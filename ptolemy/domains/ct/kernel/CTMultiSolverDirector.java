@@ -333,7 +333,7 @@ public class CTMultiSolverDirector extends CTDirector {
 
         // Schedule has to be computed before calling initialize() on
         // actors since some actors may call fireAt() in their initialize().
-        CTSchedule schedule = (CTSchedule)getScheduler().getSchedule();
+        /* CTSchedule schedule = (CTSchedule)*/ getScheduler().getSchedule();
         // Display schedule
         if (_debugging) _debug(getScheduler().getSchedule().toString());
 

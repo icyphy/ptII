@@ -111,8 +111,7 @@ public class EditablePlotMLApplication extends PlotMLApplication {
      */
     public static void main(String args[]) {
         try {
-            EditablePlotMLApplication plot =
-                new EditablePlotMLApplication(new EditablePlot(), args);
+            new EditablePlotMLApplication(new EditablePlot(), args);
         } catch (Exception ex) {
             System.err.println(ex.toString());
             ex.printStackTrace();

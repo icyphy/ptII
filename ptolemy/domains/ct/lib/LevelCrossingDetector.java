@@ -81,15 +81,15 @@ public class LevelCrossingDetector extends Transformer
     public LevelCrossingDetector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        Parameter inputType = new Parameter(input, "signalType",
+        new Parameter(input, "signalType",
                 new StringToken("CONTINUOUS"));
         output.setTypeAtLeast(input);
-        Parameter outputType = new Parameter(output, "signalType",
+        new Parameter(output, "signalType",
                 new StringToken("DISCRETE"));
         trigger = new TypedIOPort(this, "trigger", true, false);
         trigger.setMultiport(false);
         trigger.setTypeEquals(BaseType.DOUBLE);
-        Parameter triggerType = new Parameter(trigger, "signalType",
+        new Parameter(trigger, "signalType",
                 new StringToken("CONTINUOUS"));
         _level = 0.0;
         level = new Parameter(this, "level", new DoubleToken(0.0));

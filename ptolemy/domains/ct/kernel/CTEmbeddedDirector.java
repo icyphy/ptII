@@ -339,8 +339,6 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
      */
     public boolean prefire() throws IllegalActionException {
         if (_debugging) _debug("Director prefire.");
-        CompositeActor ca = (CompositeActor) getContainer();
-
         if (!isScheduleValid()) {
             // mutation occurred, redo the schedule;
             CTScheduler scheduler = (CTScheduler)getScheduler();

@@ -81,7 +81,7 @@ public class EventSource extends TypedAtomicActor
         super(container, name);
         // Create port and parameters.
         output = new TypedIOPort(this, "output", false, true);
-        Parameter outputType = new Parameter(output, "signalType",
+        new Parameter(output, "signalType",
                 new StringToken("DISCRETE"));
 
         period = new Parameter(this, "period", new DoubleToken(2.0));

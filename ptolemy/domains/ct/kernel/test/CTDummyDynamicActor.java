@@ -56,14 +56,14 @@ public class CTDummyDynamicActor extends TypedAtomicActor
         input = new TypedIOPort(this, "input");
         input.setInput(true);
         input.setOutput(false);
-        Parameter inputType = new Parameter(input, "signalType",
+        new Parameter(input, "signalType",
                 new StringToken("CONTINUOUS"));
         input.setTypeEquals(BaseType.DOUBLE);
         output = new TypedIOPort(this, "output");
         output.setInput(false);
         output.setOutput(true);
         output.setTypeEquals(BaseType.DOUBLE);
-        Parameter outputType = new Parameter(output, "signalType",
+        new Parameter(output, "signalType",
                 new StringToken("CONTINUOUS"));
     }
 

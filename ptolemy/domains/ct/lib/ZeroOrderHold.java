@@ -76,9 +76,9 @@ public class ZeroOrderHold extends Transformer
                 new IntToken(0));
         output.setTypeAtLeast(input);
         output.setTypeAtLeast(defaultValue);
-        Parameter inputType = new Parameter(input, "signalType",
+        new Parameter(input, "signalType",
                 new StringToken("DISCRETE"));
-        Parameter outputType = new Parameter(output, "signalType",
+        new Parameter(output, "signalType",
                 new StringToken("CONTINUOUS"));
 
         _attachText("_iconDescription", "<svg>\n" +

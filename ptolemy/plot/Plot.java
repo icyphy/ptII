@@ -1905,7 +1905,6 @@ public class Plot extends PlotBox {
         _plotImage = null;
         super.clear(format);
         _currentdataset = -1;
-        int size = _points.size();
         _points = new Vector();
         _prevx = new Vector();
         _prevy = new Vector();
@@ -1943,7 +1942,7 @@ public class Plot extends PlotBox {
         _plotImage = null;
         _checkDatasetIndex(dataset);
         _xyInvalid = true;
-        Vector points = (Vector)_points.elementAt(dataset);
+        // Vector points = (Vector)_points.elementAt(dataset);
         // Vector.clear() is new in JDK1.2, so we use just
         // create a new Vector here so that we can compile
         // this with JDK1.1 for use in JDK1.1 browsers
@@ -2236,8 +2235,8 @@ public class Plot extends PlotBox {
             2f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND);
 
     // The stroke to use for thin lines in the plot.
-    private static final BasicStroke _thinStroke = new BasicStroke(
-            1f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND);
+    //private static final BasicStroke _thinStroke = new BasicStroke(
+    //        1f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND);
 
     /** @serial Flag indicating validity of _xBottom, _xTop,
      *  _yBottom, and _yTop.

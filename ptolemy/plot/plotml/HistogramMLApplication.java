@@ -92,8 +92,7 @@ public class HistogramMLApplication extends PlotMLApplication {
      */
     public static void main(String args[]) {
         try {
-            HistogramMLApplication plot =
-                new HistogramMLApplication(new Histogram(), args);
+            new HistogramMLApplication(new Histogram(), args);
         } catch (Exception ex) {
             System.err.println(ex.toString());
             ex.printStackTrace();

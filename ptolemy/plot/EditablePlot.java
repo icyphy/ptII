@@ -206,7 +206,6 @@ public class EditablePlot extends Plot {
         // _redoStack.clear();
         while (!_redoStack.empty()) _redoStack.pop();
 
-        Graphics graphics = getGraphics();
         // constrain to be in range
         if (y > _lry) y = _lry;
         if (y < _uly) y = _uly;

@@ -159,8 +159,8 @@ public class SigmaDelta extends TypedCompositeActor {
         ctsub.connect(time.output, scale3.input);
         ctsub.connect(scale3.output, trigFunction.input);
         Relation cr0 = ctsub.connect(trigFunction.output, scale0.input, "CR0");
-        Relation cr1 = ctsub.connect(scale0.output, add1.plus, "CR1");
-        Relation cr2 = ctsub.connect(add1.output, intgl1.input, "CR2");
+        ctsub.connect(scale0.output, add1.plus, "CR1");
+        ctsub.connect(add1.output, intgl1.input, "CR2");
         Relation cr3 = ctsub.connect(intgl1.output, intgl2.input, "CR3");
         Relation cr4 = ctsub.connect(intgl2.output, ctPlot.input, "CR4");
         scale1.input.link(cr3);
@@ -169,9 +169,9 @@ public class SigmaDelta extends TypedCompositeActor {
         TypedIORelation cr5 = new TypedIORelation(ctsub, "CR5");
         ctSampler.output.link(cr5);
         subout.link(cr5);
-        Relation cr6 = ctsub.connect(scale1.output, add1.plus, "CR6");
-        Relation cr7 = ctsub.connect(scale2.output, add1.plus, "CR7");
-        Relation cr8 = ctsub.connect(scale4.output, add1.plus, "CR8");
+        ctsub.connect(scale1.output, add1.plus, "CR6");
+        ctsub.connect(scale2.output, add1.plus, "CR7");
+        ctsub.connect(scale4.output, add1.plus, "CR8");
         TypedIORelation cr9 = new TypedIORelation(ctsub, "CR9");
         hold.input.link(cr9);
         subin.link(cr9);
@@ -212,16 +212,16 @@ public class SigmaDelta extends TypedCompositeActor {
                 + "0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05}");
 
         // DE connections.
-        Relation dr0 = this.connect(subout,  delay.input);
-        Relation dr1 = this.connect(delay.output,  fir.input);
-        Relation dr2 = this.connect(fir.output, quan.input);
-        Relation dr3 = this.connect(quan.output, subin);
+        connect(subout,  delay.input);
+        connect(delay.output,  fir.input);
+        connect(fir.output, quan.input);
+        Relation dr3 = connect(quan.output, subin);
         mav.input.link(dr3);
-        Relation dr5 = this.connect(mav.output, accumulator.input);
-        Relation dr4 = this.connect(clk.output, sampler.trigger);
+        connect(mav.output, accumulator.input);
+        Relation dr4 = connect(clk.output, sampler.trigger);
         accumulator.reset.link(dr4);
-        Relation dr6 = this.connect(accumulator.output, sampler.input);
-        Relation dr7 = this.connect(sampler.output, dePlot.input);
+        connect(accumulator.output, sampler.input);
+        connect(sampler.output, dePlot.input);
         dePlot.input.link(dr3);
 
         // CT Director parameters

@@ -59,7 +59,7 @@ public class CTDummyEventGenerator extends TypedAtomicActor
         input.setInput(true);
         input.setOutput(false);
         input.setTypeEquals(BaseType.DOUBLE);
-        Parameter inputType = new Parameter(input, "signalType",
+        new Parameter(input, "signalType",
                 new StringToken("CONTINUOUS"));
         input.setTypeEquals(BaseType.DOUBLE);
         output = new TypedIOPort(this, "output");
@@ -67,7 +67,7 @@ public class CTDummyEventGenerator extends TypedAtomicActor
         output.setOutput(true);
         output.setTypeEquals(BaseType.DOUBLE);
         output.setTypeEquals(BaseType.DOUBLE);
-        Parameter outputType = new Parameter(output, "signalType",
+        new Parameter(output, "signalType",
                 new StringToken("DISCRETE"));
     }
 

@@ -173,7 +173,7 @@ public class TwoPlotExample extends JFrame {
         // the comment
         Runnable doAction = new Runnable() {
                 public void run() {
-                    TwoPlotExample twoPlotExample = new TwoPlotExample();
+                    new TwoPlotExample();
                 }
             };
         SwingUtilities.invokeLater(doAction);

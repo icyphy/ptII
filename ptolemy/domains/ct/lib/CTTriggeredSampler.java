@@ -75,15 +75,15 @@ public class CTTriggeredSampler extends Transformer
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input.setMultiport(true);
-        Parameter inputType = new Parameter(input, "signalType",
+        new Parameter(input, "signalType",
                 new StringToken("CONTINUOUS"));
         output.setMultiport(true);
         output.setTypeAtLeast(input);
-        Parameter outputType = new Parameter(output, "signalType",
+        new Parameter(output, "signalType",
                 new StringToken("DISCRETE"));
         trigger = new TypedIOPort(this, "trigger", true, false);
         trigger.setMultiport(false);
-        Parameter triggerType = new Parameter(trigger, "signalType",
+        new Parameter(trigger, "signalType",
                 new StringToken("DISCRETE"));
         // The trigger input has a generic type.
 

@@ -375,7 +375,6 @@ public abstract class CTDirector extends StaticSchedulingDirector {
     public void fireAt(Actor actor, double time)
             throws IllegalActionException{
         double resolution = getTimeResolution();
-        double minStep = getMinStepSize();
         double currentTime = getCurrentTime();
         if (time < currentTime - resolution) {
             throw new IllegalActionException((Nameable)actor,

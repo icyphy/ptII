@@ -81,11 +81,11 @@ public class FirstOrderHold extends Transformer
         input.setTypeEquals(BaseType.DOUBLE);
         derivative.setTypeEquals(BaseType.DOUBLE);
         output.setTypeEquals(BaseType.DOUBLE);
-        Parameter inputType = new Parameter(input, "signalType",
+        new Parameter(input, "signalType",
                 new StringToken("DISCRETE"));
-        Parameter derivativeType = new Parameter(derivative, "signalType",
+        new Parameter(derivative, "signalType",
                 new StringToken("DISCRETE"));
-        Parameter outputType = new Parameter(output, "signalType",
+        new Parameter(output, "signalType",
                 new StringToken("CONTINUOUS"));
     }
 

@@ -99,7 +99,7 @@ public class PlotMLApplication extends PlotApplication {
      */
     public static void main(String args[]) {
         try {
-            PlotApplication plot = new PlotMLApplication(new Plot(), args);
+            new PlotMLApplication(new Plot(), args);
         } catch (Exception ex) {
             System.err.println(ex.toString());
             ex.printStackTrace();

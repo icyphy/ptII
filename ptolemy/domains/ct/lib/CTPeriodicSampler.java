@@ -77,10 +77,10 @@ public class CTPeriodicSampler extends Transformer
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input.setMultiport(true);
-        Parameter inputType = new Parameter(input, "signalType",
+        new Parameter(input, "signalType",
                 new StringToken("CONTINUOUS"));
         output.setMultiport(true);
-        Parameter outputType = new Parameter(output, "signalType",
+        new Parameter(output, "signalType",
                 new StringToken("DISCRETE"));
         _samplePeriod = (double)0.1;
         samplePeriod = new Parameter(this,

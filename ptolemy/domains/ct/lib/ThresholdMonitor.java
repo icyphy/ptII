@@ -85,13 +85,13 @@ public class ThresholdMonitor extends TypedAtomicActor
         input = new TypedIOPort(this, "input", true, false);
         input.setMultiport(false);
         input.setTypeEquals(BaseType.DOUBLE);
-        Parameter inputType = new Parameter(input, "signalType",
+        new Parameter(input, "signalType",
                 new StringToken("CONTINUOUS"));
 
         output = new TypedIOPort(this, "output", false, true);
         output.setMultiport(false);
         output.setTypeEquals(BaseType.BOOLEAN);
-        Parameter outputType = new Parameter(output, "signalType",
+        new Parameter(output, "signalType",
                 new StringToken("DISCRETE"));
 
         _thWidth = (double)1e-2;

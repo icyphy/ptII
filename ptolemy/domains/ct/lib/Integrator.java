@@ -113,9 +113,9 @@ public class Integrator extends CTBaseIntegrator {
     public Integrator(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        Parameter inputType = new Parameter(input, "signalType",
+        new Parameter(input, "signalType",
                 new StringToken("CONTINUOUS"));
-        Parameter outputType = new Parameter(output, "signalType",
+        new Parameter(output, "signalType",
                 new StringToken("CONTINUOUS"));
         _attachText("_iconDescription", "<svg>\n" +
                 "<rect x=\"-15\" y=\"-20\" "

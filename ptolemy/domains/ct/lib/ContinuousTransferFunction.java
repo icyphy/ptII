@@ -293,8 +293,7 @@ public class ContinuousTransferFunction extends TypedCompositeActor {
                 connect(inputAdder.output, integrators[0].input);
                 IORelation inputRelation = (IORelation)
                     connect(input, inputAdder.plus, "inputRelation");
-                IORelation outputRelation = (IORelation)
-                    connect(output, outputAdder.output, "outputRelation");
+                connect(output, outputAdder.output, "outputRelation");
                 if (d != 0) {
                     Scale scaleD = new Scale(this, "ScaleD");
                     scaleD.factor.setToken(new DoubleToken(d));
