@@ -179,7 +179,7 @@ public class CSPDirector extends ProcessDirector {
 	boolean continueExec = true;
 	while (continueExec) {
 	    while (!_checkForDeadlock()) {
-	        System.out.println("fire() waiting for deadlock.");
+	        // System.out.println("fire() waiting for deadlock.");
 	        workspace().wait(this);
 	    }
 	    System.out.println("fire() handling deadlock.");
@@ -337,10 +337,12 @@ public class CSPDirector extends ProcessDirector {
      *  delayed, false otherwise.
      */
     protected synchronized boolean _checkForDeadlock() {
+	/*
         System.out.println(Thread.currentThread().getName() +
                 ": _checkForDeadlock: Active = " +
                 _getActiveActorsCount() + ", blocked = " + _actorsBlocked +
                 ", delayed = " + _actorsDelayed );
+	*/
         if (_getActiveActorsCount() == (_actorsBlocked + _actorsDelayed)) {
             return true;
         } 
