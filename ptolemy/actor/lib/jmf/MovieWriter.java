@@ -268,7 +268,6 @@ public class MovieWriter extends Sink
 
     /** Save the file.
      *  @exception IllegalActionException If a contained method throws it.
-     *  @return true
      */
     public void wrapup() throws IllegalActionException {
         _bufferIterator = _bufferArrayList.iterator();
