@@ -1,8 +1,7 @@
-/*          
-Methods to aid in the static resolution of names and types in a Java
-program. The code was mostly converted from the Titanium project.
+/* Methods to aid in the static resolution of names and types in a Java
+program.
 
-Copyright (c) 1998-1999 The Regents of the University of California.
+Copyright (c) 1998-2000 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -48,11 +47,15 @@ import ptolemy.lang.java.nodetypes.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// StaticResolution
-/**
- *  Methods to aid in the static resolution of names and types in a Java
- *  program. The code was mostly converted from the Titanium project.
- *
- *  @author Jeff Tsay
+/** Methods to aid in the static resolution of names and types in a Java
+program.
+<p>
+Portions of this code were derived from sources developed under the
+auspices of the Titanium project, under funding from the DARPA, DoE,
+and Army Research Office.
+
+@author Jeff Tsay
+@version $Id$
  */
 public class StaticResolution implements JavaStaticSemanticConstants {
 

@@ -39,9 +39,13 @@ import ptolemy.lang.java.nodetypes.*;
 //////////////////////////////////////////////////////////////////////////
 //// MemberDecl
 /** A member of a class or interface. 
- *  Code and comments converted from the Titanium project.
- *
- *  @author Jeff Tsay
+<p>
+Portions of this code were derived from sources developed under the
+auspices of the Titanium project, under funding from the DARPA, DoE,
+and Army Research Office.
+
+@author Jeff Tsay
+@version $Id$
  */
 public abstract class MemberDecl extends TypedDecl {
     public MemberDecl(String name, int category0, TypeNode type, int modifiers, TreeNode source, JavaDecl container) {

@@ -1,6 +1,4 @@
-/* 
-Resolve fields, overloading, and do other random semantic checks.
-Code adopted from st-field.cc from the Titanium project.
+/* Resolve fields, overloading, and do other random semantic checks.
 
 Copyright (c) 1998-2000 The Regents of the University of California.
 All rights reserved.
@@ -41,10 +39,13 @@ import ptolemy.lang.*;
 import ptolemy.lang.java.nodetypes.*;
 
 /** A visitor that does field and method resolution.
- *  
- *  Code and comments taken from the Titanium project.
- * 
- *  @author Jeff Tsay
+<p>
+Portions of this code were derived from sources developed under the
+auspices of the Titanium project, under funding from the DARPA, DoE,
+and Army Research Office.
+
+@author Jeff Tsay
+@version $Id$
  */
 public class ResolveFieldVisitor extends ReplacementJavaVisitor 
        implements JavaStaticSemanticConstants {

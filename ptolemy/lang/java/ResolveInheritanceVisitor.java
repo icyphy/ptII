@@ -1,7 +1,4 @@
-/*
-Fills in class and interface environments with inherited members.
-
-Code and comments adopted from st-inherit.cc from the Titanium project.
+/* Fills in class and interface environments with inherited members.
 
 Copyright (c) 1998-2000 The Regents of the University of California.
 All rights reserved.
@@ -44,9 +41,13 @@ import ptolemy.lang.java.nodetypes.*;
 //////////////////////////////////////////////////////////////////////////
 //// ResolveInheritanceVisitor
 /** Fills in class and interface environments with inherited members.
- *  Code and comments adopted from st-inherit.cc from the Titanium project.
- *
- *  @author Jeff Tsay
+<p>
+Portions of this code were derived from sources developed under the
+auspices of the Titanium project, under funding from the DARPA, DoE,
+and Army Research Office.
+
+@author Jeff Tsay
+@version $Id$
  */
 public class ResolveInheritanceVisitor extends ResolveVisitorBase 
        implements JavaStaticSemanticConstants {

@@ -1,7 +1,5 @@
 /* A declaration of a Java package.
 
-Code and comments adopted from the Titanium project.
-
 Copyright (c) 1998-2000  The Regents of the University of California.
 All rights reserved.
 
@@ -41,9 +39,13 @@ import ptolemy.lang.*;
 //////////////////////////////////////////////////////////////////////////
 //// PackageDecl
 /** A declaration of a Java package. 
- *  Code and comments converted from the Titanium project.
- *
- *  @author Jeff Tsay
+<p>
+Portions of this code were derived from sources developed under the
+auspices of the Titanium project, under funding from the DARPA, DoE,
+and Army Research Office.
+
+@author Jeff Tsay
+@version $Id$
  */
 public class PackageDecl extends JavaDecl implements JavaStaticSemanticConstants {
     public PackageDecl(String name, JavaDecl container) {

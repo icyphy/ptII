@@ -1,5 +1,4 @@
-/*
-A declaration in Java. Code converted from the Titanium project.
+/* A declaration in Java.
 
 Copyright (c) 1998-2000 The Regents of the University of California.
 All rights reserved.
@@ -111,10 +110,13 @@ import ptolemy.lang.java.nodetypes.*;
  *     TypeNameNode that stands for the type this class represents.  That
  *     is, it is a TypeNameNode whose decl() is THIS.
  *  </p>  
- *  <p>    
- *  Code and comments converted from Decl in the Titanium project.
- *  </p>  
- *  @author Jeff Tsay
+<p>
+Portions of this code were derived from sources developed under the
+auspices of the Titanium project, under funding from the DARPA, DoE,
+and Army Research Office.
+
+@author Jeff Tsay
+@version $Id$
  */
 public abstract class JavaDecl extends Decl implements JavaStaticSemanticConstants {
 

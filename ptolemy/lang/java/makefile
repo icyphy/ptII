@@ -135,6 +135,31 @@ Yylex.java: Yylex
 run_GenerateVisitor JavaVisitor.java: NodeTypes.def
 	CLASSPATH=$(CLASSPATH) $(JAVA) ptolemy.lang.GenerateVisitor NodeTypes.def JavaVisitor TreeNode nodetypes
 
+# Note that we DON'T want to run Skeleton in any directory that contain
+# actors, like actor/lib or domains/sdf/lib because the code generator
+# needs to transform the code contained in actors.
+
+SKELETON_DIRS = \
+	ptolemy/actor \
+	ptolemy/actor/lib \
+	ptolemy/actor/sched \
+	ptolemy/actor/util \
+	ptolemy/kernel \
+	ptolemy/kernel/util \
+	ptolemy/data \
+	ptolemy/data/type \
+	ptolemy/graph \
+	ptolemy/math 
+
+skeleton:
+	for x in $(SKELETON_DIRS); do \
+		echo running Skeleton in $(PTII)/$$x ; \
+		CLASSPATH=$(CLASSPATH) $(JAVA) ptolemy.lang.java.Skeleton $(PTII)/$$x/*.java; \
+	done
+
+
+
+
 depend:
 	@echo "no dependencies in this directory"
 
@@ -159,8 +184,11 @@ analysis:
 	$(JAVA) ptolemy.lang.java.Main ./nodetypes/IntLitNode.java
 
 codegen:
+	@if [ ! -d $(JAVASRC_STUBS) ]; then \
+		echo "Warning $(JAVASRC_STUBS) does not exist"; \
+	fi
 	CLASSPATH=$(CLASSPATH)$(CLASSPATHSEPARATOR)$(JAVASRC_STUBS) \
-	$(JAVA) ptolemy.domains.sdf.codegen.SDFCodeGenerator \
+	$(JAVA) -verbose:class  ptolemy.domains.sdf.codegen.SDFCodeGenerator \
 	-class  ptolemy.domains.sdf.demo.orthocom.OrthogonalComSystem -iterations 5 \
       -outdir $(ROOT) -outpkg cg.orthocom
       

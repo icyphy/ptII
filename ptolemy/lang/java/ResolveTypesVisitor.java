@@ -1,6 +1,4 @@
-/*
-A JavaVisitor that resolves class or interface type declarations.
-Based on st-package.cc in the Titanium project.
+/* A JavaVisitor that resolves class or interface type declarations.
 
 Copyright (c) 1998-2000 The Regents of the University of California.
 All rights reserved.
@@ -39,9 +37,13 @@ import ptolemy.lang.*;
 import ptolemy.lang.java.nodetypes.*;
 
 /** A JavaVisitor that resolves class or interface type declarations.
- *  Based on st-package.cc in the Titanium project.
- *
- *  @author Jeff Tsay
+<p>
+Portions of this code were derived from sources developed under the
+auspices of the Titanium project, under funding from the DARPA, DoE,
+and Army Research Office.
+
+@author Jeff Tsay
+@version $Id$
  */
 public class ResolveTypesVisitor extends ResolveVisitorBase 
        implements JavaStaticSemanticConstants {

@@ -1,6 +1,4 @@
-/* 
-A declaration of a local variable in Java. 
-Code and comments adopted from the Titanium project.
+/* A declaration of a local variable in Java. 
 
 Copyright (c) 1998-2000 The Regents of the University of California.
 All rights reserved.
@@ -38,9 +36,13 @@ import ptolemy.lang.TreeNode;
 import ptolemy.lang.java.nodetypes.TypeNode;
 
 /** A declaration of a local variable in Java.  
- *  Code and comments adopted from the Titanium project.
- *  
- *  @author Jeff Tsay
+<p>
+Portions of this code were derived from sources developed under the
+auspices of the Titanium project, under funding from the DARPA, DoE,
+and Army Research Office.
+
+@author Jeff Tsay
+@version $Id$
  */ 
 public class LocalVarDecl extends TypedDecl implements JavaStaticSemanticConstants {
     public LocalVarDecl(String name, TypeNode type, int modifiers, TreeNode source) {

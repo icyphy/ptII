@@ -1,7 +1,5 @@
-/*
-Resolve names of local variables, formal parameters, field accesses,
-method calls, and statement labels. Code adopted from st-name.cc from
-the Titanium project.
+/* Resolve names of local variables, formal parameters, field accesses,
+method calls, and statement labels. 
 
 Copyright (c) 1998-2000 The Regents of the University of California.
 All rights reserved.
@@ -41,17 +39,19 @@ import ptolemy.lang.*;
 import ptolemy.lang.java.nodetypes.*;
 
 /** A visitor that does name resolution.
- *  
- *  After this phase, all fields and methods are referred to via
- *  ThisFieldAccessNode, SuperFieldAccessNode or ObjectFieldAccessNode. 
- *  ObjectNode is only used for local variables and parameters.
- *  
- *  The decl in methods may be wrong, because overloading resolution is
- *  done later (when types become available) 
- *
- *  Code and comments taken from the Titanium project.
- * 
- *  @author Jeff Tsay
+After this phase, all fields and methods are referred to via
+ThisFieldAccessNode, SuperFieldAccessNode or ObjectFieldAccessNode. 
+ObjectNode is only used for local variables and parameters.
+
+The decl in methods may be wrong, because overloading resolution is
+done later (when types become available) 
+
+Portions of this code were derived from sources developed under the
+auspices of the Titanium project, under funding from the DARPA, DoE,
+and Army Research Office.
+
+@author Jeff Tsay
+@version $Id$
  */
 public class ResolveNameVisitor extends ReplacementJavaVisitor 
        implements JavaStaticSemanticConstants {

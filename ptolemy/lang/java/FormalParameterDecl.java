@@ -1,6 +1,5 @@
-/* 
-A declaration of a formal parameter of a method, constructor, or catch clause.
-Code and comments adopted from the Titanium project.
+/* A declaration of a formal parameter of a method, constructor, or catch
+clause.
 
 Copyright (c) 1998-2000 The Regents of the University of California.
 All rights reserved.
@@ -37,10 +36,15 @@ package ptolemy.lang.java;
 import ptolemy.lang.TreeNode;
 import ptolemy.lang.java.nodetypes.*;
 
-/** A declaration of a formal parameter of a method, constructor, or catch clause.
- *  Code and comments adopted from the Titanium project.
- *
- *  @author Jeff Tsay
+/** A declaration of a formal parameter of a method, constructor, or catch
+clause. 
+
+Portions of this code were derived from sources developed under the
+auspices of the Titanium project, under funding from the DARPA, DoE,
+and Army Research Office.
+
+@author Jeff Tsay
+@version $Id$
  */
 public class FormalParameterDecl extends TypedDecl {
     public FormalParameterDecl(String name, TypeNode type, int modifiers, TreeNode source) {

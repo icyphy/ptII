@@ -2,8 +2,6 @@
 Create declarations for fields, constructors, and methods, and add them to
 their enclosing class's environment.
 
-Code and comments adopted from st-class.cc from the Titanium project.
-
 Copyright (c) 1998-2000 The Regents of the University of California.
 All rights reserved.
 
@@ -48,12 +46,15 @@ import ptolemy.lang.java.nodetypes.*;
 //////////////////////////////////////////////////////////////////////////
 //// ResolveClassVisitor
 /** 
- *  Create declarations for fields, constructors, and methods, and add them to
- *  their enclosing class's environment.
- * 
- *  Code and comments adopted from st-class.cc from the Titanium project.
- *
- *  @author Jeff Tsay
+Create declarations for fields, constructors, and methods, and add them to
+their enclosing class's environment.
+<p>
+Portions of this code were derived from sources developed under the
+auspices of the Titanium project, under funding from the DARPA, DoE,
+and Army Research Office.
+
+@author Jeff Tsay
+@version $Id$
  */
 public class ResolveClassVisitor extends ResolveVisitorBase 
        implements JavaStaticSemanticConstants  {

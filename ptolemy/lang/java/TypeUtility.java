@@ -1,6 +1,4 @@
-/* 
-Methods dealing with types. Most of the code and comments were taken from the 
-Titanium project.
+/* Methods dealing with types.
 
 Copyright (c) 1998-2000 The Regents of the University of California.
 All rights reserved.
@@ -29,7 +27,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 @ProposedRating Red (ctsay@eecs.berkeley.edu)
 @AcceptedRating Red (ctsay@eecs.berkeley.edu)
-
 */
 
 package ptolemy.lang.java;
@@ -41,10 +38,14 @@ import java.util.List;
 import ptolemy.lang.*;
 import ptolemy.lang.java.nodetypes.*;
 
-/** Methods dealing with types. Most of the code and comments were taken from the 
- *  Titanium project.
- *
- *  @author Jeff Tsay
+/** Methods dealing with types.
+<p>
+Portions of this code were derived from sources developed under the
+auspices of the Titanium project, under funding from the DARPA, DoE,
+and Army Research Office.
+
+@author Jeff Tsay
+@version $Id$
  */
 public class TypeUtility implements JavaStaticSemanticConstants {
 

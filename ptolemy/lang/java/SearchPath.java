@@ -1,6 +1,5 @@
-/*
-A vector containing paths to search for when resolving an import or
-package. Code was converted from SearchPath.cc from the Titanium project.
+/* A vector containing paths to search for when resolving an import or
+package.
 
 Copyright (c) 1998-2000 The Regents of the University of California.
 All rights reserved.
@@ -39,6 +38,17 @@ import java.util.Vector;
 
 import ptolemy.lang.ApplicationUtility;
 
+/** A vector containing paths to search for when resolving an import or
+package.
+
+<p>
+Portions of this code were derived from sources developed under the
+auspices of the Titanium project, under funding from the DARPA, DoE,
+and Army Research Office.
+
+@author Jeff Tsay
+@version $Id$
+ */
 public class SearchPath extends Vector {
 
     public SearchPath(String envar, String fallbacks) {

@@ -3,8 +3,6 @@ A JavaVisitor that adds the names of the types defined in the CompileUnitNode
 to the file environment, creates the environments for all nodes,
 then resolves names of the imports with a ResolveImportsVisitor.
 
-Based on st-package.cc from the Titanium project.
-
 Copyright (c) 1998-2000 The Regents of the University of California.
 All rights reserved.
 
@@ -45,13 +43,18 @@ import ptolemy.lang.java.nodetypes.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// ResolvePackageVisitor
-/** A JavaVisitor that adds the names of the types defined in the CompileUnitNode
- *  to the file environment, creates the environments for all nodes,
- *  then resolves names of the imports with a ResolveImportsVisitor.
- *
- *  Based on st-package.cc from the Titanium project.
- *
- *  @author Jeff Tsay
+
+/** A JavaVisitor that adds the names of the types defined in the
+CompileUnitNode to the file environment, creates the environments for
+all nodes, then resolves names of the imports with a
+ResolveImportsVisitor.
+
+Portions of this code were derived from sources developed under the
+auspices of the Titanium project, under funding from the DARPA, DoE,
+and Army Research Office.
+
+@author Jeff Tsay
+@version $Id$
  */
 public class ResolvePackageVisitor extends ResolveVisitorBase 
        implements JavaStaticSemanticConstants {

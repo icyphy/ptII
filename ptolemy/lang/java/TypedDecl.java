@@ -1,5 +1,4 @@
-/*
-A declaration that is typed.
+/* A declaration that is typed.
 
 Copyright (c) 1998-2000 The Regents of the University of California.
 All rights reserved.
@@ -43,9 +42,14 @@ import ptolemy.lang.java.nodetypes.TypeNode;
  *  represented as pointers to AST nodes of type TypeNode, just as they
  *  are during parsing.  Packages, statement labels, classes, and
  *  interfaces don't have types (although the latter two ARE types).
- *  Code and comments converted from the Titanium project.
- *
- *  @author Jeff Tsay
+
+<p>
+Portions of this code were derived from sources developed under the
+auspices of the Titanium project, under funding from the DARPA, DoE,
+and Army Research Office.
+
+@author Jeff Tsay
+@version $Id$
  */
 public abstract class TypedDecl extends JavaDecl {
     public TypedDecl(String name, int category0, TypeNode type, int modifiers) {

@@ -1,6 +1,4 @@
-/* 
-A declaration of a class or interface in Java.
-Code and comments converted from the Titanium project.
+/* A declaration of a class or interface in Java.
 
 Copyright (c) 1998-2000 The Regents of the University of California.
 All rights reserved.
@@ -44,9 +42,13 @@ import ptolemy.lang.java.nodetypes.*;
 //////////////////////////////////////////////////////////////////////////
 //// ClassDecl
 /** A declaration of a class or interface in Java.
- *  Code and comments converted from the Titanium project.
- *
- *  @author Jeff Tsay
+<p>
+Portions of this code were derived from sources developed under the
+auspices of the Titanium project, under funding from the DARPA, DoE,
+and Army Research Office.
+
+@author Jeff Tsay
+@version $Id$
  */
 public class ClassDecl extends TypeDecl implements JavaStaticSemanticConstants {
 

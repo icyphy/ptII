@@ -1,7 +1,5 @@
 /* A declaration of a field of a class or interface in Java.
 
-Code and comments adopted from the Titanium project.
-
 Copyright (c) 1998-2000 The Regents of the University of California.
 All rights reserved.
 
@@ -39,9 +37,13 @@ import ptolemy.lang.TreeNode;
 import ptolemy.lang.java.nodetypes.*;
 
 /** A declaration of a field of a class or interface in Java.
- *  Code and comments adopted from the Titanium project.
- *
- *  @author Jeff Tsay
+<p>
+Portions of this code were derived from sources developed under the
+auspices of the Titanium project, under funding from the DARPA, DoE,
+and Army Research Office.
+
+@author Jeff Tsay
+@version $Id$
  */
 public class FieldDecl extends MemberDecl {
     public FieldDecl(String name, TypeNode type, int modifiers, TreeNode source, JavaDecl container) {
