@@ -43,6 +43,7 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	doc
+PTVERSION =	2.0
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =
 
@@ -75,10 +76,11 @@ EXTRA_SRCS = \
 	help.htm \
 	index.htm \
 	install.htm \
+	installJNLP.htm \
 	javahtml.awk \
 	main.htm \
 	mainheader.htm \
-	ptII1.1.release.htm \
+	ptII$(PTVERSION).release.htm \
 	ptIIfaq.htm \
 	toc.css \
 	toc.htm \
@@ -88,7 +90,7 @@ EXTRA_SRCS = \
 # Derived files that are preprocessed for use within vergil.
 VERGIL_DOCS = \
 	mainVergil.htm \
-	ptII1.1.releaseVergil.htm \
+	ptII$(PTVERSION).releaseVergil.htm \
 	troubleshootingVergil.htm
 
 # Include these jars in PTAUXALLJAR
@@ -121,6 +123,7 @@ MISC_FILES =	\
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES =	\
 	codeDoc \
+	codeDoc.jar \
 	codeDocPtiny \
 	uml
 
@@ -245,7 +248,7 @@ mainVergil.htm: main.htm
 
 # Generate a file that consists of only the text within
 # <!--vergilDoc--> ... <!--/vergilDoc--> blocks
-ptII1.1.releaseVergil.htm: ptII1.1.release.htm
+ptII$(PTVERSION).releaseVergil.htm: ptII$(PTVERSION).release.htm
 	awk -f javahtml.awk $< > $@  
 troubleshootingVergil.htm: troubleshooting.htm
 	awk -f javahtml.awk $< > $@  
