@@ -119,10 +119,12 @@ public class LinearStateSpace extends TypedCompositeActor {
                 + "style=\"fill:white\"/>\n"
                 + "<text x=\"5\" y=\"20\" "
                 + "style=\"font-size:14\">\n"
-                + "dx/dt=Ax+Bu \n"
-                + "    y=Cx+Du \n"
+                + "dx/dt=Ax+Bu "
                 + "</text>\n"
-                + "style=\"fill:blue\"/>\n"
+                + "<text x=\"5\" y=\"40\" "
+                + "style=\"font-size:14\">\n"
+                + "    y=Cx+Du"
+                + "</text>\n"
                 + "</svg>\n");
     }
 
@@ -291,8 +293,8 @@ public class LinearStateSpace extends TypedCompositeActor {
                         feedback[i][j] = new Scale(this,
                                 "feedback_" + i + "_" +j);
                         feedback[i][j].factor.setToken(tokenIJ);
-                        feedback[i][j].input.link(states[i]);
-                        connect(feedback[i][j].output, stateAdders[j].plus);
+                        feedback[i][j].input.link(states[j]);
+                        connect(feedback[i][j].output, stateAdders[i].plus);
                     }
                 }
             }
@@ -305,7 +307,7 @@ public class LinearStateSpace extends TypedCompositeActor {
                 // Create input scales.
                 for (int i = 0; i < n; i++) {
                     // We create a scale for each input even if the
-                    // corresponding element in B is 0. This is because
+                    // corresponding element in B is 0. Otherwise,
                     // if the elements of A's in this row are also zero,
                     // then we will have an illegal topology.
                     inputScales[i][j] = new Scale(this, "b_" + i + "_" + j);
@@ -321,13 +323,18 @@ public class LinearStateSpace extends TypedCompositeActor {
             for(int l = 0; l < r; l++) {
                 outputAdders[l] = new AddSubtract(this, "outputAdder" + l);
                 connect(outputAdders[l].output, output);
+                // Create the output scales only if the corresponsing
+                // 'c' element is not 0.
                 for(int i = 0; i < n; i++) {
-                    outputScales[l][i] = new Scale(this,
-                            "outputScale_" + l + "_" + i);
-                    outputScales[l][i].factor.setToken(
-                            c.getElementAsToken(l, i));
-                    outputScales[l][i].input.link(states[i]);
-                    connect(outputScales[l][i].output, outputAdders[l].plus);
+                    Token tokenLI = c.getElementAsToken(l, i);
+                    if(!(tokenLI.isEqualTo(tokenLI.zero())).booleanValue()) {
+                        outputScales[l][i] = new Scale(this,
+                                "outputScale_" + l + "_" + i);
+                        outputScales[l][i].factor.setToken(tokenLI);
+                        outputScales[l][i].input.link(states[i]);
+                        connect(outputScales[l][i].output, 
+                                outputAdders[l].plus);
+                    }
                 }
             }
             // Direct feed through.
