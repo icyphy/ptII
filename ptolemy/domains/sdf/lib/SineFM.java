@@ -155,8 +155,7 @@ public class SineFM extends SDFTransformer {
 	// For each samples in the current channel:
 	for (int i = 0; i < _rate; i++) {
 	    // Convert to double[].
-	    _resultTokenArray[i] =
-		new DoubleToken(A*Math.sin(
+	    _resultTokenArray[i] = new DoubleToken(A*Math.sin(
                         (_omegaTokenArray[i].doubleValue()) *
                         (_tokenArray[i].doubleValue())+p));
 	}
