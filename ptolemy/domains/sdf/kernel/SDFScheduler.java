@@ -438,36 +438,6 @@ public class SDFScheduler extends Scheduler {
         _firingVectorValid = true;
     }
 
-    /** Return the scheduling sequence.  An exception will be thrown if the
-     *  graph is not schedulable.  This occurs in the following circumstances:
-     *  <ul>
-     *  <li>The graph is not a connected graph.
-     *  <li>No integer solution exists for the balance equations.
-     *  <li>The graph contains cycles without delays (deadlock).
-     *  <li>Multiple output ports are connected to the same broadcast
-     *  relation. (equivalent to a non-deterministic merge)
-     *  </ul>
-     *
-     *  @return An enumeration of the deeply contained opaque entities
-     *  in the firing order.
-     *  @exception NotScheduleableException If the CompositeActor is not
-     *  schedulable.
-     *  @exception IllegalActionException If the rate parameters
-     *  of the model are not correct, or the computed rates for
-     */
-    protected Enumeration _schedule()
-            throws NotSchedulableException, IllegalActionException{
-        final Iterator schedule = _getSchedule().actorIterator();
-        return new Enumeration() {
-                public boolean hasMoreElements() {
-                    return schedule.hasNext();
-                }
-                public Object nextElement() {
-                    return schedule.next();
-                }
-            };
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
