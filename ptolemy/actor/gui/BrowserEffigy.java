@@ -53,6 +53,8 @@ public class BrowserEffigy extends Effigy {
      */
     public BrowserEffigy(Workspace workspace) {
 	super(workspace);
+        // Indicate that we cannot save to URL.
+        setModifiable(false);
     }
 
     /** Create a new effigy in the given directory with the given name.
@@ -62,6 +64,8 @@ public class BrowserEffigy extends Effigy {
     public BrowserEffigy(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
 	super(container, name);
+        // Indicate that we cannot save to URL.
+        setModifiable(false);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -84,13 +88,11 @@ public class BrowserEffigy extends Effigy {
     public static BrowserEffigy newBrowserEffigy(
             CompositeEntity container, URL base, URL in)
             throws Exception {
+
         // Create a new effigy.
         BrowserEffigy effigy = new BrowserEffigy(container,
                 container.uniqueName("browserEffigy"));
 
-	if (in != null) {
-	    BrowserLauncher.openURL(in.toExternalForm());
-	}
 	// We cannot easily communicate with the Browser once we launch
 	// it, so mark this effigy as unmodifiable
 	effigy.setModifiable(false);

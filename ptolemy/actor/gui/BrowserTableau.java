@@ -30,10 +30,9 @@
 package ptolemy.actor.gui;
 
 import ptolemy.gui.Top;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.*;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
@@ -76,6 +75,25 @@ public class BrowserTableau extends Tableau {
      */
     public void setEditable(boolean flag) {
         super.setEditable(flag);
+    }
+
+    /** Make this tableau visible by calling 
+     *	{@link BrowserLauncher#openURL(String)}
+     *  with URL from the effigy.  Most browsers are smart enough
+     *  so that if the browser is already displaying the URL, then
+     *  that window will be brought to the foreground.  We are limited
+     *  by the lack of communication between Java and the browser,
+     *  so this is the best we can do.
+     */
+    public void show() {
+	Effigy effigy = (Effigy)getContainer();
+	try {
+	    BrowserLauncher.openURL(effigy.url.getURL().toExternalForm());
+	} catch (IOException ex) {
+	    throw new InvalidStateException((Nameable)null, ex,
+					    "Failed to handle '"
+					     + effigy.url.getURL() + "': ");
+	}
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -121,12 +139,12 @@ public class BrowserTableau extends Tableau {
 	    if (effigy instanceof BrowserEffigy) {
                 // First see whether the effigy already contains a
                 // BrowserTableau with the appropriate name.
-                BrowserTableau tableau =
-                    (BrowserTableau)effigy.getEntity("browserTableau");
-                if (tableau == null) {
-                    tableau = new BrowserTableau(
+		BrowserTableau tableau =
+		    (BrowserTableau)effigy.getEntity("browserTableau");
+		if (tableau == null) {
+		    tableau = new BrowserTableau(
                             (BrowserEffigy)effigy, "browserTableau");
-                }
+		}
                 tableau.setEditable(effigy.isModifiable());
                 return tableau;
             } else {
