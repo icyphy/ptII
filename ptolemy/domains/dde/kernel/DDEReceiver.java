@@ -276,6 +276,16 @@ public class DDEReceiver extends TimedQueueReceiver
 	notifyAll();
     }
 
+    /** Set the pause flag of this receiver. If the flag is set to true,
+     *  then pause any process that tries to read from or write to this
+     *  receiver. If the flag is false, then resume any process that
+     *  tries to read from or write to this receiver.
+     * @param flag The boolean pause flag of this receiver.
+     */
+    public synchronized void requestPause(boolean pause) {
+	;
+    }
+
     /** Reset local flags. The local flag of this receiver indicates
      *  whether this receiver is scheduled for termination. Resetting
      *  the termination flag will make sure that this receiver is not
