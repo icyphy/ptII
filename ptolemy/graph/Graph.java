@@ -1159,6 +1159,8 @@ public class Graph implements Cloneable {
      *  Node and edge weights are preserved. In derived classes, this
      *  method returns the same type of graph as is returned by
      *  {@link ptolemy.graph.Graph#_emptyGraph()}.
+     *  Derived classes that do not have zero-argument constructors may
+     *  need to override this method to properly intialize the subgraph.
      *  @param nodes The collection of nodes; each element is a {@link Node}.
      *  @return The induced subgraph.
      *  @exception GraphElementException If the collection contains a node
