@@ -314,9 +314,9 @@ findchanges:
 
 ChangeLog:
 	@echo "#"
-	@echo "# Now generating ChangeLog file in ~ptII "
+	@echo "# Now generating ChangeLog file in $(PTIIHOME)"
 	@echo "#"
-	date
+	@echo "$@ `date`"
 	cd $(PTIIHOME); $(MAKE) ChangeLog
 
 # Build jnlp installers
@@ -436,6 +436,7 @@ bldmastrcoverage:
 		remote1distjsrestore \
 		remote1build \
 		remote1distnonjsall \
+		remote1ChangeLog \
 		remote1jnlp
 
 # Remove the remote dist
@@ -712,6 +713,14 @@ remote1distnonjsall:
 		    fi ; \
 		done ; \
 	fi
+
+remote1ChangeLog:
+	@echo "#"
+	@echo "# Now generating ChangeLog file in $(REMOTE1PTIIDIST)"
+	@echo "#"
+	@echo "$@ `date`"
+	(cd $(REMOTE1PTIIDIST);	PTII=$(REMOTE1PTIIDIST) \
+		$(MAKE) -k ChangeLog)
 
 # Build jnlp installers
 remote1jnlp:
