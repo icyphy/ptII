@@ -6,7 +6,7 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[747, 481]">
     </property>
-    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[31, 87]">
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[31, 89]">
     </property>
     <property name="CT" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -285,8 +285,8 @@ preemptive ones can.
 <title>Output of Plant 1</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="0.0" max="11.299999999999976"/>
-<yRange min="-0.029337983571413026" max="0.2323123898294862"/>
+<xRange min="0.0" max="30.0"/>
+<yRange min="-0.10468755018974017" max="0.3093741327821534"/>
 </plot>?>
         </configure>
     </entity>
@@ -699,7 +699,7 @@ preemptive ones can.
 <title>Output of Plant 2</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="0.0" max="11.299999999999976"/>
+<xRange min="0.0" max="30.0"/>
 <yRange min="0.0" max="0.1284684223206446"/>
 </plot>?>
         </configure>
@@ -723,11 +723,11 @@ preemptive ones can.
         </port>
     </entity>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="345.0, 135.0">
+        <vertex name="vertex1" value="345.0, 135.0">
         </vertex>
     </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="129.0, 33.0">
+        <vertex name="vertex1" value="129.0, 33.0">
         </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -737,13 +737,13 @@ preemptive ones can.
     <relation name="Copy1:relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="Copy1:relation10" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="131.0, 332.0">
+        <vertex name="vertex1" value="131.0, 332.0">
         </vertex>
     </relation>
     <relation name="Copy1:relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="Copy1:relation9" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="355.0, 235.0">
+        <vertex name="vertex1" value="355.0, 235.0">
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
