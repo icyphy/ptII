@@ -39,8 +39,8 @@ import ptolemy.lang.java.nodetypes.*;
 
 
 /** A class that identifies special types in Extended Java.
- *
- *  @author Jeff Tsay
+@author Jeff Tsay
+@version $Id$
  */
 public class ExtendedJavaTypeIdentifier extends TypeIdentifier {
 
@@ -52,11 +52,10 @@ public class ExtendedJavaTypeIdentifier extends TypeIdentifier {
                 super.isClassKind(kind));
     }
 
-    /** Return the kind (an integer) of the type. If the type node is a TypeNameNode,
-     *  return kindOfTypeNameNode(type).
+    /** Return the kind (an integer) of the type. If the type node is
+     *  a TypeNameNode, return kindOfTypeNameNode(type).
      */
     public int kind(TypeNode type) {
-
         if (type.classID() == ARRAYTYPENODE_ID) {
             int arrayDim = TypeUtility.arrayDimension(type);
 
@@ -79,9 +78,10 @@ public class ExtendedJavaTypeIdentifier extends TypeIdentifier {
         return super.kind(type);
     }
 
-    /** Return an integer representing the user type that has the specified ClassDecl,
-     *  which may be a special type in Ptolemy. If the type is not a special type,
-     *  return the integer given by super.kindOfClassDecl(classDecl).
+    /** Return an integer representing the user type that has the
+     *  specified ClassDecl, which may be a special type in
+     *  Ptolemy. If the type is not a special type, return the integer
+     *  given by super.kindOfClassDecl(classDecl).
      */
     public int kindOfClassDecl(ClassDecl classDecl) {
         if (classDecl == PtolemyTypeIdentifier.COMPLEX_DECL) {
@@ -97,19 +97,19 @@ public class ExtendedJavaTypeIdentifier extends TypeIdentifier {
         }
     }
 
-    // Ptolemy math kinds
+    // Ptolemy math kinds.
 
     public static final int TYPE_KIND_COMPLEX
     = PtolemyTypeIdentifier.TYPE_KIND_COMPLEX;
     public static final int TYPE_KIND_FIX_POINT = TYPE_KIND_COMPLEX + 1;
 
-    // String kind
+    // String kind.
     public static final int TYPE_KIND_STRING = TYPE_KIND_FIX_POINT + 1;
 
-    // Token kind (used for unresolved tokens)
+    // Token kind (used for unresolved tokens).
     public static final int TYPE_KIND_TOKEN = TYPE_KIND_STRING + 1;
 
-    // matrix kinds
+    // Matrix kinds.
 
     public static final int TYPE_KIND_BOOLEAN_MATRIX =
     TYPE_KIND_TOKEN + 1;
@@ -124,13 +124,13 @@ public class ExtendedJavaTypeIdentifier extends TypeIdentifier {
     public static final int TYPE_KIND_FIX_POINT_MATRIX =
     TYPE_KIND_COMPLEX_MATRIX + 1;
 
-    // Token type (not currently used)
+    // Token type (not currently used).
     public static final ClassDecl TOKEN_DECL =
     PtolemyTypeIdentifier.TOKEN_DECL;
     public static final TypeNameNode TOKEN_TYPE =
     PtolemyTypeIdentifier.TOKEN_TYPE;
 
-    // Ptolemy math types
+    // Ptolemy math types.
 
     public static final ClassDecl COMPLEX_DECL =
     PtolemyTypeIdentifier.COMPLEX_DECL;
