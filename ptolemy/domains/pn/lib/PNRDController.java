@@ -76,7 +76,7 @@ public class PNRDController extends AtomicActor {
         _rdnew = new PNRDInfo[numberofblocks];
         _taps[0] = highpass;
         _taps[1] = lowpass;
-        System.out.println("In controller setINit");
+        System.out.println("In controller setInitState");
     }
     
     /** Reads one Token from it's input port and writes this token to 
