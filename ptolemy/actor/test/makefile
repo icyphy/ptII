@@ -48,6 +48,7 @@ TCL_SRCS = \
 JSRCS = \
 	IdentityActor.java \
 	TestActor.java \
+    TestGraphReader.java \
 	TestTypeListener.java \
 	TestTypedIORelation.java \
 	TypedTestActor.java
