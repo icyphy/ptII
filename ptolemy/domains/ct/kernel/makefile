@@ -54,7 +54,9 @@ JSRCS = \
 	CTActor.java \
 	CTBaseIntegrator.java \
 	CTDirector.java \
+	CTDynamicActor.java \
 	CTErrorControlActor.java \
+	CTEventDetector.java \
 	CTParameter.java \
 	CTReceiver.java \
 	CTScheduler.java \
