@@ -29,6 +29,7 @@
 
 package ptolemy.actor.gui;
 
+import ptolemy.gui.Top;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -38,6 +39,8 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.Iterator;
+import java.util.List;
+import javax.swing.JTextArea;
 
 //////////////////////////////////////////////////////////////////////////
 //// TextEditorTableau
@@ -109,35 +112,36 @@ public class TextEditorTableau extends Tableau {
         public Factory(NamedObj container, String name)
                 throws IllegalActionException, NameDuplicationException {
             super(container, name);
-            String editorPreference =
-                System.getProperty("ptolemy.user.texteditor",".");
+            
+            String editorPreference = ".";
+            try {
+                editorPreference
+                    = System.getProperty("ptolemy.user.texteditor",".");
+            } catch (SecurityException security) {
+                // Ignore, we are probably running in a sandbox or as
+                // an applet
+            }
             Class tableauClass;
             Class effigyClass;
             try {
-
                 if (editorPreference.equals("emacs")) {
-                    tableauClass = Class.forName
-                        ("ptolemy.actor.gui.ExternalTextTableau");
-                    effigyClass = Class.forName
-                        ("ptolemy.actor.gui.ExternalTextEffigy");
+                    tableauClass
+                        = Class.forName("ptolemy.actor.gui.ExternalTextTableau");
+                    effigyClass
+                        = Class.forName("ptolemy.actor.gui.ExternalTextEffigy");
                 } else {
-                    tableauClass = Class.forName
-                        ("ptolemy.actor.gui.TextEditorTableau");
-                    effigyClass = Class.forName
-                        ("ptolemy.actor.gui.TextEffigy");
+                    tableauClass
+                        = Class.forName("ptolemy.actor.gui.TextEditorTableau");
+                    effigyClass
+                        = Class.forName("ptolemy.actor.gui.TextEffigy");
                 }
-                _tableauConstructor =
-                    tableauClass.getConstructor
-                    (new Class[]{TextEffigy.class, String.class});
-                _newTextEffigyText =
-                    effigyClass.getMethod
-                    ("newTextEffigy",
-                            new Class[]{CompositeEntity.class, String.class});
-                _newTextEffigyURL =
-                    effigyClass.getMethod
-                    ("newTextEffigy",
-                            new Class[]{CompositeEntity.class, URL.class,
-                                            URL.class});
+                _tableauConstructor = tableauClass.getConstructor(
+                        new Class[]{TextEffigy.class, String.class});
+                _newTextEffigyText = effigyClass.getMethod("newTextEffigy",
+                        new Class[]{CompositeEntity.class, String.class});
+                _newTextEffigyURL = effigyClass.getMethod("newTextEffigy",
+                        new Class[]{CompositeEntity.class, URL.class,
+                                    URL.class});
 
             } catch (ClassNotFoundException ex) {
                 throw new IllegalActionException(ex.toString());

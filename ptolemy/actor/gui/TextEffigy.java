@@ -30,18 +30,16 @@
 package ptolemy.actor.gui;
 
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Workspace;
+import ptolemy.kernel.util.*;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStreamReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.lang.reflect.Method;
 import java.net.URL;
-
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultStyledDocument;
 import javax.swing.text.Document;
@@ -246,24 +244,28 @@ public class TextEffigy extends Effigy {
         public Factory(CompositeEntity container, String name)
                 throws IllegalActionException, NameDuplicationException {
             super(container, name);
-            String editorPreference =
-                System.getProperty("ptolemy.user.texteditor",".");
-            Class effigyClass;
             try {
+                String editorPreference = ".";
+                try {
+                    editorPreference =
+                        System.getProperty("ptolemy.user.texteditor",".");
+                } catch (SecurityException security) {
+                    // Ignore, we are probably running in a sandbox
+                    // or applet.
+                }
 
+                Class effigyClass;
                 if (editorPreference.equals("emacs")) {
-                    effigyClass = Class.forName
-                        ("ptolemy.actor.gui.ExternalTextEffigy");
+                    effigyClass
+                        = Class.forName("ptolemy.actor.gui.ExternalTextEffigy");
                 } else {
-                    effigyClass = Class.forName
-                        ("ptolemy.actor.gui.TextEffigy");
+                    effigyClass
+                        = Class.forName("ptolemy.actor.gui.TextEffigy");
                 }
                 _newTextEffigyURL =
-                    effigyClass.getMethod
-                    ("newTextEffigy",
+                    effigyClass.getMethod("newTextEffigy",
                             new Class[]{CompositeEntity.class,
-                                            URL.class, URL.class});
-
+                                        URL.class, URL.class});
             } catch (ClassNotFoundException ex) {
                 throw new IllegalActionException(ex.toString());
             } catch (NoSuchMethodException ex) {
