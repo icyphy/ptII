@@ -82,15 +82,6 @@ test BackwardCompatibility-1.1 {Const: added an _icon} {
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
     </property>
     <entity name="Const" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
 </entity>
 }}
@@ -117,14 +108,6 @@ test BackwardCompatibility-3.1 {MathFunction} {
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
     </property>
     <entity name="MathFunction" class="ptolemy.actor.lib.MathFunction">
-        <property name="function" class="ptolemy.data.expr.StringParameter" value="exp">
-        </property>
-        <port name="firstOperand" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
 </entity>
 }}
@@ -153,16 +136,6 @@ test BackwardCompatibility-4.1 {Scale} {
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
     </property>
     <entity name="Scale" class="ptolemy.actor.lib.Scale">
-        <property name="factor" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-        <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
 </entity>
 }}
@@ -190,14 +163,6 @@ test BackwardCompatibility-5.1 {TrigFunction} {
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
     </property>
     <entity name="TrigFunction" class="ptolemy.actor.lib.TrigFunction">
-        <property name="function" class="ptolemy.data.expr.StringParameter" value="sin">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
 </entity>
 }}
@@ -246,26 +211,8 @@ test BackwardCompatibility-6.1 {ComplexToCartesian: port name change} {
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
     </property>
     <entity name="ComplexToCartesian1" class="ptolemy.actor.lib.conversions.ComplexToCartesian">
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="x" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="y" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <entity name="CartesianToComplex2" class="ptolemy.actor.lib.conversions.CartesianToComplex">
-        <port name="x" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="y" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
 </entity>
 }}
@@ -463,67 +410,32 @@ test BackwardCompatibility-7.2 {Expression: Property Class Change} {
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
     </property>
     <property name="SDFDirector" class="ptolemy.domains.sdf.kernel.SDFDirector">
-        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
-        </property>
-        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="5">
-        </property>
-        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="73.0, 25.0">
         </property>
     </property>
     <entity name="slow" class="ptolemy.actor.lib.Ramp">
-        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
         <property name="init" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="PI/100.0">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="63.0, 113.0">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <port name="step" class="ptolemy.actor.parameters.ParameterPort">
-            <property name="input"/>
-        </port>
     </entity>
     <entity name="fast" class="ptolemy.actor.lib.Ramp">
-        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
         <property name="init" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="PI/10.0">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="63.0, 200.0">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <port name="step" class="ptolemy.actor.parameters.ParameterPort">
-            <property name="input"/>
-        </port>
     </entity>
     <entity name="Expression" class="ptolemy.actor.lib.Expression">
         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="cos(slow) + cos(fast)">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="202.0, 191.0">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
         <port name="slow" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
@@ -537,10 +449,6 @@ test BackwardCompatibility-7.2 {Expression: Property Class Change} {
         <doc>Write to a file</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="428.0, 205.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
     <relation name="_R0" class="ptolemy.actor.TypedIORelation">
     </relation>
@@ -691,8 +599,6 @@ test BackwardCompatibility-10.1 {PNDirectory parameter named Initial_queue_capac
 <entity name="PnDirectoryMoML" class="ptolemy.actor.TypedCompositeActor">
     <property name="Process Network Director" class="ptolemy.domains.pn.kernel.PNDirector">
         <property name="initialQueueCapacity" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-        <property name="maximumQueueCapacity" class="ptolemy.data.expr.Parameter" value="65536">
         </property>
     </property>
 </entity>

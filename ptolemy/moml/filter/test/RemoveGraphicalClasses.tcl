@@ -173,15 +173,7 @@ RemoveGraphicalClasses.</text></svg></configure>
         </property>
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
-        </property>
-        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="5">
-        </property>
-        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="100.0, 45.0">
         </property>
@@ -192,13 +184,6 @@ RemoveGraphicalClasses.</text></svg></configure>
         <doc>Create a constant sequence</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="100.0, 165.0">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
     <entity name="TrigFunction" class="ptolemy.actor.lib.TrigFunction">
         <property name="function" class="ptolemy.data.expr.StringParameter" value="sin">
@@ -219,29 +204,12 @@ RemoveGraphicalClasses.</text></svg></configure>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="235.0, 165.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0,1.0,1.0,1.0,1.0}">
         </property>
-        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
-        </property>
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="355.0, 165.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
@@ -283,8 +251,6 @@ test RemoveGraphicalClasses-1.3 {Try a configuration has a class that we are goi
     <entity name="sources" class="ptolemy.moml.EntityLibrary">
         <configure>
             <group>
-                <property name="_libraryMarker" class="ptolemy.kernel.util.Attribute">
-                </property>
             </group>
         </configure>
     </entity>
@@ -323,8 +289,6 @@ test RemoveGraphicalClasses-1.4 {Try a configuration has a class that we are goi
 <entity name="sources" class="ptolemy.moml.EntityLibrary">
     <configure>
         <group>
-            <property name="_libraryMarker" class="ptolemy.kernel.util.Attribute">
-            </property>
             <doc>default entity library</doc>
         </group>
     </configure>
