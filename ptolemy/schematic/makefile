@@ -51,7 +51,8 @@ PTPACKAGE = 	schematic
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
-JSRCS = \
+JSRCS = 
+# \
 	Domain.java \
 	DomainLibrary.java \
 	EntityType.java \
