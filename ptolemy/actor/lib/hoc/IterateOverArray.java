@@ -134,12 +134,16 @@ import ptolemy.moml.HandlesInternalLinks;
    FIXME: There should be an option to reset between
    firings of the inside actor.
    <li> FIXME: If you drop a new actor onto an
-   IterateOverArray in a subclass, it will simply acquire the
-   new contents, but not actually do anything with them.
-   It should somehow refuse to accept the new object in the
-   subclass, since to do so, it would have to delete the
-   original object defined in the base class, and this would
-   violate the derived invariant.
+   IterateOverArray in a subclass, it will replace the
+   version inherited from the prototype. This is not right,
+   since it violates the derivation invariant. Any attempt
+   to modify the contained object in the prototype will trigger
+   an exception.  There are two possible fixes. One is to
+   relax the derivation invariant and allow derived objects
+   to not perfectly mirror the hierarchy of the prototype.
+   Another is for this class to somehow refuse to accept
+   the new object in a subclass. But it is not obvious how
+   to do this.
    <li>     
    FIXME: If an instance of IterateOverArray in a derived class has
    overridden values of parameters, those are lost if contained
@@ -237,10 +241,13 @@ public class IterateOverArray extends TypedCompositeActor
     public Port newPort(String name) throws NameDuplicationException {
         try {
             IteratePort result = new IteratePort(this, name);
-            // Prevent deletion via MoML (or name changes, for that matter).
-            result.setDerivedLevel(1);
+            // NOTE: We would like prevent deletion via MoML
+            // (or name changes, for that matter), but the following
+            // also prevents making it an input, which makes
+            // adding ports via the port dialog fail.
+            // result.setDerivedLevel(1);
             // Force the port to be persistent despite being derived.
-            result.setPersistent(true);
+            // result.setPersistent(true);
             return result;
         } catch (IllegalActionException ex) {
             // This exception should not occur, so we throw a runtime
@@ -291,9 +298,8 @@ public class IterateOverArray extends TypedCompositeActor
 
         super._addEntity(entity);
 
-        // Now we know that this object is not derived.
-        // Now we can remove any previously contained entities
-        // and add the appropriate ports and connections to the new entity.
+        // Issue a change request to add the appropriate
+        // ports and connections to the new entity.
         ChangeRequest request = new ChangeRequest(
                 this,       // originator
                 "Adjust contained entities, ports and parameters") {
@@ -317,13 +323,18 @@ public class IterateOverArray extends TypedCompositeActor
                     // Thus, if this is derived, we _cannot_ delete contained
                     // entities. Thus, we should not generate entity removal
                     // commands.
-                    Iterator priors = entityList().iterator();
+                    List priorEntities = entityList();
+                    Iterator priors = priorEntities.iterator();
                     while (priors.hasNext()) {
                         ComponentEntity prior = (ComponentEntity)priors.next();
                         // If there is at least one more contained object,
                         // then delete this one.
-                        if (priors.hasNext()
-                                && getDerivedLevel() < Integer.MAX_VALUE) {
+                        // NOTE: How do we prevent the user from attempting to
+                        // override the contained object in a subclass?
+                        // It doesn't work to not remove this if the object
+                        // is derived, because then derived objects won't
+                        // track the prototype.
+                        if (priors.hasNext()) {
                             prior.setContainer(null);
                         } else {
                             // The last entity in the entityList is
@@ -432,7 +443,8 @@ public class IterateOverArray extends TypedCompositeActor
                                     IOPort castInsidePort = (IOPort)insidePort;
                                     castInsidePort.setInput(castPort.isInput());
                                     castInsidePort.setOutput(castPort.isOutput());
-                                    castInsidePort.setMultiport(castPort.isMultiport());
+                                    castInsidePort.setMultiport(
+                                            castPort.isMultiport());
                                 }
                             }
                             if (insidePort instanceof MirrorPort) {
