@@ -1,21 +1,23 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="typed composite actor" class="ptolemy.actor.TypedCompositeActor">
+<entity name="State2" class="ptolemy.actor.TypedCompositeActor">
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
     </property>
-    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[178, 40]">
     </property>
     <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
-        <property name="iterations" class="ptolemy.data.expr.Parameter" value="100">
+        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+        </property>
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="45">
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="74.0, 63.0">
+        <property name="_location" class="ptolemy.moml.Location" value="130.0, 44.0">
         </property>
     </property>
     <entity name="Hysteresis controller" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.moml.Location" value="356.0, 88.0">
+        <property name="_location" class="ptolemy.moml.Location" value="378.0, 187.0">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
         </property>
@@ -81,7 +83,7 @@
                 </port>
             </entity>
             <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">
-                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="input1 &lt; 68.0">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="input1 &lt; -0.3">
                 </property>
                 <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
                 </property>
@@ -95,7 +97,7 @@
                 </property>
             </relation>
             <relation name="relation3" class="ptolemy.domains.fsm.kernel.Transition">
-                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="input1 &gt; 72.0">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="input1 &gt; 0.3">
                 </property>
                 <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
                 </property>
@@ -121,6 +123,8 @@
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
             </property>
             <property name="SDF1" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+                </property>
                 <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
                 <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
@@ -141,7 +145,7 @@
             </port>
             <port name="output1" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="428.5, 178.0">
+                <property name="_location" class="ptolemy.moml.Location" value="427.5, 173.0">
                 </property>
                 <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
@@ -154,7 +158,7 @@
                 <property name="value" class="ptolemy.data.expr.Parameter" value="-1.0">
                 </property>
                 <doc>Create a constant sequence</doc>
-                <property name="_location" class="ptolemy.moml.Location" value="249.0, 172.0">
+                <property name="_location" class="ptolemy.moml.Location" value="250.0, 174.0">
                 </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -181,6 +185,8 @@
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
             </property>
             <property name="SDF2" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+                </property>
                 <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
                 <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
@@ -190,7 +196,7 @@
             </property>
             <port name="input1" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="90.0, 177.0">
+                <property name="_location" class="ptolemy.moml.Location" value="94.0, 170.0">
                 </property>
                 <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
@@ -201,7 +207,7 @@
             </port>
             <port name="output1" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="416.5, 169.0">
+                <property name="_location" class="ptolemy.moml.Location" value="417.5, 170.0">
                 </property>
                 <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
@@ -249,6 +255,20 @@
         <link port="State2.input1" relation="relation"/>
         <link port="State2.output1" relation="relation3"/>
     </entity>
+    <entity name="Sinewave" class="ptolemy.actor.lib.Sinewave">
+        <property name="samplingFrequency" class="ptolemy.data.expr.Parameter" value="8000.0">
+            <doc>The sampling frequency, in the same units as the frequency.</doc>
+        </property>
+        <property name="frequency" class="ptolemy.data.expr.Parameter" value="440.0">
+            <doc>The frequency of the sinusoid, in the same units as the sampling frequency.</doc>
+        </property>
+        <property name="phase" class="ptolemy.data.expr.Parameter" value="0.0">
+            <doc>The phase, in radians.</doc>
+        </property>
+        <doc>This composite actor generates a sine wave.</doc>
+        <property name="_location" class="ptolemy.moml.Location" value="76.0, 139.0">
+        </property>
+    </entity>
     <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -260,31 +280,29 @@
         </property>
         <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="511.0, 242.0">
+        <property name="_location" class="ptolemy.moml.Location" value="537.0, 114.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
         </port>
-        <configure><?plotml
-<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+        <configure><?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title></title>
-<xRange min="0.0" max="99.0"/>
-<yRange min="59.276543234074005" max="76.0"/>
+<xRange min="0.0" max="44.0"/>
+<yRange min="-1.1833369944260135" max="1.1503759425165965"/>
 </plot>?>
-        </configure>
-    </entity>
+                </configure>    </entity>
     <entity name="GaussianNoiseSource" class="ptolemy.actor.lib.Gaussian">
         <property name="seed" class="ptolemy.data.expr.Parameter" value="0">
         </property>
         <property name="mean" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="standardDeviation" class="ptolemy.data.expr.Parameter" value="0.5">
+        <property name="standardDeviation" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
         <doc>Create a sequence of gaussian random variables</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="79.0, 256.0">
+        <property name="_location" class="ptolemy.moml.Location" value="66.0, 233.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -295,7 +313,7 @@
         </port>
     </entity>
     <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-        <property name="_location" class="ptolemy.moml.Location" value="244.0, 188.0">
+        <property name="_location" class="ptolemy.moml.Location" value="232.0, 147.0">
         </property>
         <port name="plus" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -309,223 +327,23 @@
             <property name="output"/>
         </port>
     </entity>
-    <entity name="typed composite actor" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.moml.Location" value="206.0, 90.0">
-        </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
-        </property>
-        <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_location" class="ptolemy.moml.Location" value="40.0, 197.0">
-            </property>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_location" class="ptolemy.moml.Location" value="548.0, 170.0">
-            </property>
-        </port>
-        <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-            <property name="_location" class="ptolemy.moml.Location" value="423.0, 220.0">
-            </property>
-            <port name="plus" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-            <port name="minus" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-        </entity>
-        <entity name="Delay" class="ptolemy.domains.sdf.lib.SampleDelay">
-            <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="{60.0}">
-            </property>
-            <doc>The sdf delay actor, which behaves as an initial token on an arc.</doc>
-            <property name="_location" class="ptolemy.moml.Location" value="297.0, 81.0">
-            </property>
-            <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
-                <property name="input"/>
-                <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
-                <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-            </port>
-            <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
-                <property name="output"/>
-                <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
-                <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
-            </port>
-        </entity>
-        <entity name="Scale" class="ptolemy.actor.lib.Scale">
-            <property name="factor" class="ptolemy.data.expr.Parameter" value="0.5">
-            </property>
-            <property name="_location" class="ptolemy.moml.Location" value="163.0, 203.0">
-            </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-        </entity>
-        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="454.0, 163.0">
-            </vertex>
-        </relation>
-        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <link port="input" relation="relation5"/>
-        <link port="output" relation="relation2"/>
-        <link port="AddSubtract.plus" relation="relation4"/>
-        <link port="AddSubtract.plus" relation="relation"/>
-        <link port="AddSubtract.output" relation="relation2"/>
-        <link port="Delay.input" relation="relation2"/>
-        <link port="Delay.output" relation="relation4"/>
-        <link port="Scale.input" relation="relation5"/>
-        <link port="Scale.output" relation="relation"/>
-    </entity>
-    <entity name="Delay" class="ptolemy.domains.sdf.lib.SampleDelay">
-        <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="{0.0}">
-        </property>
-        <doc>The sdf delay actor, which behaves as an initial token on an arc.</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="111.0, 167.0">
-        </property>
-        <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
-            <property name="input"/>
-            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
-            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-        </port>
-        <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
-            <property name="output"/>
-            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
-            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
-        </port>
-    </entity>
-    <entity name="format for plotting" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.moml.Location" value="512.0, 149.0">
-        </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
-        </property>
-        <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[130, 157]">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_location" class="ptolemy.moml.Location" value="83.0, 153.0">
-            </property>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_location" class="ptolemy.moml.Location" value="447.0, 148.0">
-            </property>
-        </port>
-        <entity name="Scale" class="ptolemy.actor.lib.Scale">
-            <property name="factor" class="ptolemy.data.expr.Parameter" value="8.0">
-            </property>
-            <property name="_location" class="ptolemy.moml.Location" value="218.0, 156.0">
-            </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-        </entity>
-        <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-            <property name="_location" class="ptolemy.moml.Location" value="311.0, 155.0">
-            </property>
-            <port name="plus" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-            <port name="minus" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-        </entity>
-        <entity name="Const" class="ptolemy.actor.lib.Const">
-            <property name="value" class="ptolemy.data.expr.Parameter" value="68.0">
-            </property>
-            <doc>Create a constant sequence</doc>
-            <property name="_location" class="ptolemy.moml.Location" value="229.0, 245.0">
-            </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-        </entity>
-        <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <link port="input" relation="relation"/>
-        <link port="output" relation="relation3"/>
-        <link port="Scale.input" relation="relation"/>
-        <link port="Scale.output" relation="relation2"/>
-        <link port="AddSubtract.plus" relation="relation2"/>
-        <link port="AddSubtract.plus" relation="relation4"/>
-        <link port="AddSubtract.output" relation="relation3"/>
-        <link port="Const.output" relation="relation4"/>
-    </entity>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="298.0, 193.0">
-        </vertex>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="412.0, 147.0">
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="298.0, 120.0">
         </vertex>
     </relation>
-    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <link port="Hysteresis controller.input1" relation="relation4"/>
-    <link port="Hysteresis controller.output1" relation="relation6"/>
+    <link port="Hysteresis controller.output1" relation="relation2"/>
+    <link port="Sinewave.output" relation="relation"/>
+    <link port="SequencePlotter.input" relation="relation2"/>
     <link port="SequencePlotter.input" relation="relation4"/>
-    <link port="SequencePlotter.input" relation="relation10"/>
     <link port="GaussianNoiseSource.output" relation="relation3"/>
     <link port="AddSubtract.plus" relation="relation"/>
     <link port="AddSubtract.minus" relation="relation3"/>
     <link port="AddSubtract.output" relation="relation4"/>
-    <link port="typed composite actor.input" relation="relation7"/>
-    <link port="typed composite actor.output" relation="relation"/>
-    <link port="Delay.input" relation="relation6"/>
-    <link port="Delay.output" relation="relation7"/>
-    <link port="format for plotting.input" relation="relation6"/>
-    <link port="format for plotting.output" relation="relation10"/>
 </entity>
