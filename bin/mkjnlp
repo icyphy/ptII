@@ -44,7 +44,9 @@ otherjars="$@"
 
 for file in $otherjars
 do
-    otherjarssizes="$otherjarssizes `ls -l $file | awk '{print $5}' - `"
+    # Use ls -lg because Cygwin ls -l includes the group and
+    # Solaris 8 ls -l does not
+    otherjarssizes="$otherjarssizes `ls -lg $file | awk '{print $5}' - `"
 done
 
 # Read in the jar files and generate jar and package lines for them
