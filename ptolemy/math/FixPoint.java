@@ -50,11 +50,31 @@ Double, Integer, etc.
 
 In a Fixpoint, a value is represented by a finite numbers of bits, as
 defined by the precision of the Fixpoint. The precision can be
-expressed in different ways as explained in detail in the Precision
-class. The precision indicates how many bits are used to represent the
-integer part and the fractional part of a Fixpoint value. The total
-number of bits used is thus equal to the total number of bits used for
-the integer and fractional part.
+expressed in different ways. The precision indicates how many bits are
+used to represent the integer part and the fractional part of a
+Fixpoint value. The total number of bits used is thus equal to the
+total number of bits used for the integer and fractional part.
+
+<p>
+
+The precision of a Fixpoint can be noted in different ways
+
+<ul>
+
+<li> <b>m/n</b> <br> The total bit length of the Fixpoint is equal to
+<i>m</i> bits and the integer part is equal to <i>n</i> bits. The
+fractional part it thus equal to <i>m-n</i> bits.
+
+<li> <b>m.n</b> <br> The total length of the Fixpoint is equal to
+<i>n+m</i> bits. The integer part is <i>m</i> bits long and the
+fractional part is <i>n</i> bits long.
+
+<li> <b>m^e</b> <br> The Fixpoint can represent all numbers between
+-2^m < number < 2^m with a resolution of <i>e</i> bits. This is
+equivalent to saying that the the total number of bits available is
+<i>e</i> and that <i>m</i> bits are used to describe the integer part.
+
+</ul>
 
 <p> 
 
@@ -207,24 +227,73 @@ public final class FixPoint implements Cloneable, Serializable {
         return new FixPoint(cp, argZ);
     }
 
-     /** Return a new Fixpoint number with value equal to the subtraction
-     *  of this Fixpoint number and the argument. The operation is
-     *  lossless because the precision of the result is changed to
-     *  accommodate the result.
-     *  @param arg A Fixpoint number.
-     *  @return A new Fixpoint number.
-     */
-    public FixPoint subtract(FixPoint arg ) {
+     /** Return a new Fixpoint number with value equal to the division
+     *   of this Fixpoint number and the argument. This implementation
+     *   uses the division operation of BigDecimal, instead of the
+     *   division operator of BigInteger. This is much easier to
+     *   implement. The operation is lossless because the precision of
+     *   the result is changed to accommodate the result.  
+     *   @param arg A Fixpoint number.  
+     *   @return A new Fixpoint number.  */
+    public FixPoint divide(FixPoint arg ) {
 	// Align the precision of the two Fixpoints
-	Precision  cp = _precision.matchThePoint(this._precision, arg.getPrecision());
+	Precision cp = _precision.matchThePoint(this._precision, 
+						arg.getPrecision());
 	Fixvalue argX = this._alignToPrecision(cp);
-	Fixvalue argY =  arg._alignToPrecision(cp);
+	Fixvalue argY = arg._alignToPrecision(cp);
 
-	// Determine the new Fixvalue
-	Fixvalue argZ =  argX.add( argY.negate() );
+	// To compute the division, we use a trick, we make a
+	// BigDecimal from the BigIntegers and use the division
+	// operator of BigDecimal
+	BigDecimal dx = new BigDecimal( argX.fixvalue );
+	BigDecimal dy = new BigDecimal( argY.fixvalue );
+
+	// FIXME: Should we use as scale factor (2^fractionBits)/log(10)?
+	BigDecimal dz = dx.divide( dy, 32, BigDecimal.ROUND_HALF_UP );
+
+	// Create a Fixvalue with the additional bits set
+	Fixvalue result = _makeBits( dz.doubleValue(), cp );
+	result.setError( _value.getError() );
+	result.setOverflow( _value.getOverflow() );
 
 	// return the FixPoint with the correct precision and result
-        return new FixPoint(cp, argZ);
+	return new FixPoint(cp, result);
+    }
+    /** Return the fixvalue in the Fixpoint as a double. 
+     *  @return The fixvalue in the Fixpoint as a double.
+     */
+    public double doubleValue() {
+	int ln = _precision.getNumberOfBits(); 
+	int ib = _precision.getIntegerBitLength();
+
+	long h = (_value.fixvalue).longValue();
+	double y = h/(_twoRaisedTo[ln - ib]).doubleValue();	 
+
+	return y;
+    }
+    /** Get a description of the error condition of the Fixpoint 
+	@return The description of the error condition of the Fixpoint
+    */
+    public String getErrorDescription() {
+	return _value.getErrorDescription();
+    }
+    /** Get a description of the overflow mode of the Fixpoint 
+	@return The description of the overflow mode of the Fixpoint
+    */
+    public String getOverflowDescription() {
+	return _value.getOverflowDescription();
+    }
+    /** Returns the precision of the Fixpoint.  
+     *  @return the precision of the Fixpoint.
+     */
+    public Precision getPrecision() {
+	return _precision;
+    }
+    /** Returns the overflow mode of the Fixpoint.  
+     *  @return the overflow mode of the Fixpoint.
+     */
+    public Overflow getRoundingMode() {
+	return _value.getOverflow();
     }
 
      /** Return a new Fixpoint number with value equal to the multiplication
@@ -258,60 +327,19 @@ public final class FixPoint implements Cloneable, Serializable {
 	return new FixPoint(np, argZ);
     }
 
-     /** Return a new Fixpoint number with value equal to the division
-     *   of this Fixpoint number and the argument. This implementation
-     *   uses the division operation of BigDecimal, instead of the
-     *   division operator of BigInteger. This is much easier to
-     *   implement. The operation is lossless because the precision of
-     *   the result is changed to accommodate the result.  
-     *   @param arg A Fixpoint number.  
-     *   @return A new Fixpoint number.  */
-    public FixPoint divide(FixPoint arg ) {
-	// Align the precision of the two Fixpoints
-	Precision cp = _precision.matchThePoint(this._precision, 
-						arg.getPrecision());
-	Fixvalue argX = this._alignToPrecision(cp);
-	Fixvalue argY = arg._alignToPrecision(cp);
 
-	// To compute the division, we use a trick, we make a
-	// BigDecimal from the BigIntegers and use the division
-	// operator of BigDecimal
-	BigDecimal dx = new BigDecimal( argX.fixvalue );
-	BigDecimal dy = new BigDecimal( argY.fixvalue );
-
-	// FIXME: Should we use as scale factor (2^fractionBits)/log(10)?
-	BigDecimal dz = dx.divide( dy, 32, BigDecimal.ROUND_HALF_UP );
-
-	// Create a Fixvalue with the additional bits set
-	Fixvalue result = _makeBits( dz.doubleValue(), cp );
-	result.setError( _value.getError() );
-	result.setOverflow( _value.getOverflow() );
-
-	// return the FixPoint with the correct precision and result
-	return new FixPoint(cp, result);
-    }
-
-    /** Return the fixvalue in the Fixpoint as a double. 
-     *  @return The fixvalue in the Fixpoint as a double.
-     */
-    public double doubleValue() {
-	int ln = _precision.getNumberOfBits(); 
-	int ib = _precision.getIntegerBitLength();
-
-	long h = (_value.fixvalue).longValue();
-	double y = h/(_twoRaisedTo[ln - ib]).doubleValue();	 
-
-	return y;
-    }
 
     /** Return a bit string representation of the value of this Fixpoint. 
      * @return A bit string of the form "<i>integerbits . fractionbits</i>".
      */
-    public String toString() {
+    public String toBitString() {
 	return  _value.getIntegerBits(_precision).toString() 
 	    + "." + _value.getFractionBits(_precision).toString();
     }
 
+  public String toString(){        
+  	return "" + doubleValue();
+  }
      /** Return a new Fixpoint number scaled to the give precision. To
      *  fit the new precision, a rounding error can occur. In that
      *  case the value of the Fixpoint is determined, depending on the
@@ -338,12 +366,6 @@ public final class FixPoint implements Cloneable, Serializable {
 	return new FixPoint(newprecision, newvalue);
     }
 
-    /** Returns the precision of the Fixpoint.  
-     *  @return the precision of the Fixpoint.
-     */
-    public Precision getPrecision() {
-	return _precision;
-    }
 
     /** Set the overflow mode of the Fixpoint.  
      *  @param overflow The overflow mode
@@ -374,29 +396,6 @@ public final class FixPoint implements Cloneable, Serializable {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /** Returns the overflow mode of the Fixpoint.  
-     *  @return the overflow mode of the Fixpoint.
-     */
-    public Overflow getRoundingMode() {
-	return _value.getOverflow();
-    }
-
-
-    /** Get a description of the error condition of the Fixpoint 
-	@return The description of the error condition of the Fixpoint
-    */
-    public String getErrorDescription() {
-	return _value.getErrorDescription();
-    }
-
-    
-    /** Get a description of the overflow mode of the Fixpoint 
-	@return The description of the overflow mode of the Fixpoint
-    */
-    public String getOverflowDescription() {
-	return _value.getOverflowDescription();
-    }
-
 
     /** Indicator that no overflow has occurred */
     public final Error OVERFLOW   = new Error("Overflow Occurred");   
@@ -410,17 +409,37 @@ public final class FixPoint implements Cloneable, Serializable {
     /** Indicator to saturate the fixvalue, when an overflow occurs */
     public final Overflow SATURATE = new Overflow("Saturate",0);
 
-    /** Indicator to saturate the fixvalue to zero, when an overflow occurs */
-    public final Overflow ZERO_SATURATE = new Overflow("Zero Saturate",1);
 
     /** Indicator to truncate the fixvalue, when an overflow occurs */
     public final Overflow TRUNCATE = new Overflow("Truncated",2);
+    /** Indicator to saturate the fixvalue to zero, when an overflow occurs */
+    public final Overflow ZERO_SATURATE = new Overflow("Zero Saturate",1);
     
 
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
+     /** Return a new Fixpoint number with value equal to the subtraction
+     *  of this Fixpoint number and the argument. The operation is
+     *  lossless because the precision of the result is changed to
+     *  accommodate the result.
+     *  @param arg A Fixpoint number.
+     *  @return A new Fixpoint number.
+     */
+
+    public FixPoint subtract(FixPoint arg ) {
+	// Align the precision of the two Fixpoints
+	Precision  cp = _precision.matchThePoint(this._precision, arg.getPrecision());
+	Fixvalue argX = this._alignToPrecision(cp);
+	Fixvalue argY =  arg._alignToPrecision(cp);
+
+	// Determine the new Fixvalue
+	Fixvalue argZ =  argX.add( argY.negate() );
+
+	// return the FixPoint with the correct precision and result
+        return new FixPoint(cp, argZ);
+    }
     /** Prints useful debug information about the Fixpoint. Is used
      *  many for Debug purposes.  */
     public void printFix() {
@@ -451,6 +470,36 @@ public final class FixPoint implements Cloneable, Serializable {
 	
 	// return the Fixvalue with aligned value
 	return new Fixvalue( arg, _value.getError(), _value.getOverflow() );
+    }
+
+    /** Initialize the Fixpoint */
+    private void _initialize() {
+	_value     = null;
+	_precision = null;
+    }    
+
+
+    /** Returns the maximal obtainable value for the given precision 
+     @param p The precision
+     @return The maximal value obtainable for the given precision
+    */
+    private double _findMax(Precision p) 
+    {
+	int ln = p.getNumberOfBits();
+	int ib = p.getIntegerBitLength();
+	double tmp = Math.pow(2,ib-1) - 1.0 / Math.pow(2, (ln - ib));
+	return tmp;
+    }
+
+    /** Returns the minimal obtainable value for the given precision 
+     @param p The precision
+     @return The minimal value obtainable for the given precision
+    */
+    private double _findMin(Precision p)
+    {
+	int ib = p.getIntegerBitLength();
+	double tmp = -1*Math.pow(2,ib-1);
+	return tmp;
     }
 
     /**
@@ -495,36 +544,6 @@ public final class FixPoint implements Cloneable, Serializable {
 
 	return fxv;
     }
-
-    /** Initialize the Fixpoint */
-    private void _initialize() {
-	_value     = null;
-	_precision = null;
-    }    
-
-    /** Returns the maximal obtainable value for the given precision 
-     @param p The precision
-     @return The maximal value obtainable for the given precision
-    */
-    private double _findMax(Precision p) 
-    {
-	int ln = p.getNumberOfBits();
-	int ib = p.getIntegerBitLength();
-	double tmp = Math.pow(2,ib-1) - 1.0 / Math.pow(2, (ln - ib));
-	return tmp;
-    }
-
-    /** Returns the minimal obtainable value for the given precision 
-     @param p The precision
-     @return The minimal value obtainable for the given precision
-    */
-    private double _findMin(Precision p)
-    {
-	int ib = p.getIntegerBitLength();
-	double tmp = -1*Math.pow(2,ib-1);
-	return tmp;
-    }
-
     /** Returns a Fixvalue which is a copy of the supplied Fixvalue,
 but with it's precision scaled from the old precision to the new
 precision. If the new Fixvalue cannot be contained by the new
@@ -630,7 +649,6 @@ selected, the appropriate Fixvalue is determined.
 
     /** The Fixvalue containing the BigInteger bit string */
     private Fixvalue  _value;
-
 
     //////////////////////////////////////////////////////////////
     /////////                 Innerclass                  ////////
@@ -908,7 +926,7 @@ selected, the appropriate Fixvalue is determined.
   calculated using BigDecimal, since this make the transformation from
   string of bits to a double easier.  
     */
-    private static BigDecimal _twoRaisedTo[] = new BigDecimal[128];
+    private static BigDecimal[] _twoRaisedTo = new BigDecimal[128];
 
     // Static Class Constructor
     static {
@@ -922,3 +940,5 @@ selected, the appropriate Fixvalue is determined.
 
 
 }
+
+

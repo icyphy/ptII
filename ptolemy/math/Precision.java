@@ -69,6 +69,9 @@ the precision description. Thus "(16/4)" and "16/4" are the same.
 
 public class Precision {
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+ 
     /**
        Construct a Precision object based on the provided string. The
        string can described the precision in three different modes
@@ -143,6 +146,36 @@ public class Precision {
 	_fraction = length - intBits;
     }
     
+    /** Return the number of bit representing the
+        fractional part of a Fixpoint 
+	@return length of Fractional part.  
+    */
+    public int getFractionBitLength() {
+	return _fraction;
+    }
+
+    /** Return the number of bit representing the
+        integer part of a Fixpoint 
+	@return length of Integer part.  
+    */
+    public int getIntegerBitLength() {
+	return _intBits;
+    }
+    /** Return the total number of bits representing a Fixpoint 
+	@return Total number of bits.
+     */
+    public int getNumberOfBits() {
+	return _length;
+    }
+
+
+    /** Return the precision 
+	@return The precision
+    */
+    public Precision getPrecision() {
+	return this;
+    }
+
     /** Return the precision that is the maximum precision of the two
         supplied precision in both the integer and fractional part. 
 	@param precisionA a Precision 
@@ -159,37 +192,6 @@ public class Precision {
 	int newLength  = newIntLength+bitright;
 	return new Precision(newLength, newIntLength);
     }
-
-    /** Return the precision 
-	@return The precision
-    */
-    public Precision getPrecision() {
-	return this;
-    }
-
-    /** Return the number of bit representing the
-        fractional part of a Fixpoint 
-	@return length of Fractional part.  
-    */
-    public int getFractionBitLength() {
-	return _fraction;
-    }
-
-    /** Return the number of bit representing the
-        integer part of a Fixpoint 
-	@return length of Integer part.  
-    */
-    public int getIntegerBitLength() {
-	return _intBits;
-    }
-
-    /** Return the total number of bits representing a Fixpoint 
-	@return Total number of bits.
-     */
-    public int getNumberOfBits() {
-	return _length;
-    }
-
     /** Return a string representing the Precision. The string is
 	expressed using the <i>m/n</i> notation, where <i>m</i>
 	indicates the total number of bits used to represent a
@@ -201,9 +203,13 @@ public class Precision {
 	return x; 
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
     private int _length   = 0;  
     private int _intBits  = 0;
     private int _fraction = 0;
 
 }
+
+
 
