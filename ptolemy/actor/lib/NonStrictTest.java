@@ -235,15 +235,8 @@ public class NonStrictTest extends Transformer {
             return true;
         }
 
-        Token referenceToken
-            = ((ArrayToken)(correctValues.getToken()))
-            .getElement(_numberOfInputTokensSeen);
-        if (referenceToken instanceof ArrayToken) {
-            throw new IllegalActionException(this,
-                    "Reference is an ArrayToken, "
-                    + "but NonStrictTest only supports a width of 1.");
-        }
-
+        Token referenceToken = ((ArrayToken)(correctValues.getToken()))
+                .getElement(_numberOfInputTokensSeen);
         if (input.hasToken(0)) {
             Token token = input.get(0);
             _numberOfInputTokensSeen++;
