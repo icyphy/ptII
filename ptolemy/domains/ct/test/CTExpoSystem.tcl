@@ -91,23 +91,28 @@ test CTExpoSystem-4.1 {Expo with ForwardEulerSolver} {
 
     set starttime [java::cast ptolemy.data.expr.Parameter \
 	    [$dir getAttribute StartTime]]
-    $starttime setExpression 0.0
+    set token [java::new ptolemy.data.DoubleToken 0.0]
+    $starttime setToken $token
     
     set initstep [java::cast ptolemy.data.expr.Parameter \
 	    [$dir getAttribute InitialStepSize]]
-    $initstep setExpression 0.01
+    set token [java::new ptolemy.data.DoubleToken 0.1]
+    $initstep setToken $token
 
     set stoptime [java::cast ptolemy.data.expr.Parameter \
 	    [$dir getAttribute StopTime]]
-    $stoptime setExpression 1.0
+    set token [java::new ptolemy.data.DoubleToken 1.0]
+    $stoptime setToken $token
 
     set initstate [java::cast ptolemy.data.expr.Parameter \
 	    [$integral getAttribute InitialState]]
-    $initstate setExpression 0.0
+    set token [java::new ptolemy.data.DoubleToken 0.0]
+    $initstate setToken $token
     
     set constval [java::cast ptolemy.data.expr.Parameter \
 	    [$const getAttribute value]]
-    $constval setExpression 1.0
+    set token [java::new ptolemy.data.DoubleToken 1.0]
+    $constval setToken $token
     
     set testvalue [java::cast ptolemy.data.expr.Parameter \
 	    [$testV getAttribute "Value"]]
@@ -168,7 +173,31 @@ test CTExpoSystem-4.5 {Expo System with NultiSolver BE RK23} {
     #Note: Use above setup.
     set dir [java::new ptolemy.domains.ct.kernel.CTMultiSolverDirector $sys DIR]
     $sys setDirector $dir
+    set starttime [java::cast ptolemy.data.expr.Parameter \
+	    [$dir getAttribute StartTime]]
+    set token [java::new ptolemy.data.DoubleToken 0.0]
+    $starttime setToken $token
     
+    set initstep [java::cast ptolemy.data.expr.Parameter \
+	    [$dir getAttribute InitialStepSize]]
+    set token [java::new ptolemy.data.DoubleToken 0.1]
+    $initstep setToken $token
+
+    set stoptime [java::cast ptolemy.data.expr.Parameter \
+	    [$dir getAttribute StopTime]]
+    set token [java::new ptolemy.data.DoubleToken 1.0]
+    $stoptime setToken $token
+
+    set initstate [java::cast ptolemy.data.expr.Parameter \
+	    [$integral getAttribute InitialState]]
+    set token [java::new ptolemy.data.DoubleToken 0.0]
+    $initstate setToken $token
+    
+    set constval [java::cast ptolemy.data.expr.Parameter \
+	    [$const getAttribute value]]
+    set token [java::new ptolemy.data.DoubleToken 1.0]
+    $constval setToken $token
+
     set testvalue [java::cast ptolemy.data.expr.Parameter \
 	    [$testV getAttribute "Value"]]
     $testvalue setToken [java::new ptolemy.data.DoubleToken 1.7181292467832234]
@@ -192,15 +221,18 @@ test CTExpoSystem-4.6 {Expo System with Multi-Solver ImpulseBE RK23} {
     list [$testV isSuccessful]  
 } {1}
     
-
 test CTExpoSystem-4.7 {Expo System with CTMixsignalSolver as toplevel} {
     #Note: Use above setup.
-     set dir [java::new ptolemy.domains.ct.kernel.CTMixedSignalDirector $sys DIR]
+    set dir [java::new ptolemy.domains.ct.kernel.CTMixedSignalDirector $sys DIR]
     $sys setDirector $dir
     #set printflag [java::cast ptolemy.data.expr.Parameter \
 	    #	    [$testV getAttribute "Print"]]
     #$printflag setToken [java::new ptolemy.data.BooleanToken true]
-    
+    set stoptime [java::cast ptolemy.data.expr.Parameter \
+	    [$dir getAttribute StopTime]]
+    set token [java::new ptolemy.data.DoubleToken 1.0]
+    $stoptime setToken $token
+
     set testvalue [java::cast ptolemy.data.expr.Parameter \
 	    [$testV getAttribute "Value"]]
     $testvalue setToken [java::new ptolemy.data.DoubleToken 1.7181292467832234]

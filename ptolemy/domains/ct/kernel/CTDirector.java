@@ -563,7 +563,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
     protected void _initParameters() {
         try {
             _startTime = 0.0;
-            _stopTime = 1.0;
+            _stopTime = java.lang.Double.MAX_VALUE;
             _initStepSize = 0.1;
             _minStepSize = 1e-5;
             _maxStepSize = 1.0;

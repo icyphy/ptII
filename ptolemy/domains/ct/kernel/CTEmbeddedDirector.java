@@ -102,44 +102,23 @@ public class CTEmbeddedDirector  extends CTMultiSolverDirector
         return false;
     }
 
-    /** 
-     
+    /** In addition to the initialization actions of the super class,
+     *  synchronize the local current time with the outside model's
+     *  current time.
+     *  @exception IllegalActionException If thrown by the super class.
+     */
     public void initialize() throws IllegalActionException {
         _debug(this.getFullName(), " initialize.");
         CompositeActor ca = (CompositeActor) getContainer();
-        if (ca == null) {
-            throw new IllegalActionException(this, "Has no container.");
-        }
-        if (!(ca instanceof CTCompositeActor)) {
-            throw new IllegalActionException(this,
-                    "must be the director of a CTCompositeActor.");
-        }
-        if (ca.getExecutiveDirector() == null) {
-            throw new IllegalActionException(this,
-                    "Can not be top-level director.");
-        }
-        CTScheduler sch = (CTScheduler)getScheduler();
-        if (sch == null) {
-            _debug("Director does not have a scheduler.");
-            throw new IllegalActionException( this,
-                    "does not have a scheduler.");
-        }
-
-        sch.setValid(false);
         _first = true;
         _debug(getName(), " _first is set to true.");
         Director exe = ca.getExecutiveDirector();
         double tnow = exe.getCurrentTime();
         setStartTime(tnow);
         setCurrentTime(tnow);
-        _initialize();
-        _debug(getName(), " register init break point " + tnow);
-        fireAt(null, tnow);
-        _debug(getName(), "call super._initialize().");
-        _debug(getName(), "breakpt table contains ", 
-                getBreakPoints().toString());
+        super.initialize();
     }
-    */
+
     /** fire
      */
     public void fire() throws IllegalActionException {
