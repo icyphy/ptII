@@ -140,7 +140,7 @@ public class ActorController extends AttributeController {
                     (BasicGraphController)getController());
             _menuFactory.addMenuItemFactory(_breakpointDialogFactory);
         }
-        
+
         // The filter for the layout algorithm of the ports within this
         // entity. This returns true only if the argument is a Port
         // and the parent is an instance of Location.
@@ -233,7 +233,7 @@ public class ActorController extends AttributeController {
                     } else {
                         inputOutputCount++;
                         inputOutputs.addLast(port);
-                    } 
+                    }
                 }
             }
             CompositeFigure figure =
@@ -372,7 +372,7 @@ public class ActorController extends AttributeController {
             }
         }
     }
-    
+
     // An action to listen to debug messages in the actor.
     // NOTE: This requires that the configuration be non null, or it
     // will report an error with a fairly cryptic message.
@@ -392,7 +392,7 @@ public class ActorController extends AttributeController {
             super.actionPerformed(e);
             try {
                 NamedObj object = getTarget();
-                
+
                 BasicGraphController controller =
                     (BasicGraphController)getController();
                 BasicGraphFrame frame = controller.getFrame();
