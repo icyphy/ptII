@@ -53,6 +53,7 @@
 # of this file, and for a DISCLAIMER OF ALL WARRANTIES.
 #
 
+package require java
 
 # Load up Tcl procs to print out enums
 if {[info procs _testEnums] == "" } then { 
