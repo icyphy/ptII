@@ -28,6 +28,9 @@
      </property>
 </entity>
 
+<entity name="Default" class="ptolemy.domains.sr.lib.Default">
+</entity>
+
 <entity name="InstantaneousDialogGenerator" class="ptolemy.domains.sr.lib.InstantaneousDialogGenerator">
 </entity>
 
@@ -71,6 +74,9 @@
 <entity name="NonStrictTokenToExpression" class="ptolemy.domains.sr.lib.NonStrictTokenToExpression">
 </entity>
 
+<entity name="Pre" class="ptolemy.domains.sr.lib.Pre">
+</entity>
+
 <entity name="SingleTokenDistributor" class="ptolemy.domains.sr.lib.SingleTokenDistributor">
 </entity>
 <entity name="SingleTokenCommutator" class="ptolemy.domains.sr.lib.SingleTokenCommutator">
@@ -94,6 +100,9 @@
 	              class="ptolemy.kernel.util.StringAttribute"/>
         </property>
      </property>
+</entity>
+
+<entity name="When" class="ptolemy.domains.sr.lib.When">
 </entity>
 
       </group>

@@ -52,6 +52,7 @@ JSRCS = \
 	Absent.java \
 	AbsentToken.java \
 	ButtonTime.java \
+	Default.java \
 	InstantaneousDialogGenerator.java \
 	Latch.java \
 	NonStrictDelay.java \
@@ -59,12 +60,17 @@ JSRCS = \
 	NonStrictLogicFunction.java \
 	NonStrictThreeBitAdder.java \
 	NonStrictTokenToExpression.java \
+	Pre.java \
 	SingleTokenDistributor.java \
 	SingleTokenCommutator.java \
-        Undefined.java
+    Undefined.java \
+    When.java
 
 OTHER_FILES_TO_BE_JARED = \
-	srentities.xml
+	DefaultIcon.xml \
+	PreIcon.xml \
+	srentities.xml \
+	WhenIcon.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

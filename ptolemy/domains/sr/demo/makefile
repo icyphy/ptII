@@ -30,7 +30,7 @@
 
 ME =		ptolemy/domains/sr/demo
 
-DIRS = 		FeedbackLoop ReflexGame TokenRing
+DIRS = 		FeedbackLoop GuardedCount ReflexGame TokenRing
 
 # Root of Ptolemy II directory
 ROOT =		../../../..

@@ -1,4 +1,4 @@
-/* A nonstrict actor that delays tokens by one iteration.
+/* A pre operator for the SR domain.
 
 Copyright (c) 1997-2004 The Regents of the University of California.
 All rights reserved.
@@ -35,35 +35,32 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.graph.Inequality;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
-//// NonstrictDelay
+//// Pre
 /**
-   This actor provides a one-tick delay.  On each firing, it produces
-   on the output port whatever value it read on the input port in the
-   previous tick of the clock. If the input was absent on the previous
-   tick of the clock, then the output will be absent. On the first tick,
-   the output is <i>initialValue</i> if it is given, and absent otherwise.
-   In contrast to the Pre actor, this actor is non-strict, and hence can
-   break causality loops.  Whereas Pre provides a one-step delay of
-   non-absent values, this actor simply delays by one clock tick.
+ * When the input is present, the output is the previously received input. When
+ * the input is absent, the output is absent. The first time the input is
+ * present, the output is given by <i>initialValue </i>, or if <i>initialValue
+ * </i> is not given, then the output is absent. The output data type is greater
+ * than or equal to the input and the <i>initialValue </i> parameter, if it is
+ * given. Note that in contrast to the NonStrictDelay actor, this actor is
+ * strict. It cannot fire until the input is known.  While NonStrictDelay
+ * delays by one clock tick, regardless of whether the input is present,
+ * this actor delays only present values, and produces an output only when
+ * the input is present.
+ * 
+ * @see NonStrictDelay
+ * @author Edward A. Lee
+ * @version $Id$
+ * @Pt.ProposedRating Yellow (eal)
+ * @Pt.AcceptedRating Red (cxh)
+ */
 
-   @see Pre
-   @see ptolemy.domains.sdf.lib.SampleDelay
-   @see ptolemy.domains.de.lib.TimedDelay
-
-   @author Paul Whitaker, Elaine Cheong, and Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating Yellow (celaine)
-   @Pt.AcceptedRating Yellow (cxh)
-*/
-
-public class NonStrictDelay extends Transformer {
+public class Pre extends Transformer {
 
     /** Construct an actor in the specified container with the specified
      *  name.
@@ -74,88 +71,63 @@ public class NonStrictDelay extends Transformer {
      *  @exception NameDuplicationException If the name coincides with
      *   an actor already in the container.
      */
-    public NonStrictDelay(CompositeEntity container, String name)
+    public Pre(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        new Attribute(this, "_nonStrictMarker");
-
         initialValue = new Parameter(this, "initialValue");
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
     /** Initial token value.  Can be of any type.
-     *  @see #typeConstraintList()
      */
     public Parameter initialValue;
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** If the input known and there is a token on the input port,
-     *  consume the token from the input port, and store it for output
-     *  on the next iteration. Otherwise, store an AbsentToken for
-     *  output on the next iteration.
-     *  If a token was received on the previous iteration, output it to the
-     *  receivers. Otherwise, notify the receivers that there will never be
-     *  any token available in the current iteration.
-     *  @exception IllegalActionException If there is no director.
+    /** If there is an input token, the produce the previously read
+     *  input token on the output. If there is no previously read
+     *  input token, then produce the <i>initialValue</i> token.
+     *  If the <i>initialValue</i> has not been set, the produce
+     *  absent.
      */
     public void fire() throws IllegalActionException {
-        if (input.isKnown(0)) {
-            if (input.hasToken(0)) {
-                _currentToken = input.get(0);
+        if (input.hasToken(0)) {
+       	    if (_currentToken != null) {
+                output.send(0, _currentToken);
             } else {
-                _currentToken = AbsentToken.ABSENT;
-            }
-        }
-
-        if (_previousToken != null) {
-            if (_previousToken == AbsentToken.ABSENT) {
                 output.sendClear(0);
-            } else {
-                output.send(0, _previousToken);
             }
-        } else {
-            output.sendClear(0);
         }
     }
 
-    /** Initialize the state of the actor.
+    /** Initialize the actor by recording the value of <i>initialValue</i>,
+     *  if there is one.
      *  @exception IllegalActionException If there is no director.
      */
     public void initialize() throws IllegalActionException {
         // Note that this will default to null if there is no initialValue set.
-        _previousToken = initialValue.getToken();
-        _currentToken = null;
+        _currentToken = initialValue.getToken();
         super.initialize();
     }
 
-    /** Update the state of the actor.
+    /** Update the state of the actor by recording the current input
+     *  value, if there is one.
      *  @exception IllegalActionException If there is no director.
      */
     public boolean postfire() throws IllegalActionException {
-        _previousToken = _currentToken;
-        _currentToken = null;
-
+        if (input.hasToken(0)) {
+        	_currentToken = input.get(0);
+        }
         return super.postfire();
-    }
-
-    /** Override the base class to declare that the <i>output</i>
-     *  does not depend on the <i>input</i> in a firing.
-     */
-    public void pruneDependencies() {
-        super.pruneDependencies();
-        removeDependency(input, output);
     }
 
     /** Override the method in the base class so that the type
      *  constraint for the <i>initialValue</i> parameter will be set
      *  if it contains a value.
-     *  @return a list of Inequality objects.
+     *  @return A list of Inequality objects.
      *  @see ptolemy.graph.Inequality
      */
     public List typeConstraintList() {
@@ -177,18 +149,10 @@ public class NonStrictDelay extends Transformer {
         return typeConstraints;
     }
 
-
     ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-    // The token received on the previous iteration to be output on the
-    // current iteration.
-    protected Token _previousToken;
+    ////                         private variables                 ////
 
     // The most recent token received on the current iteration to be
     // output on the next iteration.
-    protected Token _currentToken;
-
+    private Token _currentToken;
 }
-
-
