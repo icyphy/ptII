@@ -307,8 +307,7 @@ public class MoMLParser extends HandlerBase {
                 // NOTE: The following may throw a CancelException, which
                 // will have the effect of cancelling the entire parse.
                 MessageHandler.warning("Evaluating parameter "
-                + param.getFullName() + " triggers exception:\n\n"
-                + ex.getMessage());
+                + param.getFullName() + " triggers exception.", ex);
             }
         }
         // If there were any unrecognized elements, warn the user.
