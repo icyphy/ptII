@@ -241,7 +241,7 @@ public class PtolemyQuery extends Query
 		String moml = "<property name=\""
 		    + castAttribute.getName(parent) 
 		    + "\" value=\""
-		    + stringValue(name)
+		    + StringUtilities.escapeForXML(stringValue(name))
 		    + "\"/>";
 		request = new MoMLChangeRequest(
 		        this,         // originator
