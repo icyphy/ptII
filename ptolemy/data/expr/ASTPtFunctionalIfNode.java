@@ -61,7 +61,7 @@ public class ASTPtFunctionalIfNode extends ASTPtRootNode {
      *  have been resolved. This method is concerned with evaluating
      *  both the value and type of the ptToken to be stored.
      *  @return The ptolemy.data.Token to be stored in this node.
-     *  @exception IllegalArgumentException Thrown when an error occurs
+     *  @exception IllegalArgumentException If an error occurs
      *  trying to evaluate the PtToken type and/or value to be stored.
      */
     protected ptolemy.data.Token _resolveNode()
