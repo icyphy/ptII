@@ -798,13 +798,13 @@ else
 	    esac
 	    if test $PTCYGWIN = "yes"; then
 	       AC_MSG_CHECKING([for win32com.dll ])
-	       if test -f "$PTJAVA_HOME/lib/ext/win32com.dll"; then
-	           AC_MSG_RESULT([$PTJAVA_HOME/lib/ext/win32com.dll])
+	       if test -f "$PTJAVA_HOME/jre/bin/win32com.dll"; then
+	           AC_MSG_RESULT([$PTJAVA_HOME/jre/bin/win32com.dll])
    	       else   
-	           AC_MSG_WARN([$PTJAVA_HOME/lib/ext/win32com.dll
+	           AC_MSG_WARN([$PTJAVA_HOME/jre/bin/win32com.dll
     not found.
     Download the Java Comm API from http://java.sun.com/products/javacomm/
-    and place win32com.dll in $PTJAVA_HOME/lib/ext])
+    and place win32com.dll in $PTJAVA_HOME/jre/bin])
 	       fi
 	    fi
 	else   
@@ -2131,7 +2131,12 @@ else
     During installation, choose "custom" and then "select all".
     This drops QTJava.zip into the lib/ext of all your installed JREs.
     Then you have to copy this zip file to the jre/lib/ext directory
-    of your SDK.
+    of your SDK and rerun configure.
+    If configure still fails, you may need to unzip the QTJava.zip
+    file and create a QTJava.jar file:
+       # unzip QTJava.zip
+       cd QTJava
+       jar -cf ../QTJava.jar .
     QuickTime for Java is only needed if you want to build in
     $QUICKTIME_USER_DIR,
     otherwise the build will proceed fine without Quicktime for Java.])
