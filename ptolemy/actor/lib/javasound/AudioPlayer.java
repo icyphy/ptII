@@ -377,17 +377,37 @@ public class AudioPlayer extends Sink implements LiveSoundListener {
      *   playing audio.
      */
     public boolean postfire() throws IllegalActionException {
-	int returnVal = iterate(1);
-	if (returnVal == COMPLETED) {
-	    return true;
-	} else if (returnVal == NOT_READY) {
-	    // This should never happen.
-	    throw new IllegalActionException(this, "Actor " +
-                    "is not ready to fire.");
-	} else if (returnVal == STOP_ITERATING) {
-	    return false;
+	for (int j = 0; j < _channels; j++) {
+	    if (input.hasToken(j)) {
+		// NOTE: inArray[j].length may be > count, in which case
+		// only the first count tokens are valid.
+		_inArray[j] = input.get(j, 1);
+	    }
 	}
-	return false;
+        // For each channel.
+        for (int m = 0; m < _channels; m++) {
+            // Keep writing samples until the array argument to
+            // putSamples() is full, then call putSamples().
+            // Array argument to putSamples() is not full yet,
+            // so write another sample for each channel.
+            _audioPutArray[m][_curElement] =
+                ((DoubleToken)_inArray[m][0]).doubleValue();
+        }
+        // Increment pointer.
+        _curElement++;
+        if (_curElement == _putSampleSize) {
+            try {
+                // write out samples to speaker and/or file.
+                LiveSound.putSamples(this, _audioPutArray);
+            } catch (Exception ex) {
+                throw new IllegalActionException(this,
+                        "Cannot playback audio:\n" +
+                        ex);
+            }
+            // Reset pointer to beginning of array.
+            _curElement = 0;
+        }
+        return true;
     }
 
     /** Set up the number of channels to use.
