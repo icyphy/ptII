@@ -73,7 +73,6 @@ JSRCS = \
 	IODependency.java \
 	IODependencyOfAtomicActor.java \
 	IODependencyOfCompositeActor.java \
-	IODependencyOfFSMActor.java \
 	IOPort.java \
 	IORelation.java \
 	Mailbox.java \
