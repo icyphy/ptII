@@ -10,8 +10,10 @@
   <entity name="DB" class="ptolemy.actor.lib.DB">
   </entity>
 
+<entity name="FFT" class="ptolemy.domains.sdf.lib.FFT"/>
+
 <entity name="FIR" class="ptolemy.domains.sdf.lib.FIR">
-<doc>FIR filter</doc>
+<doc name="tooltip">FIR filter</doc>
 </entity>
 
 <entity name="IIR" class="ptolemy.actor.lib.IIR">
