@@ -150,8 +150,13 @@ argument is the primary difference between <code>xgraph</code>
 and <code>pxgraph</code>.  The 
 <A HREF="http://ptolemy.eecs.berkeley.edu">Ptolemy Project</A> software
 makes extensive use of <code>-binary</code>.
-<br>The plot commands are encoded as single characters, and the numeric data 
-is a 4 byte float.  
+<br>There are two binary formats, both of which use 4 byte floats.
+<ol>
+<li>If the first byte of the data file is not a <code>d<code>, then
+we assume that the file contains 4 byte floats with no plot commands.
+<li>If the first byte of the data file is a <code>d<code>, then 
+we assume that the plot commands are encoded as single characters,
+and the numeric data is a 4 byte float.  
  <br>The commands are encoded as follows:
   <dl>
   <dt> <code>d <I>&lt;4byte float&gt; &lt;4byte float&gt;</I></code>
@@ -163,6 +168,7 @@ is a 4 byte float.
   <dt> <code>m <I>&lt;4byte float&gt; &lt;4byte float&gt;</I></code>
   <dd> Move to a X,Y point.
   </dl>
+</ol>
  <br>To view a binary plot file under unix, we can use the 
 <code>od</code> command.  Note that the first character is a <code>d</code>
 followed by eight bytes of data consisting of two floats of four bytes.
