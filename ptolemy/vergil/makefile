@@ -34,7 +34,7 @@ ME =		ptolemy/vergil
 DIRS = 		toolbox basic actor kernel fsm debugger icon img lib tree test
 
 # Root of the Java directory
-ROOT =		../../
+ROOT =		../../..
 
 CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)
 
@@ -49,7 +49,10 @@ PTCLASSJAR =
 
 # Include these jars in PTAUXALLJAR
 PTAUXALLJARS = \
-		ptolemy/ptolemy.jar \
+		actor/actor.jar \
+		basic/basic.jar \
+		fsm/fsm.jar \
+		kernel/kernel.jar \
 		toolbox/toolbox.jar
 
 # All the .class files necessary to run a Vergil applet
@@ -104,8 +107,6 @@ OPTIONAL_FILES = \
 	'VergilApplication$$ClassReloadingService.class' \
 	'VergilApplication$$MouseFocusMover.class' \
 	'VergilApplication$$TitleChanger.class'
-
-
 
 JCLASS = $(JSRCS:%.java=%.class)
 
