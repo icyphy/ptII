@@ -35,7 +35,7 @@ ME =		ptolemy/util/test
 # Root of the Ptolemy II directory
 ROOT =		../../..
 
-CLASSPATH =	$(ROOT)
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(SAXON_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
