@@ -265,6 +265,10 @@ public class PtolemyUtilities {
                 units.insertBefore(Jimple.v().newAssignStmt(typeLocal,
                         Jimple.v().newStaticFieldRef(doubleMatrixTypeField)),
                         insertPoint);
+            } else if (type.equals(ptolemy.data.type.BaseType.FIX)) {
+                units.insertBefore(Jimple.v().newAssignStmt(typeLocal,
+                        Jimple.v().newStaticFieldRef(fixTypeField)),
+                        insertPoint);
             } else if (type.equals(ptolemy.data.type.BaseType.FIX_MATRIX)) {
                 units.insertBefore(Jimple.v().newAssignStmt(typeLocal,
                         Jimple.v().newStaticFieldRef(fixMatrixTypeField)),
