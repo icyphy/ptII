@@ -522,6 +522,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/conversions \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/hoc \
+	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/io \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/gui \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/logic \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/javasound \
