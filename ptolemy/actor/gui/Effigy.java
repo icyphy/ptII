@@ -400,7 +400,9 @@ public class Effigy extends CompositeEntity {
 		setContainer(null);
 	    } catch (Exception ex) {
                 ex.printStackTrace();
-		throw new InternalErrorException("Cannot remove effigy!");
+		throw new InternalErrorException("Cannot remove effigy!:" 
+                                                 + KernelException
+                                                 .stackTraceToString(ex));
 	    }
 	}
     }
