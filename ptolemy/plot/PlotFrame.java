@@ -37,10 +37,12 @@ import java.awt.Toolkit;
 import java.awt.Event;
 import java.awt.Graphics;
 import java.awt.PrintJob;
+import java.awt.print.PageFormat;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.print.PrinterJob;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -50,6 +52,10 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.StringTokenizer;
 import java.util.Vector;
+
+// Used for cross platform printing
+import javax.print.attribute.PrintRequestAttributeSet;
+import javax.print.attribute.HashPrintRequestAttributeSet;
 
 import javax.swing.AbstractAction;
 import javax.swing.KeyStroke;
@@ -376,10 +382,45 @@ public class PlotFrame extends JFrame {
     /** Print the plot.
      */
     protected void _print() {
-        PrinterJob job = PrinterJob.getPrinterJob();
-        job.setPrintable(plot);
+	//_printCrossPlatform();
+	_printNative();
+    }
+
+    /** Print using the cross platform dialog.
+     *  FIXME: this dialog is slow and is often hidden
+     *  behind other windows.  However, it does honor
+     *  the user's choice of portrait vs. landscape
+     */	
+    protected void _printCrossPlatform() {
+	// Build a set of attributes
+	PrintRequestAttributeSet aset = new HashPrintRequestAttributeSet(); 
+	PrinterJob job = PrinterJob.getPrinterJob();
+	job.setPrintable(plot);
+	if (job.printDialog(aset)) {
+	    try { 
+		job.print(aset); 
+	    } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this,
+                        "Printing failed:\n" + ex.toString(),
+                        "Print Error", JOptionPane.WARNING_MESSAGE);
+	    }
+	} 
+    }
+
+    /** Print using the native dialog.
+     *  FIXME: This method does not seem to honor the user's
+     *  choice of portrait vs. landscape.
+     */
+    protected void _printNative() {
+	PrinterJob job = PrinterJob.getPrinterJob();
+	//PageFormat pageFormat = job.defaultPage();
+	
+        //job.setPrintable(plot, pageFormat);
+	job.setPrintable(plot);
         if (job.printDialog()) {
             try {
+		// job.print() eventually 
+		// calls PlotBox.print(Graphics, PageFormat)
                 job.print();
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this,
