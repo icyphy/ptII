@@ -195,7 +195,8 @@ public class ElementList extends LabeledList {
         Collection elements = elements(weight);
         if (elements.size() == 0) {
             throw new GraphWeightException(weight, null, _graph,
-                    "Invalid weight argument.");
+                    "Invalid weight argument, the number of elements for"
+                    + " this weight is zero.");
         }
         return (Element)(elements.iterator().next());
     }
