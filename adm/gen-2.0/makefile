@@ -121,11 +121,13 @@ all: $(PTII_FULL) $(PTII_SRC) #$(PTII_FULL_ZIP) #$(PTII_DEVEL_SRC)
 # Rebuild the distributions
 rebuild: clean all installshield_app build_unixPtII
 
+# The line #ptIInightly-mail#: Starting make clean at `date`
+# is special, the ptIInightly-mail script uses it
 clean:
 	@echo "#"
 	@echo "# Now cleaning old tar files in ~ptII/adm/gen-latest"
 	@echo "#"
-	@echo `date`
+	@echo "#ptIInightly-mail#: Starting make clean at `date`
 	rm -f $(PTII_FULL) $(PTII_FULL_ZIP) $(PTII_DEVEL_SRC) $(PTII_SRC)
 	rm -rf $(PTIIDIST) src installshield/*
 
