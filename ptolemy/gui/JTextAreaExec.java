@@ -43,7 +43,7 @@ import javax.swing.*;
 import javax.swing.border.*;
 
 /** Execute commands in a subprocess and display them in a JTextArea.
- 
+
 <p>Loosely based on Example1.java from
 http://java.sun.com/products/jfc/tsc/articles/threads/threads2.html
 
@@ -111,14 +111,14 @@ public class JTextAreaExec extends JPanel {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Append the text message to the JTextArea and include a trailing 
+    /** Append the text message to the JTextArea and include a trailing
      *  newline.
      */
     public void appendJTextArea(final String text) {
         Runnable doAppendJTextArea = new Runnable() {
             public void run() {
 		// Oddly, we can just use '\n' here,
-		// we do not need to call 
+		// we do not need to call
 		// System.getProperties("line.separator")
 		_jTextArea.append(text + '\n');
             }
@@ -137,7 +137,7 @@ public class JTextAreaExec extends JPanel {
         WindowListener windowListener = new WindowAdapter() {
 		public void windowClosing(WindowEvent e) {System.exit(0);}
         };
-        jFrame.addWindowListener(windowListener); 
+        jFrame.addWindowListener(windowListener);
 
 	List execCommands = new LinkedList();
 	execCommands.add("date");
@@ -171,7 +171,7 @@ public class JTextAreaExec extends JPanel {
     }
 
     /** Set the list of commands. */
-    public void setCommands(List commands) { 
+    public void setCommands(List commands) {
         _commands = commands;
 	_enableStartButton();
     }
@@ -297,7 +297,7 @@ public class JTextAreaExec extends JPanel {
         }
     };
 
-    // This action listener, called by the Start button, effectively 
+    // This action listener, called by the Start button, effectively
     // forks the thread that does the work.
     private ActionListener _startListener = new ActionListener() {
         public void actionPerformed(ActionEvent event) {

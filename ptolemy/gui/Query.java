@@ -825,7 +825,7 @@ public class Query extends JPanel {
 			urls.append("{");
 		    }
 		    if (i > 0) {
-			// If we throw an exception below, then 
+			// If we throw an exception below, then
 			// urls will have a trailing comma.
 			urls.append(", ");
 		    }
@@ -833,7 +833,7 @@ public class Query extends JPanel {
 			urls.append("\"" + files[i].toURL().toString() + "\"");
 		    } catch (MalformedURLException malformed) {
 			// FIXME: this can't be right
-			throw new IllegalArgumentException(malformed.toString()); 
+			throw new IllegalArgumentException(malformed.toString());
 		    }
 		}
 		if (files.length > 1) {
@@ -1062,4 +1062,4 @@ public class Query extends JPanel {
         private String _name;
     }
 }
- 
+

@@ -35,7 +35,7 @@ This is the 3rd version of SwingWorker (also known as
 SwingWorker 3), an abstract class that you subclass to
 perform GUI-related work in a dedicated thread.  For
 instructions on using this class, see:
- 
+
 <a href="http://java.sun.com/docs/books/tutorial/uiswing/misc/threads.html">http://java.sun.com/docs/books/tutorial/uiswing/misc/threads.html</a>
 
 Note that the API changed slightly in the 3rd version:
@@ -55,7 +55,7 @@ public abstract class SwingWorker {
            public void run() { finished(); }
         };
 
-        Runnable doConstruct = new Runnable() { 
+        Runnable doConstruct = new Runnable() {
             public void run() {
                 try {
                     setValue(construct());
@@ -76,8 +76,8 @@ public abstract class SwingWorker {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** 
-     * Compute the value to be returned by the <code>get</code> method. 
+    /**
+     * Compute the value to be returned by the <code>get</code> method.
      */
     public abstract Object construct();
 
@@ -89,14 +89,14 @@ public abstract class SwingWorker {
     }
 
     /**
-     * Return the value created by the <code>construct</code> method.  
+     * Return the value created by the <code>construct</code> method.
      * Returns null if either the constructing thread or the current
      * thread was interrupted before a value was produced.
-     * 
+     *
      * @return the value created by the <code>construct</code> method
      */
     public Object get() {
-        while (true) {  
+        while (true) {
             Thread thread = _threadVar.get();
             if (thread == null) {
                 return getValue();
@@ -134,28 +134,28 @@ public abstract class SwingWorker {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** 
-     * Get the value produced by the worker thread, or null if it 
+    /**
+     * Get the value produced by the worker thread, or null if it
      * hasn't been constructed yet.
      */
-    protected synchronized Object getValue() { 
-        return _value; 
+    protected synchronized Object getValue() {
+        return _value;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** 
-     * Set the value produced by worker thread 
+    /**
+     * Set the value produced by worker thread
      */
-    private synchronized void setValue(Object object) { 
-        _value = object; 
+    private synchronized void setValue(Object object) {
+        _value = object;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
-    /** 
+    /**
      * Class to maintain reference to current worker thread
      * under separate synchronization control.
      */
