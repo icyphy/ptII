@@ -82,7 +82,7 @@ public class Round extends Transformer {
         // Parameters
         function = new StringAttribute(this, "function");
         function.setExpression("round");
-        _function = ROUND;
+        _function = _ROUND;
         
         // Ports
         input.setTypeEquals(BaseType.DOUBLE);
@@ -111,13 +111,13 @@ public class Round extends Transformer {
         if (attribute == function) {
             String spec = function.getExpression();
             if (spec.equals("ceil")) {
-                _function = CEIL;
+                _function = _CEIL;
             } else if (spec.equals("floor")) {
-                _function = FLOOR;
+                _function = _FLOOR;
             } else if (spec.equals("round")) {
-                _function = ROUND;
+                _function = _ROUND;
             } else if (spec.equals("truncate")) {
-                _function = TRUNCATE;
+                _function = _TRUNCATE;
             } else {
                 throw new IllegalActionException(this,
                         "Unrecognized rounding function: " + spec);
@@ -186,16 +186,16 @@ public class Round extends Transformer {
     private int _doFunction(double in) {
         int result;
         switch(_function) {
-        case CEIL:
+        case _CEIL:
             result = (int) Math.ceil(in);
             break;
-        case FLOOR:
+        case _FLOOR:
             result = (int) Math.floor(in);
             break;
-        case ROUND:
+        case _ROUND:
             result = (int) Math.round(in);
             break;
-        case TRUNCATE:
+        case _TRUNCATE:
             if ( in > 0) {
                 result = (int) Math.floor(in);
             } else {
@@ -222,8 +222,8 @@ public class Round extends Transformer {
     private int _function;
 
     // Constants used for more efficient execution.
-    private static final int CEIL = 0;
-    private static final int FLOOR = 1;
-    private static final int ROUND = 2;
-    private static final int TRUNCATE = 3;
+    private static final int _CEIL = 0;
+    private static final int _FLOOR = 1;
+    private static final int _ROUND = 2;
+    private static final int _TRUNCATE = 3;
 }
