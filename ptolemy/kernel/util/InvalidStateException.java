@@ -100,13 +100,14 @@ public class InvalidStateException extends RuntimeException {
             }
         }
     }
-
     /** Constructs an Exception with a detail message that includes the
      *  names of an enumeration of nameable plus the an argument string.
      *  @param objects The enumeration of Nameable objects
      *  @param detail The message.
      */
     public InvalidStateException( Enumeration objects, String detail) {
+        // InvalidStateException is the baseclass 
+        // for ct.kernel.NumericalNonconvergeException
         String prefix = "";
         while(objects.hasMoreElements()) {
             Nameable obj = (Nameable)objects.nextElement();
