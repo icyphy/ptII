@@ -57,6 +57,7 @@ JSRCS = \
 	ProcessThread.java \
 	TerminateBranchException.java \
 	TerminateProcessException.java \
+	BoundaryDetector.java \
 	BoundaryReceiver.java \
 	Branch.java \
 	BranchController.java \
