@@ -581,7 +581,13 @@ public class NamedObj implements
                     // Get write access once on the outside, to make
                     // getting write access on each individual
                     // modification faster.
-                    _workspace.getWriteAccess();
+                    // NOTE: This optimization, it turns out,
+                    // drastically slows down execution of models
+                    // that do graphical animation or that change
+                    // parameter values during execution. Changing
+                    // parameter values does not require write
+                    // access to the workspace.
+                    // _workspace.getWriteAccess();
 
                     // Defer change requests so that if changes are
                     // requested during execution, they get queued.
@@ -597,7 +603,8 @@ public class NamedObj implements
                         change.execute();
                     }
                 } finally {
-                    _workspace.doneWriting();
+                    // NOTE: See note above.
+                    // _workspace.doneWriting();
                     setDeferringChangeRequests(previousDeferStatus);
                 }
 
