@@ -269,8 +269,8 @@ public class PlotterBase extends TypedAtomicActor
         } else {
             // NOTE: Cannot include xml spec in the header because processing
             // instructions cannot be nested in XML (lame, isn't it?).
-            String header
-                = "<!DOCTYPE plot PUBLIC \"-//UC Berkeley//DTD PlotML 1//EN\"\n"                + "\"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd\">";
+            //String header
+            //    = "<!DOCTYPE plot PUBLIC \"-//UC Berkeley//DTD PlotML 1//EN\"\n"                + "\"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd\">";
             StringWriter writer = new StringWriter();
             PrintWriter print = new PrintWriter(writer);
             // NOTE: Cannot include xml spec in the header because processing
