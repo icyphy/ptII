@@ -59,7 +59,8 @@ JSRCS = \
 	PtolemyListCellRenderer.java \
 	PtolemyMenuFactory.java \
 	PtolemyTransferable.java \
-	SnapConstraint.java
+	SnapConstraint.java \
+	VisibleParameterEditorFactory.java
 
 EXTRA_SRCS =	$(JSRCS)
 
