@@ -54,7 +54,7 @@ class RLEncoding {
         // FIXME FIXME FIXME
         c1.setManager(manager);
 	BasePNDirector local = new BasePNDirector("Local");
-        local.addProcessListener(new DefaultPNListener());
+        //local.addProcessListener(new DefaultPNListener());
 	c1.setDirector(local);
         //myUniverse.setCycles(Integer.parseInt(args[0]));
 
@@ -65,7 +65,7 @@ class RLEncoding {
 	    "/users/mudit/ptII/ptolemy/domains/pn/lib/test/ptII.pbm";
 	try {
 	    FileInputStream fis = new FileInputStream(filename);
-	    a1.readFrom(fis);
+	    a1.read(fis);
 	} catch (FileNotFoundException e) {
 	    System.err.println("FileNotFoundException: "+ e.toString());
 	}
