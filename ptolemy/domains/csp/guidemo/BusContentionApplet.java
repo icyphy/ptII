@@ -10,17 +10,18 @@ import diva.graph.*;
 import diva.graph.model.*;
 import diva.graph.layout.*;
 import diva.canvas.*;
-import diva.canvas.connector.*;
 import diva.canvas.toolbox.*;
+import diva.canvas.connector.*;
 import diva.util.gui.TutorialWindow;
 
-import ptolemy.domains.csp.kernel.*;
-import ptolemy.domains.csp.lib.*;
-import ptolemy.actor.process.*;
-import ptolemy.actor.*;
 import ptolemy.data.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
+import ptolemy.actor.*;
+import ptolemy.actor.process.*;
+import ptolemy.domains.csp.lib.*;
+import ptolemy.domains.csp.kernel.*;
+import ptolemy.actor.util.PtolemyApplet;
 
 import java.awt.*;
 import java.io.*;
@@ -39,14 +40,15 @@ import java.applet.Applet;
  * @version $Revision$
  * @rating Red
  */
-public class BusContentionApplet extends Applet {
+public class BusContentionApplet extends PtolemyApplet {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /**
      */
-    public void init() {
+   public void init() {
+        super.init();
         _demo = new BusContentionApplication();
 	_demo.initializeDemo();
     }
@@ -54,14 +56,16 @@ public class BusContentionApplet extends Applet {
     /**
      */
     public void start() {
-        System.out.println("yo");
-	_demo.runDemo();
+      // Do Nothing
     }
 
     /**
      */
     public void stop() {
+        _demo.shutDown();
+        _demo = null;
     }
+
     ///////////////////////////////////////////////////////////////////
     ////                        private methods                    ////
 
