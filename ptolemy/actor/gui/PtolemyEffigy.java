@@ -36,6 +36,7 @@ import java.util.List;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.attributes.URIAttribute;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ChangeListener;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
@@ -250,8 +251,9 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
          *  <i>input</i> URL. If the <i>input</i> URL is null, then
          *  create a blank effigy.
          *  The blank effigy will have a new model associated with it.
-         *  If this effigy factory contains an entity named "blank", then
-         *  the new model will be a clone of that entity.  Otherwise,
+         *  If this effigy factory contains an entity or an attribute
+         *  named "blank", then
+         *  the new model will be a clone of that object.  Otherwise,
          *  it will be an instance of TypedCompositeActor.
          *  If the URL does not end with extension ".xml" or ".moml", then
          *  return null.  If the URL points to an XML file that is not
@@ -280,9 +282,18 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                 // If this factory contains an entity called "blank", then
                 // clone that.
                 NamedObj entity = getEntity("blank");
+                Attribute attribute = getAttribute("blank");
                 NamedObj newModel;
                 if (entity != null) {
                     newModel = (NamedObj)entity.clone(new Workspace());
+                    // The cloning process results an object that defers change
+                    // requests.  By default, we do not want to defer change
+                    // requests, but more importantly, we need to execute
+                    // any change requests that may have been queued
+                    // during cloning. The following call does that.
+                    newModel.setDeferringChangeRequests(false);
+                } else if (attribute != null) {
+                    newModel = (NamedObj)attribute.clone(new Workspace());
                     // The cloning process results an object that defers change
                     // requests.  By default, we do not want to defer change
                     // requests, but more importantly, we need to execute
