@@ -136,7 +136,8 @@ public class HammingDecoder extends Transformer {
             // set the input consumption rate.
             _inputRate.setToken(new IntToken(_codeSizeValue));
         } else if (attribute == uncodeBlockSize) {
-            _uncodeSizeValue = ((IntToken)uncodeBlockSize.getToken()).intValue();
+            _uncodeSizeValue =
+                ((IntToken)uncodeBlockSize.getToken()).intValue();
             if (_uncodeSizeValue < 1 ) {
                 throw new IllegalActionException(this,
                         "uncodeBlockSize must be non-negative.");
