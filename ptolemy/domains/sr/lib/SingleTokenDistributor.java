@@ -83,17 +83,21 @@ public class SingleTokenDistributor extends Transformer
      */
     public void fire() throws IllegalActionException {
         int width = output.getWidth();
-        _tentativeOutputPosition = 1 + _currentOutputPosition;
+        _tentativeOutputPosition = _currentOutputPosition;
         if (_tentativeOutputPosition >= width) {
             _tentativeOutputPosition = 0;
         }
         if (input.hasToken(0)) {
             for (int i = 0; i < width; i++) {
-                Token outToken = null;
-                if (i == _tentativeOutputPosition) outToken = input.get(0);
-                output.send(i, outToken);
+                if (i == _tentativeOutputPosition) {
+                    Token outToken = input.get(0);
+                    output.send(i, outToken);
+                } else {
+                    output.sendAbsent(i);
+                }
             }
         }
+        _tentativeOutputPosition++;
     }
 
     /** Begin execution by setting the current output channel to zero.

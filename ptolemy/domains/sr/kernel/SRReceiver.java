@@ -130,82 +130,18 @@ public class SRReceiver extends Mailbox {
         return _known;
     }
 
-    /** Put a token into this receiver. If the argument is null,
-     *  then this receiver will not contain any token after this method
-     *  returns (if no exception was thrown). If the receiver already 
-     *  has a token, it will not change.
+    /** Set the state of this receiver to be known and to contain the
+     *  specified token.  If the receiver already contains an equal token, 
+     *  do nothing.
      *  @param token The token to be put into this receiver.
-     *  @exception NoRoomException If the argument is null and this receiver
-     *   already contains a token, or if the argument is a token and this 
-     *   receiver already contains a different token, or if the argument is
-     *   a token and this receiver is in an absent state.
+     *  @exception NoRoomException If this receiver already contains a 
+     *   different token, or if this receiver is in an absent state.
      */
     public void put(Token token) throws NoRoomException {
         if (token == null) {
-            _setAbsent();
-        } else {
-            _setPresent(token);
+            throw new InternalErrorException("SRReceiver.put(null) is " +
+                    "invalid.");
         }
-    }
-
-    /** Reset the receiver by removing any contained token and setting
-     *  the state of this receiver to be unknown.
-     */
-    public void reset() {
-        if (hasToken()) super.get();
-        _known = false;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    /** Return the contained token without modifying or removing it.
-     *  @return The token contained in this receiver.
-     *  @exception NoTokenException If this receiver contains no token.
-     */
-    private Token _getToken() throws NoTokenException {
-        if (_token == null) {
-            throw new NoTokenException(getContainer(),
-                    "Attempt to get data from an empty mailbox.");
-        }
-        return _token;
-    }
-
-    /** Discard any contained token, and replace it with the specified
-     *  token or null for no token.
-     *  @param token The token to be put into this receiver.
-     */
-    private void _putToken(Token token) {
-        reset();
-        super.put(token);
-        _known = true;
-    }
-
-    /** Set the state of this receiver to be known and to contain no token.
-     *  @exception NoRoomException If this receiver already contains 
-     *   a token.
-     */
-    private void _setAbsent() throws NoRoomException {
-        if (isKnown()) {
-            if (hasToken()) {
-                throw new NoRoomException(getContainer(),
-                        "SRReceiver cannot transition from a present " +
-                        "state to an absent state.");
-            } else {
-                // Do nothing, because already in an absent state.
-            }
-        } else {
-            _putToken(null);
-        }
-    }
-
-    /** Set the state of this receiver to be known and to contain the
-     *  specified token.
-     *  @param token The token to be put into this receiver.
-     *  @exception NoRoomException If this receiver already contains 
-     *   a different token, or if this receiver is in an absent state.
-     */
-    private void _setPresent(Token token) throws NoRoomException {
         if (isKnown()) {
             if (hasToken()) {
                 try {
@@ -231,6 +167,57 @@ public class SRReceiver extends Mailbox {
         } else {
             _putToken(token);
         }
+    }
+
+    /** Reset the receiver by removing any contained token and setting
+     *  the state of this receiver to be unknown.
+     */
+    public void reset() {
+        if (hasToken()) super.get();
+        _known = false;
+    }
+
+    /** Set the state of this receiver to be known and to contain no token.
+     *  @exception NoRoomException If this receiver already contains 
+     *   a token.
+     */
+    public void setAbsent() throws NoRoomException {
+        if (isKnown()) {
+            if (hasToken()) {
+                throw new NoRoomException(getContainer(),
+                        "SRReceiver cannot transition from a present " +
+                        "state to an absent state.");
+            } else {
+                // Do nothing, because already in an absent state.
+            }
+        } else {
+            _putToken(null);
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** Return the contained token without modifying or removing it.
+     *  @return The token contained in this receiver.
+     *  @exception NoTokenException If this receiver contains no token.
+     */
+    private Token _getToken() throws NoTokenException {
+        if (_token == null) {
+            throw new NoTokenException(getContainer(),
+                    "Attempt to get data from an empty mailbox.");
+        }
+        return _token;
+    }
+
+    /** Discard any contained token, and replace it with the specified
+     *  token or null for no token.
+     *  @param token The token to be put into this receiver.
+     */
+    private void _putToken(Token token) {
+        reset();
+        super.put(token);
+        _known = true;
     }
 
     ///////////////////////////////////////////////////////////////////

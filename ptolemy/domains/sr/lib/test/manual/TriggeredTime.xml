@@ -71,7 +71,7 @@
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
+    <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute">
@@ -92,7 +92,7 @@
 <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
-<title>SequencePlotter</title>
+<title>TimedPlotter</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="11.0"/>
@@ -101,7 +101,7 @@
 </plot>?>
         </configure>
     </entity>
-    <entity name="SequencePlotter2" class="ptolemy.actor.lib.gui.SequencePlotter">
+    <entity name="TimedPlotter2" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute">
@@ -122,7 +122,7 @@
 <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
-<title>SequencePlotter2</title>
+<title>TimedPlotter2</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="11.0"/>
@@ -131,7 +131,7 @@
 </plot>?>
         </configure>
     </entity>
-    <entity name="SequencePlotter3" class="ptolemy.actor.lib.gui.SequencePlotter">
+    <entity name="TimedPlotter3" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute">
@@ -152,7 +152,7 @@
 <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
-<title>SequencePlotter3</title>
+<title>TimedPlotter3</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="11.0"/>
@@ -193,9 +193,9 @@
     <link port="TriggeredTime2.trigger" relation="relation3"/>
     <link port="TriggeredTime3.output" relation="relation4"/>
     <link port="TriggeredTime3.trigger" relation="relation7"/>
-    <link port="SequencePlotter.input" relation="relation6"/>
-    <link port="SequencePlotter2.input" relation="relation5"/>
-    <link port="SequencePlotter3.input" relation="relation4"/>
+    <link port="TimedPlotter.input" relation="relation6"/>
+    <link port="TimedPlotter2.input" relation="relation5"/>
+    <link port="TimedPlotter3.input" relation="relation4"/>
     <link port="SingleTokenDistributor.input" relation="relation"/>
     <link port="SingleTokenDistributor.output" relation="relation2"/>
     <link port="SingleTokenDistributor.output" relation="relation3"/>
