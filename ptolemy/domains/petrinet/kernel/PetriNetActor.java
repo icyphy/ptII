@@ -118,7 +118,7 @@ as default weight 1, unless otherwise specified.
 @version $Id$ */
 public class PetriNetActor extends TypedCompositeActor  {
 
-   /** Construct a PetriNetActor in the default workspace with an empty string
+    /** Construct a PetriNetActor in the default workspace with an empty string
      *  as its name. Add the actor to the workspace directory.
      *  Increment the version number of the workspace.
      */
@@ -141,7 +141,7 @@ public class PetriNetActor extends TypedCompositeActor  {
             "ptolemy.domains.petrinet.kernel.PetriNetActor";
     }
 
-   /** Create a PetriNetActor in the specified container with the specified
+    /** Create a PetriNetActor in the specified container with the specified
      *  name. The name must be unique within the container or an exception
      *  is thrown. The container argument must not be null, or a
      *  NullPointerException will be thrown.

@@ -108,7 +108,7 @@ public class Place extends Transformer {
      *  of the place is bigger than the sum of all links between the place
      *  and a transition. TemporaryMarking is used in Transition.prefire.
      *  @return the _temporaryMarking of the place.
-    */
+     */
     public int getTemporaryMarking() {
         return _temporaryMarking;
     }

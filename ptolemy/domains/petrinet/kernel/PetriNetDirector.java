@@ -162,9 +162,9 @@ public class PetriNetDirector extends Director {
                 java.util.Random(System.currentTimeMillis());
             int randomIndex = generator.nextInt(i);
             Nameable chosenTransition = (Nameable)
-                                    nextComponents.get(randomIndex);
+                nextComponents.get(randomIndex);
             _debug("start firing "
-                             + chosenTransition.getFullName());
+                    + chosenTransition.getFullName());
             if(chosenTransition instanceof Transition) {
                 Transition realTransition = (Transition) chosenTransition;
                 _fireTransition(realTransition);
@@ -184,21 +184,21 @@ public class PetriNetDirector extends Director {
             while (pointer.hasNext()) {
                 Nameable item = (Nameable) pointer.next();
                 _debug(i +" ready item is "
-                                          + item.getFullName());
+                        + item.getFullName());
             }
             iteration++;
         }
     }
 
-   /** This method calls the private method _testReadyTransition
-    *  to see whether the given transition is ready to fire or not.
-    *  FIXME: testReadyTransition is not a good name.
-    *
-    *  @param transition Transition to be tested to be ready or not.
-    *  @return true or false The testing transition is ready to fire or not.
-    *  @exception IllegalActionException If
-    *  method "_testReadyTransition" throws exception.
-    */
+    /** This method calls the private method _testReadyTransition
+     *  to see whether the given transition is ready to fire or not.
+     *  FIXME: testReadyTransition is not a good name.
+     *
+     *  @param transition Transition to be tested to be ready or not.
+     *  @return true or false The testing transition is ready to fire or not.
+     *  @exception IllegalActionException If
+     *  method "_testReadyTransition" throws exception.
+     */
     public boolean testReadyTransition(Transition transition)
             throws IllegalActionException {
         return (_testReadyTransition(transition));
@@ -255,25 +255,25 @@ public class PetriNetDirector extends Director {
                     if (!temporarySourcePortList.contains(weightPort)) {
                         temporarySourcePortList.add(weightPort);
                         Nameable weightPlace =
-                                  (Nameable) weightPort.getContainer();
+                            (Nameable) weightPort.getContainer();
                         if (weightPlace instanceof PetriNetActor) {
 			    if(weightPort.isOutput()) {
-                                  newRelationList.addAll
-                                     (weightPort.insideRelationList());
-                             } else if( weightPort.isInput()) {
-                                  newRelationList.addAll
-                                     (weightPort.linkedRelationList());
+                                newRelationList.addAll
+                                    (weightPort.insideRelationList());
+                            } else if( weightPort.isInput()) {
+                                newRelationList.addAll
+                                    (weightPort.linkedRelationList());
                             }
                         }
                     }
                     else
                         _debug("*******found used source port"
-                                          + weightPort.getFullName());
+                                + weightPort.getFullName());
                 }
 
                 int weightNumber = _getWeightNumber(weights);
                 LinkedList  updatePlace =
-                                       _findBackwardConnectedPlaces(weights);
+                    _findBackwardConnectedPlaces(weights);
                 Iterator pointer = updatePlace.iterator();
                 while (pointer.hasNext()) {
                     Place item = (Place) pointer.next();
@@ -299,7 +299,7 @@ public class PetriNetDirector extends Director {
      *  or prefire throws exception.
      */
     private LinkedList _readyComponents(TypedCompositeActor container)
-          throws IllegalActionException {
+            throws IllegalActionException {
         Iterator actors = container.entityList().iterator();
         LinkedList readyComponentList = new LinkedList();
         while (actors.hasNext()) {
@@ -332,7 +332,7 @@ public class PetriNetDirector extends Director {
      *   _getWeightNumber throws exception.
      */
     private void _fireTransition(Transition transition)
-           throws IllegalActionException {
+            throws IllegalActionException {
 
         if(transition.isOpaque()) {
             transition.fire();
@@ -416,16 +416,16 @@ public class PetriNetDirector extends Director {
                         if (weightPlace instanceof PetriNetActor) {
                             if(weightPort.isOutput())
                                 backRelationList.addAll
-                                     (weightPort.insideRelationList());
+                                    (weightPort.insideRelationList());
                             else if( weightPort.isInput())
                                 backRelationList.addAll
-                                     (weightPort.linkedRelationList());
+                                    (weightPort.linkedRelationList());
                         }
                     }
                 }
                 int weightNumber = _getWeightNumber(weights);
                 LinkedList  updatePlace =
-                                      _findBackwardConnectedPlaces(weights);
+                    _findBackwardConnectedPlaces(weights);
                 Iterator pointer = updatePlace.iterator();
                 int i = 0;
                 while (pointer.hasNext()) {
@@ -450,7 +450,7 @@ public class PetriNetDirector extends Director {
      *  _fireTransition throws an exception.
      */
     private void _fireHierarchicalPetriNetOnce(TypedCompositeActor container)
-           throws IllegalActionException {
+            throws IllegalActionException {
         _debug(" _fireHierarchicalPetriNetOnce_");
 
         LinkedList components = _readyComponents(container);
@@ -466,7 +466,7 @@ public class PetriNetDirector extends Director {
             _debug("start firing " + chosenTransition.getFullName());
             if(chosenTransition instanceof Transition) {
                 Transition realTransition
-                                 = (Transition) chosenTransition;
+                    = (Transition) chosenTransition;
                 _fireTransition(realTransition);
             }
             else if(chosenTransition instanceof PetriNetActor) {
@@ -505,16 +505,16 @@ public class PetriNetDirector extends Director {
                     if (weightPlace instanceof PetriNetActor) {
                         if(weightPort.isOutput())
                             newRelationList.addAll
-                               (weightPort.linkedRelationList());
+                                (weightPort.linkedRelationList());
                         else if( weightPort.isInput())
                             newRelationList.addAll
-                                 (weightPort.insideRelationList());
+                                (weightPort.insideRelationList());
                     }
                     else if(weightPlace instanceof Place)
                         temporaryPlaceList.add(weightPlace);
                     else {
                         _debug(
-                              "*******found no place/PetriNetActor"
+                                "*******found no place/PetriNetActor"
                                 + weightPort.getFullName());
                         return null;
                     }
@@ -552,16 +552,16 @@ public class PetriNetDirector extends Director {
                     if (weightPlace instanceof PetriNetActor) {
                         if(weightPort.isOutput())
                             newRelationList.addAll
-                                             (weightPort.insideRelationList());
+                                (weightPort.insideRelationList());
                         else if( weightPort.isInput())
                             newRelationList.addAll
-                                       (weightPort.linkedRelationList());
+                                (weightPort.linkedRelationList());
                     }
                     else if(weightPlace instanceof Place)
                         temporaryPlaceList.add(weightPlace);
                     else {
                         _debug(
-                                  "*******found no place/PetriNetActor  "
+                                "*******found no place/PetriNetActor  "
                                 + weightPort.getFullName());
                         return null;
                     }
@@ -590,7 +590,7 @@ public class PetriNetDirector extends Director {
         while(newRelationList.size()>0 )  {
             IORelation weights = (IORelation) newRelationList.getFirst();
             temporaryPlaceList.addAll
-                               ( _findBackwardConnectedPlaces(weights));
+                ( _findBackwardConnectedPlaces(weights));
             newRelationList.remove(weights);
         }
         return temporaryPlaceList;
