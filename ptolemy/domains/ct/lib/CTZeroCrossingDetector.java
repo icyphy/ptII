@@ -119,10 +119,11 @@ public class CTZeroCrossingDetector extends CTActor
      *  @exception IllegalActionException If the event cannot be broadcasted.
      */
     public void emitCurrentEvents() throws IllegalActionException{
-        _debug(this.getFullName() + " checking for current event...");
+        if(_debugging) 
+            _debug(this.getFullName() + " checking for current event...");
 
         if(_eventNow) {
-            _debug(getFullName() + " Emitting event: " +
+            if(_debugging) _debug(getFullName() + " Emitting event: " +
                     _inputToken.toString());
             output.broadcast(_inputToken);
             _eventNow = false;
@@ -136,7 +137,8 @@ public class CTZeroCrossingDetector extends CTActor
      */
     public void fire() throws IllegalActionException {
         _thisTrg = ((DoubleToken) trigger.get(0)).doubleValue();
-        _debug(getFullName() + "consuming trigger Token" +  _thisTrg);
+        if(_debugging) 
+            _debug(getFullName() + " consuming trigger Token" +  _thisTrg);
         _inputToken = input.get(0);
     }
 
@@ -156,7 +158,7 @@ public class CTZeroCrossingDetector extends CTActor
         super.initialize();
         updateParameters();
         _first = true;
-        _debug(getFullName() + "initialize");
+        if(_debugging) _debug(getFullName() + "initialize");
     }
 
     /** Return true if this step does not cross zero. The current trigger
@@ -172,13 +174,15 @@ public class CTZeroCrossingDetector extends CTActor
             _first = false;
             return true;
         }
-        _debug(this.getFullName() + " This trigger " + _thisTrg);
-        _debug(this.getFullName() + " The last trigger " + _lastTrg);
-
+        if(_debugging) {
+            _debug(this.getFullName() + " This trigger " + _thisTrg);
+            _debug(this.getFullName() + " The last trigger " + _lastTrg);
+        }
         if (Math.abs(_thisTrg) < _errorTolerance) {
             if (_enabled) {
                 _eventNow = true;
-                _debug(getFullName() + " detected event at "
+                if(_debugging)
+                    _debug(getFullName() + " detected event at "
                         + getDirector().getCurrentTime());
                 _enabled = false;
             }
@@ -194,8 +198,8 @@ public class CTZeroCrossingDetector extends CTActor
                     _eventMissed = true;
                     _refineStep = (-_lastTrg*dir.getCurrentStepSize())/
                         (_thisTrg-_lastTrg);
-                    _debug(getFullName() + " Event Missed: refined step at" +
-                            _refineStep);
+                   if(_debugging) _debug(getFullName() + 
+                           " Event Missed: refined step at" +  _refineStep);
                     return false;
                 }
             }
