@@ -136,7 +136,7 @@ install: subinstall $(PTCLASSALLJAR)
 
 # Glimpse is a tool that prepares an index of a directory tree.
 # glimpse is not included with Ptolemy II, see http://glimpse.cs.arizona.edu
-GLIMPSEINDEX =	/usr/sww/bin/glimpseindex
+GLIMPSEINDEX =	/usr/local/bin/glimpseindex
 glimpse: .glimpse_exclude
 	@echo "Saving .glimpse_exclude, removing the .glimpse* files"
 	rm -f glimpse_exclude
