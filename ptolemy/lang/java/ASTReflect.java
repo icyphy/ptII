@@ -242,10 +242,11 @@ public class ASTReflect {
      *  pathname until we find a class or run through all the directories.
      *  If a class is not found, return null.
      */
-    public static ClassDeclNode lookupClassDeclNode(String name) {
+
+    public static Class lookupClass(String name) {
         try {
             // The classname was something like java.lang.Object
-            return ASTClassDeclNode(Class.forName(name));
+            return Class.forName(name);
         } catch (ClassNotFoundException e) {
             // The classname was something like Object, so
             // we search the loaded packages.
@@ -257,18 +258,22 @@ public class ASTReflect {
                 String qualifiedName =
                     new String(packages[i].getName() + "." + name);
                 try {
-                    return ASTClassDeclNode(Class.forName(qualifiedName));
+                    return Class.forName(qualifiedName);
                 } catch (ClassNotFoundException ee) {
                     // Keep searching the packages.
                 }
 	    } 
 	    // FIXME: We need to do this part
-	    throw new RuntimeException("ASTReflect.lookupClassDeclNode(): " +
+	    throw new RuntimeException("ASTReflect.lookupClass(): " +
 				       "Could not find class '" + name + 
 				       "'. The package of this class has " +
 				       "not yet been loaded, so we need to " +
 				       "look in the searchPath");
 	}
+    }
+
+    public static ClassDeclNode lookupClassDeclNode(String name) {
+            return ASTClassDeclNode(lookupClass(name));
     }
 
 
