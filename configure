@@ -1035,6 +1035,9 @@ fi
 JINI_USER_DIR="$PTII/ptolemy/domains/ct/demo/CarTracking"
 JINI_VERSION=jini1_0_1
 JINI_PRESENT=no
+# PTJSPACES_DIR is set to jspaces and used in 
+# $PTII/ptolemy/actor/lib/makefile if jini was found
+PTJSPACES_DIR=
 if test ! -d "$JINI_USER_DIR"; then
     echo "$ac_t""$JINI_USER_DIR is not present, so we need not
 find Jini" 1>&6
@@ -1043,7 +1046,7 @@ find Jini" 1>&6
     JINI_DIR='$(PTII)/vendors/sun/jini/jini1_0_1'
 else
     echo $ac_n "checking for jini directory""... $ac_c" 1>&6
-echo "configure:1047: checking for jini directory" >&5
+echo "configure:1050: checking for jini directory" >&5
     # Check whether --with-jini or --without-jini was given.
 if test "${with_jini+set}" = set; then
   withval="$with_jini"
@@ -1056,6 +1059,8 @@ fi
     if test -d "$JINI_DIR"; then
 	echo "$ac_t""$JINI_DIR" 1>&6
 	JINI_PRESENT=yes
+	# Subdirectory that contains Java spaces specific code
+	PTJSPACES_DIR=jspaces
     else    
 	JINI_DIR='$(PTII)/vendors/sun/$JINI_VERSION'
     fi    
@@ -1086,7 +1091,7 @@ find the PalmOS kvm" 1>&6
     KVM_CLASSES='$(KVM_DIR)/tools/classes.zip'
 else
     echo $ac_n "checking for kvm directory""... $ac_c" 1>&6
-echo "configure:1090: checking for kvm directory" >&5
+echo "configure:1095: checking for kvm directory" >&5
     # Check whether --with-kvm or --without-kvm was given.
 if test "${with_kvm+set}" = set; then
   withval="$with_kvm"
@@ -1099,7 +1104,7 @@ fi
     if test -d "$KVM_DIR"; then
 	echo "$ac_t""$KVM_DIR" 1>&6
         echo $ac_n "checking for \$KVM_DIR/tools/classes.zip""... $ac_c" 1>&6
-echo "configure:1103: checking for \$KVM_DIR/tools/classes.zip" >&5
+echo "configure:1108: checking for \$KVM_DIR/tools/classes.zip" >&5
 	if test -f "$KVM_DIR/tools/classes.zip"; then
 	    KVM_CLASSES='$(KVM_DIR)/tools/classes.zip'
 	    echo "$ac_t""$KVM_CLASSES" 1>&6
@@ -1166,6 +1171,10 @@ fi
 
 
 # Location of the JDK
+
+
+# Set to jspaces and used in 
+# $PTII/ptolemy/actor/lib/makefile if jini was found
 
 
 # Location of the PtII directory
@@ -1332,6 +1341,7 @@ s%@KVM_DIR@%$KVM_DIR%g
 s%@PTJACL_JAR@%$PTJACL_JAR%g
 s%@PTJACL_JFLAG@%$PTJACL_JFLAG%g
 s%@PTJAVA_DIR@%$PTJAVA_DIR%g
+s%@PTJSPACES_DIR@%$PTJSPACES_DIR%g
 s%@PTII_DEFAULT@%$PTII_DEFAULT%g
 
 CEOF
