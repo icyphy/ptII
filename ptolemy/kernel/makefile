@@ -63,10 +63,13 @@ JSRCS = \
 	ComponentRelation.java \
 	CompositeEntity.java \
 	CrossRefList.java \
+	DebugMutationListener.java \
 	Entity.java \
 	KernelException.java \
 	IllegalActionException.java \
 	InvalidStateException.java \
+	Mutation.java \
+	MutationListener.java \
 	Nameable.java \
 	NamedList.java \
 	NamedObj.java \
