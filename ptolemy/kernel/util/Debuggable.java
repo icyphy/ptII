@@ -49,7 +49,7 @@ public interface Debuggable {
     /** Add a debug listener.
      *  If the listener is already in the list, do not add it again.
      *  @param listener The listener to which to send debug messages.
-     *  @see #removedDebugListener(DebugListener)
+     *  @see #removeDebugListener(DebugListener)
      */
     public void addDebugListener(DebugListener listener);
 
