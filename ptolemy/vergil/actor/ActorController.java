@@ -357,10 +357,10 @@ public class ActorController extends AttributeController {
                         _configuration.openModel(null,
                                toRead, toRead.toExternalForm());
                     } else {
-                        MessageHandler.error("Cannot find inside definition.");
+                        MessageHandler.error(_CANNOT_FIND_MESSAGE);
                     }
                 } catch (Exception ex) {
-                    MessageHandler.error("Cannot find inside definition.", ex);
+                    MessageHandler.error(_CANNOT_FIND_MESSAGE, ex);
                 }
                 return;
             }
@@ -414,4 +414,10 @@ public class ActorController extends AttributeController {
             }
 	}
     }
+
+    // Error message used when we can't find the inside definition.
+    private String _CANNOT_FIND_MESSAGE = "Cannot find inside definition. "
+    + "Perhaps source code is not installed? "
+    + "You can obtain source code for Berkeley actors at: "
+    + "http://ptolemy.eecs.berkeley.edu/ptolemyII";
 }
