@@ -62,7 +62,6 @@ JSIMPLE_TESTS = \
 	NoTokenException.tcl \
 	IOPort.tcl \
 	IORelation.tcl \
-	PrototypeAttribute.tcl \
 	QueueReceiver.tcl \
 	TypedAtomicActor.tcl \
 	TypeConflictException.tcl \
