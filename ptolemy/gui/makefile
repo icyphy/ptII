@@ -49,6 +49,7 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	#$(PTPACKAGE).jar
 
 JSRCS = \
+	Message.java \
 	Query.java \
 	QueryListener.java
 
