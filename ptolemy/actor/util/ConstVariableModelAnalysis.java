@@ -318,8 +318,7 @@ public class ConstVariableModelAnalysis {
             ParameterPort port = parameter.getPort();
 
             // Under what conditions is a PortParameter not associated
-            // with a port?  This came up in the context of
-            // IterateOverArray.
+            // with a port?
             if (port != null && port.getWidth() > 0) {
                 _updateChangeContext(parameter,
                         (Entity)parameter.getContainer());

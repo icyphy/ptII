@@ -144,7 +144,7 @@ public class LifeCycleManager extends TypedCompositeActor {
 
                     // Defer change requests so that if changes are
                     // requested during execution, they get queued.
-                    setDeferringChangeRequests(true);
+                    previousDeferStatus = setDeferringChangeRequests(true);
                     while (requests.hasNext()) {
                         ChangeRequest change = (ChangeRequest)requests.next();
                         change.setListeners(_changeListeners);
