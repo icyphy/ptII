@@ -165,7 +165,6 @@ public class GenericJNIActor extends TypedAtomicActor {
     ////                         public methods                    ////
 
     /** Add a return argument to this entity
-     *  @return void
      */
     public void addArgumentReturn()
             throws IllegalActionException, NameDuplicationException {
@@ -732,7 +731,6 @@ public class GenericJNIActor extends TypedAtomicActor {
     ////                         protected methods                 ////
 
     /** Add an argument to this entity
-     *  @return void
      */
     protected void _addArgument(Argument arg)
             throws IllegalActionException, NameDuplicationException {

@@ -535,9 +535,8 @@ public class Argument extends Attribute implements Settable {
     }
 
     /** Notify the container that an attribute has changed
-        @return void
-        @exception IllegalActionException If a error occurs
-    */
+     *   @exception IllegalActionException If a error occurs
+     */
     public void validate() throws IllegalActionException {
         NamedObj container = (NamedObj) getContainer();
         if (container != null)

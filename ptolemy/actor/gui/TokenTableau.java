@@ -131,7 +131,6 @@ public class TokenTableau extends Tableau {
      *  it is replaced with a text editor.
      *  This is called in the constructor.
      *  @param frame The frame to use, or null if none is specified.
-     *  @return A new TextEditor frame.
      *  @exception IllegalActionException If the frame cannot be created.
      */
     public void createFrame(TableauFrame frame) throws IllegalActionException {

@@ -134,7 +134,6 @@ public class MatrixTokenTableau extends TokenTableau {
     /** Create a matrix frame to view the data.  If the argument is null,
      *  then a new TableauFrame is created.
      *  This is called in the constructor.
-     *  @return A new TableauFrame containing a MatrixPane.
      *  @see MatrixPane
      *  @exception IllegalActionException If the frame cannot be created.
      */

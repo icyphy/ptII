@@ -139,7 +139,6 @@ public class TimedEvent {
          *  are analyzed to determine a reasonable bin width.
          *
          *  @param entryArray An array of TimedEvent objects.
-         *  @return The bin width.
          *  @exception ClassCastException If one of the array elements is not
          *   an instance of TimedEvent.
          */
