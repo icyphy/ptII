@@ -1,0 +1,65 @@
+<!-- $Id$ -->
+<html>
+<head>
+<title>Endian Examples</title>
+</head>
+<body bgcolor="#faf0e6">
+<h1>Endian Examples</h1>
+<hr>
+The three plots below illustrate the use of the different endian 
+command line arguments on the same data set.
+See the <a href="../doc/internals/ptplotfaq.html#endian">Ptplot FAQ</a> for details.
+
+<h2>-binary</h2>
+The plot below uses the <CODE>-binary</CODE> argument.
+<p>
+<applet name="Binary" code="ptplot.PlotApplet" width=500 height=400
+    codebase="../.."	
+    archive="ptplot/ptplotapplet.jar"
+    alt="If you had a java-enabled browser, you would see an applet here."
+>
+<param name="pxgraphargs" value="-binary -t 'Integrator Demo' -P -x n =800x400+0+0 -1 control -0 final data/integrator1.plt data/integrator2.plt">
+<param name="background" value="faf0e6">
+   <hr>If your browser recognized the applet tag,
+    you would see an applet here.<hr>
+</applet>
+
+<h2>-bigendian</h2>
+The plot below uses the <CODE>-bigendian</CODE> argument.
+<p>
+<applet name="Binary" code="ptplot.PlotApplet" width=500 height=400
+    codebase="../.."	
+    archive="ptplot/ptplotapplet.jar"
+    alt="If you had a java-enabled browser, you would see an applet here."
+>
+<param name="pxgraphargs" value="-bigendian -t 'Integrator Demo' -P -x n =800x400+0+0 -1 control -0 final data/integrator1.plt data/integrator2.plt">
+<param name="background" value="faf0e6">
+   <hr>If your browser recognized the applet tag,
+    you would see an applet here.<hr>
+</applet>
+<h2>-littleendian</h2>
+The plot below uses the <CODE>-littleendian</CODE> argument.
+<p>
+<applet name="Binary" code="ptplot.PlotApplet" width=500 height=400
+    codebase="../.."	
+    archive="ptplot/ptplotapplet.jar"
+    alt="If you had a java-enabled browser, you would see an applet here."
+>
+<param name="pxgraphargs" value="-littleendian -t 'Integrator Demo' -P -x n =800x400+0+0 -1 control -0 final data/integrator1.plt data/integrator2.plt">
+<param name="background" value="faf0e6">
+   <hr>If your browser recognized the applet tag,
+    you would see an applet here.<hr>
+</applet>
+<p>
+<HR>
+<A HREF="index.html">Up</A> to the Example index -
+<A HREF="Live.html">Back</A> to a Live, animated plot -
+<A HREF="Butterfly.html">Forward</A> to a Plot of 10,000 binary points
+<HR>
+Copyright &#169 1998, The Regents of the University of California.
+All rights reserved.
+<br>
+Last updated: $Date$,
+comments to: <author>cxh@eecs.berkeley.edu</author>
+</body>
+</html>
