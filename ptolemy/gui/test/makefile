@@ -45,7 +45,8 @@ include $(CONFIG)
 TCL_SRCS = \
 	testDefs.tcl
 
-JSRCS =
+JSRCS = \
+	TopTest.java
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
@@ -56,7 +57,9 @@ JSIMPLE_TESTS = \
 # alljtests.tcl works.  If you add a test, be sure to add
 # $(JGRAPHICAL_TESTS) to EXTRA_SRCS
 JGRAPHICAL_TESTS = \
+	GraphicalMessageHandler.tcl \
 	Query.tcl \
+	Top.tcl
 
 EXTRA_SRCS = \
 	$(TCL_SRCS) $(JSRCS) $(JGRAPHICAL_TESTS) #$(JSIMPLE_TESTS)
