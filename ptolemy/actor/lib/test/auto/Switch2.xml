@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="switch" class="ptolemy.actor.TypedCompositeActor">
+<entity name="Switch2" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
@@ -15,12 +15,6 @@
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{408.5, 314.0}">
-    </property>
-    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Note this test actor never gets fired.">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 185.0]">
-        </property>
     </property>
     <entity name="Switch" class="ptolemy.actor.lib.Switch">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 285.0]">
@@ -45,7 +39,9 @@
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{2}">
+        </property>
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 250.0]">
         </property>
