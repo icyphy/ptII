@@ -492,7 +492,7 @@ cd $srcdir/config
 # Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
 if $JAVAC javasoundTest.java ; then
     AC_MSG_RESULT(ok)
-    PTJAVASOUND=javasound	
+    PTJAVASOUND_DIR=javasound	
 else
    AC_MSG_WARN(['"$JAVAC" javasoundTest.java' failed.
 	Perhaps you are running under JDK1.2?
