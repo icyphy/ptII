@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<class name="carmodel" class="ptolemy.actor.TypedCompositeActor">
+<class name="carmodel" extends="ptolemy.actor.TypedCompositeActor">
     <doc>CT model for the a car, without a director</doc>
     <!-- Define the composite actor ports -->
     <port name="forceInput" class="ptolemy.actor.TypedIOPort">
@@ -10,7 +10,7 @@
     <port name="velocityOutput" class="ptolemy.actor.TypedIOPort">
       <property name="velocityOutput"/>
     </port>
-    <port name="postionOutput" class="ptolemy.actor.TypedIOPort">
+    <port name="positionOutput" class="ptolemy.actor.TypedIOPort">
       <property name="positionOutput"/>
     </port>
     <!-- Define the actors -->
@@ -41,24 +41,24 @@
     </entity>
    
     <!-- Make the connections -->
-    <relation name="r3" class="ptolemy.actor.TypedIORelation"></relation>
-  	<link port="forceInput" relation="r3"/>
-  	<link port="add1.plus" relation="r3"/>
-    <relation name="r4" class="ptolemy.actor.TypedIORelation"></relation>
-  	<link port="add1.output" relation="r4"/>
-  	<link port="scaleM.input" relation="r4"/>
-    <relation name="r5" class="ptolemy.actor.TypedIORelation"></relation>
-  	<link port="scaleM.output" relation="r5"/>
-  	<link port="velocity.input" relation="r5"/>
-    <relation name="r6" class="ptolemy.actor.TypedIORelation"></relation>
-  	<link port="velocity.output" relation="r6"/>
-  	<link port="position.input" relation="r6"/>
-	<link port="scaleN.input" relation="r6"/>
-	<link port="velocityOutput" relation="r6"/>
-    <relation name="r7" class="ptolemy.actor.TypedIORelation"></relation>
-  	<link port="scaleN.output" relation="r7"/>
-  	<link port="add1.minus" relation="r7"/>
-    <relation name="r8" class="ptolemy.actor.TypedIORelation"></relation>
-  	<link port="position.output" relation="r8"/>
-	<link port="positionOutput" relation="r8"/>
+    <relation name="r33" class="ptolemy.actor.TypedIORelation"></relation>
+  	<link port="forceInput" relation="r33"/>
+  	<link port="add1.plus" relation="r33"/>
+    <relation name="r44" class="ptolemy.actor.TypedIORelation"></relation>
+  	<link port="add1.output" relation="r44"/>
+  	<link port="scaleM.input" relation="r44"/>
+    <relation name="r55" class="ptolemy.actor.TypedIORelation"></relation>
+  	<link port="scaleM.output" relation="r55"/>
+  	<link port="velocity.input" relation="r55"/>
+    <relation name="r66" class="ptolemy.actor.TypedIORelation"></relation>
+        <link port="position.input" relation="r66"/>
+  	<link port="velocity.output" relation="r66"/>
+	<link port="scaleN.input" relation="r66"/>
+	<link port="velocityOutput" relation="r66"/>
+    <relation name="r77" class="ptolemy.actor.TypedIORelation"></relation>
+  	<link port="scaleN.output" relation="r77"/>
+  	<link port="add1.minus" relation="r77"/>
+    <relation name="r88" class="ptolemy.actor.TypedIORelation"></relation>
+  	<link port="position.output" relation="r88"/>
+	<link port="positionOutput" relation="r88"/>
 </class>

@@ -11,6 +11,7 @@
         <property name="stopTime" value="100">
         </property>
     </director>
+    <import source="carmodel.xml"/>
     <!-- Define the actors -->
     <entity name="time" class="ptolemy.actor.lib.CurrentTime">
       	<port name="output"></port>
