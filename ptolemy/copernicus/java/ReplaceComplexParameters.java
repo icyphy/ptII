@@ -36,6 +36,7 @@ import ptolemy.actor.parameters.PortParameter;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.copernicus.kernel.SootUtilities;
 import ptolemy.data.expr.Parameter;
+import ptolemy.moml.SharedParameter;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
@@ -155,7 +156,8 @@ public class ReplaceComplexParameters extends SceneTransformer
         //                 copyAttributesOtherThanVariable(port);
         //             }
         //         }
-        if (object instanceof Attribute) {
+        if ((object instanceof Attribute) && 
+                !(object instanceof SharedParameter)) {
             Attribute attribute = (Attribute) object;
 
             // Ignore attributes that are ignorable.

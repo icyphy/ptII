@@ -41,6 +41,7 @@ import soot.Local;
 import soot.Modifier;
 import soot.PhaseOptions;
 import soot.RefType;
+import soot.Scene;
 import soot.SceneTransformer;
 import soot.SootClass;
 import soot.SootField;
@@ -263,12 +264,19 @@ public class FieldsForEntitiesTransformer extends SceneTransformer
         NamedObj correspondingObject = ModelTransformer.getObjectForClass(theClass);
 
         // Create a field referencing the container, for all but the top level.
-        System.out.println("theClass = " + theClass);
-        System.out.println("object = " + correspondingObject);
+//         System.out.println("theClass = " + theClass);
+//         System.out.println("object = " + correspondingObject);
 
         if (!correspondingObject.equals(_model)) {
             NamedObj container = (NamedObj) correspondingObject.getContainer();
             SootClass containerClass = ModelTransformer.getClassForObject(container);
+            if(containerClass == null) {
+                containerClass = Scene.v().loadClassAndSupport(container.getClass().getName());
+            }
+
+  //           System.out.println("container = " + container);
+//             System.out.println("containerClass = " + containerClass);
+            
             SootField field = new SootField(ModelTransformer
                     .getContainerFieldName(), RefType.v(containerClass),
                     Modifier.PUBLIC);
