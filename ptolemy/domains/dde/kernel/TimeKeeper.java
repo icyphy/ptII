@@ -37,9 +37,8 @@ import ptolemy.data.*;
 import ptolemy.actor.*;
 import ptolemy.actor.process.*;
 
+import java.util.LinkedList;
 import java.util.Enumeration;
-
-import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// TimeKeeper
@@ -127,7 +126,7 @@ public class TimeKeeper {
 	if( _rcvrTimeList.size() == 0 ) {
 	    return null;
 	}
-        RcvrTimeTriple triple = (RcvrTimeTriple)_rcvrTimeList.first();
+        RcvrTimeTriple triple = (RcvrTimeTriple)_rcvrTimeList.getFirst();
 	return triple.getReceiver();
     }
 
@@ -153,7 +152,7 @@ public class TimeKeeper {
 	}
 	while( cnt < _rcvrTimeList.size() ) {
 	    RcvrTimeTriple triple =
-                (RcvrTimeTriple)_rcvrTimeList.at(cnt);
+                (RcvrTimeTriple)_rcvrTimeList.get(cnt);
 	    if( time == -10.0 ) {
 	        time = triple.getTime();
 	        firstTime = time;
@@ -214,7 +213,7 @@ public class TimeKeeper {
 	}
 	while( cnt < _rcvrTimeList.size() ) {
 	    RcvrTimeTriple triple =
-                (RcvrTimeTriple)_rcvrTimeList.at(cnt);
+                (RcvrTimeTriple)_rcvrTimeList.get(cnt);
 	    if( time == -10.0 ) {
 	        time = triple.getTime();
 	        firstTime = time;
@@ -279,7 +278,7 @@ public class TimeKeeper {
 	}
 	while( cnt < _rcvrTimeList.size() ) {
 	    RcvrTimeTriple triple =
-                (RcvrTimeTriple)_rcvrTimeList.at(cnt);
+                (RcvrTimeTriple)_rcvrTimeList.get(cnt);
 	    if( time == -10.0 ) {
 	        time = triple.getTime();
 	        firstTime = time;
@@ -314,7 +313,7 @@ public class TimeKeeper {
         if( _rcvrTimeList.size() == 0 ) {
             return _currentTime;
         }
-        RcvrTimeTriple triple = (RcvrTimeTriple)_rcvrTimeList.first();
+        RcvrTimeTriple triple = (RcvrTimeTriple)_rcvrTimeList.getFirst();
         return triple.getTime();
     }
 
@@ -351,9 +350,9 @@ public class TimeKeeper {
         }
 
         RcvrTimeTriple firstTriple =
-            (RcvrTimeTriple)_rcvrTimeList.first();
+            (RcvrTimeTriple)_rcvrTimeList.getFirst();
 	RcvrTimeTriple secondTriple =
-            (RcvrTimeTriple)_rcvrTimeList.at(1);
+            (RcvrTimeTriple)_rcvrTimeList.get(1);
 
 	if( firstTriple.getTime() == secondTriple.getTime() ) {
 	    return false;
@@ -374,7 +373,7 @@ public class TimeKeeper {
 	RcvrTimeTriple triple;
 	TimedQueueReceiver rcvr;
 	for( int i = 0; i < listSize; i++ ) {
-	    triple = (RcvrTimeTriple)oldRcvrTimeList.at(i);
+	    triple = (RcvrTimeTriple)oldRcvrTimeList.get(i);
 	    rcvr = triple.getReceiver();
 	    updateRcvrList(rcvr);
 	} 
@@ -515,7 +514,7 @@ public class TimeKeeper {
         // First Order The Ports
         //
         while( enum.hasMoreElements() ) {
-	    listOfPorts.insertLast( (IOPort)enum.nextElement() );
+	    listOfPorts.addLast( (IOPort)enum.nextElement() );
         }
 
         //
@@ -526,7 +525,7 @@ public class TimeKeeper {
         int cnt = 0;
         int currentPriority = 0;
         while( cnt < listOfPorts.size() ) {
-            IOPort port = (IOPort)listOfPorts.at(cnt);
+            IOPort port = (IOPort)listOfPorts.get(cnt);
             Receiver[][] rcvrs = port.getReceivers();
             for( int i = 0; i < rcvrs.length; i++ ) {
                 for( int j = 0; j < rcvrs[i].length; j++ ) {
@@ -583,7 +582,7 @@ public class TimeKeeper {
 	    RcvrTimeTriple triple;
 	    DDEReceiver rcvr;
 	    for( int i = 0; i < _rcvrTimeList.size(); i++ ) {
-	        triple = (RcvrTimeTriple)_rcvrTimeList.at(i);
+	        triple = (RcvrTimeTriple)_rcvrTimeList.get(i);
 		rcvr = (DDEReceiver)triple.getReceiver();
 		if( rcvr.getRcvrTime() ==
 			TimedQueueReceiver.IGNORE ) {
@@ -682,14 +681,14 @@ public class TimeKeeper {
     private void _addRcvrTriple(RcvrTimeTriple newTriple) {
 	String calleeName = ((Nameable)_actor).getName();
         if( _rcvrTimeList.size() == 0 ) {
-            _rcvrTimeList.insertAt( 0, newTriple );
+            _rcvrTimeList.add( 0, newTriple );
             return;
         }
 
         boolean notAddedYet = true;
 	// Add INACTIVE receivers
 	if( newTriple.getTime() == TimedQueueReceiver.INACTIVE ) {
-	    _rcvrTimeList.insertLast(newTriple);
+	    _rcvrTimeList.addLast(newTriple);
 	    return;
 	}
 
@@ -698,13 +697,13 @@ public class TimeKeeper {
 	    int cnt = 0;
 	    while( cnt < _rcvrTimeList.size() && notAddedYet ) {
 		RcvrTimeTriple triple =
-                    (RcvrTimeTriple)_rcvrTimeList.at(cnt);
+                    (RcvrTimeTriple)_rcvrTimeList.get(cnt);
 	        if( triple.getTime() == TimedQueueReceiver.INACTIVE ) {
-		    _rcvrTimeList.insertAt( cnt, newTriple );
+		    _rcvrTimeList.add( cnt, newTriple );
 		    cnt = _rcvrTimeList.size();
 		    notAddedYet = false;
 		} else if( triple.getTime() == TimedQueueReceiver.IGNORE ) {
-		    _rcvrTimeList.insertAt( cnt, newTriple );
+		    _rcvrTimeList.add( cnt, newTriple );
 		    cnt = _rcvrTimeList.size();
 		    notAddedYet = false;
 	        }
@@ -718,17 +717,17 @@ public class TimeKeeper {
 	    int cnt = 0;
 	    while( cnt < _rcvrTimeList.size() && notAddedYet ) {
 		RcvrTimeTriple triple =
-                    (RcvrTimeTriple)_rcvrTimeList.at(cnt);
+                    (RcvrTimeTriple)_rcvrTimeList.get(cnt);
 	        if( triple.getTime() == TimedQueueReceiver.INACTIVE ) {
-		    _rcvrTimeList.insertAt( cnt, newTriple );
+		    _rcvrTimeList.add( cnt, newTriple );
 		    cnt = _rcvrTimeList.size();
 		    notAddedYet = false;
 		} else if( triple.getTime() == TimedQueueReceiver.IGNORE ) {
-		    _rcvrTimeList.insertAt( cnt, newTriple );
+		    _rcvrTimeList.add( cnt, newTriple );
 		    cnt = _rcvrTimeList.size();
 		    notAddedYet = false;
 	        } else if( newTriple.getTime() < triple.getTime() ) {
-	            _rcvrTimeList.insertAt( cnt, newTriple );
+	            _rcvrTimeList.add( cnt, newTriple );
 		    cnt = _rcvrTimeList.size();
 		    notAddedYet = false;
 	        }
@@ -737,7 +736,7 @@ public class TimeKeeper {
 	}
 
         if( notAddedYet ) {
-            _rcvrTimeList.insertLast( newTriple );
+            _rcvrTimeList.addLast( newTriple );
         }
     }
 
@@ -750,11 +749,11 @@ public class TimeKeeper {
 
 	for( int cnt = 0; cnt < _rcvrTimeList.size(); cnt++ ) {
 	    RcvrTimeTriple nextTriple =
-                (RcvrTimeTriple)_rcvrTimeList.at(cnt);
+                (RcvrTimeTriple)_rcvrTimeList.get(cnt);
 	    TimedQueueReceiver nextRcvr = nextTriple.getReceiver();
 
 	    if( rcvrToBeRemoved == nextRcvr ) {
-	        _rcvrTimeList.removeAt( cnt );
+	        _rcvrTimeList.remove( cnt );
 		return;
 	    }
 	}

@@ -35,10 +35,6 @@ import ptolemy.kernel.util.*;
 import ptolemy.actor.*;
 import ptolemy.data.*;
 
-import java.util.Enumeration;
-
-import collections.LinkedList;
-
 //////////////////////////////////////////////////////////////////////////
 //// DDEActor
 /**

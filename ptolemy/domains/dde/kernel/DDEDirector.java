@@ -42,10 +42,9 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.domains.pn.kernel.BasePNDirector; // For Javadoc
 
 import java.util.Hashtable;
-import java.util.Enumeration;
-
-import collections.LinkedList;
-import collections.Comparator;
+import java.util.LinkedList;
+import java.util.Comparator;
+import java.util.Collections;
 
 //////////////////////////////////////////////////////////////////////////
 //// DDEDirector
@@ -234,7 +233,8 @@ public class DDEDirector extends ProcessDirector {
                             + "types.");
                 }
             } else {
-                // Processes Are Stopped; Continued Execution Is Allowed
+                // Processes Are Stopped; Continued Execution 
+                // Is Allowed
 		_notDone = true;
 	    }
         }
@@ -479,7 +479,8 @@ public class DDEDirector extends ProcessDirector {
 	if( _writeBlockedQs == null ) {
 	    _writeBlockedQs = new LinkedList();
 	}
-	_writeBlockedQs.insertFirst(rcvr);
+	_writeBlockedQs.addFirst(rcvr);
+	// _writeBlockedQs.insertFirst(rcvr);
 	if( _isDeadlocked() ) {
 	    notifyAll();
 	}
@@ -522,7 +523,8 @@ public class DDEDirector extends ProcessDirector {
 	if( _writeBlockedQs == null ) {
 	    _writeBlockedQs = new LinkedList();
 	}
-        _writeBlockedQs.removeOneOf(rcvr);
+        _writeBlockedQs.remove(rcvr);
+        // _writeBlockedQs.removeOneOf(rcvr);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -580,9 +582,10 @@ public class DDEDirector extends ProcessDirector {
 	if( _writeBlockedQs == null ) {
 	    _writeBlockedQs = new LinkedList();
 	}
-        _writeBlockedQs.sort(new RcvrCapacityComparator() );
+        Collections.sort( _writeBlockedQs, 
+                new RcvrCapacityComparator() );
         DDEReceiver smallestQueue;
-        smallestQueue = (DDEReceiver)_writeBlockedQs.first();
+        smallestQueue = (DDEReceiver)_writeBlockedQs.getFirst();
 
         if( smallestQueue.getCapacity() <= 0 ) {
             smallestQueue.setCapacity(1);
@@ -792,7 +795,6 @@ public class DDEDirector extends ProcessDirector {
     private boolean _pendingMutations = false;
     private LinkedList _writeBlockedQs;
     private Hashtable _initialTimeTable;
-    
     private LinkedList _extReadBlockedQs;
 
 
