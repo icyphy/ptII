@@ -33,7 +33,7 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
-import ptolemy.actor.lib.NonStrictActor;  // FIXME: remove
+import ptolemy.actor.lib.NonStrictActor;     // FIXME: remove
 import ptolemy.actor.sched.Firing;
 import ptolemy.actor.sched.Schedule;
 import ptolemy.actor.sched.Scheduler;
@@ -43,12 +43,14 @@ import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
 import java.util.Iterator;
@@ -78,9 +80,9 @@ change again in the course of the iteration.
 An actor is considered <i>ready to fire</i> if sufficient known inputs are 
 available.  In a sense, an actor firing is triggered by these known inputs, 
 because the director only fires an actor if it is ready to fire.  Unless an 
-actor implements the NonStrictActor FIXME, it is assumed to be a strict 
-actor, meaning that it requires all of its inputs to be known before it is 
-fired.  This is very important since once an actor defines a particular 
+actor contains an attribute called "_nonStrictMarker", it is assumed to be a 
+strict actor, meaning that it requires all of its inputs to be known before 
+it is fired.  This is very important since once an actor defines a particular 
 output, it is not allowed to change that value in a subsequent firing in the 
 course of the iteration.  An actor <i>has completed firing</i> if it has 
 defined all of its outputs.
@@ -539,6 +541,9 @@ public class SRDirector extends StaticSchedulingDirector {
     /** Return true if the specified actor is a nonstrict actor.
      */
     private boolean _isNonStrict(Actor actor) {
+        //Attribute nonStrictAttribute = 
+        //    ((NamedObj) actor).getAttribute(NON_STRICT_ATTRIBUTE_NAME);
+        //return (nonStrictAttribute != null);  FIXME
         return (actor instanceof NonStrictActor);
     }
 
@@ -668,6 +673,8 @@ public class SRDirector extends StaticSchedulingDirector {
     // List of all receivers this director has created.
     private List _receivers;
 
+    // The name of an attribute that marks an actor as non strict.
+    private static final String NON_STRICT_ATTRIBUTE_NAME = "_nonStrictMarker";
 }
 
 
