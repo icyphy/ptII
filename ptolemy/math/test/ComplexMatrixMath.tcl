@@ -313,10 +313,19 @@ test ComplexMatrixMath-5.1.5 {diag} {
 } {}
 
 ####################################################################
-test ComplexMatrixMath-5.1.5 {determinate} {
+test ComplexMatrixMath-5.1.6 {determinate} {
     set mr [java::call ptolemy.math.ComplexMatrixMath \
 	    determinate $m22]
     set s [java::call ptolemy.math.Complex toString $mr]
     regsub -all {,} $s {} stmp
     epsilonDiff $stmp {83.35 + 2.9i}
+} {}
+
+####################################################################
+test ComplexMatrixMath-5.1.7 {crop} {
+    set mr [java::call ptolemy.math.ComplexMatrixMath \
+	    crop $m33 1 1 2 2]
+    set s [java::call ptolemy.math.ComplexMatrixMath toString $mr]
+    regsub -all {,} $s {} stmp
+    epsilonDiff $stmp {{{-7.0 + 8.0i -4.9 - 6.0i} {-0.25 + 0.4i 1.0 + 2.0i}}}
 } {}
