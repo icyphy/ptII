@@ -103,6 +103,21 @@ PTJACL_JFLAG="@PTJACL_JFLAG@"
 # Jar file for JHDL
 JHDL_JAR="@JHDL_JAR@"
 
+#### Cal 
+#
+# Directory that contains the Cal jar file ptCal.jar
+# used by bin/ptinvoke.in
+CAL_DIR = @CAL_DIR@
+
+# Set to cal and used in $PTII/ptolemy/makefile if Cal was found.
+PTCAL_DIR = @PTCAL_DIR@
+
+# If PTCAL_DIR is not empty, then set CAL_JARS to have the class path sep.
+CAL_JARS="" 
+if [ "$PTCAL_DIR" ] ;
+    CAL_JARS="${CLASSPATHSEPARATOR}${CAL_DIR}/ptCal.jar"
+fi
+
 #### Serial port stuff
 # Directory that contains the Java Serial Comm API, see
 # http://java.sun.com/products/javacomm/
@@ -197,7 +212,7 @@ JXTA_JFLAG=
 
 #### All the jar files.  Useful for Vergil and ptolemy rules which must load
 # arbitrary files
-ALL_JAR="${DIVA_JAR}${CLASSPATHSEPARATOR}${JINI_JARS}${COMMAPI_JAR}${SOOT_JARS}${CLASSPATHSEPARATOR}${PTJACL_JAR}${CLASSPATHSEPARATOR}${JOYSTICK_JAR}${CLASSPATHSEPARATOR}${JYTHON_JAR}${CLASSPATHSEPARATOR}${JXTA_JAR}${CLASSPATHSEPARATOR}${GIOTTO_JAR}"
+ALL_JAR="${DIVA_JAR}${CLASSPATHSEPARATOR}${JINI_JARS}${CAL_JARS}${COMMAPI_JAR}${SOOT_JARS}${CLASSPATHSEPARATOR}${PTJACL_JAR}${CLASSPATHSEPARATOR}${JOYSTICK_JAR}${CLASSPATHSEPARATOR}${JYTHON_JAR}${CLASSPATHSEPARATOR}${JXTA_JAR}${CLASSPATHSEPARATOR}${GIOTTO_JAR}"
 ALL_JFLAG="${DIVA_JFLAG} ${JINI_JFLAG}"
 
 #### Sandbox
