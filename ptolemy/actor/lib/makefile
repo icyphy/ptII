@@ -204,12 +204,16 @@ JSRCS = \
 
 OTHER_FILES_TO_BE_JARED = \
 	CommutatorIcon.xml \
+	ComputeHistogramIcon.xml \
 	DistributorIcon.xml \
 	BooleanSelectIcon.xml \
 	BooleanSwitchIcon.xml \
 	PowerEstimate.xml \
+	SelectIcon.xml \
 	Sinewave.xml \
+	SwitchIcon.xml \
 	TimedSine.xml \
+	UnaryMathFunctionIcon.xml \
 	aggregators.xml \
 	array.xml \
 	booleanflowcontrol.xml \
