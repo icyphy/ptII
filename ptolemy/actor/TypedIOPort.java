@@ -26,7 +26,6 @@
 
 @ProposedRating Yellow (yuhong@eecs.berkeley.edu)
 @AcceptedRating Yellow (lmuliadi@eecs.berkeley.edu)
-
 */
 
 package ptolemy.actor;
@@ -386,13 +385,13 @@ public class TypedIOPort extends IOPort implements Typeable {
                     // Good, no conversion necessary.
                     farRec[channelIndex][j].putArray(tokenArray, vectorLength);
                 } else {
-                    // Note: This is very bad for performance!
-                    // For better efficiency, make sure
-                    // all ports have the same type.
-                    for (int i = 0; i < vectorLength; i++) {
-                        tokenArray[i] = farType.convert(tokenArray[i]);
-                    }
-                    farRec[channelIndex][j].putArray(tokenArray, vectorLength);
+		    // Note: This is very bad for performance!
+		    // For better efficiency, make sure
+		    // all ports have the same type.
+		    for (int i = 0; i < vectorLength; i++) {
+			farRec[channelIndex][j].put(
+                                farType.convert(tokenArray[i]));
+		    }
                 }
             }
         } catch (ArrayIndexOutOfBoundsException ex) {
