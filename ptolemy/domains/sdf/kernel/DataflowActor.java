@@ -49,12 +49,12 @@ it will produce or consume on any of its ports during its next firing.
 @see ptolemy.actors.CompositeActor
 @see ptolemy.actors.IOPort
 */
-interface DataflowActor {
+public interface DataflowActor {
 
     /** Get the number of tokens that are produced or consumed
      *  on the designated port of this Actor.
      *
-     *  @throw IllegalActionException if port is not contained in this actor,
+     *  @exception IllegalActionException if port is not contained in this actor,
      *  or is not an input port.
      *  @return The number of tokens consumed on the port.
      */
@@ -64,7 +64,7 @@ interface DataflowActor {
     /** Get the number of tokens that are produced or consumed
      *  on the designated port of this Actor during each firing.
      *
-     *  @throw IllegalActionException if port is not contained in this actor.
+     *  @exception IllegalActionException if port is not contained in this actor.
      *  @return The number of tokens produced on the port, as supplied by
      *  setTokenProductionRate
      */
@@ -74,7 +74,7 @@ interface DataflowActor {
     /** Get the number of tokens that are produced or consumed
      *  on the designated port of this Actor.
      *
-     *  @throw IllegalActionException if port is not contained in this actor.
+     *  @exception IllegalActionException if port is not contained in this actor.
      *  or is not an output port.
      *  @return The number of tokens produced on the port.
      */
@@ -89,7 +89,7 @@ interface DataflowActor {
      *  determine the rate by scheduling the contained domain, and it must be
      *  explicitly declared.)
      *
-     *  @throw IllegalActionException if port is not contained in this actor,
+     *  @exception IllegalActionException if port is not contained in this actor,
      *  or is not an input port.
      *  @return The number of tokens consumed on the port.
      */
@@ -102,8 +102,8 @@ interface DataflowActor {
      *  port is connected to, and may be necessary in order to get the SDF
      *  scheduler to create a valid schedule from certain kinds of topologies.
      *
-     *  @throw IllegalActionException if port is not contained in this actor.
-     *  @throw IllegalActionException if port is not an input IOPort.
+     *  @exception IllegalActionException if port is not contained in this actor.
+     *  @exception IllegalActionException if port is not an input IOPort.
      */
     public void setTokenInitProduction(IOPort p, int count)
             throws IllegalActionException;
@@ -116,7 +116,7 @@ interface DataflowActor {
      *  determine the rate by scheduling the contained domain, and it must be
      *  explicitly declared.)
      *
-     *  @throw IllegalActionException if port is not contained in this actor,
+     *  @exception IllegalActionException if port is not contained in this actor,
      *  or is not an output port.
      *  @return The number of tokens produced on the port.
      */

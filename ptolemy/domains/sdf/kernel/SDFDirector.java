@@ -105,7 +105,6 @@ public class SDFDirector extends StaticSchedulingDirector {
 
     /** The SDFDirector always assumes that it can be fired.  
      *  @return True If the Director can be fired.
-     *  @exception CloneNotSupportedException Not Thrown
      *  @exception IllegalActionException Not Thrown
      */
     public boolean prefire() throws IllegalActionException {
