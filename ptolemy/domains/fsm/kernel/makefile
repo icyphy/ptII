@@ -51,6 +51,7 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 JSRCS = \
 	AbstractActionsAttribute.java \
 	Action.java \
+	AssertionModelErrorHandler.java \
 	ChoiceAction.java \
 	CommitAction.java \
 	CommitActionsAttribute.java \

@@ -169,7 +169,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
             Actor actor = (Actor)actors.next();
             if (_debugging) _debug(getName(), " fire refinement",
                     ((ptolemy.kernel.util.NamedObj)actor).getName());
-            actor.fire();
+            	actor.fire();
         }
  
         ctrl._setInputsFromRefinement();       
@@ -282,6 +282,13 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
         return result;
     }
 
+    /** Set the modelErrorHandler. Call super.preinitialize().
+     */
+    public void preinitialize() throws IllegalActionException {
+        setModelErrorHandler(new AssertionModelErrorHandler());
+        super.preinitialize();
+    }
+
     /** Return true if the mode controller wishes to be scheduled for
      *  another iteration. Postfire the enabled refinements of the
      *  current state
@@ -304,8 +311,17 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
         Iterator refinements = _enabledRefinements.iterator();
         while (refinements.hasNext()) {
             Actor refinement = (Actor)refinements.next();
-            refinement.postfire();
-            // take out event outputs generated in ref.postfire()
+            try {
+	            refinement.postfire();
+            } catch (IllegalActionException e) {
+		        if (_debugging) {
+		            _debug("ModelError is thrown: " + e.getMessage());
+		        }            	
+            	handleModelError(ctrl, e);
+		        if (_debugging && handleModelError(ctrl, e)) {
+		            _debug("ModelError is processed: " + e.getMessage());
+		        }                   	
+            }            // take out event outputs generated in ref.postfire()
             Iterator outports = refinement.outputPortList().iterator();
             while (outports.hasNext()) {
                 IOPort p = (IOPort)outports.next();
