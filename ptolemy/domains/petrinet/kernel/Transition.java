@@ -87,115 +87,126 @@ public class Transition extends Transformer {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         ports and parameters              ////
-
-    ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    // fire has two parts: to modify the marking in the output places and
-    // to modify the marking at the input places. The method also checks
-    // whether there is a weight in the middle of the place-transition
-    // connection. The weight is defined as single-input single-output
-    // transformer to hold the weight of the arcs.
-
-
+    /** fire has two parts: to modify the marking in the output places and
+     * to modify the marking at the input places. The method also checks
+     * whether there is a weight in the middle of the place-transition
+     * connection. The weight is defined as single-input single-output
+     * transformer to hold the weight of the arcs.
+     */
     public void fire() throws IllegalActionException {
-        int k=output.getWidth();
-        System.out.println("--inside the fire for transition--*the output width is" + k);
+        int k = output.getWidth();
+        System.out.println("-- inside the fire for transition -- "
+                + "the output width is" + k);
 
-        System.out.println("start to increase the place marking for output places"  );
+        System.out.println("start to increase the place marking "
+                + "for output places");
 
-        //            for(int j=0; j < output.getWidth(); j++)  {
-        Iterator outports=output.connectedPortList().iterator();
+        //            for(int j = 0; j < output.getWidth(); j++)  {
+        Iterator outports = output.connectedPortList().iterator();
         while(outports.hasNext())  {
-            IOPort weightport = (IOPort) outports.next();            //output port should be connected to weights.
+           //output port should be connected to weights.
+            IOPort weightport = (IOPort) outports.next();
             if (weightport!= null) {
                 Nameable arcweight = weightport.getContainer();
                 if (arcweight instanceof NamedObj)
-                    System.out.println("the object is" + arcweight.getFullName());
-                if (arcweight instanceof Place || arcweight instanceof Transition)  {
-                    System.out.println("wrong connection, it should be weight here" + arcweight.getFullName());
+                    System.out.println("the object is"
+                            + arcweight.getFullName());
+                if (arcweight instanceof Place
+                        || arcweight instanceof Transition)  {
+                    System.out.println("wrong connection, it should be "
+                            + "weight here" + arcweight.getFullName());
                     return;
                 }
                 if (arcweight instanceof Weight)  {
                     Weight arc = (Weight ) arcweight;
-                    int  tempweight= arc.getWeight();
+                    int  tempweight = arc.getWeight();
                     IOPort weightOutPort = arc.output;
 
-                    Iterator placeports=weightOutPort.connectedPortList().iterator();
+                    Iterator placeports =
+                        weightOutPort.connectedPortList().iterator();
                     while(placeports.hasNext())  {
                         IOPort   placeport = (IOPort) placeports.next();
                         if (placeport!= null) {
                             Nameable place = placeport.getContainer();
                             if (place instanceof NamedObj)
-                                System.out.println("the place is" + place.getFullName());
-                            if (place instanceof Transition || place instanceof Weight)  {
-                                System.out.println("wrong connection, it should be place here" + place.getFullName());
+                                System.out.println("the place is"
+                                        + place.getFullName());
+                            if (place instanceof Transition
+                                    || place instanceof Weight)  {
+                                System.out.println("wrong connection, it "
+                                        + "should be place here"
+                                        + place.getFullName());
                                 return;
                             }
                             if (place instanceof Place)  {
                                 Place tempplace = (Place ) place;
-                                System.out.println("the old place weight is" + tempplace.getMarking());
+                                System.out.println("the old place weight is"
+                                        + tempplace.getMarking());
                                 tempplace.increaseMarking(tempweight);
-                                System.out.println("the new place weight is" + tempplace.getMarking());
+                                System.out.println("the new place weight is"
+                                        + tempplace.getMarking());
                             }
-                        }      // for (if placeport)
-                    } // for (while placeports)
-                }       //for arcweight
-            }     // for  weightport
-        }    //for outports
-        //   }
-        // for getwidth
+                        }
+                    }
+                }
+            }
+        }
+        //                 for(int j = 0; j < input.getWidth(); j++)  {
 
+        System.out.println("start to decrease the place marking for "
+                + "input places"  );
 
-        //                 for(int j=0; j < input.getWidth(); j++)  {
-
-        System.out.println("start to decrease the place marking for input places"  );
-
-        Iterator inports=input.connectedPortList().iterator();
+        Iterator inports = input.connectedPortList().iterator();
         while(inports.hasNext())  {
             IOPort weightport = (IOPort) inports.next();
             if (weightport!= null) {
                 Nameable arcweight = weightport.getContainer();
                 if (arcweight instanceof NamedObj)
-                    System.out.println("the weight is" + arcweight.getFullName());
-                if (arcweight instanceof Place || arcweight instanceof Transition)  {
-                    System.out.println("wrong connection, it should be weight here" + arcweight.getFullName());
+                    System.out.println("the weight is "
+                            + arcweight.getFullName());
+                if (arcweight instanceof Place
+                        || arcweight instanceof Transition)  {
+                    System.out.println("wrong connection, it should be "
+                            + "weight here" + arcweight.getFullName());
                     return;
                 }
                 if (arcweight instanceof Weight)  {
                     Weight arc = (Weight )  arcweight;
-                    int  tempweight= arc.getWeight();
+                    int  tempweight = arc.getWeight();
                     IOPort weightOutPort = arc.input;
-                    Iterator placeports=weightOutPort.connectedPortList().iterator();
+                    Iterator placeports =
+                        weightOutPort.connectedPortList().iterator();
                     while(placeports.hasNext())  {
                         IOPort   placeport = (IOPort) placeports.next();
                         if (placeport!= null) {
                             Nameable place = placeport.getContainer();
                             if (place instanceof NamedObj)
-                                System.out.println("the place is" + place.getFullName());
-                            if (place instanceof Transition || place instanceof Weight)  {
-                                System.out.println("wrong connection, it should be place here" + place.getFullName());
+                                System.out.println("the place is "
+                                        + place.getFullName());
+                            if (place instanceof Transition
+                                    || place instanceof Weight)  {
+                                System.out.println("wrong connection, it "
+                                        + "should be place here "
+                                        + place.getFullName());
                                 return;
                             }
                             if (place instanceof Place)  {
                                 Place tempplace = (Place ) place;
-                                System.out.println("the arc weight is"+tempweight+" the place token is" + tempplace.getMarking());
+                                System.out.println("the arc weight is"
+                                        + tempweight + " the place token is "
+                                        + tempplace.getMarking());
                                 tempplace.decreaseMarking(tempweight);
-                                System.out.println("the arc weight is"+tempweight+" the place token is" + tempplace.getMarking());
+                                System.out.println("the arc weight is "
+                                        + tempweight + " the place token is "
+                                        + tempplace.getMarking());
                             }
-                        } // for (if placeport)
-                    }      // for (while placeports)
-                }//for arcweight
-            }     // for weightport
-        }    //for inports
-        //              }
-        //for getwidth
-
-
-
-
-
+                        }
+                    }
+                }
+            }
+        }
     }
 
     // prefire is similar with fire, it checks all the input places
@@ -204,76 +215,63 @@ public class Transition extends Transformer {
 
 
     public boolean prefire() throws IllegalActionException {
-        int k=input.getWidth();
+        int k = input.getWidth();
         boolean readyToFire = true;
-        System.out.println("--inside the prefire for transition--*the width is" + k);
+        System.out.println("-- inside the prefire for transition -- "
+                + "*the width is" + k);
 
-
-        //          for(int j=0; j < input.getWidth(); j++)  {
-        Iterator inports=input.connectedPortList().iterator();
+        //          for(int j = 0; j < input.getWidth(); j++)  {
+        Iterator inports = input.connectedPortList().iterator();
         while(inports.hasNext())  {
             IOPort weightport = (IOPort) inports.next();
             if (weightport!= null) {
                 Nameable arcweight = weightport.getContainer();
                 if (arcweight instanceof NamedObj)
-                    System.out.println("the weight is" + arcweight.getFullName());
-                if (arcweight instanceof Place || arcweight instanceof Transition)  {
-                    System.out.println("wrong connection, it should be weight here" + arcweight.getFullName());
+                    System.out.println("the weight is "
+                            + arcweight.getFullName());
+                if (arcweight instanceof Place
+                        || arcweight instanceof Transition)  {
+                    System.out.println("wrong connection, it should be "
+                            + "weight here " + arcweight.getFullName());
                     return false;
                 }
                 if (arcweight instanceof Weight)  {
                     Weight arc = (Weight )  arcweight;
-                    int  tempweight= arc.getWeight();
+                    int  tempweight = arc.getWeight();
                     IOPort weightOutPort = arc.input;
-                    Iterator placeports=weightOutPort.connectedPortList().iterator();
+                    Iterator placeports =
+                        weightOutPort.connectedPortList().iterator();
                     while(placeports.hasNext())  {
                         IOPort   placeport = (IOPort) placeports.next();
                         if (placeport!= null) {
                             Nameable place = placeport.getContainer();
                             if (place instanceof NamedObj)
-                                System.out.println("the place is" + place.getFullName());
-                            if (place instanceof Transition || place instanceof Weight)  {
-                                System.out.println("wrong connection, it should be place here" + place.getFullName());
+                                System.out.println("the place is "
+                                        + place.getFullName());
+                            if (place instanceof Transition
+                                    || place instanceof Weight)  {
+                                System.out.println("wrong connection, it "
+                                        + "should be place here "
+                                        + place.getFullName());
                                 return false;
                             }
                             if (place instanceof Place)  {
                                 Place tempplace = (Place ) place;
-                                System.out.println("the arc weight is"+tempweight+" the place token is" + tempplace.getMarking());
+                                System.out.println("the arc weight is"
+                                        + tempweight + " the place token is"
+                                        + tempplace.getMarking());
                                 if ( tempweight > tempplace.getMarking() ) {
 
                                     return false;
                                 }
                             }
-                        } // for (if placeport)
-                    }      // for (while placeports)
-                }//for arcweight
-            }     // for weightport
-        }    //for inports
-        // }
-        // for getwidth
-
+                        }
+                    }
+                }
+            }
+        }
         return readyToFire;
     }
-
-
-
-
-
-
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
-
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -300,7 +298,7 @@ public class Transition extends Transformer {
 
 /*      System.out.println("fire within transition ^^^^^^^^^^^^^^^^^^^^^^");
 
-        for(int i=0; i < input.getWidth(); i++) {
+        for(int i = 0; i < input.getWidth(); i++) {
 
         if (input.hasToken(i)) {
         Token token = input.get(i);
@@ -309,7 +307,7 @@ public class Transition extends Transformer {
         + " consuming input from channel " + i);
         }
         }
-        for(int i=0; i < output.getWidth(); i++) {
+        for(int i = 0; i < output.getWidth(); i++) {
         output.send(i, _token);
 
         System.out.println(getName()
@@ -319,7 +317,8 @@ public class Transition extends Transformer {
 */
 
 
-/*                System.out.println("------inside the prefire for transition--------");
+/*                System.out.println("------inside the prefire for "
+                  + "transition--------");
 
                   Iterator relations = input.linkedRelationList().iterator();
                   while(relations.hasNext()) {
@@ -329,7 +328,8 @@ public class Transition extends Transformer {
                   Nameable container = relation.getContainer();
 
                   if (container instanceof NamedObj)
-                  System.out.println("the container is" + container.getFullName());
+                  System.out.println("the container is"
+                       + container.getFullName());
                   }
                   }
 

@@ -106,11 +106,11 @@ public class Place extends Transformer {
     }
 
     public void increaseMarking(int i) {
-        _currentMarking=_currentMarking +i;
+        _currentMarking = _currentMarking + i;
     }
 
     public void decreaseMarking(int i) {
-        _currentMarking=_currentMarking - i;
+        _currentMarking = _currentMarking - i;
     }
     public void printMarking() {
         System.out.println("the current marking is " + _currentMarking);

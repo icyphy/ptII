@@ -1,6 +1,6 @@
 /* A Petri net Weight.
 
- Copyright (c) 1999 The Regents of the University of California.
+ Copyright (c) 2000 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -69,7 +69,7 @@ public class Weight extends Transformer {
         output.setMultiport(false);
         output.setTypeEquals(BaseType.GENERAL);
 
-        initialWeight= new Parameter(this, "initialWeight");
+        initialWeight = new Parameter(this, "initialWeight");
         initialWeight.setExpression("1");
 
     }
@@ -80,10 +80,8 @@ public class Weight extends Transformer {
     public Parameter initialWeight;
 
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
 
     public void initialize() throws IllegalActionException {
         _currentWeight = ((IntToken)initialWeight.getToken()).intValue();
@@ -93,30 +91,11 @@ public class Weight extends Transformer {
         return _currentWeight;
     }
 
-
     public void printWeight() {
-
-
         System.out.println("The weight here is " + _currentWeight);
-
     }
-
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-
-
     private int _currentWeight = 1;
 }

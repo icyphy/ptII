@@ -1,6 +1,6 @@
 /* Petri net director.
 
- Copyright (c) 1999 The Regents of the University of California.
+ Copyright (c) 2001 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -48,12 +48,6 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
-
-
-//import ptolemy.graph.*;
-//import ptolemy.kernel.*;
-//import ptolemy.kernel.util.*;
-//import ptolemy.data.*;
 
 import java.util.Iterator;
 import java.util.Random;
@@ -109,14 +103,11 @@ public class PetriNetDirector extends Director {
     // until no more transitions can fire.
     // the current method just fire the transition sequentially.
 
-
-
     public void fire() throws IllegalActionException {
-
-
         Nameable container = getContainer();
         if (container instanceof NamedObj)
-            System.out.println("firing, the top level in the director container is" + container.getFullName());
+            System.out.println("firing, the top level in the director "
+                    + "container is" + container.getFullName());
 
         if (container instanceof CompositeActor) {
             Iterator actors = ((CompositeActor)container)
@@ -126,15 +117,14 @@ public class PetriNetDirector extends Director {
                 Transformer actor = (Transformer) actors.next();
 
                 if (actor instanceof Transition)  {
-                    System.out.println("this is " + actor.getName()
-                            + " ************************************************************** " );
+                    System.out.println("this is " + actor.getName());
                     Transition transition = (Transition) actor;
                     if (transition.prefire()) {
-                        System.out.println("ready to fire transition********");
+                        System.out.println("ready to fire transition");
                         transition.fire();
                     }
                     else
-                        System.out.println("not ready to fire transition********");
+                        System.out.println("not ready to fire transition");
                 }
 
             }
@@ -142,17 +132,15 @@ public class PetriNetDirector extends Director {
     }
 
 
-    // this method is about the same as the above fire method, except that
-    // it returns after one fire.
-    // we can further extend this to make it fire a specific transition.
-
-
+    /** This method is about the same as the above fire method, except that
+     *  it returns after one fire.
+     *  we can further extend this to make it fire a specific transition.
+     */
     public void fireOnce() throws IllegalActionException {
-
-
         Nameable container = getContainer();
         if (container instanceof NamedObj)
-            System.out.println("firing, the top level in the director container is" + container.getFullName());
+            System.out.println("firing, the top level in the director "
+                    + "container is" + container.getFullName());
 
         if (container instanceof CompositeActor) {
             Iterator actors = ((CompositeActor)container)
@@ -163,42 +151,19 @@ public class PetriNetDirector extends Director {
 
                 if (actor instanceof Transition)  {
 
-                    System.out.println("this is " + actor.getName()
-                            + " ************************************************************** " );
+                    System.out.println("this is " + actor.getName());
 
                     Transition transition = (Transition) actor;
                     if (transition.prefire()) {
-                        System.out.println("ready to fire transition********");
+                        System.out.println("ready to fire transition");
                         transition.fire();
                         return;
                     }
                     else
-                        System.out.println("not ready to fire transition********");
+                        System.out.println("not ready to fire transition");
                 }
 
             }
         }
     }
-
-
-
-
-
-
-    ///////////////////////////////////////////////////////////////////
-    ////
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-
-
 }
