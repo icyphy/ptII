@@ -33,6 +33,7 @@ package ptolemy.vergil.basic;
 import diva.canvas.CompositeFigure;
 import diva.canvas.Figure;
 import diva.graph.GraphController;
+import diva.graph.GraphModel;
 import diva.graph.NodeRenderer;
 
 import ptolemy.kernel.util.ChangeRequest;
@@ -77,7 +78,7 @@ public class IconController extends ParameterizedNodeController {
     ////                         inner classes                     ////
 
     /** An icon renderer. */
-    public static class IconRenderer implements NodeRenderer {
+    public class IconRenderer implements NodeRenderer {
         public Figure render(Object n) {
             Locatable location = (Locatable)n;
             final NamedObj object = (NamedObj) location.getContainer();
@@ -95,13 +96,20 @@ public class IconController extends ParameterizedNodeController {
                     // require write access to the workspace), and specify
                     // to it what the container will eventually be. Then
                     // we queue a change request to make that the container.
-                    // FIXME: Doesn't work... end up getting two figures per actor...
-                    final EditorIcon icon = new XMLIcon(object, "_icon");
+                    final EditorIcon icon = new XMLIcon(object.workspace(), "_icon");
                     icon.setContainerToBe(object);
                     icon.setPersistent(false);
                     result = icon.createFigure();
-                    /* FIXME
-                    ChangeRequest request = new ChangeRequest(this,
+
+                    // NOTE: Make sure the source of this change request is
+                    // the graph model. Otherwise, this change request will trigger
+                    // a redraw of the entire graph, which will result in another
+                    // call to this very same method, which will result in
+                    // creation of yet another figure before this method
+                    // even returns!
+                    GraphController controller = IconController.this.getController();
+                    GraphModel graphModel = controller.getGraphModel();
+                    ChangeRequest request = new ChangeRequest(graphModel,
                             "Set the container of a new XMLIcon.") {
                          // NOTE: The KernelException should not be thrown, but
                          // if it is, it will be handled properly.
@@ -115,7 +123,6 @@ public class IconController extends ParameterizedNodeController {
                     };
                     request.setPersistent(false);
                     object.requestChange(request);
-                    */
                 } else if (iconList.size() == 1) {
                     EditorIcon icon = (EditorIcon)iconList.iterator().next();
                     result = icon.createFigure();
