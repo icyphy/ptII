@@ -20,12 +20,12 @@
             class="ptolemy.actor.gui.MatrixTokenTableau$Factory"/>
   <property name="Token viewer"
             class="ptolemy.actor.gui.TokenTableau$Factory"/>
-  <property name="Exec Evaluator"
-            class="ptolemy.actor.gui.exec.ExecShellTableau$Factory"/>
+  <!--property name="Exec Evaluator"
+            class="ptolemy.actor.gui.exec.ExecShellTableau$Factory"/-->
   <property name="Expression Evaluator"
             class="ptolemy.actor.gui.ExpressionShellTableau$Factory"/>
-  <property name="Python Evaluator"
-            class="ptolemy.actor.gui.python.PythonShellTableau$Factory"/>
+  <!--property name="Python Evaluator"
+            class="ptolemy.actor.gui.python.PythonShellTableau$Factory"/-->
   <property name="Tcl Evaluator"
             class="ptolemy.actor.gui.ptjacl.TclShellTableau$Factory"/>
   <property name="Text Editor"
