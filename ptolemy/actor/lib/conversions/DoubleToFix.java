@@ -62,9 +62,9 @@ public class DoubleToFix extends Transformer {
         super(container, name);
         input.setTypeEquals(BaseType.DOUBLE);
 	output.setTypeEquals(BaseType.FIX);
-   
         
-	precision = new Parameter(this, "precision", new StringToken("(2.1)"));
+	precision = 
+            new Parameter(this, "precision", new StringToken("(2.14)"));
         precision.setTypeEquals(BaseType.STRING);
    
 	mode = new Parameter(this, "mode", new StringToken("Round"));
@@ -97,7 +97,6 @@ public class DoubleToFix extends Transformer {
             } else {
                 result = new FixToken( Quantizer.truncate(in.doubleValue(), _precision) );
             }
-            System.out.println(" D->F: output: " + result.toString() );
             output.send(0, result);
         }
     }

@@ -39,8 +39,7 @@ import ptolemy.math.Precision;
 
 //////////////////////////////////////////////////////////////////////////
 //// FixToDouble
-/** Read a FixToken and converts it to a DoubleToken. Before the
-conversion takes place, the user can set the precision of the FixToken.
+/** Read a FixToken and converts it to a DoubleToken. 
 
 @author Bart Kienhuis 
 @version $Id$
@@ -79,15 +78,16 @@ public class FixToDouble extends Transformer {
     ////                         public methods                    ////
 
     /** Read at most one token from each input and convert the FixToken
-     *  into a DoubleToken. The user has the option to change the
-     *  precision of the FixToken before it is converted into the
-     *  double token.
+     *  into a DoubleToken. 
      * @exception IllegalActionException If there is no director.  
      */
+    // FIXME: Need to add functionality that a user has the option to
+    // change the precision of the FixToken before it is converted
+    // into the double token.
     public void fire() throws IllegalActionException {
 	if (input.hasToken(0)) {
     	    FixToken in = (FixToken)input.get(0);
-	    DoubleToken result = new DoubleToken(in.doubleValue());    
+	    DoubleToken result = new DoubleToken( in.convertToDouble() );    
             output.send(0, result);
         }
     }
