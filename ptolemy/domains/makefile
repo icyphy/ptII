@@ -64,6 +64,7 @@ PTAUXALLJARS = \
                 dt/dt.jar \
 		giotto/giotto.jar \
 		gr/gr.jar \
+		petrinet/petrinet.jar \
 		pn/pn.jar \
 		tm/tm.jar \
 		sr/sr.jar
