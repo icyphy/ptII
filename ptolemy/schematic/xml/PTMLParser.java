@@ -194,13 +194,16 @@ public class PTMLParser extends HandlerBase{
      */
     public Object resolveEntity(String pubID, String sysID)
             throws Exception {
+        System.out.println(pubID + " : " + sysID);
         // Use System ID if the public on unknown
         if(pubID == null) {
             return sysID;
         }
 
         // Construct the path to the DTD file
-        StringBuffer dtdPath = new StringBuffer(DomainLibrary.getPTIIRoot());
+        //// FIXME FIXME
+        //// StringBuffer dtdPath = new StringBuffer(DomainLibrary.getPTIIRoot());
+        StringBuffer dtdPath = new StringBuffer("/users/ptII");
 
         // Use System ID if there's no PTII environment variable
         if(dtdPath.toString().equals("UNKNOWN")) {
