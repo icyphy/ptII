@@ -62,6 +62,13 @@ test Complex-2.1 {magnitude} {
 3.60555127546}}
 
 ####################################################################
+test Complex-2.1.1 { static magnitude(Complex)} {
+    list [java::call ptolemy.math.Complex magnitude $c0] \
+	    [java::call ptolemy.math.Complex magnitude $c1] \
+	    [java::call ptolemy.math.Complex magnitude $c2]
+} {0.0 0.5 3.60555127546}
+
+####################################################################
 test Complex-2.2 {magnitudeSquared} {
     list "[$c0 magnitudeSquared]\n[$c1 magnitudeSquared]\n[$c2 magnitudeSquared]"
 } {{0.0
@@ -120,8 +127,20 @@ test Complex-3.1.4 {atanh} {
 } {}
 
 ####################################################################
+test Complex-3.1.5 {static atanh(Complex)} {
+    set c9 [java::call ptolemy.math.Complex atanh $c2]
+    epsilonDiff [$c9 toString] {0.14694666622552977 - 1.3389725222944935i}
+} {}
+
+####################################################################
 test Complex-3.2 {csc} {
     set c9 [$c2 csc]
+    epsilonDiff [$c9 toString] {0.09047320975320743 - 0.04120098628857413i}
+} {}
+
+####################################################################
+test Complex-3.2.1 {static csc(Complex)} {
+    set c9 [java::call ptolemy.math.Complex csc $c2]
     epsilonDiff [$c9 toString] {0.09047320975320743 - 0.04120098628857413i}
 } {}
 
@@ -138,6 +157,12 @@ test Complex-4.1 {conjugate} {
 ####################################################################
 test Complex-5.1.0 {cot} {
     set c9 [$c2 cot]
+    epsilonDiff [$c9 toString] {-0.0037397103763367905 + 0.9967577965693585i}
+} {}
+
+####################################################################
+test Complex-5.1.0.1 {static cot(Complex)} {
+    set c9 [java::call ptolemy.math.Complex cot $c2]
     epsilonDiff [$c9 toString] {-0.0037397103763367905 + 0.9967577965693585i}
 } {}
 
@@ -214,7 +239,14 @@ test Complex-5.4 {isNaN} {
 } {0 1}
 
 ####################################################################
-test Complex-5.4.1 {log} {
+test Complex-5.4.1 {static isNaN(Complex) } {
+    set inf [$c2 divide $c0]
+    list [java::call ptolemy.math.Complex isNaN $c2] \
+	    [java::call ptolemy.math.Complex isNaN $inf]
+} {0 1}
+
+####################################################################
+test Complex-5.4.5 {log} {
     set lc2 [$c2 log]
     epsilonDiff [$lc2 toString] {1.2824746787307684 - 0.982793723247329i}
 } {}
@@ -275,6 +307,13 @@ test Complex-11.1 {scale} {
 ####################################################################
 test Complex-11.2.0 {sec} {
     set c9 [$c2 sec]
+    epsilonDiff [$c9 toString] {-0.04167496441114425 - 0.09061113719623758i}
+} {}
+
+
+####################################################################
+test Complex-11.2.0.1 {static sec(Complex)} {
+    set c9 [java::call ptolemy.math.Complex sec $c2]
     epsilonDiff [$c9 toString] {-0.04167496441114425 - 0.09061113719623758i}
 } {}
 
@@ -346,6 +385,24 @@ test Complex-15.1 {isInfinite} {
 	    [$complexMinValue isInfinite] \
 	    [$complexMaxValue isInfinite]
 
+
+} {1 1 1 1 0 0}
+
+####################################################################
+test Complex-15.1.1 {static isInfinite(Complex)} {
+    # Uses 15.1 above
+    list [java::call ptolemy.math.Complex isInfinite \
+	    $complexNegativeInfinity] \
+	    [java::call ptolemy.math.Complex isInfinite \
+	    $complexImaginaryNegativeInfinity] \
+	    [java::call ptolemy.math.Complex isInfinite \
+	    $complexPositiveInfinity] \
+	    [java::call ptolemy.math.Complex isInfinite \
+	    $complexImaginaryPositiveInfinity] \
+	    [java::call ptolemy.math.Complex isInfinite \
+	    $complexMinValue] \
+	    [java::call ptolemy.math.Complex isInfinite \
+	    $complexMaxValue]
 
 } {1 1 1 1 0 0}
 
