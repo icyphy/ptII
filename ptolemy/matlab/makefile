@@ -79,13 +79,16 @@ OPTIONAL_FILES = \
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-PTMATLAB_LIB=$(PTJNI_SHAREDLIBRARY_PREFIX)ptmatlab.$(PTJNI_SHAREDLIBRARY_SUFFIX)
+# 'make fast' also build PTLIB, so be sure that PTLIB is set to
+# the name of the library
+PTLIB=$(PTJNI_SHAREDLIBRARY_PREFIX)ptmatlab.$(PTJNI_SHAREDLIBRARY_SUFFIX)
+
 # make clean removes $(KRUFT)
 KRUFT = matlabWindows.jar
 
 all: jclass
 
-jclass: $(PTMATLAB_LIB)
+jclass: $(PTLIB)
 
 
 # MAJOR_OS_NAME is set by configure to the major name of the OS
@@ -107,7 +110,7 @@ include $(ROOT)/mk/ptcommon.mk
 # -fno-exceptions  - see note at bottom
 # $(PTJNI_NO_CYGWIN) is sometimes set to -mno-cygwin and causes
 # "Invalid access to memory location" errors
-$(PTMATLAB_LIB): ptmatlab.cc Engine.class
+$(PTLIB): ptmatlab.cc Engine.class
 	CLASSPATH="$(CLASSPATH)" javah -jni -o ptmatlab.h ptolemy.matlab.Engine
 	$(PTCC) -shared \
 		"-I$(MATLAB_DIR)/extern/include" \
@@ -119,7 +122,7 @@ $(PTMATLAB_LIB): ptmatlab.cc Engine.class
 		-L$(MATLAB_LIBDIR) $(PTJNI_SHAREDLIBRARY_LDFLAG) -lc -leng -lmx
 
 # Jar file for Web Start that contains the dll
-$(PTPACKAGE_NATIVE_JAR): $(PTMATLAB_LIB)
+$(PTPACKAGE_NATIVE_JAR): $(PTLIB)
 	rm -rf $(PTJAR_TMPDIR) $@
 	mkdir $(PTJAR_TMPDIR)
 	-cp $< $(PTJAR_TMPDIR)
@@ -130,7 +133,7 @@ $(PTPACKAGE_NATIVE_JAR): $(PTMATLAB_LIB)
 
 
 ptmatlab_clean:
-	rm -f ptmatlab.h *.o $(PTMATLAB_LIB)
+	rm -f ptmatlab.h *.o $(PTLIB)
 
 # Note: -fno-exceptions was added to remove the exception handling frames,
 # which for gcc 3.2-3 (prerelease) was introducing an unresolved
