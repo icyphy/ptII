@@ -1,3 +1,4 @@
+
 /* Petri net receiver.
 
  Copyright (c) 1999 The Regents of the University of California.
@@ -23,7 +24,7 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-@ProposedRating Red (yourname@eecs.berkeley.edu)
+@ProposedRating Red (yukewang@eecs.berkeley.edu)
 @AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
 */
 
@@ -77,5 +78,4 @@ public class PetriNetReceiver extends Mailbox {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private int _token = 3;
 }

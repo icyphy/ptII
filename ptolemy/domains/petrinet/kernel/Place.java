@@ -8,6 +8,8 @@
  copyright notice and the following two paragraphs appear in all copies
  of this software.
 
+
+
  IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
  FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
  ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
@@ -23,7 +25,7 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-@ProposedRating Red (yourname@eecs.berkeley.edu)
+@ProposedRating Red (yukewang@eecs.berkeley.edu)
 @AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
 */
 
@@ -74,14 +76,6 @@ public class Place extends Transformer {
         input.setTypeEquals(BaseType.GENERAL);
         output.setMultiport(true);
 
-
-        //  We need multiport, but each channel has only one link.
-        // however, at this moment, we do not check how many links we have
-        // from one place to one transition.
-        // yuke
-
-
-
         output.setTypeEquals(BaseType.GENERAL);
     }
 
@@ -96,35 +90,61 @@ public class Place extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Read an available input token, and send it to a randomly chosen
-     *  output channel.
-     *  @exception IllegalActionException If the send method throws it.
-     */
+  /** getMarking() is to get the _currentMarking of the place */
 
     public int getMarking() {
         return _currentMarking;
     }
+  /** getTemporaryMarking() is to get the temporaryMarking of the place.
+      temporaryMarking is used for checking whether the _currentMarking
+      of the place is bigger than the sum of all links between the place
+      and a transition. TemporaryMarking is used in Transition.prefire.
+   */
 
+    public int getTemporaryMarking() {
+        return _temporaryMarking;
+    }
+
+   /** increaseMarking() is to increase the _currentMarking by i */
     public void increaseMarking(int i) {
-        _currentMarking = _currentMarking + i;
+         _currentMarking = _currentMarking + i;
+    }
+    
+    /** decreaseMarking() is to decrease the _currentMarking by i */
+    public void decreaseMarking(int i) {
+         _currentMarking = _currentMarking - i;
+    }
+    
+    /** decreaseTemporaryMarking() is to decrease the _tempoararyMarking by i */
+    public void decreaseTemporaryMarking(int i) {
+         _temporaryMarking = _temporaryMarking - i;
     }
 
-    public void decreaseMarking(int i) {
-        _currentMarking = _currentMarking - i;
+    /** setTemporaryMarking() is to set the _tempoararyMarking to i */
+    public void setTemporaryMarking(int i) {
+         _temporaryMarking = i;
     }
+
+    
+    /** setTemporaryMarking() is to set the _currentMarking to i */
+    public void setMarking(int i) {
+         _currentMarking = i;
+    }
+
     public void printMarking() {
         System.out.println("the current marking is " + _currentMarking);
     }
 
-    /** Set the current marking equal to the initial marking.
+   /** Set the current marking equal to the initial marking.
      *  @exception IllegalActionException If the initialMarking parameter
      *   throws it.
      */
     public void initialize() throws IllegalActionException {
         _currentMarking = ((IntToken)initialMarking.getToken()).intValue();
+        _temporaryMarking = _currentMarking;
     }
 
-
+ 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -142,7 +162,8 @@ public class Place extends Transformer {
 
     // Current marking.
     private int _currentMarking = 0;
-
+    private int _temporaryMarking = 0;   
+           // for dealing with multiple arcs between a place and a transition
 
 
 

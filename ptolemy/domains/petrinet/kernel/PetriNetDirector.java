@@ -1,6 +1,7 @@
+
 /* Petri net director.
 
- Copyright (c) 2001 The Regents of the University of California.
+ Copyright (c) 1999 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -20,16 +21,16 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
-
+ 
                                         PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
-@ProposedRating Red (eal@eecs.berkeley.edu)
+                                          COPYRIGHTENDKEY
+@ProposedRating Red (yukewang@eecs.berkeley.edu)
 @AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.petrinet.kernel;
 
-import ptolemy.actor.lib.Transformer;
+import ptolemy.actor.lib.Transformer; 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
@@ -49,8 +50,15 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
+
+//import ptolemy.graph.*;
+//import ptolemy.kernel.*;
+//import ptolemy.kernel.util.*;
+//import ptolemy.data.*;
+
 import java.util.Iterator;
 import java.util.Random;
+import java.util.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// PetriNetDirector
@@ -86,84 +94,100 @@ public class PetriNetDirector extends Director {
         return new PetriNetReceiver();
     }
 
-
-    // we will have three kinds of fire, fire one transition,
-    // fire one round transitions, and fire till no more
-    // transitions can fire. The director should have all the
-    // three parameters to choose. The implementation details
-    // are minor differences. We have implemented two methods
-    // the fire one transition, and fire one round transition.
-    // we have not implemented the fire all transitions till
-    // no more transitions to fire yet.
-
-    //
-    // second problem is to choose from all the ready transition which one
-    // to fire, and when it fires, it changes the state, and
-    // we again to choose from many of the ready states
-    // until no more transitions can fire.
-    // the current method just fire the transition sequentially.
-
-    public void fire() throws IllegalActionException {
-        Nameable container = getContainer();
-        if (container instanceof NamedObj)
-            System.out.println("firing, the top level in the director "
-                    + "container is" + container.getFullName());
-
-        if (container instanceof CompositeActor) {
-            Iterator actors = ((CompositeActor)container)
-                .deepEntityList().iterator();
-
-            while (actors.hasNext()) {
-                Transformer actor = (Transformer) actors.next();
-
-                if (actor instanceof Transition)  {
-                    System.out.println("this is " + actor.getName());
-                    Transition transition = (Transition) actor;
-                    if (transition.prefire()) {
-                        System.out.println("ready to fire transition");
-                        transition.fire();
-                    }
-                    else
-                        System.out.println("not ready to fire transition");
-                }
-
-            }
-        }
-    }
-
-
-    /** This method is about the same as the above fire method, except that
-     *  it returns after one fire.
-     *  we can further extend this to make it fire a specific transition.
+    /** Fire calls _chooseTransition to select one of the
+     *  ready Transitions to fire. The selection method
+     *  here is random. Therefore running the same
+     *  test will result in different firing sequence
+     *  at different times of the day since the
+     *  random seed is the time.
+     *  There is also a possibility for infinite loop.
      */
-    public void fireOnce() throws IllegalActionException {
-        Nameable container = getContainer();
-        if (container instanceof NamedObj)
-            System.out.println("firing, the top level in the director "
-                    + "container is" + container.getFullName());
 
+
+   public void fire() throws IllegalActionException {
+
+     int i = 0;
+
+     Nameable container = getContainer();
+     if (container instanceof NamedObj) 
+           System.out.println("the top container is" + container.getFullName());
+
+     Transition nextTransition = _chooseTransition(); 
+     while (nextTransition != null) {
+         i++;
+         System.out.println("_"+i+ 
+                   "th firing __"+nextTransition.getFullName());
+         nextTransition.fire();
+         System.out.println("___________ start to choose next transition");
+         nextTransition = _chooseTransition(); 
+     }
+   }
+
+ 
+
+
+
+    ///////////////////////////////////////////////////////////////////
+    ////                      
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+ /** The method first accumulates all the enabled transitions, and
+  * then randomly choose one to fire. 
+  */
+
+    private Transition _chooseTransition()  throws IllegalActionException {
+        Nameable container = getContainer();
         if (container instanceof CompositeActor) {
-            Iterator actors = ((CompositeActor)container)
-                .deepEntityList().iterator();
+            Iterator actors = 
+                    ((CompositeActor)container).deepEntityList().iterator();
+     
+            LinkedList readyTransitionList = new LinkedList();
+            int i = 0;
 
             while (actors.hasNext()) {
                 Transformer actor = (Transformer) actors.next();
-
-                if (actor instanceof Transition)  {
-
-                    System.out.println("this is " + actor.getName());
-
+                if (actor instanceof Transition)  {            
                     Transition transition = (Transition) actor;
                     if (transition.prefire()) {
-                        System.out.println("ready to fire transition");
-                        transition.fire();
-                        return;
+                        readyTransitionList.add(transition);
+                        i++;
                     }
-                    else
-                        System.out.println("not ready to fire transition");
+                    else 
+                        System.out.println("not ready to fire______");
                 }
-
+            }   
+        
+            if (i>0) {
+                System.out.print(i + "  transitions ready in choosing");
+                System.out.println(" transitions----------");
+                java.util.Random generator = new 
+                java.util.Random(System.currentTimeMillis());
+                int j = generator.nextInt(i);
+                Object chosenTransition = readyTransitionList.get(j);
+                if(chosenTransition instanceof Transition)
+                    return (Transition) chosenTransition;
             }
-        }
+            else
+                return null;
+        } 
+        return null;
     }
+
+
+
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+   // private we have to set the current state here
+   // we also need the initial state, which is the places with markings.
+
+     
 }
+
