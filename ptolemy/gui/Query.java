@@ -96,7 +96,7 @@ public class Query extends JPanel {
         checkbox.setBackground(_background);
         checkbox.setOpaque(false);
         checkbox.setSelected(defaultValue);
-        _addPair(name, lbl, checkbox);
+        _addPair(name, lbl, checkbox, checkbox);
         // Add the listener last so that there is no notification
         // of the first value.
         checkbox.addItemListener(new QueryItemListener(name));
@@ -129,7 +129,7 @@ public class Query extends JPanel {
         combobox.setEditable(editable);
         combobox.setBackground(Color.white);
         combobox.setSelectedItem(defaultChoice);
-        _addPair(name, lbl, combobox);
+        _addPair(name, lbl, combobox, combobox);
         // Add the listener last so that there is no notification
         // of the first value.
         combobox.addItemListener(new QueryItemListener(name));
@@ -150,7 +150,7 @@ public class Query extends JPanel {
         JTextArea displayField = new JTextArea(theValue, 1, 10);
 	displayField.setEditable(false);
         displayField.setBackground(_background);
-        _addPair(name, lbl, displayField);
+        _addPair(name, lbl, displayField, displayField);
     }
 
     /** Create a single-line entry box with the specified name, label, and
@@ -166,7 +166,7 @@ public class Query extends JPanel {
         lbl.setBackground(_background);
         JTextField entryBox = new JTextField(defaultValue, _width);
         entryBox.setBackground(Color.white);
-        _addPair(name, lbl, entryBox);
+        _addPair(name, lbl, entryBox, entryBox);
 
         // Add the listener last so that there is no notification
         // of the first value.
@@ -242,9 +242,7 @@ public class Query extends JPanel {
             // of the first value.
             checkbox.addActionListener(listener);
         }
-        _addPair(name, lbl, buttonPanel);
-        // Override what is stored in _addPair().
-        _entries.put(name, buttons);
+        _addPair(name, lbl, buttonPanel, buttons);
     }
 
     /** Create a slider with the specified name, label, default
@@ -272,7 +270,7 @@ public class Query extends JPanel {
             "between the minimum and maximum.");
         }
         JSlider slider = new JSlider(minimum, maximum, defaultValue);
-        _addPair(name, lbl, slider);
+        _addPair(name, lbl, slider, slider);
         slider.addChangeListener(new SliderListener(name));
     }
 
@@ -763,8 +761,10 @@ public class Query extends JPanel {
      *  @param name The name of the entry.
      *  @param label The label.
      *  @param widget The interactive entry to the right of the label.
+     *  @param entry The object that contains user data.
      */
-    protected void _addPair(String name, JLabel label, Component widget) {
+    protected void _addPair(String name, JLabel label,
+            Component widget, Object entry) {
         // Surely there is a better layout manager in swing...
         // Note that Box and BoxLayout do not work because they do not
         // support gridded layout.
@@ -774,7 +774,7 @@ public class Query extends JPanel {
         _constraints.gridwidth = GridBagConstraints.REMAINDER;
         _grid.setConstraints(widget, _constraints);
         _entryPanel.add(widget);
-        _entries.put(name, widget);
+        _entries.put(name, entry);
         _labels.put(name, label);
         _previous.put(name, stringValue(name));
     }
