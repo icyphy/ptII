@@ -1,4 +1,4 @@
-/* This interleaves elements from its different input streams into one 
+/* This interleaves elements from its different input streams into one
 output stream.
 
  Copyright (c) 1997-1999 The Regents of the University of California.
@@ -44,16 +44,16 @@ Merges its input streams into one output stream by alternating/circulating
 between its input receivers and directing them to the output.
 This actor is a polymorphic actor and should work with most of the domains.
 It reads a token from one of the input receivers and writes a token to the
-output port. Then it reads a token from the next input receiver and sends 
-it to the next relation. The order in which the tokens are read from the 
+output port. Then it reads a token from the next input receiver and sends
+it to the next relation. The order in which the tokens are read from the
 input port is the order of their creation.
 
-This actor can handle mutations of some types. 
+This actor can handle mutations of some types.
 The smallest granularity of mutations that this can handle are the mutations
 that can occur between every read from the input channel.
 
 In case of domains like SDF, which need to know the token consumption or
-production rate for all ports to construct a firing schedule, 
+production rate for all ports to construct a firing schedule,
 this actor defines and sets three different port parameters, namely:
 <UL>
 <LI>Token Consumption Rate
@@ -62,7 +62,7 @@ this actor defines and sets three different port parameters, namely:
 </UL>
 These parameters can be ignored by domains that do not require this information.
 
-These parameters are safe for computing a schedule only after a call to the 
+These parameters are safe for computing a schedule only after a call to the
 initialize() method of the actor, as they are computed and set in that method.
 
 
@@ -91,7 +91,7 @@ public class Commutator extends AtomicActor{
                 new IntToken(1));
         param = new Parameter(_input,"Token Init Production",
                 new IntToken(0));
-        
+
         _output = new IOPort(this, "output", false, true);
         param = new Parameter(_output, "Token Consumption Rate",
                 new IntToken(1));
@@ -104,9 +104,9 @@ public class Commutator extends AtomicActor{
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Reads tokens from each of its input receivers in a circular 
-     *  fashion and redirects them each to the output port. 
-     *  
+    /** Reads tokens from each of its input receivers in a circular
+     *  fashion and redirects them each to the output port.
+     *
      *  @exception IllegalActionException This can be thrown by a called
      *  method
      */
@@ -115,12 +115,12 @@ public class Commutator extends AtomicActor{
             _output.broadcast(_input.get(i));
         }
     }
-    
-    /** Initializes the actor. Sets the parameter representing the number of 
-     *  tokens that the output port will produce. This parameter is required 
+
+    /** Initializes the actor. Sets the parameter representing the number of
+     *  tokens that the output port will produce. This parameter is required
      *  only for domains like SDF that need this information to calculate
      *  a static schedule.
-     *  
+     *
      *  @exception IllegalActionException Not thrown in this class
      */
     public void initialize() throws IllegalActionException {

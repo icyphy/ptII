@@ -39,20 +39,20 @@ import java.util.Enumeration;
 //////////////////////////////////////////////////////////////////////////
 //// Distributor
 /**
-The actor reads tokens from its input stream and redirects those tokens to 
+The actor reads tokens from its input stream and redirects those tokens to
 the different relations connected to the output port in a cyclic way.
 This actor is a polymorphic actor and should work with most of the domains.
-It reads a token from the input stream and writes a token to an output 
+It reads a token from the input stream and writes a token to an output
 relation. On reading the next token from the input, it sends this token to the
 next relation. The order of the relations on the output side is the order
 of their creation.
 
-This actor can handle mutations of some types. 
+This actor can handle mutations of some types.
 The smallest granularity of mutations that this can handle are the mutations
 that can occur between every read from the input channel.
 
 In case of domains like SDF, which need to know the token consumption or
-production rate for all ports before they can construct a firing schedule, 
+production rate for all ports before they can construct a firing schedule,
 this actor defines and sets three different port parameters, namely:
 <UL>
 <LI>Token Consumption Rate
@@ -61,7 +61,7 @@ this actor defines and sets three different port parameters, namely:
 </UL>
 These parameters can be ignored by domains that do not require this information.
 
-These parameters are safe for computing a schedule only after a call to the 
+These parameters are safe for computing a schedule only after a call to the
 initialize() method of the actor, as they are computed and set in that method.
 
 @author Mudit Goel
@@ -107,12 +107,12 @@ public class Distributor extends AtomicActor {
     ////                         public methods                    ////
 
     /** Reads one token from its input port and writes this token to
-     *  one of the relations  connected to the output port. 
-     *  Needs to read one token for every relation connected to the 
+     *  one of the relations  connected to the output port.
+     *  Needs to read one token for every relation connected to the
      *  output port.
      *
      *  @exception IllegalActionException If there is an error in reading
-     *  data from the input or writing data to the output. 
+     *  data from the input or writing data to the output.
      */
     public void fire() throws IllegalActionException {
         for (int i=0; i < _output.getWidth(); i++) {
@@ -120,11 +120,11 @@ public class Distributor extends AtomicActor {
         }
     }
 
-    /** Initializes the actor. Sets the parameter representing the number of 
-     *  tokens that the input port will consume. This parameter is required 
+    /** Initializes the actor. Sets the parameter representing the number of
+     *  tokens that the input port will consume. This parameter is required
      *  only for domains like SDF that need this information to calculate
      *  a static schedule.
-     *  
+     *
      *  @exception IllegalActionException Not thrown in this class
      */
     public void initialize() throws IllegalActionException {
@@ -134,7 +134,7 @@ public class Distributor extends AtomicActor {
         param.setToken(new IntToken(_output.getWidth()));
     }
 
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
