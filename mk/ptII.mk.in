@@ -226,8 +226,8 @@ JAVACC_DIR =	@JAVACC_DIR@
 # JJTREE = 	$(JAVA) COM.sun.labs.jjtree.Main
 # JAVACC = 	$(JAVA) COM.sun.labs.javacc.Main
 
-JJTREE =	@JJTREE@
-JAVACC =	@JAVACC@
+JJTREE =	"@JJTREE@"
+JAVACC =	"@JAVACC@"
 
 # Set to ptjacl and used in
 # $PTII/ptolemy/actor/gui/makefile if ptjacl.jar was found 
