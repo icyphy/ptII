@@ -170,7 +170,7 @@ public class Test extends Sink {
     }
 
     /** Read one token from each input channel and compare against
-     *  the value specified in <i>correctValues</i>.  If the interation count
+     *  the value specified in <i>correctValues</i>.  If the iteration count
      *  is larger than the length of <i>correctValues</i>, then return
      *  immediately, declaring success on the test.
      *  @exception IllegalActionException If an input is missing,
