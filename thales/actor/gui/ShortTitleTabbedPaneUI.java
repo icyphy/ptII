@@ -20,8 +20,6 @@
 
  Created on 01 sept. 2003
 
- @ProposedRating Yellow (jerome.blanc@thalesgroup.com)
- @AcceptedRating
 */
 
 package thales.actor.gui;
@@ -42,6 +40,8 @@ import javax.swing.plaf.basic.BasicTabbedPaneUI;
  @author J&eacute;r&ocirc;me Blanc & Benoit Masson
  @version $Id$
  @since Ptolemy II 4.0
+ @Pt.ProposedRating Yellow (jerome.blanc@thalesgroup.com)
+ @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
  */
 public class ShortTitleTabbedPaneUI extends BasicTabbedPaneUI {
 

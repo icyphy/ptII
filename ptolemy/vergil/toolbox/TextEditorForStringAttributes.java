@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (ptolemy@eecs.berkeley.edu)
 */
 
 package ptolemy.vergil.toolbox;
@@ -46,6 +44,8 @@ import ptolemy.util.StringUtilities;
    @author Edward A. Lee
    @version $Id$
    @since Ptolemy II 4.0
+   @Pt.ProposedRating Yellow (eal@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (ptolemy@eecs.berkeley.edu)
 */
 
 public class TextEditorForStringAttributes extends TextEditor {

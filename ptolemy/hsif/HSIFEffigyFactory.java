@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
 
 */
 
@@ -56,6 +54,8 @@ import java.net.URL;
    @author Haiyang Zheng, Edward A. Lee, Christopher Hylands
    @version $Id$
    @since Ptolemy II 2.2
+   @Pt.ProposedRating Yellow (eal@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
    @see ptolemy.actor.gui.Configuration
    @see Effigy
 */

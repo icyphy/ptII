@@ -25,8 +25,6 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 
-   @ProposedRating Yellow (vogel@eecs.berkeley.edu)
-   @AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.media.javasound;
@@ -106,6 +104,8 @@ import javax.sound.sampled.SourceDataLine;
    @author Brian K. Vogel
    @version $Id$
    @since Ptolemy II 1.0
+   @Pt.ProposedRating Yellow (vogel@eecs.berkeley.edu)
+   @Pt.AcceptedRating Yellow (cxh@eecs.berkeley.edu)
    @see ptolemy.media.javasound.SoundCapture
 */
 

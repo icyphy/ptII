@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Red (eal@eecs.berkeley.edu)
-@AcceptedRating Red (johnr@eecs.berkeley.edu)
 */
 
 package ptolemy.vergil.fsm;
@@ -42,6 +40,8 @@ import ptolemy.kernel.ComponentRelation;
    @author Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 2.0
+   @Pt.ProposedRating Red (eal@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (johnr@eecs.berkeley.edu)
    @see FSMGraphModel.ArcModel
 */
 public class Arc {

@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Red (yuhong@eecs.berkeley.edu)
-@AcceptedRating Red
 */
 
 package ptolemy.data.type;
@@ -61,6 +59,8 @@ import java.util.Map;
    @author Yuhong Xiong, Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 0.4
+   @Pt.ProposedRating Red (yuhong@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red
 */
 
 public abstract class BaseType implements Type, Serializable {

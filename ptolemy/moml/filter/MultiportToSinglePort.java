@@ -23,8 +23,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-@ProposedRating Red (cxh@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.moml.filter;
@@ -71,6 +69,8 @@ import java.util.Iterator;
     @author Christopher Hylands Brooks, Contributor: Edward A. Lee
     @version $Id$
     @since Ptolemy II 4.0
+    @Pt.ProposedRating Red (cxh@eecs.berkeley.edu)
+    @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 public class MultiportToSinglePort implements MoMLFilter {
 

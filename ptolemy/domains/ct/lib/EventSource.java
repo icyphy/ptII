@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Red (liuj@eecs.berkeley.edu)
-@AcceptedRating Red (liuj@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.ct.lib;
@@ -55,6 +53,8 @@ import ptolemy.kernel.util.Workspace;
    @author Jie Liu
    @version $Id$
    @since Ptolemy II 2.0
+   @Pt.ProposedRating Red (liuj@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (liuj@eecs.berkeley.edu)
 */
 
 // FIXME: This is nearly a reimplementation of the SequentialClock.

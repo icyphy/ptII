@@ -26,8 +26,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-@ProposedRating Red (eal@eecs.berkeley.edu)
-@AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.fsm.modal;
@@ -60,6 +58,8 @@ it can be used to construct hybrid systems using the CT domain.<p>
 @author David Hermann, Research In Motion Limited
 @version $Id$
 @since Ptolemy II 2.1
+@Pt.ProposedRating Red (eal@eecs.berkeley.edu)
+@Pt.AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
 */
     public class TransitionRefinement extends Refinement {
 

@@ -23,8 +23,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-@ProposedRating Red (cxh@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.copernicus.kernel;
@@ -47,6 +45,8 @@ import java.util.Set;
    @author Stephen Neuendorffer
    @version $Id$
    @since Ptolemy II 4.0
+   @Pt.ProposedRating Red (cxh@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 public interface AliasAnalysis {
     /** Return the set of other fields and locals that reference

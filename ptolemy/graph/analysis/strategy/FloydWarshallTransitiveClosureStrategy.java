@@ -21,8 +21,6 @@
    MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
    ENHANCEMENTS, OR MODIFICATIONS.
 
-   @ProposedRating Red (shahrooz@eng.umd.edu)
-   @AcceptedRating Red (ssb@eng.umd.edu)
 
 */
 
@@ -49,6 +47,8 @@ import ptolemy.graph.analysis.analyzer.TransitiveClosureAnalyzer;
    @see ptolemy.graph.Graph#nodeLabel
    @see ptolemy.graph.analysis.TransitiveClosureAnalysis
    @since Ptolemy II 4.0
+   @Pt.ProposedRating Red (shahrooz@eng.umd.edu)
+   @Pt.AcceptedRating Red (ssb@eng.umd.edu)
    @author Shahrooz Shahparnia based on an initial implementation by Ming Yung Ko.
    @version $Id$
 */

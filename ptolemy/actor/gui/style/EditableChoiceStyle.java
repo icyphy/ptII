@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Green (neuendor@eecs.berkeley.edu)
-@AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.gui.style;
@@ -57,6 +55,8 @@ import ptolemy.kernel.util.NamedObj;
    @author Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 1.0
+   @Pt.ProposedRating Green (neuendor@eecs.berkeley.edu)
+   @Pt.AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 */
 
 public class EditableChoiceStyle extends ChoiceStyle {

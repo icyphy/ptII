@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Yellow (liuj@eecs.berkeley.edu)
-@AcceptedRating Red (liuj@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.ct.kernel;
@@ -42,6 +40,8 @@ package ptolemy.domains.ct.kernel;
    @author Jie Liu
    @version $Id$
    @since Ptolemy II 1.0
+   @Pt.ProposedRating Yellow (liuj@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (liuj@eecs.berkeley.edu)
 */
 public interface BreakpointODESolver {
 }

@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION 2
 COPYRIGHTENDKEY
-@ProposedRating Yellow (neuendor@eecs.berkeley.edu)
-@AcceptedRating Red (liuj@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.conversions;
@@ -49,6 +47,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @author  Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 2.1
+   @Pt.ProposedRating Yellow (neuendor@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (liuj@eecs.berkeley.edu)
 */
 public class TokenToExpression extends Converter {
 

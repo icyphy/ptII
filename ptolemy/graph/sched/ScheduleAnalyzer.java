@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating red (shahrooz@eng.umd.edu)
-@AcceptedRating red (ssb@eng.umd.edu)
 */
 
 package ptolemy.graph.sched;
@@ -39,6 +37,8 @@ import ptolemy.graph.analysis.analyzer.GraphAnalyzer;
    <p>
    @see ptolemy.graph.analysis.analyzer.GraphAnalyzer;
    @since Ptolemy II 4.0
+   @Pt.ProposedRating red (shahrooz@eng.umd.edu)
+   @Pt.AcceptedRating red (ssb@eng.umd.edu)
    @author Shahrooz Shahparnia
 */
 public interface ScheduleAnalyzer extends GraphAnalyzer {

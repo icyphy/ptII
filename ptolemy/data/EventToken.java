@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Red (neuendor@eecs.berkeley.edu)
-@AcceptedRating Red (neuendor@eecs.berkeley.edu)
 */
 
 package ptolemy.data;
@@ -41,6 +39,8 @@ import ptolemy.data.type.Type;
    @author Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 0.2
+   @Pt.ProposedRating Red (neuendor@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (neuendor@eecs.berkeley.edu)
 */
 public class EventToken extends Token {
 

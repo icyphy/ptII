@@ -21,8 +21,6 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-@ProposedRating Red (ankush@eng.umd.edu)
-@AcceptedRating Red (ssb@eng.umd.edu)
 */
 
 package ptolemy.copernicus.c;
@@ -47,6 +45,8 @@ import java.util.LinkedList;
    @author Ankush Varma
    @version $Id$
    @since Ptolemy II 4.0
+   @Pt.ProposedRating Red (ankush@eng.umd.edu)
+   @Pt.AcceptedRating Red (ssb@eng.umd.edu)
 */
 public class AnalysisUtilities{
     /** Returns the set of classes needed by a field. These are the

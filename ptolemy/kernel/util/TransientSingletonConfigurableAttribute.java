@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Green (eal@eecs.berkeley.edu)
-@AcceptedRating Green (bilung@eecs.berkeley.edu)
 */
 
 package ptolemy.kernel.util;
@@ -47,6 +45,8 @@ import java.io.Writer;
    @author Steve Neuendorffer and Edward A. Lee
    @version $Id$
    @since Ptolemy II 1.0
+   @Pt.ProposedRating Green (eal@eecs.berkeley.edu)
+   @Pt.AcceptedRating Green (bilung@eecs.berkeley.edu)
 */
 
 public class TransientSingletonConfigurableAttribute

@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Yellow (cxh@eecs.berkeley.edu)
-@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.security;
@@ -47,6 +45,8 @@ import java.security.Key;
    @author Christopher Hylands Brooks, Based on TestToken by Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 4.0
+   @Pt.ProposedRating Yellow (cxh@eecs.berkeley.edu)
+   @Pt.AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 public class KeyToken extends Token {
 

@@ -22,8 +22,6 @@
 
   PT_COPYRIGHT_VERSION_2
   COPYRIGHTENDKEY
-  @ProposedRating Red (cxh@eecs.berkeley.edu)
-  @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.copernicus.jhdl.util;
@@ -41,6 +39,8 @@ import java.io.*;
    @author Michael Wirthlin
    @version $Id$
    @since Ptolemy II 2.0
+   @Pt.ProposedRating Red (cxh@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 public class BlockGraphToDotty extends GraphToDotty {
 

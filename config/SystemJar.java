@@ -23,8 +23,6 @@
   PT_COPYRIGHT_VERSION_2
   COPYRIGHTENDKEY
 
-  @ProposedRating Green (cxh@@eecs.berkeley.edu)
-  @AcceptedRating Red
 */
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -34,6 +32,8 @@ import java.io.IOException;
     @author Christopher Hylands
     @version $Id$
     @since Ptolemy II 2.0
+    @Pt.ProposedRating Green (cxh@@eecs.berkeley.edu)
+    @Pt.AcceptedRating Red
 */
 public class SystemJar {
     public static void main(String args[]) {

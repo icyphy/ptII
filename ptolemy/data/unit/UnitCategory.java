@@ -44,6 +44,8 @@ import ptolemy.kernel.util.NamedObj;
    @author Xiaojun Liu
    @version $Id$
    @since Ptolemy II 2.0
+   @Pt.ProposedRating Red (cxh@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
    @see ptolemy.data.unit.BaseUnit
 */
 public class UnitCategory extends Attribute {

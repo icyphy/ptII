@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Red (winthrop@robotics.eecs.berkeley.edu)
-@AcceptedRating Red (winthrop@robotics.eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.conversions;
@@ -51,6 +49,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @author Winthrop Williams, Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 2.0
+   @Pt.ProposedRating Red (winthrop@robotics.eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (winthrop@robotics.eecs.berkeley.edu)
 */
 
 public class StringToUnsignedByteArray extends Converter {

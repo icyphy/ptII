@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@.eecs.berkeley.edu)
-@AcceptedRating Red (ptolemy@ptolemy.eecs.berkeley.edu)
 */
 
 package ptolemy.domains.wireless.lib;
@@ -95,6 +93,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @author Xiaojun Liu, Edward A. Lee
    @version $Id$
    @since Ptolemy II 4.0
+   @Pt.ProposedRating Yellow (eal@.eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (ptolemy@ptolemy.eecs.berkeley.edu)
 */
 
 public class Triangulator extends TypedAtomicActor {

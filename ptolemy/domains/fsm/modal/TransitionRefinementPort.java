@@ -27,8 +27,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Red (eal@eecs.berkeley.edu)
-@AcceptedRating Red (liuxj@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.fsm.modal;
@@ -64,6 +62,8 @@ import ptolemy.kernel.util.NamedObj;
    @author David Hermann, Research In Motion Limited
    @version $Id$
    @since Ptolemy II 2.1
+   @Pt.ProposedRating Red (eal@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (liuxj@eecs.berkeley.edu)
 */
 
 public class TransitionRefinementPort extends RefinementPort {

@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION 2
 COPYRIGHTENDKEY
-@ProposedRating Red (liuj@eecs.berkeley.edu)
-@AcceptedRating Red (liuj@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.conversions;
@@ -49,6 +47,8 @@ import ptolemy.kernel.util.*;
    @author Yang Zhao
    @version $Id$
    @since Ptolemy II 4.0
+   @Pt.ProposedRating Red (liuj@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (liuj@eecs.berkeley.edu)
 */
 public class StringToXML extends Transformer{
 

@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Red (chf@eecs.berkeley.edu)
-@AcceptedRating Red (chf@eecs.berkeley.edu)
 */
 package ptolemy.domains.gr.lib;
 
@@ -51,6 +49,8 @@ import com.sun.j3d.utils.geometry.Box;
     @author C. Fong
     @version $Id$
     @since Ptolemy II 1.0
+    @Pt.ProposedRating Red (chf@eecs.berkeley.edu)
+    @Pt.AcceptedRating Red (chf@eecs.berkeley.edu)
 */
 public class Box3D extends GRShadedShape {
 

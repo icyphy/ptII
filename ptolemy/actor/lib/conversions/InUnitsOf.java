@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Red (yuhong@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.conversions;
@@ -58,6 +56,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @author Yuhong Xiong, Xiaojun Liu, Edward Lee
    @version $Id$
    @since Ptolemy II 2.0
+   @Pt.ProposedRating Red (yuhong@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 public class InUnitsOf extends Transformer {

@@ -24,8 +24,6 @@
   PT_COPYRIGHT_VERSION_2
   COPYRIGHTENDKEY
 
-  @ProposedRating Yellow (nsmyth@eecs.berkeley.edu)
-  @AcceptedRating Yellow (yuhong@eecs.berkeley.edu)
 
   Created : May 1998
 
@@ -51,6 +49,8 @@ import org.w3c.dom.*;
    @author Yang Zhao
    @version $Id$
    @since Ptolemy II 4.0
+   @Pt.ProposedRating Yellow (nsmyth@eecs.berkeley.edu)
+   @Pt.AcceptedRating Yellow (yuhong@eecs.berkeley.edu)
 
 */
 public class XMLParser {

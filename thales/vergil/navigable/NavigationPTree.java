@@ -21,8 +21,6 @@
 
  Created on 01 sept. 2003
 
- @ProposedRating Yellow (jerome.blanc@thalesgroup.com)
- @AcceptedRating
 */
 
 package thales.vergil.navigable;
@@ -48,6 +46,8 @@ import thales.vergil.SingleWindowApplication;
  @author J&eacute;r&ocirc;me Blanc & Benoit Masson  01 sept. 2003
  @version $Id$
  @since Ptolemy II 4.0
+ @Pt.ProposedRating Yellow (jerome.blanc@thalesgroup.com)
+ @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
  */
 
 public class NavigationPTree extends PTree {

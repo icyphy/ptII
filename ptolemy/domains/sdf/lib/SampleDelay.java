@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION 2
 COPYRIGHTENDKEY
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 */
 package ptolemy.domains.sdf.lib;
 
@@ -57,6 +55,8 @@ import ptolemy.kernel.util.Workspace;
    @author Steve Neuendorffer, Edward A. Lee
    @version $Id$
    @since Ptolemy II 1.0
+   @Pt.ProposedRating Yellow (eal@eecs.berkeley.edu)
+   @Pt.AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 */
 
 public class SampleDelay extends SDFTransformer {

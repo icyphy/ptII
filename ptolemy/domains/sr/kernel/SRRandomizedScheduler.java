@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Green (pwhitake@eecs.berkeley.edu)
-@AcceptedRating Green (pwhitake@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.sr.kernel;
@@ -58,6 +56,8 @@ import java.util.List;
    @author Paul Whitaker
    @version $Id$
    @since Ptolemy II 2.0
+   @Pt.ProposedRating Green (pwhitake@eecs.berkeley.edu)
+   @Pt.AcceptedRating Green (pwhitake@eecs.berkeley.edu)
    @see ptolemy.domains.sr.kernel.SRDirector
 */
 public class SRRandomizedScheduler extends Scheduler {

@@ -25,8 +25,6 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 
-   @ProposedRating Red (vogel@eecs.berkeley.edu)
-   @AcceptedRating Red
 */
 
 package ptolemy.media.javasound;
@@ -44,6 +42,8 @@ package ptolemy.media.javasound;
    @author Brian K. Vogel
    @version $Id$
    @since Ptolemy II 1.0
+   @Pt.ProposedRating Red (vogel@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red
    @see LiveSoundEvent
    @see ptolemy.media.javasound.LiveSound
 */

@@ -25,8 +25,6 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 
-   @ProposedRating Red (pwhitake@eecs.berkeley.edu)
-   @AcceptedRating Red (pwhitake@eecs.berkeley.edu)
 */
 
 package ptolemy.data.expr;
@@ -43,6 +41,8 @@ import ptolemy.kernel.util.Nameable;
    @author Paul Whitaker
    @version $Id$
    @since Ptolemy II 2.0
+   @Pt.ProposedRating Red (pwhitake@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (pwhitake@eecs.berkeley.edu)
 */
 public class UnknownResultException extends KernelRuntimeException {
 

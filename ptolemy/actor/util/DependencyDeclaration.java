@@ -25,8 +25,6 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 
-   @ProposedRating Yellow (neuendor@eecs.berkeley.edu)
-   @AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.util;
@@ -57,6 +55,8 @@ import java.util.*;
    @author Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 4.0
+   @Pt.ProposedRating Yellow (neuendor@eecs.berkeley.edu)
+   @Pt.AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
    @see ptolemy.actor.util.ConstVariableModelAnalysis
 */
 public class DependencyDeclaration extends Attribute {

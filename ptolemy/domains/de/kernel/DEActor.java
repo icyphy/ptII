@@ -23,8 +23,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-@ProposedRating Green (liuj@eecs.berkeley.edu)
-@AcceptedRating Green (eal@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.de.kernel;
@@ -53,6 +51,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @author Jie Liu
    @version $Id$
    @since Ptolemy II 0.2
+   @Pt.ProposedRating Green (liuj@eecs.berkeley.edu)
+   @Pt.AcceptedRating Green (eal@eecs.berkeley.edu)
    @see ptolemy.actor.Actor
 */
 public abstract class DEActor extends TypedAtomicActor

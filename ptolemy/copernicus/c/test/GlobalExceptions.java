@@ -26,8 +26,6 @@
   PT_COPYRIGHT_VERSION_2
   COPYRIGHTENDKEY
 
-  @ProposedRating Red (ankush@eng.umd.edu)
-  @AcceptedRating Red (ankush@eng.umd.edu)
 */
 
 
@@ -38,6 +36,8 @@
     @author Ankush Varma
     @version $Id$
     @since Ptolemy II 4.0
+    @Pt.ProposedRating Red (ankush@eng.umd.edu)
+    @Pt.AcceptedRating Red (ankush@eng.umd.edu)
 */
 
 public class GlobalExceptions

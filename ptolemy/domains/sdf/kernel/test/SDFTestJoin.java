@@ -24,8 +24,6 @@
   PT_COPYRIGHT_VERSION 2
   COPYRIGHTENDKEY
 
-  @ProposedRating Red
-  @AcceptedRating Red
 */
 package ptolemy.domains.sdf.kernel.test;
 
@@ -45,6 +43,8 @@ import ptolemy.kernel.util.NameDuplicationException;
  * @author Stephen Neuendorffer
  * @version $Id$
  * @since Ptolemy II 0.4
+ * @Pt.ProposedRating Red
+ * @Pt.AcceptedRating Red
  */
 
 public class SDFTestJoin extends TypedAtomicActor {

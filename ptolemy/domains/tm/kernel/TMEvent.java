@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Yellow (liuj@eecs.berkeley.edu)
-@AcceptedRating Yellow (janneck@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.tm.kernel;
@@ -69,6 +67,8 @@ import ptolemy.data.Token;
    @author  Jie Liu
    @version $Id$
    @since Ptolemy II 2.0
+   @Pt.ProposedRating Yellow (liuj@eecs.berkeley.edu)
+   @Pt.AcceptedRating Yellow (janneck@eecs.berkeley.edu)
    @see ptolemy.domains.de.kernel.DEEvent
 */
 public class TMEvent implements Comparable {

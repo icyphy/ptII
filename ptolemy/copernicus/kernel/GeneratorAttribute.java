@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Red (eal@eecs.berkeley.edu)
-@AcceptedRating Red (johnr@eecs.berkeley.edu)
 */
 
 package ptolemy.copernicus.kernel;
@@ -87,6 +85,8 @@ import java.util.List;
    @author Edward A. Lee, Christopher Hylands
    @version $Id$
    @since Ptolemy II 2.0
+   @Pt.ProposedRating Red (eal@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (johnr@eecs.berkeley.edu)
 */
 public class GeneratorAttribute extends SingletonAttribute
     implements ChangeListener {

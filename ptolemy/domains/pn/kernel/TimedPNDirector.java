@@ -25,8 +25,6 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 
-   @ProposedRating Green (mudit@eecs.berkeley.edu)
-   @AcceptedRating Green (davisj@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.pn.kernel;
@@ -98,6 +96,8 @@ import ptolemy.kernel.util.Workspace;
    @author Mudit Goel
    @version $Id$
    @since Ptolemy II 0.2
+   @Pt.ProposedRating Green (mudit@eecs.berkeley.edu)
+   @Pt.AcceptedRating Green (davisj@eecs.berkeley.edu)
 */
 public class TimedPNDirector extends PNDirector {
 

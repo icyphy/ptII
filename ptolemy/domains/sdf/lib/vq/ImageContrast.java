@@ -23,8 +23,6 @@
 
    PT_COPYRIGHT_VERSION 2
    COPYRIGHTENDKEY
-   @ProposedRating Red (mikele@eecs.berkeley.edu)
-   @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.sdf.lib.vq;
@@ -48,6 +46,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @author Michael Leung, Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 0.2
+   @Pt.ProposedRating Red (mikele@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 public class ImageContrast extends Transformer {

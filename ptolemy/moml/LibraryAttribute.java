@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (janneck@eecs.berkeley.edu)
 */
 
 package ptolemy.moml;
@@ -66,6 +64,8 @@ import ptolemy.kernel.util.Workspace;
    @author Edward A. Lee
    @version $Id$
    @since Ptolemy II 1.0
+   @Pt.ProposedRating Yellow (eal@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (janneck@eecs.berkeley.edu)
 */
 
 public class LibraryAttribute extends ConfigurableAttribute {

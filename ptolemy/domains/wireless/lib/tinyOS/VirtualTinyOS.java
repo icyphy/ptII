@@ -28,8 +28,6 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 
-   @ProposedRating Yellow (zkemenczy@rim.net)
-   @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.wireless.lib.tinyOS;
@@ -55,6 +53,8 @@ import ptolemy.vergil.kernel.attributes.EllipseAttribute;
     @author Yang Zhao, Xiaojun Liu
     @version $ $
     @since Ptolemy II 4.0
+    @Pt.ProposedRating Yellow (zkemenczy@rim.net)
+    @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 public class VirtualTinyOS extends TypedAtomicActor {
 

@@ -25,8 +25,6 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 
-   @ProposedRating Red (vogel@eecs.berkeley.edu)
-   @AcceptedRating Red (vogel@eecs.berkeley.edu)
 */
 
 package ptolemy.media.javasound.demo.LiveSines;
@@ -45,6 +43,8 @@ import ptolemy.media.javasound.LiveSound;
    @author Brian K. Vogel, Neil E. Turner
    @version $Id$
    @since Ptolemy II 3.1
+   @Pt.ProposedRating Red (vogel@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (vogel@eecs.berkeley.edu)
 */
 public class LiveSines {
 

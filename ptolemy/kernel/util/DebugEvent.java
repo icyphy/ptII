@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Green (neuendor@eecs.berkeley.edu)
-@AcceptedRating Green (neuendor@eecs.berkeley.edu)
 */
 
 package ptolemy.kernel.util;
@@ -43,6 +41,8 @@ package ptolemy.kernel.util;
    @author  Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 1.0
+   @Pt.ProposedRating Green (neuendor@eecs.berkeley.edu)
+   @Pt.AcceptedRating Green (neuendor@eecs.berkeley.edu)
    @see DebugListener
    @see Debuggable
    @see ptolemy.actor.FiringEvent

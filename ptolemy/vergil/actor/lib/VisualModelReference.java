@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (eal@eecs.berkeley.edu)
 
 */
 
@@ -109,6 +107,8 @@ import ptolemy.vergil.basic.ExtendedGraphFrame;
    @author Edward A. Lee
    @version $Id$
    @since Ptolemy II 4.0
+   @Pt.ProposedRating Yellow (eal@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (eal@eecs.berkeley.edu)
    @see ptolemy.data.expr.Variable
    @see ptolemy.data.expr.Parameter
    @see ptolemy.kernel.util.Settable

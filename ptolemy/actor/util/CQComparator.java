@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Green (eal@eecs.berkeley.edu)
-@AcceptedRating Yellow (liuj@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.util;
@@ -45,6 +43,8 @@ import java.util.Comparator;
    @author Lukito Muliadi, Edward A. Lee
    @version $Id$
    @since Ptolemy II 0.2
+   @Pt.ProposedRating Green (eal@eecs.berkeley.edu)
+   @Pt.AcceptedRating Yellow (liuj@eecs.berkeley.edu)
    @see ptolemy.actor.util.CalendarQueue
    @see java.util.Comparator
 */

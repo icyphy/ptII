@@ -25,8 +25,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Yellow (ctsay@eecs.berkeley.edu)
-@AcceptedRating Yellow (ctsay@eecs.berkeley.edu)
 */
 
 package ptolemy.math;
@@ -43,6 +41,8 @@ package ptolemy.math;
    @author Albert Chen, William Wu, Edward A. Lee, Jeff Tsay
    @version $Id$
    @since Ptolemy II 1.0
+   @Pt.ProposedRating Yellow (ctsay@eecs.berkeley.edu)
+   @Pt.AcceptedRating Yellow (ctsay@eecs.berkeley.edu)
 */
 public class FloatArrayMath {
 

@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Red (zhouye@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.hdf.lib;
@@ -64,6 +62,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @author Rachel Zhou
    @version $Id$
    @since Ptolemy II 3.1
+   @Pt.ProposedRating Red (zhouye@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 public class HDFDownSample extends Transformer {
 

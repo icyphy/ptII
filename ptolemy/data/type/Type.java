@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Red (neuendor@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
 
 */
 
@@ -42,6 +40,8 @@ import ptolemy.kernel.util.IllegalActionException;
    @author Yuhong Xiong, Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 0.4
+   @Pt.ProposedRating Red (neuendor@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 public interface Type {
@@ -129,6 +129,8 @@ public interface Type {
 
     /** Used to indicate that the type comparison cache is invalid
      *  @since Ptolemy II 2.1
+     *  @Pt.ProposedRating Red (cxh@eecs.berkeley.edu)
+     *  @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
      */
     public static final int HASH_INVALID = Integer.MIN_VALUE;
     public static final int HASH_MAX = 12;

@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (sanjeev@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.wireless.lib;
@@ -79,6 +77,8 @@ import ptolemy.moml.MoMLChangeRequest;
    @author Sanjeev Kohli, N. Vinay Krishnan, Cheng Tien Ee, Edward Lee and Xiaojun Liu
    @version $Id$
    @since Ptolemy II 4.0
+   @Pt.ProposedRating Yellow (eal@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (sanjeev@eecs.berkeley.edu)
    @see Locatable
 */
 public class NodeRandomizer extends TypedAtomicActor {

@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Red (eal@eecs.berkeley.edu)
-@AcceptedRating Red (bilung@eecs.berkeley.edu)
 */
 
 package ptolemy.moml;
@@ -144,6 +142,8 @@ import ptolemy.util.MessageHandler;
    @author Edward A. Lee
    @version $Id$
    @since Ptolemy II 1.0
+   @Pt.ProposedRating Red (eal@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (bilung@eecs.berkeley.edu)
 */
 
 // FIXME: Have to do ports and relations.  Only done attributes and entities.

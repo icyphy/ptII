@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Red (eal@eecs.berkeley.edu)
-@AcceptedRating Red (johnr@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.tm.kernel;
@@ -64,6 +62,8 @@ import java.util.HashMap;
    @author Christopher Hylands, Contributor: Johan Ecker
    @version $Id$
    @since Ptolemy II 2.0
+   @Pt.ProposedRating Red (eal@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (johnr@eecs.berkeley.edu)
 */
 
 public class SchedulePlotter extends Attribute implements ScheduleListener {

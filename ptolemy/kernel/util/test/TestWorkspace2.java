@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Green (eal@eecs.berkeley.edu)
 
 */
 
@@ -49,6 +48,8 @@ import ptolemy.kernel.util.Workspace;
    @author Mudit Goel, Edward A. Lee
    @version $Id$
    @since Ptolemy II 0.3
+   @Pt.ProposedRating Green (eal@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
 
 */
 public class TestWorkspace2 extends Thread {

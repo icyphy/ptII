@@ -25,8 +25,6 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 
-   @ProposedRating Yellow (cxh@eecs.berkeley.edu)
-   @AcceptedRating Red (vogel@eecs.berkeley.edu)
 */
 
 package ptolemy.copernicus.java;
@@ -53,6 +51,8 @@ import ptolemy.kernel.util.IllegalActionException;
    @author Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 2.0
+   @Pt.ProposedRating Yellow (cxh@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (vogel@eecs.berkeley.edu)
 */
 public class CommandLineTemplate {
 

@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Red (vincent.arnould@thalesgroup.com)
-@AcceptedRating Red (vincent.arnould@thalesgroup.com)
 */
 
 package jni;
@@ -54,6 +52,8 @@ import diva.graph.GraphPane;
    @author  Steve Neuendorffer, Vincent Arnould, Contributor: Edward A. Lee
    @version $Id$
    @since Ptolemy II 3.0
+   @Pt.ProposedRating Red (vincent.arnould@thalesgroup.com)
+   @Pt.AcceptedRating Red (vincent.arnould@thalesgroup.com)
 */
 public class ThalesGraphFrame extends ActorGraphFrame {
 

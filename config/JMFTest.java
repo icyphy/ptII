@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Green (cxh@eecs.berkeley.edu)
-@AcceptedRating Red
 */
 import javax.media.CaptureDeviceInfo;
 
@@ -37,6 +35,8 @@ import javax.media.CaptureDeviceInfo;
     @author Christopher Hylands
     @version $Id$
     @since Ptolemy II 2.1
+    @Pt.ProposedRating Green (cxh@eecs.berkeley.edu)
+    @Pt.AcceptedRating Red
 */
 public class JMFTest {
     public static void main(String args[]) {

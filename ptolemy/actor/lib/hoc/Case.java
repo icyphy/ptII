@@ -23,8 +23,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-@ProposedRating Red (eal@eecs.berkeley.edu)
-@AcceptedRating Red (eal@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.hoc;
@@ -44,6 +42,8 @@ import java.util.Iterator;
    @author  Joern Janneck and Edward A. Lee
    @version $Id$
    @since Ptolemy II 2.0
+   @Pt.ProposedRating Red (eal@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (eal@eecs.berkeley.edu)
 */
 public class Case extends AbstractCase {
 

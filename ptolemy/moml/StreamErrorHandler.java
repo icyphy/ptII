@@ -23,8 +23,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-@ProposedRating Red (eal@eecs.berkeley.edu)
-@AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
 
 */
 
@@ -46,6 +44,8 @@ import java.io.PrintStream;
    @author Edward A. Lee
    @version $Id$
    @since Ptolemy II 2.0
+   @Pt.ProposedRating Red (eal@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
 */
 public class StreamErrorHandler implements ErrorHandler {
 

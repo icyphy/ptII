@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Yellow (winthrop@robotics.eecs.berkeley.edu)
-@AcceptedRating Yellow (winthrop@robotics.eecs.berkeley.edu)
 */
 
 package ptolemy.domains.de.lib;
@@ -61,6 +59,8 @@ import ptolemy.kernel.util.Workspace;
    @author Winthrop Williams (based closely on Queue by Steve Neuendorffer)
    @version $Id$
    @since Ptolemy II 2.0
+   @Pt.ProposedRating Yellow (winthrop@robotics.eecs.berkeley.edu)
+   @Pt.AcceptedRating Yellow (winthrop@robotics.eecs.berkeley.edu)
 */
 public class QueueWithNextOut extends DETransformer {
     //FIXME: make this consistent with the queue from ptolemy classic

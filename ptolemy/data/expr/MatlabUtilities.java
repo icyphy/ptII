@@ -23,8 +23,6 @@ BASIS, AND THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION
 LIMITED HAVE NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-@ProposedRating Green (neuendor@eecs.berkeley.edu)
-@AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 
 */
 package ptolemy.data.expr;
@@ -47,6 +45,8 @@ import java.util.StringTokenizer;
     @author Zoltan Kemenczy, Research in Motion Ltd.
     @version $Id$
     @since Ptolemy II 2.1
+    @Pt.ProposedRating Green (neuendor@eecs.berkeley.edu)
+    @Pt.AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
     @see ptolemy.data.expr.ParseTreeEvaluator
 */
 

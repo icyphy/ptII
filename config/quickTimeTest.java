@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Green (cxh@eecs.berkeley.edu)
-@AcceptedRating Red
 */
 import quicktime.std.movies.media.*;
 
@@ -37,6 +35,8 @@ import quicktime.std.movies.media.*;
     @author Christopher Hylands
     @version $Id$
     @since Ptolemy II 4.0
+    @Pt.ProposedRating Green (cxh@eecs.berkeley.edu)
+    @Pt.AcceptedRating Red
 */
 public class quickTimeTest {
     public static void main(String args[]) {

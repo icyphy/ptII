@@ -23,8 +23,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-@ProposedRating Green (cxh@eecs.berkeley.edu)
-@AcceptedRating Green (cxh@eecs.berkeley.edu)
 
 */
 
@@ -42,6 +40,8 @@ package ptolemy.kernel.util;
    @author Edward A. Lee
    @version $Id$
    @since Ptolemy II 2.1
+   @Pt.ProposedRating Green (cxh@eecs.berkeley.edu)
+   @Pt.AcceptedRating Green (cxh@eecs.berkeley.edu)
    @see Location
 */
 public interface Locatable extends Settable {

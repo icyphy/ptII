@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@ptolemy.eecs.berkeley.edu)
-@AcceptedRating Red (ptolemy@ptolemy.eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.x10;
@@ -70,6 +68,8 @@ import x10.Command;
    @author Colin Cochran, Edward A. Lee
    @version $Id$
    @since Ptolemy II 4.0
+   @Pt.ProposedRating Yellow (eal@ptolemy.eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (ptolemy@ptolemy.eecs.berkeley.edu)
 */
 
 public class CommandListener extends Receiver {

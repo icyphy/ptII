@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-@ProposedRating Red (cxh@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
 
 */
 
@@ -43,6 +41,8 @@ import java.util.TimerTask;
     @author Christopher Hylands
     @version $Id$
     @since Ptolemy II 2.2
+    @Pt.ProposedRating Red (cxh@eecs.berkeley.edu)
+    @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 public class WatchDog {
     /** Create a timer that will go off after timeToDie milliseconds.

@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Green (mudit@eecs.berkeley.edu)
-@AcceptedRating Yellow (mudit@eecs.berkeley.edu)
 Semantics of initialize(Actor) have changed.
 */
 
@@ -76,6 +74,8 @@ import java.util.LinkedList;
    @author Mudit Goel, Neil Smyth, John S. Davis II
    @version $Id$
    @since Ptolemy II 0.2
+   @Pt.ProposedRating Green (mudit@eecs.berkeley.edu)
+   @Pt.AcceptedRating Yellow (mudit@eecs.berkeley.edu)
    @see Director
 */
 public class ProcessDirector extends Director {

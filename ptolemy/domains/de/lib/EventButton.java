@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION 2
 COPYRIGHTENDKEY
-@ProposedRating Red (winthrop@robotics.eecs.berkeley.edu)
-@AcceptedRating Red (winthrop@robotics.eecs.berkeley.edu)
 */
 
 package ptolemy.domains.de.lib;
@@ -57,6 +55,8 @@ import javax.swing.SwingUtilities;
    @author  Winthrop Williams, closely follows EventButton.java by Paul Whitaker
    @version $Id$
    @since Ptolemy II 2.0
+   @Pt.ProposedRating Red (winthrop@robotics.eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (winthrop@robotics.eecs.berkeley.edu)
 */
 public class EventButton extends Source implements Placeable {
 

@@ -25,8 +25,6 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 
-   @ProposedRating Red (cxh@eecs.berkeley.edu)
-   @AcceptedRating Red (eal@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.gui;
@@ -69,6 +67,8 @@ import java.util.List;
     @author Christopher Hylands
     @version $Id$
     @since Ptolemy II 2.0
+    @Pt.ProposedRating Red (cxh@eecs.berkeley.edu)
+    @Pt.AcceptedRating Red (eal@eecs.berkeley.edu)
 */
 public class MoMLSimpleStatisticalApplication extends MoMLSimpleApplication {
     /** Parse the xml file and run it.

@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Green (neuendor@eecs.berkeley.edu)
-@AcceptedRating Red (neuendor@eecs.berkeley.edu)
 This is similar to Switch and could be design/code reviewed at the same time.
 */
 
@@ -59,6 +57,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @author Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 2.0
+   @Pt.ProposedRating Green (neuendor@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (neuendor@eecs.berkeley.edu)
 */
 
 public class BooleanSwitch extends TypedAtomicActor {

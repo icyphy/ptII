@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Red (yuhong@eecs.berkeley.edu)
-@AcceptedRating Red (johnr@eecs.berkeley.edu)
 */
 
 package ptolemy.vergil.fsm.ia;
@@ -49,6 +47,8 @@ import ptolemy.vergil.fsm.FSMGraphModel;
    @author  Steve Neuendorffer, Yuhong Xiong, Contributor: Edward A. Lee
    @version $Id$
    @since Ptolemy II 2.0
+   @Pt.ProposedRating Red (yuhong@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (johnr@eecs.berkeley.edu)
 */
 public class InterfaceAutomatonGraphFrame extends FSMGraphFrame {
 

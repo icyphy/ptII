@@ -23,8 +23,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-@ProposedRating Red (eal@eecs.berkeley.edu)
-@AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
 
 */
 
@@ -57,6 +55,8 @@ import java.util.Enumeration;
    @author  Edward A. Lee, Contributor: Christopher Hylands
    @version $Id$
    @since Ptolemy II 1.0
+   @Pt.ProposedRating Red (eal@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
    @see ptolemy.kernel.util.ChangeRequest
 
 */

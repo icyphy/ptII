@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Green (cxh@eecs.berkeley.edu)
-@AcceptedRating Red
 */
 
 /** Print the major operating system name of the current JVM.
@@ -33,6 +31,8 @@ COPYRIGHTENDKEY
 @author Christopher Hylands
 @version $Id$
 @since Ptolemy II 3.0
+@Pt.ProposedRating Green (cxh@eecs.berkeley.edu)
+@Pt.AcceptedRating Red
 */
 public class MajorOSName {
 

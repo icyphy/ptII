@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Yellow (neuendor@eecs.berkeley.edu)
-@AcceptedRating Red (johnr@eecs.berkeley.edu)
 */
 
 package ptolemy.vergil.basic;
@@ -69,6 +67,8 @@ import diva.graph.modular.NodeModel;
    @author Steve Neuendorffer, Contributor: Edward A. Lee
    @version $Id$
    @since Ptolemy II 2.0
+   @Pt.ProposedRating Yellow (neuendor@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (johnr@eecs.berkeley.edu)
 */
 public abstract class AbstractBasicGraphModel extends ModularGraphModel {
 

@@ -21,8 +21,6 @@
 
   Created on 8 juil. 2003
 
-  @ProposedRating Yellow (jerome.blanc@thalesgroup.com)
-  @AcceptedRating
 */
 
 package thales.vergil;
@@ -46,6 +44,8 @@ import thales.actor.gui.SingleWindowHTMLViewer;
    @author J&eacute;r&ocirc;me Blanc & Benoit Masson, Thales Research and technology, 12 nov. 2003
    @version $Id$
    @since
+   @Pt.ProposedRating Yellow (jerome.blanc@thalesgroup.com)
+   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
 */
 public class SingleWindowApplication extends VergilApplication {
 

@@ -25,8 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 
-@ProposedRating Green (pjb2e@eecs.berkeley.edu)
-@AcceptedRating Green (eal@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.string;
@@ -59,6 +57,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @author Rakesh Reddy, Philip Baldwin, Edward A. Lee
    @version $Id$
    @since Ptolemy II 4.0
+   @Pt.ProposedRating Green (pjb2e@eecs.berkeley.edu)
+   @Pt.AcceptedRating Green (eal@eecs.berkeley.edu)
 */
 
 public class StringIndexOf extends TypedAtomicActor {

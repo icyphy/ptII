@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Red (eal@eecs.berkeley.edu)
-@AcceptedRating Red (johnr@eecs.berkeley.edu)
 */
 
 package ptolemy.vergil.toolbox;
@@ -56,6 +54,8 @@ import javax.swing.UIManager;
    @author Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 1.0
+   @Pt.ProposedRating Red (eal@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (johnr@eecs.berkeley.edu)
 */
 public class PtolemyTransferable implements Transferable, Serializable {
     // This class implements Serializable in hopes that

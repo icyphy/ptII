@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Green (pwhitake@eecs.berkeley.edu)
-@AcceptedRating Green (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.conversions;
@@ -53,6 +51,8 @@ import ptolemy.math.Complex;
    @author Michael Leung, Edward A. Lee, and Paul Whitaker
    @version $Id$
    @since Ptolemy II 1.0
+   @Pt.ProposedRating Green (pwhitake@eecs.berkeley.edu)
+   @Pt.AcceptedRating Green (cxh@eecs.berkeley.edu)
 */
 
 public class ComplexToPolar extends TypedAtomicActor {

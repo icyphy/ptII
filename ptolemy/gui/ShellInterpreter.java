@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-@ProposedRating Red (cxh@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.gui;
@@ -39,6 +37,8 @@ package ptolemy.gui;
    @author Edward A. Lee
    @version $Id$
    @since Ptolemy II 3.0 
+   @Pt.ProposedRating Red (cxh@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 public interface ShellInterpreter {
 

@@ -23,8 +23,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-@ProposedRating Red (neuendor@eecs.berkeley.edu)
-@AcceptedRating Red (neuendor@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.gui;
@@ -56,6 +54,8 @@ import ptolemy.kernel.util.Workspace;
    @author Edward A. Lee, contributor Zoltan Kemenczy
    @version $Id$
    @since Ptolemy II 1.0
+   @Pt.ProposedRating Red (neuendor@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (neuendor@eecs.berkeley.edu)
 */
 public class TextEffigy extends Effigy {
 

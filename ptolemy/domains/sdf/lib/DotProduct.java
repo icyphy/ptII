@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Yellow (pwhitake@eecs.berkeley.edu)
-@AcceptedRating Red (acataldo@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.sdf.lib;
@@ -65,6 +63,8 @@ import ptolemy.kernel.util.Workspace;
    @author Jeff Tsay, Paul Whitaker, Adam Cataldo
    @version $Id$
    @since Ptolemy II 1.0
+   @Pt.ProposedRating Yellow (pwhitake@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (acataldo@eecs.berkeley.edu)
 */
 
 public class DotProduct extends TypedAtomicActor {

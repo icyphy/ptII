@@ -23,8 +23,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor;
@@ -80,6 +78,8 @@ import ptolemy.kernel.util.Workspace;
    @author Edward A. Lee, Xiaojun Liu
    @version $Id$
    @since Ptolemy II 1.0
+   @Pt.ProposedRating Yellow (eal@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
    @see TypedIOPort
    @see ptolemy.data.expr.Constants
 */

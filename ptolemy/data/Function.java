@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Yellow (liuxj@eecs.berkeley.edu)
-@AcceptedRating Red (liuxj@eecs.berkeley.edu)
 */
 
 package ptolemy.data;
@@ -46,6 +44,8 @@ import java.util.List;
 @author Xiaojun Liu, Steve Neuendorffer
 @version $Id$
 @since Ptolemy II 4.0
+@Pt.ProposedRating Yellow (liuxj@eecs.berkeley.edu)
+@Pt.AcceptedRating Red (liuxj@eecs.berkeley.edu)
 */
 
 public interface Function {

@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Green (nsmyth@eecs.berkeley.edu)
-@AcceptedRating Green (kienhuis@eecs.berkeley.edu)
 
 */
 
@@ -107,6 +105,8 @@ import java.util.List;
    @author Neil Smyth, Mudit Goel, John S. Davis II
    @version $Id$
    @since Ptolemy II 0.2
+   @Pt.ProposedRating Green (nsmyth@eecs.berkeley.edu)
+   @Pt.AcceptedRating Green (kienhuis@eecs.berkeley.edu)
    @see ptolemy.actor.Director
 */
 public class CSPDirector extends CompositeProcessDirector {

@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Red (ismael@eecs.berkeley.edu)
-@AcceptedRating Red (chf@eecs.berkeley.edu)
 */
 package ptolemy.domains.gr.lib;
 
@@ -42,6 +40,8 @@ import java.awt.geom.Ellipse2D;
 @author Steve Neuendorffer
 @version $Id$
 @since Ptolemy II 4.0
+@Pt.ProposedRating Red (ismael@eecs.berkeley.edu)
+@Pt.AcceptedRating Red (chf@eecs.berkeley.edu)
 */
 public class Circle2D extends GRShape2D {
 

@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Red (eal@eecs.berkeley.edu)
-@AcceptedRating Red (johnr@eecs.berkeley.edu)
 */
 
 package ptolemy.moml;
@@ -195,6 +193,8 @@ import com.microstar.xml.XmlParser;
    @author Edward A. Lee, Steve Neuendorffer, John Reekie, Contributor: Christopher Hylands
    @version $Id$
    @since Ptolemy II 0.4
+   @Pt.ProposedRating Red (eal@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (johnr@eecs.berkeley.edu)
 */
 public class MoMLParser extends HandlerBase implements ChangeListener {
 
@@ -1563,6 +1563,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *
      * @param  undoable  The new Undoable value
      * @since Ptolemy II 2.1
+     * @Pt.ProposedRating Red (cxh@eecs.berkeley.edu)
+     * @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
      */
     public void setUndoable(boolean undoable) {
         _undoEnabled = undoable;
@@ -4363,6 +4365,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  @param  elementName  Description of Parameter
      *  @return              Description of the Returned Value
      *  @since Ptolemy 2.1
+     *  @Pt.ProposedRating Red (cxh@eecs.berkeley.edu)
+     *  @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
      */
     private boolean _isUndoableElement(String elementName) {
         // The following serves as documentation of sorts for which

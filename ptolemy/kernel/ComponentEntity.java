@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Green (eal@eecs.berkeley.edu)
-@AcceptedRating Green (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.kernel;
@@ -63,6 +61,8 @@ import ptolemy.kernel.util.Workspace;
    @author John S. Davis II, Edward A. Lee
    @version $Id$
    @since Ptolemy II 0.2
+   @Pt.ProposedRating Green (eal@eecs.berkeley.edu)
+   @Pt.AcceptedRating Green (cxh@eecs.berkeley.edu)
 */
 public class ComponentEntity extends Entity {
 

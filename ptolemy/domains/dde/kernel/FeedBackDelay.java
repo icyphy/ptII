@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Red (davisj@eecs.berkeley.edu)
-@AcceptedRating Red (yuhong@eecs.berkeley.edu)
 
 */
 
@@ -78,6 +76,8 @@ import ptolemy.kernel.util.Workspace;
    @author John S. Davis II
    @version $Id$
    @since Ptolemy II 0.4
+   @Pt.ProposedRating Red (davisj@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (yuhong@eecs.berkeley.edu)
    @see ptolemy.domains.dde.kernel.NullToken
 */
 public class FeedBackDelay extends DDEActor {

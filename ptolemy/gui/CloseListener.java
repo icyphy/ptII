@@ -23,8 +23,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-@ProposedRating Green (eal@eecs.berkeley.edu)
-@AcceptedRating Green (janneck@eecs.berkeley.edu)
 */
 
 package ptolemy.gui;
@@ -49,6 +47,8 @@ import java.awt.Window;
    @author Edward A. Lee
    @version $Id$
    @since Ptolemy II 1.0
+   @Pt.ProposedRating Green (eal@eecs.berkeley.edu)
+   @Pt.AcceptedRating Green (janneck@eecs.berkeley.edu)
 */
 public interface CloseListener {
 

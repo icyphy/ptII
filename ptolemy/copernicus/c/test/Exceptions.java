@@ -26,8 +26,6 @@
   PT_COPYRIGHT_VERSION_2
   COPYRIGHTENDKEY
 
-  @ProposedRating Red (ssb@eng.umd.edu)
-  @AcceptedRating Red (ssb@eng.umd.edu)
 */
 
 
@@ -47,6 +45,8 @@ NestedExceptions.java
 @author Ankush Varma
 @version $Id$
 @since Ptolemy II 4.0
+@Pt.ProposedRating Red (ssb@eng.umd.edu)
+@Pt.AcceptedRating Red (ssb@eng.umd.edu)
 
 */
 

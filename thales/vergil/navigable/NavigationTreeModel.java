@@ -22,15 +22,11 @@
 
  Created on 01 sept. 2003
 
- @ProposedRating Yellow (jerome.blanc@thalesgroup.com)
- @AcceptedRating
 */
 
 /*
  * Created on 01 sept. 2003
  *
- * @ProposedRating Yellow (jerome.blanc@thalesgroup.com)
- * @AcceptedRating
  */
 package thales.vergil.navigable;
 
@@ -51,6 +47,8 @@ import ptolemy.vergil.tree.ClassAndEntityTreeModel;
  @author J&eacute;r&ocirc;me Blanc & Benoit Masson  * 01 sept. 2003
  @version $Id$
  @since Ptolemy II 4.0
+ @Pt.ProposedRating @ProposedRating Yellow (jerome.blanc@thalesgroup.com)
+ @Pt.AcceptedRating @AcceptedRating
  */
 public class NavigationTreeModel extends ClassAndEntityTreeModel {
 

@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Green (eal@eecs.berkeley.edu)
 
 */
 
@@ -45,6 +44,8 @@ import java.util.List;
    @author Xiaojun Liu
    @version $Id$
    @since Ptolemy II 3.0
+   @Pt.ProposedRating Green (eal@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
 
 */
 public class TestWorkspace3 extends TestWorkspaceBase {

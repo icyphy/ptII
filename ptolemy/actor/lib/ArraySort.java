@@ -23,8 +23,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-@ProposedRating Red (cxh@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib;
@@ -55,6 +53,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @author Mark Oliver, Edward A. Lee
    @version $ID: ArraySort.java,v1.0 2003/07/09
    @since Ptolemy II 4.0
+   @Pt.ProposedRating Red (cxh@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 public class ArraySort extends Transformer {

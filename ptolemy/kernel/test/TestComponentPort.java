@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Yellow (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.kernel.test;
@@ -45,6 +44,8 @@ import java.util.LinkedList;
    @author Christopher Hylands
    @version $Id$
    @since Ptolemy II 0.4
+   @Pt.ProposedRating Yellow (cxh@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
 */
 public class TestComponentPort extends ComponentPort {
     /** Construct a TestComponentPort

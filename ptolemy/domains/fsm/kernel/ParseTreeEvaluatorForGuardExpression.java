@@ -23,8 +23,6 @@ BASIS, AND THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION
 LIMITED HAVE NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-@ProposedRating Red (hyzheng@eecs.berkeley.edu)
-@AcceptedRating Red (hyzheng@eecs.berkeley.edu)
 
 */
 package ptolemy.domains.fsm.kernel;
@@ -96,6 +94,8 @@ import java.util.Set;
    @author Haiyang Zheng
    @version $Id
    @since Ptolemy II 4.0
+   @Pt.ProposedRating Red (hyzheng@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (hyzheng@eecs.berkeley.edu)
    @see RelationList
    @see ptolemy.data.expr.ParseTreeEvaluator
 */

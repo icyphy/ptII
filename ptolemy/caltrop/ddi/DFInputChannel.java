@@ -24,8 +24,6 @@
   PT_COPYRIGHT_VERSION_2
   COPYRIGHTENDKEY
 
-  @ProposedRating Red (cxh@eecs.berkeley.edu)
-  @AcceptedRating Red (cxh@eecs.berkeley.edu)
 
 
 */
@@ -45,6 +43,8 @@ import java.util.List;
    @author J&#246;rn W. Janneck <janneck@eecs.berkeley.edu>
    @version $Id$
    @since Ptolemy II 4.0
+   @Pt.ProposedRating Red (cxh@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 class DFInputChannel implements InputChannel {
 

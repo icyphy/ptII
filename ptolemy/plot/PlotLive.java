@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-@ProposedRating Yellow (cxh@eecs.berkeley.edu)
-@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 package ptolemy.plot;
 
@@ -60,6 +58,8 @@ import javax.swing.JButton;
    @author Edward A. Lee, Christopher Hylands, Contributor: Jeff Lane
    @version $Id$
    @since Ptolemy II 0.2
+   @Pt.ProposedRating Yellow (cxh@eecs.berkeley.edu)
+   @Pt.AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 public abstract class PlotLive extends Plot implements Runnable {
 

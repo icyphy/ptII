@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION 2
 COPYRIGHTENDKEY
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (liuj@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.io;
@@ -73,6 +71,8 @@ import ptolemy.util.MessageHandler;
    @author  Edward A. Lee
    @version $Id$
    @since Ptolemy II 2.2
+   @Pt.ProposedRating Yellow (eal@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (liuj@eecs.berkeley.edu)
 */
 public class LineWriter extends Sink {
 

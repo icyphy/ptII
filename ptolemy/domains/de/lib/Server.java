@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.de.lib;
@@ -81,6 +79,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @author Lukito Muliadi, Edward A. Lee
    @version $Id$
    @since Ptolemy II 0.3
+   @Pt.ProposedRating Yellow (eal@eecs.berkeley.edu)
+   @Pt.AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 public class Server extends DETransformer {
 

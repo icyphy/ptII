@@ -24,8 +24,6 @@
   PT_COPYRIGHT_VERSION_2
   COPYRIGHTENDKEY
 
-  @ProposedRating Red (cxh@eecs.berkeley.edu)
-  @AcceptedRating Red (cxh@eecs.berkeley.edu)
 
 
 */
@@ -40,6 +38,8 @@ package ptolemy.caltrop.ddi;
    @author Christopher Chang <cbc@eecs.berkeley.edu>
    @version $Id$
    @since Ptolemy II 4.0
+   @Pt.ProposedRating Red (cxh@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 public class DDIException extends RuntimeException {
 

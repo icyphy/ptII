@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (eal@eecs.berkeley.edu)
 */
 
 package ptolemy.vergil;
@@ -90,6 +88,8 @@ import ptolemy.vergil.basic.BasicGraphFrame;
    @author Edward A. Lee, Steve Neuendorffer, Christopher Hylands
    @version $Id$
    @since Ptolemy II 1.0
+   @Pt.ProposedRating Yellow (eal@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (eal@eecs.berkeley.edu)
    @see ptolemy.actor.gui.ModelFrame
    @see ptolemy.actor.gui.RunTableau
    @see ptolemy.actor.gui.PtExecuteApplication

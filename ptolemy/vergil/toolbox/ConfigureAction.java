@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Red (eal@eecs.berkeley.edu)
-@AcceptedRating Red (johnr@eecs.berkeley.edu)
 */
 
 package ptolemy.vergil.toolbox;
@@ -55,6 +53,8 @@ import javax.swing.KeyStroke;
    @author Edward A. Lee
    @version $Id$
    @since Ptolemy II 2.1
+   @Pt.ProposedRating Red (eal@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (johnr@eecs.berkeley.edu)
    @see ptolemy.actor.gui.EditParametersDialog
 */
 public class ConfigureAction extends FigureAction {

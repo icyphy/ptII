@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Red (johane@eecs.berkeley.edu)
-@AcceptedRating Red (johane@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.tm.kernel;
@@ -38,6 +36,8 @@ package ptolemy.domains.tm.kernel;
    @author  Johan Eker
    @version $Id$
    @since Ptolemy II 2.0
+   @Pt.ProposedRating Red (johane@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (johane@eecs.berkeley.edu)
    @see ptolemy.kernel.util.NamedObj
 
 */

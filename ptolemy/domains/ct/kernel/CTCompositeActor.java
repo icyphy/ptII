@@ -23,8 +23,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-@ProposedRating Yellow (liuj@eecs.berkeley.edu)
-@AcceptedRating Yellow (chf@eecs.berkeley.edu)
 
 */
 
@@ -63,6 +61,8 @@ import ptolemy.kernel.util.Workspace;
    @author  Jie Liu
    @version $Id$
    @since Ptolemy II 0.2
+   @Pt.ProposedRating Yellow (liuj@eecs.berkeley.edu)
+   @Pt.AcceptedRating Yellow (chf@eecs.berkeley.edu)
    @see CTStepSizeControlActor
    @see CTTransparentDirector
 */

@@ -25,8 +25,6 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 
-   @ProposedRating Yellow (kienhuis@eecs.berkeley.edu)
-   @AcceptedRating Red (kienhuis@eecs.berkeley.edu)
 
 */
 
@@ -92,6 +90,8 @@ import ptolemy.math.Quantizer;
    @author Bart Kienhuis, Contributor: Edward A. Lee
    @version $Id$
    @since Ptolemy II 0.4
+   @Pt.ProposedRating Yellow (kienhuis@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (kienhuis@eecs.berkeley.edu)
    @see PtParser
    @see ptolemy.math.FixPoint
    @see ptolemy.math.Quantizer

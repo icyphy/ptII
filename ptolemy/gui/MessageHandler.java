@@ -23,8 +23,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Yellow (janneck@eecs.berkeley.edu)
 */
 
 package ptolemy.gui;
@@ -57,6 +55,8 @@ import java.io.InputStreamReader;
    @author  Edward A. Lee, Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 1.0
+   @Pt.ProposedRating Yellow (eal@eecs.berkeley.edu)
+   @Pt.AcceptedRating Yellow (janneck@eecs.berkeley.edu)
    @deprecated Use ptolemy.util.MessageHandler.
 */
 public class MessageHandler {

@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Green (neuendor@eecs.berkeley.edu)
-@AcceptedRating Yellow (wbwu@eecs.berkeley.edu)
 
 */
 
@@ -51,6 +49,8 @@ import ptolemy.kernel.util.IllegalActionException;
    @author Edward A. Lee, Neil Smyth, Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 0.2
+   @Pt.ProposedRating Green (neuendor@eecs.berkeley.edu)
+   @Pt.AcceptedRating Yellow (wbwu@eecs.berkeley.edu)
 */
 public class StringToken extends AbstractConvertibleToken {
 

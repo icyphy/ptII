@@ -23,8 +23,6 @@
 
   PT_COPYRIGHT_VERSION 2
   COPYRIGHTENDKEY
-  @ProposedRating Red (neuendor@eecs.berkeley.edu)
-  @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 package ptolemy.domains.sdf.kernel.test;
 
@@ -46,6 +44,8 @@ import ptolemy.kernel.util.Workspace;
 
     @version $Id$
     @since Ptolemy II 0.4
+    @Pt.ProposedRating Red (neuendor@eecs.berkeley.edu)
+    @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
     @author Steve Neuendorffer
 */
 public class SDFTestRamp extends TypedAtomicActor {

@@ -23,8 +23,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-@ProposedRating Red (eal@eecs.berkeley.edu)
-@AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
 
 */
 
@@ -56,6 +54,8 @@ import java.util.List;
    @author Steve Neuendorffer and Edward A. Lee
    @version $Id$
    @since Ptolemy II 0.4
+   @Pt.ProposedRating Red (eal@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
 */
 public class Vertex extends Location {
 

@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Red (chf@eecs.berkeley.edu)
-@AcceptedRating Red (chf@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.gr.lib;
@@ -53,6 +51,8 @@ import javax.media.j3d.Node;
     @author C. Fong, Steve Neuendorffer
     @version $Id$
     @since Ptolemy II 1.0
+    @Pt.ProposedRating Red (chf@eecs.berkeley.edu)
+    @Pt.AcceptedRating Red (chf@eecs.berkeley.edu)
 */
 abstract public class GRTransform extends GRActor3D {
 

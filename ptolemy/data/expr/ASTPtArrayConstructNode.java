@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Yellow (liuxj@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
 
 Created : December 2000
 
@@ -45,6 +43,8 @@ import ptolemy.kernel.util.IllegalActionException;
    @author Xiaojun Liu
    @version $Id$
    @since Ptolemy II 1.0
+   @Pt.ProposedRating Yellow (liuxj@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
    @see ptolemy.data.expr.ASTPtRootNode
    @see ptolemy.data.expr.PtParser
    @see ptolemy.data.Token

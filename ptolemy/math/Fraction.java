@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Green (neuendor@eecs.berkeley.edu)
-@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 
 // do we want to make this a token class?
@@ -48,6 +46,8 @@ package ptolemy.math;
    @author Stephen Neuendorffer
    @version $Id$
    @since Ptolemy II 0.2
+   @Pt.ProposedRating Green (neuendor@eecs.berkeley.edu)
+   @Pt.AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 public class Fraction extends Object {
     /** Create a new fraction with the value zero (0/1).

@@ -23,8 +23,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-@ProposedRating Green (eal@eecs.berkeley.edu)
-@AcceptedRating Yellow (johnr@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.gui;
@@ -71,6 +69,8 @@ import ptolemy.kernel.util.NamedObj;
    @author Edward A. Lee
    @version $Id$
    @since Ptolemy II 1.0
+   @Pt.ProposedRating Green (eal@eecs.berkeley.edu)
+   @Pt.AcceptedRating Yellow (johnr@eecs.berkeley.edu)
 */
 public abstract class PtolemyFrame extends TableauFrame {
 

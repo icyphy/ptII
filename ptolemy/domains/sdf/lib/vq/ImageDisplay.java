@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION 2
 COPYRIGHTENDKEY
-@AcceptedRating Red
-@ProposedRating Yellow (neuendor@eecs.berkeley.edu)
 */
 package ptolemy.domains.sdf.lib.vq;
 
@@ -58,6 +56,8 @@ import javax.swing.SwingUtilities;
    @author Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 0.2
+   @Pt.ProposedRating Yellow (neuendor@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red
 */
 
 public class ImageDisplay extends Sink implements Placeable {

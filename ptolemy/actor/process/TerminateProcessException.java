@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Green (mudit@eecs.berkeley.edu)
-@AcceptedRating Yellow (mudit@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.process;
@@ -53,6 +51,8 @@ import ptolemy.kernel.util.Nameable;
    @author Neil Smyth, Mudit Goel
    @version $Id$
    @since Ptolemy II 0.2
+   @Pt.ProposedRating Green (mudit@eecs.berkeley.edu)
+   @Pt.AcceptedRating Yellow (mudit@eecs.berkeley.edu)
 */
 public class TerminateProcessException extends RuntimeException {
 

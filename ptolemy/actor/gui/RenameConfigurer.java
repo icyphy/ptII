@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (neuendor@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.gui;
@@ -50,6 +48,8 @@ import ptolemy.util.MessageHandler;
    @author Edward A. Lee
    @version $Id$
    @since Ptolemy II 1.0
+   @Pt.ProposedRating Yellow (eal@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (neuendor@eecs.berkeley.edu)
 */
 
 public class RenameConfigurer extends Query

@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Yellow (yuhong@eecs.berkeley.edu)
-@AcceptedRating Yellow (wbwu@eecs.berkeley.edu)
 
 */
 
@@ -46,6 +44,8 @@ import ptolemy.kernel.util.IllegalActionException;
    @author Edward A. Lee
    @version $Id$
    @since Ptolemy II 2.0
+   @Pt.ProposedRating Yellow (yuhong@eecs.berkeley.edu)
+   @Pt.AcceptedRating Yellow (wbwu@eecs.berkeley.edu)
 */
 public class ConcreteScalarToken extends ScalarToken {
 

@@ -23,8 +23,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-@ProposedRating yellow (chf@eecs.berkeley.edu)
-@AcceptedRating yellow (vogel@eecs.berkeley.edu)
 
 */
 
@@ -51,6 +49,8 @@ import ptolemy.kernel.util.IllegalActionException;
    @author C. Fong
    @version $Id$
    @since Ptolemy II 1.0
+   @Pt.ProposedRating yellow (chf@eecs.berkeley.edu)
+   @Pt.AcceptedRating yellow (vogel@eecs.berkeley.edu)
 */
 public class GRReceiver extends Mailbox {
 

@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Red (liuxj@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.fsm.demo.ABP;
@@ -50,6 +48,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @author Xiaojun Liu
    @version $Id$
    @since Ptolemy II 0.4
+   @Pt.ProposedRating Red (liuxj@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 public class DEMessageSource extends TypedAtomicActor {
 

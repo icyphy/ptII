@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Green (eal@eecs.berkeley.edu)
-@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.kernel.attributes;
@@ -122,6 +120,8 @@ import java.net.URL;
    @version $Id$
    @see URIAttribute
    @since Ptolemy II 3.0
+   @Pt.ProposedRating Green (eal@eecs.berkeley.edu)
+   @Pt.AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 public class FileAttribute extends StringAttribute {
 

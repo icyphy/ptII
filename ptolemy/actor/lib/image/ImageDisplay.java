@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION 2
 COPYRIGHTENDKEY
-@AcceptedRating Red
-@ProposedRating Red
 */
 package ptolemy.actor.lib.image;
 
@@ -64,6 +62,8 @@ import javax.swing.SwingUtilities;
    @author James Yeh, Edward A. Lee
    @version $Id$
    @since Ptolemy II 3.0
+   @Pt.ProposedRating Red
+   @Pt.AcceptedRating Red
 */
 public class ImageDisplay extends Sink implements Placeable {
 

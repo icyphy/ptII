@@ -23,8 +23,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-@ProposedRating Red (cxh@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.copernicus.jhdl;
@@ -82,6 +80,8 @@ import ptolemy.copernicus.jhdl.util.*;
    @author Steve Neuendorffer and Ben Warlick
    @version $Id$
    @since Ptolemy II 2.0
+   @Pt.ProposedRating Red (cxh@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 public class CircuitTransformer extends SceneTransformer {
     /** Construct a new transformer

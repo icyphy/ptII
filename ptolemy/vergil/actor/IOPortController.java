@@ -87,6 +87,8 @@ import diva.util.java2d.ShapeUtilities;
    @author Steve Neuendorffer and Edward A. Lee
    @version $Id$
    @since Ptolemy II 2.0
+   @Pt.ProposedRating Red (cxh@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
 */
 public class IOPortController extends AttributeController {
 

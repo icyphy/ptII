@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Green (eal@eecs.berkeley.edu)
-@AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.sdf.lib;
@@ -113,6 +111,8 @@ import ptolemy.kernel.util.Workspace;
    @author Edward A. Lee and Yuhong Xiong
    @version $Id$
    @since Ptolemy II 1.0
+   @Pt.ProposedRating Green (eal@eecs.berkeley.edu)
+   @Pt.AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 */
 
 public class Autocorrelation extends SDFTransformer {

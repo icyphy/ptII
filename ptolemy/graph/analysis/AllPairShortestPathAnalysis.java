@@ -20,8 +20,6 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-@ProposedRating Red (shahrooz@eng.umd.edu)
-@AcceptedRating Red (ssb@eng.umd.edu)
 
 */
 
@@ -56,6 +54,8 @@ import ptolemy.graph.mapping.ToDoubleMapping;
    The default analyzer runs in O(N^3) in which N is the number of nodes.
 
    @since Ptolemy II 4.0
+   @Pt.ProposedRating Red (shahrooz@eng.umd.edu)
+   @Pt.AcceptedRating Red (ssb@eng.umd.edu)
    @version $Id$
    @author Shahrooz Shahparnia
    @see ptolemy.graph.Graph#nodeLabel

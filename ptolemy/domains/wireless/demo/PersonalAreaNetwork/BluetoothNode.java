@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (pjb2e@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.wireless.demo.PersonalAreaNetwork;
@@ -59,6 +57,8 @@ import ptolemy.vergil.kernel.attributes.EllipseAttribute;
    @author Philip Baldwin
    @version $Id$
    @since Ptolemy II 4.0
+   @Pt.ProposedRating Yellow (eal@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (pjb2e@eecs.berkeley.edu)
 */
 public class BluetoothNode extends TypedAtomicActor {
 

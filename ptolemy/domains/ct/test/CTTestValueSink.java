@@ -23,8 +23,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-@ProposedRating Yellow (liuj@eecs.berkeley.edu)
-@AcceptedRating Red (liuj@eecs.berkeley.edu)
 
 */
 
@@ -53,6 +51,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @author  Jie Liu
    @version $Id$
    @since Ptolemy II 0.3
+   @Pt.ProposedRating Yellow (liuj@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (liuj@eecs.berkeley.edu)
 
 */
 public class CTTestValueSink extends TypedAtomicActor {

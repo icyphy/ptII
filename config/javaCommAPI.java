@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Green (cxh@eecs.berkeley.edu)
-@AcceptedRating Red
 */
 import javax.comm.CommPort;
 
@@ -37,6 +35,8 @@ import javax.comm.CommPort;
     @author Christopher Hylands
     @version $Id$
     @since Ptolemy II 1.0
+    @Pt.ProposedRating Green (cxh@eecs.berkeley.edu)
+    @Pt.AcceptedRating Red
 */
 public class javaCommAPI {
     public static void main(String args[]) {

@@ -21,8 +21,6 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-@ProposedRating Red (ankush@glue.umd.edu)
-@AcceptedRating Red (ssb@eng.umd.edu)
 */
 
 package ptolemy.copernicus.c;
@@ -78,6 +76,8 @@ import java.util.Hashtable;
    @author Ankush Varma
    @version $Id$
    @since Ptolemy II 4.0
+   @Pt.ProposedRating Red (ankush@glue.umd.edu)
+   @Pt.AcceptedRating Red (ssb@eng.umd.edu)
 */
 public class Options {
 

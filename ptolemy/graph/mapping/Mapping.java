@@ -22,8 +22,6 @@ MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
 
-@ProposedRating Red (ssb@eng.umd.edu)
-@AcceptedRating Red (ssb@eng.umd.edu)
 */
 
 package ptolemy.graph.mapping;
@@ -47,6 +45,8 @@ package ptolemy.graph.mapping;
     to make sure that that a candidate argument is in the domain.
 
     @since Ptolemy II 4.0
+    @Pt.ProposedRating Red (ssb@eng.umd.edu)
+    @Pt.AcceptedRating Red (ssb@eng.umd.edu)
     @author Shuvra S. Bhattacharyya, Shahrooz Shahparnia
     @version $Id$
 */

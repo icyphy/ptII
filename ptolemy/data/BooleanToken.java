@@ -23,8 +23,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-@ProposedRating Green (neuendor@eecs.berkeley.edu)
-@AcceptedRating Green (wbwu@eecs.berkeley.edu)
 */
 
 package ptolemy.data;
@@ -50,6 +48,8 @@ import ptolemy.kernel.util.IllegalActionException;
   @author Neil Smyth, Yuhong Xiong, Edward A. Lee, Steve Neuendorffer
   @version $Id$
   @since Ptolemy II 0.2
+  @Pt.ProposedRating Green (neuendor@eecs.berkeley.edu)
+  @Pt.AcceptedRating Green (wbwu@eecs.berkeley.edu)
 */
 
 public class BooleanToken extends AbstractConvertibleToken

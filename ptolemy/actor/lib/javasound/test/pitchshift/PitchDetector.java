@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Red (vogel@eecs.berkeley.edu)
-@AcceptedRating Red (vogel@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.javasound.test.pitchshift;
@@ -42,6 +40,8 @@ import ptolemy.math.SignalProcessing;
     @author Brian K. Vogel
     @version $Id$
     @since Ptolemy II 1.0
+    @Pt.ProposedRating Red (vogel@eecs.berkeley.edu)
+    @Pt.AcceptedRating Red (vogel@eecs.berkeley.edu)
 */
 public class PitchDetector {
 

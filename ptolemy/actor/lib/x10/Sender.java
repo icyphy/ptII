@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Green (ptolemy@ptolemy.eecs.berkeley.edu)
-@AcceptedRating Yellow (ptolemy@ptolemy.eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.x10;
@@ -48,6 +46,8 @@ import x10.Command;
    @author Colin Cochran (contributor: Edward A. Lee)
    @version $Id$
    @since Ptolemy II 4.0
+   @Pt.ProposedRating Green (ptolemy@ptolemy.eecs.berkeley.edu)
+   @Pt.AcceptedRating Yellow (ptolemy@ptolemy.eecs.berkeley.edu)
 */
 
 public class Sender extends X10Interface {

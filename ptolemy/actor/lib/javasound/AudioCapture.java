@@ -25,8 +25,6 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 
-   @ProposedRating Yellow (vogel@eecs.berkeley.edu)
-   @AcceptedRating Yellow (chf@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.javasound;
@@ -100,6 +98,8 @@ import ptolemy.media.javasound.LiveSound;
    @author Brian K. Vogel, Christopher Hylands, Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 1.0
+   @Pt.ProposedRating Yellow (vogel@eecs.berkeley.edu)
+   @Pt.AcceptedRating Yellow (chf@eecs.berkeley.edu)
    @see ptolemy.media.javasound.LiveSound
    @see AudioPlayer
    @see ptolemy.media.javasound.SoundReader

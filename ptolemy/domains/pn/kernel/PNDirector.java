@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Green (mudit@eecs.berkeley.edu)
-@AcceptedRating Green (davisj@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.pn.kernel;
@@ -97,6 +95,8 @@ import java.util.LinkedList;
    @author Mudit Goel
    @version $Id$
    @since Ptolemy II 0.2
+   @Pt.ProposedRating Green (mudit@eecs.berkeley.edu)
+   @Pt.AcceptedRating Green (davisj@eecs.berkeley.edu)
 */
 public class PNDirector extends CompositeProcessDirector {
 

@@ -21,8 +21,6 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-@ProposedRating Red (shahrooz@eng.umd.edu)
-@AcceptedRating Red (ssb@eng.umd.edu)
 */
 
 package ptolemy.graph.analysis.analyzer;
@@ -38,6 +36,8 @@ package ptolemy.graph.analysis.analyzer;
    and {@link #hasForwardMapping()} methods.
    <p>
    @since Ptolemy II 4.0
+   @Pt.ProposedRating Red (shahrooz@eng.umd.edu)
+   @Pt.AcceptedRating Red (ssb@eng.umd.edu)
    @author Shahrooz Shahparnia, Shuvra S. Bhattacharyya
    @version $Id$
 */

@@ -25,8 +25,6 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 
-   @ProposedRating Yellow (cxh@eecs.berkeley.edu)
-   @AcceptedRating Red (vogel@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.gui;
@@ -86,6 +84,8 @@ import java.util.List;
    @author Edward A. Lee, Brian K. Vogel, and Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 0.4
+   @Pt.ProposedRating Yellow (cxh@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (vogel@eecs.berkeley.edu)
 */
 public class CompositeActorApplication {
 

@@ -26,8 +26,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-@ProposedRating red (eal@eecs.berkeley.edu)
-@AcceptedRating red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.plot.demo;
@@ -44,6 +42,8 @@ import ptolemy.plot.PlotLiveApplet;
    @author Edward A. Lee, Christopher Hylands
    @version $Id$
    @since Ptolemy II 0.2
+   @Pt.ProposedRating red (eal@eecs.berkeley.edu)
+   @Pt.AcceptedRating red (cxh@eecs.berkeley.edu)
 */
 public class PlotLiveDemoApplet extends PlotLiveApplet {
 

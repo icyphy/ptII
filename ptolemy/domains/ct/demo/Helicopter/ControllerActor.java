@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Red (liuj@eecs.berkeley.edu)
-@AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.ct.demo.Helicopter;
@@ -95,6 +93,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @author  Jie Liu
    @version $Id$
    @since Ptolemy II 0.4
+   @Pt.ProposedRating Red (liuj@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
 
 */
 public class ControllerActor extends TypedAtomicActor

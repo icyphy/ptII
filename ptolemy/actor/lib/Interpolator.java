@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Yellow (yuhong@eecs.berkeley.edu)
-@AcceptedRating Yellow (yuhong@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib;
@@ -77,6 +75,8 @@ import ptolemy.math.Interpolation;
    @author Sarah Packman, Yuhong Xiong
    @version $Id$
    @since Ptolemy II 0.3
+   @Pt.ProposedRating Yellow (yuhong@eecs.berkeley.edu)
+   @Pt.AcceptedRating Yellow (yuhong@eecs.berkeley.edu)
    @see ptolemy.math.Interpolation
 */
 

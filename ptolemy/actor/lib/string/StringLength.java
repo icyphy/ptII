@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Green (eal@ptolemy.eecs.berkeley.edu)
-@AcceptedRating Green (net@ptolemy.eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.string;
@@ -46,6 +44,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @author Edward A. Lee
    @version $Id$
 @since Ptolemy II 4.0
+@Pt.ProposedRating Green (eal@ptolemy.eecs.berkeley.edu)
+@Pt.AcceptedRating Green (net@ptolemy.eecs.berkeley.edu)
 */
 
 public class StringLength extends Transformer {

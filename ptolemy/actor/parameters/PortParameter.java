@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Green (eal@eecs.berkeley.edu)
-@AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.parameters;
@@ -96,6 +94,8 @@ import ptolemy.kernel.util.Workspace;
    @author Edward A. Lee
    @version $Id$
    @since Ptolemy II 3.0
+   @Pt.ProposedRating Green (eal@eecs.berkeley.edu)
+   @Pt.AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 */
 public class PortParameter extends Parameter {
 

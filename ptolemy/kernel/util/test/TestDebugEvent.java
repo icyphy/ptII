@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Red (neuendor@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.kernel.util.test;
@@ -41,6 +39,8 @@ import ptolemy.kernel.util.NamedObj;
    @author  Christopher Hylands
    @version $Id$
    @since Ptolemy II 1.0
+   @Pt.ProposedRating Red (neuendor@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 public class TestDebugEvent implements DebugEvent {
 

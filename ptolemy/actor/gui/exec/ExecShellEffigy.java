@@ -23,8 +23,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-@ProposedRating Red (eal@eecs.berkeley.edu)
-@AcceptedRating Red (janneck@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.gui.exec;
@@ -49,6 +47,8 @@ import java.net.URL;
    @author Edward A. Lee, Christopher Hylands
    @version $Id$
    @since Ptolemy II 1.0
+   @Pt.ProposedRating Red (eal@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (janneck@eecs.berkeley.edu)
 */
 public class ExecShellEffigy extends Effigy {
 

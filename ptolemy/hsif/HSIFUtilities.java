@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Red (eal@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.hsif;
@@ -52,6 +50,8 @@ import org.w3c.dom.Document;
     @author Christopher Hylands
     @version $Id$
     @since Ptolemy II 2.2
+    @Pt.ProposedRating Red (eal@eecs.berkeley.edu)
+    @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
 
 */
 public class HSIFUtilities {

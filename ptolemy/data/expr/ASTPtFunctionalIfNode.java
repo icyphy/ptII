@@ -25,8 +25,6 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 
-   @ProposedRating Yellow (nsmyth@eecs.berkeley.edu)
-   @AcceptedRating Red (cxh@eecs.berkeley.edu)
 
    Created : May 1998
 
@@ -49,6 +47,8 @@ import ptolemy.kernel.util.IllegalActionException;
    @author Neil Smyth
    @version $Id$
    @since Ptolemy II 0.2
+   @Pt.ProposedRating Yellow (nsmyth@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
    @see ptolemy.data.expr.ASTPtRootNode
    @see ptolemy.data.expr.PtParser
    @see ptolemy.data.Token

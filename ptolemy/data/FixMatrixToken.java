@@ -23,8 +23,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-@ProposedRating Yellow (neuendor@eecs.berkeley.edu)
-@AcceptedRating Yellow (kienhuis@eecs.berkeley.edu)
 This class does not handle operations well, because the result may have
 unusual precision.
 */
@@ -52,6 +50,8 @@ import ptolemy.math.Quantizer;
    @author Bart Kienhuis, Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 0.4
+   @Pt.ProposedRating Yellow (neuendor@eecs.berkeley.edu)
+   @Pt.AcceptedRating Yellow (kienhuis@eecs.berkeley.edu)
    @see ptolemy.math.FixPoint
 */
 

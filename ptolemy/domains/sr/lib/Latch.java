@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Yellow (cxh@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu) Should support multiports
 */
 
 package ptolemy.domains.sr.lib;
@@ -59,6 +57,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @author Paul Whitaker, Christopher Hylands
    @version $Id$
    @since Ptolemy II 2.0
+   @Pt.ProposedRating Yellow (cxh@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu) Should support multiports
 */
 
 public class Latch extends Transformer {

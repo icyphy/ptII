@@ -25,8 +25,6 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 
-   @ProposedRating Red (hyzheng@eecs.berkeley.edu)
-   @AcceptedRating Red (hyzheng@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.fsm.modal;
@@ -48,6 +46,8 @@ import ptolemy.util.MessageHandler;
     @author Haiyang Zheng
     @version $Id $
     @since Ptolemy II 4.0
+    @Pt.ProposedRating Red (hyzheng@eecs.berkeley.edu)
+    @Pt.AcceptedRating Red (hyzheng@eecs.berkeley.edu)
 */
 public class FunctionDependencyOfModalModel extends FunctionDependencyOfCompositeActor {
 

@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating
-@AcceptedRating
 */
 
 package ptolemy.chic;
@@ -51,6 +49,8 @@ import ptolemy.vergil.basic.NodeControllerFactory;
    @author Eleftherios Matsikoudis
    @version $Id$
    @since Ptolemy II 3.0
+   @Pt.ProposedRating Red (cxh@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
 */
 public class ChicControllerFactory extends NodeControllerFactory {
 

@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating
-@AcceptedRating
 */
 
 package ptolemy.chic;
@@ -64,6 +62,8 @@ import diva.gui.GUIUtilities;
    @author Eleftherios Matsikoudis
    @version $Id$
    @since Ptolemy II 3.0
+   @Pt.ProposedRating Red (cxh@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
 */
 public class ChicController extends AttributeController {
 

@@ -25,8 +25,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Yellow (ctsay@eecs.berkeley.edu)
-@AcceptedRating Red (ctsay@eecs.berkeley.edu)
 */
 
 package ptolemy.math;
@@ -45,6 +43,8 @@ import java.util.Random;
    @author Jeff Tsay
    @version $Id$
    @since Ptolemy II 0.3
+   @Pt.ProposedRating Yellow (ctsay@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (ctsay@eecs.berkeley.edu)
 */
 public class DoubleArrayStat extends DoubleArrayMath {
 

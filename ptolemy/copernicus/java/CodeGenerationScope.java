@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Red (liuxj@eecs.berkeley.edu)
-@AcceptedRating Red (liuxj@eecs.berkeley.edu)
 
 */
 
@@ -43,6 +41,8 @@ import soot.Local;
    @author Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 2.1
+   @Pt.ProposedRating Red (liuxj@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (liuxj@eecs.berkeley.edu)
    @see ptolemy.data.expr.ParserScope
 */
 

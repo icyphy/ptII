@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Yellow (neuendor@eecs.berkeley.edu)
-@AcceptedRating Yellow (eal@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.sdf.lib;
@@ -58,6 +56,8 @@ import ptolemy.math.SignalProcessing;
    @author Bart Kienhuis, Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 1.0
+   @Pt.ProposedRating Yellow (neuendor@eecs.berkeley.edu)
+   @Pt.AcceptedRating Yellow (eal@eecs.berkeley.edu)
    @see ptolemy.math.SignalProcessing#IFFTComplexOut
 */
 

@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Red (neuendor@eecs.berkeley.edu)
-@AcceptedRating Red (neuendor@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.sdf.kernel;
@@ -76,6 +74,8 @@ import ptolemy.math.Fraction;
    @author Stephen Neuendorffer, Shuvra S. Bhattacharyya
    @version $Id$
    @since Ptolemy II 4.0
+   @Pt.ProposedRating Red (neuendor@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (neuendor@eecs.berkeley.edu)
 */
 public abstract class BaseSDFScheduler extends Scheduler {
 

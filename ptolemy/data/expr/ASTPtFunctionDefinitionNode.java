@@ -25,8 +25,6 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 
-   @ProposedRating Yellow (nsmyth@eecs.berkeley.edu)
-   @AcceptedRating Red (cxh@eecs.berkeley.edu)
 
    Created: September 2002
 
@@ -68,6 +66,8 @@ import java.util.Map;
    @author Xiaojun Liu, Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 0.2
+   @Pt.ProposedRating Yellow (nsmyth@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
    @see ptolemy.data.expr.ASTPtRootNode
    @see ptolemy.data.expr.PtParser
    @see ptolemy.data.Token

@@ -26,8 +26,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Red (vogel@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib;
@@ -91,6 +89,8 @@ Prentice Hall, 1989.
 @author Aleksandar Necakov, Research in Motion Limited
 @version $Id$
 @since Ptolemy II 1.0
+@Pt.ProposedRating Red (vogel@eecs.berkeley.edu)
+@Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
     public class IIR extends Transformer {
 

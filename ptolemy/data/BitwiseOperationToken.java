@@ -23,8 +23,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-@ProposedRating Green (neuendor@eecs.berkeley.edu)
-@AcceptedRating Yellow (wbwu@eecs.berkeley.edu)
 */
 
 package ptolemy.data;
@@ -39,6 +37,8 @@ import ptolemy.kernel.util.IllegalActionException;
   @author Steve Neuendorffer
   @version $Id$
   @since Ptolemy II 2.1
+  @Pt.ProposedRating Green (neuendor@eecs.berkeley.edu)
+  @Pt.AcceptedRating Yellow (wbwu@eecs.berkeley.edu)
 */
 
 public interface BitwiseOperationToken {

@@ -25,8 +25,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
 isCloseTo(t), isCloseTo(t, e), EPSILON
 
 */
@@ -60,6 +58,8 @@ import java.io.Serializable;
     @author Edward A. Lee, Jeff Tsay, Steve Neuendorffer, Adam Cataldo
     @version $Id$
     @since Ptolemy II 0.2
+    @Pt.ProposedRating Yellow (eal@eecs.berkeley.edu)
+    @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 public class Complex implements Cloneable, Serializable {
 

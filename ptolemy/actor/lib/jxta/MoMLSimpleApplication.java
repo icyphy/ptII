@@ -25,8 +25,6 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 
-   @ProposedRating Red (cxh@eecs.berkeley.edu)
-   @AcceptedRating Red (eal@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.jxta;
@@ -55,6 +53,8 @@ import java.io.StringWriter;
     @author Yang Zhao
     @version $Id$
     @since Ptolemy II 2.0
+    @Pt.ProposedRating Red (cxh@eecs.berkeley.edu)
+    @Pt.AcceptedRating Red (eal@eecs.berkeley.edu)
 */
 public class MoMLSimpleApplication extends NamedObj implements ChangeListener {
 

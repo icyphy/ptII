@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Yellow (kienhuis@eecs.berkeley.edu)
-@AcceptedRating Yellow (kienhuis@eecs.berkeley.edu)
 
 */
 
@@ -59,6 +57,8 @@ import ptolemy.math.Rounding;
    @see ptolemy.math.Quantization
    @version $Id$
    @since Ptolemy II 0.4
+   @Pt.ProposedRating Yellow (kienhuis@eecs.berkeley.edu)
+   @Pt.AcceptedRating Yellow (kienhuis@eecs.berkeley.edu)
 */
 
 public class FixToken extends ScalarToken {

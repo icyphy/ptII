@@ -25,8 +25,6 @@
 
    PT_COPYRIGHT_VERSION 2
    COPYRIGHTENDKEY
-   @ProposedRating Red (vogel@eecs.berkeley.edu)
-   @AcceptedRating Red (vogel@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.javasound;
@@ -113,6 +111,8 @@ import ptolemy.media.javasound.SoundWriter;
    @author  Brian K. Vogel
    @version  $Id$
    @since Ptolemy II 2.0
+   @Pt.ProposedRating Red (vogel@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (vogel@eecs.berkeley.edu)
 */
 public class AudioWriteBuffer extends TypedAtomicActor {
 

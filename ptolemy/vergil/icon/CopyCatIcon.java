@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (eal@eecs.berkeley.edu)
 */
 
 package ptolemy.vergil.icon;
@@ -56,6 +54,8 @@ import diva.canvas.toolbox.BasicRectangle;
    @author Edward A. Lee
    @version $Id$
    @since Ptolemy II 4.0
+   @Pt.ProposedRating Yellow (eal@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (eal@eecs.berkeley.edu)
 */
 public class CopyCatIcon extends XMLIcon {
 

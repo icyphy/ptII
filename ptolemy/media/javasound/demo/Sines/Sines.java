@@ -25,8 +25,6 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 
-   @ProposedRating Red (vogel@eecs.berkeley.edu)
-   @AcceptedRating Red (vogel@eecs.berkeley.edu)
 */
 
 package ptolemy.media.javasound.demo.Sines;
@@ -41,6 +39,8 @@ import ptolemy.media.javasound.SoundPlayback;
     @author Brian K. Vogel (vogel@eecs.berkeley.edu)
     @version $Id$
     @since Ptolemy II 1.0
+    @Pt.ProposedRating Red (vogel@eecs.berkeley.edu)
+    @Pt.AcceptedRating Red (vogel@eecs.berkeley.edu)
 */
 public class Sines {
     public static void main(String[] args) {

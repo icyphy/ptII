@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Yellow (davisj@eecs.berkeley.edu)
-@AcceptedRating Red (davisj@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.dde.demo.LocalZeno;
@@ -89,6 +87,8 @@ import javax.swing.SwingUtilities;
  *  @author Michael Shilman  (michaels@eecs.berkeley.edu)
  *  @version $Id$
  *  @since Ptolemy II 0.3
+ *  @Pt.ProposedRating Yellow (davisj@eecs.berkeley.edu)
+ *  @Pt.AcceptedRating Red (davisj@eecs.berkeley.edu)
  */
 public class LocalZenoApplet extends PtolemyApplet {
 

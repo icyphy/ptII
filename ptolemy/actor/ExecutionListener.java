@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Green (neuendor@eecs.berkeley.edu)
-@AcceptedRating Green (bart@eecs.berkeley.edu)
 */
 
 package ptolemy.actor;
@@ -50,6 +48,8 @@ package ptolemy.actor;
    @author Steve Neuendorffer, Edward A. Lee
    @version $Id$
    @since Ptolemy II 0.2
+   @Pt.ProposedRating Green (neuendor@eecs.berkeley.edu)
+   @Pt.AcceptedRating Green (bart@eecs.berkeley.edu)
    @see Manager
 */
 

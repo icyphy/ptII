@@ -23,8 +23,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-@ProposedRating Yellow (liuxj@eecs.berkeley.edu)
-@AcceptedRating Yellow (liuxj@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.fsm.kernel;
@@ -41,6 +39,8 @@ package ptolemy.domains.fsm.kernel;
    @author Xiaojun Liu
    @version $Id$
    @since Ptolemy II 0.4
+   @Pt.ProposedRating Yellow (liuxj@eecs.berkeley.edu)
+   @Pt.AcceptedRating Yellow (liuxj@eecs.berkeley.edu)
    @see Action
    @see Transition
    @see FSMActor

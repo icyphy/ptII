@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Red (kienhuis@eecs.berkeley.edu)
-@AcceptedRating Red (kienhuis@eecs.berkeley.edu)
 
 */
 
@@ -78,6 +76,8 @@ import javax.swing.SwingUtilities;
    @author Bart Kienhuis and Edward A. Lee
    @version $Id$
    @since Ptolemy II 1.0
+   @Pt.ProposedRating Red (kienhuis@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (kienhuis@eecs.berkeley.edu)
 */
 
 public class MatrixViewer extends Sink implements Placeable {

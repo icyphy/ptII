@@ -23,8 +23,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-@ProposedRating Red (yourname@eecs.berkeley.edu)
-@AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
 */
 
 package MyPackageName;
@@ -41,6 +39,8 @@ package MyPackageName;
    @version $Id$
    @see classname (refer to relevant classes, but not the base class)
    @since Ptolemy II x.x
+   @Pt.ProposedRating Red (yourname@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
 */
 
 public class ClassName {

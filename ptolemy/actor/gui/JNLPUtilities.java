@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Red (cxh@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.gui;
@@ -52,6 +50,8 @@ or <code>$PTII/doc/webStartHelp</code>
 @author Christopher Hylands
 @version $Id$
 @since Ptolemy II 2.0
+@Pt.ProposedRating Red (cxh@eecs.berkeley.edu)
+@Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
 @see Configuration
 */
 public class JNLPUtilities {

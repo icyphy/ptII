@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Green (liuj@eecs.berkeley.edu)
-@AcceptedRating Green (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.de.kernel;
@@ -68,6 +66,8 @@ import java.util.LinkedList;
     @author Lukito Muliadi, Edward A. Lee, Jie Liu
     @version $Id$
     @since Ptolemy II 0.2
+    @Pt.ProposedRating Green (liuj@eecs.berkeley.edu)
+    @Pt.AcceptedRating Green (cxh@eecs.berkeley.edu)
 */
 public class DEReceiver extends AbstractReceiver {
 

@@ -23,8 +23,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-@ProposedRating Red (neuendor@eecs.berkeley.edu)
-@AcceptedRating Red (neuendor@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.gui;
@@ -48,6 +46,8 @@ import java.net.URL;
    @author Edward A. Lee
    @version $Id$
    @since Ptolemy II 2.1
+   @Pt.ProposedRating Red (neuendor@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (neuendor@eecs.berkeley.edu)
 */
 public class PlotEffigy extends Effigy {
 

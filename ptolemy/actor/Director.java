@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Green (eal@eecs.berkeley.edu)
-@AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 Review changeRequest / changeListener code.
 Review container relationship and new parent class.
 Win added methods fireAtCurrentTime(Actor) and
@@ -96,6 +94,8 @@ import java.util.Iterator;
    @author Mudit Goel, Edward A. Lee, Lukito Muliadi, Steve Neuendorffer, John Reekie
    @version $Id$
    @since Ptolemy II 0.2
+   @Pt.ProposedRating Green (eal@eecs.berkeley.edu)
+   @Pt.AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 */
 public class Director extends Attribute implements Executable {
 

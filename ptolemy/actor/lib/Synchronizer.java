@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Yellow (pwhitake@eecs.berkeley.edu)
-@AcceptedRating Yellow (pwhitake@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib;
@@ -50,6 +48,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @author Paul Whitaker
    @version $Id$
    @since Ptolemy II 1.0
+   @Pt.ProposedRating Yellow (pwhitake@eecs.berkeley.edu)
+   @Pt.AcceptedRating Yellow (pwhitake@eecs.berkeley.edu)
 */
 
 public class Synchronizer extends Transformer {

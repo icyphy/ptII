@@ -27,8 +27,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Red (cxh@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.gui;
@@ -57,6 +55,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @author  Zoltan Kemenczy, Research in Motion Limited
    @version $Id$
    @since Ptolemy II 2.1
+   @Pt.ProposedRating Red (cxh@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 public class ExternalTextTableau extends TextEditorTableau {
 

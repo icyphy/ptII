@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.gui;
@@ -70,6 +68,8 @@ import ptolemy.util.StringUtilities;
    @author Steve Neuendorffer and Edward A. Lee
    @version $Id$
    @since Ptolemy II 0.4
+   @Pt.ProposedRating Yellow (eal@eecs.berkeley.edu)
+   @Pt.AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 */
 
 public class Configurer extends JPanel implements CloseListener {

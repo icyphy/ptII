@@ -25,8 +25,6 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 
-   @ProposedRating Red (zkemenczy@rim.net)
-   @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.gui.style;
@@ -53,6 +51,8 @@ import ptolemy.kernel.util.Settable;
    @author Zoltan Kemenczy, Research in Motion Ltd
    @version $Id$
    @since Ptolemy II 2.1
+   @Pt.ProposedRating Red (zkemenczy@rim.net)
+   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 public class TextStyle extends ParameterEditorStyle {

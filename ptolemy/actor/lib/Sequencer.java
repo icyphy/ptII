@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Yellow (ctsay@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib;
@@ -60,6 +58,8 @@ import java.util.TreeMap;
    @author Edward A. Lee
    @version $Id$
    @since Ptolemy II 1.0
+   @Pt.ProposedRating Yellow (eal@eecs.berkeley.edu)
+   @Pt.AcceptedRating Yellow (ctsay@eecs.berkeley.edu)
 */
 
 public class Sequencer extends Transformer implements SequenceActor {

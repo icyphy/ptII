@@ -28,8 +28,6 @@
   PT_COPYRIGHT_VERSION_2
   COPYRIGHTENDKEY
 
-  @ProposedRating Red (ssb@eng.umd.edu)
-  @AcceptedRating Red (ssb@eng.umd.edu)
 */
 
 package ptolemy.copernicus.c;
@@ -91,6 +89,8 @@ import java.util.LinkedList;
     @author Shuvra S. Bhattacharyya
     @version $Id$
     @since Ptolemy II 2.0
+    @Pt.ProposedRating Red (ssb@eng.umd.edu)
+    @Pt.AcceptedRating Red (ssb@eng.umd.edu)
 
 */
 
@@ -105,6 +105,8 @@ public class MethodListGenerator {
      *  @param source The class.
      *  @return The class initializer method.
      *  @since Ptolemy II 2.0
+     *  @Pt.ProposedRating Red (cxh@eecs.berkeley.edu)
+     *  @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
      */
     public static SootMethod getClassInitializer(SootClass source) {
         if (!_classInitializerMap.containsKey(source)) _generate(source);

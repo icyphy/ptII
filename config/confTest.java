@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Green (cxh@eecs.berkeley.edu)
-@AcceptedRating Red
 */
 
 /** Simple class used by configure to test whether the javac
@@ -33,6 +31,8 @@ COPYRIGHTENDKEY
     @author Christopher Hylands
     @version $Id$
     @since Ptolemy II 0.2
+    @Pt.ProposedRating Green (cxh@eecs.berkeley.edu)
+    @Pt.AcceptedRating Red
 */
 public class confTest {
 

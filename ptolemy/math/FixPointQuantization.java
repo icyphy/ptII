@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Red (Ed.Willink@uk.thalesgroup.com)
-@AcceptedRating Red
 
 */
 
@@ -57,6 +55,8 @@ import java.util.StringTokenizer;
    @author Ed Willink
    @version $Id$
    @since Ptolemy II 2.1
+   @Pt.ProposedRating Red (Ed.Willink@uk.thalesgroup.com)
+   @Pt.AcceptedRating Red
    @see FixPoint
    @see Precision
    @see Overflow

@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
 
 */
 
@@ -68,6 +66,8 @@ import ptolemy.util.StringUtilities;
    @author Neil Smyth, Edward A. Lee, Xiaojun Liu
    @version $Id$
    @since Ptolemy II 0.2
+   @Pt.ProposedRating Yellow (eal@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
 
    @see ptolemy.data.expr.PtParser
    @see ptolemy.data.Token

@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Green (cxh@eecs.berkeley.edu)
-@AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 setDirector throws NameDuplicationException
 fire: call transferOutputs on local, not executive director.
 preinitialize: validate attributes of this composite and
@@ -110,6 +108,8 @@ import ptolemy.actor.parameters.ParameterPort;
    @author Mudit Goel, Edward A. Lee, Lukito Muliadi, Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 0.2
+   @Pt.ProposedRating Green (cxh@eecs.berkeley.edu)
+   @Pt.AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
    @see ptolemy.actor.IOPort
    @see ptolemy.actor.IORelation
    @see ptolemy.kernel.ComponentEntity

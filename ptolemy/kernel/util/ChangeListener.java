@@ -25,8 +25,6 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 
-   @ProposedRating Green (eal@eecs.berkeley.edu)
-   @AcceptedRating Green (neuendor@eecs.berkeley.edu)
 */
 
 package ptolemy.kernel.util;
@@ -42,6 +40,8 @@ package ptolemy.kernel.util;
    @author Edward A. Lee
    @version $Id$
    @since Ptolemy II 1.0
+   @Pt.ProposedRating Green (eal@eecs.berkeley.edu)
+   @Pt.AcceptedRating Green (neuendor@eecs.berkeley.edu)
    @see ChangeRequest
 */
 public interface ChangeListener {

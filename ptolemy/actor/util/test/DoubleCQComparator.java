@@ -25,8 +25,6 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 
-   @ProposedRating Green (eal@eecs.berkeley.edu)
-   @AcceptedRating Yellow (liuj@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.util.test;
@@ -45,6 +43,8 @@ import ptolemy.actor.util.CQComparator;
    @author Lukito Muliadi
    @version $Id$
    @since Ptolemy II 0.2
+   @Pt.ProposedRating Green (eal@eecs.berkeley.edu)
+   @Pt.AcceptedRating Yellow (liuj@eecs.berkeley.edu)
    @see CQComparator
    @see CalendarQueue
 */

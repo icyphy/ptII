@@ -23,8 +23,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-@ProposedRating Yellow (liuxj@eecs.berkeley.edu)
-@AcceptedRating Yellow (kienhuis@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.fsm.kernel;
@@ -140,6 +138,8 @@ import ptolemy.util.MessageHandler;
    @author Xiaojun Liu
    @version $Id$
    @since Ptolemy II 0.4
+   @Pt.ProposedRating Yellow (liuxj@eecs.berkeley.edu)
+   @Pt.AcceptedRating Yellow (kienhuis@eecs.berkeley.edu)
    @see State
    @see Transition
    @see Action

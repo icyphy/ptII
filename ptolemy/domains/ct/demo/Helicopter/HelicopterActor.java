@@ -23,8 +23,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-@ProposedRating Red (liuj@eecs.berkeley.edu)
-@AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
 
 */
 
@@ -64,6 +62,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @author  Jie Liu, John Koo
    @version $Id$
    @since Ptolemy II 0.4
+   @Pt.ProposedRating Red (liuj@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
 */
 public class HelicopterActor extends TypedAtomicActor
     implements TimedActor {

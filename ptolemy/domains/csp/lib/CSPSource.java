@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Red (nsmyth@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.csp.lib;
@@ -52,6 +50,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @author Neil Smyth
    @version $Id$
    @since Ptolemy II 0.2
+   @Pt.ProposedRating Red (nsmyth@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
 
 */
 

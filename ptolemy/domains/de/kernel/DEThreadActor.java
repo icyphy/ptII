@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Red (lmuliadi@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.de.kernel;
@@ -68,6 +66,8 @@ import java.util.Iterator;
    @author Lukito Muliadi
    @version $Id$
    @since Ptolemy II 0.2
+   @Pt.ProposedRating Red (lmuliadi@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
    @see DEActor
 */
 public abstract class DEThreadActor extends DEActor implements Runnable {

@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION 2
 COPYRIGHTENDKEY
-@ProposedRating Yellow (yuhong@eecs.berkeley.edu)
-@AcceptedRating Yellow (mudit@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib;
@@ -52,6 +50,8 @@ import java.io.OutputStreamWriter;
    @author  Yuhong Xiong, Edward A. Lee
    @version $Id$
    @since Ptolemy II 0.4
+   @Pt.ProposedRating Yellow (yuhong@eecs.berkeley.edu)
+   @Pt.AcceptedRating Yellow (mudit@eecs.berkeley.edu)
 */
 public class Writer extends Sink {
 

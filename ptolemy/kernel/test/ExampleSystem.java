@@ -23,8 +23,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-@ProposedRating Red
-@AcceptedRating Red
 */
 
 package ptolemy.kernel.test;
@@ -52,6 +50,8 @@ import java.util.Iterator;
    @author Jie Liu
    @version $Id$
    @since Ptolemy II 0.2
+   @Pt.ProposedRating Red
+   @Pt.AcceptedRating Red
 */
 public class ExampleSystem implements Serializable {
 

@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Red (cxh@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.csp.demo.DiningPhilosophers;
@@ -69,6 +67,8 @@ import java.text.NumberFormat;
    @author Neil Smyth
    @version $Id$
    @since Ptolemy II 0.3
+   @Pt.ProposedRating Red (cxh@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 public class DiningApplet extends Applet

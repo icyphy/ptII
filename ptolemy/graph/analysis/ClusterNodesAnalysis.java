@@ -20,8 +20,6 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-@ProposedRating Red (shahrooz@eng.umd.edu)
-@AcceptedRating Red (ssb@eng.umd.edu)
 
 */
 
@@ -46,6 +44,8 @@ import ptolemy.graph.analysis.strategy.ClusterNodesTransformerStrategy;
    that is, return the subgraph induced by the given collection of nodes.
 
    @since Ptolemy II 4.0
+   @Pt.ProposedRating Red (shahrooz@eng.umd.edu)
+   @Pt.AcceptedRating Red (ssb@eng.umd.edu)
    @version $Id$
    @author Shahrooz Shahparnia based on a file by Shuvra S. Bhattacharyya and
    Ming-Yung Ko

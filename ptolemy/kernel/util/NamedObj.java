@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Green (eal@eecs.berkeley.edu)
-@AcceptedRating Red (johnr@eecs.berkeley.edu)
 
 FIXME: Accepted rating was green, but
 FIXME: Need review of methods from Derivable and Changeable interfaces,
@@ -128,6 +126,8 @@ import ptolemy.util.StringUtilities;
    @author Mudit Goel, Edward A. Lee, Neil Smyth
    @version $Id$
    @since Ptolemy II 0.2
+   @Pt.ProposedRating Green (eal@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (johnr@eecs.berkeley.edu)
    @see Attribute
    @see Workspace
 */
@@ -546,6 +546,8 @@ public class NamedObj implements
      *  debug listeners.
      *  @param event The event.
      *  @since Ptolemy II 2.3
+     *  @Pt.ProposedRating Red (cxh@eecs.berkeley.edu)
+     *  @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
      */
     public void event(DebugEvent event) {
         if (_debugging) {
@@ -1183,6 +1185,8 @@ public class NamedObj implements
      *  debug listeners.
      *  @param message The debug message.
      *  @since Ptolemy II 2.3
+     *  @Pt.ProposedRating Red (cxh@eecs.berkeley.edu)
+     *  @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
      */
     public void message(String message) {
         if (_debugging) {

@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Red (liuj@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu) This class was
 saving the actors as an enumeration, but this value was not
 used anywhere so I pulled out that code.
 */
@@ -48,6 +46,8 @@ import java.util.List;
    @author Jie Liu, Christopher Hylands
    @version $Id$
    @since Ptolemy II 0.2
+   @Pt.ProposedRating Red (liuj@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu) This class was
    @see ptolemy.kernel.util.InvalidStateException
 */
 public class NotSchedulableException extends InvalidStateException {

@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Red (liuxj@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.fsm.kernel.test;
@@ -46,6 +45,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @author Xiaojun Liu
    @version $Id$
    @since Ptolemy II 1.0
+   @Pt.ProposedRating Red (liuxj@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
 */
 public class ZeroOneSource extends SequenceSource {
 

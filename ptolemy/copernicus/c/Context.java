@@ -25,8 +25,6 @@ MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
 
-@ProposedRating Red (ssb@eng.umd.edu)
-@AcceptedRating Red (ssb@eng.umd.edu)
 */
 
 package ptolemy.copernicus.c;
@@ -41,6 +39,8 @@ import java.util.Iterator;
 @author Shuvra S. Bhattacharyya
 @version $Id$
 @since Ptolemy II 2.0
+@Pt.ProposedRating Red (ssb@eng.umd.edu)
+@Pt.AcceptedRating Red (ssb@eng.umd.edu)
 */
 
 

@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Green (neuendor@eecs.berkeley.edu)
-@AcceptedRating Green (wbwu@eecs.berkeley.edu)
 
 */
 
@@ -49,6 +47,8 @@ import ptolemy.math.Complex;
    @author Neil Smyth, Yuhong Xiong, Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 0.2
+   @Pt.ProposedRating Green (neuendor@eecs.berkeley.edu)
+   @Pt.AcceptedRating Green (wbwu@eecs.berkeley.edu)
 */
 public class IntToken extends ScalarToken {
 

@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Green (cxh@eecs.berkeley.edu)
-@AcceptedRating Red
 */
 
 import java.io.File;
@@ -36,6 +34,10 @@ import java.net.URL;
     @author Christopher Hylands Brooks
     @version $Id$
     @since Ptolemy II 3.1
+    @Pt.ProposedRating Red (cxh@eecs.berkeley.edu)
+    @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
+    @Pt.ProposedRating Green (cxh@eecs.berkeley.edu)
+    @Pt.AcceptedRating Red
 */
 public class FindClass {
     /** Given a dot separated class name, return the location of the

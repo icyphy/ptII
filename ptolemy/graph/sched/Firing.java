@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating red (shahrooz@eng.umd.edu)
-@AcceptedRating red (ssb@eng.umd.edu)
 */
 
 package ptolemy.graph.sched;
@@ -59,6 +57,8 @@ import java.util.ConcurrentModificationException;
    Brian K. Vogel, Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 4.0
+   @Pt.ProposedRating red (shahrooz@eng.umd.edu)
+   @Pt.AcceptedRating red (ssb@eng.umd.edu)
    @see ptolemy.graph.sched.Firing
    @see ptolemy.graph.sched.Schedule
    @see ptolemy.graph.sched.ScheduleElement

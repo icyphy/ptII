@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Red (vincent.arnould@thalesgroup.com)
-@AcceptedRating Red (vincent.arnould@thalesgroup.com)
 */
 
 package jni;
@@ -53,6 +51,8 @@ import ptolemy.util.MessageHandler;
    @author Steve Neuendorffer, Edward A. Lee, V. Arnould (Thales)
    @version $Id$
    @since Ptolemy II 2.3
+   @Pt.ProposedRating Red (vincent.arnould@thalesgroup.com)
+   @Pt.AcceptedRating Red (vincent.arnould@thalesgroup.com)
 */
 public class ArgumentConfigurer extends Query implements QueryListener {
     /** Construct a argument configurer for the specified entity.

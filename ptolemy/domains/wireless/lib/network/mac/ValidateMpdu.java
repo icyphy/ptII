@@ -25,8 +25,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-@ProposedRating Red (czhong@eecs.berkeley.edu)
-@AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.wireless.lib.network.mac;
@@ -58,6 +56,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @author Charlie Zhong, Xiaojun Liu and Yang Zhao
    @version $Id$
    @since Ptolemy II 4.0
+   @Pt.ProposedRating Red (czhong@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
 */
 
 public class ValidateMpdu extends MACActorBase {

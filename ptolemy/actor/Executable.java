@@ -23,8 +23,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-@ProposedRating Green (eal@eecs.berkeley.edu)
-@AcceptedRating Green (davisj@eecs.berkeley.edu)
 */
 
 package ptolemy.actor;
@@ -54,6 +52,8 @@ import ptolemy.kernel.util.IllegalActionException;
    @author Mudit Goel, Edward A. Lee, Lukito Muliadi, Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 0.2
+   @Pt.ProposedRating Green (eal@eecs.berkeley.edu)
+   @Pt.AcceptedRating Green (davisj@eecs.berkeley.edu)
 */
 public interface Executable {
 

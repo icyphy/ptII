@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Red (liuj@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.ct.lib;
@@ -83,6 +81,8 @@ import java.util.Iterator;
    @author Jie Liu
    @version $Id$
    @since Ptolemy II 1.0
+   @Pt.ProposedRating Red (liuj@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
    @see ptolemy.domains.ct.kernel.CTBaseIntegrator
 */
 public class ContinuousTransferFunction extends TypedCompositeActor {

@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Red (eal@eecs.berkeley.edu)
-@AcceptedRating Red (johnr@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.gui;
@@ -66,6 +64,8 @@ import javax.swing.JLabel;
    @author Steve Neuendorffer and Edward A. Lee
    @version $Id$
    @since Ptolemy II 0.4
+   @Pt.ProposedRating Red (eal@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (johnr@eecs.berkeley.edu)
 */
 
 public class EditorPaneFactory extends Attribute {

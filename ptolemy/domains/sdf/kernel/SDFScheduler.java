@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Green (neuendor@eecs.berkeley.edu)
-@AcceptedRating Green (neuendor@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.sdf.kernel;
@@ -129,6 +127,8 @@ is somewhat conservative in this respect.
 @author Stephen Neuendorffer and Brian Vogel
 @version $Id$
 @since Ptolemy II 0.2
+@Pt.ProposedRating Green (neuendor@eecs.berkeley.edu)
+@Pt.AcceptedRating Green (neuendor@eecs.berkeley.edu)
 */
 public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
     /** Construct a scheduler with no container(director)

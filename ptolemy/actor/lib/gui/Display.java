@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION 2
 COPYRIGHTENDKEY
-@ProposedRating Yellow (yuhong@eecs.berkeley.edu)
-@AcceptedRating Yellow (vogel@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.gui;
@@ -90,6 +88,8 @@ import javax.swing.text.BadLocationException;
    @author  Yuhong Xiong, Edward A. Lee
    @version $Id$
    @since Ptolemy II 1.0
+   @Pt.ProposedRating Yellow (yuhong@eecs.berkeley.edu)
+   @Pt.AcceptedRating Yellow (vogel@eecs.berkeley.edu)
 */
 public class Display extends Sink implements Placeable {
 

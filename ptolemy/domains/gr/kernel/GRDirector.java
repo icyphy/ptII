@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating yellow (chf@eecs.berkeley.edu)
-@AcceptedRating yellow (vogel@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.gr.kernel;
@@ -77,6 +75,8 @@ import java.util.List;
    @author C. Fong, Steve Neuendorffer, Contributor: Christopher Hylands
    @version $Id$
    @since Ptolemy II 1.0
+   @Pt.ProposedRating yellow (chf@eecs.berkeley.edu)
+   @Pt.AcceptedRating yellow (vogel@eecs.berkeley.edu)
 */
 public class GRDirector extends StaticSchedulingDirector {
 

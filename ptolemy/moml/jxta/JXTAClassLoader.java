@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Red (ellen_zh@eecs.berkeley.edu)
-@AcceptedRating Red (cxheecs.berkeley.edu)
 */
 
 package ptolemy.moml.jxta;
@@ -41,6 +39,8 @@ package ptolemy.moml.jxta;
    @author Yang Zhao
    @version $Id$
    @since Ptolemy II 2.1
+   @Pt.ProposedRating Red (ellen_zh@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (cxheecs.berkeley.edu)
 */
 public class JXTAClassLoader extends ClassLoader {
     // FIXME: the name of this method needs to be changed

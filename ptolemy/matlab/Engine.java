@@ -27,8 +27,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Yellow (zkemenczy@rim.net)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.matlab;
@@ -165,6 +163,8 @@ import ptolemy.math.Complex;
    @author Zoltan Kemenczy and Sean Simmons, Research in Motion Limited.
    @version $Id$
    @since Ptolemy II 2.0
+   @Pt.ProposedRating Yellow (zkemenczy@rim.net)
+   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 public class Engine {
     /** Load the "ptmatlab" native interface. Use a classpath-relative

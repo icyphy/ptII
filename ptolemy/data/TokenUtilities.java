@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Green (neuendor@eecs.berkeley.edu)
-@AcceptedRating Green (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.data;
@@ -42,6 +40,8 @@ import java.text.DecimalFormat;
    @author  Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 2.1
+   @Pt.ProposedRating Green (neuendor@eecs.berkeley.edu)
+   @Pt.AcceptedRating Green (cxh@eecs.berkeley.edu)
 */
 public class TokenUtilities {
 

@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Yellow (mudit@eecs.berkeley.edu)
-@AcceptedRating Red
 */
 
 package ptolemy.domains.pn.kernel.event;
@@ -46,6 +44,8 @@ import ptolemy.kernel.util.InternalErrorException;
    @author Mudit Goel
    @version $Id$
    @since Ptolemy II 0.3
+   @Pt.ProposedRating Yellow (mudit@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red
 */
 
 public class PNProcessEvent {

@@ -24,10 +24,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Green (cxh@eecs.berkeley.edu)
 added description() method
 made many methods throw IllegalActionException
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
 
 */
 
@@ -66,6 +64,8 @@ import ptolemy.kernel.util.InvalidStateException;
    @author Yuhong Xiong
    @version $Id$
    @since Ptolemy II 0.2
+   @Pt.ProposedRating Green (cxh@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 // Note: To make it easier to reference the above paper, some of the

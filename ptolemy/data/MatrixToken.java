@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Green (neuendor@eecs.berkeley.edu)
-@AcceptedRating Yellow (wbwu@eecs.berkeley.edu)
 
 */
 
@@ -53,6 +51,8 @@ import ptolemy.math.Complex;
    @author Yuhong Xiong, Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 0.2
+   @Pt.ProposedRating Green (neuendor@eecs.berkeley.edu)
+   @Pt.AcceptedRating Yellow (wbwu@eecs.berkeley.edu)
 */
 public abstract class MatrixToken extends Token {
 

@@ -25,8 +25,6 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 
-   @ProposedRating Green (mudit@eecs.berkeley.edu)
-   @AcceptedRating Yellow (davisj@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.process;
@@ -71,6 +69,8 @@ import ptolemy.kernel.util.Workspace;
    @author John S. Davis II
    @version $Id$
    @since Ptolemy II 1.0
+   @Pt.ProposedRating Green (mudit@eecs.berkeley.edu)
+   @Pt.AcceptedRating Yellow (davisj@eecs.berkeley.edu)
    @see ptolemy.actor.process.Branch
    @see ptolemy.actor.process.BranchController
 

@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Yellow (cxh@eecs.berkeley.edu)
-@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.sr.lib;
@@ -53,6 +51,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @author Paul Whitaker, Mudit Goel, Edward A. Lee, Christopher Hylands
    @version $Id$
    @since Ptolemy II 2.0
+   @Pt.ProposedRating Yellow (cxh@eecs.berkeley.edu)
+   @Pt.AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 public class SingleTokenDistributor extends Transformer
     implements SequenceActor {

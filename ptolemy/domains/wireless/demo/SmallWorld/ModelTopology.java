@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Red (sanjeev@eecs.berkeley.edu)
-@AcceptedRating Red (sanjeev@eecs.berkeley.edu)
 */
 package ptolemy.domains.wireless.demo.SmallWorld;
 
@@ -52,6 +50,8 @@ import ptolemy.kernel.util.Locatable;
    @author Yang Zhao and Edward A. Lee
    @version $Id$
    @since Ptolemy II 4.0
+   @Pt.ProposedRating Red (sanjeev@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (sanjeev@eecs.berkeley.edu)
 */
 public class ModelTopology {
 

@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Yellow (celaine@eecs.berkeley.edu)
-@AcceptedRating Yellow (celaine@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.de.lib;
@@ -68,6 +66,8 @@ import java.util.LinkedList;
    @author Elaine Cheong and Yang Zhao and Xiaojun Liu
    @version $Id$
    @since Ptolemy II 2.0
+   @Pt.ProposedRating Yellow (celaine@eecs.berkeley.edu)
+   @Pt.AcceptedRating Yellow (celaine@eecs.berkeley.edu)
 */
 
 public class PreemptableTask extends DETransformer {

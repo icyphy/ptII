@@ -23,8 +23,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (eal@eecs.berkeley.edu)
 
 */
 
@@ -103,6 +101,8 @@ import java.net.URL;
    @author  Edward A. Lee, Christopher Hylands
    @version $Id$
    @since Ptolemy II 0.4
+   @Pt.ProposedRating Yellow (eal@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (eal@eecs.berkeley.edu)
 */
 public class MoMLApplet extends PtolemyApplet {
 

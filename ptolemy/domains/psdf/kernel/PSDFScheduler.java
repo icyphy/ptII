@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Red (neuendor@eecs.berkeley.edu)
-@AcceptedRating Red (neuendor@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.psdf.kernel;
@@ -118,6 +116,8 @@ pages 84-89, Paris, France, June 2000.
 @author Stephen Neuendorffer, Shuvra S. Bhattacharyya
 @version $Id$
 @since Ptolemy II 3.1
+@Pt.ProposedRating Red (neuendor@eecs.berkeley.edu)
+@Pt.AcceptedRating Red (neuendor@eecs.berkeley.edu)
 */
 public class PSDFScheduler extends BaseSDFScheduler {
     /** Construct a scheduler with no container(director)

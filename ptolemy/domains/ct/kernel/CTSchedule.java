@@ -23,8 +23,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-@ProposedRating Yellow (liuj@eecs.berkeley.edu)
-@AcceptedRating Red (liuj@eecs.berkeley.edu)
 
 */
 
@@ -73,6 +71,8 @@ import java.util.List;
    @author  Jie Liu
    @version $Id$
    @since Ptolemy II 2.0
+   @Pt.ProposedRating Yellow (liuj@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (liuj@eecs.berkeley.edu)
 */
 public class CTSchedule extends Schedule {
 

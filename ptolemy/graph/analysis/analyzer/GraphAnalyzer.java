@@ -21,8 +21,6 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-@ProposedRating Red (shahrooz@eng.umd.edu)
-@AcceptedRating Red (ssb@eng.umd.edu)
 */
 
 package ptolemy.graph.analysis.analyzer;
@@ -36,6 +34,8 @@ import ptolemy.graph.Graph;
    which analyze graphs and compute results, that will be accessed through methods
    that interfaces that extend this one will define.
    @since Ptolemy II 4.0
+   @Pt.ProposedRating Red (shahrooz@eng.umd.edu)
+   @Pt.AcceptedRating Red (ssb@eng.umd.edu)
    @author Shahrooz Shahparnia
    @version $Id$
 */

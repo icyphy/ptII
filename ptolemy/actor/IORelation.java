@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Green (eal@eecs.berkeley.edu)
-@AcceptedRating Green (davisj@eecs.berkeley.edu)
 
 */
 
@@ -84,6 +82,8 @@ import java.util.List;
    @author Edward A. Lee, Jie Liu
    @version $Id$
    @since Ptolemy II 0.2
+   @Pt.ProposedRating Green (eal@eecs.berkeley.edu)
+   @Pt.AcceptedRating Green (davisj@eecs.berkeley.edu)
 */
 public class IORelation extends ComponentRelation {
 

@@ -95,6 +95,8 @@ import ptolemy.vergil.basic.LocatableNodeController;
    @author Rowland R Johnson
    @version $Id$
    @since Ptolemy II 1.0
+   @Pt.ProposedRating Red (cxh@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
 */
 public class PortConfigurerDialog
     extends PtolemyDialog

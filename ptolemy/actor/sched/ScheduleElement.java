@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Green (vogel@eecs.berkeley.edu)
-@AcceptedRating Yellow (chf@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.sched;
@@ -54,6 +52,8 @@ import java.util.Iterator;
    @author Brian K. Vogel
    @version $Id$
    @since Ptolemy II 1.0
+   @Pt.ProposedRating Green (vogel@eecs.berkeley.edu)
+   @Pt.AcceptedRating Yellow (chf@eecs.berkeley.edu)
    @see ptolemy.actor.sched.Firing
    @see ptolemy.actor.sched.Schedule
 */

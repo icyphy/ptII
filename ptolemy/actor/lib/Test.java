@@ -25,8 +25,6 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 review output port.
 */
 
@@ -97,6 +95,8 @@ test data.
 @author Edward A. Lee, Christopher Hylands, Jim Armstrong
 @version $Id$
 @since Ptolemy II 1.0
+@Pt.ProposedRating Yellow (eal@eecs.berkeley.edu)
+@Pt.AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 
 public class Test extends NonStrictTest {

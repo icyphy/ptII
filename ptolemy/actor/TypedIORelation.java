@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Green (yuhong@eecs.berkeley.edu)
-@AcceptedRating Green (liuxj@eecs.berkeley.edu)
 
 */
 
@@ -59,6 +57,8 @@ import ptolemy.kernel.util.Workspace;
    @author Yuhong Xiong
    @version $Id$
    @since Ptolemy II 0.2
+   @Pt.ProposedRating Green (yuhong@eecs.berkeley.edu)
+   @Pt.AcceptedRating Green (liuxj@eecs.berkeley.edu)
 */
 public class TypedIORelation extends IORelation {
 

@@ -23,8 +23,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-@ProposedRating Yellow (liuxj@eecs.berkeley.edu)
-@AcceptedRating Yellow (liuxj@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.fsm.kernel;
@@ -97,6 +95,8 @@ import java.util.Map;
    @author Xiaojun Liu
    @version $Id$
    @since Ptolemy II 0.4
+   @Pt.ProposedRating Yellow (liuxj@eecs.berkeley.edu)
+   @Pt.AcceptedRating Yellow (liuxj@eecs.berkeley.edu)
    @see FSMActor
 */
 public class FSMDirector extends Director

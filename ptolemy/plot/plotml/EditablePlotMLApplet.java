@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-@ProposedRating red (eal@eecs.berkeley.edu)
-@AcceptedRating red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.plot.plotml;
@@ -52,6 +50,8 @@ import javax.swing.JPanel;
    @author Edward A. Lee
    @version $Id$
    @since Ptolemy II 0.4
+   @Pt.ProposedRating red (eal@eecs.berkeley.edu)
+   @Pt.AcceptedRating red (cxh@eecs.berkeley.edu)
 */
 public class EditablePlotMLApplet extends PlotMLApplet {
 

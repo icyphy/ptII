@@ -19,8 +19,6 @@
   BASIS, AND THALES HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT,
   UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-  @ProposedRating Yellow (jerome.blanc@thalesgroup.com)
-  @AcceptedRating
 */
 package thales.actor.gui;
 
@@ -71,6 +69,8 @@ import thales.vergil.navigable.NavigationPTree;
    @author J&eacute;r&ocirc;me Blanc, Soci&eacute;t&eacute; : Thales Research and technology, 01 sept. 2003
    @version $Id$
    @since Ptolemy II 3.1
+   @Pt.ProposedRating Yellow (jerome.blanc@thalesgroup.com)
+   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
 */
 public class SingleWindowHTMLViewer
     extends HTMLViewer

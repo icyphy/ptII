@@ -23,8 +23,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-@ProposedRating Red (cxh@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.gui;
@@ -47,6 +45,8 @@ import javax.swing.JPanel;
    @author Edward A. Lee
    @version $Id$
    @since Ptolemy II 3.0
+   @Pt.ProposedRating Red (cxh@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
    @see ExpressionShellTableau
    @see ShellTextArea
    @see ExpressionShellEffigy

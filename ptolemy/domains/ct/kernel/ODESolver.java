@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Green (liuj@eecs.berkeley.edu)
-@AcceptedRating Green (yuhong@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.ct.kernel;
@@ -78,6 +76,8 @@ import ptolemy.kernel.util.Workspace;
    @author Jie Liu
    @version $Id$
    @since Ptolemy II 0.2
+   @Pt.ProposedRating Green (liuj@eecs.berkeley.edu)
+   @Pt.AcceptedRating Green (yuhong@eecs.berkeley.edu)
 */
 public abstract class ODESolver extends NamedObj {
 

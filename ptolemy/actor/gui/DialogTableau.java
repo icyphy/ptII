@@ -23,8 +23,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-@ProposedRating Red (rowland@eecs.berkeley.edu)
-@AcceptedRating
 */
 
 package ptolemy.actor.gui;
@@ -61,6 +59,8 @@ import ptolemy.kernel.util.NamedObj;
    @author  Rowland R Johnson
    @version $Id$
    @since Ptolemy II 4.0
+   @Pt.ProposedRating Red (rowland@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
    @see Effigy
 */
 public class DialogTableau extends Tableau {

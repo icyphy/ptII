@@ -25,8 +25,6 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 
-   @ProposedRating Red (cxh@eecs.berkeley.edu)
-   @AcceptedRating Red (eal@eecs.berkeley.edu)
 */
 
 package ptolemy.copernicus.java;
@@ -57,6 +55,8 @@ import ptolemy.moml.filter.RemoveGraphicalClasses;
     @author Christopher Hylands
     @version $Id$
     @since Ptolemy II 2.0
+    @Pt.ProposedRating Red (cxh@eecs.berkeley.edu)
+    @Pt.AcceptedRating Red (eal@eecs.berkeley.edu)
 */
 public class TestApplication implements ChangeListener {
     /** Parse the xml file and run it.

@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Green (liuj@eecs.berkeley.edu)
-@AcceptedRating Yellow (eal@eecs.berkeley.edu)
 Review transferOutputs().
 Review changes in fire() and _dequeueEvents().
 Review fireAtCurrentTime()'s use of the time Double.NEGATIVE_INFINITY
@@ -194,6 +192,8 @@ import java.util.Set;
    @author Lukito Muliadi, Edward A. Lee, Jie Liu, Haiyang Zheng
    @version $Id$
    @since Ptolemy II 0.2
+   @Pt.ProposedRating Green (liuj@eecs.berkeley.edu)
+   @Pt.AcceptedRating Yellow (eal@eecs.berkeley.edu)
    @see DEReceiver
    @see ptolemy.actor.util.CalendarQueue
 */

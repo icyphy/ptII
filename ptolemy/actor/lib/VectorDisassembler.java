@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Yellow (celaine@eecs.berkeley.edu)
-@AcceptedRating Yellow (celaine@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib;
@@ -58,6 +56,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @author Jie Liu, Elaine Cheong
    @version $Id$
    @since Ptolemy II 2.0
+   @Pt.ProposedRating Yellow (celaine@eecs.berkeley.edu)
+   @Pt.AcceptedRating Yellow (celaine@eecs.berkeley.edu)
    @see VectorAssembler
 */
 public class VectorDisassembler extends Transformer {

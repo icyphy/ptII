@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Green (djstone@eecs.berkeley.edu)
-@AcceptedRating Green (eal@ptolemy.eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.string;
@@ -57,6 +55,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @author Antonio Yordan-Nones, Colin Cochran (contributor Edward A. Lee)
    @version $Id$
    @since Ptolemy II 4.0
+   @Pt.ProposedRating Green (djstone@eecs.berkeley.edu)
+   @Pt.AcceptedRating Green (eal@ptolemy.eecs.berkeley.edu)
 */
 
 public class StringMatches extends TypedAtomicActor {

@@ -30,8 +30,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Yellow (ctsay@eecs.berkeley.edu)
-@AcceptedRating Red (ctsay@eecs.berkeley.edu)
 */
 
     package ptolemy.math;
@@ -50,6 +48,8 @@ COPYRIGHTENDKEY
    @author Jeff Tsay
    @version $Id$
    @since Ptolemy II 1.0
+   @Pt.ProposedRating Yellow (ctsay@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (ctsay@eecs.berkeley.edu)
 */
 public class ComplexMatrixMath {
 

@@ -25,8 +25,6 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 
-   @ProposedRating Red (liuj@eecs.berkeley.edu)
-   @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.ct.lib;
@@ -55,6 +53,8 @@ import ptolemy.kernel.util.Workspace;
    @author Jie Liu
    @version $Id$
    @since Ptolemy II 1.0
+   @Pt.ProposedRating Red (liuj@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 public class CTTriggeredSampler extends Transformer
     implements CTEventGenerator, TimedActor {

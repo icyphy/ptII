@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Red (eal@eecs.berkeley.edu)
-@AcceptedRating Red (eal@eecs.berkeley.edu)
 
 */
 
@@ -53,6 +51,8 @@ import javax.swing.table.AbstractTableModel;
    @author Bart Kienhuis and Edward A. Lee
    @version $Id$
    @since Ptolemy II 2.1
+   @Pt.ProposedRating Red (eal@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (eal@eecs.berkeley.edu)
 */
 
 public class MatrixPane extends JScrollPane {

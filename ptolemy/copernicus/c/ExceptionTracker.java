@@ -25,8 +25,6 @@ MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
 
-@ProposedRating Red (ankush@glue.umd.edu)
-@AcceptedRating Red (ankush@glue.umd.edu)
 
 */
 
@@ -44,6 +42,8 @@ import java.util.LinkedList;
     @author Ankush Varma
     @version $Id$
     @since Ptolemy II 2.0
+    @Pt.ProposedRating Red (ankush@glue.umd.edu)
+    @Pt.AcceptedRating Red (ankush@glue.umd.edu)
 */
 
 public class ExceptionTracker {

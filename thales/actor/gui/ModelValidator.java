@@ -19,8 +19,6 @@
   BASIS, AND THALES HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT,
   UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-  @ProposedRating Yellow (jerome.blanc@thalesgroup.com)
-  @AcceptedRating
 
 /**
  * Created on 01 sept. 2003
@@ -28,8 +26,6 @@
  * If the present is considered as mature and necessary, it has to be merged
  * with the MoML parser.
  *
- * @ProposedRating Red (jerome.blanc@thalesgroup.com)
- * @AcceptedRating
  */
 package thales.actor.gui;
 
@@ -60,6 +56,8 @@ a MoML file. Used to avoid MoMLparser bugs on older Ptolemy MoML files.</p>
  @author J&eacute;r&ocirc;me Blanc & Benoit Masson
  @version $Id$
  @since Ptolemy II 4.0
+ @Pt.ProposedRating @ProposedRating Red (jerome.blanc@thalesgroup.com)
+ @Pt.AcceptedRating @AcceptedRating
  */
 public class ModelValidator {
 

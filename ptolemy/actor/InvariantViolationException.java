@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Red (hyzheng@eecs.berkeley.edu)
-@AcceptedRating Red (hyzheng@eecs.berkeley.edu)
 */
 
 package ptolemy.actor;
@@ -41,6 +39,8 @@ import ptolemy.kernel.util.Nameable;
    @author Haiyang Zheng
    @version $Id$
    @since Ptolemy II 4.0
+   @Pt.ProposedRating Red (hyzheng@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (hyzheng@eecs.berkeley.edu)
 */
 public class InvariantViolationException extends IllegalActionException {
     /** Construct an exception with a detail message.

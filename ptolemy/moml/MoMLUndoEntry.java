@@ -23,8 +23,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.moml;
@@ -53,6 +51,8 @@ import ptolemy.kernel.util.NamedObj;
    @author  Neil Smyth and Edward A. Lee
    @version $Id$
    @since Ptolemy II 2.1
+   @Pt.ProposedRating Yellow (eal@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 public class MoMLUndoEntry implements UndoAction, ChangeListener {
 

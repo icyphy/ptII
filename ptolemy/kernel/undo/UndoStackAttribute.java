@@ -23,8 +23,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.kernel.undo;
@@ -65,6 +63,8 @@ import java.util.Stack;
    @author Neil Smyth and Edward A. Lee
    @version $Id$
    @since Ptolemy II 3.1
+   @Pt.ProposedRating Yellow (eal@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 public class UndoStackAttribute extends SingletonAttribute {
 

@@ -25,8 +25,6 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 
-   @ProposedRating Red (davisj@eecs.berkeley.edu)
-   @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.csp.demo.BusContention;
@@ -48,6 +46,8 @@ import ptolemy.actor.IOPort;
    @author John S. Davis II
    @version $Id$
    @since Ptolemy II 0.3
+   @Pt.ProposedRating Red (davisj@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 public class PortChannelCode {

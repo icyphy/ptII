@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Green (cxh@eecs.berkeley.edu)
-@AcceptedRating Green (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor;
@@ -66,6 +64,8 @@ import java.util.List;
    @author Yuhong Xiong
    @version $Id$
    @since Ptolemy II 0.2
+   @Pt.ProposedRating Green (cxh@eecs.berkeley.edu)
+   @Pt.AcceptedRating Green (cxh@eecs.berkeley.edu)
    @see ptolemy.actor.AtomicActor
    @see ptolemy.actor.TypedCompositeActor
    @see ptolemy.actor.TypedIOPort

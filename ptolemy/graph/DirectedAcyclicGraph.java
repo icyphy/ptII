@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Green (yuhong@eecs.berkeley.edu)
-@AcceptedRating Green (kienhuis@eecs.berkeley.edu)
 
 */
 
@@ -66,6 +64,8 @@ import ptolemy.graph.analysis.strategy.CachedStrategy;
    @author Yuhong Xiong, Shuvra S. Bhattacharyya
    @version $Id$
    @since Ptolemy II 0.2
+   @Pt.ProposedRating Green (yuhong@eecs.berkeley.edu)
+   @Pt.AcceptedRating Green (kienhuis@eecs.berkeley.edu)
 */
 
 // The methods greatestLowerBound, downSet, greatestElement share the

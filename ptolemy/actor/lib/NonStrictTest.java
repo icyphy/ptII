@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Yellow (cxh@eecs.berkeley.edu)
-@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib;
@@ -84,6 +82,8 @@ The value of the reference token is set in the wrapup() method.
 @author Paul Whitaker, Christopher Hylands, Edward A. Lee
 @version $Id$
 @since Ptolemy II 2.0
+@Pt.ProposedRating Yellow (cxh@eecs.berkeley.edu)
+@Pt.AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 
 public class NonStrictTest extends Sink {

@@ -26,8 +26,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Red (zkemenczy@rim.net)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib;
@@ -58,6 +56,8 @@ import java.util.Iterator;
    @author Zoltan Kemenczy
    @version $Id$
    @since Ptolemy II 2.1
+   @Pt.ProposedRating Red (zkemenczy@rim.net)
+   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
    @see ptolemy.actor.IORelation
 */
 

@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Red (vogel@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.media.javasound;
@@ -100,6 +98,8 @@ import javax.sound.sampled.SourceDataLine;
    @author Brian K. Vogel
    @version $Id$
    @since Ptolemy II 1.0
+   @Pt.ProposedRating Red (vogel@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
    @see ptolemy.media.javasound.SoundCapture
 */
 public class SoundWriter {

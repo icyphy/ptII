@@ -24,8 +24,6 @@ BASIS, AND THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION
 LIMITED HAVE NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-@ProposedRating Yellow (nsmyth@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
 
 Created : May 1998
 
@@ -45,6 +43,8 @@ import ptolemy.kernel.util.IllegalActionException;
    @author Xiaojun Liu
    @version $Id$
    @since Ptolemy II 0.3
+   @Pt.ProposedRating Yellow (nsmyth@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
    @see ptolemy.data.expr.ASTPtRootNode
    @see ptolemy.data.expr.PtParser
    @see ptolemy.data.Token

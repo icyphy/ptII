@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Yellow (pwhitake@eecs.berkeley.edu)
-@AcceptedRating Yellow (pwhitake@eecs.berkeley.edu)
 
 */
 
@@ -62,6 +60,8 @@ import ptolemy.graph.analysis.TransitiveClosureAnalysis;
    Shahrooz Shahparnia
    @version $Id$
    @since Ptolemy II 0.2
+   @Pt.ProposedRating Yellow (pwhitake@eecs.berkeley.edu)
+   @Pt.AcceptedRating Yellow (pwhitake@eecs.berkeley.edu)
 */
 public class DirectedGraph extends Graph {
 

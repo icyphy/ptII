@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating yellow (chf@eecs.berkeley.edu)
-@AcceptedRating yellow (vogel@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.gr.kernel;
@@ -64,6 +62,8 @@ Scheduling is done by performing a topological sort on all the actors.
 @author C. Fong, Steve Neuendorffer
 @version $Id$
 @since Ptolemy II 1.0
+@Pt.ProposedRating yellow (chf@eecs.berkeley.edu)
+@Pt.AcceptedRating yellow (vogel@eecs.berkeley.edu)
 */
 public class GRScheduler extends Scheduler {
 

@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Yellow (yuhong@eecs.berkeley.edu)
-@AcceptedRating red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.math;
@@ -60,6 +58,8 @@ package ptolemy.math;
    @author Sarah Packman, Yuhong Xiong
    @version $Id$
    @since Ptolemy II 0.4
+   @Pt.ProposedRating Yellow (yuhong@eecs.berkeley.edu)
+   @Pt.AcceptedRating red (cxh@eecs.berkeley.edu)
 */
 
 public class Interpolation {

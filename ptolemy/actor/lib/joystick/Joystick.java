@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating red (cxh@eecs.berkeley.edu)
-@AcceptedRating red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.joystick;
@@ -74,6 +72,8 @@ import com.centralnexus.input.JoystickListener;
    @author Christopher Hylands, David Lee, Paul Yang
    @version $Id$
    @since Ptolemy II 3.0
+   @Pt.ProposedRating red (cxh@eecs.berkeley.edu)
+   @Pt.AcceptedRating red (cxh@eecs.berkeley.edu)
    @see ptolemy.actor.lib.io.comm.SerialComm
 */
 public class Joystick extends TypedAtomicActor implements JoystickListener {

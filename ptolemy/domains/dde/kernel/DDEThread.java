@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Yellow (davisj@eecs.berkeley.edu)
-@AcceptedRating Yellow (yuhong@eecs.berkeley.edu)
 
 */
 
@@ -58,6 +56,8 @@ import java.util.Iterator;
    @author John S. Davis II
    @version $Id$
    @since Ptolemy II 0.3
+   @Pt.ProposedRating Yellow (davisj@eecs.berkeley.edu)
+   @Pt.AcceptedRating Yellow (yuhong@eecs.berkeley.edu)
    @see ptolemy.domains.dde.kernel.TimeKeeper
 */
 public class DDEThread extends ProcessThread {

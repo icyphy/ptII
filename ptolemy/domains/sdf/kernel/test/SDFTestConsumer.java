@@ -23,8 +23,6 @@
 
   PT_COPYRIGHT_VERSION 2
   COPYRIGHTENDKEY
-  @ProposedRating Red
-  @AcceptedRating Red
 */
 package ptolemy.domains.sdf.kernel.test;
 
@@ -49,6 +47,8 @@ import ptolemy.kernel.util.Workspace;
  *
  * @version $Id$
  * @since Ptolemy II 0.4
+ * @Pt.ProposedRating Red
+ * @Pt.AcceptedRating Red
  * @author Steve Neuendorffer
  */
 public class SDFTestConsumer extends TypedAtomicActor {

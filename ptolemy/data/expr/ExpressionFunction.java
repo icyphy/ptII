@@ -23,8 +23,6 @@ BASIS, AND THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION
 LIMITED HAVE NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-@ProposedRating Yellow (neuendor@eecs.berkeley.edu)
-@AcceptedRating Red (neuendor@eecs.berkeley.edu)
 
 */
 package ptolemy.data.expr;
@@ -51,6 +49,8 @@ import java.util.Map;
    @author Steve Neuendorffer, Xiaojun Liu
    @version $Id$
    @since Ptolemy II 2.1
+   @Pt.ProposedRating Yellow (neuendor@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (neuendor@eecs.berkeley.edu)
    @see ptolemy.data.expr.ASTPtRootNode
 */
 

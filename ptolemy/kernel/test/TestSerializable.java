@@ -23,8 +23,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-@ProposedRating Red
-@AcceptedRating Red
 */
 
 package ptolemy.kernel.test;
@@ -47,6 +45,8 @@ import java.io.ObjectOutputStream;
    @author Christopher Hylands
    @version $Id$
    @since Ptolemy II 0.2
+   @Pt.ProposedRating Red
+   @Pt.AcceptedRating Red
 */
 public class TestSerializable {
 

@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Red (cxh@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 /**
@@ -34,6 +32,8 @@ COPYRIGHTENDKEY
  * @author John Hall
  * @version $Id$
  * @since Ptolemy II 0.3
+ * @Pt.ProposedRating Red (cxh@eecs.berkeley.edu)
+ * @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
  */
 package ptolemy.domains.csp.demo.DiningPhilosophers;
 

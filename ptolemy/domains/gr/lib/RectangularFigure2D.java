@@ -25,8 +25,6 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 
-   @ProposedRating Yellow (ismael@eecs.berkeley.edu)
-   @AcceptedRating Red (chf@eecs.berkeley.edu)
 */
 package ptolemy.domains.gr.lib;
 
@@ -57,6 +55,8 @@ import diva.canvas.toolbox.BasicFigure;
    @author Ismael M. Sarmiento, Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 4.0
+   @Pt.ProposedRating Yellow (ismael@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (chf@eecs.berkeley.edu)
 */
 public abstract class RectangularFigure2D extends GRShape2D {
 

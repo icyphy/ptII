@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Red (celaine@eecs.berkeley.edu)
-@AcceptedRating Red (celaine@eecs.berkeley.edu)
 */
 
 package ptolemy.vergil.debugger;
@@ -58,6 +56,8 @@ import javax.swing.JMenuItem;
    @author Elaine Cheong
    @version $Id$
    @since Ptolemy II 2.1
+   @Pt.ProposedRating Red (celaine@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (celaine@eecs.berkeley.edu)
 */
 public class BreakpointDialogFactory implements MenuItemFactory {
 

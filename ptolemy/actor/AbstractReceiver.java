@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Green (eal@eecs.berkeley.edu)
-@AcceptedRating Green (bart@eecs.berkeley.edu)
 
 */
 
@@ -49,6 +47,8 @@ import ptolemy.kernel.util.IllegalActionException;
    @author Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 1.0
+   @Pt.ProposedRating Green (eal@eecs.berkeley.edu)
+   @Pt.AcceptedRating Green (bart@eecs.berkeley.edu)
    @see ptolemy.actor.Receiver
 */
 public abstract class AbstractReceiver implements Receiver {

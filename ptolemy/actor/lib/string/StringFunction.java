@@ -25,8 +25,6 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 
-   @ProposedRating Green (ismael@eecs.berkeley.edu)
-   @AcceptedRating Green (net@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.string;
@@ -64,6 +62,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @author Mike Kofi Okyere, Ismael M. Sarmiento
    @version $Id$
    @since Ptolemy II 4.0
+   @Pt.ProposedRating Green (ismael@eecs.berkeley.edu)
+   @Pt.AcceptedRating Green (net@eecs.berkeley.edu)
 */
 
 public class StringFunction extends Transformer {

@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Red (neuendor@eecs.berkeley.edu)
-@AcceptedRating Red (neuendor@eecs.berkeley.edu)
 
 */
 package ptolemy.domains.gr.kernel;
@@ -48,6 +46,8 @@ import javax.media.j3d.Node;
    @author Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 2.0
+   @Pt.ProposedRating Red (neuendor@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (neuendor@eecs.berkeley.edu)
 
 */
 public class SceneGraphToken extends Token {

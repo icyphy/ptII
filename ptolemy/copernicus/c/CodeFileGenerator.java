@@ -28,8 +28,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Red (ssb@eng.umd.edu)
-@AcceptedRating Red (ssb@eng.umd.edu)
 */
 
 package ptolemy.copernicus.c;
@@ -48,6 +46,8 @@ import java.util.List;
     @author Shuvra S. Bhattacharyya, Ankush Varma
     @version $Id$
     @since Ptolemy II 2.0
+    @Pt.ProposedRating Red (ssb@eng.umd.edu)
+    @Pt.AcceptedRating Red (ssb@eng.umd.edu)
 */
 
 public class CodeFileGenerator extends CodeGenerator {

@@ -25,8 +25,6 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 
-   @ProposedRating Green (mudit@eecs.berkeley.edu)
-   @AcceptedRating Yellow (mudit@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.process;
@@ -91,6 +89,8 @@ import ptolemy.data.Token;
    @author Neil Smyth, Mudit Goel, John S. Davis II
    @version $Id$
    @since Ptolemy II 0.2
+   @Pt.ProposedRating Green (mudit@eecs.berkeley.edu)
+   @Pt.AcceptedRating Yellow (mudit@eecs.berkeley.edu)
    @see ptolemy.actor.process.BoundaryDetector
 
 */

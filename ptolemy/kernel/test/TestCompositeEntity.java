@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Yellow (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.kernel.test;
@@ -39,6 +38,8 @@ import ptolemy.kernel.CompositeEntity;
    @author Christopher Hylands
    @version $Id$
    @since Ptolemy II 0.2
+   @Pt.ProposedRating Yellow (cxh@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
 */
 public class TestCompositeEntity extends CompositeEntity {
     public String uniqueEntityName() {

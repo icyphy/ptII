@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Red (davisj@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
 
 */
 
@@ -66,6 +64,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @author John S. Davis II
    @version $Id$
    @since Ptolemy II 0.3
+   @Pt.ProposedRating Red (davisj@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
    @see ptolemy.domains.dde.kernel.DDEReceiver
 */
 

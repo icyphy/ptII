@@ -25,8 +25,6 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 
-   @ProposedRating Red (davisj@eecs.berkeley.edu)
-   @AcceptedRating Red (cxh@eecs.berkeley.edu)
 
 */
 
@@ -109,6 +107,8 @@ import java.util.LinkedList;
    @author John S. Davis II, Mudit Goel
    @version $Id$
    @since Ptolemy II 0.3
+   @Pt.ProposedRating Red (davisj@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
    @see ptolemy.domains.pn.kernel.PNDirector
    @see ptolemy.domains.dde.kernel.FeedBackDelay
    @see ptolemy.domains.dde.kernel.NullToken

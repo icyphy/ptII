@@ -21,8 +21,6 @@
   BASIS, AND THALES HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT,
   UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-  @ProposedRating Red (jerome.blanc@thalesgroup.com)
-  @AcceptedRating
 */
 package thales.vergil.navigable;
 
@@ -62,6 +60,8 @@ import thales.vergil.SingleWindowApplication;
    @author J&eacute;r&ocirc;me Blanc & Benoit Masson
    01 sept. 2003
    @since Ptolemy II 3.1
+   @Pt.ProposedRating Red (jerome.blanc@thalesgroup.com)
+   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
 */
 public class NavigableActorGraphFrame extends ActorGraphFrame {
 

@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Green (yuhong@eecs.berkeley.edu)
-@AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 review sendInside
 */
 
@@ -105,6 +103,8 @@ import java.util.List;
    @author Yuhong Xiong, Lukito Muliadi
    @version $Id$
    @since Ptolemy II 0.2
+   @Pt.ProposedRating Green (yuhong@eecs.berkeley.edu)
+   @Pt.AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 */
 
 public class TypedIOPort extends IOPort implements Typeable {

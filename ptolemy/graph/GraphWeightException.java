@@ -21,8 +21,6 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-@ProposedRating Red (myko@eng.umd.edu)
-@AcceptedRating Red (ssb@eng.umd.edu)
 */
 
 package ptolemy.graph;
@@ -37,6 +35,8 @@ package ptolemy.graph;
     @author Mingyung Ko
     @version $Id$
     @since Ptolemy II 2.1
+    @Pt.ProposedRating Red (myko@eng.umd.edu)
+    @Pt.AcceptedRating Red (ssb@eng.umd.edu)
 */
 public class GraphWeightException extends GraphException {
 

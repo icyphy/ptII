@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Green (neuendor@eecs.berkeley.edu)
-@AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 
 added truncatedUnsignedByteValue.  Note that this needs to be greatly
 extended to be made useful.
@@ -51,6 +49,8 @@ import ptolemy.kernel.util.IllegalActionException;
    @author Neil Smyth, Yuhong Xiong, Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 0.2
+   @Pt.ProposedRating Green (neuendor@eecs.berkeley.edu)
+   @Pt.AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 */
 public class LongToken extends ScalarToken {
 

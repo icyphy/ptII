@@ -23,8 +23,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Green (neuendor@eecs.berkeley.edu)
-@AcceptedRating Green (neuendor@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.sdf.kernel;
@@ -121,6 +119,8 @@ import ptolemy.kernel.util.Workspace;
    @author Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 0.2
+   @Pt.ProposedRating Green (neuendor@eecs.berkeley.edu)
+   @Pt.AcceptedRating Green (neuendor@eecs.berkeley.edu)
 */
 public class SDFDirector extends StaticSchedulingDirector {
 

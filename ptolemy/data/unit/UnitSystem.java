@@ -52,6 +52,8 @@ import ptolemy.kernel.util.NamedObj;
    @author Xiaojun Liu
    @version $Id$
    @since Ptolemy II 2.0
+   @Pt.ProposedRating Red (cxh@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
 */
 
 public class UnitSystem extends ScopeExtendingAttribute {

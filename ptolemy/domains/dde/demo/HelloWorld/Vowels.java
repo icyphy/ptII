@@ -25,8 +25,6 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 
-   @ProposedRating Red (davisj@eecs.berkeley.edu)
-   @AcceptedRating Red (davisj@eecs.berkeley.edu)
 
 */
 
@@ -47,6 +45,8 @@ import java.util.LinkedList;
    @author John S. Davis II
    @version $Id$
    @since Ptolemy II 1.0
+   @Pt.ProposedRating Red (davisj@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (davisj@eecs.berkeley.edu)
 */
 public class Vowels extends StringOut {
 

@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Green (eal@eecs.berkeley.edu)
-@AcceptedRating Green (neuendor@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib;
@@ -79,6 +77,8 @@ import ptolemy.kernel.util.SingletonConfigurableAttribute;
    @author Edward A. Lee
    @version $Id$
    @since Ptolemy II 2.1
+   @Pt.ProposedRating Green (eal@eecs.berkeley.edu)
+   @Pt.AcceptedRating Green (neuendor@eecs.berkeley.edu)
 */
 
 public class Stop extends Sink {

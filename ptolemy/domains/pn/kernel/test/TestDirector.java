@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Green (mudit@eecs.berkeley.edu)
-@AcceptedRating Red (mudit@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.pn.kernel.test;
@@ -54,6 +52,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @author Mudit Goel, Edward A. Lee
    @version $Id$
    @since Ptolemy II 0.3
+   @Pt.ProposedRating Green (mudit@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (mudit@eecs.berkeley.edu)
 
 */
 public class TestDirector extends AtomicActor {

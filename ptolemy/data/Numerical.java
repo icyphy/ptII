@@ -25,8 +25,6 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 
-   @ProposedRating Green (neuendor@eecs.berkeley.edu)
-   @AcceptedRating Green (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.data;
@@ -40,6 +38,8 @@ package ptolemy.data;
    @author Yuhong Xiong
    @version $Id$
    @since Ptolemy II 0.2
+   @Pt.ProposedRating Green (neuendor@eecs.berkeley.edu)
+   @Pt.AcceptedRating Green (cxh@eecs.berkeley.edu)
 */
 public interface Numerical {
 }

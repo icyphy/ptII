@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Red (eal@eecs.berkeley.edu)
-@AcceptedRating Red (eal@eecs.berkeley.edu)
 */
 
 package ptolemy.gui.demo;
@@ -56,6 +54,8 @@ import javax.swing.JTextArea;
    @author  Christopher Hylands
    @version $Id$
    @since Ptolemy II 0.4
+   @Pt.ProposedRating Red (eal@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (eal@eecs.berkeley.edu)
 */
 public class ShowRawDocumentApplet extends BasicJApplet {
     /** Constructor.

@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Yellow (chf@eecs.berkeley.edu)
-@AcceptedRating Red (chf@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.gr.lib;
@@ -51,6 +49,8 @@ import java.awt.geom.Point2D;
    @author Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 4.0
+   @Pt.ProposedRating Yellow (chf@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (chf@eecs.berkeley.edu)
 */
 public class Translate2D extends GRTransform2D {
 

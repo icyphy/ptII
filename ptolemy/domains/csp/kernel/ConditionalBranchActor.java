@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Red (bilung@eecs.berkeley.edu)
-@AcceptedRating Red (bilung@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.csp.kernel;
@@ -42,6 +40,8 @@ import ptolemy.actor.Actor;
    @author Bilung Lee
    @version $Id$
    @since Ptolemy II 0.4
+   @Pt.ProposedRating Red (bilung@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (bilung@eecs.berkeley.edu)
    @see ConditionalBranch
    @see ConditionalBranchController
 */

@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Green (yuhong@eecs.berkeley.edu)
-@AcceptedRating Green (kienhuis@eecs.berkeley.edu)
 
 */
 
@@ -47,6 +45,8 @@ package ptolemy.graph;
    @author Yuhong Xiong
    @version $Id$
    @since Ptolemy II 0.2
+   @Pt.ProposedRating Green (yuhong@eecs.berkeley.edu)
+   @Pt.AcceptedRating Green (kienhuis@eecs.berkeley.edu)
 */
 
 public interface CPO {

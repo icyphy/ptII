@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Yellow (liuj@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.ct.lib;
@@ -45,6 +43,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @author Jie Liu
    @version $Id$
    @since Ptolemy II 0.4
+   @Pt.ProposedRating Yellow (liuj@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 public class ZeroCrossingDetector extends LevelCrossingDetector {
 

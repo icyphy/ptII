@@ -22,8 +22,6 @@
    MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
    ENHANCEMENTS, OR MODIFICATIONS.
 
-   @ProposedRating Red (ankush@eng.umd.edu)
-   @AcceptedRating Red (ssb@eng.umd.edu)
 */
 
 package ptolemy.copernicus.c;
@@ -76,6 +74,8 @@ import java.util.LinkedList;
    @author Ankush Varma
    @version $Id$
 @since Ptolemy II 4.0
+@Pt.ProposedRating Red (ankush@eng.umd.edu)
+@Pt.AcceptedRating Red (ssb@eng.umd.edu)
 */
 
 public class CallGraphPruner {

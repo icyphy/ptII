@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.process.test;
@@ -44,6 +43,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @author Edward A. Lee, Mudit Goel
    @version $Id$
    @since Ptolemy II 0.2
+   @Pt.ProposedRating Yellow (eal@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
 */
 public class TestProcessActor extends TestActor {
 

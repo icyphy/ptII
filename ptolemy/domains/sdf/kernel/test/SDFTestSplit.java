@@ -23,8 +23,6 @@
 
   PT_COPYRIGHT_VERSION 2
   COPYRIGHTENDKEY
-  @ProposedRating Red
-  @AcceptedRating Red
 */
 package ptolemy.domains.sdf.kernel.test;
 
@@ -43,6 +41,8 @@ import ptolemy.kernel.util.NameDuplicationException;
  * @author Steve Neuendorffer
  * @version $Id$
  * @since Ptolemy II 0.4
+ * @Pt.ProposedRating Red
+ * @Pt.AcceptedRating Red
  */
 public class SDFTestSplit extends TypedAtomicActor {
     public SDFTestSplit(CompositeEntity container, String name)

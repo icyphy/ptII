@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Green (davisj@eecs.berkeley.edu)
-@AcceptedRating Green (kienhuis@eecs.berkeley.edu)
 
 */
 
@@ -55,6 +53,8 @@ import java.util.Comparator;
    @author John S. Davis II
    @version $Id$
    @since Ptolemy II 2.0
+   @Pt.ProposedRating Green (davisj@eecs.berkeley.edu)
+   @Pt.AcceptedRating Green (kienhuis@eecs.berkeley.edu)
    @see ptolemy.domains.dde.kernel.DDEThread
 */
 public class ReceiverComparator implements Comparator {

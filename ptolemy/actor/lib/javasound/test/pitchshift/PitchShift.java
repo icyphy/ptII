@@ -25,8 +25,6 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 
-   @ProposedRating Red (vogel@eecs.berkeley.edu)
-   @AcceptedRating Red (vogel@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.javasound.test.pitchshift;
@@ -38,6 +36,8 @@ package ptolemy.actor.lib.javasound.test.pitchshift;
 @author Brian K. Vogel
 @version $Id$
 @since Ptolemy II 1.0
+@Pt.ProposedRating Red (vogel@eecs.berkeley.edu)
+@Pt.AcceptedRating Red (vogel@eecs.berkeley.edu)
 */
 public class PitchShift {
     /* Initialize the current output ring buffer read postition.

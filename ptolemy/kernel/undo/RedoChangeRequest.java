@@ -23,8 +23,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-@ProposedRating Yellow (nsmyth@eecs.berkeley.edu)
-@AcceptedRating Red (neuendor@eecs.berkeley.edu)
 */
 
 package ptolemy.kernel.undo;
@@ -50,6 +48,8 @@ import ptolemy.kernel.util.NamedObj;
    @author Edward A. Lee and Neil Smyth
    @version $Id$
    @since Ptolemy II 4.0
+   @Pt.ProposedRating Yellow (nsmyth@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (neuendor@eecs.berkeley.edu)
 */
 public class RedoChangeRequest extends ChangeRequest {
 

@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Green (eal@eecs.berkeley.edu)
 
 */
 
@@ -47,6 +46,8 @@ NOTE: This is a very primitive test.  It does not check very much.
 @author Edward A. Lee, Lukito Muliadi
 @version $Id$
 @since Ptolemy II 0.2
+@Pt.ProposedRating Green (eal@eecs.berkeley.edu)
+@Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
 
 */
 public class PtestWorkspace extends PtolemyThread {

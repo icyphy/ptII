@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Yellow (cm@eecs.berkeley.edu)
-@AcceptedRating Red (eal@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.giotto.kernel;
@@ -87,6 +85,8 @@ import java.util.ListIterator;
    @author Christoph Kirsch, Haiyang Zheng
    @version $Id$
    @since Ptolemy II 1.0
+   @Pt.ProposedRating Yellow (cm@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (eal@eecs.berkeley.edu)
 */
 public class GiottoScheduler extends Scheduler {
 

@@ -25,8 +25,6 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 
-   @ProposedRating Green (kapokasa@ptolemy.eecs.berkeley.edu)
-   @AcceptedRating Green (net@ptolemy.eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.string;
@@ -66,6 +64,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @author Vinay Krishnan, Daniel L&aacute;zaro Cuadrado (contributor: Edward A. Lee)
    @version $Id$
    @since Ptolemy II 4.0
+   @Pt.ProposedRating Green (kapokasa@ptolemy.eecs.berkeley.edu)
+   @Pt.AcceptedRating Green (net@ptolemy.eecs.berkeley.edu)
 */
 
 public class StringCompare extends TypedAtomicActor {

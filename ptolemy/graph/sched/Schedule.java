@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating red (shahrooz@eng.umd.edu)
-@AcceptedRating red (ssb@eng.umd.edu)
 */
 
 package ptolemy.graph.sched;
@@ -101,6 +99,8 @@ import java.util.NoSuchElementException;
    Software Syntheses from Dataflow Graphs, Kluwer Academic Publishers, 1996.
 
    @since Ptolemy II 4.0
+   @Pt.ProposedRating red (shahrooz@eng.umd.edu)
+   @Pt.AcceptedRating red (ssb@eng.umd.edu)
    @author Shahrooz Shahparnia, Mingyung Ko,
    University of Maryland at College Park, based on a file by
    Brian K. Vogel, Steve Neuendorffer

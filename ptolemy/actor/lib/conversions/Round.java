@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Green (chf@eecs.berkeley.edu)
-@AcceptedRating Green (janneck@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.conversions;
@@ -65,6 +63,8 @@ import ptolemy.kernel.util.StringAttribute;
    @author C. Fong
    @version $Id$
    @since Ptolemy II 1.0
+   @Pt.ProposedRating Green (chf@eecs.berkeley.edu)
+   @Pt.AcceptedRating Green (janneck@eecs.berkeley.edu)
 */
 
 public class Round extends Transformer {

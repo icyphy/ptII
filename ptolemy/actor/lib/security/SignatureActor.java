@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Yellow (cxh@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.security;
@@ -80,6 +78,8 @@ import java.util.Iterator;
    @author Christopher Hylands Brooks, Contributor: Rakesh Reddy
    @version $Id$
    @since Ptolemy II 4.0
+   @Pt.ProposedRating Yellow (cxh@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 public class SignatureActor extends TypedAtomicActor {
 

@@ -26,8 +26,6 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 
-   @ProposedRating Green (cxh@eecs.berkeley.edu)
-   @AcceptedRating Green (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.kernel.util;
@@ -48,6 +46,8 @@ package ptolemy.kernel.util;
    @author Edward A. Lee, Christopher Hylands
    @version $Id$
    @since Ptolemy II 0.2
+   @Pt.ProposedRating Green (cxh@eecs.berkeley.edu)
+   @Pt.AcceptedRating Green (cxh@eecs.berkeley.edu)
 */
 public class IllegalActionException extends KernelException {
 

@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION 2
 COPYRIGHTENDKEY
-@ProposedRating Yellow (vogel@eecs.berkeley.edu)
-@AcceptedRating Yellow (chf@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.javasound;
@@ -103,6 +101,8 @@ import ptolemy.media.javasound.SoundWriter;
    @author  Brian K. Vogel
    @version  $Id$
    @since Ptolemy II 1.0
+   @Pt.ProposedRating Yellow (vogel@eecs.berkeley.edu)
+   @Pt.AcceptedRating Yellow (chf@eecs.berkeley.edu)
    @see AudioReader
    @see AudioCapture
    @see AudioPlayer

@@ -23,8 +23,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-@ProposedRating Yellow (liuj@eecs.berkeley.edu)
-@AcceptedRating Yellow (liuxj@eecs.berkeley.edu)
 
 */
 
@@ -79,6 +77,8 @@ import java.util.Iterator;
    @author  Jie Liu
    @version $Id$
    @since Ptolemy II 0.2
+   @Pt.ProposedRating Yellow (liuj@eecs.berkeley.edu)
+   @Pt.AcceptedRating Yellow (liuxj@eecs.berkeley.edu)
 */
 public class ExplicitRK23Solver extends ODESolver {
 

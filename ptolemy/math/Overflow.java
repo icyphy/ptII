@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Red (Ed.Willink@uk.thalesgroup.com)
-@AcceptedRating Red
 */
 
 package ptolemy.math;
@@ -72,6 +70,8 @@ import java.util.Map;
    @author Ed Willink
    @version $Id$
    @since Ptolemy II 2.1
+   @Pt.ProposedRating Red (Ed.Willink@uk.thalesgroup.com)
+   @Pt.AcceptedRating Red
    @see FixPoint
    @see Quantization
    @see Rounding

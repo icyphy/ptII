@@ -25,8 +25,6 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 
-   @ProposedRating Red (vogel@eecs.berkeley.edu)
-   @AcceptedRating Red (vogel@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.javasound;
@@ -108,6 +106,8 @@ import ptolemy.media.javasound.SoundReader;
    @author Brian K. Vogel
    @version $Id$
    @since Ptolemy II 2.0
+   @Pt.ProposedRating Red (vogel@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (vogel@eecs.berkeley.edu)
    @see ptolemy.media.javasound.LiveSound
 */
 public class AudioReadBuffer extends Transformer {

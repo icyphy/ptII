@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Red (pwhitake@eecs.berkeley.edu)
-@AcceptedRating Red (pwhitake@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.sr.kernel;
@@ -69,6 +67,8 @@ import ptolemy.util.MessageHandler;
    @author Paul Whitaker
    @version $Id$
    @since Ptolemy II 2.0
+   @Pt.ProposedRating Red (pwhitake@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (pwhitake@eecs.berkeley.edu)
    @see ptolemy.domains.sr.kernel.SRDirector
 */
 public class SROptimizedScheduler extends Scheduler {

@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Green (liuj@eecs.berkeley.edu)
-@AcceptedRating Yellow (eal@eecs.berkeley.edu)
 Review transferOutputs().
 */
 
@@ -173,6 +171,8 @@ import ptolemy.kernel.util.Workspace;
    @author Lukito Muliadi, Edward A. Lee, Jie Liu, Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 2.0
+   @Pt.ProposedRating Green (liuj@eecs.berkeley.edu)
+   @Pt.AcceptedRating Yellow (eal@eecs.berkeley.edu)
    @see ptolemy.domains.de.kernel.DEReceiver
    @see ptolemy.actor.util.CalendarQueue
 */

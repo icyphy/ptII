@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Green (neuendor@eecs.berkeley.edu)
-@AcceptedRating Green (bart@eecs.berkeley.edu)
 */
 
 package ptolemy.kernel.util;
@@ -65,6 +63,8 @@ import java.net.URL;
    @author Edward A. Lee, Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 1.0
+   @Pt.ProposedRating Green (neuendor@eecs.berkeley.edu)
+   @Pt.AcceptedRating Green (bart@eecs.berkeley.edu)
    @see ptolemy.actor.CompositeActor
    @see ptolemy.actor.AtomicActor
 */

@@ -23,8 +23,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-@ProposedRating Red (yuhong@eecs.berkeley.edu)
-@AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.fsm.kernel.test;
@@ -51,6 +49,8 @@ import java.util.Iterator;
    @author Yuhong Xiong
    @version $Id$
    @since Ptolemy II 2.0
+   @Pt.ProposedRating Red (yuhong@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
 */
 
 public class DeadlockStates {

@@ -23,8 +23,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-@ProposedRating Green (eal@eecs.berkeley.edu)
-@AcceptedRating Green (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.kernel.util.test;
@@ -44,6 +42,8 @@ import java.io.PrintStream;
    @author  Christopher Hylands
    @version $Id$
    @since Ptolemy II 2.1
+   @Pt.ProposedRating Green (eal@eecs.berkeley.edu)
+   @Pt.AcceptedRating Green (cxh@eecs.berkeley.edu)
    @see ptolemy.data.expr.Variable
 */
 public class StreamValueListener implements ValueListener {

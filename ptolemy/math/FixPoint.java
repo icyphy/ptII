@@ -25,8 +25,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Red (Ed.Willink@uk.thalesgroup.com)
-@AcceptedRating Red
 */
 
 package ptolemy.math;
@@ -75,6 +73,8 @@ import java.math.BigInteger;
    @author Bart Kienhuis, Ed Willink, Contributor: Edward A. Lee
    @version $Id$
    @since Ptolemy II 0.4, rewritten for Ptolemy II 2.2
+   @Pt.ProposedRating Red (Ed.Willink@uk.thalesgroup.com)
+   @Pt.AcceptedRating Red
    @see Precision
    @see Quantization
 */

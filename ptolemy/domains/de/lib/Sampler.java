@@ -25,8 +25,6 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 
-   @ProposedRating Yellow (eal@eecs.berkeley.edu)
-   @AcceptedRating Yellow (eal@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.de.lib;
@@ -74,6 +72,8 @@ import java.util.List;
    @author Jie Liu, Edward A. Lee, Steve Neuendorffer, Elaine Cheong
    @version $Id$
    @since Ptolemy II 0.3
+   @Pt.ProposedRating Yellow (eal@eecs.berkeley.edu)
+   @Pt.AcceptedRating Yellow (eal@eecs.berkeley.edu)
    @see ptolemy.domains.de.lib.Inhibit
 */
 

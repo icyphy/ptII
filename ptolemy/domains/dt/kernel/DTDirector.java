@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Yellow (chf@eecs.berkeley.edu)
-@AcceptedRating Yellow (vogel@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.dt.kernel;
@@ -184,6 +182,8 @@ import java.util.Map;
    @author C. Fong
    @version $Id$
    @since Ptolemy II 1.0
+   @Pt.ProposedRating Yellow (chf@eecs.berkeley.edu)
+   @Pt.AcceptedRating Yellow (vogel@eecs.berkeley.edu)
 */
 public class DTDirector extends SDFDirector {
 

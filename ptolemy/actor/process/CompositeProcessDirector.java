@@ -25,8 +25,6 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 
-   @ProposedRating Green (mudit@eecs.berkeley.edu)
-   @AcceptedRating Yellow (davisj@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.process;
@@ -120,6 +118,8 @@ import java.util.LinkedList;
    @author John S. Davis II
    @version $Id$
    @since Ptolemy II 1.0
+   @Pt.ProposedRating Green (mudit@eecs.berkeley.edu)
+   @Pt.AcceptedRating Yellow (davisj@eecs.berkeley.edu)
    @see Director
 */
 public class CompositeProcessDirector extends ProcessDirector {

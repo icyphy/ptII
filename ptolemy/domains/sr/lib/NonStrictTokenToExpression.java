@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION 2
 COPYRIGHTENDKEY
-@ProposedRating Red (hyzheng@eecs.berkeley.edu)
-@AcceptedRating Red (hyzheng@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.sr.lib;
@@ -48,6 +46,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @author Haiyang Zheng
    @version $Id$
    @since Ptolemy II 4.0
+   @Pt.ProposedRating Red (hyzheng@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (hyzheng@eecs.berkeley.edu)
    @see ptolemy.actor.lib.conversions.TokenToExpression
 */
 public class NonStrictTokenToExpression extends TokenToExpression {

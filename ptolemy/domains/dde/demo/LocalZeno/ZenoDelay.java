@@ -25,8 +25,6 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 
-   @AcceptedRating Red (davisj@eecs.berkeley.edu)
-   @ProposedRating Red (davisj@eecs.berkeley.edu)
 
 */
 
@@ -46,6 +44,8 @@ import ptolemy.kernel.util.Workspace;
    @author John S. Davis II
    @version $Id$
    @since Ptolemy II 0.3
+   @Pt.ProposedRating Red (davisj@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (davisj@eecs.berkeley.edu)
    @see ptolemy.domains.dde.kernel.NullToken
 */
 public class ZenoDelay extends ListenFeedBackDelay {

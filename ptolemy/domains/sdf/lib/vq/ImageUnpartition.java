@@ -23,8 +23,6 @@
 
    PT_COPYRIGHT_VERSION 2
    COPYRIGHTENDKEY
-   @ProposedRating Green (neuendor@eecs.berkeley.edu)
-   @AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 */
 package ptolemy.domains.sdf.lib.vq;
 
@@ -49,6 +47,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @author Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 0.2
+   @Pt.ProposedRating Green (neuendor@eecs.berkeley.edu)
+   @Pt.AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 */
 
 public class ImageUnpartition extends Transformer {

@@ -28,8 +28,6 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 
-   @ProposedRating Red (zkemenczy@rim.net)
-   @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.hoc;
@@ -110,6 +108,8 @@ import java.util.List;
    @author Zoltan Kemenczy, Sean Simmons, Research In Motion Limited
    @version $Id$
    @since Ptolemy II 4.0
+   @Pt.ProposedRating Red (zkemenczy@rim.net)
+   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 public class MultiInstanceComposite extends TypedCompositeActor {
 

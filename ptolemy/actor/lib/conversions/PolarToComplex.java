@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Green (pwhitake@eecs.berkeley.edu)
-@AcceptedRating Green (pwhitake@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.conversions;
@@ -53,6 +51,8 @@ then the output is NaN or infinity.
 @author Michael Leung, Edward A. Lee, Paul Whitaker
 @version $Id$
 @since Ptolemy II 1.0
+@Pt.ProposedRating Green (pwhitake@eecs.berkeley.edu)
+@Pt.AcceptedRating Green (pwhitake@eecs.berkeley.edu)
 */
 
 public class PolarToComplex extends TypedAtomicActor {

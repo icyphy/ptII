@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Red (kienhuis@eecs.berkeley.edu)
-@AcceptedRating Red (kienhuis@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.pn.demo.QR;
@@ -45,6 +43,8 @@ parameterized.
 @author Bart Kienhuis
 @version $Id$
 @since Ptolemy II 0.4
+@Pt.ProposedRating Red (kienhuis@eecs.berkeley.edu)
+@Pt.AcceptedRating Red (kienhuis@eecs.berkeley.edu)
 */
 
 

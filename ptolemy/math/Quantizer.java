@@ -26,8 +26,6 @@ MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Yellow (kienhuis@eecs.berkeley.edu)
-@AcceptedRating Red (kienhuis@eecs.berkeley.edu)
 */
 
 package ptolemy.math;
@@ -57,6 +55,8 @@ import java.math.BigDecimal;
    @author Bart Kienhuis, Edward A. Lee, Ed Willink
    @version $Id$
    @since Ptolemy II 0.4
+   @Pt.ProposedRating Yellow (kienhuis@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (kienhuis@eecs.berkeley.edu)
    @see FixPoint
    @see Overflow
    @see Precision

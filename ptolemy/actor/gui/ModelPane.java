@@ -23,8 +23,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-@ProposedRating Green (eal@eecs.berkeley.edu)
-@AcceptedRating Yellow (janneck@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.gui;
@@ -73,6 +71,8 @@ the Placeable interface is placed in the display region.
 @author Edward A. Lee, Elaine Cheong
 @version $Id$
 @since Ptolemy II 0.4
+@Pt.ProposedRating Green (eal@eecs.berkeley.edu)
+@Pt.AcceptedRating Yellow (janneck@eecs.berkeley.edu)
 */
 public class ModelPane extends JPanel implements CloseListener {
 

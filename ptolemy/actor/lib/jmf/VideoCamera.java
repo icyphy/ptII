@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION 2
 COPYRIGHTENDKEY
-@ProposedRating Red
-@AcceptedRating Red
 */
 
 
@@ -108,6 +106,8 @@ import ptolemy.kernel.util.StringAttribute;
    @author  Christopher Hylands, Edward Lee, James Yeh, Paul Yang, David Lee
    @version $Id$
    @since Ptolemy II 3.0
+   @Pt.ProposedRating Red
+   @Pt.AcceptedRating Red
 */
 public class VideoCamera extends Source implements ControllerListener {
 

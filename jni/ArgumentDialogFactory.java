@@ -25,8 +25,6 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 
-   @ProposedRating Red (vincent.arnould@thalesgroup.com)
-   @AcceptedRating Red (vincent.arnould@thalesgroup.com)
 */
 
 package jni;
@@ -54,6 +52,8 @@ import javax.swing.JMenuItem;
    @author Edward A. Lee and Steve Neuendorffer, modified by Vincent Arnould
    @version $Id$
    @since Ptolemy II 2.3
+   @Pt.ProposedRating Red (vincent.arnould@thalesgroup.com)
+   @Pt.AcceptedRating Red (vincent.arnould@thalesgroup.com)
 */
 public class ArgumentDialogFactory implements MenuItemFactory {
 

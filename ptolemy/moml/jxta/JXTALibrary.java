@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Red (ellen_zh@eecs.berkeley.edu)
-@AcceptedRating Red (cxheecs.berkeley.edu)
 */
 
 package ptolemy.moml.jxta;
@@ -142,6 +140,8 @@ import net.jxta.resolver.ResolverService;
    @author Yang Zhao, Xiaojun Liu
    @version $Id$
    @since Ptolemy II 2.1
+   @Pt.ProposedRating Red (ellen_zh@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (cxheecs.berkeley.edu)
 */
 public class JXTALibrary extends EntityLibrary
     implements ChangeListener, QueryHandler,

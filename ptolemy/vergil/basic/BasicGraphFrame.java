@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Red (neuendor@eecs.berkeley.edu)
-@AcceptedRating Red (johnr@eecs.berkeley.edu)
 */
 
 package ptolemy.vergil.basic;
@@ -148,6 +146,8 @@ import diva.util.java2d.ShapeUtilities;
    @author  Steve Neuendorffer, Edward A. Lee
    @version $Id$
    @since Ptolemy II 2.0
+   @Pt.ProposedRating Red (neuendor@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (johnr@eecs.berkeley.edu)
 */
 public abstract class BasicGraphFrame extends PtolemyFrame
     implements Printable, ClipboardOwner, ChangeListener {
@@ -1087,6 +1087,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame
      *  configuration.
      *  @param entity The entity to save.
      *  @since Ptolemy 2.1
+     *  @Pt.ProposedRating Red (cxh@eecs.berkeley.edu)
+     *  @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
      */
     public static void saveComponentInLibrary(Configuration configuration,
             Entity entity) {

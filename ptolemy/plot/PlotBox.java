@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-@ProposedRating Yellow (cxh@eecs.berkeley.edu)
-@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 package ptolemy.plot;
 
@@ -235,6 +233,8 @@ import javax.swing.SwingUtilities;
 
    @version $Id$
    @since Ptolemy II 0.2
+   @Pt.ProposedRating Yellow (cxh@eecs.berkeley.edu)
+   @Pt.AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 public class PlotBox extends JPanel implements Printable {
 
@@ -657,6 +657,8 @@ public class PlotBox extends JPanel implements Printable {
      *  @param legend The String naming the legend
      *  @return The legend dataset, or -1 if not found.
      *  @since Ptplot 5.2p1
+     *  @Pt.ProposedRating Red (cxh@eecs.berkeley.edu)
+     *  @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
      */
     public synchronized int getLegendDataset(String legend) {
         int index = _legendStrings.indexOf(legend);

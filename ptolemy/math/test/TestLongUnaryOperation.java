@@ -29,8 +29,6 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 
-   @ProposedRating Red (ctsay@eecs.berkeley.edu)
-   @AcceptedRating Red (ctsay@eecs.berkeley.edu)
 */
 
 package ptolemy.math.test;
@@ -43,6 +41,8 @@ import ptolemy.math.LongUnaryOperation;
     @author Jeff Tsay
     @version $Id$
     @since Ptolemy II 2.0
+    @Pt.ProposedRating Red (ctsay@eecs.berkeley.edu)
+    @Pt.AcceptedRating Red (ctsay@eecs.berkeley.edu)
 */
 public class TestLongUnaryOperation implements LongUnaryOperation {
 

@@ -24,8 +24,6 @@
 
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
-   @ProposedRating Yellow (vincent.arnould@thalesgroup.com)
-   @AcceptedRating Red (vincent.arnould@thalesgroup.com)
 */
 
 package jni;
@@ -61,6 +59,8 @@ import ptolemy.util.MessageHandler;
    @author Edward A. Lee, V.Arnould
    @version $Id$
    @since Ptolemy II 3.0
+   @Pt.ProposedRating Yellow (vincent.arnould@thalesgroup.com)
+   @Pt.AcceptedRating Red (vincent.arnould@thalesgroup.com)
 */
 public class ArgumentConfigurerDialog
     extends ComponentDialog

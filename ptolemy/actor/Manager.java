@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Green (neuendor@eecs.berkeley.edu)
-@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 execute catches Exceptions and rethrows them as runtime exceptions. why?
 requestInitialization is pickier about what actors are initialized.
 added preinitialization analyses (i.e. constVariableModelAnalysis)
@@ -133,6 +131,8 @@ import ptolemy.util.StringUtilities;
    // Contributors: Mudit Goel, John S. Davis II
    @version $Id$
    @since Ptolemy II 0.2
+   @Pt.ProposedRating Green (neuendor@eecs.berkeley.edu)
+   @Pt.AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 
 public class Manager extends NamedObj implements Runnable {

@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Yellow (cxh@eecs.berkeley.edu)
-@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.ci.demo.Router;
@@ -64,6 +62,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @author Xiaojun Liu
    @version $Id$
    @since Ptolemy II 1.0
+   @Pt.ProposedRating Yellow (cxh@eecs.berkeley.edu)
+   @Pt.AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 
 public class QueueControl extends TypedAtomicActor {

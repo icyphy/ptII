@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (pjb2e@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.wireless.demo.EvaderAndPursuer;
@@ -77,6 +75,8 @@ import ptolemy.vergil.kernel.attributes.EllipseAttribute;
    @author Yang Zhao
    @version $ $
    @since Ptolemy II 4.0
+   @Pt.ProposedRating Yellow (eal@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (pjb2e@eecs.berkeley.edu)
 */
 public class Sensor extends TypedAtomicActor {
 

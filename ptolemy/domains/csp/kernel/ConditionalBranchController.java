@@ -25,8 +25,6 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 
-   @ProposedRating Red (bilung@eecs.berkeley.edu)
-   @AcceptedRating Red (bilung@eecs.berkeley.edu)
 
 */
 
@@ -80,6 +78,8 @@ import java.util.LinkedList;
    @author Neil Smyth, Bilung Lee
    @version $Id$
    @since Ptolemy II 0.4
+   @Pt.ProposedRating Red (bilung@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (bilung@eecs.berkeley.edu)
    @see ConditionalBranch
    @see ConditionalBranchActor
    @see ConditionalReceive

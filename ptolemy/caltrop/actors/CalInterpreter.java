@@ -24,8 +24,6 @@
   PT_COPYRIGHT_VERSION_2
   COPYRIGHTENDKEY
 
-  @ProposedRating Red (cxh@eecs.berkeley.edu)
-  @AcceptedRating Red (cxh@eecs.berkeley.edu)
 
 
 */
@@ -92,6 +90,8 @@ import caltrop.interpreter.environment.SingleClassEnvironment;
    @author J&#246;rn W. Janneck <jwj@acm.org> Christopher Chang <cbc@eecs.berkeley.edu>
    @version $Id$
    @since Ptolemy II 4.0
+   @Pt.ProposedRating Red (cxh@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
    @see ptolemy.caltrop.ddi.util.DataflowActorInterpreter
    @see caltrop.interpreter.Context
    @see PtolemyPlatform

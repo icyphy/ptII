@@ -25,8 +25,6 @@
     PT_COPYRIGHT_VERSION_2
     COPYRIGHTENDKEY
 
-    @ProposedRating Red (kienhuis@eecs.berkeley.edu)
-    @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.pn.demo.QR;
@@ -51,6 +49,8 @@ considered to be an Upper triangular Matrix.
 @author Bart Kienhuis
 @version $Id: StreamToMatrix.java,v 1.2 1999/11/30 03:55:57 kienhuis
 @since Ptolemy II 0.4
+@Pt.ProposedRating Red (kienhuis@eecs.berkeley.edu)
+@Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
 Exp $
 */
 

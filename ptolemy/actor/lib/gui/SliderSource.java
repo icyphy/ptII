@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION 2
 COPYRIGHTENDKEY
-@ProposedRating Red (liuxj@eecs.berkeley.edu)
-@AcceptedRating Red (liuxj@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.gui;
@@ -65,6 +63,8 @@ import javax.swing.event.ChangeListener;
    @author Xiaojun Liu
    @version $Id$
    @since Ptolemy II 2.0
+   @Pt.ProposedRating Red (liuxj@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (liuxj@eecs.berkeley.edu)
 */
 public class SliderSource extends Source implements ChangeListener, Placeable {
 

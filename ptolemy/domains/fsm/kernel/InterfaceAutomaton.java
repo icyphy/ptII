@@ -23,8 +23,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-@ProposedRating Yellow (liuxj@eecs.berkeley.edu)
-@AcceptedRating Yellow (kienhuis@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.fsm.kernel;
@@ -75,6 +73,8 @@ import java.util.Set;
    @author Yuhong Xiong, Xiaojun Liu and Edward A. Lee
    @version $Id$
    @since Ptolemy II 2.0
+   @Pt.ProposedRating Yellow (liuxj@eecs.berkeley.edu)
+   @Pt.AcceptedRating Yellow (kienhuis@eecs.berkeley.edu)
    @see State
    @see InterfaceAutomatonTransition
 */

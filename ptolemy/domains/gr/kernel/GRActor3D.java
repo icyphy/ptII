@@ -22,8 +22,6 @@
 
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
-   @ProposedRating Yellow (chf@eecs.berkeley.edu)
-   @AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.gr.kernel;
@@ -48,6 +46,8 @@ import javax.media.j3d.Node;
    @author C. Fong
    @version $Id$
    @since Ptolemy II 4.0
+   @Pt.ProposedRating Yellow (chf@eecs.berkeley.edu)
+   @Pt.AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 abstract public class GRActor3D extends GRActor {
 

@@ -24,8 +24,6 @@ BASIS, AND THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION
 LIMITED HAVE NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-@ProposedRating Green (neuendor@eecs.berkeley.edu)
-@AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 
 */
 
@@ -146,6 +144,8 @@ import java.util.Iterator;
    @author Zoltan Kemenczy, Research in Motion Limited., Steve Neuendorffer, Edward Lee
    @version $Id$
    @since Ptolemy II 2.0
+   @Pt.ProposedRating Green (neuendor@eecs.berkeley.edu)
+   @Pt.AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
    @see ptolemy.data.expr.ASTPtFunctionApplicationNode
    @see ptolemy.data.expr.PtParser
 */

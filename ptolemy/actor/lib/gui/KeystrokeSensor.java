@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Red (winthrop@robotics.eecs.berkeley.edu)
-@AcceptedRating Red (winthrop@robotics.eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.gui;
@@ -77,6 +75,8 @@ import javax.swing.KeyStroke;
    @author Winthrop Williams
    @version $Id$
    @since Ptolemy II 2.0
+   @Pt.ProposedRating Red (winthrop@robotics.eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (winthrop@robotics.eecs.berkeley.edu)
 */
 public class KeystrokeSensor extends TypedAtomicActor {
 

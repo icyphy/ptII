@@ -21,8 +21,6 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-@ProposedRating Red (ssb@eng.umd.edu)
-@AcceptedRating Red (ssb@eng.umd.edu)
 */
 
 package ptolemy.graph.mapping;
@@ -32,6 +30,8 @@ package ptolemy.graph.mapping;
 /** A mapping from objects into int values.
 
 @since Ptolemy II 4.0
+@Pt.ProposedRating Red (ssb@eng.umd.edu)
+@Pt.AcceptedRating Red (ssb@eng.umd.edu)
 @author Shuvra S. Bhattacharyya, Shahrooz Shahparnia
 @version $Id$
 */

@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Green (pwhitake@eecs.berkeley.edu)
-@AcceptedRating Green (pwhitake@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.sr.kernel;
@@ -84,6 +82,8 @@ import ptolemy.kernel.util.InternalErrorException;
    @author Paul Whitaker, contributor: Christopher Hylands
    @version $Id$
    @since Ptolemy II 2.0
+   @Pt.ProposedRating Green (pwhitake@eecs.berkeley.edu)
+   @Pt.AcceptedRating Green (pwhitake@eecs.berkeley.edu)
    @see ptolemy.domains.sr.kernel.SRDirector
 */
 public class SRReceiver extends AbstractReceiver {
@@ -192,6 +192,8 @@ public class SRReceiver extends AbstractReceiver {
      *  @exception IllegalArgumentException If the state is unknown.
      *  @see #hasToken()
      *  @since Ptolemy II 2.1
+     *  @Pt.ProposedRating Red (cxh@eecs.berkeley.edu)
+     *  @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
      */
     public boolean hasToken(int numberOfTokens)
             throws IllegalArgumentException {

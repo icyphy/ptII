@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Yellow (neuendor@eecs.berkeley.edu)
-@AcceptedRating Red
 */
 
 package ptolemy.data;
@@ -63,6 +61,8 @@ import java.io.Serializable;
    @author Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 2.1
+   @Pt.ProposedRating Yellow (neuendor@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red
 
 */
 public abstract class AbstractConvertibleToken extends Token

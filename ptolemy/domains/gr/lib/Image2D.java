@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Green (ismael@eecs.berkeley.edu)
-@AcceptedRating Yellow (chf@eecs.berkeley.edu)
 */
 package ptolemy.domains.gr.lib;
 
@@ -57,6 +55,8 @@ import diva.canvas.toolbox.ImageFigure;
    @author Ismael M. Sarmiento, Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 4.0
+   @Pt.ProposedRating Green (ismael@eecs.berkeley.edu)
+   @Pt.AcceptedRating Yellow (chf@eecs.berkeley.edu)
 */
 public class Image2D extends GRActor2D {
 

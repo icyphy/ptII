@@ -25,8 +25,6 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 
-   @ProposedRating Yellow (eal@eecs.berkeley.edu)
-   @AcceptedRating Red (johnr@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.gui;
@@ -59,6 +57,8 @@ import ptolemy.kernel.util.NamedObj;
    @author Edward A. Lee
    @version $Id$
    @since Ptolemy II 4.0
+   @Pt.ProposedRating Yellow (eal@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (johnr@eecs.berkeley.edu)
 */
 
 public class InsideEntityEditorPaneFactory extends EditorPaneFactory {

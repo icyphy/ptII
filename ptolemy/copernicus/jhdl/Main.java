@@ -23,8 +23,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-@ProposedRating Red (cxh@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 
@@ -63,6 +61,8 @@ import soot.util.*;
 @author Michael Wirthlin, Stephen Neuendorffer, Edward A. Lee, Christopher Hylands
 @version $Id$
 @since Ptolemy II 2.0
+@Pt.ProposedRating Red (cxh@eecs.berkeley.edu)
+@Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 public class Main extends KernelMain {
 

@@ -23,8 +23,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-@ProposedRating Red (yuhong@eecs.berkeley.edu)
-@AcceptedRating Red (yuhong@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.fsm.kernel;
@@ -39,6 +37,8 @@ package ptolemy.domains.fsm.kernel;
    @author Yuhong Xiong
    @version $Id$
    @since Ptolemy II 2.1
+   @Pt.ProposedRating Red (yuhong@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (yuhong@eecs.berkeley.edu)
 */
 
 public class StatePair {

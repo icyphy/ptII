@@ -26,8 +26,6 @@
    PT_COPYRIGHT_VERSION 2
    COPYRIGHTENDKEY
 
-   @ProposedRating Red (cxh@eecs.berkeley.edu)
-   @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.jai;
@@ -58,6 +56,8 @@ import javax.media.jai.RenderedOp;
    @author James Yeh
    @version $Id$
    @since Ptolemy II 3.1
+   @Pt.ProposedRating Red (cxh@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 public class JAIPolarToComplex extends TypedAtomicActor {

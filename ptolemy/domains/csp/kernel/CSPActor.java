@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Green (nsmyth@eecs.berkeley.edu)
-@AcceptedRating Yellow (liuj@eecs.berkeley.edu)
 
 */
 
@@ -104,6 +102,8 @@ import ptolemy.kernel.util.Workspace;
    @author Neil Smyth, Bilung Lee
    @version $Id$
    @since Ptolemy II 0.2
+   @Pt.ProposedRating Green (nsmyth@eecs.berkeley.edu)
+   @Pt.AcceptedRating Yellow (liuj@eecs.berkeley.edu)
    @see ConditionalBranch
    @see ConditionalReceive
    @see ConditionalSend

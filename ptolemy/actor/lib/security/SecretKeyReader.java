@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION 2
 COPYRIGHTENDKEY
-@ProposedRating Yellow (cxh@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.security;
@@ -54,6 +52,8 @@ description of symmetric vs. asymmetric algorithms.
 @author  Christopher Hylands Brooks
 @version $Id$
 @since Ptolemy II 4.0
+@Pt.ProposedRating Yellow (cxh@eecs.berkeley.edu)
+@Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 public class SecretKeyReader extends PrivateKeyReader {
     /** Construct an actor with the given container and name.

@@ -25,8 +25,6 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 
-   @ProposedRating Red (davisj@eecs.berkeley.edu)
-   @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.dde.demo.HelloWorld;
@@ -46,6 +44,8 @@ import java.util.LinkedList;
    @author John S. Davis II
    @version $Id$
    @since Ptolemy II 1.0
+   @Pt.ProposedRating Red (davisj@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 public class Punctuation extends StringOut {
 

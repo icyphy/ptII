@@ -23,8 +23,6 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Red (celaine@eecs.berkeley.edu)
-@AcceptedRating Red (celaine@eecs.berkeley.edu)
 */
 
 package ptolemy.vergil.debugger;
@@ -62,6 +60,8 @@ import javax.swing.SwingUtilities;
    @author Elaine Cheong
    @version $Id$
    @since Ptolemy II 2.0
+   @Pt.ProposedRating Red (celaine@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (celaine@eecs.berkeley.edu)
 */
 public class DebugController extends SingletonConfigurableAttribute
     implements DebugListener {

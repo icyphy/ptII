@@ -23,8 +23,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-@ProposedRating Yellow (cxh@eecs.berkeley.edu)
-@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.gui;
@@ -71,6 +69,8 @@ field is set once in the constructor and immutable afterwards.
 @author Edward A. Lee
 @version $Id$
 @since Ptolemy II 2.1
+@Pt.ProposedRating Yellow (cxh@eecs.berkeley.edu)
+@Pt.AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 public class PlotTableauFrame extends TableauFrame {
 

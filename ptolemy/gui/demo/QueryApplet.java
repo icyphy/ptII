@@ -23,8 +23,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-@ProposedRating Red (eal@eecs.berkeley.edu)
-@AcceptedRating Red (eal@eecs.berkeley.edu)
 
 */
 
@@ -44,6 +42,8 @@ import javax.swing.UIManager;
    @author  Edward A. Lee, Manda Sutijono
    @version $Id$
    @since Ptolemy II 0.3
+   @Pt.ProposedRating Red (eal@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (eal@eecs.berkeley.edu)
    @see ptolemy.gui.Query
 */
 public class QueryApplet extends BasicJApplet implements QueryListener {

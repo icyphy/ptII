@@ -23,8 +23,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (eal@eecs.berkeley.edu)
 
 */
 
@@ -96,6 +94,8 @@ import javax.swing.plaf.basic.BasicComboBoxEditor;
    @author  Edward A. Lee, Manda Sutijono, Elaine Cheong
    @version $Id$
    @since Ptolemy II 0.3
+   @Pt.ProposedRating Yellow (eal@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (eal@eecs.berkeley.edu)
 */
 public class Query extends JPanel {
 
@@ -402,6 +402,8 @@ public class Query extends JPanel {
      *  @param label The label to attach to the entry.
      *  @param defaultValue Default value to appear in the entry box.
      *  @since Ptolemy II 3.1
+     *  @Pt.ProposedRating Red (cxh@eecs.berkeley.edu)
+     *  @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
      */
     public void addPassword(String name, String label, String defaultValue) {
         addPassword(name, label, defaultValue, Color.white);
@@ -425,6 +427,8 @@ public class Query extends JPanel {
      *  @param defaultValue Default value to appear in the entry box.
      *  @param background The background color.
      *  @since Ptolemy II 3.1
+     *  @Pt.ProposedRating Red (cxh@eecs.berkeley.edu)
+     *  @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
      */
     public void addPassword(
             String name,
@@ -732,6 +736,8 @@ public class Query extends JPanel {
      *   have a string representation (this should not be thrown).
      *   This is a runtime exception, so it need not be declared explicitly.
      *  @since Ptolemy II 3.1
+     *  @Pt.ProposedRating Red (cxh@eecs.berkeley.edu)
+     *  @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
      */
     public char [] getCharArrayValue(String name)
             throws NoSuchElementException, IllegalArgumentException {

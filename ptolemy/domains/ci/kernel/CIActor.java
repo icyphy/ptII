@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Yellow (cxh@eecs.berkeley.edu)
-@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.ci.kernel;
@@ -44,6 +42,8 @@ import ptolemy.kernel.util.NameDuplicationException;
 @author Yang Zhao
 @version $Id$
 @since Ptolemy II 2.2
+@Pt.ProposedRating Yellow (cxh@eecs.berkeley.edu)
+@Pt.AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 public class CIActor extends Transformer {
 

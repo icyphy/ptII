@@ -25,8 +25,6 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 
-   @ProposedRating Yellow (eal@eecs.berkeley.edu)
-   @AcceptedRating Red (ptolemy@eecs.berkeley.edu)
 
 */
 
@@ -60,6 +58,8 @@ import ptolemy.kernel.util.StringAttribute;
    @author Edward A. Lee
    @version $Id$
    @since Ptolemy II 4.0
+   @Pt.ProposedRating Yellow (eal@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (ptolemy@eecs.berkeley.edu)
    @see TextEditorConfigureFactory
 */
 public class TextEditorTableauFactory

@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Yellow (ismael@eecs.berkeley.edu)
-@AcceptedRating Red (chf@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.gr.lib;
@@ -53,6 +51,8 @@ import diva.canvas.toolbox.BasicFigure;
 @author Steve Neuendorffer, Ismael M. Sarmiento
 @version $Id$
 @since Ptolemy II 4.0
+@Pt.ProposedRating Yellow (ismael@eecs.berkeley.edu)
+@Pt.AcceptedRating Red (chf@eecs.berkeley.edu)
 */
 public class Line2D extends GRActor2D {
 

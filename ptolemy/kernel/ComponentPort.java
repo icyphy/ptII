@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Green (eal@eecs.berkeley.edu)
-@AcceptedRating Green (bart@eecs.berkeley.edu)
 */
 
 package ptolemy.kernel;
@@ -91,6 +89,8 @@ import java.util.List;
    @author Edward A. Lee, Xiaojun Liu
    @version $Id$
    @since Ptolemy II 0.2
+   @Pt.ProposedRating Green (eal@eecs.berkeley.edu)
+   @Pt.AcceptedRating Green (bart@eecs.berkeley.edu)
 */
 public class ComponentPort extends Port {
 

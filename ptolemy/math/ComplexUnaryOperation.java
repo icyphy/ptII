@@ -29,8 +29,6 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 
-   @ProposedRating Red (ctsay@eecs.berkeley.edu)
-   @AcceptedRating Red (ctsay@eecs.berkeley.edu)
 */
 
 package ptolemy.math;
@@ -43,6 +41,8 @@ package ptolemy.math;
     @author Jeff Tsay
     @version $Id$
     @since Ptolemy II 1.0
+    @Pt.ProposedRating Red (ctsay@eecs.berkeley.edu)
+    @Pt.AcceptedRating Red (ctsay@eecs.berkeley.edu)
 */
 public interface ComplexUnaryOperation {
 

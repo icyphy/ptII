@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Green (pwhitake@eecs.berkeley.edu)
-@AcceptedRating Green (pwhitake@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.conversions;
@@ -75,6 +73,8 @@ import ptolemy.math.Rounding;
    @author Bart Kienhuis, Contributor: Edward A. Lee, Ed.Willink,
    @version $Id$
    @since Ptolemy II 0.4
+   @Pt.ProposedRating Green (pwhitake@eecs.berkeley.edu)
+   @Pt.AcceptedRating Green (pwhitake@eecs.berkeley.edu)
    @see ptolemy.data.FixToken
    @see ptolemy.math.Overflow
    @see ptolemy.math.Precision

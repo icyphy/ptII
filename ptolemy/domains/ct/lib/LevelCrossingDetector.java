@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Yellow (liuj@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.ct.lib;
@@ -64,6 +62,8 @@ import ptolemy.kernel.util.Workspace;
    @author Jie Liu, Haiyang Zheng
    @version $Id$
    @since Ptolemy II 2.0
+   @Pt.ProposedRating Yellow (liuj@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 public class LevelCrossingDetector extends Transformer
     implements CTStepSizeControlActor, CTEventGenerator {

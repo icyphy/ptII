@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION 2
 COPYRIGHTENDKEY
-@ProposedRating Green (neuendor@eecs.berkeley.edu)
-@AcceptedRating Yellow (chf@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.javasound;
@@ -98,6 +96,8 @@ import ptolemy.media.javasound.LiveSound;
    @author  Brian K. Vogel, Steve Neuendorffer
    @version  $Id$
    @since Ptolemy II 1.0
+   @Pt.ProposedRating Green (neuendor@eecs.berkeley.edu)
+   @Pt.AcceptedRating Yellow (chf@eecs.berkeley.edu)
    @see ptolemy.media.javasound.LiveSound
    @see AudioCapture
    @see AudioReader

@@ -23,8 +23,6 @@
 
    PT_COPYRIGHT_VERSION 2
    COPYRIGHTENDKEY
-   @ProposedRating Green (neuendor@eecs.berkeley.edu)
-   @AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 */
 package ptolemy.domains.sdf.lib.vq;
 
@@ -48,6 +46,8 @@ import ptolemy.math.ExtendedMath;
    @author Michael Leung, Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 0.4
+   @Pt.ProposedRating Green (neuendor@eecs.berkeley.edu)
+   @Pt.AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 */
 public class PSNR extends TypedAtomicActor {
     /** Construct an actor in the specified container with the specified

@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Green (liuj@eecs.berkeley.edu)
-@AcceptedRating Green (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.hde.kernel;
@@ -60,6 +58,8 @@ import ptolemy.kernel.util.IllegalActionException;
     @author Steve Neuendorffer, Jim Armstrong
     @version $Id$
     @since Ptolemy II 2.0
+    @Pt.ProposedRating Green (liuj@eecs.berkeley.edu)
+    @Pt.AcceptedRating Green (cxh@eecs.berkeley.edu)
 */
 public class HDEReceiver extends DEReceiver {
 

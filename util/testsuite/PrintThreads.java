@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-@ProposedRating Red (cxh@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
 
 */
 
@@ -58,6 +56,8 @@ import javax.swing.SwingUtilities;
     @author Christopher Hylands, based on code from Fusion Systems Group
     @version $Id$
     @since Ptolemy II 1.0
+    @Pt.ProposedRating Red (cxh@eecs.berkeley.edu)
+    @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 public class PrintThreads {
 

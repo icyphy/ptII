@@ -21,8 +21,6 @@ MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
 
-@ProposedRating Red (cxh@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 // In theory, this class could be in ptolemy.graph, but that would
@@ -56,6 +54,8 @@ import java.lang.String;
     @author Shuvra S. Bhattacharyya, Chia-Jui Hsu
     @version $Id$
     @since Ptolemy II 2.0
+    @Pt.ProposedRating Red (cxh@eecs.berkeley.edu)
+    @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 public class GraphReader {
 

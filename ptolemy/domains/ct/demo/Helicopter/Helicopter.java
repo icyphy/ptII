@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Red (liuj@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.ct.demo.Helicopter;
@@ -70,6 +68,8 @@ import java.util.Iterator;
    @author Jie Liu, Xiaojun Liu
    @version $Id$
    @since Ptolemy II 1.0
+   @Pt.ProposedRating Red (liuj@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 public class Helicopter extends TypedCompositeActor {
 

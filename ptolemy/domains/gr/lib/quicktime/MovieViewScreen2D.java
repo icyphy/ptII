@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Red (chf@eecs.berkeley.edu)
-@AcceptedRating Red (chf@eecs.berkeley.edu)
 */
 package ptolemy.domains.gr.lib.quicktime;
 
@@ -72,6 +70,8 @@ import quicktime.util.RawEncodedImage;
    @author Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 4.0
+   @Pt.ProposedRating Red (chf@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (chf@eecs.berkeley.edu)
 */
 public class MovieViewScreen2D extends ViewScreen2D
     implements StdQTConstants, Errors {

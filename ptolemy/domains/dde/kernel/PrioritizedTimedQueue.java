@@ -25,8 +25,6 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 
-   @ProposedRating Green (davisj@eecs.berkeley.edu)
-   @AcceptedRating Green (kienhuis@eecs.berkeley.edu)
 
 */
 
@@ -108,6 +106,8 @@ import ptolemy.kernel.util.NamedObj;
    @author John S. Davis II
    @version $Id$
    @since Ptolemy II 0.4
+   @Pt.ProposedRating Green (davisj@eecs.berkeley.edu)
+   @Pt.AcceptedRating Green (kienhuis@eecs.berkeley.edu)
    @see ptolemy.domains.dde.kernel.DDEReceiver
    @see ptolemy.domains.dde.kernel.TimeKeeper
 */

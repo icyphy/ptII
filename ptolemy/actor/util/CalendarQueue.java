@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Green (eal@eecs.berkeley.edu)
-@AcceptedRating Yellow (liuj@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.util;
@@ -118,6 +116,8 @@ CalendarQueue class.</i>
 @author Lukito Muliadi and Edward A. Lee
 @version $Id$
 @since Ptolemy II 0.2
+@Pt.ProposedRating Green (eal@eecs.berkeley.edu)
+@Pt.AcceptedRating Yellow (liuj@eecs.berkeley.edu)
 @see ptolemy.actor.util.CQComparator
 */
 public class CalendarQueue implements Debuggable {

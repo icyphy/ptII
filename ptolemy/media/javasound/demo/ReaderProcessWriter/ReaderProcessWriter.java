@@ -25,8 +25,6 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 
-   @ProposedRating Red (vogel@eecs.berkeley.edu)
-   @AcceptedRating Red (vogel@eecs.berkeley.edu)
 */
 
 package ptolemy.media.javasound.demo.ReaderProcessWriter;
@@ -46,6 +44,8 @@ import ptolemy.media.javasound.SoundWriter;
     @author Brian K. Vogel
     @version $Id$
     @since Ptolemy II 2.0
+    @Pt.ProposedRating Red (vogel@eecs.berkeley.edu)
+    @Pt.AcceptedRating Red (vogel@eecs.berkeley.edu)
 */
 public class ReaderProcessWriter {
     public static void main(String[] args) {

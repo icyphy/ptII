@@ -23,8 +23,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-@ProposedRating Yellow (liuj@eecs.berkeley.edu)
-@AcceptedRating Yellow (chf@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.ct.kernel;
@@ -45,6 +43,8 @@ package ptolemy.domains.ct.kernel;
    @author  Jie Liu
    @version $Id$
    @since Ptolemy II 0.3
+   @Pt.ProposedRating Yellow (liuj@eecs.berkeley.edu)
+   @Pt.AcceptedRating Yellow (chf@eecs.berkeley.edu)
 
 */
 public interface CTTransparentDirector {

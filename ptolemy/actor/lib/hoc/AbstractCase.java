@@ -23,8 +23,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-@ProposedRating Red (eal@eecs.berkeley.edu)
-@AcceptedRating Red (eal@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.hoc;
@@ -52,6 +50,8 @@ Abstract base class for a composite actor with several possible refinements.
 @author  Joern Janneck and Edward A. Lee
 @version $Id$
 @since Ptolemy II 2.0
+@Pt.ProposedRating Red (eal@eecs.berkeley.edu)
+@Pt.AcceptedRating Red (eal@eecs.berkeley.edu)
 */
 public abstract class AbstractCase extends TypedCompositeActor {
 

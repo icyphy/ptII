@@ -26,8 +26,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 
-@ProposedRating Red (vincent.arnould@thalesgroup.com)
-@AcceptedRating Red (vincent.arnould@thalesgroup.com)
 */
 
 package jni;
@@ -56,6 +54,8 @@ import java.awt.Color;
    @author  Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 3.0
+   @Pt.ProposedRating Red (vincent.arnould@thalesgroup.com)
+   @Pt.AcceptedRating Red (vincent.arnould@thalesgroup.com)
 */
 public class ThalesGraphTableau extends ActorGraphTableau {
 

@@ -27,8 +27,6 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
 
- @ProposedRating Yellow (eal@eecs.berkeley.edu)
- @AcceptedRating Red (pjb2e@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.wireless.lib.network.mac;
@@ -54,6 +52,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @author Xiaojun Liu
    @version FilterMpdu.java,v 1.6 2004/04/12 15:30:36 cxh Exp
    @since Ptolemy II 4.0
+   @Pt.ProposedRating Yellow (eal@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (pjb2e@eecs.berkeley.edu)
 */
 public class FilterMpdu extends MACActorBase {
 

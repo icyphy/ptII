@@ -23,8 +23,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-@ProposedRating Yellow (liuxj@eecs.berkeley.edu)
-@AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.python;
@@ -135,6 +133,8 @@ import org.python.util.PythonInterpreter;
    @author Xiaojun Liu
    @version $Id$
    @since Ptolemy II 2.3
+   @Pt.ProposedRating Yellow (liuxj@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
    @see <a href="http://www.python.org" target="_top">Python</a>
    @see <a href="http://www.jython.org" target="_top">Jython</a>
 */

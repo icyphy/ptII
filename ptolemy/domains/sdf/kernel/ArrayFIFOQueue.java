@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Yellow (neuendor@eecs.berkeley.edu)
-@AcceptedRating Yellow (johnr@eecs.berkeley.edu)
 
 */
 
@@ -60,6 +58,8 @@ import java.util.NoSuchElementException;
    @author Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 0.2
+   @Pt.ProposedRating Yellow (neuendor@eecs.berkeley.edu)
+   @Pt.AcceptedRating Yellow (johnr@eecs.berkeley.edu)
 */
 public final class ArrayFIFOQueue implements Cloneable {
 

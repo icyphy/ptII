@@ -23,8 +23,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-@ProposedRating Yellow (liuj@eecs.berkeley.edu)
-@AcceptedRating Yellow (chf@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.ct.kernel;
@@ -41,6 +39,8 @@ import ptolemy.kernel.util.Nameable;
    @author  Jie Liu
    @version $Id$
    @since Ptolemy II 0.2
+   @Pt.ProposedRating Yellow (liuj@eecs.berkeley.edu)
+   @Pt.AcceptedRating Yellow (chf@eecs.berkeley.edu)
 */
 public class NumericalNonconvergeException extends InvalidStateException {
     /** Constructs an Exception with only a detail message.

@@ -23,8 +23,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-@ProposedRating Yellow (liuxj@eecs.berkeley.edu)
-@AcceptedRating Yellow (liuxj@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.fsm.kernel;
@@ -141,6 +139,8 @@ import java.util.StringTokenizer;
    @author Xiaojun Liu and Edward A. Lee
    @version $Id$
    @since Ptolemy II 0.4
+   @Pt.ProposedRating Yellow (liuxj@eecs.berkeley.edu)
+   @Pt.AcceptedRating Yellow (liuxj@eecs.berkeley.edu)
    @see State
    @see Action
    @see ChoiceAction

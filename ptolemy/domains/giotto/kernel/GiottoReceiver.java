@@ -23,8 +23,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-@ProposedRating Yellow (cm@eecs.berkeley.edu)
-@AcceptedRating Yellow (liuj@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.giotto.kernel;
@@ -49,6 +47,8 @@ import ptolemy.kernel.util.IllegalActionException;
    @author  Christoph Meyer Kirsch and Edward A. Lee
    @version $Id$
    @since Ptolemy II 1.0
+   @Pt.ProposedRating Yellow (cm@eecs.berkeley.edu)
+   @Pt.AcceptedRating Yellow (liuj@eecs.berkeley.edu)
    @see GiottoDirector
 */
 public class GiottoReceiver extends AbstractReceiver {

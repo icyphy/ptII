@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Yellow (liuxj@eecs.berkeley.edu)
-@AcceptedRating Red (liuxj@eecs.berkeley.edu)
 
 Changed wait(Object) to throw InterruptedException. This method is used
 in:
@@ -108,6 +106,8 @@ import java.util.List;
    @author Edward A. Lee, Mudit Goel, Lukito Muliadi, Xiaojun Liu
    @version $Id$
    @since Ptolemy II 0.2
+   @Pt.ProposedRating Yellow (liuxj@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (liuxj@eecs.berkeley.edu)
 */
 
 public final class Workspace implements Nameable, Serializable {
@@ -493,6 +493,8 @@ public final class Workspace implements Nameable, Serializable {
      *  @exception IllegalActionException The exception passed
      *   as an argument is always thrown.
      *  @since Ptolemy II 2.1
+     *  @Pt.ProposedRating Red (cxh@eecs.berkeley.edu)
+     *  @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
      */
     public boolean handleModelError(
             NamedObj context,

@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Yellow (neuendor@eecs.berkeley.edu)
-@AcceptedRating Yellow (johnr@eecs.berkeley.edu)
 
 */
 
@@ -56,6 +54,8 @@ import ptolemy.kernel.util.Workspace;
    @author Stephen Neuendorffer
    @version $Id$
    @since Ptolemy II 0.2
+   @Pt.ProposedRating Yellow (neuendor@eecs.berkeley.edu)
+   @Pt.AcceptedRating Yellow (johnr@eecs.berkeley.edu)
    @deprecated It is preferable to declare the rate parameters directly
    in the actors, instead of using this class.  This allows the
    dependence of rates to be understood by various SDF schedulers.

@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Red (vogel@eecs.berkeley.edu)
-@AcceptedRating Red (vogel@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.sdf.kernel.test;
@@ -53,6 +51,8 @@ import ptolemy.kernel.util.Workspace;
    @author Brian K. Vogel
    @version $Id$
    @since Ptolemy II 2.0
+   @Pt.ProposedRating Red (vogel@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (vogel@eecs.berkeley.edu)
 */
 
 public class SDFTestZeroRate2 extends Transformer {

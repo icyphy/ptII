@@ -23,8 +23,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Yellow (cm@eecs.berkeley.edu)
-@AcceptedRating Red (eal@eecs.berkeley.edu)
 
 // NOTE: Downgraded to red due to extensive changes.  EAL
 */
@@ -81,6 +79,8 @@ import java.util.ListIterator;
    @author  Christoph Meyer Kirsch, Edward A. Lee and Haiyang Zheng
    @version $Id$
    @since Ptolemy II 1.0
+   @Pt.ProposedRating Yellow (cm@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (eal@eecs.berkeley.edu)
    @see GiottoScheduler
    @see GiottoReceiver
 */

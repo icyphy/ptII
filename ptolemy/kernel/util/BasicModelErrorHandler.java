@@ -23,8 +23,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-@ProposedRating Green (eal@eecs.berkeley.edu)
-@AcceptedRating Green (hyzheng@eecs.berkeley.edu)
 
 */
 
@@ -44,6 +42,8 @@ package ptolemy.kernel.util;
    @author Edward A. Lee
    @version $Id$
    @since Ptolemy II 2.1
+   @Pt.ProposedRating Green (eal@eecs.berkeley.edu)
+   @Pt.AcceptedRating Green (hyzheng@eecs.berkeley.edu)
 */
 public class BasicModelErrorHandler implements ModelErrorHandler {
 

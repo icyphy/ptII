@@ -55,6 +55,8 @@ import ptolemy.graph.analysis.analyzer.GraphAnalyzer;
    <p> [1] G. Ramalingam. <em>Bounded Incremental Computation</em>. PhD thesis,
    University of Wisconsin at Madison, August 1993.
    @since Ptolemy II 4.0
+   @Pt.ProposedRating Red (cxh@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (cxh@eecs.berkeley.edu>
    @author Shuvra S. Bhattacharyya, Ming Yung Ko and Shahrooz Shahparnia
    @version $Id$
 */

@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Green (eal@eecs.berkeley.edu)
-@AcceptedRating Green (johnr@eecs.berkeley.edu)
 */
 
 package ptolemy.kernel;
@@ -80,6 +78,8 @@ import java.util.List;
    @author John S. Davis II, Edward A. Lee
    @version $Id$
    @since Ptolemy II 0.2
+   @Pt.ProposedRating Green (eal@eecs.berkeley.edu)
+   @Pt.AcceptedRating Green (johnr@eecs.berkeley.edu)
    @see ptolemy.kernel.Port
    @see ptolemy.kernel.Relation
 */

@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Red (chf@eecs.berkeley.edu)
-@AcceptedRating Red (chf@eecs.berkeley.edu)
 */
 package ptolemy.domains.gr.lib;
 
@@ -60,6 +58,8 @@ in the X-Y plane to specify the polygonal shape for the base. The parameter
 @author C. Fong
 @version $Id$
 @since Ptolemy II 1.0
+@Pt.ProposedRating Red (chf@eecs.berkeley.edu)
+@Pt.AcceptedRating Red (chf@eecs.berkeley.edu)
 */
 public class PolyCylinder3D extends GRShadedShape {
 

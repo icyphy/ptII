@@ -24,8 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-@ProposedRating Red (liuxj@eecs.berkeley.edu)
-@AcceptedRating Red (liuxj@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib;
@@ -88,6 +86,8 @@ import java.util.Iterator;
    @author Xiaojun Liu
    @version $Id$
    @since Ptolemy II 2.0
+   @Pt.ProposedRating Red (liuxj@eecs.berkeley.edu)
+   @Pt.AcceptedRating Red (liuxj@eecs.berkeley.edu)
 */
 
 public class ClassWrapper extends TypedAtomicActor {

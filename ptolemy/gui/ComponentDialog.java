@@ -23,8 +23,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Yellow (janneck@eecs.berkeley.edu)
 */
 
 package ptolemy.gui;
@@ -69,6 +67,8 @@ then that component is notified when this dialog closes.
 @author Edward A. Lee
 @version $Id$
 @since Ptolemy II 0.4
+@Pt.ProposedRating Yellow (eal@eecs.berkeley.edu)
+@Pt.AcceptedRating Yellow (janneck@eecs.berkeley.edu)
 */
 public class ComponentDialog extends JDialog {
 
