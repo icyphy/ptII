@@ -102,14 +102,8 @@ public class SequenceToArray extends SDFTransformer {
      */
     public Object clone(Workspace ws)
 	    throws CloneNotSupportedException {
-        try {
-            SequenceToArray newobj = (SequenceToArray)(super.clone(ws));
-            return newobj;
-        } catch (CloneNotSupportedException ex) {
-            // Errors should not occur here...
-            throw new InternalErrorException(
-                    "Clone failed: " + ex.getMessage());
-        }
+        SequenceToArray newobj = (SequenceToArray)(super.clone(ws));
+        return newobj;
     }
 
     /** Consume the inputs and produce the output ArrayToken.

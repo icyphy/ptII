@@ -161,19 +161,14 @@ public class SequenceToDoubleMatrix extends SDFAtomicActor {
      */
     public Object clone(Workspace ws)
         throws CloneNotSupportedException {
-        try {
-            SequenceToDoubleMatrix newobj = (SequenceToDoubleMatrix) (super.clone(ws));
-            newobj.input = (SDFIOPort) newobj.getPort("input");
-            newobj.output = (SDFIOPort) newobj.getPort("output");
+        SequenceToDoubleMatrix newobj =
+            (SequenceToDoubleMatrix) super.clone(ws);
+        newobj.input = (SDFIOPort) newobj.getPort("input");
+        newobj.output = (SDFIOPort) newobj.getPort("output");
 
-            newobj.rows = (Parameter) newobj.getAttribute("rows");
-            newobj.columns = (Parameter) newobj.getAttribute("columns");
-            return newobj;
-        } catch (CloneNotSupportedException ex) {
-            // Errors should not occur here...
-            throw new InternalErrorException(
-                    "Clone failed: " + ex.getMessage());
-        }
+        newobj.rows = (Parameter) newobj.getAttribute("rows");
+        newobj.columns = (Parameter) newobj.getAttribute("columns");
+        return newobj;
     }
 
     /** Consume the inputs and produce the output DoubleMatrixToken.
