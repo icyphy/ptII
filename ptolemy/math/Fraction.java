@@ -66,7 +66,8 @@ public class Fraction {
      */
     public Fraction(int Numerator, int Denominator) {
                 if(Denominator == 0)
-                    throw new ArithmeticException("Illegal Fraction: cannot Divide by zero");
+                    throw new ArithmeticException("Illegal Fraction: " +
+                            "cannot Divide by zero");
 
         _num = Numerator;
         _den = Denominator;
@@ -94,7 +95,8 @@ public class Fraction {
      */
     public void setDenominator(int Denominator) {
                 if(Denominator == 0)
-                    throw new ArithmeticException("Illegal Fraction: cannot Divide by zero");
+                    throw new ArithmeticException("Illegal Fraction: " +
+                            "cannot Divide by zero");
                 _den = Denominator;
     }
 
@@ -128,7 +130,8 @@ public class Fraction {
     public static Fraction divide(Fraction a, Fraction b) {
         Fraction f = new Fraction(a._num * b._den, a._den * b._num);
         if(f._den == 0)
-            throw new ArithmeticException("Illegal Fraction: cannot Divide by zero");
+            throw new ArithmeticException("Illegal Fraction: " +
+                    "cannot Divide by zero");
         return f;
     }
 
@@ -137,7 +140,8 @@ public class Fraction {
      *  @return The answer as another Fraction
      */
     public static Fraction add(Fraction a, Fraction b) {
-        Fraction f = new Fraction(a._num * b._den + a._den * b._num, a._den * b._den);
+        Fraction f = new Fraction(
+                a._num * b._den + a._den * b._num, a._den * b._den);
         return f;
     }
 
@@ -146,7 +150,8 @@ public class Fraction {
      *  @return The answer as another Fraction
      */
     public static Fraction subtract(Fraction a, Fraction b) {
-       Fraction f = new Fraction(a._num * b._den - a._den * b._num, a._den * b._den);
+       Fraction f = new Fraction(
+               a._num * b._den - a._den * b._num, a._den * b._den);
         return f;
     }
 
@@ -205,7 +210,7 @@ public class Fraction {
         return _den;
     }
 
-    public static Fraction ZERO = new Fraction(0,1);
+    public static Fraction ZERO = new Fraction(0, 1);
 
     /** Implement Euclid's method for finding the Greatest Common Divisor of
      *  two numbers
