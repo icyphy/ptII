@@ -64,6 +64,8 @@ ptolemy/domains/sdf/demo/FixPointSystem
 ptolemy/domains/sdf/lib/huffman
 ptolemy/domains/sdf/lib/javasound
 ptolemy/domains/sdf/test/pitchshift
+ptolemy/kernel/util/LibraryMarkerAttribute.java
+ptolemy/kernel/util/UserSettable.java
 ptolemy/math/filter
 ptolemy/plot/adm
 ptolemy/schematic
