@@ -32,7 +32,7 @@ import java.util.Iterator;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
-import ptolemy.actor.RunCompositeActor;
+import ptolemy.actor.lib.hoc.RunCompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleToken;

@@ -2,11 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="MultipleRuns" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0-alpha">
     </property>
     <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
-        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
-        </property>
         <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="5">
@@ -16,7 +14,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 35.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-1, 0, 815, 466}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {-1, 0, 815, 466}, maximized = false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 350]">
     </property>
@@ -24,11 +22,12 @@
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This model illustrates the use of a "run composite actor"
-component.  That component contains another Ptolemy II model.
-Each time it fires, it performs a complete execution of
-that other Ptolemy II model, rather than just one firing
-as would be typical of a composite actor.</text></svg></configure>
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This model illustrates the use of a "RunCompositeActor"
+component, which can be found in the Actors library under
+HigherOrderActors.  That component contains another Ptolemy
+II model. Each time it fires, it performs a complete
+execution of that other Ptolemy II model, rather than
+just one firing as would be typical of a composite actor.</text></svg></configure>
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -86,12 +85,14 @@ repeatedly executed.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="10.0, 265.0">
         </property>
     </property>
-    <entity name="run composite actor" class="ptolemy.actor.RunCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="250.0, 170.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 175.0}">
+    </property>
+    <entity name="RunCompositeActor" class="ptolemy.actor.lib.hoc.RunCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 170.0]">
         </property>
         <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
-            <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
-            </property>
             <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="iterations" class="ptolemy.data.expr.Parameter" value="500">
@@ -177,13 +178,11 @@ on each run.</text></svg></configure>
         </property>
         <port name="run" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="30.0, 115.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{30.0, 115.0}">
             </property>
         </port>
         <entity name="XYPlotter" class="ptolemy.actor.lib.gui.XYPlotter">
             <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="legend" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={448, 337, 457, 418}}">
             </property>
@@ -193,14 +192,6 @@ on each run.</text></svg></configure>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="365.0, 180.0">
             </property>
-            <port name="inputX" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-            <port name="inputY" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
             <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
@@ -216,6 +207,7 @@ on each run.</text></svg></configure>
         <entity name="Sinewave2" class="ptolemy.actor.lib.Sinewave">
             <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
             </property>
+            <doc>This composite actor generates a sine wave.</doc>
             <property name="samplingFrequency" class="ptolemy.data.expr.Parameter" value="1.0">
                 <doc>The sampling frequency, in the same units as the frequency.</doc>
             </property>
@@ -224,8 +216,6 @@ on each run.</text></svg></configure>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 102]">
             </property>
             <property name="annotation" class="ptolemy.kernel.util.Attribute">
-                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-                </property>
                 <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                     <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Generate a sine wave.</text></svg></configure>
                 </property>
@@ -236,16 +226,10 @@ on each run.</text></svg></configure>
       </svg>
     </configure>
                 </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-                </property>
-                <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="172.0, 45.0">
                 </property>
             </property>
             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-                <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
-                </property>
                 <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
@@ -256,8 +240,6 @@ on each run.</text></svg></configure>
                 </property>
             </property>
             <property name="frequency" class="ptolemy.actor.parameters.PortParameter" value="1.0/50.0">
-                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-                </property>
                 <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                     <configure>
       <svg>
@@ -273,16 +255,12 @@ on each run.</text></svg></configure>
         <text x="20" style="font-size:14; font-family:SansSerif; fill:green" y="20">-P-</text>
       </svg>
     </configure>
-                </property>
-                <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 95.0">
                 </property>
                 <doc>The frequency of the sinusoid, in the same units as the sampling frequency.</doc>
             </property>
             <property name="phase" class="ptolemy.actor.parameters.PortParameter" value="0.0">
-                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-                </property>
                 <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                     <configure>
       <svg>
@@ -298,8 +276,6 @@ on each run.</text></svg></configure>
         <text x="20" style="font-size:14; font-family:SansSerif; fill:green" y="20">-P-</text>
       </svg>
     </configure>
-                </property>
-                <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 135.0">
                 </property>
@@ -307,13 +283,13 @@ on each run.</text></svg></configure>
             </property>
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={108, 103, 811, 561}}">
             </property>
-            <doc>This composite actor generates a sine wave.</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="240.0, 140.0">
             </property>
         </entity>
         <entity name="Sinewave" class="ptolemy.actor.lib.Sinewave">
             <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
             </property>
+            <doc>This composite actor generates a sine wave.</doc>
             <property name="samplingFrequency" class="ptolemy.data.expr.Parameter" value="1.0">
                 <doc>The sampling frequency, in the same units as the frequency.</doc>
             </property>
@@ -322,8 +298,6 @@ on each run.</text></svg></configure>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 102]">
             </property>
             <property name="annotation" class="ptolemy.kernel.util.Attribute">
-                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-                </property>
                 <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                     <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Generate a sine wave.</text></svg></configure>
                 </property>
@@ -334,16 +308,10 @@ on each run.</text></svg></configure>
       </svg>
     </configure>
                 </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-                </property>
-                <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="172.0, 45.0">
                 </property>
             </property>
             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-                <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
-                </property>
                 <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
@@ -354,8 +322,6 @@ on each run.</text></svg></configure>
                 </property>
             </property>
             <property name="frequency" class="ptolemy.actor.parameters.PortParameter" value="1.0/100.0 + 1.0/(25.0*run)">
-                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-                </property>
                 <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                     <configure>
       <svg>
@@ -371,16 +337,12 @@ on each run.</text></svg></configure>
         <text x="20" style="font-size:14; font-family:SansSerif; fill:green" y="20">-P-</text>
       </svg>
     </configure>
-                </property>
-                <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 95.0">
                 </property>
                 <doc>The frequency of the sinusoid, in the same units as the sampling frequency.</doc>
             </property>
             <property name="phase" class="ptolemy.actor.parameters.PortParameter" value="0.0">
-                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-                </property>
                 <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                     <configure>
       <svg>
@@ -396,8 +358,6 @@ on each run.</text></svg></configure>
         <text x="20" style="font-size:14; font-family:SansSerif; fill:green" y="20">-P-</text>
       </svg>
     </configure>
-                </property>
-                <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 135.0">
                 </property>
@@ -405,7 +365,6 @@ on each run.</text></svg></configure>
             </property>
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={108, 103, 811, 561}}">
             </property>
-            <doc>This composite actor generates a sine wave.</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="240.0, 205.0">
             </property>
         </entity>
@@ -428,19 +387,9 @@ on each run.</text></svg></configure>
         <doc>Create a sequence of tokens with increasing value</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 170.0">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <port name="step" class="ptolemy.actor.parameters.ParameterPort">
-            <property name="input"/>
-        </port>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="run composite actor.run" relation="relation"/>
+    <link port="RunCompositeActor.run" relation="relation"/>
     <link port="Ramp.output" relation="relation"/>
 </entity>
