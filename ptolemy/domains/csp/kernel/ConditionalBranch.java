@@ -52,7 +52,6 @@ A conditional branch is created to perform a single conditional communication.
 The information it contains in its private members is immutable and
 fixed upon creation.
 <p>
-FIXME: does this class want/need to have a notion of workspace?
 FIXME: a bit strange to only use the constructor arguments to set internal
 fields!
 
@@ -131,10 +130,13 @@ public abstract class ConditionalBranch {
     ////////////////////////////////////////////////////////////////////////
     ////                         protected methods                      ////
 
-    public void _checkAndWait() throws InterruptedException {
-        getParent().branchBlocked();
+    /** Called by subclasses to wait. It takes care of registering 
+     *  branches as blocked which is needed for deadlock detection.
+     */
+    protected void _checkAndWait() throws InterruptedException {
+        getParent()._branchBlocked();
         getReceiver()._checkAndWait();
-        getParent().branchUnblocked();
+        getParent()._branchUnblocked();
     }
 
 
