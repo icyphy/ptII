@@ -90,7 +90,9 @@ public class CurrentTime extends TimedSource {
                 if (trigger.hasToken(i)) {
                     currentTime = Math.min(
                             trigger.getCurrentTime(i), currentTime);
-                    trigger.get(i);
+                    // Do not consume the token... It will be consumed
+                    // in the superclass fire().
+                    // trigger.get(i);
                 }
             }
         }
