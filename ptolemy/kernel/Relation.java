@@ -38,10 +38,15 @@ specialized to point-to-point connections.
 <A HREF="pt.kernel.Particles.html#_top_">Particles</A> reside in in Relations 
 during transit. Unlike Entities, Relations can not contain ports but they 
 do have port references. Relations come in two types as follows: 
+<UL>
 <LI>
-<EM>Source Relations</EM> consist of a one-to-many topology while
+<EM>Source Relations</EM>: A one-to-many topology
+</LI>
+<LI>
+<BR>
 <EM>Destination Relations</EM> facilitate many-to-one topologies.
 </LI>
+</UL>
 @author John S. Davis, II
 @version $Id$
 @see pt.kernel.Particle
