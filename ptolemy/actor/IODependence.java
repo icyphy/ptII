@@ -227,6 +227,10 @@ public class IODependence extends Attribute {
         ////                         private variables                    ////
 
         private String _inputPortName;
+        // FIXME
+        // _delayToPorts is not a good name.
+        // It includes the ports those are not immediately depedent and 
+        // those are not dependent at all.
         private LinkedList _delayToPorts = new LinkedList();
         private LinkedList _directFeedThroughPorts = new LinkedList();
     }
