@@ -14,6 +14,7 @@ Benveniste
 Bhatt
 Bicheng
 Bilung
+Blackdown
 CELLPADDING
 CELLSPACING
 Cardelli
@@ -37,6 +38,7 @@ Dingbats
 Downsampler
 Dresden
 Edsger
+Emacs
 Endian
 Esterel
 Feedforward
@@ -77,6 +79,7 @@ Instantiable
 Irix
 Itcl
 Itk
+JAVAHOME
 JDK
 Jacl
 Jarvis
@@ -104,6 +107,7 @@ Liu
 Lotos
 Lukito
 Lustre
+MAKEARCH
 Majordomo
 Makefiles
 Manda
@@ -131,8 +135,10 @@ Optronics
 Ousterhout
 PDF
 PN
+PTARCH
 Passerone
 Pauer
+Perl
 Photonics
 Pilaud
 Pino
@@ -259,7 +265,15 @@ faf0e6
 frameborder
 frameset
 fsm
+gcc
 gif
+gigascale
+gigasource
+gigavault
+gsrc
+gz
+gzcat
+gzipped
 h1
 h2
 h3
@@ -295,6 +309,7 @@ jindent
 johnr
 kienhuis
 lang
+laptop
 linux
 liuj
 liuxj
@@ -311,6 +326,7 @@ mikele
 mkdir
 mkgroup
 mkpasswd
+msdn
 mudit
 namespace
 nbsp
@@ -337,9 +353,10 @@ prioritization
 prioritized
 prioritizing
 ptmkmodel
-ptsupport
 ptolemy
 ptolemy.eecs.berkeley.edu
+ptplot
+ptsupport
 pxgraph
 queueing
 rowspan
@@ -378,4 +395,5 @@ website
 workaround
 www
 www.scriptics.com
+xraylith
 yuhong
