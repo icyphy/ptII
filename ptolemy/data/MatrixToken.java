@@ -397,7 +397,9 @@ public abstract class MatrixToken extends Token {
 
     /** Return a new token whose value is the value of this token
      *  divided by the value of the argument token.  Division is not
-     *  supported for matrices, so this always throws an exception.
+     *  supported for matrices, so this throws an exception if the
+     *  argument is a matrix. However, if it is a scalar, then division
+     * 	is performed elementwise.
      *  @param rightArgument The token that divides this token.
      *  @return A new token containing the result.
      *  @exception IllegalActionException If the operation
