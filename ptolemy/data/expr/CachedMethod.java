@@ -24,24 +24,25 @@
   LIMITED HAVE NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
   ENHANCEMENTS, OR MODIFICATIONS.
 
- @ProposedRating Yellow (neuendor@eecs.berkeley.edu)
- @AcceptedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Yellow (neuendor@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 
- Created : May 2002
- */
- package ptolemy.data.expr;
+Created : May 2002
+*/
 
- import ptolemy.kernel.util.IllegalActionException;
- import ptolemy.kernel.util.InternalErrorException;
- import ptolemy.data.type.*;
- import ptolemy.data.ArrayToken;
- import ptolemy.data.MatrixToken;
+package ptolemy.data.expr;
 
- import java.lang.reflect.Method;
- import java.lang.reflect.Array;
- import java.lang.reflect.InvocationTargetException;
- import java.util.Hashtable;
- import java.util.Iterator;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.data.type.*;
+import ptolemy.data.ArrayToken;
+import ptolemy.data.MatrixToken;
+
+import java.lang.reflect.Method;
+import java.lang.reflect.Array;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Hashtable;
+import java.util.Iterator;
 
 //////////////////////////////////////////////////////////////////////////
 //// CachedMethod
@@ -364,12 +365,40 @@ public class CachedMethod {
         return cachedMethod;
     }
 
+    /** Return the CachedMethod that corresponds to methodName and
+     *  argTypes if it had been cached previously.
+     */
+    public static CachedMethod get(
+            String methodName, Type[] argTypes, int type) {
+        CachedMethod key = new CachedMethod(
+                   methodName, argTypes, null, null, type);
+        // System.out.println("findMethod:" + key);
+        CachedMethod method = (CachedMethod)_cachedMethods.get(key);
+        return method;
+    }
+
     /** Return the conversions the are applied to the arguments of this
      *  function or method.
      *  @return The conversions applied to the arguments.
      */
     public ArgumentConversion[] getConversions() {
         return _conversions;
+    }
+
+    /** Return the method or function associated with this instance, or null
+     *  if none has been found.
+     *  @return The method associated with this instance.
+     */
+    public Method getMethod() {
+        return _method;
+    }
+
+    /** Return the type of this class, which is one of
+     *  REAL or MISSING or'ed with one of METHOD or FUNCTION.
+     *  @return The type of this class.
+     */
+    public int getType() {
+        return _type;
     }
 
     /** Return the type of the token that results from an invocation
@@ -396,34 +425,6 @@ public class CachedMethod {
      */
     public int hashCode() {
         return _hashcode;
-    }
-
-    /** Return the CachedMethod that corresponds to methodName and
-     *  argTypes if it had been cached previously.
-     */
-    public static CachedMethod get(
-            String methodName, Type[] argTypes, int type) {
-        CachedMethod key = new CachedMethod(
-                   methodName, argTypes, null, null, type);
-        // System.out.println("findMethod:" + key);
-        CachedMethod method = (CachedMethod)_cachedMethods.get(key);
-        return method;
-    }
-
-    /** Return the type of this class, which is one of
-     *  REAL or MISSING or'ed with one of METHOD or FUNCTION.
-     *  @return The type of this class.
-     */
-    public int getType() {
-        return _type;
-    }
-
-    /** Return the method or function associated with this instance, or null
-     *  if none has been found.
-     *  @return The method associated with this instance.
-     */
-    public Method getMethod() {
-        return _method;
     }
 
     /** Apply the method or function represented by this object to

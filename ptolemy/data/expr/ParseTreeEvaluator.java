@@ -772,7 +772,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
                         "Exponent must have a valid "
                         + "lossless conversion to integer. Integer or "
                         + "unsigned byte meet this criterion.\n"
-                        + "Use pow(10,3.5) for non-integer exponents");
+                        + "Use pow(10, 3.5) for non-integer exponents");
             }
 
             result = result.pow(times);

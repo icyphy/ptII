@@ -162,35 +162,165 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    public String getFunctionName() {
-        Node n = jjtGetChild(0);
-        if (!(n instanceof ASTPtLeafNode))
-            return null;
-        else
-            return ((ASTPtLeafNode)n).getName();
+    /** Convert a java object to its corresponding Token. */
+    public static ptolemy.data.Token convertJavaTypeToToken(Object object)
+        throws ptolemy.kernel.util.IllegalActionException {
+        ptolemy.data.Token returnValue = null;
+        if (object instanceof ptolemy.data.Token) {
+            returnValue = (ptolemy.data.Token)object;
+        } else if (object instanceof ptolemy.data.Token[]) {
+            returnValue = new ArrayToken((ptolemy.data.Token[])object);
+        } else if (object instanceof Double) {
+            returnValue = new DoubleToken(((Double)object).doubleValue());
+        } else if (object instanceof Byte) {
+            // FIXME: not quite right? Sign?
+            returnValue = new UnsignedByteToken(((Byte)object).byteValue());
+        } else if (object instanceof Integer) {
+            returnValue = new IntToken(((Integer)object).intValue());
+        } else if (object instanceof Long) {
+            returnValue = new LongToken(((Long)object).longValue());
+        } else if (object instanceof String) {
+            returnValue = new StringToken((String)object);
+        } else if (object instanceof Boolean) {
+            returnValue = new BooleanToken(((Boolean)object).booleanValue());
+        } else if (object instanceof Complex) {
+            returnValue = new ComplexToken((Complex)object);
+        } else if (object instanceof FixPoint) {
+            returnValue = new FixToken((FixPoint)object);
+        } else if (object instanceof int[][]) {
+            returnValue = new IntMatrixToken((int[][])object);
+        } else if (object instanceof double[][]) {
+            returnValue = new DoubleMatrixToken((double[][])object);
+        } else if (object instanceof Complex[][]) {
+            returnValue = new ComplexMatrixToken((Complex[][])object);
+        } else if (object instanceof long[][]) {
+            returnValue = new LongMatrixToken((long[][])object);
+        } else if (object instanceof FixPoint[][]) {
+            returnValue = new FixMatrixToken((FixPoint[][])object);
+        } else if (object instanceof double[]) {
+            DoubleToken[] temp = new DoubleToken
+                [((double[])object).length];
+            for (int j = 0; j < temp.length; j++) {
+                temp[j] = new DoubleToken(((double[])object)[j]);
+            }
+            returnValue = new ArrayToken(temp);
+        } else if (object instanceof Complex[]) {
+            ComplexToken[] temp = new ComplexToken
+                [((Complex[])object).length];
+            for (int j = 0; j < temp.length; j++) {
+                temp[j] = new ComplexToken(((Complex[])object)[j]);
+            }
+            returnValue = new ArrayToken(temp);
+        } else if (object instanceof int[]) {
+            IntToken[] temp = new IntToken[((int[])object).length];
+            for (int j = 0; j < temp.length; j++) {
+                temp[j] = new IntToken(((int[])object)[j]);
+            }
+            returnValue = new ArrayToken(temp);
+        } else if (object instanceof long[]) {
+            LongToken[] temp = new LongToken[((long[])object).length];
+            for (int j = 0; j < temp.length; j++) {
+                temp[j] = new LongToken(((long[])object)[j]);
+            }
+            returnValue = new ArrayToken(temp);
+        } else if (object instanceof boolean[]) {
+            BooleanToken[] temp = new BooleanToken[((long[])object).length];
+            for (int j = 0; j < temp.length; j++) {
+                temp[j] = new BooleanToken(((boolean[])object)[j]);
+            }
+            returnValue = new ArrayToken(temp);
+        } else if (object instanceof String[]) {
+            StringToken[] temp = new StringToken[((String[])object).length];
+            for (int j = 0; j < temp.length; j++) {
+                temp[j] = new StringToken(((String[])object)[j]);
+            }
+            returnValue = new ArrayToken(temp);
+        } else if (object instanceof FixPoint[]) {
+            // Create back an ArrayToken containing FixTokens
+            FixToken[] temp = new FixToken[((FixPoint[])object).length];
+            for (int j = 0; j < temp.length; j++) {
+                temp[j] = new FixToken((FixPoint)((FixPoint[])object)[j]);
+            }
+            returnValue = new ArrayToken(temp);
+        } else if(object instanceof Object) {
+            // Package into an ObjectToken.
+            returnValue = new ObjectToken(object);
+        }
+        return returnValue;
     }
 
-    public void jjtClose() {
-        super.jjtClose();
-        // We cannot assume that the result of a function call is
-        // constant, even when the arguments to the function are.
-        _isConstant = false;
+    /** Convert a java class to a corresponding token class. */
+    public static Type convertJavaTypeToTokenType(Class tokenClass)
+        throws ptolemy.kernel.util.IllegalActionException {
+        try {
+            if (tokenClass.equals(ptolemy.data.Token.class)) {
+                return BaseType.GENERAL;
+            } else if (ptolemy.data.ArrayToken.class.isAssignableFrom(
+                               tokenClass)) {
+                Type type = new ArrayType(BaseType.GENERAL);
+                return type;
+            } else if (ptolemy.data.Token.class.isAssignableFrom(tokenClass)) {
+                Type type = BaseType.forClassName(tokenClass.getName());
+                if(type == null) {
+                    throw new IllegalActionException(
+                            "Could not return type for class " + tokenClass);
+                }
+                return type;
+            } else if (tokenClass.equals(Boolean.class) ||
+                    tokenClass.equals(Boolean.TYPE)) {
+                return BaseType.BOOLEAN;
+            } else if (tokenClass.equals(Byte.class) ||
+                    tokenClass.equals(Byte.TYPE)) {
+                return BaseType.UNSIGNED_BYTE;
+            } else if (tokenClass.equals(Integer.class) ||
+                    tokenClass.equals(Integer.TYPE)) {
+                return BaseType.INT;
+            } else if (tokenClass.equals(Long.class) ||
+                    tokenClass.equals(Long.TYPE)) {
+                return BaseType.LONG;
+            } else if (tokenClass.equals(Double.class) ||
+                    tokenClass.equals(Double.TYPE)) {
+                return BaseType.DOUBLE;
+            } else if (tokenClass.equals(Complex.class)) {
+                return BaseType.COMPLEX;
+            } else if (tokenClass.equals(FixPoint.class)) {
+                return BaseType.FIX;
+            } else if (tokenClass.equals(String.class)) {
+                return BaseType.STRING;
+            } else if (tokenClass.equals(Class.forName("[[Z"))) {
+                return BaseType.BOOLEAN_MATRIX;
+            } else if (tokenClass.equals(Class.forName("[[I"))) {
+                return BaseType.INT_MATRIX;
+            } else if (tokenClass.equals(Class.forName("[[J"))) {
+                return BaseType.LONG_MATRIX;
+            } else if (tokenClass.equals(Class.forName("[[D"))) {
+                return BaseType.DOUBLE_MATRIX;
+            } else if (tokenClass.equals(
+                               Class.forName("[[Lptolemy.math.Complex;"))) {
+                return BaseType.COMPLEX_MATRIX;
+            }  else if (tokenClass.equals(
+                                Class.forName("[[Lptolemy.math.FixPoint;"))) {
+                return BaseType.FIX_MATRIX;
+            } else if (tokenClass.isArray()) {
+                return new ArrayType(convertJavaTypeToTokenType(
+                                             tokenClass.getComponentType()));
+
+            } else if (java.lang.Object.class.isAssignableFrom(tokenClass)) {
+                return BaseType.OBJECT;
+            } else {
+                throw new IllegalActionException(
+                        "type not found: " + tokenClass);
+            }
+        } catch(ClassNotFoundException ex) {
+            throw new IllegalActionException(null, ex, ex.getMessage());
+        }
     }
 
-    /** Traverse this node with the given visitor.
+    /** Convert a token to its underlying java type and return its value
+     * (Object) and type (Class).
+     * @deprecated Use separate convert methods for type and arg.
      */
-    public void visit(ParseTreeVisitor visitor)
-            throws IllegalActionException {
-        visitor.visitFunctionNode(this);
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
-    // Convert a token to its underlying java type and return its value
-    // (Object) and type (Class).
-    // @deprecated use separate convert methods for type and arg.
-    public static Object[] convertTokenToJavaType(ptolemy.data.Token token)
+    public static Object convertTokenToJava(ptolemy.data.Token token)
             throws ptolemy.kernel.util.IllegalActionException {
         Object[] returnValue = new Object[2];
         if (token instanceof DoubleToken) {
@@ -198,12 +328,12 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
             // for double & Double...
             returnValue[0] = new Double(((DoubleToken)token).doubleValue());
             returnValue[1] = Double.TYPE;
-        } else if (token instanceof UnsignedByteToken) {
-            returnValue[0] = new Byte(((UnsignedByteToken)token).byteValue());
-            returnValue[1] = Byte.TYPE;
         } else if (token instanceof IntToken) {
             returnValue[0] = new Integer(((IntToken)token).intValue());
             returnValue[1] = Integer.TYPE;
+        } else if (token instanceof UnsignedByteToken) {
+            returnValue[0] = new Byte(((UnsignedByteToken)token).byteValue());
+            returnValue[1] = Byte.TYPE;
         } else if (token instanceof LongToken) {
             returnValue[0] = new Long(((LongToken)token).longValue());
             returnValue[1] = Long.TYPE;
@@ -316,10 +446,11 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
         return returnValue;
     }
 
-    // Convert a token to its underlying java type and return its value
-    // (Object) and type (Class).
-    // @deprecated Use separate convert methods for type and arg.
-    public static Object convertTokenToJava(ptolemy.data.Token token)
+    /** Convert a token to its underlying java type and return its value
+     * (Object) and type (Class).
+     * @deprecated use separate convert methods for type and arg.
+     */
+    public static Object[] convertTokenToJavaType(ptolemy.data.Token token)
             throws ptolemy.kernel.util.IllegalActionException {
         Object[] returnValue = new Object[2];
         if (token instanceof DoubleToken) {
@@ -327,12 +458,12 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
             // for double & Double...
             returnValue[0] = new Double(((DoubleToken)token).doubleValue());
             returnValue[1] = Double.TYPE;
-        } else if (token instanceof IntToken) {
-            returnValue[0] = new Integer(((IntToken)token).intValue());
-            returnValue[1] = Integer.TYPE;
         } else if (token instanceof UnsignedByteToken) {
             returnValue[0] = new Byte(((UnsignedByteToken)token).byteValue());
             returnValue[1] = Byte.TYPE;
+        } else if (token instanceof IntToken) {
+            returnValue[0] = new Integer(((IntToken)token).intValue());
+            returnValue[1] = Integer.TYPE;
         } else if (token instanceof LongToken) {
             returnValue[0] = new Long(((LongToken)token).longValue());
             returnValue[1] = Long.TYPE;
@@ -502,158 +633,27 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
         }
     }
 
-    // Convert a java class to a corresponding token class.
-    public static Type convertJavaTypeToTokenType(Class tokenClass)
-        throws ptolemy.kernel.util.IllegalActionException {
-        try {
-            if (tokenClass.equals(ptolemy.data.Token.class)) {
-                return BaseType.GENERAL;
-            } else if (ptolemy.data.ArrayToken.class.isAssignableFrom(
-                               tokenClass)) {
-                Type type = new ArrayType(BaseType.GENERAL);
-                return type;
-            } else if (ptolemy.data.Token.class.isAssignableFrom(tokenClass)) {
-                Type type = BaseType.forClassName(tokenClass.getName());
-                if(type == null) {
-                    throw new IllegalActionException(
-                            "Could not return type for class " + tokenClass);
-                }
-                return type;
-            } else if (tokenClass.equals(Boolean.class) ||
-                    tokenClass.equals(Boolean.TYPE)) {
-                return BaseType.BOOLEAN;
-            } else if (tokenClass.equals(Byte.class) ||
-                    tokenClass.equals(Byte.TYPE)) {
-                return BaseType.UNSIGNED_BYTE;
-            } else if (tokenClass.equals(Integer.class) ||
-                    tokenClass.equals(Integer.TYPE)) {
-                return BaseType.INT;
-            } else if (tokenClass.equals(Long.class) ||
-                    tokenClass.equals(Long.TYPE)) {
-                return BaseType.LONG;
-            } else if (tokenClass.equals(Double.class) ||
-                    tokenClass.equals(Double.TYPE)) {
-                return BaseType.DOUBLE;
-            } else if (tokenClass.equals(Complex.class)) {
-                return BaseType.COMPLEX;
-            } else if (tokenClass.equals(FixPoint.class)) {
-                return BaseType.FIX;
-            } else if (tokenClass.equals(String.class)) {
-                return BaseType.STRING;
-            } else if (tokenClass.equals(Class.forName("[[Z"))) {
-                return BaseType.BOOLEAN_MATRIX;
-            } else if (tokenClass.equals(Class.forName("[[I"))) {
-                return BaseType.INT_MATRIX;
-            } else if (tokenClass.equals(Class.forName("[[J"))) {
-                return BaseType.LONG_MATRIX;
-            } else if (tokenClass.equals(Class.forName("[[D"))) {
-                return BaseType.DOUBLE_MATRIX;
-            } else if (tokenClass.equals(
-                               Class.forName("[[Lptolemy.math.Complex;"))) {
-                return BaseType.COMPLEX_MATRIX;
-            }  else if (tokenClass.equals(
-                                Class.forName("[[Lptolemy.math.FixPoint;"))) {
-                return BaseType.FIX_MATRIX;
-            } else if (tokenClass.isArray()) {
-                return new ArrayType(convertJavaTypeToTokenType(
-                                             tokenClass.getComponentType()));
-
-            } else if (java.lang.Object.class.isAssignableFrom(tokenClass)) {
-                return BaseType.OBJECT;
-            } else {
-                throw new IllegalActionException(
-                        "type not found: " + tokenClass);
-            }
-        } catch(ClassNotFoundException ex) {
-            throw new IllegalActionException(null, ex, ex.getMessage());
-        }
+    public String getFunctionName() {
+        Node n = jjtGetChild(0);
+        if (!(n instanceof ASTPtLeafNode))
+            return null;
+        else
+            return ((ASTPtLeafNode)n).getName();
     }
 
-    // Convert a java object to its corresponding Token.
-    public static ptolemy.data.Token convertJavaTypeToToken(Object object)
-        throws ptolemy.kernel.util.IllegalActionException {
-        ptolemy.data.Token returnValue = null;
-        if (object instanceof ptolemy.data.Token) {
-            returnValue = (ptolemy.data.Token)object;
-        } else if (object instanceof ptolemy.data.Token[]) {
-            returnValue = new ArrayToken((ptolemy.data.Token[])object);
-        } else if (object instanceof Double) {
-            returnValue = new DoubleToken(((Double)object).doubleValue());
-        } else if (object instanceof Byte) {
-            // FIXME: not quite right? Sign?
-            returnValue = new UnsignedByteToken(((Byte)object).byteValue());
-        } else if (object instanceof Integer) {
-            returnValue = new IntToken(((Integer)object).intValue());
-        } else if (object instanceof Long) {
-            returnValue = new LongToken(((Long)object).longValue());
-        } else if (object instanceof String) {
-            returnValue = new StringToken((String)object);
-        } else if (object instanceof Boolean) {
-            returnValue = new BooleanToken(((Boolean)object).booleanValue());
-        } else if (object instanceof Complex) {
-            returnValue = new ComplexToken((Complex)object);
-        } else if (object instanceof FixPoint) {
-            returnValue = new FixToken((FixPoint)object);
-        } else if (object instanceof int[][]) {
-            returnValue = new IntMatrixToken((int[][])object);
-        } else if (object instanceof double[][]) {
-            returnValue = new DoubleMatrixToken((double[][])object);
-        } else if (object instanceof Complex[][]) {
-            returnValue = new ComplexMatrixToken((Complex[][])object);
-        } else if (object instanceof long[][]) {
-            returnValue = new LongMatrixToken((long[][])object);
-        } else if (object instanceof FixPoint[][]) {
-            returnValue = new FixMatrixToken((FixPoint[][])object);
-        } else if (object instanceof double[]) {
-            DoubleToken[] temp = new DoubleToken
-                [((double[])object).length];
-            for (int j = 0; j < temp.length; j++) {
-                temp[j] = new DoubleToken(((double[])object)[j]);
-            }
-            returnValue = new ArrayToken(temp);
-        } else if (object instanceof Complex[]) {
-            ComplexToken[] temp = new ComplexToken
-                [((Complex[])object).length];
-            for (int j = 0; j < temp.length; j++) {
-                temp[j] = new ComplexToken(((Complex[])object)[j]);
-            }
-            returnValue = new ArrayToken(temp);
-        } else if (object instanceof int[]) {
-            IntToken[] temp = new IntToken[((int[])object).length];
-            for (int j = 0; j < temp.length; j++) {
-                temp[j] = new IntToken(((int[])object)[j]);
-            }
-            returnValue = new ArrayToken(temp);
-        } else if (object instanceof long[]) {
-            LongToken[] temp = new LongToken[((long[])object).length];
-            for (int j = 0; j < temp.length; j++) {
-                temp[j] = new LongToken(((long[])object)[j]);
-            }
-            returnValue = new ArrayToken(temp);
-        } else if (object instanceof boolean[]) {
-            BooleanToken[] temp = new BooleanToken[((long[])object).length];
-            for (int j = 0; j < temp.length; j++) {
-                temp[j] = new BooleanToken(((boolean[])object)[j]);
-            }
-            returnValue = new ArrayToken(temp);
-        } else if (object instanceof String[]) {
-            StringToken[] temp = new StringToken[((String[])object).length];
-            for (int j = 0; j < temp.length; j++) {
-                temp[j] = new StringToken(((String[])object)[j]);
-            }
-            returnValue = new ArrayToken(temp);
-        } else if (object instanceof FixPoint[]) {
-            // Create back an ArrayToken containing FixTokens
-            FixToken[] temp = new FixToken[((FixPoint[])object).length];
-            for (int j = 0; j < temp.length; j++) {
-                temp[j] = new FixToken((FixPoint)((FixPoint[])object)[j]);
-            }
-            returnValue = new ArrayToken(temp);
-        } else if(object instanceof Object) {
-            // Package into an ObjectToken.
-            returnValue = new ObjectToken(object);
-        }
-        return returnValue;
+    public void jjtClose() {
+        super.jjtClose();
+        // We cannot assume that the result of a function call is
+        // constant, even when the arguments to the function are.
+        _isConstant = false;
     }
+
+    /** Traverse this node with the given visitor.
+     */
+    public void visit(ParseTreeVisitor visitor)
+            throws IllegalActionException {
+        visitor.visitFunctionNode(this);
+    }
+
 }
 
