@@ -36,14 +36,8 @@ if {[string compare test [info procs test]] == 1} then {
 } {}
 
 # Uncomment this to get a full report, or set in your Tcl shell window.
-# set VERBOSE 1
+#set VERBOSE 1
 
-# If a file contains non-graphical tests, then it should be named .tcl
-# If a file contains graphical tests, then it should be called .itcl
-#
-# It would be nice if the tests would work in a vanilla itkwish binary.
-# Check for necessary classes and adjust the auto_path accordingly.
-#
 
 ######################################################################
 ####
@@ -465,3 +459,49 @@ test MoMLChangeRequest-3.2 {Test propagation} {
     }}
 } relations {
 }}
+
+
+######################################################################
+####
+#
+set baseModel4 {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="top" class="ptolemy.actor.TypedCompositeActor">
+    <property name="dir" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" value="2"/>
+    </property>
+</entity>}
+
+test MoMLChangeRequest-4.1 {Call two arg constructor (Originator, request)} {
+    # Create a base model.
+    set parser [java::new ptolemy.moml.MoMLParser]
+    $parser reset
+    set toplevel4 [java::cast ptolemy.actor.CompositeActor \
+            [$parser parse $baseModel4]]
+    set manager [java::new ptolemy.actor.Manager [$toplevel4 workspace] "w"]
+    $toplevel4 setManager $manager
+
+    set change [java::new ptolemy.moml.MoMLChangeRequest \
+	    $toplevel4 $baseModel4]
+    
+    # NOTE: Request is filled immediately because the model is not running.
+    # Note that this call also ends up calling MoMLParser.getToplevel()
+    $manager requestChange $change
+    $toplevel4 exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="top" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
+    </property>
+    <property name="dir" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+        </property>
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </property>
+</entity>
+}
