@@ -45,7 +45,7 @@ public class Mailbox implements Receiver {
     /** Construct an empty Mailbox. The Mailbox must have a container, 
      * which is an IOPort. The container, once set, can't be changed.
      * FIXME: what if container = null?
-     * @param container 
+     * @param container Container of Mailbox to be constructed.
      */	
     public Mailbox(IOPort container) {
         _container = container;
