@@ -655,13 +655,6 @@ public class CIDirector extends Director {
         return (!outputIsPush && (!hasInput || !inputIsPush));
     }
 
-    private boolean _isTopLevel() {
-        Nameable container = getContainer();
-        if (container == null) return true;
-        if (container.getContainer() == null) return true;
-        return false;
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
