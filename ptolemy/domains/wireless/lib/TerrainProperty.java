@@ -83,7 +83,7 @@ public class TerrainProperty extends TypedAtomicActor
         channelName.setExpression("TerrainChannel");
 
         xyPoints = new Parameter(this, "xyPoints");
-        xyPoints.setExpression("{{0,0}, {0,5}, {20,5}, {20, 0}}");
+        xyPoints.setExpression("{{0, 0}, {0, 5}, {20, 5}, {20, 0}}");
         //create the default icon.
         _numberOfPoints = 4;
         _xPoints = new int[_numberOfPoints];
@@ -295,7 +295,7 @@ public class TerrainProperty extends TypedAtomicActor
     // with different width, so that is can update the shape.
     private int _number;
 
-    //the location of this actor. This is used as (0,0) when
+    //the location of this actor. This is used as (0, 0) when
     //create the shape.
     private double[] _offset;
 

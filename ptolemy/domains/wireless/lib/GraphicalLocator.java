@@ -75,7 +75,8 @@ public class GraphicalLocator extends Locator {
         outputRange.setToken("100.0");
         outputRange.setTypeEquals(BaseType.DOUBLE);
 
-        output.outsideTransmitProperties.setExpression("{range=outputRange}");
+        output.outsideTransmitProperties.setExpression(
+                "{range = outputRange}");
 
         // Hide the ports in Vergil.
         new Attribute(output, "_hide");

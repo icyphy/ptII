@@ -112,7 +112,7 @@ public class Triangulator extends TypedAtomicActor {
 
         input = new TypedIOPort (this, "input", true, false);
         TypeAttribute inputType = new TypeAttribute(input, "type");
-        inputType.setExpression("{location={double}, time=double}");
+        inputType.setExpression("{location = {double}, time = double}");
 
         output = new TypedIOPort (this, "output", false, true);
         TypeAttribute outputType = new TypeAttribute(output, "type");
@@ -134,7 +134,7 @@ public class Triangulator extends TypedAtomicActor {
     /** The input port for an event detection, which is a record
      *  containing the location of a sensor that has detected the
      *  event and the time at which the sensor detected the event.
-     *  This has type {location={double}, time=double} The location
+     *  This has type {location = {double}, time = double} The location
      *  is assumed to have two entries.
      */
     public TypedIOPort input;
@@ -189,7 +189,7 @@ public class Triangulator extends TypedAtomicActor {
             }
             double locationX =
                 ((DoubleToken)locationArray.getElement(0)).doubleValue();
-            double locationY = 
+            double locationY =
                 ((DoubleToken)locationArray.getElement(1)).doubleValue();
 
             double time = ((DoubleToken)recordToken.get("time")).doubleValue();
@@ -202,7 +202,8 @@ public class Triangulator extends TypedAtomicActor {
             double oldestTime = Double.POSITIVE_INFINITY;
             double newestTime = Double.NEGATIVE_INFINITY;
             for (int i = 0; i < 3; i++) {
-                if (_locationsX[i] == locationX && _locationsY[i] == locationY) {
+                if (_locationsX[i] == locationX
+                        && _locationsY[i] == locationY) {
                     _times[i] = time;
                     foundMatch = true;
                 }
@@ -311,11 +312,14 @@ public class Triangulator extends TypedAtomicActor {
             return false;
         }
         double tdiff1 =
-            Math.abs(_distance(x1, y1, result[0], result[1])/v - (t1 - result[2]));
+            Math.abs(_distance(x1, y1,
+                    result[0], result[1])/v - (t1 - result[2]));
         double tdiff2 =
-            Math.abs(_distance(x2, y2, result[0], result[1])/v - (t2 - result[2]));
+            Math.abs(_distance(x2, y2,
+                    result[0], result[1])/v - (t2 - result[2]));
         double tdiff3 =
-            Math.abs(_distance(x3, y3, result[0], result[1])/v - (t3 - result[2]));
+            Math.abs(_distance(x3, y3,
+                    result[0], result[1])/v - (t3 - result[2]));
         // FIXME: make the check threshold a parameter?
         if (tdiff1 > 1e-5 || tdiff2 > 1e-5 || tdiff3 > 1e-5) {
             return false;
@@ -414,7 +418,8 @@ public class Triangulator extends TypedAtomicActor {
                 result[2] = (-eb - Math.sqrt(delta)) / ea / 2;
                 result[0] = m_inv_b[0] * result[2] + m_inv_c[0];
                 result[1] = m_inv_b[1] * result[2] + m_inv_c[1];
-                if (_checkResult(result, x1, y1, t1, x2, y2, t2, x3, y3, t3, v)) {
+                if (_checkResult(result, x1, y1, t1, x2, y2, t2,
+                        x3, y3, t3, v)) {
                     return result;
                 } else {
                     result[0] = Double.NEGATIVE_INFINITY;

@@ -122,7 +122,8 @@ public class PowerLossChannel extends LimitedRangeChannel {
 
         // Set the default properties.  Note that this type is a
         // subtype of the base class type (it includes more fields).
-        defaultProperties.setExpression("{range=Infinity, power=Infinity}");
+        defaultProperties.setExpression(
+                "{range = Infinity, power = Infinity}");
 
         // Force the type of the defaultProperties to at least include
         // the range field. This must be done after setting the value

@@ -93,7 +93,7 @@ public class LimitedRangeChannel extends DelayChannel {
         RecordType type = new RecordType(labels, types);
         // Setting an upper bound allows the addition of fields.
         defaultProperties.setTypeAtMost(type);
-        defaultProperties.setExpression("{range=Infinity}");
+        defaultProperties.setExpression("{range = Infinity}");
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -219,7 +219,8 @@ public class TransmitPropertyTransformer extends RunCompositeActor
                                 (WirelessIOPort)port);
                 } else {
                     throw new IllegalActionException(this,
-                            "The connected port does not refer to a valid channel.");
+                            "The connected port does not refer to a "
+                            + "valid channel.");
                 }
             }
         }
