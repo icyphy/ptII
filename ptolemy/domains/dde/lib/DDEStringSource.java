@@ -126,7 +126,7 @@ public abstract class DDEStringSource extends DDESourceActor {
             _time = time;
         }
 
-        public void set( double time, String str ) {
+        public void set(double time, String str) {
             _str = str;
             _time = time;
         }
