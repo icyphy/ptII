@@ -72,6 +72,7 @@ import ptolemy.vergil.toolbox.MenuItemFactory;
 import ptolemy.vergil.toolbox.PtolemyListCellRenderer;
 import ptolemy.vergil.toolbox.PtolemyMenuFactory;
 import ptolemy.vergil.toolbox.XMLIcon;
+import ptolemy.vergil.tree.EntityTreeModel;
 import ptolemy.vergil.tree.VisibleTreeModel;
 import ptolemy.vergil.tree.PTree;
 
@@ -286,8 +287,8 @@ public abstract class GraphFrame extends PtolemyFrame
             }
         }
 
-        TreeModel treeModel = new VisibleTreeModel(_topLibrary);
-        _library = new PTree(treeModel);
+        _libraryModel = new VisibleTreeModel(_topLibrary);
+        _library = new PTree(_libraryModel);
         _library.setRootVisible(false);
         _library.setBackground(BACKGROUND_COLOR);
 
@@ -451,6 +452,17 @@ public abstract class GraphFrame extends PtolemyFrame
         MessageHandler.error("Cut is not yet implemented.");
     }
 
+    /** Override the dispose method to unattach any listeners that may keep
+     *  this model from getting garbage collected.
+     */
+    public void dispose() {
+        // Remove the association with the library. This is necessary to allow
+        // this frame, and the rest of the model to be properly garbage
+        // collected
+        _libraryModel.setRoot(null);
+        super.dispose();
+    }
+ 
     /** Return the jgraph instance that this view uses to represent the
      *  ptolemy model.
      */
@@ -646,6 +658,7 @@ public abstract class GraphFrame extends PtolemyFrame
     protected JScrollPane _graphScrollPane;
     protected JPanner _graphPanner;
     protected JTree _library;
+    protected EntityTreeModel _libraryModel;
     protected JScrollPane _libraryScrollPane;
     protected JPanel _palettePane;
     protected JSplitPane _splitPane;
