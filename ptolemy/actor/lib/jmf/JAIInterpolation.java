@@ -47,7 +47,6 @@ import javax.media.jai.RenderedOp;
 /**
 Scale a RenderedOp using the javax.media.jai.JAI class.
 
-
 @author James Yeh
 @version $Id$
 */
@@ -91,14 +90,7 @@ public class JAIInterpolation extends Transformer {
     ////                         public methods                    ////
     
     /** Fire this actor.
-     *  Consume an IntMatrixToken from the input port.  If the image is
-     *  not the same size as the previous image, or this is the first
-     *  image, then create a new Picture object to represent the image,
-     *  and put it in the appropriate container (either the container
-     *  set using place, or the frame created during the initialize
-     *  phase).
-     *  Convert the pixels from greyscale to RGBA triples (setting the
-     *  image to be opaque) and update the picture.
+     *  Output the scaled RenderedOp.
      *  @exception IllegalActionException If a contained method throws it,
      *   or if a token is received that contains a null image.
      */    
@@ -117,7 +109,8 @@ public class JAIInterpolation extends Transformer {
 	output.send(0, new ObjectToken(newImage));
     }
     
-    /** Set the scaling values equal to the values of the parameters.
+    /** Initialize this actor.
+     *  Set the horizontal and vertical scaling values.
      *  @exception IllegalActionException If a contained method throws it.
      */
     public void initialize() throws IllegalActionException {
@@ -131,21 +124,26 @@ public class JAIInterpolation extends Transformer {
     
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
+    /** The type of Interpolation being used is specified using this
+     *  variable.
+     */
+    private Interpolation _interp;
     
     /** The horizontal scaling factor. */
     private double _xScaleFactor;
     
     /** The vertical scaling factor. */
     private double _yScaleFactor;
-
-    /** The block that holds the horizontal and vertical scaling
-     *  factor, the horizontal and vertical translation factor
-     * (unused),  and the type of interpolation being used.
-     */
-    private ParameterBlock _parameters;
     
     /** The type of Interpolation being used is specified using this
      *  variable.
      */
     private Interpolation _interp;
+    
+    /** The block that holds the horizontal and vertical scaling
+     *  factor, the horizontal and vertical translation factor
+     * (unused),  and the type of interpolation being used.
+     */
+    private ParameterBlock _parameters;
 }

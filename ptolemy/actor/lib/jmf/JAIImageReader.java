@@ -1,4 +1,5 @@
-/* An actor that produces a sequence of frames from a video camera.
+/* An actor that produces a javax.media.jai.RenderedOp from an
+   image file specified as a URL.
 
 @Copyright (c) 2001 The Regents of the University of California.
 All rights reserved.
@@ -43,7 +44,20 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 
+//////////////////////////////////////////////////////////////////////////
+//// JAIImageReader
+/**
+Load an image and create a RendredOp from it.  The file to be loaded is 
+specified as a relative URL from the base URL path.  Usually the base 
+path should be set to the root ptolemy classpath.  Supports BMP, FPX, 
+GIF, JPEG, PNG, PBM, PGM, PPM, and TIFF file formats.
+
+@author James Yeh, Steve Neuendorffer
+@version $Id$
+*/
+
 public class JAIImageReader extends Source {
+    
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -62,12 +76,38 @@ public class JAIImageReader extends Source {
     
 }
     
+    ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+
+    /** The image filename template */
     public Parameter imageURLTemplate;
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+    
+    /** The RenderedOp being created from the URL template */
     public RenderedOp image1;
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+    
+    /** Fire this actor.
+     *  Output the RenderedOp.
+     *  @exception IllegalActionException If a contained method throws it,
+     *   or if a token is received that contains a null image.
+     */    
+    public void fire() throws IllegalActionException {
+	super.fire();
+	output.send(0, new ObjectToken(image1));
+    }       
+    
+    /** Initialize this actor.
+     *  Read in the image file.
+     *  @exception IllegalActionException If a contained method throws it.
+     */
     public void initialize() throws IllegalActionException {
 	super.initialize();
-
+        
 	StringToken urlToken = (StringToken)imageURLTemplate.getToken();
 	String fileRoot = urlToken.stringValue();
 	
@@ -79,11 +119,5 @@ public class JAIImageReader extends Source {
 	}
 	image1 = JAI.create("stream", stream);
     }
-
-    public void fire() throws IllegalActionException {
-	super.fire();
-	output.send(0, new ObjectToken(image1));
-    }
-
 }
 	    
