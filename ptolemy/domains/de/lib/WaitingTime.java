@@ -44,13 +44,14 @@ next arrival of an event at <i>waitee</i>.  When one or more events arrive
 at <i>waitee</i>, then all events that have arrived at <i>waiter</i> since
 the last <i>waitee</i> (or since the start of the execution) trigger an
 output.  The value of each output is the time that the <i>waiter</i> event
-waited for <i>waitee</i>.  The inputs can be of any type.  The output
-is always a DoubleToken.
+waited for <i>waitee</i>.  The inputs are of type Token, so anything
+is acceptable.  The output is always a DoubleToken.
 
 @author Lukito Muliadi, Edward A Lee
 @version $Id$
 */
-public class WaitingTime extends TypedAtomicActor {
+public class WaitingTime extends TypedAtomicActor
+        implements SequenceActor, TimedActor {
 
     /** Construct an actor with the specified container and name.
      *  @param container The container.
