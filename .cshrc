@@ -84,7 +84,7 @@ endif
 # causes the LD_LIBRARY_PATH to be mis-set as far as THOR is concerned.
 # the following corrects for this.
 # if (! $?LD_LIBRARY_PATH) setenv LD_LIBRARY_PATH ""
-setenv LD_LIBRARY_PATH /usr/lib:/usr/openwin/lib:/usr/sww/X11/lib:/usr/sww/sunos-X11R5/lib
+setenv LD_LIBRARY_PATH /usr/ccs/lib:/usr/lib:/usr/openwin/lib:/usr/sww/X11/lib:/usr/sww/sunos-X11R5/lib
 
 # Source UCB local modifications
 if (-r ~/ucb-.cshrc) then
