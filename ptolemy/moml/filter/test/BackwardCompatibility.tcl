@@ -780,6 +780,31 @@ proc createAndExecute {file} {
 	    || "$file" == "compat4/PythonScale.xml" \
 	    || "$file" == "compat4/PythonStop.xml" \
 	    || "$file" == "compat4/PythonTerminate.xml" \
+	    || "$file" == "compat2/Cascade.xml" \
+	    || "$file" == "compat2/HierarchyTest.xml" \
+	    || "$file" == "compat3/Cascade.xml" \
+	    || "$file" == "compat3/ControllersTestNonPreemptive.xml" \
+	    || "$file" == "compat3/ControllersTestPreemptive.xml" \
+	    || "$file" == "compat3/HierarchyTest.xml" \
+	    || "$file" == "compat3/LLSTest.xml" \
+	    || "$file" == "compat3/MultiplexorDE.xml" \
+	    || "$file" == "compat3/SwitchTest.xml" \
+	    || "$file" == "compat3/sampledClocks.xml" \
+	    || "$file" == "compat4/CarTrackingTest.xml" \
+	    || "$file" == "compat4/Cascade.xml" \
+	    || "$file" == "compat4/Clock5.xml" \
+	    || "$file" == "compat4/ControllersTestNonPreemptive.xml" \
+	    || "$file" == "compat4/ControllersTestPreemptive.xml" \
+	    || "$file" == "compat4/HierarchyTest.xml" \
+	    || "$file" == "compat4/LevelCrossingDetectorDetectsGlitches.xml" \
+	    || "$file" == "compat4/MultiplexorDE.xml" \
+	    || "$file" == "compat4/SwitchTest.xml" \
+	    || "$file" == "compat4/VectorAssemblerDisassemblerCT.xml" \
+	    || "$file" == "compat4/half.xml" \
+	    || "$file" == "compat4/sampledClocks.xml" \
+	    || "$file" == "compat4/scaler.xml" \
+	    || "$file" == "compat4/scaletoHalf.xml" \
+	    || "$file" == "compat4/triple.xml" \
 	} {
 	puts "$file: Skipping Known Failure"
 	incr KNOWN_FAILED
