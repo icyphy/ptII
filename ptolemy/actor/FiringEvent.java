@@ -1,4 +1,4 @@
-/* An event that represents an actor firing.
+/* An event that represents an actor activation.
 
  Copyright (c) 2000 The Regents of the University of California.
  All rights reserved.
@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (neuendor@eecs.berkeley.edu)
+@ProposedRating Yellow (neuendor@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
@@ -36,9 +36,18 @@ import ptolemy.kernel.util.NamedObj;
 //////////////////////////////////////////////////////////////////////////
 //// FiringEvent
 /**
-An interface for events that can be used for debugging.  These events will
-generally be subclassed to create events with more meaning (such as
-a FiringEvent).
+An event that is published by directors whenever an actor is activated.
+An activation occurs whenever an actor is prefired, fired, or postfired. 
+The event of the same name should be published just before the associated
+method of the executable interface is called.  The postpostfire event is 
+published just after the postfire method is called.  The iterate event
+is published by those directors which vectorize firings of a
+particular actor.  This event may represent many individual calls
+to prefire, fire and postfire.   As an example of 
+how to implement a director that publishes these events, see the SDF Director.
+One way in which these events are used is to trace the firings of different
+actors.  A user interface can implement a breakpoint mechanism by
+pausing execution of the executing thread in response to one of these events. 
 
 @author  Steve Neuendorffer
 @version $Id$
@@ -66,7 +75,9 @@ public class FiringEvent implements DebugEvent {
     }
 
     /**
-     * Return the director that activated this event.
+     * Return the source of the event.  This class returns the director 
+     * that activated the actor.
+     * @return An instance of Director.
      */
     public NamedObj getSource() {
 	return _director;
@@ -77,6 +88,19 @@ public class FiringEvent implements DebugEvent {
      */
     public FiringEventType getType() {
 	return _type;
+    }
+
+    /** Return a string representation of this event.
+     *  @return A user-readable string describing the event.
+     */
+    public String toString() {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append("The actor ");
+        buffer.append(((NamedObj)_actor).getFullName());
+        buffer.append(" was ");
+        buffer.append(_type.getName());
+        buffer.append("d.");
+        return buffer.toString();
     }
 
     ///////////////////////////////////////////////////////////////////
