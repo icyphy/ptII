@@ -65,6 +65,8 @@ OTHER_FILES_TO_BE_JARED = \
 	basicUtilities.xml \
 	defaultFullConfiguration.xml \
 	experimentalDirectors.xml \
+	evaluatorEffigyFactories.xml \
+	evaluatorTableauFactories.xml \
 	extendedEffigyFactories.xml \
 	extendedTableauFactories.xml \
 	fsmEffigyFactories.xml \

@@ -30,6 +30,7 @@
     <input source="ptolemy/configs/fsmEffigyFactories.xml"/>
     <input source="ptolemy/configs/iaEffigyFactory.xml"/>
     <input source="ptolemy/configs/extendedEffigyFactories.xml"/>
+    <input source="ptolemy/configs/evaluatorEffigyFactories.xml"/>
   </entity>
 
   <!-- The list of tableau factories, which defines the visual   -->
@@ -47,6 +48,7 @@
              class="ptolemy.copernicus.gui.GeneratorTableau$Factory"/>
     </property>
     <input source="ptolemy/configs/extendedTableauFactories.xml"/>
+    <input source="ptolemy/configs/evaluatorTableauFactories.xml"/>
   </property>
 
   <!-- Main default library. -->

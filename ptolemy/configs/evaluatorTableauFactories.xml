@@ -1,0 +1,13 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<!-- This list contains the additional tableau factories for   -->
+<!-- general tools, such as HTML, text, and plotters.          -->
+<group>
+  <property name="Exec Evaluator"
+            class="ptolemy.actor.gui.exec.ExecShellTableau$Factory"/>
+  <property name="Python Evaluator"
+            class="ptolemy.actor.gui.python.PythonShellTableau$Factory"/>
+  <property name="Tcl Evaluator"
+            class="ptolemy.actor.gui.ptjacl.TclShellTableau$Factory"/>
+</group>
