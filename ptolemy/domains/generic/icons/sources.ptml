@@ -6,6 +6,27 @@
 <iconlibrary name="Sources" version="1.0">
     <description>Generic source icons</description>
 
+
+<terminalstyle name="single-output-east">
+        <terminal x="100" y="50" normal="east" 
+                 output="true" input="false" style="arrowout"/>
+</terminalstyle>
+
+<terminalstyle name="single-output-west">
+        <terminal x="0" y="50" normal="west" 
+                 output="true" input="false" style="arrowout"/>
+</terminalstyle>
+
+<terminalstyle name="single-input-east">
+        <terminal x="100" y="50" normal="east" 
+                 input="true" output="false" style="arrowin"/>
+</terminalstyle>
+
+<terminalstyle name="single-input-west">
+        <terminal x="0" y="50" normal="west" 
+                 input="true" output="false" style="arrowout"/>
+</terminalstyle>
+
 <icon name="Const">
     <entitytype name="Const" ports="1"/>
     <port name="output" input="false" type="string">
