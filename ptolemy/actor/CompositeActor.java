@@ -297,7 +297,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
             _createReceivers();
             if (!isOpaque()) {
                 throw new IllegalActionException(this,
-                        "Cannot initialize a non-opaque actor YO.");
+                        "Cannot initialize a non-opaque actor.");
             }
             // Note that this is assured of firing the local director,
             // not the executive director, because this is opaque.
