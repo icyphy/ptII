@@ -413,6 +413,22 @@ public class ComplexMatrixToken extends MatrixToken {
         return new ComplexMatrixToken(result);
     }
 
+    /** Return a new token whose elements are the result of dividing
+     *  the elements of this token by the argument. It is
+     *  assumed that the type of the argument is the same as the type
+     *  of each element of this class.
+     *  @param rightArgument The token that divides this token.
+     *  @exception IllegalActionException If this operation is not
+     *  supported by the derived class.
+     *  @return A new Token containing the result.
+     */
+    protected MatrixToken _divideElement(Token rightArgument)
+            throws IllegalActionException {
+        Complex scalar = ((ComplexToken)rightArgument).complexValue();
+        Complex[][] result = ComplexMatrixMath.divide(_value, scalar);
+        return new ComplexMatrixToken(result);
+    }
+
     /** Return a reference to the internal 2-D matrix of complex
      *  numbers that represents this Token. Because no copying is
      *  done, the contents must NOT be modified to preserve the

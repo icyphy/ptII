@@ -375,6 +375,23 @@ public class ComplexMatrixMath {
         return returnValue;
     }
 
+    /** Return a new matrix that is constructed from the argument by
+     *  dividing the second argument to every element.
+     *  @param matrix A matrix of complex numbers.
+     *  @param z The complex number to divide.
+     *  @return A new matrix of complex numbers.
+     */
+    public static final Complex[][] divide(Complex[][] matrix, Complex z) {
+        Complex[][] returnValue = new Complex[_rows(matrix)][_columns(matrix)];
+        for (int i = 0; i < _rows(matrix); i++) {
+            for (int j = 0; j < _columns(matrix); j++) {
+                returnValue[i][j] = matrix[i][j].divide(z);
+            }
+        }
+        return returnValue;
+    }
+
+
     /** Return a new matrix that is constructed by element-by-element
      *  division of the two matrix arguments. Each element of the
      *  first matrix is divided by the corresponding element of the

@@ -332,11 +332,21 @@ test ParseTreeEvaluator-17.1 {Test correct scoping in function definitions.} {
 
 ####################################################################
 
-test ParseTreeEvaluator-18.1 {Test complex multiplied by [double].} {
-    list [theTest "(1+i)*\[1, 2\]"] \
-         [theTest "\[1, 2\]*(1+i)"]
- } {{[1.0 + 1.0i, 2.0 + 2.0i]} {[1.0 + 1.0i, 2.0 + 2.0i]}}
+test ParseTreeEvaluator-18.1 {Test Matrix Scalar Multiplication} {
+    list [theTest {[1,2]*1}] \
+         [theTest {1*[1,2]}] \
+         [theTest {[1,2]*1.0}] \
+         [theTest {1.0*[1,2]}] \
+         [theTest {j*[1.0,2.0]}] \
+         [theTest {[1.0,2.0]*j}] \
+         [theTest {j*[1,2]}] \
+         [theTest {[1,2]*j}] \
+         [theTest {[j, 2*j]*2}] \
+         [theTest {3*[j, 2*j]}]
+ } {{[1, 2]} {[1, 2]} {[1.0, 2.0]} {[1.0, 2.0]} {[0.0 + 1.0i, 0.0 + 2.0i]} {[0.0 + 1.0i, 0.0 + 2.0i]} {[0.0 + 1.0i, 0.0 + 2.0i]} {[0.0 + 1.0i, 0.0 + 2.0i]} {[0.0 + 2.0i, 0.0 + 4.0i]} {[0.0 + 3.0i, 0.0 + 6.0i]}}
 
+####################################################################
+  
 test ParseTreeEvaluator-18.2 {Test various matrix ops} {
     list [theTest {[1, 2; 3, 4]*[2, 2; 2, 2]}] \
          [theTest {[1, 2; 3, 4]+[2, 2; 2, 2]}] \
@@ -401,90 +411,139 @@ test ParseTreeEvaluator-19.9 {Test various function calls} {
          [theTest {conjugate([1+i, 1-i])}]
  } {{1.0 - 1.0i} {{1.0 - 1.0i, 1.0 + 1.0i}} {[1.0 - 1.0i, 1.0 + 1.0i]}}
 
-test ParseTreeEvaluator-19.10 {Test various function calls} {
+####################################################################
+
+test ParseTreeEvaluator-20.1 {Test Addition between incomparable data types} {
+    catch {list [theTest {1.0+1L}]} msg
+    list $msg
+} {{ptolemy.kernel.util.IllegalActionException: Cannot convert token 1.0 to type scalar, because scalar is not a concrete type.}}
+
+####################################################################
+
+test ParseTreeEvaluator-20.2 {Test Matrix Scalar Addition} {
+    list [theTest {[1,2]+1}] \
+         [theTest {1+[1,2]}] \
+         [theTest {[1,2]+1.0}] \
+         [theTest {1.0+[1,2]}] \
+         [theTest {j+[1.0,2.0]}] \
+         [theTest {[1.0,2.0]+j}] \
+         [theTest {j+[1,2]}] \
+         [theTest {[1,2]+j}] \
+         [theTest {[j, 2*j]+1}] \
+         [theTest {1+[j, 2*j]}]
+ } {{[2, 3]} {[2, 3]} {[2.0, 3.0]} {[2.0, 3.0]} {[1.0 + 1.0i, 2.0 + 1.0i]} {[1.0 + 1.0i, 2.0 + 1.0i]} {[1.0 + 1.0i, 2.0 + 1.0i]} {[1.0 + 1.0i, 2.0 + 1.0i]} {[1.0 + 1.0i, 1.0 + 2.0i]} {[1.0 + 1.0i, 1.0 + 2.0i]}}
+
+####################################################################
+
+test ParseTreeEvaluator-21.1 {Test Matrix Scalar Subtraction} {
+    list [theTest {[1,2]-1}] \
+         [theTest {1-[1,2]}] \
+         [theTest {[1,2]-1.0}] \
+         [theTest {1.0-[1,2]}] \
+         [theTest {j-[1.0,2.0]}] \
+         [theTest {[1.0,2.0]-j}] \
+         [theTest {j-[1,2]}] \
+         [theTest {[1,2]-j}] \
+         [theTest {[j, 2*j]-1}] \
+         [theTest {1-[j, 2*j]}]
+ } {{[0, 1]} {[0, -1]} {[0.0, 1.0]} {[-0.0, -1.0]} {[-1.0 + 1.0i, -2.0 + 1.0i]} {[1.0 - 1.0i, 2.0 - 1.0i]} {[-1.0 + 1.0i, -2.0 + 1.0i]} {[1.0 - 1.0i, 2.0 - 1.0i]} {[-1.0 + 1.0i, -1.0 + 2.0i]} {[1.0 - 1.0i, 1.0 - 2.0i]}} 
+
+####################################################################
+
+test ParseTreeEvaluator-22.1 {Test Matrix Scalar Division} {
+    list [theTest {[1,2]/1}] \
+         [theTest {[1,2]/1.0}] \
+         [theTest {[1.0,2.0]/j}] \
+         [theTest {[j,2*j]/2}] \
+         [theTest {[1,2]/j}] \
+     } {{[1, 2]} {[1.0, 2.0]} {[0.0 - 1.0i, 0.0 - 2.0i]} {[0.0 + 0.5i, 0.0 + 1.0i]} {[0.0 - 1.0i, 0.0 - 2.0i]}}
+
+####################################################################
+
+test ParseTreeEvaluator-23.0 {Test various function calls} {
     list [theTest {cos(1+i)}] \
          [theTest {cos({1+i, 1-i})}] \
          [theTest {cos([1+i, 1-i])}]
 } {{0.8337300251311491 - 0.9888977057628653i} {{0.8337300251311491 - 0.9888977057628653i, 0.8337300251311491 + 0.9888977057628653i}} {[0.8337300251311491 - 0.9888977057628653i, 0.8337300251311491 + 0.9888977057628653i]}}
 
- test ParseTreeEvaluator-19.11 {Test various function calls} {
+ test ParseTreeEvaluator-23.1 {Test various function calls} {
     list [theTest {cosh(1+i)}] \
          [theTest {cosh({1+i, 1-i})}] \
          [theTest {cosh([1+i, 1-i])}]
  } {{0.8337300251311491 + 0.9888977057628653i} {{0.8337300251311491 + 0.9888977057628653i, 0.8337300251311491 - 0.9888977057628653i}} {[0.8337300251311491 + 0.9888977057628653i, 0.8337300251311491 - 0.9888977057628653i]}}
 
-test ParseTreeEvaluator-19.12 {Test various function calls} {
+test ParseTreeEvaluator-23.2 {Test various function calls} {
     list [theTest {cot(1+i)}] \
          [theTest {cot({1+i, 1-i})}] \
          [theTest {cot([1+i, 1-i])}]
 } {{0.21762156185440262 - 0.8680141428959249i} {{0.21762156185440262 - 0.8680141428959249i, 0.21762156185440262 + 0.8680141428959249i}} {[0.21762156185440262 - 0.8680141428959249i, 0.21762156185440262 + 0.8680141428959249i]}}
 
-#  test ParseTreeEvaluator-19.13 {Test various function calls} {
+#  test ParseTreeEvaluator-23.4 {Test various function calls} {
 #     list [theTest {coth(1+i)}] \
 #          [theTest {coth({1+i, 1-i})}] \
 #          [theTest {coth([1+i, 1-i])}]
 #  } {} {Not Implemented}
 
-test ParseTreeEvaluator-19.14 {Test various function calls} {
+test ParseTreeEvaluator-23.5 {Test various function calls} {
     list [theTest {csc(1+i)}] \
          [theTest {csc({1+i, 1-i})}] \
          [theTest {csc([1+i, 1-i])}]
 } {{0.6215180171704283 - 0.3039310016284264i} {{0.6215180171704283 - 0.3039310016284264i, 0.6215180171704283 + 0.3039310016284264i}} {[0.6215180171704283 - 0.3039310016284264i, 0.6215180171704283 + 0.3039310016284264i]}}
 
- # test ParseTreeEvaluator-19.15 {Test various function calls} {
+ # test ParseTreeEvaluator-23.6 {Test various function calls} {
 #     list [theTest {csch(1+i)}] \
 #          [theTest {csch({1+i, 1-i})}] \
 #          [theTest {csch([1+i, 1-i])}]
 #  } {} {We don't have this method}
 
-test ParseTreeEvaluator-19.16 {Test various function calls} {
+test ParseTreeEvaluator-23.7 {Test various function calls} {
     list [theTest {exp(1+i)}] \
          [theTest {exp({1+i, 1-i})}] \
          [theTest {exp([1+i, 1-i])}]
 } {{1.4686939399158854 + 2.2873552871788427i} {{1.4686939399158854 + 2.2873552871788427i, 1.4686939399158854 - 2.2873552871788427i}} {[1.4686939399158854 + 2.2873552871788427i, 1.4686939399158854 - 2.2873552871788427i]}}
 
-test ParseTreeEvaluator-19.17 {Test various function calls} {
+test ParseTreeEvaluator-23.8 {Test various function calls} {
     list [theTest {isInfinite(1+i)}] \
          [theTest {isInfinite({1+i, 1-i})}] \
          [theTest {isInfinite([1+i, 1-i])}]
 } {false {{false, false}} {[false, false]}}
 
-test ParseTreeEvaluator-19.18 {Test various function calls} {
+test ParseTreeEvaluator-23.9 {Test various function calls} {
     list [theTest {isNaN(1+i)}] \
          [theTest {isNaN({1+i, 1-i})}] \
          [theTest {isNaN([1+i, 1-i])}]
 } {false {{false, false}} {[false, false]}}
 
-test ParseTreeEvaluator-19.19 {Test various function calls} {
+test ParseTreeEvaluator-23.10 {Test various function calls} {
     list [theTest {log(1+i)}] \
          [theTest {log({1+i, 1-i})}] \
          [theTest {log([1+i, 1-i])}]
 } {{0.3465735902799727 + 0.7853981633974483i} {{0.3465735902799727 + 0.7853981633974483i, 0.3465735902799727 - 0.7853981633974483i}} {[0.3465735902799727 + 0.7853981633974483i, 0.3465735902799727 - 0.7853981633974483i]}}
 
-test ParseTreeEvaluator-19.20 {Test various function calls} {
+test ParseTreeEvaluator-23.11 {Test various function calls} {
     list [theTest {magnitudeSquared(1+i)}] \
          [theTest {magnitudeSquared({1+i, 1-i})}] \
          [theTest {magnitudeSquared([1+i, 1-i])}]
 } {2.0 {{2.0, 2.0}} {[2.0, 2.0]}}
 
-test ParseTreeEvaluator-19.21 {Test various function calls} {
+test ParseTreeEvaluator-23.12 {Test various function calls} {
     list [theTest {pow(1+i, 2+i)}] \
          [theTest {pow({1+i, 1-i}, {2+i, 2-i})}] \
          [theTest {pow([1+i, 1-i], [1+i, 1-i])}]
 } {{-0.30974350492849356 + 0.8576580125887358i} {{-0.30974350492849356 + 0.8576580125887358i, -0.30974350492849356 - 0.8576580125887358i}} {[0.2739572538301211 + 0.5837007587586147i, 0.2739572538301211 - 0.5837007587586147i]}}
 
-test ParseTreeEvaluator-19.22 {Test various function calls} {
+test ParseTreeEvaluator-23.13 {Test various function calls} {
     list [theTest {reciprocal(1+i)}] \
          [theTest {reciprocal({1+i, 1-i})}] \
          [theTest {reciprocal([1+i, 1-i])}]
 } {{0.5 - 0.5i} {{0.5 - 0.5i, 0.5 + 0.5i}} {[0.5 - 0.5i, 0.5 + 0.5i]}}
 
-test ParseTreeEvaluator-19.23 {Test various function calls} {
+test ParseTreeEvaluator-23.14 {Test various function calls} {
     list [theTest {roots(1+i, 4)}] \
          [theTest {roots({1+i, 1-i}, 4)}]
 } {{{1.0695539323639858 + 0.21274750472674303i, -0.21274750472674295 + 1.0695539323639858i, -1.0695539323639858 - 0.21274750472674314i, 0.2127475047267431 - 1.0695539323639858i}} {{{1.0695539323639858 + 0.21274750472674303i, -0.21274750472674295 + 1.0695539323639858i, -1.0695539323639858 - 0.21274750472674314i, 0.2127475047267431 - 1.0695539323639858i}, {1.0695539323639858 - 0.21274750472674303i, 0.21274750472674311 + 1.0695539323639858i, -1.0695539323639858 + 0.21274750472674342i, -0.21274750472674347 - 1.0695539323639858i}}}}
 
-test ParseTreeEvaluator-19.24 {Test various function calls} {
+test ParseTreeEvaluator-23.15 {Test various function calls} {
     list [theTest {sec(1+i)}] \
          [theTest {sec({1+i, 1-i})}] \
          [theTest {sec([1+i, 1-i])}]
@@ -496,31 +555,31 @@ test ParseTreeEvaluator-19.24 {Test various function calls} {
 #          [theTest {sech([1+i, 1-i])}]
 #  } {} {Not implemented}
 
-test ParseTreeEvaluator-19.26 {Test various function calls} {
+test ParseTreeEvaluator-23.16 {Test various function calls} {
     list [theTest {sin(1+i)}] \
          [theTest {sin({1+i, 1-i})}] \
          [theTest {sin([1+i, 1-i])}]
 } {{1.2984575814159776 + 0.6349639147847362i} {{1.2984575814159776 + 0.6349639147847362i, 1.2984575814159776 - 0.6349639147847362i}} {[1.2984575814159776 + 0.6349639147847362i, 1.2984575814159776 - 0.6349639147847362i]}}
 
- test ParseTreeEvaluator-19.27 {Test various function calls} {
+ test ParseTreeEvaluator-23.17 {Test various function calls} {
     list [theTest {sinh(1+i)}] \
          [theTest {sinh({1+i, 1-i})}] \
          [theTest {sinh([1+i, 1-i])}]
  } {{0.6349639147847362 + 1.2984575814159776i} {{0.6349639147847362 + 1.2984575814159776i, 0.6349639147847362 - 1.2984575814159776i}} {[0.6349639147847362 + 1.2984575814159776i, 0.6349639147847362 - 1.2984575814159776i]}}
  
-test ParseTreeEvaluator-19.28 {Test various function calls} {
+test ParseTreeEvaluator-23.18 {Test various function calls} {
     list [theTest {sqrt(1+i)}] \
          [theTest {sqrt({1+i, 1-i})}] \
          [theTest {sqrt([1+i, 1-i])}]
 } {{1.09868411346781 + 0.45508986056222733i} {{1.09868411346781 + 0.45508986056222733i, 1.09868411346781 - 0.45508986056222733i}} {[1.09868411346781 + 0.45508986056222733i, 1.09868411346781 - 0.45508986056222733i]}}
 
- test ParseTreeEvaluator-19.29 {Test various function calls} {
+ test ParseTreeEvaluator-23.19 {Test various function calls} {
     list [theTest {tan(1+i)}] \
          [theTest {tan({1+i, 1-i})}] \
          [theTest {tan([1+i, 1-i])}]
  } {{0.27175258531951163 + 1.0839233273386946i} {{0.27175258531951163 + 1.0839233273386946i, 0.27175258531951163 - 1.0839233273386946i}} {[0.27175258531951163 + 1.0839233273386946i, 0.27175258531951163 - 1.0839233273386946i]}}
 
- test ParseTreeEvaluator-19.30 {Test various function calls} {
+ test ParseTreeEvaluator-23.20 {Test various function calls} {
     list [theTest {tanh(1+i)}] \
          [theTest {tanh({1+i, 1-i})}] \
          [theTest {tanh([1+i, 1-i])}]

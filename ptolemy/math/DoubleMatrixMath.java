@@ -290,6 +290,21 @@ public class DoubleMatrixMath {
         return returnValue;
     }
 
+    /** Return a new matrix that is constructed from the argument by
+     *  dividing the second argument to every element.
+     *  @param matrix A matrix of doubles.
+     *  @param z The double number to divide.
+     *  @return A new matrix of doubles.
+     */
+    public static final double[][] divide(double[][] matrix, double z) {
+        double[][] returnValue = new double[_rows(matrix)][_columns(matrix)];
+        for (int i = 0; i < _rows(matrix); i++) {
+            for (int j = 0; j < _columns(matrix); j++) {
+                returnValue[i][j] = matrix[i][j]/z;
+            }
+        }
+        return returnValue;
+    }
 
     /** Return a new matrix that is constructed by element by element
      *  division of the two matrix arguments. Each element of the

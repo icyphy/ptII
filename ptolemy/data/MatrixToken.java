@@ -75,7 +75,6 @@ public abstract class MatrixToken extends Token {
      *   does not make sense for the given types.
      */
     public Token add(Token rightArgument) throws IllegalActionException {
-        UnsizedMatrixType type = (UnsizedMatrixType)getType();
         // Get the corresponding element type for this matrix type,
         // and try a scalar operation.
         Type elementType = getElementType();
@@ -98,7 +97,8 @@ public abstract class MatrixToken extends Token {
             }
         }
 
-        // Must be a matrix...
+        // If we get here, then either our element type is lower than
+        // the rightArgument, incomparable to it.
         typeInfo = TypeLattice.compare(getType(), rightArgument);
         if (typeInfo == CPO.SAME) {
             Token result = _doAdd(rightArgument);
@@ -120,9 +120,25 @@ public abstract class MatrixToken extends Token {
             Token result = rightArgument.addReverse(this);
             return result;
         } else {
+            // Items being added are incomparable.
+            // However, addition may still be possible because
+            // the LUB of the types might support it. E.g., [double]+complex,
+            // where the LUB is [complex].
+            Type lubType = (Type)TypeLattice.lattice()
+                    .leastUpperBound(getType(), rightArgument.getType());
+            // If the LUB is a new type, try it.
+            if (!lubType.equals(getType())) {
+                Token lub = lubType.convert(this);
+                // Caution: convert() might return this again, e.g.
+                // if lubType is general.  Only proceed if the conversion
+                // returned a new type.
+                if (!(lub.getType().equals(getType()))) {
+                    return lub.add(rightArgument);
+                }
+            }
             throw new IllegalActionException(
                     notSupportedIncomparableMessage("add",
-                            this, rightArgument));
+                    this, rightArgument));
         }
     }
 
@@ -160,7 +176,8 @@ public abstract class MatrixToken extends Token {
             return result;
         }
 
-        // Must be a matrix...
+        // If we get here, then either our element type is lower than
+        // the leftArgument, incomparable to it.
         typeInfo = TypeLattice.compare(leftArgument, getType());
         // We would normally expect this to be LOWER, since this will almost
         // always be called by subtract, so put that case first.
@@ -176,7 +193,7 @@ public abstract class MatrixToken extends Token {
                 // arguments that were passed in.
                 throw new IllegalActionException(null, ex,
                         notSupportedMessage("addReverse",
-                                this, leftArgument));
+                        this, leftArgument));
             }
         } else if (typeInfo == CPO.SAME) {
             Token result = ((MatrixToken)leftArgument)._doAdd(this);
@@ -185,6 +202,22 @@ public abstract class MatrixToken extends Token {
             Token result = leftArgument.add(this);
             return result;
         } else {
+            // Items being added are incomparable.
+            // However, addition may still be possible because
+            // the LUB of the types might support it. E.g., complex+[double],
+            // where the LUB is [complex].
+            Type lubType = (Type)TypeLattice.lattice()
+                    .leastUpperBound(getType(), leftArgument.getType());
+            // If the LUB is a new type, try it.
+            if (!lubType.equals(getType())) {
+                Token lub = lubType.convert(this);
+                // Caution: convert() might return this again, e.g.
+                // if lubType is general.  Only proceed if the conversion
+                // returned a new type.
+                if (!(lub.getType().equals(getType()))) {
+                    return lub.addReverse(leftArgument);
+                }
+            }
             throw new IllegalActionException(
                     notSupportedIncomparableMessage("addReverse",
                             this, leftArgument));
@@ -365,13 +398,57 @@ public abstract class MatrixToken extends Token {
     /** Return a new token whose value is the value of this token
      *  divided by the value of the argument token.  Division is not
      *  supported for matrices, so this always throws an exception.
-     *  @param rightArgument The token to divide into this token.
+     *  @param rightArgument The token that divides this token.
      *  @return A new token containing the result.
      *  @exception IllegalActionException If the operation
      *   does not make sense for the given types.
      */
     public final Token divide(Token rightArgument)
-            throws IllegalActionException {
+            throws IllegalActionException {  
+        // Get the corresponding element type for this matrix type,
+        // and try a scalar operation.
+        Type elementType = getElementType();
+        int typeInfo = TypeLattice.compare(elementType, rightArgument);
+
+        if (typeInfo == CPO.SAME) {
+            Token result = _divideElement(rightArgument);
+            return result;
+        } else if (typeInfo == CPO.HIGHER) {
+            Token convertedArgument = elementType.convert(rightArgument);
+            try {
+                Token result = _divideElement(convertedArgument);
+                return result;
+            } catch (IllegalActionException ex) {
+                // If the type-specific operation fails, then create a better
+                // error message that has the types of the arguments that were
+                // passed in.
+                throw new IllegalActionException(null, ex,
+                        notSupportedMessage("divide", this, rightArgument));
+            }
+        }
+
+        // If we get here, then either our element type is lower than
+        // the rightArgument, incomparable to it.
+ 
+        typeInfo = TypeLattice.compare(getType(), rightArgument);
+        if (typeInfo == CPO.INCOMPARABLE) {
+            // Items being added are incomparable.
+            // However, division may still be possible because
+            // the LUB of the types might support it. E.g., [double]/complex,
+            // where the LUB is [complex].
+            Type lubType = (Type)TypeLattice.lattice()
+                    .leastUpperBound(getType(), rightArgument.getType());
+            // If the LUB is a new type, try it.
+            if (!lubType.equals(getType())) {
+                Token lub = lubType.convert(this);
+                // Caution: convert() might return this again, e.g.
+                // if lubType is general.  Only proceed if the conversion
+                // returned a new type.
+                if (!(lub.getType().equals(getType()))) {
+                    return lub.divide(rightArgument);
+                }
+            }
+        }   
         throw new IllegalActionException(
                 notSupportedMessage("divide", this, rightArgument));
     }
@@ -775,7 +852,6 @@ public abstract class MatrixToken extends Token {
      */
     public final Token subtract(Token rightArgument)
             throws IllegalActionException {
-        UnsizedMatrixType type = (UnsizedMatrixType)getType();
         // Get the corresponding element type for this matrix type,
         // and try a scalar operation.
         Type elementType = getElementType();
@@ -798,7 +874,8 @@ public abstract class MatrixToken extends Token {
             }
         }
 
-        // Must be a matrix...
+        // If we get here, then either our element type is lower than
+        // the rightArgument, incomparable to it.
         typeInfo = TypeLattice.compare(getType(), rightArgument);
         if (typeInfo == CPO.SAME) {
             Token result = _doSubtract(rightArgument);
@@ -820,9 +897,25 @@ public abstract class MatrixToken extends Token {
             Token result = rightArgument.subtractReverse(this);
             return result;
         } else {
+            // Items being subracted are incomparable.
+            // However, subtraction may still be possible because
+            // the LUB of the types might support it. E.g., [double]-complex,
+            // where the LUB is [complex].
+            Type lubType = (Type)TypeLattice.lattice()
+                    .leastUpperBound(getType(), rightArgument.getType());
+            // If the LUB is a new type, try it.
+            if (!lubType.equals(getType())) {
+                Token lub = lubType.convert(this);
+                // Caution: convert() might return this again, e.g.
+                // if lubType is general.  Only proceed if the conversion
+                // returned a new type.
+                if (!(lub.getType().equals(getType()))) {
+                    return lub.subtract(rightArgument);
+                }
+            }
             throw new IllegalActionException(
                     notSupportedIncomparableMessage("subtract",
-                            this, rightArgument));
+                    this, rightArgument));
         }
     }
 
@@ -860,7 +953,8 @@ public abstract class MatrixToken extends Token {
             return result;
         }
 
-        // Must be a matrix...
+        // If we get here, then either our element type is lower than
+        // the rightArgument, incomparable to it.
         typeInfo = TypeLattice.compare(leftArgument, getType());
         // We would normally expect this to be LOWER, since this will almost
         // always be called by subtract, so put that case first.
@@ -876,7 +970,7 @@ public abstract class MatrixToken extends Token {
                 // arguments that were passed in.
                 throw new IllegalActionException(null, ex,
                         notSupportedMessage("subtractReverse",
-                                this, leftArgument));
+                        this, leftArgument));
             }
         } else if (typeInfo == CPO.SAME) {
             Token result = ((MatrixToken)leftArgument)._doSubtract(this);
@@ -885,9 +979,25 @@ public abstract class MatrixToken extends Token {
             Token result = leftArgument.subtract(this);
             return result;
         } else {
+            // Items being subtracted are incomparable.
+            // However, subtraction may still be possible because
+            // the LUB of the types might support it. E.g., complex-[double],
+            // where the LUB is [complex].
+            Type lubType = (Type)TypeLattice.lattice()
+                    .leastUpperBound(getType(), leftArgument.getType());
+            // If the LUB is a new type, try it.
+            if (!lubType.equals(getType())) {
+                Token lub = lubType.convert(this);
+                // Caution: convert() might return this again, e.g.
+                // if lubType is general.  Only proceed if the conversion
+                // returned a new type.
+                if (!(lub.getType().equals(getType()))) {
+                    return lub.subtractReverse(leftArgument);
+                }
+            }
             throw new IllegalActionException(
                     notSupportedIncomparableMessage("subtractReverse",
-                            this, leftArgument));
+                    this, leftArgument));
         }
     }
 
@@ -987,8 +1097,8 @@ public abstract class MatrixToken extends Token {
 
     /** Return a new token whose value is the value of the argument
      *  Token added to the value of each element of this Token. It is
-     *  guaranteed by the caller that the type of the argument is the same as the type
-     *  of each element of this class.
+     *  guaranteed by the caller that the type of the argument 
+     *  is the same as the type of each element of this class.
      *  @param rightArgument The token to add to this token.
      *  @exception IllegalActionException If this operation is not
      *  supported by the derived class.
@@ -998,6 +1108,21 @@ public abstract class MatrixToken extends Token {
             throws IllegalActionException {
         throw new IllegalActionException(
                 notSupportedMessage("add", this, rightArgument));
+    }
+
+    /** Return a new token whose elements are the result of dividing
+     *  the elements of this token by the argument. It is
+     *  guaranteed by the caller that the type of the argument 
+     *  is the same as the type of each element of this class.
+     *  @param rightArgument The token that divides this token.
+     *  @exception IllegalActionException If this operation is not
+     *  supported by the derived class.
+     *  @return A new Token containing the result.
+     */
+    protected MatrixToken _divideElement(Token rightArgument)
+            throws IllegalActionException {
+        throw new IllegalActionException(
+                notSupportedMessage("divide", this, rightArgument));
     }
 
     /** Test for closeness of the values of this Token and the

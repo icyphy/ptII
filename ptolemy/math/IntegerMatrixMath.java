@@ -340,6 +340,22 @@ public class IntegerMatrixMath {
         return returnValue;
     }
 
+    /** Return a new matrix that is constructed from the argument by
+     *  dividing the second argument to every element.
+     *  @param matrix A matrix of ints.
+     *  @param z The int number to divide.
+     *  @return A new matrix of ints.
+     */
+    public static final int[][] divide(int[][] matrix, int z) {
+        int[][] returnValue = new int[_rows(matrix)][_columns(matrix)];
+        for (int i = 0; i < _rows(matrix); i++) {
+            for (int j = 0; j < _columns(matrix); j++) {
+                returnValue[i][j] = matrix[i][j]/z;
+            }
+        }
+        return returnValue;
+    }
+
     /** Return a new matrix that is constructed by element by element
      *  division of the two matrix arguments. Each element of the
      *  first matrix is divided by the corresponding element of the

@@ -128,12 +128,34 @@ public abstract class ScalarToken extends Token
                 throw new IllegalActionException(null, ex,
                         notSupportedMessage("add", this, rightArgument));
             }
-        } else if (typeInfo == CPO.LOWER) {
+        } else if ((typeInfo == CPO.LOWER)                
+                || (rightArgument instanceof MatrixToken)) {
+            // NOTE: If the right argument is an instance of MatrixToken,
+            // then we try reversing the add. This is because the
+            // code below for incomparable types won't work because
+            // automatic conversion from double to [double] is not
+            // supported.  Perhaps it should be?
             return rightArgument.addReverse(this);
         } else {
+            // Items being multiplied are incomparable.
+            // However, addition may still be possible because
+            // the LUB of the types might support it. E.g., [double]+complex,
+            // where the LUB is [complex].
+            Type lubType = (Type)TypeLattice.lattice()
+                    .leastUpperBound(getType(), rightArgument.getType());
+            // If the LUB is a new type, try it.
+            if (!lubType.equals(getType())) {
+                Token lub = lubType.convert(this);
+                // Caution: convert() might return this again, e.g.
+                // if lubType is general.  Only proceed if the conversion
+                // returned a new type.
+                if (!(lub.getType().equals(getType()))) {
+                    return lub.add(rightArgument);
+                }
+            }
             throw new IllegalActionException(
                     notSupportedIncomparableMessage("add",
-                            this, rightArgument));
+                    this, rightArgument));
         }
     }
 
@@ -333,7 +355,7 @@ public abstract class ScalarToken extends Token
         } else {
             throw new IllegalActionException(
                     notSupportedIncomparableMessage("divide",
-                            this, rightArgument));
+                    this, rightArgument));
         }
     }
 
@@ -938,12 +960,34 @@ public abstract class ScalarToken extends Token
                 throw new IllegalActionException(null, ex,
                         notSupportedMessage("subtract", this, rightArgument));
             }
-        } else if (typeInfo == CPO.LOWER) {
+        } else if ((typeInfo == CPO.LOWER) 
+                || (rightArgument instanceof MatrixToken)) {
+            // NOTE: If the right argument is an instance of MatrixToken,
+            // then we try reversing the subtract. This is because the
+            // code below for incomparable types won't work because
+            // automatic conversion from double to [double] is not
+            // supported.  Perhaps it should be?
             return rightArgument.subtractReverse(this);
         } else {
+            // Items being subtracted are incomparable.
+            // However, addition may still be possible because
+            // the LUB of the types might support it. E.g., [double]-complex,
+            // where the LUB is [complex].
+            Type lubType = (Type)TypeLattice.lattice()
+                    .leastUpperBound(getType(), rightArgument.getType());
+            // If the LUB is a new type, try it.
+            if (!lubType.equals(getType())) {
+                Token lub = lubType.convert(this);
+                // Caution: convert() might return this again, e.g.
+                // if lubType is general.  Only proceed if the conversion
+                // returned a new type.
+                if (!(lub.getType().equals(getType()))) {
+                    return lub.subtract(rightArgument);
+                }
+            }
             throw new IllegalActionException(
                     notSupportedIncomparableMessage("subtract",
-                            this, rightArgument));
+                    this, rightArgument));
         }
     }
 
@@ -987,7 +1031,7 @@ public abstract class ScalarToken extends Token
         } else {
             throw new IllegalActionException(
                     notSupportedIncomparableMessage("subtractReverse",
-                            this, leftArgument));
+                    this, leftArgument));
         }
     }
 
