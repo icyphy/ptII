@@ -1243,7 +1243,7 @@ public class NamedObj implements
      *  request when it is executed.
      *  @param change The requested change.
      *  @see #executeChangeRequests()
-     *  @see #setDeferChangeRequests(boolean)
+     *  @see #setDeferringChangeRequests(boolean)
      */
     public void requestChange(ChangeRequest change) {
         NamedObj container = (NamedObj) getContainer();

@@ -255,7 +255,7 @@ public class ComponentEntity extends Entity {
      *  @exception NameDuplicationException If the name of this entity
      *   collides with a name already in the container.
      *  @see #getContainer()
-     *  @see #_checkContainer()
+     *  @see #_checkContainer(Prototype)
      */
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
