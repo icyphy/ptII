@@ -14,27 +14,27 @@ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
 THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
 SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES, 
 INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, 
 ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-/*******************************************************************************
- * Copyright (c) 2000, 2004 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Common Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/cpl-v10.html
- *
- * Contributors:
- *     IBM Corporation - initial API and implementation
- *******************************************************************************/
+/******************************************************************************
+  Copyright (c) 2000, 2004 IBM Corporation and others.
+  All rights reserved. This program and the accompanying materials
+  are made available under the terms of the Common Public License v1.0
+  which accompanies this distribution, and is available at
+  http://www.eclipse.org/legal/cpl-v10.html
+ 
+  Contributors:
+      IBM Corporation - initial API and implementation
+*******************************************************************************/
 
 package ptolemy.backtrack.ast;
 
@@ -141,17 +141,18 @@ import org.eclipse.jdt.core.dom.WildcardType;
 //////////////////////////////////////////////////////////////////////////
 //// ASTFormatter
 /**
- *  This is an AST visitor that traverses an eclipse AST from a root node
- *  (usually a {@link CompilationUnit} object), and outputs the formatted
- *  Java source code. It is modified from {@link
- *  org.eclipse.jdt.core.dom.NaiveASTFlattener}.
- *
- *  @author Thomas Feng
- *  @version $Id$
- *  @since Ptolemy II 4.1
- *  @Pt.ProposedRating Red (tfeng)
- *  @see org.eclipse.jdt.core.dom.NaiveASTFlattener
- */
+   An AST visitor that traverses an eclipse AST from a root node
+   (usually a {@link CompilationUnit} object), and outputs the formatted
+   Java source code. It is modified from {@link
+   org.eclipse.jdt.core.dom.NaiveASTFlattener} in Eclipse 3.0.
+ 
+   @author Thomas Feng
+   @version $Id$
+   @since Ptolemy II 5.1
+   @Pt.ProposedRating Red (tfeng)
+   @Pt.AcceptedRating Red (tfeng)
+   @see org.eclipse.jdt.core.dom.NaiveASTFlattener
+*/
 public class ASTFormatter extends ASTVisitor {
 
     /** Construct an AST formatter with a {@link StringBuffer} where the
@@ -180,10 +181,12 @@ public class ASTFormatter extends ASTVisitor {
      */
     public static void main(String[] args) throws Exception {
         if (args.length == 0)
-            System.err.println("USAGE: java ptolemy.backtrack.ast.ASTFormatter [.java files...]");
+            System.err.println("USAGE:" +
+                    "java ptolemy.backtrack.ast.ASTFormatter" +
+                    " [.java files...]");
         else {
             Writer writer = new OutputStreamWriter(System.out);
-            for (int i=0; i<args.length; i++) {
+            for (int i = 0; i < args.length; i++) {
                 String fileName = args[i];
                 CompilationUnit root = ASTBuilder.parse(fileName);
                 ASTFormatter formatter = new ASTFormatter(writer);
@@ -277,7 +280,7 @@ public class ASTFormatter extends ASTVisitor {
             dims--;
         }
         // add empty "[]" for each extra array dimension
-        for (int i= 0; i < dims; i++) {
+        for (int i = 0; i < dims; i++) {
             _output("[]");
         }
         if (node.getInitializer() != null) {
@@ -433,7 +436,8 @@ public class ASTFormatter extends ASTVisitor {
         if (node.getAST().apiLevel() >= AST.JLS3) {
             if (!node.typeArguments().isEmpty()) {
                 _output("<");
-                for (Iterator it = node.typeArguments().iterator(); it.hasNext(); ) {
+                Iterator it;
+                for (it = node.typeArguments().iterator(); it.hasNext(); ) {
                     Type t = (Type) it.next();
                     t.accept(this);
                     if (it.hasNext()) {
@@ -497,7 +501,8 @@ public class ASTFormatter extends ASTVisitor {
         if (node.getAST().apiLevel() >= AST.JLS3) {
             if (!node.typeArguments().isEmpty()) {
                 _output("<");
-                for (Iterator it = node.typeArguments().iterator(); it.hasNext(); ) {
+                Iterator it;
+                for (it = node.typeArguments().iterator(); it.hasNext(); ) {
                     Type t = (Type) it.next();
                     t.accept(this);
                     if (it.hasNext()) {
@@ -594,7 +599,8 @@ public class ASTFormatter extends ASTVisitor {
         }
         if (!node.bodyDeclarations().isEmpty()) {
             _openBrace();
-            for (Iterator it = node.bodyDeclarations().iterator(); it.hasNext(); ) {
+            Iterator it;
+            for (it = node.bodyDeclarations().iterator(); it.hasNext(); ) {
                 BodyDeclaration d = (BodyDeclaration) it.next();
                 d.accept(this);
             }
@@ -618,7 +624,8 @@ public class ASTFormatter extends ASTVisitor {
         _output(" ");
         if (!node.superInterfaceTypes().isEmpty()) {
             _output("implements ");
-            for (Iterator it = node.superInterfaceTypes().iterator(); it.hasNext(); ) {
+            Iterator it;
+            for (it = node.superInterfaceTypes().iterator(); it.hasNext(); ) {
                 Type t = (Type) it.next();
                 t.accept(this);
                 if (it.hasNext()) {
@@ -629,7 +636,8 @@ public class ASTFormatter extends ASTVisitor {
         }
         _openBrace();
         BodyDeclaration prev = null;
-        for (Iterator it = node.bodyDeclarations().iterator(); it.hasNext(); ) {
+        Iterator it;
+        for (it = node.bodyDeclarations().iterator(); it.hasNext(); ) {
             BodyDeclaration d = (BodyDeclaration) it.next();
             if (prev instanceof EnumConstantDeclaration) {
                 // enum constant declarations do not include punctuation
@@ -686,7 +694,8 @@ public class ASTFormatter extends ASTVisitor {
         node.getType().accept(this);
         _output(" ");
         for (Iterator it = node.fragments().iterator(); it.hasNext(); ) {
-            VariableDeclarationFragment f = (VariableDeclarationFragment) it.next();
+            VariableDeclarationFragment f = 
+                (VariableDeclarationFragment) it.next();
             f.accept(this);
             if (it.hasNext()) {
                 _output(", ");
@@ -794,7 +803,7 @@ public class ASTFormatter extends ASTVisitor {
      */
     public boolean visit(InfixExpression node) {
         node.getLeftOperand().accept(this);
-        _output(" ");  // for cases like x= i - -1; or x= i++ + ++i;
+        _output(" ");  // for cases like x = i - -1; or x = i++ + ++i;
         _output(node.getOperator().toString());
         _output(" ");
         node.getRightOperand().accept(this);
@@ -951,7 +960,8 @@ public class ASTFormatter extends ASTVisitor {
             _outputModifiers(node.modifiers());
             if (!node.typeParameters().isEmpty()) {
                 _output("<");
-                for (Iterator it = node.typeParameters().iterator(); it.hasNext(); ) {
+                Iterator it;
+                for (it = node.typeParameters().iterator(); it.hasNext(); ) {
                     TypeParameter t = (TypeParameter) it.next();
                     t.accept(this);
                     if (it.hasNext()) {
@@ -977,7 +987,8 @@ public class ASTFormatter extends ASTVisitor {
         node.getName().accept(this);
         _output("(");
         for (Iterator it = node.parameters().iterator(); it.hasNext(); ) {
-            SingleVariableDeclaration v = (SingleVariableDeclaration) it.next();
+            SingleVariableDeclaration v = 
+                (SingleVariableDeclaration) it.next();
             v.accept(this);
             if (it.hasNext()) {
                 _output(", ");
@@ -989,7 +1000,8 @@ public class ASTFormatter extends ASTVisitor {
         }
         if (!node.thrownExceptions().isEmpty()) {
             _output(" throws ");
-            for (Iterator it = node.thrownExceptions().iterator(); it.hasNext(); ) {
+            Iterator it;
+            for (it = node.thrownExceptions().iterator(); it.hasNext(); ) {
                 Name n = (Name) it.next();
                 n.accept(this);
                 if (it.hasNext()) {
@@ -1017,7 +1029,8 @@ public class ASTFormatter extends ASTVisitor {
         if (node.getAST().apiLevel() >= AST.JLS3) {
             if (!node.typeArguments().isEmpty()) {
                 _output("<");
-                for (Iterator it = node.typeArguments().iterator(); it.hasNext(); ) {
+                Iterator it;
+                for (it = node.typeArguments().iterator(); it.hasNext(); ) {
                     Type t = (Type) it.next();
                     t.accept(this);
                     if (it.hasNext()) {
@@ -1271,7 +1284,8 @@ public class ASTFormatter extends ASTVisitor {
         if (node.getAST().apiLevel() >= AST.JLS3) {
             if (!node.typeArguments().isEmpty()) {
                 _output("<");
-                for (Iterator it = node.typeArguments().iterator(); it.hasNext(); ) {
+                Iterator it;
+                for (it = node.typeArguments().iterator(); it.hasNext(); ) {
                     Type t = (Type) it.next();
                     t.accept(this);
                     if (it.hasNext()) {
@@ -1318,7 +1332,8 @@ public class ASTFormatter extends ASTVisitor {
         if (node.getAST().apiLevel() >= AST.JLS3) {
             if (!node.typeArguments().isEmpty()) {
                 _output("<");
-                for (Iterator it = node.typeArguments().iterator(); it.hasNext(); ) {
+                Iterator it;
+                for (it = node.typeArguments().iterator(); it.hasNext(); ) {
                     Type t = (Type) it.next();
                     t.accept(this);
                     if (it.hasNext()) {
@@ -1406,8 +1421,9 @@ public class ASTFormatter extends ASTVisitor {
         boolean previousRequiresNewLine = false;
         for (Iterator it = node.fragments().iterator(); it.hasNext(); ) {
             ASTNode e = (ASTNode) it.next();
-            // assume text elements include necessary leading and trailing whitespace
-            // but Name, MemberRef, MethodRef, and nested TagElement do not include white space
+            // assume text elements include necessary leading and trailing
+            // whitespace but Name, MemberRef, MethodRef, and nested
+            // TagElement do not include white space
             boolean currentIncludesWhiteSpace = (e instanceof TextElement);
             if (previousRequiresNewLine && currentIncludesWhiteSpace) {
                 _output("\n * ");
@@ -1418,7 +1434,8 @@ public class ASTFormatter extends ASTVisitor {
                 _output(" ");
             }
             e.accept(this);
-            previousRequiresWhiteSpace = !currentIncludesWhiteSpace && !(e instanceof TagElement);
+            previousRequiresWhiteSpace = 
+                !currentIncludesWhiteSpace && !(e instanceof TagElement);
         }
         if (node.isNested()) {
             _closeBrace();
@@ -1493,12 +1510,14 @@ public class ASTFormatter extends ASTVisitor {
         if (node.getAST().apiLevel() >= AST.JLS3) {
             _outputModifiers(node.modifiers());
         }
-        _output(node.isInterface() ? "interface " : "class ");//$NON-NLS-2$
+        _output(node.isInterface() ? "interface " : "class ");
+            //$NON-NLS-2$
         node.getName().accept(this);
         if (node.getAST().apiLevel() >= AST.JLS3) {
             if (!node.typeParameters().isEmpty()) {
                 _output("<");
-                for (Iterator it = node.typeParameters().iterator(); it.hasNext(); ) {
+                Iterator it;
+                for (it = node.typeParameters().iterator(); it.hasNext(); ) {
                     TypeParameter t = (TypeParameter) it.next();
                     t.accept(this);
                     if (it.hasNext()) {
@@ -1516,8 +1535,10 @@ public class ASTFormatter extends ASTVisitor {
                 _output(" ");
             }
             if (!node.superInterfaces().isEmpty()) {
-                _output(node.isInterface() ? "extends " : "implements ");//$NON-NLS-2$
-                for (Iterator it = node.superInterfaces().iterator(); it.hasNext(); ) {
+                _output(node.isInterface() ? "extends " : "implements ");
+                    //$NON-NLS-2$
+                Iterator it;
+                for (it = node.superInterfaces().iterator(); it.hasNext(); ) {
                     Name n = (Name) it.next();
                     n.accept(this);
                     if (it.hasNext()) {
@@ -1534,8 +1555,11 @@ public class ASTFormatter extends ASTVisitor {
                 _output(" ");
             }
             if (!node.superInterfaceTypes().isEmpty()) {
-                _output(node.isInterface() ? "extends " : "implements ");//$NON-NLS-2$
-                for (Iterator it = node.superInterfaceTypes().iterator(); it.hasNext(); ) {
+                _output(node.isInterface() ? "extends " : "implements ");
+                    //$NON-NLS-2$
+                Iterator it;
+                for (it = node.superInterfaceTypes().iterator(); 
+                        it.hasNext(); ) {
                     Type t = (Type) it.next();
                     t.accept(this);
                     if (it.hasNext()) {
@@ -1547,7 +1571,8 @@ public class ASTFormatter extends ASTVisitor {
         }
         _openBrace();
         BodyDeclaration prev = null;
-        for (Iterator it = node.bodyDeclarations().iterator(); it.hasNext(); ) {
+        Iterator it;
+        for (it = node.bodyDeclarations().iterator(); it.hasNext(); ) {
             BodyDeclaration d = (BodyDeclaration) it.next();
             if (prev instanceof EnumConstantDeclaration) {
                 // enum constant declarations do not include punctuation
@@ -1620,7 +1645,8 @@ public class ASTFormatter extends ASTVisitor {
         node.getType().accept(this);
         _output(" ");
         for (Iterator it = node.fragments().iterator(); it.hasNext(); ) {
-            VariableDeclarationFragment f = (VariableDeclarationFragment) it.next();
+            VariableDeclarationFragment f = 
+                (VariableDeclarationFragment) it.next();
             f.accept(this);
             if (it.hasNext()) {
                 _output(", ");
@@ -1658,7 +1684,8 @@ public class ASTFormatter extends ASTVisitor {
         node.getType().accept(this);
         _output(" ");
         for (Iterator it = node.fragments().iterator(); it.hasNext(); ) {
-            VariableDeclarationFragment f = (VariableDeclarationFragment) it.next();
+            VariableDeclarationFragment f = 
+                (VariableDeclarationFragment) it.next();
             f.accept(this);
             if (it.hasNext()) {
                 _output(", ");
@@ -1698,12 +1725,55 @@ public class ASTFormatter extends ASTVisitor {
         return false;
     }
 
+    /** Output a closing brase and a new line character after it, and
+     *  also decrease the indent amount.
+     *  <p>
+     *  This is the same as <tt>_closeBrace(true)</tt>.
+     */
+    private void _closeBrace() {
+        _closeBrace(true);
+    }
+
+    /** Output a closing brase and a new line character after it if
+     *  <tt>newLineAfter</tt> is true, and also decrease the indent
+     *  amount.
+     *
+     *  @param newLineAfter Whether to output a new line character
+     *   after the closing brace.
+     */
+    private void _closeBrace(boolean newLineAfter) {
+        _indent.setLength(_indent.length() - 4);
+        _output(_indent);
+        _output("}");
+        if (newLineAfter)
+            _output("\n");
+    }
+
+    /** Decrease the indent amount.
+     */
+    private void _decreaseIndent() {
+        _indent.setLength(_indent.length() - 4);
+    }
+
+    /** Increase the indent amount.
+     */
+    private void _increaseIndent() {
+        _indent.append("    ");
+    }
+
+    /** Output an open brace and increase the indent amount.
+     */
+    private void _openBrace() {
+        _indent.append("    ");
+        _output("{\n");
+    }
+
     /** Output a message. If a {@link StringBuffer} is used, the output
      *  is appended to the buffer; if a {@link Writer} is provided, the
      *  output is written to the writer.
      *
      *  @param message The message to be output.
-     *  @exception ASTIORuntimeException Thrown when a writer is provided and
+     *  @exception ASTIORuntimeException If a writer is provided but
      *   IO exception occurs when trying to write to the writer.
      */
     private void _output(String message) throws ASTIORuntimeException {
@@ -1722,7 +1792,7 @@ public class ASTFormatter extends ASTVisitor {
      *  output is written to the writer.
      *
      *  @param message The message to be output.
-     *  @exception ASTIORuntimeException Thrown when a writer is provided and
+     *  @exception ASTIORuntimeException If a writer is provided but
      *   IO exception occurs when trying to write to the writer.
      */
     private void _output(StringBuffer message) throws ASTIORuntimeException {
@@ -1737,7 +1807,8 @@ public class ASTFormatter extends ASTVisitor {
     }
 
     /**
-     * Appends the text representation of the given modifier flags, followed by a single space.
+     * Appends the text representation of the given modifier flags, 
+     * followed by a single space.
      * Used for 3.0 modifiers and annotations.
      *
      * @param ext the list of modifier and annotation nodes
@@ -1752,7 +1823,8 @@ public class ASTFormatter extends ASTVisitor {
     }
 
     /**
-     * Appends the text representation of the given modifier flags, followed by a single space.
+     * Appends the text representation of the given modifier flags, 
+     * followed by a single space.
      * Used for JLS2 modifiers.
      *
      * @param modifiers the modifier flags
@@ -1791,50 +1863,6 @@ public class ASTFormatter extends ASTVisitor {
         if (Modifier.isTransient(modifiers)) {
             _output("transient ");
         }
-    }
-
-    /** Output an open brace and increase the indent amount.
-     */
-    private void _openBrace() {
-        _indent.append("    ");
-        _output("{\n");
-    }
-
-
-    /** Output a closing brase and a new line character after it, and
-     *  also decrease the indent amount.
-     *  <p>
-     *  This is the same as <tt>_closeBrace(true)</tt>.
-     */
-    private void _closeBrace() {
-        _closeBrace(true);
-    }
-
-    /** Output a closing brase and a new line character after it if
-     *  <tt>newLineAfter</tt> is true, and also decrease the indent
-     *  amount.
-     *
-     *  @param newLineAfter Whether to output a new line character
-     *   after the closing brace.
-     */
-    private void _closeBrace(boolean newLineAfter) {
-        _indent.setLength(_indent.length() - 4);
-        _output(_indent);
-        _output("}");
-        if (newLineAfter)
-            _output("\n");
-    }
-
-    /** Increase the indent amount.
-     */
-    private void _increaseIndent() {
-        _indent.append("    ");
-    }
-
-    /** Decrease the indent amount.
-     */
-    private void _decreaseIndent() {
-        _indent.setLength(_indent.length() - 4);
     }
 
     /** The current indentation, a string of spaces.
