@@ -54,6 +54,8 @@ ptolemy/actor/lib/javasound/test/outfile.wav
 ptolemy/actor/lib/jspaces
 ptolemy/actor/lib/jxta
 ptolemy/actor/lib/net/test_auto
+ptolemy/actor/lib/python/demo/HelloWorld
+ptolemy/actor/lib/python/demo/NotifyFailedTest
 ptolemy/actor/lib/test/auto/FileWriter1Output.txt
 ptolemy/actor/xslt
 ptolemy/apps
