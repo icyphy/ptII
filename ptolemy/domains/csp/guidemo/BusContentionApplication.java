@@ -19,6 +19,7 @@ import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.actor.*;
 import ptolemy.actor.process.*;
+import ptolemy.actor.gui.*;
 import ptolemy.domains.csp.lib.*;
 import ptolemy.domains.csp.kernel.*;
 
@@ -327,7 +328,7 @@ public class BusContentionApplication implements ActionListener {
  
     /**
      */
-    public void runDemo() {
+    public void runDemo() throws IllegalActionException {
 	// System.out.println("Listeners set");
 
         // Run the model
