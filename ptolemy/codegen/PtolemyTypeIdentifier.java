@@ -467,7 +467,7 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
 
     static {
         System.out.println("PtolemyTypeIdentifier<static>: start");
-        CompileUnitNode typedAtomicActorUnit = StaticResolution.load(
+        CompileUnitNode typedAtomicActorUnit = StaticResolution.loadFile(
                 SearchPath.NAMED_PATH.openSource("ptolemy.actor.TypedAtomicActor", true), 1);
 
         TYPED_ATOMIC_ACTOR_DECL = (ClassDecl) StaticResolution.findDecl(
@@ -477,7 +477,7 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
 
 
         System.out.println("PtolemyTypeIdentifier<static>: load Complex");
-        CompileUnitNode complexUnit = StaticResolution.load(
+        CompileUnitNode complexUnit = StaticResolution.loadFile(
                 SearchPath.NAMED_PATH.openSource("ptolemy.math.Complex", true), 1);
 
         COMPLEX_DECL = (ClassDecl) StaticResolution.findDecl(complexUnit,
@@ -486,7 +486,7 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
         COMPLEX_TYPE = COMPLEX_DECL.getDefType();
 
         System.out.println("PtolemyTypeIdentifier<static>: load FixPoint");
-        CompileUnitNode fixPointUnit = StaticResolution.load(
+        CompileUnitNode fixPointUnit = StaticResolution.loadFile(
                 SearchPath.NAMED_PATH.openSource("ptolemy.math.FixPoint", true), 1);
 
         FIX_POINT_DECL = (ClassDecl) StaticResolution.findDecl(fixPointUnit,
@@ -494,7 +494,7 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
 
         FIX_POINT_TYPE = FIX_POINT_DECL.getDefType();
 
-        CompileUnitNode tokenUnit = StaticResolution.load(
+        CompileUnitNode tokenUnit = StaticResolution.loadFile(
                 SearchPath.NAMED_PATH.openSource("ptolemy.data.Token", true), 1);
 
         TOKEN_DECL = (ClassDecl) StaticResolution.findDecl(tokenUnit,
@@ -502,7 +502,7 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
 
         TOKEN_TYPE = TOKEN_DECL.getDefType();
 
-        CompileUnitNode booleanTokenUnit = StaticResolution.load(
+        CompileUnitNode booleanTokenUnit = StaticResolution.loadFile(
                 SearchPath.NAMED_PATH.openSource("ptolemy.data.BooleanToken", true), 1);
 
         BOOLEAN_TOKEN_DECL = (ClassDecl) StaticResolution.findDecl(booleanTokenUnit,
@@ -510,7 +510,7 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
 
         BOOLEAN_TOKEN_TYPE = BOOLEAN_TOKEN_DECL.getDefType();
 
-        CompileUnitNode scalarTokenUnit = StaticResolution.load(
+        CompileUnitNode scalarTokenUnit = StaticResolution.loadFile(
                 SearchPath.NAMED_PATH.openSource("ptolemy.data.ScalarToken", true), 1);
 
         SCALAR_TOKEN_DECL = (ClassDecl) StaticResolution.findDecl(booleanTokenUnit,
@@ -518,7 +518,7 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
 
         SCALAR_TOKEN_TYPE = SCALAR_TOKEN_DECL.getDefType();
 
-        CompileUnitNode intTokenUnit = StaticResolution.load(
+        CompileUnitNode intTokenUnit = StaticResolution.loadFile(
                 SearchPath.NAMED_PATH.openSource("ptolemy.data.IntToken", true), 1);
 
         INT_TOKEN_DECL = (ClassDecl) StaticResolution.findDecl(intTokenUnit,
@@ -526,7 +526,7 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
 
         INT_TOKEN_TYPE = INT_TOKEN_DECL.getDefType();
 
-        CompileUnitNode doubleTokenUnit = StaticResolution.load(
+        CompileUnitNode doubleTokenUnit = StaticResolution.loadFile(
                 SearchPath.NAMED_PATH.openSource("ptolemy.data.DoubleToken", true), 1);
 
         DOUBLE_TOKEN_DECL = (ClassDecl) StaticResolution.findDecl(doubleTokenUnit,
@@ -534,7 +534,7 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
 
         DOUBLE_TOKEN_TYPE = DOUBLE_TOKEN_DECL.getDefType();
 
-        CompileUnitNode longTokenUnit = StaticResolution.load(
+        CompileUnitNode longTokenUnit = StaticResolution.loadFile(
                 SearchPath.NAMED_PATH.openSource("ptolemy.data.LongToken", true), 1);
 
         LONG_TOKEN_DECL = (ClassDecl) StaticResolution.findDecl(doubleTokenUnit,
@@ -542,7 +542,7 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
 
         LONG_TOKEN_TYPE = LONG_TOKEN_DECL.getDefType();
 
-        CompileUnitNode complexTokenUnit = StaticResolution.load(
+        CompileUnitNode complexTokenUnit = StaticResolution.loadFile(
                 SearchPath.NAMED_PATH.openSource("ptolemy.data.ComplexToken", true), 1);
 
         COMPLEX_TOKEN_DECL = (ClassDecl) StaticResolution.findDecl(complexTokenUnit,
@@ -550,7 +550,7 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
 
         COMPLEX_TOKEN_TYPE = COMPLEX_TOKEN_DECL.getDefType();
 
-        CompileUnitNode fixTokenUnit = StaticResolution.load(
+        CompileUnitNode fixTokenUnit = StaticResolution.loadFile(
                 SearchPath.NAMED_PATH.openSource("ptolemy.data.FixToken", true), 1);
 
         FIX_TOKEN_DECL = (ClassDecl) StaticResolution.findDecl(fixTokenUnit,
@@ -558,7 +558,7 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
 
         FIX_TOKEN_TYPE = FIX_TOKEN_DECL.getDefType();
 
-        CompileUnitNode objectTokenUnit = StaticResolution.load(
+        CompileUnitNode objectTokenUnit = StaticResolution.loadFile(
                 SearchPath.NAMED_PATH.openSource("ptolemy.data.ObjectToken", true), 1);
 
         OBJECT_TOKEN_DECL = (ClassDecl) StaticResolution.findDecl(objectTokenUnit,
@@ -566,7 +566,7 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
 
         OBJECT_TOKEN_TYPE = OBJECT_TOKEN_DECL.getDefType();
 
-        CompileUnitNode stringTokenUnit = StaticResolution.load(
+        CompileUnitNode stringTokenUnit = StaticResolution.loadFile(
                 SearchPath.NAMED_PATH.openSource("ptolemy.data.StringToken", true), 1);
 
         STRING_TOKEN_DECL = (ClassDecl) StaticResolution.findDecl(stringTokenUnit,
@@ -574,7 +574,7 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
 
         STRING_TOKEN_TYPE = STRING_TOKEN_DECL.getDefType();
 
-        CompileUnitNode matrixTokenUnit = StaticResolution.load(
+        CompileUnitNode matrixTokenUnit = StaticResolution.loadFile(
                 SearchPath.NAMED_PATH.openSource("ptolemy.data.MatrixToken", true), 1);
 
         MATRIX_TOKEN_DECL = (ClassDecl) StaticResolution.findDecl(
@@ -582,7 +582,7 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
 
         MATRIX_TOKEN_TYPE = MATRIX_TOKEN_DECL.getDefType();
 
-        CompileUnitNode booleanMatrixTokenUnit = StaticResolution.load(
+        CompileUnitNode booleanMatrixTokenUnit = StaticResolution.loadFile(
                 SearchPath.NAMED_PATH.openSource("ptolemy.data.BooleanMatrixToken", true), 1);
 
         BOOLEAN_MATRIX_TOKEN_DECL = (ClassDecl) StaticResolution.findDecl(
@@ -590,7 +590,7 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
 
         BOOLEAN_MATRIX_TOKEN_TYPE = BOOLEAN_MATRIX_TOKEN_DECL.getDefType();
 
-        CompileUnitNode intMatrixTokenUnit = StaticResolution.load(
+        CompileUnitNode intMatrixTokenUnit = StaticResolution.loadFile(
                 SearchPath.NAMED_PATH.openSource("ptolemy.data.IntMatrixToken", true), 1);
 
         INT_MATRIX_TOKEN_DECL = (ClassDecl) StaticResolution.findDecl(
@@ -598,7 +598,7 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
 
         INT_MATRIX_TOKEN_TYPE = INT_MATRIX_TOKEN_DECL.getDefType();
 
-        CompileUnitNode doubleMatrixTokenUnit = StaticResolution.load(
+        CompileUnitNode doubleMatrixTokenUnit = StaticResolution.loadFile(
                 SearchPath.NAMED_PATH.openSource("ptolemy.data.DoubleMatrixToken", true), 1);
 
         DOUBLE_MATRIX_TOKEN_DECL = (ClassDecl) StaticResolution.findDecl(
@@ -606,7 +606,7 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
 
         DOUBLE_MATRIX_TOKEN_TYPE = DOUBLE_MATRIX_TOKEN_DECL.getDefType();
 
-        CompileUnitNode longMatrixTokenUnit = StaticResolution.load(
+        CompileUnitNode longMatrixTokenUnit = StaticResolution.loadFile(
                 SearchPath.NAMED_PATH.openSource("ptolemy.data.LongMatrixToken", true), 1);
 
         LONG_MATRIX_TOKEN_DECL = (ClassDecl) StaticResolution.findDecl(
@@ -614,7 +614,7 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
 
         LONG_MATRIX_TOKEN_TYPE = LONG_MATRIX_TOKEN_DECL.getDefType();
 
-        CompileUnitNode complexMatrixTokenUnit = StaticResolution.load(
+        CompileUnitNode complexMatrixTokenUnit = StaticResolution.loadFile(
                 SearchPath.NAMED_PATH.openSource("ptolemy.data.ComplexMatrixToken", true), 1);
 
         COMPLEX_MATRIX_TOKEN_DECL = (ClassDecl) StaticResolution.findDecl(
@@ -622,7 +622,7 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
 
         COMPLEX_MATRIX_TOKEN_TYPE = COMPLEX_MATRIX_TOKEN_DECL.getDefType();
 
-        CompileUnitNode fixMatrixTokenUnit = StaticResolution.load(
+        CompileUnitNode fixMatrixTokenUnit = StaticResolution.loadFile(
                 SearchPath.NAMED_PATH.openSource("ptolemy.data.FixMatrixToken", true), 1);
 
         FIX_MATRIX_TOKEN_DECL = (ClassDecl) StaticResolution.findDecl(
@@ -635,7 +635,7 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
         dummyName.setProperty(DECL_KEY, DUMMY_LOWER_BOUND);
         DUMMY_LOWER_BOUND_TYPE = new TypeNameNode(dummyName);
 
-        CompileUnitNode parameterUnit = StaticResolution.load(
+        CompileUnitNode parameterUnit = StaticResolution.loadFile(
                 SearchPath.NAMED_PATH.openSource("ptolemy.data.expr.Parameter", true), 1);
 
         PARAMETER_DECL = (ClassDecl) StaticResolution.findDecl(
@@ -643,7 +643,7 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
 
         PARAMETER_TYPE = PARAMETER_DECL.getDefType();
 
-        CompileUnitNode typedIOPortUnit = StaticResolution.load(
+        CompileUnitNode typedIOPortUnit = StaticResolution.loadFile(
                 SearchPath.NAMED_PATH.openSource("ptolemy.actor.TypedIOPort", true), 1);
 
         TYPED_IO_PORT_DECL = (ClassDecl) StaticResolution.findDecl(
@@ -651,7 +651,7 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
 
         TYPED_IO_PORT_TYPE = TYPED_IO_PORT_DECL.getDefType();
 
-	//        CompileUnitNode changeFailedUnit = StaticResolution.load(
+	//        CompileUnitNode changeFailedUnit = StaticResolution.loadFile(
 	//                SearchPath.NAMED_PATH.openSource(
 	//                        "ptolemy.kernel.event.ChangeFailedException", true), 1);
 
@@ -660,7 +660,7 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
 
         //CHANGE_FAILED_EXCEPTION_TYPE = CHANGE_FAILED_EXCEPTION_DECL.getDefType();
 
-       CompileUnitNode illegalActionUnit = StaticResolution.load(
+       CompileUnitNode illegalActionUnit = StaticResolution.loadFile(
                 SearchPath.NAMED_PATH.openSource(
                         "ptolemy.kernel.util.IllegalActionException", true), 1);
 
@@ -669,7 +669,7 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
 
         ILLEGAL_ACTION_EXCEPTION_TYPE = ILLEGAL_ACTION_EXCEPTION_DECL.getDefType();
 
-        CompileUnitNode kernelExceptionUnit = StaticResolution.load(
+        CompileUnitNode kernelExceptionUnit = StaticResolution.loadFile(
                 SearchPath.NAMED_PATH.openSource(
                         "ptolemy.kernel.util.KernelException", true), 1);
 
@@ -678,7 +678,7 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
 
         KERNEL_EXCEPTION_TYPE = KERNEL_EXCEPTION_DECL.getDefType();
 
-        CompileUnitNode nameDuplicationUnit = StaticResolution.load(
+        CompileUnitNode nameDuplicationUnit = StaticResolution.loadFile(
                 SearchPath.NAMED_PATH.openSource(
                         "ptolemy.kernel.util.NameDuplicationException", true), 1);
 
@@ -687,7 +687,7 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
 
         NAME_DUPLICATION_EXCEPTION_TYPE = NAME_DUPLICATION_EXCEPTION_DECL.getDefType();
 
-        CompileUnitNode noSuchItemUnit = StaticResolution.load(
+        CompileUnitNode noSuchItemUnit = StaticResolution.loadFile(
                 SearchPath.NAMED_PATH.openSource(
                         "ptolemy.kernel.util.NoSuchItemException", true), 1);
 
@@ -696,7 +696,7 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
 
         NO_SUCH_ITEM_EXCEPTION_TYPE = NO_SUCH_ITEM_EXCEPTION_DECL.getDefType();
 
-        CompileUnitNode typeConflictUnit = StaticResolution.load(
+        CompileUnitNode typeConflictUnit = StaticResolution.loadFile(
                 SearchPath.NAMED_PATH.openSource(
                         "ptolemy.actor.TypeConflictException", true), 1);
 
@@ -705,7 +705,7 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
 
         TYPE_CONFLICT_EXCEPTION_TYPE = TYPE_CONFLICT_EXCEPTION_DECL.getDefType();
 
-        CompileUnitNode internalErrorUnit = StaticResolution.load(
+        CompileUnitNode internalErrorUnit = StaticResolution.loadFile(
                 SearchPath.NAMED_PATH.openSource(
                         "ptolemy.kernel.util.InternalErrorException", true), 1);
 
@@ -714,7 +714,7 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
 
         INTERNAL_ERROR_EXCEPTION_TYPE = INTERNAL_ERROR_EXCEPTION_DECL.getDefType();
 
-        CompileUnitNode invalidStateUnit = StaticResolution.load(
+        CompileUnitNode invalidStateUnit = StaticResolution.loadFile(
                 SearchPath.NAMED_PATH.openSource(
                         "ptolemy.kernel.util.InvalidStateException", true), 1);
 
@@ -723,7 +723,7 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
 
         INVALID_STATE_EXCEPTION_TYPE = INVALID_STATE_EXCEPTION_DECL.getDefType();
 
-        CompileUnitNode notSchedulableUnit = StaticResolution.load(
+        CompileUnitNode notSchedulableUnit = StaticResolution.loadFile(
                 SearchPath.NAMED_PATH.openSource(
                         "ptolemy.actor.sched.NotSchedulableException", true), 1);
 
@@ -732,7 +732,7 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
 
         NOT_SCHEDULABLE_EXCEPTION_TYPE = NOT_SCHEDULABLE_EXCEPTION_DECL.getDefType();
 
-        CompileUnitNode noRoomUnit = StaticResolution.load(
+        CompileUnitNode noRoomUnit = StaticResolution.loadFile(
                 SearchPath.NAMED_PATH.openSource(
                         "ptolemy.actor.NoRoomException", true), 1);
 
@@ -741,7 +741,7 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
 
         NO_ROOM_EXCEPTION_TYPE = NO_ROOM_EXCEPTION_DECL.getDefType();
 
-        CompileUnitNode noTokenUnit = StaticResolution.load(
+        CompileUnitNode noTokenUnit = StaticResolution.loadFile(
                 SearchPath.NAMED_PATH.openSource(
                         "ptolemy.actor.NoTokenException", true), 1);
 
@@ -750,7 +750,7 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
 
         NO_TOKEN_EXCEPTION_TYPE = NO_TOKEN_EXCEPTION_DECL.getDefType();
 
-        CompileUnitNode actorUnit = StaticResolution.load(
+        CompileUnitNode actorUnit = StaticResolution.loadFile(
                 SearchPath.NAMED_PATH.openSource("ptolemy.actor.Actor", true), 1);
 
         ACTOR_DECL = (ClassDecl) StaticResolution.findDecl(
