@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/lib/javasound/test/pitchshift/
+ME =		ptolemy/actor/lib/javasound/test/pitchshift
 # Root of the Java directory
 ROOT =		../../../../../..
 
