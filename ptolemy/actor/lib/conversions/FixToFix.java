@@ -129,7 +129,7 @@ public class FixToFix extends Transformer {
             IntMatrixToken token = (IntMatrixToken)precision.getToken();
             if (token.getRowCount() != 1 || token.getColumnCount() != 2) {
                 throw new IllegalActionException(this,
-                "Invalid precision (not a 1 by 2 matrix).");
+                        "Invalid precision (not a 1 by 2 matrix).");
             }
             _precision = new Precision(token.getElementAt(0, 0),
                     token.getElementAt(0, 1));
@@ -141,7 +141,7 @@ public class FixToFix extends Transformer {
                 _quantization = 0;
             } else {
                 throw new IllegalActionException(this,
-                "Unrecognized quantization: " + spec);
+                        "Unrecognized quantization: " + spec);
             }
         } else if (attribute == overflow) {
             String spec = overflow.getExpression();
@@ -151,7 +151,7 @@ public class FixToFix extends Transformer {
                 _overflow = 1;
             } else {
                 throw new IllegalActionException(this,
-                "Unrecognized overflow strategy: " + spec);
+                        "Unrecognized overflow strategy: " + spec);
             }
         } else {
             super.attributeChanged(attribute);
@@ -170,7 +170,7 @@ public class FixToFix extends Transformer {
             switch(_quantization) {
             case 1:
                 result = new FixToken(
-                    Quantizer.truncate(in.fixValue(), _precision, _overflow));
+                        Quantizer.truncate(in.fixValue(), _precision, _overflow));
                 break;
             default:
                 result = new FixToken(

@@ -119,7 +119,7 @@ public class DoubleToFix extends Transformer {
             IntMatrixToken token = (IntMatrixToken)precision.getToken();
             if (token.getRowCount() != 1 || token.getColumnCount() != 2) {
                 throw new IllegalActionException(this,
-                "Invalid precision (not a 1 by 2 matrix).");
+                        "Invalid precision (not a 1 by 2 matrix).");
             }
             _precision = new Precision(token.getElementAt(0, 0),
                     token.getElementAt(0, 1));
@@ -131,7 +131,7 @@ public class DoubleToFix extends Transformer {
                 _quantization = 0;
             } else {
                 throw new IllegalActionException(this,
-                "Unrecognized quantization: " + spec);
+                        "Unrecognized quantization: " + spec);
             }
         } else {
             super.attributeChanged(attribute);
