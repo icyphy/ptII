@@ -334,7 +334,11 @@ public abstract class AbstractActionsAttribute extends Action {
             Variable result = getScopedVariable(
                     null,
                     (NamedObj)AbstractActionsAttribute.this, name);
-            return result.getToken();
+            if(result != null) {
+                return result.getToken();
+            } else {
+                return null;
+            }
         }
 
         /** Look up and return the type of the attribute with the
