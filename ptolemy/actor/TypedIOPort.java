@@ -429,16 +429,6 @@ public class TypedIOPort extends IOPort implements Typeable {
 	return _constraints;
     }
 
-    /** Return the type constraints of this port in the form of an
-     *  enumeration of Inequality.
-     *  @return An Enumeration of Inequality.
-     *  @see ptolemy.graph.Inequality
-     *  @deprecated Use typeConstraintList() instead.
-     */
-    public Enumeration typeConstraints() {
-	return Collections.enumeration(typeConstraintList());
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 

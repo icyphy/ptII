@@ -252,23 +252,6 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
 	}
     }
 
-    /** Return the type constraints of this actor.
-     *  The constraints have the form of an enumeration of inequalities.
-     *  In this base class, the implementation of type constraints
-     *  is that the type of any input port that does not have its type
-     *  declared must be less than or equal to the type of any output port
-     *  that does not have its type declared.
-     *  In addition, this method also collects type constraints from the
-     *  contained Typeables (ports, variables, and parameters).
-     *  This method is read-synchronized on the workspace.
-     *  @return an Enumeration of Inequality.
-     *  @see ptolemy.graph.Inequality
-     *  @deprecated Use typeConstraintList() instead.
-     */
-    public Enumeration typeConstraints()  {
-	return Collections.enumeration(typeConstraintList());
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 

@@ -917,19 +917,6 @@ public class Variable extends Attribute implements Typeable, Settable {
 	return result;
     }
 
-    /** Return the type constraints of this variable.
-     *  The constraints include the ones explicitly set to this variable,
-     *  plus the constraint that the type of this variable must be no less
-     *  than its current type, if it has one.
-     *  The constraints are an enumeration of inequalities.
-     *  @return an enumeration of Inequality objects.
-     *  @see ptolemy.graph.Inequality
-     *  @deprecated Use typeConstraintList() instead.
-     */
-    public Enumeration typeConstraints() {
-	return Collections.enumeration(typeConstraintList());
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 

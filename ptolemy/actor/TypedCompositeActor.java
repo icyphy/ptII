@@ -316,20 +316,6 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
 	}
     }
 
-    /** Return the type constraints of this typed composite actor, if it
-     *  is opaque.
-     *  This method calls typeConstraintList() and convert the result into
-     *  an enumeration.
-     *  @return an Enumerations of Inequality.
-     *  @exception IllegalActionException If this composite actor is not
-     *   opaque.
-     *  @see ptolemy.graph.Inequality
-     *  @deprecated Use typeConstraintList() instead.
-     */
-    public Enumeration typeConstraints() throws IllegalActionException {
-	return Collections.enumeration(typeConstraintList());
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
