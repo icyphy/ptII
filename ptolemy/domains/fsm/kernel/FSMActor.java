@@ -493,12 +493,12 @@ public class FSMActor extends CompositeEntity implements TypedActor {
 
             _removeInputVariables(inport);
         }
+        _createInputVariables();
         Iterator attributes = attributeList(Settable.class).iterator();
         while(attributes.hasNext()) {
             Settable attribute = (Settable)attributes.next();
             attribute.validate();
         }
-        _createInputVariables();
         _gotoInitialState();
     }
 
