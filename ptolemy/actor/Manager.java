@@ -246,15 +246,15 @@ public final class Manager extends NamedObj implements Runnable {
                             (Inequality)unsatisfied.nextElement();
 		        InequalityTerm term =
 					(InequalityTerm)ineq.getLesserTerm();
-			// FIXME: change Object to Typeable
 		        Object typeObj = term.getAssociatedObject();
 		        if (typeObj != null) {
+			    // typeObj is a Typeable
 			    conflicts.insertLast(typeObj);
 		        }
 		        term = (InequalityTerm)ineq.getGreaterTerm();
-			// FIXME: change Object to Typeable
 		        typeObj = term.getAssociatedObject();
 		        if (typeObj != null) {
+			    // typeObj is a Typeable
 			    conflicts.insertLast(typeObj);
 		        }
 		    }
