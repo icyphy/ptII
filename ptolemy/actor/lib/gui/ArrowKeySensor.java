@@ -95,7 +95,7 @@ this director's fireAtCurrentTime() method.
 
 @author Winthrop Williams
 @version $Id$
-@since Ptolemy II 2.1
+@since Ptolemy II 2.0
 */
 public class ArrowKeySensor extends TypedAtomicActor {
 
