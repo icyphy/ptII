@@ -23,6 +23,9 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
+
+@ProposedRating Red (lmuliadi@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.de.demo;
@@ -88,7 +91,7 @@ public class SigmaDeltaApplet extends Applet {
         // The applet has two panels, stacked vertically
         setLayout(new BorderLayout());
         Panel appletPanel = new Panel();
-        appletPanel.setLayout(new GridLayout(2,1));
+        appletPanel.setLayout(new GridLayout(2, 1));
         add(appletPanel, "Center");
 
         // _la is the drawing panel for DELogicAnalyzer actor.
@@ -104,7 +107,7 @@ public class SigmaDeltaApplet extends Applet {
 
         // Adding simulation parameter panel in the control panel.
         Panel simulationParam = new Panel();
-        simulationParam.setLayout(new GridLayout(3,2));
+        simulationParam.setLayout(new GridLayout(3, 2));
         controlPanel.add(simulationParam);
         // Done adding simulation parameter panel.
 
@@ -308,13 +311,15 @@ public class SigmaDeltaApplet extends Applet {
 
             Parameter solver1 =
                 (Parameter)ctdir.getAttribute("BreakpointODESolver");
-            StringToken token1 = new StringToken("ptolemy.domains.ct.kernel.solver.BackwardEulerSolver");
+            StringToken token1 = new StringToken(
+                    "ptolemy.domains.ct.kernel.solver.BackwardEulerSolver");
             solver1.setToken(token1);
             solver1.parameterChanged(null);
 
             Parameter solver2 =
                 (Parameter)ctdir.getAttribute("ODESolver");
-            StringToken token2 = new StringToken("ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver");
+            StringToken token2 = new StringToken(
+                    "ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver");
             solver2.setToken(token2);
             solver2.parameterChanged(null);
 
@@ -441,7 +446,8 @@ public class SigmaDeltaApplet extends Applet {
                 try {
                     String s = _mstBox.getText();
                     Double d = Double.valueOf(s);
-                    _minimumServiceTime.setToken(new DoubleToken(d.doubleValue()));
+                    _minimumServiceTime.setToken(
+                            new DoubleToken(d.doubleValue()));
 
                 } catch (NumberFormatException ex) {
                     System.err.println("Invalid minimum service time: " +
@@ -452,7 +458,8 @@ public class SigmaDeltaApplet extends Applet {
                 try {
                     String s = _istBox.getText();
                     Double d = Double.valueOf(s);
-                    _interruptServiceTime.setToken(new DoubleToken(d.doubleValue()));
+                    _interruptServiceTime.setToken(
+                            new DoubleToken(d.doubleValue()));
 
                 } catch (NumberFormatException ex) {
                     System.err.println("Invalid interrupt service time: " +
