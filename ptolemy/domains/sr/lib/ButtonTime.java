@@ -160,7 +160,7 @@ public class ButtonTime extends WallClockTime implements Placeable {
     }
 
     /** Set the background.
-     *  @param Color The color of the background.
+     *  @param background The color of the background.
      *  @see #getBackground()
      */
     public void setBackground(Color background) {

@@ -152,7 +152,7 @@ public class ConstVariableModelAnalysis {
     }
 
     /** Return the analysis that is active for the given object.
-     *  @param The given object.
+     *  @param object The given object.
      *  @return The active analysis for the given object.
      *  @exception If an exception occurs during analysis.
      */
@@ -176,7 +176,7 @@ public class ConstVariableModelAnalysis {
     /** Return the change context of the given variable.  This an
      *  actor containing the variable, such that the variable is
      *  guaranteed not to change values during a firing of the actor.
-     *  @param The given variable.
+     *  @param variable The given variable.
      *  @return The change context of the given variable.
      */
     public Entity getChangeContext(Variable variable) {
@@ -185,7 +185,7 @@ public class ConstVariableModelAnalysis {
 
     /** Return the constant value of the given parameter, if the
      *  parameter is actually constant.
-     *  @param The given variable.
+     *  @param variable The given variable.
      *  @return The constant value of the given variable.
      *  @exception IllegalActionException If the given parameter is
      *  not a constant parameter, as determined by this analysis.
@@ -201,7 +201,7 @@ public class ConstVariableModelAnalysis {
     }
 
     /** Return the computed constant variables for the given container.
-     *  @param The given container.
+     *  @param container The given container.
      *  @return The computed constant variables.
      *  @exception RuntimeException If the constant variables for the
      *  container have not already been computed.
@@ -221,7 +221,7 @@ public class ConstVariableModelAnalysis {
     }
 
     /** Return the computed not constant variables for the given container.
-     *  @param The given container.
+     *  @param container The given container.
      *  @return The computed not constant variables.
      *  @exception RuntimeException If the constant variables for the
      *  container have not already been computed.
@@ -234,7 +234,7 @@ public class ConstVariableModelAnalysis {
 
     /** Return the set of variables anywhere in the model that have
      *  the given container as least change context.
-     *  @param The given container.
+     *  @param container The given container.
      *  @return The set of variables anywhere in the model that have
      *  the given container as least change context.
      */
