@@ -39,7 +39,9 @@ import ptolemy.actor.NoRoomException;
 import ptolemy.actor.NoTokenException;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedActor;
+import ptolemy.actor.util.ExplicitChangeContext;
 import ptolemy.data.Token;
+import ptolemy.data.expr.Variable;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
@@ -97,7 +99,8 @@ the transition.
 @since Ptolemy II 0.4
 @see FSMActor
 */
-public class FSMDirector extends Director implements ModelErrorHandler {
+public class FSMDirector extends Director
+    implements ModelErrorHandler, ExplicitChangeContext {
 
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
@@ -355,6 +358,67 @@ public class FSMDirector extends Director implements ModelErrorHandler {
         } finally {
             workspace().doneReading();
         }
+    }
+
+    /** 
+     * Return the change context being made explicit.  In this case,
+     * the change context returned is the composite actor controlled
+     * by this director.
+     */
+    public Entity getContext() {
+        return (Entity)getContainer();
+    }
+
+    /** Return a list of variables that are modified in a modal model.
+     * The variables are assumed to have a change context of the
+     * container of this director.  This class returns all variables
+     * that are assigned in the actions of transitions.
+     * @return A list of variables.
+     */
+    public List getModifiedVariables() throws IllegalActionException {
+        List list = new LinkedList();
+        // Collect assignments from FSM transitions
+        for (Iterator states = getController().entityList().iterator();
+             states.hasNext();) {
+            State state = (State)states.next();
+            for (Iterator transitions =
+                     state.outgoingPort.linkedRelationList().iterator();
+                 transitions.hasNext();) {
+                Transition transition = (Transition)transitions.next();
+                for (Iterator actions =
+                         transition.choiceActionList().iterator();
+                     actions.hasNext();) {
+                    AbstractActionsAttribute action =
+                        (AbstractActionsAttribute)actions.next();
+                    for (Iterator names = 
+                             action.getDestinationNameList().iterator();
+                         names.hasNext();) {
+                        String name = (String)names.next();
+                        NamedObj object = action.getDestination(name);
+                        if (object instanceof Variable) {
+                            list.add(object);
+                        }
+                    }
+                }
+                for (Iterator actions =
+                         transition.commitActionList().iterator();
+                     actions.hasNext();) {
+                    AbstractActionsAttribute action =
+                        (AbstractActionsAttribute)actions.next();
+                    
+                    for (Iterator names = 
+                             action.getDestinationNameList().iterator();
+                         names.hasNext();) {
+                        String name = (String)names.next();
+                        NamedObj object = action.getDestination(name);
+                        if (object instanceof Variable) {
+                            list.add(object);
+                        }
+                    }
+                }
+            }
+        }      
+        return list;
     }
 
     /** Return the next iteration time provided by the refinement of the

@@ -383,21 +383,23 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
         }
         // FIXME: why do we need to execute the update actions again in postfire?
         // From Xiaojun: actions of the event triggered transition need to be 
-        // executed. // This is not necessary. hyzheng 08/14/2003
+        // executed. 
+        // This is not necessary. hyzheng 08/14/2003
         // Transition tr = _ctrl._chooseTransition(_st.outgoingPort.linkedRelationList());
          Transition tr = _enabledTransition;
 
-        // If there is one transition enabled, the HSDirector requests fire again
-        // at the same time to see whether the next state has some outgoing
-        // transition enabled.
+        // If there is one transition enabled, the HSDirector requests
+        // fire again at the same time to see whether the next state
+        // has some outgoing transition enabled.
         if (tr != null) {
             if (_debugging) {
                 _debug("Postfire deals with enabled transition " +
                         tr.getGuardExpression());
             }
             Iterator iterator = _st.nonpreemptiveTransitionList().listIterator();
-            // It is important to clear the history information of the relation list
-            // since after this breakpoint, no history information is valid.
+            // It is important to clear the history information of the
+            // relation list since after this breakpoint, no history
+            // information is valid.
             while (iterator.hasNext()) {
                 ((Transition) iterator.next()).getRelationList().clearRelationList();
             }

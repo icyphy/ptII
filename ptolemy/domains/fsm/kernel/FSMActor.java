@@ -47,11 +47,12 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.HasTypeConstraints;
 import ptolemy.data.type.Typeable;
-import ptolemy.domains.sdf.kernel.SDFScheduler;
+import ptolemy.domains.sdf.kernel.SDFUtilities;
 import ptolemy.graph.Inequality;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.Settable;
@@ -268,6 +269,14 @@ public class FSMActor extends CompositeEntity
         _setInputVariables();
         List trList = _currentState.outgoingPort.linkedRelationList();
         _chooseTransition(trList);
+    }
+
+    /** 
+     * Return the change context being made explicit.  This class returns
+     * this.
+     */
+    public Entity getContext() {
+        return this;
     }
 
     /** Return the director responsible for the execution of this actor.
@@ -1187,7 +1196,7 @@ public class FSMActor extends CompositeEntity
                     + port.getName() + ".\n");
         }
         if (port.isKnown(channel)) {
-            int portRate = SDFScheduler.getTokenConsumptionRate(port);
+            int portRate = SDFUtilities.getTokenConsumptionRate(port);
             if (_debug_info) {
                 System.out.println(port.getFullName() + " port rate = " + portRate);
             }
