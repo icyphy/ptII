@@ -65,6 +65,7 @@ OTHER_FILES_TO_BE_JARED = \
 	help.htm \
 	intro.htm \
 	makefile \
+	ptinyos.gif \
 	visualsense.gif \
 	visualsenseIcon.gif \
 	welcomeWindow.xml
