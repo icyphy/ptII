@@ -76,7 +76,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="77.7890625, 117.40625">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={169, 17, 865, 680}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={71, 27, 865, 680}}">
     </property>
     <entity name="1:giotto" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="305.0, 200.0">
@@ -195,7 +195,7 @@
             <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1">
             </property>
             <doc>Create a sequence of tokens with increasing value</doc>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="195.0, 115.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="200.0, 115.0">
             </property>
             <property name="frequency" class="ptolemy.data.expr.Parameter" value="2">
             </property>
@@ -329,7 +329,7 @@
         </port>
     </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0,0.1,0.2,0.3}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0,0.1,0.2,0.3,0.4}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
@@ -346,7 +346,7 @@
         </port>
     </entity>
     <entity name="NonStrictTest2" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{false,false,false,false,false,true,false,false,false,false,false,true,false,false,false,false,false,true,false,false,false,false,false,true}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{false, false, true, false, true, false, true, false, true, false, true}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
@@ -371,6 +371,8 @@
         </vertex>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="510.0, 285.0">
+        </vertex>
     </relation>
     <link port="1:giotto.in" relation="relation2"/>
     <link port="1:giotto.out" relation="relation3"/>
