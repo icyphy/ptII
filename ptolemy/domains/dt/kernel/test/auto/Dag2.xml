@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="Dag2" class="ptolemy.actor.TypedCompositeActor">
+<entity name="Dag2" class="ptolemy.actor.TypedCompositeActor">
     <property name="DT0" class="ptolemy.domains.dt.kernel.DTDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="10">
         </property>
@@ -504,4 +504,4 @@
     <link port="CurrentTime5.output" relation="relation9"/>
     <link port="CurrentTime5.trigger" relation="relation6"/>
     <link port="Test8.input" relation="relation9"/>
-</model>
+</entity>

@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
-<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="DTinsideCT" class="ptolemy.actor.TypedCompositeActor">
+<entity name="DTinsideCT" class="ptolemy.actor.TypedCompositeActor">
     <property name="CT0" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
@@ -206,4 +206,4 @@
     <link port="CurrentTime4.output" relation="relation6"/>
     <link port="CurrentTime4.trigger" relation="relation3"/>
     <link port="Display5.input" relation="relation6"/>
-</model>
+</entity>
