@@ -141,7 +141,7 @@ public class PitchDetector {
 		    }
 		    // Step 5. Find the peak in the the autocorrelation estimate.
 
-		    // Find the index at which the autocorrelation funtion
+		    // Find the index at which the autocorrelation function
 		    // becomes less than the threshold.
 		    int firstZzeroIndex = -1;
 		    double closeEnoughToZero = 0.25;

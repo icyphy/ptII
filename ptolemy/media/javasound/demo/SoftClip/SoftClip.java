@@ -34,16 +34,17 @@ package ptolemy.media.javasound.demo.SoftClip;
 import ptolemy.media.javasound.*;
 
 ////////////////////////////////////////////////////
-/** A simple application that demonstrates the use of SoundCapture
-   and SoundPlayback. This application performs real-time
-   capture, processing, and playback of audio data.
-   Sound samples are captured from the computer's audio
-   input port. The processing consists of a simple
-   soft-clipping funtion (the arc tangent is used). The
-   soft-clipped audio data is then played out the speaker.
-   @author Brian K. Vogel (vogel@eecs.berkeley.edu)
-   @version $Id$
-   @since Ptolemy II 1.0
+/**
+A simple application that demonstrates the use of SoundCapture
+and SoundPlayback. This application performs real-time
+capture, processing, and playback of audio data.
+Sound samples are captured from the computer's audio
+input port. The processing consists of a simple
+soft-clipping function (the arc tangent is used). The
+soft-clipped audio data is then played out the speaker.
+@author Brian K. Vogel (vogel@eecs.berkeley.edu)
+@version $Id$
+@since Ptolemy II 1.0
  */
 public class SoftClip {
     public static void main(String[] args) {
