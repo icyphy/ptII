@@ -1,4 +1,4 @@
-# Makefile for Java ptplot program
+ Makefile for Java ptplot program
 #
 # @Authors: Christopher Hylands
 #
@@ -47,7 +47,7 @@ PTPACKAGE = 	plot
 # If you change PTVERSION, modify the version numbers in:
 #    PlotBox.java,
 #    doc/main.htm, doc/changes.htm, doc/install.htm
-PTVERSION =	5.2p1
+PTVERSION =	5.3
 PTDIST =	ptplot$(PTVERSION)
 PTCLASSJAR =
 
