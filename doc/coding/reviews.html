@@ -1,19 +1,19 @@
 <!-- $Id$ -->
 <html>
 <head>
-<title>Review guidelines and check-lists</title>
+<title>Review guidelines and checklists</title>
 </head>
 
 <body bgcolor="#faf0e6">
 
 
-<h1>Review guidelines and check-lists</h1>
+<h1>Review guidelines and checklists</h1>
 
-This document lists Ptolemy-specific guidelines and check-lists for
+This document lists Ptolemy-specific guidelines and checklists for
 the process described in the <a href="rating.html">Change control and
 code rating</a> document. The guidelines list the steps in the process
 -- these steps are based on practical experience with making the
-process as smooth and effective as possible. The check-lists seem
+process as smooth and effective as possible. The checklists seem
 long, but we highly recommend that authors go through these to make
 their reviews as smooth and productive as possible.
 
@@ -22,10 +22,10 @@ their reviews as smooth and productive as possible.
 <ul>
 <li><a href="#process">The review process</a>
 <li><a href="#mini-reviews">Mini-reviews</a>
-<li><a href="#moderator">Moderator check-list</a>
-<li><a href="#yellow-checklist">Author check-list -- yellow</a>
-<li><a href="#green-checklist">Author check-list -- green</a>
-<li><a href="#blue-checklist">Author check-list -- blue</a>
+<li><a href="#moderator">Moderator checklist</a>
+<li><a href="#yellow-checklist">Author checklist -- yellow</a>
+<li><a href="#green-checklist">Author checklist -- green</a>
+<li><a href="#blue-checklist">Author checklist -- blue</a>
 </ul>
 
 <p>
@@ -50,7 +50,7 @@ on software reviews</a>
 This is the suggested process for conducting a review in
 the Ptolemy project. All reviews follow this same basic
 format, which deviates from the formal inspection process
-where we have felt it necessary to stream-line the process
+where we have felt it necessary to streamline the process
 in our environment.
 
 <p>
@@ -60,22 +60,22 @@ in our environment.
 The author is responsible for getting the review
 process started. When an author has code that is
 ready for review, he or she verifies this by running
-through the <i>Development check-list</i> for the type
+through the <i>Development checklist</i> for the type
 of review. (See lists below).
 
-<p> The author then finds someone willing to be the moderator, and
+<p> The author then finds someone willing to be the moderator and
 they agree on a suitable time. <i>The first-choice times as of October
 1998 are <b>Tuesday 12:30 -- 2:00</b>, and <b>Friday 1:30 --
 2:30</b></i>. The author then runs through the <i>Review
-preparation</i> check-list. When completed, the moderator announces
+preparation</i> checklist. When completed, the moderator announces
 the review and requests reviewers.
 
 <p> Here are the steps:
 
 <ol>
-<li>Author steps through <i>Development</i> check-list
+<li>Author steps through <i>Development</i> checklist
 <li>Author finds moderator and they schedule a date
-<li>Author steps through <i>Review preparation</i> check-list
+<li>Author steps through <i>Review preparation</i> checklist
 <li>Moderator announces review and calls for reviewers
 </ol>
 
@@ -99,19 +99,19 @@ and scribe are also reviewers.)
 Points to note:
 
 <ul>
-<li> The scribe should be determined before the meeting, in
-case the scribe want to bring a laptop to scribe into.
+<li> The scribe should be determined before the meeting, 
+should the scribe want to bring a laptop to use.
 
-<li> Scribing directly into a computer is preferred, as that
-way the review notes will be available much sooner.
+<li> Scribing directly into a computer is preferred, since
+the review notes will be available much sooner.
 
-<li> The scribe must be careful to note down the raised
+<li> The scribe must be careful to note the raised
 issues and defects. Poor scribing makes rework much
-more difficult and substantially reduces the effective
+more difficult and substantially reduces the effectiveness 
 of the review.
 
-<li> If the meeting runs out of time, the moderator
-should schedule a second meeting before concluding.
+<li> The moderator should schedule a second meeting if one meeting
+proves insufficient.
 
 </ul>
 
@@ -120,7 +120,7 @@ should schedule a second meeting before concluding.
 
 <p> The review is not completed until the author has completed
 rework. To be sure, the author should run through the <i>Rework</i>
-check-list for the level being reviewed.
+checklist for the level being reviewed.
 
 <p> We do not require that the moderator verify that rework has been
 completed properly. The moderator only verifies that the Web page has
@@ -148,7 +148,7 @@ Use your judgment.
 
 
 <a name="moderator">
-<h2>Moderator check-list</h2>
+<h2>Moderator checklist</h2>
 </a>
 
 The role of the moderator is crucial for successful reviews.
@@ -170,10 +170,10 @@ covered in the time scheduled for the meeting
 <li> Announce the review and call for reviewers.
 
 <li> Verify that enough reviewers of the right type
-will be present. If not, re-announce or walk around
-recruiting.
+will be present. If not, re-announce the review and/or
+walk around and ask for reviewers.
 
-<li> Nominate or get a volunteer for scribe at least
+<li> Choose a volunteer for scribe at least
 one day prior to the review.
 
 <li> Send a reminder to eallocal the day before the
@@ -181,7 +181,7 @@ review.
 
 <li> At the start of the review meeting, state:
 <ol>
-<li> The purpose and scope of the meeting (i.e. to
+<li> The purpose and scope of the meeting (e.g. to
 do a design review of these classes.)
 <li> The time at which the meeting will finish.
 
@@ -208,7 +208,7 @@ author's responses.
 </ol>
 
 <a name="yellow-checklist">
-<h2>Author check-list -- yellow</h2>
+<h2>Author checklist -- yellow</h2>
 </a>
 
 Yellow is a commitment to an initial architecture
@@ -253,7 +253,7 @@ contained in <code>&lt;blockquote&gt; ... &lt;/blockquote&gt;</code>
 </ol>
 
 <a name="green-checklist">
-<h2>Author check-list -- green</h2>
+<h2>Author checklist -- green</h2>
 </a>
 
 Green  is a commitment to an implementation of the
@@ -270,12 +270,14 @@ JFLAGS=-deprecation</CODE> and fix any warnings. If it is not
 possible to fix the warnings, consider adding the
 <CODE>@deprecated</CODE> javadoc tag to the method.
 
+<li> Review the output of <CODE>spell *.java</CODE>.
+
 <li> <CODE>make javadocs</CODE> does not produce any warnings.
 
 <li> <a href="../../util/testsuite/chkjava"><CODE>util/testsuite/chkjava *.java</CODE></a> does not produce any warnings.
 
 <li> Run <CODE>jindent delget *.java</CODE> to
-reformat to Ptolemy group <a href="style.html">style standards</a>
+reformat to Ptolemy group <a href="style.html">style standards</a>.
 
 </ol>
 
@@ -307,7 +309,7 @@ contained in <code>&lt;blockquote&gt; ... &lt;/blockquote&gt;</code>
 </ol>
 
 <a name="blue-checklist">
-<h2>Author check-list -- blue</h2>
+<h2>Author checklist -- blue</h2>
 </a>
 
 <p
