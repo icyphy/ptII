@@ -77,8 +77,12 @@ MISC_FILES =	$(DIRS) cg
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
+	'FastForwardFlowAnalysis$$1.class' \
 	'KernelMain$$_IgnoreAllApplicationClasses.class' \
-	'SideEffectAnalysis$$EffectFlow.class'
+	'MaybeAliasAnalysis$$1.class' \
+	'MaybeAliasAnalysis$$GraphFlow.class' \
+	'SideEffectAnalysis$$EffectFlow.class' \
+	'WatchDogTimer$$1.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
