@@ -67,8 +67,7 @@ public class BoundaryDetector {
      *  receiver is connected to a boundary port, then return true; 
      *  otherwise return false. 
      *  This method is not synchronized so the caller should be.
-     * @return True if the containing receiver is connected to the 
-     *  inside of a
+     * @return True if the containing receiver is connected to 
      *  boundary port; return false otherwise.
      */
     public boolean isConnectedToBoundary() {
@@ -136,6 +135,119 @@ public class BoundaryDetector {
             _connectedBoundaryCacheIsOn = true;
             _isConnectedBoundaryValue = false;
             return _isConnectedBoundaryValue;
+        }
+    }
+
+    /** Return true if the receiver containing this boundary detector
+     *  is connected to the inside of an input boundary port; return
+     *  false otherwise. A boundary port is an opaque port that is 
+     *  contained by a composite actor. 
+     *  This method is not synchronized so the caller should be.
+     * @return True if the containing receiver is connected to the 
+     *  inside of a boundary port; return false otherwise.
+     */
+    public boolean isConnectedToBoundaryInside() {
+        if( _connectedInsideOfBoundaryCacheIsOn ) {
+            return _isConnectedInsideOfBoundaryValue;
+        } else {
+            IOPort contPort = (IOPort)_rcvr.getContainer();
+            if( contPort == null ) {
+                _connectedInsideOfBoundaryCacheIsOn = false;
+                _isConnectedInsideOfBoundaryValue = false;
+                return _isConnectedInsideOfBoundaryValue;
+            }
+            ComponentEntity contEntity =
+                (ComponentEntity)contPort.getContainer();
+            IOPort connectedPort = null;
+            ComponentEntity connectedEntity = null;
+
+            Iterator ports = contPort.connectedPortList().iterator();
+	    int cnt = 0;
+            while( ports.hasNext() ) {
+                connectedPort = (IOPort)ports.next();
+                connectedEntity = (ComponentEntity)connectedPort.getContainer();
+                if( connectedEntity == contEntity.getContainer() 
+			&& connectedPort.isInput() ) {
+                    // The port container of this receiver is
+                    // connected to the inside of a boundary port. 
+		    // Now determine if this receiver's channel is 
+		    // connected to the boundary port.
+                    try {
+                        Receiver[][] rcvrs = 
+			        connectedPort.deepGetReceivers();
+                        for( int i = 0; i < rcvrs.length; i++ ) {
+                            for( int j = 0; j < rcvrs[i].length; j++ ) {
+                                if( _rcvr == rcvrs[i][j] ) {
+                                    _connectedInsideOfBoundaryCacheIsOn = true;
+                                    _isConnectedInsideOfBoundaryValue = true;
+                                    return true;
+                                }
+                            }
+                        }
+                    } catch( IllegalActionException e) {
+                        // FIXME: Do Something!
+			System.out.println("BoundaryDetector threw " +
+				"IllegalActionException!!!");
+                    }
+		}
+            }
+            _connectedInsideOfBoundaryCacheIsOn = true;
+            _isConnectedInsideOfBoundaryValue = false;
+            return _isConnectedInsideOfBoundaryValue;
+        }
+    }
+
+    /** Return true if the receiver containing this boundary detector
+     *  is connected to the outside of an output boundary port; return
+     *  false otherwise. A boundary port is an opaque port that is 
+     *  contained by a composite actor. If the receiver containing
+     *  this boundary detector is contained on the inside of a boundary 
+     *  port, then return false.
+     *  This method is not synchronized so the caller should be.
+     * @return True if the containing receiver is connected to the 
+     *  outside of a boundary port; return false otherwise.
+     */
+    public boolean isConnectedToBoundaryOutside() {
+        if( _connectedOutsideOfBoundaryCacheIsOn ) {
+            return _isConnectedOutsideOfBoundaryValue;
+        } else {
+            IOPort contPort = (IOPort)_rcvr.getContainer();
+            if( contPort == null ) {
+                _connectedOutsideOfBoundaryCacheIsOn = false;
+                _isConnectedOutsideOfBoundaryValue = false;
+                return _isConnectedOutsideOfBoundaryValue;
+            }
+            ComponentEntity contEntity =
+                (ComponentEntity)contPort.getContainer();
+            IOPort connectedPort = null;
+            ComponentEntity connectedEntity = null;
+
+            Iterator ports = contPort.connectedPortList().iterator();
+	    int cnt = 0;
+            while( ports.hasNext() ) {
+                connectedPort = (IOPort)ports.next();
+                connectedEntity = (ComponentEntity)connectedPort.getContainer();
+                if( connectedPort.isOpaque() && !connectedEntity.isAtomic() 
+			&& connectedPort.isOutput() ) {
+                    // The port container of this receiver is
+                    // connected to the outside of a boundary port. 
+		    // Now determine if this receiver's channel is 
+		    // connected to the boundary port.
+		    Receiver[][] rcvrs = connectedPort.getRemoteReceivers();
+		    for( int i = 0; i < rcvrs.length; i++ ) {
+			for( int j = 0; j < rcvrs[i].length; j++ ) {
+			    if( _rcvr == rcvrs[i][j] ) {
+				_connectedOutsideOfBoundaryCacheIsOn = true;
+				_isConnectedOutsideOfBoundaryValue = true;
+				return true;
+			    }
+			}
+		    }
+		}
+            }
+            _connectedOutsideOfBoundaryCacheIsOn = true;
+            _isConnectedOutsideOfBoundaryValue = false;
+            return _isConnectedOutsideOfBoundaryValue;
         }
     }
 
@@ -260,5 +372,11 @@ public class BoundaryDetector {
 
     private boolean _connectedBoundaryCacheIsOn = false;
     private boolean _isConnectedBoundaryValue = false;
+
+    private boolean _connectedInsideOfBoundaryCacheIsOn = false;
+    private boolean _isConnectedInsideOfBoundaryValue = false;
+
+    private boolean _connectedOutsideOfBoundaryCacheIsOn = false;
+    private boolean _isConnectedOutsideOfBoundaryValue = false;
 
 }
