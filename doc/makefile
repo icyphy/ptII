@@ -60,7 +60,7 @@ EXTRA_SRCS = \
 	install.htm \
 	main.htm \
 	mainheader.htm \
-	ptII0.3.release.htm \
+	ptII0.4.release.htm \
 	ptIIfaq.htm \
 	toc.css \
 	toc.htm \
