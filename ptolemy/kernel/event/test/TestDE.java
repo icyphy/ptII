@@ -1,4 +1,4 @@
-/* Test for ChangeRequest.
+/* Test for ChangeRequest in the DE domain.
 
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
@@ -34,91 +34,92 @@ import ptolemy.kernel.util.*;
 import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.event.*;
 import ptolemy.actor.*;
-import ptolemy.domains.sdf.kernel.*;
-import ptolemy.domains.sdf.lib.Delay;
+import ptolemy.domains.de.kernel.*;
+import ptolemy.domains.de.lib.Merge;
+import ptolemy.domains.de.lib.Delay;
 import ptolemy.actor.lib.*;
 import ptolemy.data.*;
 import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
-//// ChangeRequestTest
+//// TestDE
 /**
-Test for ChangeRequest.
+Test for ChangeRequest in the DE domain.
 
 @author  Edward A. Lee
 @version $Id$
 @see ptolemy.kernel.event.ChangeRequest
 */
-public class ChangeRequestTest {
+public class TestDE {
 
     /** Constructor.
      */
-    public ChangeRequestTest()
-             throws IllegalActionException, NameDuplicationException {
+    public TestDE() throws IllegalActionException, NameDuplicationException {
         _top = new TypedCompositeActor();
         _top.setName("top");
         _manager = new Manager();
-        SDFDirector director = new SDFDirector();
-        _top.setDirector(director);
+        _director = new DEDirector();
+        _top.setDirector(_director);
         _top.setManager(_manager);
 
-        _const = new Const(_top, "const");
+        _clock = new Clock(_top, "clock");
+        _clock.values.setExpression("[1.0]");
+        _clock.offsets.setExpression("[0.0]");
+        _clock.period.setExpression("1.0");
         _rec = new Recorder(_top, "rec");
-        _top.connect(_const.output, _rec.input);
+        _top.connect(_clock.output, _rec.input);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Finish a run.  Return the results.
+    /** Double the period of the clock.  Note that this will take
+     *  after the next event is processed, because the next firing
+     *  has already been queued.
      */
-    public Enumeration finish() throws KernelException {
-        for (int i = 0; i < 4; i++) {
-            _manager.iterate();
-        }
-        _manager.wrapup();
-        return _rec.getRecord(0);
-    }
-
-    /** Insert a feedback loop.
-     */
-    public void insertFeedback() throws ChangeFailedException {
+    public void doublePeriod() throws ChangeFailedException {
         // Create an anonymous inner class
-        ChangeRequest change = new ChangeRequest(_top, "test2") {
+        ChangeRequest change = new ChangeRequest(_top, "test") {
             public void execute() throws ChangeFailedException {
-                try {
-                    _const.output.unlinkAll();
-                    _rec.input.unlinkAll();
-                    AddSubtract add = new AddSubtract(_top, "add");
-                    Delay delay = new Delay(_top, "delay");
-                    delay.initialOutputs.setExpression("[4, 5]");
-                    _top.connect(_const.output, add.plus);
-                    ComponentRelation relation =
-                            _top.connect(add.output, delay.input);
-                    _rec.input.link(relation);
-                    // Any pre-existing input port whose connections
-                    // are modified needs to have this method called.
-                    _rec.input.createReceivers();
-                    _top.connect(delay.output, add.plus);
-                } catch (IllegalActionException ex) {
-                    throw new ChangeFailedException(this, ex);
-                } catch (NameDuplicationException ex) {
-                    throw new ChangeFailedException(this, ex);
-                }
+                _clock.period.setExpression("2.0");
             }
         };
         _manager.requestChange(change);
     }
 
-    /** Mutate.
+    /** Finish a run.  Return the time of the output events.
      */
-    public void mutate() throws ChangeFailedException {
+    public Enumeration finish() throws KernelException {
+        while (_director.getCurrentTime() <= 10.0) {
+            _manager.iterate();
+        }
+        _manager.wrapup();
+        return _rec.getTimeRecord();
+    }
+
+    /** Insert a new clock.
+     */
+    public void insertClock() throws ChangeFailedException {
         // Create an anonymous inner class
-        ChangeRequest change = new ChangeRequest(_top, "test") {
+        ChangeRequest change = new ChangeRequest(_top, "test2") {
             public void execute() throws ChangeFailedException {
                 try {
-                    _const.value.setToken(new DoubleToken(2.0));
+                    _clock.output.unlinkAll();
+                    _rec.input.unlinkAll();
+                    Clock clock2 = new Clock(_top, "clock2");
+                    clock2.values.setExpression("[2.0]");
+                    clock2.offsets.setExpression("[0.5]");
+                    clock2.period.setExpression("2.0");
+                    Merge merge = new Merge(_top, "merge");
+                    _top.connect(_clock.output, merge.input);
+                    _top.connect(clock2.output, merge.input);
+                    _top.connect(merge.output, _rec.input);
+                    // Any pre-existing input port whose connections
+                    // are modified needs to have this method called.
+                    _rec.input.createReceivers();
                 } catch (IllegalActionException ex) {
+                    throw new ChangeFailedException(this, ex);
+                } catch (NameDuplicationException ex) {
                     throw new ChangeFailedException(this, ex);
                 }
             }
@@ -130,7 +131,10 @@ public class ChangeRequestTest {
      */
     public void start() throws KernelException {
         _manager.initialize();
-        _manager.iterate();
+        // Process up to time 1.0
+        while (_director.getCurrentTime() <= 1.0) {
+            _manager.iterate();
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -138,6 +142,7 @@ public class ChangeRequestTest {
 
     private Manager _manager;
     private Recorder _rec;
-    private Const _const;
+    private Clock _clock;
     private TypedCompositeActor _top;
+    private DEDirector _director;
 }
