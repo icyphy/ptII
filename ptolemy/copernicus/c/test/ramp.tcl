@@ -59,6 +59,7 @@ if {[info procs jdkClassPathSeparator] == "" } then {
 # adapt the description above, the test header below, and the value of the
 # modelName variable below.
 
+set VERBOSE 1
 test ramp-1.1 {Generate .c, .i.h, and .h files for ramp.xml} {
     # The model name. If adapting this test file for another model, just
     # change the value of this variable.
@@ -76,8 +77,11 @@ test ramp-1.1 {Generate .c, .i.h, and .h files for ramp.xml} {
     set sootJar $relativePathToPTII/lib/sootclasses.jar
     set jasmineJar $relativePathToPTII/lib/jasminclasses.jar
     set separator [java::field java.io.File pathSeparator]
+    puts "ptolemyClasspath: $ptolemyClasspath"
+    puts "separator: $separator"
     set classpath $ptolemyClasspath$separator$sootJar
-
+    puts "rtjar: $rtjar"
+    puts "buildintClasspath: $builtinClasspath"
     # Need buildinClasspath so that we can find JavaScope.zip
     set classpath $classpath$separator$jasmineJar$separator$rtjar$separator$builtinClasspath
 
@@ -101,7 +105,8 @@ test ramp-1.1 {Generate .c, .i.h, and .h files for ramp.xml} {
 	# exec will _not_ report this as an error. 
 	# -stderrok was introduced in $PTII/lib/ptjacl.jar on 8/14/02
 
-	exec -stderrok java -classpath $classpath ptolemy.copernicus.c.Main $modelFile -d $dummyDirectory $debugFlag -p $phaseName $outputDirectorySpecifier
+	#exec -stderrok java -classpath $classpath ptolemy.copernicus.c.Main $modelFile -d $dummyDirectory $debugFlag -p $phaseName $outputDirectorySpecifier
+	generateCExec java -classpath $classpath ptolemy.copernicus.c.Main $modelFile -d $dummyDirectory $debugFlag -p $phaseName $outputDirectorySpecifier
     }
 
     # Make sure all the output files were created.
