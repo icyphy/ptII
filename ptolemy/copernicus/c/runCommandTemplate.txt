@@ -7,5 +7,6 @@
 #
 @java@
  -Xfuture -classpath @classPath@
- -Dptolemy.ptII.dir='@root@'
+ "@javaPtIIProperty@"
  ptolemy.actor.gui.CompositeActorApplication
+ -class @targetPackage@.Main

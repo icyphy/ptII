@@ -72,20 +72,20 @@ $Id$
      <property name="targetPackage" 
                class="ptolemy.data.expr.Parameter"
 	       value="&quot;ptolemy.copernicus.&quot; + codeGenerator
-	       + &quot;.cg.&quot; + model"
+	       + &quot;.cg.&quot; + modelName"
 	       >
-	       <doc>The package to generate code in with the model name appended. Defaults to "ptolemy.copernicus." + codeGenerator + ".cg." + model</doc>
+	       <doc>The package to generate code in with the model name appended. Defaults to "ptolemy.copernicus." + codeGenerator + ".cg." + modelName</doc>
      </property>
 
      <property name="targetPath" 
                class="ptolemy.data.expr.Variable"
-	       value="&quot;ptolemy/copernicus/&quot; + codeGenerator + &quot;/cg/&quot; + model"
+	       value="&quot;ptolemy/copernicus/&quot; + codeGenerator + &quot;/cg/&quot; + modelName"
 	       >
 	       <doc>The path relative to 'root' directory to generate code in. The default is derived from the value of codeGenerator + targetPackage.</doc>
      </property>
 
 
-     <property name="model" 
+     <property name="modelName" 
                class="ptolemy.data.expr.Parameter"
 	       value="&quot;OrthogonalCom&quot;"
 	       >
@@ -132,11 +132,11 @@ $Id$
                class="ptolemy.data.expr.Parameter"
 	       value="1000"
 	       >
-	       <doc>Number of iterations to run the model for. Defaults to 1000.</doc>
+	       <doc>Number of iterations to run the model for. Usually, the model itself contains the number of iterations to run for. Defaults to 1000.</doc>
      </property>
 
      <property name="iterationsParameter" 
-               class="ptolemy.data.expr.Parameter"
+               class="ptolemy.data.expr.Variable"
 	       value="&quot;,iterations:&quot; + iterations"
 	       >
 	       <doc>Defaults to "iterations:" + iterations.  Set this to the empty string if the model has the number of iterations built in.</doc>
@@ -147,6 +147,13 @@ $Id$
               value="property(&quot;java.home&quot;) + &quot;/bin/java&quot;"
 	      >
      <doc>Defaults to the value of the java.home property + bin/java, for example: c:/jdk1.3.1/bin/java</doc>
+     </property>
+
+     <property name="javaPtIIProperty" 
+              class="ptolemy.data.expr.Variable"
+              value="&quot;-Dptolemy.ptII.dir=&quot; + ptII"
+	      >
+     <doc>The flag to pass to the java process that defines the value of the ptolemy.ptII.dir property.  Defaults to "-Dptolemy.ptII.dir=" + ptII</doc>
      </property>
 
      <property name="javaSystemJar" 

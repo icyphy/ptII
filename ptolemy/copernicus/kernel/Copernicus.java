@@ -143,7 +143,7 @@ public class Copernicus {
 	}
 	String modelPathValue =
 	    ((StringToken)(modelPath.getToken())).stringValue();
-        _generatorAttribute.updateModelPathAndModel(modelPathValue);
+        _generatorAttribute.updateAttributes(modelPathValue);
 
 	if (_verbose) {
 	    System.out.println(_generatorAttribute.toString());
@@ -449,7 +449,7 @@ public class Copernicus {
             // Ignore blank argument.
         } else if (!arg.startsWith("-")) {
 	    // Assume the argument is a file name or URL.
-	    _generatorAttribute.updateModelPathAndModel(arg);
+	    _generatorAttribute.updateAttributes(arg);
 	} else {
 	    // Argument not recognized.
 	    return false;

@@ -231,7 +231,7 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
 	// FIXME: This means we are always parsing the default model
 	// modelPath, every time we construct a GeneratorAttribute, 
 	// even if we then go and change it immeadiately.
-	updateModelPathAndModel(modelPath);
+	updateAttributes(modelPath);
 
 	String root =
 	    ((StringToken)
@@ -307,10 +307,11 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
 	}
     }
 
-    /** Update the modelPath and model parameters in the GeneratorAttribute.
+    /** Update the modelPath and modelName parameters in the
+     *  GeneratorAttribute.
      *  @param modelPathOrURL The file pathname or URL to the model.
      */
-    public void updateModelPathAndModel(String modelPathOrURL)
+    public void updateAttributes(String modelPathOrURL)
     throws IllegalActionException {
 	URL modelURL;
 	try {
@@ -373,12 +374,12 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
 	    modelPath.setExpression("\"" + modelPathOrURL + "\"");
 
 	    // Strip off the leading '.' and then sanitize.
-	    String modelName = 
+	    String modelNameValue = 
 		StringUtilities
 		.sanitizeName(topLevel.getFullName().substring(1));
 
-	    Parameter model = (Parameter)getAttribute("model");
-	    model.setExpression("\"" + modelName + "\"");
+	    Parameter modelName = (Parameter)getAttribute("modelName");
+	    modelName.setExpression("\"" + modelNameValue + "\"");
 	} catch (Exception ex) {
 	    throw new IllegalActionException(this, ex,
 					     "Failed to parse '"

@@ -589,7 +589,7 @@ public class GeneratorTableau extends Tableau {
 
 	try {
 	    generatorAttribute
-		.updateModelPathAndModel(temporaryMoMLFile.getPath());
+		.updateAttributes(temporaryMoMLFile.getPath());
 	} catch (Exception ex) {
 	    throw new InternalErrorException(model, ex,
 					     "Failed to update modelPath "

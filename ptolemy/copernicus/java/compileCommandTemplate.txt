@@ -7,8 +7,8 @@
 #
 @java@ @jvmSize@
  -classpath "@classPath@"
- -Dptolemy.ptII.dir='@root@'
- ptolemy.copernicus.java.Main "@modelPath@" -d @root@
+ "@javaPtIIProperty@"
+ ptolemy.copernicus.java.Main "@modelPath@" -d "@root@"
  -p wjtp.watchDog time:@watchDogTimeout@
  -p wjtp.at targetPackage:@targetPackage@
  -p wjtp.mt targetPackage:@targetPackage@
