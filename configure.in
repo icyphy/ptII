@@ -630,8 +630,21 @@ else
 	AC_MSG_CHECKING([for saxon7.jar (used by cal)])
 	if test -f "$CAL_DIR/saxon7.jar"; then
 	   AC_MSG_RESULT([$CAL_DIR/saxon7.jar])
-	   PTCAL_DIR=cal
-	   PTCALTROP_DIR=caltrop
+	   AC_MSG_CHECKING([for java_cup.jar (used by cal)])
+	   if test -f "$CAL_DIR/java_cup.jar"; then
+	       AC_MSG_RESULT([$CAL_DIR/java_cup.jar])
+	       PTCAL_DIR=cal
+	       PTCALTROP_DIR=caltrop
+	   else     
+               AC_MSG_WARN([Failed to find $CAL_DIR/java_cup.jar
+    which is required by Cal, the actor language.
+    You can download java_cup from 
+    http://www.cs.princeton.edu/~appel/modern/java/CUP/
+    If it is not present, you will not be able to use the Cal actor
+    or run the demonstrations  in ptolemy/cal])
+	       # Note that we don't substitute in the ${PTII} here
+	       CAL_DIR='${PTII}/lib/'
+	   fi    
 	else   
            AC_MSG_WARN([Failed to find $CAL_DIR/saxon7.jar
     which is required by Cal, the actor language.
