@@ -77,6 +77,7 @@ ptolemy/domains/dfm
 ptolemy/domains/fsm/demo/Hysteresis
 ptolemy/domains/generic
 ptolemy/domains/giotto/kernel/test/ptolemy.giotto
+ptolemy/domains/giotto/demo/Legiotto
 ptolemy/domains/gr/lib/Loader3D.java
 ptolemy/domains/gr/lib/Loader3D.class
 ptolemy/domains/gr/lib/experimental
