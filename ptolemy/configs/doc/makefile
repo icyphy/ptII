@@ -68,7 +68,8 @@ OTHER_FILES_TO_BE_JARED = \
 	demos.htm \
 	docs.htm \
 	vergilFsmEditorHelp.htm \
-	vergilGraphEditorHelp.htm
+	vergilGraphEditorHelp.htm \
+	whatsNew3.0.2.htm
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
