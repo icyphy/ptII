@@ -36,5 +36,5 @@ do
 	mv $actor.tmp2 $actor.tmp
     fi	
     diff $actor $actor.tmp 
-    #cp $actor.tmp $actor
+    cp $actor.tmp $actor
 done
