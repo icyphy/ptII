@@ -26,6 +26,7 @@
 
 @ProposedRating Green (neuendor@eecs.berkeley.edu)
 @AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
+Review changeRequest / changeListener code.
 */
 
 package ptolemy.actor;
@@ -515,7 +516,7 @@ public class Manager extends NamedObj implements Runnable {
     /** Remove a change listener. If the specified listener is not
      *  on the list, do nothing.
      *  @param listener The listener to remove.
-     *  @deprecated use method in CompsiteActor instead.
+     *  @deprecated use method in CompositeActor instead.
      */
     public void removeChangeListener(ChangeListener listener) {
 	((CompositeActor)getContainer()).removeChangeListener(listener);
@@ -854,7 +855,7 @@ public class Manager extends NamedObj implements Runnable {
      *  to it.
      */
     protected void _notifyChangeListeners(ChangeRequest request) {
-	((CompositeActor)getContainer())._notifyChangeListeners(request);
+	((CompositeActor)getContainer()).notifyChangeListeners(request);
     }
 
     /** Process the queued change requests that have been added with

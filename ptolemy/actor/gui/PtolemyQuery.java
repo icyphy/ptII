@@ -39,11 +39,11 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.gui.*;
 import ptolemy.actor.gui.style.*;
 import ptolemy.data.*;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.event.*;
 import ptolemy.kernel.util.*;
 import ptolemy.moml.Documentation;
-import ptolemy.actor.*;
-import ptolemy.kernel.event.*;
-import ptolemy.actor.event.*;
+import ptolemy.actor.event.SetParameter;
 
 //////////////////////////////////////////////////////////////////////////
 //// PtolemyQuery
@@ -87,22 +87,22 @@ public class PtolemyQuery extends Query
 
     /** Construct a panel with no queries in it.
      *  When an entry changes, a change request is
-     *  queued with the given director. The director
+     *  queued with the given composite entity. The director
      *  will then schedule the corresponding variable's
      *  value to be updated at an appropriate time in 
      *  the execution of the model. Note that
      *  only one PtolemyQuery object is allowed per
-     *  director.   If the director is null, this query will
-     *  attempt to find a director.
-     *  @param director The director for a model. This should
-     *  be the director associated with all variables that
+     *  director.   If the entity is null, this query will
+     *  attempt to find an entity.
+     *  @param entity The entity for a model. This should
+     *  be the entity that deeply contains all variables that
      *  are attached to query entries.
      */
-    public PtolemyQuery(Director director) {
+    public PtolemyQuery(CompositeEntity entity) {
 	super();
 	addQueryListener(this);
 	_parameters = new HashMap();
-	_director = director;
+	_entity = entity;
         _varToListOfEntries = new HashMap();
     }
 
@@ -213,20 +213,16 @@ public class PtolemyQuery extends Query
             } 
 
 	    // Don't ignore.	    
-	    Director director = _director;
-	    if (_director != null) {
-		// Director not specified in constructor,
+	    CompositeEntity entity = _entity;
+	    if (_entity == null) {
+		// Entity not specified in constructor,
 		// so get it from the variable.
-		// Get the director from the variable.
+		// Get the entity from the variable.
 		Nameable container = var.getContainer();
-		// Walk up the tree until we hit an actor.
+		// Walk up the tree until we hit a composite entity.
 		while (container != null) {
-		    if(container instanceof Director) {
-			director = (Director)container;
-			break;
-		    }
-		    if (container instanceof Actor) {
-			director = ((Actor)container).getDirector();
+		    if(container instanceof CompositeEntity) {
+			entity = (CompositeEntity)container;
 			break;
 		    }
 		    container = container.getContainer();
@@ -235,11 +231,10 @@ public class PtolemyQuery extends Query
             try {
                 ChangeRequest request = new SetParameter((Parameter)var, 
                         (Parameter)var, stringValue(name));
-                if(director != null && director.getContainer() != null &&
-                        ((CompositeActor)director.getContainer()).getManager() != null) {
+                if(entity != null) {
                     // FIXME the change may happen at sometime in the future.
                     // we should listen and revert if the change fails.
-                    director.requestChange(request);
+                    entity.requestChange(request);
                 } else {
                     request.execute();
                 }
@@ -288,7 +283,7 @@ public class PtolemyQuery extends Query
                 //System.out.println("setting " + name);
                 // Set the entry name's value to the variable's
                 // value.
-                // FIXME
+                // FIXME have some way of viewing the evaluated value.
                 /*String finalExpression;
                 try {
                     finalExpression = variable.getToken().toString();
@@ -315,8 +310,7 @@ public class PtolemyQuery extends Query
     // Maps a variable name to a list of entry names that the
     // variable is attached to.
     private Map _varToListOfEntries;
-
-    private Director _director;
-    private boolean _constructorDirector;
+    // The entity that was specified in the constructors.
+    private CompositeEntity _entity;
 }
 

@@ -25,7 +25,8 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Green (eal@eecs.berkeley.edu)
-@AcceptedRating Green (davisj@eecs.berkeley.edu)
+@AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
+Review changeRequest / changeListener code.
 */
 
 package ptolemy.actor;
@@ -629,10 +630,10 @@ public class CompositeActor extends CompositeEntity implements Actor {
         }
     }
 
-    /** Queue a change request.
-     *  If the actor has a director, then request that the director
-     *  execute the change.  If the composite actor does not have a director,
-     *  then defer to the superclass to execute the change immediately.
+    /** Queue a change request.  Defer the change request to the container
+     *  of this entity.  If the entity has no container, then defer to its
+     *  Manager.  If the entity has no manager then execute the request 
+     *  immediately.
      *  @param change The requested change.
      *  @exception ChangeFailedException If the change request fails.
      */
@@ -642,17 +643,13 @@ public class CompositeActor extends CompositeEntity implements Actor {
 	if(container == null) {
 	    Manager manager = getManager();
 	    if(manager == null) {
-		super.requestChange(change);
+		change.execute();
+		notifyChangeListeners(change);
 	    } else {
 		manager.requestChange(change);
 	    }
 	} else {
-	    Director director = getDirector();
-	    if(director == null) {
-		super.requestChange(change);
-	    } else {
-		director.requestChange(change);
-	    }
+	    container.requestChange(change);
 	}
     }
 
