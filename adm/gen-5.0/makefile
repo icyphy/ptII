@@ -360,6 +360,7 @@ src_jar/hyvisual$(VERSION): ptII$(VERSION).src.jar
 		ptolemy/actor/lib/colt \
 		ptolemy/actor/lib/comm \
 		ptolemy/actor/lib/conversions/test/auto/Round.xml \
+		ptolemy/actor/lib/ecsl
 		ptolemy/actor/lib/io/comm \
 		ptolemy/actor/lib/jai \
 		ptolemy/actor/lib/javasound \
@@ -367,12 +368,15 @@ src_jar/hyvisual$(VERSION): ptII$(VERSION).src.jar
 		ptolemy/actor/lib/joystick \
 		ptolemy/actor/lib/python \
 		ptolemy/actor/lib/security \
+		ptolemy/actor/lib/test/Const.txt \
 		ptolemy/actor/lib/test/OrderedMerge.tcl \
+		ptolemy/actor/lib/test/ReadFile1Output.txt \
 		ptolemy/actor/lib/test/auto/MathFunction.xml \
 		ptolemy/actor/lib/test/auto/OrderedMerge.xml \
 	        ptolemy/actor/lib/test/auto/Switch.xml \
 		ptolemy/actor/lib/x10 \
 		ptolemy/actor/lib/xslt \
+		ptolemy/build.xml \
 		ptolemy/caltrop \
 		ptolemy/codegen \
 		ptolemy/component \
@@ -387,6 +391,8 @@ src_jar/hyvisual$(VERSION): ptII$(VERSION).src.jar
 		ptolemy/copernicus \
 		ptolemy/domains/ci \
 		ptolemy/domains/csp \
+		ptolemy/domains/ct/lib/IPCInterface.java \
+		ptolemy/domains/ct/lib/IPCInterface.class \
 		ptolemy/domains/dde \
 		ptolemy/domains/ddf \
 		ptolemy/domains/domains.xml \
@@ -408,6 +414,10 @@ src_jar/hyvisual$(VERSION): ptII$(VERSION).src.jar
 		ptolemy/domains/tm \
 		ptolemy/domains/wireless \
 		ptolemy/demo \
+		ptolemy/media/test/tmp2_7.au \
+		ptolemy/plot/build.xml \
+		ptolemy/plot/plotml/build.xml \
+		ptolemy/util/test/FileUtilities-1.1.tmp \
 		thales; \
 	   touch configure; \
 	   chmod a+rx configure; \
