@@ -34,6 +34,7 @@ import ptolemy.kernel.util.*;
 import java.util.Enumeration;
 import collections.*;
 import java.io.*;
+import ptolemy.schematic.xml.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// XMLObjectFactory
@@ -45,7 +46,7 @@ of the correspinding PTML file.
 @author Steve Neuendorffer, John Reekie
 @version $Id$
 */
-public class XMLObjectFactory {
+public class PTMLObjectFactory {
 
     /** 
      * Create the root IconLibrary from an XMLElement that was parsed from 
@@ -55,12 +56,13 @@ public class XMLObjectFactory {
     public static IconLibrary createIconLibrary(XMLElement e) 
             throws IllegalActionException {
 
+        PTMLParser parser = null;
         _checkElement(e, "iconlibrary");
 
         IconLibrary iconlibrary = new IconLibrary();
         Enumeration children = e.childElements();
-        while(child.hasMoreElements()) {
-            XMLElement child = children.nextElement();
+        while(children.hasMoreElements()) {
+            XMLElement child = (XMLElement) children.nextElement();
             String etype = child.getElementType();
             if(etype.equals("icon")) {
                 // if it's an Icon, then create it, 
@@ -69,25 +71,30 @@ public class XMLObjectFactory {
             } else if(etype.equals("sublibrary")) {
                 // if it's a sublibrary, then add it to the 
                 // list of sublibraries.
-                String name = e.getAttribute("name");
-                _sublibraries.putAt(name,e);
 
-                /* } else if(e.getElementType().equals("header")) {
-                // Remove the old header and swap in the new one.
-                // if the new header does not contain a description, then
-                // keep the old description 
-                if(!e.hasChildElement(_description)) {
-                    _header.removeChildElement(_description);
-                    e.addChildElement(_description);
+                String url = "";
+                try {
+                    url = child.getAttribute("link");
+                    if(parser == null) parser = new PTMLParser();
+                    
+                    XMLElement sublibtree = parser.parse(url);
+                    IconLibrary sublib = createIconLibrary(sublibtree); 
+                    iconlibrary.addSubLibrary(sublib);
                 }
-                removeChildElement(_header);
-                _header = e;
-                */
+                catch (Exception ex) {
+                    System.out.println("Couldn't parse iconlibrary from url "+
+                            url);
+                    System.out.println(ex.getMessage());
+                }
+
             } else if(etype.equals("description")) {
-                setDescription(child.getPCData());
+                iconlibrary.setDescription(child.getPCData());
             } else if(etype.equals("terminalstyle")) {
+            } else {
+                _unknownElementType(etype, "iconlibrary");
             }
         }
+        return iconlibrary;
             
     }
 
@@ -96,10 +103,10 @@ public class XMLObjectFactory {
      * the root IconLibrary.  
      * @exception If the XML element does not have a type of "iconlibrary"
      */
-    public static DomainLibrary createDomainLibrary(XMLElement e)
+    /*    public static DomainLibrary createDomainLibrary(XMLElement e)
     throws IllegalActionException {
         
-    }
+    }*/
    
     /**
      * Check the validity of the XML element.  This method is used to 
@@ -121,42 +128,65 @@ public class XMLObjectFactory {
                     "differs from expected iconlibrary.");
         }
     }
-    private static Icon _createIcon(XMLElement e) {
+
+    private static GraphicElement _createGraphicElement(XMLElement e)
+        throws IllegalActionException {
+
+        _verifyElement(e, "xmlgraphic");
+
+        String name = e.getElementType();
+        GraphicElement graphic = new GraphicElement(name);
+        Enumeration children = e.childElements();
+        while(children.hasMoreElements()) {
+            XMLElement child = (XMLElement)children.nextElement();
+            String etype = child.getElementType();
+            _unknownElementType(etype, "xmlgraphic");
+        }
+        
+        Enumeration attributes = e.attributeNames();
+        while(attributes.hasMoreElements()) {
+            String n = (String) attributes.nextElement();
+            String v = e.getAttribute(n);        
+            graphic.setAttribute(n, v);
+        }
+        return graphic;
+    }
+
+    private static Icon _createIcon(XMLElement e)
+        throws IllegalActionException {
 
         _verifyElement(e, "icon");
 
-        IconLibrary iconlibrary = new IconLibrary();
+        Icon icon = new Icon();
         Enumeration children = e.childElements();
-        while(child.hasMoreElements()) {
-            XMLElement child = children.nextElement();
+        while(children.hasMoreElements()) {
+            XMLElement child = (XMLElement)children.nextElement();
             String etype = child.getElementType();
-            if(etype.equals("icon")) {
+            if(etype.equals("tclscript")) {
                 // if it's an Icon, then create it, 
                 // and add it to the list of icons.
-                iconlibrary.addIcon(_createIcon(child));
-            } else if(etype.equals("sublibrary")) {
-                // if it's a sublibrary, then add it to the 
-                // list of sublibraries.
-                String name = e.getAttribute("name");
-                _sublibraries.putAt(name,e);
-
-                /* } else if(e.getElementType().equals("header")) {
-                // Remove the old header and swap in the new one.
-                // if the new header does not contain a description, then
-                // keep the old description 
-                if(!e.hasChildElement(_description)) {
-                    _header.removeChildElement(_description);
-                    e.addChildElement(_description);
-                }
-                removeChildElement(_header);
-                _header = e;
-                */
             } else if(etype.equals("description")) {
-                setDescription(child.getPCData());
-            } else if(etype.equals("terminalstyle")) {
-            }
+                icon.setDescription(child.getPCData());
+            } else if(etype.equals("terminal")) {
+            } else if(etype.equals("xmlgraphic")) {
+                GraphicElement g = _createGraphicElement(child);
+                icon.addGraphicElement(g);
+            } else {
+                _unknownElementType(etype, "icon");
+            }    
         }
-    /**
+        return icon;
+    }
+
+    /** 
+     * Print a message about the unknown element
+     */
+    private static void _unknownElementType(String etype, String parent) {
+                System.out.println("Unrecognized element type = " +
+                    etype + " found in " + parent);
+    }
+        
+        /**
      * Check the validity of the XML element.   This method is very similar 
      * to _checkElement, except that it is used internally to check state
      * that should already be true, unless the code is broken.
@@ -174,7 +204,7 @@ public class XMLObjectFactory {
                     "Element type " + e.getElementType() + 
                     "differs from expected iconlibrary.");
         }
-    }
+     }
                    
 }
 

@@ -56,7 +56,7 @@ public class Icon extends NamedObj {
      */
     public Icon () {
         super("icon");
-        _graphics = (LLMap) new LLMap();
+        _graphics = (CircularList) new CircularList();
         _description = new String("");
     }
 
@@ -64,12 +64,12 @@ public class Icon extends NamedObj {
      * Create a new Icon with the given name.
      * By default, the icon contains no graphic
      * representations.
-     * @param attributes a LLMap from a String specifying the name of
+     * @param attributes a CircularList from a String specifying the name of
      * an attribute to a String specifying the attribute's value.
      */
     public Icon (String name) {
         super(name);
-        _graphics = (LLMap) new LLMap();
+        _graphics = (CircularList) new CircularList();
         _description = new String("");
     }
 
@@ -83,43 +83,17 @@ public class Icon extends NamedObj {
      * @throw IllegalActionException if a graphic with the same type as
      * the element is already associated with this Icon.
      */
-    public void addGraphic (XMLElement element) throws IllegalActionException {
-        String type = element.getElementType();
-        if(!type.equals("graphic"))
-            throw new IllegalActionException("Element must be of " +
-                    " type graphic");
-        String format = element.getAttribute("format");
-        if(containsGraphic(format))
-            throw new IllegalActionException("Graphic of type " + format +
-                    " already exists.");
-        _graphics.putAt(format, element);
+    public void addGraphicElement (GraphicElement g) 
+            throws IllegalActionException {
+        _graphics.insertLast(g);
     }
 
     /**
      * Test if this icon contains a graphic in the
      * given format.
      */
-    public boolean containsGraphic (String format) {
-        return _graphics.includesKey(format);
-    }
-
-   /**
-     * Given a graphic format attribute, return the graphic
-     * that has that format.
-     *
-     * @return an XMLElement with element type of "graphic"
-     * @throw IllegalActionException if no graphic exists in the given format
-     */
-    public XMLElement getGraphic (String format)
-    throws IllegalActionException {
-        try {
-            XMLElement s = (XMLElement) _graphics.at(format);
-            return s;
-        }
-        catch (NoSuchElementException e) {
-            throw new IllegalActionException("Icon does not contain a " +
-                    "graphic of format " + format);
-        }
+    public boolean containsGraphicElement (GraphicElement g) {
+        return _graphics.includes(g);
     }
 
     /**
@@ -135,22 +109,22 @@ public class Icon extends NamedObj {
      *
      * @return Enumeration of String.
      */
-    public Enumeration graphicFormats() {
-        return _graphics.keys();
+    public Enumeration graphicElements() {
+        return _graphics.elements();
     }
 
     /**
-     * Remove a graphic from the icon. Throw an exception if
-     * a graphic in this format is not associated with the Icon.
+     * Remove a graphic element from the icon. Throw an exception if
+     * the graphic element is not contained in this icon
      */
-    public void removeGraphic (String format) throws IllegalActionException {
+    public void removeGraphicElement (GraphicElement g)
+            throws IllegalActionException {
         try {
-            XMLElement e = (XMLElement) _graphics.at(format);
-            _graphics.removeAt(format);
+            _graphics.removeOneOf(g);
         }
         catch (NoSuchElementException e) {
-            throw new IllegalActionException("Icon does not contain a " +
-                    "graphic of format " + format);
+            throw new IllegalActionException("removeGraphicElement:" +
+                    "GraphicElement not found in icon.");
         }
     }
 
@@ -162,7 +136,7 @@ public class Icon extends NamedObj {
     }
 
     String _description;
-    LLMap _graphics;
+    CircularList _graphics;
 
 }
 

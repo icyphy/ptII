@@ -48,8 +48,10 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
+	GraphicElement.java \
 	Icon.java \
-	IconLibrary.java 
+	IconLibrary.java \
+	PTMLObjectFactory.java  
 #	Domain.java \
 #	DomainLibrary.java \
 
