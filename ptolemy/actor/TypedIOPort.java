@@ -146,6 +146,21 @@ public class TypedIOPort extends IOPort implements InequalityTerm {
 	}
     }
 
+    /** If the type of this port is undeclared, return this port in an
+     *  array. In this case, this port is an InequalityTerm representing
+     *  a type variable. If the type of this port is declared, return
+     *  an array of size zero.
+     */
+     public InequalityTerm[] getVariables() {
+	if (_declaredType == null) {
+	    InequalityTerm[] variable = new InequalityTerm[1];
+	    variable[0] = this;
+	    return variable;
+	} else {
+	    return (new InequalityTerm[0]);
+	}
+    } 
+
     /** Checks if the type of this port is undeclared.  If this call
      *  returns true, set() can be used to set the resolved type.
      *  This is a method in the InequalityTerm interface.

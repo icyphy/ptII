@@ -188,8 +188,6 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
 		    	if (inport != outport) {
 		            // not bi-directional port
 		            Inequality ineq = new Inequality(inport, outport);
-			    ineq.addVariable(inport);
-			    ineq.addVariable(outport);
 			    result.insertLast(ineq);
 		        }
 		    }
