@@ -43,11 +43,11 @@ class PNInterleavingExample {
 	    IllegalStateException, IllegalActionException, 
             NameDuplicationException {
 	PNUniverse myUniverse = new PNUniverse();
-        myUniverse.setMode(Integer.parseInt(args[0]));
-        myUniverse.setNoCycles(Integer.parseInt(args[1]));
+        //myUniverse.setMode(Integer.parseInt(args[0]));
+        myUniverse.setNoCycles(Integer.parseInt(args[0]));
         PNInterleave _interleave = new PNInterleave(myUniverse, "interleave");
         _interleave.initialize();
-        _interleave.setCycles(Integer.parseInt(args[1]));
+        _interleave.setCycles(Integer.parseInt(args[0]));
         PNAlternate _alternate = new PNAlternate(myUniverse, "alternate");
         _alternate.initialize();
         PNRedirect _redirect0 = new PNRedirect(myUniverse, "redirect0");
