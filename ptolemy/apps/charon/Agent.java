@@ -1,6 +1,6 @@
 /* An agent represents a general composite actor or a refinement in a modal model.
 
- Copyright (c) 1998-2001 The Regents of the University of California.
+ Copyright (c) 1998-2003 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -1114,4 +1114,3 @@ System.out.println(" Container is an instance of " + _container.getClass().toStr
   private LinkedList _subAgents = new LinkedList();
   private LinkedList _connections = new LinkedList();
   private LinkedList _transitions = new LinkedList();
-}

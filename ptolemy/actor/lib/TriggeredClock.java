@@ -1,7 +1,7 @@
 /** A clock source that only generates an output when triggered.The number of
 times the specified cycle repeats is controlled  by numberOfCycles parameter.
 
- Copyright (c) 1998-2001 The Regents of the University of California.
+ Copyright (c) 1998-2003 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this

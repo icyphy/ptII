@@ -33,7 +33,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
  *
  * @(#)FrameAccess.java        1.5 01/03/13
  *
- * Copyright (c) 1999-2001 Sun Microsystems, Inc. All Rights Reserved.
+ * Copyright (c) 1999-2003 Sun Microsystems, Inc. All Rights Reserved.
  *
  * Sun grants you ("Licensee") a non-exclusive, royalty free, license to use,
  * modify and redistribute this software in source and binary code form,

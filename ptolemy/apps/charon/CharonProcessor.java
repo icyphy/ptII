@@ -1,6 +1,6 @@
 /* A processor engine for transfer a Charon model to Ptolemy II model.
 
- Copyright (c) 1998-2001 The Regents of the University of California.
+ Copyright (c) 1998-2003 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -303,4 +303,3 @@ public class CharonProcessor {
   private Writer _writer;
   private String _inputFileName;
   private String _outputFileName;
-}
