@@ -45,6 +45,12 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+// FIXME: we should not import com.sun classes.
+// http://java.sun.com/products/java-media/jai/forDevelopers/jai-apidocs/com/sun/media/jai/codec/FileCacheSeekableStream.html
+// says:
+// "This class is not a committed part of the JAI API. It may be
+// removed or changed in future releases of JAI."
+
 import com.sun.media.jai.codec.FileCacheSeekableStream;
 import com.sun.media.jai.codec.SeekableStream;
 import java.io.InputStream;
