@@ -64,8 +64,7 @@ public class ABP {
             sys.setManager(mgr);
 
             // the top level DE director
-            DEDirector dedir = new DEDirector("DETopLevelDirector");
-            sys.setDirector(dedir);
+            DEDirector dedir = new DEDirector(sys, "DETopLevelDirector");
 
             // message source
             DEMessageSource msgSrc = new DEMessageSource(sys,
@@ -132,8 +131,7 @@ public class ABP {
             ctrlTr2.setTriggerEvent("error");
 
             // sender's director
-            FSMDirector sdrDir = new FSMDirector("SenderDirector");
-            sender.setDirector(sdrDir);
+            FSMDirector sdrDir = new FSMDirector(sender, "SenderDirector");
             sdrDir.setController(ctrl);
 
             // submachine refining sender's connecting state

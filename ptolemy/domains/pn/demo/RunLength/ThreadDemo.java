@@ -174,8 +174,8 @@ public class ThreadDemo {
         try {
             c1.setManager(manager);
 
-            BasePNDirector local = new BasePNDirector("Local");
-            c1.setDirector(local);
+            BasePNDirector local = new BasePNDirector(c1, "Local");
+            //c1.setDirector(local);
             //myUniverse.setCycles(Integer.parseInt(args[0]));
 
             a1 = new PNImageSource(c1, "A1");

@@ -91,8 +91,7 @@ public class Thermostat extends CTApplet {
 
             // the top level DE director
             CTMultiSolverDirector topdir = new CTMultiSolverDirector(
-                    _workspace, "CTTopLevelDirector");
-            _toplevel.setDirector(topdir);
+                    _toplevel, "CTTopLevelDirector");
             //topdir.addDebugListener(new StreamListener());
             // a CT ramp
             CTRamp ramp = new CTRamp(_toplevel, "Ramp");
@@ -147,8 +146,8 @@ public class Thermostat extends CTApplet {
             HSInit hsinit2 = new HSInit(ctrlTr2, "Integrator", "state");
 
             // the hybrid system director
-            HSDirector hsdir = new HSDirector(_workspace, "HSDirector");
-            hs.setDirector(hsdir);
+            HSDirector hsdir = new HSDirector(hs, "HSDirector");
+            //hs.setDirector(hsdir);
             hsdir.setController(ctrl);
             //hsdir.addDebugListener(new StreamListener());
 
@@ -196,8 +195,7 @@ public class Thermostat extends CTApplet {
             ctIncGFi.link(ctIncR1);
             ctIncSt.link(ctIncR1);
             CTEmbeddedNRDirector ctIncDir = new CTEmbeddedNRDirector(
-                    _workspace, "CTIncDir");
-            ctInc.setDirector(ctIncDir);
+                    ctInc, "CTIncDir");
 
             //System.out.println("Building the cooling subsystem.");
             CTCompositeActor ctDec = new CTCompositeActor(hs, "Decreasing");
@@ -245,8 +243,7 @@ public class Thermostat extends CTApplet {
             ctDecGFi.link(ctDecR1);
             ctDecSt.link(ctDecR1);
             CTEmbeddedNRDirector ctDecDir = new CTEmbeddedNRDirector(
-                    _workspace, "CTDecDir");
-            ctDec.setDirector(ctDecDir);
+                    ctDec, "CTDecDir");
 
             ctrlInc.setRefinement(ctInc);
             ctrlDec.setRefinement(ctDec);

@@ -53,11 +53,10 @@ if {[string compare test [info procs test]] == 1} then {
 test DDEIOPort-2.1 {Check send()} {
     set wspc [java::new ptolemy.kernel.util.Workspace]
     set topLevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
-    set dir [java::new ptolemy.domains.dde.kernel.DDEDirector $wspc "director"]
+    set dir [java::new ptolemy.domains.dde.kernel.DDEDirector $topLevel "director"]
     set act1 [java::new ptolemy.actor.TypedAtomicActor $topLevel "act1"] 
     set act2 [java::new ptolemy.actor.TypedAtomicActor $topLevel "act2"] 
 
-    $topLevel setDirector $dir
 
     set outPort [java::new ptolemy.domains.dde.kernel.DDEIOPort $act1 "output" false true]
     set inPort [java::new ptolemy.domains.dde.kernel.DDEIOPort $act2 "input" true false]
@@ -86,12 +85,11 @@ test DDEIOPort-2.1 {Check send()} {
 test DDEIOPort-3.1 {Broadcast tokens to two different actors.} {
     set wspc [java::new ptolemy.kernel.util.Workspace]
     set topLevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
-    set dir [java::new ptolemy.domains.dde.kernel.DDEDirector $wspc "director"]
+    set dir [java::new ptolemy.domains.dde.kernel.DDEDirector $topLevel "director"]
     set act1 [java::new ptolemy.actor.TypedAtomicActor $topLevel "act1"] 
     set act2 [java::new ptolemy.actor.TypedAtomicActor $topLevel "act2"] 
     set act3 [java::new ptolemy.actor.TypedAtomicActor $topLevel "act3"] 
 
-    $topLevel setDirector $dir
 
     set outPort [java::new ptolemy.domains.dde.kernel.DDEIOPort $act1 "output" false true]
     set inPort2 [java::new ptolemy.domains.dde.kernel.DDEIOPort $act2 "input" true false]

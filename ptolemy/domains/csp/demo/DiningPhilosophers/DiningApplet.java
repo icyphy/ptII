@@ -85,8 +85,7 @@ public class DiningApplet extends Applet
         univ.setName("Top");
 
         // Set up the directors
-        _localDirector = new CSPDirector("CSP Director");
-        univ.setDirector(_localDirector);
+        _localDirector = new CSPDirector(univ, "CSP Director");
         _manager = new Manager("Manager");
         univ.setManager(_manager);
 

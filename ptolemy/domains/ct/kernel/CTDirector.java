@@ -112,11 +112,13 @@ public abstract class CTDirector extends StaticSchedulingDirector {
     public static int NFAIL = 0;
     public static int NROLL = 0;
 
-    /** Construct a CTDirector with no name and no Container.
-     *  All parameters take their default values. The scheduler
+    /** Construct a director in the default workspace with an empty string
+     *  as its name. The director is added to the list of objects in
+     *  the workspace. Increment the version number of the workspace.
+     *  All the parameters takes their default values.The scheduler
      *  is created.
      */
-    public CTDirector () {
+    public CTDirector() {
         super();
         _initParameters();
         try {
@@ -128,20 +130,18 @@ public abstract class CTDirector extends StaticSchedulingDirector {
         }
     }
 
-    /** Construct a CTDirector in the default workspace with the given name.
-     *  If the name argument is null, then the name is set to the empty
-     *  string. The director is added to the list of objects in the workspace.
+    /** Construct a director in the  workspace with an empty name.
+     *  The director is added to the list of objects in the workspace.
      *  Increment the version number of the workspace.
-     *  All parameters take their default values. The scheduler
+     *  All the parameters takes their default values.The scheduler
      *  is created.
-     *
-     *  @param name The name of this director.
+     *  @param workspace The workspace of this object.
      */
-    public CTDirector (String name) {
-        super(name);
+    public CTDirector(Workspace workspace) {
+        super(workspace);
         _initParameters();
         try {
-            setScheduler(new CTScheduler());
+            setScheduler(new CTScheduler(workspace));
         }catch(IllegalActionException e) {
             // Should never occur.
             throw new InternalErrorException(this.getFullName() +
@@ -149,22 +149,24 @@ public abstract class CTDirector extends StaticSchedulingDirector {
         }
     }
 
-    /** Construct a director in the given workspace with the given name.
-     *  If the workspace argument is null, use the default workspace.
-     *  The director is added to the list of objects in the workspace.
+    /** Construct a director in the given container with the given name.
+     *  If the container argument must not be null, or a
+     *  NullPointerException will be thrown.
      *  If the name argument is null, then the name is set to the
      *  empty string. Increment the version number of the workspace.
-     *  All parameters take their default values. The scheduler
+     *  All the parameters takes their default values.The scheduler
      *  is created.
-     *
      *  @param workspace Object for synchronization and version tracking
      *  @param name Name of this director.
+     *  @exception It may be thrown in derived classes if the
+     *      director is not compatible with the specified container.
      */
-    public CTDirector (Workspace workspace, String name) {
-        super(workspace, name);
+    public CTDirector(CompositeActor container, String name)
+            throws IllegalActionException {
+        super(container, name);
         _initParameters();
         try {
-            setScheduler(new CTScheduler(workspace));
+            setScheduler(new CTScheduler(container.workspace()));
         }catch(IllegalActionException e) {
             // Should never occur.
             throw new InternalErrorException(this.getFullName() +

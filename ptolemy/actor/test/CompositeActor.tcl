@@ -72,16 +72,17 @@ test CompositeActor-2.1 {Constructor tests} {
 #
 test CompositeActor-3.1 {Test getDirector} {
     # NOTE: Uses the setup above
-    list [expr {[$e1 getDirector] == [java::null]}] \
+    list [expr {[$e1 getDirector] == [java::null]}]  \
             [expr {[$e2 getDirector] == [java::null]}] \
             [expr {[$e3 getDirector] == $director}]
 } {1 1 1}
 
 test CompositeActor-3.2 {Test getDirector and getExecutiveDirector} {
     # NOTE: Extends the setup above
+    $e3 getName
     set e5 [java::new ptolemy.actor.CompositeActor $e3 E5]
-    set wormdirect [java::new ptolemy.actor.Director]
-    $e5 setDirector $wormdirect
+    set wormdirect [java::new ptolemy.actor.Director $e5 WORMDIR]
+    #$e5 setDirector $wormdirect
     list [expr {[$e5 getDirector] == $wormdirect}] \
             [expr {[$e5 getExecutiveDirector] == $director}] \
             [expr {[$e3 getDirector] == $director}] \
@@ -101,7 +102,8 @@ test CompositeActor-3.3 {Test failure mode of setManager} {
 
 test CompositeActor-3.3a {Test failure mode of setDirector} {
     # NOTE: Uses the setup above
-    set d4 [java::new ptolemy.actor.Director $w Director]
+    set d4 [java::new ptolemy.actor.Director $w]
+    $d4 setName Director
     catch {$e0 setDirector $d4} msg
     list $msg 
 } {{ptolemy.kernel.util.IllegalActionException: .E0 and W.Director: Cannot set director because workspaces are different.}}
@@ -199,7 +201,7 @@ test CompositeActor-7.1 {Test clone and description} {
     } entities {
     } relations {
     } director {
-        {ptolemy.actor.Director {.} attributes {
+        {ptolemy.actor.Director {.WORMDIR} attributes {
         }}
     } executivedirector {
     }}

@@ -65,38 +65,39 @@ two solvers share them.
 @see ptolemy.domains.ct.kernel.CTDirector
 */
 public class CTMultiSolverDirector extends CTSingleSolverDirector {
-    /** Construct a CTMultiSolverDirector with no name and no container.
-     *  All parameters take their default values.
+    /** Construct a director in the default workspace with an empty string
+     *  as its name. The director is added to the list of objects in
+     *  the workspace. Increment the version number of the workspace.
+     *  All the parameters takes their default values.
      */
-    public CTMultiSolverDirector () {
+    public CTMultiSolverDirector() {
         super();
     }
 
-    /** Construct a CTMultiSolverDirector in the default workspace with
-     *  the given name.
-     *  If the name argument is null, then the name is set to the empty
-     *  string. The director is added to the list of objects in the workspace.
+    /** Construct a director in the  workspace with an empty name.
+     *  The director is added to the list of objects in the workspace.
      *  Increment the version number of the workspace.
-     *  All parameters take their default values.
-     *
-     *  @param name The name of this director.
+     *  All the parameters takes their default values.
+     *  @param workspace The workspace of this object.
      */
-    public CTMultiSolverDirector (String name) {
-        super(name);
+    public CTMultiSolverDirector(Workspace workspace)  {
+        super(workspace);
     }
 
-    /** Construct a director in the given workspace with the given name.
-     *  If the workspace argument is null, use the default workspace.
-     *  The director is added to the list of objects in the workspace.
+    /** Construct a director in the given container with the given name.
+     *  If the container argument must not be null, or a
+     *  NullPointerException will be thrown.
      *  If the name argument is null, then the name is set to the
      *  empty string. Increment the version number of the workspace.
-     *  All parameters take their default values.
-     *
+     *  All the parameters takes their default values.
      *  @param workspace Object for synchronization and version tracking
      *  @param name Name of this director.
+     *  @exception It may be thrown in derived classes if the
+     *      director is not compatible with the specified container.
      */
-    public CTMultiSolverDirector (Workspace workspace, String name) {
-        super(workspace, name);
+    public CTMultiSolverDirector(CompositeActor container, String name)
+            throws IllegalActionException {
+        super(container, name);
     }
 
     ///////////////////////////////////////////////////////////////////

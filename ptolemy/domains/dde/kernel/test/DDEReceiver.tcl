@@ -53,9 +53,8 @@ if {[string compare test [info procs test]] == 1} then {
 test DDEReceiver-2.1 {get(), single arg put(), check _rcvrTime and _lastTime} {
     set wspc [java::new ptolemy.kernel.util.Workspace]
     set toplevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
-    set dir [java::new ptolemy.domains.dde.kernel.DDEDirector $wspc "director"]
+    set dir [java::new ptolemy.domains.dde.kernel.DDEDirector $topLevel "director"]
     set mgr [java::new ptolemy.actor.Manager $wspc "manager"]
-    $toplevel setDirector $dir
     $toplevel setManager $mgr
     
     set actorRcvr [java::new ptolemy.actor.TypedAtomicActor $toplevel "actorRcvr"]

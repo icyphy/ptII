@@ -39,8 +39,7 @@ set sys [java::new ptolemy.actor.TypedCompositeActor]
 $sys setName DESystem
 set man [java::new ptolemy.actor.Manager]
 $sys setManager $man
-set dedir [java::new ptolemy.domains.de.kernel.DEDirector DELocalDirector]
-$sys setDirector $dedir
+set dedir [java::new ptolemy.domains.de.kernel.DEDirector $sys DELocalDirector]
 
 set ctsub [java::new ptolemy.actor.TypedCompositeActor $sys CTSubsystem]
 set subin [java::new ptolemy.actor.TypedIOPort $ctsub Pin]
@@ -51,8 +50,7 @@ set subout [java::new ptolemy.actor.TypedIOPort $ctsub Pout]
 $subout setOutput 1
 #$subout setDeclaredType $ptype
 
-set ctdir [java::new ptolemy.domains.ct.kernel.CTMixedSignalDirector CTEmbDIR]
-$ctsub setDirector $ctdir
+set ctdir [java::new ptolemy.domains.ct.kernel.CTMixedSignalDirector $ctsub CTEmbDIR]
 
 # construct the sub system
 set hold [java::new ptolemy.domains.ct.lib.CTZeroOrderHold $ctsub Hold]

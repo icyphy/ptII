@@ -159,21 +159,55 @@ import java.util.Enumeration;
 // currently supported.
 public class DEDirector extends Director {
 
-    /** Construct a director with empty string as name in the
-     *  default workspace.
+    /** Construct a director in the default workspace with an empty string
+     *  as its name. The director is added to the list of objects in
+     *  the workspace. Increment the version number of the workspace.
      */
     public DEDirector() {
-	this(null, null);
+	this(null);
     }
 
-    /** Construct a director with the specified name in the default
-     *  workspace. If the name argument is null, then the name is set to the
-     *  empty string. This director is added to the directory of the workspace,
-     *  and the version of the workspace is incremented.
-     *  @param name The name of this director.
+    /**  Construct a director in the  workspace with an empty name.
+     *  The director is added to the list of objects in the workspace.
+     *  Increment the version number of the workspace.
+     *  @param workspace The workspace of this object.
      */
-    public DEDirector(String name) {
-	this(null, name);
+    public DEDirector(Workspace workspace) {
+        super(workspace);
+        try {
+            _stopTime = new Parameter(this,
+                    "StopTime",
+                    new DoubleToken(0.0));
+        } catch (IllegalActionException e) {
+            // shouldn't happen, because we know the Parameter class is an
+            // acceptable type for this director.
+            e.printStackTrace();
+            throw new InternalErrorException("IllegalActionException: " +
+                    e.getMessage());
+        } catch (NameDuplicationException e) {
+            // The name is guaranteed to be unique here..
+            e.printStackTrace();
+            throw new InternalErrorException("NameDuplicationException: " +
+                    e.getMessage());
+        }
+        // create event queue.
+        _eventQueue = new DECQEventQueue();
+    }
+
+    /** Construct a director in the given container with the given name.
+     *  If the container argument must not be null, or a
+     *  NullPointerException will be thrown.
+     *  If the name argument is null, then the name is set to the
+     *  empty string. Increment the version number of the workspace.
+     *
+     *  @param container Container of the director.
+     *  @param name Name of this director.
+     *  @exception It may be thrown in derived classes if the
+     *      director is not compatible with the specified container.
+     */
+    public DEDirector(CompositeActor container , String name)
+            throws IllegalActionException {
+        this(container, name, null);
     }
 
     /** Construct a director in the given workspace with the given name.
@@ -183,25 +217,13 @@ public class DEDirector extends Director {
      *  empty string. Increment the version number of the workspace.
      *
      *  @param workspace Object for synchronization and version tracking.
-     *  @param name The name of this director.
+     *  @exception It may be thrown in derived classes if the
+     *      director is not compatible with the specified container.
      */
-    public DEDirector(Workspace workspace, String name) {
-        this(workspace, name, null);
-    }
-
-    /** Construct a director in the given workspace with the given name.
-     *  If the workspace argument is null, use the default workspace.
-     *  The director is added to the list of objects in the workspace.
-     *  If the name argument is null, then the name is set to the
-     *  empty string. Increment the version number of the workspace.
-     *
-     *  @param workspace Object for synchronization and version tracking.
-     *  @param name The name of this director.
-     */
-    public DEDirector(Workspace workspace, 
+    public DEDirector(CompositeActor container, 
             String name, 
-            DEEventQueue eventQueue) {
-	super(workspace, name);
+            DEEventQueue eventQueue) throws IllegalActionException {
+	super(container, name);
         try {
             _stopTime = new Parameter(this,
                     "StopTime",

@@ -96,9 +96,8 @@ public class DEApplet extends PtolemyApplet {
 
         try {
             // Initialization
-            _director = new DEDirector();
+            _director = new DEDirector(_toplevel, "DEDirector");
             _director.setStopTime(stopTime);
-            _toplevel.setDirector(_director);
         } catch (Exception ex) {
             report("Failed to setup director:\n", ex);
         }

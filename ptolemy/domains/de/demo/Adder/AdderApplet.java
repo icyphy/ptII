@@ -150,8 +150,7 @@ public class AdderApplet extends Applet implements Runnable {
             topLevel.setName("Top");
 
             // Set up the top level composite actor, director and manager
-            _localDirector = new DEDirector("DE Director");
-            topLevel.setDirector(_localDirector);
+            _localDirector = new DEDirector(topLevel, "DE Director");
             _manager = new Manager("Executive Director");
             topLevel.setManager(_manager);
 

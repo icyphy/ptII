@@ -40,8 +40,7 @@ set sys [java::new ptolemy.actor.TypedCompositeActor]
 $sys setName System
 set man [java::new ptolemy.actor.Manager]
 $sys setManager $man
-set dir [java::new ptolemy.domains.ct.kernel.CTSingleSolverDirector DIR]
-$sys setDirector $dir
+set dir [java::new ptolemy.domains.ct.kernel.CTSingleSolverDirector $sys DIR]
 
 set sqwv [java::new ptolemy.domains.ct.lib.CTSquareWave $sys SQWV]
 set add1 [java::new ptolemy.domains.ct.lib.CTAdd $sys Add1]

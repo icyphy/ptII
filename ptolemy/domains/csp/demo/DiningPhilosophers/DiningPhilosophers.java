@@ -89,9 +89,8 @@ public class DiningPhilosophers {
             TypedCompositeActor univ = new TypedCompositeActor();
             univ.setName( "DiningPhilosophers demo");
             Manager manager = new Manager("Manager");
-            CSPDirector localdir = new CSPDirector("Local Director");
+            CSPDirector localdir = new CSPDirector(univ, "Local Director");
             univ.setManager(manager);
-            univ.setDirector(localdir);
 
             Parameter thinkingRate = new Parameter(univ, "thinkingRate");
             thinkingRate.setExpression("1.0");

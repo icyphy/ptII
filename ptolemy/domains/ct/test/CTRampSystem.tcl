@@ -66,10 +66,7 @@ test CTRampSystem-4.1 {Ramp with ForwardEulerSolver} {
     $sys setName System
     set man [java::new ptolemy.actor.Manager]
     $sys setManager $man
-    set dir [java::new ptolemy.domains.ct.kernel.CTSingleSolverDirector DIR]
-    $sys setDirector $dir
-    #$dir setVERBOSE 1
-    #$dir setDEBUG 1
+    set dir [java::new ptolemy.domains.ct.kernel.CTSingleSolverDirector $sys DIR]
     set const [java::new ptolemy.domains.ct.lib.CTConst $sys Const]
     set integral [java::new ptolemy.domains.ct.lib.CTIntegrator $sys Integ]
     set print [java::new ptolemy.domains.ct.test.CTTestValueSink\

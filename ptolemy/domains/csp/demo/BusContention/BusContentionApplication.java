@@ -145,8 +145,7 @@ public class BusContentionApplication implements ActionListener {
      */
     public void constructPtolemyModel () {
         try {
-	    Director director = new CSPDirector("Director");
-	    _topLevel.setDirector( director );
+	    Director director = new CSPDirector(_toplevel, "Director");
 	    
             // Instantiate Actors 
 	    _contentionActor = new CSPController( _topLevel, "controller" ); 

@@ -48,42 +48,39 @@ Don't need to run ahead of time and don't need to rollback.
 */
 public class CTEmbeddedNRDirector  extends CTMultiSolverDirector
         implements CTEmbeddedDirector{
-        /** Construct a CTEmbeddedNRDirector with no name and no Container.
-     *  All parameters take their default values. The scheduler is a
-     *  CTScheduler.
+    /** Construct a director in the default workspace with an empty string
+     *  as its name. The director is added to the list of objects in
+     *  the workspace. Increment the version number of the workspace.
+     *  All the parameters takes their default values.
      */
-    public CTEmbeddedNRDirector () {
+    public CTEmbeddedNRDirector() {
         super();
     }
 
-    /** Construct a CTEmbeddedNRDirector in the default workspace 
-     *  with the given name.
-     *  If the name argument is null, then the name is set to the empty
-     *  string. The director is added to the list of objects in the workspace.
+    /** Construct a director in the  workspace with an empty name.
+     *  The director is added to the list of objects in the workspace.
      *  Increment the version number of the workspace.
-     *  All parameters take their default values. The scheduler is a
-     *  CTScheduler.
-     *
-     *  @param name The name of this director.
+     *  All the parameters takes their default values.
+     *  @param workspace The workspace of this object.
      */
-    public CTEmbeddedNRDirector (String name) {
-        super(name);
+    public CTEmbeddedNRDirector(Workspace workspace)  {
+        super(workspace);
     }
 
-    /** Construct a CTEmbeddedNRDirector in the given workspace with
-     *  the given name.
-     *  If the workspace argument is null, use the default workspace.
-     *  The director is added to the list of objects in the workspace.
+    /** Construct a director in the given container with the given name.
+     *  If the container argument must not be null, or a
+     *  NullPointerException will be thrown.
      *  If the name argument is null, then the name is set to the
      *  empty string. Increment the version number of the workspace.
-     *  All parameters take their default values. The scheduler is a
-     *  CTScheduler.   
-     *
+     *  All the parameters takes their default values.
      *  @param workspace Object for synchronization and version tracking
      *  @param name Name of this director.
+     *  @exception It may be thrown in derived classes if the
+     *      director is not compatible with the specified container.
      */
-    public CTEmbeddedNRDirector (Workspace workspace, String name) {
-        super(workspace, name);
+    public CTEmbeddedNRDirector(CompositeActor container, String name)
+            throws IllegalActionException {
+        super(container, name);
     }
 
     ///////////////////////////////////////////////////////////////////

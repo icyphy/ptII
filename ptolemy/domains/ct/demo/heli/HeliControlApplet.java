@@ -134,8 +134,7 @@ public class HeliControlApplet extends CTApplet {
             // Set up the top level composite actor, director and manager
             TypedCompositeActor sys = _toplevel;
             sys.setName("HeliControlSystem");
-            _dir = new CTMultiSolverDirector(_workspace, "OutterDirector");
-            sys.setDirector(_dir);
+            _dir = new CTMultiSolverDirector(sys, "OutterDirector");
             //_manager = new Manager("Manager");
             _manager.addExecutionListener(new MyExecutionListener());
             //sys.setManager(_manager);
@@ -148,9 +147,8 @@ public class HeliControlApplet extends CTApplet {
             // ---------------------------------
 
             CTCompositeActor sub = new CTCompositeActor(sys, "Linearizers");
-            _hsdir = new HSDirector(_workspace, "HSDirector");
+            _hsdir = new HSDirector(sub, "HSDirector");
 
-            sub.setDirector(_hsdir);
             TypedIOPort subinPx = new TypedIOPort(sub, "inputPx");
             subinPx.setInput(true);
             subinPx.setOutput(false);
@@ -599,9 +597,8 @@ public class HeliControlApplet extends CTApplet {
             throws NameDuplicationException, IllegalActionException {
         CTCompositeActor sub = new CTCompositeActor(container, "dummy");
         CTEmbeddedNRDirector subdir = 
-                new CTEmbeddedNRDirector(_workspace, "CTInnerDirector");
+                new CTEmbeddedNRDirector(sub, "CTInnerDirector");
 
-        sub.setDirector(subdir);
         TypedIOPort subinPx = new TypedIOPort(sub, "inputPx");
         subinPx.setInput(true);
         subinPx.setOutput(false);

@@ -39,8 +39,8 @@ set sys [java::new ptolemy.actor.TypedCompositeActor]
 $sys setName System
 set man [java::new ptolemy.actor.Manager]
 $sys setManager $man
-set dir [java::new ptolemy.domains.ct.kernel.CTMultiSolverDirector DIR]
-$sys setDirector $dir
+set dir [java::new ptolemy.domains.ct.kernel.CTMultiSolverDirector $sys DIR]
+
 set const [java::new ptolemy.domains.ct.lib.CTConst $sys Const]
 set integral [java::new ptolemy.domains.ct.lib.CTIntegrator $sys Integrator]
 set print [java::new ptolemy.domains.ct.lib.CTPrintln $sys Print]

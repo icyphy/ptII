@@ -151,8 +151,7 @@ public class InterruptApplet extends Applet {
             sys.setName("DEDemo");
 
             // Set up the top level composite actor, director and manager
-            _localDirector = new DEDirector("DE Director");
-            sys.setDirector(_localDirector);
+            _localDirector = new DEDirector(sys, "DE Director");
             _manager = new Manager("Manager");
             _manager.addExecutionListener(new MyExecutionListener());
             sys.setManager(_manager);

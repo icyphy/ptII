@@ -60,7 +60,8 @@ import java.util.Enumeration;
 public class DTDirector extends SDFDirector {
 
     /** Construct a director in the default workspace with an empty string
-     *  as its name.
+     *  as its name. The director is added to the list of objects in
+     *  the workspace. Increment the version number of the workspace.
      *  The DTDirector will have a default scheduler of type SDFScheduler.
      */
     public DTDirector() {
@@ -68,25 +69,33 @@ public class DTDirector extends SDFDirector {
         _init();
     }
 
-    /** Construct an DTDirector in the default workspace with the given name.
+    /** Construct a director in the  workspace with an empty name.
+     *  The director is added to the list of objects in the workspace.
+     *  Increment the version number of the workspace.
      *  The DTDirector will have a default scheduler of type SDFScheduler.
      *
-     *  @param name Name of this object.
+     *  @param workspace The workspace of this object.
      */
-    public DTDirector(String name) {
-        super(name);
+    public DTDirector(Workspace workspace) {
+        super(workspace);
         _init();
     }
 
-    /** Create a new DTDirector in the specified workspace with the specified
-     *   name.   The DTDirector will have a default scheduler of type
-     *   SDFScheduler.
+    /** Construct a director in the given container with the given name.
+     *  If the container argument must not be null, or a
+     *  NullPointerException will be thrown.
+     *  If the name argument is null, then the name is set to the
+     *  empty string. Increment the version number of the workspace.
+     *  The DTDirector will have a default scheduler of type SDFScheduler.
      *
-     *  @param workspace Object for synchronization and version tracking
+     *  @param container Container of the director.
      *  @param name Name of this director.
+     *  @exception It may be thrown in derived classes if the
+     *      director is not compatible with the specified container.
      */
-    public DTDirector(Workspace workspace, String name) {
-        super(workspace, name);
+    public DTDirector(CompositeActor container, String name)
+            throws IllegalActionException {
+        super(container, name);
         _init();
     }
 

@@ -55,10 +55,13 @@ set manager [java::new ptolemy.actor.Manager $w M]
 test Director-2.1 {Constructor tests} {
     set d1 [java::new ptolemy.actor.Director]
     $d1 setName D1
-    set d2 [java::new ptolemy.actor.Director D2]
-    set d3 [java::new ptolemy.actor.Director $w D3]
+    set d2 [java::new ptolemy.actor.Director $w]
+    $d2 setName D2
+    set e0 [java::new ptolemy.actor.CompositeActor $w]
+    $e0 setName E0
+    set d3 [java::new ptolemy.actor.Director $e0 D3]
     list [$d1 getFullName] [$d2 getFullName] [$d3 getFullName]
-} {.D1 .D2 W.D3}
+} {.D1 W.D2 W.E0.D3}
 
 ######################################################################
 ####
@@ -68,19 +71,16 @@ test Director-3.1 {Test clone} {
     set d4 [java::cast ptolemy.actor.Director [$d2 clone $w]]
     $d4 setName D4
     enumToFullNames [$w directory]
-} {W.M W.D3}
+} {W.M W.D2 W.E0}
 
 ######################################################################
 ####
 #
 test Director-4.1 {Test _makeDirectorOf} {
     # NOTE: Uses the setup above
-    set e0 [java::new ptolemy.actor.CompositeActor $w]
-    $e0 setName E0
     $e0 setManager $manager
-    $e0 setDirector $d3
     list [$d3 getFullName] [$d4 getFullName] [enumToFullNames [$w directory]]
-} {W.E0.D3 W.D4 W.E0}
+} {W.E0.D3 W.D4 {W.D2 W.E0}}
 
 ######################################################################
 ####
@@ -109,8 +109,7 @@ W.E0.A2.wrapup
 #
 test Director-6.1 {Test wormhole activation} {
     set e1 [java::new ptolemy.actor.CompositeActor $e0 E1]
-    set d5 [java::new ptolemy.actor.Director $w D5]
-    $e1 setDirector $d5
+    set d5 [java::new ptolemy.actor.Director $e1 D5]
     $a2 setContainer $e1
     $a1 clear
     $manager run

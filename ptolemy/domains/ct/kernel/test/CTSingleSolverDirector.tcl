@@ -59,16 +59,18 @@ test CTSingleSolverDirector-1.1 {Construct a Director and get name} {
     list  [$d1 getName]
 } {{}}
 
-test CTSingleSolverDirector-1.2 {Construct a Director with a name} {
-    set d1 [java::new ptolemy.domains.ct.kernel.CTSingleSolverDirector DIR]
-    list  [$d1 getName]
-} {DIR}
-
-test CTScheduler-1.3 {Construct a director with a name in a workspace} {
+test CTSingleSolverDirector-1.2 {Construct a Director in a workspace} {
     set w [java::new ptolemy.kernel.util.Workspace W]
-    set d2 [java::new ptolemy.domains.ct.kernel.CTSingleSolverDirector $w DIR2]
+    set d1 [java::new ptolemy.domains.ct.kernel.CTSingleSolverDirector $w]
+    list  [$d1 getFullName]
+} {W.}
+
+test CTSingleSolverDirector-1.3 {Construct with a name and a container} {
+    set ca [java::new ptolemy.actor.TypedCompositeActor $w]
+    $ca setName CA
+    set d2 [java::new ptolemy.domains.ct.kernel.CTSingleSolverDirector $ca DIR2]
     list [$d2 getFullName]
-} {W.DIR2}
+} {W.CA.DIR2}
 
 
 ######################################################################
@@ -77,8 +79,7 @@ test CTScheduler-1.3 {Construct a director with a name in a workspace} {
 test CTSingleSolverDirector-2.1 {Get default values} {
     set sys [java::new ptolemy.actor.TypedCompositeActor]
     $sys setName System
-    set dir [java::new ptolemy.domains.ct.kernel.CTSingleSolverDirector DIR]
-    $sys setDirector $dir
+    set dir [java::new ptolemy.domains.ct.kernel.CTSingleSolverDirector $sys DIR]
     $dir initialize
     list [[$dir getCurrentODESolver] getFullName] \
 	    [$dir getCurrentStepSize] \
@@ -193,8 +194,7 @@ test CTSingleSolverDirector-3.1 {register a breakpoint} {
     #Note: new set up.
     set sys [java::new ptolemy.actor.TypedCompositeActor]
     $sys setName System
-    set dir [java::new ptolemy.domains.ct.kernel.CTSingleSolverDirector DIR]
-    $sys setDirector $dir
+    set dir [java::new ptolemy.domains.ct.kernel.CTSingleSolverDirector $sys DIR]
     $dir initialize
     $dir fireAt $sys 0.1
     $dir fireAt $sys 0.4

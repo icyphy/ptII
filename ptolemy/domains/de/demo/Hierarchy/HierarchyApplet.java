@@ -120,14 +120,13 @@ public class HierarchyApplet extends Applet {
             _manager = new Manager("Manager");
             _manager.addExecutionListener(new MyExecutionListener());
             sys.setManager(_manager);
-            _localDirector = new DEDirector("TopLocalDirector");
-            sys.setDirector(_localDirector);
+            _localDirector = new DEDirector(sys, "TopLocalDirector");
 
             // Set up block A
 
             TypedCompositeActor blockA = new TypedCompositeActor(sys,
                     "BlockA");
-            blockA.setDirector(new DEDirector("Director A"));
+            new DEDirector(blockA, "Director A");
 
             DEClock clock = new DEClock(blockA, "Clock", 1.0, 1.0);
             DERamp ramp1 = new DERamp(blockA, "Ramp1", 0, 2);
@@ -149,7 +148,7 @@ public class HierarchyApplet extends Applet {
             // Set up block B
 
             TypedCompositeActor blockB = new TypedCompositeActor(sys, "BlockB");
-            blockB.setDirector(new DEDirector("Director B"));
+            new DEDirector(blockB, "Director B");
 
             DERamp ramp2 = new DERamp(blockB, "Ramp2", -2, 2);
             DESampler sampler2 = new DESampler(blockB, "Sampler2");
@@ -169,7 +168,7 @@ public class HierarchyApplet extends Applet {
             // Set up block C
 
             TypedCompositeActor blockC = new TypedCompositeActor(sys, "BlockC");
-            blockC.setDirector(new DEDirector("Director C"));
+            new DEDirector(blockC, "Director C");
 
             DEPlot plot = new DEPlot(blockC, "Plot", plotPanel);
 

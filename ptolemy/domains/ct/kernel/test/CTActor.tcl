@@ -111,14 +111,14 @@ test CTActor-2.1 {Create a CTParameter} {
 test CTActor-3.1 {passing tokens} {
     set ca [java::new ptolemy.actor.TypedCompositeActor]
     $ca setName CA
-    set dir [java::new ptolemy.domains.ct.kernel.CTSingleSolverDirector Dir]
-    $ca setDirector $dir
+    set dir [java::new ptolemy.domains.ct.kernel.CTSingleSolverDirector $ca Dir]
     set a1 [java::new ptolemy.domains.ct.kernel.test.CTDummySource $ca A1]
     set a2 [java::new ptolemy.domains.ct.kernel.test.CTDummySink $ca A2]
     set p1o [java::cast ptolemy.actor.IOPort [$a1 getPort output]]
     set p2i [java::cast ptolemy.actor.IOPort [$a2 getPort input]]
     set r1 [$ca connect $p1o $p2i]
-    $a2 createReceivers
+    $a1 initialize
+    $a2 initialize
     $p1o broadcast $zero
     [java::cast ptolemy.data.DoubleToken [$p2i get 0]] doubleValue
 } {0.0}

@@ -61,8 +61,8 @@ public class PNWavepacket {
 	Manager exec = new Manager("exec");
         // FIXME FIXME FIXME
 	myUniverse.setManager(exec);
-	PNDirector local = new PNDirector("Local");
-	myUniverse.setDirector(local);
+	PNDirector local = new PNDirector(myUniverse, "Local");
+	//myUniverse.setDirector(local);
         //myUniverse.setCycles(Integer.parseInt(args[0]));
         PNAudioSource source = new PNAudioSource(myUniverse, "source");
         //source.setInitState("/users/mudit/_Ptolemy/tycho/java/ptolemy/domains/pn/demo/test.bin");

@@ -54,7 +54,7 @@ test TimeKeeper-2.1 {hasMinRcvrTime - No simultaneous Events} {
     
     set wspc [java::new ptolemy.kernel.util.Workspace]
     set topLevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
-    set dir [java::new ptolemy.domains.dde.kernel.DDEDirector $wspc "director"]
+    set dir [java::new ptolemy.domains.dde.kernel.DDEDirector $topLevel "director"]
     set actor [java::new ptolemy.actor.TypedAtomicActor $topLevel "actor"] 
     set iop [java::new ptolemy.actor.TypedIOPort]
 
@@ -86,7 +86,7 @@ test TimeKeeper-2.2 {hasMinRcvrTime - Simultaneous Events} {
     
     set wspc [java::new ptolemy.kernel.util.Workspace]
     set topLevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
-    set dir [java::new ptolemy.domains.dde.kernel.DDEDirector $wspc "director"]
+    set dir [java::new ptolemy.domains.dde.kernel.DDEDirector $topLevel "director"]
     set actor [java::new ptolemy.actor.TypedAtomicActor $topLevel "actor"] 
     set iop [java::new ptolemy.actor.TypedIOPort]
 
@@ -118,7 +118,7 @@ test TimeKeeper-2.3 {hasMinRcvrTime - Negative Events} {
     
     set wspc [java::new ptolemy.kernel.util.Workspace]
     set topLevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
-    set dir [java::new ptolemy.domains.dde.kernel.DDEDirector $wspc "director"]
+    set dir [java::new ptolemy.domains.dde.kernel.DDEDirector $topLevel "director"]
     set actor [java::new ptolemy.actor.TypedAtomicActor $topLevel "actor"] 
     set iop [java::new ptolemy.actor.TypedIOPort]
 
@@ -153,7 +153,7 @@ test TimeKeeper-3.1 {hasMinRcvrTime, getNextTime - With Negative Events} {
     
     set wspc [java::new ptolemy.kernel.util.Workspace]
     set topLevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
-    set dir [java::new ptolemy.domains.dde.kernel.DDEDirector $wspc "director"]
+    set dir [java::new ptolemy.domains.dde.kernel.DDEDirector $topLevel "director"]
     set actor [java::new ptolemy.actor.TypedAtomicActor $topLevel "actor"] 
     set iop [java::new ptolemy.actor.TypedIOPort]
 
@@ -198,7 +198,7 @@ test TimeKeeper-4.1 {getNextTime()} {
     
     set wspc [java::new ptolemy.kernel.util.Workspace]
     set topLevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
-    set dir [java::new ptolemy.domains.dde.kernel.DDEDirector $wspc "director"]
+    set dir [java::new ptolemy.domains.dde.kernel.DDEDirector $topLevel "director"]
     set actor [java::new ptolemy.actor.TypedAtomicActor $topLevel "actor"] 
     set iop [java::new ptolemy.actor.TypedIOPort $actor "port"]
 
@@ -229,7 +229,7 @@ test TimeKeeper-5.1 {Call Methods On Uninitialized TimeKeeper} {
     
     set wspc [java::new ptolemy.kernel.util.Workspace]
     set topLevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
-    set dir [java::new ptolemy.domains.dde.kernel.DDEDirector $wspc "director"]
+    set dir [java::new ptolemy.domains.dde.kernel.DDEDirector $topLevel "director"]
     set actor [java::new ptolemy.actor.TypedAtomicActor $topLevel "actor"] 
     set keeper [java::new ptolemy.domains.dde.kernel.TimeKeeper $actor]
 
@@ -261,7 +261,7 @@ test TimeKeeper-6.1 {getHighestPriorityTriple - Simultaneous Events} {
     
     set wspc [java::new ptolemy.kernel.util.Workspace]
     set topLevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
-    set dir [java::new ptolemy.domains.dde.kernel.DDEDirector $wspc "director"]
+    set dir [java::new ptolemy.domains.dde.kernel.DDEDirector $topLevel "director"]
     set actor [java::new ptolemy.actor.TypedAtomicActor $topLevel "actor"] 
     set iop [java::new ptolemy.actor.TypedIOPort $actor "port"]
 
@@ -291,7 +291,7 @@ test TimeKeeper-6.1 {getHighestPriorityTriple - Simultaneous Events} {
 test TimeKeeper-6.2 {getHighestPriorityTriple - No Simultaneous Events} {
     set wspc [java::new ptolemy.kernel.util.Workspace]
     set topLevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
-    set dir [java::new ptolemy.domains.dde.kernel.DDEDirector $wspc "director"]
+    set dir [java::new ptolemy.domains.dde.kernel.DDEDirector $topLevel "director"]
     set actor [java::new ptolemy.actor.TypedAtomicActor $topLevel "actor"] 
     set iop [java::new ptolemy.actor.TypedIOPort $actor "port"]
 
@@ -358,11 +358,11 @@ test TimeKeeper-6.3 {Check resortList} {
 test TimeKeeper-7.1 {Check sendOutNullTokens} {
     set wspc [java::new ptolemy.kernel.util.Workspace]
     set topLevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
-    set dir [java::new ptolemy.domains.dde.kernel.DDEDirector $wspc "director"]
+    set dir [java::new ptolemy.domains.dde.kernel.DDEDirector $topLevel "director"]
     set act1 [java::new ptolemy.actor.TypedAtomicActor $topLevel "act1"] 
     set act2 [java::new ptolemy.actor.TypedAtomicActor $topLevel "act2"] 
 
-    $topLevel setDirector $dir
+    #$topLevel setDirector $dir
 
     set outPort [java::new ptolemy.actor.TypedIOPort $act1 "output" false true]
     set inPort [java::new ptolemy.actor.TypedIOPort $act2 "input" true false]

@@ -54,10 +54,10 @@ test DDEThread-2.1 {getTimeKeeper()} {
     
     set wspc [java::new ptolemy.kernel.util.Workspace]
     set topLevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
-    set dir [java::new ptolemy.domains.dde.kernel.DDEDirector $wspc "director"]
+    set dir [java::new ptolemy.domains.dde.kernel.DDEDirector $topLevel "director"]
     set man [java::new ptolemy.actor.Manager $wspc "manager"]
     
-    $topLevel setDirector $dir
+    #$topLevel setDirector $dir
     $topLevel setManager $man
 
     set actor1 [java::new ptolemy.actor.TypedAtomicActor $topLevel "actor"] 

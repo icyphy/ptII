@@ -51,13 +51,13 @@ class PNinPN {
 	Manager exec = new Manager("exec");
         // FIXME FIXME FIXME
         myUniverse.setManager(exec);
-	BasePNDirector local = new BasePNDirector("Local");
+	BasePNDirector local = new BasePNDirector(myUniverse, "Local");
         //local.addProcessListener(new DefaultPNListener());
-	myUniverse.setDirector(local);
+	//myUniverse.setDirector(local);
         //myUniverse.setCycles(Integer.parseInt(args[0]));
         CompositeActor inner = new CompositeActor(myUniverse, "inner");
-        BasePNDirector indir = new BasePNDirector("indir");
-        inner.setDirector(indir);
+        BasePNDirector indir = new BasePNDirector(inner, "indir");
+        //inner.setDirector(indir);
         //indir.addProcessListener(new DefaultPNListener());
         IOPort inport1 = (IOPort)inner.newPort("input1");
         inport1.setInput(true);

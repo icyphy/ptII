@@ -77,8 +77,7 @@ public class MainTest {
 
         // Create directors and associate them with 
         // the top level composite actor.
-        DECQDirector dir = new DECQDirector("DELocalDirector");
-        sys.setDirector(dir);
+        DECQDirector dir = new DECQDirector(sys,"DELocalDirector");
         Manager manager = new Manager();
         sys.setManager(manager);
 

@@ -50,8 +50,8 @@ class TicTacToe {
 	CompositeActor myUniverse = new CompositeActor();
 	Manager exec = new Manager("exec");
         myUniverse.setManager(exec);
-	BasePNDirector local = new BasePNDirector("Local");
-	myUniverse.setDirector(local);
+	BasePNDirector local = new BasePNDirector(myUniverse, "Local");
+	//myUniverse.setDirector(local);
 
         TicTacToeDisplay display = new TicTacToeDisplay(myUniverse, "display");
         TTTPlayer play = new TTTPlayer(myUniverse, "player");

@@ -39,16 +39,14 @@ set sys [java::new ptolemy.actor.TypedCompositeActor]
 $sys setName DESystem
 set man [java::new ptolemy.actor.Manager]
 $sys setManager $man
-set dedir [java::new ptolemy.domains.de.kernel.DEDirector DELocalDirector]
-$sys setDirector $dedir
+set dedir [java::new ptolemy.domains.de.kernel.DEDirector $sys DELocalDirector]
 
 set ctsub [java::new ptolemy.actor.TypedCompositeActor $sys CTSubsystem]
 set subout [java::new ptolemy.actor.TypedIOPort $ctsub P1]
 #set ptype [java::call Class forName ptolemy.data.DoubleToken]
 $subout setOutput 1
 #$subout setDeclaredType $ptype
-set ctdir [java::new ptolemy.domains.ct.kernel.CTMixedSignalDirector CTEmbDIR]
-$ctsub setDirector $ctdir
+set ctdir [java::new ptolemy.domains.ct.kernel.CTMixedSignalDirector $ctsub CTEmbDIR]
 # construct the sub system
 set const [java::new ptolemy.domains.ct.lib.CTConst $ctsub Const]
 set integral [java::new ptolemy.domains.ct.lib.CTIntegrator $ctsub Integrator]

@@ -67,8 +67,8 @@ public class SimpleHS {
             sys.setManager(mgr);
 
             // the top level DE director
-            CTMultiSolverDirector dedir = new CTMultiSolverDirector("CTTopLevelDirector");
-            sys.setDirector(dedir);
+            CTMultiSolverDirector dedir = new CTMultiSolverDirector(
+                    sys, "CTTopLevelDirector");
 
             //dedir.setVERBOSE(true);
             //dedir.setDEBUG(true);
@@ -123,8 +123,7 @@ public class SimpleHS {
             HSInit hsinit2 = new HSInit(ctrlTr2, "Integrator", "state");
 
             // the hybrid system director
-            HSDirector hsdir = new HSDirector("HSDirector");
-            hs.setDirector(hsdir);
+            HSDirector hsdir = new HSDirector(hs, "HSDirector");
             hsdir.setController(ctrl);
 
             // the first ct subsystem
@@ -170,8 +169,8 @@ public class SimpleHS {
             ctIncD.input.link(ctIncR1);
             ctIncGFi.link(ctIncR1);
             ctIncSt.link(ctIncR1);
-            CTEmbeddedNRDirector ctIncDir = new CTEmbeddedNRDirector("CTIncDir");
-            ctInc.setDirector(ctIncDir);
+            CTEmbeddedNRDirector ctIncDir = new CTEmbeddedNRDirector(
+                    ctInc, "CTIncDir");
 
             // the second ct subsystem
             CTCompositeActor ctDec = new CTCompositeActor(hs, "Decreasing");
@@ -218,8 +217,8 @@ public class SimpleHS {
             ctDecD.input.link(ctDecR1);
             ctDecGFi.link(ctDecR1);
             ctDecSt.link(ctDecR1);
-            CTEmbeddedNRDirector ctDecDir = new CTEmbeddedNRDirector("CTDecDir");
-            ctDec.setDirector(ctDecDir);
+            CTEmbeddedNRDirector ctDecDir = new CTEmbeddedNRDirector(
+                    ctDec, "CTDecDir");
 
             ctrlInc.setRefinement(ctInc);
             ctrlDec.setRefinement(ctDec);

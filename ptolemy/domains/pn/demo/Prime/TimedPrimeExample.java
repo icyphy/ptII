@@ -54,8 +54,8 @@ public class TimedPrimeExample {
         myUniverse.setName("Prime_example");
 	Manager exec = new Manager(ws, "exec");
 	myUniverse.setManager(exec);
-	TimedPNDirector local = new TimedPNDirector(ws, "Local");
-	myUniverse.setDirector(local);
+	TimedPNDirector local = new TimedPNDirector(myUniverse, "Local");
+	//myUniverse.setDirector(local);
         TimedRamp ramp = new TimedRamp(myUniverse, "ramp");
         ramp.setParam("Initial Value", "2");
         PNSieve sieve = new PNSieve(myUniverse, "2_sieve");

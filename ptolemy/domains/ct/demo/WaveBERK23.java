@@ -53,8 +53,8 @@ public class WaveBERK23 {
              Manager man = new Manager();
              sys.setManager(man);
 
-             CTMultiSolverDirector dir = new CTMultiSolverDirector("DIR");
-             sys.setDirector(dir);
+             CTMultiSolverDirector dir = new CTMultiSolverDirector(
+                     sys, "DIR");
              CTSquareWave sqwv = new CTSquareWave(sys, "SQWV");
              CTAdd add1 = new CTAdd( sys, "Add1");
              CTIntegrator intgl1 = new CTIntegrator(sys, "Integrator1");

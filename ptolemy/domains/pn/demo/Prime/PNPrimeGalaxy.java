@@ -53,8 +53,8 @@ public class PNPrimeGalaxy {
 	Manager exec = new Manager("exec");
         // FIXME FIXME FIXME
 	myUniverse.setManager(exec);
-	PNDirector local = new PNDirector("Local");
-	myUniverse.setDirector(local);
+	PNDirector local = new PNDirector(myUniverse, "Local");
+	//myUniverse.setDirector(local);
         //myUniverse.setCycles(Integer.parseInt(args[0]));
         PNRamp ramp = new PNRamp(myUniverse, "ramp");
         ramp.setParam("Initial Value", "2");

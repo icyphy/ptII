@@ -134,32 +134,35 @@ public class PNDirector extends BasePNDirector {
         super();
     }
 
-    /** Construct a director in the default workspace with the given name.
-     *  If the name argument is null, then the name is set to the empty
-     *  string. The director is added to the list of objects in the workspace.
-     *  Increment the version number of the workspace. 
+    /** Construct a director in the  workspace with an empty name.
+     *  The director is added to the list of objects in the workspace.
+     *  Increment the version number of the workspace.
      *  Create a director parameter "Initial_queue_capacity" with the default 
      *  value 1. This sets the initial capacities of the queues in all 
      *  the receivers created in the PN domain.
-     *  @param name Name of this director.
+     *  @param workspace The workspace of this object.
      */
-    public PNDirector(String name) {
-        super(name);
+    public PNDirector(Workspace workspace) {
+        super(workspace);
     }
 
-    /** Construct a director in the given workspace with the given name.
-     *  If the workspace argument is null, use the default workspace.
-     *  The director is added to the list of objects in the workspace.
+    /**  Construct a director in the given container with the given name.
+     *  If the container argument must not be null, or a
+     *  NullPointerException will be thrown.
      *  If the name argument is null, then the name is set to the
-     *  empty string. Increment the version number of the workspace. 
+     *  empty string. Increment the version number of the workspace.
+     * 
      *  Create a director parameter "Initial_queue_capacity" with the default 
      *  value 1. This sets the initial capacities of the queues in all 
      *  the receivers created in the PN domain.
-     *  @param workspace Object for synchronization and version tracking
+     *  @param container Container of the director.
      *  @param name Name of this director.
+     *  @exception It may be thrown in derived classes if the
+     *      director is not compatible with the specified container.
      */
-    public PNDirector(Workspace workspace, String name) {
-        super(workspace, name);
+    public PNDirector(CompositeActor container, String name)
+            throws IllegalActionException {
+        super(container, name);
     }
 
     ///////////////////////////////////////////////////////////////////

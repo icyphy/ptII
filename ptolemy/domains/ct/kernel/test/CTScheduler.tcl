@@ -73,8 +73,7 @@ test CTScheduler-1.2 {Construct a CTScheduler in a workspace} {
 test CTScheduler-1.3 {sheduler and its container} {
     set ca [java::new ptolemy.actor.CompositeActor]
     $ca setName CA
-    set dir [java::new ptolemy.domains.ct.kernel.CTSingleSolverDirector Dir]
-    $ca setDirector $dir
+    set dir [java::new ptolemy.domains.ct.kernel.CTSingleSolverDirector $ca Dir]
     list [[$dir getScheduler] getFullName]
 } {.CA.Dir.CTScheduler}
 
@@ -85,8 +84,7 @@ test CTScheduler-1.3 {sheduler and its container} {
 test CTScheduler-2.1 {schedule a chain of actors} {
     set ca [java::new ptolemy.actor.TypedCompositeActor]
     $ca setName CA
-    set dir [java::new ptolemy.domains.ct.kernel.CTSingleSolverDirector Dir]
-    $ca setDirector $dir
+    set dir [java::new ptolemy.domains.ct.kernel.CTSingleSolverDirector $ca Dir]
     set sch [java::cast ptolemy.domains.ct.kernel.CTScheduler \
 	    [$dir getScheduler]]
     #### construct a chain with no feedback.

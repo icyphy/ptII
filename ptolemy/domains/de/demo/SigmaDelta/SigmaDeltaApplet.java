@@ -162,8 +162,7 @@ public class SigmaDeltaApplet extends Applet {
             sys.setName("DESystem");
 
             // Set up the top level composite actor, director and manager
-            _localDirector = new DEDirector("DELocalDirector");
-            sys.setDirector(_localDirector);
+            _localDirector = new DEDirector(sys, "DELocalDirector");
             _manager = new Manager("Manager");
             _manager.addExecutionListener(new MyExecutionListener());
             sys.setManager(_manager);
@@ -178,8 +177,7 @@ public class SigmaDeltaApplet extends Applet {
             subout.setOutput(true);
 
             CTMixedSignalDirector ctdir =
-                new CTMixedSignalDirector("CTEmbDir");
-            ctsub.setDirector(ctdir);
+                new CTMixedSignalDirector(ctsub, "CTEmbDir");
 
 
             // ---------------------------------

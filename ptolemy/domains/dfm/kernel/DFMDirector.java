@@ -61,9 +61,10 @@ domain.  Since DFM operates generally like timed-PN, except : <p>
 
 public class DFMDirector extends PNDirector {
 
-    /** Constructor
-     * Construct a PN director.
-     */	
+    /**  Construct a director in the default workspace with an empty string
+     *  as its name. The director is added to the list of objects in
+     *  the workspace. Increment the version number of the workspace.
+     */
     public DFMDirector() {
        super();
     }

@@ -61,27 +61,29 @@ public class HSDirector extends FSMDirector implements CTEmbeddedDirector {
         super();
     }
 
-    /** Construct a director in the default workspace with the given name.
-     *  If the name argument is null, then the name is set to the empty
-     *  string. The director is added to the list of objects in the workspace.
+    /** Construct a director in the  workspace with an empty name.
+     *  The director is added to the list of objects in the workspace.
      *  Increment the version number of the workspace.
-     *  @param name Name of this object.
+     *  @param workspace The workspace of this object.
      */
-    public HSDirector(String name) {
-        super(name);
+    public HSDirector(Workspace workspace) {
+        super(workspace);
     }
 
-    /** Construct a director in the given workspace with the given name.
-     *  If the workspace argument is null, use the default workspace.
-     *  The director is added to the list of objects in the workspace.
+    /** Construct a director in the given container with the given name.
+     *  If the container argument must not be null, or a
+     *  NullPointerException will be thrown.
      *  If the name argument is null, then the name is set to the
      *  empty string. Increment the version number of the workspace.
      *
-     *  @param workspace Object for synchronization and version tracking
+     *  @param container Container of the director.
      *  @param name Name of this director.
+     *  @exception It may be thrown in derived classes if the
+     *      director is not compatible with the specified container.
      */
-    public HSDirector(Workspace workspace, String name) {
-        super(workspace, name);
+    public HSDirector(CompositeActor container, String name)
+            throws IllegalActionException {
+        super(container, name);
     }
 
     ///////////////////////////////////////////////////////////////////

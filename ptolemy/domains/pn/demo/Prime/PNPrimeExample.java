@@ -53,8 +53,8 @@ public class PNPrimeExample {
         myUniverse.setName("Prime_example");
 	Manager exec = new Manager("exec");
 	myUniverse.setManager(exec);
-	PNDirector local = new PNDirector("Local");
-	myUniverse.setDirector(local);
+	PNDirector local = new PNDirector(myUniverse,"Local");
+	//myUniverse.setDirector(local);
         PNRamp ramp = new PNRamp(myUniverse, "ramp");
         ramp.setParam("Initial Value", "2");
         PNSieve sieve = new PNSieve(myUniverse, "2_sieve");

@@ -39,8 +39,7 @@ set sys [java::new ptolemy.actor.TypedCompositeActor]
 $sys setName System
 set man [java::new ptolemy.actor.Manager]
 $sys setManager $man
-set dir [java::new ptolemy.domains.ct.kernel.CTMixedSignalDirector DIR]
-$sys setDirector $dir
+set dir [java::new ptolemy.domains.ct.kernel.CTMixedSignalDirector $sys DIR]
 
 set const [java::new ptolemy.domains.ct.lib.CTConst $sys Const]
 set add [java::new ptolemy.domains.ct.lib.CTAdd $sys Add]

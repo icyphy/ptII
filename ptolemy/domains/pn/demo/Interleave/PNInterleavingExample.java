@@ -50,8 +50,8 @@ class PNInterleavingExample {
 	Manager exec = new Manager("exec");
         // FIXME FIXME FIXME
         myUniverse.setManager(exec);
-	BasePNDirector local = new BasePNDirector("Local");
-	myUniverse.setDirector(local);
+	BasePNDirector local = new BasePNDirector(myUniverse,"Local");
+	//myUniverse.setDirector(local);
         //myUniverse.setCycles(Integer.parseInt(args[0]));
         PNInterleave _interleave = new PNInterleave(myUniverse, "interleave");
         PNAlternate _alternate = new PNAlternate(myUniverse, "alternate");

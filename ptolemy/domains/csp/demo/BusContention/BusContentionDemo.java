@@ -57,9 +57,8 @@ public class BusContentionDemo {
         _topLevelActor = new TypedCompositeActor(_workSpc);
         _topLevelActor.setName("universe");
         _manager = new Manager(_workSpc, "manager");
-        _director = new CSPDirector(_workSpc, "director");
+        _director = new CSPDirector(_topLevelActor, "director");
         _topLevelActor.setManager( _manager );
-        _topLevelActor.setDirector( _director );
 
         // Set up next level actors
         _controller = new CSPController( _topLevelActor, "controller" );
