@@ -36,8 +36,8 @@ import ptolemy.data.expr.Parameter;
 //// Ramp
 /**
 An actor that produces output token with monotonically increasing value.
-The value of the output event starts at <code>value</code> and increases
-by <code>step</code> each time the actor fires.
+The value of the output event starts from an initial value and increases
+by a fixed step each time the actor fires.
 
 @author Yuhong Xiong
 @version $Id$
@@ -45,21 +45,38 @@ by <code>step</code> each time the actor fires.
 
 public class Ramp extends TypedAtomicActor {
 
-    /** Constructor.
+    /** Construct a Ramp. The initial value and the step size of the output
+     *  is determined by the specified expressions. If an expression is
+     *  null, it is set to the default value "0".
      *  @param container The container.
      *  @param name The name of this actor.
-     *
+     *  @param initValue The String expression of the initial value.
+     *  @param step The String expression of the step size.
      *  @exception IllegalActionException If the entity cannot be contained
      *   by the proposed container.
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public Ramp(TypedCompositeActor container, String name)
+    public Ramp(TypedCompositeActor container, String name,
+	        String initValue, String step)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-        _initValue = new Parameter(this, "Value", new IntToken(0));
-        _step = new Parameter(this, "Step", new IntToken(1));
+        _initValue = new Parameter(this, "Value");
+	if (initValue == null) {
+	    _initValue.setExpression("0");
+	} else {
+	    _initValue.setExpression(initValue);
+	}
+	_initValue.evaluate();
+        _step = new Parameter(this, "Step");
+	if (_step == null) {
+            _step.setExpression("0");
+        } else {
+            _step.setExpression(step);
+        }
+        _step.evaluate();
+
         _output = new TypedIOPort(this, "Output", false, true);
     }
 
