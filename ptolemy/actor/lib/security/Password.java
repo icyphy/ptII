@@ -45,12 +45,18 @@ import ptolemy.kernel.util.Workspace;
 //////////////////////////////////////////////////////////////////////////
 //// Password
 /**
-Produce a password output. The value of the
-output is that of the token contained by the <i>password</i> parameter,
-which by default is an StringToken with value "foo". 
+Produce a password output.
 
-<p>The password itself is not persistent, so each time the model
-is opened, the password is set to the default initial value.
+The value of the output is that of the token contained by the
+<i>password</i> parameter, which by default is an StringToken with
+value "foo".
+
+<p>The <i>isPersistent</i> parameter determines whether the password
+itself is written out to a file when the model is saved.  The initial
+default value of <i>isPersistent</i> is false, which means that the
+password is <b>not</b> written out when the file is saved.
+Note that writing the password out to a file is not very secure unless
+the file itself is encrypted.
 
 @author Christopher Hylands Brooks
 @version $Id$
@@ -58,9 +64,27 @@ is opened, the password is set to the default initial value.
 */
 public class Password extends Source {
 
+    // FIXME: The documentation for javax.swing.JPasswordField
+    // says that String getText() is deprecated and that char [] getPassword()
+    // should be used instead.  However, we do not have a char basic
+    // type in Ptolemy.
+    //
+    // Note that the individual elements of the array returned by
+    // getPassword() should be zeroed after use.
+    //
+    // Another problem with passing char [] instead of String is that
+    // in PtolemyQuery we eventually try to queue up a ChangeRequest
+    // by calling Query.getStringValue(), which calls getText().
+    //
+    // This actor differs from actor.lib.Const in that actor.lib.Const
+    // * expects a double quoted string as an argument
+    // * Const displays the value in the icon, which would defeat
+    // the purpose of having a password
+    // * The value of a Const actor is always persistent.
+
     /** Construct a password source with the given container and name.
      *  Create the <i>password</i> parameter, initialize its value to
-     *  the default value of an IntToken with value 1.
+     *  the default value of StringToken with the value "foo".
      *  @param container The container.
      *  @param name The name of this actor.
      *  @exception IllegalActionException If the entity cannot be contained
@@ -88,10 +112,10 @@ public class Password extends Source {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** Set to true if the parameter is persistent and will be saved
-     *  when the model is written out.  For security reasons, the default
-     *  is false, which means that the password will not be save in
-     *  clear text when the model is saved.
+    /** Set to true if the <i>password</i> parameter is persistent and
+     *  will be saved in clear text when the model is written out to a
+     *  file.  For security reasons, the default is false, which means
+     *  that the password will not be saved when the model is saved.
      */
     public Parameter isPersistent;
 
@@ -99,7 +123,6 @@ public class Password extends Source {
      *  By default, it contains a String  with value "foo".
      */
     public StringParameter password;
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
