@@ -212,12 +212,38 @@ public class SDFDirector extends StaticSchedulingDirector {
      *  @return True.
      *  @exception IllegalActionException Not thrown in this base class.
      */
-    // FIXME This should, perhaps return false if the rates on the
-    // Composite actors input ports are not satisfied.  This will
-    // ease integration with other domains.  But will it be efficient?
     public boolean prefire() throws IllegalActionException {
         _postfirereturns = true;
-        return true;
+
+        TypedCompositeActor container = ((TypedCompositeActor)getContainer());
+	Iterator inputPorts = container.inputPortList().iterator();
+	int inputCount = 0;
+	while(inputPorts.hasNext()) {
+	    IOPort inputPort = (IOPort) inputPorts.next();
+	    if (_debugging) _debug("checking input " +
+                    inputPort.getFullName());
+
+	    int threshold =
+		SDFScheduler.getTokenConsumptionRate(inputPort);
+	    if (_debugging) _debug("Threshold = " + threshold);
+	    Receiver receivers[][] = inputPort.getReceivers();
+
+	    int channel;
+	    for(channel = 0;
+		channel < inputPort.getWidth();
+		channel++) {
+		if(!receivers[channel][0].hasToken(threshold)) {
+		    if(_debugging) _debug("Channel " + channel + 
+					  " does not have enough tokens." +
+					  " Prefire returns false on " + 
+					  container.getFullName());
+		    return false;
+		}
+	    }
+	}
+	if(_debugging) _debug("Prefire returns true on " + 
+			      container.getFullName());
+	return true;
     }
 
     /** Initialize the actors associated with this director and
@@ -256,7 +282,7 @@ public class SDFDirector extends StaticSchedulingDirector {
     /** Return true if transfers data from an input port of the
      *  container to the ports it is connected to on the inside.
      *  This method differs from the base class method in that this
-     *  method will transfer all available tokens in the receivers,
+     *  method will transfer enough tokens to complete an internal iteration,
      *  while the base class method will transfer at most one token.
      *  This behavior is required to handle the case of non-homogeneous
      *  opaque composite actors. The port argument must be an opaque
@@ -277,7 +303,8 @@ public class SDFDirector extends StaticSchedulingDirector {
         boolean trans = false;
         Receiver[][] insiderecs = port.deepGetReceivers();
         for (int i = 0; i < port.getWidth(); i++) {
-	    while (port.hasToken(i)) {
+	    int rate = SDFScheduler.getTokenConsumptionRate(port);
+	    for(int k = 0; k < rate; k++) {
                 try {
                     ptolemy.data.Token t = port.get(i);
                     if (insiderecs != null && insiderecs[i] != null) {
@@ -291,7 +318,7 @@ public class SDFDirector extends StaticSchedulingDirector {
                 } catch (NoTokenException ex) {
                     // this shouldn't happen.
                     throw new InternalErrorException(
-                            "Director.transferInputs: Internal error: " +
+                            "SDFDirector.transferInputs: Not enough tokens " +
                             ex.getMessage());
                 }
             }
@@ -396,6 +423,8 @@ public class SDFDirector extends StaticSchedulingDirector {
                     "Cannot create default iterations parameter:\n" +
                     e.getMessage());
         }
+
+	addDebugListener(new StreamListener());
     }
 
     ///////////////////////////////////////////////////////////////////

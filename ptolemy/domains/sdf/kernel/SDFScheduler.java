@@ -138,7 +138,7 @@ public class SDFScheduler extends Scheduler {
      *  @exception IllegalActionException If the tokenConsumptionRate
      *   parameter has an invalid expression.
      */
-    protected int _getTokenConsumptionRate(IOPort p)
+    public static int getTokenConsumptionRate(IOPort p)
             throws IllegalActionException {
         Parameter param = (Parameter)p.getAttribute("tokenConsumptionRate");
         if(param == null) {
@@ -159,7 +159,7 @@ public class SDFScheduler extends Scheduler {
      * @exception IllegalActionException If the tokenInitProduction
      *  parameter has an invalid expression.
      */
-    protected int _getTokenInitProduction(IOPort p)
+    public static int getTokenInitProduction(IOPort p)
             throws IllegalActionException {
         Parameter param = (Parameter)p.getAttribute("tokenInitProduction");
         if(param == null)
@@ -176,7 +176,7 @@ public class SDFScheduler extends Scheduler {
      *  @exception IllegalActionException If the tokenProductionRate
      *   parameter has an invalid expression.
      */
-    protected int _getTokenProductionRate(IOPort p)
+    public static int getTokenProductionRate(IOPort p)
             throws IllegalActionException {
         Parameter param = (Parameter)p.getAttribute("tokenProductionRate");
         if(param == null) {
@@ -283,7 +283,7 @@ public class SDFScheduler extends Scheduler {
         return Collections.enumeration(result);
     }
 
-    protected void _setTokenConsumptionRate(Entity e, IOPort port, int rate)
+    public static void setTokenConsumptionRate(Entity e, IOPort port, int rate)
             throws NotSchedulableException {
         if(rate <= 0) throw new NotSchedulableException(
                 "Rate must be > 0");
@@ -312,7 +312,7 @@ public class SDFScheduler extends Scheduler {
         }
     }
 
-    protected void _setTokenProductionRate(Entity e, IOPort port, int rate)
+    public static void setTokenProductionRate(Entity e, IOPort port, int rate)
             throws NotSchedulableException {
         if(rate <= 0) throw new NotSchedulableException(
                 "Rate must be > 0");
@@ -341,7 +341,7 @@ public class SDFScheduler extends Scheduler {
         }
     }
 
-    protected void _setTokenInitProduction(Entity e, IOPort port, int rate)
+    public static void setTokenInitProduction(Entity e, IOPort port, int rate)
             throws NotSchedulableException {
         if(rate <= 0) throw new NotSchedulableException(
                 "Rate must be > 0");
@@ -393,25 +393,25 @@ public class SDFScheduler extends Scheduler {
 	if (_debugging)
             _debug("counting unfulfilled inputs for " +
                     ((Entity) a).getFullName());
-        Enumeration ainputPorts = a.inputPorts();
+        Iterator ainputPorts = a.inputPortList().iterator();
 
 	int inputCount = 0;
-	while(ainputPorts.hasMoreElements()) {
-	    IOPort ainputPort = (IOPort) ainputPorts.nextElement();
+	while(ainputPorts.hasNext()) {
+	    IOPort ainputPort = (IOPort) ainputPorts.next();
 	    if (_debugging) _debug("checking input " +
                     ainputPort.getFullName());
 
-	    Enumeration cports = ainputPort.deepConnectedOutPorts();
+	    Iterator cports = ainputPort.deepConnectedOutPortList().iterator();
 
 	    boolean isOnlyExternalPort = true;
-	    while(cports.hasMoreElements()) {
-		IOPort cport = (IOPort) cports.nextElement();
+	    while(cports.hasNext()) {
+		IOPort cport = (IOPort) cports.next();
 		if(actorList.contains(cport.getContainer()))
 		    isOnlyExternalPort = false;
 	    }
 
 	    int threshold =
-		_getTokenConsumptionRate(ainputPort);
+		getTokenConsumptionRate(ainputPort);
 	    if (_debugging) _debug("Threshold = " + threshold);
 	    int[] tokens =
 		(int []) waitingTokens.get(ainputPort);
@@ -521,16 +521,16 @@ public class SDFScheduler extends Scheduler {
             (ComponentEntity) currentPort.getContainer();
 
         //Calculate over all the output ports of this actor.
-        int currentRate = _getTokenConsumptionRate(currentPort);
+        int currentRate = getTokenConsumptionRate(currentPort);
 
         if(currentRate>0) {
             // Compute the rate for the Actor currentPort is connected to
-            Enumeration connectedPorts =
-                currentPort.deepConnectedOutPorts();
+            Iterator connectedPorts =
+                currentPort.deepConnectedOutPortList().iterator();
 
-            while(connectedPorts.hasMoreElements()) {
+            while(connectedPorts.hasNext()) {
                 IOPort connectedPort =
-                    (IOPort) connectedPorts.nextElement();
+                    (IOPort) connectedPorts.next();
 
                 ComponentEntity connectedActor =
                     (ComponentEntity) connectedPort.getContainer();
@@ -539,7 +539,7 @@ public class SDFScheduler extends Scheduler {
                         connectedActor.getName());
 
                 int connectedRate =
-                    _getTokenProductionRate(connectedPort);
+                    getTokenProductionRate(connectedPort);
 
                 // currentFiring is the firing that we've already
                 // calculated for currentactor
@@ -630,12 +630,12 @@ public class SDFScheduler extends Scheduler {
         // First check to make sure that this Port is not connected to
         // Any other output ports.  This results in a non-deterministic
         // merge and is illegal.
-        Enumeration connectedOutPorts =
-            currentPort.deepConnectedOutPorts();
+        Iterator connectedOutPorts =
+            currentPort.deepConnectedOutPortList().iterator();
 
-        while(connectedOutPorts.hasMoreElements()) {
+        while(connectedOutPorts.hasNext()) {
             IOPort connectedPort =
-                (IOPort) connectedOutPorts.nextElement();
+                (IOPort) connectedOutPorts.next();
             // connectPort might be connected on the inside to the
             // currentPort, which is legal.
             if(!connectedPort.getContainer().equals(
@@ -649,16 +649,16 @@ public class SDFScheduler extends Scheduler {
         }
 
         //Calculate over all the output ports of this actor.
-        int currentRate = _getTokenProductionRate(currentPort);
+        int currentRate = getTokenProductionRate(currentPort);
 
         if(currentRate > 0) {
             // Compute the rate for the Actor currentPort is connected to
-            Enumeration connectedPorts =
-                currentPort.deepConnectedInPorts();
+            Iterator connectedPorts =
+                currentPort.deepConnectedInPortList().iterator();
 
-            while(connectedPorts.hasMoreElements()) {
+            while(connectedPorts.hasNext()) {
                 IOPort connectedPort =
-                    (IOPort) connectedPorts.nextElement();
+                    (IOPort) connectedPorts.next();
 
                 ComponentEntity connectedActor =
                     (ComponentEntity) connectedPort.getContainer();
@@ -667,7 +667,7 @@ public class SDFScheduler extends Scheduler {
                         connectedActor.getName());
 
                 int connectedRate =
-                    _getTokenConsumptionRate(connectedPort);
+                    getTokenConsumptionRate(connectedPort);
 
                 // currentFiring is the firing that we've already
                 // calculated for currentactor
@@ -754,9 +754,9 @@ public class SDFScheduler extends Scheduler {
 	    while(schedulableEntities.hasNext()) {
 		Actor a = (Actor)schedulableEntities.next();
 
-		Enumeration ainputports = a.inputPorts();
-		while(ainputports.hasMoreElements()) {
-		    IOPort ainputport = (IOPort) ainputports.nextElement();
+		Iterator ainputports = a.inputPortList().iterator();
+		while(ainputports.hasNext()) {
+		    IOPort ainputport = (IOPort) ainputports.next();
 		    int[] tokencount = new int[ainputport.getWidth()];
 		    for(int channel = 0; channel < tokencount.length;
 			channel++)
@@ -770,10 +770,10 @@ public class SDFScheduler extends Scheduler {
 	    while(schedulableEntities.hasNext()) {
 		Actor a = (Actor)schedulableEntities.next();
 
-		Enumeration aoutputports = a.outputPorts();
-		while(aoutputports.hasMoreElements()) {
-		    IOPort aOutputPort = (IOPort) aoutputports.nextElement();
-		    int count = _getTokenInitProduction(aOutputPort);
+		Iterator aoutputports = a.outputPortList().iterator();
+		while(aoutputports.hasNext()) {
+		    IOPort aOutputPort = (IOPort) aoutputports.next();
+		    int count = getTokenInitProduction(aOutputPort);
                     if (_debugging) _debug("Simulating " + count
                             + " tokens created on " + aOutputPort);
 		    if(count > 0) {
@@ -847,15 +847,15 @@ public class SDFScheduler extends Scheduler {
 		newSchedule.addLast(currentActor);
 
 		// Get all it's outputPorts.
-		Enumeration aOutputPorts =
-		    ((Actor) currentActor).outputPorts();
+		Iterator aOutputPorts =
+		    ((Actor) currentActor).outputPortList().iterator();
 
 		// And simulate the proper production of tokens.
-		while(aOutputPorts.hasMoreElements()) {
-		    IOPort aOutputPort = (IOPort) aOutputPorts.nextElement();
+		while(aOutputPorts.hasNext()) {
+		    IOPort aOutputPort = (IOPort) aOutputPorts.next();
 
 		    int count =
-			_getTokenProductionRate(aOutputPort);
+			getTokenProductionRate(aOutputPort);
 
 		    _simulateTokensCreated(aOutputPort,
                             count,
@@ -931,7 +931,7 @@ public class SDFScheduler extends Scheduler {
 	    }
 	}
         catch (IllegalActionException iae) {
-            // This could happen if we call _getTokenConsumptionRate on a
+            // This could happen if we call getTokenConsumptionRate on a
             // port that isn't a part of the actor.   This probably means
             // the graph is screwed up, or somebody else is mucking
             // with it.
@@ -990,11 +990,11 @@ public class SDFScheduler extends Scheduler {
                 IOPort cport = (IOPort) connectedports.next();
                 Entity cactor = (Entity) cport.getContainer();
                 consumptionRate = _getFiringCount(cactor) *
-                    _getTokenConsumptionRate(cport);
+                    getTokenConsumptionRate(cport);
                 productionRate = _getFiringCount(cactor) *
-                    _getTokenProductionRate(cport);
+                    getTokenProductionRate(cport);
                 initProduction = _getFiringCount(cactor) *
-                    _getTokenInitProduction(cport);
+                    getTokenInitProduction(cport);
                 if (_debugging) {
                     _debug("CPort " + cport.getName());
                     _debug("consumptionRate = " + consumptionRate);
@@ -1007,7 +1007,7 @@ public class SDFScheduler extends Scheduler {
                 IOPort cport = (IOPort) connectedports.next();
                 Entity cactor = (Entity) cport.getContainer();
                 int crate = _getFiringCount(cactor) *
-                    _getTokenConsumptionRate(cport);
+                    getTokenConsumptionRate(cport);
                 if(crate != consumptionRate) throw new NotSchedulableException(
                         port, cport, "Port " + cport.getName() +
                         " has an aggregate consumption rate of " + crate +
@@ -1015,7 +1015,7 @@ public class SDFScheduler extends Scheduler {
                         "of " + port.getName() + " of " + consumptionRate +
                         "!");
                 int prate = _getFiringCount(cactor) *
-                    _getTokenProductionRate(cport);
+                    getTokenProductionRate(cport);
                 if(prate != productionRate) throw new NotSchedulableException(
                         port, cport, "Port " + cport.getName() +
                         " has an aggregate production rate of " + prate +
@@ -1023,7 +1023,7 @@ public class SDFScheduler extends Scheduler {
                         "of " + port.getName() + " of " + productionRate +
                         "!");
                 int initp = _getFiringCount(cactor) *
-                    _getTokenInitProduction(cport);
+                    getTokenInitProduction(cport);
                 if(initp != initProduction) throw new NotSchedulableException(
                         port, cport, "Port " + cport.getName() +
                         " has an aggregate init production of " + initp +
@@ -1054,10 +1054,10 @@ public class SDFScheduler extends Scheduler {
               "but does not declare that it is an input port.");
               }
 
-              if(_getTokenConsumptionRate(port) != consumptionRate) {
+              if(getTokenConsumptionRate(port) != consumptionRate) {
               throw new NotSchedulableException(port, "Port " +
               port.getName() + " has a declared consumption rate " +
-              "of " + _getTokenConsumptionRate(port) + " that " +
+              "of " + getTokenConsumptionRate(port) + " that " +
               "does not match the rate extrapolated from the " +
               "contained model of " + consumptionRate + ".");
               }
@@ -1071,10 +1071,10 @@ public class SDFScheduler extends Scheduler {
               port.getName() + " has a nonzero production rate, " +
               "but does not declare that it is an output port.");
               }
-              if(_getTokenProductionRate(port) != productionRate) {
+              if(getTokenProductionRate(port) != productionRate) {
               throw new NotSchedulableException(port, "Port " +
               port.getName() + " has a declared production rate " +
-              "of " + _getTokenProductionRate(port) + " that " +
+              "of " + getTokenProductionRate(port) + " that " +
               "does not match the rate extrapolated from the " +
               "contained model of " + productionRate + ".");
               }
@@ -1083,10 +1083,10 @@ public class SDFScheduler extends Scheduler {
               port.getName() + " has a nonzero init production, " +
               "but does not declare that it is an output port.");
               }
-              if(_getTokenInitProduction(port) != initProduction) {
+              if(getTokenInitProduction(port) != initProduction) {
               throw new NotSchedulableException(port, "Port " +
               port.getName() + " has a declared init production " +
-              "of " + _getTokenInitProduction(port) + " that " +
+              "of " + getTokenInitProduction(port) + " that " +
               "does not match the extrapolated value from the " +
               "contained model of " + initProduction + ".");
               }
@@ -1158,13 +1158,14 @@ public class SDFScheduler extends Scheduler {
         boolean stillReadyToSchedule = true;
         // update tokensWaiting on the actor's input ports.
 
-        Enumeration inputPorts = ((Actor) currentActor).inputPorts();
-        while(inputPorts.hasMoreElements()) {
-            IOPort inputPort = (IOPort) inputPorts.nextElement();
+        Iterator inputPorts = 
+	    ((Actor) currentActor).inputPortList().iterator();
+        while(inputPorts.hasNext()) {
+            IOPort inputPort = (IOPort) inputPorts.next();
             int[] tokens =
 		(int []) waitingTokens.get(inputPort);
 	    int tokenrate =
-		_getTokenConsumptionRate(inputPort);
+		getTokenConsumptionRate(inputPort);
 	    for(int channel = 0; channel < inputPort.getWidth(); channel++) {
 		tokens[channel] -= tokenrate;
 
