@@ -78,6 +78,11 @@ public class DEMessageSource extends DEActor {
     public void initialize() throws IllegalActionException {
         super.initialize();
         _firstFire = true;
+        _msgNum = 0;
+        _nextMsgTime = -1.0;
+
+System.out.println("DEChannel "+getFullName()+" initializing at time "+getCurrentTime());
+
         fireAfterDelay(((DoubleToken)_maxDelay.getToken()).doubleValue()*Math.random());
     }
 
@@ -107,6 +112,7 @@ public class DEMessageSource extends DEActor {
                 _nextMsgTime = getCurrentTime() + delay;
             }
 
+/* REMOVE */
 System.out.println("DEMessageSource " + this.getFullName() + " next message "
         + "scheduled at " + _nextMsgTime);
 

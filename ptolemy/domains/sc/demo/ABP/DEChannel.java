@@ -1,5 +1,6 @@
 /* An actor that models a channel with random delay and drop.
-Copyright (c) 1998-1999 The Regents of the University of California.
+
+ Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -32,14 +33,14 @@ import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.data.expr.Parameter;
-import java.util.Enumeration;
 import collections.LinkedList;
+import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
 //// DEChannel
 /**
 The channel delays the input messages randomly, and drops messages with
-a probability.
+a probability. It does not change the order of messages.
 
 @author Xiaojun Liu
 @version $Id$
@@ -97,6 +98,7 @@ public class DEChannel extends DEActor {
                 }
             }
 
+/* REMOVE */
 System.out.println("DEChannel " + this.getFullName() + " get input message at "
         + getCurrentTime());
 
@@ -107,6 +109,7 @@ System.out.println("DEChannel " + this.getFullName() + " get input message at "
             IntToken msg = (IntToken)_msgs.take();
             output.broadcast(msg);
 
+/* REMOVE */
 System.out.println("DEChannel " + this.getFullName() + " sends message at "
         + getCurrentTime());
 
@@ -122,6 +125,17 @@ System.out.println("DEChannel " + this.getFullName() + " sends message at "
             }
         }
 
+    }
+
+    /** Initialize the channel. Clear the message list, reset next output
+     *  time.
+     *  @exception IllegalActionException If the initialize() of the parent
+     *   class throws it.
+     */
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        _msgs.clear();
+        _nextOutTime = -1.0;
     }
 
     public DEIOPort input;

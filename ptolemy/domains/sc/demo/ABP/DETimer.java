@@ -83,6 +83,7 @@ public class DETimer extends DEActor {
                 _expireTime = -1.0;
             }
 
+/* REMOVE */
 System.out.println("Reset DETimer " + this.getFullName() + " to expire at "
         + _expireTime);
 
@@ -90,11 +91,21 @@ System.out.println("Reset DETimer " + this.getFullName() + " to expire at "
             // timer expires
             expired.broadcast(_outToken);
 
+/* REMOVE */
 System.out.println("DETimer " + this.getFullName() + " expires at "
         + getCurrentTime());
 
         }
 
+    }
+
+    /** Initialize the timer.
+     *  @exception IllegalActionException If the initialize() of the parent
+     *   class throws it.
+     */
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        _expireTime = -1.0;
     }
 
     ///////////////////////////////////////////////////////////////////
