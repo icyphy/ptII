@@ -350,8 +350,20 @@ test PtParser-8.0 {Test method calls on PtTokens} {
     set root1 [ $p1 {generateParseTree String} "(4.0).add(3.0)"]
     set res1  [ $root1 evaluateParseTree ]
 
-    list [$res1 toString] 
-} {ptolemy.data.DoubleToken(7.0)}
+    set nl [java::new ptolemy.kernel.util.NamedList]
+    set v1 [java::new ptolemy.data.expr.Variable]
+    $v1 setName "v1"
+    $v1 setToken [java::new {ptolemy.data.IntToken int} 1]
+    set v2 [java::new ptolemy.data.expr.Variable]
+    $v2 setName "v2"
+    $v2 setToken [java::new {ptolemy.data.DoubleToken double} 1.0]
+    $nl prepend $v1
+    $nl prepend $v2
+    set root2 [ $p1 generateParseTree "v1.add(v2)" $nl]
+    set res2 [ $root2 evaluateParseTree ]
+
+    list [$res1 toString] [$res2 toString]
+} {ptolemy.data.DoubleToken(7.0) ptolemy.data.DoubleToken(2.0)}
 ######################################################################
 ####
 # 
@@ -482,3 +494,50 @@ test PtParser-11.0 {Test constants} {
     $v2 setExpression {v1*j}
     [$v2 getToken] stringValue
 } {-1.0 + 0.0i}
+######################################################################
+####
+# Test matrix construction, when term types are identical.
+test PtParser-12.1 {Test basic matrix construction.} {
+    set p1 [java::new ptolemy.data.expr.PtParser]
+    set root1 [ $p1 {generateParseTree String} "\[1,2,3;4,5,6;7,8,9\]" ]
+    set res1 [java::cast ptolemy.data.IntMatrixToken [ $root1 evaluateParseTree ]]
+    set col [ $res1 getColumnCount ]
+    set row [ $res1 getRowCount ]
+    set value1 [ $res1 getElementAt 0 0 ]
+    set value2 [ $res1 getElementAt 2 2 ]
+
+    list $col $row $value1 $value2
+} {3 3 1 9}
+# Test matrix construction, when term types are heterogeneous.
+test PtParser-12.2 {Test matrix multiplication & construction.} {
+    set p1 [java::new ptolemy.data.expr.PtParser]
+    set root1 [ $p1 {generateParseTree String} "\[1.0;2;3j\]" ]
+    set res1 [java::cast ptolemy.data.ComplexMatrixToken [ $root1 evaluateParseTree ]]
+    set col [ $res1 getColumnCount ]
+    set row [ $res1 getRowCount ]
+    set value1 [ [ $res1 getElementAt 0 0 ] toString ]
+    set value2 [ [ $res1 getElementAt 2 0 ] toString ]
+
+    list $col $row $value1 $value2
+} {1 3 {1.0 + 0.0i} {0.0 + 3.0i}}
+######################################################################
+####
+# Test array reference.
+test PtParser-13.0 {Test array reference.} {
+    set p1 [java::new ptolemy.data.expr.PtParser]
+    set nl [java::new ptolemy.kernel.util.NamedList]
+    set v1 [java::new ptolemy.data.expr.Variable]
+    $v1 setName "v1"
+    $v1 setExpression "\[ 1, 2.0, 3; 4, 5, 6j \]"
+    $nl prepend $v1
+    set v2 [java::new ptolemy.data.expr.Variable]
+    $v2 setName "v2"
+    $v2 setToken [java::new {ptolemy.data.IntToken int} 1]
+    $nl prepend $v2
+
+    set root1 [ $p1 generateParseTree "v1(0+1,2)+v1(0, v2-1)" $nl]
+    set res1 [ [ $root1 evaluateParseTree ] toString ]
+    set root2 [ $p1 generateParseTree "v1(0+1,2)+v1(0, v2-1).add(v2)" $nl]
+    set res2 [ [ $root2 evaluateParseTree ] toString ]
+    list $res1 $res2
+} {{ptolemy.data.ComplexToken(1.0 + 6.0i)} {ptolemy.data.ComplexToken(2.0 + 6.0i)}}
