@@ -416,7 +416,8 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
 
         _computeTransitiveClosure();
         if ( !isAcyclic()) {
-            throw new InvalidStateException("DirectedAcyclicGraph._check: Cycle in CPO.");
+            throw new InvalidStateException("DirectedAcyclicGraph._check: " +
+                    Cycle in CPO.");
         }
 
         // find bottom
@@ -486,14 +487,14 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
     }
 
     // compute the least element of a subset nodeIds using _closure.
-    // if ids.length=0, return null.
+    // if ids.length = 0, return null.
     private Object _leastElementNodeId(int[] ids) {
 
         // Algorithm: use 2 data structures: (1)a linked list storing all
         // the upper bounds incomparable with one another.  The least
         // element (if exists) must be less than all the elements in this
         // list. (2)an int storing the nodeId of a least element
-        // candidate(==-1 if no candidate).  Scan all the elements in the
+        // candidate( == -1 if no candidate).  Scan all the elements in the
         // ids array, for each current element(CE) in ids, there are 4 cases:
         // (1) (candidate == -1 && list empty)
         //         candidate = CE;
@@ -686,7 +687,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
 
     // compute the lub of a subset using _closure.  This method is
     // shared by leastUpperBound() and greatestLowerBound(). This method
-    // should work when subset.lenth=0, in which case the top or bottom
+    // should work when subset.length = 0, in which case the top or bottom
     // of this CPO is returned, depending on whether the lub or the glb
     // is computed.
     private Object _lubShared(Object[] subset) {
