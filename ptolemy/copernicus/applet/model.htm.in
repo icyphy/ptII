@@ -16,6 +16,15 @@ applet is displayed on a XGA screen-->
 <center>
 <!-- The HTML below is for the Java Plugin.  The first
      section is for IE, the second is for Netscape 4, the third for Mozilla 1.0
+     For information about applets and Ptolemy, see
+	http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/coding/applets.htm
+     For information about java versions and applet tags, see:
+	http://java.sun.com/products/plugin/versions.html
+	http://java.sun.com/products/plugin/versions.html
+     We are currently using 1.4.2 because:
+        There is a bug under JDK1.4.1 XP with Radeon display cards
+        that causes XP to hang when exiting.  For details, see
+        http://developer.java.sun.com/developer/bugParade/bugs/4713003.html
  -->
 <!-- HTML CONVERTER -->
 <SCRIPT LANGUAGE="JavaScript"><!--
@@ -37,14 +46,14 @@ applet is displayed on a XGA screen-->
             classid="clsid:8AD9C840-044E-11D1-B3E9-00805F499D93" \
             width = "450" \
             height = "400"  \
-            codebase="http://java.sun.com/products/plugin/autodl/jinstall-1_4_1_02-windows-i586.cab#Version=1,4,1,02"> \
+            codebase="http://java.sun.com/products/plugin/autodl/jinstall-1_4_2-windows-i586.cab#Version=1,4,2"> \
             <PARAM NAME = "code" \
                    VALUE = "ptolemy.actor.gui.MoMLApplet" > \
 	    <PARAM NAME = "codebase"   VALUE = "@codeBase@" > \
 	    <PARAM NAME = "archive" \
                    VALUE = "@modelJarFiles@" > \
             <PARAM NAME = "type" \
-                   VALUE = "application/x-java-applet;jpi-version=1.4.1_02" > \
+                   VALUE = "application/x-java-applet;version=1.4.2" > \
             <PARAM NAME = "scriptable" VALUE = "false" > \
             <PARAM NAME = "NAME" VALUE = "@sanitizedModelName@" > \
 	    <PARAM NAME = "background" VALUE = "#faf0e6" > \
@@ -58,7 +67,7 @@ applet is displayed on a XGA screen-->
          document.writeln('\
         <COMMENT> \
           <EMBED \
-            type = "application/x-java-applet;jpi-version=1.4.1_02" \
+            type = "application/x-java-applet;version=1.4.2" \
             code = "ptolemy.actor.gui.MoMLApplet" \
             codebase = "@codeBase@" \
             archive = "@modelJarFiles@" \
@@ -66,7 +75,7 @@ applet is displayed on a XGA screen-->
             height = "400" \
             NAME = "@sanitizedModelName@" background = "#faf0e6" controls = "buttons, directorParameters, topParameters" orientation = "vertical" modelURL = "@sanitizedModelName@.xml"  \
             scriptable = "false" \
-            pluginspage = "http://java.sun.com/j2se/1.4.1/download.html"> \
+            pluginspage = "http://java.sun.com/j2se/1.4.2/download.html"> \
               <NOEMBED> \
               <a href="@sanitizedModelName@.xml">MoML specification for this model.</a> \
               </NOEMBED> \
