@@ -41,27 +41,38 @@ import java.util.StringTokenizer;
 
 //////////////////////////////////////////////////////////////////////////
 //// MatlabUtilities
-/** 
-This class provides access to the Ptolemy Matlab interface in
-ptolemy.matlab by using reflection.
+/** This class provides access to the Ptolemy Matlab interface
+    in ptolemy.matlab by using reflection.
 
-@author Christopher Hylands, Steve Neuendorffer
-@version $Id$
-@since Ptolemy II 2.1
-@see ptolemy.data.expr.ParseTreeEvaluator
- */
+    @author Christopher Hylands, Steve Neuendorffer
+    @author Zoltan Kemenczy, Research in Motion Ltd.
+    @version $Id$
+    @since Ptolemy II 2.1
+    @see ptolemy.data.expr.ParseTreeEvaluator
+*/
 
 public class MatlabUtilities {
 
     /** Evaluate a Matlab expression within a scope.
      *	The expression argument is of the form
-     *  <em>matlab("expression(" + arg1 + "," arg2 + ")")</em>, where
-     *  <em>arg1, + "," + arg2</em>is a list of arguments appearing in
+     *  <em>matlab("expression", arg1, arg2, ...)</em>, where
+     *  <em>arg1, arg2, ... </em>is a list of Variables appearing in
      *  <em>"expression"</em>. Note that this form of invoking matlab
      *  is limited to returning only the first return value of a
      *  matlab function. If you need multiple return values, use the
-     *  matlab {@link ptolemy.matlab.Expression} actor. If a
-     *  "packageDirectories" Parameter is in the scope of this
+     *  matlab  actor.<p>
+     *
+     *  Note that having an instance of {@link
+     *  ptolemy.matlab.Expression} in the model will keep the matlab
+     *  engine open from model preinitialize() to wrapup() and hence
+     *  opening/closing of additional Engine instances done by this
+     *  matlab expression evaluator becomes fast. Most users should
+     *  prefer to use {@link ptolemy.matlab.Expression} and resort to
+     *  this mechanism of invoking matlab only where necessary, e.g. in
+     *  FSM transition action expressions (which was the reason for
+     *  introducing this form of matlab engine access).<p>
+     *
+     *  If a "packageDirectories" Parameter is in the scope of this
      *  expression, its value is added to the matlab path while the
      *  expression is being executed (like {@link
      *  ptolemy.matlab.Expression}).
@@ -69,17 +80,15 @@ public class MatlabUtilities {
      *  @param scope The scope to evaluate the expression within.
      *  @return The results of the evaluation
      */
-    public static ptolemy.data.Token evaluate(String expression,
-            ParserScope scope)
-            throws IllegalActionException {
+    public static ptolemy.data.Token evaluate
+        (String expression, Set variableNames, ParserScope scope)
+        throws IllegalActionException {
 
 	try {
 	    if (_engineClass == null) {
 		_initialize();
 	    }
 	    ptolemy.data.Token result = null;
-
-
 
 	    //MatlabEngineInterface matlabEngine =
 	    //    MatlabEngineFactory.createEngine();
@@ -104,7 +113,14 @@ public class MatlabUtilities {
 	    
 		synchronized (
 			      //matlabEngine.getSemaphore();
-			      matlabEngine ) {
+			      _engine ) {
+                    // matlabEngine is not very good since it is
+                    // "local".
+
+                    // (zk:) I would recommend removing the static,
+                    // synchronized engine instance and open/close a new
+                    // Engine every time (see updated javadoc for this
+                    // function).
 
 		    String addPathCommand = null;         // Assume none
 		    ptolemy.data.Token previousPath = null;
@@ -137,35 +153,30 @@ public class MatlabUtilities {
 			    addPathCommand = "addedPath_=" +
 				cellFormat.toString()
 				+ ";addpath(addedPath_{:});";
+
 			    //matlabEngine.evalString
 			    //    (engine, "previousPath_=path");
-
-
-			    //_engineEvalString.invoke(matlabEngine,
-                            //        new Object[] {
-                            //            _engine, "previousPath_=path"
-                            //        });
-                                
+			    _engineEvalString.invoke(matlabEngine,
+                                    new Object[] {
+                                        _engine, "previousPath_=path"
+                                    });
 
 			    //previousPath = matlabEngine.get
 			    //    (engine, "previousPath_");
-
-			    //previousPath = (ptolemy.data.Token)
-			    //	_engineGet.invoke(matlabEngine,
-                            //        new Object[] {
-                            //            _engine, "previousPath_"
-                            //        });
+			    previousPath = (ptolemy.data.Token)
+			    	_engineGet.invoke(matlabEngine,
+                                    new Object[] {
+                                        _engine, "previousPath_"
+                                    });
 
 			}
 		    }
 		    //matlabEngine.evalString
 		    //    (engine, "clear variables;clear globals");
-
 		    _engineEvalString.invoke(matlabEngine,
                             new Object[] {
                                 _engine, "clear variables;clear globals"
                             });
-
 
 		    if (addPathCommand != null) {
 			// matlabEngine.evalString(engine, addPathCommand);
@@ -174,41 +185,48 @@ public class MatlabUtilities {
                                     _engine, addPathCommand
                                 });
 		    }
-		    // Set scope variables
-		    // This would be more efficient if the matlab engine
-		    // understood the scope.
-                    Set identifierSet = 
-                        scope.identifierSet();
-                    Iterator identifiers = 
-                        identifierSet.iterator();
-                    while(identifiers.hasNext()) {
-                        String identifier = (String)identifiers.next();
-                        // This was here...  don't understand why???
-                        // if (var != packageDirectories)
-                        
-                        //matlabEngine.put
-                        //    (engine, var.getName(), var.getToken());
 
-                        _enginePut.invoke(matlabEngine,
-                                new Object[] {
-                                    _engine, identifier, scope.get(identifier)
-                                });
-                    }
+		    // Set matlab variables required for evaluating the
+		    // expression
+		    if (!variableNames.isEmpty()) {
+			Iterator names = variableNames.iterator();
+			while (names.hasNext()) {
+                            String name = (String)names.next();
+			    ptolemy.data.Token token = scope.get(name);
+                            if (token != null) {
+                                //matlabEngine.put
+                                //    (engine, name, token);
+                                _enginePut.invoke
+                                    (matlabEngine, new Object[]
+                                        {_engine, name, token});
+                            }
+			}
+		    }
 		    //matlabEngine.evalString(engine,
 		    //        "result__=" + expression);
-
 		    _engineEvalString.invoke(matlabEngine,
                             new Object[] {
                                 _engine, "result__=" + expression
                             });
 
 		    //result = matlabEngine.get(engine, "result__");
-
 		    result = (ptolemy.data.Token)
 			_engineGet.invoke(matlabEngine,
                                 new Object[] {
                                     _engine, "result__"
                                 });
+
+		    if (previousPath != null) {
+                        // Restore the original engine path
+                        //matlabEngine.put
+                        //    (engine, name, token);
+                        _enginePut.invoke
+                            (matlabEngine, new Object[]
+                                {_engine, "previousPath_", previousPath});
+			// matlabEngine.evalString(engine, "path(previousPath_)");
+			_engineEvalString.invoke(matlabEngine,
+                            new Object[] {_engine, "path(previousPath_)" });
+		    }
 		}
 	    }
 	    finally {

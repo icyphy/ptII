@@ -38,6 +38,7 @@ import ptolemy.kernel.util.*;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Set;
 import java.util.StringTokenizer;
 
 
@@ -374,16 +375,19 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
                 _evaluatedChildToken;
             if (token instanceof StringToken) {
                 String expression = ((StringToken)token).stringValue();
-                // NamedList scope = node.getParser().getScope();
-
-                // Invoke the matlab engine to evaluate this function.
-                _evaluatedChildToken
-		    = MatlabUtilities.evaluate(expression, _scope);
+                ParseTreeFreeVariableCollector collector =
+                    new ParseTreeFreeVariableCollector();
+                Set freeVariables =
+                    collector.collectFreeVariables(node, _scope);
+                _evaluatedChildToken =
+                    MatlabUtilities.evaluate(expression, freeVariables,_scope);
 		return;
             } else {
                 throw new IllegalActionException("The function \"matlab\" is" +
                         " reserved for invoking the matlab engine, and takes" +
-		        " a string matlab expression argument");
+		        " a string matlab expression argument followed by" +
+                        " a list of variable names that the matlab expression" +
+                        " refers to.");
             }
         }
 
