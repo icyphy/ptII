@@ -42,13 +42,19 @@ if {[string compare test [info procs test]] == 1} then {
 ####
 #
 test XSLTUtilities-1.1 {Call main} {
-    file delete -force out.xml
+    catch {file delete -force out.xml} ignore
+    puts "deleting out.xml failed, ignoring: $ignore"
+
     set args [java::new {String[]} {3} {test.xml addMarkers.xsl out.xml}]
     java::call ptolemy.util.XSLTUtilities main $args
 
     set file [open out.xml r]
     set results [read $file]
+
+    # Close before deleting
+    close $file
     file delete -force out.xml
+
     list $results
 } {{<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <WMBasicEdit>
@@ -178,6 +184,8 @@ test XSLTUtilities-3.3 {Call transform(Document, List) using files found in the 
 ####
 #
 test XSLTUtilities-3.4 {Call transform(String, String, String)} {
+    # Close before deleting
+    close $file
     file delete -force out.xml
 
     # Note that this operates on pathnames, not files in the classpath
@@ -185,7 +193,11 @@ test XSLTUtilities-3.4 {Call transform(String, String, String)} {
         transform  addMarkers.xsl test.xml out.xml
     set file [open out.xml r]
     set results [read $file]
+
+    # Close before deleting
+    close $file
     file delete -force out.xml
+
     list $results
 } {{<?xml version="1.0" encoding="UTF-8"?>
 <WMBasicEdit>
