@@ -42,10 +42,10 @@ proc readin { infile } {
     set fd [open $infile r]
     # sawPage is true if we've seen %%Page:
     set sawPage 0 
-    # After we see '%%Page:', skip until we see another line that starts
-    # with %.  This gets rid of some of the annoying boxes that are
+    # After we see '%%Page:', throw away a few lines 
+    # This gets rid of some of the annoying boxes that are
     # in the ptplot output
-    set sawFirstPercentAfterPage 0
+    set sawHeaderAfterPage 0
     set pscript ""
     while {[gets $fd line] >= 0} {
 	# puts "---> $line"
@@ -59,21 +59,25 @@ proc readin { infile } {
 		    set ymax $y
 		}
 	    } else {
-		if [regexp {^%} $line] {
-		    set sawFirstPercentAfterPage 1
-		    # If it starts with a %, comment it out
-		    append pscript "puts \{# $line\}\n"
-    		    append pscript "parsePercent {$line}\n"
-    	        } else {
-		    if { $sawFirstPercentAfterPage } { 
+	        if { ! $sawHeaderAfterPage } {
+		    if { "$line" == "255 255 255 SC" } {
+			set sawHeaderAfterPage 1
+		    } 
+		}
+	        if { $sawHeaderAfterPage } {
+		    if [regexp {^%} $line] {
+			# If it starts with a %, comment it out
+			append pscript "puts \{# $line\}\n"
+			append pscript "parsePercent {$line}\n"
+		    } else {
 			set linelist [split $line]
 			set command [lindex $linelist end]
 			set arglist [lrange $linelist 0 \
-				[expr {[llength $linelist] -2}]]\n
+			    [expr {[llength $linelist] -2}]]\n
 			if { "$command" == "SC" } {
 			    global colorlist
 			    set colorlist [addToColorList $colorlist \
-				    [string trim $arglist]]
+				[string trim $arglist]]
 			}
 			append pscript "$command $arglist"
 		    }
