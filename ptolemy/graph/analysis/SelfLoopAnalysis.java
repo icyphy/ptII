@@ -1,4 +1,4 @@
-/* Computation of self loops in a graph.
+/* Computation of self-loops in a graph.
 
  Copyright (c) 2002 The University of Maryland. All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -36,11 +36,11 @@ import java.util.Collections;
 //// SelfLoopAnalysis
 /** Computation of self-loops in a graph.
 
-A self-loop in a graph is an edge whose source and sink nodes are identical.
-The <code>result</code> method
+A <em>self-loop</em> (also called a <em>self-loop edge</em>) in a graph is an 
+edge whose source and sink nodes are identical.  The <code>result</code> method
 (see {@link Analysis.#result()})
-of this analysis returns the self loop edges in the associated graph.
-The self loop edges are returned in the form of a 
+of this analysis returns the self-loop edges in the associated graph.
+The self-loop edges are returned in the form of a 
 {@link java.util.Collection}, where each element in the collection is an
 {@link Edge}. The collection returned cannot be modified.
 <p>
@@ -54,7 +54,7 @@ number of edges in the graph.
 // FIXME: this should be an abstract class.
 public class SelfLoopAnalysis extends Analysis {
 
-    /** Construct a self loop analysis for a given graph. 
+    /** Construct a self-loop analysis for a given graph. 
      *  @param graph The given graph.
      */
     public SelfLoopAnalysis(Graph graph) {
@@ -72,7 +72,7 @@ public class SelfLoopAnalysis extends Analysis {
      *  @return A description of the analysis.
      */
     public String toString() {
-        return "Self loop anlaysis for the following graph.\n"
+        return "Self-loop anlaysis for the following graph.\n"
                 + graph().toString();
     }
 
@@ -95,7 +95,7 @@ public class SelfLoopAnalysis extends Analysis {
         return selfLoopEdges;
     }
 
-    /** Return the result of this analysis (collection of self loop edges)
+    /** Return the result of this analysis (collection of self-loop edges)
      *  in a form that cannot be modified.
      *  @return The analysis result in unmodifiable form.
      */
