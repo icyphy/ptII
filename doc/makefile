@@ -40,6 +40,7 @@ include $(CONFIG)
 DIRS =		 coding internals #usersGuides
 
 EXTRA_SRCS = \
+	demos.html \
 	index.html \
 	install.html \
 	javalinks.html \
