@@ -93,7 +93,7 @@ public class ButterflyApplication extends Frame {
 
 	    // FIXME: Why does DE have setStopTime, but SDF has an
 	    // interations parameter?
-	    director.iterations.setToken(new IntToken(2400));
+	    director.iterations.setToken(new IntToken(1200));
 	    manager.run();
 	    //manager.run();
         } catch (Exception ex) {
