@@ -116,22 +116,20 @@ test MoMLUndoChangeRequest-1.2 {Undo} {
     # Unfortunately, under Windows, there is quite a bit of confusion
     # about how end of line characters are returned by exec, so
     # we take a subset of the result string and avoid some problems
-    string range [diffText $originalMoML $undoneMoML] 0 470
-} {17,27d16
-<     <entity name="const" class="ptolemy.actor.lib.Const">
-<         <property name="value" class="ptolemy.data.expr.Parameter" value="1">
-<         </property>
-<         <port name="output" class="ptolemy.actor.TypedIOPort">
-<             <property name="output"/>
-<         </port>
-<         <port name="trigger" class="ptolemy.actor.TypedIOPort">
-<             <property name="input"/>
-<             <property name="multiport"/>
-<         </port>
-}
-
-
-
+    set r [diffText $originalMoML $undoneMoML]
+    puts $r
+    # Unfortunately, under Windows, there are problems with end of line
+    # characters that are returned by the diffText proc, so we just
+    # check  that the discard1 and discard3 actors are not present
+    # in the diff output
+    list \
+	[regexp  {<     <entity name="const" class="ptolemy.actor.lib.Const">} \
+	     $r] \
+	[regexp  {<         <port name="output" class="ptolemy.actor.TypedIOPort">} \
+	     $r] \
+	[regexp  {<         <port name="trigger" class="ptolemy.actor.TypedIOPort">} \
+	     $r] \
+} {1 1 1}
 
 test MoMLUndoChangeRequest-1.2a {Undo again, with nothing to undo} {
     # Uses $undoneMoML from 1.2 above
