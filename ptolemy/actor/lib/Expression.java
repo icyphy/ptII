@@ -413,9 +413,8 @@ public class Expression extends TypedAtomicActor {
                 if (_scope == null) {
                     _scope = new VariableScope();
                 }
-                Set set =
-                    _variableCollector.collectFreeVariables(
-                            _parseTree, _scope);
+                Set set = _variableCollector.collectFreeVariables(
+                        _parseTree, _scope);
                 List termList = new LinkedList();
                 for(Iterator elements = set.iterator();
                     elements.hasNext();) {
