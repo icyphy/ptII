@@ -1,0 +1,75 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<model name="" class="ptolemy.actor.TypedCompositeActor">
+    <director name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="5">
+        </property>
+        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </director>
+    <entity name="IIR0" class="ptolemy.actor.lib.IIR">
+        <property name="numerator" class="ptolemy.data.expr.Parameter" value="[1.0]">
+        </property>
+        <property name="denominator" class="ptolemy.data.expr.Parameter" value="[1.0, 0.9]">
+        </property>
+        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
+            <location value="215.0, 113.0"/>
+            <configure>generic.transformer</configure>
+        </rendition>
+        <doc>IIR filter</doc>
+        <property name="editorFactory0" class="ptolemy.actor.gui.EditorPaneFactory">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Pulse1" class="ptolemy.actor.lib.Pulse">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="indexes" class="ptolemy.data.expr.Parameter" value="[0, 1]">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="[1, 0]">
+        </property>
+        <property name="repeat" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
+            <location value="91.0, 114.0"/>
+            <configure>generic.source</configure>
+        </rendition>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="Test4" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="[1.0, 0.9, 0.81, 0.729, 0.6561]">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
+            <location value="382.0, 113.0"/>
+            <configure>generic.sink</configure>
+        </rendition>
+        <property name="editorFactory0" class="ptolemy.actor.gui.EditorPaneFactory">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="IIR0.input" relation="relation3"/>
+    <link port="IIR0.output" relation="relation6"/>
+    <link port="Pulse1.output" relation="relation3"/>
+    <link port="Test4.input" relation="relation6"/>
+</model>
