@@ -74,7 +74,7 @@ order.</text>
         </property>
         <property name="meanTime" class="ptolemy.data.expr.Parameter" value="poissonBusArrivalRate">
         </property>
-        <property name="values" class="ptolemy.data.expr.Parameter" value="[2]">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{2}">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="65.99999999999999, 277.0">
         </property>
@@ -91,7 +91,7 @@ order.</text>
         </property>
         <property name="meanTime" class="ptolemy.data.expr.Parameter" value="passengerArrivalRate">
         </property>
-        <property name="values" class="ptolemy.data.expr.Parameter" value="[1]">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{1}">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="58.999999999999986, 354.0">
         </property>
@@ -180,7 +180,7 @@ order.</text>
         </property>
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="[0.0]">
         </property>
-        <property name="values" class="ptolemy.data.expr.Parameter" value="[3.0]">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{3.0}">
         </property>
         <doc>Create a generalized square wave</doc>
         <property name="_location" class="ptolemy.moml.Location" value="65.99999999999999, 193.0">
