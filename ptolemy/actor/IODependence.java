@@ -95,34 +95,6 @@ public class IODependence extends Attribute {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Resolve the IODependence describing the relation between
-     *  the inputs and outputs of an actor. If the cached version
-     *  is valid, use the cached one. Otherwise, recaculate a new 
-     *  one. Cache and synchronize the new version with the workspace. 
-     *  @exception IllegalActionException If the name has a period in it, or
-     *   the attribute is not compatible with the specified container.
-     *  @exception NameDuplicationException If the container already contains
-     *   an entity with the specified name.
-     */
-    public void inferDependence() 
-        throws IllegalActionException, NameDuplicationException {
-
-        if (_dgValid != workspace().getVersion()){
-            // construct a directed graph
-            _dg = _constructDirectedGraph();
-            System.out.println(_dg.toString());
-            // FIXME: how to show the following debugging information
-            // when listening to director?
-            if (_debugging){ 
-                _debug(getContainer().getName() +
-                    " has a directed graph based on input and" +
-                    " output ports: ");
-                _debug(_dg.toString());
-            }
-            _dgValid = workspace().getVersion();
-        }
-    }
-        
     /** Return true if there are directed cycle loops. 
      *  @return True if there are directed loops.
      */
@@ -179,6 +151,34 @@ public class IODependence extends Attribute {
         return dependentOutputs.contains(_dg.node(outputPort));
     }
 
+    /** Resolve the IODependence describing the relation between
+     *  the inputs and outputs of an actor. If the cached version
+     *  is valid, use the cached one. Otherwise, recaculate a new 
+     *  one. Cache and synchronize the new version with the workspace. 
+     *  @exception IllegalActionException If the name has a period in it, or
+     *   the attribute is not compatible with the specified container.
+     *  @exception NameDuplicationException If the container already contains
+     *   an entity with the specified name.
+     */
+    public void inferDependence() 
+        throws IllegalActionException, NameDuplicationException {
+
+        if (_dgValid != workspace().getVersion()){
+            // construct a directed graph
+            _dg = _constructDirectedGraph();
+            System.out.println(_dg.toString());
+            // FIXME: how to show the following debugging information
+            // when listening to director?
+            if (_debugging){ 
+                _debug(getContainer().getName() +
+                    " has a directed graph based on input and" +
+                    " output ports: ");
+                _debug(_dg.toString());
+            }
+            _dgValid = workspace().getVersion();
+        }
+    }
+        
     /** Invalidate the cached version of this attribute.
      */
     public void invalidate() {

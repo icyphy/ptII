@@ -627,6 +627,43 @@ public class CompositeActor extends CompositeEntity implements Actor {
         }
     }
 
+    /** Create Receivers and invoke the
+     *  preinitialize() method of its local director. If this actor is
+     *  not opaque, throw an exception.  This method also resets
+     *  the protected variable _stopRequested
+     *  to false, so if a derived class overrides this method, then it
+     *  should also do that.  This method is
+     *  read-synchronized on the workspace, so the preinitialize()
+     *  method of the director need not be, assuming it is only called
+     *  from here.
+     * 
+     *  @exception IllegalActionException If there is no director, or if
+     *   the director's preinitialize() method throws it, or if this actor
+     *   is not opaque.
+     */
+    public void preinitialize() throws IllegalActionException {
+        _stopRequested = false;
+        if (_debugging) {
+            _debug("Called preinitialize()");
+        }
+        try {
+            _workspace.getReadAccess();
+            _createReceivers();
+            
+            if (!isOpaque()) {
+                throw new IllegalActionException(this,
+                        "Cannot preinitialize a non-opaque actor.");
+            }
+
+            // Note that this is assured of firing the local director,
+            // not the executive director, because this is opaque.
+            getDirector().preinitialize();
+
+        } finally {
+            _workspace.doneReading();
+        }
+    }
+
     /** If this actor is opaque, invoke the postfire() method of its
      *  local director and transfer output data.
      *  Specifically, transfer any data from the output ports of this composite
@@ -687,43 +724,6 @@ public class CompositeActor extends CompositeEntity implements Actor {
                 _debug("Prefire returns (from director) " + result);
             }
             return result;
-        } finally {
-            _workspace.doneReading();
-        }
-    }
-
-    /** Create Receivers and invoke the
-     *  preinitialize() method of its local director. If this actor is
-     *  not opaque, throw an exception.  This method also resets
-     *  the protected variable _stopRequested
-     *  to false, so if a derived class overrides this method, then it
-     *  should also do that.  This method is
-     *  read-synchronized on the workspace, so the preinitialize()
-     *  method of the director need not be, assuming it is only called
-     *  from here.
-     * 
-     *  @exception IllegalActionException If there is no director, or if
-     *   the director's preinitialize() method throws it, or if this actor
-     *   is not opaque.
-     */
-    public void preinitialize() throws IllegalActionException {
-        _stopRequested = false;
-        if (_debugging) {
-            _debug("Called preinitialize()");
-        }
-        try {
-            _workspace.getReadAccess();
-            _createReceivers();
-            
-            if (!isOpaque()) {
-                throw new IllegalActionException(this,
-                        "Cannot preinitialize a non-opaque actor.");
-            }
-
-            // Note that this is assured of firing the local director,
-            // not the executive director, because this is opaque.
-            getDirector().preinitialize();
-
         } finally {
             _workspace.doneReading();
         }
@@ -979,29 +979,6 @@ public class CompositeActor extends CompositeEntity implements Actor {
         super._addEntity(entity);
     }
 
-    /** Notify this actor that the given entity has been added inside it.
-     *  This overrides the base-class method to invalidate the schedule
-     *  and type resolution, and to request initialization with the director.
-     *  This method does not alter the actor in any way.
-     *  It is <i>not</i> synchronized on the workspace, so the
-     *  caller should be.
-     *
-     *  @param entity Actor to contain.
-     *  @exception IllegalActionException If the actor has no name, or the
-     *   action would result in a recursive containment structure, or the
-     *   argument does not implement the Actor interface.
-     *  @exception NameDuplicationException If the name collides with a name
-     *   already on the actor contents list.
-     */
-    protected void _finishedAddEntity(ComponentEntity entity) {
-        Director director = getDirector();
-        if (director != null) {
-            director.invalidateSchedule();
-            director.invalidateResolvedTypes();
-            director.requestInitialization((Actor)entity);
-        }
-    }
-
     /** Add a port to this actor. This overrides the base class to
      *  throw an exception if the added port is not an instance of
      *  IOPort.  This method should not be used directly.  Call the
@@ -1046,6 +1023,29 @@ public class CompositeActor extends CompositeEntity implements Actor {
                     "CompositeActor can only contain instances of IORelation.");
         }
         super._addRelation(relation);
+    }
+
+    /** Notify this actor that the given entity has been added inside it.
+     *  This overrides the base-class method to invalidate the schedule
+     *  and type resolution, and to request initialization with the director.
+     *  This method does not alter the actor in any way.
+     *  It is <i>not</i> synchronized on the workspace, so the
+     *  caller should be.
+     *
+     *  @param entity Actor to contain.
+     *  @exception IllegalActionException If the actor has no name, or the
+     *   action would result in a recursive containment structure, or the
+     *   argument does not implement the Actor interface.
+     *  @exception NameDuplicationException If the name collides with a name
+     *   already on the actor contents list.
+     */
+    protected void _finishedAddEntity(ComponentEntity entity) {
+        Director director = getDirector();
+        if (director != null) {
+            director.invalidateSchedule();
+            director.invalidateResolvedTypes();
+            director.requestInitialization((Actor)entity);
+        }
     }
 
     /** Set the local director for execution of this CompositeActor.
