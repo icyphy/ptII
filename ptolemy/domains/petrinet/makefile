@@ -1,9 +1,9 @@
-# Makefile for Java classes used to implement Ptolemy domains
+# Makefile for PtolemyII Petri net domain.
 #
 # @Version: $Id$
-# @Author: Christopher Hylands
+# @Author: Xiaojun Liu
 #
-# @Copyright (c) 1997-2001 The Regents of the University of California.
+# @Copyright (c) 1998-2001 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -27,67 +27,43 @@
 #
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
-##########################################################################
 
-ME =		ptolemy/domains
+ME =		ptolemy/domains/petrinet
 
-# Domains, in alphabetical order.  If you change this, change
-# PTCLASSALLJARS below
-# DT has to come after SDF, sorry.
-# PTJAVA3D_DIR is set by configure in $PTII/mk/ptII.mk to gr if
-#   Java 3D was found
-# PTRTOS_DIR is set by configure in $PTII/mk/ptII.mk to rtos if
-#   java.util.Timer is found.
-DIRS =		csp ct dde de fsm pn sdf dt hdf giotto pbo rtp petrinet \
-		$(PTRTOS_DIR) sr $(PTJAVA3D_DIR)
+DIRS =		kernel
 
 # Root of Ptolemy II directory
-ROOT =		../..
+ROOT =		../../..
+
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	domains
+PTPACKAGE = 	petrinet
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =
 
-# Include these jars in PTAUXALLJAR
-PTAUXALLJARS = \
-		dde/dde.jar \
-                dt/dt.jar \
-		giotto/giotto.jar \
-		gr/gr.jar \
-
-# Experimental domains 
-PTAUXALLJAR =	experimentalDomains.jar
-
 # Include the .class files from these jars in PTCLASSALLJAR
-# If you change this, change DIRS above
 PTCLASSALLJARS = \
-		csp/csp.jar \
-		ct/ct.jar \
-		de/de.jar \
-		fsm/fsm.jar \
-		pn/pn.jar \
-		sdf/sdf.jar
+		kernel/kernel.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Files or directories that are present, but that 'make checkjunk'
 # should not complain about
-MISC_FILES =	$(DIRS)
+# Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
+MISC_FILES =	kernel lib
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	dfm \
-	generic
+	demo \
+	doc
 
 all: jclass
 install: jclass jars
-
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
