@@ -214,10 +214,12 @@ public class ProcessThread extends PtolemyThread {
                     _manager.notifyListenersOfException(
                             (IllegalActionException)thrownWhenWrapup);
                 } else if (thrownWhenWrapup != null) {
-                    // must be a runtime exception
-                    throw new RuntimeException(thrownWhenWrapup);
+                    // Must be a runtime exception.
+                    // Call notifyListenerOfThrowable() here so that
+                    // the stacktrace appears in the UI and not in stderr. 
+                    _manager.notifyListenersOfThrowable(thrownWhenWrapup);
                 } else if (rethrow) {
-                    throw new RuntimeException(thrownWhenIterate);
+                    _manager.notifyListenersOfThrowable(thrownWhenIterate);
                 }
             }
         }
