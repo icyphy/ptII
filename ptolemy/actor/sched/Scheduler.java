@@ -34,6 +34,7 @@ import pt.kernel.util.*;
 import pt.kernel.mutation.*;
 
 import java.util.Enumeration;
+import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// Scheduler
@@ -59,31 +60,25 @@ as a MutationListener to the host director.  When a mutation occurs,
 the director will inform all the mutation listeners (including the 
 scheduler), and the scheduler will in
 validate the current schedule.
+
+FIXME: This class uses LinkedList in the collections package. Change it
+to Java collection when update to JDK1.2
 @author Jie Liu
 @version $Id$
 */
 public class Scheduler extends NamedObj implements MutationListener{
-    /** Construct a scheduler with empty name and no container(director)
-     *  in the default workspace.
-     *  FIXME: Need? For test
+    /** Construct a scheduler with no container(director)
+     *  in the default workspace, the name of the scheduler is
+     *  "Basic Scheduler".
      * @see pt.kernel.util.NamedObj
      * @return The scheduler
      */	
     public Scheduler() {
-        super();
+        super(_staticname);
     }
 
-    /** Construct a scheduler in the default workspace with the given name.
-     *  If the name argument is null, then the name is set to the empty
-     *  string. The scheduler is added to the list of objects in the workspace.
-     *  Increment the version number of the workspace.
-     *  @param name Name of this object.
-     */
-    public Scheduler(String name) {
-        super(name);
-    }
-
-    /** Construct a scheduler in the given workspace with the given name.
+    /** Construct a scheduler in the given workspace with the name
+     *  "Basic Scheduler".
      *  If the workspace argument is null, use the default workspace.
      *  The scheduler is added to the list of objects in the workspace.
      *  If the name argument is null, then the name is set to the
@@ -92,8 +87,8 @@ public class Scheduler extends NamedObj implements MutationListener{
      *  @param workspace Object for synchronization and version tracking
      *  @param name Name of this scheduler.
      */
-    public Scheduler(Workspace ws, String name) {
-        super(ws, name);
+    public Scheduler(Workspace ws) {
+        super(ws, _staticname);
     }
         
     ////////////////////////////////////////////////////////////////////////
@@ -212,17 +207,44 @@ public class Scheduler extends NamedObj implements MutationListener{
      *  schedule is valid, return it directly. Otherwise call
      *  _schedule() to reconstruct. The validity of the current schedule
      *  is set by setValid() method.
+     *  If the scheduler has no container, or the container 
+     *  StaticSchedulingDirector has no container, throw an 
+     *  IllegalActionException.
+     *  This method read synchronize the workspace.
+     *
      * @return An Enumeration of the deeply contained atomic entities
      *  in the firing order.
+     * @exception IllegalActionException If the scheduler has no container
+     *  (director), or the container has no container (CompositeActor).
      * @exception NotSchedulableException If the _schedule() method 
      *  throws it. Not thrown in this base class, but may be needed
      *  by the derived scheduler.
      */	
-    public Enumeration schedule() throws NotSchedulableException {
-       if(!valid()) {
-           _cachedschedule = _schedule();
-       }
-       return _cachedschedule;
+    public Enumeration schedule() throws 
+            IllegalActionException, NotSchedulableException {
+        try {
+            workspace().getReadAccess();
+            StaticSchedulingDirector dir =
+                (StaticSchedulingDirector)getContainer();
+            if( dir == null) {
+                throw new IllegalActionException(this, 
+                    "is a dangling scheduler.");
+            }
+            CompositeActor ca = (CompositeActor)(dir.getContainer());
+            if( ca == null) {
+                throw new IllegalActionException(this, 
+                    "is a dangling scheduler.");
+            }
+            if(!valid()) {
+                Enumeration newsche = _schedule();
+                while (newsche.hasMoreElements()) {
+                    _cachedschedule.insertLast(newsche.nextElement());
+                }
+            }
+            return _cachedschedule.elements(); 
+        } finally {
+            workspace().doneReading();
+        }
     }
 
     /** Validate/invalidate the current schedule by set the _valid member.
@@ -275,11 +297,10 @@ public class Scheduler extends NamedObj implements MutationListener{
      *  the containees of the CompositeActor in the order of construction.
      *  (Same as calling deepCetEntities()). The derived classes will
      *  override this method and add their scheduling algorithms here.
-     *  If the scheduler has no container, or the contained 
-     *  StaticSchedulingDirector has no container, return null.
-     *  This method read synchronize the workspace.
      *  This method should not be called directly, rather the schedule()
-     *  will call it when the schedule is not valid.
+     *  will call it when the schedule is not valid. So it is not
+     *  synchronized on the workspace.
+     * 
      * @see pt.kernel.CompositeEntity#deepGetEntities()
      * @return An Enumeration of the deeply contained atomic entities
      *  in the firing order.
@@ -288,21 +309,10 @@ public class Scheduler extends NamedObj implements MutationListener{
      *  by the derived scheduler.
      */	
     protected Enumeration _schedule() throws NotSchedulableException {
-        try {
-            workspace().getReadAccess();
-            StaticSchedulingDirector dir =
+        StaticSchedulingDirector dir =
                 (StaticSchedulingDirector)getContainer();
-            if( dir == null) {
-                return null;
-            }
-            CompositeActor ca = (CompositeActor)(dir.getContainer());
-            if( ca == null) {
-                return null;
-            }
-            return ca.deepGetEntities();
-        } finally {
-            workspace().doneReading();
-        }
+        CompositeActor ca = (CompositeActor)(dir.getContainer());
+        return ca.deepGetEntities();
     }
 
     ////////////////////////////////////////////////////////////////////////
@@ -312,6 +322,6 @@ public class Scheduler extends NamedObj implements MutationListener{
     // have regular C++ comments.
     private StaticSchedulingDirector _container = null;
     private boolean _valid = false;
-    private Enumeration _cachedschedule;
-    private static String _name = "Basic Scheduler";
+    private LinkedList _cachedschedule = null;
+    private static final String _staticname = "Basic Scheduler";
 }
