@@ -55,7 +55,7 @@ public class AbsoluteValue extends CCodeGeneratorHelper {
     }
 
     public void  generateFireCode(StringBuffer stream)
-        throws IllegalActionException {
+            throws IllegalActionException {
 
         CodeStream tmpStream = new CodeStream(this);
         tmpStream.appendCodeBlock("codeBlock1");   //"$val(output) = ($val(input) < 0)? -$val(input) : $val(input);\n");

@@ -55,13 +55,13 @@ public class Scale extends CCodeGeneratorHelper {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-        public void generateFireCode(StringBuffer stream)
-                throws IllegalActionException {
+    public void generateFireCode(StringBuffer stream)
+            throws IllegalActionException {
 
         CodeStream tmpStream = new CodeStream(this);
 
         tmpStream.appendCodeBlock("codeBlock1");
 
         stream.append(processCode(tmpStream.toString()));
-        }
+    }
 }

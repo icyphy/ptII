@@ -53,7 +53,7 @@ public class TrigFunction extends CCodeGeneratorHelper {
     }
 
     public void  generateFireCode(StringBuffer stream)
-        throws IllegalActionException {
+            throws IllegalActionException {
 
         CodeStream tmpStream = new CodeStream(this);
 

@@ -53,7 +53,7 @@ public class Remainder extends CCodeGeneratorHelper {
     }
 
     public void  generateFireCode(StringBuffer stream)
-        throws IllegalActionException {
+            throws IllegalActionException {
 
         CodeStream tmpStream = new CodeStream(this);
         tmpStream.appendCodeBlock("codeBlock1");

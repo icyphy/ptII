@@ -63,13 +63,13 @@ public class Minimum extends CCodeGeneratorHelper {
 
         if (actor.enable.getWidth() == 0) {
             tmpStream.append(
-                      "if (currentIndex < $size(values)) {\n"
+                    "if (currentIndex < $size(values)) {\n"
                     + "    $ref(output) = $ref(values, currentIndex);\n"
                     + "    outputProduced = 1;\n"
                     + "}\n");
         } else {
             tmpStream.append(
-                      "if ($ref(enable) != 0)\n"
+                    "if ($ref(enable) != 0)\n"
                     + "        && currentIndex < $size(values)) {\n"
                     + "    $ref(output) = $ref(values, currentIndex);\n"
                     + "    outputProduced = 1;\n"
@@ -77,7 +77,7 @@ public class Minimum extends CCodeGeneratorHelper {
         }
 
         tmpStream.append(
-                  "if (outputProduced != 0) {\n"
+                "if (outputProduced != 0) {\n"
                 + "    outputProduced = 0;\n"
                 + "    currentIndex += 1;\n"
                 + "    if (currentIndex >= $size(values)) {\n"
@@ -98,7 +98,7 @@ public class Minimum extends CCodeGeneratorHelper {
     public void generateInitializeCode(StringBuffer stream)
             throws IllegalActionException {
         stream.append(processCode(_initBlock));
-}
+    }
 
 
     ///////////////////////////////////////////////////////////////////
@@ -107,6 +107,6 @@ public class Minimum extends CCodeGeneratorHelper {
     protected String _codeBlock;
 
     protected String _initBlock =
-              "int max = 0;\n"
-            + "int maxChannel = 0;\n";
+    "int max = 0;\n"
+    + "int maxChannel = 0;\n";
 }

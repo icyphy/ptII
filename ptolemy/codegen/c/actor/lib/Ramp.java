@@ -55,7 +55,7 @@ public class Ramp extends CCodeGeneratorHelper {
     ////                         public methods                    ////
 
     public void generateFireCode(StringBuffer stream)
-                throws IllegalActionException {
+            throws IllegalActionException {
         CodeStream tmpStream = new CodeStream(this);
         tmpStream.appendCodeBlock("codeBlock1");
 
