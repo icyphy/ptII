@@ -81,14 +81,19 @@ public class JavaToC {
         }
 
         // Set up the code generator as follows:
+        // Pass 0:  Generate unique method names. This pass operates
+        // on all of the abstract syntax trees instantiated after static
+        // resolution.
         // Pass 1:  Compute indentation levels for code constructs
         // Pass 2:  Generate a header file (i.e., a .h file)
         // Pass 3:  Generate equivalent C code (i.e., a .c file)
+        LinkedList prePassList = new LinkedList();
+        prePassList.add(new MethodNameGenerator()); 
         LinkedList passList = new LinkedList();
         passList.add(new IndentationVisitor());
         passList.add(new HeaderFileGenerator());
         passList.add(new CCodeGenerator()); 
-        JavaConverter converter = new JavaConverter(passList);
+        JavaConverter converter = new JavaConverter(passList, prePassList);
 
         // Configure the code generator to display verbose output,
         // perform static resolution, and suppress debugging output
