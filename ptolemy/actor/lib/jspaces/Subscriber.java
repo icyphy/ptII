@@ -188,9 +188,10 @@ public class Subscriber extends Source implements RemoteEventListener {
         try {
             UnicastRemoteObject.exportObject(this);
         } catch (RemoteException e) {
-            throw new IllegalActionException( this,
-                    "unable to export object. Please check if RMI is OK." +
-                    e.getMessage());
+            //throw new IllegalActionException( this,
+            //        "unable to export object. Please check if RMI is OK. " +
+            //        e.getMessage());
+            System.out.println(e.getMessage());
         }
         _tokenList = new LinkedList();
         //FIXME: set type by the token read.
@@ -263,12 +264,12 @@ public class Subscriber extends Source implements RemoteEventListener {
                                     e.getMessage());
                         }
                         if(entry == null) {
-                            System.out.println("PREINIT: read null.");
+                            //System.out.println("PREINIT: read null.");
                             finished = true;
                         } else {
                             _lastRead.increment();
-                            System.out.println("PRE: insert token " +
-                                    _lastRead.getSerialNumber());
+                            //System.out.println("PRE: insert token " +
+                            //        _lastRead.getSerialNumber());
                             Token token = entry.token;
                             _tokenList.addLast(token);
                         }
@@ -317,7 +318,7 @@ public class Subscriber extends Source implements RemoteEventListener {
                         break;
                     }
                 } else {
-                    System.out.println("FIRE: token list not empty");
+                    System.out.println("FIRE: subscriber output token");
                     output.send(0, (Token)_tokenList.removeFirst());
                     return;
                 }
@@ -419,9 +420,9 @@ public class Subscriber extends Source implements RemoteEventListener {
                                             }*/
                                 finished = true;
                             } else {
-                                System.out.println("Read sth from space.");
+                                System.out.println("Read succeeded.");
                                 _lastRead.increment();
-                                System.out.println("RUN: insert token " +
+                                System.out.println("insert token... " +
                                         _lastRead.getSerialNumber());
                                 Token token = entry.token;
                                 _tokenList.addLast(token);
@@ -431,7 +432,6 @@ public class Subscriber extends Source implements RemoteEventListener {
                     }
                 }
             }   
-            System.out.println("Finished one run");
             Thread.currentThread().yield();
         }
         

@@ -173,8 +173,8 @@ public class Publisher extends Sink {
      */
     public void fire() throws IllegalActionException {
         try {
-             System.out.println("Wait for one second.");
-            Thread.sleep(1000l);
+             System.out.println("Wait for 30 second.");
+            Thread.sleep(30*1000l);
         } catch (Exception e) {
             throw new IllegalActionException(this,
                     "Interruptted" + e.getMessage());
