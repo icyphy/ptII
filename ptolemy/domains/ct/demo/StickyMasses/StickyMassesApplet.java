@@ -344,39 +344,39 @@ public class StickyMassesApplet extends CTApplet {
 
             //System.out.println("Set parameters.");
             // try to run the system
-            topdir.StartTime.setToken(new DoubleToken(0.0));
-            topdir.StopTime.setToken(new DoubleToken(50.0));
+            topdir.startTime.setToken(new DoubleToken(0.0));
+            topdir.stopTime.setToken(new DoubleToken(50.0));
 
             // CT embedded director 1 parameters
-            ctIncDir.InitStepSize.setToken(new DoubleToken(0.01));
+            ctIncDir.initStepSize.setToken(new DoubleToken(0.01));
 
-            ctIncDir.MinStepSize.setToken(new DoubleToken(1e-5));
+            ctIncDir.minStepSize.setToken(new DoubleToken(1e-5));
 
             StringToken tok = new StringToken(
                     "ptolemy.domains.ct.kernel.solver.BackwardEulerSolver");
-            ctIncDir.BreakpointODESolver.setToken(tok);
+            ctIncDir.breakpointODESolver.setToken(tok);
             Parameter dfsol = (Parameter)ctIncDir.getAttribute("ODESolver");
             tok = new StringToken(
                     "ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver");
             ctIncDir.ODESolver.setToken(tok);
 
             // CT embedded director 2  parameters
-            ctDecDir.InitStepSize.setToken(new DoubleToken(0.01));
-            ctDecDir.MinStepSize.setToken(new DoubleToken(1e-5));
+            ctDecDir.initStepSize.setToken(new DoubleToken(0.01));
+            ctDecDir.minStepSize.setToken(new DoubleToken(1e-5));
             tok = new StringToken(
                     "ptolemy.domains.ct.kernel.solver.BackwardEulerSolver");
-            ctDecDir.BreakpointODESolver.setToken(tok);
+            ctDecDir.breakpointODESolver.setToken(tok);
             tok = new StringToken(
                     "ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver");
             ctDecDir.ODESolver.setToken(tok);
 
             // CT director parameters
-            topdir.InitStepSize.setToken(new DoubleToken(0.01));
-            topdir.MinStepSize.setToken(new DoubleToken(1e-5));
-            topdir.MaxStepSize.setToken(new DoubleToken(0.3));
+            topdir.initStepSize.setToken(new DoubleToken(0.01));
+            topdir.minStepSize.setToken(new DoubleToken(1e-5));
+            topdir.maxStepSize.setToken(new DoubleToken(0.3));
             tok = new StringToken(
                     "ptolemy.domains.ct.kernel.solver.ForwardEulerSolver");
-            topdir.BreakpointODESolver.setToken(tok);
+            topdir.breakpointODESolver.setToken(tok);
             tok = new StringToken(
                     "ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver");
             topdir.ODESolver.setToken(tok);

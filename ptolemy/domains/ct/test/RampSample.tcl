@@ -79,7 +79,7 @@ $depin link $r4
 $dedir setStopTime 20.0
 
 # CT parameters
-set solver1 [$ctdir getAttribute BreakpointODESolver]
+set solver1 [$ctdir getAttribute breakpointODESolver]
 set token [java::new ptolemy.data.StringToken ptolemy.domains.ct.kernel.solver.BackwardEulerSolver]
 $solver1 setToken $token
 
@@ -87,7 +87,7 @@ set solver2 [$ctdir getAttribute ODESolver]
 set token [java::new ptolemy.data.StringToken ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver]
 $solver2 setToken $token
 
-set initstep [$ctdir getAttribute InitialStepSize]
+set initstep [$ctdir getAttribute initStepSize]
 $initstep setExpression 0.1
 
 set constval [$const getAttribute Value]

@@ -169,8 +169,8 @@ public class LorenzApplet extends CTApplet {
 
             //System.out.println("Parameters");
             // CT Director parameters
-            _dir.InitStepSize.setToken(new DoubleToken(0.01));
-            _dir.MinStepSize.setToken(new DoubleToken(1e-6));
+            _dir.initStepSize.setToken(new DoubleToken(0.01));
+            _dir.minStepSize.setToken(new DoubleToken(1e-6));
 
             // CTActorParameters
             X1.InitialState.setToken(new DoubleToken(1.0));
@@ -194,7 +194,7 @@ public class LorenzApplet extends CTApplet {
      */
     protected void _go() throws IllegalActionException {
         try {
-            _dir.StopTime.setToken(new DoubleToken(
+            _dir.stopTime.setToken(new DoubleToken(
                     _query.doubleValue("stopT")));
             _LAMBDA.value.setToken(new DoubleToken(
                     _query.doubleValue("lambda")));
@@ -225,7 +225,7 @@ public class LorenzApplet extends CTApplet {
     private class ParameterListener implements QueryListener {
         public void changed(String name) {
             try {
-                _dir.StopTime.setToken(new DoubleToken(
+                _dir.stopTime.setToken(new DoubleToken(
                         _query.doubleValue("stopT")));
                 _LAMBDA.value.setToken(new DoubleToken(
                         _query.doubleValue("lambda")));

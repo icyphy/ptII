@@ -107,7 +107,7 @@ public class CTMultiSolverDirector extends CTSingleSolverDirector {
 
     /** parameter of breakpoint ODE solver.
      */
-    public Parameter BreakpointODESolver;
+    public Parameter breakpointODESolver;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -122,7 +122,7 @@ public class CTMultiSolverDirector extends CTSingleSolverDirector {
     public void attributeChanged(Attribute attr)
             throws IllegalActionException {
         Parameter param = (Parameter)attr;
-        if (param == BreakpointODESolver) {
+        if (param == breakpointODESolver) {
             if(_debugging) _debug(getName() + "breakpoint solver updating.");
             _bpsolverclassname =
                 ((StringToken)param.getToken()).toString();
@@ -167,10 +167,10 @@ public class CTMultiSolverDirector extends CTSingleSolverDirector {
                     new StringToken(defaultsolverclass));
             _bpsolverclassname =
                 "ptolemy.domains.ct.kernel.solver.DerivativeResolver";
-            BreakpointODESolver = new Parameter(
-                    this, "BreakpointODESolver",
+            breakpointODESolver = new Parameter(
+                    this, "breakpointODESolver",
                     new StringToken(_bpsolverclassname));
-            BreakpointODESolver.setTypeEquals(BaseType.STRING);
+            breakpointODESolver.setTypeEquals(BaseType.STRING);
         } catch (IllegalActionException e) {
             //Should never happens. The parameters are always compatible.
             throw new InternalErrorException("Parameter creation error.");

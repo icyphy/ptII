@@ -219,9 +219,9 @@ public class SigmaDeltaApplet extends CTApplet {
             _dePlot.input.link(dr3);
 
             // CT Director parameters
-            ctdir.InitStepSize.setToken(new DoubleToken(0.0001));
+            ctdir.initStepSize.setToken(new DoubleToken(0.0001));
 
-            ctdir.MinStepSize.setToken(new DoubleToken(1e-6));
+            ctdir.minStepSize.setToken(new DoubleToken(1e-6));
 
             //StringToken token1 = new StringToken(
             //        "ptolemy.domains.ct.kernel.solver.BackwardEulerSolver");

@@ -63,39 +63,39 @@ is called the <I>current ODE solver</I>.
 <P>
 This base class maintains a list of parameters that may be used by
 ODE solvers. These parameters are: <Br>
-<LI> start time (<code>StartTime</code>): The start time of the
+<LI> start time (<code>startTime</code>): The start time of the
 simulation. The parameter should only be affective if the director
 is at the top level. Default value is 0.0.</LI><BR>
-<LI> stop time (<code>StopTime</code>): The stop time of the simulation.
+<LI> stop time (<code>stopTime</code>): The stop time of the simulation.
  The parameter should only be affective if the director
 is at the top level. Default value is 1.0.</LI><BR>
 <LI> initial step size (<code>InitStepSize</code>): The suggested
 step size from the user. This will be the step size for fixed step
 size ODE solvers. However, it is just a guide for variable step size
 ODE solvers. Default value is 0.1</LI><Br>
-<LI> minimum step size (<code>MinStepSize</code>): The minimum step
+<LI> minimum step size (<code>minStepSize</code>): The minimum step
 size the user wants to use in the simulation. Default value is 1e-5.
 </LI><Br>
-<LI> maximum step size (<code>MaxStepSize</code>): The maximum step
+<LI> maximum step size (<code>maxStepSize</code>): The maximum step
 size the user wants to use in the simulation. Usually used to control
 the simulation speed. Default value is 1.0.
 </LI><Br>
-<LI> maximum iteration per step (<code>MaxIterations</code>):
+<LI> maximum iteration per step (<code>maxIterations</code>):
 Used only in implicit ODE solvers. This is the maximum number of
 iterations for finding the fixed point at one time point.
 Default value is 20. </LI><Br>
-<LI> local truncation error tolerance (<code>ErrorTolerance</code>):
+<LI> local truncation error tolerance (<code>errorTolerance</code>):
 This used for controlling the local truncation error
 in variable step size ODE solvers. If the local truncation error
 at some error control actors are greater than this tolerance, then the
 integration step is considered failed, and should be restarted with
 a reduced step size. Default value 1e-4. </LI><Br>
-<LI> value resolution for convergence (<code>ValueResolution</code>):
+<LI> value resolution for convergence (<code>valueResolution</code>):
  This is used to control the convergence of fixed point iteration.
 If in two successive iterations the differences of the state variables
 is less than this resolution, then the fixed point is considered found.
 Default value is 1e-6.<LI><Br>
-<LI> time resolution (<code>TimeResolution</code>): The minimum resolution
+<LI> time resolution (<code>timeResolution</code>): The minimum resolution
 of time, such that if two time values differ less than this value,
 they are considered equivalent. Default value is 1e-10. </LI><Br>
 <P>
@@ -176,15 +176,15 @@ public abstract class CTDirector extends StaticSchedulingDirector {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    public Parameter StartTime;
-    public Parameter StopTime;
-    public Parameter InitStepSize;
-    public Parameter MinStepSize;
-    public Parameter MaxStepSize;
-    public Parameter MaxIterations;
-    public Parameter ErrorTolerance;
-    public Parameter ValueResolution;
-    public Parameter TimeResolution;
+    public Parameter startTime;
+    public Parameter stopTime;
+    public Parameter initStepSize;
+    public Parameter minStepSize;
+    public Parameter maxStepSize;
+    public Parameter maxIterations;
+    public Parameter errorTolerance;
+    public Parameter valueResolution;
+    public Parameter timeResolution;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
@@ -225,35 +225,35 @@ public abstract class CTDirector extends StaticSchedulingDirector {
     public void attributeChanged(Attribute attr)
             throws IllegalActionException {
         if(_debugging) _debug(attr.getName() + " updating.");
-        if(attr == StopTime) {
+        if(attr == stopTime) {
             Parameter param = (Parameter)attr;
             setStopTime(((DoubleToken)param.getToken()).doubleValue());
-        } else if(attr == InitStepSize) {
+        } else if(attr == initStepSize) {
             Parameter param = (Parameter)attr;
             _initStepSize = ((DoubleToken)param.getToken()).doubleValue();
-        } else if(attr == StartTime) {
+        } else if(attr == startTime) {
             Parameter param = (Parameter)attr;
             _startTime = ((DoubleToken)param.getToken()).doubleValue();
-        } else if(attr == ErrorTolerance) {
+        } else if(attr == errorTolerance) {
             Parameter param = (Parameter)attr;
             _lteTolerance = ((DoubleToken)param.getToken()).doubleValue();
-        } else if(attr == MinStepSize) {
+        } else if(attr == minStepSize) {
             Parameter param = (Parameter)attr;
             _minStepSize = ((DoubleToken)param.getToken()).doubleValue();
-        } else if(attr == MaxStepSize) {
+        } else if(attr == maxStepSize) {
             Parameter param = (Parameter)attr;
             _maxStepSize = ((DoubleToken)param.getToken()).doubleValue();
-        } else if(attr == ValueResolution) {
+        } else if(attr == valueResolution) {
             Parameter param = (Parameter)attr;
             _valueResolution = ((DoubleToken)param.getToken()).doubleValue();
-        } else if(attr == TimeResolution) {
+        } else if(attr == timeResolution) {
             Parameter param = (Parameter)attr;
             _timeResolution = ((DoubleToken)param.getToken()).doubleValue();
             TotallyOrderedSet bptable = getBreakPoints();
             FuzzyDoubleComparator comp =
                 (FuzzyDoubleComparator) bptable.getComparator();
             comp.setThreshold(_timeResolution);
-        } else if(attr == MaxIterations) {
+        } else if(attr == maxIterations) {
             Parameter param = (Parameter)attr;
             _maxIterations = ((IntToken)param.getToken()).intValue();
         }
@@ -577,36 +577,36 @@ public abstract class CTDirector extends StaticSchedulingDirector {
             _timeResolution = 1e-10;
 
 
-            StartTime = new Parameter(
-                    this, "StartTime", new DoubleToken(_startTime));
-            StartTime.setTypeEquals(BaseType.DOUBLE);
-            StopTime = new Parameter(
-                    this, "StopTime", new DoubleToken(_stopTime));
-            StopTime.setTypeEquals(BaseType.DOUBLE);
-            InitStepSize = new Parameter(
-                    this, "InitialStepSize", new DoubleToken(_initStepSize));
-            InitStepSize.setTypeEquals(BaseType.DOUBLE);
-            MinStepSize = new Parameter(
-                    this, "MinimumStepSize", new DoubleToken(_minStepSize));
-            MinStepSize.setTypeEquals(BaseType.DOUBLE);
-            MaxStepSize = new Parameter(
-                    this, "MaximumStepSize", new DoubleToken(_maxStepSize));
-            MaxStepSize.setTypeEquals(BaseType.DOUBLE);
-            MaxIterations = new Parameter(
-                    this, "MaximumIterationsPerStep",
+            startTime = new Parameter(
+                    this, "startTime", new DoubleToken(_startTime));
+            startTime.setTypeEquals(BaseType.DOUBLE);
+            stopTime = new Parameter(
+                    this, "stopTime", new DoubleToken(_stopTime));
+            stopTime.setTypeEquals(BaseType.DOUBLE);
+            initStepSize = new Parameter(
+                    this, "initStepSize", new DoubleToken(_initStepSize));
+            initStepSize.setTypeEquals(BaseType.DOUBLE);
+            minStepSize = new Parameter(
+                    this, "minStepSize", new DoubleToken(_minStepSize));
+            minStepSize.setTypeEquals(BaseType.DOUBLE);
+            maxStepSize = new Parameter(
+                    this, "maxStepSize", new DoubleToken(_maxStepSize));
+            maxStepSize.setTypeEquals(BaseType.DOUBLE);
+            maxIterations = new Parameter(
+                    this, "maxIterations",
                     new IntToken(_maxIterations));
-            MaxIterations.setTypeEquals(BaseType.INT);
-            ErrorTolerance =  new Parameter(
-                    this, "ErrorTolerance",
+            maxIterations.setTypeEquals(BaseType.INT);
+            errorTolerance =  new Parameter(
+                    this, "errorTolerance",
                     new DoubleToken(_lteTolerance));
-            ErrorTolerance.setTypeEquals(BaseType.DOUBLE);
-            ValueResolution =  new Parameter(
-                    this, "ConvergeValueResolution",
+            errorTolerance.setTypeEquals(BaseType.DOUBLE);
+            valueResolution =  new Parameter(
+                    this, "valueResolution",
                     new DoubleToken(_valueResolution));
-            ValueResolution.setTypeEquals(BaseType.DOUBLE);
-            TimeResolution = new Parameter(
-                    this, "TimeResolution", new DoubleToken(_timeResolution));
-            TimeResolution.setTypeEquals(BaseType.DOUBLE);
+            valueResolution.setTypeEquals(BaseType.DOUBLE);
+            timeResolution = new Parameter(
+                    this, "timeResolution", new DoubleToken(_timeResolution));
+            timeResolution.setTypeEquals(BaseType.DOUBLE);
 
         } catch (IllegalActionException e) {
             //Should never happens. The parameters are always compatible.

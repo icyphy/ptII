@@ -93,17 +93,17 @@ test CTRampSystem-4.1 {Ramp with ForwardEulerSolver} {
     $initstate setToken $token
 
     set starttime [java::cast ptolemy.data.expr.Parameter \
-	    [$dir getAttribute StartTime]]
+	    [$dir getAttribute startTime]]
     set token [java::new ptolemy.data.DoubleToken 0.0]
     $starttime setToken $token
 
     set stoptime [java::cast ptolemy.data.expr.Parameter \
-	    [$dir getAttribute StopTime]]
+	    [$dir getAttribute stopTime]]
     set token [java::new ptolemy.data.DoubleToken 1.0]
     $stoptime setToken $token
 
     set initstep [java::cast ptolemy.data.expr.Parameter \
-	    [$dir getAttribute InitialStepSize]]
+	    [$dir getAttribute initStepSize]]
     set token [java::new ptolemy.data.DoubleToken 0.1]
     $initstep setToken $token
 
@@ -131,17 +131,17 @@ test CTRampSystem-4.2 {Ramp with BackwardEulerSolver} {
     $initstate setToken $token
 
     set starttime [java::cast ptolemy.data.expr.Parameter \
-	    [$dir getAttribute StartTime]]
+	    [$dir getAttribute startTime]]
     set token [java::new ptolemy.data.DoubleToken 0.0]
     $starttime setToken $token
 
     set stoptime [java::cast ptolemy.data.expr.Parameter \
-	    [$dir getAttribute StopTime]]
+	    [$dir getAttribute stopTime]]
     set token [java::new ptolemy.data.DoubleToken 1.0]
     $stoptime setToken $token
 
     set initstep [java::cast ptolemy.data.expr.Parameter \
-	    [$dir getAttribute InitialStepSize]]
+	    [$dir getAttribute initStepSize]]
     set token [java::new ptolemy.data.DoubleToken 0.1]
     $initstep setToken $token
 
@@ -164,7 +164,7 @@ test CTRampSystem-4.3 {Ramp with ExplicitRK23Solver and DerivativeResolver} {
     $solver setToken $token
 
     set bpsolver [java::cast ptolemy.data.expr.Parameter \
-	    [$dir getAttribute BreakpointODESolver]]
+	    [$dir getAttribute breakpointODESolver]]
     set token [java::new ptolemy.data.StringToken\
 	    ptolemy.domains.ct.kernel.solver.DerivativeResolver]
     $bpsolver setToken $token
@@ -175,17 +175,17 @@ test CTRampSystem-4.3 {Ramp with ExplicitRK23Solver and DerivativeResolver} {
     $initstate setToken $token
 
     set starttime [java::cast ptolemy.data.expr.Parameter \
-	    [$dir getAttribute StartTime]]
+	    [$dir getAttribute startTime]]
     set token [java::new ptolemy.data.DoubleToken 0.0]
     $starttime setToken $token
 
     set stoptime [java::cast ptolemy.data.expr.Parameter \
-	    [$dir getAttribute StopTime]]
+	    [$dir getAttribute stopTime]]
     set token [java::new ptolemy.data.DoubleToken 1.0]
     $stoptime setToken $token
 
     set initstep [java::cast ptolemy.data.expr.Parameter \
-	    [$dir getAttribute InitialStepSize]]
+	    [$dir getAttribute initStepSize]]
     set token [java::new ptolemy.data.DoubleToken 0.1]
     $initstep setToken $token
 

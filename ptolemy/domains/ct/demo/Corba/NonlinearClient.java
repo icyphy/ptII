@@ -128,11 +128,11 @@ public class NonlinearClient extends CTApplet{
                 _toplevel.connect(gain3.output, add1.plus, "R7");
             myplot.input.link(r1);
 
-            _dir.StartTime.setToken(new DoubleToken(0.0));
+            _dir.startTime.setToken(new DoubleToken(0.0));
 
-            _dir.InitStepSize.setToken(new DoubleToken(0.0001));
+            _dir.initStepSize.setToken(new DoubleToken(0.0001));
 
-            _dir.MinStepSize.setToken(new DoubleToken(1e-6));
+            _dir.minStepSize.setToken(new DoubleToken(1e-6));
 
             sqwv.period.setToken(new DoubleToken(4));
             double offsets[][] = {{0.0, 2.0}};
@@ -164,7 +164,7 @@ public class NonlinearClient extends CTApplet{
      */
     protected void _go() throws IllegalActionException {
         try {
-            _dir.StopTime.setToken(new DoubleToken(
+            _dir.stopTime.setToken(new DoubleToken(
                     _query.doubleValue("stopT")));
             _client.ORBInitProperties.setToken(new StringToken(
                     _query.stringValue("init")));

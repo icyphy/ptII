@@ -474,15 +474,15 @@ public class HelicopterApplet extends CTApplet {
 
             //_debug("Set parameters");
             // CT Director parameters
-            _dir.InitStepSize.setToken(new DoubleToken(0.1));
+            _dir.initStepSize.setToken(new DoubleToken(0.1));
 
-            _dir.MinStepSize.setToken(new DoubleToken(1e-3));
+            _dir.minStepSize.setToken(new DoubleToken(1e-3));
 
-            _dir.MaxStepSize.setToken(new DoubleToken(0.5));
+            _dir.maxStepSize.setToken(new DoubleToken(0.5));
 
             StringToken token1 = new StringToken(
                     "ptolemy.domains.ct.kernel.solver.BackwardEulerSolver");
-            _dir.BreakpointODESolver.setToken(token1);
+            _dir.breakpointODESolver.setToken(token1);
 
             StringToken token2 = new StringToken(
                     "ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver");
@@ -688,15 +688,15 @@ public class HelicopterApplet extends CTApplet {
             break;
         }
 
-        subdir.InitStepSize.setToken(new DoubleToken(0.1));
+        subdir.initStepSize.setToken(new DoubleToken(0.1));
 
-        subdir.MinStepSize.setToken(new DoubleToken(1e-3));
+        subdir.minStepSize.setToken(new DoubleToken(1e-3));
 
-        subdir.MaxStepSize.setToken(new DoubleToken(0.5));
+        subdir.maxStepSize.setToken(new DoubleToken(0.5));
 
         Token token1 = new StringToken(
                 "ptolemy.domains.ct.kernel.solver.BackwardEulerSolver");
-        subdir.BreakpointODESolver.setToken(token1);
+        subdir.breakpointODESolver.setToken(token1);
 
         Token token2 = new StringToken(
                 "ptolemy.domains.ct.kernel.solver.ForwardEulerSolver");
@@ -714,7 +714,7 @@ public class HelicopterApplet extends CTApplet {
      */
     protected void _go() throws IllegalActionException {
         try {
-            _dir.StopTime.setToken(new DoubleToken(
+            _dir.stopTime.setToken(new DoubleToken(
                     _query.doubleValue("stopT")));
             super._go();
             // Start the CurrentTimeThread.

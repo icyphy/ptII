@@ -172,13 +172,13 @@ $dedir setStopTime 15.0
 ############################################################
 ### CT Director Parameters
 #
-set initstep [$ctdir getAttribute InitialStepSize]
+set initstep [$ctdir getAttribute initStepSize]
 $initstep setExpression 0.000001
 
-set minstep [$ctdir getAttribute MinimumStepSize]
+set minstep [$ctdir getAttribute minStepSize]
 $minstep setExpression 1e-6
 
-set solver1 [$ctdir getAttribute BreakpointODESolver]
+set solver1 [$ctdir getAttribute breakpointODESolver]
 set token [java::new ptolemy.data.StringToken ptolemy.domains.ct.kernel.solver.BackwardEulerSolver]
 $solver1 setToken $token
 
