@@ -25,6 +25,9 @@
  
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
+
+@ProposedRating Green (eal@eecs.berkeley.edu)
+
 */
 
 package pt.kernel.util;
@@ -42,32 +45,39 @@ attempt to add an item with no name to a named list.
 @version $Id$
 */
 public class IllegalActionException extends KernelException {
-    /** Constructs an Exception with no detail message */  
+    /** Constructs an Exception with no detail message. */  
     public IllegalActionException() {
         super();
     }
 
-    /** Constructs an Exception with a detail message */  
+    /** Constructs an Exception with a detail message.
+     *  @param detail The message.
+     */  
     public IllegalActionException(String detail) {
         super(detail);
     }
 
     /** Constructs an Exception with a detail message that is only the
-     * name of the argument.
+     *  name of the argument.
+     *  @param obj The object.
      */  
     public IllegalActionException(Nameable obj) {
         super(obj);
     }
 
     /** Constructs an Exception with a detail message that includes the
-     * name of the argument.
+     *  name of the first argument.
+     *  @param obj The object.
+     *  @param detail The message.
      */  
     public IllegalActionException(Nameable obj, String detail) {
         super(obj, detail);
     }
 
     /** Constructs an Exception with a detail message that consists of
-     * only the names of the obj1 and obj2 arguments.
+     *  only the names of the obj1 and obj2 arguments.
+     *  @param obj1 The first object.
+     *  @param obj2 The second object.
      */  
     public IllegalActionException(Nameable obj1, Nameable obj2)  {
         super(obj1, obj2);
@@ -75,6 +85,9 @@ public class IllegalActionException extends KernelException {
 
     /** Constructs an Exception with a detail message that includes the
      * names of the obj1 and obj2 arguments.
+     *  @param obj1 The first object.
+     *  @param obj2 The second object.
+     *  @param detail The message.
      */  
     public IllegalActionException(Nameable obj1, Nameable obj2,
             String detail) {

@@ -26,7 +26,8 @@ name in the collection.
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
+@ProposedRating Green (eal@eecs.berkeley.edu)
+
 */
 
 package pt.kernel.util;
@@ -49,6 +50,7 @@ provide additional information about the error).
 public class NameDuplicationException extends KernelException {
 
     /** Given containee only.
+     *  @param wouldBeContainee The would be containee.
      */  
     public NameDuplicationException(Nameable wouldBeContainee) {
         _setMessage("Attempt to insert object named \"" +
@@ -58,6 +60,8 @@ public class NameDuplicationException extends KernelException {
     }
 
     /** Given containee and string.
+     *  @param wouldBeContainee The would be containee.
+     *  @param moreInfo A message.
      */  
     public NameDuplicationException(Nameable wouldBeContainee,
             String moreInfo) {
@@ -69,6 +73,8 @@ public class NameDuplicationException extends KernelException {
     }
 
     /** Given container and containee.
+     *  @param wouldBeContainee The would be containee.
+     *  @param container The would be container.
      */  
     public NameDuplicationException(Nameable container, 
             Nameable wouldBeContainee) {
@@ -87,6 +93,9 @@ public class NameDuplicationException extends KernelException {
     }
 
     /** Given container, containee, and string.
+     *  @param wouldBeContainee The would be containee.
+     *  @param container The would be container.
+     *  @param moreInfo A message.
      */  
     public NameDuplicationException(Nameable container, 
             Nameable wouldBeContainee, String moreInfo) {

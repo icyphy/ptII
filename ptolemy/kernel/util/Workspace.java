@@ -24,24 +24,71 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
+@ProposedRating Green (eal@eecs.berkeley.edu)
 
 */
 
 package pt.kernel.util;
 
 import java.io.Serializable;
+import java.util.Hashtable;
 import collections.LinkedList;
 import collections.CollectionEnumeration;
 
 //////////////////////////////////////////////////////////////////////////
 //// Workspace
 /** 
-A Workspace is used for synchronization and version tracking 
-of interdependent groups of objects.
-Elements may register with the workspace by calling add(),
-although they are not required to do so in order to use the workspace.
-The names of the elements in the workspace are not required to be unique.
+An instance of Workspace is used for synchronization and version tracking 
+of interdependent groups of objects.  These objects are said to be in the
+workspace. This is not the same as the <i>container</i> association
+in Ptolemy II.  A workspace is never returned by a getContainer() method.
+<p>
+The workspace provides a rudimentary directory service that can
+be used to keep track of the objects within it.  It is not required to use
+it in order to use the workspace for synchronization. Items are added 
+to the directory by calling add().
+The names of the items in the directory are not required to be unique.
+<p>
+When reading the state of objects in the workspace, a thread must
+ensure that no other thread is simultaneously modifying the objects in the
+workspace.  To read-synchronize on its workspace, it uses the following
+code in a method:
+<pre>
+    try {
+	workspace().read();
+	// ... code that reads
+    } finally {
+	workspace().doneReading();
+    }
+</pre>
+We assume that the workspace() method returns the workspace, as for example
+in the NamedObj class. The read() method suspends the thread if
+another thread is currently modifying the workspace, and otherwise
+returns immediately. The finally clause is executed even if
+an exception occurs.  This is essential because without the call
+to doneReading(), the workspace will never again allow any thread
+to modify it.  It believes there is still a thread reading it.
+Any number of threads can simultaneously read the workspace.
+<p>
+To make changes in the workspace, a thread must write-synchronize
+using the following code:
+<pre>
+    try {
+	workspace().write();
+	// ... code that writes
+    } finally {
+	workspace().doneWriting();
+    }
+</pre>
+Only one thread can be writing to the workspace at a time, and
+while the write permission is held, no thread can read the workspace.
+Again, the call to doneWriting() is essential, or the workspace
+will remain permanently locked to either reading or writing.
+<p>
+Note that it is not necessary to obtain a write lock just to add
+an item to the workspace directory.  The methods for accessing
+the directory are all synchronized, so there is no risk of any
+thread reading an inconsistent state.
 
 @author Edward A. Lee
 @version $Id$
@@ -52,78 +99,126 @@ public class Workspace implements Nameable, Serializable {
      */	
     public Workspace() {
         setName("");
-        _contents = new LinkedList();
+        _directory = new LinkedList();
     }
 
     /** Create a workspace with the specified name.  This name will form the
-     *  prefix of the full name of all contained objects.
-     *  @exception IllegalActionException Argument is null.
-     *  @param name Name of the workspace to be created.
+     *  prefix of the full name of all contained objects. If the name
+     *  argument is null, then an empty string "" is used as the name.
+     *  @param name Name of the workspace.
      */	
-    public Workspace(String name)
-            throws IllegalActionException {
+    public Workspace(String name) {
         setName(name);
-        _contents = new LinkedList();
+        _directory = new LinkedList();
     }
 
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
 
-    /** Append an element to the contents list. The names of the objects
-     *  in the workspace are not required to be unique.
-     *  Only elements with no container can be added.  Elements with
+    /** Add an item to the directory. The names of the objects
+     *  in the directory are not required to be unique.
+     *  Only items with no container can be added.  Items with
      *  a container are still viewed as being within the workspace, but
-     *  they are not explicitly listed in the contents list.  Instead,
+     *  they are not explicitly listed in the directory.  Instead,
      *  their top-level container is expected to be listed (although this
      *  is not enforced).  Increment the version number.
-     *  @param element Object to contain.
-     *  @exception IllegalActionException Object has a container or is
-     *   already on the list.
+     *  @param item Item to list in the directory.
+     *  @exception IllegalActionException If the item has a container, is
+     *   already in the directory, or is not in this workspace.
      */	
-    public synchronized void add(Nameable element)
+    public synchronized void add(NamedObj item)
             throws IllegalActionException {
-        if (element.getContainer() != null) {
-            throw new IllegalActionException(this, element,
-                    "Cannot add an object with a container to a workspace.");
+        if (item.workspace() != this) {
+            throw new IllegalActionException(this, item,
+            "Cannot add an item to the directory of a workspace that it " +
+            "is not in.");
         }
-        if (_contents.firstIndexOf(element) >= 0) {
-            throw new IllegalActionException(this, element,
-                    "Object is already listed in the workspace.");
+        if (item.getContainer() != null) {
+            throw new IllegalActionException(this, item,
+            "Cannot add an object with a container to a workspace directory.");
         }
-        _contents.insertLast(element);
+        if (_directory.firstIndexOf(item) >= 0) {
+            throw new IllegalActionException(this, item,
+            "Object is already listed in the workspace directory.");
+        }
+        _directory.insertLast(item);
         incrVersion();
     }
 
-    /** Return a full description of the workspace and everything in it.
-     *  This is accomplished
+    /** Return a full description of the workspace and everything in its
+     *  directory.  This is accomplished
      *  by calling the description method with an argument for full detail.
-     *  @return A description of the object.
+     *  @return A description of the workspace.
      */
-    public String description() {
+    public synchronized String description() {
+        // NOTE: It is not strictly needed for this method to be
+        // synchronized, since _description is.  However, by making it
+        // synchronized, the documentation shows this on the public
+        // interface, not just the protected one.
         return description(NamedObj.ALL);
     }
 
-    /** Return a description of the object.  The level of detail depends
+    /** Return a description of the workspace. The level of detail depends
      *  on the argument, which is an or-ing of the static final constants
      *  defined in the NamedObj class.  This method returns an empty
-     *  string (not null) if there is nothing to report.
-     *  It is synchronized on the workspace.
+     *  string (not null) if there is nothing to report.  If the contents
+     *  are requested, then the items in the directory are also described.
      *  @param detail The level of detail.
      *  @return A description of the workspace.
      */
-    public String description(int detail) {
+    public synchronized String description(int detail) {
+        // NOTE: It is not strictly needed for this method to be
+        // synchronized, since _description is.  However, by making it
+        // synchronized, the documentation shows this on the public
+        // interface, not just the protected one.
         return _description(detail, 0);
     }
 
-    /** Enumerate the elements in the contents list, in the order in which
+    /** Enumerate the items in the directory, in the order in which
      *  they were added.
-     *  @return An enumeration of Nameable objects.
+     *  @return An enumeration of NamedObj objects.
      */	
-    public synchronized CollectionEnumeration elements() {
-        return _contents.elements();
+    public synchronized CollectionEnumeration directory() {
+        return _directory.elements();
     }
 
-    /** Get the owner or container.  Always return null since a namespace
+    /** Indicate that the calling thread is finished reading.
+     *  If this thread is completely done reading (it has no other
+     *  active read or write permissions), then wake up any threads that are
+     *  suspended on access to this
+     *  workspace so that they may contend for permissions.
+     *  @exception InvalidStateException
+     *   If this method is called before a corresponding call to read().
+     */
+    public synchronized void doneReading() {
+        Thread current = Thread.currentThread();
+        ReadCount depth = (ReadCount)_readers.get(current);
+        if (depth == null) {
+            throw new InvalidStateException(this,
+            "Workspace: doneReading() called before read()!");
+        }
+        depth.decr();
+        if (depth.zero()) {
+            _readers.remove(current);
+            if (_writer != current) {
+                notifyAll();
+            }
+        }
+    }
+
+    /** Indicate that the calling thread is finished writing.
+     *  This wakes up any threads that are suspended on access to this
+     *  workspace so that they may contend for permissions.
+     *  It also increments the version number of the workspace.
+     */
+    public synchronized void doneWriting() {
+        _writeReq--;
+        _writer = null;
+        incrVersion();
+        notifyAll();
+    }
+
+    /** Get the container.  Always return null since a workspace
      *  has no container.
      *  @return null.
      */
@@ -131,7 +226,7 @@ public class Workspace implements Nameable, Serializable {
 	return null;
     }
 
-    /** Get the name.
+    /** Get the full name.
      *  @return The name of the workspace.
      */
     public String getFullName() {
@@ -139,13 +234,13 @@ public class Workspace implements Nameable, Serializable {
     }
 
     /** Get the name.
-     *  @return The name of the object. 
+     *  @return The name of the workspace. 
      */	
     public String getName() { 
         return _name; 
     }
     /** Get a the version number
-     *  @return A non-negative integer.
+     *  @return A non-negative long integer.
      */	
     public synchronized long getVersion() {
         return _version;
@@ -157,24 +252,56 @@ public class Workspace implements Nameable, Serializable {
         _version++;
     }
 
-    /** Remove the specified element from the contents list.
-     *  Note that that element will still refer to this workspace as
+    /** Obtain permission to read objects in the workspace.
+     *  This method suspends the calling thread until such permission
+     *  has been obtained.  Permission is granted unless either another
+     *  thread has write permission, or there are there are threads that
+     *  have requested write permission and not gotten it yet.
+     *  It is essential that doneReading() be called
+     *  after this, or write permission may never again be granted in
+     *  this workspace. 
+     */
+    public synchronized void read() {
+        while (true) {
+            // If the current thread has write permission, or if there
+            // are no pending write requests, then grant read permission.
+            Thread current = Thread.currentThread();
+            if (current == _writer || _writeReq == 0 ) {
+                // The thread may already have read permission.
+                ReadCount depth = (ReadCount)_readers.get(current);
+                if (depth == null) {
+                    depth = new ReadCount();
+                    _readers.put(current, depth);
+                }
+                depth.incr();
+                return;
+            }
+            try {
+                wait();
+            } catch(InterruptedException ex) {
+                // Ignore, since it's still not safe to return.
+            }
+        }
+    }
+
+    /** Remove the specified item from the directory.
+     *  Note that that item will still refer to this workspace as
      *  its workspace (its workspace is immutable).  If the object is
-     *  not in the workspace, do nothing.
+     *  not in the directory, do nothing.
      *  Increment the version number.
      */	
-    public synchronized void remove(Object element) {
-        _contents.removeOneOf(element);
+    public synchronized void remove(NamedObj item) {
+        _directory.removeOneOf(item);
         incrVersion();
     }
 
-    /** Remove all elements from the contents list.
-     *  Note that those elements will still refer to this workspace as
+    /** Remove all items from the directory.
+     *  Note that those items will still refer to this workspace as
      *  their workspace (their workspace is immutable).
      *  Increment the version number.
      */	
     public synchronized void removeAll() {
-        _contents.clear();
+        _directory.clear();
         incrVersion();
     }
 
@@ -185,28 +312,68 @@ public class Workspace implements Nameable, Serializable {
      */
     public synchronized void setName(String name) {
         if (name == null) {
-            name = new String("");
+            name = "";
         }
         _name = name;
         incrVersion();
     }
 
-    /** Return a concise description of the object. */ 
+    /** Return a concise description of the object.
+     *  @return The classname and name.
+     */ 
     public String toString() {
         return "pt.kernel.Workspace {" + getFullName()+ "}";
+    }
+
+    /** Obtain permission to write to objects in the workspace.
+     *  Permission is granted if there are no other threads that currently 
+     *  have read or write permission.  In particular, it <i>is</i> granted
+     *  if this thread already has write permission, or if it is the only
+     *  thread with read permission.
+     *  This method suspends the calling thread until such permission
+     *  has been obtained.  It is essential that doneWriting() be called
+     *  after this, or read or write permission may never again be granted in
+     *  this workspace.
+     */
+    public synchronized void write() {
+        _writeReq++;
+        while (true) {
+            Thread current = Thread.currentThread();
+            if (current == _writer) {
+                // already have write permission
+                return;
+            }
+            if ( _writer == null) {
+                // there are no writers.  Are there any readers?
+                if (_readers.isEmpty()) {
+                    // No readers
+                    _writer = Thread.currentThread();
+                    return;
+                }
+                if (_readers.size() == 1 && _readers.get(current) != null) {
+                    // Sole reader is this thread.
+                    _writer = Thread.currentThread();
+                    return;
+                }
+            }
+            try {
+                wait();
+            } catch(InterruptedException ex) {
+                // Ignore, since it's still not safe to return.
+            }
+        }
     }
 
     //////////////////////////////////////////////////////////////////////////
     ////                         protected methods                        ////
 
-    /** Return a description of the object.  The level of detail depends
+    /** Return a description of the workspace.  The level of detail depends
      *  on the argument, which is an or-ing of the static final constants
-     *  defined in the NamedObj class.
-     *  This method is synchronized to prevent the workspace from changing
-     *  while the description is being generated.
+     *  defined in the NamedObj class.  If the contents are requested,
+     *  then the items in the directory are also described.
      *  @param detail The level of detail.
      *  @param indent The amount of indenting.
-     *  @return A description of the object.
+     *  @return A description of the workspace.
      */
     public synchronized String _description(int detail, int indent) {
         String result = NamedObj._indent(indent);
@@ -223,8 +390,8 @@ public class Workspace implements Nameable, Serializable {
             if ((detail & (NamedObj.CLASSNAME | NamedObj.FULLNAME)) != 0) {
                 result += " ";
             }
-            result += "elements {\n";
-            CollectionEnumeration enum = elements();
+            result += "directory {\n";
+            CollectionEnumeration enum = directory();
             while (enum.hasMoreElements()) {
                 NamedObj obj = (NamedObj)enum.nextElement();
                 // If deep is not set, the zero-out the contents flag
@@ -243,11 +410,44 @@ public class Workspace implements Nameable, Serializable {
     ////                         private variables                        ////
 
     // List of contained objects.
-    private LinkedList _contents;
+    private LinkedList _directory;
 
     // The name
     private String _name;
 
     // Version number.
     private long _version;
+
+    // The currently writing thread (if any).
+    private Thread _writer;
+
+    // The number of pending write requests.
+    private int _writeReq = 0;
+
+    // A table by readers (threads) of how many times they have gotten
+    // read permission.
+    private Hashtable _readers = new Hashtable();
+
+    //////////////////////////////////////////////////////////////////////////
+    ////                         inner classes                            ////
+    
+    // Class ReadCount
+    // Keeps track of the number of reader permissions that a thread has.
+    // This is used instead of the Integer class because Integer has no
+    // incr() or decr() methods.  These methods save creating new instances
+    // every time a read permission is granted.
+    private class ReadCount implements Serializable {
+        public ReadCount() {
+        }
+        public void decr() {
+            _count--;
+        }
+        public void incr() {
+            _count++;
+        }
+        public boolean zero() {
+            return _count <= 0;
+        }
+        private int _count = 0;
+    }
 }

@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
+@ProposedRating Green (eal@eecs.berkeley.edu)
 
 */
 
@@ -57,10 +57,11 @@ sizes of the cross-reference lists.
 public final class CrossRefList implements Serializable  {
 
     // FIXME: add "final" modifiers noted below when JDK 1.2 is released.
+    // NOTE: Why is this necessary?  The class is final... EAL
 
-    /** Constructor requires a non-null container.
-     *  @param container The Container of the object to be constructed.
-     *  @exception IllegalActionException Argument is null.
+    /** Construct a list with the specified container.
+     *  @param container The container of the object to be constructed.
+     *  @exception IllegalActionException If the argument is null.
      */
     public CrossRefList(Object container) 
             throws IllegalActionException {
@@ -68,38 +69,56 @@ public final class CrossRefList implements Serializable  {
             throw new IllegalActionException(
                     "Attempt to create CrossRefList with a null container.");
         }
-        // This should be initializing a blank final.
         _container = container; 
-        _listVersion = 0;
-        _size = 0;
-        _headNode = null;
-        _lastNode = null;
     }
     
     /** Copy constructor. 
      *  Create a new list that duplicates an original list except that it
-     *  has a new container.
-     *  @exception IllegalActionException Second argument is null.
+     *  has a new container.  This method synchronizes on the original list.
+     *  @param container The container of the object to be constructed.
+     *  @param originalList The model to copy.
+     *  @exception IllegalActionException If either argument is null.
      */
     public CrossRefList(Object container, CrossRefList originalList)
             throws IllegalActionException {
         this(container);
-        _duplicate(originalList);
+        if (originalList == null) {
+            throw new IllegalActionException(
+                    "Attempt to copy a CrossRefList from a null model.");
+        }
+        synchronized(originalList) {
+            if(originalList.size() == 0) return; // List to copy is empty.
+            for(CrossRef p = originalList._headNode; p != null; p = p._next) {
+                if(p._far != null) {
+                    if(p._far._nearList() != null) {
+                        link(p._far._nearList());
+                    }
+                }
+            }
+        }
     }
 
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
     
-    /** Return the first object referenced by this list, or null if the
+    /** Return the first remote object referenced by this list, or null if the
      *  list is empty.
      *  Time complexity: O(1).
+     *  @return The first entry, or null if there is none.
      */
     public synchronized Object first() {
-        return _headNode._farContainer();
+        if (_headNode != null) {
+            return _headNode._farContainer();
+        } else {
+            return null;
+        }
     }
     
-    /** Enumerate the objects referenced by this list.
+    /** Enumerate the objects referenced by this list. Note that
+     *  an object may be enumerated more than once if more than one
+     *  link to it has been established.
      *  Time complexity: O(1).
+     *  @return An enumeration of remote referenced objects.
      */
     public synchronized Enumeration getLinks() { 
         return new CrossRefEnumeration();
@@ -107,6 +126,8 @@ public final class CrossRefList implements Serializable  {
     
     /** Return true if the specified object is referenced on this list. 
      *  Time complexity: O(n).
+     *  @param obj An object that might be referenced.
+     *  @return A boolean indicating whether the object is referenced.
      */
     public synchronized boolean isLinked(Object obj) {
         if (obj == null || _size == 0) return false;
@@ -118,39 +139,42 @@ public final class CrossRefList implements Serializable  {
         return false;
     }
     
-    /** Link to another CrossRefList.
-     *  Instantiate a new CrossRef in the specified (far) list and link
-     *  that to the the new one here.  Redundant links are allowed.
+    /** Link to a remote object. Redundant links are allowed.
+     *  Note that this method does not synchronize on the remote object.
+     *  Thus, this method should be called within a write-synchronization of
+     *  the common workspace.
      *  Time complexity: O(1).
-     *  @exception IllegalActionException Proposed link is back this link.
+     *  @param farList The cross reference list contained by the remote object.
+     *  @exception IllegalActionException If the remote object is the container
+     *   of this cross reference list.
      */
     public synchronized void link(CrossRefList farList) 
             throws IllegalActionException {
-        if(farList == this)
-            throw new IllegalActionException("illegal link-back");
-
-        // FIXME: Technically, this will not always prevent deadlock, since
-        // grabbing the lock on "this" is not atomic with grabbing the lock
-        // on the modelToCopy.  This method should instead grab a lock on a
-        // common container.
-        synchronized(farList) {
-            ++_listVersion;
-            CrossRef localCrossRef = new CrossRef();
-            // FIXME: put below line in initializer and
-            // make _far a "blank final"
-            localCrossRef._far = farList.new CrossRef(localCrossRef);
+        if(farList == this) {
+            throw new IllegalActionException(
+                "CrossRefLink.link: Illegal self-link.");
         }
+
+        ++_listVersion;
+        CrossRef localCrossRef = new CrossRef();
+        // FIXME: put below line in initializer and
+        // make _far a "blank final"
+        // NOTE: Again: why? Class is final... EAL
+        localCrossRef._far = farList.new CrossRef(localCrossRef);
     }
     
     /** Return size of this list. 
      *  Time complexity: O(1).
+     *  @return A non-negative integer.
      */
     public synchronized int size() {
         return _size;
     }
 
-    /** Delete a link to the specified object. 
+    /** Delete a link to the specified object.   If there is no such
+     *  link, ignore.
      *  Time complexity: O(n).
+     *  @param obj The object to delete.
      */
     public synchronized void unlink(Object obj) {
         if (obj == null || _size == 0) return;
@@ -193,40 +217,16 @@ public final class CrossRefList implements Serializable  {
     }
 
     //////////////////////////////////////////////////////////////////////////
-    ////                         private methods                          ////
-
-    /** Duplicate the contents of another list, creating back references in
-     *  the remote lists to this one.
-     *  Time complexity: O(n).
-     */
-    private synchronized void _duplicate(CrossRefList modelToCopy) 
-            throws IllegalActionException {
-        // FIXME: Technically, this will not always prevent deadlock, since
-        // grabbing the lock on "this" is not atomic with grabbing the lock
-        // on the modelToCopy.  This method should instead grab a lock on a
-        // common container.
-        synchronized(modelToCopy) {
-            if(modelToCopy.size() == 0) return; // List to copy is empty.
-            for(CrossRef p = modelToCopy._headNode; p != null; p = p._next) {
-                if(p._far != null) {
-                    if(p._far._nearList() != null) {
-                        link(p._far._nearList());
-                    }
-                }
-            }
-        }
-    }
-
-    //////////////////////////////////////////////////////////////////////////
     ////                         private variables                        ////
     
     // Version number is incremented each time the list is modified.
     // This is used to make sure that elements accessed via an enumeration
     // are valid.  This is inspired by a similar mechanism in Doug Lea's
     // Java Collections.
-    private int _listVersion;
+    private int _listVersion = 0;
     
-    private int _size;
+    // The code ensures that if this is non-zero, then _headNode is non-null.
+    private int _size = 0;
     
     private CrossRef _headNode;
     
@@ -234,6 +234,7 @@ public final class CrossRefList implements Serializable  {
     
     // FIXME: make final to prohibit what is called "reference
     // reseating" (not resetting).
+    // NOTE: Why?  The class is final... EAL
     private Object _container;
     
     //////////////////////////////////////////////////////////////////////////
@@ -372,3 +373,4 @@ public final class CrossRefList implements Serializable  {
         private boolean _startAtHead;
     }
 }
+

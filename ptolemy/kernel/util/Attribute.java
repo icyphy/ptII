@@ -46,7 +46,7 @@ public class Attribute extends NamedObj {
 
     /** Construct an attribute in the default workspace with an empty string
      *  as its name.
-     *  The object is added to the list of objects in the workspace.
+     *  The object is added to the directory of the workspace.
      *  Increment the version number of the workspace.
      */
     public Attribute() {
@@ -57,7 +57,7 @@ public class Attribute extends NamedObj {
      *  string as a name. You can then change the name with setName().
      *  If the workspace argument
      *  is null, then use the default workspace.
-     *  The object is added to the list of objects in the workspace.
+     *  The object is added to the directory of the workspace.
      *  Increment the version number of the workspace.
      *  @param workspace The workspace that will list the attribute.
      */
@@ -70,10 +70,11 @@ public class Attribute extends NamedObj {
      *  NullPointerException will be thrown.  This attribute will use the
      *  workspace of the container for synchronization and version counts.
      *  If the name argument is null, then the name is set to the empty string.
-     *  The object is not added to the list of objects in the workspace,
+     *  The object is not added to the directory of the workspace
      *  unless the container is null.
      *  Increment the version of the workspace.
      *  @param container The container.
+
      *  @param name The name of the attribute.
      *  @exception IllegalActionException If the attribute is not of an
      *   acceptable class for the container.
@@ -89,10 +90,10 @@ public class Attribute extends NamedObj {
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
 
-    /** Clone the object and register the clone in the workspace.
-     *  The result is an attribute with no container that
-     *  is registered with the workspace.
-     *  @param ws The workspace in which to place the cloned object.
+    /** Clone the object into the specified workspace and add the clone
+     *  to the directory of that workspace.
+     *  The result is an attribute with no container.
+     *  @param ws The workspace in which to list the cloned object.
      *  @exception CloneNotSupportedException Thrown only in derived classes.
      *  @return The cloned attribute.
      */
@@ -118,14 +119,14 @@ public class Attribute extends NamedObj {
      *  If this attribute is already contained by the NamedObj, do nothing.
      *  If the attribute already has a container, remove
      *  this attribute from its attribute list first.  Otherwise, remove 
-     *  it from the list of objects in the workspace, if it is present.
+     *  it from the directory of the workspace, if it is present.
      *  If the argument is null, then remove it from its container.
-     *  It is not added to the workspace, so this could result in
+     *  It is not added to the workspace directory, so this could result in
      *  this object being garbage collected.
      *  Note that since an Attribute is a NamedObj, it can itself have
      *  attributes.  However, recursive containment is not allowed, where
      *  an attribute is an attribute of itself, or indirectly of any attribute
-     *  it contains.  This method is synchronized on the
+     *  it contains.  This method is write-synchronized on the
      *  workspace and increments its version number.
      *  @param container The container to attach this attribute to..
      *  @exception IllegalActionException If this attribute is not of the
@@ -141,7 +142,8 @@ public class Attribute extends NamedObj {
             throw new IllegalActionException(this, container,
                 "Cannot set container because workspaces are different.");
         }
-        synchronized(workspace()) {
+        try {
+            workspace().write();
             if (deepContains(container)) {
                 throw new IllegalActionException(this, container,
                 "Attempt to construct recursive containment of attributes.");
@@ -160,7 +162,8 @@ public class Attribute extends NamedObj {
             if (prevcontainer != null) {
                 prevcontainer._removeAttribute(this);
             }
-            workspace().incrVersion();
+        } finally {
+            workspace().doneWriting();
         }
     }
 
@@ -172,7 +175,7 @@ public class Attribute extends NamedObj {
      *  in invalid references to objects. 
      *  In this class, this method reinitializes the private member, the
      *  container, so that it is null.
-     *  @param ws The workspace that the cloned object is to be placed in.
+     *  @param ws The workspace that the cloned object is to be listed in.
      */
     protected void _clearAndSetWorkspace(Workspace ws) {
         super._clearAndSetWorkspace(ws);

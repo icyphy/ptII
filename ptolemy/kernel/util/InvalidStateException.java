@@ -23,6 +23,9 @@
  
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
+
+@ProposedRating Green (eal@eecs.berkeley.edu)
+
 */
 
 package pt.kernel.util;
@@ -54,34 +57,44 @@ public class InvalidStateException extends RuntimeException {
         this(null, null, "Serious internal error!");
     }
 
-    /** Constructs an Exception with only a detail message. */  
+    /** Constructs an Exception with only a detail message.
+     *  @param detail The message.
+     */
     public InvalidStateException(String detail) {
         this(null, null, detail);
     }
 
     /** Constructs an Exception with a message that is only the
-     * name of the argument.
+     *  name of the first argument.
+     *  @param obj The object.
      */  
     public InvalidStateException(Nameable obj) {
         this(obj, null, "Serious internal error!");
     }
 
     /** Constructs an Exception with a detail message that includes the
-     * name of the first argument and the second argument string.
+     *  name of the first argument and the second argument string.
+     *  @param obj The object.
+     *  @param detail The message.
      */  
     public InvalidStateException(Nameable obj, String detail) {
         this(obj, null, detail);
     }
 
     /** Constructs an Exception with a detail message that consists of
-     * only the names of the two arguments.
+     *  only the names of the two arguments.
+     *  @param obj1 The first object.
+     *  @param obj2 The second object.
      */  
     public InvalidStateException(Nameable obj1, Nameable obj2)  {
         this(obj1, obj2, "Serious internal error!");
     }
 
     /** Constructs an Exception with a detail message that includes the
-     * names of the first two arguments plus the third argument string.
+     *  names of the first two arguments plus the third argument string.
+     *  @param obj1 The first object.
+     *  @param obj2 The second object.
+     *  @param detail The message.
      */  
     public InvalidStateException(Nameable obj1, Nameable obj2,
             String detail) {
@@ -112,14 +125,6 @@ public class InvalidStateException extends RuntimeException {
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
 
-    /** Get a localized version of the detail message.  Note that
-     *  in this implementation, we merely return the same result as
-     *  getMessage().
-     */  
-    public String getLocalizedMessage() {
-        return getMessage();
-    }
-
     /** Get the detail message. */
     public String getMessage() {
         return _message;
@@ -130,6 +135,8 @@ public class InvalidStateException extends RuntimeException {
 
     /** Get the name of a Nameable object.
      *  If the argument is a null reference, return an empty string.
+     *  @param obj An object with a name.
+     *  @return The name of the argument.
      */
     protected String _getName(Nameable obj) {
         String name;
@@ -147,6 +154,8 @@ public class InvalidStateException extends RuntimeException {
     /** Get the name of a Nameable object.  This method attempts to use
      *  getFullName(), if it is defined, and resorts to getName() if it is
      *  not.  If the argument is a null reference, return an empty string.
+     *  @param obj An object with a full name.
+     *  @return The full name of the argument.
      */
     protected String _getFullName(Nameable obj) {
         String name;
@@ -163,6 +172,7 @@ public class InvalidStateException extends RuntimeException {
     }
 
     /** Sets the error message to the specified string.
+     *  @param msg The message.
      */  
     protected void _setMessage(String msg) {
         _message = msg;

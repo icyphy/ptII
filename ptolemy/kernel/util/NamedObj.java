@@ -66,8 +66,9 @@ provided to change it. Derived classes that support hierarchy provide one
 or more methods that set the container.
 <p>
 By convention, if the container of
-a NamedObj is set, ir then should be removed from the workspace.
-The workspace is expected to list only top-level objects in a hierarchy.
+a NamedObj is set, then it should be removed from the workspace directory,
+if it is present.  The workspace directory is expected
+to list only top-level objects in a hierarchy.
 The NamedObj can still use the workspace for synchronization.
 Any object contained by another uses the workspace of its container
 as its own workspace by default.
@@ -119,6 +120,10 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
         _workspace = workspace;
         // Exception cannot occur, so we ignore. The object does not
         // have a container, and is not already on the workspace list.
+        // NOTE: This does not need to be write-synchronized on the workspace
+        // because the only side effect is adding to the directory,
+        // and methods for adding and reading from the directory are
+        // synchronized.
         try {
             workspace.add(this);
         } catch (IllegalActionException ex) {
@@ -130,7 +135,7 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
 
-    /** Clone the object and register the cloned object in the 
+    /** Clone the object and add the cloned object to the directory of the
      *  workspace in which the original object resides.
      *  This overrides the protected clone() method of
      *  java.lang.Object, which makes a field-by-field copy, to
@@ -140,7 +145,7 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
      *  method serves the function of a constructor, which is not
      *  called, making the state of the cloned object like
      *  one that has just been constructed.
-     *  This method synchronizes on the workspace.
+     *  This method read-synchronizes on the workspace.
      *  @return A new NamedObj.
      *  @exception CloneNotSupportedException If any of the attributes
      *   cannot be cloned.
@@ -149,8 +154,8 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
         return clone(workspace());
     }
 
-    /** Clone the object and register the clone in the specified 
-     *  workspace. This uses the clone() method of
+    /** Clone the object into the specified workspace and add the clone
+     *  to the directory of that workspace. This uses the clone() method of
      *  java.lang.Object, which makes a field-by-field copy, and then
      *  calls the protected method _clearAndSetWorkspace(), which is
      *  expected to remove references that should not be in the clone.
@@ -159,8 +164,8 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
      *  called, making the state of the cloned object like
      *  one that has just been constructed.  It then clones the
      *  attributes on the attribute list, if there is one.
-     *  This method synchronizes on the workspace.
-     *  @param ws The workspace in which to place the new object.
+     *  This method read-synchronizes on the workspace.
+     *  @param ws The workspace in which to list the new object.
      *  @return A new NamedObj.
      *  @exception CloneNotSupportedException If any of the attributes
      *   cannot be cloned.
@@ -174,8 +179,12 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
         // workspace. Moreover, no object in the old workspace can have
         // a reference to the cloned object because we have only just
         // created it and have not returned the reference.
-        synchronized(workspace()) {
+        try {
+            workspace().read();
             NamedObj result = (NamedObj)super.clone();
+            // NOTE: It is not necessary to write-synchronize on the other
+            // workspace because this only affects its directory, and methods
+            // to access the directory are synchronized.
             result._clearAndSetWorkspace(ws);
             try {
                 ws.add(result);
@@ -195,6 +204,8 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
                 }
             }
             return result;
+        } finally {
+            workspace().doneReading();
         }
     }
 
@@ -205,13 +216,14 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
      *  This method ignores whether the entities report that they are
      *  atomic (see CompositeEntity), and always returns false if the entities
      *  are not in the same workspace.
-     *  This method is synchronized on the workspace.
+     *  This method is read-synchronized on the workspace.
      *  @see CompositeEntity.isAtomic
      *  @return True if this contains the argument, directly or indirectly.
      */	
     public boolean deepContains(NamedObj inside) {
         if (workspace() != inside.workspace()) return false;
-        synchronized(workspace()) {
+        try {
+            workspace().read();
             // Start with the inside and check its containers in sequence.
             if (inside != null) {
                 Nameable container = inside.getContainer();
@@ -223,11 +235,14 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
                 }
             }
             return false;
+        } finally {
+            workspace().doneReading();
         }
     }
 
     /** Return a full description of the object. This is accomplished
      *  by calling the description method with an argument for full detail.
+     *  This method read-synchronizes on the workspace.
      *  @return A description of the object.
      */
     public String description() {
@@ -238,7 +253,7 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
      *  on the argument, which is an or-ing of the static final constants
      *  defined in this class (NamedObj).  This method returns an empty
      *  string (not null) if there is nothing to report.
-     *  It is synchronized on the workspace.
+     *  It read-synchronizes on the workspace.
      *  @param detail The level of detail.
      *  @return A description of the object.
      */
@@ -266,11 +281,12 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
      *  since there is no container.
      *  But derived classes might erroneously permit recursive structures,
      *  so this error is caught here.
-     *  This method is synchronized on the workspace.
+     *  This method is read-synchronized on the workspace.
      *  @return The full name of the object.
      */
     public String getFullName() {
-        synchronized (workspace()) {
+        try {
+            workspace().read();
             // NOTE: For improved performance, the full name could be cached.
             String fullname = getName();
             // Use a linked list to keep track of what we've seen already.
@@ -293,6 +309,8 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
                 container = container.getContainer();
             }
             return workspace().getName() + "." + fullname;
+        } finally {
+            workspace().doneReading();
         }
     }
 
@@ -305,43 +323,51 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
     }
 
     /** Get the attribute with the given name.
-     *  This method is synchronized on the workspace.
+     *  This method is read-synchronized on the workspace.
      *  @param name The name of the desired attribute.
      *  @return The requested attribute if it is found, null otherwise.
      */
     public Attribute getAttribute(String name) {
-        synchronized(workspace()) {
+        try {
+            workspace().read();
             return (Attribute) _attributes.get(name);
+        } finally {
+            workspace().doneReading();
         }
     }
 
     /** Return an enumeration of the attributes attached to this object.
-     *  This method is synchronized on the workspace.
+     *  This method is read-synchronized on the workspace.
      *  @return An enumeration of instances of Attribute.
      */
     public Enumeration getAttributes() {
-        synchronized(workspace()) {
+        try {
+            workspace().read();
             if  (_attributes == null) {
                 return (new NamedList()).getElements();
             } else {
                 return _attributes.getElements();
             }
+        } finally {
+            workspace().doneReading();
         }
     }
     
     /** Set or change the name.  If a null argument is given the
      *  name is set to an empty string.
      *  Increment the version of the workspace.
-     *  This method is synchronized on the workspace.
+     *  This method is write-synchronized on the workspace.
      *  @param name The new name.
      */
     public void setName(String name) {
         if (name == null) {
             name = new String("");
         }
-        synchronized (workspace()) {
+        try {
+            workspace().write();
             _name = name;
-            workspace().incrVersion();
+        } finally {
+            workspace().doneWriting();
         }
     }
 
@@ -413,7 +439,7 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
      *  Derived classes may further constrain the class of the attribute.
      *  To do this, they should override this method to throw an exception
      *  when the argument is not an instance of the expected class.
-     *  This method is synchronized on the workspace and increments its
+     *  This method is write-synchronized on the workspace and increments its
      *  version number.
      *  @param p The attribute to be added.
      *  @exception NameDuplicationException If this object already
@@ -423,7 +449,8 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
      */
     protected void _addAttribute(Attribute p)
             throws NameDuplicationException, IllegalActionException {
-        synchronized(workspace()) {
+        try {
+            workspace().write();
             try {
                 if (_attributes == null) {
                     _attributes = new NamedList();
@@ -433,7 +460,8 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
                 // a Attribute cannot be constructed without a name, so we can
                 // ignore the exception.
             }
-            workspace().incrVersion();
+        } finally {
+            workspace().doneWriting();
         }
     }
  
@@ -458,13 +486,14 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
      *  on the argument, which is an or-ing of the static final constants
      *  defined in this class (NamedObj).  Lines are indented according to
      *  to the level argument using the protected method _indent().
-     *  It is synchronized on the workspace.
+     *  It is read-synchronized on the workspace.
      *  @param detail The level of detail.
      *  @param indent The amount of indenting.
      *  @return A description of the object.
      */
     protected String _description(int detail, int indent) {
-        synchronized (workspace()) {
+        try {
+            workspace().read();
             String result = _indent(indent);
             if((detail & CLASSNAME) != 0) {
                 result += getClass().getName();
@@ -493,6 +522,8 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
                 result = result + _indent(indent) + "}";
             }
             return result;
+        } finally {
+            workspace().doneReading();
         }
     }
 
@@ -511,14 +542,16 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
 
     /** Remove the given attribute.
      *  If there is no such attribute, do nothing.
-     *  This method is synchronized on the workspace and increments its
+     *  This method is write-synchronized on the workspace and increments its
      *  version. It should only be called by setContainer() in Attribute.
      *  @param param The attribute to be removed.
      */
     protected void _removeAttribute(NamedObj param) {
-        synchronized(workspace()) {
+        try {
+            workspace().write();
             _attributes.remove((Nameable)param);
-            workspace().incrVersion();
+        } finally {
+            workspace().doneWriting();
         }
     }
     

@@ -24,12 +24,13 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (eal@eecs.berkeley.edu)
+@ProposedRating Green (eal@eecs.berkeley.edu)
 
-NOTE: This class should probably leverage better
-the underlying LinkedList class. E.g., it should be
+NOTE: This class could leverage better
+the underlying LinkedList class. E.g., it could be
 capable of returning an enumeration sorted alphabetically by name.
-This is the reason for a Red rating.
+This would require extensions to the interface, but not modifications
+of the current interface.
 */
 
 package pt.kernel.util;
@@ -47,11 +48,14 @@ import java.io.Serializable;
 An ordered list of objects with names.
 The objects must implement the Nameable interface.
 The names are required to be unique and non-null.
-
+<p>
 This class is intended to be used with small lists.
 It is implemented as a linked list rather than hash table to
 preserve ordering information, and thus would not provide efficient
 name lookup for large lists.
+<p>
+An instance of this class may have a container, but that container
+is only used for error reporting.
 
 @author Mudit Goel, Edward A. Lee
 @version $Id$
@@ -68,6 +72,7 @@ public class NamedList implements Cloneable, Serializable {
     }
 
     /** Construct an empty list with a Nameable container.
+     *  @param container The container (for error reporting).
      */	
     public NamedList(Nameable container) {
         _namedlist = new LinkedList();
@@ -76,7 +81,8 @@ public class NamedList implements Cloneable, Serializable {
 
     /** Copy constructor.  Create a copy of the specified list, but
      *  with no container. This is useful to permit enumerations over
-     *  a queue while the queue continues to be modified.
+     *  a list while the list continues to be modified.
+     *  @param model The list to copy.
      */	
     public NamedList(NamedList model) {
         _namedlist = new LinkedList();
@@ -91,11 +97,11 @@ public class NamedList implements Cloneable, Serializable {
      *  The element is required to have a name that does not coincide with
      *  that of an element already on the list. 
      *  @param element Element to be added to the list.
-     *  @exception IllegalActionException Argument has no name.
-     *  @exception NameDuplicationException Name coincides with
-     *  an element already on the list.
+     *  @exception IllegalActionException If the argument has no name.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an element already on the list.
      */
-    public void append(Nameable element) 
+    public synchronized void append(Nameable element) 
             throws IllegalActionException, NameDuplicationException {
         String newName = element.getName();
         if (newName == null) {
@@ -111,24 +117,25 @@ public class NamedList implements Cloneable, Serializable {
 
     /** Build an independent copy of the list.
      *  The elements themselves are not cloned.
+     *  @return A new instance of NamedList.
      */
-    public Object clone() { 
+    public synchronized Object clone() { 
         return new NamedList(this); 
     }
 
     /** Get the first element.
-     *  @exception NoSuchElementException The list is empty.
+     *  @exception NoSuchElementException If the list is empty.
      *  @return The specified element.
      */
-    public Nameable first() throws NoSuchElementException {
+    public synchronized Nameable first() throws NoSuchElementException {
 	return (Nameable)_namedlist.first();
     }
 
     /** Get an element by name.
      *  @param name The name of the desired element.
-     *  @return The requested element if it is found, null otherwise.
+     *  @return The requested element if it is found, and null otherwise.
      */
-    public Nameable get(String name) {
+    public synchronized Nameable get(String name) {
         CollectionEnumeration enum = new NamedListEnumeration();
         while( enum.hasMoreElements() ) {
             Nameable obj = (Nameable)enum.nextElement();
@@ -143,14 +150,15 @@ public class NamedList implements Cloneable, Serializable {
      *  @see collections.LinkedList#elements()
      *  @return An enumeration of Nameable objects. 
      */
-    public CollectionEnumeration getElements() {
+    public synchronized CollectionEnumeration getElements() {
         return new NamedListEnumeration();
     }
    
     /** Return true if the specified object is on the list.
      *  @param element Element to be searched for in the list.
+     *  @return A boolean indicating whether the element is on the list.
      */	
-    public boolean includes(Nameable element) {
+    public synchronized boolean includes(Nameable element) {
         CollectionEnumeration enum = new NamedListEnumeration();
         while( enum.hasMoreElements() ) {
             if (element == enum.nextElement()) return true;
@@ -163,14 +171,14 @@ public class NamedList implements Cloneable, Serializable {
      *  appended to the end of the list.
      *  @param name The name of the element after which to insert.
      *  @param element The element to insert.
-     *  @exception IllegalActionException Element to insert has no name.
-     *  @exception NameDuplicationException Element to insert has a
+     *  @exception IllegalActionException If the element to insert has no name.
+     *  @exception NameDuplicationException If the element to insert has a
      *   name that coincides with one already on the list.
      */
-    public void insertAfter(String name, Nameable element) 
+    public synchronized void insertAfter(String name, Nameable element) 
             throws IllegalActionException, NameDuplicationException {
         int index = _getIndexOf(name);
-        if (index == -1) append(element);  // name doesn't exist in list
+        if (index == -1) append(element);   // name doesn't exist in list
         else _insertAt((index+1), element); // name exists in list
     }
 
@@ -179,22 +187,22 @@ public class NamedList implements Cloneable, Serializable {
      *  added to the beginning of the list.
      *  @param name The name of the element before which to insert.
      *  @param element The element to insert.
-     *  @exception IllegalActionException Element to insert has no name.
-     *  @exception NameDuplicationException Element to insert has a
+     *  @exception IllegalActionException If the element to insert has no name.
+     *  @exception NameDuplicationException If the element to insert has a
      *   name that coincides with one already on the list.
      */
-    public void insertBefore(String name, Nameable element) 
+    public synchronized void insertBefore(String name, Nameable element) 
             throws IllegalActionException, NameDuplicationException {
         int index = _getIndexOf(name);
-        if (index == -1) prepend(element);// name doesn't exist in list
+        if (index == -1) prepend(element); // name doesn't exist in list
         else _insertAt(index, element);    // name exists in the list
     }
 
     /** Get the last element.
-     *  @exception NoSuchElementException The list is empty.
-     *  @return The specified element.
+     *  @exception NoSuchElementException If the list is empty.
+     *  @return The last element.
      */
-    public Nameable last() throws NoSuchElementException {
+    public synchronized Nameable last() throws NoSuchElementException {
 	return (Nameable)_namedlist.last();
     }
 
@@ -202,11 +210,11 @@ public class NamedList implements Cloneable, Serializable {
      *  The element is required to have a name that does not coincide with
      *  that of an element already on the list. 
      *  @param element Element to be added to the list.
-     *  @exception IllegalActionException Argument has no name.
-     *  @exception NameDuplicationException Name coincides with
-     *  an element already on the list.
+     *  @exception IllegalActionException If the argument has no name.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an element already on the list.
      */
-    public void prepend(Nameable element) 
+    public synchronized void prepend(Nameable element) 
             throws IllegalActionException, NameDuplicationException {
         String newName = element.getName();
         if (newName == null) {
@@ -223,17 +231,17 @@ public class NamedList implements Cloneable, Serializable {
      *  list, do nothing.
      *  @param element Element to be removed.
      */
-    public void remove(Nameable element) {
+    public synchronized void remove(Nameable element) {
         _namedlist.removeOneOf(element);
     }
 
     /** Remove an element specified by name.  If no such element exists
      *  on the list, do nothing.
      *  @param name Name of the element to be removed.
-     *  @return Return A reference to the removed object, or null if no
-     *  object with the specified name is found.
+     *  @return A reference to the removed object, or null if no
+     *   object with the specified name is found.
      */
-    public Nameable remove(String name) {
+    public synchronized Nameable remove(String name) {
         Nameable element = get(name);
         if (element != null) {
             remove(element);
@@ -243,12 +251,14 @@ public class NamedList implements Cloneable, Serializable {
     }
 
     /** Remove all elements from the list. */
-    public void removeAll() {
+    public synchronized void removeAll() {
         _namedlist.clear();
     }
     
-    /** Return the number of elements in the list. */
-    public int size() {
+    /** Return the number of elements in the list.
+     *  @return A non-negative integer.
+     */
+    public synchronized int size() {
         return _namedlist.size();
     }
 

@@ -23,6 +23,9 @@
  
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
+
+@ProposedRating Green (eal@eecs.berkeley.edu)
+
 */
 
 package pt.kernel.util;
@@ -37,13 +40,17 @@ E.g., attempt to remove a port by name and no such port exists.
 @version $Id$
 */
 public class NoSuchItemException extends KernelException {
-    /** Constructs an Exception with a detail message */  
+    /** Constructs an Exception with a detail message.
+     *  @param detail A message.
+     */  
     public NoSuchItemException(String detail) {
         super(detail);
     }
 
     /** Constructs an Exception with a detail message that includes the
-     * name of the argument.
+     *  name of the argument.
+     *  @param obj An object in which the item might have been.
+     *  @param detail A message.
      */  
     public NoSuchItemException(Nameable obj, String detail) {
         super(obj, detail);
