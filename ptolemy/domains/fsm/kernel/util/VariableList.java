@@ -35,6 +35,7 @@ import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.data.expr.Variable;
 import collections.LinkedList;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.NoSuchElementException;
 
@@ -166,7 +167,7 @@ public class VariableList extends Attribute {
      *  @return An enumeration of the variables in this list.
      */
     public Enumeration getVariables() {
-        return getAttributes();
+        return Collections.enumeration(attributeList());
     }
 
     /** Get the current value of the variable named varname.
@@ -216,7 +217,7 @@ public class VariableList extends Attribute {
      */
     public void setAllVariables(ptolemy.data.Token token)
             throws IllegalActionException {
-        Enumeration enum = getAttributes();
+        Enumeration enum = Collections.enumeration(attributeList());
         while (enum.hasMoreElements()) {
             Variable nextvar = (Variable)enum.nextElement();
             nextvar.setToken(token);
