@@ -105,9 +105,9 @@ public class GiottoScheduler extends Scheduler {
 
         List actorList = compositeActor.deepEntityList();
 
-	/* Sort all actors according to their period.
-	   Small period value means earlier in the list.
-	   Keeps order of actors with same period value. */
+	/* Sort all actors according to their frequency.
+	   Small frequency value means earlier in the list.
+	   Keeps order of actors with same frequency value. */
 	Collections.sort(actorList, new GiottoActorComparator());
 
 	// Compute schedule
@@ -115,17 +115,17 @@ public class GiottoScheduler extends Scheduler {
 	if (actorList.isEmpty())
 	    return null;
 	else {
-	    // Get first actor's period.
-	    // Assumption: It's the lowest period in actorList.
+	    // Get first actor's frequency.
+	    // Assumption: It's the lowest frequency in actorList.
 
 	    Actor actor = (Actor) actorList.get(0);
 
-	    int period = GiottoActorComparator.period(actor);
+	    int frequency = GiottoActorComparator.getFrequency(actor);
 
 	    List scheduleList =_treeSchedule(actorList.listIterator(),
 					     GiottoActorComparator.
-					     _DEFAULT_GIOTTO_PERIOD,
-					     period);
+					     _DEFAULT_GIOTTO_FREQUENCY,
+					     frequency);
 
 	    return Collections.enumeration(scheduleList);
 	}
@@ -137,49 +137,49 @@ public class GiottoScheduler extends Scheduler {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    private List _treeSchedule(ListIterator iterator, int lastPeriod, int period)
+    private List _treeSchedule(ListIterator iterator, int lastFrequency, int frequency)
 	throws NotSchedulableException {
 
-	List samePeriodList = new LinkedList();
-	List higherPeriodList = null;
+	List sameFrequencyList = new LinkedList();
+	List higherFrequencyList = null;
 
 	while (iterator.hasNext()) {
 	    Actor actor = (Actor) (iterator.next());
 
-	    int actorPeriod = GiottoActorComparator.period(actor);
+	    int actorFrequency = GiottoActorComparator.getFrequency(actor);
 
-	    if (actorPeriod == period)
-		samePeriodList.add(actor);
-	    else if (actorPeriod > period) {
+	    if (actorFrequency == frequency)
+		sameFrequencyList.add(actor);
+	    else if (actorFrequency > frequency) {
 		// Makes sure that current actor will be read again.
 
 		Actor dummy = (Actor) (iterator.previous());
 
-		higherPeriodList = _treeSchedule(iterator, period, actorPeriod);
+		higherFrequencyList = _treeSchedule(iterator, frequency, actorFrequency);
 
 		// Redundant break because recursive call
 		// completely iterates iterator.
 
 		break;
 	    } else
-		throw new NotSchedulableException("Sorting periods failed!");
+		throw new NotSchedulableException("Sorting frequencies failed!");
 	}
 
 	List scheduleList = new LinkedList();
 
-	// Assumption: period >= lastPeriod
+	// Assumption: frequency >= lastFrequency
 
-	if ((period%lastPeriod) == 0) {
-	    int currentPeriod = period / lastPeriod;
+	if ((frequency%lastFrequency) == 0) {
+	    int currentFrequency = frequency / lastFrequency;
 
 	    // Length of scheduleList will be even!
 
-	    for (int i = 1; i <= currentPeriod; i++) {
-		scheduleList.add(samePeriodList);
-		scheduleList.add(higherPeriodList);
+	    for (int i = 1; i <= currentFrequency; i++) {
+		scheduleList.add(sameFrequencyList);
+		scheduleList.add(higherFrequencyList);
 	    }
 	} else
-	    throw new NotSchedulableException("Periods not harmonic!");
+	    throw new NotSchedulableException("Frequencies not harmonic!");
 
 	return scheduleList;
     }

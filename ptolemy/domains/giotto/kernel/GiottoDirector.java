@@ -34,6 +34,7 @@ import ptolemy.actor.Receiver;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.sched.StaticSchedulingDirector;
+import ptolemy.actor.sched.Scheduler;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.IllegalActionException;
@@ -131,6 +132,14 @@ public class GiottoDirector extends StaticSchedulingDirector {
         return newobj;
     }
 
+    /** Return the real start time.
+     *  @return The real start time in terms of milliseconds counting 
+     *  from 1/1/1970
+     */
+    public long getRealStartTime() {
+        return _realStartTime;
+    }
+
     /** Calculate the current schedule, if necessary, and iterate
      *  the contained actors in the order given by the schedule.
      *
@@ -148,6 +157,8 @@ public class GiottoDirector extends StaticSchedulingDirector {
 	    if (_debugging)
 		_debug("Giotto director firing!");
 	    
+	    _realStartTime = System.currentTimeMillis();
+
 	    _postfirereturns = _fire(giottoSchedule);
         } else
 	    throw new IllegalActionException(this, "Has no container!");
@@ -212,6 +223,26 @@ public class GiottoDirector extends StaticSchedulingDirector {
         return _postfirereturns;
     }
 
+    /** Return the next time of interest in the Giotto model.
+     *  @return The time of the next iteration.
+     */
+    public double getNextIterationTime() {
+	// FIXME: actor must become method argument.
+	Actor actor = null;
+
+	double currentTime = getCurrentTime();
+
+	int actorFrequency = GiottoActorComparator.getFrequency(actor);
+
+        return currentTime + (_period / actorFrequency);
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    // The static default Giotto period is 100ms.
+    protected static double _DEFAULT_GIOTTO_PERIOD = 0.1;
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -236,6 +267,10 @@ public class GiottoDirector extends StaticSchedulingDirector {
 
         setScheduler(scheduler);
 
+	_setPeriod(_DEFAULT_GIOTTO_PERIOD);
+
+	setCurrentTime(0.0);
+
         iterations = new Parameter(this, "iterations", new IntToken(0));
 
         // FIXME: Remove this after debugging, or when GUI supports it.
@@ -249,12 +284,12 @@ public class GiottoDirector extends StaticSchedulingDirector {
 
 	if (schedule != null)
 	    while (schedule.hasMoreElements()) {
-		List samePeriodList = (List) schedule.nextElement();
+		List sameFrequencyList = (List) schedule.nextElement();
 
-		Enumeration samePeriod = Collections.enumeration(samePeriodList);
+		Enumeration sameFrequency = Collections.enumeration(sameFrequencyList);
 
-		while (samePeriod.hasMoreElements()) {
-		    Actor actor = (Actor) samePeriod.nextElement();
+		while (sameFrequency.hasMoreElements()) {
+		    Actor actor = (Actor) sameFrequency.nextElement();
 
 		    if (_debugging)
 			_debug("Prefiring " + ((NamedObj)actor).getFullName());
@@ -275,19 +310,19 @@ public class GiottoDirector extends StaticSchedulingDirector {
 
 		// Assumption: schedule has even number of elements.
 
-		List higherPeriodList = (List) schedule.nextElement();
+		List higherFrequencyList = (List) schedule.nextElement();
 		
-		if (higherPeriodList != null) {
-		    Enumeration higherPeriod = Collections.enumeration(higherPeriodList);
+		if (higherFrequencyList != null) {
+		    Enumeration higherFrequency = Collections.enumeration(higherFrequencyList);
 
 		    // Recursive call.
-		    postfire = _fire(higherPeriod) && postfire;
+		    postfire = _fire(higherFrequency) && postfire;
 		}
 
-		samePeriod = Collections.enumeration(samePeriodList);
+		sameFrequency = Collections.enumeration(sameFrequencyList);
 
-		while (samePeriod.hasMoreElements()) {
-		    Actor actor = (Actor) samePeriod.nextElement();
+		while (sameFrequency.hasMoreElements()) {
+		    Actor actor = (Actor) sameFrequency.nextElement();
 
 		    if (_debugging)
 			_debug("Updating " + ((NamedObj)actor).getFullName());
@@ -312,13 +347,71 @@ public class GiottoDirector extends StaticSchedulingDirector {
 			}
 		    }
 		}
+
+		if (higherFrequencyList == null) {
+		    // Update time for every invocation of the most frequent tasks
+		    // which are stored at the bottom of the tree.
+		    double currentTime;
+
+		    currentTime = getCurrentTime();
+
+		    // What is the highest frequency?
+		    // We look it up in the first actor.
+		    // Assumption: sameFrequencyList is non-empty.
+		    Actor actor = (Actor) sameFrequencyList.get(0);
+
+		    int maxFrequency = GiottoActorComparator.getFrequency(actor);
+
+		    setCurrentTime(currentTime + (_period / maxFrequency));
+
+		    if (_synchronizeToRealTime) {
+			long elapsedTime = System.currentTimeMillis() - _realStartTime;
+
+			double elapsedTimeInSeconds = ((double) elapsedTime) / 1000.0;
+
+			if (currentTime > elapsedTimeInSeconds) {
+			    long timeToWait = (long) ((currentTime - elapsedTimeInSeconds) * 1000.0);
+
+			    if (timeToWait > 0) {
+				if (_debugging) {
+				    _debug("Waiting for real time to pass: " + timeToWait);
+				}
+
+				// FIXME: Do I need to synchronize on anything?
+				Scheduler scheduler = getScheduler();
+
+				synchronized(scheduler) {
+				    try {
+					scheduler.wait(timeToWait);
+				    } catch (InterruptedException ex) {
+					// Continue executing.
+				    }
+				}
+			    }
+			}
+		    }
+		}
 	    }
 
 	return postfire;
     }
 
+    private void _setPeriod(double period) {
+	_period = period;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
+    // The current period in milliseconds.
+    private double _period = _DEFAULT_GIOTTO_PERIOD;
+
+    // Specify whether the director should wait for elapsed real time to
+    // catch up with model time.
+    private boolean _synchronizeToRealTime = false;
+
+    // The real time at which the last unit has been invoked.
+    private long _realStartTime = 0;
 
     // The count of iterations executed.
     private int _iteration = 0;

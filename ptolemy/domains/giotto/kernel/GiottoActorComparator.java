@@ -40,14 +40,14 @@ import java.util.Comparator;
 //// GiottoActor
 /**
 This class implements the Comparator interface for Actors
-based on a "period" attribute of the actors.
-The period of an actor which does not have a "period" attribute
-is _DEFAULT_GIOTTO_PERIOD.
+based on a "frequency" attribute of the actors.
+The frequency of an actor which does not have a "frequency" attribute
+is _DEFAULT_GIOTTO_FREQUENCY.
 <p>
 Given two actors A1 and A2,
-compare(A1,A2) is -1 (A1<A2) if A1's period is strictly less than A2's period, or
-compare(A1,A2) is 0 (A1==A2) if A1's period is equal to A2's period, or
-compare(A1,A2) is 1 (A1>A2) if A1's period is strictly greater than A2's period.
+compare(A1,A2) is -1 (A1<A2) if A1's frequency is strictly less than A2's frequency, or
+compare(A1,A2) is 0 (A1==A2) if A1's frequency is equal to A2's frequency, or
+compare(A1,A2) is 1 (A1>A2) if A1's frequency is strictly greater than A2's frequency.
 
 @author Christoph Meyer
 @version $Id$
@@ -57,21 +57,21 @@ public class GiottoActorComparator implements Comparator {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    public static int period(Actor actor) {
+    public static int getFrequency(Actor actor) {
 	try {
 	    Parameter parameter = (Parameter)
-		((NamedObj) actor).getAttribute("period");
+		((NamedObj) actor).getAttribute("frequency");
 
 	    if (parameter != null) {
 		IntToken intToken = (IntToken) parameter.getToken();
 
 		return intToken.intValue();
 	    } else
-		return _DEFAULT_GIOTTO_PERIOD;
+		return _DEFAULT_GIOTTO_FREQUENCY;
 	} catch (ClassCastException ex) {
-	    return _DEFAULT_GIOTTO_PERIOD;
+	    return _DEFAULT_GIOTTO_FREQUENCY;
 	} catch (IllegalActionException ex) {
-	    return _DEFAULT_GIOTTO_PERIOD;
+	    return _DEFAULT_GIOTTO_FREQUENCY;
 	}
     }
 
@@ -83,9 +83,9 @@ public class GiottoActorComparator implements Comparator {
 	    Actor actor1 = (Actor) object1;
 	    Actor actor2 = (Actor) object2;
 
-	    if (period(actor1) < period(actor2))
+	    if (getFrequency(actor1) < getFrequency(actor2))
 		return -1;
-	    else if (period(actor1) == period(actor2))
+	    else if (getFrequency(actor1) == getFrequency(actor2))
 		return 0;
 	    else
 		return 1;
@@ -102,8 +102,8 @@ public class GiottoActorComparator implements Comparator {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    // The static default Giotto period.
-    protected static int _DEFAULT_GIOTTO_PERIOD = 1;
+    // The static default Giotto frequency.
+    protected static int _DEFAULT_GIOTTO_FREQUENCY = 1;
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
