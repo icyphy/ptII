@@ -30,7 +30,7 @@
 ##########################################################################
 
 # Order matters here, tycho depends on pn and tcl.
-DIRS = tcl pn pt tycho doc
+DIRS = collections tcl pn pt tycho doc
 
 # Root of Tycho directory
 ROOT =		..
