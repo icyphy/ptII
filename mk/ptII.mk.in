@@ -166,8 +166,9 @@ JDOCBREAKITERATOR = @JDOCBREAKITERATOR@
 # Increase the amount of memory that javadoc uses.
 JDOCMEMORY =	-J-Xmx132m
 
-# Allow @rating tag for use within Diva and other files. 
-JDOCTAG = 	-tag rating
+# Allow @Pt.AcceptedRating and @Pt.ProposedRating tags.
+# Diva uses @rating
+JDOCTAG = 	-tag rating -tag Pt.AcceptedRating -tag Pt.ProposedRating
 
 # Doccheck is a doclet that checks for bugs
 # Location of the doccheck jar file, available from
