@@ -166,6 +166,7 @@ vergilDSP.jnlp: vergilDSP.jnlp.in
 		-e 's%@PTVERSION@%$(PTVERSION)%' \
 			$< > $@
 	@echo "# Adding jar files to $@"
+	-chmod a+x $(MKJNLP)
 	"$(MKJNLP)" $@ \
 		$(DSP_MAIN_JAR) \
 		$(DSP_JNLP_JARS)
@@ -187,6 +188,7 @@ vergilPtiny.jnlp: vergilPtiny.jnlp.in
 		-e 's%@PTVERSION@%$(PTVERSION)%' \
 			$< > $@
 	@echo "# Adding jar files to $@"
+	-chmod a+x $(MKJNLP)
 	"$(MKJNLP)" $@ \
 		$(PTINY_MAIN_JAR) \
 		$(PTINY_JNLP_JARS)
@@ -209,6 +211,7 @@ vergil.jnlp: vergil.jnlp.in
 		-e 's%@PTVERSION@%$(PTVERSION)%' \
 			$< > $@
 	@echo "# Adding jar files to $@"
+	-chmod a+x $(MKJNLP)
 	"$(MKJNLP)" $@ \
 		$(FULL_MAIN_JAR) \
 		$(FULL_JNLP_JARS)
