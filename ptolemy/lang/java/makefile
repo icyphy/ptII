@@ -174,6 +174,12 @@ clean_skeleton:
 		rm -f $(ROOT)/$$x/*.skel; \
 	done
 
+# Read in the JDK rt.jar file and generate zero length .java files.
+generate_zero_length_stubs:
+	-mkdir stubs;
+	cd stubs; CLASSPATH=$(CLASSPATH)/.. \
+		 $(JAVA) ptolemy.lang.java.GenerateZeroLengthStubs
+
 depend:
 	@echo "no dependencies in this directory"
 
