@@ -49,6 +49,7 @@ import org.eclipse.jdt.core.dom.MethodInvocation;
 import org.eclipse.jdt.core.dom.Modifier;
 import org.eclipse.jdt.core.dom.Name;
 import org.eclipse.jdt.core.dom.PrimitiveType;
+import org.eclipse.jdt.core.dom.ReturnStatement;
 import org.eclipse.jdt.core.dom.SimpleName;
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 import org.eclipse.jdt.core.dom.StructuralPropertyDescriptor;
@@ -81,16 +82,18 @@ public class AssignmentTransformer
         AST ast = node.getAST();
         Expression leftHand = node.getLeftHandSide();
         Expression rightHand = node.getRightHandSide();
-        Expression object = null;
+        Expression newObject = null;
         SimpleName name;
         
         if (leftHand instanceof FieldAccess) {
-            object = ((FieldAccess)leftHand).getExpression();
+            Expression object = ((FieldAccess)leftHand).getExpression();
             name = ((FieldAccess)leftHand).getName();
 
             Type type = Type.getType(object);
             if (!type.getName().equals(state.getCurrentClass().getName()))
                 return;
+            
+            newObject = (Expression)ASTNode.copySubtree(ast, object);
         } else {
             name = (SimpleName)leftHand;
             if (state.isVariable(name.getIdentifier()))
@@ -98,8 +101,9 @@ public class AssignmentTransformer
         }
         
         MethodInvocation invocation = ast.newMethodInvocation();
-        Expression newObject = (Expression)ASTNode.copySubtree(ast, object);
-        invocation.setExpression(newObject);
+        
+        if (newObject != null)
+            invocation.setExpression(newObject);
         SimpleName newName = 
             ast.newSimpleName(ASSIGN_PREFIX + name.getIdentifier());
         invocation.setName(newName);
@@ -107,17 +111,7 @@ public class AssignmentTransformer
             (Expression)ASTNode.copySubtree(ast, rightHand);
         invocation.arguments().add(newRightHand);
         Type.propagateType(invocation, node);
-
-        ASTNode parent = node.getParent();
-        StructuralPropertyDescriptor location = node.getLocationInParent();
-        if (location.isChildProperty())
-            parent.setStructuralProperty(location, invocation);
-        else {
-            List properties = 
-                (List)parent.getStructuralProperty(location);
-            int position = properties.indexOf(node);
-            properties.set(position, invocation);
-        }
+        _replaceNode(node, invocation);
     }
     
     public void handle(AnonymousClassDeclaration node, 
@@ -134,6 +128,8 @@ public class AssignmentTransformer
     public static String CHECKPOINT_NAME = "$CHECKPOINT";
     
     public static String RECORD_PREFIX = "$RECORD$";
+    
+    public static boolean OPTIMIZE_CALL = true;
     
     private void _handleDeclaration(ASTNode node, List bodyDeclarations, 
             TypeAnalyzerState state) {
@@ -152,9 +148,12 @@ public class AssignmentTransformer
                         VariableDeclarationFragment fragment = 
                             (VariableDeclarationFragment)fragmentIter.next();
                         String fieldName = fragment.getName().getIdentifier();
-                        newDeclarations.add(_createAssignMethod(ast, 
-                                fieldName, type));
-                        newDeclarations.add(_createFieldRecord(ast, fieldName));
+                        boolean isStatic = 
+                            Modifier.isStatic(fieldDecl.getModifiers());
+                        newDeclarations.add(_createAssignMethod(ast, fieldName, 
+                                type, isStatic));
+                        newDeclarations.add(_createFieldRecord(ast, fieldName, 
+                                isStatic));
                     }
                 }
             }
@@ -173,7 +172,7 @@ public class AssignmentTransformer
     }
     
     private MethodDeclaration _createAssignMethod(AST ast, String fieldName, 
-            Type fieldType) {
+            Type fieldType, boolean isStatic) {
         MethodDeclaration method = ast.newMethodDeclaration();
         
         SimpleName name = ast.newSimpleName(ASSIGN_PREFIX + fieldName);
@@ -183,6 +182,15 @@ public class AssignmentTransformer
             _convertEclipseType(ast, fieldType.getName());
         method.setReturnType(type);
         
+        if (isStatic) {
+            // Add a "$CHECKPOINT" argument.
+            SingleVariableDeclaration checkpoint = 
+                ast.newSingleVariableDeclaration();
+            checkpoint.setType(ast.newSimpleType(
+                    _createName(ast, Checkpoint.class.getName())));
+            checkpoint.setName(ast.newSimpleName(CHECKPOINT_NAME));
+            method.parameters().add(checkpoint);
+        }
         SingleVariableDeclaration argument = 
             ast.newSingleVariableDeclaration();
         argument.setType(
@@ -190,16 +198,18 @@ public class AssignmentTransformer
         argument.setName(ast.newSimpleName("newValue"));
         method.parameters().add(argument);
         
-        Block body = _createAssignmentBlock(ast, fieldName, fieldType);
+        Block body = _createAssignmentBlock(ast, fieldName);
         method.setBody(body);
         
-        method.setModifiers(Modifier.PRIVATE);
+        int modifiers = Modifier.PRIVATE;
+        if (isStatic)
+            modifiers |= Modifier.STATIC;
+        method.setModifiers(modifiers);
         
         return method;
     }
     
-    private Block _createAssignmentBlock(AST ast, String fieldName, 
-            Type fieldType) {
+    private Block _createAssignmentBlock(AST ast, String variableName) {
         Block block = ast.newBlock();
         
         IfStatement ifStatement = ast.newIfStatement();
@@ -217,10 +227,10 @@ public class AssignmentTransformer
         timestampGetter.setName(ast.newSimpleName("getTimestamp"));
 
         MethodInvocation recordInvocation = ast.newMethodInvocation();
-        recordInvocation.setExpression(ast.newSimpleName(RECORD_PREFIX +
-                fieldName));
+        recordInvocation.setExpression(
+                ast.newSimpleName(RECORD_PREFIX + variableName));
         recordInvocation.setName(ast.newSimpleName("add"));
-        recordInvocation.arguments().add(ast.newSimpleName(fieldName));
+        recordInvocation.arguments().add(ast.newSimpleName(variableName));
         recordInvocation.arguments().add(timestampGetter);
         ExpressionStatement recordStatement = 
             ast.newExpressionStatement(recordInvocation);
@@ -230,18 +240,19 @@ public class AssignmentTransformer
         block.statements().add(ifStatement);
         
         Assignment assignment = ast.newAssignment();
-        assignment.setLeftHandSide(ast.newSimpleName(fieldName));
+        assignment.setLeftHandSide(ast.newSimpleName(variableName));
         assignment.setRightHandSide(ast.newSimpleName("newValue"));
         assignment.setOperator(Assignment.Operator.ASSIGN);
         
-        ExpressionStatement assignStatement = 
-            ast.newExpressionStatement(assignment);
-        block.statements().add(assignStatement);        
+        ReturnStatement returnStatement = ast.newReturnStatement();
+        returnStatement.setExpression(assignment);
+        block.statements().add(returnStatement);
         
         return block;
     }
     
-    private FieldDeclaration _createFieldRecord(AST ast, String fieldName) {
+    private FieldDeclaration _createFieldRecord(AST ast, String fieldName, 
+            boolean isStatic) {
         VariableDeclarationFragment fragment = 
             ast.newVariableDeclarationFragment();
         fragment.setName(ast.newSimpleName(RECORD_PREFIX + fieldName));
@@ -253,7 +264,11 @@ public class AssignmentTransformer
         
         FieldDeclaration field = ast.newFieldDeclaration(fragment);
         field.setType(_convertEclipseType(ast, FieldRecord.class.getName()));
-        field.setModifiers(Modifier.PRIVATE);
+        
+        int modifiers = Modifier.PRIVATE;
+        if (isStatic)
+            modifiers |= Modifier.STATIC;
+        field.setModifiers(modifiers);
         
         return field;
     }
@@ -290,5 +305,18 @@ public class AssignmentTransformer
                 pos = newPos;
         }
         return pos;
+    }
+    
+    private void _replaceNode(ASTNode node, ASTNode newNode) {
+        ASTNode parent = node.getParent();
+        StructuralPropertyDescriptor location = node.getLocationInParent();
+        if (location.isChildProperty())
+            parent.setStructuralProperty(location, newNode);
+        else {
+            List properties = 
+                (List)parent.getStructuralProperty(location);
+            int position = properties.indexOf(node);
+            properties.set(position, newNode);
+        }
     }
 }
