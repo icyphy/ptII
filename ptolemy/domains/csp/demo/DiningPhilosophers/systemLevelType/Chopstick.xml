@@ -20,12 +20,12 @@
         <property name="_location" class="ptolemy.moml.Location" value="199.0, 341.0">
         </property>
     </port>
-    <port name="s1" class="ptolemy.actor.TypedIOPort">
+    <port name="c1" class="ptolemy.actor.TypedIOPort">
         <property name="input"/>
         <property name="_location" class="ptolemy.moml.Location" value="279.0, 342.0">
         </property>
     </port>
-    <port name="s2" class="ptolemy.actor.TypedIOPort">
+    <port name="c2" class="ptolemy.actor.TypedIOPort">
         <property name="input"/>
         <property name="_location" class="ptolemy.moml.Location" value="333.0, 343.0">
         </property>
@@ -127,7 +127,7 @@
         </property>
     </relation>
     <relation name="relation2" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
-        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="s1_isPresent">
+        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="c1_isPresent">
         </property>
         <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
         </property>
@@ -139,7 +139,7 @@
         </property>
         <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="label" class="ptolemy.kernel.util.StringAttribute" value="s1?">
+        <property name="label" class="ptolemy.kernel.util.StringAttribute" value="c1?">
         </property>
     </relation>
     <relation name="relation3" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
@@ -175,7 +175,7 @@
         </property>
     </relation>
     <relation name="relation9" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
-        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="s2_isPresent">
+        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="c2_isPresent">
         </property>
         <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
         </property>
@@ -187,7 +187,7 @@
         </property>
         <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="label" class="ptolemy.kernel.util.StringAttribute" value="s2?">
+        <property name="label" class="ptolemy.kernel.util.StringAttribute" value="c2?">
         </property>
     </relation>
     <relation name="relation11" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">

@@ -13,7 +13,7 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[792, 653]">
     </property>
-    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[6, 5]">
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[8, 16]">
     </property>
     <port name="iA1" class="ptolemy.actor.TypedIOPort">
         <property name="input"/>
@@ -100,12 +100,12 @@
         <property name="_location" class="ptolemy.moml.Location" value="249.0, 22.0">
         </property>
     </port>
-    <port name="s1" class="ptolemy.actor.TypedIOPort">
+    <port name="c1" class="ptolemy.actor.TypedIOPort">
         <property name="output"/>
         <property name="_location" class="ptolemy.moml.Location" value="355.0, 23.0">
         </property>
     </port>
-    <port name="s2" class="ptolemy.actor.TypedIOPort">
+    <port name="c2" class="ptolemy.actor.TypedIOPort">
         <property name="output"/>
         <property name="_location" class="ptolemy.moml.Location" value="407.0, 24.0">
         </property>
@@ -881,7 +881,7 @@
     <relation name="relation38" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
         </property>
-        <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="s2=true">
+        <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="c2=true">
         </property>
         <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
         </property>
@@ -891,7 +891,7 @@
         </property>
         <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="label" class="ptolemy.kernel.util.StringAttribute" value="s2!">
+        <property name="label" class="ptolemy.kernel.util.StringAttribute" value="c2!">
         </property>
     </relation>
     <relation name="relation42" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
@@ -929,7 +929,7 @@
     <relation name="relation44" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
         </property>
-        <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="s1=true">
+        <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="c1=true">
         </property>
         <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
         </property>
@@ -939,7 +939,7 @@
         </property>
         <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="label" class="ptolemy.kernel.util.StringAttribute" value="s1!">
+        <property name="label" class="ptolemy.kernel.util.StringAttribute" value="c1!">
         </property>
     </relation>
     <link port="1.incomingPort" relation="relation6"/>
