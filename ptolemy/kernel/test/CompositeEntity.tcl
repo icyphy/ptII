@@ -1047,8 +1047,8 @@ test CompositeEntity-20.1 {test exportMoML with link indexing, inside links} {
     </entity>
     <relation name="r" class="ptolemy.kernel.ComponentRelation">
     </relation>
-    <link port="p1" relation="r" insertAt="1"/>
-    <link port="e2.p2" relation="r" insertAt="1"/>
+    <link port="p1" insertAt="1" relation="r"/>
+    <link port="e2.p2" insertAt="1" relation="r"/>
 </model>
 }
 
@@ -1076,7 +1076,7 @@ test CompositeEntity-20.2 {test exportMoML with link indexing, inside links} {
     <relation name="r2" class="ptolemy.kernel.ComponentRelation">
     </relation>
     <link port="p1" relation="r2"/>
-    <link port="p1" relation="r1" insertAt="2"/>
+    <link port="p1" insertAt="2" relation="r1"/>
 </model>
 }
 
@@ -1097,7 +1097,7 @@ test CompositeEntity-20.3 {test exportMoML with link indexing, inside links} {
     </relation>
     <relation name="r2" class="ptolemy.kernel.ComponentRelation">
     </relation>
-    <link port="p1" relation="r1" insertAt="1"/>
+    <link port="p1" insertAt="1" relation="r1"/>
 </model>
 }
 
@@ -1120,3 +1120,80 @@ test CompositeEntity-20.4 {test unlinkInside by relation, inside links} {
     </relation>
 </model>
 }
+
+######################################################################
+####
+#
+test CompositeEntity-21.0 {test exportLinks with filtering} {
+    set w [java::new ptolemy.kernel.util.Workspace]
+    set e1 [java::new ptolemy.kernel.CompositeEntity $w]
+    $e1 setName "e1"
+    set p1 [java::new ptolemy.kernel.ComponentPort $e1 "p1"]
+    set e2 [java::new ptolemy.kernel.ComponentEntity $e1 "e2"]
+    set p2 [java::new ptolemy.kernel.ComponentPort $e2 "p2"]
+    set r [java::new ptolemy.kernel.ComponentRelation $e1 "r"]
+    $p1 insertLink 0 $r
+    $p2 insertLink 0 $r
+    $e1 exportLinks 0 [java::null]
+} {<link port="p1" relation="r"/>
+<link port="e2.p2" relation="r"/>
+}
+
+######################################################################
+####
+#
+test CompositeEntity-21.1 {test exportLinks with filtering} {
+    set w [java::new ptolemy.kernel.util.Workspace]
+    set e1 [java::new ptolemy.kernel.CompositeEntity $w]
+    $e1 setName "e1"
+    set p1 [java::new ptolemy.kernel.ComponentPort $e1 "p1"]
+    set e2 [java::new ptolemy.kernel.ComponentEntity $e1 "e2"]
+    set p2 [java::new ptolemy.kernel.ComponentPort $e2 "p2"]
+    set r [java::new ptolemy.kernel.ComponentRelation $e1 "r"]
+    $p1 insertLink 0 $r
+    $p2 insertLink 0 $r
+    $e1 exportLinks 0 [java::null]
+} {<link port="p1" relation="r"/>
+<link port="e2.p2" relation="r"/>
+}
+
+######################################################################
+####
+#
+test CompositeEntity-21.2 {test exportLinks with filtering} {
+    set filter [java::new java.util.HashSet]
+    $filter add $p1
+    $filter add $r
+    $e1 exportLinks 0 $filter
+} {<link port="p1" relation="r"/>
+}
+
+######################################################################
+####
+#
+test CompositeEntity-21.3 {test exportLinks with filtering} {
+    set filter [java::new java.util.HashSet]
+    $filter add $p2
+    $filter add $r
+    $e1 exportLinks 0 $filter
+} {<link port="e2.p2" relation="r"/>
+}
+
+######################################################################
+####
+#
+test CompositeEntity-21.4 {test exportLinks with filtering} {
+    set filter [java::new java.util.HashSet]
+    $filter add $e2
+    $filter add $r
+    $e1 exportLinks 0 $filter
+} {<link port="e2.p2" relation="r"/>
+}
+
+######################################################################
+####
+#
+test CompositeEntity-21.5 {test exportLinks with filtering} {
+    set filter [java::new java.util.HashSet]
+    $e1 exportLinks 0 $filter
+} {}

@@ -265,9 +265,11 @@ test ComponentPort-5.1 {Transparent entity} {
     set p3 [java::new ptolemy.kernel.ComponentPort $e3 "P3"]
     set p4 [java::new ptolemy.kernel.ComponentPort $e2 "P4"]
     set p5 [java::new ptolemy.kernel.ComponentPort $e4 "P5"]
+    set p6 [java::new ptolemy.kernel.ComponentPort $e0 "P6"]
     set r1 [java::new ptolemy.kernel.ComponentRelation $e0 "R1"]
     set r2 [java::new ptolemy.kernel.ComponentRelation $e2 "R2"]
     set r3 [java::new ptolemy.kernel.ComponentRelation $e0 "R3"]
+    set r4 [java::new ptolemy.kernel.ComponentRelation $e0 "R4"]
 
     # Connect
     $p1 link $r1
@@ -277,6 +279,7 @@ test ComponentPort-5.1 {Transparent entity} {
     $p4 link $r2
     $p4 link $r3
     $p5 link $r3
+    $p6 link $r4
 
     list [enumToNames [$p1 deepConnectedPorts]] \
             [enumToNames [$p2 deepConnectedPorts]] \
@@ -325,6 +328,12 @@ test ComponentPort-6.0 {unlinkAll} {
             [enumToNames [$p4 deepConnectedPorts]] \
             [enumToNames [$p5 deepConnectedPorts]]
 } {{} {} P5 P5 P3}
+
+# NOTE: Uses topology built in 6.1
+test ComponentPort-6.0 {unlinkAll} {
+    $p6 unlinkAllInside
+    enumToNames [$p6 deepConnectedPorts]
+} {}
 
 test ComponentPort-7.0 {transparent ports in a loop} {
     set w [java::new ptolemy.kernel.CompositeEntity]

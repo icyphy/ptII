@@ -55,8 +55,8 @@ test Port-2.1 {Construct Ports} {
     set p1 [java::new ptolemy.kernel.Port]
     set p2 [java::new ptolemy.kernel.Port $e1 "My Port"]
     list [$p1 getName] [$p2 getName] \
-	    [$p1 numLinks] [$p2 numLinks] [$p1 isOpaque]
-} {{} {My Port} 0 0 1}
+	    [$p1 numLinks] [$p2 numLinks]
+} {{} {My Port} 0 0}
 
 ######################################################################
 ####
@@ -91,10 +91,11 @@ test Port-3.1.1 {Test link with one port, one relation twice} {
 #
 test Port-3.1.2 {Test link with one port to a null relation} {
     set p1 [java::new ptolemy.kernel.Port]
+    # NOTE: This creates a null link.
     $p1 link [java::null]
     list [enumToNames [$p1 linkedRelations]] \
             [enumToNames [$p1 connectedPorts]]
-} {{} {}}
+} {NOT_NAMEABLE. {}}
 
 ######################################################################
 ####

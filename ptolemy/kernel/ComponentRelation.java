@@ -142,7 +142,7 @@ public class ComponentRelation extends Relation {
 
             while( nearports.hasNext() ) {
                 ComponentPort port = (ComponentPort)nearports.next();
-                if (port._outside(this.getContainer())) {
+                if (port._isInsideLinkable(this.getContainer())) {
                     // Port is above me in the hierarchy.
                     if (port.isOpaque()) {
                         // Port is opaque.  Append it to list.
@@ -226,7 +226,6 @@ public class ComponentRelation extends Relation {
             if (container == null) {
                 unlinkAll();
             }
-            _workspace.incrVersion();
         } finally {
             _workspace.doneWriting();
         }

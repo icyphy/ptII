@@ -25,14 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Green (eal@eecs.berkeley.edu)
-@AcceptedRating Red (eal@eecs.berkeley.edu)
-
-NOTE: This was green, but on 7/13/00 I added the following methods,
-which need to be reviewed (EAL):
-
-  - insertLink(int, Relation)
-  - _checkLink() (replacing _link(), using strategy pattern).
-
+@AcceptedRating Green (bart@eecs.berkeley.edu)
 */
 
 package ptolemy.kernel;
@@ -201,13 +194,6 @@ public class Port extends NamedObj {
         return Collections.enumeration(connectedPortList());
     }
 
-    /** Return true, since a simple port is always opaque.
-     *  @return True.
-     */
-    public boolean isOpaque() {
-        return true;
-    }
-
     /** Get the container entity.
      *  @return An instance of Entity.
      */
@@ -226,7 +212,7 @@ public class Port extends NamedObj {
      *  Any links with indices larger than or equal to the one specified
      *  here will henceforth have indices that are larger by one.
      *  If the index is larger than the number of existing
-     *  links (as returned by numLinks()), then empty links are
+     *  links (as returned by numLinks()), then empty links
      *  are inserted (these will be null elements in the list returned
      *  by linkedRelationsList() or in the enumeration returned by
      *  linkedRelations()). If the specified relation is null, then
@@ -280,6 +266,9 @@ public class Port extends NamedObj {
 
     /** List the linked relations.  Note that a relation may appear
      *  more than once if more than one link to it has been established.
+     *  Also, some entries in the list may be null, indicating a <b>null
+     *  link</b>, where there is no linked relation. A null link causes
+     *  a skip in the link indexes.
      *  This method is read-synchronized on the workspace.
      *  @return A list of Relation objects.
      */
@@ -302,6 +291,9 @@ public class Port extends NamedObj {
 
     /** Enumerate the linked relations.  Note that a relation may appear
      *  more than once if more than one link to it has been established.
+     *  Also, some entries in the enumeration may be null, indicating a
+     *  <b>null link</b>, where there is no linked relation. A null link
+     *  causes a skip in the link indexes.
      *  This method is read-synchronized on the workspace.
      *  @return An enumeration of Relation objects.
      */
@@ -324,8 +316,8 @@ public class Port extends NamedObj {
      *  is the same as the container of the container of the port.
      *  That is, level-crossing links are not allowed.
      *  <p>
-     *  If the argument is null, do nothing.  Note that a port may
-     *  be linked to the same relation more than once, in which case
+     *  If the argument is null, then create a null link. Note that a port
+     *  may be linked to the same relation more than once, in which case
      *  the link will be reported more than once by the linkedRelations()
      *  method. In derived classes, the relation may be required to be an
      *  instance of a particular subclass of Relation (this is checked
@@ -338,17 +330,19 @@ public class Port extends NamedObj {
      *   or the port has no container, or the port is not in the
      *   same workspace as the relation.
      */
-    public void link(Relation relation)
-            throws IllegalActionException {
-        if (relation == null) return;
-        if (_workspace != relation.workspace()) {
+    public void link(Relation relation) throws IllegalActionException {
+        if (relation != null && _workspace != relation.workspace()) {
             throw new IllegalActionException(this, relation,
                     "Cannot link because workspaces are different.");
         }
         try {
             _workspace.getWriteAccess();
-            _checkLink(relation);
-            _relationsList.link( relation._getPortList() );
+            if (relation != null) {
+                _checkLink(relation);
+                _relationsList.link( relation._getPortList() );
+            } else {
+                _relationsList.link( null );
+            }
             if (_container != null) _container.connectionsChanged(this);
         } finally {
             _workspace.doneWriting();
@@ -455,7 +449,6 @@ public class Port extends NamedObj {
         try {
             _workspace.getWriteAccess();
             _relationsList.unlink(index);
-            _workspace.incrVersion();
             if (_container != null) _container.connectionsChanged(this);
         } finally {
             _workspace.doneWriting();
@@ -474,7 +467,6 @@ public class Port extends NamedObj {
         try {
             _workspace.getWriteAccess();
             _relationsList.unlink(relation);
-            _workspace.incrVersion();
             if (_container != null) _container.connectionsChanged(this);
         } finally {
             _workspace.doneWriting();
@@ -490,7 +482,6 @@ public class Port extends NamedObj {
         try {
             _workspace.getWriteAccess();
             _relationsList.unlinkAll();
-            _workspace.incrVersion();
             if (_container != null) _container.connectionsChanged(this);
         } finally {
             _workspace.doneWriting();
@@ -506,8 +497,13 @@ public class Port extends NamedObj {
      *  Derived classes may constrain the argument to be a subclass of
      *  Relation. Level-crossing links are allowed.
      *  This port and the relation are assumed to be in the same workspace,
-     *  but this not checked here.  The caller should check.
-     *  This method <i>not</i> synchronized on the
+     *  but this is not checked here.  The caller should check.
+     *  This method is used in a "strategy pattern," where the link
+     *  methods call it to check the validity of a link, and derived
+     *  classes perform more elaborate checks.  Derived classes should
+     *  be sure to call super._checkLiberalLink() if they override this
+     *  method.
+     *  This method is <i>not</i> synchronized on the
      *  workspace, so the caller should be.
      *  @param relation The relation to link to.
      *  @exception IllegalActionException If this port has no container,

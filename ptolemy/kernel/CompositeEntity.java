@@ -25,9 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Green (eal@eecs.berkeley.edu)
-@AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
-Review changeRequest / changeListener code.
-Also need to review exportMoML's export of indexed links.
+@AcceptedRating Green (bart@eecs.berkeley.edu)
 */
 
 package ptolemy.kernel;
@@ -37,6 +35,7 @@ import ptolemy.kernel.util.*;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Hashtable;
@@ -51,7 +50,7 @@ A CompositeEntity is a cluster in a clustered graph.
 I.e., it is a non-atomic entity, in that
 it can contain other entities and relations.  It supports transparent ports,
 where, in effect, the port of a contained entity is represented by a port
-of the container entity. Methods that "deeply" traverse the topology
+of this entity. Methods that "deeply" traverse the topology
 see right through transparent ports.
 It may be opaque, in which case its ports are opaque and methods
 that "deeply" traverse the topology do not see through them.
@@ -130,27 +129,32 @@ public class CompositeEntity extends ComponentEntity {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Add a change listener.  In this base class, 
-     *  add the listener to the list of change listeners in
-     *  this entity.  
+    /** Add a change listener.  If there is a container, then
+     *  delegate to the container.  Otherwise, add the listener
+     *  to the list of change listeners in this entity.  
      *  Each listener will be notified of the execution of each 
      *  change request that is executed via the requestChange() method
      *  at this level of the hierarchy.  Note that in this base class
      *  implementation, only the toplevel composite entity executes changes,
-     *  so it probably doesn't make sense to add change listeners to 
-     *  composites that are not at the toplevel.
+     *  which is why this method delegates to the container if there is one.
+     *  <p>
      *  If the listener is already in the list, do not add it again.
      *  @param listener The listener to add.
      */
     public void addChangeListener(ChangeListener listener) {
-	if (_changeListeners == null) {
-	    _changeListeners = new LinkedList();
-	} else {
-	    if (_changeListeners.contains(listener)) {
-		return;
-	    }
-	}
-	_changeListeners.add(listener);
+	CompositeEntity container = (CompositeEntity) getContainer();
+	if(container != null) {
+            container.addChangeListener(listener);
+        } else {
+            if (_changeListeners == null) {
+                _changeListeners = new LinkedList();
+            } else {
+                if (_changeListeners.contains(listener)) {
+                    return;
+                }
+            }
+            _changeListeners.add(listener);
+        }
     }
 
     /** Allow or disallow connections that are created using the connect()
@@ -425,6 +429,156 @@ public class CompositeEntity extends ComponentEntity {
         }
     }
 
+    /** Return a sequence of MoML link attributes that describe
+     *  any link between objects (ports, entities, and relations) that are
+     *  present in the <i>filter</i> argument.  The <i>filter</i>
+     *  argument normally contains ports, relations, and entities
+     *  that are contained by this composite entity. If it contains
+     *  this entity, then that is equivalent to containing all the ports
+     *  contained by this entity.  It is recommended to use a collection
+     *  class (such as HashSet) for which the contains() method is
+     *  efficient.
+     *  <p>
+     *  If the argument is null, then return all the links that this
+     *  composite is responsible for (i.e., apply no filtering).  If the
+     *  argument is an empty collection, then return none of the links. The
+     *  links that this entity is responsible for is the inside links of
+     *  its ports, and links on ports contained by contained entities.
+     *  @param indentation The depth at which the output should be indented.
+     *  @param filter A collection of ports, parameters, and entities, or
+     *   null to apply no filtering.
+     *  @exception IOException If an I/O error occurs.
+     */
+    public String exportLinks(int indentation, Collection filter)
+            throws IOException {
+        // To get the ordering right,
+        // we read the links from the ports, not from the relations.
+
+        StringBuffer result = new StringBuffer();
+
+        // First, produce the inside links on contained ports.
+        Iterator ports = portList().iterator();
+        while (ports.hasNext()) {
+            ComponentPort port = (ComponentPort)ports.next();
+            Iterator relations = port.insideRelationList().iterator();
+            // The following variables are used to determine whether to
+            // specify the index of the link explicitly, or to leave
+            // it implicit.
+            int index = -1;
+            boolean useIndex = false;
+            while (relations.hasNext()) {
+                index++;
+                ComponentRelation relation
+                    = (ComponentRelation)relations.next();
+                if (relation == null) {
+                    // Gap in the links.  The next link has to use an
+                    // explicit index.
+                    useIndex = true;
+                    continue;
+                }
+                // Apply filter.
+                if (filter == null
+                        || (filter.contains(relation)
+                           && (filter.contains(port)
+                              ||  filter.contains(port.getContainer())))) {
+
+                    // In order to support level-crossing links, consider the
+                    // possibility that the relation is not contained by this.
+                    String relationName;
+                    if (relation.getContainer() == this) {
+                        relationName = relation.getName();
+                    } else {
+                        relationName = relation.getFullName();
+                    }
+                    if (useIndex) {
+                        useIndex = false;
+                        result.append(_getIndentPrefix(indentation)
+                                + "<link port=\""
+                                + port.getName()
+                                + "\" insertAt=\""
+                                + index
+                                + "\" relation=\""
+                                + relationName
+                                + "\"/>\n");
+                    } else {
+                        result.append(_getIndentPrefix(indentation)
+                                + "<link port=\""
+                                + port.getName()
+                                + "\" relation=\""
+                                + relationName
+                                + "\"/>\n");
+                    }
+                }
+            }
+        }
+
+        // Next, produce the links on ports contained by contained entities.
+        Iterator entities = entityList().iterator();
+        while (entities.hasNext()) {
+            ComponentEntity entity = (ComponentEntity)entities.next();
+            ports = entity.portList().iterator();
+            while (ports.hasNext()) {
+                ComponentPort port = (ComponentPort)ports.next();
+                Iterator relations = port.linkedRelationList().iterator();
+                // The following variables are used to determine whether to
+                // specify the index of the link explicitly, or to leave
+                // it implicit.
+                int index = -1;
+                boolean useIndex = false;
+                while (relations.hasNext()) {
+                    index++;
+                    ComponentRelation relation
+                            = (ComponentRelation)relations.next();
+                    if (relation == null) {
+                        // Gap in the links.  The next link has to use an
+                        // explicit index.
+                        useIndex = true;
+                        continue;
+                    }
+                    // Apply filter.
+                    if (filter == null
+                            || (filter.contains(relation)
+                               && (filter.contains(port)
+                                  ||  filter.contains(port.getContainer())))) {
+
+                        // In order to support level-crossing links,
+                        // consider the possibility that the relation
+                        // is not contained by this.
+                        String relationName;
+                        if (relation.getContainer() == this) {
+                            relationName = relation.getName();
+                        } else {
+                            relationName = relation.getFullName();
+                        }
+                        if (useIndex) {
+                            useIndex = false;
+                            result.append(_getIndentPrefix(indentation)
+                                    + "<link port=\""
+                                    + entity.getName()
+                                    + "."
+                                    + port.getName()
+                                    + "\" insertAt=\""
+                                    + index
+                                    + "\" relation=\""
+                                    + relationName
+                                    + "\"/>\n");
+                        } else {
+                            result.append(_getIndentPrefix(indentation)
+                                    + "<link port=\""
+                                    + entity.getName()
+                                    + "."
+                                    + port.getName()
+                                    + "\" relation=\""
+                                    + relationName
+                                    + "\"/>\n");
+                        }
+                    }
+                }
+            }
+        }
+        return result.toString();
+    }
+
     /** Get the attribute with the given name. The name may be compound,
      *  with fields separated by periods, in which case the attribute
      *  returned is contained by a (deeply) contained attribute, port,
@@ -619,22 +773,23 @@ public class CompositeEntity extends ComponentEntity {
     }
 
     /** Notify all change listeners registered with this composite 
-     *  that the given request has completed
-     *  without throwing an exception.  The notification is deferred to
-     *  mutation itself, which performs the actual notification.
+     *  that the given request has completed without throwing an exception.
+     *  If there is a container, this request is delegated to the container.
      *  If no change listeners have been added, then do nothing.
-     *  This method is public so that subclasses can easily defer the 
-     *  actual execution of the change request to another class.  For 
-     *  example, an instance of CompositeActor defers to a Manager to 
-     *  execute the change request at an appropriate time.
+     *  @param request The change request that has been executed.
      */
     public void notifyChangeListeners(ChangeRequest request) {
-	if (_changeListeners != null) {
-	    Iterator listeners = _changeListeners.iterator();
-	    while(listeners.hasNext()) {
-		ChangeListener listener = (ChangeListener)listeners.next();
-		request.notify(listener);
-	    }
+	CompositeEntity container = (CompositeEntity) getContainer();
+	if(container != null) {
+            container.notifyChangeListeners(request);
+        } else {
+            if (_changeListeners != null) {
+                Iterator listeners = _changeListeners.iterator();
+                while(listeners.hasNext()) {
+                    ChangeListener listener = (ChangeListener)listeners.next();
+                    request.notify(listener);
+                }
+            }
 	}
     }
 
@@ -737,33 +892,37 @@ public class CompositeEntity extends ComponentEntity {
         }
     }
 
-    /** Remove a change listener. If the specified listener is not
-     *  on the list, do nothing.
+    /** Remove a change listener. If there is a container, delegate the
+     *  request to the container.  If the specified listener is not
+     *  on the list of listeners, do nothing.
      *  @param listener The listener to remove.
      */
     public void removeChangeListener(ChangeListener listener) {
-        if (_changeListeners == null) {
-            return;
+	CompositeEntity container = (CompositeEntity) getContainer();
+	if(container != null) {
+            container.removeChangeListener(listener);
+        } else {
+            if (_changeListeners == null) {
+                return;
+            }
+            _changeListeners.remove(listener);
         }
-        _changeListeners.remove(listener);
     }
 
     /** Request that given change request be executed.   In this base 
-     *  class defer the change request to the container of this entity. 
+     *  class, defer the change request to the container of this entity,
+     *  if there is one.
      *  If the entity has no container, then execute the request immediately.
      *  In other words, the request will get passed up to the toplevel 
      *  composite entity and then executed.  Subclasses should override
-     *  this to queue the change request and execute at an appropriate time.
+     *  this to queue the change request and execute it at an appropriate time.
      *  An exception is thrown by this method if the change 
-     *  request fails.
+     *  request is executed and fails.
      *  @param change The requested change.
-     *  @exception ChangeFailedException If the model is idle and the
-     *  change request fails.
+     *  @exception ChangeFailedException If the change request fails.
      */
     public void requestChange(ChangeRequest change) 
 	throws ChangeFailedException {
-	// If the model is idle (i.e., initialize() has not yet been
-	// invoked), then process the change request right now.
 	CompositeEntity container = (CompositeEntity) getContainer();
 	if(container == null) {
 	    change.execute();
@@ -910,114 +1069,8 @@ public class CompositeEntity extends ComponentEntity {
                 = (ComponentRelation)relations.next();
             relation.exportMoML(output, depth);
         }
-        // Next write the links.  To get the ordering right,
-        // we read the links from the ports, not from the relations.
-
-        // First, produce the inside links on contained ports.
-        Iterator ports = portList().iterator();
-        while (ports.hasNext()) {
-            ComponentPort port = (ComponentPort)ports.next();
-            relations = port.insideRelationList().iterator();
-            // The following variables are used to determine whether to
-            // specify the index of the link explicitly, or to leave
-            // it implicit.
-            int index = -1;
-            boolean useIndex = false;
-            while (relations.hasNext()) {
-                index++;
-                ComponentRelation relation
-                    = (ComponentRelation)relations.next();
-                if (relation == null) {
-                    // Gap in the links.  The next link has to use an
-                    // explicit index.
-                    useIndex = true;
-                    continue;
-                }
-                // In order to support level-crossing links, consider the
-                // possibility that the relation is not contained by this.
-                String relationName;
-                if (relation.getContainer() == this) {
-                    relationName = relation.getName();
-                } else {
-                    relationName = relation.getFullName();
-                }
-                if (useIndex) {
-                    useIndex = false;
-                    output.write(_getIndentPrefix(depth)
-                            + "<link port=\""
-                            + port.getName()
-                            + "\" relation=\""
-                            + relationName
-                            + "\" insertAt=\""
-                            + index
-                            + "\"/>\n");
-                } else {
-                    output.write(_getIndentPrefix(depth)
-                            + "<link port=\""
-                            + port.getName()
-                            + "\" relation=\""
-                            + relationName
-                            + "\"/>\n");
-                }
-            }
-        }
-
-        // Next, produce the links on ports contained by contained entities.
-        entities = entityList().iterator();
-        while (entities.hasNext()) {
-            ComponentEntity entity = (ComponentEntity)entities.next();
-            ports = entity.portList().iterator();
-            while (ports.hasNext()) {
-                ComponentPort port = (ComponentPort)ports.next();
-                relations = port.linkedRelationList().iterator();
-                // The following variables are used to determine whether to
-                // specify the index of the link explicitly, or to leave
-                // it implicit.
-                int index = -1;
-                boolean useIndex = false;
-                while (relations.hasNext()) {
-                    index++;
-                    ComponentRelation relation
-                            = (ComponentRelation)relations.next();
-                    if (relation == null) {
-                        // Gap in the links.  The next link has to use an
-                        // explicit index.
-                        useIndex = true;
-                        continue;
-                    }
-                    // In order to support level-crossing links, consider the
-                    // possibility that the relation is not contained by this.
-                    String relationName;
-                    if (relation.getContainer() == this) {
-                        relationName = relation.getName();
-                    } else {
-                        relationName = relation.getFullName();
-                    }
-                    if (useIndex) {
-                        useIndex = false;
-                        output.write(_getIndentPrefix(depth)
-                            + "<link port=\""
-                            + entity.getName()
-                            + "."
-                            + port.getName()
-                            + "\" relation=\""
-                            + relationName
-                            + "\" insertAt=\""
-                            + index
-                            + "\"/>\n");
-                    } else {
-                        output.write(_getIndentPrefix(depth)
-                            + "<link port=\""
-                            + entity.getName()
-                            + "."
-                            + port.getName()
-                            + "\" relation=\""
-                            + relationName
-                            + "\"/>\n");
-                    }
-                }
-            }
-        }
+        // Next write the links.
+        output.write(exportLinks(depth, null));
     }
 
     /** Remove the specified entity. This method should not be used

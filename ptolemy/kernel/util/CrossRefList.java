@@ -25,17 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Green (eal@eecs.berkeley.edu)
-@AcceptedRating Red (wbwu@eecs.berkeley.edu)
-
-NOTE: This class has been promoted to green.  To restore green
-status, we need to review:
-
-  insertLink(int, CrossRefList)
-  unlink(int)
-  CrossRef(int)  - constructor
-
-These were added on 7/13/00 by EAL.
-
+@AcceptedRating Green (bart@eecs.berkeley.edu)
 */
 
 package ptolemy.kernel.util;
@@ -66,7 +56,7 @@ is used as if it were a simple list of references to objects, but it
 ensures the symmetry of the references, and supports efficient removal
 of links.  Removing a reference in one list automatically updates N
 back-references in O(N) time, independent of the sizes of the
-cross-reference lists.
+cross-referenced lists.
 <p>
 It is possible to create links at specified points in the list (called
 the <i>index number</i>).  This may result in gaps in the list at
@@ -160,10 +150,19 @@ public final class CrossRefList implements Serializable  {
      *  the specified position (<i>index</i>).  The index can be any
      *  non-negative integer.  If the index is greater than or equal to the
      *  size of this list, then null links are created to make the list
-     *  big enough.
+     *  big enough.  If there are already links with indices equal to or
+     *  larger than <i>index</i>, then their indices become one larger.
      *  This method creates a back reference in the far list, unless the
      *  <i>farList</i> argument is null.  That back reference is appended
      *  to the end of the far list.
+     *  <p>
+     *  Note that this method specifies the index on the local reference
+     *  list, but not on the remote reference list.  There is no mechanism
+     *  provided to specify both indices.  This is because this class is
+     *  used to linked ports to relations, and indices of links have
+     *  no meaning in relations.  Thus, there is no need for a richer
+     *  interface.
+     *  <p>
      *  Note that this method does not synchronize on the remote object.
      *  Thus, this method should be called within a write-synchronization of
      *  the common workspace.
@@ -178,10 +177,11 @@ public final class CrossRefList implements Serializable  {
             throw new IllegalActionException(
                     "CrossRefLink.link: Illegal self-link.");
         }
-
         ++_listVersion;
         CrossRef localCrossRef = new CrossRef(index);
-        localCrossRef._far = farList.new CrossRef(localCrossRef);
+        if (farList != null) {
+            localCrossRef._far = farList.new CrossRef(localCrossRef);
+        }
     }
 
     /** Return true if the specified container is linked to this
@@ -205,8 +205,10 @@ public final class CrossRefList implements Serializable  {
     /** Link this list to a different CrossRefList (<i>farList</i>).
      *  The link is appended at the end of the list.
      *  This action additionally creates a back-reference in the far list,
-     *  also at the end.
-     *  Redundant entries are allowed.
+     *  also at the end, unless the <i>farList</i> argument is null, in
+     *  which case the new link is a null link.
+     *  Redundant entries are allowed; that is, you can link more than
+     *  once to the same remote list.
      *  Note that this method does not synchronize on the remote object.
      *  Thus, this method should be called within a write-synchronization of
      *  the common workspace.
@@ -221,10 +223,11 @@ public final class CrossRefList implements Serializable  {
             throw new IllegalActionException(
                     "CrossRefLink.link: Illegal self-link.");
         }
-
         ++_listVersion;
         CrossRef localCrossRef = new CrossRef();
-        localCrossRef._far = farList.new CrossRef(localCrossRef);
+        if (farList != null) {
+            localCrossRef._far = farList.new CrossRef(localCrossRef);
+        }
     }
 
     /** Return size of this list.
@@ -465,7 +468,8 @@ public final class CrossRefList implements Serializable  {
         public boolean hasMoreElements() {
             if(_enumeratorVersion != _listVersion) {
                 throw new InvalidStateException(
-                        "CrossRefList.hasMoreElements(): The list has been modified.");
+                        "CrossRefList.hasMoreElements(): "
+                        + "The list has been modified.");
             }
 
             if (_ref == null)
@@ -482,7 +486,8 @@ public final class CrossRefList implements Serializable  {
                 throws NoSuchElementException {
             if(_enumeratorVersion != _listVersion) {
                 throw new InvalidStateException(
-                        "CrossRefList.nextElement(): The list has been modified.");
+                        "CrossRefList.nextElement(): "
+                        + "The list has been modified.");
             }
 
             if (_ref == null) {
