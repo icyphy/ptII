@@ -42,8 +42,8 @@ LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
 A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS"
 BASIS, AND THALES HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT,
 UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
- * <p>Société : Thales Research and technology</p>
- * @author Jérôme Blanc & Benoit Masson
+ * <p>Soci@eacute;t@eacute; : Thales Research and technology</p>
+ * @author J&eacute;r&ocirc;me Blanc & Benoit Masson
  * 01 sept. 2003
  */
 

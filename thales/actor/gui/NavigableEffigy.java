@@ -58,7 +58,7 @@ import thales.vergil.navigable.NavigationTreeModel;
 An effigy for navigable models.
 
 
-@author Jérôme Blanc & Benoit Masson, Thales Research and technology, 01 sept. 2003
+@author J&eacute;r&ocirc;me Blanc & Benoit Masson, Thales Research and technology, 01 sept. 2003
 @version $Id$
 @since Ptolemy II 3.1
  */

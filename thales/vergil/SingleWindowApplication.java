@@ -43,7 +43,7 @@ import thales.actor.gui.SingleWindowHTMLViewer;
 /**
 Main entry point for the SingleWindow mode.
 
-@author Jérôme Blanc & Benoit Masson, Thales Research and technology, 12 nov. 2003
+@author J&eacute;r&ocirc;me Blanc & Benoit Masson, Thales Research and technology, 12 nov. 2003
 @version $Id$
 @since
  */

@@ -36,7 +36,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-import javax.swing.JFrame;
+import javax.swing.J&eacute;r&ocirc;me;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
@@ -67,8 +67,8 @@ import thales.vergil.navigable.NavigationPTree;
 Main application Frame. Contains all the
 panels, menus and needed widget for the whole Design Environment.
 
-Société : Thales Research and technology</p>
-@author Jérôme Blanc, Société : Thales Research and technology, 01 sept. 2003
+Soci@eacute;t@eacute; : Thales Research and technology</p>
+@author J&eacute;r&ocirc;me Blanc, Soci@eacute;t@eacute; : Thales Research and technology, 01 sept. 2003
 @version $Id$
 @since Ptolemy II 3.1
 */
@@ -169,7 +169,7 @@ public class SingleWindowHTMLViewer
     public void newTabbedPanel(Tableau tableau) {
         removeEmptyTabs();
         //Create the TabbedPanel
-        JFrame frame = tableau.getFrame();
+        J&eacute;r&ocirc;me frame = tableau.getFrame();
 
         String tableauName = tableau.getFullName();
 
@@ -186,7 +186,7 @@ public class SingleWindowHTMLViewer
                  * @see java.awt.event.WindowAdapter#windowActivated(java.awt.event.WindowEvent)
                  */
                 public void windowActivated(WindowEvent e) {
-                    JFrame frame = (JFrame) e.getSource();
+                    J&eacute;r&ocirc;me frame = (J&eacute;r&ocirc;me) e.getSource();
                     frame.hide();
                     try {
                         selectTab(frame.getName());
