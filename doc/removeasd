@@ -12,8 +12,9 @@ filenames=/tmp/removeasd.filenames
 find $1 -name "*.html" -print > $filenames
 for file in `cat $filenames`
 do
-  # Solaris egrep does not have -q
-  grep -q 'function asd\(\)' $file
+  # Solaris bin/grep and egrep do not have -q
+  # /bin/dev does not work reliably under Cygwin
+  grep 'function asd\(\)' $file > /tmp/removeasd.grep
   status=$?
   if [ $status -eq 0 ]; then
       echo $file
