@@ -45,7 +45,7 @@ import collections.LinkedList;
 //////////////////////////////////////////////////////////////////////////
 //// CSPController
 /**
-   
+
 
 @author John S. Davis II
 @version $Id$
@@ -56,20 +56,20 @@ public class CSPController extends CSPActor {
 
     /**
      */
-    public CSPController(CompositeActor cont, String name) 
+    public CSPController(CompositeActor cont, String name)
             throws IllegalActionException, NameDuplicationException {
          super(cont, name);
-         
+
          _requestOut = new IOPort(this, "requestOut", false, true);
          _requestIn = new IOPort(this, "requestIn", true, false);
          _contendOut = new IOPort(this, "contendOut", false, true);
          _contendIn = new IOPort(this, "contendIn", true, false);
-         
+
          _requestOut.setMultiport(true);
          _requestIn.setMultiport(true);
-         
+
     }
-         
+
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
 
@@ -81,104 +81,104 @@ public class CSPController extends CSPActor {
         }
         _listeners.insertLast(listener);
     }
-    
+
     /**
      */
     public void fire() throws IllegalActionException {
-        
+
         if( _numRequestInChannels == -1 ) {
-            _numRequestInChannels = 0; 
+            _numRequestInChannels = 0;
             Receiver[][] rcvrs = _requestIn.getReceivers();
             for( int i = 0; i < rcvrs.length; i++ ) {
                 for( int j = 0; j < rcvrs[i].length; j++ ) {
-                    _numRequestInChannels++; 
+                    _numRequestInChannels++;
                 }
             }
         }
-        
-        int br; 
+
+        int br;
         int code;
-        BooleanToken posAck = new BooleanToken( true ); 
+        BooleanToken posAck = new BooleanToken( true );
         BooleanToken negAck = new BooleanToken( false );
-        
+
         while(true) {
-        
+
             //
             // State 1: Wait for 1st Request
             //
             generateEvents( new ExecEvent( this, 1 ) );
 	    System.out.println("\t\t\tSTATE 1: " +getName());
-            ConditionalBranch[] reqBrchs = 
+            ConditionalBranch[] reqBrchs =
                     new ConditionalBranch[_numRequestInChannels];
             for( int i=0; i<_numRequestInChannels; i++ ) {
-                reqBrchs[i] = new 
+                reqBrchs[i] = new
                         ConditionalReceive(true, _requestIn, i, i);
-            } 
-            
+            }
+
             br = chooseBranch(reqBrchs);
-            
+
             if( br != -1 ) {
                 IntToken token = (IntToken)reqBrchs[br].getToken();
-                code = token.intValue(); 
-                _winningPortChannelCode = 
+                code = token.intValue();
+                _winningPortChannelCode =
                         new PortChannelCode(_requestIn, br, code);
             }
-            
-            
+
+
             //
             // State 2: Notify Contention Alarm of 1st Request
             //
             generateEvents( new ExecEvent( this, 2 ) );
 	    System.out.println("\t\t\tSTATE 2: " +getName());
             _contendOut.send(0, new Token() );
-            
-            
+
+
             //
             // State 3: Wait for Contenders and Send Ack's
             //
             generateEvents( new ExecEvent( this, 3 ) );
 	    System.out.println("\t\t\tSTATE 3: " +getName());
-            _losingPortChannelCodes = new LinkedList(); 
+            _losingPortChannelCodes = new LinkedList();
             boolean continueCDO = true;
             while( continueCDO ) {
                 reqBrchs = new ConditionalBranch[_numRequestInChannels+1];
                 for( int i=0; i<_numRequestInChannels; i++ ) {
                     reqBrchs[i] = new ConditionalReceive(true, _requestIn, i, i);
-                } 
+                }
                 int j = _numRequestInChannels;
                 reqBrchs[j] = new ConditionalReceive(true, _contendIn, 0, j);
-                
+
                 br = chooseBranch(reqBrchs);
-                
-                
+
+
                 // Contention Occurred...and might happen again
                 if( br >= 0 && br < _numRequestInChannels ) {
                     IntToken token = (IntToken)reqBrchs[br].getToken();
-                    code = token.intValue(); 
+                    code = token.intValue();
                     if( code > _winningPortChannelCode.getCode() ) {
                         _losingPortChannelCodes.
                                 insertFirst(_winningPortChannelCode);
-                        _winningPortChannelCode = 
+                        _winningPortChannelCode =
                                 new PortChannelCode(_requestIn, br, code);
                     } else {
-                        _losingPortChannelCodes.insertFirst( new 
+                        _losingPortChannelCodes.insertFirst( new
                             PortChannelCode(_requestIn, br, code) );
                     }
-                    
+
                 } else if( br == _numRequestInChannels ) {
-                
-                    // 
-                    // State 4: Contention is Over 
-                    // 
+
+                    //
+                    // State 4: Contention is Over
+                    //
                     generateEvents( new ExecEvent( this, 4 ) );
 	            System.out.println("\t\t\tSTATE 4: " +getName());
-                
+
                     reqBrchs[br].getToken();
-                    
+
                     // Send Positive Ack
                     int ch =  _winningPortChannelCode.getChannel();
                     _requestOut.send(ch, posAck);
-                    
+
                     // Send Negative Ack
                     Enumeration enum = _losingPortChannelCodes.elements();
                     PortChannelCode pcc = null;
@@ -187,15 +187,15 @@ public class CSPController extends CSPActor {
                         ch = pcc.getChannel();
                         _requestOut.send(ch, negAck);
                     }
-                    
+
                     // Prepare to Wait for New Requests...enter state 1
                     continueCDO = false;
                     _winningPortChannelCode = null;
                     _losingPortChannelCodes = null;
-                    
+
                 }
-                    
-                
+
+
                 // All branches failed.
                 else {
                     continueCDO = false;
@@ -204,7 +204,7 @@ public class CSPController extends CSPActor {
             }
         }
     }
-    
+
     /**
      */
     public void generateEvents(ExecEvent event) {
@@ -213,12 +213,12 @@ public class CSPController extends CSPActor {
         }
         Enumeration enum = _listeners.elements();
         while( enum.hasMoreElements() ) {
-            ExecEventListener newListener = 
+            ExecEventListener newListener =
                     (ExecEventListener)enum.nextElement();
             newListener.stateChanged(event);
         }
     }
-    
+
     /**
      */
     public void removeListeners(ExecEventListener listener) {
@@ -227,7 +227,7 @@ public class CSPController extends CSPActor {
         }
         _listeners.removeOneOf(listener);
     }
-    
+
 
     ////////////////////////////////////////////////////////////////////////
     ////                         public variables                       ////
@@ -236,11 +236,11 @@ public class CSPController extends CSPActor {
     private IOPort _requestOut;
     private IOPort _contendIn;
     private IOPort _contendOut;
-    
+
     private int _numRequestInChannels = -1;
-    
+
     private PortChannelCode _winningPortChannelCode;
     private LinkedList _losingPortChannelCodes;
-    
+
     private LinkedList _listeners;
 }

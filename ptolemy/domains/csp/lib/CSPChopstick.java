@@ -42,14 +42,14 @@ import ptolemy.data.expr.Parameter;
 //////////////////////////////////////////////////////////////////////////
 //// Chopstick
 /**
-Chopstick in Sieve of Eratosthenes demo. Each Chopstick can only be used by 
-one philosopher at a time. When it is not being used it can be 
-claimed by either of the two philosophers next to it. Once it has 
-been claimed, it is not available until it is released by the 
+Chopstick in Sieve of Eratosthenes demo. Each Chopstick can only be used by
+one philosopher at a time. When it is not being used it can be
+claimed by either of the two philosophers next to it. Once it has
+been claimed, it is not available until it is released by the
 philosopher holding it.
 <p>
-This actor has four ports, each of width one: two are used to communicate 
-with the philosopher on the left, and two are used to communicate with the 
+This actor has four ports, each of width one: two are used to communicate
+with the philosopher on the left, and two are used to communicate with the
 buffer on the right. Two ports are needed to communicate with each philosopher
 as the philosopher holds the chopstick for some random time.
 <p>
@@ -60,20 +60,20 @@ as the philosopher holds the chopstick for some random time.
 
 public class CSPChopstick extends CSPActor {
     /** Construct a CSPChopstick in the default workspace with an empty string
-     *  as its name. 
-     *  The actor is created with two input ports and two output 
-     *  ports, all of width one. The input ports are called "leftIn" 
-     *  and "rightIn", and similarly, the output ports are called "leftOut" 
+     *  as its name.
+     *  The actor is created with two input ports and two output
+     *  ports, all of width one. The input ports are called "leftIn"
+     *  and "rightIn", and similarly, the output ports are called "leftOut"
      *  and "rightOut".
      *  The object is added to the workspace directory.
      *  Increment the version number of the workspace.
-     *  @exception IllegalActionException If the port or parameter cannot 
+     *  @exception IllegalActionException If the port or parameter cannot
      *   be contained by this actor.
      *  @exception NameDuplicationException If the port name coincides with
      *   a port already in this actor, or if the parameter name coincides with
      *   a parameter already in this actor
      */
-    public CSPChopstick() 
+    public CSPChopstick()
             throws IllegalActionException, NameDuplicationException{
         super();
         leftOut = new IOPort(this, "leftOut", false, true);
@@ -85,10 +85,10 @@ public class CSPChopstick extends CSPActor {
     /** Construct a CSPChopstick in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
      *  is thrown. The container argument must not be null, or a
-     *  NullPointerException will be thrown. The actor is created with 
-     *  two input ports and two output 
-     *  ports, all of width one. The input ports are called "leftIn" 
-     *  and "rightIn", and similarly, the output ports are called "leftOut" 
+     *  NullPointerException will be thrown. The actor is created with
+     *  two input ports and two output
+     *  ports, all of width one. The input ports are called "leftIn"
+     *  and "rightIn", and similarly, the output ports are called "leftOut"
      *  and "rightOut".
      *  <p>
      *  @param container The CompositeActor that contains this actor.
@@ -110,14 +110,14 @@ public class CSPChopstick extends CSPActor {
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
 
-    /** Executes the code in this actor. This actor uses a CDO 
-     *  construct when it is waiting to be used by either of the 
-     *  philosophers next to it. Once one of the philosophers is using 
-     *  it, this actor waits to receive a message that the philosopher 
+    /** Executes the code in this actor. This actor uses a CDO
+     *  construct when it is waiting to be used by either of the
+     *  philosophers next to it. Once one of the philosophers is using
+     *  it, this actor waits to receive a message that the philosopher
      *  is finished eating (using it). It is a good example of using a CDO.
-     *  This process continues executing until a TerminateProcessException 
+     *  This process continues executing until a TerminateProcessException
      *  is thrown.
-     *  @exception IllegalActionException If an error occurs during 
+     *  @exception IllegalActionException If an error occurs during
      *   executing the process.
      */
     public void fire() throws IllegalActionException {

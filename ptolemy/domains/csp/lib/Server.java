@@ -47,7 +47,7 @@ import java.util.Random;
 
 Model of a server in a M/M/1 queue. It serves customers with times
 that are exponentially distributed. It is parameterized by the
-Parameter "serviceRate". The default service rate is 1. The process 
+Parameter "serviceRate". The default service rate is 1. The process
 continues executing until a TerminateProcesException is thrown.
 <p>
 @author Neil Smyth
@@ -55,16 +55,16 @@ continues executing until a TerminateProcesException is thrown.
 
  */
 public class Server extends CSPActor {
-    
+
     /** Construct a Server in the default workspace with an empty string
-     *  as its name. The actor is parameterized by the rate at which 
-     *  customers are served, which is a double. The default service 
-     *  rate is 1.0. 
-     *  The actor is created with a single input port, of width one, 
+     *  as its name. The actor is parameterized by the rate at which
+     *  customers are served, which is a double. The default service
+     *  rate is 1.0.
+     *  The actor is created with a single input port, of width one,
      *  called "input".
      *  The object is added to the workspace directory.
      *  Increment the version number of the workspace.
-     *  @exception IllegalActionException If the port or parameter cannot 
+     *  @exception IllegalActionException If the port or parameter cannot
      *   be contained by this actor.
      *  @exception NameDuplicationException If the port name coincides with
      *   a port already in this actor, or if the parameter name coincides with
@@ -79,9 +79,9 @@ public class Server extends CSPActor {
     /** Construct a Server in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
      *  is thrown. The container argument must not be null, or a
-     *  NullPointerException will be thrown. The actor is parameterized 
-     *  by the rate at which customers are served, which is a double. 
-     *  The default service rate is 1.0. The actor is created with a 
+     *  NullPointerException will be thrown. The actor is parameterized
+     *  by the rate at which customers are served, which is a double.
+     *  The default service rate is 1.0. The actor is created with a
      *  single input port, of width one, called "input".
      *  <p>
      *  @param container The CompositeActor that contains this actor.
@@ -99,9 +99,9 @@ public class Server extends CSPActor {
     /** Construct a Server in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
      *  is thrown. The container argument must not be null, or a
-     *  NullPointerException will be thrown. The actor is parameterized 
-     *  by the rate at which customers are served, which is a double. 
-     *  The service rate is assigned the value passed in. The actor is 
+     *  NullPointerException will be thrown. The actor is parameterized
+     *  by the rate at which customers are served, which is a double.
+     *  The service rate is assigned the value passed in. The actor is
      *  created with a single input port, of width one, called "input".
      *  <p>
      *  @param container The CompositeActor that contains this actor.
@@ -122,14 +122,14 @@ public class Server extends CSPActor {
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
 
-    /** Executes the code in this actor. This actor waits for a 
-     *  customer to arrive, then delays for a random time, 
-     *  representing the service times, described by an 
-     *  exponential distribution. A customer arrival is marked by 
-     *  the arrival of a message at the input channel of the actor. 
+    /** Executes the code in this actor. This actor waits for a
+     *  customer to arrive, then delays for a random time,
+     *  representing the service times, described by an
+     *  exponential distribution. A customer arrival is marked by
+     *  the arrival of a message at the input channel of the actor.
      *  It then repeats. This process continues
      *  executing until a TerminateProcessException is thrown.
-     *  @exception IllegalActionException If an error occurs during 
+     *  @exception IllegalActionException If an error occurs during
      *   executing the process.
      */
     public void fire() throws IllegalActionException {
@@ -149,7 +149,7 @@ public class Server extends CSPActor {
             }
         } catch (NoTokenException ex) {
             throw new IllegalActionException(getName() + ": invalid get.");
-        } 
+        }
     }
 
     /** Return false so that the process terminates.
@@ -163,8 +163,8 @@ public class Server extends CSPActor {
 
     // The input port for this actor.
     private IOPort _input;
-    
-    // The rate at which customers are served. It parameterizes an 
+
+    // The rate at which customers are served. It parameterizes an
     // exponential distribution.
     private Parameter _rate;
 }

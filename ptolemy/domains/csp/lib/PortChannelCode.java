@@ -61,25 +61,25 @@ public class PortChannelCode {
      */
     public int getChannel() {
         return _channel;
-    } 
-     
+    }
+
     /**
      */
     public int getCode() {
         return _code;
-    } 
-     
+    }
+
     /**
      */
     public IOPort getPort() {
         return _port;
-    } 
-     
+    }
+
     ////////////////////////////////////////////////////////////////////////
     ////                         public variables                       ////
 
     private IOPort _port;
     private int _channel;
     private int _code;
-    
+
 }

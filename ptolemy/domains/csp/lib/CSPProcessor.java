@@ -57,19 +57,19 @@ public class CSPProcessor extends CSPActor {
 
     /**
      */
-    public CSPProcessor(CompositeActor cont, String name, int code) 
+    public CSPProcessor(CompositeActor cont, String name, int code)
             throws IllegalActionException, NameDuplicationException {
          super(cont, name);
-         
+
          _requestOut = new IOPort(this, "requestOut", false, true);
          _requestIn = new IOPort(this, "requestIn", true, false);
          _memoryOut = new IOPort(this, "memoryOut", false, true);
          _memoryIn = new IOPort(this, "memoryIn", true, false);
-         
+
          _code = code;
-         
+
     }
-         
+
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
 
@@ -81,15 +81,15 @@ public class CSPProcessor extends CSPActor {
         }
         _listeners.insertLast(listener);
     }
-    
+
     /**
      */
     public void accessMemory(boolean read) throws IllegalActionException {
-        
-        // State 1 
+
+        // State 1
         {
-            generateEvents( new ExecEvent( this, 1 ) ); 
-            
+            generateEvents( new ExecEvent( this, 1 ) );
+
             if( _topGraphic != null ) {
                 System.out.println("YO MOMMA");
                 _topGraphic.receiveEvent(this, 1);
@@ -113,11 +113,11 @@ public class CSPProcessor extends CSPActor {
             delayTime = 10.0;
         }
         // System.out.println(getName()+" delaying for "+delayTime+" seconds.");
-        delay( delayTime ); 
-        IntToken iToken = new IntToken( _code ); 
-        _requestOut.broadcast(iToken); 
-        
-        // State 2 
+        delay( delayTime );
+        IntToken iToken = new IntToken( _code );
+        _requestOut.broadcast(iToken);
+
+        // State 2
         generateEvents( new ExecEvent( this, 2 ) );
         if( getName().equals("proc1") ) {
 	    System.out.println("STATE 2: " +getName());
@@ -126,9 +126,9 @@ public class CSPProcessor extends CSPActor {
         } else {
 	    System.out.println("\t\tSTATE 2: " +getName());
         }
-        BooleanToken bToken = (BooleanToken)_requestIn.get(0); 
-        
-        // State 3 
+        BooleanToken bToken = (BooleanToken)_requestIn.get(0);
+
+        // State 3
         generateEvents( new ExecEvent( this, 3 ) );
         if( getName().equals("proc1") ) {
 	    System.out.println("STATE 3: " +getName());
@@ -156,7 +156,7 @@ public class CSPProcessor extends CSPActor {
             }
             return;
         }
-        
+
         // System.out.println(getName()+ ": Negative Ack!!!");
         accessMemory(read);
     }
@@ -171,7 +171,7 @@ public class CSPProcessor extends CSPActor {
         }
         return false;
     }
-    
+
     /**
      */
     public void fire() throws IllegalActionException {
@@ -186,7 +186,7 @@ public class CSPProcessor extends CSPActor {
             }
         }
     }
-        
+
     /**
      */
     public void generateEvents(ExecEvent event) {
@@ -195,12 +195,12 @@ public class CSPProcessor extends CSPActor {
         }
         Enumeration enum = _listeners.elements();
         while( enum.hasMoreElements() ) {
-            ExecEventListener newListener = 
+            ExecEventListener newListener =
                     (ExecEventListener)enum.nextElement();
             newListener.stateChanged(event);
         }
     }
-    
+
     /**
      */
     public void initialize() throws IllegalActionException {
@@ -208,7 +208,7 @@ public class CSPProcessor extends CSPActor {
         CompositeActor ca = (CompositeActor)getContainer();
         _dir = (CSPDirector)ca.getDirector();
     }
-    
+
     /**
      */
     public boolean performReadNext() {
@@ -217,7 +217,7 @@ public class CSPProcessor extends CSPActor {
         }
         return false;
     }
-    
+
     /**
      */
     public void removeListeners(ExecEventListener listener) {
@@ -226,17 +226,17 @@ public class CSPProcessor extends CSPActor {
         }
         _listeners.removeOneOf(listener);
     }
-    
+
     /**
      */
-    public void setGraphicFrame(BusContentionGraphic bcg) 
+    public void setGraphicFrame(BusContentionGraphic bcg)
             throws IllegalActionException {
         if( bcg == null ) {
             throw new IllegalActionException( this, "BusContentionGraphic is null");
         }
         _topGraphic = bcg;
     }
-    
+
     ////////////////////////////////////////////////////////////////////////
     ////                        private methods                         ////
 
@@ -244,11 +244,11 @@ public class CSPProcessor extends CSPActor {
     private IOPort _requestOut;
     private IOPort _memoryIn;
     private IOPort _memoryOut;
-    
+
     private int _code;
-    
+
     private CSPDirector _dir;
-    
+
     private LinkedList _listeners;
     private BusContentionGraphic _topGraphic;
 }

@@ -40,9 +40,9 @@ import ptolemy.data.Token;
 //////////////////////////////////////////////////////////////////////////
 //// CSPMultiSink
 /**
-Accepts a Token from any channel connected to its port. It uses a 
+Accepts a Token from any channel connected to its port. It uses a
 CDO construct to always be ready to accept a new Token.
-The channels it can accept from is set at the start of each firing. 
+The channels it can accept from is set at the start of each firing.
 <p>
 @author Neil Smyth
 @version $Id$
@@ -105,7 +105,7 @@ public class CSPMultiSink extends CSPActor {
                 count++;
             }
         } catch (IllegalActionException ex) {
-            throw new TerminateProcessException(getName() + ": Error: " + 
+            throw new TerminateProcessException(getName() + ": Error: " +
 			"could not create ConditionalReceive branch");
         }
         return;

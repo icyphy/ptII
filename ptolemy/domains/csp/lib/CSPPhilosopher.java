@@ -47,40 +47,40 @@ import java.util.Random;
 //////////////////////////////////////////////////////////////////////////
 //// Philosopher in Sieve of Eratosthenes demo.
 /**
-A philosopher sits at a table with 4 other philososphers. Between 
-each two philosophers there is a fork. A Philosopher eats when he has 
-both forks next to him. A Philosopher thinks for a while, then tries 
-to eat. When he suceeds in obtaining both forks he eats for a while, 
+A philosopher sits at a table with 4 other philososphers. Between
+each two philosophers there is a fork. A Philosopher eats when he has
+both forks next to him. A Philosopher thinks for a while, then tries
+to eat. When he suceeds in obtaining both forks he eats for a while,
 then puts both forks back on the table and continues thinking.
 <p>
-Due to the rendezvous nature of communication in the CSP domain, a 
-philosopher stalls if it tries to get a chopstick but cannot. When 
-it acquires the chopstick, it eats for a while and then sends a 
+Due to the rendezvous nature of communication in the CSP domain, a
+philosopher stalls if it tries to get a chopstick but cannot. When
+it acquires the chopstick, it eats for a while and then sends a
 message to the chopstick to say that it is finished using it.
-Note this actor has been slowed down with Thread.sleep() statements to 
+Note this actor has been slowed down with Thread.sleep() statements to
 mimic the eating nature of the philosophers in real time.
 <p>
-This actor is aparameterized by three parameters: "eatingRate" which 
-controls the distribution of the eating times, and "thinkingRate" 
-which controls the distribution of the thinking times. Both these 
+This actor is aparameterized by three parameters: "eatingRate" which
+controls the distribution of the eating times, and "thinkingRate"
+which controls the distribution of the thinking times. Both these
 rates characterize a uniform distribution between 0 and the rate.
 <p>
 @author Neil Smyth
-@version 
+@version
 
  */
 public class CSPPhilosopher extends CSPActor {
-    
-    /** Construct a CSPPhilosopher in the specified container with the 
-     *  specified name.  The name must be unique within the container or 
+
+    /** Construct a CSPPhilosopher in the specified container with the
+     *  specified name.  The name must be unique within the container or
      *  an exception is thrown. The container argument must not be null, or a
-     *  NullPointerException will be thrown. 
-     *  The actor is created with two input ports and two output 
-     *  ports, all of width one. The input ports are called "leftIn" 
-     *  and "rightIn", and similarly, the output ports are called "leftOut" 
+     *  NullPointerException will be thrown.
+     *  The actor is created with two input ports and two output
+     *  ports, all of width one. The input ports are called "leftIn"
+     *  and "rightIn", and similarly, the output ports are called "leftOut"
      *  and "rightOut".
      *  <p>
-     *  The default values of the eatingRate and thinkingRate 
+     *  The default values of the eatingRate and thinkingRate
      *  parameters are 1.0.
      *  <p>
      *  @param container The CompositeActor that contains this actor.
@@ -97,7 +97,7 @@ public class CSPPhilosopher extends CSPActor {
         leftOut = new IOPort(this, "leftOut", false, true);
         rightIn = new IOPort(this, "rightIn", true, false);
         rightOut = new IOPort(this, "rightOut", false, true);
-        
+
         _eating = new Parameter(this, "eatingRate");
         _eating.setExpression("1.0");
 
@@ -108,13 +108,13 @@ public class CSPPhilosopher extends CSPActor {
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
 
-    /** Executes the code in this actor. This actor randomly chooses 
-     *  whether to grab the chopstick to the left or right of it first. 
-     *  When it has one chopstick, it then tries to grab the other 
-     *  chopstick beside it. 
-     *  This process mimics the eating action of the philosopher twenty 
-     *  times, and then finishes normally. 
-     *  @exception IllegalActionException If an error occurs during 
+    /** Executes the code in this actor. This actor randomly chooses
+     *  whether to grab the chopstick to the left or right of it first.
+     *  When it has one chopstick, it then tries to grab the other
+     *  chopstick beside it.
+     *  This process mimics the eating action of the philosopher twenty
+     *  times, and then finishes normally.
+     *  @exception IllegalActionException If an error occurs during
      *   executing the process.
      */
     public void fire() throws IllegalActionException {
@@ -129,7 +129,7 @@ public class CSPPhilosopher extends CSPActor {
                 interval = (int)(rand.nextDouble()*rate*1000);
                 interval = interval/1000;
                 System.out.println(getName() + count + ": thinking for "
-                        + interval);   
+                        + interval);
                 Thread th = Thread.currentThread();
                 th.sleep((long)interval*1000);
                 delay(interval);
@@ -166,9 +166,9 @@ public class CSPPhilosopher extends CSPActor {
                 gotLeft = false;
                 rightOut.send(0,t);
                 gotRight = false;
-                   
+
                 notifyListeners();
-                    
+
                 count++;
             }
             return;
@@ -184,7 +184,7 @@ public class CSPPhilosopher extends CSPActor {
     public boolean postfire() {
         return false;
     }
-    
+
     /** Register a PhilosospherListener with this Philosopher.
      */
      public void addPhilosopherListener(PhilosopherListener newListener) {
@@ -193,7 +193,7 @@ public class CSPPhilosopher extends CSPActor {
          }
          _listeners.insertLast(newListener);
      }
-     
+
     /*  Notify any PhilosospherListeners that have registered an
      *  interest/dependency in this Philosospher.
      */
@@ -208,7 +208,7 @@ public class CSPPhilosopher extends CSPActor {
         }
     }
 
-    // Variables that are used by the applet to get the state of 
+    // Variables that are used by the applet to get the state of
     // the philosopher.
     public boolean gotLeft = false;
     public boolean gotRight = false;
@@ -222,9 +222,9 @@ public class CSPPhilosopher extends CSPActor {
     private IOPort leftOut;
     private IOPort rightIn;
     private IOPort rightOut;
-    
+
     private LinkedList _listeners;
     private Parameter _eating;
     private Parameter _thinking;
-    
+
 }

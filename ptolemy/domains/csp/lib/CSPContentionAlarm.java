@@ -53,14 +53,14 @@ public class CSPContentionAlarm extends CSPActor {
 
     /**
      */
-    public CSPContentionAlarm(CompositeActor cont, String name) 
+    public CSPContentionAlarm(CompositeActor cont, String name)
             throws IllegalActionException, NameDuplicationException {
          super(cont, name);
-         
+
          _input = new IOPort(this, "input", true, false);
          _output = new IOPort(this, "output", false, true);
     }
-         
+
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
 
@@ -72,29 +72,29 @@ public class CSPContentionAlarm extends CSPActor {
         }
         _listeners.insertLast(listener);
     }
-    
+
     /**
      */
     public void fire() throws IllegalActionException {
-        
+
         while(true) {
             // State 1
             generateEvents( new ExecEvent( this, 1 ) );
 	    System.out.println("\t\t\t\tSTATE 1: " +getName());
             _input.get(0);
-            
+
             // State 2
             generateEvents( new ExecEvent( this, 2 ) );
 	    System.out.println("\t\t\t\tSTATE 2: " +getName());
             waitForDeadlock();
-            
+
             // State 3
             generateEvents( new ExecEvent( this, 3 ) );
 	    System.out.println("\t\t\t\tSTATE 3: " +getName());
             _output.send(0, new Token());
         }
     }
-    
+
     /**
      */
     public void generateEvents(ExecEvent event) {
@@ -103,12 +103,12 @@ public class CSPContentionAlarm extends CSPActor {
         }
         Enumeration enum = _listeners.elements();
         while( enum.hasMoreElements() ) {
-            ExecEventListener newListener = 
+            ExecEventListener newListener =
                     (ExecEventListener)enum.nextElement();
             newListener.stateChanged(event);
         }
     }
-    
+
     /**
      */
     public void removeListeners(ExecEventListener listener) {
@@ -117,12 +117,12 @@ public class CSPContentionAlarm extends CSPActor {
         }
         _listeners.removeOneOf(listener);
     }
-    
+
     ////////////////////////////////////////////////////////////////////////
     ////                         public variables                       ////
 
     private IOPort _input;
     private IOPort _output;
-    
+
     private LinkedList _listeners;
 }

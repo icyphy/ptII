@@ -1,4 +1,4 @@
-/* Sieve filtering out all multiples of a given number for 
+/* Sieve filtering out all multiples of a given number for
 the Sieve of Eratosthenes.
 
  Copyright (c) 1997-1999 The Regents of the University of California.
@@ -39,11 +39,11 @@ import java.util.Enumeration;
 //////////////////////////////////////////////////////////////////////////
 //// CSPSieve
 /**
-Used in the Sieve of Eratosthenes demo. This actor represents a 
+Used in the Sieve of Eratosthenes demo. This actor represents a
 sieve process which filters out all multiples of a particular number.
-The first time the filter encounters a number it cannot filter it 
-creates a new process to filter out all multiples of that number and 
-appends it to the string of filters already created. This actor is a good 
+The first time the filter encounters a number it cannot filter it
+creates a new process to filter out all multiples of that number and
+appends it to the string of filters already created. This actor is a good
 illustration of how to perform changes to the topology.
 <p>
 @author Neil Smyth
@@ -53,8 +53,8 @@ public class CSPSieve extends CSPActor {
 
     /** Calls the super class constructor and creates the neccessary ports.
      *  @exception NameDuplicationException If more than one port
-     *   with the same name is added to this actor, or if the entity 
-     *   containing this actor already contains an actor with the name 
+     *   with the same name is added to this actor, or if the entity
+     *   containing this actor already contains an actor with the name
      *   of this actor.
      *  @exception IllegalActionException If the entity cannot be contained
      *   by the proposed container.
@@ -74,7 +74,7 @@ public class CSPSieve extends CSPActor {
     /** Reads one Token from it's input port and writes this token to
      *  it's output ports. Needs to read one token for every output
      *  port.
-     *  @exception IllegalActionException If an error occurs during 
+     *  @exception IllegalActionException If an error occurs during
      *   executing the process.
      */
     public void fire() throws IllegalActionException {
@@ -145,10 +145,10 @@ public class CSPSieve extends CSPActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // The input port 
+    // The input port
     private IOPort _input;
 
-    // The output port 
+    // The output port
     private IOPort _output;
 
     // The prime this sieve is filtering out.

@@ -42,11 +42,11 @@ import ptolemy.data.expr.Parameter;
 //////////////////////////////////////////////////////////////////////////
 //// CSPBuffer
 /**
-A single channel buffer. This actor is the canonical example of how 
+A single channel buffer. This actor is the canonical example of how
 to use a CDO construct. It is parameterized by the Parameter "depth",
 which controls how many Tokens can be stored in this buffer.
-The default depth of the buffer is 1. The buffer depth is set upon calling 
-the fire method. The fire() method does not return until a 
+The default depth of the buffer is 1. The buffer depth is set upon calling
+the fire method. The fire() method does not return until a
 TerminateProcessException is thrown.
 <p>
 @author Neil Smyth
@@ -56,14 +56,14 @@ TerminateProcessException is thrown.
 public class CSPBuffer extends CSPActor {
 
     /** Construct a CSPBuffer in the default workspace with an empty string
-     *  as its name. The actor is parameterized by its depth, which must 
+     *  as its name. The actor is parameterized by its depth, which must
      *  be an integer. The default depth of the buffer is one.
-     *  The actor is created with a single input port and a single ouput 
-     *  port, both of width one. The input port is called "input", and 
+     *  The actor is created with a single input port and a single ouput
+     *  port, both of width one. The input port is called "input", and
      *  similarly, the output port is called "output".
      *  The object is added to the workspace directory.
      *  Increment the version number of the workspace.
-     *  @exception IllegalActionException If the port or parameter cannot 
+     *  @exception IllegalActionException If the port or parameter cannot
      *   be contained by this actor.
      *  @exception NameDuplicationException If the port name coincides with
      *   a port already in this actor, or if the parameter name coincides with
@@ -79,10 +79,10 @@ public class CSPBuffer extends CSPActor {
     /** Construct a CSPBuffer in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
      *  is thrown. The container argument must not be null, or a
-     *  NullPointerException will be thrown. The actor is parameterized by 
-     *  its depth, which must be an integer. The default depth of the buffer 
-     *  is one. The actor is created with a single input 
-     *  port and a single output port, both of width one.Tthe input port 
+     *  NullPointerException will be thrown. The actor is parameterized by
+     *  its depth, which must be an integer. The default depth of the buffer
+     *  is one. The actor is created with a single input
+     *  port and a single output port, both of width one.Tthe input port
      *  is called "input", and similarly, the output port is called "output".
      *  <p>
      *  @param container The CompositeActor that contains this actor.
@@ -100,11 +100,11 @@ public class CSPBuffer extends CSPActor {
     /** Construct a CSPBuffer in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
      *  is thrown. The container argument must not be null, or a
-     *  NullPointerException will be thrown. The actor is parameterized by 
-     *  its depth, which must be an integer. The buffer depth is assigned to 
-     *  the value passed in. The actor is created with a 
-     *  single input port and a single output port, both of width one. The 
-     *  input port is called "input", and similarly, the output port is 
+     *  NullPointerException will be thrown. The actor is parameterized by
+     *  its depth, which must be an integer. The buffer depth is assigned to
+     *  the value passed in. The actor is created with a
+     *  single input port and a single output port, both of width one. The
+     *  input port is called "input", and similarly, the output port is
      *  called "output".
      *  <p>
      *  @param container The CompositeActor that contains this actor.
@@ -126,12 +126,12 @@ public class CSPBuffer extends CSPActor {
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
 
-    /** Executes the code in this actor. This actor uses a CDO 
-     *  construct so that it is always able to receive or send a 
-     *  token, depending on the state of the buffer. It is the 
-     *  canonical example of using a CDO. This process continues 
+    /** Executes the code in this actor. This actor uses a CDO
+     *  construct so that it is always able to receive or send a
+     *  token, depending on the state of the buffer. It is the
+     *  canonical example of using a CDO. This process continues
      *  executing until a TerminateProcessException is thrown.
-     *  @exception IllegalActionException If an error occurs during 
+     *  @exception IllegalActionException If an error occurs during
      *   executing the process.
      */
     public void fire() throws IllegalActionException {
@@ -196,10 +196,10 @@ public class CSPBuffer extends CSPActor {
 
     // The input port for this actor.
     private IOPort _input;
-    
+
     // the output port for this actor.
     private IOPort _output;
-    
+
     // The number of Tokens currently stored in the buffer.
     private int _size = 0;
 

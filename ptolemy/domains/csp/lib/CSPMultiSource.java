@@ -41,10 +41,10 @@ import ptolemy.data.IntToken;
 //////////////////////////////////////////////////////////////////////////
 //// CSPMultiSource
 /**
-Sends a Token on any channel connected to its output port. It uses a 
-CDO construct to always be ready to send a new Token when another 
+Sends a Token on any channel connected to its output port. It uses a
+CDO construct to always be ready to send a new Token when another
 proces is ready to accept along one of the channels..
-The channels it can accept from is set at the start of each firing. 
+The channels it can accept from is set at the start of each firing.
 <p>
 @author Neil Smyth
 @version $Id$

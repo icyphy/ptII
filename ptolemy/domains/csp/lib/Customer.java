@@ -50,7 +50,7 @@ fashion, i.e the inter-arrival times are exponentially distributed.
 It is parameterized by the Parameter "arrivalRate". The default rate
 of arrival is 1.
 <p>
-It continues executing until 10 customers have arrived or a 
+It continues executing until 10 customers have arrived or a
 TerminateProcessException is thrown.
 <p>
 @author Neil Smyth
@@ -61,13 +61,13 @@ TerminateProcessException is thrown.
 public class Customer extends CSPActor {
 
     /** Construct a Customer in the default workspace with an empty string
-     *  as its name. The actor is parameterized by the rate of customer 
-     *  arrivals, which is a double. The default rate of arrival is 1.0. 
-     *  The actor is created with a single output 
+     *  as its name. The actor is parameterized by the rate of customer
+     *  arrivals, which is a double. The default rate of arrival is 1.0.
+     *  The actor is created with a single output
      *  port, of width one, called "output".
      *  The object is added to the workspace directory.
      *  Increment the version number of the workspace.
-     *  @exception IllegalActionException If the port or parameter cannot 
+     *  @exception IllegalActionException If the port or parameter cannot
      *   be contained by this actor.
      *  @exception NameDuplicationException If the port name coincides with
      *   a port already in this actor, or if the parameter name coincides with
@@ -82,9 +82,9 @@ public class Customer extends CSPActor {
     /** Construct a Customer in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
      *  is thrown. The container argument must not be null, or a
-     *  NullPointerException will be thrown. The actor is parameterized 
-     *  by the rate of customer arrivals, which is a double. The default 
-     *  rate of arrival is 1.0. The actor is created with a single output 
+     *  NullPointerException will be thrown. The actor is parameterized
+     *  by the rate of customer arrivals, which is a double. The default
+     *  rate of arrival is 1.0. The actor is created with a single output
      *  port, of width one, called "output".
      *  <p>
      *  @param container The CompositeActor that contains this actor.
@@ -102,10 +102,10 @@ public class Customer extends CSPActor {
     /** Construct a Customer in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
      *  is thrown. The container argument must not be null, or a
-     *  NullPointerException will be thrown. The actor is parameterized 
-     *  by the rate of customer arrivals, which is a double. The arrival 
+     *  NullPointerException will be thrown. The actor is parameterized
+     *  by the rate of customer arrivals, which is a double. The arrival
      *  rate is assigned to the value passed in.
-     *  The actor is created with a single output port, of width one, 
+     *  The actor is created with a single output port, of width one,
      *  called "output".
      *  <p>
      *  @param container The CompositeActor that contains this actor.
@@ -126,14 +126,14 @@ public class Customer extends CSPActor {
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
 
-    /** Executes the code in this actor. This actor delays for a 
-     *  random time, representing the customer inter-arrival times, 
-     *  described by an exponential distribution. It then sends a 
-     *  message on its output channel to signal the fact that a 
+    /** Executes the code in this actor. This actor delays for a
+     *  random time, representing the customer inter-arrival times,
+     *  described by an exponential distribution. It then sends a
+     *  message on its output channel to signal the fact that a
      *  customer has arrived, and then repeats. It continues
-     *  executing until 10 customers have arrived or a 
+     *  executing until 10 customers have arrived or a
      *  TerminateProcessException is thrown.
-     *  @exception IllegalActionException If an error occurs during 
+     *  @exception IllegalActionException If an error occurs during
      *   executing the process.
      */
     public void fire() throws IllegalActionException {
@@ -167,7 +167,7 @@ public class Customer extends CSPActor {
     ////////////////////////////////////////////////////////////////////////
     ////                         private variables                      ////
 
-    // The rate at which customers arrive. It parameterizes an 
+    // The rate at which customers arrive. It parameterizes an
     // exponential distribution.
     private Parameter _rate;
 

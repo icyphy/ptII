@@ -40,7 +40,7 @@ import ptolemy.data.Token;
 //////////////////////////////////////////////////////////////////////////
 //// CSPSink
 /**
-Accepts Tokens from a single channel. 
+Accepts Tokens from a single channel.
 
 @author Neil Smyth
 @version $Id$

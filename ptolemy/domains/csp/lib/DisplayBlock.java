@@ -1,4 +1,4 @@
-/* DisplayBlock 
+/* DisplayBlock
 
  Copyright (c) 1997-1999 The Regents of the University of California.
  All rights reserved.
@@ -39,7 +39,7 @@ import java.awt.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// DisplayBlock
-/** 
+/**
 
 
 @author John S. Davis II
@@ -47,23 +47,23 @@ import java.awt.*;
 */
 public class DisplayBlock extends Canvas {
 
-    /** 
+    /**
      */
     public DisplayBlock() {
     }
- 
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** 
+    /**
      */
     public void paint(Graphics g) {
         int w = getSize().width;
         int h = getSize().height;
- 
+
         g.setColor( SystemColor.window );
         g.fillRect( 0, 0, w, h );
- 
+
         g.setColor( SystemColor.black );
         Font font = new Font( "Helvetica", Font.BOLD, 40 );
         g.setFont(font);
@@ -72,12 +72,12 @@ public class DisplayBlock extends Canvas {
         int width = fMetrics.charWidth( '?' );
         g.drawString( "?", (w - width)/2 , (h + ascent)/2 );
     }
-        
-    
+
+
     ///////////////////////////////////////////////////////////////////
-    ////                        private variables                  //// 
-    
-    
+    ////                        private variables                  ////
+
+
 }
 
 
