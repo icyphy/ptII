@@ -107,7 +107,7 @@ public class CSPMultiSource extends CSPActor {
                 count++;
             }
         } catch (IllegalActionException ex) {
-            throw new TerminatePocessException(getName() + ": could not " +
+            throw new TerminateProcessException(getName() + ": could not " +
 		    "create all branches for CDO.");
         }
 	return;
