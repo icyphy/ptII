@@ -40,7 +40,7 @@ import javax.swing.filechooser.FileFilter;
  * all files except for those type extensions that it knows about.
  *
  * Extensions are of the type ".foo", which is typically found on
- * Windows and Unix boxes, but not on Macinthosh. Case is ignored.
+ * Windows and Unix boxes, but not on Macintosh. Case is ignored.
  *
  * Extension - create a new filter that filerts out all files
  * but gif and jpg image files:
