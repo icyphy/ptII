@@ -7,7 +7,7 @@
 # at $PTII/ptolemy/copernicus/shallow/makefile.in
 
 # Root of the Java directory
-ROOT =		@ptIIDirectory@
+ROOT =		@ptII@
 
 CLASSPATH =	$(ROOT)
 
@@ -16,7 +16,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	@sanitizedModelName@
+PTPACKAGE = 	@modelName@
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =
@@ -47,7 +47,7 @@ all: jclass
 install: all $(PTCLASSJAR)
 
 demo:
-	"$(JAVA)" -classpath "@ptIIUserDirectory@$(CLASSPATHSEPARATOR)$(PTII)" "-Dptolemy.ptII.dir=@ptIIDirectory@" ptolemy.actor.gui.CompositeActorApplication -class @targetPackage@.CG@sanitizedModelName@
+	"$(JAVA)" -classpath "@ptIIUserDirectory@$(CLASSPATHSEPARATOR)$(CLASSPATH)" "-Dptolemy.ptII.dir=@ptII@" ptolemy.actor.gui.CompositeActorApplication -class @targetPackage@.CG@modelName@
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
