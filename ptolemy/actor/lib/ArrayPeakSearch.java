@@ -248,9 +248,10 @@ public class ArrayPeakSearch extends TypedAtomicActor {
             if (end < start) {
                 increment = -1;
             }
-                        
-            boolean searchValley = false;
-            boolean searchPeak = true;
+
+            //  Originally these were reversed.
+            boolean searchValley = true;
+            boolean searchPeak = false;
             
             int localMaxIndex = start;
             int localMinIndex = start;
