@@ -33,6 +33,7 @@ import ptolemy.gui.*;
 
 import java.awt.*;
 import javax.swing.JPanel;
+import javax.swing.JOptionPane;
 import java.awt.event.*;
 import java.io.*;
 import java.net.URL;
@@ -206,17 +207,17 @@ public class PlotFrame extends Frame {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Display basic information about the application.
-     */
     protected void _about() {
-        Message message = new Message(
-                "Ptolemy plot frame\n" +
-                "By: Edward A. Lee, eal@eecs.berkeley.edu\n" +
+        JOptionPane.showMessageDialog(this,
+                "PlotFrame class\n" +
+                "By: Edward A. Lee, eal@eecs.berkeley.edu " +
                 "and Christopher Hylands, cxh@eecs.berkeley.edu\n" +
-                "Version 3.1, Build: $Id$"+
+                "Version 3.1, Build: $Id$\n\n"+
                 "For more information, see\n" +
-                "http://ptolemy.eecs.berkeley.edu/java/ptplot\n");
-        message.setTitle("About Ptolemy Plot");
+                "http://ptolemy.eecs.berkeley.edu/java/ptplot\n\n" +
+                "Copyright (c) 1997-1999, " +
+                "The Regents of the University of California.",
+                "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
     }
 
     /** Close the window.
@@ -486,17 +487,11 @@ public class PlotFrame extends Frame {
     /** Display more detailed information than given by _about().
      */
     protected void _help() {
-        Message message = new Message(
-                "This is a versatile two-dimensional data plotter " +
-                "that runs as part of an application, but in its own " +
-                "window. It can read files compatible with the Ptolemy " +
-                "plot file format (currently only ASCII), or the " +
-                "application can interact directly with the contained " +
-                "Plot object, which is visible as a public member. " +
-                "For a description of the file format, see the Plot " +
-                "and PlotBox classes.",
-                null, null, 8, 60, TextArea.SCROLLBARS_NONE);
-        message.setTitle("Plot frame");
+        JOptionPane.showMessageDialog(this,
+                "PlotFrame is a plot in a top-level window.\n" +
+                "  File formats understood: Ptplot ASCII.\n" +
+                "  Left mouse button: Zooming.",
+                "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
     }
 
     /** Open a new file and plot its data.
@@ -523,9 +518,13 @@ public class PlotFrame extends Frame {
             _read(new URL("file", null, _directory), new FileInputStream(file));
             plot.repaint();
         } catch (FileNotFoundException ex) {
-            Message msg = new Message("File not found: " + ex);
+            JOptionPane.showMessageDialog(this,
+            "File not found:\n" + ex.toString(),
+            "Ptolemy Plot Error", JOptionPane.WARNING_MESSAGE);
         } catch (IOException ex) {
-            Message msg = new Message("Error reading input: " + ex);
+            JOptionPane.showMessageDialog(this,
+            "Error reading input:\n" + ex.toString(),
+            "Ptolemy Plot Error", JOptionPane.WARNING_MESSAGE);
         }
         _filename = filename;
     }
@@ -590,7 +589,9 @@ public class PlotFrame extends Frame {
                 FileOutputStream fout = new FileOutputStream(file);
                 plot.write(fout);
             } catch (IOException ex) {
-                Message msg = new Message("Error writing file: " + ex);
+                JOptionPane.showMessageDialog(this,
+                "Error writing file:\n" + ex.toString(),
+                "Ptolemy Plot Error", JOptionPane.WARNING_MESSAGE);
             }
         } else {
             _saveAs();

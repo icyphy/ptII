@@ -33,7 +33,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 */
 package ptolemy.plot.plotml;
 
-import ptolemy.plot.Message;
 import ptolemy.plot.Plot;
 import ptolemy.plot.PlotBox;
 import ptolemy.plot.PlotApplication;
@@ -44,6 +43,7 @@ import java.io.IOException;
 import java.io.BufferedInputStream;
 import java.io.InputStream;
 import java.net.URL;
+import javax.swing.JOptionPane;
 
 //////////////////////////////////////////////////////////////////////////
 //// PlotMLApplication
@@ -117,31 +117,29 @@ public class PlotMLApplication extends PlotApplication {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Display basic information about the application.
-     */
     protected void _about() {
-        Message message = new Message(
+        JOptionPane.showMessageDialog(this,
                 "PlotMLApplication class\n" +
-                "By: Edward A. Lee, eal@eecs.berkeley.edu\n" +
+                "By: Edward A. Lee, eal@eecs.berkeley.edu " +
                 "and Christopher Hylands, cxh@eecs.berkeley.edu\n" +
                 "Version 3.1, Build: $Id$\n\n"+
                 "For more information, see\n" +
-                "http://ptolemy.eecs.berkeley.edu/java/ptplot\n" +
-                "Copyright (c) 1997-1999,\n" +
-                "The Regents of the University of California.");
-        message.setTitle("About Ptolemy Plot");
+                "http://ptolemy.eecs.berkeley.edu/java/ptplot\n\n" +
+                "Copyright (c) 1997-1999, " +
+                "The Regents of the University of California.",
+                "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
     }
 
     /** Display more detailed information than given by _about().
      */
     protected void _help() {
-        // Use newlines here since we are displaying with scrollbars.
-        Message message = new Message(
-                "PlotMLApplication is a standalone plot application.\n" +
-                "It can read files in the PlotML format " +
-                "(an XML extension).\n\n" +
-                _usage());
-        message.setTitle("Usage of Ptolemy Plot");
+        JOptionPane.showMessageDialog(this,
+                "PlotMLApplication is a standalone plot " +
+                " application.\n" +
+                "  File formats understood: PlotML and Ptplot ASCII.\n" +
+                "  Left mouse button: Zooming.\n\n" +
+                _usage(),
+                "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
     }
 
     /** Read the specified stream.  This method checks to see whether

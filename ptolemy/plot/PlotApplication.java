@@ -34,9 +34,7 @@ import java.io.*;
 import java.util.StringTokenizer;
 import java.net.URL;
 import java.net.MalformedURLException;
-
-// TO DO:
-//   - Improve the help mechanism and separate from the usage message.
+import javax.swing.JOptionPane;
 
 //////////////////////////////////////////////////////////////////////////
 //// PlotApplication
@@ -175,19 +173,17 @@ public class PlotApplication extends PlotFrame {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Display basic information about the application.
-     */
     protected void _about() {
-        Message message = new Message(
+        JOptionPane.showMessageDialog(this,
                 "PlotApplication class\n" +
-                "By: Edward A. Lee, eal@eecs.berkeley.edu\n" +
+                "By: Edward A. Lee, eal@eecs.berkeley.edu " +
                 "and Christopher Hylands, cxh@eecs.berkeley.edu\n" +
                 "Version 3.1, Build: $Id$\n\n"+
                 "For more information, see\n" +
-                "http://ptolemy.eecs.berkeley.edu/java/ptplot\n" +
-                "Copyright (c) 1997-1999,\n" +
-                "The Regents of the University of California.");
-        message.setTitle("About Ptolemy Plot");
+                "http://ptolemy.eecs.berkeley.edu/java/ptplot\n\n" +
+                "Copyright (c) 1997-1999, " +
+                "The Regents of the University of California.",
+                "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
     }
 
     /** Exit the application.
@@ -199,15 +195,13 @@ public class PlotApplication extends PlotFrame {
     /** Display more detailed information than given by _about().
      */
     protected void _help() {
-        // Use newlines here since we are displaying with scrollbars.
-        Message message = new Message(
-                "PlotApplication is a standalone Java 2D plot application.\n" +
-                "It can read files compatible with the Ptolemy plot\n" +
-                "file format (currently only ASCII).\n" +
+        JOptionPane.showMessageDialog(this,
+                "PlotApplication is a standalone plot " +
+                " application.\n" +
+                "  File formats understood: Ptplot ASCII.\n" +
+                "  Left mouse button: Zooming.\n\n" +
                 _usage(),
-                null, null, 20, 40,
-                TextArea.SCROLLBARS_BOTH);
-        message.setTitle("Usage of Ptolemy Plot");
+                "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
     }
 
     /** Parse the command-line
