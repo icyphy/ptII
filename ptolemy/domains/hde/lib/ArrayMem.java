@@ -225,7 +225,7 @@ public class ArrayMem extends TypedAtomicActor {
     ////                         private variables                 ////
 
     //  The value of the length parameter.
-    public int _lengthValue;
+    private int _lengthValue;
 
     // The most recently read index token.
     private int _index = 0;
