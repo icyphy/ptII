@@ -48,9 +48,9 @@ public class Average extends CCodeGeneratorHelper {
         stream.append(processCode(_codeBlock));
     }
 
-    public void generateInitializeCode(StringBuffer stream)
+    public String generateInitializeCode()
             throws IllegalActionException {
-    	stream.append(processCode(_initBlock));
+    	return processCode(_initBlock);
     }
 
 

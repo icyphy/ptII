@@ -8,7 +8,6 @@ package ptolemy.codegen.c.actor.lib;
 
 import ptolemy.codegen.kernel.CCodeGeneratorHelper;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NamedObj;
 
 /**
  * @author Man-Kit Leung
@@ -39,9 +38,9 @@ public class Differential extends CCodeGeneratorHelper {
         stream.append(processCode(_codeBlock));
     }
 
-    public void generateInitializeCode(StringBuffer stream)
+    public String generateInitializeCode()
             throws IllegalActionException {
-    	stream.append(processCode(_initBlock));
+    	return processCode(_initBlock);
     }
 
 
