@@ -63,6 +63,7 @@ JSRCS = \
 	CTPlot.java \
 	CTPrintln.java \
 	CTRamp.java \
+	CTSin.java \
 	CTSink.java \
 	CTSquareWave.java \
 	CTZeroOrderHold.java
