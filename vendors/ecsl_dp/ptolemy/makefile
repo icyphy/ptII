@@ -51,7 +51,6 @@ PTCLASSJAR =    ecslptolemy.jar
 # Keep this list alphabetized.
 JSRCS = \
         ECSLGain.java \
-	ECSLIntegrator.java \
 	ECSLStep.java \
 	ECSLSum.java
 
