@@ -30,6 +30,8 @@
 
 package ptolemy.vergil.tree;
 
+import ptolemy.kernel.util.ChangeListener;
+import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.CompositeEntity;
 
@@ -61,8 +63,9 @@ public class EntityTreeModel implements TreeModel {
      *  root objects might be used by derived classes.
      *  @param root The root of the tree.
      */
-    public EntityTreeModel(Object root) {
+    public EntityTreeModel(NamedObj root) {
 	_root = root;
+	root.addChangeListener(new TreeUpdateListener());
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -149,10 +152,29 @@ public class EntityTreeModel implements TreeModel {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+
+    public class TreeUpdateListener implements ChangeListener {
+	/** Trigger an update of the entire tree.
+	 */
+	public void changeExecuted(ChangeRequest change) {
+	    // FIXME it would be nice if there was more information in
+	    // the change about the context of the change.
+	    valueForPathChanged(new TreePath(getRoot()), getRoot());
+	}
+
+	/** Trigger an update of the entire tree.
+	 */	
+	public void changeFailed(ChangeRequest change, Exception exception) {
+	    valueForPathChanged(new TreePath(getRoot()), getRoot());
+	}	
+    }
+
+    ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
     // The root of the tree.
-    protected Object _root;
+    protected NamedObj _root;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
