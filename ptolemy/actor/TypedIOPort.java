@@ -452,7 +452,6 @@ public class TypedIOPort extends IOPort implements Typeable {
     ////                         protected methods                 ////
 
     /** Override parent method to ensure compatibility of the relation.
-     *  <p>
      *  This method is <i>not</i> synchronized on the
      *  workspace, so the caller should be.
      *
@@ -464,18 +463,17 @@ public class TypedIOPort extends IOPort implements Typeable {
      *   relation is incompatible with this port, or the port is not
      *   in the same workspace as the relation.
      */
-    protected void _checkInsideLink(ComponentRelation relation)
+    protected void _checkLiberalLink(ComponentRelation relation)
             throws IllegalActionException {
         if (!(relation instanceof TypedIORelation)) {
             throw new IllegalActionException(this, relation,
                     "Attempt to link to an incompatible relation." +
                     " TypedIOPort requires TypedIORelation.");
         }
-        super._checkInsideLink((TypedIORelation)relation);
+        super._checkLiberalLink((TypedIORelation)relation);
     }
 
     /** Override parent method to ensure compatibility of the relation.
-     *  <p>
      *  This method is <i>not</i> synchronized on the
      *  workspace, so the caller should be.
      *

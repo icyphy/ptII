@@ -978,4 +978,134 @@ test CompositeEntity-19.1 {test changeListeners} {
 } {Place port . in container .
 Place port . in container .
 }}
-    
+
+######################################################################
+####
+#
+test CompositeEntity-20.0 {test exportMoML with link indexing, inside links} {
+    set w [java::new ptolemy.kernel.util.Workspace]
+    set e1 [java::new ptolemy.kernel.CompositeEntity $w]
+    $e1 setName "e1"
+    set p1 [java::new ptolemy.kernel.ComponentPort $e1 "p1"]
+    set e2 [java::new ptolemy.kernel.ComponentEntity $e1 "e2"]
+    set p2 [java::new ptolemy.kernel.ComponentPort $e2 "p2"]
+    set r [java::new ptolemy.kernel.ComponentRelation $e1 "r"]
+    $p1 insertLink 0 $r
+    $p2 insertLink 0 $r
+    $e1 exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<model name="e1" class="ptolemy.kernel.CompositeEntity">
+    <port name="p1" class="ptolemy.kernel.ComponentPort">
+    </port>
+    <entity name="e2" class="ptolemy.kernel.ComponentEntity">
+        <port name="p2" class="ptolemy.kernel.ComponentPort">
+        </port>
+    </entity>
+    <relation name="r" class="ptolemy.kernel.ComponentRelation">
+    </relation>
+    <link port="p1" relation="r"/>
+    <link port="e2.p2" relation="r"/>
+</model>
+}
+
+######################################################################
+####
+#
+test CompositeEntity-20.1 {test exportMoML with link indexing, inside links} {
+    set w [java::new ptolemy.kernel.util.Workspace]
+    set e1 [java::new ptolemy.kernel.CompositeEntity $w]
+    $e1 setName "e1"
+    set p1 [java::new ptolemy.kernel.ComponentPort $e1 "p1"]
+    set e2 [java::new ptolemy.kernel.ComponentEntity $e1 "e2"]
+    set p2 [java::new ptolemy.kernel.ComponentPort $e2 "p2"]
+    set r [java::new ptolemy.kernel.ComponentRelation $e1 "r"]
+    $p1 insertLink 1 $r
+    $p2 insertLink 1 $r
+    $e1 exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<model name="e1" class="ptolemy.kernel.CompositeEntity">
+    <port name="p1" class="ptolemy.kernel.ComponentPort">
+    </port>
+    <entity name="e2" class="ptolemy.kernel.ComponentEntity">
+        <port name="p2" class="ptolemy.kernel.ComponentPort">
+        </port>
+    </entity>
+    <relation name="r" class="ptolemy.kernel.ComponentRelation">
+    </relation>
+    <link port="p1" relation="r" index="1"/>
+    <link port="e2.p2" relation="r" index="1"/>
+</model>
+}
+
+######################################################################
+####
+#
+test CompositeEntity-20.2 {test exportMoML with link indexing, inside links} {
+    set w [java::new ptolemy.kernel.util.Workspace]
+    set e1 [java::new ptolemy.kernel.CompositeEntity $w]
+    $e1 setName "e1"
+    set p1 [java::new ptolemy.kernel.ComponentPort $e1 "p1"]
+    set r1 [java::new ptolemy.kernel.ComponentRelation $e1 "r1"]
+    set r2 [java::new ptolemy.kernel.ComponentRelation $e1 "r2"]
+    $p1 insertLink 1 $r1
+    $p1 insertLink 0 $r2
+    $e1 exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<model name="e1" class="ptolemy.kernel.CompositeEntity">
+    <port name="p1" class="ptolemy.kernel.ComponentPort">
+    </port>
+    <relation name="r1" class="ptolemy.kernel.ComponentRelation">
+    </relation>
+    <relation name="r2" class="ptolemy.kernel.ComponentRelation">
+    </relation>
+    <link port="p1" relation="r2"/>
+    <link port="p1" relation="r1" index="2"/>
+</model>
+}
+
+######################################################################
+####
+#
+test CompositeEntity-20.3 {test exportMoML with link indexing, inside links} {
+    # NOTE: This builds on the previous test.
+    $p1 {unlinkInside int} 0
+    $e1 exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<model name="e1" class="ptolemy.kernel.CompositeEntity">
+    <port name="p1" class="ptolemy.kernel.ComponentPort">
+    </port>
+    <relation name="r1" class="ptolemy.kernel.ComponentRelation">
+    </relation>
+    <relation name="r2" class="ptolemy.kernel.ComponentRelation">
+    </relation>
+    <link port="p1" relation="r1" index="1"/>
+</model>
+}
+
+######################################################################
+####
+#
+test CompositeEntity-20.4 {test unlinkInside by relation, inside links} {
+    # NOTE: This builds on the previous test.
+    $p1 unlinkInside $r1
+    $e1 exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<model name="e1" class="ptolemy.kernel.CompositeEntity">
+    <port name="p1" class="ptolemy.kernel.ComponentPort">
+    </port>
+    <relation name="r1" class="ptolemy.kernel.ComponentRelation">
+    </relation>
+    <relation name="r2" class="ptolemy.kernel.ComponentRelation">
+    </relation>
+</model>
+}

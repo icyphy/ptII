@@ -253,15 +253,9 @@ public class Port extends NamedObj {
         }
         try {
             _workspace.getWriteAccess();
-            if (_container != null) {
-                if (_container.getContainer() != relation.getContainer()) {
-                    throw new IllegalActionException(this, relation,
-                            "Link crosses levels of the hierarchy");
-                }
-            }
             _checkLink(relation);
             _relationsList.insertLink(index, relation._getPortList());
-            _container.connectionsChanged(this);
+            if (_container != null) _container.connectionsChanged(this);
         } finally {
             _workspace.doneWriting();
         }
@@ -349,15 +343,9 @@ public class Port extends NamedObj {
         }
         try {
             _workspace.getWriteAccess();
-            if (_container != null) {
-                if (_container.getContainer() != relation.getContainer()) {
-                    throw new IllegalActionException(this, relation,
-                            "Link crosses levels of the hierarchy");
-                }
-            }
             _checkLink(relation);
             _relationsList.link( relation._getPortList() );
-            _container.connectionsChanged(this);
+            if (_container != null) _container.connectionsChanged(this);
         } finally {
             _workspace.doneWriting();
         }
@@ -450,6 +438,26 @@ public class Port extends NamedObj {
         super.setName(name);
     }
 
+    /** Unlink whatever relation is currently linked at the specified index
+     *  number. If there is no such relation, do nothing.
+     *  If a link is removed, then any links at higher index numbers
+     *  will have their index numbers decremented by one.
+     *  If there is a container, notify it by calling connectionsChanged().
+     *  This method is write-synchronized on the
+     *  workspace and increments its version number.
+     *  @param index The index number of the link to remove.
+     */
+    public void unlink(int index) {
+        try {
+            _workspace.getWriteAccess();
+            _relationsList.unlink(index);
+            _workspace.incrVersion();
+            if (_container != null) _container.connectionsChanged(this);
+        } finally {
+            _workspace.doneWriting();
+        }
+    }
+
     /** Unlink the specified Relation. If the Relation
      *  is not linked to this port, do nothing. If the relation is linked
      *  more than once, then unlink the first link only.
@@ -462,12 +470,10 @@ public class Port extends NamedObj {
         try {
             _workspace.getWriteAccess();
             _relationsList.unlink(relation);
+            _workspace.incrVersion();
+            if (_container != null) _container.connectionsChanged(this);
         } finally {
             _workspace.doneWriting();
-        }
-        Entity container = (Entity)getContainer();
-        if (container != null) {
-            container.connectionsChanged(this);
         }
     }
 
@@ -481,12 +487,9 @@ public class Port extends NamedObj {
             _workspace.getWriteAccess();
             _relationsList.unlinkAll();
             _workspace.incrVersion();
+            if (_container != null) _container.connectionsChanged(this);
         } finally {
             _workspace.doneWriting();
-        }
-        Entity container = (Entity)getContainer();
-        if (container != null) {
-            container.connectionsChanged(this);
         }
     }
 
@@ -503,13 +506,14 @@ public class Port extends NamedObj {
      *  This method <i>not</i> synchronized on the
      *  workspace, so the caller should be.
      *  @param relation The relation to link to.
-     *  @exception IllegalActionException If this port has no container.
+     *  @exception IllegalActionException If this port has no container,
+     *   or if this port is not an acceptable port for the specified
+     *   relation.
      */
     protected void _checkLink(Relation relation)
             throws IllegalActionException {
         if (relation != null) {
-            Entity container = (Entity)getContainer();
-            if (container == null) {
+            if (_container == null) {
                 throw new IllegalActionException(this, relation,
                         "Port must have a container to establish a link.");
             }
@@ -554,7 +558,11 @@ public class Port extends NamedObj {
                 Enumeration enum = linkedRelations();
                 while (enum.hasMoreElements()) {
                     Relation rel = (Relation)enum.nextElement();
-                    result += rel._description(detail, indent+1, 2) + "\n";
+                    if (rel != null) {
+                        result += rel._description(detail, indent+1, 2) + "\n";
+                    } else {
+                        result += _getIndentPrefix(indent+1) + "null\n";
+                    }
                 }
                 result += _getIndentPrefix(indent) + "}";
             }

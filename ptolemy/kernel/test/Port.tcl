@@ -176,7 +176,7 @@ test Port-4.1 {Test unlinkAll} {
 ######################################################################
 ####
 #
-test Port-5.1 {Test unlink} {
+test Port-5.1 {Test unlink (by relation)} {
     set p3 [java::new ptolemy.kernel.Port]
     set e1 [java::new ptolemy.kernel.Entity]
     set p1 [java::new ptolemy.kernel.Port $e1 P1]
@@ -210,6 +210,46 @@ test Port-5.1 {Test unlink} {
 } {{relation2 {relation1 relation2}
 relation2 relation1
 relation2 {}
+1
+{} {}}}
+
+######################################################################
+####
+#
+test Port-5.1.1 {Test unlink (by index)} {
+    set p3 [java::new ptolemy.kernel.Port]
+    set e1 [java::new ptolemy.kernel.Entity]
+    set p1 [java::new ptolemy.kernel.Port $e1 P1]
+    # FIXME: Bug in TclBlend: If p3 is set below instead of above,
+    # TclBlend gives an error on Unix machines, but not on NT.
+    # The error is:
+    # wrong # args for calling constructor "ptolemy.kernel.Port"
+    # set p3 [java::new ptolemy.kernel.Port]
+    $p3 setContainer $e1
+    set r1 [java::new ptolemy.kernel.Relation "relation1"]
+    set r2 [java::new ptolemy.kernel.Relation "relation2"]
+    $p1 link $r1
+    $p3 link $r1
+    $p1 link $r2
+    $p3 link $r2
+    $p1 {unlink int} 1
+    set result1 [_testPortLinkedRelations $p1 $p3]
+    $p3 {unlink int} 0
+    set result2 [_testPortLinkedRelations $p1 $p3]
+    $p3 {unlink int} 0
+    set result3 [_testPortLinkedRelations $p1 $p3]
+
+    # Call unlink on a relation that has already been disconnected.
+    $p3 {unlink int} 1
+    set result4 [expr {$result3 == [_testPortLinkedRelations $p1 $p3]}]
+
+    $p1 {unlink int} 0
+    set result5 [_testPortLinkedRelations $p1 $p3]
+
+   list "$result1\n$result2\n$result3\n$result4\n$result5"
+} {{relation1 {relation1 relation2}
+relation1 relation2
+relation1 {}
 1
 {} {}}}
 
@@ -522,4 +562,21 @@ test Port-16.0 {Test exportMoML} {
 </model>
 }
 
+######################################################################
+####
+#
+test Port-17.0 {Test insertLink} {
+    set e1 [java::new ptolemy.kernel.Entity]
+    $e1 setName "E1"
+    set p1 [java::new ptolemy.kernel.Port $e1 "P1"]
+    set r1 [java::new ptolemy.kernel.Relation "R1"]
+    set r2 [java::new ptolemy.kernel.Relation "R2"]
+    $p1 insertLink 1 $r1
+    $p1 description
+} {ptolemy.kernel.Port {.E1.P1} attributes {
+} links {
+    null
+    {ptolemy.kernel.Relation {.R1} attributes {
+    }}
+}}
 

@@ -24,6 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
+@ProposedRating Green (eal@eecs.berkeley.edu)
 @AcceptedRating Green (johnr@eecs.berkeley.edu)
 */
 
@@ -252,6 +253,39 @@ public class ComponentRelation extends Relation {
             }
         }
         super.setName(name);
+    }
+
+    /** Override the base class to break inside links on ports as well
+     *  as outside lists.
+     *  This method is write-synchronized on the workspace and increments
+     *  its version number.
+     */
+    public void unlinkAll() {
+        try {
+            // NOTE: Do not just use _portList.unlinkAll() because then the
+            // containers of the ports are not notified of the change.
+            // Also, have to first copy the ports references, then remove
+            // them, to avoid a corrupted enumeration exception.
+
+            // Unlink the outside links of linked ports.
+            super.unlinkAll();
+
+            // Next, remove the links that are inside links of ports.
+            _workspace.getWriteAccess();
+            int size = numLinks();
+            ComponentPort portArray[] = new ComponentPort[size];
+            int i = 0;
+            Enumeration ports = linkedPorts();
+            while(ports.hasMoreElements()) {
+                ComponentPort p = (ComponentPort)ports.nextElement();
+                portArray[i++] = p;
+            }
+            for (i = 0; i < size; i++) {
+                portArray[i].unlinkInside(this);
+            }
+        } finally {
+            _workspace.doneWriting();
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

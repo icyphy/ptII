@@ -237,6 +237,8 @@ public final class CrossRefList implements Serializable  {
 
     /** Delete the link at the specified index.  If there is no such
      *  link, ignore.  Back references are likewise updated.
+     *  Note that the index numbers of any links at higher indices
+     *  will decrease by one.
      *  Time complexity: O(n).
      *  @param index The index of the link to delete.
      */

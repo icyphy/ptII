@@ -861,7 +861,6 @@ test MoMLParser-1.23 {Simulate a problem we found with FSM, where pure propertie
 test MoMLParser-2.1 {Test incremental parsing: add entity} {
     set incMomlBase "$header
 <model name=\"top\" class=\"ptolemy.actor.TypedCompositeActor\">
-    <doc>xxx</doc>
 </model>
 "
 
@@ -878,7 +877,6 @@ test MoMLParser-2.1 {Test incremental parsing: add entity} {
 <!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <model name="top" class="ptolemy.actor.TypedCompositeActor">
-    <doc>xxx</doc>
     <entity name="inside" class="ptolemy.actor.TypedCompositeActor">
     </entity>
 </model>
@@ -896,7 +894,6 @@ test MoMLParser-2.2 {Test incremental parsing: add entity deeper} {
 <!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <model name="top" class="ptolemy.actor.TypedCompositeActor">
-    <doc>xxx</doc>
     <entity name="inside" class="ptolemy.actor.TypedCompositeActor">
         <property name="prop" class="ptolemy.data.expr.Parameter">
         </property>
@@ -916,7 +913,6 @@ test MoMLParser-2.3 {Test incremental parsing: add port} {
 <!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <model name="top" class="ptolemy.actor.TypedCompositeActor">
-    <doc>xxx</doc>
     <entity name="inside" class="ptolemy.actor.TypedCompositeActor">
         <property name="prop" class="ptolemy.data.expr.Parameter">
         </property>
@@ -943,7 +939,6 @@ test MoMLParser-2.4 {Test incremental parsing: add another port, relation, and l
 <!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <model name="top" class="ptolemy.actor.TypedCompositeActor">
-    <doc>xxx</doc>
     <entity name="inside" class="ptolemy.actor.TypedCompositeActor">
         <property name="prop" class="ptolemy.data.expr.Parameter">
         </property>
@@ -973,7 +968,6 @@ test MoMLParser-2.5 {Test incremental parsing: remove an entity} {
 <!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <model name="top" class="ptolemy.actor.TypedCompositeActor">
-    <doc>xxx</doc>
     <entity name="inside" class="ptolemy.actor.TypedCompositeActor">
         <property name="prop" class="ptolemy.data.expr.Parameter">
         </property>
@@ -997,7 +991,6 @@ test MoMLParser-2.5.1 {Test incremental parsing: remove an entity} {
 <!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <model name="top" class="ptolemy.actor.TypedCompositeActor">
-    <doc>xxx</doc>
     <entity name="inside" class="ptolemy.actor.TypedCompositeActor">
         <property name="prop" class="ptolemy.data.expr.Parameter">
         </property>
@@ -1034,7 +1027,6 @@ test MoMLParser-2.7 {Test incremental parsing: remove a relation} {
 <!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <model name="top" class="ptolemy.actor.TypedCompositeActor">
-    <doc>xxx</doc>
     <entity name="inside" class="ptolemy.actor.TypedCompositeActor">
         <property name="prop" class="ptolemy.data.expr.Parameter">
         </property>
@@ -1058,13 +1050,79 @@ test MoMLParser-2.8 {Test incremental parsing: remove a port} {
 <!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <model name="top" class="ptolemy.actor.TypedCompositeActor">
-    <doc>xxx</doc>
     <entity name="inside" class="ptolemy.actor.TypedCompositeActor">
         <property name="prop" class="ptolemy.data.expr.Parameter">
         </property>
     </entity>
 </model>
 }
+
+#----------------------------------------------------------------------
+test MoMLParser-2.9 {Test link with insertAt attribute} {
+    $parser reset
+    set toplevel [$parser parse {
+<model name="top" class="ptolemy.kernel.CompositeEntity">
+    <port name="p" class="ptolemy.kernel.ComponentPort"/>
+    <entity name="a" class="ptolemy.kernel.CompositeActor">
+        <port name="p" class="ptolemy.kernel.ComponentPort"/>
+    </entity>
+    <relation name="r" class="ptolemy.kernel.ComponentRelation"/>
+    <link port="p" relation="r" insertAt="1"/>
+</model>
+}]
+    $toplevel exportMoML
+} {<model name="top" class="ptolemy.kernel.CompositeEntity">
+    <port name="p" class="ptolemy.kernel.ComponentPort"/>
+    <entity name="a" class="ptolemy.kernel.CompositeActor">
+        <port name="p" class="ptolemy.kernel.ComponentPort"/>
+    </entity>
+    <relation name="r" class="ptolemy.kernel.ComponentRelation"/>
+    <link port="p" relation="r" insertAt="1"/>
+</model>
+}}
+
+#----------------------------------------------------------------------
+test MoMLParser-2.10 {Test link with insertAt attribute} {
+   $parser parse {
+<model name="top">
+   <link port="p" relation="r" insertAt="0"/>
+</model>
+}
+    $toplevel exportMoML
+} {<model name="top" class="ptolemy.kernel.CompositeEntity">
+    <port name="p" class="ptolemy.kernel.ComponentPort"/>
+    <entity name="a" class="ptolemy.kernel.CompositeActor">
+        <port name="p" class="ptolemy.kernel.ComponentPort"/>
+    </entity>
+    <relation name="r" class="ptolemy.kernel.ComponentRelation"/>
+    <link port="p" relation="r"/>
+    <link port="p" relation="r" insertAt="2"/>
+</model>
+}}
+
+#----------------------------------------------------------------------
+test MoMLParser-2.11 {Test link with insertAt attribute} {
+   $parser parse {
+<model name="top">
+   <link port="a.p" relation="r" insertAt="0"/>
+</model>
+}
+    $toplevel exportMoML
+} {<model name="top" class="ptolemy.kernel.CompositeEntity">
+    <port name="p" class="ptolemy.kernel.ComponentPort"/>
+    <entity name="a" class="ptolemy.kernel.CompositeActor">
+        <port name="p" class="ptolemy.kernel.ComponentPort"/>
+    </entity>
+    <relation name="r" class="ptolemy.kernel.ComponentRelation"/>
+    <link port="a.p" relation="r"/> FIXME
+    <link port="p" relation="r"/>
+    <link port="p" relation="r" insertAt="2"/>
+</model>
+}}
+
+
+# FIXME: Test link with insertAt attribute, inside and out.
+# FIXME: Test unlink by relation and index, inside and out.
 
 #----------------------------------------------------------------------
 test MoMLParser-3.1 {Test invalid containment} {

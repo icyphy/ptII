@@ -27,6 +27,7 @@
 @ProposedRating Green (eal@eecs.berkeley.edu)
 @AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 Review changeRequest / changeListener code.
+Also need to review exportMoML's export of indexed links.
 */
 
 package ptolemy.kernel;
@@ -913,9 +914,21 @@ public class CompositeEntity extends ComponentEntity {
         while (ports.hasNext()) {
             ComponentPort port = (ComponentPort)ports.next();
             relations = port.insideRelationList().iterator();
+            // The following variables are used to determine whether to
+            // specify the index of the link explicitly, or to leave
+            // it implicit.
+            int index = -1;
+            boolean useIndex = false;
             while (relations.hasNext()) {
+                index++;
                 ComponentRelation relation
                     = (ComponentRelation)relations.next();
+                if (relation == null) {
+                    // Gap in the links.  The next link has to use an
+                    // explicit index.
+                    useIndex = true;
+                    continue;
+                }
                 // In order to support level-crossing links, consider the
                 // possibility that the relation is not contained by this.
                 String relationName;
@@ -924,12 +937,24 @@ public class CompositeEntity extends ComponentEntity {
                 } else {
                     relationName = relation.getFullName();
                 }
-                output.write(_getIndentPrefix(depth)
-                        + "<link port=\""
-                        + port.getName()
-                        + "\" relation=\""
-                        + relationName
-                        + "\"/>\n");
+                if (useIndex) {
+                    useIndex = false;
+                    output.write(_getIndentPrefix(depth)
+                            + "<link port=\""
+                            + port.getName()
+                            + "\" relation=\""
+                            + relationName
+                            + "\" index=\""
+                            + index
+                            + "\"/>\n");
+                } else {
+                    output.write(_getIndentPrefix(depth)
+                            + "<link port=\""
+                            + port.getName()
+                            + "\" relation=\""
+                            + relationName
+                            + "\"/>\n");
+                }
             }
         }
 
@@ -941,9 +966,21 @@ public class CompositeEntity extends ComponentEntity {
             while (ports.hasNext()) {
                 ComponentPort port = (ComponentPort)ports.next();
                 relations = port.linkedRelationList().iterator();
+                // The following variables are used to determine whether to
+                // specify the index of the link explicitly, or to leave
+                // it implicit.
+                int index = -1;
+                boolean useIndex = false;
                 while (relations.hasNext()) {
+                    index++;
                     ComponentRelation relation
-                        = (ComponentRelation)relations.next();
+                            = (ComponentRelation)relations.next();
+                    if (relation == null) {
+                        // Gap in the links.  The next link has to use an
+                        // explicit index.
+                        useIndex = true;
+                        continue;
+                    }
                     // In order to support level-crossing links, consider the
                     // possibility that the relation is not contained by this.
                     String relationName;
@@ -952,7 +989,20 @@ public class CompositeEntity extends ComponentEntity {
                     } else {
                         relationName = relation.getFullName();
                     }
-                    output.write(_getIndentPrefix(depth)
+                    if (useIndex) {
+                        useIndex = false;
+                        output.write(_getIndentPrefix(depth)
+                            + "<link port=\""
+                            + entity.getName()
+                            + "."
+                            + port.getName()
+                            + "\" relation=\""
+                            + relationName
+                            + "\" index=\""
+                            + index
+                            + "\"/>\n");
+                    } else {
+                        output.write(_getIndentPrefix(depth)
                             + "<link port=\""
                             + entity.getName()
                             + "."
@@ -960,6 +1010,7 @@ public class CompositeEntity extends ComponentEntity {
                             + "\" relation=\""
                             + relationName
                             + "\"/>\n");
+                    }
                 }
             }
         }
