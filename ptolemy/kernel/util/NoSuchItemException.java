@@ -36,7 +36,7 @@ package pt.kernel.util;
 Thrown on access (by name) to an item that doesn't exist.
 E.g., attempt to remove a port by name and no such port exists.
 
-@author Edward A. Lee, Christopher Hylands
+@author Edward A. Lee
 @version $Id$
 */
 public class NoSuchItemException extends KernelException {

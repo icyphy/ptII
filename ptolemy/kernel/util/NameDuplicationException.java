@@ -44,7 +44,7 @@ take two named objects (the container and the would-be containee),
 or two named objects and an arbitrary string (which can be used to
 provide additional information about the error).
 
-@author John S. Davis II, Christopher Hylands, Edward A. Lee
+@author John S. Davis II, Edward A. Lee
 @version $Id$
 */
 public class NameDuplicationException extends KernelException {

@@ -41,7 +41,7 @@ complete. E.g., attempt to remove a port from an entity when the
 port does not belong to the entity. Another example would be an
 attempt to add an item with no name to a named list.
 
-@author Edward A. Lee, Christopher Hylands
+@author Edward A. Lee
 @version $Id$
 */
 public class IllegalActionException extends KernelException {
