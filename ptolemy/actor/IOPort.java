@@ -31,17 +31,20 @@
 
 package ptolemy.actor;
 
+// Ptolemy imports.
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 
-import java.util.List;
-import java.util.Iterator;
-import java.util.Hashtable;
-import java.util.LinkedList;
+// Java imports.
+import java.io.IOException;
+import java.io.Writer;
 import java.util.Collections;
-
 import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// IOPort
@@ -1296,6 +1299,33 @@ public class IOPort extends ComponentPort {
         } finally {
             _workspace.doneReading();
         }
+    }
+
+    /** Write a MoML description of the contents of this object, which
+     *  in this class is the attributes plus possibly a special attribute
+     *  to indicate whether the port is a multiport.  This method is called
+     *  by _exportMoML().  If there are attributes, then
+     *  each attribute description is indented according to the specified
+     *  depth and terminated with a newline character.
+     *  @param output The output stream to write to.
+     *  @param depth The depth in the hierarchy, to determine indenting.
+     *  @throws IOException If an I/O error occurs.
+     */
+    protected void _exportMoMLContents(Writer output, int depth)
+            throws IOException {
+        if (_isinput) {
+            output.write(_getIndentPrefix(depth)
+                   + "<property name=\"input\"/>\n");
+        }
+        if (_isoutput) {
+            output.write(_getIndentPrefix(depth)
+                   + "<property name=\"output\"/>\n");
+        }
+        if (_ismultiport) {
+            output.write(_getIndentPrefix(depth)
+                   + "<property name=\"multiport\"/>\n");
+        }
+        super._exportMoMLContents(output, depth);
     }
 
     /** Return the sums of the widths of the relations linked on the inside,
