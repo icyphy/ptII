@@ -41,7 +41,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	Multimode
+PTPACKAGE =
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =
