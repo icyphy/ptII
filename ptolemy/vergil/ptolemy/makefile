@@ -59,10 +59,13 @@ JSRCS = \
 	CompaanPerformance.java \
 	DirectorService.java \
 	FrameAttribute.java \
+	GraphFrame.java \
+	GraphTableau.java \
 	PtolemyDocument.java \
 	PtolemyGraphView.java \
 	PtolemyNotation.java \
-	PtolemyModule.java
+	PtolemyModule.java \
+	TreeTableau.java
 
 EXTRA_SRCS =	$(JSRCS)
 
