@@ -59,16 +59,16 @@ import ptolemy.domains.sdf.kernel.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// SDFCodeGenerator
-/** A code generator for SDF.
- *  Command line arguments are specified as with the CompositeActorApplication
- *  class, except that the first argument can optionally be used to enable
- *  shallow loading of abstract syntax trees: if the first argument is 
- *  "-shallowLoading" then shallow loading will be enabled. Shallow loading
- *  is an experimental feature that decreases the size and 
- *  number of abstract syntax trees
- *  that have to be loaded during code generation. For details on shallow
- *  loading, see ptolemy.lang.java.ASTReflect. 
- *
+/**
+   A code generator for SDF.  Command line arguments are specified as
+   with the CompositeActorApplication class, except that the first
+   argument can optionally be used to enable shallow loading of
+   abstract syntax trees: if the first argument is "-shallowLoading"
+   then shallow loading will be enabled. Shallow loading is an
+   experimental feature that decreases the size and number of abstract
+   syntax trees that have to be loaded during code generation. For
+   details on shallow loading, see ptolemy.lang.java.ASTReflect.
+
 @author Jeff Tsay, Christopher Hylands
 @version $Id$
  */
@@ -253,7 +253,11 @@ public class SDFCodeGenerator extends CompositeActorApplication
 
             actorCodeGen.pass3(renamedSource);
         }
-        System.out.println("AST loading status: " + ASTReflect.getLoadingStatus()); 
+
+        _generateMakefile();
+
+        System.out.println("AST loading status: "
+                + ASTReflect.getLoadingStatus());
         System.out.println("\nSDFCodeGenerator: done " +
                 (System.currentTimeMillis() - startTime) + " ms" +
                 " totalMemory: " + runtime.totalMemory() +
@@ -276,17 +280,7 @@ public class SDFCodeGenerator extends CompositeActorApplication
         SDFCodeGenerator codeGen = new SDFCodeGenerator();
 
         try {
-            String[] newArgs;
-            // See if shallow loading should be enabled.
-            if ((args.length > 0) && (args[0].equals("-shallowLoading"))) {
-                StaticResolution.enableShallowLoading();
-                // Remove the shallow loading argument before further argument
-                // processing.
-                newArgs = new String[args.length - 1];
-                System.arraycopy(args, 1, newArgs, 0, (args.length - 1));
-            }
-            else newArgs = args;
-            codeGen.processArgs(newArgs);
+            codeGen.processArgs(args);
             codeGen.generateCode();
         } catch (Exception ex) {
             System.err.println(ex.toString());
@@ -364,7 +358,8 @@ public class SDFCodeGenerator extends CompositeActorApplication
                         String.valueOf(bufferWidth)));
             }
 
-            TypeNode dataBaseTypeNode = TypeUtility.arrayBaseType(dataTypeNode);
+            TypeNode dataBaseTypeNode =
+                TypeUtility.arrayBaseType(dataTypeNode);
             int dataTypeDims = TypeUtility.arrayDimension(dataTypeNode);
 
             AllocateArrayNode allocateArrayNode = new AllocateArrayNode(
@@ -373,7 +368,8 @@ public class SDFCodeGenerator extends CompositeActorApplication
 
             FieldDeclNode fieldDeclNode = new FieldDeclNode(
                     PUBLIC_MOD | STATIC_MOD | FINAL_MOD, typeNode,
-                    new NameNode(AbsentTreeNode.instance, bufferInfo.codeGenName),
+                    new NameNode(AbsentTreeNode.instance,
+                            bufferInfo.codeGenName),
                     allocateArrayNode);
 
             memberList.add(fieldDeclNode);
@@ -384,7 +380,7 @@ public class SDFCodeGenerator extends CompositeActorApplication
                 new LinkedList(), memberList,
                 (TypeNameNode) StaticResolution.OBJECT_TYPE.clone());
 
-        // bring in imports for Complex and FixPoint
+        // Bring in imports for Complex and FixPoint
         // (remove unnecessary ones later)
         LinkedList importList = new LinkedList();
 
@@ -493,7 +489,7 @@ public class SDFCodeGenerator extends CompositeActorApplication
 	}
 
 
-        // generate preinitialize statements
+        // Generate preinitialize statements.
         actorItr = _actorSet.iterator();
 
         while (actorItr.hasNext()) {
@@ -505,7 +501,8 @@ public class SDFCodeGenerator extends CompositeActorApplication
 
             MethodCallNode methodCallNode = new MethodCallNode(
                     new ObjectFieldAccessNode(
-                            new NameNode(AbsentTreeNode.instance, "preinitialize"),
+                            new NameNode(AbsentTreeNode.instance,
+                                    "preinitialize"),
                             actorObjectNode),
                     new LinkedList());
 
@@ -513,7 +510,7 @@ public class SDFCodeGenerator extends CompositeActorApplication
         }
 
 
-        // generate initialize statements
+        // Generate initialize statements.
         actorItr = _actorSet.iterator();
 
         while (actorItr.hasNext()) {
@@ -524,14 +521,15 @@ public class SDFCodeGenerator extends CompositeActorApplication
 
             MethodCallNode methodCallNode = new MethodCallNode(
                     new ObjectFieldAccessNode(
-                            new NameNode(AbsentTreeNode.instance, "initialize"),
+                            new NameNode(AbsentTreeNode.instance,
+                                    "initialize"),
                             actorObjectNode),
                     new LinkedList());
 
             stmtList.addLast(new ExprStmtNode(methodCallNode));
         }
 
-        // generate the iteration loop
+        // Generate the iteration loop.
         LinkedList iterationStmtList = new LinkedList();
 
         Iterator schedule = null;
@@ -566,7 +564,8 @@ public class SDFCodeGenerator extends CompositeActorApplication
 
                     ExprStmtNode prefireCallStmtNode = new ExprStmtNode(
                             new MethodCallNode(new ObjectFieldAccessNode(
-                                    new NameNode(AbsentTreeNode.instance, "prefire"),
+                                    new NameNode(AbsentTreeNode.instance,
+                                            "prefire"),
                                     actorVarNode),
                                     new LinkedList()));
 
@@ -574,13 +573,15 @@ public class SDFCodeGenerator extends CompositeActorApplication
                     // actor node needs to be cloned here.
                     ExprStmtNode fireCallStmtNode = new ExprStmtNode(
                             new MethodCallNode(new ObjectFieldAccessNode(
-                                    new NameNode(AbsentTreeNode.instance, "fire"),
+                                    new NameNode(AbsentTreeNode.instance,
+                                            "fire"),
                                     ((ObjectNode)actorVarNode.clone())),
                                     new LinkedList()));
 
                     ExprStmtNode postfireCallStmtNode = new ExprStmtNode(
                             new MethodCallNode(new ObjectFieldAccessNode(
-                                    new NameNode(AbsentTreeNode.instance, "postfire"),
+                                    new NameNode(AbsentTreeNode.instance,
+                                            "postfire"),
                                     ((ObjectNode)actorVarNode.clone())),
                                     new LinkedList()));
 
@@ -613,7 +614,9 @@ public class SDFCodeGenerator extends CompositeActorApplication
                                 (ObjectNode) loopCounterObjectNode.clone()));
 
                         iterationStmtList.addLast(new ForNode(forInitList,
-                                forTestExprNode, forUpdateList, iterationBlockNode));
+                                forTestExprNode,
+                                forUpdateList,
+                                iterationBlockNode));
                     }  else {
                         iterationStmtList.addLast(iterationBlockNode);
                     }
@@ -629,7 +632,8 @@ public class SDFCodeGenerator extends CompositeActorApplication
             ((IntToken) _director.iterations.getToken()).intValue();
 
         if (iterations == 1) {
-            // just add all the iteration statements to the list of all statements
+            // Just add all the iteration statements to the
+            // list of all statements.
             stmtList.addAll(iterationStmtList);
         } else {
             if (iterations == 0) {
@@ -661,7 +665,7 @@ public class SDFCodeGenerator extends CompositeActorApplication
             }
         }
 
-        // generate wrapup statements, unless we are iterating forever.
+        // Generate wrapup statements, unless we are iterating forever.
         if (iterations != 0) {
             actorItr = _actorSet.iterator();
 
@@ -767,16 +771,22 @@ public class SDFCodeGenerator extends CompositeActorApplication
                         TypeUtility.makeArrayType(
                                 (TypeNode) StaticResolution.STRING_TYPE.clone(), 1),
                         new NameNode(AbsentTreeNode.instance, "args"))),
-                new LinkedList(), new BlockNode(stmtList), VoidTypeNode.instance);
+                new LinkedList(), new BlockNode(stmtList),
+                VoidTypeNode.instance);
     }
 
+
+    /** Generate a makefile. */
+    protected void _generateMakefile() {
+    }
 
     /** Figure out which buffers are connected to each input port of a given
      *  TypedAtomicActor, and add the information to the instance of
      *  SDFActorCodeGeneratorInfo argument.
      */
     protected void _makeInputInfo(TypedAtomicActor actor,
-            SDFActorCodeGeneratorInfo actorInfo) throws IllegalActionException {
+            SDFActorCodeGeneratorInfo actorInfo)
+            throws IllegalActionException {
 
         // iterate over the ports of this actor
         Iterator portItr = actor.portList().iterator();
@@ -808,7 +818,7 @@ public class SDFCodeGenerator extends CompositeActorApplication
 
                     int outputChannel = -1;
 
-                    // search all output ports connected to this port
+                    // Search all output ports connected to this port
                     Iterator connectedPortItr = connectedPortList.iterator();
 
                     TypedIOPort outputPort = null;
@@ -824,7 +834,7 @@ public class SDFCodeGenerator extends CompositeActorApplication
                             Receiver[][] remoteReceiversArray =
                                 connectedPort.getRemoteReceivers();
 
-                            // search all channels of the output port
+                            // Search all channels of the output port.
                             int ch = 0;
                             do {
 
@@ -833,11 +843,13 @@ public class SDFCodeGenerator extends CompositeActorApplication
 
                                 int i = 0;
 
-                                // search all receivers in the same receiver group
+                                // Search all receivers in the same
+                                // receiver group.
                                 while ((i < remoteReceivers.length) &&
                                         (outputPort == null)) {
 
-                                    Receiver remoteReceiver = remoteReceivers[i];
+                                    Receiver remoteReceiver =
+                                        remoteReceivers[i];
 
                                     if (receiver == remoteReceiver) {
                                         outputPort = connectedPort;
@@ -889,7 +901,8 @@ public class SDFCodeGenerator extends CompositeActorApplication
      *  actor, and put them in the actor to buffer info map.
      */
     protected void _makeBufferInfo(TypedAtomicActor actor,
-            SDFActorCodeGeneratorInfo actorInfo) throws IllegalActionException {
+            SDFActorCodeGeneratorInfo actorInfo)
+            throws IllegalActionException {
 
         int firings = actorInfo.totalFirings;
 
@@ -919,8 +932,8 @@ public class SDFCodeGenerator extends CompositeActorApplication
                     productionRate = sdfIOPort.getTokenProductionRate();
                     initProduction = sdfIOPort.getTokenInitProduction();
                 } else {
-                    // for non-SDFIOPorts, the production rate is assumed to be 1,
-                    // and the init production rate is assumed to be 0
+                    // For non-SDFIOPorts, the production rate is assumed
+                    // to be 1, and the init production rate is assumed to be 0
                     productionRate = 1;
                     initProduction = 0;
                 }
@@ -955,6 +968,8 @@ public class SDFCodeGenerator extends CompositeActorApplication
             _expectingOutputDirectory = true;
         } else if (arg.equals("-outpkg")) {
             _expectingOutputPackage = true;
+        } else if (arg.equals("-shallowLoading")) {
+            StaticResolution.enableShallowLoading();
         } else if (arg.equals("-version")) {
             System.out.println("Version 1.0, Build $Id$");
             System.exit(0);
@@ -991,6 +1006,9 @@ public class SDFCodeGenerator extends CompositeActorApplication
         for(i = 0; i < _commandFlags.length; i++) {
             result += " " + _commandFlags[i];
         }
+        result += " -all Run w/o codegen, generate files, compile & run\n";
+        result += " -shallowLoading  Load ASTs shallowly\n";
+
         return result;
     }
 
