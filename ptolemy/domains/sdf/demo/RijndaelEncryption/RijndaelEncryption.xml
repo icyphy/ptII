@@ -4,14 +4,14 @@
 <entity name="RijndaelEncryption" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0-alpha">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[546, 503]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 127]">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 45.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 5.0]">
         </property>
     </property>
     <property name="annotation" class="ptolemy.kernel.util.Attribute">
@@ -22,9 +22,16 @@
 This model makes heavy use of the class mechanism in Ptolemy II
 to describe components that are instantiated multiple times in the model.
 
+The algorithm is parameterized to run on 128 bits of data at a time.
+Executing the model displays two windows of data in hex format.
+One window shows 128 bits of encrypted data, while the other displays 
+intermediate results in the encryption process after each 'round'.
+
 For more information about the algorithm, see:
 http://www.esat.kuleuven.ac.be/~rijmen/rijndael/index.html
-http://home.ecn.ab.ca/~jsavard/crypto/co040801.htm</text></svg></configure>
+http://home.ecn.ab.ca/~jsavard/crypto/co040801.htm
+
+Author: Stephen Neuendorffer</text></svg></configure>
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -37,14 +44,14 @@ http://home.ecn.ab.ca/~jsavard/crypto/co040801.htm</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 240.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 185.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {104, 129, 815, 509}, maximized = false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {104, 129, 761, 612}, maximized = false}">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{295.0, 206.0}">
     </property>
     <property name="annotation2" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -68,11 +75,11 @@ to all instances.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 25.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, -15.0]">
         </property>
     </property>
     <class name="convertToStringClass" extends="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 115.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 75.0]">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[706, 491]">
         </property>
@@ -231,7 +238,7 @@ to all instances.</text></svg></configure>
         <link port="PadToTwoChars.input" relation="relation8"/>
     </class>
     <entity name="rijndael" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="200.0, 200.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 160.0]">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[781, 567]">
         </property>
@@ -327,10 +334,15 @@ internal models.
             </property>
         </port>
         <class name="Sbox" extends="ptolemy.actor.lib.LookupTable">
-            <property name="table" class="ptolemy.data.expr.Parameter" value="eval(readFile(&quot;ptolemy/domains/sdf/demo/RijndaelEncryption/sbox.txt&quot;))">
+            <property name="table" class="ptolemy.data.expr.Parameter" value="eval(readFile(&quot;c:/users/neuendor/ptII/ptolemy/domains/sdf/demo/RijndaelEncryption/sbox.txt&quot;))">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 115.0]">
             </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_type" class="ptolemy.actor.TypeAttribute" value="unsignedByte">
+                </property>
+            </port>
         </class>
         <class name="Shift Row" extends="ptolemy.actor.TypedCompositeActor">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 115.0]">
@@ -1002,6 +1014,8 @@ the 128 bit user key as a seed.</text></svg></configure>
                 </property>
                 <port name="input" class="ptolemy.domains.fsm.modal.ModalPort">
                     <property name="input"/>
+                    <property name="_type" class="ptolemy.actor.TypeAttribute" value="{unsignedByte}">
+                    </property>
                 </port>
                 <port name="output" class="ptolemy.domains.fsm.modal.ModalPort">
                     <property name="output"/>
@@ -2032,9 +2046,11 @@ This makes encrpytion and decryption more symmetric.</text></svg></configure>
             </property>
         </entity>
         <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+            <property name="title" class="ptolemy.kernel.util.StringAttribute" value="Intermediate Round Output">
+            </property>
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {323, 534, 292, 222}, maximized = false}">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[685.0, 130.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[685.0, 120.0]">
             </property>
         </entity>
         <entity name="DownSample" class="ptolemy.domains.sdf.lib.DownSample">
@@ -2111,9 +2127,11 @@ This makes encrpytion and decryption more symmetric.</text></svg></configure>
         <link port="convertToString.port2" relation="relation3"/>
     </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {632, 533, 292, 222}, maximized = false}">
+        <property name="title" class="ptolemy.kernel.util.StringAttribute" value="Encrpyted Block">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="395.0, 210.0">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {632, 533, 271, 223}, maximized = false}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 160.0]">
         </property>
     </entity>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
@@ -2122,15 +2140,15 @@ This makes encrpytion and decryption more symmetric.</text></svg></configure>
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="0x1ub">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 200.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 160.0]">
         </property>
     </entity>
     <entity name="convertToString" class="convertToStringClass">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="300.0, 200.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 160.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="140.0, 200.0">
+        <vertex name="vertex1" value="[165.0, 160.0]">
         </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
