@@ -302,7 +302,7 @@ public class ConfigurableAttribute
         if (_text != null) {
             output.write(_getIndentPrefix(depth)
                     + "<configure" + sourceSpec + ">"
-                    + StringUtilities.escapeForXML(_text)
+                    + _text
                     + "</configure>\n");
         }
     }
