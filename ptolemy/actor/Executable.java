@@ -51,8 +51,8 @@ output data (which can result in a CloneNotSupported exception).
 */
 public interface Executable {
 
-    ///////////////////////////////////////////////////////////////////////
-    ////                         public methods                           ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** This fires an actor and may be invoked several times between
      *  invocations of prefire() and postfire(). It may produce output

@@ -140,8 +140,8 @@ public class CompositeActor extends CompositeEntity implements Actor {
         super(container, name);
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Clone the actor into the specified workspace. The new object is
      *  <i>not</i> added to the directory of that workspace (you must do this
@@ -600,16 +600,16 @@ public class CompositeActor extends CompositeEntity implements Actor {
         }
     }
 
-    /////////////////////////////////////////////////////////////////////////
-    ////                         public variables                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
 
     /** Indicate that the description(int) method should include the
      *  director and executive director.
      */
     public static final int DIRECTOR = 512;
 
-    ///////////////////////////////////////////////////////////////////////
-    ////                      protected methods                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /** Add an actor to this container with minimal error checking.
      *  This overrides the base-class method to make sure the argument
@@ -732,8 +732,8 @@ public class CompositeActor extends CompositeEntity implements Actor {
         }
     }
 
-    /////////////////////////////////////////////////////////////////////
-    ////                         private variables                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     private Director _director, _execdirector;
 

@@ -107,8 +107,8 @@ public class IORelation extends ComponentRelation {
         super(container, name);
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         public methods                           ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Clone the object into the specified workspace. The new object is
      *  <i>not</i> added to the directory of that workspace (you must do this
@@ -400,16 +400,16 @@ public class IORelation extends ComponentRelation {
         return (_width != 0);
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public variables                       ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
 
     /** Indicate that the description(int) method should describe the width
      *  of the relation, and whether it has been fixed.
      */
     public static final int CONFIGURATION = 512;
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         protected methods                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /** Throw an exception if the specified port cannot be linked to this
      *  relation (is not of class IOPort).
@@ -473,8 +473,8 @@ public class IORelation extends ComponentRelation {
         }
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         private methods                          ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                    ////
 
     // Cascade two Receiver arrays to form a new array. For each row, each
     // element of the second array is appended behind the elements of the
@@ -536,8 +536,8 @@ public class IORelation extends ComponentRelation {
         return _inferredwidth;
     }
 
-    ///////////////////////////////////////////////////////////////////////
-    ////                      private variables                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     // width of the relation.
     private int _width = 1;

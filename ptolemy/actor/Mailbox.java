@@ -53,8 +53,8 @@ public class Mailbox implements Receiver {
         _container = container;
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Get the contained Token.  If there is none, thrown an exception.
      *  @return A token.
@@ -110,8 +110,8 @@ public class Mailbox implements Receiver {
         _container = port;
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         private variables                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     // Container is not changeable.
     private IOPort _container = null;

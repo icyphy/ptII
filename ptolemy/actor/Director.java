@@ -135,8 +135,8 @@ public class Director extends NamedObj implements Executable {
         super(workspace, name);
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         public methods                           ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Adds a new mutation listener to the list of listeners to be informed
      *  about any mutation that occurs in the container.
@@ -608,8 +608,8 @@ public class Director extends NamedObj implements Executable {
         }
     }
 
-    ///////////////////////////////////////////////////////////////////////
-    ////                      protected methods                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /** Return a description of the object.  The level of detail depends
      *  on the argument, which is an or-ing of the static final constants
@@ -713,8 +713,8 @@ public class Director extends NamedObj implements Executable {
         return result;
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         private variables                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     // The composite of which this is either a local or an executive director.
     private CompositeActor _container = null;

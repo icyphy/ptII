@@ -139,8 +139,8 @@ public class IOPort extends ComponentPort {
         makeOutput(isoutput);
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         public methods                           ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Send a token to all connected receivers.  The first receiver gets
      *  the token passed as an argument, and subsequent receivers get clones.
@@ -1026,8 +1026,8 @@ public class IOPort extends ComponentPort {
         }
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public variables                       ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
 
     /** Indicate that the description(int) method should include information
      *  about whether the port is an input, output, or multiport, whether it
@@ -1045,8 +1045,8 @@ public class IOPort extends ComponentPort {
      */
     public static final int REMOTERECEIVERS = 2048;
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         protected methods                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /** Return a description of the object.  The level of detail depends
      *  on the argument, which is an or-ing of the static final constants
@@ -1381,8 +1381,8 @@ public class IOPort extends ComponentPort {
         return rec;
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         private variables                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     // Indicate whether the port is an input, an output, or both.
     // The value may be overriden in transparent ports, in that if

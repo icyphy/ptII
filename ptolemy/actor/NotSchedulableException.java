@@ -85,8 +85,8 @@ public class NotSchedulableException extends InvalidStateException {
         _actors= actors;
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Return the unschedulable actors enumeration.
      *  @return the unschedulable actors enumeration.
@@ -95,8 +95,8 @@ public class NotSchedulableException extends InvalidStateException {
         return _actors;
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         private variables                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     // Private variables should not have doc comments, they should
     // have regular C++ comments.

@@ -91,8 +91,8 @@ public class AtomicActor extends ComponentEntity implements Actor {
         super(container, name);
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Clone this actor into the specified workspace. The new actor is
      *  <i>not</i> added to the directory of that workspace (you must do this
@@ -342,8 +342,8 @@ public class AtomicActor extends ComponentEntity implements Actor {
     // NOTE: There is nothing new to report in the _description() method,
     // so we do not override it.
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         private variables                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     // Cached lists of input and output ports.
     private transient long _inputPortsVersion = -1;
