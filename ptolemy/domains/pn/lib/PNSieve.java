@@ -112,6 +112,15 @@ public class PNSieve extends PNActor {
         }
     }
     
+    public void setParam(String name, double value)
+        throws IllegalActionException {
+        if (name.equals("prime")) {
+            _prime = (int) value;
+        } else {
+            throw new IllegalActionException("foo " + name);
+        }
+    }
+
     //////////////////////////////////////////////////////////////////////////
     ////                         private variables                        ////
     

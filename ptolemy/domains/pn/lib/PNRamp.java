@@ -39,7 +39,7 @@ import pt.actors.*;
 @author Mudit Goel
 @version $Id$
 */
-public class PNRamp extends PNActor{
+public class PNRamp extends PNActor {
     
     /** Constructor Adds ports to the star
      * @param initValue is the initial token that the star puts in the stream
@@ -77,6 +77,17 @@ public class PNRamp extends PNActor{
 	    System.out.println("Terminating "+this.getName());
             return;
         }
+    }
+    
+    public void setParam(String name, double value) 
+        throws IllegalActionException {
+            System.out.println(name + ": " + value);
+
+            if (name.equals("seed")) {
+                _seed = (int) value;
+            } else {
+                throw new IllegalActionException("foo " + name);
+            }
     }
     
     //////////////////////////////////////////////////////////////////////////
