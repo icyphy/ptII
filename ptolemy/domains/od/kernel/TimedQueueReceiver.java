@@ -38,13 +38,15 @@ import ptolemy.actor.util.*;
 //////////////////////////////////////////////////////////////////////////
 //// TimedQueueReceiver
 /**
-A FIFO queue receiver for storing tokens with time stamps. To help organize
-the tokens this queue contains, two flags are maintained: "lastTime" and
-"rcvrTime." The lastTime flag is defined to be equivalent to the time stamp 
-of the newest token placed in the queue. The rcvrTime flag is defined as the 
-time stamp of the oldest token in the queue. Both of these flags must have
-monotonically non-decreasing values with the exception that their values will
-be set to -1.0 at the conclusion of a simulation run. 
+A FIFO queue receiver for storing tokens with time stamps. A "time stamp"
+is a time value that is associated with a token and is used to order the
+consumption of a token with respect to other time stamped tokens. To help 
+organize the tokens this queue contains, two flags are maintained: "lastTime" 
+and "rcvrTime." The lastTime flag is defined to be equivalent to the time 
+stamp of the token that was most recently placed in the queue. The rcvrTime 
+flag is defined as the time stamp of the oldest token in the queue. Both of 
+these flags must have monotonically non-decreasing values with the exception 
+that their values will be set to -1.0 at the conclusion of a simulation run. 
 
 ***
 Synchronization Notes:
@@ -98,7 +100,7 @@ public class TimedQueueReceiver implements Receiver {
         super();
     }
 
-    /** Construct an empty queue with the specified container.
+    /** Construct an empty queue with the specified IOPort container.
      */
     public TimedQueueReceiver(IOPort container) {
         super();
@@ -108,11 +110,14 @@ public class TimedQueueReceiver implements Receiver {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Take the first token (the oldest one) off the queue and return it.
-     *  If the queue is empty, throw a NoTokenException. If there are other
-     *  tokens left on the queue, set the rcvr time to equal that of the
-     *  new leading token.
+    /** Take the the oldest token off of the queue and return it.
+     *  If the queue is empty, throw a NoTokenException. If there are 
+     *  other tokens left on the queue after this removal, then set 
+     *  the rcvrTime of this receiver to equal that of the next oldest 
+     *  token. Update the RcvrTimeTriple entry in the ODActor which 
+     *  contains this receiver.
      * @exception NoTokenException If the queue is empty.
+     * @see ptolemy.domains.od.kernel.RcvrTimeTriple
      */
     public Token get() {
         // System.out.println("Call to TimedQueueReceiver.get()");
@@ -155,28 +160,32 @@ public class TimedQueueReceiver implements Receiver {
         return token;
     }
 
-    /** Get the queue capacity. 
+    /** Return the queue capacity of this receiver. 
      * @return int The queue capacity.
-     */
+     * @deprecated
     public int getCapacity() {
         return _queue.getCapacity();
     }
+     */
 
-    /** Get the completion time of this receiver. 
+    /** Return the completion time of this receiver. 
      * @return double The completion time.
      */
     public synchronized double getCompletionTime() {
         return _completionTime;
     }
 
-    /** Return the container. 
+    /** Return the IOPort container of this receiver. 
      * @return IOPort The containing IOPort.
      */
     public IOPort getContainer() {
         return _container;
     }
 
-    /** Return the lastTime value.
+    /** Return the lastTime value of this receiver. The lastTime is
+     *  the time associated with the token that was most recently
+     *  placed in the queue. If no tokens have been placed on the
+     *  queue, then lastTime equals 0.0. 
      * @return double The value of the lastTime flag.
      */
     public double getLastTime() {
@@ -185,63 +194,75 @@ public class TimedQueueReceiver implements Receiver {
 
     /** Return the priority of this receiver. 
      * @return The priority of this receiver.
-     */
+     * @deprecated
     public synchronized int getPriority() {
         return _priority;
     }
+     */
 
     /** Get the queue size. 
-     *  FIXME: Make this private
+     *  FIXME: Eventually remove this and access _queue.size() directly
      */
     public int getSize() {
         return _queue.size();
     }
 
     /** Set the priority of this receiver. 
+     * @param int The priority of this receiver.
      */
     public synchronized void setPriority(int priority) {
         _priority = priority;
     }
 
-    /** 
+    /** Return the rcvrTime value of this receiver. The rcvrTime is 
+     *  the time associated with the oldest token that is currently
+     *  on the queue. If the queue is empty, then the rcvrTime value
+     *  is equal to the lastTime value.
+     * @return double The value of the rcvrTime flag.
      */
     public double getRcvrTime() {
         return _rcvrTime;
     }
 
-    /** Return true if put() will succeed in accepting a token. 
+    /** Return true if the number of tokens stored in the queue is 
+     *  less than the capacity of the queue. Return false otherwise.
+     * @return boolean Return true if the queue is not full; return
+     *  false otherwise.
      */
     public boolean hasRoom() {
         return !_queue.isFull();
     }
 
-    /** Return true if get() will succeed in returning a token. 
+    /** Return true if there are tokens stored on the queue. Return
+     *  false if the queue is empty.
+     * @return boolean Return true if the queue is not empty; return
+     *  false otherwise.
      */
     public boolean hasToken() {
         return _queue.size() > 0;
     }
 
-    /** Put a token on the queue with a time stamp equivalent to the
-     *  current rcvr time of the Receiver. If the queue is full, throw an 
-     *  exception. Set the last time of the queue to equal the time of
-     *  the newly added token.
+    /** Put a token on the queue and set the time stamp of the token to
+     *  the value of the lastTime flag of this receiver. If the queue is 
+     *  empty immediately prior to putting the token on the queue, then 
+     *  set the rcvrTime flag value to be equal to the lastTime flag value. 
+     *  If the queue is full, throw a NoRoomException. Update the 
+     *  RcvrTimeTriple entry in the ODActor which contains this receiver.
      * @param token The token to put on the queue.
-     * @exception NoRoomException If the queue is full.
-     *  FIXME: I need an IllegalActionException here to deal with
-     *         time stamps that are decreasing.
      */
     public void put(Token token) {
         put( token, _lastTime );
     }
 
-    /** Put a token on the queue with a specified time stamp and set 
-     *  the time of the Receiver to the time stamp value. If the 
-     *  queue is full, throw an exception. Set the last time of the 
-     *  queue to equal the time of the newly added token.
+    /** Put a token on the queue with the specified time stamp and set 
+     *  the value of the lastTime flag to be equal to this time stamp.
+     *  If the queue is empty immediately prior to putting the token on 
+     *  the queue, then set the rcvrTime flag value to be equal to the 
+     *  lastTime flag value. If the queue is full, throw a NoRoomException. 
+     *  Update the RcvrTimeTriple entry in the ODActor which contains 
+     *  this receiver.
      * @param token The token to put on the queue.
      * @param time The time stamp of the token.
-     *  FIXME: I need an IllegalActionException here to deal with
-     *         time stamps that are decreasing.
      */
     public void put(Token token, double time) {
         // System.out.println("Call to TimedQueueReceiver.put()");
@@ -251,15 +272,6 @@ public class TimedQueueReceiver implements Receiver {
         ODActor actor = (ODActor)port.getContainer();
         
         synchronized(this) {
-	    /* 
-	    if( time > getCompletionTime() && getCompletionTime() != -5 ) {
-	        _lastTime = -1.0;
-	    }
-	    else {
-               _lastTime = time; 
-	    }
-	    */
-
             _lastTime = time; 
 
             event = new Event(token, _lastTime);
@@ -284,25 +296,26 @@ public class TimedQueueReceiver implements Receiver {
         }
     }
 
-    /** Set the queue capacity. 
+    /** Set the queue capacity of this receiver. 
+     * @param capacity The capacity of this receiver's queue.
      */
     public void setCapacity(int capacity) throws IllegalActionException {
         _queue.setCapacity(capacity);
     }
 
     /** Set the completion time of this receiver. 
+     * @param time The completion time of this receiver.
      */
     public void setCompletionTime(double time) {
         _completionTime = time;
     }
 
-    /** Set the container. */
+    /** Set the IOPort container. 
+     * @param port The IOPort which contains this receiver.
+     */
     public void setContainer(IOPort port) {
         _container = port;
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods 		   ////
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -314,11 +327,15 @@ public class TimedQueueReceiver implements Receiver {
     private double _rcvrTime = 0.0;
 
     // The time after which this server will become defunct.
+    // FIXME: perhaps this should be package private
     private double _completionTime = -5.0;
 
+    // The priority of this receiver.
     private int _priority = 0;
     
-    // FIXME
+    // The queue in which this receiver stores tokens.
     public FIFOQueue _queue = new FIFOQueue();
+
+    // The IOPort which contains this receiver.
     private IOPort _container;
 }
