@@ -35,7 +35,7 @@ uses the GR domain to render the results</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="155.0, 20.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={132, 139, 819, 468}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={132, 139, 819, 459}}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -112,18 +112,10 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
             <property name="input"/>
             <property name="location1" class="ptolemy.kernel.util.Location" value="50.0, 345.0">
             </property>
-            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;DISCRETE&quot;">
-                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                </property>
-            </property>
         </port>
         <port name="displacement for blue bob" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="location1" class="ptolemy.kernel.util.Location" value="45.0, 35.0">
-            </property>
-            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;DISCRETE&quot;">
-                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                </property>
             </property>
         </port>
         <entity name="blue spring-mass" class="ptolemy.actor.TypedCompositeActor">
@@ -2217,7 +2209,7 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={406, 27, 508, 355}}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={406, 27, 508, 348}}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
@@ -2228,10 +2220,6 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;DISCRETE&quot;">
-                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                </property>
-            </property>
         </port>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -2333,57 +2321,38 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
                 <property name="output"/>
                 <property name="_hide" class="ptolemy.data.expr.Parameter">
                 </property>
-                <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
-                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                    </property>
+                <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
                 </property>
             </port>
             <port name="V2" class="ptolemy.vergil.fsm.modal.ModalPort">
                 <property name="output"/>
                 <property name="_hide" class="ptolemy.data.expr.Parameter">
                 </property>
-                <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
-                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                    </property>
+                <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
                 </property>
             </port>
             <port name="P1" class="ptolemy.vergil.fsm.modal.ModalPort">
                 <property name="output"/>
-                <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
-                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                    </property>
+                <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
                 </property>
             </port>
             <port name="P2" class="ptolemy.vergil.fsm.modal.ModalPort">
                 <property name="output"/>
-                <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
-                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                    </property>
-                </property>
-            </port>
-            <port name="touched" class="ptolemy.vergil.fsm.modal.ModalPort">
-                <property name="output"/>
-                <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
-                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                    </property>
+                <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
                 </property>
             </port>
             <port name="Stickiness" class="ptolemy.vergil.fsm.modal.ModalPort">
                 <property name="output"/>
                 <property name="_hide" class="ptolemy.data.expr.Parameter">
                 </property>
-                <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
-                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                    </property>
+                <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
                 </property>
             </port>
             <port name="Force" class="ptolemy.vergil.fsm.modal.ModalPort">
                 <property name="output"/>
                 <property name="_hide" class="ptolemy.data.expr.Parameter">
                 </property>
-                <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
-                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                    </property>
+                <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
                 </property>
             </port>
             <entity name="_Controller" class="ptolemy.vergil.fsm.modal.ModalController">
@@ -2479,12 +2448,6 @@ model (double click on that transition to see its actions).</text></svg></config
                     <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 151.66666666666666">
                     </property>
                 </port>
-                <port name="touched" class="ptolemy.vergil.fsm.modal.RefinementPort">
-                    <property name="input"/>
-                    <property name="output"/>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 280.0">
-                    </property>
-                </port>
                 <port name="Stickiness" class="ptolemy.vergil.fsm.modal.RefinementPort">
                     <property name="input"/>
                     <property name="output"/>
@@ -2556,8 +2519,6 @@ model (double click on that transition to see its actions).</text></svg></config
                     </property>
                     <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                     </property>
-                    <property name="relationList" class="ptolemy.domains.fsm.kernel.RelationList">
-                    </property>
                     <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
                     </property>
                     <property name="actions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="Separate.p1 = p1; Separate.p2 = p2; Separate.v1 = v1; Separate.v2 = v2">
@@ -2580,8 +2541,6 @@ model (double click on that transition to see its actions).</text></svg></config
                     </property>
                     <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                     </property>
-                    <property name="relationList" class="ptolemy.domains.fsm.kernel.RelationList">
-                    </property>
                     <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
                     </property>
                 </relation>
@@ -2601,8 +2560,6 @@ model (double click on that transition to see its actions).</text></svg></config
                     <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                     <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
-                    </property>
-                    <property name="relationList" class="ptolemy.domains.fsm.kernel.RelationList">
                     </property>
                     <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
                     </property>
@@ -2753,17 +2710,9 @@ of the two masses.</text></svg></configure>
                     </property>
                     <port name="output" class="ptolemy.actor.TypedIOPort">
                         <property name="output"/>
-                        <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
-                            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                            </property>
-                        </property>
                     </port>
                     <port name="P1" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
-                        <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
-                            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                            </property>
-                        </property>
                     </port>
                 </entity>
                 <entity name="V2 integrator" class="ptolemy.domains.ct.lib.Integrator">
@@ -2775,18 +2724,10 @@ of the two masses.</text></svg></configure>
                         <property name="input"/>
                         <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
                         </property>
-                        <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
-                            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                            </property>
-                        </property>
                     </port>
                     <port name="output" class="ptolemy.actor.TypedIOPort">
                         <property name="output"/>
                         <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                        </property>
-                        <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
-                            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                            </property>
                         </property>
                     </port>
                 </entity>
@@ -2799,18 +2740,10 @@ of the two masses.</text></svg></configure>
                         <property name="input"/>
                         <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
                         </property>
-                        <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
-                            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                            </property>
-                        </property>
                     </port>
                     <port name="output" class="ptolemy.actor.TypedIOPort">
                         <property name="output"/>
                         <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                        </property>
-                        <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
-                            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                            </property>
                         </property>
                     </port>
                 </entity>
@@ -2823,18 +2756,10 @@ of the two masses.</text></svg></configure>
                         <property name="input"/>
                         <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
                         </property>
-                        <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
-                            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                            </property>
-                        </property>
                     </port>
                     <port name="output" class="ptolemy.actor.TypedIOPort">
                         <property name="output"/>
                         <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                        </property>
-                        <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
-                            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                            </property>
                         </property>
                     </port>
                 </entity>
@@ -2851,17 +2776,9 @@ of the two masses.</text></svg></configure>
                     </property>
                     <port name="output" class="ptolemy.actor.TypedIOPort">
                         <property name="output"/>
-                        <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
-                            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                            </property>
-                        </property>
                     </port>
                     <port name="P2" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
-                        <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
-                            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                            </property>
-                        </property>
                     </port>
                 </entity>
                 <entity name="P2 integrator" class="ptolemy.domains.ct.lib.Integrator">
@@ -2873,18 +2790,10 @@ of the two masses.</text></svg></configure>
                         <property name="input"/>
                         <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
                         </property>
-                        <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
-                            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                            </property>
-                        </property>
                     </port>
                     <port name="output" class="ptolemy.actor.TypedIOPort">
                         <property name="output"/>
                         <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                        </property>
-                        <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
-                            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                            </property>
                         </property>
                     </port>
                 </entity>
@@ -3063,18 +2972,10 @@ stickiness.</text></svg></configure>
                         <property name="input"/>
                         <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
                         </property>
-                        <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
-                            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                            </property>
-                        </property>
                     </port>
                     <port name="output" class="ptolemy.actor.TypedIOPort">
                         <property name="output"/>
                         <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                        </property>
-                        <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
-                            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                            </property>
                         </property>
                     </port>
                 </entity>
@@ -3091,17 +2992,9 @@ stickiness.</text></svg></configure>
                     </property>
                     <port name="output" class="ptolemy.actor.TypedIOPort">
                         <property name="output"/>
-                        <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
-                            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                            </property>
-                        </property>
                     </port>
                     <port name="P1" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
-                        <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
-                            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                            </property>
-                        </property>
                     </port>
                 </entity>
                 <entity name="V1 integrator" class="ptolemy.domains.ct.lib.Integrator">
@@ -3113,18 +3006,10 @@ stickiness.</text></svg></configure>
                         <property name="input"/>
                         <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
                         </property>
-                        <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
-                            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                            </property>
-                        </property>
                     </port>
                     <port name="output" class="ptolemy.actor.TypedIOPort">
                         <property name="output"/>
                         <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                        </property>
-                        <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
-                            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                            </property>
                         </property>
                     </port>
                 </entity>
@@ -3141,17 +3026,9 @@ stickiness.</text></svg></configure>
                     </property>
                     <port name="output" class="ptolemy.actor.TypedIOPort">
                         <property name="output"/>
-                        <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
-                            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                            </property>
-                        </property>
                     </port>
                     <port name="P1" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
-                        <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
-                            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                            </property>
-                        </property>
                     </port>
                 </entity>
                 <entity name="P1 integrator" class="ptolemy.domains.ct.lib.Integrator">
@@ -3163,18 +3040,10 @@ stickiness.</text></svg></configure>
                         <property name="input"/>
                         <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
                         </property>
-                        <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
-                            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                            </property>
-                        </property>
                     </port>
                     <port name="output" class="ptolemy.actor.TypedIOPort">
                         <property name="output"/>
                         <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                        </property>
-                        <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
-                            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                            </property>
                         </property>
                     </port>
                 </entity>
@@ -3193,17 +3062,9 @@ stickiness.</text></svg></configure>
                     </property>
                     <port name="input" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
-                        <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
-                            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                            </property>
-                        </property>
                     </port>
                     <port name="output" class="ptolemy.actor.TypedIOPort">
                         <property name="output"/>
-                        <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
-                            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                            </property>
-                        </property>
                     </port>
                 </entity>
                 <relation name="1:_R3" class="ptolemy.actor.TypedIORelation">
@@ -3254,8 +3115,6 @@ stickiness.</text></svg></configure>
             </relation>
             <relation name="P2Relation" class="ptolemy.actor.TypedIORelation">
             </relation>
-            <relation name="touchedRelation" class="ptolemy.actor.TypedIORelation">
-            </relation>
             <relation name="StickinessRelation" class="ptolemy.actor.TypedIORelation">
             </relation>
             <relation name="ForceRelation" class="ptolemy.actor.TypedIORelation">
@@ -3264,14 +3123,12 @@ stickiness.</text></svg></configure>
             <link port="V2" relation="V2Relation"/>
             <link port="P1" relation="P1Relation"/>
             <link port="P2" relation="P2Relation"/>
-            <link port="touched" relation="touchedRelation"/>
             <link port="Stickiness" relation="StickinessRelation"/>
             <link port="Force" relation="ForceRelation"/>
             <link port="_Controller.V1" relation="V1Relation"/>
             <link port="_Controller.V2" relation="V2Relation"/>
             <link port="_Controller.P1" relation="P1Relation"/>
             <link port="_Controller.P2" relation="P2Relation"/>
-            <link port="_Controller.touched" relation="touchedRelation"/>
             <link port="_Controller.Stickiness" relation="StickinessRelation"/>
             <link port="_Controller.Force" relation="ForceRelation"/>
             <link port="Separate.V1" relation="V1Relation"/>
@@ -3294,19 +3151,11 @@ stickiness.</text></svg></configure>
                 <property name="multiport"/>
                 <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
                 </property>
-                <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
-                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                    </property>
-                </property>
             </port>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
                 <property name="multiport"/>
                 <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
-                </property>
-                <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;DISCRETE&quot;">
-                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                    </property>
                 </property>
             </port>
         </entity>
