@@ -475,13 +475,18 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
             _context.addIncludeFile(includeFileName);
         }
 
-        // Comment out native method calls.
-        if (v.getMethod().isNative()) {
-            _push("/*" + CNames.functionNameOf(v.getMethod()) + "("
-                    +_generateArguments(v, 0) + ")" + "*/" );
+        // The method that was invoked.
+        SootMethod method = v.getMethod();
+
+        // Comment out native method calls and replace them with a zero.
+        // FIXME: Native methods are disabled by this.
+
+        if (method.isNative()) {
+            _push("/*" + CNames.functionNameOf(method) + "("
+                    + _generateArguments(v, 0) + ")" + "*/" + 0);
         }
         else {
-            _push(CNames.functionNameOf(v.getMethod()) + "("
+            _push(CNames.functionNameOf(method) + "("
                     +_generateArguments(v, 0) + ")");
         }
 
@@ -604,7 +609,6 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
         if (stmt.getRightOp().getType() instanceof ArrayType) {
             _context.addArrayInstance(
                 CNames.typeNameOf(stmt.getRightOp().getType()));
-            //System.out.println(_context.getArrayInstances().next());
         }
 
 

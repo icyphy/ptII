@@ -64,7 +64,7 @@ test FIR-1.1 {Generate .c, .i.h, and .h files for FIR.xml} {
     # change the value of this variable.
     set modelName FIR
 
-    set outputDirectory $modelName.out
+    set outputDirectory testOutput/$modelName.out
     file delete -force $outputDirectory
     file mkdir $outputDirectory
 

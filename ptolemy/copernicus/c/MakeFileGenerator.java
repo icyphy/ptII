@@ -81,7 +81,12 @@ public class MakeFileGenerator {
         while (i.hasNext()) {
             String name = _classNameToMakeFileName(
                 ((SootClass)i.next()).getName());
-            code.append("\t" + name + ".c\\\n");
+
+            // A name with a "$" in it represents an inner class.
+            // FIXME: We don't want to compile inner classes for now.
+            if (name.indexOf("$") == -1) {
+                code.append("\t" + name + ".c\\\n");
+            }
         }
 
         code.append("\n");// Takes care of blank line for last "\".
@@ -96,7 +101,8 @@ public class MakeFileGenerator {
         code.append("\tgcc $(OBJECTS) -o "+ className +".exe\n");
 
         code.append(".c.o:\n");
-        code.append("\tgcc -c $(CFLAGS) -I $(RUNTIME) -I $(LIB) $< -o $@\n\n");
+        code.append("\tgcc -c $(CFLAGS) -I $(RUNTIME) -I $(LIB) $< -o $@ "
+                + "2>err.txt\n\n");
 
         code.append(".PHONY:depend\n\n");
         code.append("depend:\n");

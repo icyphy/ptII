@@ -64,7 +64,7 @@ test ramp-1.1 {Generate .c, .i.h, and .h files for ramp.xml} {
     # change the value of this variable.
     set modelName ramp
 
-    set outputDirectory $modelName.out
+    set outputDirectory testOutput/$modelName.out
     file delete -force $outputDirectory
     file mkdir $outputDirectory
 

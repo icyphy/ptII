@@ -53,4 +53,3 @@ _STRING_INSTANCE_STRUCT charArrayToString(char *charArray)
     return s;
     
 }
-

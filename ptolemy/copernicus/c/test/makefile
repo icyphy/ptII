@@ -62,7 +62,8 @@ JSIMPLE_TESTS = \
 	ObjectSingle.tcl \
 	ramp.tcl \
 	Simple.tcl \
-	SimpleSingle.tcl
+	SimpleSingle.tcl \
+        Terp.tcl
 
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds

@@ -77,6 +77,7 @@ public class CWriter extends SceneTransformer {
      *  Sample option arguments:
      *	<code>-p wjtp.writeJimple1 outDir:jimple1</code>
      *
+     *  @see ClassWriter
      *  @param phaseName The name of the phase, for example
      *  <code>wjtp.writeJimple2</code>.
      *  @param options The options Map.  This method uses the
@@ -88,7 +89,7 @@ public class CWriter extends SceneTransformer {
                 + phaseName + ", " + options + ")");
 
         String outDir = Options.getString(options, "outDir");
-        
+
         // FIXME: Remove the next line if things don't break without it
         // _completedTransform = true;
 

@@ -423,8 +423,9 @@ public class CodeFileGenerator extends CodeGenerator {
                 unit.apply(visitor);
                 StringBuffer newCode = visitor.getCode();
                 if (newCode.length() > 0) {
-                    code.append(_indent(indentLevel)).append(newCode).
-                            append(";\n");
+                    code.append(_indent(indentLevel)).append(newCode + ";");
+                    code.append("/* " + unit.toBriefString() + " */");
+                    code.append("\n");
                 }
 
                 //Code for end unit in exceptions.
@@ -529,10 +530,22 @@ public class CodeFileGenerator extends CodeGenerator {
             SootMethod method = (SootMethod)(methods.next());
             if (!method.isStatic()
                     && RequiredFileGenerator.isRequiredMethod(method)) {
+
+                // Comment out native method references.
+                if (method.isNative()) {
+                    code.append("/* Native Method Reference Commented "
+                            + "out.\n");
+                }
+
                 code.append(_indent(1) + argumentReference
                         + "methods." + CNames.methodNameOf(method) + " = "
                         + CNames.functionNameOf(method) + ";\n");
                 _updateRequiredTypes(method.getDeclaringClass().getType());
+
+                // Commenting out of native method ends.
+                if (method.isNative()) {
+                    code.append("*/\n");
+                }
             }
         }
         return code.toString();

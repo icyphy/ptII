@@ -48,7 +48,9 @@ import soot.SootField;
 import soot.Value;
 
 import soot.jimple.InvokeStmt;
+import soot.jimple.AssignStmt;
 import soot.jimple.InvokeExpr;
+import soot.jimple.DefinitionStmt;
 import soot.jimple.Stmt;
 import soot.jimple.FieldRef;
 import soot.jimple.JimpleBody;
@@ -216,6 +218,7 @@ public class RequiredFileGenerator {
         Iterator requiredClassesIter = ((HashSet)_requiredClasses.clone()).
                 iterator();
 
+
         while (requiredClassesIter.hasNext()) {
              SootClass thisClass = (SootClass)requiredClassesIter.next();
 
@@ -228,6 +231,16 @@ public class RequiredFileGenerator {
                     _requiredMethods.add(initMethod);
                 }
              }
+
+             // The superclass of each class is also a required class.
+             if (thisClass.hasSuperclass()) {
+                 SootClass superclass = thisClass.getSuperclass();
+                 if (!_requiredClasses.contains(superclass)) {
+                     _requiredClasses.add(superclass);
+                     newClassesAdded = true;
+                 }
+             }
+
         }
 
         // For each method in the required set, find all the methods it
@@ -281,16 +294,19 @@ public class RequiredFileGenerator {
         }
 
 
+
         // If this call to _growRequiredTree cause any changes, another call to
         // _growRequiredTree is required.
         if (newMethodsAdded || newClassesAdded) {
             _growRequiredTree();
         }
+
     }
 
     /** Gets all methods called directly by a given method.
      * @param method The method for which we want the target methods.
      * @return The collection of all methods called by this method.
+     * FIXME: Does this need to be made more general?
      */
     private static Collection _methodsCalledBy(SootMethod method)
     {
@@ -298,8 +314,13 @@ public class RequiredFileGenerator {
         HashSet targets = new HashSet();
 
         // FIXME: What about native methods?
-        if(method.isConcrete()) {
+        // It was found that "clinit" methods need to be generated even though
+        // they are not concrete.
+        if(method.isConcrete()
+                ||(method.toString().indexOf("clinit") != -1)) {
             method.getDeclaringClass().setApplicationClass();
+
+
             // Iterate over all the units and see which ones call methods.
             Iterator unitsIter = ((JimpleBody)method.retrieveActiveBody()).
                     getUnits().iterator();
@@ -311,6 +332,19 @@ public class RequiredFileGenerator {
                                 .getInvokeExpr());
 
                         targets.add(invokeExpr.getMethod());
+
+                }
+                // The unit may not be an ivoke statement by itself. It may
+                // have an RHS thats an invoke statement. For example , a =
+                // b()
+                // DefinitionStmt includes both AssignStmt and IdentityStmt
+                else if ((unit instanceof AssignStmt)) {
+                    Value rightOp = ((AssignStmt)unit).getRightOp();
+
+                    if (rightOp instanceof InvokeExpr) {
+                        targets.add(((InvokeExpr)rightOp).getMethod());
+
+                    }
                 }
             }
         }
