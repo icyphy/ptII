@@ -118,7 +118,7 @@ public final class VQDecode extends SDFAtomicActor {
                     try {
                         // showStatus("Reading data");
                         URL dataurl = new URL(_baseurl, filename);
-                        System.out.println("dataurl=" + dataurl);
+                        System.out.println("dataurl = " + dataurl);
                         source = dataurl.openStream();
                         //showStatus("Done");
                     } catch (MalformedURLException e) {
