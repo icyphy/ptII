@@ -140,6 +140,7 @@ public class DelayLine extends SDFTransformer {
     /** Initialize this actor by reading the value of <i>initialValues</i>.
      */
     public void initialize() throws IllegalActionException {
+        super.initialize();
         _delayLine = ((ArrayToken)initialValues.getToken()).arrayValue();
     }
 
