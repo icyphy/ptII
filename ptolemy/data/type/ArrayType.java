@@ -98,49 +98,48 @@ public class ArrayType extends StructuredType {
      *  a one dimensional token array if the MatrixToken has only one row,
      *  or it will be converted to an ArrayToken containing another ArrayToken
      *  (an array of arrays) if the MatrixToken has more than one row.
-     *  @param t A token.
+     *  @param token A token.
      *  @return An ArrayToken.
      *  @exception IllegalActionException If lossless conversion
      *   cannot be done.
      */
-    public Token convert(Token t)
-            throws IllegalActionException {
-        if ( !isCompatible(t)) {
+    public Token convert(Token token) throws IllegalActionException {
+        if ( !isCompatible(token)) {
             throw new IllegalArgumentException("ArrayType.convert: " +
                     "Cannot convert the argument token to this type.");
         }
 
-        ArrayToken argArrTok;
-        if (t instanceof MatrixToken) {
-            argArrTok = fromMatrixToken((MatrixToken)t);
+        ArrayToken argumentArrayToken;
+        if (token instanceof MatrixToken) {
+            argumentArrayToken = fromMatrixToken((MatrixToken)token);
         } else {
-            argArrTok = (ArrayToken)t;
+            argumentArrayToken = (ArrayToken)token;
         }
 
-        Token[] argArray = argArrTok.arrayValue();
-        Token[] result = new Token[argArray.length];
-        for (int i = 0; i < argArray.length; i++) {
-            result[i] = _elementType.convert(argArray[i]);
+        Token[] argumentArray = argumentArrayToken.arrayValue();
+        Token[] resultArray = new Token[argumentArray.length];
+        for (int i = 0; i < argumentArray.length; i++) {
+            resultArray[i] = _elementType.convert(argumentArray[i]);
         }
-        return new ArrayToken(result);
+        return new ArrayToken(resultArray);
     }
 
     /** Convert the argument MatrixToken to an ArrayToken. If the argument
      *  has more than one row, convert it to an ArrayToken containing an
      *  ArrayToken (an array of array).
-     *  @param tok A MatrixToken.
+     *  @param token A MatrixToken.
      *  @return An ArrayToken.
      */
-    public static ArrayToken fromMatrixToken(MatrixToken tok) {
-        int rows = tok.getRowCount();
+    public static ArrayToken fromMatrixToken(MatrixToken token) {
+        int rows = token.getRowCount();
         if (rows == 1) {
-            return _fromMatrixToken(tok, 0);
+            return _fromMatrixToken(token, 0);
         } else {
-            Token[] tokArray = new Token[rows];
+            Token[] tokenArray = new Token[rows];
             for (int i = 0; i < rows; i++) {
-                tokArray[i] = _fromMatrixToken(tok, i);
+                tokenArray[i] = _fromMatrixToken(token, i);
             }
-            return new ArrayToken(tokArray);
+            return new ArrayToken(tokenArray);
         }
     }
 
@@ -175,7 +174,7 @@ public class ArrayType extends StructuredType {
             }
         } catch (IllegalActionException iae) {
             throw new InternalErrorException("ArrayType.initialize: Cannot " +
-                    "initialize the element type to " + t + " " +
+                    "initialize the element type to " + t + ". " +
                     iae.getMessage());
         }
     }
@@ -189,40 +188,22 @@ public class ArrayType extends StructuredType {
      *  the lossless conversion relation defined by the type lattice,
      *  MatrixTokens can also be losslessly converted to ArrayTokens of the
      *  same type.
-     *  @param t A Token.
+     *  @param token A Token.
      *  @return True if the argument is compatible with this type.
      *  @see ptolemy.data.type.ArrayType#convert
      */
-    public boolean isCompatible(Token t) {
-        Type argType = t.getType();
-        if (t instanceof MatrixToken) {
-            MatrixToken argCast = (MatrixToken)t;
-            if (argCast.getRowCount() == 1) {
-                // argument is 1-D
-                argType = new ArrayType(
-                        argCast.getElementAsToken(0, 0).getType());
-            } else {
-                // argument is 2-D
-                argType = new ArrayType(new ArrayType(
-                        argCast.getElementAsToken(0, 0).getType()));
-            }
-        }
+    public boolean isCompatible(Token token) {
+        ArrayToken arrayToken;
+	if (token instanceof ArrayToken) {
+	    arrayToken = (ArrayToken)token;
+	} else if (token instanceof MatrixToken) {
+	    arrayToken = fromMatrixToken((MatrixToken)token);
+	} else {
+	    return false;
+	}
 
-        // may not need to distinguish constant or non-constant, can
-        // just check if the element type of argument token is compatible
-        // with the _elementType of this ArrayType.
-        if (isConstant()) {
-            int typeInfo = TypeLattice.compare(this, argType);
-            if (typeInfo == CPO.HIGHER || typeInfo == CPO.SAME) {
-                return true;
-            }
-        } else {
-            // This type is a variable.
-            if (isSubstitutionInstance(argType)) {
-                return true;
-            }
-        }
-        return false;
+        Token elementToken = arrayToken.getElement(0);
+	return _elementType.isCompatible(elementToken);
     }
 
     /** Test if this ArrayType is a constant. An ArrayType is a constant if
@@ -399,13 +380,13 @@ public class ArrayType extends StructuredType {
     ////                        private methods                    ////
 
     // convert a row of a MatrixToken into an ArrayToken.
-    private static ArrayToken _fromMatrixToken(MatrixToken tok, int row) {
-        int cols = tok.getColumnCount();
-        Token[] tokArray = new Token[cols];
+    private static ArrayToken _fromMatrixToken(MatrixToken token, int row) {
+        int cols = token.getColumnCount();
+        Token[] tokenArray = new Token[cols];
         for (int i = 0; i < cols; i++) {
-            tokArray[i] = tok.getElementAsToken(row, i);
+            tokenArray[i] = token.getElementAsToken(row, i);
         }
-        return new ArrayToken(tokArray);
+        return new ArrayToken(tokenArray);
     }
 
     ///////////////////////////////////////////////////////////////////
