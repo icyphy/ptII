@@ -44,7 +44,7 @@ import java.lang.Math;
 /** 
 This actor get two image token (type: IntMatrixToken); 
 one image token comes from the original input image,
-another one comes from the modified ouput image; and calculate the 
+another one comes from the modified output image; and calculate the 
 Power Signal to Noise Ratio (PSNR).
 
 @author Michael Leung

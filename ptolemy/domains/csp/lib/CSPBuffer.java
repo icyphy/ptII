@@ -58,7 +58,7 @@ public class CSPBuffer extends CSPActor {
     /** Construct a CSPBuffer in the default workspace with an empty string
      *  as its name. The actor is parameterized by its depth, which must
      *  be an integer. The default depth of the buffer is one.
-     *  The actor is created with a single input port and a single ouput
+     *  The actor is created with a single input port and a single output
      *  port, both of width one. The input port is called "input", and
      *  similarly, the output port is called "output".
      *  The object is added to the workspace directory.
