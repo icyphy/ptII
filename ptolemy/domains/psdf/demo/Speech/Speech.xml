@@ -264,7 +264,7 @@
                 <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
                 </property>
             </port>
-            <port name="quantized residuals" class="ptolemy.actor.TypedIOPort">
+            <port name="quantizedResiduals" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="40.0, 210.0">
                 </property>
@@ -321,7 +321,7 @@
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
             </relation>
             <link port="reconstruction" relation="relation2"/>
-            <link port="quantized residuals" relation="relation4"/>
+            <link port="quantizedResiduals" relation="relation4"/>
             <link port="RecursiveLattice.input" relation="relation"/>
             <link port="RecursiveLattice.output" relation="relation2"/>
             <link port="SequenceToArray.input" relation="relation4"/>
@@ -467,7 +467,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="40.0, 135.0">
                 </property>
             </port>
-            <port name="quantized residuals" class="ptolemy.actor.TypedIOPort">
+            <port name="quantizedResiduals" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="500.0, 210.0">
                 </property>
@@ -546,7 +546,7 @@
             </relation>
             <relation name="relation5" class="ptolemy.actor.TypedIORelation">
             </relation>
-            <link port="quantized residuals" relation="relation2"/>
+            <link port="quantizedResiduals" relation="relation2"/>
             <link port="port" relation="relation"/>
             <link port="Lattice.input" relation="relation5"/>
             <link port="Lattice.output" relation="relation3"/>
@@ -604,13 +604,13 @@
         <link port="AudioPlayer.input" relation="relation6"/>
         <link port="Decoder.ReflectionCoefficients" relation="relation3"/>
         <link port="Decoder.reconstruction" relation="relation6"/>
-        <link port="Decoder.quantized residuals" relation="relation"/>
+        <link port="Decoder.quantizedResiduals" relation="relation"/>
         <link port="Autocorrelation.input" relation="relation2"/>
         <link port="Autocorrelation.output" relation="relation4"/>
         <link port="LevinsonDurbin.autocorrelation" relation="relation4"/>
         <link port="LevinsonDurbin.reflectionCoefficients" relation="relation9"/>
         <link port="Encoder.ReflectionCoefficients" relation="relation3"/>
-        <link port="Encoder.quantized residuals" relation="relation"/>
+        <link port="Encoder.quantizedResiduals" relation="relation"/>
         <link port="Encoder.port" relation="relation2"/>
         <link port="AudioReader.output" relation="relation2"/>
     </entity>
