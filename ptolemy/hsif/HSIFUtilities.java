@@ -59,7 +59,7 @@ public class HSIFUtilities {
     }
 
     /**  Read in an HSIF file, transform it into MoML and generate an output
-     *	 file.
+     *	 file.  Note that if the output file exists, then it is overwritten.
      *   @param input HSIF file to be read in
      *   @param output MoML filename to be generated.
      *   @throws Exception if there is a problem with the transformation.
