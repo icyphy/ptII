@@ -88,10 +88,9 @@ public class EditorIcon extends Icon {
         label.setSize(10);
 	label.setPadding(1);
 	label.setAnchor(SwingConstants.SOUTH_WEST);
-
 	label.translateTo(backBounds.getX(), backBounds.getY());
         ((CompositeFigure)figure).add(label);
-        return figure;
+	return figure;
     }
 
     /**
