@@ -102,5 +102,8 @@ update: $(DERIVED_FILES)
 	rm -f doc.jar
 	$(MAKE) doc.jar
 
+update_clean: 
+	rm -f $(DERIVED_FILES)
+
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
