@@ -80,7 +80,7 @@ decoding decision and sends all-zero tokens to the output.
 And the last "D" codewords are "lost" in the decoder.
 The larger "D" is, the more likely the decoder can "guess" correctly.
 The trade-off is more waiting time and more complexity in the computation.
-Users who wish to get a complete sequence of the decoded bits should attatch
+Users who wish to get a complete sequence of the decoded bits should attach
 "D" blocks of redundant inputs when they send their information bits into the
 ConvolutionalCoder. It has been found experimentally that a proper value
 for "D" would be 5 times of the highest order of all polynomials, provided
