@@ -28,6 +28,7 @@
 package ptolemy.domains.pn.lib;
 import ptolemy.domains.pn.kernel.*;
 import ptolemy.kernel.*;
+import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.actor.*;
 import java.util.Enumeration;
@@ -39,7 +40,7 @@ import java.util.Enumeration;
 @author Mudit Goel
 @version $Id$
 */
-public class PNAlternate extends PNActor {
+public class PNAlternate extends AtomicActor {
     
     /** Constructor. Creates ports
      * @exception NameDuplicationException is thrown if more than one port 
@@ -47,11 +48,12 @@ public class PNAlternate extends PNActor {
      *  an identical name already exists.
      */
     public PNAlternate(CompositeActor container, String name)
-            throws NameDuplicationException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        _input = newInPort(this, "input");
-        _output = newOutPort(this, "output");
-        _output.makeMultiplex(true);
+        _input = new IOPort(this, "input", true, false);
+	_input.makeMultiport(false);
+        _output = new IOPort(this, "output", false, true);
+        _output.makeMultiport(true);
     }
     
 
@@ -62,46 +64,50 @@ public class PNAlternate extends PNActor {
      *  it's output ports. Needs to read one token for every output
      *  port. 
      */
-    //FIXME: CUrrently this is a BIIIIIG hack and should be changed ASA 
-    // the new kernel strategy is implemented
-    public void run() {
-        Token[] data;
-        try {
-            int index = 0;
-	    int i;
-	    for (i=0; _noOfCycles < 0 || i < _noOfCycles; i++) {
-                int width = _output.getWidth();
-                Enumeration relations = _input.linkedRelations();
-                while (relations.hasMoreElements()) {
-                    IORelation relation = (IORelation)relations.nextElement();
-                    data = readFrom(_input, relation);
-		    for (int j =0; j<data.length; j++) {
-                        _output.send(index, data[j]);
-                        index = (index+1)%width;
-		    }
-                }
-            }                
-            ((PNDirector)getDirector()).processStopped();
-        } catch (NoSuchItemException e) {
-	    System.out.println("Terminating "+ this.getName());
-            return;
-        } catch (InvalidStateException e) {
-	    System.out.println("InvalidStateException "+ e.toString());
-            return;
-        } catch (IllegalActionException e) {
-	    System.out.println("IllegalActionException "+ e.toString());
-            return;
-        } catch (CloneNotSupportedException e) {
-	    System.out.println("CloneNotSupportedException :"+ e.toString());
-            return;
-        }
+    public void fire() throws IllegalActionException {
+        Token data;
+        //try {
+	int index = 0;
+	//int i;
+	//for (i=0; _noOfCycles < 0 || i < _noOfCycles; i++) {
+	int width = _output.getWidth();
+	while (true) {
+	    //Enumeration relations = _input.linkedRelations();
+	    //while (relations.hasMoreElements()) {
+	    //IORelation relation = (IORelation)relations.nextElement();
+	    //data = readFrom(_input, relation);
+	    data = _input.get(0);
+	    //for (int j =0; j<data.length; j++) {
+	    //_output.send(index, data[j]);
+	    _output.send(index, data);
+	    index = (index+1)%width;
+	}
+	//}
+	//}
+	//}                
+	//((PNDirector)getDirector()).processStopped();
+        // } catch (NoSuchItemException e) {
+// 	    System.out.println("Terminating "+ this.getName());
+//             return;
+//         } catch (InvalidStateException e) {
+// 	    System.out.println("InvalidStateException "+ e.toString());
+//             return;
+//         } catch (IllegalActionException e) {
+// 	    System.out.println("IllegalActionException "+ e.toString());
+//             return;
+//         } catch (CloneNotSupportedException e) {
+// 	    System.out.println("CloneNotSupportedException :"+ e.toString());
+//             return;
+//         }
     }
     
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     
     // The input port 
-    private PNInPort _input;
+    private IOPort _input;
     // The output port 
-    private PNOutPort _output;
+    private IOPort _output;
 }
+
+
