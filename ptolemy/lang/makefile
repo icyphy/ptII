@@ -31,7 +31,7 @@
 
 ME =		ptolemy/lang
 
-DIRS = 		java tree
+DIRS = 		java tree test
 
 # Root of the Java directory
 ROOT =		../..
