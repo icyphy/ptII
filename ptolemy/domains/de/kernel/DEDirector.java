@@ -39,7 +39,7 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.graph.*;
 import java.util.HashSet;
 import java.util.Set;
-import collections.LinkedList;
+import java.util.LinkedList;
 import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
@@ -398,6 +398,7 @@ public class DEDirector extends Director {
         _deadActors = null;
         _currentTime = 0.0;
         _noMoreActorsToFire = false;
+        _pendingEvents = new LinkedList();
 
         // Haven't seen any events yet, so...
         _startTime = Double.MAX_VALUE;
@@ -412,7 +413,7 @@ public class DEDirector extends Director {
         _isInitialized = true;
 
         // Set the depth field of the receivers.
-        // FIXME: This is done in prefire... Presumably that is sufficient.
+        // FIXME: This is done in prefire... Presumably that is sufficient?
         // _computeDepth();
 
         // Request a firing to the outer director if the queue is not empty.
@@ -459,6 +460,7 @@ public class DEDirector extends Director {
     public boolean prefire() throws IllegalActionException {
         if (!_sortValid) {
             _computeDepth();
+            _sortValid = true;
         }
         return super.prefire();
     }
@@ -570,10 +572,6 @@ public class DEDirector extends Director {
         DEEventTag key = new DEEventTag(time, depth);
         DEEvent event = new DEEvent(receiver, token, key);
         _eventQueue.put(event);
-        _debug("Enqueue event for port:",
-                destination.getFullName(),
-                "at time " + time,
-                "with depth " + depth);
     }
 
     /** Override the default Director implementation, because in DE
@@ -607,16 +605,32 @@ public class DEDirector extends Director {
     private Actor _getActorToFire() {
         Actor actorToFire = null;
         DEEvent currentEvent = null;
-
-        // Keep taking events out until there are no more simultaneous
-        // events or until the queue is empty. Some events get put back
-        // into the queue.  We collect those in the following fifo
-        // to put them back outside the loop.
-        FIFOQueue eventsToPutBack = new FIFOQueue();
         double currentTime = getCurrentTime();
         long currentDepth = 0;
-        while (true) {
 
+        // Get any events that have previously been dequeued and cached
+        // (their tag was the same as the previous firing).
+        while (_pendingEvents.size() > 0) {
+            currentEvent = (DEEvent)_pendingEvents.remove(0);
+            actorToFire = currentEvent.getDestinationActor();
+            if (_deadActors != null && _deadActors.contains(actorToFire)) {
+                _debug("Skipping actor: ", ((Entity)actorToFire).getFullName());
+                actorToFire = null;
+                continue;
+            }
+            currentTime = currentEvent.getEventTag().timeStamp();
+            currentDepth = currentEvent.getEventTag().receiverDepth();
+            // NOTE: No need to set current time, because it is the
+            // same as during the previous firing.
+            break;
+        }
+
+        // Keep taking events out until there are no more simultaneous
+        // events or until the queue is empty. One event may get put back
+        // into the queue (the first one with a future tag).  Others
+        // may be put on the pending list (if their tag is identical to
+        // that of the currentEvent).
+        while (true) {
             // Get the next event off the event queue.
             if (_stopWhenQueueIsEmpty) {
                 try {
@@ -629,39 +643,40 @@ public class DEDirector extends Director {
                 // In this case, effectively, we want to do a blocking
                 // take(). So, keep invoking take() until an exception
                 // is not thrown.
-                while (true) {
-                    try {
-                        currentEvent = (DEEvent)_eventQueue.take();
-                    } catch (IllegalActionException ex) {
-                        // Queue is empty.
-                        _debug("Queue is empty. Waiting for input events.");
-                        synchronized(_eventQueue) {
-                            try {
-                                _eventQueue.wait();
-                            } catch (InterruptedException e) {
-                                // ignore... Keep waiting
-                            }
+                while (_eventQueue.isEmpty()) {
+                    // Queue is empty.
+                    _debug("Queue is empty. Waiting for input events.");
+                    synchronized(_eventQueue) {
+                        try {
+                            _eventQueue.wait();
+                        } catch (InterruptedException e) {
+                            // ignore... Keep waiting
                         }
-                        continue;
                     }
-                    break;
+                }
+                try {
+                    currentEvent = (DEEvent)_eventQueue.take();
+                } catch (IllegalActionException ex) {
+                    throw new InternalErrorException(ex.toString());
                 }
             }
 
             if (actorToFire == null) {
-                // This is first time we're in the loop, therefore
+                // No previously seen event at this time stamp, so
                 // always accept the event.
                 actorToFire = currentEvent.getDestinationActor();
 
                 if (_deadActors != null && _deadActors.contains(actorToFire)) {
                     // This actor has requested that it not be fired again.
-                    _debug("Skipping actor: ", ((Entity)actorToFire).getName());
+                    _debug("Skipping actor: ",
+                           ((Entity)actorToFire).getFullName());
+                    actorToFire = null;
                     continue;
                 }
 
-                // Advance current time.
                 currentTime = currentEvent.getEventTag().timeStamp();
                 currentDepth = currentEvent.getEventTag().receiverDepth();
+                // Advance current time.
                 try {
                     setCurrentTime(currentTime);
                 } catch (IllegalActionException ex) {
@@ -693,9 +708,9 @@ public class DEDirector extends Director {
                     rec._triggerEvent(currentEvent.getTransferredToken());
                 }
             } else {
-                // Not the first time through the loop; check whether the event
-                // has time stamp equal to previously obtained current
-                // time. Then check if it's for the same actor.
+                // Already seen an event at the current time;
+                // check whether the new event has tag equal to the previous
+                // one. Then check whether it's for the same actor.
                 double eventTime = currentEvent.getEventTag().timeStamp();
                 long eventDepth = currentEvent.getEventTag().receiverDepth();
                 if (eventTime < currentTime) {
@@ -706,39 +721,28 @@ public class DEDirector extends Director {
                 if (eventTime > currentTime || eventDepth > currentDepth) {
                     // The event has a later time stamp or depth,
                     // so we put it back
-                    eventsToPutBack.put(currentEvent);
-                    // Break the loop, since all events after this will
-                    // all have time stamp later or equal to this one.
+                    _eventQueue.put(currentEvent);
                     break;
                 } else {
                     // The event has the same time stamp and depth as the first
-                    // event seen.  Check whether it is for the same actor.
-                    if (currentEvent.getDestinationActor() == actorToFire) {
-                        DEReceiver rec = currentEvent.getDestinationReceiver();
-                        // If rec is null, then it's a 'pure event' and
-                        // there's no need to put event into receiver.
-                        if (rec != null) {
-                            // Transfer the event to the receiver.
-                            rec._triggerEvent(
-                                    currentEvent.getTransferredToken());
-                        }
-                    } else {
-                        // Put it back in the queue.
-                        eventsToPutBack.put(currentEvent);
+                    // event seen.
+
+                    // Transfer the event into the receiver.
+                    DEReceiver rec = currentEvent.getDestinationReceiver();
+                    // If rec is null, then it's a 'pure event' and
+                    // there's no need to put event into receiver.
+                    if (rec != null) {
+                        // Transfer the event to the receiver.
+                        rec._triggerEvent(
+                                currentEvent.getTransferredToken());
+                    }
+                    // If the event is not for the same actor, add it to
+                    // the pending list.
+                    if (currentEvent.getDestinationActor() != actorToFire) {
+                        _pendingEvents.add(currentEvent);
                     }
                 }
             }
-        }
-        // Transfer back the events from the eventsToPutBack queue
-        // into the calendar queue.
-        _debug("Putting back events for another actor or at later time.");
-        // FIXME: Putting these events back can be costly.
-        // Is there some way to avoid this? Perhaps they can be
-        // processed (fired) since the depth and time stamp is the same on all
-        // but the last one.
-        while (eventsToPutBack.size() > 0) {
-            DEEvent event = (DEEvent)eventsToPutBack.take();
-            _eventQueue.put(event);
         }
         return actorToFire;
     }
@@ -748,8 +752,6 @@ public class DEDirector extends Director {
     // is returned.
     private DirectedAcyclicGraph _constructDirectedGraph()
             throws IllegalActionException {
-        LinkedList portList = new LinkedList();
-
         // Clear the graph
         DirectedAcyclicGraph dag = new DirectedAcyclicGraph();
 
@@ -814,13 +816,14 @@ public class DEDirector extends Director {
                     }
                 }
             }
-            // NOTE: The following may be a very costly test.
-            // Perhaps this should be done only at the end.
-            if (!dag.isAcyclic()) {
-                throw new IllegalActionException(this,
-                "Zero delay loop including actor: "
-                + ((Nameable)actor).getFullName());
-            }
+        }
+        // NOTE: The following may be a very costly test, which is why
+        // it it done at the end.  However, this means that we cannot
+        // report an actor in the directed cycle.  Probably DirectedGraph
+        // should be modified to enable such reporting.
+        if (!dag.isAcyclic()) {
+            throw new IllegalActionException(this,
+            "Zero delay loop found.  Cannot prioritize actors.");
         }
         return dag;
     }
@@ -880,18 +883,17 @@ public class DEDirector extends Director {
     // Return true if this director is embedded inside an opaque composite
     // actor contained by another composite actor.
     private boolean _isEmbedded() {
-        if (getContainer().getContainer() == null) {
-            return false;
-        } else {
-            return true;
-        }
+        return (getContainer().getContainer() != null);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    //_eventQueue: an instance of DEEventQueue is used for sorting events.
+    // The queue used for sorting events.
     private DEEventQueue _eventQueue;
+
+    // List of dequeued events waiting to be processed.
+    private LinkedList _pendingEvents;
 
     // Indicate whether the actors (not the director) is initialized.
     private boolean _isInitialized = false;
