@@ -120,19 +120,20 @@ test VergilConfiguration-1.3 {make sure that everything inside the Full configur
     puts "file name vergilConfiguration.xml: $inFile"
 
     set infd [open $inFile]
-    set outfd [open vergilConfigurationNoMatlabNoSerial.xml "w"]
+    set outfd [open vergilConfigurationNoMatlabNoSerialNoApps.xml "w"]
     while {![eof $infd]} {
 	set linein [gets $infd]
 	regsub -all {.*matlab.*} $linein {} lineout
 	# Filter out the serial actor because it does not work under Unix,
 	# which is where the nightly build is run
 	regsub -all {.*comm/comm.xml.*} $lineout {} lineout2
-	puts $outfd $lineout2
-    }
+	# Filter out apps
+	regsub -all {.*apps/apps.xml.*} $lineout2 {} lineout3
+	puts $outfd $lineout3    }
     close $infd
     close $outfd
 
-    expandConfiguration "ptolemy/vergil/test/vergilConfigurationNoMatlabNoSerial.xml"
+    expandConfiguration "ptolemy/vergil/test/vergilConfigurationNoMatlabNoSerialNoApps.xml"
 } {0}
 
 
