@@ -102,6 +102,12 @@ DIVA_JAR="${PTII}/lib/diva.jar"
 
 DIVA_JFLAG=
 
+#### Jode..  Java decompiler
+# The jode jar file.
+JODE_JAR= #FIXME
+
+JODE_JFLAG=
+
 #### All the jar files.  Useful for Vergil and ptolemy rules which must load
 # arbitrary files
 ALL_JAR="${DIVA_JAR}${CLASSPATHSEPARATOR}${JINI_JARS}${COMMAPI_JAR}"
@@ -132,6 +138,13 @@ case `basename "$0"` in
 	javastartupclass=ptolemy.plot.plotml.HistogramMLApplication
 	javasourcedir=ptolemy/plot/plotml
 	;;
+    jode)
+	# JAva decompiler
+	javastartupclass=jode.decompiler.Main
+	javasourcedir=
+	jarfile="$JODE_JAR"
+	javaflag="$JODE_JFLAG"
+	;;
     moml)
 	# Moml application
 	# This has no default configuration, run moml when you want
@@ -139,6 +152,8 @@ case `basename "$0"` in
 	# moml myBiggerBetterVergilConfiguration.xml foo.xml
 	javastartupclass=ptolemy.actor.gui.MoMLApplication
 	javasourcedir=
+	jarfile="$ALL_JAR"
+	javaflag="$ALL_JFLAG"
 	;;
     ptexecute)
         # This takes over what CompositeActorApplication used to do (with the

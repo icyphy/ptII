@@ -45,6 +45,7 @@ include $(CONFIG)
 # Bourne Shell scripts for Unix and Cygwin
 SHELL_FILES = \
 	histogram \
+	jode \
 	moml \
 	ptexecute \
 	ptinvoke \
@@ -88,6 +89,8 @@ all: ptinvoke
 	-chmod a+x ptinvoke
 	rm -f histogram
 	ln -s ptinvoke histogram
+	rm -f jode
+	ln -s ptinvoke jode
 	rm -f moml
 	ln -s ptinvoke moml
 	rm -f ptexecute
