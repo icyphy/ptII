@@ -33,7 +33,7 @@ import java.io.Reader;
 
 /**
  * CompositeBuilder is a non-validating parser that uses other
- * builders to parse and generate XML files from arbitary collections
+ * builders to parse and generate XML files from arbitrary collections
  * of objects.  (FIXME - more documentation here)
  *
  * @author Michael Shilman (michaels@eecs.berkeley.edu)
