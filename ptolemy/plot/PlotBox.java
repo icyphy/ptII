@@ -1600,18 +1600,20 @@ public class PlotBox extends Panel {
             String legend = (String) v.nextElement();
             // NOTE: relies on _legendDatasets having the same num. of entries.
             int dataset = ((Integer) i.nextElement()).intValue();
-            if (_usecolor) {
-                // Points are only distinguished up to the number of colors.
-                int color = dataset % _colors.length;
-                graphics.setColor(_colors[color]);
-            }
-            _drawPoint(graphics, dataset, urx-3, ypos-3, false);
+            if (dataset >= 0) {
+                if (_usecolor) {
+                    // Points are only distinguished up to the number of colors
+                    int color = dataset % _colors.length;
+                    graphics.setColor(_colors[color]);
+                }
+                _drawPoint(graphics, dataset, urx-3, ypos-3, false);
 
-            graphics.setColor(_foreground);
-            int width = _labelFontMetrics.stringWidth(legend);
-            if (width > maxwidth) maxwidth = width;
-            graphics.drawString(legend, urx - 15 - width, ypos);
-            ypos += spacing;
+                graphics.setColor(_foreground);
+                int width = _labelFontMetrics.stringWidth(legend);
+                if (width > maxwidth) maxwidth = width;
+                graphics.drawString(legend, urx - 15 - width, ypos);
+                ypos += spacing;
+            }
         }
         return 22 + maxwidth;  // NOTE: subjective spacing parameter.
     }
