@@ -87,7 +87,7 @@ set sys [java::new ptolemy.actor.TypedCompositeActor]
 $sys setName DESystem
 
 # Create directors and associate them with the top level composite actor.
-set dir [java::new ptolemy.domains.de.kernel.DECQDirector DELocalDirector]
+set dir [java::new ptolemy.domains.de.kernel.DEDirector DELocalDirector]
 $sys setDirector $dir
 set exec [java::new ptolemy.actor.Manager]
 $sys setManager $exec
@@ -122,7 +122,7 @@ set r3 [$block2 connect $clock2Out $ramp2In R3]
 set r4 [$block2 connect $ramp2Out $block2Out R4]
 
 # Build the system
-set blockDir [java::new ptolemy.domains.de.kernel.DECQDirector BlockDir]
+set blockDir [java::new ptolemy.domains.de.kernel.DEDirector BlockDir]
 $block2 setDirector $blockDir
 
 set add [java::new ptolemy.actor.lib.Add $sys Add]
