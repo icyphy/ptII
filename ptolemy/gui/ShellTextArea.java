@@ -30,14 +30,23 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.gui;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Toolkit;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.util.Vector;
+
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 
 //////////////////////////////////////////////////////////////////////////
@@ -66,6 +75,8 @@ public class ShellTextArea extends JPanel {
         _initialMessage = initialMessage;
         // FIXME: Size needs to be configurable.
         _jTextArea = new JTextArea("", 20, 80);
+        // FIXME: Large font for demo. Font needs to be configurable.
+        // _jTextArea.setFont(new Font("DialogInput", 0, 24));
         JScrollPane jScrollPane = new JScrollPane(_jTextArea);
         add(jScrollPane);
 
@@ -270,7 +281,11 @@ public class ShellTextArea extends JPanel {
                     // e.printStackTrace();
                 }
                 if (result != null) {
-                    appendJTextArea(result + "\n" + mainPrompt);
+                    if (result.trim().equals("")) {
+                        appendJTextArea(mainPrompt);
+                    } else {
+                        appendJTextArea(result + "\n" + mainPrompt);
+                    }
                 } else {
                     // Result is incomplete.
                     // Make the text uneditable to prevent further input
