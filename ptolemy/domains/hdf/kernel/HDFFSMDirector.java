@@ -164,12 +164,13 @@ public class HDFFSMDirector extends MultirateFSMDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Set the values of input variables in the mode controller.
+    /** Fire the modal model
      *  If the refinement of the current state of the mode controller
-     *  is ready to fire, then fire the current refinement.
-     *  Choose a transition if this FSM is embedded in SDF, otherwise
-     *  request to choose a transition to the manager.
-     *  @exception IllegalActionException If there is no controller.
+     *  is ready to fire, then fire the current refinement. Overrides
+     *  the base class method by sending a request to choose a
+     *  transition to the manager.
+     *  @exception IllegalActionException If there is no controller,
+     *   or if the current state has no or more than one refinement.
      */
     public void fire() throws IllegalActionException {
         CompositeActor container = (CompositeActor) getContainer();
@@ -224,8 +225,8 @@ public class HDFFSMDirector extends MultirateFSMDirector {
 
     /** Return the change context being made explicit.  This class
      *  overrides the implementation in the FSMDirector base class to
-     *  report that HDF models only make state transitions between
-     *  toplevel iterations.
+     *  report that modal models using HDFFSMDirector only make state
+     *  transitions between toplevel iterations.
      */
     public Entity getContext() {
         // Set the flag indicating whether we're in an SDF model or
@@ -239,16 +240,10 @@ public class HDFFSMDirector extends MultirateFSMDirector {
         return (Entity) toplevel();
     }
 
-    /** If this method is called immediately after preinitialize(),
-     *  initialize the mode controller and all the refinements.
-     *  If this is a reinitialization, it typically means this
-     *  is a sub-layer HDFFSMDirector and a "reset" has been called
-     *  at the upper-level HDFFSMDirector. This method will then
-     *  reinitialize all the refinements in the sub-layer, recompute
-     *  the schedule of the initial state in the sub-layer, and notify
-     *  update of port rates to the upper level director.
-     *  @exception IllegalActionException If the initialize() method of
-     *  one of the associated actors throws it.
+    /** Initialize the modal model. Set the _sendRequest flag to be true
+     *  to indicate the modal model can send a change request to the manager.
+     *  Set the controller flag to indicate a new iteration begins.
+     *  @exception IllegalActionException if the base class throws it.
      */
     public void initialize() throws IllegalActionException {
         State currentState;
@@ -259,14 +254,11 @@ public class HDFFSMDirector extends MultirateFSMDirector {
     }
 
 
-    /** Make a state transition if this FSM is embedded in SDF.
-     *  Otherwise, request a change of state transition to the manager.
-     *  <p>
-     *  @return True if the FSM is inside SDF and the super class
-     *  method returns true; otherwise return true if the postfire of
-     *  the current state refinement returns true.
+    /** Request a change of state transition to the manager.
+     *  @return True if the postfire of the current state refinement
+     *   returns true.
      *  @exception IllegalActionException If a refinement throws it,
-     *  if there is no controller.
+     *   if there is no controller.
      */
     public boolean postfire() throws IllegalActionException {
         FSMActor controller = getController();
@@ -289,14 +281,8 @@ public class HDFFSMDirector extends MultirateFSMDirector {
         return _refinementPostfire;
     }
 
-    /** Preinitialize() methods of all actors deeply contained by the
-     *  container of this director. The HDF/SDF preinitialize method
-     *  will compute the initial schedule. Propagate the consumption
-     *  and production rates of the current state out to the
-     *  corresponding ports of the container of this director.
-     *  @exception IllegalActionException If the preinitialize()
-     *  method of one of the associated actors throws it, or there
-     *  is no controller.
+    /** Preinitialize the modal model. Set the _sendRequest flag to be true
+     *  to indicate the modal model can send a change request to the manager.
      */
     public void preinitialize() throws IllegalActionException {
         _sendRequest = true;
@@ -305,9 +291,11 @@ public class HDFFSMDirector extends MultirateFSMDirector {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    // A flag indicating whether the FSM can send a change request.
-    // The controller in HDFFSMDirector can only send one request per 
-    // global iteration.
+
+    /** A flag indicating whether the FSM can send a change request.
+     *  The controller in HDFFSMDirector can only send one request per 
+     *  global iteration.
+     */
     private boolean _sendRequest;
 
 }
