@@ -55,7 +55,6 @@ JSRCS = ArrayStringFormat.java \
 	ExtendedMath.java \
 	Fraction.java \
 	Interpolation.java \
-	SampleGenerator.java \
 	SignalProcessing.java \
 	FloatArrayMath.java \
 	DoubleArrayMath.java \
@@ -97,7 +96,7 @@ OPTIONAL_FILES = \
 	'FixPoint$$Error.class' \
 	'FixPoint$$Fixvalue.class' \
 	'SignalProcessing$$GaussianSampleGenerator.class' \
-	'SignalProcessing$$LineSampleGenerator.class' \
+	'SignalProcessing$$PolynomialSampleGenerator.class' \
 	'SignalProcessing$$RaisedCosineSampleGenerator.class' \
 	'SignalProcessing$$SawtoothSampleGenerator.class' \
 	'SignalProcessing$$SincSampleGenerator.class' \
