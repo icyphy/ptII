@@ -21,8 +21,6 @@
     <entity name="_Controller" class="ptolemy.vergil.fsm.modal.ModalController">
         <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="init">
         </property>
-        <property name="finalStateNames" class="ptolemy.kernel.util.StringAttribute" value="stop">
-        </property>
         <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
         </property>
         <property name="_library" class="ptolemy.moml.LibraryAttribute">
@@ -30,7 +28,9 @@
     <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/annotation.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property></entity></entity>
   </configure>
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[682, 345]">
+        <property name="finalStateNames" class="ptolemy.kernel.util.StringAttribute" value="stop">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[682, 350]">
         </property>
         <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[63, 135]">
         </property>
@@ -55,12 +55,33 @@
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 40.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 65.0">
             </property>
         </property>
         <property name="numberOfRuns" class="ptolemy.data.expr.Parameter" value="10">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={7, 3, 897, 461}}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={63, 151, 897, 466}}">
+        </property>
+        <property name="annotation" class="ptolemy.kernel.util.Attribute">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:red">Note that this demo tickles a bug that leaves threads running even
+after the model is closed.  The threads die when Ptolemy II is exited.</text></svg></configure>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="160.0, 15.0">
+            </property>
         </property>
         <entity name="mode1" class="ptolemy.domains.fsm.kernel.State">
             <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="mode1">
