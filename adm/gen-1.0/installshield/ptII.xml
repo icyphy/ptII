@@ -1,9 +1,10 @@
 <isjeProject name="Ptolemy II" class="com.installshield.isje.product.TypicalProductProject" framework="com.installshield.isje.product.ProductWizardFramework">
 <section name="projectProperties" class="com.installshield.isje.project.ProjectPropertiesSection">
-    <property name="authorName" displayName="Author Name" category="Author Info"></property>
-    <property name="authorEmail" displayName="Author Email" category="Author Info"></property>
-    <property name="companyName" displayName="Company Name" category="Company Info"></property>
-    <property name="companyAddress" displayName="Company Address" category="Company Info" ui="3"></property>
+    <property name="authorName" displayName="Author Name" category="Author Info">Ptolemy Project, UC Berkeley EECS Dept.</property>
+    <property name="authorEmail" displayName="Author Email" category="Author Info">ptolemy@eecs.berkeley.edu</property>
+    <property name="companyName" displayName="Company Name" category="Company Info">UC Berkeley, EECS Dept. Ptolemy Project</property>
+    <property name="companyAddress" displayName="Company Address" category="Company Info" ui="3">558 Cory Hall
+Berkeley, CA 94706</property>
     <property name="companyTelephone" displayName="Company Telephone" category="Company Info"></property>
     <property name="companyFax" displayName="Company Fax" category="Company Info"></property>
     <property name="companyWebsite" displayName="Company Website" category="Company Info"></property>
@@ -129,7 +130,7 @@
                             <property name="usingGNUPattern">False</property>
                             <property name="type">4</property>
                             <property name="pattern"/>
-                            <property name="fileName">c:\users\cxh\ptII\adm\dists\ptII1.0beta</property>
+                            <property name="fileName">c:\users\cxh\ptII\adm\gen-1.0\installshield\app</property>
                         </arrayItem>
                     </property>
                     <property name="totalBytes">-1</property>
@@ -171,7 +172,7 @@
                     <property name="mainClass">ptolemy.vergil.VergilApplication</property>
                     <property name="mainClassArguments"/>
                     <property array="True" length="1" name="classPath" type="string">
-                        <arrayItem>lib\diva.jar</arrayItem>
+                        <arrayItem>$D(install)\lib\diva.jar</arrayItem>
                     </property>
                     <property array="True" length="0" name="systemProperties" type="string"/>
                     <property name="javaArguments"/>
@@ -186,8 +187,8 @@
                         <property name="iconFileType">1</property>
                         <property name="folderContext">$AllUsersPrograms$</property>
                     </extendedProperty>
-                    <property name="folder"/>
-                    <property name="name">Ptolemy II Vergil</property>
+                    <property name="folder">$P(DisplayName) $P(ProductNumber)</property>
+                    <property name="name">Vergil</property>
                     <property name="target">vergil.exe</property>
                     <property name="args"/>
                     <property name="workingDirectory"/>
@@ -205,7 +206,7 @@
                         <property name="iconFileType">1</property>
                         <property name="folderContext">$AllUsersPrograms$</property>
                     </extendedProperty>
-                    <property name="folder"/>
+                    <property name="folder">$P(DisplayName) $P(ProductNumber)</property>
                     <property name="name">Documentation</property>
                     <property name="target">doc/index.htm</property>
                     <property name="args"/>
@@ -214,6 +215,54 @@
                     <property name="itemGroup"/>
                     <property name="folderOwner"/>
                     <property name="folderGroup"/>
+                </action>
+            </component>
+        </feature>
+        <feature id="bean119">
+            <key>
+                <uid>2d631328dd6765f5330e8203faffe007</uid>
+                <version/>
+            </key>
+            <built>19691131 160000.000-0800</built>
+            <name>product3</name>
+            <displayName>Documentation</displayName>
+            <localizedDisplayName>Javadoc Documentation</localizedDisplayName>
+            <description>Documentation for Ptolemy II Java Classes</description>
+            <shareable>false</shareable>
+            <active>true</active>
+            <installStatus>0</installStatus>
+            <replaceOption>0</replaceOption>
+            <removeOption>0</removeOption>
+            <installFailureOption>1</installFailureOption>
+            <component id="bean125">
+                <key>
+                    <uid>e1cafdf2cc11c53fe0b078d18f80f704</uid>
+                    <version/>
+                </key>
+                <built>19691131 160000.000-0800</built>
+                <name>component4</name>
+                <displayName>Documentation Files</displayName>
+                <shareable>false</shareable>
+                <active>true</active>
+                <installStatus>0</installStatus>
+                <replaceOption>0</replaceOption>
+                <removeOption>0</removeOption>
+                <installFailureOption>3</installFailureOption>
+                <onFailSummaryMessage/>
+                <action class="com.installshield.product.actions.Files" id="bean126">
+                    <displayName>Files</displayName>
+                    <active>true</active>
+                    <property array="True" length="1" name="files" type="com.installshield.product.actions.SourceFile">
+                        <arrayItem type="com.installshield.product.actions.SourceFile">
+                            <property name="usingGNUPattern">False</property>
+                            <property name="type">4</property>
+                            <property name="pattern"/>
+                            <property name="fileName">c:\users\cxh\ptII\adm\gen-1.0\installshield\doc</property>
+                        </arrayItem>
+                    </property>
+                    <property name="totalBytes">-1</property>
+                    <property name="owner"/>
+                    <property name="group"/>
                 </action>
             </component>
         </feature>
@@ -231,7 +280,7 @@
         <property name="wizardImageSource">C:\Program Files\InstallShield\ISMPP40\images\InstallShield Images\welcome.gif</property>
         <property name="wizardImageOrientation">1</property>
         <property name="splashImageSource"/>
-        <property name="splashDuration">0</property>
+        <property name="splashDuration">1</property>
         <property name="wizardIcon"/>
         <property name="wizardIconSource">C:\Program Files\InstallShield\ISMPP40\images\InstallShield Images\icon.gif</property>
         <property name="width">640</property>
@@ -296,18 +345,23 @@
             <property array="True" length="2" name="setupTypes" type="com.installshield.product.wizardbeans.SetupType">
                 <arrayItem type="com.installshield.product.wizardbeans.SetupType">
                     <property name="displayName">$L(com.installshield.product.i18n.ProductResources, SetupTypePanel.typicalDisplayName)</property>
-                    <property array="True" length="0" name="features" type="string"/>
+                    <property array="True" length="2" name="features" type="string">
+                        <arrayItem>bean62</arrayItem>
+                        <arrayItem>bean119</arrayItem>
+                    </property>
                     <property name="description">$L(com.installshield.product.i18n.ProductResources, SetupTypePanel.typicalDescription)</property>
                     <property name="id">typical</property>
                 </arrayItem>
                 <arrayItem type="com.installshield.product.wizardbeans.SetupType">
                     <property name="displayName">$L(com.installshield.product.i18n.ProductResources, SetupTypePanel.customDisplayName)</property>
-                    <property array="True" length="0" name="features" type="string"/>
+                    <property array="True" length="1" name="features" type="string">
+                        <arrayItem>bean62</arrayItem>
+                    </property>
                     <property name="description">$L(com.installshield.product.i18n.ProductResources, SetupTypePanel.customDescription)</property>
                     <property name="id">custom</property>
                 </arrayItem>
             </property>
-            <property name="selectedSetupTypeId">typical</property>
+            <property name="selectedSetupTypeId">custom</property>
         </wizardBean>
         <wizardBean class="com.installshield.product.wizardbeans.SetupTypeSequence" id="customize">
             <property name="displayName">Customize Sequence</property>
@@ -502,7 +556,7 @@
             <property array="True" length="0" name="distributions" type="com.installshield.isje.build.Distribution"/>
         </arrayItem>
     </property>
-    <property name="projectDirectory">c:\users\cxh\ptII\adm\gen-1.0\ptIIinstallshield</property>
+    <property name="projectDirectory">C:\users\cxh\ptII\adm\gen-1.0\installshield</property>
 </buildConfiguration>
 </section>
 </isjeProject>
