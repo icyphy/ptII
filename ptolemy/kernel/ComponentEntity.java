@@ -33,6 +33,7 @@ package ptolemy.kernel;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
 import java.io.Writer;
@@ -244,6 +245,9 @@ public class ComponentEntity extends Entity {
                     port.unlinkAll();
                 }
             }
+            
+            // Validate all contained settables.
+            _validateDeeplyContainedSettables(this);
         } finally {
             _workspace.doneWriting();
         }
@@ -324,6 +328,23 @@ public class ComponentEntity extends Entity {
                 "<polygon points=\"-20,-10 20,0 -20,10\" " +
                 "style=\"fill:blue\"/>\n" +
                 "</svg>\n");
+    }
+    
+    private static void _validateDeeplyContainedSettables(Entity entity) 
+            throws IllegalActionException {
+        Iterator settables = entity.attributeList(Settable.class).iterator();
+        while (settables.hasNext()) {
+            Settable settable = (Settable)settables.next();
+            settable.validate();
+        }
+        if(entity instanceof CompositeEntity) {
+            CompositeEntity composite = (CompositeEntity)entity;
+            Iterator entities = composite.entityList().iterator();
+            while(entities.hasNext()) {
+                Entity insideEntity = (Entity)entities.next();
+                _validateDeeplyContainedSettables(insideEntity);
+            }
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
