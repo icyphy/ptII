@@ -152,7 +152,7 @@ and <code>pxgraph</code>.  The
 makes extensive use of <code>-binary</code>.
 <br>There are two binary formats, both of which use 4 byte floats.
 <ol>
-<li>If the first byte of the data file is not a <code>d<code>, then
+<li>If the first byte of the data file is not a <code>d</code>, then
 we assume that the file contains 4 byte floats with no plot commands.
 <li>If the first byte of the data file is a <code>d<code>, then 
 we assume that the plot commands are encoded as single characters,
