@@ -54,6 +54,7 @@ JSRCS = \
 	EventSource.java \
 	FirstOrderHold.java \
 	Integrator.java \
+	LevelCrossingDetector.java \
 	ThresholdMonitor.java \
 	ZeroCrossingDetector.java \
 	ZeroOrderHold.java \

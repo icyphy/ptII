@@ -8,6 +8,8 @@
       <group>
       <entity name="EventSource" class="ptolemy.domains.ct.lib.EventSource">
       </entity>
+      <entity name="LevelCrossingDetector" class="ptolemy.domains.ct.lib.LevelCrossingDetector">
+      </entity>
       <entity name="PeriodicSampler" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
       </entity>
       <entity name="TriggeredSampler" class="ptolemy.domains.ct.lib.CTTriggeredSampler">
