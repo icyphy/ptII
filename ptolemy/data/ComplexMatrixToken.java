@@ -121,7 +121,7 @@ public class ComplexMatrixToken extends MatrixToken {
 		result = new Complex[_rowCount][_columnCount];
 		for (int i = 0; i < _rowCount; i++) {
 		    for (int j = 0; j < _columnCount; j++) {
-			result[i][j] = Complex.add(scalar, _value[i][j]);
+			result[i][j] = scalar.add(_value[i][j]);
 		    }
 		}
 	    } else {
@@ -137,7 +137,7 @@ public class ComplexMatrixToken extends MatrixToken {
 		result = tem.complexMatrix();
 		for (int i = 0; i < _rowCount; i++) {
 		    for (int j = 0; j < _columnCount; j++) {
-			result[i][j].add(_value[i][j]);
+			result[i][j] = result[i][j].add(_value[i][j]);
 		    }
 		}
 	    }
@@ -165,15 +165,15 @@ public class ComplexMatrixToken extends MatrixToken {
 	return add(t);
     }
 
-    /** Return the content of this token as a 2-D Complex array.
+    /** Return the content of this token as a new 2-D Complex array.
      *  @return A 2-D Complex matrix
      */
     public Complex[][] complexMatrix() {
 	Complex[][] array = new Complex[_rowCount][_columnCount];
 	for (int i = 0; i < _rowCount; i++) {
 	    for (int j = 0; j < _columnCount; j++) {
-		array[i][j] = new Complex(_value[i][j].real,
-					  _value[i][j].imag);
+                // Complex is now immutable, so no need to copy.
+		array[i][j] = _value[i][j];
 	    }
 	}
 	return array;
@@ -267,8 +267,7 @@ public class ComplexMatrixToken extends MatrixToken {
 
 	    for (int i = 0; i < _rowCount; i++) {
 		for (int j = 0; j < _columnCount; j++) {
-		    if (_value[i][j].real != array[i][j].real ||
-			_value[i][j].imag != array[i][j].imag) {
+		    if (!_value[i][j].equals(array[i][j])) {
 			return new BooleanToken(false);
 		    }
 		}
@@ -346,9 +345,10 @@ public class ComplexMatrixToken extends MatrixToken {
      */
     public Token zero() {
 	Complex[][] result = new Complex[_rowCount][_columnCount];
+	Complex zero = new Complex(0.0);
 	for (int i = 0; i < _rowCount; i++) {
 	    for (int j = 0; j < _columnCount; j++) {
-		result[i][j] = new Complex(0.0);
+		result[i][j] = zero;
 	    }
 	}
 	return new ComplexMatrixToken(result);

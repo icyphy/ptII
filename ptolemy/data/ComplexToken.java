@@ -97,7 +97,7 @@ public class ComplexToken extends ScalarToken {
         } else {
 	    // type of the specified token <= ComplexToken
 	    ComplexToken tem = (ComplexToken)convert(token);
-	    Complex result = Complex.add(_value, tem.complexValue());
+	    Complex result = _value.add(tem.complexValue());
 	    return new ComplexToken(result);
 	}
     }
@@ -128,7 +128,8 @@ public class ComplexToken extends ScalarToken {
      *  @return A Complex
      */
     public Complex complexValue() {
-        return new Complex(_value.real, _value.imag);
+        // Complex is immutable, so we can just return the value.
+        return _value;
     }
 
     /** Convert the specified token into an instance of ComplexToken.
@@ -200,7 +201,7 @@ public class ComplexToken extends ScalarToken {
         } else {
 	    // argument type is lower or the same as Complex.
 	    ComplexToken comptoken = (ComplexToken)convert(divisor);
-            Complex result = Complex.divide(_value, comptoken.complexValue());
+            Complex result = _value.divide(comptoken.complexValue());
             return new ComplexToken(result);
         }
     }
@@ -223,7 +224,7 @@ public class ComplexToken extends ScalarToken {
         }
 
         ComplexToken tem = (ComplexToken)this.convert(dividend);
-        Complex result = Complex.divide(tem.complexValue(), _value);
+        Complex result = tem.complexValue().divide(_value);
         return new ComplexToken(result);
     }
 
@@ -253,7 +254,7 @@ public class ComplexToken extends ScalarToken {
 	    // argument type is lower or the same as Complex.
 	    ComplexToken comptoken = (ComplexToken)convert(token);
             Complex tem = comptoken.complexValue();
-	    if (_value.real == tem.real && _value.imag == tem.imag) {
+	    if (_value.equals(tem)) {
                 return new BooleanToken(true);
 	    }
 	    return new BooleanToken(false);
@@ -288,7 +289,7 @@ public class ComplexToken extends ScalarToken {
         } else {
 	    // type of the specified token <= ComplexToken
 	    ComplexToken tem = (ComplexToken)convert(token);
-	    Complex result = Complex.multiply(_value, tem.complexValue());
+	    Complex result = _value.multiply(tem.complexValue());
 	    return new ComplexToken(result);
 	}
     }
@@ -359,8 +360,7 @@ public class ComplexToken extends ScalarToken {
         } else {
 	    // argument type is lower or the same as Complex.
 	    ComplexToken comptoken = (ComplexToken)convert(rightArg);
-            Complex result = Complex.subtract(_value,
-					 comptoken.complexValue());
+            Complex result = _value.subtract(comptoken.complexValue());
             return new ComplexToken(result);
         }
     }
@@ -383,7 +383,7 @@ public class ComplexToken extends ScalarToken {
         }
 
         ComplexToken tem = (ComplexToken)this.convert(leftArg);
-        Complex result = Complex.subtract(tem.complexValue(), _value);
+        Complex result = tem.complexValue().subtract(_value);
         return new ComplexToken(result);
     }
 
