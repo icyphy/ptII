@@ -84,7 +84,6 @@
 # JDOCFLAGS	Flags to pass to javadoc.
 # PTCLASSZIP		Zip file of classes to be produced.
 # PTCLASSJAR	Jar file of classes to be produced.
-# JBEANCLASSES  Classes that are included in the jar file as Java Beans.
 # JDIST		The name and version of the tar.gz and zip files of the sources
 # JTESTHTML	Test html file for a java class.
 # JTCLSH	TclBlend Tcl/Java interface shell.
@@ -110,7 +109,7 @@ suball:
 		for x do \
 		    if [ -w $$x ] ; then \
 			( cd $$x ; \
-			echo making all in $$x ; \
+			echo making all in $(ME)/$$x ; \
 			$(MAKE) $(MFLAGS) $(MAKEVARS) all ;\
 			) \
 		    fi ; \
@@ -124,7 +123,7 @@ subinstall:
 		for x do \
 		    if [ -w $$x ] ; then \
 			( cd $$x ; \
-			echo making install in $$x ; \
+			echo making install in $(ME)/$$x ; \
 			$(MAKE) $(MFLAGS) $(MAKEVARS) install ;\
 			) \
 		    fi ; \
@@ -169,7 +168,7 @@ sources::	$(SRCS) $(EXTRA_SRCS) $(HDRS) $(MISC_FILES) makefile
 		for x do \
 		    if [ -w $$x ] ; then \
 			( cd $$x ; \
-			echo making $@ in $$x ; \
+			echo making $@ in $(ME)/$$x ; \
 			$(MAKE) $(MFLAGS) $(MAKEVARS) $@ ;\
 			) \
 		    fi ; \
@@ -183,7 +182,7 @@ sccsinfo:
 		for x do \
 		    if [ -w $$x ] ; then \
 			( cd $$x ; \
-			echo making $@ in $$x ; \
+			echo making $@ in $(ME)/$$x ; \
 			$(MAKE) $(MFLAGS) $(MAKEVARS) $@ ;\
 			) \
 		    fi ; \
@@ -199,7 +198,7 @@ sccsclean:
 		@for x do \
 		    if [ -w $$x ] ; then \
 			( cd $$x ; \
-			echo making $@ in $$x ; \
+			echo making $@ in $(ME)/$$x ; \
 			$(MAKE) $(MFLAGS) $(MAKEVARS) $@ ;\
 			) \
 		    fi ; \
@@ -213,7 +212,7 @@ makefiles: makefile
 		for x do \
 		    if [ -w $$x ] ; then \
 			( cd $$x ; \
-			echo making $@ in $$x ; \
+			echo making $@ in $(ME)/$$x ; \
 			$(MAKE) $(MFLAGS) $(MAKEVARS) $@ ;\
 			) \
 		    fi ; \
@@ -239,7 +238,7 @@ subjclass:
 		for x do \
 		    if [ -w $$x ] ; then \
 			( cd $$x ; \
-			echo making jclass in $$x ; \
+			echo making jclass in $(ME)/$$x ; \
 			$(MAKE) $(MFLAGS) $(MAKEVARS) jclass ;\
 			) \
 		    fi ; \
@@ -256,7 +255,7 @@ javadocs: doc/codeDoc/tree.html
 		for x do \
 		    if [ -w $$x ] ; then \
 			( cd $$x ; \
-			echo making javadocs in $$x ; \
+			echo making javadocs in $(ME)/$$x ; \
 			$(MAKE) $(MFLAGS) $(MAKEVARS) javadocs ;\
 			) \
 		    fi ; \
@@ -275,7 +274,7 @@ doc/codeDoc/tree.html:	$(JSRCS) $(OPTIONAL_JSRCS) $(DERIVED_JSRCS)
 	   $(JAVADOC) $(JDOCFLAGS) -d doc/codeDoc \
 		$(JSRCS) $(OPTIONAL_JSRCS) $(DERIVED_JSRCS); \
 	for x in doc/codeDoc/*.html; do \
-		echo "Fixing paths in $$x"; \
+		echo "Fixing paths in $(ME)/$$x"; \
 		sed -e 's|<a href="java|<a href="$(JAVAHTMLDIR)/java|g' \
 		-e 's|<img src="images/|<img src="$(JAVAHTMLDIR)/images/|g' \
 			$$x > $$x.bak; \
@@ -295,31 +294,72 @@ htest-netscape: $(JTESTHTML) $(JCLASS)
 # We remove the file in case it is a symbolic link
 tyzip: $(PTCLASSZIP)
 $(PTCLASSZIP): $(JSRCS) $(JCLASS)
-	(cd $(CLASSPATH); rm -f $(PTPACKAGE_DIR)/$@; \
-		 $(JAR) -c0Mf $(PTPACKAGE_DIR)/$@ $(PTPACKAGE_DIR)/*.class)
+	(cd $(CLASSPATH); rm -f $(ME)/$@; \
+		 $(JAR) -c0Mf $(ME)/$@ $(ME)/*.class)
 
-jars: $(PTCLASSJAR) 
+# Build the jar file
+jars: $(PTCLASSJAR) $(PTAUXJAR) subjars $(PTCLASSALLJAR) $(PTAUXALLJAR)
 $(PTCLASSJAR): $(JSRCS) $(JCLASS)
-	@if [ "$(JBEANCLASSES)" != "" ]; then \
-		echo "Creating manifest.tmp"; \
-		rm -f manifest.tmp; \
-		echo "Manifest-Version: 1.0" > manifest.tmp; \
-		set $(JBEANCLASSES); \
+	(cd $(ROOT); rm -f $(ME)/$@; \
+		$(JAR) cf $(ME)/$@ \
+			$(ME)/*.class)
+subjars:
+	@if [ "x$(DIRS)" != "x" ]; then \
+		set $(DIRS); \
 		for x do \
-			echo "Name: $$x" >> manifest.tmp; \
-			echo "Java-Bean: True" >> manifest.tmp; \
-		done; \
-		(cd $(CLASSPATH); rm -f $(PTPACKAGE_DIR)/$@; \
-			$(JAR) cfm $(PTPACKAGE_DIR)/$@ \
-				$(PTPACKAGE_DIR)/manifest.tmp \
-				$(PTPACKAGE_DIR)/*.class); \
-	else \
-		echo "Creating $@"; \
-		(cd $(CLASSPATH); rm -f $(PTPACKAGE_DIR)/$@; \
-			$(JAR) cf $(PTPACKAGE_DIR)/$@ \
-				$(PTPACKAGE_DIR)/*.class); \
+		    if [ -w $$x ] ; then \
+			( cd $$x ; \
+			echo making jars in $(ME)/$$x ; \
+			$(MAKE) $(MFLAGS) $(MAKEVARS) jars ;\
+			) \
+		    fi ; \
+		done ; \
 	fi
 
+# Jar file consisting of the jar file in the current dir
+# and any jar files listed in
+
+# Directory to unjar things in.
+# Be very careful here, we rely on relative paths
+PTJAR_TMPDIR =  ptjar_tmpdir
+
+alljars: $(PTCLASSALLJAR)
+$(PTCLASSALLJAR): $(PTCLASSALLJARS)
+	rm -rf $(PTJAR_TMPDIR) $@
+	mkdir $(PTJAR_TMPDIR)
+	# Copy any class files from this directory
+	mkdir -p $(PTJAR_TMPDIR)/$(ME)
+	-cp *.class $(PTJAR_TMPDIR)/$(ME)
+	for jar in $^; do \
+		echo "Unjaring $$jar"; \
+		(cd $(PTJAR_TMPDIR); jar -xf ../$$jar); \
+	done
+	rm -rf $(PTJAR_TMPDIR)/META-INF
+	@echo "Creating $@"
+	(cd $(PTJAR_TMPDIR); jar -cvf tmp.jar .)
+	mv $(PTJAR_TMPDIR)/tmp.jar $@
+	rm -rf $(PTJAR_TMPDIR)
+
+
+# Occaisionally, we need to build a second jar file that includes
+# a subset of all of the subjars included in PTCLASSALLJAR above.
+# ptolemy/ptsupport.jar is an example
+$(PTAUXALLJAR): $(PTAUXALLJARS)
+	# Building Auxiliary jar file
+	rm -rf $(PTJAR_TMPDIR) $@
+	mkdir $(PTJAR_TMPDIR)
+	# Copy any class files from this directory
+	mkdir -p $(PTJAR_TMPDIR)/$(ME)
+	-cp *.class $(PTJAR_TMPDIR)/$(ME)
+	for jar in $^; do \
+		echo "Unjaring $$jar"; \
+		(cd $(PTJAR_TMPDIR); jar -xf ../$$jar); \
+	done
+	rm -rf $(PTJAR_TMPDIR)/META-INF
+	@echo "Creating $@"
+	(cd $(PTJAR_TMPDIR); jar -cvf tmp.jar .)
+	mv $(PTJAR_TMPDIR)/tmp.jar $@
+	rm -rf $(PTJAR_TMPDIR)
 
 ##############
 # Rules for testing 
@@ -376,7 +416,7 @@ tests:: makefile
 		for x do \
 		    if [ -w $$x ] ; then \
 			( cd $$x ; \
-			echo making $@ in $$x ; \
+			echo making $@ in $(ME)/$$x ; \
 			$(MAKE) $(MFLAGS) $(MAKEVARS) $@ ;\
 			) \
 		    fi ; \
@@ -480,7 +520,7 @@ weblint:
 		for x do \
 		    if [ -w $$x ] ; then \
 			( cd $$x ; \
-			echo making $@ in $$x ; \
+			echo making $@ in $(ME)/$$x ; \
 			$(MAKE) $(MFLAGS) $(MAKEVARS) $@ ;\
 			) \
 		    fi ; \
@@ -507,7 +547,7 @@ checkjunk:
 		for x do \
 		    if [ -w $$x ] ; then \
 			( cd $$x ; \
-			echo making $@ in $$x ; \
+			echo making $@ in $(ME)/$$x ; \
 			$(MAKE) $(MFLAGS) $(MAKEVARS) $@ ;\
 			) \
 		    fi ; \
@@ -519,8 +559,8 @@ checkjunk:
 
 CRUD=*.o *.so core *~ *.bak ,* LOG* *.class \
 	config.cache config.log config.status manifest.tmp \
-	$(JCLASS) $(PTPACKAGE).zip $(PTPACKAGE).jar \
-	$(PTDISTS) $(PTCLASSJAR) $(KRUFT)  
+	$(JCLASS) $(PTPACKAGE).zip $(PTCLASSJAR) $(PTCLASSALLJAR) \
+	$(PTDISTS) $(PTCLASSJAR) $(KRUFT)
 
 clean:
 	rm -f $(CRUD)
@@ -529,7 +569,7 @@ clean:
 		for x do \
 		    if [ -w $$x ] ; then \
 			( cd $$x ; \
-			echo making $@ in $$x ; \
+			echo making $@ in $(ME)/$$x ; \
 			$(MAKE) $(MFLAGS) $(MAKEVARS) $@ ;\
 			) \
 		    fi ; \
@@ -547,7 +587,7 @@ distclean:
 		for x do \
 		    if [ -w $$x ] ; then \
 			( cd $$x ; \
-			echo making $@ in $$x ; \
+			echo making $@ in $(ME)/$$x ; \
 			$(MAKE) $(MFLAGS) $(MAKEVARS) $@ ;\
 			) \
 		    fi ; \
@@ -565,7 +605,7 @@ extraclean:
 		for x do \
 		    if [ -w $$x ] ; then \
 			( cd $$x ; \
-			echo making $@ in $$x ; \
+			echo making $@ in $(ME)/$$x ; \
 			$(MAKE) $(MFLAGS) $(MAKEVARS) $@ ;\
 			) \
 		    fi ; \

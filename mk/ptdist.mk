@@ -49,11 +49,8 @@
 #
 #  2. It should set the following makefile variables
 #  PTPACKAGE = 	ptolemy.plot
-#  PTPACKAGE_ROOTDIR = $(CLASSPATH)
-#  PTPACKAGE_DIR = ptolemy/plot
 #  PTVERSION =	2.0
 #  PTDIST =	$(PTPACKAGE)$(PTVERSION)
-#  PTZIP =		$(PTPACKAGE_DIR)/$(PTPACKAGE).zip
 #  PTCLASSJAR = 	$(PTPACKAGE).jar
 # 
 #  3. It should have a fixtmpdist rule that makes any modifications
@@ -75,11 +72,11 @@
 PTDISTS =	$(PTDIST).tar.gz $(PTDIST).zip 
 
 # Temporary directory 
-# If you change PTTMPDIR, you may need to change RELATIVE_PTPACKAGE_DIR
+# If you change PTTMPDIR, you may need to change RELATIVE_ME
 PTTMPDIR =	adm/tmp
 
-# The relative pathname from the PTTMPDIR to the PTPACKAGE_DIR
-RELATIVE_PTPACKAGE_DIR = ../..
+# The relative pathname from the PTTMPDIR to the ME
+RELATIVE_ME = ../..
 
 # Temporary distribution, PTDIST is set in the calling makefile 
 PTTMPDIST =	$(PTMPDIR)/$(PTDIST)
@@ -120,9 +117,9 @@ distsclean:
 $(PTTMPDIST): pttmpdist
 pttmpdist: $(PTTMPDIR) $(PTDIST_EX)
 	-mkdir -p $(PTTMPDIR)/$(PTDIST)
-	(cd $(PTPACKAGE_ROOTDIR); \
-	 	$(GNUTAR) -cf - -X $(PTPACKAGE_DIR)/$(PTDIST_EX) \
-			$(PTPACKAGE_DIR) $(TOPFILES)) | \
+	(cd $(ROOT); \
+	 	$(GNUTAR) -cf - -X $(ME)/$(PTDIST_EX) \
+			$(ME) $(TOPFILES)) | \
 	(cd $(PTTMPDIR)/$(PTDIST); $(GNUTAR) -xf -)
 
 $(PTTMPDIR):
@@ -131,8 +128,8 @@ $(PTTMPDIR):
 # Create the list of files for tar to exclude
 # If ptdist.mk changes, then update the list of files we are excluding
 $(PTDIST_EX): $(ROOT)/mk/ptdist.mk
-	@if [ "$(PTPACKAGE_DIR)x" = "x" ]; then \
-		echo "PTPACKAGE_DIR is not set in the makefile, so we";\
+	@if [ "$(ME)x" = "x" ]; then \
+		echo "ME is not set in the makefile, so we";\
 		echo "won't create a tar exclude file"; \
 	else \
 		echo "dummy" | \
@@ -142,24 +139,24 @@ $(PTDIST_EX): $(ROOT)/mk/ptdist.mk
 
 # Tar file distribution
 $(PTDIST).tar.gz:  $(PTDIST_EX)
-	if [ "$(PTPACKAGE_DIR)x" = "x" ]; then \
-		echo "PTPACKAGE_DIR is not set in the makefile, so we"; \
+	if [ "$(ME)x" = "x" ]; then \
+		echo "ME is not set in the makefile, so we"; \
 		echo "won't create a tar exclude file"; \
 	else \
 		echo "Building $@"; \
 		(cd $(PTTMPDIR); \
-		 $(GNUTAR) -zcf $(RELATIVE_PTPACKAGE_DIR)/$@ \
+		 $(GNUTAR) -zcf $(RELATIVE_ME)/$@ \
 			-X $(PTDIST_EX_BASE) $(PTDIST) ); \
 	fi
 
 # Zip distribution
 $(PTDIST).zip:
-	@if [ "$(PTPACKAGE_DIR)x" = "x" ]; then \
-		echo "PTPACKAGE_DIR is not set in the makefile, so we"; \
+	@if [ "$(ME)x" = "x" ]; then \
+		echo "ME is not set in the makefile, so we"; \
 		echo "won't create a tar exclude file"; \
 	else \
 		echo "Building $@"; \
-		(cd $(PTTMPDIR); zip -rq $(RELATIVE_PTPACKAGE_DIR)/$@ $(PTDIST) -x \*/adm/\* -x \*/SCCS/\* -x \*/$(PTDIST).tar.gz -x \*/$(PTDIST).zip); \
+		(cd $(PTTMPDIR); zip -rq $(RELATIVE_ME)/$@ $(PTDIST) -x \*/adm/\* -x \*/SCCS/\* -x \*/$(PTDIST).tar.gz -x \*/$(PTDIST).zip); \
 	fi
 
 # Build sources in a form suitable for releasing
@@ -189,9 +186,9 @@ installjdist:
 
 updatewebsite: $(PTDISTS)
 	@echo "Updating website"
-	(cd $(JDESTDIR); rm -rf $(PTDIST); mkdir -p $(PTDIST)/$(PTPACKAGE_DIR))
-	cp $(PTDISTS) $(JDESTDIR)/$(PTDIST)/$(PTPACKAGE_DIR)
+	(cd $(JDESTDIR); rm -rf $(PTDIST); mkdir -p $(PTDIST)/$(ME))
+	cp $(PTDISTS) $(JDESTDIR)/$(PTDIST)/$(ME)
 	(cd $(JDESTDIR); $(GNUTAR) \
-		-zxf $(PTDIST)/$(PTPACKAGE_DIR)/$(PTDIST).tar.gz;\
+		-zxf $(PTDIST)/$(ME)/$(PTDIST).tar.gz;\
 	 chmod g+ws $(PTDIST))
-	(cd $(JDESTDIR)/$(PTDIST)/$(PTPACKAGE_DIR); chmod g+w $(PTDISTS))
+	(cd $(JDESTDIR)/$(PTDIST)/$(ME); chmod g+w $(PTDISTS))
