@@ -105,14 +105,21 @@ PTINY_ONLY_JNLP_JARS = \
 PTINY_MAIN_JAR = \
 	ptolemy/actor/gui/jnlp/PtinyApplication.jar
 
-PTINY_SANDBOX_MAIN_JAR = \
-	ptolemy/actor/gui/jnlp/PtinySandboxApplication.jar
-
 PTINY_JNLP_JARS = \
 	$(PTINY_MAIN_JAR) \
 	$(CORE_JNLP_JARS) \
 	$(DSP_ONLY_JNLP_JARS) \
 	$(PTINY_ONLY_JNLP_JARS)
+
+PTINY_SANDBOX_MAIN_JAR = \
+	ptolemy/actor/gui/jnlp/PtinySandboxApplication.jar
+
+PTINY_SANDBOX_JNLP_JARS = \
+	$(PTINY_SANDBOX_MAIN_JAR) \
+	$(CORE_JNLP_JARS) \
+	$(DSP_ONLY_JNLP_JARS) \
+	$(PTINY_ONLY_JNLP_JARS)
+
 
 #######
 # Full
@@ -261,7 +268,7 @@ vergilPtinySandbox.jnlp: vergilPtinySandbox.jnlp.in
 	"$(MKJNLP)" $@ \
 		$(NUMBER_OF_JARS_TO_LOAD_EAGERLY) \
 		$(PTINY_SANDBOX_MAIN_JAR) \
-		$(PTINY_JNLP_JARS)
+		$(PTINY_SANDBOX_JNLP_JARS)
 	@echo "# Updating JNLP-INF/APPLICATION.JNLP with $@"
 	rm -rf JNLP-INF
 	mkdir JNLP-INF
