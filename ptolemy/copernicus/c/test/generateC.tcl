@@ -108,10 +108,23 @@ proc generateC {className {commandLineArgs {}}} {
     # like java.lang.Object.
     generateCExec javac $javaFile
     
+    global VERBOSE
+
+    if ![info exists VERBOSE] {
+	set VERBOSE 0
+    }
+
+    set javaToCVerboseOption false
+    if {$VERBOSE} {
+	set javaToCVerboseOption true
+    }
+
     # Generate the code.
-    generateCExec java -Xmx600m -classpath $classpath ptolemy.copernicus.c.JavaToC \
-        $classpath -lib $lib -gcDir $gcDir $className
-    
+    generateCExec java -Xmx600m -classpath $classpath \
+	    ptolemy.copernicus.c.JavaToC \
+	    $classpath -lib $lib -gcDir $gcDir \
+	    -verbose $javaToCVerboseOption \
+	    $className
     #exec -stderrok [generateCExec make -s -f $mkFile] 1>$outputDir/out.txt 2>$outputDir/err.txt
     set error ""
     catch {generateCExec make -s -f $makeFile} error
@@ -165,5 +178,13 @@ proc generateCExec {args} {
     # -stderrok means that if make generates output on stderr, then
     # exec will _not_ report this as an error. 
     # -stderrok was introduced in $PTII/lib/ptjacl.jar on 8/14/02
-    return [eval exec -stderrok $args]  
+    #
+    # It would be nice if we had a version of exec that would
+    # print the results as it was generated.
+    set results [eval exec -stderrok $args]  
+
+    if {$VERBOSE} {
+	puts "exec: $results"
+    }
+    return $results
 } 
