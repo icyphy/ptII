@@ -47,7 +47,10 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
-	NewtonsCradle.xml
+	NewtonsCradle.xml \
+	NewtonsCradleComplicated.xml \
+	NewtonsCradleNondeterministic.xml \
+	pendulum.gif
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
