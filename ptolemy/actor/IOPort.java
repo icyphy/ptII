@@ -214,6 +214,9 @@ public class IOPort extends ComponentPort {
     public void broadcast(Token token)
 	    throws IllegalActionException, NoRoomException {
         Receiver[][] farReceivers;
+        if (_debugging) {
+            _debug("broadcast " + token);
+        }
         try {
             _workspace.getReadAccess();
             farReceivers = getRemoteReceivers();
@@ -265,6 +268,9 @@ public class IOPort extends ComponentPort {
     public void broadcast(Token[] tokenArray, int vectorLength)
             throws IllegalActionException, NoRoomException {
         Receiver[][] farReceivers;
+        if (_debugging) {
+            _debug("broadcast token array of length " + vectorLength);
+        }
         try {
             _workspace.getReadAccess();
             farReceivers = getRemoteReceivers();
@@ -306,6 +312,9 @@ public class IOPort extends ComponentPort {
     public void broadcastAbsent()
 	    throws IllegalActionException, NoRoomException {
         Receiver[][] farReceivers;
+        if (_debugging) {
+            _debug("broadcast absent.");
+        }
         try {
             _workspace.getReadAccess();
             farReceivers = getRemoteReceivers();
@@ -384,6 +393,10 @@ public class IOPort extends ComponentPort {
             throw new IllegalActionException(this,
                     "createReceivers: Can only create " +
                     "receivers on opaque ports.");
+        }
+
+        if (_debugging) {
+            _debug("create receivers");
         }
 
         // Create the hashtable of lists of receivers in this port, keyed by
@@ -703,6 +716,9 @@ public class IOPort extends ComponentPort {
         if (token == null) {
             throw new NoTokenException(this, "No token to return.");
         }
+        if (_debugging) {
+            _debug("get from channel " + channelIndex + ": " + token);
+        }
         return token;
     }
 
@@ -766,6 +782,10 @@ public class IOPort extends ComponentPort {
         if (retArray == null) {
             throw new NoTokenException(this, "get: No token array " +
                     "to return.");
+        }
+        if (_debugging) {
+            _debug("get vector from channel " + channelIndex
+                    + " of length " + vectorLength);
         }
         return retArray;
     }
@@ -876,6 +896,9 @@ public class IOPort extends ComponentPort {
         }
         if (token == null) {
             throw new NoTokenException(this, "No token to return.");
+        }
+        if (_debugging) {
+            _debug("get from inside channel " + channelIndex + ": " + token);
         }
         return token;
     }
@@ -1387,20 +1410,28 @@ public class IOPort extends ComponentPort {
      *   is out of range.
      */
     public boolean hasRoom(int channelIndex) throws IllegalActionException {
+        boolean result = true;
         try {
             Receiver[][] farReceivers = getRemoteReceivers();
             if (farReceivers == null || farReceivers[channelIndex] == null) {
-                return false;
-            }
-            for (int j = 0; j < farReceivers[channelIndex].length; j++) {
-                if (!farReceivers[channelIndex][j].hasRoom()) return false;
+                result = false;
+            } else {
+                for (int j = 0; j < farReceivers[channelIndex].length; j++) {
+                    if (!farReceivers[channelIndex][j].hasRoom()) {
+                        result = false;
+                        break;
+                    }
+                }
             }
         } catch (ArrayIndexOutOfBoundsException ex) {
             // NOTE: This might be thrown if the port is not an output port.
             throw new IllegalActionException(this,
                     "hasRoom: channel index is out of range.");
         }
-        return true;
+        if (_debugging) {
+            _debug("hasRoom on channel " + channelIndex + " returns " + result);
+        }
+        return result;
     }
 
     /** Return true if the specified channel can accept a token via
@@ -1418,20 +1449,29 @@ public class IOPort extends ComponentPort {
      */
     public boolean hasRoomInside(int channelIndex) 
             throws IllegalActionException {
+        boolean result = true;
         try {
             Receiver[][] farReceivers = getInsideReceivers();
             if (farReceivers == null || farReceivers[channelIndex] == null) {
-                return false;
-            }
-            for (int j = 0; j < farReceivers[channelIndex].length; j++) {
-                if (!farReceivers[channelIndex][j].hasRoom()) return false;
+                result = false;
+            } else {
+                for (int j = 0; j < farReceivers[channelIndex].length; j++) {
+                    if (!farReceivers[channelIndex][j].hasRoom()) {
+                        result = false;
+                        break;
+                    }
+                }
             }
         } catch (ArrayIndexOutOfBoundsException ex) {
             // NOTE: This might be thrown if the port is not an output port.
             throw new IllegalActionException(this,
                     "hasRoom: channel index is out of range.");
         }
-        return true;
+        if (_debugging) {
+            _debug("hasRoomInside on channel " + channelIndex 
+                   + " returns " + result);
+        }
+        return result;
     }
 
     /** Return true if the specified channel has a token to deliver
@@ -1452,6 +1492,7 @@ public class IOPort extends ComponentPort {
         // The getReceivers() method throws an IllegalActionException if
         // there's no director.
         Receiver[][] receivers = getReceivers();
+        boolean result = false;
         if (channelIndex >= receivers.length) {
             if (!isInput()) {
                 throw new IllegalActionException(this,
@@ -1463,13 +1504,19 @@ public class IOPort extends ComponentPort {
                         + getWidth() + ".");
             }
         }
-        if (receivers == null || receivers[channelIndex] == null) {
-            return false;
+        if (receivers != null && receivers[channelIndex] != null) {
+            for (int j = 0; j < receivers[channelIndex].length; j++) {
+                if (receivers[channelIndex][j].hasToken()) {
+                    result = true;
+                    break;
+                }
+            }
         }
-        for (int j = 0; j < receivers[channelIndex].length; j++) {
-            if (receivers[channelIndex][j].hasToken()) return true;
+        if (_debugging) {
+            _debug("hasToken on channel " + channelIndex
+                   + " returns " + result);
         }
-        return false;
+        return result;
     }
 
     /** Return true if the specified channel has a token to deliver
@@ -1490,6 +1537,7 @@ public class IOPort extends ComponentPort {
         // The getInsideReceivers() method throws an
         // IllegalActionException if there's no director.
         Receiver[][] receivers = getInsideReceivers();
+        boolean result = false;
         if (channelIndex >= receivers.length) {
             if (!isOutput()) {
                 throw new IllegalActionException(this,
@@ -1501,14 +1549,19 @@ public class IOPort extends ComponentPort {
                         + getWidthInside() + ".");
             }
         }
-        if (receivers == null || receivers[channelIndex] == null) {
-            return false;
+        if (receivers != null && receivers[channelIndex] != null) {
+            for (int j = 0; j < receivers[channelIndex].length; j++) {
+                if (receivers[channelIndex][j].hasToken()) {
+                    result = true;
+                    break;
+                }
+            }
         }
-        for (int j = 0; j < receivers[channelIndex].length; j++) {
-            if (receivers[channelIndex][j].hasToken()) return true;
+        if (_debugging) {
+            _debug("hasTokenInside on channel " + channelIndex
+                   + " returns " + result);
         }
-    
-        return false;
+        return result;
     }
 
     /** Return true if the specified channel has the specified number
@@ -1529,22 +1582,30 @@ public class IOPort extends ComponentPort {
      */
     public boolean hasToken(int channelIndex, int tokens)
             throws IllegalActionException {
+        boolean result = false;
         try {
             // The getReceivers() method throws an IllegalActionException if
             // there's no director.
             Receiver[][] receivers = getReceivers();
-            if (receivers == null || receivers[channelIndex] == null) {
-                return false;
-            }
-            for (int j = 0; j < receivers[channelIndex].length; j++) {
-                if (receivers[channelIndex][j].hasToken(tokens)) return true;
+            if (receivers != null && receivers[channelIndex] != null) {
+                for (int j = 0; j < receivers[channelIndex].length; j++) {
+                    if (receivers[channelIndex][j].hasToken(tokens)) {
+                        result = true;
+                        break;
+                    }
+                }
             }
         } catch (ArrayIndexOutOfBoundsException ex) {
             // NOTE: This might be thrown if the port is not an output port.
             throw new IllegalActionException(this,
                     "hasToken: channel index is out of range.");
         }
-        return false;
+        if (_debugging) {
+            _debug("hasToken on channel " + channelIndex
+                   + " returns " + result + " with "
+                   + tokens + " tokens");
+        }
+        return result;
     }
 
     /** Override the base class to invalidate the schedule and resolved
@@ -1662,20 +1723,26 @@ public class IOPort extends ComponentPort {
      *   of range.
      */
     public boolean isKnown() throws IllegalActionException {
+        boolean result = true;
         for (int j = 0; j < getWidth(); j++) {
-            if (!isKnown(j)) return false;
+            if (!isKnown(j)) {
+                result = false;
+                break;
+            }
         }
-        return true;
+        if (_debugging) {
+            _debug("isKnown returns " + result);
+        }
+        return result;
     }
 
     /** Return true if the specified channel has known state, that is, the
      *  tokens on this channel are known or this channel is known not to
      *  have any tokens.  If the channel index is out of range, then throw
-     *  an exception.
-     *  <p>
-     *  Note that this does not report any tokens in inside receivers
-     *  of an output port. Those are accessible only through
-     *  getInsideReceivers().
+     *  an exception. If the port is an input and an output, then both
+     *  the receivers in this port (for the input) and the remote
+     *  receivers (for the output) must be known to return true.
+     *  If the port is neither an input nor an output, then return true.
      *
      *  @param channelIndex The channel index.
      *  @return True if it is known whether there is a token in the channel.
@@ -1685,20 +1752,27 @@ public class IOPort extends ComponentPort {
      *   of range.
      */
     public boolean isKnown(int channelIndex) throws IllegalActionException {
+        boolean result = true;
         try {
             if (isInput()) {
                 Receiver[][] receivers = getReceivers();
                 if (receivers != null && receivers[channelIndex] != null) {
                     for (int j = 0; j < receivers[channelIndex].length; j++) {
-                        if (receivers[channelIndex][j].isKnown()) return true;
+                        if (!receivers[channelIndex][j].isKnown()) {
+                            result = false;
+                            break;
+                        }
                     }
                 }
             }
-            if (isOutput()) {
+            if (result && isOutput()) {
                 Receiver[][] receivers = getRemoteReceivers();
                 if (receivers != null && receivers[channelIndex] != null) {
                     for (int j = 0; j < receivers[channelIndex].length; j++) {
-                        if (receivers[channelIndex][j].isKnown()) return true;
+                        if (!receivers[channelIndex][j].isKnown()) {
+                            result = false;
+                            break;
+                        }
                     }
                 }
             }
@@ -1706,16 +1780,20 @@ public class IOPort extends ComponentPort {
             throw new IllegalActionException(this,
                     "isKnown: channel index is out of range.");
         }
-        return false;
+        if (_debugging) {
+            _debug("isKnown on channel " + channelIndex + " returns " + result);
+        }
+        return result;
     }
 
     /** Return true if the specified inside channel has known state,
      *  that is, the tokens on this channel are known or this channel
      *  is known not to have any tokens.  If the channel index is out
      *  of range, then throw an exception.
-     *  
-     *  <p> Note that this only reports any tokens in inside receivers
-     *  of an output port.
+     *  If the port is an input and an output, then both
+     *  the receivers in this port (for the input) and the remote
+     *  receivers (for the output) must be known to return true.
+     *  If the port is neither an input nor an output, then return true.
      *
      *  @param channelIndex The channel index.
      *  @return True if it is known whether there is a token in the channel.
@@ -1726,20 +1804,27 @@ public class IOPort extends ComponentPort {
      */
     public boolean isKnownInside(int channelIndex) 
             throws IllegalActionException {
+        boolean result = true;
         try {
             if (isOutput()) {
                 Receiver[][] receivers = getInsideReceivers();
                 if (receivers != null && receivers[channelIndex] != null) {
                     for (int j = 0; j < receivers[channelIndex].length; j++) {
-                        if (receivers[channelIndex][j].isKnown()) return true;
+                        if (!receivers[channelIndex][j].isKnown()) {
+                            result = false;
+                            break;
+                        }
                     }
                 }
             }
-            if (isInput()) {
+            if (result && isInput()) {
                 Receiver[][] receivers = deepGetReceivers();
                 if (receivers != null && receivers[channelIndex] != null) {
                     for (int j = 0; j < receivers[channelIndex].length; j++) {
-                        if (receivers[channelIndex][j].isKnown()) return true;
+                        if (!receivers[channelIndex][j].isKnown()) {
+                            result = false;
+                            break;
+                        }
                     }
                 }
             }
@@ -1747,7 +1832,11 @@ public class IOPort extends ComponentPort {
             throw new IllegalActionException(this,
                     "isKnownInside: channel index is out of range.");
         }
-        return false;
+        if (_debugging) {
+            _debug("isKnownInside on channel " + channelIndex
+                    + " returns " + result);
+        }
+        return result;
     }
 
     /** Return true if the port is a multiport.  The port is a multiport
@@ -1850,6 +1939,9 @@ public class IOPort extends ComponentPort {
     public void send(int channelIndex, Token token)
             throws IllegalActionException, NoRoomException {
         Receiver[][] farReceivers;
+        if (_debugging) {
+            _debug("send to channel " + channelIndex + ": " + token);
+        }
         try {
             try {
                 _workspace.getReadAccess();
@@ -1901,6 +1993,9 @@ public class IOPort extends ComponentPort {
     public void sendInside(int channelIndex, Token token)
             throws IllegalActionException, NoRoomException {
         Receiver[][] farReceivers;
+        if (_debugging) {
+            _debug("send inside to channel " + channelIndex + ": " + token);
+        }
         try {
             try {
                 _workspace.getReadAccess();
@@ -1953,6 +2048,10 @@ public class IOPort extends ComponentPort {
     public void send(int channelIndex, Token[] tokenArray, int vectorLength)
             throws IllegalActionException, NoRoomException {
         Receiver[][] farReceivers;
+        if (_debugging) {
+            _debug("send to channel " + channelIndex
+                    + " token array of length " + vectorLength);
+        }
         try {
             try {
                 _workspace.getReadAccess();
@@ -1999,6 +2098,9 @@ public class IOPort extends ComponentPort {
     public void sendAbsent(int channelIndex)
             throws IllegalActionException, NoRoomException {
         Receiver[][] farReceivers;
+        if (_debugging) {
+            _debug("sendAbsent to channel " + channelIndex);
+        }
         try {
             try {
                 _workspace.getReadAccess();
@@ -2044,6 +2146,9 @@ public class IOPort extends ComponentPort {
     public void sendAbsentInside(int channelIndex)
             throws IllegalActionException, NoRoomException {
         Receiver[][] farReceivers;
+        if (_debugging) {
+            _debug("sendAbsentInside to channel " + channelIndex);
+        }
         try {
             try {
                 _workspace.getReadAccess();

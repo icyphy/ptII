@@ -211,6 +211,9 @@ public class TypedIOPort extends IOPort implements Typeable {
     public void broadcast(Token token)
 	    throws IllegalActionException, NoRoomException {
         Receiver[][] farReceivers;
+        if (_debugging) {
+            _debug("broadcast " + token);
+        }
         try {
             _workspace.getReadAccess();
             int compare = TypeLattice.compare(token.getType(),
@@ -284,6 +287,9 @@ public class TypedIOPort extends IOPort implements Typeable {
     public void broadcast(Token[] tokenArray, int vectorLength)
             throws IllegalActionException, NoRoomException {
         Receiver[][] farReceivers;
+        if (_debugging) {
+            _debug("broadcast token array of length " + vectorLength);
+        }
         Token token = null;
         try {
             _workspace.getReadAccess();
@@ -506,6 +512,9 @@ public class TypedIOPort extends IOPort implements Typeable {
                     "Cannot send a null token.");
         }
         Receiver[][] farReceivers;
+        if (_debugging) {
+            _debug("send to channel " + channelIndex + ": " + token);
+        }
         try {
             try {
                 _workspace.getReadAccess();
@@ -584,6 +593,9 @@ public class TypedIOPort extends IOPort implements Typeable {
     public void sendInside(int channelIndex, Token token)
             throws IllegalActionException, NoRoomException {
         Receiver[][] farReceivers;
+        if (_debugging) {
+            _debug("send inside to channel " + channelIndex + ": " + token);
+        }
         try {
             try {
                 _workspace.getReadAccess();
@@ -675,6 +687,10 @@ public class TypedIOPort extends IOPort implements Typeable {
     public void send(int channelIndex, Token[] tokenArray, int vectorLength)
             throws IllegalActionException, NoRoomException {
         Receiver[][] farReceivers;
+        if (_debugging) {
+            _debug("send to channel " + channelIndex
+                    + " token array of length " + vectorLength);
+        }
         Token token = null;
 	try {
             try {
