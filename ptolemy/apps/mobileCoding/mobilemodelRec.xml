@@ -4,9 +4,9 @@
 <entity name="mobilemodelRec" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={82, 37, 896, 731}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={130, 377, 881, 631}}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[681, 622]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[666, 511]">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -51,7 +51,7 @@ Please run mobilemodelSnd.xml also to send the change.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="0.0, 320.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="0.0, 370.0">
         </property>
     </property>
     <property name="annotation2" class="ptolemy.kernel.util.Attribute">
@@ -122,7 +122,7 @@ Please run mobilemodelSnd.xml also to send the change.</text></svg></configure>
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={386, 338, 508, 348}}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={386, 338, 508, 357}}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
@@ -141,8 +141,8 @@ Please run mobilemodelSnd.xml also to send the change.</text></svg></configure>
 <title>TimedPlotter</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
-<yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
+<xRange min="0.0" max="94.0"/>
+<yRange min="0.0" max="141.0"/>
 <default connected="no" marks="points" stems="yes"/>
 </plot>?>
         </configure>
@@ -152,7 +152,7 @@ Please run mobilemodelSnd.xml also to send the change.</text></svg></configure>
         </property>
         <property name="value" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 200.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="55.0, 190.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -170,13 +170,17 @@ Please run mobilemodelSnd.xml also to send the change.</text></svg></configure>
         </port>
     </entity>
     <entity name="PushConsumer" class="ptolemy.actor.corba.PushConsumer">
-        <property name="ORBInit" class="ptolemy.data.expr.Parameter" value="&quot;-ORBInitialPort 1050&quot;">
+        <property name="ORBInitProperties" class="ptolemy.data.expr.Parameter" value="&quot;-ORBInitialPort 1050&quot;">
         </property>
-        <property name="ConsumerName" class="ptolemy.data.expr.Parameter" value="&quot;modelReceiver&quot;">
+        <property name="consumerName" class="ptolemy.data.expr.Parameter" value="&quot;modelReceiver&quot;">
         </property>
         <property name="blocking" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="defaultToken" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="ORBInit" class="ptolemy.data.expr.Parameter" value="&quot;-ORBInitialPort 1050&quot;">
+        </property>
+        <property name="ConsumerName" class="ptolemy.data.expr.Parameter" value="&quot;modelReceiver&quot;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="120.0, 285.0">
         </property>
@@ -196,11 +200,15 @@ Please run mobilemodelSnd.xml also to send the change.</text></svg></configure>
         <doc>Read a text file and output the string of it.</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="160.0, 200.0">
         </property>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="fileOrURL" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
         </port>
     </entity>
     <entity name="MobileModel" class="ptolemy.actor.hoc.MobileModel">
@@ -246,8 +254,8 @@ Please run mobilemodelSnd.xml also to send the change.</text></svg></configure>
     <link port="Merge.input" relation="relation4"/>
     <link port="Merge.output" relation="relation6"/>
     <link port="PushConsumer.output" relation="relation7"/>
-    <link port="FileReader.trigger" relation="relation3"/>
     <link port="FileReader.output" relation="relation4"/>
+    <link port="FileReader.trigger" relation="relation3"/>
     <link port="MobileModel.input" relation="relation8"/>
     <link port="MobileModel.modelString" relation="relation6"/>
     <link port="MobileModel.output" relation="relation2"/>

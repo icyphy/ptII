@@ -22,7 +22,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="105.0, 65.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={72, 113, 815, 509}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={72, 113, 815, 520}}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -52,16 +52,16 @@ send the change request remotely to the comsumer.</text></svg></configure>
         </property>
         <property name="value" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 160.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 150.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
     </entity>
     <entity name="PushSupplier" class="ptolemy.actor.corba.PushSupplier">
-        <property name="ORBInit" class="ptolemy.data.expr.Parameter" value="&quot;-ORBInitialPort 1050&quot;">
+        <property name="ORBInitProperties" class="ptolemy.data.expr.Parameter" value="&quot;-ORBInitialPort 1050&quot;">
         </property>
-        <property name="RemoteConsumerName" class="ptolemy.data.expr.Parameter" value="&quot;modelReceiver&quot;">
+        <property name="remoteConsumerName" class="ptolemy.data.expr.Parameter" value="&quot;modelReceiver&quot;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="315.0, 160.0">
         </property>
@@ -71,16 +71,20 @@ send the change request remotely to the comsumer.</text></svg></configure>
         </port>
     </entity>
     <entity name="FileReader" class="ptolemy.actor.lib.io.FileReader">
-        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="LQRController.xml">
+        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="scaler.xml">
         </property>
         <doc>Read a text file and output the string of it.</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="165.0, 160.0">
         </property>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="fileOrURL" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
         </port>
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
@@ -91,6 +95,6 @@ send the change request remotely to the comsumer.</text></svg></configure>
     </relation>
     <link port="SingleEvent.output" relation="relation"/>
     <link port="PushSupplier.input" relation="relation3"/>
-    <link port="FileReader.trigger" relation="relation"/>
     <link port="FileReader.output" relation="relation3"/>
+    <link port="FileReader.trigger" relation="relation"/>
 </entity>
