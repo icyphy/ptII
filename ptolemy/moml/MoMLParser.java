@@ -452,7 +452,6 @@ public class MoMLParser extends HandlerBase {
                 IOPort port = (IOPort)portConstructor.newInstance(arguments);
                 _current = port;
 
-                // FIXME: this should be an enumeration in the dtd.
                 String direction = (String)_attributes.get("direction");
                 _checkForNull(direction, "No direction for element \"port\"");
                 port.setOutput(direction.equals("output")

@@ -1,5 +1,5 @@
 <?xml version="1.0" standalone="no"?>
-<!DOCTYPE model SYSTEM "moml.dtd">
+<!DOCTYPE model SYSTEM "../moml.dtd">
 <!-- The name and class of the top-level actor are specified as -->
 <!-- defaults in the DTD. -->
 <model>
