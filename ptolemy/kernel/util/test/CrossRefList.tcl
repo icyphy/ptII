@@ -288,3 +288,119 @@ test CrossRefList-5.3 {link CrossRefList to itself} {
     catch {$c1 link $c1} errmsg
     list $errmsg
 } {{ptolemy.kernel.util.IllegalActionException: CrossRefLink.link: Illegal self-link.}}
+
+######################################################################
+####
+#
+test CrossRefList-6.1 {link at a specified index with an empty list} {
+    set a [java::new ptolemy.kernel.util.NamedObj A]
+    set ca [java::new ptolemy.kernel.util.CrossRefList $a]
+    set b [java::new ptolemy.kernel.util.NamedObj B]
+    set cb [java::new ptolemy.kernel.util.CrossRefList $b]
+    $ca insertLink 0 $cb
+    _testCrossRefListGetLinks $ca $cb
+} {B A}
+
+######################################################################
+####
+#
+test CrossRefList-6.2 {link at a specified larger index with an empty list} {
+    set a [java::new ptolemy.kernel.util.NamedObj A]
+    set ca [java::new ptolemy.kernel.util.CrossRefList $a]
+    set b [java::new ptolemy.kernel.util.NamedObj B]
+    set cb [java::new ptolemy.kernel.util.CrossRefList $b]
+    $ca insertLink 1 $cb
+    _testCrossRefListGetLinks $ca $cb
+} {{java0x0 B} A}
+
+######################################################################
+####
+#
+test CrossRefList-6.3 {link in the middle of a list} {
+    set c [java::new ptolemy.kernel.util.NamedObj C]
+    set cc [java::new ptolemy.kernel.util.CrossRefList $c]
+    $ca insertLink 1 $cc
+    _testCrossRefListGetLinks $ca $cb
+} {{java0x0 C B} A}
+
+######################################################################
+####
+#
+test CrossRefList-6.4 {link in the middle of a list} {
+    set d [java::new ptolemy.kernel.util.NamedObj D]
+    set cd [java::new ptolemy.kernel.util.CrossRefList $d]
+    $ca insertLink 2 $cd
+    _testCrossRefListGetLinks $ca $cb
+} {{java0x0 C D B} A}
+
+######################################################################
+####
+#
+test CrossRefList-6.5 {link at the begining of a list} {
+    $ca insertLink 0 $cd
+    _testCrossRefListGetLinks $ca $cd
+} {{D java0x0 C D B} {A A}}
+
+######################################################################
+####
+#
+test CrossRefList-6.6 {link near the end of a list} {
+    $ca insertLink 4 $cd
+    _testCrossRefListGetLinks $ca $cd
+} {{D java0x0 C D D B} {A A A}}
+
+######################################################################
+####
+#
+test CrossRefList-6.7 {link at the end of a list} {
+    $ca insertLink 6 $cd
+    _testCrossRefListGetLinks $ca $cd
+} {{D java0x0 C D D B D} {A A A A}}
+
+######################################################################
+####
+#
+test CrossRefList-7.1 {unlink first occurrence} {
+    $ca unlink $d
+    _testCrossRefListGetLinks $ca $cd
+} {{java0x0 C D D B D} {A A A}}
+
+######################################################################
+####
+#
+test CrossRefList-7.1 {unlink by index at the head} {
+    # NOTE: There is a bug in jacl, and we have to give the method
+    # signature here or jacl thinks the argument is an Object.
+    $ca {unlink int} 0
+    _testCrossRefListGetLinks $ca $cd
+} {{C D D B D} {A A A}}
+
+######################################################################
+####
+#
+test CrossRefList-7.2 {unlink by index at the tail} {
+    # NOTE: There is a bug in jacl, and we have to give the method
+    # signature here or jacl thinks the argument is an Object.
+    $ca {unlink int} 4
+    _testCrossRefListGetLinks $ca $cd
+} {{C D D B} {A A}}
+
+######################################################################
+####
+#
+test CrossRefList-7.3 {unlink by index beyond the tail} {
+    # NOTE: There is a bug in jacl, and we have to give the method
+    # signature here or jacl thinks the argument is an Object.
+    $ca {unlink int} 8
+    _testCrossRefListGetLinks $ca $cd
+} {{C D D B} {A A}}
+
+######################################################################
+####
+#
+test CrossRefList-7.4 {unlink by index in the middle} {
+    # NOTE: There is a bug in jacl, and we have to give the method
+    # signature here or jacl thinks the argument is an Object.
+    $ca {unlink int} 1
+    _testCrossRefListGetLinks $ca $cd
+} {{C D B} A}
