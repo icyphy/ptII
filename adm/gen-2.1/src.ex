@@ -50,6 +50,7 @@ ptolemy/actor/lib/net/test_auto
 ptolemy/actor/lib/test/auto/FileWriter1Output.txt
 ptolemy/apps
 ptolemy/automata
+ptolemy/codegen
 ptolemy/filter/*
 ptolemy/filter
 ptolemy/com
