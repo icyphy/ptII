@@ -168,10 +168,10 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
      *  If this director serves as a top-level director, this method behaves
      *  just like that is defined in the super class, CTMultiSolverDirector.
      *  <p>
-     *  Otherwise, this method keeps advancing time and
-     *  executing the model until the iteration time one of the following conditions
-     *  is satisfied. 1) The iteration end time computed in the prefire()
-     *  method is reached. 2) An event is generated.
+     *  Otherwise, this method keeps advancing time and executing the
+     *  model until the iteration time one of the following conditions
+     *  is satisfied. 1) The iteration end time computed in the
+     *  prefire() method is reached. 2) An event is generated.
      *  It saves the state of the system at the current time of the executive
      *  director as the "known good" state, and runs ahead of that time.
      *  The "known good" state is used for roll back.
