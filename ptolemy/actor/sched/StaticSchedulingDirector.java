@@ -176,12 +176,14 @@ public class StaticSchedulingDirector extends Director {
         }
         try {
             workspace().getWriteAccess();
-            // If there was a previous director, we need to reset it.
-            if (_scheduler != null) _scheduler._makeSchedulerOf(null);
+            // If there was a previous scheduler, we need to reset it.
+            if (_scheduler != null) {
+                _scheduler._makeSchedulerOf(null);
+            }
+            _scheduler = scheduler;
             if (scheduler != null) {
                 scheduler._makeSchedulerOf(this);
             }
-            _scheduler = scheduler;
         } finally {
             workspace().doneWriting();
         }

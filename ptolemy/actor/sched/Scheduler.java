@@ -166,12 +166,9 @@ public class Scheduler extends NamedObj {
                 throw new IllegalActionException(this,
                         "Director has no container.");
             }
-            if(!isValid()) {
+            if(!isValid() || _cachedGetSchedule == null) {
                 _cachedGetSchedule = _getSchedule();
             }
-	    if (_cachedGetSchedule == null) {
-		_cachedGetSchedule = _getSchedule();
-	    }
             return _cachedGetSchedule;
         } finally {
             workspace().doneReading();
@@ -208,7 +205,7 @@ public class Scheduler extends NamedObj {
                 throw new IllegalActionException(this,
                         "Director has no container.");
             }
-            if(!isValid()) {
+            if(!isValid() || _cachedSchedule == null) {
                 _cachedSchedule = new ArrayList();
                 Enumeration newSchedEnum = _schedule();
                 while (newSchedEnum.hasMoreElements()) {
@@ -232,6 +229,10 @@ public class Scheduler extends NamedObj {
      */
     public void setValid(boolean valid) {
         _valid = valid;
+        if(valid == false) {
+            _cachedSchedule = null;
+            _cachedGetSchedule = null;
+        }
     }
 
     /** Return true if the current schedule is valid.
