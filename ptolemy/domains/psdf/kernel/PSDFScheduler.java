@@ -61,12 +61,12 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StreamListener;
 import ptolemy.kernel.util.Workspace;
-import synthesis.dif.psdf.PSDFAPGANStrategy;
-import synthesis.dif.psdf.PSDFEdgeWeight;
-import synthesis.dif.psdf.PSDFGraph;
-import synthesis.dif.psdf.PSDFGraphReader;
-import synthesis.dif.psdf.PSDFGraphs;
-import synthesis.dif.psdf.PSDFNodeWeight;
+import mapss.dif.psdf.PSDFAPGANStrategy;
+import mapss.dif.psdf.PSDFEdgeWeight;
+import mapss.dif.psdf.PSDFGraph;
+import mapss.dif.psdf.PSDFGraphReader;
+import mapss.dif.psdf.PSDFGraphs;
+import mapss.dif.psdf.PSDFNodeWeight;
 
 ///////////////////////////////////////////////////////////
 //// PSDFScheduler
@@ -228,7 +228,7 @@ public class PSDFScheduler extends BaseSDFScheduler {
         _debug("P-APGAN schedule = \n" + graphSchedule.toString());
 
         SymbolicScheduleElement resultSchedule =
-            _expandAPGAN(graph, strategy.getClusteredGraphRoot(),
+            _expandAPGAN(graph, strategy.getClusterManager().getRootNode(),
                     strategy);
         _debug("Final schedule = \n" + resultSchedule.toString());
         if (_debugging) {
@@ -389,7 +389,8 @@ public class PSDFScheduler extends BaseSDFScheduler {
     // @return The schedule saving the expansion result.
     private SymbolicScheduleElement _expandAPGAN(PSDFGraph graph,
             ptolemy.graph.Node node, PSDFAPGANStrategy apgan) {
-        PSDFGraph childGraph = (PSDFGraph)apgan.getSubgraph(node);
+        PSDFGraph childGraph =
+                (PSDFGraph)apgan.getClusterManager().getSubgraph(node);
 
         try {
             // Atomic node
