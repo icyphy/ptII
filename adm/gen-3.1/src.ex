@@ -82,7 +82,6 @@ ptolemy/domains/ct/demo/Corba
 ptolemy/domains/ct/demo/SigmaDelta/DEStatistics.java
 ptolemy/domains/ct/lib/IPCInterface.class
 ptolemy/domains/ct/lib/IPCInterface.java
-ptolemy/domains/dde/kernel/test/DDEDirector.tcl
 ptolemy/domains/dde/kernel/test/test.tcl
 ptolemy/domains/dde/kernel/DEThreadActor.java
 ptolemy/domains/ddf
