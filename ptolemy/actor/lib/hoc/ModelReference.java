@@ -560,10 +560,15 @@ public class ModelReference
             }
             _manager.waitForCompletion();
         }
-        // If we specified to run in a new thread, then we are listening.
-        // If we didn't, this is harmless.
-        _manager.removeExecutionListener(ModelReference.this);
-        _manager = null;
+
+        // Test auto/ModelReference2.xml seems to end up here with
+        // _manager == null
+        if (_manager != null) {
+            // If we specified to run in a new thread, then we are listening.
+            // If we didn't, this is harmless.
+            _manager.removeExecutionListener(ModelReference.this);
+            _manager = null;
+        }
 
         return super.postfire();
     }
