@@ -143,9 +143,9 @@ public class MoMLUndoChangeRequest extends ChangeRequest {
         // No parser associated with this model??
         if (parserAttribute == null) {
             // FIXME: what to do? Given a context, but it has no parser
-            // assocaited with it!
+            // associated with it!
             System.out.println("FIXME: Undo request on a model with no " +
-                               "assocaited parser");
+                               "associated parser");
             return;
         }
         _parser = parserAttribute.getParser();

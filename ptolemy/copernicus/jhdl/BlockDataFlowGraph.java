@@ -328,7 +328,7 @@ public class BlockDataFlowGraph extends DirectedGraph {
     /**
      * Create a new Node for a binary operation expression.
      *
-     * 1. Obtain Nodes assocaited with op1 and op2
+     * 1. Obtain Nodes associated with op1 and op2
      * 2. Create a new Node for the binary operation
      * 3. Add edges between op1/op2 and the new Node.
      *
