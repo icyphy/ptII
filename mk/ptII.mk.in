@@ -39,7 +39,7 @@
 # The home of the Java Developer's Kit (JDK)
 # Generating Java documentation uses this makefile variable
 # The line below gets subsituted by the configure script
-PTJAVA_DIR = 	@JAVA_DIR@
+PTJAVA_DIR = 	@PTJAVA_DIR@
 
 # Java CLASSPATH separator
 CLASSPATHSEPARATOR = :
