@@ -16,8 +16,14 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
     </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This test currently fails.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{210, 80}">
+        </property>
+    </property>
     <entity name="StreamLoader" class="ptolemy.actor.lib.jmf.StreamLoader">
-        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/actor/lib/jmf/test/test.mov">
+        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="file:/C:/cxh/ptII/ptolemy/actor/lib/jmf/MrPtolemy.mov">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{95, 200}">
         </property>
