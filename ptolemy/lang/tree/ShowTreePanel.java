@@ -59,7 +59,7 @@ public class ShowTreePanel extends JScrollPane {
         // Uncomment this to get more info:
         //    ApplicationUtility.enableTrace = debug;
         // Need to go all the way to the last pass (2) to resolve all names.
-        CompileUnitNode ast = StaticResolution.load(filename, 2);
+        CompileUnitNode ast = StaticResolution.loadFileName(filename, 2);
         ASTModel model = new ASTModel(ast);
         JTree tree = new JTree(model);
         tree.setPreferredSize(new Dimension(600,800));
