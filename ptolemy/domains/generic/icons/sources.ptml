@@ -43,10 +43,14 @@
 	</graphic>
     </port>
 
-    <graphic format="tcl" color="blue">
+    <graphic format="tcl" color="lightgreen">
     <tclscript>
-	polygon 30 25 30 70 25 75 20 70 15 80 25 85 35 75 35 30 40 25 45 30 50 25 40 15 -fill black -outline yellow
-         text 70 55 -text dx -fill yellow 
+	line 10 20 10 90
+	line 10 80 90 80
+	line 20 30 20 80 -fill blue
+	line 40 30 40 80 -fill blue
+	line 60 30 60 80 -fill blue
+	line 80 30 80 80 -fill blue
     </tclscript>
     </graphic>
 </icon>
@@ -63,10 +67,11 @@
 	</graphic>
     </port>
 
-    <graphic format="tcl" color="blue">
+    <graphic format="tcl" color="lightgreen">
     <tclscript>
-	polygon 30 25 30 70 25 75 20 70 15 80 25 85 35 75 35 30 40 25 45 30 50 25 40 15 -fill black -outline yellow
-         text 70 55 -text dx -fill yellow 
+	line 10 80 90 80
+	line 50 10 50 90
+	line 10 75 20 70 40 30 50 20 60 30 80 70 90 75 -smooth 1 -fill red -width 2
     </tclscript>
     </graphic>
 </icon>

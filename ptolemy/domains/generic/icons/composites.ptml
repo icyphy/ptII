@@ -8,8 +8,12 @@
     <description>Composite Actors</description>
 </header>
 
-<icon name="SimpleComposite">
-    <entitytype name="Out" type="composite" ports="1"/>
+<icon name="RampSampler">
+    <entitytype name="RampSampler"
+	type="composite"
+	ports="1"
+	location="RampSampler.ptml" />
+
     <port name="output" input="false" type="string">
 	<graphic format="tcl">
 	<tclscript>
@@ -23,6 +27,11 @@
 
     <graphic format="tcl" color="green">
     <tclscript>
+	oval 20 20 50 50 -fill green
+	oval 60 20 90 45 -fill red
+	oval 20 60 40 80 -fill blue
+	oval 50 60 75 80 -fill orange
+
     </tclscript>
     </graphic>
 </icon>
