@@ -71,7 +71,11 @@ EXTRA_SRCS = \
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =
+# Not sure why we need to add the .h files here
+MISC_FILES = \
+	meaningOfLife.h \
+	testDeux.h \
+	testTrois.h
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
