@@ -4327,7 +4327,7 @@ public class XmlParser {
   private int line;		// current line number
   private int column;		// current column number
   private int sourceType;	// type of input source
-  private Stack inputStack;	// stack of input soruces
+  private Stack inputStack;	// stack of input sources
   private URLConnection externalEntity;	// current external entity
   private int encoding;		// current character encoding.
   private int currentByteCount;	// how many bytes read from current source.
