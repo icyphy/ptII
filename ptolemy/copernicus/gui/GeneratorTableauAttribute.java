@@ -176,7 +176,7 @@ public class GeneratorTableauAttribute extends SingletonAttribute {
 		    canonicalDefaultDirectory
 		    .substring(canonicalPtIIDirectory.length());
 		packageNameString = (packagePath
-				     .replace('/','.')).replace('\\','.');
+				     .replace('/', '.')).replace('\\', '.');
 		if (packageNameString.indexOf('.') == 0
 		    && packageNameString.length() >= 2) {
 		    // Strip off the leading . in the package.
