@@ -277,6 +277,8 @@ public class PtolemyApplet extends BasicJApplet
             _manager = new Manager(_workspace, "manager");
             _manager.addExecutionListener(this);
             result.setManager(_manager);
+        } else {
+            _manager = result.getManager();
         }
         return result;
     }
