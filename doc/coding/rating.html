@@ -1,12 +1,17 @@
+<!-- $Id$ -->
 <html>
 <head>
-<title>Code Rating</title>
+<title>Change control and code rating overview</title>
 </head>
 
 <body bgcolor="#faf0e6">
 
 
-<h1>Code Rating</h1>
+<h1>Change control and code rating overview</h1>
+
+This document describes a simple change control process, designed to
+improve management of change in small-ish development projects. The
+process is based on formal reviews.
 
 <p><B>Contents</B>
 <ul>
@@ -24,8 +29,11 @@
 <ul>
 
 <li><a
+href="reviews.html">Review guidelines and check-lists</a>
+
+<li><a
 href="http://ptolemy.eecs.berkeley.edu/~johnr/info/reviews.html">Notes
-on software reviews</a>. My notes and some references.
+on software reviews</a>
 
 </ul>
 
@@ -198,15 +206,6 @@ explanatory text. If one or a few classes with well-defined or obvious
 roles are being reviewed, then an API specification or javadoc output
 is fine.
 
- <p> Before submitting a package for design review to Yellow, please check
-the following items:
-	<menu>
-	<li> For a design review, it may be easiest to review
-	the javadoc output, so you may want to check the
-	<CODE>make javadocs</CODE> output for warnings
-	</menu>
-
-
 
 <dt><b>Green</b>
 
@@ -225,27 +224,6 @@ same priniciple applies to inheritance hierarchies: a class that
 inherits from a Red class cannot be reasonably made Green, since you
 can't have any confidence in its stability.
 
- <p> Before submitting a package for code review to Green, please check
-the following items:
-	<menu>
-
-	<li> Compile with <CODE>javac -deprecation</CODE> and fix
-	any warnings.  If it is not possibile to fix the warnings,
-	consider adding the <CODE>@deprecated</CODE> javadoc tag
-	to the method.  To compile Ptolemy II with <CODE>-deprecation</CODE>, 
-	run <CODE>make clean all JFLAGS=-deprecation</CODE>.
-
-	<li> <CODE>make javadocs</CODE> does not produce
-	any warnings.
-
-	<li> <a href="../../util/testsuite/chkjava"><CODE>util/testsuite/chkjava *.java</CODE></a> does not produce any warnings.  
-
-	<li> Review the output of <CODE>spell *.java</CODE>.
-
-	<li> Run <CODE>jindent delget *.java</CODE> to
-	reformat to Ptolemy group <a href="style.html">style standards</a>
-	</menu>
-
 
 <dt><b>Blue</b>
 
@@ -256,14 +234,6 @@ does fulfil its requirements, at least as far as its clients are
 concerned. One way to encourage this (suggested by John Davis) is to
 require that at least one client package be Green before making a
 package Blue.
-
- <p> Before submitting a package for final review to Blue, please check
-the following items:
-	<menu>
-	<li> Recheck the items necessary for code review to Green.
-	<li> Check the test suite code coverage.  In general,
-	every method should be called by the test suite.
-	</menu>
 
 
 </dl>
