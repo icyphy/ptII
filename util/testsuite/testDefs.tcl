@@ -183,7 +183,7 @@ proc test {test_name test_description contents_of_test passing_results {testtype
 		    $code $answer $testtype
 	    puts "---- Result should have been:"
 	    puts "$passing_results"
-	    if { [llength [split $passing_results]] > 7 } {
+	    if { [llength [split $passing_results "\n"]] > 7 } {
 		puts "@@@@@ known results is more than 7 lines long, so we run diff"
 		# If the answer is more than 7 lines, try running diff
 		puts [diffText $passing_results $answer]
