@@ -115,7 +115,7 @@ PTCAL_DIR=@PTCAL_DIR@
 # If PTCAL_DIR is not empty, then set CAL_JARS to have the class path sep.
 CAL_JARS="" 
 if [ "$PTCAL_DIR" ]; then
-    CAL_JARS="${CLASSPATHSEPARATOR}${CAL_DIR}/ptCal.jar"
+    CAL_JARS="${CLASSPATHSEPARATOR}${CAL_DIR}/ptCal.jar${CLASSPATHSEPARATOR}${CAL_DIR}/saxon7.jar"
 fi
 
 #### Serial port stuff
