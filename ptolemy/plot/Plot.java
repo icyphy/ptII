@@ -192,8 +192,12 @@ public class Plot extends PlotBox {
         // the one passed to paintComponent, and it draws lines
         // differently (one pixel off?). This means that XOR drawing
         // doesn't work...  Turning off double buffering helps.
-        RepaintManager repaintManager = RepaintManager.currentManager(this);
-        repaintManager.setDoubleBufferingEnabled(false);
+        // Originally:
+	// RepaintManager repaintManager = RepaintManager.currentManager(this);
+        // repaintManager.setDoubleBufferingEnabled(false);
+	// But the following seems to work without turning off 
+	// double buffering for all the other frames.
+	setDoubleBuffered(false);
     }
 
     ///////////////////////////////////////////////////////////////////
