@@ -91,7 +91,10 @@ public class ParseTreeFreeVariableCollector implements ParseTreeVisitor {
     }
     public void visitFunctionNode(ASTPtFunctionNode node) 
             throws IllegalActionException {
-        _visitAllChildren(node);
+        int numChildren = node.jjtGetNumChildren();
+        for (int i = 1; i < numChildren; i++) {
+            _visitChild(node, i);
+        }
 
         if(_isValidName(node.getFunctionName())) {
             _set.add(node.getFunctionName());
