@@ -78,9 +78,10 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
         _model = model;
     }
 
-    /** Return an instance of this transformer that will operate on the given model.
-     *  The model is assumed to already have been properly initialized so that
-     *  resolved types and other static properties of the model can be inspected.
+    /** Return an instance of this transformer that will operate on
+     *  the given model.  The model is assumed to already have been
+     *  properly initialized so that resolved types and other static
+     *  properties of the model can be inspected.
      */
     public static FieldsForAttributesTransformer v(CompositeActor model) { 
         return new FieldsForAttributesTransformer(model);
@@ -146,48 +147,49 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
 
                 JimpleBody body = (JimpleBody)method.retrieveActiveBody();
 
-                CompleteUnitGraph unitGraph = 
-                    new CompleteUnitGraph(body);
+                CompleteUnitGraph unitGraph = new CompleteUnitGraph(body);
                 // this will help us figure out where locals are defined.
-                SimpleLocalDefs localDefs =
-                    new SimpleLocalDefs(unitGraph);
+                SimpleLocalDefs localDefs = new SimpleLocalDefs(unitGraph);
 
                 for(Iterator units = body.getUnits().snapshotIterator();
                     units.hasNext();) {
-                    Unit unit = (Unit)units.next();
-                    Iterator boxes = unit.getUseBoxes().iterator();
-                    while(boxes.hasNext()) {
-                        ValueBox box = (ValueBox)boxes.next();
-                        Value value = box.getValue();
-                        if(value instanceof InstanceInvokeExpr) {
-                            InstanceInvokeExpr r = (InstanceInvokeExpr)value;
-                            if(r.getMethod().getSubSignature().equals(
-                                    PtolemyUtilities.getDirectorMethod.getSubSignature())) {
-                                // Replace calls to getDirector with null.
-                                // FIXME: we should be able to do better than this?
-                                box.setValue(NullConstant.v());
-                            } else if(r.getMethod().equals(PtolemyUtilities.getAttributeMethod)) {
-                                // inline calls to getAttribute(arg) when arg is a string
-                                // that can be statically evaluated.
-                                Value nameValue = r.getArg(0);
-                                //System.out.println("attribute name =" + nameValue);
-                                if(Evaluator.isValueConstantValued(nameValue)) {
-                                    StringConstant nameConstant = 
-                                        (StringConstant)
-                                        Evaluator.getConstantValueOf(nameValue);
-                                    String name = nameConstant.value;
-                                    // perform type analysis to determine what the 
-                                    // type of the base is.
-                                    
-                                    Local baseLocal = (Local)r.getBase();
-                                    Value newFieldRef = _createAttributeField(
-                                            baseLocal, name, unit, localDefs, 
-                                            classToObjectMap, attributeToFieldMap);
-                                    box.setValue(newFieldRef);
-                                } else {
-                                    String string = "Attribute cannot be statically determined";
-                                    throw new RuntimeException(string);
-                                }
+                    Stmt unit = (Stmt)units.next();
+                    if(!unit.containsInvokeExpr()) {
+                        continue;
+                    }
+                    ValueBox box = (ValueBox)unit.getInvokeExprBox();
+                    Value value = box.getValue();
+                    if(value instanceof InstanceInvokeExpr) {
+                        InstanceInvokeExpr r = (InstanceInvokeExpr)value;
+                        if(r.getMethod().getSubSignature().equals(
+                                PtolemyUtilities.getDirectorMethod.getSubSignature())) {
+                                // Replace calls to getDirector with
+                                // null.  FIXME: we should be able to
+                                // do better than this?
+                            box.setValue(NullConstant.v());
+                        } else if(r.getMethod().equals(
+                                PtolemyUtilities.getAttributeMethod)) {
+                                // inline calls to getAttribute(arg)
+                                // when arg is a string that can be
+                                // statically evaluated.
+                            Value nameValue = r.getArg(0);
+                            if(Evaluator.isValueConstantValued(nameValue)) {
+                                StringConstant nameConstant = 
+                                    (StringConstant)
+                                    Evaluator.getConstantValueOf(nameValue);
+                                String name = nameConstant.value;
+                                // perform type analysis to determine what the 
+                                // type of the base is.
+                                
+                                Local baseLocal = (Local)r.getBase();
+                                Value newFieldRef = _createAttributeField(
+                                        baseLocal, name, unit, localDefs, 
+                                        classToObjectMap, attributeToFieldMap);
+                                box.setValue(newFieldRef);
+                            } else {
+                                String string = "Attribute cannot be " +
+                                    "statically determined";
+                                throw new RuntimeException(string);
                             }
                         }
                     }
@@ -200,7 +202,8 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
     // of an attribute in that object, return a new field ref that
     // refers to that attribute.
     private static FieldRef _createAttributeField(Local baseLocal, 
-            String name, Unit unit, LocalDefs localDefs, Map classToObjectMap, Map attributeToFieldMap) {
+            String name, Unit unit, LocalDefs localDefs,
+            Map classToObjectMap, Map attributeToFieldMap) {
         // FIXME: This is not enough.
         RefType type = (RefType)baseLocal.getType();
         NamedObj object = (NamedObj)classToObjectMap.get(type.getSootClass());
@@ -222,7 +225,8 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
             // Walk back and get the definition of the field.
             DefinitionStmt definition = 
                 _getFieldDef(baseLocal, unit, localDefs);
-            InstanceFieldRef fieldRef = (InstanceFieldRef)definition.getRightOp();
+            InstanceFieldRef fieldRef = (InstanceFieldRef)
+                definition.getRightOp();
             SootField baseField = fieldRef.getField();
             System.out.println("baseField = " + baseField);
             return _createAttributeField((Local)fieldRef.getBase(),
@@ -247,7 +251,8 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
             DefinitionStmt stmt = (DefinitionStmt)definitionList.get(0);
             Value value = (Value)stmt.getRightOp();
             if(value instanceof CastExpr) {
-                return _getFieldDef((Local)((CastExpr)value).getOp(), stmt, localDefs);
+                return _getFieldDef((Local)((CastExpr)value).getOp(),
+                        stmt, localDefs);
             } else if(value instanceof FieldRef) {
                 return stmt;
             } else {
@@ -278,9 +283,11 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
                     attribute, container);
             
             if(!theClass.declaresFieldByName(fieldName)) {
-                throw new RuntimeException("Class " + theClass 
+                // FIXME: This should be an exception.
+                System.out.println("Class " + theClass 
                         + " does not declare field for attribute "
                         + attribute.getFullName());
+                continue;
             }
             
             // retrieve the existing field.

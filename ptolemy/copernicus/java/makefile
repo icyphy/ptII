@@ -126,7 +126,7 @@ JVM_SIZE = -Xmx256m
 SOOT_USER_ARGS =
 
 # Time that we should let code generation run before exiting in ms.
-WATCH_DOG_TIMEOUT =     150000
+WATCH_DOG_TIMEOUT =     600000
 # Number of Iterations to run the generated code for.
 ITERATIONS =		50000
 ITERATIONS_PARAMETER =	,iterations:$(ITERATIONS)

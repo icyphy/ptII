@@ -386,11 +386,25 @@ public class ModelTransformer extends SceneTransformer {
                 //    System.out.println("already has " + attributeName);
                 // If the class for the object already creates the
                 // attribute, then get a reference to the existing attribute.
-                local = attributeLocal;
-                body.getUnits().add(Jimple.v().newAssignStmt(attributeLocal,
-                        Jimple.v().newVirtualInvokeExpr(contextLocal,
-                                PtolemyUtilities.getAttributeMethod,
-                                StringConstant.v(attributeName))));
+                // Note that if the class creates the attribute, but
+                // doesn't also create a field for it, that we will
+                // fail later when we try to replace getAttribute
+                // calls with references to fields.
+                if(theClass.declaresFieldByName(fieldName)) {
+                    local = attributeLocal;
+                    body.getUnits().add(Jimple.v().newAssignStmt(
+                            attributeLocal,
+                            Jimple.v().newVirtualInvokeExpr(contextLocal,
+                                    PtolemyUtilities.getAttributeMethod,
+                                    StringConstant.v(attributeName))));
+                } else {
+                    System.out.println("Warning: " + theClass + " does " + 
+                            "not declare a field " + fieldName);
+                    // FIXME: Try to analyze the constructor to set
+                    // the field.  This is nontrivial.
+                    // For the moment, we skip this case.
+                    continue;
+                }
             } else {
                 //   System.out.println("creating " + attributeName);
                 // If the class does not create the attribute,
@@ -404,11 +418,12 @@ public class ModelTransformer extends SceneTransformer {
                         + attribute.getName(),
                         classAttribute, classAttribute, createdSet);
             }
-
+            
             // Create a new field for the attribute, and initialize
             // it to the the attribute above.
-	    SootUtilities.createAndSetFieldFromLocal(body, local, 
+            SootUtilities.createAndSetFieldFromLocal(body, local, 
                     theClass, attributeType, fieldName);
+            
             // If the attribute is settable, then set its
             // expression.
 	    if(attribute instanceof Settable) {

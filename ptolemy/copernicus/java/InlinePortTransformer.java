@@ -423,13 +423,12 @@ public class InlinePortTransformer extends SceneTransformer {
         return doneSomething;
     }
 
-    /** Attempt to determine the constant value of the 
-     *  given local, which is assumed to have a variable
-     *  type.  Walk backwards through all the possible 
-     *  places that the local may have been defined and
-     *  try to symbolically evaluate the value of the 
-     *  variable. If the value can be determined, 
-     *  then return it, otherwise return null.
+    /** Attempt to determine the constant value of the given local,
+     *  which is assumed to have a variable type.  Walk backwards
+     *  through all the possible places that the local may have been
+     *  defined and try to symbolically evaluate the value of the
+     *  variable. If the value can be determined, then return it,
+     *  otherwise return null.
      */ 
     public static TypedIOPort getPortValue(SootMethod method, Local local, 
             Unit location, LocalDefs localDefs, LocalUses localUses) {
@@ -1138,11 +1137,12 @@ public class InlinePortTransformer extends SceneTransformer {
         _getCorrectIndex(body, stmt, port, indexLocal, indexArrayLocal, 
                 channelValue, bufferSizeValue, portToIndexArrayField);
                                        
+        System.out.println("inlining get at " + stmt);
         // If we are calling with just a channel, then read the value.
         if(expr.getArgCount() == 1) {
             body.getUnits().insertAfter(_createIndexUpdateInstructions( 
-                    indexLocal, indexArrayLocal, channelValue, bufferSizeValue),
-                    stmt);
+                    indexLocal, indexArrayLocal, channelValue,
+                    bufferSizeValue), stmt);
                                            
             // We may be calling get without setting the return value to anything.
             if(stmt instanceof DefinitionStmt) {
@@ -1161,7 +1161,7 @@ public class InlinePortTransformer extends SceneTransformer {
                             Jimple.v().newNewArrayExpr(
                                     PtolemyUtilities.tokenType, expr.getArg(1))),
                     stmt);
-            Value countValue = expr.getArg(2);
+            Value countValue = expr.getArg(1);
               
             // If the count is specified statically
             // FIXME: constant loop unroller should take care of this.
