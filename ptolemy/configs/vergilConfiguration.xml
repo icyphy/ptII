@@ -154,7 +154,14 @@
       <property name="HybridFSM" class="ptolemy.domains.fsm.kernel.HSDirector"/>
       <property name="Giotto" class="ptolemy.domains.giotto.kernel.GiottoDirector"/>
       <property name="RTP" class="ptolemy.domains.rtp.kernel.RTPDirector"/>
-      <property name="SR" class="ptolemy.domains.sr.kernel.SRDirector"/>
+      <property name="SR" class="ptolemy.domains.sr.kernel.SRDirector">
+         <property name="scheduler">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+               <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.sr.kernel.SROptimizedScheduler&quot;"/>
+               <property name="choice1" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.sr.kernel.SRRandomizedScheduler&quot;"/>
+	    </property>
+         </property>
+      </property>
 
           </group>
         ?>
