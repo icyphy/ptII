@@ -411,15 +411,18 @@ public class TableauFrame extends Top {
         // windowClosing behavior given here.
         Effigy topEffigy = getEffigy().topEffigy();
         // If the top-level effigy has any open tableau that
-        // is not this one, then simply close.  No need to prompt
+        // is not this one, and this one is not a master,
+        // then simply close.  No need to prompt
         // for save, as that will be done when that tableau is closed.
-        List tableaux = topEffigy.entityList(Tableau.class);
-        Iterator tableauxIterator = tableaux.iterator();
-        while (tableauxIterator.hasNext()) {
-            Tableau tableau = (Tableau) tableauxIterator.next();
-            if (!(tableau instanceof DialogTableau) && (tableau != _tableau)) {
-                dispose();
-                return true;
+        if (!_tableau.isMaster()) {
+            List tableaux = topEffigy.entityList(Tableau.class);
+            Iterator tableauxIterator = tableaux.iterator();
+            while (tableauxIterator.hasNext()) {
+                Tableau tableau = (Tableau) tableauxIterator.next();
+                if (!(tableau instanceof DialogTableau) && (tableau != _tableau)) {
+                    dispose();
+                    return true;
+                }
             }
         }
         // If we get here, there was no other tableau.
