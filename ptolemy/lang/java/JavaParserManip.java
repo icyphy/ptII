@@ -163,7 +163,9 @@ public class JavaParserManip implements JavaStaticSemanticConstants {
             throw new NullPointerException("JavaParserManip.parseCanonical" +
                     "ClassName(" + className + "): loadedAST was null " + 
                     "myClass:" +
-                    ((myClass==null) ? "null" : myClass.getName()));
+                    ((myClass==null) ? "null" : myClass.getName()) +
+                    " Perhaps your classpath is wrong, or the class name is" +
+                    " wrong");
         }
 
         loadedAST.setProperty(IDENT_KEY, className);
