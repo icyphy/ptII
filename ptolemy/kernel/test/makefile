@@ -93,9 +93,13 @@ test_java: jclass
 test_jsimple: $(EXTRA_SRCS) jclass alljtests.tcl
 	CLASSPATH=$(CLASSPATH)$(AUXCLASSPATH) $(JTCLSH) alljtests.tcl
 
+# To profile the tests using jacl, run
+# make JACLPROFILE=-prof test_simple_jacl
+# then look in java.prof
+
 # These tests do not require a graphics terminal, but do use Jacl and Java
 test_jsimple_jacl: $(EXTRA_SRCS) jclass alljtests.tcl
-	CLASSPATH=$(CLASSPATH)$(AUXCLASSPATH) jacl alljtests.tcl
+	CLASSPATH=$(CLASSPATH)$(AUXCLASSPATH) jacl $(JACLPROFILE) alljtests.tcl
 
 docs: javadocs
 
