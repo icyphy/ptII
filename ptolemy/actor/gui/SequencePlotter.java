@@ -44,10 +44,12 @@ A sequence plotter.  This plotter contains an instance of the Plot
 class from the Ptolemy plot package as a public member. Data at
 the input, which can consist of any number of channels, is plotted
 on this instance.  Each channel is plotted as a separate data set.
-The horizontal axis represents the count of the iterations. The
-input is of type DoubleToken. The horizontal increment between
-samples can be set. Its default value is 1.0. The horizontal value
-of the first sample can also be set. Its default value is 0.0.
+The horizontal axis represents the count of the iterations, scaled
+by the <i>xUnit</i> parameter.  The horizontal increment between
+samples is given by the <i>xUnit</i> parameter.
+Its default value is 1.0. The horizontal value
+of the first sample is given by the <i>xInit</i> parameter.
+Its default value is 0.0. The input is of type DoubleToken.
 
 @author  Edward A. Lee, Bart Kienhuis
 @version $Id$
@@ -113,7 +115,7 @@ public class SequencePlotter extends Plotter implements SequenceActor {
     }
 
     /** Clone the actor into the specified workspace. This calls the
-     *  base class and then creates new ports and parameters.
+     *  base class and then sets up the ports and parameters.
      *  @param ws The workspace for the new object.
      *  @return A new actor.
      *  @exception CloneNotSupportedException If a derived class has an
@@ -137,10 +139,10 @@ public class SequencePlotter extends Plotter implements SequenceActor {
     }
 
     /** Read at most one token from each input channel and plot it as
-     *  a function of the iteration number. The iteration number
-     *  starts at the value given by the <i>xInit</i> value. The
-     *  increments on the iteration numbers are given by the
-     *  <i>xUnit</i> value. The input data are plotted in postfire() to
+     *  a function of the iteration number, scaled by <i>xUnit</i>.
+     *  The first point is plotted at the horizontal position given by
+     *  <i>xInit</i>. The increments on the position are given by
+     *  <i>xUnit</i>. The input data are plotted in postfire() to
      *  ensure that the data have settled.
      *  @exception IllegalActionException If there is no director,
      *   or if the base class throws it.
