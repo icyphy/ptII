@@ -13,10 +13,6 @@
         </property>
         <property name="denominator" class="ptolemy.data.expr.Parameter" value="[1.0, 0.9]">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="215.0, 113.0"/>
-            <configure>generic.transformer</configure>
-        </rendition>
         <doc>IIR filter</doc>
         <property name="editorFactory0" class="ptolemy.actor.gui.EditorPaneFactory">
         </property>
@@ -36,10 +32,6 @@
         </property>
         <property name="repeat" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="91.0, 114.0"/>
-            <configure>generic.source</configure>
-        </rendition>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
@@ -53,10 +45,6 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="382.0, 113.0"/>
-            <configure>generic.sink</configure>
-        </rendition>
         <property name="editorFactory0" class="ptolemy.actor.gui.EditorPaneFactory">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">

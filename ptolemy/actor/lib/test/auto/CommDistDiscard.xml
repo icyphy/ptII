@@ -15,17 +15,6 @@
         </property>
         <property name="step" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.XMLIcon">
-            <location value="59.0, 89.0"/>
-            <configure>
-            <![CDATA[
-                <xmlgraphic>
-                <rectangle coords="0 0 60 40" fill="white"/>
-                <polygon coords="10 30 50 10 50 30" fill="blue"/>
-                </xmlgraphic>
-            ]]>
-            </configure>
-        </rendition>
         <doc>Create a sequence of tokens with increasing value</doc>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -36,10 +25,6 @@
         </port>
     </entity>
     <entity name="Distributor1" class="ptolemy.actor.lib.Distributor">
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="161.0, 90.0"/>
-            <configure>generic.transformer</configure>
-        </rendition>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="3">
@@ -51,10 +36,6 @@
         </port>
     </entity>
     <entity name="Commutator4" class="ptolemy.actor.lib.Commutator">
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="375.0, 90.0"/>
-            <configure>generic.transformer</configure>
-        </rendition>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
@@ -70,10 +51,6 @@
         </port>
     </entity>
     <entity name="Discard3" class="ptolemy.actor.lib.Discard">
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="312.0, 172.0"/>
-            <configure>generic.sink</configure>
-        </rendition>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
@@ -84,10 +61,6 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="478.0, 89.0"/>
-            <configure>generic.sink</configure>
-        </rendition>
         <property name="editorFactory0" class="ptolemy.actor.gui.EditorPaneFactory">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">

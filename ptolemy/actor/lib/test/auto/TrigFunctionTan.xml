@@ -15,17 +15,6 @@
         </property>
         <property name="step" class="ptolemy.data.expr.Parameter" value="pi/5">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.XMLIcon">
-            <location value="87.0, 69.0"/>
-            <configure>
-            <![CDATA[
-                <xmlgraphic>
-                <rectangle coords="0 0 60 40" fill="white"/>
-                <polygon coords="10 30 50 10 50 30" fill="blue"/>
-                </xmlgraphic>
-            ]]>
-            </configure>
-        </rendition>
         <doc>Create a sequence of tokens with increasing value</doc>
         <property name="editorFactory0" class="ptolemy.actor.gui.EditorPaneFactory">
         </property>
@@ -40,10 +29,6 @@
     <entity name="TrigFunction5" class="ptolemy.actor.lib.TrigFunction">
         <property name="function" value="tan">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="233.0, 64.0"/>
-            <configure>generic.transformer</configure>
-        </rendition>
         <property name="editorFactory0" class="ptolemy.actor.gui.EditorPaneFactory">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -58,10 +43,6 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-5">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="355.0, 65.0"/>
-            <configure>generic.sink</configure>
-        </rendition>
         <property name="editorFactory0" class="ptolemy.actor.gui.EditorPaneFactory">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">

@@ -15,17 +15,6 @@
         </property>
         <property name="step" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.XMLIcon">
-            <location value="63.0, 78.0"/>
-            <configure>
-            <![CDATA[
-                <xmlgraphic>
-                <rectangle coords="0 0 60 40" fill="white"/>
-                <polygon coords="10 30 50 10 50 30" fill="blue"/>
-                </xmlgraphic>
-            ]]>
-            </configure>
-        </rendition>
         <doc>Create a sequence of tokens with increasing value</doc>
         <property name="editorFactory0" class="ptolemy.actor.gui.EditorPaneFactory">
         </property>
@@ -38,10 +27,6 @@
         </port>
     </entity>
     <entity name="MultiplyDivide1" class="ptolemy.actor.lib.MultiplyDivide">
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="195.0, 78.0"/>
-            <configure>generic.transformer</configure>
-        </rendition>
         <port name="multiply" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
@@ -59,10 +44,6 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="314.0, 79.0"/>
-            <configure>generic.sink</configure>
-        </rendition>
         <property name="editorFactory0" class="ptolemy.actor.gui.EditorPaneFactory">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">

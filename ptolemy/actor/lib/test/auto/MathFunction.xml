@@ -9,9 +9,6 @@
         </property>
         <property name="period" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
-            <location value="555.0, 340.0"/>
-        </rendition>
     </property>
     <entity name="MathFunction1" class="ptolemy.actor.lib.MathFunction">
         <property name="function" class="ptolemy.kernel.util.StringAttribute" value="exp">
@@ -28,9 +25,6 @@
                 </property>
             </property>
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="257.0, 65.0"/>
-        </rendition>
         <port name="firstOperand" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
@@ -47,9 +41,6 @@
         </property>
         <property name="repeat" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="110.0, 64.0"/>
-        </rendition>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
@@ -73,9 +64,6 @@
                 </property>
             </property>
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="257.0, 127.0"/>
-        </rendition>
         <port name="firstOperand" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
@@ -98,9 +86,6 @@
                 </property>
             </property>
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="256.0, 191.0"/>
-        </rendition>
         <port name="firstOperand" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
@@ -123,9 +108,6 @@
                 </property>
             </property>
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="262.0, 256.0"/>
-        </rendition>
         <port name="firstOperand" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
@@ -148,9 +130,6 @@
                 </property>
             </property>
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="259.0, 319.0"/>
-        </rendition>
         <port name="firstOperand" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
@@ -163,9 +142,6 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-3">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="387.0, 89.0"/>
-        </rendition>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
@@ -176,9 +152,6 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-3">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="386.0, 191.0"/>
-        </rendition>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
@@ -189,9 +162,6 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-3">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="455.0, 142.0"/>
-        </rendition>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
@@ -202,9 +172,6 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-3">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="403.0, 256.0"/>
-        </rendition>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
@@ -227,10 +194,6 @@
                 </property>
             </property>
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="251.0, 436.0"/>
-            <configure>generic.transformer</configure>
-        </rendition>
         <port name="firstOperand" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
@@ -247,10 +210,6 @@
         </property>
         <property name="repeat" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="134.0, 436.0"/>
-            <configure>generic.source</configure>
-        </rendition>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
@@ -268,10 +227,6 @@
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="[1, 0]">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="44.0, 265.0"/>
-            <configure>generic.source</configure>
-        </rendition>
         <doc>Create a generalized square wave</doc>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -286,10 +241,6 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="413.0, 436.0"/>
-            <configure>generic.sink</configure>
-        </rendition>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>

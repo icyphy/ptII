@@ -9,10 +9,6 @@
         </property>
     </property>
     <entity name="MultiplyDivide0" class="ptolemy.actor.lib.MultiplyDivide">
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="255.0, 86.0"/>
-            <configure>generic.transformer</configure>
-        </rendition>
         <port name="multiply" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
@@ -30,10 +26,6 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-3">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="367.0, 90.0"/>
-            <configure>generic.sink</configure>
-        </rendition>
         <property name="editorFactory0" class="ptolemy.actor.gui.EditorPaneFactory">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -44,10 +36,6 @@
     <entity name="Const2" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="0.5 + 4i">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="118.0, 63.0"/>
-            <configure>generic.source</configure>
-        </rendition>
         <doc>Create a constant sequence</doc>
         <property name="editorFactory0" class="ptolemy.actor.gui.EditorPaneFactory">
         </property>
@@ -62,10 +50,6 @@
     <entity name="Const3" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="3 + 0.1i">
         </property>
-        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="120.0, 129.0"/>
-            <configure>generic.source</configure>
-        </rendition>
         <doc>Create a constant sequence</doc>
         <property name="editorFactory0" class="ptolemy.actor.gui.EditorPaneFactory">
         </property>
