@@ -1216,6 +1216,8 @@ public class PtolemyUtilities {
 
     public static SootField objectTypeField;
 
+    public static SootClass parameterClass;
+
     // Soot Class representing the ptolemy.kernel.Port class.
     public static SootClass portClass;
 
@@ -1400,6 +1402,8 @@ public class PtolemyUtilities {
         stringAttributeClass =
             Scene.v().loadClassAndSupport("ptolemy.kernel.util.StringAttribute");
 
+        parameterClass = 
+            Scene.v().loadClassAndSupport("ptolemy.data.expr.Parameter");
         variableClass =
             Scene.v().loadClassAndSupport("ptolemy.data.expr.Variable");
         variableConstructorWithoutToken = variableClass.getMethod(

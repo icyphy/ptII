@@ -52,6 +52,7 @@ JSRCS = \
 	CastAndInstanceofEliminator.java \
 	ClassWriter.java \
 	Copernicus.java \
+	DependedClasses.java \
 	EntitySootClass.java \
 	FastForwardFlowAnalysis.java \
 	InvocationBinder.java \

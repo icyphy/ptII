@@ -140,8 +140,15 @@ public class KernelMain {
         Transform t = new Transform(name, transformer);
         if(transformer instanceof HasPhaseOptions) {
             HasPhaseOptions options = (HasPhaseOptions) transformer;
-            t.setDefaultOptions(t.getDefaultOptions() + " " + options.getDefaultOptions() + " " + defaultOptions);
-            t.setDeclaredOptions(t.getDeclaredOptions() + " " + options.getDeclaredOptions());
+            // Note: First appearance of an option has precendence
+            t.setDefaultOptions(defaultOptions + " " + 
+                    options.getDefaultOptions() + " " +
+                    t.getDefaultOptions());
+            t.setDeclaredOptions(options.getDeclaredOptions() + " " + 
+                    t.getDeclaredOptions());
+        } else {
+            t.setDefaultOptions(defaultOptions + " " +
+                    t.getDefaultOptions());
         }
         pack.add(t);
     }

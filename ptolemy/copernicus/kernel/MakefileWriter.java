@@ -85,7 +85,7 @@ public class MakefileWriter extends SceneTransformer implements HasPhaseOptions 
 
     public String getDeclaredOptions() {
         return 
-            "_generatorAttributeFileName outDir targetPackage templateDirectory";
+          "_generatorAttributeFileName outDir targetPackage templateDirectory";
     }
 
     /** Add a makefile substitution from the given name to the given value.

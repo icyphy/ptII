@@ -62,6 +62,7 @@ public class SideEffectAnalysis extends BackwardFlowAnalysis {
     public SideEffectAnalysis(CallGraph g) {
         super(g);
         _reachables = new ReachableMethods(g);
+        _reachables.update();
         doAnalysis();
     }
 

@@ -1161,8 +1161,6 @@ public class SootUtilities {
                                     "foldClass: Problem with "
                                     + "retrieveActiveBody()");
                         }
-                        System.err.println(
-                                "foldClass inlining " + invokeMethod);
                         SiteInliner.inlineSite(invokeMethod,
                                 stmt, newMethod);
                     }
@@ -1561,7 +1559,7 @@ public class SootUtilities {
             for (Iterator blocks = graph.iterator();
                  blocks.hasNext();) {
                 Block block = (Block)blocks.next();
-                System.out.println("body = " + block);
+                // System.out.println("body = " + block);
                 // filter out anything that doesn't look like a loop body.
                 if ((block.getPreds().size() != 1) ||
                         (block.getSuccs().size() != 1)) {

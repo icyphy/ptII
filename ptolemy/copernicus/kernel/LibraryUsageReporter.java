@@ -36,8 +36,7 @@ import soot.Scene;
 import soot.SceneTransformer;
 import soot.SootClass;
 import soot.SootMethod;
-import soot.jimple.toolkits.callgraph.CallGraph;
-import soot.jimple.toolkits.callgraph.ReachableMethods;
+import soot.jimple.toolkits.callgraph.*;
 
 import java.io.FileWriter;
 import java.util.Collections;
@@ -87,46 +86,75 @@ public class LibraryUsageReporter extends SceneTransformer implements HasPhaseOp
         String outDir = PhaseOptions.getString(options, "outDir");
         System.out.println("LibraryUsageReporter.internalTransform("
                 + phaseName + ", " + options + ")");
+        Scene.v().releaseCallGraph();
         CallGraph callGraph = Scene.v().getCallGraph();
         ReachableMethods reachableMethods = new ReachableMethods(callGraph, 
-                Scene.v().getMainClass().getMethods());
+                EntryPoints.v().application());
+
+        reachableMethods.update();
         Hierarchy hierarchy = Scene.v().getActiveHierarchy();
         
-        Set createableClasses = new HashSet();
-        for (Iterator reachables = reachableMethods.listener(); reachables.hasNext();) {
+        final Set createableClasses = new HashSet();
+        for (Iterator reachables = reachableMethods.listener(); 
+             reachables.hasNext();) {
             SootMethod method = (SootMethod)reachables.next();
-            if (method.getName().equals("<init>")) {
+            String methodName = method.getSignature();
+            if (method.getName().equals("<init>") &&
+                    !method.getDeclaringClass().getName().startsWith("java")) {
                 createableClasses.addAll(
                         hierarchy.getSuperclassesOfIncluding(
                                 method.getDeclaringClass()));
-                // FIXME: interfaces?
+                // FIXME: what about super interfaces
+                createableClasses.addAll(
+                        method.getDeclaringClass().getInterfaces());
             }
         }
 
-        Set RTAReachableClasses = new HashSet(createableClasses);
+        System.out.println("createableClasses = " + createableClasses);
+        // Now create a new set of reachable methods that only
+        // includes methods that are static or are declared in classes
+        // that can are created.
+        Filter filter = new Filter(
+                new EdgePredicate() {
+                    public boolean want(Edge e) {
+                        SootMethod target = e.tgt();
+                        return e.isExplicit() && (target.isStatic() || 
+                            createableClasses.contains(
+                                    target.getDeclaringClass()));
+                    }
+                });
+        Set necessaryClasses = new HashSet();
+        ReachableMethods RTAReachableMethods = new ReachableMethods(callGraph, 
+                EntryPoints.v().application().iterator(), filter);
+        RTAReachableMethods.update();
         List list = new LinkedList();
-        for (Iterator reachables = reachableMethods.listener(); reachables.hasNext();) {
+        for (Iterator reachables = RTAReachableMethods.listener(); 
+             reachables.hasNext();) {
             SootMethod method = (SootMethod)reachables.next();
             String methodName = method.getSignature();
-            if (method.isStatic() ||
-                    createableClasses.contains(method.getDeclaringClass())) {
-                list.add(methodName);
-                RTAReachableClasses.add(method.getDeclaringClass());
+            list.add(methodName);
+            SootClass declaringClass = method.getDeclaringClass();
+            if (!declaringClass.getName().startsWith("java")) {
+                necessaryClasses.add(declaringClass);
             }
         }
+
+        // Print out all the used methods
         Collections.sort(list);
         for (Iterator names = list.iterator(); names.hasNext();) {
             System.out.println(names.next());
         }
+        
         try {
+            // Add to the set of necessary classes all that they depend on.
+            DependedClasses dependedClasses = 
+                new DependedClasses(necessaryClasses);
             FileWriter writer = new FileWriter(outDir + "/jarClassList.txt");
-            for (Iterator classes = RTAReachableClasses.iterator();
+            for (Iterator classes = dependedClasses.list().iterator();
                  classes.hasNext();) {
                 SootClass theClass = (SootClass)classes.next();
-                if (!theClass.getName().startsWith("java")) {
-                    writer.write(theClass.getName());
-                    writer.write("\n");
-                }
+                writer.write(theClass.getName());
+                writer.write("\n");
             }
             writer.close();
         } catch(Exception ex) {
