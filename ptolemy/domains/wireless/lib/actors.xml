@@ -8,6 +8,9 @@
     <?moml
       <group>
 
+<entity name="CollisionDetector" class="ptolemy.domains.wireless.lib.CollisionDetector">
+</entity>
+
 <entity name="GetProperties" class="ptolemy.domains.wireless.lib.GetProperties">
 </entity>
 

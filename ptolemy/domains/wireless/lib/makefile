@@ -47,6 +47,7 @@ PTPACKAGE = 	lib
 PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \
+    CollisionDetector.java \
 	DelayChannel.java \
 	ErasureChannel.java \
 	GetProperties.java \
