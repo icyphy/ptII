@@ -3,7 +3,7 @@ An application that converts a Java class into  C
 source files (a .i.h file, a .h file and a .c file) that implement
 the class.
 
-Copyright (c) 2001 The University of Maryland.
+Copyright (c) 2001-2002 The University of Maryland.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without

@@ -4,7 +4,7 @@
 #
 # $Id$
 #
-# @Copyright (c) 2001 The University of Maryland. All rights reserved.
+# @Copyright (c) 2001-2002 The University of Maryland. All rights reserved.
 # 
 # Permission is hereby granted, without written agreement and without
 # license or royalty fees, to use, copy, modify, and distribute this

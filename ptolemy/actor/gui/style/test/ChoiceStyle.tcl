@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2001 The Regents of the University of California.
+# @Copyright (c) 2001-2002 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -101,4 +101,3 @@ test ChoiceStyle-2.0 {addEntry} {
     $pane add $ptolemyQuery
     $frame pack
     $frame setVisible true
-} {}

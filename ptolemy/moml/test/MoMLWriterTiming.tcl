@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2001 The Regents of the University of California.
+# @Copyright (c) 2001-2002 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -118,4 +118,3 @@ test MoMLWriterTiming-1.1 {Try the DSP only configuration} {
 test MoMLWriterTiming-1.2 {Try the Ptiny only configuration} {
     compareMoMLWriter "ptolemy/configs/vergilConfigurationPtiny.xml"
     list 0
-} {0}

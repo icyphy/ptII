@@ -1,7 +1,7 @@
 /*
 A class that takes care of common File I/O functions.
 
-Copyright (c) 2001 The University of Maryland.
+Copyright (c) 2001-2002 The University of Maryland.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without

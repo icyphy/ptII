@@ -1,7 +1,7 @@
 /* A class that allows to stop a model's execution if a condition returns
    true.
 
- Copyright (c) 1999-2001 SUPELEC and The Regents of the University of
+ Copyright (c) 1999-2002 SUPELEC and The Regents of the University of
  California.  All rights reserved.  Permission is hereby granted,
  without written agreement and without license or royalty fees, to
  use, copy, modify, and distribute this software and its documentation
