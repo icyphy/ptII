@@ -34,6 +34,7 @@ import ptolemy.data.expr.PtParser;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
+import ptolemy.data.type.TypeLattice;
 import ptolemy.kernel.util.IllegalActionException;
 
 import java.util.List;
@@ -269,6 +270,28 @@ public class ArrayToken extends AbstractNotConvertibleToken {
                             this, token));
         }
         return new ArrayToken(result);
+    }
+
+    /** Return the (exact) return type of the elementMultiply function
+     *  above.  This returns a new array type whose element type is
+     *  the least upper bound of the element type of this token and
+     *  the given type.
+     *  @param type1 The type of the base of the
+     *  corresponding function.
+     *  @param type2 The type of the argument of the
+     *  corresponding function.
+     *  @return The type of the value returned from the corresponding function.
+     */
+    public static Type elementMultiplyReturnType(
+            Type type1, Type type2) throws IllegalActionException {
+        if(type1 instanceof ArrayType) {
+            return new ArrayType(
+                    TypeLattice.leastUpperBound(
+                            ((ArrayType)type1).getElementType(), 
+                            type2));
+        } else {
+            return new ArrayType(BaseType.UNKNOWN);
+        }
     }
 
     /** Subtract the given token from each element of this array.
