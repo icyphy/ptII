@@ -53,7 +53,7 @@ public class PNCirConvFilter extends AtomicActor{
         super(container, name);
         _input  = new IOPort(this, "input", true, false);
         _output = new IOPort(this, "output", false, true);
-        //This is a HACK for the DogandPonyShow
+        // FIXME:  This is a HACK for the DogandPonyShow
         //_output.makeMultiplex(true);
     }
  
