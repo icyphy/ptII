@@ -104,12 +104,13 @@ test IllegalActionException-3.2 {Create a IllegalActionException with a null det
 ######################################################################
 ####
 # 
-test IllegalActionException-3.3 {Create a IllegalActionException with a detail message \
-	that is not a String} {
-    set n1 [java::new pt.kernel.NamedObj]
-    catch {set pe [java::new {pt.kernel.IllegalActionException String} $n1]} errmsg
-    list $errmsg
-} {{expected object of type java.lang.String but got "java0x1fc" (pt.kernel.NamedObj)}}
+# FIXME: Bogus test.  Can't succeed.
+# test IllegalActionException-3.3 {Create a IllegalActionException with a detail message \
+# 	that is not a String} {
+#     set n1 [java::new pt.kernel.NamedObj]
+#     catch {set pe [java::new {pt.kernel.IllegalActionException String} $n1]} errmsg
+#     list $errmsg
+# } {{expected object of type java.lang.String but got "java0x1fc" (pt.kernel.NamedObj)}}
 
 ######################################################################
 ####
