@@ -33,8 +33,10 @@ package ptolemy.actor.util;
 
 import ptolemy.kernel.util.*;
 
-import collections.LinkedList;
-import collections.CollectionEnumeration;
+import java.util.List;
+import java.util.LinkedList;
+import java.util.Enumeration;
+import java.util.Collections;
 import java.util.NoSuchElementException;
 
 //////////////////////////////////////////////////////////////////////////
@@ -80,8 +82,8 @@ public class FIFOQueue implements Cloneable {
     public FIFOQueue(FIFOQueue model) {
         this();
         synchronized(model) {
-            _queueList.appendElements(model.elements());
-            _historyList.appendElements(model.historyElements());
+            _queueList.addAll( model.elementList() );
+            _historyList.addAll( model.historyElementList());
         }
     }
 
@@ -106,11 +108,20 @@ public class FIFOQueue implements Cloneable {
     }
 
     /** Enumerate the objects in the queue, beginning with the oldest.
+     *  This method is deprecated and calls elementList()
      *  @return An enumeration of objects.
+     *  @deprecated Used elementList() instead.
      *  @see collections.LinkedList#elements()
      */
-    public CollectionEnumeration elements() {
-        return _queueList.elements();
+    public Enumeration elements() {
+        return Collections.enumeration( _queueList );
+    }
+
+    /** List the objects in the queue, beginning with the oldest.
+     *  @return A list of objects.
+     */
+    public List elementList() {
+        return _queueList;
     }
 
     /** Return true if the number of objects in the queue equals the
@@ -137,16 +148,15 @@ public class FIFOQueue implements Cloneable {
      *  @return The desired object in the queue or history.
      *  @exception NoSuchElementException If the offset is out of range.
      */
-    public Object get(int offset)
-            throws NoSuchElementException {
+    public Object get(int offset) throws NoSuchElementException {
         Object obj = null;
         try {
             if (offset >= 0) {
-                obj = _queueList.at(offset);
+                obj = _queueList.get(offset);
             } else {
-                obj = _historyList.at(historySize()+offset);
+                obj = _historyList.get(historySize()+offset);
             }
-        } catch (NoSuchElementException ex) {
+        } catch (IndexOutOfBoundsException ex) {
             String str = ".";
             if (_container != null) {
                 str = " contained by " + _container.getFullName();
@@ -182,15 +192,26 @@ public class FIFOQueue implements Cloneable {
 
     /** Enumerate the objects in the history, which are the N most recent
      *  objects taken from the queue, beginning with the oldest, where
-     *  N is less than or equal to the history capacity. If the history
-     *  capacity is infinite, then the enumeration includes all objects
-     *  previously taken from the queue. If the history capacity is zero,
-     *  then return an empty enumeration.
+     *  N is less than or equal to the history capacity. This method is
+     *  deprecated and calls historyElementList().
      *  @return An enumeration of objects in the history.
+     *  @deprecated Use historyElementList() instead.
      *  @see collections.LinkedList#elements()
      */
-    public CollectionEnumeration historyElements() {
-        return _historyList.elements();
+    public Enumeration historyElements() {
+        return Collections.enumeration( _historyList );
+    }
+
+    /** List the objects in the history, which are the N most recent
+     *  objects taken from the queue, beginning with the oldest, where
+     *  N is less than or equal to the history capacity. If the history
+     *  capacity is infinite, then the list includes all objects
+     *  previously taken from the queue. If the history capacity is zero,
+     *  then return an empty list.
+     *  @return A list of objects in the history.
+     */
+    public List historyElementList() {
+        return _historyList;
     }
 
     /** Return the number of objects in the history.
@@ -209,7 +230,7 @@ public class FIFOQueue implements Cloneable {
     public boolean put(Object element) {
         if (_queueCapacity == INFINITE_CAPACITY ||
                 _queueCapacity > _queueList.size()) {
-            _queueList.insertLast(element);
+            _queueList.addLast(element);
             return true;
         } else {
             return false;
@@ -260,7 +281,7 @@ public class FIFOQueue implements Cloneable {
             throws IllegalActionException {
         if (capacity > 0) {
             while (_historyList.size() > capacity) {
-                _historyList.take();
+                _historyList.removeFirst();
             }
         } else if (capacity == 0) {
             _historyList.clear();
@@ -290,7 +311,7 @@ public class FIFOQueue implements Cloneable {
     public Object take() throws NoSuchElementException {
         Object obj = null;
         try {
-            obj = _queueList.take();
+            obj = _queueList.removeFirst();
         } catch (NoSuchElementException ex) {
             String str = "";
             if (_container != null) {
@@ -299,11 +320,12 @@ public class FIFOQueue implements Cloneable {
             throw new NoSuchElementException("The FIFOQueue" + str
                     + " is empty!");
         }
+        
         if (_historyCapacity != 0) {
             if (_historyCapacity == _historyList.size()) {
-                _historyList.take();
+            	_historyList.removeFirst();
             }
-            _historyList.insertLast(obj);
+            _historyList.addLast(obj);
         }
         return obj;
     }
