@@ -189,18 +189,17 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
                         transitionActors[i].postfire();
                     }
                 }
+                ctrl._setInputsFromRefinement();
+                // execute the output actions, since these are normally
+                // executed in chooseTransition, but the outputs may
+                // have been changed by the transition refinemenets
+                Iterator actions = tr.choiceActionList().iterator();
+                while (actions.hasNext()) {
+                    Action action = (Action)actions.next();
+                    action.execute();
+                }
             }
-            // execute the output actions, since these are normally
-            // executed in chooseTransition, but the outputs may
-            // have been changed by the transition refinemenets
-            Iterator actions = tr.choiceActionList().iterator();
-            while (actions.hasNext()) {
-                Action action = (Action)actions.next();
-                action.execute();
-            }
-            ctrl._setInputsFromRefinement();       
         }
-	
         return;
     }
 
@@ -316,7 +315,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
         }
         State st = ctrl.currentState();
         Transition tr =
-            ctrl._chooseTransition(st.outgoingPort.linkedRelationList());
+            ctrl._chooseTransition(st.outgoingPort.linkedRelationList()); 
         if (_debugging && tr != null) {
             _debug(tr.getFullName(), "is chosen.");
         }
