@@ -55,7 +55,7 @@ CLASSPATH = ../../../..
 
 JSRCS = \
 	CTAdd.java \
-	CTAdd4.java \
+	CTAdd2.java \
 	CTConst.java \
 	CTGain.java \
 	CTIntegrator.java \
