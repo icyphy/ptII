@@ -101,7 +101,7 @@ import java.lang.*;
  * Grid: off
  * </pre>
  * It can be turned back on with
-  * <pre>
+ * <pre>
  * Grid: on
  * </pre>
  * Also, by default, the first ten data sets are shown each in a unique color.
@@ -268,7 +268,7 @@ public class PlotBox extends Applet {
 
         // Draw scaling annotation for x axis.
         // NOTE: 5 pixel padding on bottom.
-        int ySPos = drawRect.y + drawRect.height - 5; 
+	int ySPos = drawRect.height - 5; 
         if (_xExp != 0 && _xticks == null) {
             int xSPos = drawRect.x + drawRect.width - _rightPadding;
             String superscript = Integer.toString(_xExp);
@@ -323,25 +323,31 @@ public class PlotBox extends Applet {
         int ind = 0;
         if (_yticks == null) {
             // automatic ticks
-            // First, figure out how many digits after the decimal point will be used.
+            // First, figure out how many digits after the decimal point
+	    // will be used.
             int numfracdigits = _numFracDigits(yStep);
 
             // NOTE: Test cases kept in case they are needed again.
             // System.out.println("0.1 with 3 digits: " + _formatNum(0.1, 3));
-            // System.out.println("0.0995 with 3 digits: " + _formatNum(0.0995, 3));
-            // System.out.println("0.9995 with 3 digits: " + _formatNum(0.9995, 3));
-            // System.out.println("1.9995 with 0 digits: " + _formatNum(1.9995, 0));
+            // System.out.println("0.0995 with 3 digits: " +
+	    //                    _formatNum(0.0995, 3));
+            // System.out.println("0.9995 with 3 digits: " +
+	    //                    _formatNum(0.9995, 3));
+            // System.out.println("1.9995 with 0 digits: " +
+	    //                    _formatNum(1.9995, 0));
             // System.out.println("1 with 3 digits: " + _formatNum(1, 3));
             // System.out.println("10 with 0 digits: " + _formatNum(10, 0));
             // System.out.println("997 with 3 digits: " + _formatNum(997,3));
             // System.out.println("0.005 needs: " + _numFracDigits(0.005));
             // System.out.println("1 needs: " + _numFracDigits(1));
             // System.out.println("999 needs: " + _numFracDigits(999));
-            // System.out.println("999.0001 needs: " + _numFracDigits(999.0001));
-            // System.out.println("0.005 integer digits: " + _numIntDigits(0.005));
+            // System.out.println("999.0001 needs: "+_numFracDigits(999.0001));
+            // System.out.println("0.005 integer digits: " +
+	    //                    _numIntDigits(0.005));
             // System.out.println("1 integer digits: " + _numIntDigits(1));
             // System.out.println("999 integer digits: " + _numIntDigits(999));
-            // System.out.println("-999.0001 integer digits: " + _numIntDigits(999.0001));
+            // System.out.println("-999.0001 integer digits: " +
+	    //                    _numIntDigits(999.0001));
 
             for (double ypos=yStart; ypos <= _yMax; ypos += yStep) {
                 // Prevent out of bounds exceptions
@@ -462,14 +468,15 @@ public class PlotBox extends Applet {
                 xStep=_roundUp((_xtickMax-_xtickMin)/(double)nx);
                 // Compute the width of a label for this xStep
                 numfracdigits = _numFracDigits(xStep);
-                // Number of integer digits is the maximum of the two endpoints.
+                // Number of integer digits is the maximum of the two endpoints
                 int intdigits = _numIntDigits(_xtickMax);
                 int inttemp = _numIntDigits(_xtickMin);
                 if (intdigits < inttemp) {
                     intdigits = inttemp;
                 }
                 // Allow two extra digits (decimal point and sign).
-                int maxlabelwidth = charwidth * (numfracdigits + 2 + intdigits);
+                int maxlabelwidth = charwidth *
+		    (numfracdigits + 2 + intdigits);
                 // Compute new estimate of number of ticks.
                 int savenx = nx;
                 // NOTE: 10 additional pixels between labels.
