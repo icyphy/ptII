@@ -59,6 +59,13 @@ public class Inequality {
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
 
+    /** Gets the greater term of this inequality.
+     *  @return an <code>InequalityTerm</code>
+     */
+    public InequalityTerm greaterTerm() {
+        return _greaterTerm;
+    }
+ 
     /** Gets the term that is less than the other in this inequality.
      *  @return an <code>InequalityTerm</code>
      */
@@ -66,13 +73,6 @@ public class Inequality {
         return _lesserTerm;
     }
 
-    /** Gets the greater term of this inequality.
-     *  @return an <code>InequalityTerm</code>
-     */
-    public InequalityTerm greaterTerm() {
-        return _greaterTerm;
-    }
-    
     /** Tests if this inequality is satisfied with the current value
      *  of variables.
      *  @return <code>true</code> if this inequality is satisfied;

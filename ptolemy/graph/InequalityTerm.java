@@ -42,13 +42,6 @@ $Id$
 */
 
 public interface InequalityTerm {
-    /** Checks if this term can be set to a constant.  Only a variable
-     *  can be set, constants and functions cannot.
-     *  @returns <code>true</code> if this term is a variable;
-     *   <code>false</code> otherwise.
-     */
-    public boolean settable();
-    
     /** Sets the value of this term to the specified CPO element.
      *  @param e an object representing an element in the
      *   underlining CPO.
@@ -59,6 +52,13 @@ public interface InequalityTerm {
     public void set(Object e)
             throws IllegalActionException;
 
+    /** Checks if this term can be set to a constant.  Only a variable
+     *  can be set, constants and functions cannot.
+     *  @returns <code>true</code> if this term is a variable;
+     *   <code>false</code> otherwise.
+     */
+    public boolean settable();
+ 
     /** Evaluates the value of this term.  If this term is a constant,
      *  it evaluates to that constant; if this term is a variable, it
      *  evaluates to the current value of that variable; if this term
