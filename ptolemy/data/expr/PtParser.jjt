@@ -96,12 +96,15 @@ In particular the operator precedences implemented here follow exactly
 those in Java. Any type conversions that are performed are lossless. If 
 the user wants lossy conversions, explicit casts will be necessary.
 <p>
-For a more thorough description of what the Parser is designed to do, 
+Users can register constants with the parser and also register classes
+where functions that may be called are defined. For a more 
+thorough description of what the Parser is designed to do, 
 please consult the Ptolemy II design document (or contact nsmyth@eecs)
-
+<p>
 @author Neil Smyth
 @version $Id$
 
+@see ptolemy.data.expr.ASTPtBitwiseNode
 @see ptolemy.data.expr.ASTPtFunctionNode
 @see ptolemy.data.expr.ASTPtFunctionalIfNode
 @see ptolemy.data.expr.ASTPtLeafNode
