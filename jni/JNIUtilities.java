@@ -192,9 +192,15 @@ public class JNIUtilities {
     /** Instances of this class cannot be created.
      */
     private JNIUtilities() {
+	// We could try to have non static fields for the parameter values
+	// but that would make things tricky since we want to have
+	// a method that takes a model which will generate JNI
+	// code for all the GenericJNIActors in a model.
     }
 
     /** Given a model, generate JNI files for all GenericJNIActors.
+     *  @param model The model to generate JNI files for any 
+     *  contained GenericJNIActors.
      *  @return true if a GenericJNIActor was found.
      *  @exception If there was a problem creating the JNI files.
      */
@@ -218,7 +224,8 @@ public class JNIUtilities {
 	return success;
     }
 
-    /** Generate JNI files for one actor in a model */ 
+    /** Generate JNI files for one actor in a model
+     */
     public static void generateJNI(CompositeEntity model,
             GenericJNIActor actor)
             throws Exception {
@@ -231,7 +238,7 @@ public class JNIUtilities {
 
         //Cr‰ation des ports
         Iterator relations = model.relationList().iterator();
-        while(relations.hasNext()) {
+        while (relations.hasNext()) {
             ((ptolemy.kernel.ComponentRelation)(relations.next())).unlinkAll();
         }
         actor.removeAllPorts();
@@ -312,25 +319,25 @@ public class JNIUtilities {
 //          }
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
     /** Create the interface Java File.
      */
     protected static File _exportJavaInterfaceFile(GenericJNIActor actor) 
 	throws IllegalActionException, IOException {
         StringBuffer results = new StringBuffer();
 
-        String returnJType = "";
-        String returnName = "";
 
-        String internativeLibrary = "";
-        String interFuncName = "";
-        String returnJType2 = "";
 
         String nativeFunction = _getNativeFunction(actor);
         String nativeLibrary = _getNativeLibrary(actor);
 
-        internativeLibrary = "jni" + nativeLibrary;
-        interFuncName = "jni" + nativeFunction;
+        String interNativeLibrary = "jni" + nativeLibrary;
+        String interFuncName = "jni" + nativeFunction;
 
+        String returnJType = "";
+        String returnName = "";
         List argumentsList = actor.argumentsList();
         Iterator arguments = argumentsList.iterator();
         while (arguments.hasNext()) {
@@ -342,14 +349,15 @@ public class JNIUtilities {
             }
         }
 
-        if (returnJType.equals("void"))
+        String returnJType2 = "";
+        if (returnJType.equals("void")) {
             returnJType2 = "";
-        else
+        } else {
             returnJType2 = returnJType;
+	}
 
-        results.append(
-		       "package jni."
-		       + internativeLibrary
+        results.append("package jni."
+		       + interNativeLibrary
 		       + ";\n"
 		       + "\n\n\n"
 		       + "/* The class that interface the native function call\n"
@@ -368,23 +376,23 @@ public class JNIUtilities {
 		       + " */\n"
 		       + "static {\n"
 		       + "System.loadLibrary(\"Jni"
-		       + internativeLibrary
+		       + interNativeLibrary
 		       + "\");\n }\n\n"
 		       + "public native "
 		       + returnJType
 		       + " "
 		       + interFuncName
 		       + "("
-            + _getArgsInWithJType(actor, ",")
+            + _getArgumentsInWithJType(actor, ",")
             + _virgule(
-                    _getArgsInWithJType(actor, ","),
-                    _getArgsInOutWithJType(actor, ","))
-            + _getArgsInOutWithJType(actor, ",")
+                    _getArgumentsInWithJType(actor, ","),
+                    _getArgumentsInOutWithJType(actor, ","))
+            + _getArgumentsInOutWithJType(actor, ",")
             + _virgule(
-                    _getArgsInWithJType(actor, ",")+
-                    _getArgsInOutWithJType(actor, ","),
-                    _getArgsOutWithJType(actor, ","))
-            + _getArgsOutWithJType(actor, ",")
+                    _getArgumentsInWithJType(actor, ",")+
+                    _getArgumentsInOutWithJType(actor, ","),
+                    _getArgumentsOutWithJType(actor, ","))
+            + _getArgumentsOutWithJType(actor, ",")
             + ") throws SecurityException;\n\n"
             + "/* Send the result of the native library."
             + " This method is called by"
@@ -393,20 +401,20 @@ public class JNIUtilities {
             + " */\n"
             + " public void "
             + "sendResults("
-            + _getArgsOutWithJType(actor, ",")
+            + _getArgumentsOutWithJType(actor, ",")
             + _virgule(
-                    _getArgsOutWithJType(actor, ","),
-                    _getArgsInOutWithJType(actor, ","))
-            + _getArgsInOutWithJType(actor, ",")
+                    _getArgumentsOutWithJType(actor, ","),
+                    _getArgumentsInOutWithJType(actor, ","))
+            + _getArgumentsInOutWithJType(actor, ",")
             + ") {\n");
 
-        arguments = _getArgsOut(actor).iterator();
+        arguments = _getArgumentsOut(actor).iterator();
         while (arguments.hasNext()) {
             String name = ((Argument) arguments.next()).getName();
             results.append( "_" + name + " = " + name + ";\n");
         }
 
-        arguments = _getArgsInOut(actor).iterator();
+        arguments = _getArgumentsInOut(actor).iterator();
         while (arguments.hasNext()) {
             String name = ((Argument) arguments.next()).getName();
             results.append( "_" + name + " = " + name + ";\n");
@@ -420,29 +428,29 @@ public class JNIUtilities {
             + " public "
             + returnJType
             + " fire("
-            + _getArgsInWithJType(actor, ",")
-            + _virgule(_getArgsInWithJType(actor, ","),
-                    _getArgsInOutWithJType(actor, ","))
-            + _getArgsInOutWithJType(actor, ",")
+            + _getArgumentsInWithJType(actor, ",")
+            + _virgule(_getArgumentsInWithJType(actor, ","),
+                    _getArgumentsInOutWithJType(actor, ","))
+            + _getArgumentsInOutWithJType(actor, ",")
             + _virgule(
-                    _getArgsInOutWithJType(actor, ","),
-                    _getArgsOutWithJType(actor, ","))
-            + _getArgsOutWithJType(actor, ",")
+                    _getArgumentsInOutWithJType(actor, ","),
+                    _getArgumentsOutWithJType(actor, ","))
+            + _getArgumentsOutWithJType(actor, ",")
             + ") {\n\n");
 
         //if there is a returned value
         Argument argRet = (Argument) actor.getArgumentReturn();
-        if(!(argRet.getJType().equals("void"))) {
+        if (!(argRet.getJType().equals("void"))) {
                 results.append( "_" + argRet.getName() + " = "
                     + interFuncName
                     + "("
-                    + _getArgsIn(actor, ",")
-                    + _virgule( _getArgsIn(actor, ","),
-                            _getArgsInOut(actor, ","))
-                    + _getArgsInOut(actor, ",")
-                    + _virgule( _getArgsInOut(actor, ","),
-                            _getArgsOut(actor, ","))
-                    + _getArgsOut(actor, ",")
+                    + _getArgumentsIn(actor, ",")
+                    + _virgule( _getArgumentsIn(actor, ","),
+                            _getArgumentsInOut(actor, ","))
+                    + _getArgumentsInOut(actor, ",")
+                    + _virgule( _getArgumentsInOut(actor, ","),
+                            _getArgumentsOut(actor, ","))
+                    + _getArgumentsOut(actor, ",")
                     + ");"
                     + "\n");
 
@@ -451,13 +459,13 @@ public class JNIUtilities {
 	} else {
                 results.append( interFuncName
                     + "("
-                    + _getArgsIn(actor, ",")
-                    + _virgule( _getArgsIn(actor, ","),
-                            _getArgsInOut(actor, ","))
-                    + _getArgsInOut(actor, ",")
-                    + _virgule( _getArgsInOut(actor, ","),
-                            _getArgsOut(actor, ","))
-                    + _getArgsOut(actor, ",")
+                    + _getArgumentsIn(actor, ",")
+                    + _virgule( _getArgumentsIn(actor, ","),
+                            _getArgumentsInOut(actor, ","))
+                    + _getArgumentsInOut(actor, ",")
+                    + _virgule( _getArgumentsInOut(actor, ","),
+                            _getArgumentsOut(actor, ","))
+                    + _getArgumentsOut(actor, ",")
                     + ");"
                     + "\n }\n");
 	}
@@ -465,14 +473,14 @@ public class JNIUtilities {
         results.append( "///////////// public fields\n" + "\n");
 
         //out
-        arguments = _getArgsOut(actor).iterator();
+        arguments = _getArgumentsOut(actor).iterator();
         while (arguments.hasNext()) {
             Argument arg = (Argument) arguments.next();
             results.append( "public " + arg.getJType() + " "
                 + "_" + arg.getName() + ";\n");
         }
         //inout
-        arguments = _getArgsInOut(actor).iterator();
+        arguments = _getArgumentsInOut(actor).iterator();
         while (arguments.hasNext()) {
             Argument arg = (Argument) arguments.next();
             results.append( "public " + arg.getJType() + " "
@@ -480,20 +488,20 @@ public class JNIUtilities {
         }
 
         //in
-        arguments = _getArgsIn(actor).iterator();
+        arguments = _getArgumentsIn(actor).iterator();
         while (arguments.hasNext()) {
             Argument arg = (Argument) arguments.next();
             results.append( "public " + arg.getJType() + " "
                 + "_" + arg.getName() + ";\n");
         }
         //return
-        if(!(argRet.getJType().equals("void")))
+        if (!(argRet.getJType().equals("void")))
             results.append( "public " + argRet.getJType() + " " + "_"
                 + argRet.getName() + ";\n");
 
         results.append( "\n}");
         File dir = new File(System.getProperty("user.dir")
-                + "/jni/" + internativeLibrary);
+                + "/jni/" + interNativeLibrary);
         //Creation du repertoire
         try {
             dir.mkdirs();
@@ -505,7 +513,7 @@ public class JNIUtilities {
         File javaFile =
             new File(
                     System.getProperty("user.dir") + "/jni/"
-                    + internativeLibrary
+                    + interNativeLibrary
                     + "/Jni"
                     + actor.getName()
                     + ".java");
@@ -523,16 +531,16 @@ public class JNIUtilities {
     protected static File _exportCInterfaceFile(GenericJNIActor actor)
 	throws IllegalActionException, IOException {
         StringBuffer results = new StringBuffer();
-        String returnType = "";
-        String returnName = "";
 
         String libraryDirectory = _getLibraryDirectory(actor);
 	String nativeFunction = _getNativeFunction(actor);
         String nativeLibrary = _getNativeLibrary(actor);
 
-        String internativeLibrary = "jni" + nativeLibrary;
+        String interNativeLibrary = "jni" + nativeLibrary;
         String interFuncName = "jni" + nativeFunction;
 
+        String returnType = "";
+        String returnName = "";
         List argumentsList = actor.argumentsList();
         Iterator arguments = argumentsList.iterator();
         while (arguments.hasNext()) {
@@ -545,7 +553,7 @@ public class JNIUtilities {
         }
 
         String returnJNIType = "";
-        arguments = _getArgs(actor, false, false, true).iterator();
+        arguments = _getArguments(actor, false, false, true).iterator();
         if (arguments.hasNext()) {
             Argument argument = (Argument) arguments.next();
             returnJNIType = argument.getJNIType();
@@ -568,7 +576,7 @@ public class JNIUtilities {
             + ".h\"\n"
             // le fichier entete g‰n‰r‰ par javah
             +"#include \"jni_"
-            + internativeLibrary
+            + interNativeLibrary
             + "_Jni"
             + actor.getName()
             + ".h\"\n"
@@ -585,36 +593,36 @@ public class JNIUtilities {
             + " "
             + nativeFunction
             + "("
-            + _getArgsInWithCType(actor, ",")
-            + _virgule( _getArgsInWithCType(actor, ","),
-                    _getArgsInOut(actor, ","))
-            + _getArgsInOutWithCType(actor, ",")
-            + _virgule(_getArgsInOut(actor, ","),
-                    _getArgsOutWithCType(actor, ","))
-            + _getArgsOutWithCType(actor, ",")
+            + _getArgumentsInWithCType(actor, ",")
+            + _virgule( _getArgumentsInWithCType(actor, ","),
+                    _getArgumentsInOut(actor, ","))
+            + _getArgumentsInOutWithCType(actor, ",")
+            + _virgule(_getArgumentsInOut(actor, ","),
+                    _getArgumentsOutWithCType(actor, ","))
+            + _getArgumentsOutWithCType(actor, ",")
             + ");\n\n"
             + "JNIEXPORT "
             + actor.getArgumentReturn().getJNIType()
             + " JNICALL Java_jni_"
-            + internativeLibrary
+            + interNativeLibrary
             + "_Jni"
             + actor.getName()
             + "_"
             + interFuncName
             + "(\nJNIEnv *env, jobject jobj "
-            + _virgule(_getArgsInWithJNIType(actor, ",")) 
-	    + _getArgsInWithJNIType(actor, ",")
-            + _virgule(_getArgsInWithJNIType(actor, ","),
-                    _getArgsInOutWithCType(actor, ","))
-            + _getArgsInOutWithJNIType(actor, ",")
-            + _virgule(_getArgsInOutWithJNIType(actor, ","),
-                    _getArgsOutWithCType(actor, ","))
-            + _getArgsOutWithJNIType(actor, ",")
+            + _virgule(_getArgumentsInWithJNIType(actor, ",")) 
+	    + _getArgumentsInWithJNIType(actor, ",")
+            + _virgule(_getArgumentsInWithJNIType(actor, ","),
+                    _getArgumentsInOutWithCType(actor, ","))
+            + _getArgumentsInOutWithJNIType(actor, ",")
+            + _virgule(_getArgumentsInOutWithJNIType(actor, ","),
+                    _getArgumentsOutWithCType(actor, ","))
+            + _getArgumentsOutWithJNIType(actor, ",")
             + ")\n"
             + "{\n"
             + _indent1 + "// Declaration des sorties\n");
 
-        arguments = _getArgsOut(actor).iterator();
+        arguments = _getArgumentsOut(actor).iterator();
         while (arguments.hasNext()) {
             Argument argument = (Argument) arguments.next();
             results.append(argument.getJNIType() + " "
@@ -628,7 +636,7 @@ public class JNIUtilities {
 		       + _indent1 + "// appel de la librairie existante\n\n");
 
         //For the array inout and in
-        arguments = _getArgsInOut(actor).iterator();
+        arguments = _getArgumentsInOut(actor).iterator();
         while (arguments.hasNext()) {
             Argument arg = (Argument) arguments.next();
             String typ = arg.getJType();
@@ -644,7 +652,7 @@ public class JNIUtilities {
         }
 
 
-        arguments = _getArgsIn(actor).iterator();
+        arguments = _getArgumentsIn(actor).iterator();
         while (arguments.hasNext()) {
             Argument arg = (Argument) arguments.next();
             String typ = arg.getJType();
@@ -656,7 +664,7 @@ public class JNIUtilities {
 			+ typ.substring(0, 1).toUpperCase()
                         + typ.substring(1, typ.length())  + "ArrayElements("
                         + arg.getName() + ",JNI_FALSE);\n"
-                        + "//if((long *)in_1 == (long *)0 || (long *)inout_1 == (long *)0)n" +
+                        + "//if ((long *)in_1 == (long *)0 || (long *)inout_1 == (long *)0)n" +
                         "//{\n" + "//std::cout << \"warning : the matrix is empty !\""
                         + " << std::endl;\n" +
                         "//}\n");
@@ -676,20 +684,20 @@ public class JNIUtilities {
 	results.append(
 		       nativeFunction
 		       + "("
-		       + _getArgsWithCTypeCast(actor, true, false, false, ",")
-		       + _virgule( _getArgsInWithCType(actor, ","), _getArgsInOut(actor, ","))
-		       + _getArgsWithCTypeCast(actor, true, true, false, ",")
-		       + _virgule( _getArgsInOutWithCType(actor, ","), _getArgsOut(actor, ","))
-		       + _getArgsWithCTypeCast(actor, false, true, false, ",")
+		       + _getArgumentsWithCTypeCast(actor, true, false, false, ",")
+		       + _virgule( _getArgumentsInWithCType(actor, ","), _getArgumentsInOut(actor, ","))
+		       + _getArgumentsWithCTypeCast(actor, true, true, false, ",")
+		       + _virgule( _getArgumentsInOutWithCType(actor, ","), _getArgumentsOut(actor, ","))
+		       + _getArgumentsWithCTypeCast(actor, false, true, false, ",")
 		       + ");\n\n");
 
         //Release memory in native side
         //for in
-        arguments = _getArgsIn(actor).iterator();
-        while(arguments.hasNext()) {
+        arguments = _getArgumentsIn(actor).iterator();
+        while (arguments.hasNext()) {
             Argument arg = (Argument) arguments.next();
             String typ = arg.getJType();
-            if(typ.endsWith("[]")) {
+            if (typ.endsWith("[]")) {
                     typ = typ.substring(0, typ.length()-2);
                     results.append( "env->Release"+ typ.substring(0, 1).toUpperCase() +
                         typ.substring(1, typ.length())  + "ArrayElements(" +
@@ -697,11 +705,11 @@ public class JNIUtilities {
 	    }
         }
         //for inout
-        arguments = _getArgsInOut(actor).iterator();
-        while(arguments.hasNext()) {
+        arguments = _getArgumentsInOut(actor).iterator();
+        while (arguments.hasNext()) {
             Argument arg = (Argument) arguments.next();
             String typ = arg.getJType();
-            if(typ.endsWith("[]")) {
+            if (typ.endsWith("[]")) {
                     typ = typ.substring(0, typ.length()-2);
                     results.append("env->Release"
 				   + typ.substring(0, 1).toUpperCase()
@@ -718,8 +726,8 @@ public class JNIUtilities {
 			    + "\n}\n");
         }
 
-        if (!(_getArgsOut(actor, "").equals("")
-                    && _getArgsInOut(actor, "").equals(""))) {
+        if (!(_getArgumentsOut(actor, "").equals("")
+                    && _getArgumentsInOut(actor, "").equals(""))) {
 	    results.append("                // envoi des sorties dans l'environnement JAVA / PTOLEMY II\n"
                 + "jclass cls = env->GetObjectClass(jobj);\n"
                 + "jmethodID mid = env->GetMethodID(cls,\"sendResults\",\""
@@ -733,10 +741,10 @@ public class JNIUtilities {
 	    } else {
                 results.append( "return;\n}\n");
 	    }
-            results.append( "env->CallVoidMethod(jobj,mid," + _getArgsOut(actor, ",")
+            results.append( "env->CallVoidMethod(jobj,mid," + _getArgumentsOut(actor, ",")
                 //warning : ici on suppose qu'il y a toujours au - 1 argument Out !! TBFix
-                +_virgule( _getArgsOut(actor, ","), _getArgsInOut(actor, ","))
-                + _getArgsInOut(actor, ",")
+                +_virgule( _getArgumentsOut(actor, ","), _getArgumentsInOut(actor, ","))
+                + _getArgumentsInOut(actor, ",")
                 + ");\n"
                 + "if (env->ExceptionOccurred()) {\n"
                 + "std::cout << \"Can't get back results!!\" << std::endl;\n"
@@ -748,12 +756,12 @@ public class JNIUtilities {
 
         results.append(_indent1 + "// M‰nage\n");
 
-        /*arguments = _getArgsOut(actor).iterator();
+        /*arguments = _getArgumentsOut(actor).iterator();
           while (arguments.hasNext()) {
           Argument arg = (Argument) arguments.next();
           results.append( "delete " + " " + arg.getName() + ";\n";
           }
-          arguments = _getArgsInOut(actor).iterator();
+          arguments = _getArgumentsInOut(actor).iterator();
           while (arguments.hasNext()) {
           Argument arg = (Argument) arguments.next();
           results.append( "delete " + " " + arg.getName() + ";\n";
@@ -769,7 +777,7 @@ public class JNIUtilities {
         File cFile =
             new File(
                     System.getProperty("user.dir") + "/jni/"
-                    + internativeLibrary
+                    + interNativeLibrary
                     + "/jni"
                     + actor.getName()
                     + ".cpp");
@@ -788,42 +796,42 @@ public class JNIUtilities {
         String libraryDirectory = _getLibraryDirectory(actor);
         String nativeLibrary = _getNativeLibrary(actor);
 
-        String internativeLibrary = "jni" + nativeLibrary;
+        String interNativeLibrary = "jni" + nativeLibrary;
         results.append(
             "# Microsoft Developer Studio Project File - Name=\""
-            + internativeLibrary
+            + interNativeLibrary
             + "\" - Package Owner=<4>\r\n"
             + "# Microsoft Developer Studio Generated Build File,"
             + " Format Version 6.00\r\n"
             + "# ** DO NOT EDIT **\r\n"
             + "# TARGTYPE \"Win32 (x86) Dynamic-Link Library\" 0x0102\r\n"
             + "CFG="
-            + internativeLibrary
+            + interNativeLibrary
             + " - Win32 Debug\r\n"
             + "!MESSAGE This is not a valid makefile. To build this project"
             + " using NMAKE,\r\n"
             + "!MESSAGE use the Export Makefile command and run\r\n"
             + "!MESSAGE \r\n"
             + "!MESSAGE NMAKE /f \""
-            + internativeLibrary
+            + interNativeLibrary
             + ".mak\".\r\n"
             + "!MESSAGE \r\n"
             + "!MESSAGE You can specify a configuration when running NMAKE\r\n"
             + "!MESSAGE by defining the macro CFG on the command line. For example:\r\n"
             + "!MESSAGE \r\n"
             + "!MESSAGE NMAKE /f \""
-            + internativeLibrary
+            + interNativeLibrary
             + ".mak\" CFG=\""
-            + internativeLibrary
+            + interNativeLibrary
             + " - Win32 Debug\"\r\n"
             + "!MESSAGE \r\n"
             + "!MESSAGE Possible choices for configuration are:\r\n"
             + "!MESSAGE \r\n"
             + "!MESSAGE \""
-            + internativeLibrary
+            + interNativeLibrary
             + " - Win32 Release\" (based on \"Win32 (x86) Dynamic-Link Library\")\r\n"
             + "!MESSAGE \""
-            + internativeLibrary
+            + interNativeLibrary
             + " - Win32 Debug\" (based on \"Win32 (x86) Dynamic-Link Library\")\r\n"
             + "!MESSAGE \r\n\r\n"
             + "# Begin Project\r\n"
@@ -834,7 +842,7 @@ public class JNIUtilities {
             + "MTL=midl.exe\r\n"
             + "RSC=rc.exe\r\n\r\n"
             + "!IF  \"$(CFG)\" == \""
-            + internativeLibrary
+            + interNativeLibrary
             + "- Win32 Release\"\r\n\r\n"
             + "# PROP BASE Use_MFC 0\r\n"
             + "# PROP BASE Use_Debug_Libraries 0\r\n"
@@ -851,12 +859,12 @@ public class JNIUtilities {
             + "# ADD BASE CPP /nologo /MT /W3 /GX /O2 /D \"WIN32\""
             + " /D \"NDEBUG\" /D \"_WINDOWS\" /D \"_MBCS\" /D \"_USRDLL\""
             + " /D \""
-            + internativeLibrary.toUpperCase()
+            + interNativeLibrary.toUpperCase()
             + "_EXPORTS\" /YX /FD /c\r\n"
             + "# ADD CPP /nologo /MT /W3 /GX /O2 /D \"WIN32\" /D \"NDEBUG\""
             + " /D \"_WINDOWS\" /D \"_MBCS\" /D \"_USRDLL\""
             + " /D \""
-            + internativeLibrary.toUpperCase()
+            + interNativeLibrary.toUpperCase()
             + "_EXPORTS\" /YX /FD /c /I "
             + "\"d:/users/arnould/jdk1.4.1/include/\" "
             + "/I "
@@ -876,7 +884,7 @@ public class JNIUtilities {
             + " advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib"
             + " /nologo /dll /machine:I386\r\n\r\n"
             + "!ELSEIF  \"$(CFG)\" == \""
-            + internativeLibrary
+            + interNativeLibrary
             + " - Win32 Debug\"\r\n\r\n"
             + "# PROP BASE Use_MFC 0\r\n"
             + "# PROP BASE Use_Debug_Libraries 1\r\n"
@@ -894,12 +902,12 @@ public class JNIUtilities {
             + "# ADD BASE CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /D \"WIN32\""
             + " /D \"_DEBUG\" /D \"_WINDOWS\" /D \"_MBCS\" /D \"_USRDLL\""
             + " /D \""
-            + internativeLibrary.toUpperCase()
+            + interNativeLibrary.toUpperCase()
             + "_EXPORTS\" /YX /FD /GZ /c\r\n"
             + "# ADD CPP /nologo /MTd /W3 /Gm /GX /ZI /Od  /D \"WIN32\""
             + " /D \"_DEBUG\" /D \"_WINDOWS\" /D \"_MBCS\" /D \"_USRDLL\""
             + " /D \""
-            + internativeLibrary.toUpperCase()
+            + interNativeLibrary.toUpperCase()
             + "_EXPORTS\" /YX /FD /GZ /c /I "
             + "\"d:/users/arnould/jdk1.4.1/include/\" "
             + "/I "
@@ -922,10 +930,10 @@ public class JNIUtilities {
             + "!ENDIF \r\n\r\n"
             + "# Begin Target\r\n\r\n"
             + "# Name \""
-            + internativeLibrary
+            + interNativeLibrary
             + " - Win32 Release\"\r\n"
             + "# Name \""
-            + internativeLibrary
+            + interNativeLibrary
             + " - Win32 Debug\"\r\n"
             + "# Begin Group \"Source Files\"\r\n\r\n"
             + "# PROP Default_Filter \"cpp;c;cxx;rc;def;r;odl;idl;hpj;bat\"\r\n"
@@ -971,9 +979,9 @@ public class JNIUtilities {
         File dspFile =
             new File(
                     System.getProperty("user.dir") + "/jni/"
-                    + internativeLibrary
+                    + interNativeLibrary
                     + "/Jni"
-                    + internativeLibrary
+                    + interNativeLibrary
                     + ".dsp");
 	FileWriter writer = new FileWriter(dspFile);
 	writer.write(results.toString());
@@ -989,7 +997,7 @@ public class JNIUtilities {
         String libraryDirectory = _getLibraryDirectory(actor);
         String nativeLibrary = _getNativeLibrary(actor);
 
-        String internativeLibrary = "jni" + nativeLibrary;
+        String interNativeLibrary = "jni" + nativeLibrary;
 	String libraryPath = libraryDirectory;
 	if (libraryPath.equals("\"\"")) {
 	    libraryPath = ".";
@@ -1003,7 +1011,7 @@ public class JNIUtilities {
                     + "# Get configuration info\n"
 		    + "CONFIG =\t$(ROOT)/mk/ptII.mk\n" 
 		    + "include $(CONFIG)\n\n"
-		    + internativeLibrary + ":\n"
+		    + interNativeLibrary + ":\n"
 		    + "\t\"$(PTCC)\" \\\n"
 		    + "\t\t\"-I$(PTJAVA_DIR)/include\" \\\n"
 		    + "\t\t\"-I$(PTJAVA_DIR)/include/$(PTJNI_ARCHITECTURE)\" \\\n"
@@ -1020,9 +1028,9 @@ public class JNIUtilities {
         File makeFile =
             new File(
                     System.getProperty("user.dir") + "/jni/"
-                    + internativeLibrary
+                    + interNativeLibrary
                     + "/Jni"
-                    + internativeLibrary
+                    + interNativeLibrary
                     + ".mk");
 	FileWriter writer = new FileWriter(makeFile);
 	writer.write(results.toString());
@@ -1032,220 +1040,226 @@ public class JNIUtilities {
     /** Get the args belonging to this entity.
      * @return a vector of in arguments.
      */
-    protected static Vector _getArgs(
+    protected static Vector _getArguments(
             GenericJNIActor actor,
             boolean isInput,
             boolean isOutput,
             boolean isReturn) {
-        Vector ret = new Vector();
-        List inArgs = actor.argumentsList();
-        Iterator ite = inArgs.iterator();
-        while (ite.hasNext()) {
-            Argument arg = (Argument) ite.next();
-            if (arg != null
-                    && arg.isInput() == isInput
-                    && arg.isOutput() == isOutput
-                    && arg.isReturn() == isReturn) {
-                ret.add((Object) arg);
+        Vector returnValue = new Vector();
+        Iterator arguments = actor.argumentsList().iterator();
+        while (arguments.hasNext()) {
+            Argument argument = (Argument) arguments.next();
+            if (argument != null
+                    && argument.isInput() == isInput
+                    && argument.isOutput() == isOutput
+                    && argument.isReturn() == isReturn) {
+                returnValue.add((Object) argument);
             }
         }
-        return ret;
+        return returnValue;
     }
 
     /** Get the args belonging to this entity.
      *  @return the name of each in arguments.
      */
-    protected static String _getArgs(
+    protected static String _getArguments(
             GenericJNIActor actor,
             boolean isInput,
             boolean isOutput,
             boolean isReturn,
             String separator) {
-        String ret = "";
-        Iterator ite = _getArgs(actor, isInput, isOutput, isReturn).iterator();
-        while (ite.hasNext()) {
-            Argument arg = (Argument) ite.next();
-            if (arg != null) {
-                if (ret == "")
-                    ret = arg.getName();
-                else
-                    ret = ret + separator + arg.getName();
+	StringBuffer returnValue = new StringBuffer();
+        Iterator arguments =
+	    _getArguments(actor, isInput, isOutput, isReturn).iterator();
+        while (arguments.hasNext()) {
+            Argument argument = (Argument) arguments.next();
+            if (argument != null) {
+                if (returnValue.length() > 0) {
+                    returnValue.append(separator);
+		}
+		returnValue.append(argument.getName());
             }
         }
-        return ret;
+        return returnValue.toString();
     }
 
     /** Get the args belonging to this entity with their c type.
      *  @return the c type and name of each in arguments.
      */
-    protected static String _getArgsWithCType(
+    protected static String _getArgumentsWithCType(
             GenericJNIActor actor,
             boolean isInput,
             boolean isOutput,
             boolean isReturn,
             String separator) {
-        String ret = "";
-        Iterator ite = _getArgs(actor, isInput, isOutput, isReturn).iterator();
-        while (ite.hasNext()) {
-            Argument arg = (Argument) ite.next();
-            if (arg != null) {
-                if (ret == "")
-                    ret = arg.getCType() + " " + arg.getName();
-                else
-                    ret = ret + ", " + arg.getCType() + " " + arg.getName();
+	StringBuffer returnValue = new StringBuffer();
+        Iterator arguments =
+	    _getArguments(actor, isInput, isOutput, isReturn).iterator();
+        while (arguments.hasNext()) {
+            Argument argument = (Argument) arguments.next();
+            if (argument != null) {
+                if (returnValue.length() > 0) {
+                    returnValue.append(separator);
+		}
+		returnValue.append(argument.getCType() + " "
+				   + argument.getName());
             }
         }
-        return ret;
+        return returnValue.toString();
     }
 
-    /** Get the args belonging to this entity with their c type.
+    /** Get the arguments belonging to this entity with their c type.
      *  @return the c type and name of each in arguments.
      */
-    protected static String _getArgsWithCTypeCast(
+    protected static String _getArgumentsWithCTypeCast(
             GenericJNIActor actor,
             boolean isInput,
             boolean isOutput,
             boolean isReturn,
             String separator) {
-        String ret = "";
-        Iterator ite = _getArgs(actor, isInput, isOutput, isReturn).iterator();
-        while (ite.hasNext()) {
-            Argument arg = (Argument) ite.next();
+	StringBuffer returnValue = new StringBuffer();
+        Iterator arguments =
+	    _getArguments(actor, isInput, isOutput, isReturn).iterator();
+        while (arguments.hasNext()) {
+            Argument argument = (Argument) arguments.next();
             String add = "";
-            if(arg.getJType().endsWith("[]")) add = "_1";
-            if (arg != null) {
-                if (ret == "")
-                    ret = " (" + arg.getC2Type() + ")" + arg.getName() + add;
-                else
-                    ret =
-                        ret
-                        + separator
-                        + " ("
-                        + arg.getC2Type()
-                        + ")"
-                        + arg.getName() + add;
+            if (argument.getJType().endsWith("[]")) {
+		add = "_1";
+	    }
+            if (argument != null) {
+                if (returnValue.length() > 0) {
+                    returnValue.append(separator);
+		}
+		returnValue.append(" (" + argument.getC2Type() + ")"
+				   + argument.getName() + add);
             }
         }
-        return ret;
+        return returnValue.toString();
     }
 
-    /** Get the args belonging to this entity with their java type.
+    /** Get the arguments belonging to this entity with their java type.
      *  @return the java type and name of each in arguments
      */
-    protected static String _getArgsWithJType(
+    protected static String _getArgumentsWithJType(
             GenericJNIActor actor,
             boolean isInput,
             boolean isOutput,
             boolean isReturn,
             String separator) {
-        String ret = "";
-        Iterator ite = _getArgs(actor, isInput, isOutput, isReturn).iterator();
-        while (ite.hasNext()) {
-            Argument arg = (Argument) ite.next();
-            if (ret == "")
-                ret = arg.getJType() + " " + arg.getName();
-            else
-                ret = ret + ", " + arg.getJType() + " " + arg.getName();
+	StringBuffer returnValue = new StringBuffer();
+        Iterator arguments =
+	    _getArguments(actor, isInput, isOutput, isReturn).iterator();
+        while (arguments.hasNext()) {
+            Argument argument = (Argument) arguments.next();
+	    if (returnValue.length() > 0) {
+		returnValue.append(separator);
+	    }
+	    returnValue.append(argument.getJType() + " "
+			       + argument.getName());
         }
-
-        return ret;
-
+        return returnValue.toString();
     }
 
-    /** Get the args In belonging to this entity with their JNI type, excluding the out arguments.
+    /** Get the arguments In belonging to this entity with their JNI
+     *  type, excluding the out arguments.
      *  @return the JNI type and name of each in arguments.
      */
-    protected static String _getArgsWithJNIType(
+    protected static String _getArgumentsWithJNIType(
             GenericJNIActor actor,
             boolean isInput,
             boolean isOutput,
             boolean isReturn,
             String separator) {
-        String ret = "";
-        Iterator ite = _getArgs(actor, isInput, isOutput, isReturn).iterator();
-        while (ite.hasNext()) {
-            Argument arg = (Argument) ite.next();
-            if (ret == "")
-                ret = arg.getJNIType() + " " + arg.getName();
-            else
-                ret = ret + ", " + arg.getJNIType() + " " + arg.getName();
-        }
-        return ret;
+	StringBuffer returnValue = new StringBuffer();
+        Iterator arguments =
+	    _getArguments(actor, isInput, isOutput, isReturn).iterator();
+        while (arguments.hasNext()) {
+            Argument argument = (Argument) arguments.next();
+	    if (returnValue.length() > 0) {
+		returnValue.append(separator);
+	    }
+	    returnValue.append(argument.getJNIType() + " "
+			       + argument.getName());
+	}
+        return returnValue.toString();
     }
 
     /** Get the args InOut belonging to this entity.
      *  @return a vector of inout arguments.
      */
-    protected static Vector _getArgsInOut(GenericJNIActor actor) {
-        return _getArgs(actor, true, true, false);
+    protected static Vector _getArgumentsInOut(GenericJNIActor actor) {
+        return _getArguments(actor, true, true, false);
     }
 
     /** Get the args InOut belonging to this entity.
      *  @return a vector of inout arguments.
      */
-    protected static String _getArgsInOut(GenericJNIActor actor, String separator) {
-        return _getArgs(actor, true, true, false, separator);
-    }
-
-    /** Get the args Out belonging to this entity with their java type.
-     *  @return the name and the java type of the out arguments, excluding the in arguments.
-     */
-    protected static String _getArgsInOutWithJType(
-            GenericJNIActor actor,
-            String separator) {
-        return _getArgsWithJType(actor, true, true, false, separator);
-    }
-
-    /** Get the args In belonging to this entity with their c type.
-     *  @return the c type and name of each in arguments.
-     */
-    protected static String _getArgsInOutWithCType(
-            GenericJNIActor actor,
-            String separator) {
-        return _getArgsWithCType(actor, true, true, false, separator);
-    }
-
-    /** Get the args In belonging to this entity with their JNI type, excluding the out arguments.
-     *  @return the JNI type and name of each in arguments.
-     */
-    protected static String _getArgsInOutWithJNIType(
-            GenericJNIActor actor,
-            String separator) {
-        return _getArgsWithJNIType(actor, true, true, false, separator);
-    }
-
-    /** Get the args Out belonging to this entity.
-     *  @return a vector of out arguments, excluding the in arguments.
-     */
-    protected static Vector _getArgsOut(GenericJNIActor actor) {
-        return _getArgs(actor, false, true, false);
-    }
-
-    /** Get the args out name belonging to this entity.
-     *  @return the name of the out arguments, excluding the in arguments.
-     */
-    protected static String _getArgsOut(GenericJNIActor actor,
-            String separator) {
-        return _getArgs(actor, false, true, false, separator);
+    protected static String _getArgumentsInOut(GenericJNIActor actor,
+					  String separator) {
+        return _getArguments(actor, true, true, false, separator);
     }
 
     /** Get the args Out belonging to this entity with their java type.
      *  @return the name and the java type of the out arguments,
      *  excluding the in arguments.
      */
-    protected static String _getArgsOutWithJType(
+    protected static String _getArgumentsInOutWithJType(
             GenericJNIActor actor,
             String separator) {
-        return _getArgsWithJType(actor, false, true, false, separator);
+        return _getArgumentsWithJType(actor, true, true, false, separator);
+    }
+
+    /** Get the args In belonging to this entity with their c type.
+     *  @return the c type and name of each in arguments.
+     */
+    protected static String _getArgumentsInOutWithCType(
+            GenericJNIActor actor,
+            String separator) {
+        return _getArgumentsWithCType(actor, true, true, false, separator);
+    }
+
+    /** Get the args In belonging to this entity with their JNI type,
+     *  excluding the out arguments.
+     *  @return the JNI type and name of each in arguments.
+     */
+    protected static String _getArgumentsInOutWithJNIType(
+            GenericJNIActor actor,
+            String separator) {
+        return _getArgumentsWithJNIType(actor, true, true, false, separator);
+    }
+
+    /** Get the args Out belonging to this entity.
+     *  @return a vector of out arguments, excluding the in arguments.
+     */
+    protected static Vector _getArgumentsOut(GenericJNIActor actor) {
+        return _getArguments(actor, false, true, false);
+    }
+
+    /** Get the args out name belonging to this entity.
+     *  @return the name of the out arguments, excluding the in arguments.
+     */
+    protected static String _getArgumentsOut(GenericJNIActor actor,
+            String separator) {
+        return _getArguments(actor, false, true, false, separator);
+    }
+
+    /** Get the args Out belonging to this entity with their java type.
+     *  @return the name and the java type of the out arguments,
+     *  excluding the in arguments.
+     */
+    protected static String _getArgumentsOutWithJType(
+            GenericJNIActor actor,
+            String separator) {
+        return _getArgumentsWithJType(actor, false, true, false, separator);
     }
 
     /** Get the args Out belonging to this entity with their c type.
      *  @return the c type of the out arguments.
      */
-    protected static String _getArgsOutWithCType(
+    protected static String _getArgumentsOutWithCType(
             GenericJNIActor actor,
             String separator) {
-        return _getArgsWithCType(actor, false, true, false, separator);
+        return _getArgumentsWithCType(actor, false, true, false, separator);
     }
 
     /** Get the args In belonging to this entity with their JNI type,
@@ -1253,44 +1267,44 @@ public class JNIUtilities {
      *  @return the JNI type and name of each in arguments, excluding
      *  the in arguments.
      */
-    protected static String _getArgsOutWithJNIType(
+    protected static String _getArgumentsOutWithJNIType(
             GenericJNIActor actor,
             String separator) {
-        return _getArgsWithJNIType(actor, false, true, false, separator);
+        return _getArgumentsWithJNIType(actor, false, true, false, separator);
     }
 
     /** Get the args In belonging to this entity.
      *  @return a vector of out arguments, excluding the in arguments.
      */
-    protected static Vector _getArgsIn(GenericJNIActor actor) {
-        return _getArgs(actor, true, false, false);
+    protected static Vector _getArgumentsIn(GenericJNIActor actor) {
+        return _getArguments(actor, true, false, false);
     }
 
     /** Get the args In name belonging to this entity.
      *  @return the name of the out arguments, excluding the in arguments.
      */
-    protected static String _getArgsIn(GenericJNIActor actor,
+    protected static String _getArgumentsIn(GenericJNIActor actor,
 				       String separator) {
-        return _getArgs(actor, true, false, false, separator);
+        return _getArguments(actor, true, false, false, separator);
     }
 
     /** Get the args Out belonging to this entity with their java type.
      *  @return the name and the java type of the out arguments,
      *  excluding the in arguments.
      */
-    protected static String _getArgsInWithJType(
+    protected static String _getArgumentsInWithJType(
             GenericJNIActor actor,
             String separator) {
-        return _getArgsWithJType(actor, true, false, false, separator);
+        return _getArgumentsWithJType(actor, true, false, false, separator);
     }
 
     /** Get the args Out belonging to this entity with their c type.
      *  @return the c type of the out arguments.
      */
-    protected static String _getArgsInWithCType(
+    protected static String _getArgumentsInWithCType(
             GenericJNIActor actor,
             String separator) {
-        return _getArgsWithCType(actor, true, false, false, separator);
+        return _getArgumentsWithCType(actor, true, false, false, separator);
     }
 
     /** Get the args In belonging to this entity with their JNI type,
@@ -1299,17 +1313,18 @@ public class JNIUtilities {
      *  the in arguments.
      */
 
-    protected static String _getArgsInWithJNIType(
+    protected static String _getArgumentsInWithJNIType(
             GenericJNIActor actor,
             String separator) {
-        return _getArgsWithJNIType(actor, true, false, false, separator);
+        return _getArgumentsWithJNIType(actor, true, false, false, separator);
     }
 
     /** Get the return argument belonging to this entity with its JNI type.
      *  @return the JNI type of the return argument.
      */
-    protected static String _getArgReturnWithJNIType(GenericJNIActor actor) {
-        return _getArgsWithJNIType(actor, false, false, true, "");
+    protected static String _getArgumentsReturnWithJNIType(GenericJNIActor
+							   actor) {
+        return _getArgumentsWithJNIType(actor, false, false, true, "");
     }
 
     /**
@@ -1319,15 +1334,15 @@ public class JNIUtilities {
         String returnValue = "(";
 
         //out
-        Iterator ite = _getArgsOut(actor).iterator();
-        while (ite.hasNext()) {
-            String typ = ((Argument) ite.next()).getJType();
+        Iterator arguments = _getArgumentsOut(actor).iterator();
+        while (arguments.hasNext()) {
+            String typ = ((Argument) arguments.next()).getJType();
             returnValue = returnValue + _signature(typ);
         }
         //in out
-        ite = _getArgsInOut(actor).iterator();
-        while (ite.hasNext()) {
-            String typ = ((Argument) ite.next()).getJType();
+        arguments = _getArgumentsInOut(actor).iterator();
+        while (arguments.hasNext()) {
+            String typ = ((Argument) arguments.next()).getJType();
             returnValue = returnValue + _signature(typ);
         }
 
@@ -1340,33 +1355,39 @@ public class JNIUtilities {
      *  @return the signature of the interface fonction.
      */
     protected static String _signature(String typ) {
-        String ret = "";
-        if (typ.endsWith("[]"))
-            ret = "[";
+        StringBuffer returnValue = new StringBuffer();
+        if (typ.endsWith("[]")) {
+            returnValue.append("[");
+	}
 
-        if (typ.equals("boolean")||typ.startsWith("boolean"))
-            ret = ret + "Z";
-        else if (typ.equals("byte")||typ.startsWith("byte"))
-            ret = ret + "B";
-        else if (typ.equals("char")||typ.startsWith("char"))
-            ret = ret + "C";
-        else if (typ.equals("short")||typ.startsWith("short"))
-            ret = ret + "S";
-        else if (typ.equals("int")||typ.startsWith("int"))
-            ret = ret + "I";
-        else if (typ.equals("long")||typ.startsWith("long"))
-            ret = ret + "J";
-        else if (typ.equals("float")||typ.startsWith("float"))
-            ret = ret + "F";
-        else if (typ.equals("double")||typ.startsWith("double"))
-            ret = ret + "D";
-        else if (typ.equals("Object")||typ.startsWith("Object"))
-            ret = ret + "L";
-        return ret;
+        if (typ.equals("boolean") || typ.startsWith("boolean")) {
+            returnValue.append("Z");
+	} else if (typ.equals("byte") || typ.startsWith("byte")) {
+            returnValue.append("B");
+        } else if (typ.equals("char") || typ.startsWith("char")) {
+            returnValue.append("C");
+        } else if (typ.equals("short") || typ.startsWith("short")) {
+            returnValue.append("S");
+        } else if (typ.equals("int") || typ.startsWith("int")) {
+            returnValue.append("I");
+        } else if (typ.equals("long") || typ.startsWith("long")) {
+            returnValue.append("J");
+        } else if (typ.equals("float") || typ.startsWith("float")) {
+            returnValue.append("F");
+        } else if (typ.equals("double") || typ.startsWith("double")) {
+            returnValue.append("D");
+        } else if (typ.equals("Object") || typ.startsWith("Object")) {
+            returnValue.append("L");
+	}
+
+	return returnValue.toString();
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private method                    ////
+
     // Return the value of the libraryDirectory argument with the double
-    // quotes stripped off
+    // quotes stripped off.
     private static String _getLibraryDirectory(GenericJNIActor actor)
 	throws IllegalActionException {
 	String libraryDirectory = (((StringToken) ((Parameter) actor
@@ -1425,6 +1446,11 @@ public class JNIUtilities {
         return "";
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    // String to use to indent 1 level
     private static String _indent1 = StringUtilities.getIndentPrefix(1);
+    // String to use to indent 2 level
     private static String _indent2 = StringUtilities.getIndentPrefix(2);
 }
