@@ -42,27 +42,24 @@ import ptolemy.kernel.util.*;
 
 This actor compares the inputs against the value specified by the
 <i>correctValues</i> parameter.  That parameter is an ArrayToken,
-where each element of the array is of the same type as the input.  If,
-on a given iteration, no token is present on a channel, the absence is
-ignored and no exception is thrown.  Subsequent iterations always
-succeed, so the actor can be used as a "power-up" test for a model,
+where each element of the array is of the same type as the input.
+On each firing where the input is present, the value of the input
+is compared against the next token in the <i>correctValues</i>
+parameter.  If it matches, the firing succeeds. If it doesn't
+match, then an exception is thrown. After matching each of
+the value in the <i>correctValues</i> parameter, subsequent iterations
+always succeed, so the actor can be used as a "power-up" test for a model,
 checking the first few iterations against some known results.
-
-<p> Unlike the Test actor, NonStrictTest does not support a multiport
-input, only single port inputs are supported.
-
-<p> The input values are checked in the postfire() method.  If an
-input value is absent, the absence is ignored and on the next firing
-the input is compared against the same value in the
-<i>correctValues</i> Parameter.  If an input value is present and
-differs from what it should be, then postfire() throws an exception.
-Thus, the test passes if no exception is thrown.
-
-<p> If the input is a DoubleToken or ComplexToken, then the comparison
+<p>
+Unlike the Test actor, NonStrictTest does not support a multiport
+input, only single port inputs are supported.  This also differs
+from Test in that it ignores absent inputs, and it checks the inputs
+in the postfire() method rather than the fire() method.
+<p>
+If the input is a DoubleToken or ComplexToken, then the comparison
 passes if the value is close to what it should be, within the
 specified <i>tolerance</i> (which defaults to 10<sup>-9</sup>.  The
 input data type is undeclared, so it can resolve to anything.
-
 
 @see Test
 @author Paul Whitaker, Christopher Hylands
