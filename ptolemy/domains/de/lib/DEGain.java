@@ -106,7 +106,7 @@ public class DEGain extends TypedAtomicActor {
         super(container, name);
         // set the parameters.
         _gain = new Parameter(this, "gain");
-        _gain.setType(new DoubleToken(0.0));
+        _gain.setType(DoubleToken.class);
 	_gain.setExpression(gain);
 
         // create an output port
