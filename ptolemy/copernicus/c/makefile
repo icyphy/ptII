@@ -42,10 +42,12 @@ CLASSPATH = 	$(ROOT)$(CLASSPATHSEPARATOR)$(SOOT_CLASSES)
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-DIRS =		test
+# Don't include the test directory yet
+# DIRS =		test
 
 # Keep this list alphabetized.
 JSRCS = \
+    CNames.java \
 	Main.java
 
 EXTRA_SRCS =	$(JSRCS)
