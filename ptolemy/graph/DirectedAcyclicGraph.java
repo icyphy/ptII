@@ -343,7 +343,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
         int size = getNodeCount();
         int[] indeg = new int[size];
         for (int i = 0; i < size; i++) {
-            indeg[i] = ((Integer)_inDegree.elementAt(i)).intValue();
+            indeg[i] = ((Integer)_inDegree.get(i)).intValue();
         }
         Object[] result = new Object[size];
         boolean finished = false;
@@ -360,9 +360,9 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
                     finished = false;
                     result[nextResultIndex++] = _getNodeObject(id);
                     indeg[id]--;
-                    Vector arcs = (Vector)(_graph.elementAt(id));
+                    ArrayList arcs = (ArrayList)(_graph.get(id));
                     for(int i = 0; i < arcs.size(); i++) {
-                        int item = ((Integer)(arcs.elementAt(i))).intValue();
+                        int item = ((Integer)(arcs.get(i))).intValue();
                         indeg[item]--;
                     }
                 }
@@ -424,7 +424,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
         // find bottom
         _bottom = null;
         for (int i = 0; i < getNodeCount(); i++) {
-            if (((Integer)(_inDegree.elementAt(i))).intValue() == 0) {
+            if (((Integer)(_inDegree.get(i))).intValue() == 0) {
                 if (_bottom == null) {
                     _bottom = _getNodeObject(i);
                 } else {
@@ -437,7 +437,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
 	// find top
 	_top = null;
 	for (int i = 0; i < getNodeCount(); i++) {
-	    int outdegree = ((Vector)(_graph.elementAt(i))).size();
+	    int outdegree = ((ArrayList)(_graph.get(i))).size();
 	    if (outdegree == 0) {
 		if (_top == null) {
 		    _top = _getNodeObject(i);
@@ -702,11 +702,11 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
     // compute the up-set of an element.
     private Object[] _upSetShared(Object e) {
         int id = _getNodeId(e);
-        Vector upset = new Vector(_closure.length);
-        upset.addElement(e);    // up-set includes the element itself.
+        ArrayList upset = new ArrayList(_closure.length);
+        upset.add(e);    // up-set includes the element itself.
         for (int i = 0; i < _closure.length; i++) {
             if (_closure[id][i]) {
-                upset.addElement(_getNodeObject(i));
+                upset.add(_getNodeObject(i));
             }
         }
 

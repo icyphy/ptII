@@ -84,7 +84,7 @@ public class InequalitySolver {
 	// put ineq. to _Ilist
 	Integer indexWrap = new Integer(_Ilist.size());
 	Info info = new Info(ineq);
-	_Ilist.addElement(info);
+	_Ilist.add(info);
 
         // add var->ineq to Hashtable
 	_addToClist(ineq.getLesserTerm().getVariables(), indexWrap);
@@ -218,7 +218,7 @@ public class InequalitySolver {
 	LinkedList result = new LinkedList();
 
         for (int i = 0; i < _Ilist.size(); i++) {
-	    Info info = (Info)_Ilist.elementAt(i);
+	    Info info = (Info)_Ilist.get(i);
             if ( !info._ineq.isSatisfied(_cpo)) {
                 result.addLast(info._ineq);
 	    }
@@ -271,13 +271,13 @@ public class InequalitySolver {
 			+ "InequalityTerm is not settable.");
 	    }
 
-            Vector entry = (Vector)(_Clist.get(variables[i]));
+            ArrayList entry = (ArrayList)(_Clist.get(variables[i]));
             if (entry == null) {
 		// variable not in Hashtable
-                entry = new Vector();
+                entry = new ArrayList();
                 _Clist.put(variables[i], entry);
 	    }
-            entry.addElement(indexWrap);
+            entry.add(indexWrap);
         }
     }
 
@@ -315,7 +315,7 @@ public class InequalitySolver {
     	LinkedList _NS = new LinkedList();
 
 	for (int i = 0; i < _Ilist.size(); i++) {
-	    Info info = (Info)_Ilist.elementAt(i);
+	    Info info = (Info)_Ilist.get(i);
 	    info._inCvar = least ? info._ineq.getGreaterTerm().isSettable()
                 : info._ineq.getLesserTerm().isSettable();
 
@@ -334,7 +334,7 @@ public class InequalitySolver {
 
             int index = ((Integer)(_NS.removeFirst())).intValue();
 
-            Info info = (Info)(_Ilist.elementAt(index));
+            Info info = (Info)(_Ilist.get(index));
             info._inserted = false;
             Object value = null;
 	    InequalityTerm updateTerm = null;
@@ -363,11 +363,11 @@ public class InequalitySolver {
 	    }
 
             // insert or drop the inequalities affected
-            Vector affected = (Vector)_Clist.get(updateTerm);
+            ArrayList affected = (ArrayList)_Clist.get(updateTerm);
             for (int i = 0; i < affected.size(); i++) {
-                Integer index1Wrap = (Integer)(affected.elementAt(i));
+                Integer index1Wrap = (Integer)(affected.get(i));
                 int index1 = index1Wrap.intValue();
-		Info affectedInfo = (Info)_Ilist.elementAt(index1);
+		Info affectedInfo = (Info)_Ilist.get(index1);
                 if (index1 != index && affectedInfo._inCvar) {
                     if (affectedInfo._ineq.isSatisfied(_cpo)) {    // drop
                         if (affectedInfo._inserted) {
@@ -386,7 +386,7 @@ public class InequalitySolver {
 	// These inequalities are the ones in the "Ccnst" set in the
 	// Rehof paper.
         for (int i = 0; i < _Ilist.size(); i++) {
-	    Info info = (Info)_Ilist.elementAt(i);
+	    Info info = (Info)_Ilist.get(i);
 	    if ( !info._inCvar) {
                 if ( !info._ineq.isSatisfied(_cpo)) {
                     return false;
@@ -403,10 +403,10 @@ public class InequalitySolver {
     // with inner class accessing private field of the outer class
     /*private*/ CPO _cpo = null;
 
-    // Vector representation of Ilist. Each entry is an instance of the
+    // ArrayList representation of Ilist. Each entry is an instance of the
     // inner class Info. This vector effectively gives each inequality an
     // index, _Clist and _NS use that index.
-    /*private*/ Vector _Ilist = new Vector();
+    /*private*/ ArrayList _Ilist = new ArrayList();
 
     // Mapping from variable to the Inequalities containing them.
     // Each entry in _Clist is a vector of Integers containing the

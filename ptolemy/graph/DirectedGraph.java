@@ -89,7 +89,7 @@ public class DirectedGraph extends Graph {
     public void add(Object o) {
         super.add(o);
 
-        _inDegree.addElement(new Integer(0));
+        _inDegree.add(new Integer(0));
 	_transitiveClosure = null;
     }
 
@@ -109,8 +109,8 @@ public class DirectedGraph extends Graph {
         super.addEdge(o1, o2);
 
         int id2 = _getNodeId(o2);
-        int indeg = ((Integer)(_inDegree.elementAt(id2))).intValue();
-        _inDegree.setElementAt(new Integer(indeg+1), id2);
+        int indeg = ((Integer)(_inDegree.get(id2))).intValue();
+        _inDegree.set(id2, new Integer(indeg+1));
 	_transitiveClosure = null;
     }
 
@@ -133,11 +133,11 @@ public class DirectedGraph extends Graph {
 	_computeTransitiveClosure();
 
 	int id = _getNodeId(o);
-	Vector nodes = new Vector(_transitiveClosure.length);
+	ArrayList nodes = new ArrayList(_transitiveClosure.length);
         // Look at the corresponding column.
 	for (int i = 0; i < _transitiveClosure.length; i++) {
 	    if (_transitiveClosure[i][id]) {
-		nodes.addElement(_getNodeObject(i));
+		nodes.add(_getNodeObject(i));
 	    }
 	}
 
@@ -167,7 +167,7 @@ public class DirectedGraph extends Graph {
         for (int i = 0; i < N; i++) {
             ids[i] = _getNodeId(objs[i]);
         }
-	Vector nodes = new Vector(_transitiveClosure.length);
+	ArrayList nodes = new ArrayList(_transitiveClosure.length);
         // Or the corresponding rows.
 	for (int i = 0; i < _transitiveClosure.length; i++) {
             boolean orthem = false;
@@ -175,7 +175,7 @@ public class DirectedGraph extends Graph {
                 orthem = orthem || _transitiveClosure[i][ids[j]];
             }
 	    if (orthem) {
-		nodes.addElement(_getNodeObject(i));
+		nodes.add(_getNodeObject(i));
 	    }
 	}
 
@@ -215,10 +215,10 @@ public class DirectedGraph extends Graph {
 	_computeTransitiveClosure();
 
 	int id = _getNodeId(o);
-	Vector nodes = new Vector(_transitiveClosure.length);
+	ArrayList nodes = new ArrayList(_transitiveClosure.length);
 	for (int i = 0; i < _transitiveClosure.length; i++) {
 	    if (_transitiveClosure[id][i]) {
-		nodes.addElement(_getNodeObject(i));
+		nodes.add(_getNodeObject(i));
 	    }
 	}
 
@@ -247,7 +247,7 @@ public class DirectedGraph extends Graph {
         for (int i = 0; i < N; i++) {
             ids[i] = _getNodeId(objs[i]);
         }
-	Vector nodes = new Vector(_transitiveClosure.length);
+	ArrayList nodes = new ArrayList(_transitiveClosure.length);
         // Or the corresponding rows.
 	for (int i = 0; i < _transitiveClosure.length; i++) {
             boolean orthem = false;
@@ -255,7 +255,7 @@ public class DirectedGraph extends Graph {
                 orthem = orthem || _transitiveClosure[ids[j]][i];
             }
 	    if (orthem) {
-		nodes.addElement(_getNodeObject(i));
+		nodes.add(_getNodeObject(i));
 	    }
 	}
         return nodes.toArray();
@@ -288,9 +288,9 @@ public class DirectedGraph extends Graph {
                 _transitiveClosure[i][j] = false;
             }
 
-            Vector edge = (Vector)(_graph.elementAt(i));
+            ArrayList edge = (ArrayList)(_graph.get(i));
             for (int j = 0; j < edge.size(); j++) {
-                int k = ((Integer)edge.elementAt(j)).intValue();
+                int k = ((Integer)edge.get(j)).intValue();
                 _transitiveClosure[i][k] = true;
             }
         }
@@ -323,7 +323,7 @@ public class DirectedGraph extends Graph {
      *  <code>Integer</code> containing the in-degree of the
      *  corresponding node.
      */
-    protected Vector _inDegree = new Vector();
+    protected ArrayList _inDegree = new ArrayList();
 
     /** The adjacency matrix representation of the transitive closure.
      *  The entry (i, j) is <code>true</code> if and only if there

@@ -52,8 +52,8 @@ public class Graph {
     /** Construct an empty graph.
      */
     public Graph() {
-        _graph = new Vector();
-        _nodeObject = new Vector();
+        _graph = new ArrayList();
+        _nodeObject = new ArrayList();
         _nodeIdTable = new Hashtable();
     }
 
@@ -64,8 +64,8 @@ public class Graph {
      *  @param nodeCount the integer specifying the number of nodes
      */
     public Graph(int nodeCount) {
-        _graph = new Vector(nodeCount);
-        _nodeObject = new Vector(nodeCount);
+        _graph = new ArrayList(nodeCount);
+        _nodeObject = new ArrayList(nodeCount);
         _nodeIdTable = new Hashtable(nodeCount);
     }
 
@@ -94,8 +94,8 @@ public class Graph {
             throw new IllegalArgumentException("Graph.add: Object is " +
                     "already in the graph.");
         }
-        _nodeObject.addElement(o);
-        _graph.addElement(new Vector());
+        _nodeObject.add(o);
+        _graph.add(new ArrayList());
         _nodeIdTable.put(o, new Integer(_graph.size() - 1));
     }
 
@@ -114,7 +114,7 @@ public class Graph {
         int id1 = _getNodeId(o1);
         int id2 = _getNodeId(o2);
 
-        ((Vector)(_graph.elementAt(id1))).addElement(new Integer(id2));
+        ((ArrayList)(_graph.get(id1))).add(new Integer(id2));
 	_edgeCount++;
     }
 
@@ -150,9 +150,10 @@ public class Graph {
             Object elem = _getNodeObject(i);
             result = result.concat("  {" + elem.toString());
 
-            Vector re = (Vector)(_graph.elementAt(i));
-            for (Enumeration e = re.elements(); e.hasMoreElements(); ) {
-                int i2 = ((Integer)e.nextElement()).intValue();
+            ArrayList re = (ArrayList)(_graph.get(i));
+	    Iterator iter = re.iterator();
+            while (iter.hasNext()) {
+                int i2 = ((Integer)iter.next()).intValue();
                 result = result.concat(" " +
                         _getNodeObject(i2).toString());
             }
@@ -185,9 +186,9 @@ public class Graph {
 	int count = 0;
 	for (int i = 0; i < getNodeCount(); i++) {
 	    Object source = _getNodeObject(i);
-	    Vector sinkIds = (Vector)_graph.elementAt(i);
+	    ArrayList sinkIds = (ArrayList)_graph.get(i);
 	    for (int j = 0; j < sinkIds.size(); j++) {
-		int id = ((Integer)(sinkIds.elementAt(j))).intValue();
+		int id = ((Integer)(sinkIds.get(j))).intValue();
 		Object sink = _getNodeObject(id);
 		result[count][0] = source;
 		result[count++][1] = sink;
@@ -242,7 +243,7 @@ public class Graph {
      */
     protected Object _getNodeObject(int nodeId) {
 	try {
-	    return _nodeObject.elementAt(nodeId);
+	    return _nodeObject.get(nodeId);
 	} catch (ArrayIndexOutOfBoundsException ex) {
 	    throw new IllegalArgumentException("Graph._getNodeObject: " +
                     "node ID is negative or is not less than the total " +
@@ -260,10 +261,10 @@ public class Graph {
      *  This vector is indexed by the node IDs, each entry is a vector
      *  of <code>Integers</code> containing node IDs. Every successful
      *  call of <code>addEdge</code> adds the node ID of the second
-     *  argument to the Vector at the entry of _graph indexed by
+     *  argument to the ArrayList at the entry of _graph indexed by
      *  the node ID of the first argument.
      */
-    protected Vector _graph;
+    protected ArrayList _graph;
 
     ///////////////////////////////////////////////////////////////////
     ////                          private variables                ////
@@ -280,6 +281,6 @@ public class Graph {
     // Translation from node Id to node.
     // This vector is indexed by node ID. The entries are the Objects
     // representing the graph nodes with the corresponding node IDs.
-    private Vector _nodeObject;
+    private ArrayList _nodeObject;
 }
 
