@@ -98,7 +98,8 @@ public class CTPeriodicSampler extends Transformer
      *  @exception IllegalActionException If the sampling period is
      *  less than or equal to 0.
      */
-    public void attributeChanged(Attribute attribute) throws IllegalActionException{
+    public void attributeChanged(Attribute attribute) 
+            throws IllegalActionException{
         if (attribute == samplePeriod) {
             double p = ((DoubleToken)samplePeriod.getToken()).doubleValue();
             if(p <= 0) {
@@ -116,23 +117,19 @@ public class CTPeriodicSampler extends Transformer
      *  is the sample of the input signal.
      *  @exception IllegalActionException If the transfer of tokens failed.
      */
-    public void emitCurrentEvents() {
+    public void emitCurrentEvents() throws IllegalActionException {
         if(_hasCurrentEvent) {
-            try {
-                for (int i = 0;
-                     i < Math.min(input.getWidth(), output.getWidth());
-                     i++) {
-                    if(input.hasToken(i)) {
-                        output.send(i, input.get(i));
-                    }
+            for (int i = 0;
+                 i < Math.min(input.getWidth(), output.getWidth());
+                 i++) {
+                if(input.hasToken(i)) {
+                    output.send(i, input.get(i));
                 }
-                _hasCurrentEvent = false;
-                // register for the next event.
-                _nextSamplingTime += _samplePeriod;
-                getDirector().fireAt(this, _nextSamplingTime);
-            }catch (IllegalActionException e) {
-                throw new InternalErrorException("Token mismatch.");
             }
+            _hasCurrentEvent = false;
+            // register for the next event.
+            _nextSamplingTime += _samplePeriod;
+            getDirector().fireAt(this, _nextSamplingTime);
         }
     }
 
