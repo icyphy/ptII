@@ -25,7 +25,8 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Green (cxh@eecs.berkeley.edu)
-@AcceptedRating Green (cxh@eecs.berkeley.edu) */
+@AcceptedRating Green (cxh@eecs.berkeley.edu)
+*/
 
 package ptolemy.actor.lib.conversions;
 
