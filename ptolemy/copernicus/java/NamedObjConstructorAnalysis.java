@@ -56,7 +56,7 @@ import java.util.*;
 //////////////////////////////////////////////////////////////////////////
 //// NamedObjConstructorAnalysis
 /**
-An analysis that establishes a correspondance between each constructor
+An analysis that establishes a correspondence between each constructor
 of a named object and the location in the transformed code where that
 object is created.  This information is used to create fields with the 
 appropriate naming convention for 
