@@ -434,6 +434,10 @@ AC_MSG_RESULT(['$CLASSPATHSEPARATOR'])
 # used by C code generation in copernicus/c
 CMKIT_DIR='${PTII}/vendors/cm'
 
+# PTCM_DIR is set to cm and used in $PTII/ptolemy/copernicus/c/test/makefile
+# if the CaffeineMark Java Benchmark kit is found
+PTCM_DIR= 
+
 # We only need to look for cm if $PTII/ptolemy/copernicus/c exists
 if test ! -d "$PTII/ptolemy/copernicus/c"; then
     AC_MSG_RESULT([$PTII/ptolemy/copernicus/c is not present,
@@ -447,6 +451,7 @@ else
 
     if test -f "$CMKIT_DIR/CaffeineMarkEmbeddedApp.class"; then
 	AC_MSG_RESULT([$CMKIT_DIR])
+	PTCM_DIR=cm
     else
         AC_MSG_WARN([Failed to find $CMKIT_DIR/CaffeineMarkEmbeddedApp.class
     perhaps CaffeineMark is not installed?
@@ -1827,6 +1832,10 @@ AC_SUBST(PTCOPERNICUS_DIR)
 
 # Set to gcc if gcc was found and used in $PTII/ptolemy/matlab/makefile.
 AC_SUBST(PTCC)
+
+# PTCM_DIR is set to cm and used in $PTII/ptolemy/copernicus/c/test/makefile
+# if the CaffeineMark Java Benchmark kit is found
+AC_SUBST(PTCM_DIR)
 
 # PTCOMM_DIR is set to comm and used in 
 # $PTII/ptolemy/actor/lib/makefile if the Java Communications API was found
