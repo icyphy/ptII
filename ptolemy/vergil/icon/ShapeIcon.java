@@ -71,9 +71,6 @@ public class ShapeIcon extends EditorIcon {
     public ShapeIcon(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
-        // FIXME: This should be set by the attribute.
-        // _pathFigure.setLineWidth(4f);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -108,9 +105,41 @@ public class ShapeIcon extends EditorIcon {
             newFigure = new PathFigure(new Rectangle2D.Double(
                    0.0, 0.0, 20.0, 20.0));
         }
+        newFigure.setLineWidth(_lineWidth);
         _figures.add(new WeakReference(newFigure));
         
         return newFigure;
+    }
+    
+    /** Specify the line width to use.  This is deferred and executed
+     *  in the Swing thread.
+     *  @param lineWidth The line width to use.
+     */
+    public void setLineWidth(float lineWidth) {
+        _lineWidth = lineWidth;
+        
+        // Update the shapes of all the figures that this icon has
+        // created (which may be in multiple views). This has to be
+        // done in the Swing thread.  Assuming that createBackgroundFigure()
+        // is also called in the Swing thread, there is no possibility of
+        // conflict here where that method is trying to add to the _figures
+        // list while this method is traversing it.
+        Runnable doSet = new Runnable() {
+            public void run() {
+                ListIterator figures = _figures.listIterator();
+                while (figures.hasNext()) {
+                    Object figure = ((WeakReference)figures.next()).get();
+                    if (figure == null) {
+                        // The figure has been garbage collected, so we
+                        // remove it from the list.
+                        figures.remove();
+                    } else {
+                        ((PathFigure)figure).setLineWidth(_lineWidth);
+                    }
+                }
+            }
+        };
+        SwingUtilities.invokeLater(doSet);
     }
 
     /** Specify a path to display.  This is deferred and executed
@@ -149,6 +178,9 @@ public class ShapeIcon extends EditorIcon {
 
     // A list of weak references to figures that this has created.
     private List _figures = new LinkedList();
+    
+    // The specified line width.
+    private float _lineWidth = 1f;
     
     // The shape that is rendered.
     private Shape _shape;
