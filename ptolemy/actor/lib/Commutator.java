@@ -84,18 +84,17 @@ public class Commutator extends Transformer implements SequenceActor {
         super(container, name);
         input.setMultiport(true);
         new Parameter(input, "tokenConsumptionRate", new IntToken(1));
-        _productionRate = new Parameter(output,"tokenProductionRate",
+        tokenProductionRate = new Parameter(output,"tokenProductionRate",
                 new IntToken(0));
-        new Parameter(output,"tokenInitProduction", new IntToken(0));
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
     /** The parameter controlling the output port production rate.
-     *  This parameter contains an IntToken, initially with a value of 0.
+     *  This parameter contains an IntToken, initially with a value of 1.
      */
-    public Parameter productionRate;
+    public Parameter tokenProductionRate;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -110,7 +109,7 @@ public class Commutator extends Transformer implements SequenceActor {
     public Object clone(Workspace ws)
 	    throws CloneNotSupportedException {
         Commutator newobj = (Commutator)super.clone(ws);
-        newobj.productionRate = (Parameter)
+        newobj.tokenProductionRate = (Parameter)
             (newobj.output.getAttribute("tokenProductionRate"));
         return newobj;
     }
@@ -123,7 +122,7 @@ public class Commutator extends Transformer implements SequenceActor {
     public void connectionsChanged(Port port) {
         if (port == input) {
             try {
-                productionRate.setToken(new IntToken(input.getWidth()));
+                tokenProductionRate.setToken(new IntToken(input.getWidth()));
                 // NOTE: schedule is invalidated automatically already
                 // by the changed connections.
             } catch (IllegalActionException ex) {
