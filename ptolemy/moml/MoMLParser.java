@@ -33,9 +33,9 @@ package ptolemy.moml;
 // Ptolemy imports.
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
-import ptolemy.kernel.attributes.URLAttribute;
-import ptolemy.kernel.util.*;
 import ptolemy.kernel.*;
+import ptolemy.kernel.attributes.URIAttribute;
+import ptolemy.kernel.util.*;
 import ptolemy.gui.CancelException;
 import ptolemy.gui.MessageHandler;
 
@@ -1102,8 +1102,8 @@ public class MoMLParser extends HandlerBase {
                     if (_xmlFile != null) {
                         // Add a URL attribute to the toplevel to
                         // indicate where it was read from.
-                        URLAttribute attribute
-                                 = new URLAttribute(_toplevel, "_url");
+                        URIAttribute attribute
+                                 = new URIAttribute(_toplevel, "_uri");
                         attribute.setURL(_xmlFile);
                     }
                 }
@@ -1256,8 +1256,8 @@ public class MoMLParser extends HandlerBase {
                     if (_xmlFile != null) {
                         // Add a URL attribute to the toplevel to
                         // indicate where it was read from.
-                        URLAttribute attribute
-                                 = new URLAttribute(_toplevel, "_url");
+                        URIAttribute attribute
+                                 = new URIAttribute(_toplevel, "_uri");
                         attribute.setURL(_xmlFile);
                     }
                 }

@@ -174,8 +174,8 @@ public class GeneratorTableau extends Tableau {
 	    }
 
 	    if (getEffigy() == null
-                || getEffigy().url == null 
-		|| getEffigy().url.getURL() == null) { 
+                || getEffigy().uri == null 
+		|| getEffigy().uri.getURI() == null) { 
 		// If the user does File -> New -> GraphEditor,
 		// View -> Code Generator, then we might end up 
 		// dealing with an Effigy that has a null url.
@@ -267,8 +267,8 @@ public class GeneratorTableau extends Tableau {
             }
 
 	    // Update the modelPath parameter with the path to the model
-	    attribute.sanityCheckAndUpdateParameters(getEffigy().url
-						     .getURL().toString());
+	    attribute.sanityCheckAndUpdateParameters(
+                    getEffigy().uri.toString());
 
             Configurer configurer = new Configurer(attribute);
             final GeneratorAttribute options = attribute;
