@@ -1,4 +1,4 @@
-/* A request to remove an actor.
+/* A request to remove an entity.
 
  Copyright (c) 1999-2000 The Regents of the University of California.
  All rights reserved.
@@ -45,13 +45,13 @@ import java.util.List;
 //////////////////////////////////////////////////////////////////////////
 //// RemoveActor
 /**
-A request to remove an actor.  The execute() method of this request
-invokes the wrapup() method of the actor, then disconnects it from
-the topology and sets its container to null.  The execute() method
-also called createReceivers() on all remote input ports that were
-connected to this actor.
+A request to remove an entity.  The execute() method disconnects it from
+the topology and sets its container to null.  In addition, the wrapup() method
+will be called on the entity if it is an actor and createReceivers() 
+will be called on all remote input IOports that were
+connected to the actor.
 
-@author  Edward A. Lee
+@author  Edward A. Lee, Steve Neuendorffer
 @version $Id$
 @see ptolemy.actor.Actor
 */
@@ -63,9 +63,9 @@ public class RemoveActor extends ChangeRequest {
      *  @param originator The source of the change request.
      *  @param actor The actor to remove.
      */
-    public RemoveActor(Nameable originator, Actor actor) {
-        super(originator, "Remove " + ((Nameable)actor).getFullName());
-        _actor = actor;
+    public RemoveActor(Nameable originator, ComponentEntity entity) {
+        super(originator, "Remove " + entity.getFullName());
+	_entity = entity;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -80,13 +80,10 @@ public class RemoveActor extends ChangeRequest {
      */
     public void execute() throws ChangeFailedException {
         try {
-            _actor.wrapup();
-            if (!(_actor instanceof ComponentEntity)) {
-                throw new ChangeFailedException(this,
-                        "Cannot remove an actor that is not an Entity.");
-            }
-            ComponentEntity entity = (ComponentEntity)_actor;
-            Iterator ports = entity.portList().iterator();
+	    if(_entity instanceof Actor) {
+		((Actor)_entity).wrapup();
+	    }
+            Iterator ports = _entity.portList().iterator();
             List farPortList = new LinkedList();
             while (ports.hasNext()) {
                 Port port = (Port)ports.next();
@@ -98,13 +95,17 @@ public class RemoveActor extends ChangeRequest {
             }
             Iterator farPorts = farPortList.iterator();
             while (farPorts.hasNext()) {
-                IOPort port = (IOPort)farPorts.next();
-                port.createReceivers();
+                Port port = (Port)farPorts.next();
+		if (port instanceof IOPort) {
+		    ((IOPort)port).createReceivers();
+		}
             }
-            Director director = _actor.getDirector();
-            director.invalidateSchedule();
-            director.invalidateResolvedTypes();
-            entity.setContainer(null);
+	    if(_entity instanceof Actor) {
+		Director director = ((Actor)_entity).getDirector();
+		director.invalidateSchedule();
+		director.invalidateResolvedTypes();
+	    }
+            _entity.setContainer(null);
         } catch (KernelException ex) {
             throw new ChangeFailedException(this, ex);
         }
@@ -113,13 +114,13 @@ public class RemoveActor extends ChangeRequest {
     /** Get the actor.
      *  @return The actor to be removed.
      */
-    public Actor getActor() {
-        return _actor;
+    public ComponentEntity getEntity() {
+        return _entity;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     // The actor to remove.
-    private Actor _actor;
+    private ComponentEntity _entity;
 }
