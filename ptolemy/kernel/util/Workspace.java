@@ -280,7 +280,7 @@ public final class Workspace implements Nameable, Serializable {
         // A read-only workspace can't be written, so calling this method
         // doesn't really make sense.
         if (_readOnly) {
-            throw new InvalidStateException(this, "Trying to relinguish " +
+            throw new InvalidStateException(this, "Trying to relinquish " +
                     "write access on a write-protected workspace.");
         }
         _writeReq--;
@@ -779,7 +779,7 @@ public final class Workspace implements Nameable, Serializable {
     // The number of PtolemyThread readers.
     // The use of this field is to increment it everytime we have a new
     // Ptolemy reader (readDepth field goes from 0 to 1) and decrement it
-    // whenever a Ptolemy reader relinguishes ALL its read access (readDepth
+    // whenever a Ptolemy reader relinquishes ALL its read access (readDepth
     // field goes from 1 to 0).
     private long _numPtReaders = 0;
 

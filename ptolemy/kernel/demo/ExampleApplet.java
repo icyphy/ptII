@@ -44,10 +44,10 @@ import java.lang.String;
 //////////////////////////////////////////////////////////////////////////
 //// ExampleApplet
 /**
-ExampleApplet is an applet contains a run button and a text area.
-It's for the general perpose of convert the command line application
-into AWT compatible applet. This applet is also contained in a frame
-to make it run as an application
+ExampleApplet is an applet that contains a run button and a text area.
+In general, this class is used to convert a command line application
+into AWT compatible applet. This applet can also be contained in a frame
+to make it run as an application.
 @author Jie Liu
 @version $Id$
 @see java.lang.applet

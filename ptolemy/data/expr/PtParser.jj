@@ -1232,19 +1232,19 @@ String tidied, x;
      }
 /*@egen*/
      { 
-        Parameter referedParam = null;
+        Parameter referredParam = null;
 	if (_scope != null) {
-           referedParam = (Parameter)_scope.get(token.image);
+           referredParam = (Parameter)_scope.get(token.image);
 	}
-        if (referedParam != null) {
+        if (referredParam != null) {
            // The Parameter is stored in the node so that the tree 
 	   // does not have to be reparsed whenever the Token in 
 	   // the Parameter changes.
-           jjtn007._param   = referedParam; 
+           jjtn007._param   = referredParam; 
            // Register the calling parameter as a ParameterListener 
 	   // of this Parameter this ID references.
            if (_listener != null) {
-        	referedParam.addParameterListener(_listener);
+        	referredParam.addParameterListener(_listener);
             }
         } else if (_constantsRecognized.containsKey(token.image)) {
             // constant is registered with the parser.

@@ -350,7 +350,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
     }
 
     /** Return a new receiver of a type compatible with the local director.
-     *  Derived classes may further specialize this to return a reciever
+     *  Derived classes may further specialize this to return a receiver
      *  specialized to the particular actor.  This method is <i>not</i>
      *  synchronized on the workspace, so the caller should be.
      *
@@ -392,7 +392,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
     }
 
     /** Return a new receiver of a type compatible with the executive director.
-     *  Derived classes may further specialize this to return a reciever
+     *  Derived classes may further specialize this to return a receiver
      *  specialized to the particular actor.  This method is <i>not</i>
      *  synchronized on the workspace, so the caller should be.
      *
