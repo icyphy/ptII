@@ -84,10 +84,10 @@ J. Makhoul, "Linear Prediction: A Tutorial Review",
 S. M. Kay, <i>Modern Spectral Estimation: Theory & Application</i>,
 Prentice-Hall, Englewood Cliffs, NJ, 1988.
 
-@see FIR
+@see ptolemy.domains.sdf.lib.FIR
 @see LevinsonDurbin
 @see RecursiveLattice
-@see VariableLattice
+@see ptolemy.domains.sdf.lib.VariableLattice
 @author Edward A. Lee
 @version $Id$
 */
