@@ -53,7 +53,8 @@ JSRCS = Documentation.java \
 	Locatable.java \
 	Vertex.java \
 	MoMLApplet.java \
-	MoMLParser.java
+	MoMLParser.java \
+	MoMLUtilities.java
 
 EXTRA_SRCS =	$(JSRCS) \
 	moml.dtd \
