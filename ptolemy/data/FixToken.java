@@ -33,8 +33,11 @@ package ptolemy.data;
 
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.math.FixPoint;
-import ptolemy.math.Quantizer;
+import ptolemy.math.FixPointQuantization;
+import ptolemy.math.Overflow;
 import ptolemy.math.Precision;
+import ptolemy.math.Quantization;
+import ptolemy.math.Rounding;
 import ptolemy.graph.CPO;
 import ptolemy.data.type.*;
 import ptolemy.data.expr.PtParser;
@@ -45,11 +48,12 @@ import ptolemy.data.expr.ASTPtRootNode;
 /**
 A token that contains an instance of FixPoint.
 
-@author Bart Kienhuis, Edward A. Lee, Steve Neuendorffer
+@author Bart Kienhuis, Edward A. Lee, Steve Neuendorffer Ed Willink
 @see ptolemy.data.Token
 @see ptolemy.math.FixPoint
+@see ptolemy.math.FixPointQuantization
 @see ptolemy.math.Precision
-@see ptolemy.math.Quantizer
+@see ptolemy.math.Quantization
 @version $Id$
 @since Ptolemy II 0.4
 */
@@ -80,7 +84,9 @@ public class FixToken extends ScalarToken {
     public FixToken(double value, Precision precision)
             throws IllegalArgumentException {
         try {
-            _value = Quantizer.round(value, precision);
+            FixPointQuantization q = new FixPointQuantization(precision,
+                Overflow.SATURATE, Rounding.NEAREST);
+            _value = new FixPoint(value, q);
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException(e.getMessage());
         }
@@ -99,9 +105,10 @@ public class FixToken extends ScalarToken {
     public FixToken(double value, int numberOfBits, int integerBits)
             throws IllegalArgumentException {
         try {
-            Precision precision =
-                new Precision( numberOfBits, integerBits);
-            _value = Quantizer.round(value, precision);
+            Precision precision = new Precision(numberOfBits, integerBits);
+            FixPointQuantization q = new FixPointQuantization(precision,
+                Overflow.SATURATE, Rounding.NEAREST);
+            _value = new FixPoint(value, q);
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException(e.getMessage());
         }
@@ -196,13 +203,12 @@ public class FixToken extends ScalarToken {
         return BaseType.FIX;
     }
 
-    /** Return a hash code value for this token. This method returns the
-     *  integer portion of the contained fixed point number.
+    /** Return a hash code value for this value. This method returns the
+     *  low order 32 bits of the integer representation.
      *  @return A hash code value for this token.
      */
     public int hashCode() {
-        double code = _value.doubleValue();
-        return (int)code;
+        return _value.hashCode();
     }
 
     /** Returns a new Token representing the multiplicative identity
@@ -211,6 +217,18 @@ public class FixToken extends ScalarToken {
      */
     public Token one() {
         return new FixToken( 1.0, _value.getPrecision() );
+    }
+
+    /** Return a new token whose value is constrianed to comply
+     *  with a quantization specification
+     *  @param quant The quantization specification.
+     *  @return A new FixToken containing the result.
+     */
+    public final Token quantize(Quantization quant) {
+        //FIXME: Move this to ScalarToken.
+        ScalarToken result = _quantize(quant);
+        result._unitCategoryExponents = this._copyOfCategoryExponents();
+        return result;
     }
 
     /** Return the value of this token as a string that can be parsed
@@ -282,6 +300,18 @@ public class FixToken extends ScalarToken {
         return new FixToken(result);
     }
 
+    /** Return a new token whose value is the value of this token
+     *  divided by the value of the argument token. It is assumed that
+     *  the type of the argument is an FixToken
+     *  @param rightArgument The token to divide this token by.
+     *  @param quant The quantization specification.
+     *  @return A new FixToken containing the result.
+     */
+    protected ScalarToken _divide(ScalarToken rightArgument, Quantization quant) {
+        FixPoint result = _value.divide(((FixToken)rightArgument).fixValue(), quant);
+        return new FixToken(result);
+    }
+
     /** Test for closeness of the values of this Token and the argument
      *  Token.  It is assumed that the type of the argument is
      *  FixToken.
@@ -350,6 +380,16 @@ public class FixToken extends ScalarToken {
     protected ScalarToken _multiply(ScalarToken rightArgument) {
         FixPoint result =
             _value.multiply(((FixToken)rightArgument).fixValue());
+        return new FixToken(result);
+    }
+
+    /** Return a new token whose value is constrianed to comply
+     *  with a quantization specification
+     *  @param quant The quantization specification.
+     *  @return A new FixToken containing the result.
+     */
+    protected ScalarToken _quantize(Quantization quant) {
+        FixPoint result = _value.quantize(quant);
         return new FixToken(result);
     }
 
