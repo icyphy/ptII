@@ -196,6 +196,62 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
 	_initialized = true;
     }
 
+	    
+    /** Given a dot separated classname, return the jar file or directory
+     *  where the class can be found
+     *  @param necessaryClass  The dot separated class name, for example
+     *  "ptolemy.kernel.util.NamedObj"
+     *  @returns If the class can be found as a resource, return the
+     *  directory or jar file where the necessary class can be found.
+     *  otherwise, return null.
+     */
+    public static String lookupClassAsResource(String necessaryClass) {
+	String necessaryResource =
+	    StringUtilities.substitute(necessaryClass, ".", "/")
+	    + ".class";
+
+	URL necessaryURL = Thread.currentThread()
+	    .getContextClassLoader().getResource(necessaryResource);
+
+	if (necessaryURL != null) {
+	    String resourceResults = necessaryURL.getFile();
+
+	    // Strip off the file:/ and the necessaryResource.
+	    if (resourceResults.startsWith("file:/")) {
+		resourceResults = resourceResults.substring(6);
+	    }
+
+	    // Strip off the name of the resource we were looking for
+	    // so that we are left with the directory or jar file 
+	    // it is in
+	    resourceResults =
+		resourceResults.substring(0,resourceResults.length()-
+					  necessaryResource.length());
+	    // Strip off the file:/
+	    if (resourceResults.startsWith("file:/")) {
+		resourceResults = resourceResults.substring(6);
+	    }
+
+	    // Strip off the trailing !/
+	    if (resourceResults.endsWith("!/")) {
+		resourceResults =
+		    resourceResults.substring(0,
+					      resourceResults.length()-2);
+	    }
+
+	    // Unfortunately, under Windows, URL.getFile() may
+	    // return things like /c:/ptII, so we create a new
+	    // File and get its path, which will return c:\ptII
+	    File resourceFile = new File(resourceResults);
+
+	    // Convert backslashes 
+	    String sanitizedResourceName =
+		StringUtilities.substitute(resourceFile.getPath(),
+					   "\\", "/");
+	    return sanitizedResourceName;
+	}
+	return null;
+    }
 
     /** If necessary, initialize this GeneratorAttribute and then 
      *	sanity check the parameters and update them as necessary.
@@ -479,53 +535,12 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
 		((StringToken)necessaryClassesToken.getElement(i))
 		.stringValue();
 
-	    String necessaryResource =
-		StringUtilities.substitute(necessaryClass, ".", "/")
-		+ ".class";
+	    String sanitizedResourceName =
+		lookupClassAsResource(necessaryClass);
 
-	    URL necessaryURL = Thread.currentThread()
-		.getContextClassLoader().getResource(necessaryResource);
-
-	    if (necessaryURL != null) {
-		String resourceResults = necessaryURL.getFile();
-
-		// Strip off the file:/ and the necessaryResource.
-		if (resourceResults.startsWith("file:/")) {
-		    resourceResults = resourceResults.substring(6);
-		}
-
-		// Strip off the name of the resource we were looking for
-		// so that we are left with the directory or jar file 
-		// it is in
-		resourceResults =
-		    resourceResults.substring(0,resourceResults.length()-
-					      necessaryResource.length());
-
-		// Strip off the file:/
-		if (resourceResults.startsWith("file:/")) {
-		    resourceResults = resourceResults.substring(6);
-		}
-
-		// Strip off the trailing !
-		if (resourceResults.endsWith("!/")) {
-		    resourceResults =
-			resourceResults.substring(0,
-						  resourceResults.length()-2);
-		}
-
-
-		// Unfortunately, under Windows, URL.getFile() may
-		// return things like /c:/ptII, so we create a new
-		// File and get its path, which will return c:\ptII
-		File resourceFile = new File(resourceResults);
-
-		// Convert backslashes 
-		String sanitizedResourceName =
-		    StringUtilities.substitute(resourceFile.getPath(),
-					       "\\", "/");
-		if (!classPathList.contains(sanitizedResourceName)) {
-		    classPathList.add(sanitizedResourceName);
-		}
+	    if (sanitizedResourceName != null
+		&& !classPathList.contains(sanitizedResourceName)) {
+		classPathList.add(sanitizedResourceName);
 	    }
 	}
 
@@ -547,6 +562,7 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
 		necessaryClassPath.append(classPathSeparator);
 	    }
 	    necessaryClassPath.append(classPaths.next());
+
 	} 
 
 	((Parameter)getAttribute("necessaryClassPath"))
