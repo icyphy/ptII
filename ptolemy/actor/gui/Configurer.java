@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (eal@eecs.berkeley.edu)
-@AcceptedRating Red (johnr@eecs.berkeley.edu)
+@ProposedRating Yellow (eal@eecs.berkeley.edu)
+@AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.gui;
@@ -63,6 +63,9 @@ The restore() method restores the values of the attributes of the
 object to their values when this object was created.  This can be used
 in a modal dialog to implement a cancel button, which restores
 the attribute values to those before the dialog was opened.
+<p>
+This class is created by an intance of the EditParametersDialog class
+to handle the part of the dialog that edits the parameters.
 
 @see EditorPaneFactory
 @author Steve Neuendorffer and Edward A. Lee
@@ -71,7 +74,12 @@ the attribute values to those before the dialog was opened.
 
 public class Configurer extends JPanel implements CloseListener {
 
-    /** Construct a configurer for the specified object.
+    /** Construct a configurer for the specified object.  This stores
+     *  the current values of any Settable attributes of the given object, 
+     *  and then defers to any editor pane factories contained by
+     *  the given object to populate this panel with widgets that 
+     *  edit the attributes of the given object.  If there are no 
+     *  editor pane factories, then a default editor pane is created.
      *  @param object The object to configure.
      */
     public Configurer(final NamedObj object) {

@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (eal@eecs.berkeley.edu)
+@AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.gui;
@@ -63,8 +63,11 @@ CloseListener interface, then they are notified when this dialog
 is closed, and are informed of which button (if any) was used to
 close the dialog.
 <p>
-The dialog is modal, so the statement that creates the dialog will
-not return until the user dismisses the dialog.  The method buttonPressed()
+The dialog is modal, so that (in lieu of a proper undo mechanism) 
+the Cancel button can properly undo any
+modifications that are made.  This means that the statement that creates
+the dialog will not return until the user dismisses the dialog.  
+The method buttonPressed()
 can then be called to find out whether the user clicked the Commit button
 or the Cancel button (or any other button specified in the constructor).
 Then you can access the component to determine what values were set
@@ -163,13 +166,16 @@ public class EditParametersDialog extends ComponentDialog
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Notify the listener that a change has been successfully executed.
-     *  @param change The change that has been executed.
+    /** React to the fact that a change has been successfully executed.
+     *  This method opens a new parameter editor to replace the one that
+     *  was closed.
+     *  @param change The change that was executed.
      */
     public void changeExecuted(ChangeRequest change) {
         // Ignore if this is not the originator.
         if (change.getSource() != this) return;
 
+        // FIXME: this is ugly..  Why is this necessary?
         // Open a new dialog.
         new EditParametersDialog(_owner, _target);
 

@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (vogel@eecs.berkeley.edu)
+@AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 
 */
 
@@ -109,12 +109,19 @@ public class PtolemyQuery extends Query
      *  The name of the entry will be set to the name of the attribute,
      *  and the attribute will be attached to the entry, so that if the
      *  attribute is updated, then the entry is updated. If the attribute
-     *  contains an editing style attribute, then use the style to
-     *  create the entry, otherwise just create a new line entry.
-     *  @param attribute The attribute for which to create an entry.
+     *  contains an instance of ParameterEditorStyle, then defer to 
+     *  the style to create the entry, otherwise just create a new line entry.
+     *  Only the first style that is found is used to create an entry.
+     *  @param attribute The attribute to create an entry for.
      */
     public void addStyledEntry(Settable attribute) {
-	// Look for a ParameterEditorStyle.
+        // Note: it would be nice to give 
+        // multiple styles to specify to create more than one
+        // entry for a particular parameter.  However, the style configurer
+        // doesn't support it and we don't have a good way of representing
+        // it in this class.
+
+        // Look for a ParameterEditorStyle.
         boolean foundStyle = false;
         if (attribute instanceof NamedObj) {
             Iterator styles = ((NamedObj)attribute)
@@ -258,10 +265,12 @@ public class PtolemyQuery extends Query
 		    protected void _execute() throws IllegalActionException {
 			attribute.setExpression(stringValue(name));
 
-			// Here, we need to handle instances of Variable
+                        // Here, we need to handle instances of Variable
 			// specially.  This is too bad...
 			if (attribute instanceof Variable) {
-			    // Retrieve the token to force evaluation, so as to
+                            // FIXME: Will this ever happen?  A Variable that
+                            // is not a NamedObj???
+                            // Retrieve the token to force evaluation, so as to
 			    // check the validity of the new value.
 			    ((Variable)attribute).getToken();
 			}
