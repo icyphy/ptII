@@ -54,6 +54,7 @@ public class FunctionDependencyOfFSMActor extends FunctionDependency {
 
     /** Construct a FunctionDependencyOfFSMActor in the given actor.
      *  @param fsmActor The associated FSM actor.
+     *  @param name The name of the FunctionDependency.
      *  @exception IllegalActionException If the name has a period in it, or
      *   the attribute is not compatible with the specified container.
      *  @exception NameDuplicationException If the container already contains
