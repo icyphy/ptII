@@ -1418,6 +1418,9 @@ String tidied, x;
           jjtn001._ptToken = Constants.get(x.image);
           jjtn001._isConstant = true;
           isArrayRef = true;
+        } else {
+          if (_undefined != null)
+              _undefined.add(token.image);
         }
       } finally {
       if (jjtc001) {

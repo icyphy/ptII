@@ -183,6 +183,7 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
 	int args = jjtGetNumChildren();
         boolean debug = false;
 	if (_isArrayRef) {
+            ptolemy.data.Token result = null;
 	    if (args == 2) {
 		// referencing an element in an array
 		if (!(_childTokens[0] instanceof ArrayToken)) {
@@ -196,7 +197,14 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
 			    + " is not an integer.");
 		}
 		int index = ((IntToken)_childTokens[1]).intValue();
-		return ((ArrayToken)_childTokens[0]).getElement(index);
+                try {
+		    result = ((ArrayToken)_childTokens[0]).getElement(index);
+                } catch (ArrayIndexOutOfBoundsException ex) {
+                    throw new IllegalActionException("The index to array "
+                            + _funcName + " is out of bounds: "
+                            + index + ".");
+                }
+                return result;
 	    } else if (args == 3) {
 		// referencing an element in a matrix
 		int row = 0;
@@ -221,7 +229,14 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
 		    col = ((IntToken)_childTokens[2]).intValue();
 		}
 		MatrixToken tok = (MatrixToken)_childTokens[0];
-		return ((MatrixToken)tok).getElementAsToken(row, col);
+                try {
+		    result = ((MatrixToken)tok).getElementAsToken(row, col);
+                } catch (ArrayIndexOutOfBoundsException ex) {
+                    throw new IllegalActionException("The index to matrix "
+                            + _funcName + " is out of bounds: "
+                            + row + ", " + col + ".");
+                }
+                return result;
 	    } else {
 		throw new IllegalActionException("Wrong number of indices "
 			+ "when referencing " + _referredVar().getFullName());
@@ -377,8 +392,8 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
 
     // Convert a token to its underlying java type and return its value
     // (Object) and type (Class).
-    protected static Object[] convertTokenToJavaType
-        (ptolemy.data.Token token) {
+    protected static Object[] convertTokenToJavaType(ptolemy.data.Token token) 
+            throws ptolemy.kernel.util.IllegalActionException {
         Object[] retval = new Object[2];
         if (token instanceof DoubleToken) {
             // Note: Java makes a distinction between the class objects
@@ -487,9 +502,13 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
                                 .getElement(j)).booleanValue();
                 }
                 retval[0] = array;
+            } else {
+                // Bailout if we don't recognize the argument.
+                retval[0] = token;
             }
             retval[1] = retval[0].getClass();
         } else {
+            // Bailout if we don't recognize the argument.
             retval[0] = token;
             retval[1] = retval[0].getClass();
         }
