@@ -92,3 +92,14 @@ test NameDuplicationException-2.4 {two objects and a string} {
             $container $containee "more info" ]
     list [$pe getMessage] [$pe getLocalizedMessage]
 } {{Attempt to insert object named "wouldBeContainee" into container named ".container", which already contains an object with that name. more info} {Attempt to insert object named "wouldBeContainee" into container named ".container", which already contains an object with that name. more info}}
+
+######################################################################
+####
+#
+test NameDuplicationException-3.1 {Two null objects} {
+    set container [java::null]
+    set containee [java::null]
+    set pe [java::new pt.kernel.util.NameDuplicationException \
+            $container $containee "more info" ]
+    list [$pe getMessage] [$pe getLocalizedMessage]
+} {{Attempt to insert object named "" into a container that already contains an object with that name. more info} {Attempt to insert object named "" into a container that already contains an object with that name. more info}}
