@@ -47,7 +47,7 @@ A first-in, first-out (FIFO) queue receiver with variable capacity and
 optional history. Tokens are put into the receiver with the put() method,
 and removed from the receiver with the get() method. The token removed is
 the one placed in the receiver before any other (i.e. the "oldest", although
-this has nothing to do with time in the model. 
+this has nothing to do with time in the model.
 By default, the capacity is unbounded, but
 it can be set to any nonnegative size. If the history capacity is greater
 than zero (or infinite, indicated by a capacity of INFINITE_CAPACITY),

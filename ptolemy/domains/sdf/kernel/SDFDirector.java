@@ -72,9 +72,9 @@ and puts of arrays of tokens.
 Actors are assumed to consume and produce exactly one token per channel on
 each firing.  Actors that do not follow this convention should set
 the appropriate parameters on input and output ports to declare the number
-of tokens they produce or consume.  See the 
-@link ptolemy.domains.sdf.kernel.SDFScheduler for more information. 
-The @link ptolemy.domains.sdf.lib.SampleDelay actor is usually used 
+of tokens they produce or consume.  See the
+@link ptolemy.domains.sdf.kernel.SDFScheduler for more information.
+The @link ptolemy.domains.sdf.lib.SampleDelay actor is usually used
 in a model to specify the delay across a relation.
 <p>
 The <i>iterations</i> parameter of this director corresponds to a
@@ -86,7 +86,7 @@ The default value of the iterations parameter is an IntToken with value zero.
 The <i>vectorizationFactor</i> parameter of this director sets the number
 of times that the basic schedule is executed during each firing of this
 director.  This might allow the director to execute the model more efficiently,
-by combining multiple firings of each actor.  The default value of the 
+by combining multiple firings of each actor.  The default value of the
 vectorizationFactor parameter is an IntToken with value one.
 
 
@@ -162,7 +162,7 @@ public class SDFDirector extends StaticSchedulingDirector {
      *  The director will attempt to construct a schedule where each
      *  actor fires <i>vectorizationFactor</i> times more often than
      *  it would in a minimal schedule.  This can allow actor executions
-     *  to be grouped together, resulting in faster execution.  This is 
+     *  to be grouped together, resulting in faster execution.  This is
      *  more likely to be possible in graphs without tight feedback.
      *  This parameter must be a positive integer.
      *  The default value is an IntToken with the value one.
@@ -178,7 +178,7 @@ public class SDFDirector extends StaticSchedulingDirector {
      *  @param attribute The changed parameter.
      *  @exception IllegalActionException If the parameter set is not valid.
      */
-    public void attributeChanged(Attribute attribute) 
+    public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if(attribute == vectorizationFactor) {
             invalidateSchedule();
@@ -215,7 +215,7 @@ public class SDFDirector extends StaticSchedulingDirector {
 		Firing firing = (Firing)firings.next();
 		Actor actor = (Actor)firing.getActor();
 		int iterationCount = firing.getIterationCount();
-                _debug("Actor " + actor + " will fire " + 
+                _debug("Actor " + actor + " will fire " +
                         iterationCount + " time(s).");
             }
         }
@@ -240,7 +240,7 @@ public class SDFDirector extends StaticSchedulingDirector {
     public boolean prefire() throws IllegalActionException {
         // Set current time based on the enclosing model.
         super.prefire();
-        
+
         TypedCompositeActor container = ((TypedCompositeActor)getContainer());
 	Iterator inputPorts = container.inputPortList().iterator();
 	int inputCount = 0;
@@ -368,15 +368,15 @@ public class SDFDirector extends StaticSchedulingDirector {
      *  default scheduler of the class SDFScheduler, an iterations
      *  parameter and a vectorizationFactor parameter.
      */
-    private void _init() 
+    private void _init()
             throws IllegalActionException, NameDuplicationException {
-        SDFScheduler scheduler = 
+        SDFScheduler scheduler =
             new SDFScheduler(this, uniqueName("Scheduler"));
 
-        iterations = 
+        iterations =
             new Parameter(this, "iterations", new IntToken(0));
         iterations.setTypeEquals(BaseType.INT);
-        vectorizationFactor = 
+        vectorizationFactor =
             new Parameter(this, "vectorizationFactor", new IntToken(1));
         vectorizationFactor.setTypeEquals(BaseType.INT);
     }
