@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="FeedbackLoop" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0-alpha">
     </property>
     <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector">
         <property name="scheduler" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.sr.kernel.SRRandomizedScheduler&quot;">
@@ -15,27 +15,27 @@
         </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="10">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="125.0, 60.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 45.0]">
         </property>
         <property name="Scheduler" class="ptolemy.domains.sr.kernel.SROptimizedScheduler">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={17, 29, 680, 481}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {17, 29, 815, 352}, maximized = false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 243]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{300.0, 200.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{300.0, 121.5}">
     </property>
     <property name="annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model demostrates that a NonStrictDelay actor &#10;breaks a feedback loop in a SR model.&#10;&#10;Author: Haiyang Zheng">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="55.0, 270.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 165.0]">
         </property>
     </property>
     <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="235.0, 200.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{235.0, 125.0}">
         </property>
     </entity>
     <entity name="NonStrictDisplay2" class="ptolemy.domains.sr.lib.NonStrictDisplay">
@@ -43,11 +43,11 @@
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={555, 411, 290, 227}, maximized=false}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="345.0, 100.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 45.0]">
         </property>
     </entity>
     <entity name="NonStrictDelay" class="ptolemy.domains.sr.lib.NonStrictDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="355.0, 200.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 125.0]">
         </property>
     </entity>
     <entity name="NonStrictDisplay" class="ptolemy.domains.sr.lib.NonStrictDisplay">
@@ -55,24 +55,24 @@
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={555, 411, 290, 227}, maximized=false}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="495.0, 150.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 155.0]">
         </property>
     </entity>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="105.0, 190.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 115.0]">
         </property>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="175.0, 190.0">
+        <vertex name="vertex1" value="[160.0, 115.0]">
         </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="290.0, 200.0">
+        <vertex name="vertex1" value="[290.0, 125.0]">
         </vertex>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="410.0, 150.0">
+        <vertex name="vertex1" value="[410.0, 155.0]">
         </vertex>
     </relation>
     <link port="AddSubtract.plus" relation="relation5"/>
