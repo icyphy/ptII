@@ -113,6 +113,10 @@
   <entity name="StringToUnsignedByteArray"
           class="ptolemy.actor.lib.conversions.StringToUnsignedByteArray">
   </entity>
+  
+  <entity name="StringToXML"
+          class="ptolemy.actor.lib.conversions.StringToXML">
+  </entity>
 
   <entity name="TokenToExpression"
           class="ptolemy.actor.lib.conversions.TokenToExpression">
