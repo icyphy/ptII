@@ -141,6 +141,7 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
       </property>
       <property name="HybridFSM" class="ptolemy.domains.fsm.kernel.HSDirector"/>
       <property name="Giotto" class="ptolemy.domains.giotto.kernel.GiottoDirector"/>
+      <property name="PetriNet" class="ptolemy.domains.petrinet.kernel.PetriNetDirector"/>
       <property name="RTP" class="ptolemy.domains.rtp.kernel.RTPDirector"/>
       <property name="SR" class="ptolemy.domains.sr.kernel.SRDirector">
          <property name="scheduler">
@@ -178,6 +179,7 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
             <input source="ptolemy/domains/de/lib/deentities.xml"/>
             <input source="ptolemy/domains/sr/lib/srentities.xml"/>
 	    <input source="ptolemy/domains/rtos/lib/rtosentities.xml"/>
+	    <input source="ptolemy/domains/petrinet/kernel/petrinetentities.xml"/>
           </group>
         ?>
       </configure>
