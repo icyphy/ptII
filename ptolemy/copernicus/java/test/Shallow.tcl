@@ -37,9 +37,10 @@ if {[string compare test [info procs test]] == 1} then {
     source testDefs.tcl
 } {}
 
-if {[info procs enumToObjects] == "" } then {
-     source enums.tcl
-}
+if {[string compare test [info procs autoShallowCG]] == 1} then {
+    source sootShallowCodeGeneration.tcl
+} {}
+
 
 if {[info procs jdkClassPathSeparator] == "" } then { 
     source [file join $PTII util testsuite jdktools.tcl]
@@ -48,111 +49,10 @@ if {[info procs jdkClassPathSeparator] == "" } then {
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
 
-proc sootShallowCodeGeneration {model} {
-    global relativePathToPTII
-
-    # We need to get the classpath so that we can run if we are running
-    # under Javascope, which includes classes in a zip file
-    set builtinClasspath [java::call System getProperty "java.class.path"]
-    set rtjar [java::call System getProperty "sun.boot.class.path"]
-
-    set sootClasspath $relativePathToPTII/vendors/soot/1.2.2/jasminclasses.jar[java::field java.io.File pathSeparator]$relativePathToPTII/vendors/soot/1.2.2/sootclasses.jar
-
-    set classpath $relativePathToPTII[java::field java.io.File pathSeparator].[java::field java.io.File pathSeparator]$sootClasspath[java::field java.io.File pathSeparator]$builtinClasspath[java::field java.io.File pathSeparator]$rtjar
-
-
-    set args [java::new {String[]} 9 \
-	    [list \
-	    $model "-d" $relativePathToPTII \
-	    "-p" "wjtp.at" "targetPackage:ptolemy.copernicus.java.test.cg" \
-	    "-p" "wjtp.mt" "targetPackage:ptolemy.copernicus.java.test.cg" \
-	    ]]
-    set main [java::new ptolemy.copernicus.java.Main $args]
-    $main initialize
-    $main addTransforms
-    set toplevel [$main toplevel]
-    set modelName ptolemy.copernicus.java.test.cg.[$toplevel getName]
-
-    # Make a stab at getting the iterations
-    set director [$toplevel getDirector]
-    set iterations [$director getAttribute iterations]
-    if { $iterations == [java::null] } {
-	puts "WARNING: iterations parameter not found in\n '$modelName',\n \
-		perhaps this model is not SDF?"
-    } else {
-	set iterationsValue [[java::cast ptolemy.data.IntToken \
-	    [[java::cast ptolemy.data.expr.Parameter \
-	    $iterations]  getToken]] doubleValue]
-	puts "iterationsValue = $iterationsValue"
-    }
-
-
-    # See KernelMain.generateCode for a description of why this is necessary
-    $args set 0 "java.lang.Object"
-    java::call soot.Main setReservedNames
-    java::call soot.Main setCmdLineArgs $args
-    set main [java::new soot.Main]
-    set ccl [java::new soot.ConsoleCompilationListener]
-    java::call soot.Main addCompilationListener $ccl
-    $main run
-    #set thread [java::new Thread main]
-    #$thread start
-
-
-#    exec java -Xmx132m -classpath $classpath \
-#	    ptolemy.copernicus.java.Main 
-#           $model -d $relativePathToPTII \
-#	    -p wjtp.at targetPackage:ptolemy.copernicus.java.test.cg \
-#	    -p wjtp.mt targetPackage:ptolemy.copernicus.java.test.cg
-
-
-
-
-#    set applicationArguments [java::new {java.lang.String[]} 4 [list \
-#	    "-class" $modelName \
-#	    "-iterations" "10" \
-#	    ]]
-#
-#    set application [java::new ptolemy.actor.gui.CompositeActorApplication]
-#    $application processArgs $applicationArguments
-#    set models [listToObjects [$application models]]
-#    $application waitForFinish
-#    set result {}
-#    foreach model $models {
-#        set modelc [java::cast ptolemy.actor.gui.test.TestModel $model]
-#        lappend result [listToStrings [$modelc getResults]]
-#    }
-#    list $result
-
-#    return [exec java -Xfuture -classpath $classpath ptolemy.actor.gui.CompositeActorApplication -iterations 10 -class $modelName]
-    puts "sootShallowCodeGeneration {$model}: running $modelName"
-
-    return [exec java -Xfuture -classpath $classpath ptolemy.actor.gui.CompositeActorApplication -class $modelName]
-}
-
-
-# Generate code for all the xml files in a directory.
-proc autoShallowCG {autoDirectory} {
-    foreach file [glob $autoDirectory/*.xml] {
-	puts "------------------ testing $file"
-	test "Auto" "Automatic test in file $file" {
-	    sootShallowCodeGeneration $file
-	    list {}
-	} {{}}
-    }
-}
-
-
 ######################################################################
 ####
 #
 
-
-proc foo {} {
-    global relativePathToPTII
-      sootShallowCodeGeneration \
-  	 [file join $relativePathToPTII ptolemy actor lib test auto Counter.xml]
-}
 #test Shallow-1.1 {Compile and run the Orthocomm test} {
 #    set result [sootShallowCodeGeneration \
 #  	    ptolemy.domains.sdf.demo.OrthogonalCom.OrthogonalCom]
@@ -161,14 +61,15 @@ proc foo {} {
 
 test Shallow-1.2 {Compile and run the SDF IIR test} {
     set result [sootShallowCodeGeneration \
-	    [file join $relativePathToPTII ptolemy actor lib test auto IIR.xml]
+	    [file join $relativePathToPTII ptolemy actor lib test auto \
+	    IIR.xml]]
     lrange $result 0 9
 } {2 4 6 8 10 12 14 16 18 20}
 
 test Shallow-1.2 {Compile and run the DE Counter test} {
     set result [sootShallowCodeGeneration \
 	    [file join $relativePathToPTII ptolemy actor lib test auto \
-	    Counter.xml]
+	    Counter.xml]]
     lrange $result 0 9
 } {2 4 6 8 10 12 14 16 18 20}
  

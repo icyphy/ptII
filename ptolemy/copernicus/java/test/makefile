@@ -43,7 +43,8 @@ include $(CONFIG)
 
 # Tcl sources that are part of the testing infrastructure
 TCL_SRCS = \
-	testDefs.tcl
+	testDefs.tcl \
+	sootShallowCodeGeneration.tcl
 
 JSRCS = \
 
@@ -88,7 +89,7 @@ depend:
 	@echo "no dependencies in this directory"
 ptjacl:
 	CLASSPATH="$(ROOT)$(CLASSPATHSEPARATOR)$(SOOT_CLASSES)" \
-		sh -x "$(PTII)/bin/ptjacl"
+		"$(PTII)/bin/ptjacl"
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
