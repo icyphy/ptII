@@ -30,6 +30,16 @@
 
 package ptolemy.vergil.toolbox;
 
+import java.awt.Component;
+import java.awt.Frame;
+import java.awt.event.ActionEvent;
+
+import javax.swing.AbstractAction;
+import javax.swing.JButton;
+import javax.swing.JMenuItem;
+
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.NamedObj;
 import diva.canvas.CanvasComponent;
 import diva.canvas.CanvasLayer;
 import diva.canvas.CanvasPane;
@@ -41,16 +51,6 @@ import diva.graph.GraphModel;
 import diva.graph.GraphPane;
 import diva.graph.JGraph;
 import diva.gui.toolbox.JContextMenu;
-
-import ptolemy.kernel.util.NamedObj;
-
-import java.awt.Component;
-import java.awt.Frame;
-import java.awt.event.ActionEvent;
-
-import javax.swing.AbstractAction;
-import javax.swing.JButton;
-import javax.swing.JMenuItem;
 
 //////////////////////////////////////////////////////////////////////////
 //// FigureAction
@@ -151,6 +151,11 @@ public class FigureAction extends AbstractAction {
                     }
                     _target = (NamedObj) model.getSemanticObject(object);
                     currentFigure = currentFigure.getParent();
+                }
+                // NOTE: _target may end up null here!
+                if (_target == null) {
+                    throw new InternalErrorException(
+                    "Internal error: Figure has no associated Ptolemy II object!");
                 }
             } else {
                 _target = (NamedObj) model.getRoot();
