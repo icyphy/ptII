@@ -169,16 +169,16 @@ public class Plot extends PlotBox {
      * points before the axes have been first drawn.  If the argument
      * is true, clear the display first.
      */
-	public synchronized void drawPlot(Graphics graphics,
-					  boolean clearfirst) {
+    public synchronized void drawPlot(Graphics graphics,
+    				  boolean clearfirst) {
     	// Draw the axes
     	super.drawPlot(graphics, clearfirst);
     	// Plot the points
     	for (int dataset = 0; dataset < _numsets; dataset++) {
-    	    Vector data = _points[dataset];
+            // FIXME: Make the following iteration more efficient.
+            Vector data = _points[dataset];
     	    for (int pointnum = 0; pointnum < data.size(); pointnum++) {
-    	        _drawPlotPoint(graphics, dataset,
-			       (PlotPoint)data.elementAt(pointnum));
+    	        _drawPlotPoint(graphics, dataset, pointnum);
     	    }
     	}
     	notify();
@@ -464,8 +464,7 @@ public class Plot extends PlotBox {
                                 addLegend(datasetnumber, args[i++]);
                                 continue;
 			}
-		    } catch (NumberFormatException e) {
-		    }
+		    } catch (NumberFormatException e) {}
 		}
 	    } else {
 		if (arg.startsWith("=")) {
@@ -605,8 +604,8 @@ public class Plot extends PlotBox {
 
 	this._numsets = numsets;
         _points = new Vector[numsets];
-        _prevx = new int[numsets];
-        _prevy = new int[numsets];
+        _prevx = new long[numsets];
+        _prevy = new long[numsets];
         for (int i=0; i<numsets; i++) {
             _points[i] = new Vector();
         }
@@ -648,156 +647,18 @@ public class Plot extends PlotBox {
 
     //////////////////////////////////////////////////////////////////////////
     ////                          protected methods                       ////
-    
-    /**
-     * Put a mark corresponding to the specified dataset at the
-     * specified x and y position. If the fourth argument is true,
-     * attempt to connect this point with the previous point by
-     * drawing a line.  If the fifth argument is true, then check the
-     * range and plot only points and that portion of the connecting
-     * line that is in range.  If both the new point and the previous
-     * point are out of range, no line is drawn.  Return true if the
-     * point is actually drawn.  It is not drawn if either it is out
-     * of range or there is no mark requested.
-     */
-    protected boolean _drawPoint(Graphics graphics,
-				 int dataset, int xpos, int ypos,
-				 boolean connected, boolean clip) {
-	if (_debug > 20)
-	    System.out.println("Plot:_drawPoint "+dataset+" "+xpos+
-			        " "+ypos+" "+connected+" "+clip);
-        // Points are only distinguished up to _MAX_MARKS data sets.
-        dataset %= _MAX_MARKS;
-        if (_pointsPersistence > 0) {
-            // To allow erasing to work by just redrawing the points.
-            graphics.setXORMode(Color.white);
-        }
-        if (_usecolor) {
-            graphics.setColor(_colors[dataset]);
-        } else {
-            graphics.setColor(Color.black);
-        }
-        // If the point is not out of range, draw it.
-        boolean pointinside = ypos <= _lry && ypos >= _uly &&
-	    xpos <= _lrx && xpos >= _ulx;
-        boolean showsomething = pointinside || !clip;
-        if (showsomething) {
-            switch (_marks) {
-            case 1:
-                // points -- use 3-pixel ovals.
-                graphics.fillOval(xpos-1, ypos-1, 3, 3);
-                break;
-            case 2:
-                // dots
-                graphics.fillOval(xpos-_radius, ypos-_radius,
-				   _diameter, _diameter); 
-                break;
-            case 3:
-                // marks
-                int xpoints[], ypoints[];
-                switch (dataset) {
-                    case 0:
-                        // filled circle
-                        graphics.fillOval(xpos-_radius, ypos-_radius,
-					  _diameter, _diameter); 
-                        break;
-                    case 1:
-                        // cross
-                        graphics.drawLine(xpos-_radius, ypos-_radius,
-					  xpos+_radius, ypos+_radius); 
-                        graphics.drawLine(xpos+_radius, ypos-_radius,
-					  xpos-_radius, ypos+_radius); 
-                        break;
-                    case 2:
-                        // square
-                        graphics.drawRect(xpos-_radius, ypos-_radius,
-					  _diameter, _diameter); 
-                        break;
-                    case 3:
-                        // filled triangle
-                        xpoints = new int[4];
-                        ypoints = new int[4];
-                        xpoints[0] = xpos; ypoints[0] = ypos-_radius;
-                        xpoints[1] = xpos+_radius; ypoints[1] = ypos+_radius;
-                        xpoints[2] = xpos-_radius; ypoints[2] = ypos+_radius;
-                        xpoints[3] = xpos; ypoints[3] = ypos-_radius;
-                        graphics.fillPolygon(xpoints, ypoints, 4);
-                        break;
-                    case 4:
-                        // diamond
-                        xpoints = new int[5];
-                        ypoints = new int[5];
-                        xpoints[0] = xpos; ypoints[0] = ypos-_radius;
-                        xpoints[1] = xpos+_radius; ypoints[1] = ypos;
-                        xpoints[2] = xpos; ypoints[2] = ypos+_radius;
-                        xpoints[3] = xpos-_radius; ypoints[3] = ypos;
-                        xpoints[4] = xpos; ypoints[4] = ypos-_radius;
-                        graphics.drawPolygon(xpoints, ypoints, 5);
-                        break;
-                    case 5:
-                        // circle
-                        graphics.drawOval(xpos-_radius, ypos-_radius,
-					  _diameter, _diameter); 
-                        break;
-                    case 6:
-                        // plus sign
-                        graphics.drawLine(xpos, ypos-_radius, xpos,
-					  ypos+_radius); 
-                        graphics.drawLine(xpos-_radius, ypos, xpos+_radius,
-					  ypos); 
-                        break;
-                    case 7:
-                        // filled square
-                        graphics.fillRect(xpos-_radius, ypos-_radius,
-					  _diameter, _diameter); 
-                        break;
-                    case 8:
-                        // triangle
-                        xpoints = new int[4];
-                        ypoints = new int[4];
-                        xpoints[0] = xpos; ypoints[0] = ypos-_radius;
-                        xpoints[1] = xpos+_radius; ypoints[1] = ypos+_radius;
-                        xpoints[2] = xpos-_radius; ypoints[2] = ypos+_radius;
-                        xpoints[3] = xpos; ypoints[3] = ypos-_radius;
-                        graphics.drawPolygon(xpoints, ypoints, 4);
-                        break;
-                    case 9:
-                        // filled diamond
-                        xpoints = new int[5];
-                        ypoints = new int[5];
-                        xpoints[0] = xpos; ypoints[0] = ypos-_radius;
-                        xpoints[1] = xpos+_radius; ypoints[1] = ypos;
-                        xpoints[2] = xpos; ypoints[2] = ypos+_radius;
-                        xpoints[3] = xpos-_radius; ypoints[3] = ypos;
-                        xpoints[4] = xpos; ypoints[4] = ypos-_radius;
-                        graphics.fillPolygon(xpoints, ypoints, 5);
-                        break;
-                }
-                break;
-            default:
-                // none
-            }
-        }
+  
         
-        // Draw the impulse line to the x axis, if appropriate.
-        // Do not draw them if the data is out of range along the x axis
-        // or is below the y axis.
-        if (_impulses && ypos <= _lry && xpos <= _lrx && xpos >= _ulx) {
-            int topofline = ypos;
-            if (ypos < _uly) {
-                topofline = _uly;
-            }
-            graphics.drawLine(xpos, topofline, xpos, _lry);
-        }
-
-        // Draw the bars to the x axis, if appropriate.
-        // Do not draw them if the data is out of range along the x axis
-        // or is below the y axis.
-        if (_bars && ypos <= _lry && xpos <= _lrx && xpos >= _ulx) {
-            int topofbar = ypos;
-            if (ypos < _uly) {
-                topofbar = _uly;
-            }
+    /**
+     * Draw bar from the specified point to the y axis.
+     * If the specified point is below the y axis or outside the
+     * x range, do nothing.  If the <i>clip</i> argument is true,
+     * then do not draw above the y range.
+     */
+    protected void _drawBar (Graphics graphics, int dataset,
+            long xpos, long ypos, boolean clip) {
+        if (clip && ypos < _uly) ypos = _uly;
+        if (ypos <= _lry && xpos <= _lrx && xpos >= _ulx) {
             // left x position of bar.
             int barlx = (int)(xpos - _barwidth * _xscale/2 +
                      (_currentdataset - dataset - 1) * _baroffset * _xscale);
@@ -806,97 +667,239 @@ public class Plot extends PlotBox {
             if (barlx < _ulx) barlx = _ulx;
             if (barrx > _lrx) barrx = _lrx;
 	    if (_debug > 20)
-	    System.out.println("Plot:_drawPoint bar "+barlx+" "+topofbar+" "+
+	    System.out.println("Plot:_drawPoint bar "+barlx+" "+ypos+" "+
 	                        barrx + " " + barlx + " " + _lry);
-            graphics.fillRect(barlx, topofbar, barrx - barlx, _lry - topofbar);
+            graphics.fillRect(barlx, (int)ypos, barrx - barlx, _lry - (int)ypos);
         }
+    }
 
-        int xstart = xpos;
-        int ystart = ypos;
-        int prevx = _prevx[dataset];
-        int prevy = _prevy[dataset];
+    /**
+     * Draw an impulse from the specified point to the y axis.
+     * If the specified point is below the y axis or outside the
+     * x range, do nothing.  If the <i>clip</i> argument is true,
+     * then do not draw above the y range.
+     */
+    protected void _drawImpulse (Graphics graphics,
+            long xpos, long ypos, boolean clip) {
+        if (clip && ypos < _uly) ypos = _uly;
+        if (ypos <= _lry && xpos <= _lrx && xpos >= _ulx) {
+            graphics.drawLine((int)xpos, (int)ypos, (int)xpos, _lry);
+        }
+    }
 
-        // Draw a line to the previous point, if appropriate.
-        if (connected) {
+    /**
+     * Draw a line from the specified starting point to the specified
+     * ending point.  The current color is used.  If the <i>clip</i> argument
+     * is true, then draw only that portion of the line that lies within the
+     * plotting rectangle.
+     */
+    protected void _drawLine (Graphics graphics,
+            int dataset, long startx, long starty, long endx, long endy,
+            boolean clip) {
+
             if (clip) {
                 // Rule out impossible cases.
-                if (!((prevx < _ulx && xpos < _ulx) ||
-                (prevx > _lrx && xpos > _lrx) ||
-                (prevy < _uly && ypos < _uly) ||
-                (prevy > _lry && ypos > _lry))) {
-                    // If the previous point is out of x range, adjust
-                    // prev point to boundary.
-                    if (xpos != prevx) {
-                        if (prevx < _ulx) {
-                            prevy = prevy + ((ypos - prevy) *
-					     (_ulx - prevx))/(xpos - prevx);
-                            prevx = _ulx;
-                        } else if (prevx > _lrx) {
-                            prevy = prevy + ((ypos - prevy) *
-					     (_lrx - prevx))/(xpos - prevx);
-                            prevx = _lrx;
+                if (_debug > 20) {
+                    System.out.println("bounds: " + _ulx +", "+ _uly +", "+ _lrx +", "+ _lry);
+                    System.out.println("before: " + startx +", "+ starty +", "+ endx +", "+ endy);
+                }
+                if (!((endx <= _ulx && startx <= _ulx) ||
+                (endx >= _lrx && startx >= _lrx) ||
+                (endy <= _uly && starty <= _uly) ||
+                (endy >= _lry && starty >= _lry))) {
+                    // If the end point is out of x range, adjust
+                    // end point to boundary.
+                    // The integer arithmetic has to be done with longs so as to
+                    // not loose precision on extremely close zooms.
+                    if (startx != endx) {
+                        if (endx < _ulx) {
+                            endy = (int)(endy + ((long)(starty - endy) *
+					     (_ulx - endx))/(startx - endx));
+                            endx = _ulx;
+                        } else if (endx > _lrx) {
+                            endy = (int)(endy + ((long)(starty - endy) *
+					     (_lrx - endx))/(startx - endx));
+                            endx = _lrx;
                         }
                     }
                     
-                    // If prev point is out of y range, adjust to boundary.
+                    // If end point is out of y range, adjust to boundary.
                     // Note that y increases downward
-                    if (ypos != prevy) {
-                        if (prevy < _uly) {
-                            prevx = prevx + ((xpos - prevx) *
-					     (_uly - prevy))/(ypos - prevy);
-                            prevy = _uly;
-                        } else if (prevy > _lry) {
-                            prevx = prevx + ((xpos - prevx) *
-					     (_lry - prevy))/(ypos - prevy);
-                            prevy = _lry;
+                    if (starty != endy) {
+                        if (endy < _uly) {
+                            endx = (int)(endx + ((long)(startx - endx) *
+					     (_uly - endy))/(starty - endy));                            endy = _uly;
+                        } else if (endy > _lry) {
+                            endx = (int)(endx + ((long)(startx - endx) *
+					     (_lry - endy))/(starty - endy));
+                            endy = _lry;
                         }
                     }
                     
                     // Adjust current point to lie on the boundary.
-                    if (xpos != prevx) {
-                        if (xpos < _ulx) {
-                            ypos = ypos + ((prevy - ypos) *
-					   (_ulx - xpos))/(prevx - xpos);
-                            xpos = _ulx;
-                        } else if (xpos > _lrx) {
-                            ypos = ypos + ((prevy - ypos) *
-					   (_lrx - xpos))/(prevx - xpos);
-                            xpos = _lrx;
+                    if (startx != endx) {
+                        if (startx < _ulx) {
+                            starty = (int)(starty + ((long)(endy - starty) *
+					   (_ulx - startx))/(endx - startx));
+                            startx = _ulx;
+                        } else if (startx > _lrx) {
+                            starty = (int)(starty + ((long)(endy - starty) *
+					   (_lrx - startx))/(endx - startx));
+                            startx = _lrx;
                         }
                     }
-                    if (ypos != prevy) {
-                        if (ypos < _uly) {
-                            xpos = xpos + ((prevx - xpos) *
-					   (_uly - ypos))/(prevy - ypos);
-                            ypos = _uly;
-                        } else if (ypos > _lry) {
-                            xpos = xpos + ((prevx - xpos) *
-					   (_lry - ypos))/(prevy - ypos);
-                            ypos = _lry;
+                    if (starty != endy) {
+                        if (starty < _uly) {
+                            startx = (int)(startx + ((long)(endx - startx) *
+					   (_uly - starty))/(endy - starty));
+                            starty = _uly;
+                        } else if (starty > _lry) {
+                            startx = (int)(startx + ((long)(endx - startx) *
+					   (_lry - starty))/(endy - starty));
+                            starty = _lry;
                         }
                     }
                 }
                  
                  // Are the new points in range?
-                 showsomething = prevx >= _ulx && prevx <= _lrx &&
-                         prevy >= _uly && prevy <= _lry &&
-                         xpos >= _ulx && xpos <= _lrx &&
-                         ypos >= _uly && ypos <= _lry;
+                 if (endx >= _ulx && endx <= _lrx &&
+                         endy >= _uly && endy <= _lry &&
+                         startx >= _ulx && startx <= _lrx &&
+                         starty >= _uly && starty <= _lry) {
+                     if (_debug > 20) {
+                         System.out.println("after: " + startx +", "+ starty +", "+ endx +", "+ endy);
+                     }
+                     graphics.drawLine((int)startx, (int)starty, (int)endx, (int)endy);
+                 }
+             } else {
+                 // draw unconditionally.
+                 graphics.drawLine((int)startx, (int)starty, (int)endx, (int)endy);
              }
+    }
 
-             if (showsomething || !clip) {
-                 graphics.drawLine(xpos, ypos, prevx, prevy);
-             }
+   /**
+     * Put a mark corresponding to the specified dataset at the
+     * specified x and y position. The mark is drawn in the current
+     * color. What kind of mark is drawn depends on the _marks
+     * variable and the dataset argument. If the fourth argument is
+     * true, then check the range and plot only points that
+     * are in range.
+     */
+    protected void _drawPoint(Graphics graphics,
+            int dataset, long xpos, long ypos,
+            boolean clip) {
+        if (_debug > 20) {
+            System.out.println("Plot:_drawPoint "+dataset+" "+xpos+" "+ypos+" "+" "+clip);
         }
 
-        _prevx[dataset] = xstart;
-        _prevy[dataset] = ystart;
-        graphics.setColor(Color.black);
-        if (_pointsPersistence > 0) {
-            // Restore paint mode in case axes get redrawn.
-            graphics.setPaintMode();
+        // If the point is not out of range, draw it.
+        if (!clip || (ypos <= _lry && ypos >= _uly &&
+	    xpos <= _lrx && xpos >= _ulx)) {
+            int xposi = (int)xpos;
+            int yposi = (int)ypos;
+            switch (_marks) {
+            case 0:
+                // If no mark style is given, draw a filled rectangle.
+                // This is used, for example, to draw the legend.
+                graphics.fillRect(xposi-6, yposi-6, 6, 6);
+                break;
+            case 1:
+                // points -- use 3-pixel ovals.
+                graphics.fillOval(xposi-1, yposi-1, 3, 3);
+                break;
+            case 2:
+                // dots
+                graphics.fillOval(xposi-_radius, yposi-_radius,
+				   _diameter, _diameter); 
+                break;
+            case 3:
+                // marks
+                int xpoints[], ypoints[];
+                // Points are only distinguished up to _MAX_MARKS data sets.
+                int mark = dataset % _MAX_MARKS;
+                switch (mark) {
+                    case 0:
+                        // filled circle
+                        graphics.fillOval(xposi-_radius, yposi-_radius,
+					  _diameter, _diameter); 
+                        break;
+                    case 1:
+                        // cross
+                        graphics.drawLine(xposi-_radius, yposi-_radius,
+					  xposi+_radius, yposi+_radius); 
+                        graphics.drawLine(xposi+_radius, yposi-_radius,
+					  xposi-_radius, yposi+_radius); 
+                        break;
+                    case 2:
+                        // square
+                        graphics.drawRect(xposi-_radius, yposi-_radius,
+					  _diameter, _diameter); 
+                        break;
+                    case 3:
+                        // filled triangle
+                        xpoints = new int[4];
+                        ypoints = new int[4];
+                        xpoints[0] = xposi; ypoints[0] = yposi-_radius;
+                        xpoints[1] = xposi+_radius; ypoints[1] = yposi+_radius;
+                        xpoints[2] = xposi-_radius; ypoints[2] = yposi+_radius;
+                        xpoints[3] = xposi; ypoints[3] = yposi-_radius;
+                        graphics.fillPolygon(xpoints, ypoints, 4);
+                        break;
+                    case 4:
+                        // diamond
+                        xpoints = new int[5];
+                        ypoints = new int[5];
+                        xpoints[0] = xposi; ypoints[0] = yposi-_radius;
+                        xpoints[1] = xposi+_radius; ypoints[1] = yposi;
+                        xpoints[2] = xposi; ypoints[2] = yposi+_radius;
+                        xpoints[3] = xposi-_radius; ypoints[3] = yposi;
+                        xpoints[4] = xposi; ypoints[4] = yposi-_radius;
+                        graphics.drawPolygon(xpoints, ypoints, 5);
+                        break;
+                    case 5:
+                        // circle
+                        graphics.drawOval(xposi-_radius, yposi-_radius,
+					  _diameter, _diameter); 
+                        break;
+                    case 6:
+                        // plus sign
+                        graphics.drawLine(xposi, yposi-_radius, xposi,
+					  yposi+_radius); 
+                        graphics.drawLine(xposi-_radius, yposi, xposi+_radius,
+					  yposi); 
+                        break;
+                    case 7:
+                        // filled square
+                        graphics.fillRect(xposi-_radius, yposi-_radius,
+					  _diameter, _diameter); 
+                        break;
+                    case 8:
+                        // triangle
+                        xpoints = new int[4];
+                        ypoints = new int[4];
+                        xpoints[0] = xposi; ypoints[0] = yposi-_radius;
+                        xpoints[1] = xposi+_radius; ypoints[1] = yposi+_radius;
+                        xpoints[2] = xposi-_radius; ypoints[2] = yposi+_radius;
+                        xpoints[3] = xposi; ypoints[3] = yposi-_radius;
+                        graphics.drawPolygon(xpoints, ypoints, 4);
+                        break;
+                    case 9:
+                        // filled diamond
+                        xpoints = new int[5];
+                        ypoints = new int[5];
+                        xpoints[0] = xposi; ypoints[0] = yposi-_radius;
+                        xpoints[1] = xposi+_radius; ypoints[1] = yposi;
+                        xpoints[2] = xposi; ypoints[2] = yposi+_radius;
+                        xpoints[3] = xposi-_radius; ypoints[3] = yposi;
+                        xpoints[4] = xposi; ypoints[4] = yposi-_radius;
+                        graphics.fillPolygon(xpoints, ypoints, 5);
+                        break;
+                }
+                break;
+            default:
+                // none
+            }
         }
-        return ((pointinside || !clip) && (_marks != 0));
     }
 
     /** Hook for child classes to do any file preprocessing
@@ -920,11 +923,11 @@ public class Plot extends PlotBox {
         int c;
 
         boolean connected = false;
-	if (_connected) connected = true;
+        if (_connected) connected = true;
 
-        if (_debug > 8)
-	    System.out.println("Plot: _parseBinaryStream _connected = " + 
-			       _connected);
+        if (_debug > 8) {
+            System.out.println("Plot: _parseBinaryStream _connected = "+_connected);
+        }
 	try {
 	    while (true) {
 		// Here, we read pxgraph binary format data.
@@ -1130,13 +1133,14 @@ public class Plot extends PlotBox {
             _sawfirstdataset = true;
             ++_currentdataset;
         }
-        if (_debug > 14)
-        System.out.println("Plot _addLegendIfNecessary( "+connected+" ) "+
+        if (_debug > 14) {
+            System.out.println("Plot _addLegendIfNecessary( "+connected+" ) "+
                            + (_filecount) + " "
                            + (_currentdataset) +
                            "<"+getLegend(0)+">"+
                            "<"+getLegend(1)+"> "+
                            "<"+getLegend(_currentdataset)+">");
+        }
         if (getLegend(_currentdataset) == null) {
             // We did not see a "DataSet" string yet,
             // nor did we call addLegend().
@@ -1152,14 +1156,6 @@ public class Plot extends PlotBox {
         return connected;
     }
     
-    /* Draw the specified point. If the point is out of range, do nothing.
-     */
-    private void _drawPlotPoint(Graphics graphics, int dataset, PlotPoint pt) {
-        int ypos = _lry - (int) ((pt.y - _yMin) * _yscale);
-        int xpos = _ulx + (int) ((pt.x - _xMin) * _xscale);
-        _drawPoint(graphics, dataset, xpos, ypos, pt.connected, true);
-    }
-    
     /* In the specified data set, add the specified x,y point to the
      * plot.  Data set indices begin with zero.  If the dataset
      * argument is out of range, ignore.  The number of data sets is
@@ -1167,11 +1163,12 @@ public class Plot extends PlotBox {
      * whether the point should be connected by a line to the previous
      * point.
      */
-    public synchronized void _addPoint(Graphics graphics,
+    private synchronized void _addPoint(Graphics graphics,
 				      int dataset, double x, double y,
 				      boolean connected) {
-	if (_debug > 100) System.out.println("Plot: addPoint " + dataset + " "
-					     +x+" "+y+" "+connected);
+        if (_debug > 100) {
+            System.out.println("Plot: addPoint " + dataset + " "+x+" "+y+" "+connected);
+        }
         if (dataset >= _numsets || dataset < 0) return;
         
         // For auto-ranging, keep track of min and max.
@@ -1190,35 +1187,101 @@ public class Plot extends PlotBox {
         if (_pointsPersistence > 0) {
             if (pts.size() > _pointsPersistence) erasePoint(dataset,0);
         }
-        _drawPlotPoint(graphics, dataset, pt);
+        _drawPlotPoint(graphics, dataset, pts.size() - 1);
     }
 
+    /* Draw the specified point and associated lines, if any.
+     */
+    private synchronized void _drawPlotPoint(Graphics graphics, int dataset, int index) {
+        // Set the color
+        if (_pointsPersistence > 0) {
+            // To allow erasing to work by just redrawing the points.
+            graphics.setXORMode(_background);
+        }
+        if (_usecolor) {
+            int color = dataset % _colors.length;
+            graphics.setColor(_colors[color]);
+        } else {
+            graphics.setColor(_foreground);
+        }
+
+        Vector pts = _points[dataset];
+        PlotPoint pt = (PlotPoint)pts.elementAt(index);
+        // Use long here because these numbers can be quite large
+        // (when we are zoomed out alot).
+        long ypos = _lry - (long) ((pt.y - _yMin) * _yscale);
+        long xpos = _ulx + (long) ((pt.x - _xMin) * _xscale);
+
+        // Draw the line to the previous point.
+        if (pt.connected) _drawLine(graphics, dataset, xpos, ypos,
+                 _prevx[dataset], _prevy[dataset], true);
+
+        // Save the current point as the "previous" point for future
+        // line drawing.
+        _prevx[dataset] = xpos;
+        _prevy[dataset] = ypos;
+
+        // Draw the point & associated decorations, if appropriate.
+        if (_marks != 0) _drawPoint(graphics, dataset, xpos, ypos, true);
+        if (_impulses) _drawImpulse(graphics, xpos, ypos, true);
+        if (_bars) _drawBar(graphics, dataset, xpos, ypos, true);
+
+        // Restore the color, in case the box gets redrawn.
+        graphics.setColor(_foreground);
+        if (_pointsPersistence > 0) {
+            // Restore paint mode in case axes get redrawn.
+            graphics.setPaintMode();
+        }
+    }
+    
     /** 
      * Erase the point at the given index in the given dataset.  If
      * lines are being drawn, also erase the line to the next points
-     * (note: not to the previous point).  The point is not checked to
-     * see whether it is in range, so care must be taken by the caller
-     * to ensure that it is.
+     * (note: not to the previous point).
      */
     private synchronized void _erasePoint(Graphics graphics,
 					  int dataset, int index) {
+        // Set the color
+        if (_pointsPersistence > 0) {
+            // To allow erasing to work by just redrawing the points.
+            graphics.setXORMode(_background);
+        }
+        if (_usecolor) {
+            int color = dataset % _colors.length;
+            graphics.setColor(_colors[color]);
+        } else {
+            graphics.setColor(_foreground);
+        }
+
         Vector pts = _points[dataset];
-        // Erase the line to the next point rather than the previous point.
-        int saveprevx = _prevx[dataset];
-        int saveprevy = _prevy[dataset];
-        PlotPoint pp = (PlotPoint)pts.elementAt(index);
+        PlotPoint pt = (PlotPoint)pts.elementAt(index);
+        long ypos = _lry - (long) ((pt.y - _yMin) * _yscale);
+        long xpos = _ulx + (long) ((pt.x - _xMin) * _xscale);
+
+        // Erase line to the next point, if appropriate.
         if (index < pts.size() - 1) {
             PlotPoint nextp = (PlotPoint)pts.elementAt(index+1);
-            pp.connected = nextp.connected;
-            _prevx[dataset] = _ulx + (int) ((nextp.x - _xMin) * _xscale);
-            _prevy[dataset] = _lry - (int) ((nextp.y - _yMin) * _yscale);
+            int nextx = _ulx + (int) ((nextp.x - _xMin) * _xscale);
+            int nexty = _lry - (int) ((nextp.y - _yMin) * _yscale);
+            // NOTE: I have no idea why I have to give this point backwards.
+            if (nextp.connected) _drawLine(graphics, dataset,
+                     nextx, nexty,  xpos, ypos, true);
+            nextp.connected = false;
         }
-        _drawPlotPoint(graphics, dataset, pp);
-        _prevx[dataset] = saveprevx;
-        _prevy[dataset] = saveprevy;
+
+        // Draw the point & associated lines, if appropriate.
+        if (_marks != 0) _drawPoint(graphics, dataset, xpos, ypos, true);
+        if (_impulses) _drawImpulse(graphics, xpos, ypos, true);
+        if (_bars) _drawBar(graphics, dataset, xpos, ypos, true);
+
+        // Restore the color, in case the box gets redrawn.
+        graphics.setColor(_foreground);
+        if (_pointsPersistence > 0) {
+            // Restore paint mode in case axes get redrawn.
+            graphics.setPaintMode();
+        }
+
         pts.removeElementAt(index);
-        pp = (PlotPoint)pts.elementAt(index);
-        pp.connected = false;
     }
 
     /* Split pxgraphargs up into an array and call _parseArgs
@@ -1226,20 +1289,20 @@ public class Plot extends PlotBox {
     private int _parsePxgraphargs(String pxgraphargs) 
     throws CmdLineArgException  {
         // We convert the String to a Stream and then use a StreamTokenizer
-	// to parse the arguments into a Vector and then copy
-	// the vector into an array of Strings.  We use a Vector
-	// so that we can handle an arbitrary number of arguments
-	if (_debug > 3) System.out.println("Plot: _parsePxgraphargs " +
-					   pxgraphargs);
+        // to parse the arguments into a Vector and then copy
+        // the vector into an array of Strings.  We use a Vector
+        // so that we can handle an arbitrary number of arguments
+        if (_debug > 3) System.out.println("Plot: _parsePxgraphargs "+pxgraphargs);
 
-	Vector argvector = new Vector();
-	boolean prependdash = false; // true if we need to add a -
+        Vector argvector = new Vector();
+        boolean prependdash = false; // true if we need to add a -
 	
-	StringBufferInputStream inp = new StringBufferInputStream(pxgraphargs); // StringBufferInput is deprecated, but StringReader is not in 1.0.2
+        StringBufferInputStream inp = new StringBufferInputStream(pxgraphargs);
+        // StringBufferInput is deprecated, but StringReader is not in 1.0.2
 
-	//StringReader inp = new StringReader(pxgraphargs);
+        //StringReader inp = new StringReader(pxgraphargs);
 
-	try {
+        try {
             StreamTokenizer stoken = new StreamTokenizer(inp);
 
 	    // We don't want to parse numbers specially, so we reset
@@ -1319,10 +1382,12 @@ public class Plot extends PlotBox {
     private Vector _dataurls = null;
 
     // Information about the previously plotted point.
-    private int _prevx[], _prevy[];
+    private long _prevx[], _prevy[];
     // Maximum number of _datasets.
     private static final int _MAX_DATASETS = 63;
 
     // Maximum number of different marks
+    // NOTE: There are 11 colors in the base class.  Combined with 10
+    // marks, that makes 110 unique signal identities.
     private static final int _MAX_MARKS = 10;
 }
