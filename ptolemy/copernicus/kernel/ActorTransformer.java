@@ -29,29 +29,20 @@
 
 package ptolemy.copernicus.kernel;
 
-import soot.*;
-import soot.jimple.*;
-import soot.jimple.toolkits.invoke.SiteInliner;
-import soot.jimple.toolkits.invoke.StaticInliner;
-import soot.jimple.toolkits.invoke.InvokeGraphBuilder;
-import soot.jimple.toolkits.scalar.ConditionalBranchFolder;
-import soot.jimple.toolkits.scalar.ConstantPropagatorAndFolder;
-import soot.jimple.toolkits.scalar.CopyPropagator;
-import soot.jimple.toolkits.scalar.DeadAssignmentEliminator;
-import soot.jimple.toolkits.scalar.UnreachableCodeEliminator;
-import soot.jimple.toolkits.scalar.Evaluator;
-import soot.toolkits.graph.*;
-import soot.dava.*;
-import soot.util.*;
-import java.io.*;
-import java.util.*;
+import ptolemy.actor.CompositeActor;
+import ptolemy.kernel.Entity;
 
-import ptolemy.kernel.util.*;
-import ptolemy.kernel.*;
-import ptolemy.actor.*;
-import ptolemy.moml.*;
-import ptolemy.domains.sdf.kernel.SDFDirector;
+import soot.Options;
+import soot.RefType;
+import soot.Scene;
+import soot.SceneTransformer;
+import soot.SootClass;
+import soot.SootMethod;
+import soot.Type;
 
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Map;
 
 //////////////////////////////////////////////////////////////////////////
 //// ActorTransformer
@@ -68,12 +59,17 @@ public class ActorTransformer extends SceneTransformer {
         _model = model;
     }
 
-    /** Return an instance of this transformer that will operate on the given model.
-     *  The model is assumed to already have been properly initialized so that
-     *  resolved types and other static properties of the model can be inspected.
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Return an instance of this transformer that will operate on
+     *  the given model.  The model is assumed to already have been
+     *  properly initialized so that resolved types and other static
+     *  properties of the model can be inspected. 
      */
     public static ActorTransformer v(CompositeActor model) { 
-        // FIXME: This should use a map to return a singleton instance for each model
+        // FIXME: This should use a map to return a singleton instance
+	// for each model 
         return new ActorTransformer(model);
     }
 
@@ -189,6 +185,9 @@ public class ActorTransformer extends SceneTransformer {
         return Options.getString(options, "targetPackage")
             + "." + entity.getName();        
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     private CompositeActor _model;
 }

@@ -29,12 +29,8 @@
 
 package ptolemy.copernicus.shallow;
 
-import ptolemy.actor.*;
 import ptolemy.copernicus.kernel.ActorTransformer;
-import ptolemy.domains.sdf.kernel.SDFDirector;
-import ptolemy.kernel.util.*;
-import ptolemy.kernel.*;
-import ptolemy.moml.*;
+import ptolemy.copernicus.kernel.KernelMain;
 
 import soot.*;
 import soot.jimple.*;
@@ -50,8 +46,9 @@ import soot.jimple.toolkits.scalar.Evaluator;
 import soot.toolkits.graph.*;
 import soot.dava.*;
 import soot.util.*;
-import java.io.*;
-import java.util.*;
+
+import java.util.Iterator;
+import java.util.Map;
 
 //////////////////////////////////////////////////////////////////////////
 //// Main
@@ -61,43 +58,20 @@ Read in a MoML model and generate Java classes for that model.
 @author Stephen Neuendorffer, Christopher Hylands
 @version $Id$
 */
-public class Main {    
-    public static void main(String[] args) throws Exception{
-        if(args.length == 0) {
-            System.out.println("Syntax: java ptolemy.copernicus.shallow.Main momlClass"
-                    + " [soot options]");
-            System.exit(0);
-        }            
-        
-        String source = "<entity name=\"ToplevelModel\""
-            + "class=\"" + args[0] + "\"/>\n";
-        MoMLParser parser = new MoMLParser();
-        _toplevel = (CompositeActor)parser.parse(source);        
-        // Temporary hack because cloning doesn't properly clone
-        // type constraints.
-        CompositeActor modelClass = (CompositeActor)
-            parser._searchForClass(args[0], _toplevel.getMoMLInfo().source);
-        if(modelClass != null) {
-            _toplevel = modelClass;
-        }                          
+public class Main extends KernelMain {    
 
-        // Initialize the model to ensure type resolution and scheduling
-        // are done.
-        try {
-            Manager manager = new Manager(_toplevel.workspace(), "manager");
-            _toplevel.setManager(manager);
-            manager.initialize();
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("could not initialize composite actor");
-        }
+    /** Read in a MoML mode and generate Java classes for that model. 
+     *  @param args An array of Strings that control the transformation
+     */
+    public Main(String [] args) throws Exception {
+	super(args);
 
         // Process the options.
         // FIXME!!
         String options = "deep targetPackage:ptolemy.copernicus.shallow.cg";
 
         Scene.v().getPack("wjtp").add(new Transform("wjtp.at", 
-                new IgnoreAllApplicationClasses(), options));
+                new _IgnoreAllApplicationClasses(), options));
         Scene.v().getPack("wjtp").add(new Transform("wjtp.at", 
                 ActorTransformer.v(_toplevel), options));
         Scene.v().getPack("wjtp").add(new Transform("wjtp.mt", 
@@ -123,78 +97,25 @@ public class Main {
         Scene.v().getPack("jtp").add(new Transform("jtp.dae",
         DeadAssignmentEliminator.v()));*/
        
-        // This is rather ugly.  The moml Class is not a Java class, so
-        // soot won't recognize it.  However, if we give soot nothing, then 
-        // it won't run.  Note that later we will call setLibraryClass() on
-        // this class so that we don't actually generate code for it.
-        args[0] = "java.lang.Object";
-        soot.Main.main(args);
-    }
-    
-    /** Return the model that we are generating code for
-     */
-    public static CompositeActor toplevel() {
-        return _toplevel;
+	_callSootMain(args);
     }
 
-    
-    // Get the method with the given name in the given class 
-    // (or one of its super classes).
-    private static SootMethod _searchForMethodByName(SootClass theClass, 
-            String name) {
-        while(theClass != null) {
-            if(theClass.declaresMethodByName(name)) {
-                return theClass.getMethodByName(name);
-            }
-            theClass = theClass.getSuperclass();
-        }
-        throw new RuntimeException("Method " + name + " not found in class "
-                + theClass);
-    }
-    
-    // Get the method in the given class that has the given name and will
-    // accept the given argument list.
-    private static SootMethod _getMatchingMethod(SootClass theClass,
-            String name, List args) {
-        boolean found = false;
-        SootMethod foundMethod = null;
-        
-        Iterator methods = theClass.getMethods().iterator();
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
-        while(methods.hasNext()) {
-            SootMethod method = (SootMethod) methods.next();
-            
-            if(method.getName().equals(name) &&
-                    args.size() == method.getParameterCount()) {
-                Iterator parameterTypes =
-                    method.getParameterTypes().iterator();
-                Iterator arguments = args.iterator();
-                boolean isEqual = true;
-                while(parameterTypes.hasNext()) {
-                    Type parameterType = (Type)parameterTypes.next();
-                    Local argument = (Local)arguments.next();
-                    Type argumentType = argument.getType();
-                    if(argumentType != parameterType) {
-                        // This is inefficient.  Full type merging is 
-                        // expensive and unnecessary.
-                        isEqual = (parameterType == argumentType.merge(
-                                parameterType, Scene.v()));
-                    }
-                    if(!isEqual) break;
-                }
-                if(isEqual && found)
-                    throw new RuntimeException("ambiguous method");
-                else {                    
-                    found = true;
-                    foundMethod = method;
-                    break;
-                }
-            }
-        }
-        return foundMethod;
+    /** Read in a MoML model, generate java files */
+    public static void main(String[] args) throws Exception {
+	// We do most of the work in the constructor so that we
+	// can more easily test this class
+	Main main = new Main(args);
     }
 
-    private static class IgnoreAllApplicationClasses extends SceneTransformer {
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+
+    private static class _IgnoreAllApplicationClasses
+	extends SceneTransformer {
         /** Transform the Scene according to the information specified
          *  in the model for this transform.
          *  @param phaseName The phase this transform is operating under.
@@ -202,13 +123,12 @@ public class Main {
          */
         protected void internalTransform(String phaseName, Map options) {
             for(Iterator classes =
-                    Scene.v().getApplicationClasses().snapshotIterator();
+		    Scene.v().getApplicationClasses().snapshotIterator();
                 classes.hasNext();) {
                 ((SootClass)classes.next()).setLibraryClass();
             }
         }
     }
-    private static CompositeActor _toplevel;
 }
     
 

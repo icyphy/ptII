@@ -29,7 +29,50 @@
 
 package ptolemy.copernicus.shallow;
 
+import ptolemy.actor.CompositeActor;
 import ptolemy.copernicus.kernel.SootUtilities;
+import ptolemy.domains.sdf.kernel.SDFDirector;
+import ptolemy.kernel.Entity;
+
+import soot.Hierarchy;
+import soot.Local;
+import soot.Modifier;
+import soot.NullType;
+import soot.Options;
+import soot.RefType;
+import soot.Scene;
+import soot.SceneTransformer;
+import soot.SootClass;
+import soot.SootField;
+import soot.SootMethod;
+import soot.Type;
+import soot.Unit;
+import soot.Value;
+import soot.ValueBox;
+import soot.VoidType;
+import soot.jimple.DefinitionStmt;
+import soot.jimple.IntConstant;
+import soot.jimple.InterfaceInvokeExpr;
+import soot.jimple.InvokeExpr;
+import soot.jimple.FieldRef;
+import soot.jimple.Jimple;
+import soot.jimple.JimpleBody;
+import soot.jimple.Stmt;
+import soot.jimple.toolkits.scalar.Evaluator;
+import soot.util.Chain;
+import soot.toolkits.graph.Block;
+import soot.toolkits.graph.BlockGraph;
+import soot.toolkits.graph.CompleteBlockGraph;
+
+
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.StringTokenizer;
+
+
+/*
 import ptolemy.kernel.util.*;
 import ptolemy.kernel.*;
 import ptolemy.actor.*;
@@ -52,11 +95,13 @@ import soot.dava.*;
 import soot.util.*;
 import java.io.*;
 import java.util.*;
-
+*/
 
 
 /**
 A transformer that adds the command-line interface.
+@author Michael Wirthlin, Stephen Neuendorffer, Edward A. Lee, Christopher Hylands
+@version $Id$
 */
 public class CommandLineTransformer extends SceneTransformer {
     /** Construct a new transformer

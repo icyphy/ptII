@@ -32,12 +32,12 @@ package ptolemy.copernicus.shallow;
 import soot.*;
 import soot.jimple.*;
 import soot.util.*;
-import java.io.*;
-import java.util.*;
 
-import ptolemy.kernel.util.*;
-import ptolemy.kernel.*;
-import ptolemy.actor.*;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// EntitySootClass

@@ -292,7 +292,7 @@ class JHDLTransformer extends SceneTransformer {
         // Insert a call to prefire().
         // We will later inline this method.
         SootMethod prefireMethod = 
-                Main._searchForMethodByName(theClass, "prefire");
+                SootUtilities.searchForMethodByName(theClass, "prefire");
         Stmt prefireStmt = 
                 Jimple.v().newInvokeStmt(Jimple.v().newVirtualInvokeExpr(
                 thisLocal, prefireMethod, new LinkedList()));
@@ -300,7 +300,7 @@ class JHDLTransformer extends SceneTransformer {
             
         // Insert a call to fire().
         SootMethod fireMethod = 
-                Main._searchForMethodByName(theClass, "fire");
+                SootUtilities.searchForMethodByName(theClass, "fire");
         Stmt fireStmt = 
                 Jimple.v().newInvokeStmt(Jimple.v().newVirtualInvokeExpr(
                 thisLocal, fireMethod, new LinkedList()));
@@ -308,7 +308,7 @@ class JHDLTransformer extends SceneTransformer {
                 
         // Insert a call to postfire().
         SootMethod postfireMethod = 
-                Main._searchForMethodByName(theClass, "postfire");
+                SootUtilities.searchForMethodByName(theClass, "postfire");
         Stmt postfireStmt = 
                 Jimple.v().newInvokeStmt(Jimple.v().newVirtualInvokeExpr(
                 thisLocal, postfireMethod, new LinkedList()));

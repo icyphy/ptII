@@ -36,7 +36,7 @@ DIRS =		SimpleAdd
 # Root of the Java directory
 ROOT =		../../../..
 
-CLASSPATH =	$(ROOT)
+CLASSPATH = 	$(ROOT)$(CLASSPATHSEPARATOR)$(SOOT_CLASSES)$(CLASSPATHSEPARATOR)$(JHDL_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk

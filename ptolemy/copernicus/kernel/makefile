@@ -45,6 +45,7 @@ DIRS =
 # Keep this list alphabetized.
 JSRCS = \
 	ActorTransformer.java \
+	KernelMain.java \
 	SootUtilities.java
 
 EXTRA_SRCS =	$(JSRCS)

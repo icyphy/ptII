@@ -96,9 +96,8 @@ runDemo:
 	$(JAVA) \
 	-Xfuture -classpath "$(CLASSPATH)" \
 	ptolemy.actor.gui.CompositeActorApplication \
-	-director.iterations 50 \
+	-iterations 10 \
 	-class $(TARGETCLASS)
-
 runDeepDemo:
 	@echo "Run the deep model"
 	$(JAVA) \

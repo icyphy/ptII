@@ -29,17 +29,43 @@
 
 package ptolemy.copernicus.kernel;
 
-import soot.*;
-import soot.jimple.*;
+import soot.Body;
+import soot.Hierarchy;
+import soot.Local;
+import soot.Modifier;
+import soot.RefType;
+import soot.Scene;
+import soot.SootClass;
+import soot.SootField;
+import soot.SootMethod;
+import soot.Type;
+import soot.Unit;
+import soot.Value;
+import soot.ValueBox;
+import soot.VoidType;
+import soot.jimple.CastExpr;
+import soot.jimple.FieldRef;
+import soot.jimple.InvokeExpr;
+import soot.jimple.Jimple;
+import soot.jimple.JimpleBody;
+import soot.jimple.NewExpr;
+import soot.jimple.ParameterRef;
+import soot.jimple.Stmt;
+import soot.jimple.ThisRef;
 import soot.jimple.toolkits.invoke.SiteInliner;
+import soot.util.Chain;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+
+/*
 import soot.jimple.toolkits.invoke.StaticInliner;
 import soot.jimple.toolkits.invoke.InvokeGraphBuilder;
 import soot.jimple.toolkits.scalar.CopyPropagator;
 import soot.jimple.toolkits.scalar.DeadAssignmentEliminator;
-import soot.util.*;
-import java.io.*;
-import java.util.*;
-
+*/
 //////////////////////////////////////////////////////////////////////////
 //// SootUtilities
 /**
@@ -399,5 +425,61 @@ public class SootUtilities {
         changeTypesOfFields(newInnerClass, oldOuterClass, newOuterClass);
         changeTypesInMethods(newInnerClass, oldOuterClass, newOuterClass);
         return newInnerClass;
+    }
+
+    // Get the method with the given name in the given class 
+    // (or one of its super classes).
+    public static SootMethod searchForMethodByName(SootClass theClass, 
+            String name) {
+        while(theClass != null) {
+            if(theClass.declaresMethodByName(name)) {
+                return theClass.getMethodByName(name);
+            }
+            theClass = theClass.getSuperclass();
+        }
+        throw new RuntimeException("Method " + name + " not found in class "
+                + theClass);
+    }
+    
+    // Get the method in the given class that has the given name and will
+    // accept the given argument list.
+    public static SootMethod getMatchingMethod(SootClass theClass,
+            String name, List args) {
+        boolean found = false;
+        SootMethod foundMethod = null;
+        
+        Iterator methods = theClass.getMethods().iterator();
+
+        while(methods.hasNext()) {
+            SootMethod method = (SootMethod) methods.next();
+            
+            if(method.getName().equals(name) &&
+                    args.size() == method.getParameterCount()) {
+                Iterator parameterTypes =
+                    method.getParameterTypes().iterator();
+                Iterator arguments = args.iterator();
+                boolean isEqual = true;
+                while(parameterTypes.hasNext()) {
+                    Type parameterType = (Type)parameterTypes.next();
+                    Local argument = (Local)arguments.next();
+                    Type argumentType = argument.getType();
+                    if(argumentType != parameterType) {
+                        // This is inefficient.  Full type merging is 
+                        // expensive and unnecessary.
+                        isEqual = (parameterType == argumentType.merge(
+                                parameterType, Scene.v()));
+                    }
+                    if(!isEqual) break;
+                }
+                if(isEqual && found)
+                    throw new RuntimeException("ambiguous method");
+                else {                    
+                    found = true;
+                    foundMethod = method;
+                    break;
+                }
+            }
+        }
+        return foundMethod;
     }
 }

@@ -29,6 +29,8 @@
 
 package ptolemy.copernicus.shallow;
 
+import ptolemy.actor.CompositeActor;
+
 import soot.*;
 import soot.jimple.*;
 import soot.jimple.toolkits.invoke.SiteInliner;
@@ -43,14 +45,8 @@ import soot.jimple.toolkits.scalar.Evaluator;
 import soot.toolkits.graph.*;
 import soot.dava.*;
 import soot.util.*;
-import java.io.*;
-import java.util.*;
 
-import ptolemy.kernel.util.*;
-import ptolemy.kernel.*;
-import ptolemy.actor.*;
-import ptolemy.moml.*;
-import ptolemy.domains.sdf.kernel.SDFDirector;
+import java.util.Map;
 
 //////////////////////////////////////////////////////////////////////////
 //// InlineParameterTransformer
