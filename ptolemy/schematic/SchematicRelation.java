@@ -134,6 +134,24 @@ public class SchematicRelation extends SchematicElement {
         setAttribute("width", width);
     }
 
+    /**
+     * Take an arbitrary XMLElement and figure out what type it is, then
+     * figure out what semantic meaning that has within this XMLElement.
+     * This is primarily used by the parser to keep the semantic structures
+     * within an XMLElement consistant with the childElements.
+     */
+    void applySemanticsToChild(XMLElement e) {
+        if(e instanceof SchematicParameter) {
+            // if a parameter, remove the old one and install the new one.
+            parameters.putAt(
+                    ((SchematicParameter) e).getName(), e);
+        } else if(e.getElementType().equals("link")) {
+            // if a link, add to the list of links.
+            links.putAt(
+                    e.getAttribute("name"), e);
+        }
+    }
+
     HashedMap links;
 
 }
