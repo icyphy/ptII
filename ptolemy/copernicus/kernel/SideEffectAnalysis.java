@@ -47,52 +47,80 @@ public class SideEffectAnalysis extends BackwardFlowAnalysis {
         super(g);
         doAnalysis();
     }
-    
-    /** Return the set of other fields and locals that must reference
-     *  the same object as the given field, at a point before
-     *  the given unit.
+
+    /** Return the set of fields that the given method assigns
+     *  to, or null if the side effects are unknown.
+     */
+    public Set getSideEffects(SootMethod method) {
+        EffectFlow flow = (EffectFlow)getFlowBefore(method);
+        if(flow == null) {
+            if(_debug) System.out.println(
+                    "SideEffectAnalysis: Method not found: " + method);
+            return null;
+        }
+        if(flow.hasEffects()) {
+            return flow.effectSet();
+        } else {
+            return new HashSet();
+        }
+    }
+            
+    /** Return true if the given method has any side effects.
+     *  i.e. it assigns to any fields.
      */
     public boolean hasSideEffects(SootMethod method) {
-        BooleanFlow flow = (BooleanFlow)getFlowBefore(method);
+        EffectFlow flow = (EffectFlow)getFlowBefore(method);
         if(flow == null) {
             if(_debug) System.out.println(
                     "SideEffectAnalysis: Method not found: " + method);
             return true;
         }
-        return flow.getValue();
+        return flow.hasEffects();
     }
 
-    // Formulation:
+    /** Return true if the given method has any side effects 
+     *  on the given field.  i.e. it assigns to the given field.
+     */
+    public boolean hasSideEffects(SootMethod method, SootField field) {
+        EffectFlow flow = (EffectFlow)getFlowBefore(method);
+        if(flow == null) {
+            if(_debug) System.out.println(
+                    "SideEffectAnalysis: Method not found: " + method);
+            return true;
+        }
+        return flow.hasEffects(field);
+    }
+
+    // Formulation:  An instance of the EffectFlow class.  If there
+    // are no side effects, then the flow has _hasEffects == false;
+    // if _hasEffects == true, then the effectSet is the set of fields
+    // that are side effected, or null if any field may be side effected.
     protected Object newInitialFlow() {
-        return new BooleanFlow();
+        return new EffectFlow();
     }
 
     protected void flowThrough(Object inValue, Object d, Object outValue) {
-        BooleanFlow in = (BooleanFlow)inValue;
-        BooleanFlow out = (BooleanFlow)outValue;
+        EffectFlow in = (EffectFlow)inValue;
+        EffectFlow out = (EffectFlow)outValue;
         SootMethod method = (SootMethod)d;
  
-        if(_debug) System.out.println("SideEffectAnalysis: method = " + method);
-        // A method has side effects if any method it uses has side effects.
-        if(in.getValue() == true) {
-            if(_debug) System.out.println(
-                    "SideEffectAnalysis: uses a side-effect Method");
-            out.setValue(true);
-            return;
+        if(_debug) System.out.println(
+                "SideEffectAnalysis: method = " + method);
+
+        // If the input has unknown side effects, then don't
+        // bother going through all the methods.
+        if(in.hasUnknownSideEffects()) {
+            out.setUnknownSideEffects();
         }
 
         // A method that is a context class is assumed to have side effects,
         // since we can't get it's method body.  Note that we could do better
-        // by handling each method specifically.  (For Example, Thread.currentThread()
+        // by handling each method specifically.  
+        // (For Example, Thread.currentThread()
         // has no body, but also has no side effects).
-        SootClass declaringClass = method.getDeclaringClass();
-        if(declaringClass.isContextClass()) {
-            declaringClass.setLibraryClass();
-        }
-
         if(!method.isConcrete()) {
             if(_debug) System.out.println("SideEffectAnalysis: has no body.");
-            out.setValue(true);
+            out.setUnknownSideEffects();
             return;
         }
         
@@ -109,70 +137,175 @@ public class SideEffectAnalysis extends BackwardFlowAnalysis {
                 if(value instanceof FieldRef) {
                     if(_debug) System.out.println(
                             "SideEffectAnalysis: assigns to field");
-                    out.setValue(true);
-                    return;
+                    out.addSideEffect(((FieldRef)value).getField());
                 }
             }
 
-            // Method calls that are in the invokeGraph have already been checked.
-            // However, it turns out that context classes are not included in the
-            // invokeGraph!  This checks to see if there are any invocations of
+            // Method calls that are in the invokeGraph 
+            // have already been checked.
+            // However, it turns out that context classes 
+            // are not included in the
+            // invokeGraph!  This checks to see if there 
+            // are any invocations of
             // methods that are not in the invoke graph.  Conservatively
             // assume that they have side effects.
+            Hierarchy hierarchy = Scene.v().getActiveHierarchy();
             for(Iterator boxes = unit.getUseBoxes().iterator();
                 boxes.hasNext();) {
                 ValueBox box = (ValueBox)boxes.next();
-                Value value = box.getValue();
-                if(value instanceof InvokeExpr) {
-                    SootMethod invokedMethod = ((InvokeExpr)value).getMethod();
-                    if(!((MethodCallGraph)graph).isReachable(
-                            invokedMethod.getSignature())) {
-                        if(_debug) System.out.println(
-                                "SideEffectAnalysis: Calls a method that is not in the graph");
-                        out.setValue(true);
-                        return;
-                    }
+                Value expr = box.getValue();
+                if(expr instanceof InvokeExpr) {
+                    SootMethod invokedMethod = ((InvokeExpr)expr).getMethod();
+                    if(expr instanceof SpecialInvokeExpr) {
+                        SootMethod target = 
+                            hierarchy.resolveSpecialDispatch(
+                                    (SpecialInvokeExpr)expr, invokedMethod);
+                        
+                        if(!((MethodCallGraph)graph).isReachable(
+                                target.getSignature())) {
+                            if(_debug) System.out.println(
+                                    "SideEffectAnalysis: specialInvokes method that is not in the graph");
+                            out.setUnknownSideEffects();
+                        }
+                    } else if(expr instanceof InstanceInvokeExpr) {
+                        Type baseType =
+                            ((InstanceInvokeExpr)expr).getBase().getType();
+                        if(!(baseType instanceof RefType)) {
+                            // We can invoke methods on arrays...
+                            // Ignore them here.
+                            continue;
+                        }
+                        List list = hierarchy.resolveAbstractDispatch(
+                                ((RefType)baseType).getSootClass(), invokedMethod);
+                        for(Iterator targets = list.iterator();
+                            targets.hasNext();) {
+                            SootMethod target = (SootMethod)targets.next();
+                             if(!((MethodCallGraph)graph).isReachable(
+                                     target.getSignature())) {
+                                 if(_debug) System.out.println(
+                                         "SideEffectAnalysis: virtualInvokes method that is not in the graph");
+                                 out.setUnknownSideEffects();
+                             }
+                        } 
+                    } else if(expr instanceof StaticInvokeExpr) {
+                        if(!((MethodCallGraph)graph).isReachable(
+                                invokedMethod.getSignature())) {
+                            if(_debug) System.out.println(
+                                    "SideEffectAnalysis: staticInvokes method that is not in the graph");
+                            out.setUnknownSideEffects();
+                        }
+                    }                    
                 }
             }
         }
-
-        // Otherwise, we have no side effects.
-        out.setValue(false);
     }
 
     protected void copy(Object inValue, Object outValue) {
-        BooleanFlow in = (BooleanFlow)inValue;
-        BooleanFlow out = (BooleanFlow)outValue;
-        out.setValue(in.getValue());
+        EffectFlow in = (EffectFlow)inValue;
+        EffectFlow out = (EffectFlow)outValue;
+        out.setEffectFlow(in);
     }
 
     protected void merge(Object in1Value, Object in2Value, Object outValue) {
-        BooleanFlow in1 = (BooleanFlow)in1Value;
-        BooleanFlow in2 = (BooleanFlow)in2Value;
-        BooleanFlow out = (BooleanFlow)outValue;
+        EffectFlow in1 = (EffectFlow)in1Value;
+        EffectFlow in2 = (EffectFlow)in2Value;
+        EffectFlow out = (EffectFlow)outValue;
         
         // A method has side effects if any method it uses has side effects.
-        out.setValue(in1.getValue() || in2.getValue());
+        out.setEffectFlow(in1);
+        out.mergeEffectFlow(in2);
     }
  
-    private static class BooleanFlow {
-        public BooleanFlow() {
-            _value = false;
+    private static class EffectFlow {
+        public EffectFlow() {
+            _hasEffects = false;
+            _effectSet = null;
         }
+
         public boolean equals(Object o) {
-            if(o instanceof BooleanFlow) {
-                return _value == ((BooleanFlow)o).getValue();
+            if(o instanceof EffectFlow) {
+                EffectFlow other = (EffectFlow)o;
+                if(_hasEffects != other.hasEffects()) {
+                    return false;
+                } else if(_effectSet == null && other.effectSet() != null) {
+                    return false;
+                } else if(_effectSet == null && other.effectSet() == null) {
+                    return true;
+                }
+                return _effectSet.equals(((EffectFlow)o).effectSet());
             } else {
                 return false;
             }
         }
-        public void setValue(boolean flag) {
-            _value = flag;
+
+        public void addSideEffect(SootField field) {
+            if(_hasEffects) {
+                if(_effectSet != null) {
+                    _effectSet.add(field);
+                }
+            } else {
+                _hasEffects = true;
+                _effectSet = new HashSet();
+                _effectSet.add(field);
+            }
         }
-        public boolean getValue() {
-            return _value;
+
+        public void mergeEffectFlow(EffectFlow flow) {
+            if(flow.hasUnknownSideEffects()) {
+                // If the flow has unknown effects, then we will
+                // have unknown effects.
+                setUnknownSideEffects();
+            } else if(!flow.hasEffects()) {
+                // If the flow have no effects, then we have no
+                // change.
+                return;
+            } else if(_hasEffects) {
+                if(_effectSet != null) {
+                    _effectSet.addAll(flow.effectSet());
+                } // else we have unknown side effects already.
+            } else {
+                _hasEffects = true;
+                _effectSet = new HashSet();
+                _effectSet.addAll(flow.effectSet());
+            }
         }
-        private boolean _value;
+        
+        public boolean hasEffects(SootField field) {
+            if(_hasEffects) {
+                if(_effectSet != null) {
+                    return _effectSet.contains(field);
+                } else {
+                    return true;
+                }
+            } else {
+                return false;
+            }
+        }
+
+        public Set effectSet() {
+            return _effectSet;
+        }
+
+        public boolean hasEffects() {
+            return _hasEffects;
+        }
+
+        public void setEffectFlow(EffectFlow flow) {
+            _hasEffects = flow.hasEffects();
+            _effectSet = flow.effectSet();
+        }
+
+        public void setUnknownSideEffects() {
+            _hasEffects = true;
+            _effectSet = null;
+        }
+
+        public boolean hasUnknownSideEffects() {
+            return (_hasEffects == true && _effectSet == null);
+        }
+
+        private boolean _hasEffects;
+        private Set _effectSet;
     }
-    private boolean _debug = false;
+    private boolean _debug = true;
 }

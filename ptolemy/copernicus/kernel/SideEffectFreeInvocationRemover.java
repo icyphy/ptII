@@ -86,9 +86,12 @@ public class SideEffectFreeInvocationRemover extends SceneTransformer {
         System.out.println("SideEffectFreeInvocationRemover.internalTransform(" 
                 + phaseName + ", " + options + ")");
         
-        InvokeGraph invokeGraph = ClassHierarchyAnalysis.newInvokeGraph();
-        MethodCallGraph methodCallGraph = (MethodCallGraph)invokeGraph.newMethodGraph();
-        SideEffectAnalysis analysis = new SideEffectAnalysis(methodCallGraph);
+        InvokeGraph invokeGraph =
+            ClassHierarchyAnalysis.newInvokeGraph();
+        MethodCallGraph methodCallGraph = 
+            (MethodCallGraph)invokeGraph.newMethodGraph();
+        SideEffectAnalysis analysis = 
+            new SideEffectAnalysis(methodCallGraph);
 
         for(Iterator classes = Scene.v().getApplicationClasses().iterator();
             classes.hasNext();) {
@@ -117,6 +120,9 @@ public class SideEffectFreeInvocationRemover extends SceneTransformer {
             units.hasNext();) {
             Unit unit = (Unit)units.next();
             Value useValue;
+
+            // Find a method invocation that doesn't have a return
+            // value, or whose return value is dead.
             if(unit instanceof DefinitionStmt) {
                 DefinitionStmt stmt = (DefinitionStmt)unit;
                 Value left = stmt.getLeftOp();
@@ -144,7 +150,8 @@ public class SideEffectFreeInvocationRemover extends SceneTransformer {
                 // If any targets of the invocation have side effects, then they
                 // cannot be removed.
                 boolean removable = true;
-                for(Iterator i = invokeGraph.getTargetsOf((Stmt)unit).iterator();
+                for(Iterator i = invokeGraph.getTargetsOf(
+                        (Stmt)unit).iterator();
                     i.hasNext() && removable;) {
                     
                     SootMethod targetMethod = (SootMethod)i.next();
@@ -152,9 +159,11 @@ public class SideEffectFreeInvocationRemover extends SceneTransformer {
                         removable = false;
                     }
                 }
+
                 if(removable) {
                     // Otherwise we've found an invocation we can remove.
                     // Remove it.
+                    System.out.println("SEFIR: removing " + unit);
                     body.getUnits().remove(unit);
                 }
             }

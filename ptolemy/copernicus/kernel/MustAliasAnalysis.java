@@ -34,6 +34,7 @@ import soot.jimple.*;
 import soot.toolkits.graph.CompleteUnitGraph;
 import soot.toolkits.graph.UnitGraph;
 import soot.toolkits.scalar.ForwardFlowAnalysis;
+import soot.jimple.toolkits.invoke.InvokeGraph;
 
 import java.util.*;
 
@@ -43,10 +44,23 @@ fields that must alias it, at a particular point in the code.
 */
 public class MustAliasAnalysis extends ForwardFlowAnalysis {
     public MustAliasAnalysis(UnitGraph g) {
-        super(g);
-        doAnalysis();
+        this(g, null, null);
     }
-    
+        
+    /** Create a new analysis based on the given invoke graph
+     *  and side effect information. 
+     */
+    public MustAliasAnalysis(UnitGraph g, 
+            InvokeGraph invokeGraph, 
+            SideEffectAnalysis sideEffectAnalysis) {
+        super(g);
+        _invokeGraph = invokeGraph;
+        _sideEffectAnalysis = sideEffectAnalysis;
+        doAnalysis();
+        _invokeGraph = null;
+        _sideEffectAnalysis = null;
+    }
+
     /** Return the set of other fields and locals that must reference
      *  the same object as the given field, at a point before
      *  the given unit.
@@ -123,15 +137,66 @@ public class MustAliasAnalysis extends ForwardFlowAnalysis {
         // By default, the out is equal to the in.
         copy(inValue, outValue);
 
+        //        System.out.println("flow through " + d);
+
         // if we have a method invocation, then alias information
         // for all fields is killed.
         // This is a safe flow-insensitive approximation.
         if(unit.containsInvokeExpr()) {
-            for(Iterator i = out.keySet().iterator();
-                i.hasNext();) {
-                Object object = i.next();
-                if(object instanceof SootField) {
-                    _killAlias(out, object);
+            if(_sideEffectAnalysis == null) {
+                for(Iterator i = out.keySet().iterator();
+                    i.hasNext();) {
+                    Object object = i.next();
+                    if(object instanceof SootField) {
+                        SootField field = (SootField) object;
+                        // FIXME: properly compute this..
+                        boolean targetsAreInDifferentClass = true;
+                        if(field.isPrivate() && targetsAreInDifferentClass) {
+                            continue;
+                        } else {
+                            _killAlias(out, object);
+                        }
+                    }
+                }
+            } else {   
+                InvokeExpr expr = (InvokeExpr)unit.getInvokeExpr();
+                SootMethod method = expr.getMethod();
+                System.out.println("invoking: " + method);
+                Set allSideEffects = new HashSet();
+                // Union the side effect sets over
+                // all the possible targets
+                List targets = _invokeGraph.getTargetsOf((Stmt)unit);
+                for(Iterator i = targets.iterator();
+                    i.hasNext();) {
+                    SootMethod target = (SootMethod)i.next();
+
+                    Set newSet = _sideEffectAnalysis.getSideEffects(method);
+                    
+                    if(newSet != null) {
+                        allSideEffects.addAll(newSet);
+                    } else {
+                        allSideEffects = null;
+                        break;
+                    }
+                }
+                if(allSideEffects != null) {
+                    // kill the alias for anything that was in the set,
+                    // and is in our flow.
+                    allSideEffects.retainAll(out.keySet());
+                } else {
+                    // If we have unknown side effects, then we have
+                    // to kill alias information for *all* fields.
+                    // Note that this set includes all the locals 
+                    // as well.
+                    allSideEffects = out.keySet();
+                }
+                System.out.println("all Side effects = " + allSideEffects);
+                for(Iterator i = allSideEffects.iterator();
+                    i.hasNext();) {
+                    Object object = i.next();
+                    if(object instanceof SootField) {
+                        _killAlias(out, object);
+                    }
                 }
             }
         }
@@ -157,37 +222,45 @@ public class MustAliasAnalysis extends ForwardFlowAnalysis {
                         _createAlias(out, lobject, robject);
                     }
                 }
+                //           System.out.println("aliases for " + lobject + 
+                //        " = " + out.get(lobject));
             }
         }
+
         // otherwise, the alias info is unchanged.
     }
 
     protected void copy(Object inValue, Object outValue) {
+        //System.out.println("copy");
         Map in = (Map) inValue, out = (Map) outValue;
-        // FIXME: is this necessary, since we are supposedly monotonic?
-        out.keySet().retainAll(in.keySet());
-        for(Iterator i = in.keySet().iterator(); i.hasNext();) {
-            Object object = i.next();
+        out.clear();
+        List aliasValues = new LinkedList(in.keySet());
+        while(aliasValues.size() > 0) {
+            Object object = aliasValues.get(0);
+            aliasValues.remove(object);
             Set inSet = (Set)in.get(object);
-            Set outSet = (Set)out.get(object);
             if(inSet == null) {
                 out.put(object, null);
             } else {
-                if(outSet == null) {
-                    outSet = new HashSet();
-                    out.put(object, outSet);
-                }
-                outSet.clear();
+                Set outSet = new HashSet();
                 outSet.addAll(inSet);
+                out.put(object, outSet);
+                for(Iterator i = outSet.iterator();
+                    i.hasNext();) {
+                    out.put(i.next(), outSet);
+                }
+                aliasValues.removeAll(inSet);
             }
         }
     }
 
     protected void merge(Object in1Value, Object in2Value, Object outValue) {
+        //System.out.println("merge");
         Map in1 = (Map) in1Value, in2 = (Map) in2Value, out = (Map) outValue;
 
         // First set the output to the first input.
-        copy(in1, out);
+        if(in1 != out) 
+            copy(in1, out);
 
         // Now merge in the second input.
         for(Iterator i = in1.keySet().iterator(); i.hasNext();) {
@@ -210,6 +283,7 @@ public class MustAliasAnalysis extends ForwardFlowAnalysis {
     
     
     private static void _createAlias(Map map, Object lObject, Object rObject) {
+        //System.out.println("createAlias");
         // Get its new set of aliases.
         Set rset = (Set)map.get(rObject);
         if(rset == null) {
@@ -247,4 +321,7 @@ public class MustAliasAnalysis extends ForwardFlowAnalysis {
             map.put(lObject, null);
         }
     }
+
+    private InvokeGraph _invokeGraph;
+    private SideEffectAnalysis _sideEffectAnalysis;
 }

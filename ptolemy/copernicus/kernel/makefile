@@ -51,6 +51,7 @@ JSRCS = \
 	ActorTransformer.java \
 	AliasAnalysis.java \
 	CastAndInstanceofEliminator.java \
+	ClassWriter.java \
 	ImprovedDeadAssignmentEliminator.java \
 	InstanceEqualityEliminator.java \
 	JimpleWriter.java \

@@ -34,6 +34,7 @@ import soot.jimple.*;
 import soot.toolkits.graph.CompleteUnitGraph;
 import soot.toolkits.graph.UnitGraph;
 import soot.toolkits.scalar.ForwardFlowAnalysis;
+import soot.jimple.toolkits.invoke.InvokeGraph;
 
 import java.util.*;
 
@@ -42,9 +43,27 @@ An analysis that maps each local and field to the set of locals and
 fields that may alias that value.  
 */
 public class MaybeAliasAnalysis extends ForwardFlowAnalysis {
+    /** Create a new analysis that does not rely on 
+     *  side effect information.  This is a more conservative,
+     *  but computationally cheaper  approximation to the aliases 
+     *  than is possible with better side effect information.
+     */
     public MaybeAliasAnalysis(UnitGraph g) {
+        this(g, null, null);
+    }
+    
+    /** Create a new analysis based on the given invoke graph
+     *  and side effect information. 
+     */
+    public MaybeAliasAnalysis(UnitGraph g, 
+            InvokeGraph invokeGraph, 
+            SideEffectAnalysis sideEffectAnalysis) {
         super(g);
+        _invokeGraph = invokeGraph;
+        _sideEffectAnalysis = sideEffectAnalysis;
         doAnalysis();
+        _invokeGraph = null;
+        _sideEffectAnalysis = null;
     }
     
     /** Return the set of other fields and locals that may reference
@@ -129,7 +148,9 @@ public class MaybeAliasAnalysis extends ForwardFlowAnalysis {
     // If no alias information exists for the object (i.e. it could be
     // aliased to everything) then it points to null.
     protected Object newInitialFlow() {
-        return new HashMap();
+        Map flowMap = new HashMap();
+        flowMap.put(allAliasKey, new HashSet());
+        return flowMap;
     }
 
     protected void flowThrough(Object inValue, Object d, Object outValue) {
@@ -139,15 +160,64 @@ public class MaybeAliasAnalysis extends ForwardFlowAnalysis {
         // By default, the out is equal to the in.
         copy(inValue, outValue);
 
-        // if we have a method invocation, then alias information
-        // for all fields is killed.
+        System.out.println("maybe flow through " + d);
+
+        // If we have a method invocation, then alias information
+        // for fields that the method side effects is killed.
+        // If no side effect information was specified in the constructor,
+        // then conservatively kill the alias information for all fields.
         // This is a safe flow-insensitive approximation.
         if(unit.containsInvokeExpr()) {
-            for(Iterator i = out.keySet().iterator();
-                i.hasNext();) {
-                Object object = i.next();
-                if(object instanceof SootField) {
-                    _killAlias(out, object);
+           if(_sideEffectAnalysis == null) {
+                for(Iterator i = out.keySet().iterator();
+                    i.hasNext();) {
+                    Object object = i.next();
+                    if(object instanceof SootField) {
+                        SootField field = (SootField) object;
+                        // FIXME: properly compute this..
+                        boolean targetsAreInDifferentClass = true;
+                        if(field.isPrivate() && targetsAreInDifferentClass) {
+                            continue;
+                        } else {
+                            _killAlias(out, object);
+                        }
+                    }
+                }
+            } else {   
+                InvokeExpr expr = (InvokeExpr)unit.getInvokeExpr();
+                SootMethod method = expr.getMethod();
+                //           System.out.println("invoking: " + method);
+                Set allSideEffects = new HashSet();
+                // Union the side effect sets over
+                // all the possible targets
+                List targets = _invokeGraph.getTargetsOf((Stmt)unit);
+                for(Iterator i = targets.iterator();
+                    i.hasNext();) {
+                    SootMethod target = (SootMethod)i.next();
+
+                    Set newSet = _sideEffectAnalysis.getSideEffects(method);
+                    
+                    if(newSet != null) {
+                        allSideEffects.addAll(newSet);
+                    } else {
+                        allSideEffects = null;
+                        break;
+                    }
+                }
+                if(allSideEffects != null) {
+                    // kill the alias for anything that was in the set,
+                    // and is in our flow.
+                    allSideEffects.retainAll(out.keySet());
+                } else {
+                    allSideEffects = out.keySet();
+                }
+                // System.out.println("all Side effects = " + allSideEffects);
+                for(Iterator i = allSideEffects.iterator();
+                    i.hasNext();) {
+                    Object object = i.next();
+                    if(object instanceof SootField) {
+                        _killAlias(out, object);
+                    }
                 }
             }
         }
@@ -163,6 +233,7 @@ public class MaybeAliasAnalysis extends ForwardFlowAnalysis {
                 // current set of aliases.  (Kill rule)
                 _killAlias(out, lobject);
 
+                // System.out.println("robject = " + robject);
                 if(robject != null) {
                     // If the type is aliasable,
                     if(lvalue.getType() instanceof ArrayType ||
@@ -171,36 +242,45 @@ public class MaybeAliasAnalysis extends ForwardFlowAnalysis {
                         // The left side is now aliased to everything
                         // that the right side was aliased to before.
                         // (Gen rule)
+                       
+                        //      System.out.println("creating alias");
                         _createAlias(out, lobject, robject);
                     }
                 }
+                //System.out.println("maybe aliases for " + lobject + 
+                //       " = " + out.get(lobject));
             }
         }
         // otherwise, the alias info is unchanged.
     }
 
     protected void copy(Object inValue, Object outValue) {
+        //      System.out.println("copy");
         Map in = (Map) inValue, out = (Map) outValue;
-        // FIXME: is this necessary, since we are supposedly monotonic?
-        out.keySet().retainAll(in.keySet());
-        for(Iterator i = in.keySet().iterator(); i.hasNext();) {
-            Object object = i.next();
+        out.clear();
+        List aliasValues = new LinkedList(in.keySet());
+        while(aliasValues.size() > 0) {
+            Object object = aliasValues.get(0);
+            aliasValues.remove(object);
             Set inSet = (Set)in.get(object);
-            Set outSet = (Set)out.get(object);
             if(inSet == null) {
                 out.put(object, null);
             } else {
-                if(outSet == null) {
-                    outSet = new HashSet();
-                    out.put(object, outSet);
-                }
-                outSet.clear();
+                Set outSet = new HashSet();
                 outSet.addAll(inSet);
+                out.put(object, outSet);
+                for(Iterator i = outSet.iterator();
+                    i.hasNext();) {
+                    out.put(i.next(), outSet);
+                }
+                aliasValues.removeAll(inSet);
             }
         }
     }
 
     protected void merge(Object in1Value, Object in2Value, Object outValue) {
+        //     System.out.println("merge " + in1Value);
+        //System.out.println(" with " + in2Value);
         Map in1 = (Map) in1Value, in2 = (Map) in2Value, out = (Map) outValue;
        
         LinkedList allKeys = new LinkedList();
@@ -236,6 +316,7 @@ public class MaybeAliasAnalysis extends ForwardFlowAnalysis {
                 out.put(object, set);
             } 
         }
+        //     System.out.println(" to " + outValue);
     }
    
     // Add lobject to the set of things that are aliased by rObject.
@@ -243,10 +324,20 @@ public class MaybeAliasAnalysis extends ForwardFlowAnalysis {
         // Get its new set of aliases.
         Set rset = (Set)map.get(rObject);
         if(rset == null) {
-            // If the right side was aliased to everything, then 
-            // the left side will also be aliased to everything.
-            map.put(lObject, null);
-            return;
+            // New objects create new alias sets...
+            if(rObject instanceof NewExpr ||
+                    rObject instanceof NewArrayExpr) {
+                rset = new HashSet();
+                map.put(rObject, rset);
+                rset.add(rObject);
+            } else {
+                // If we have no information about the aliases for 
+                // rObject, then it could be aliased to anything.
+                // add it to the special set of aliases for which we
+                // know nothing about (which are all aliased together).
+                _createAlias(map, rObject, allAliasKey);
+                rset = (Set)map.get(rObject);
+            }
         }
         
         // Add the object to the new set of aliases.
@@ -280,7 +371,15 @@ public class MaybeAliasAnalysis extends ForwardFlowAnalysis {
         if(lset != null) {
             // And remove.
             lset.remove(lObject);
-            map.put(lObject, null);
+            _createAlias(map, lObject, allAliasKey);
         }
     }
+
+    private InvokeGraph _invokeGraph;
+    private SideEffectAnalysis _sideEffectAnalysis;
+
+    // This object is used as a key into the flow maps.
+    // It maps to the set of objects that we encounter
+    // which can be mapped to anything.
+    private static Object allAliasKey = new Object();
 }

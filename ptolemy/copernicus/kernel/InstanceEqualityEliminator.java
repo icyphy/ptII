@@ -32,6 +32,9 @@ package ptolemy.copernicus.kernel;
 
 import soot.*;
 import soot.jimple.*;
+import soot.jimple.toolkits.invoke.ClassHierarchyAnalysis;
+import soot.jimple.toolkits.invoke.InvokeGraph;
+import soot.jimple.toolkits.invoke.MethodCallGraph;
 import soot.toolkits.scalar.*;
 import soot.util.*;
 import soot.toolkits.graph.*;
@@ -53,7 +56,7 @@ must alias analysis makes it safe
 
 */
 
-public class InstanceEqualityEliminator extends BodyTransformer
+public class InstanceEqualityEliminator extends SceneTransformer
 {
     private static InstanceEqualityEliminator instance = new InstanceEqualityEliminator();
     private InstanceEqualityEliminator() {}
@@ -65,24 +68,63 @@ public class InstanceEqualityEliminator extends BodyTransformer
     public String getDeclaredOptions() { 
         return super.getDeclaredOptions() + " debug"; 
     }
+
     
-    protected void internalTransform(Body b, String phaseName, Map options)
+    protected void internalTransform(String phaseName, Map options)
     {
-        JimpleBody body = (JimpleBody)b;
         System.out.println("InstanceEqualityEliminator.internalTransform("
-                + phaseName + ", " + body.getMethod() + ", " + options + ")");
+                + phaseName + ", " + options + ")");
         
         boolean debug = Options.getBoolean(options, "debug");
-        CompleteUnitGraph unitGraph = new CompleteUnitGraph(body);
+      
+        /*  if(debug) System.out.println("building invoke graph");
+        InvokeGraph invokeGraph =
+            ClassHierarchyAnalysis.newInvokeGraph();
+        if(debug) System.out.println("done");
+        if(debug) System.out.println("building method call graph");
+        MethodCallGraph methodCallGraph = 
+            (MethodCallGraph)invokeGraph.newMethodGraph();
+        if(debug) System.out.println("done");
+        if(debug) System.out.println("analyzing sideeffecting methods");
+        SideEffectAnalysis sideEffectAnalysis =
+            new SideEffectAnalysis(methodCallGraph);
+        if(debug) System.out.println("done");
+        */
 
+        Iterator classes = Scene.v().getApplicationClasses().iterator();
+        while(classes.hasNext()) {
+            SootClass theClass = (SootClass)classes.next();
+            Iterator methods = theClass.getMethods().iterator();
+            while(methods.hasNext()) {   
+                SootMethod m = (SootMethod) methods.next();
+                if(!m.isConcrete())
+                    continue;
+                JimpleBody body = (JimpleBody) m.retrieveActiveBody();
+                removeInstanceEqualities(body, null, debug);
+            } 
+        }
+    }
+
+       
+    public void removeInstanceEqualities(JimpleBody body, 
+            InvokeGraph invokeGraph, boolean debug) {
+        CompleteUnitGraph unitGraph = new CompleteUnitGraph(body);
+        
+        if(debug) System.out.println("analyzing body of " + body.getMethod());
+                
         // The analyses that give us the information to transform the code.
         NullPointerAnalysis nullPointerAnalysis =
             new NullPointerAnalysis(unitGraph);
+        //  if(debug) System.out.println("done nullpointers");
         MustAliasAnalysis mustAliasAnalysis = 
             new MustAliasAnalysis(unitGraph);
+
+        //if(debug) System.out.println("done mustAliases");
         MaybeAliasAnalysis maybeAliasAnalysis = 
             new MaybeAliasAnalysis(unitGraph);
- 
+        //if(debug) System.out.println("done maybeAliases");
+              
+        //System.out.println("done analyzing");
         // Loop through all the unit
         for(Iterator units = body.getUnits().iterator();
             units.hasNext();) {
@@ -182,4 +224,8 @@ public class InstanceEqualityEliminator extends BodyTransformer
         }
     }
 }
+
+
+
+
 
