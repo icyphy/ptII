@@ -77,7 +77,7 @@ public class XSLTransformer extends Transformer{
         //output.setMultiport(true);
         output.setTypeEquals(BaseType.STRING);
 
-		fileOrURL = new FileAttribute(this, "fileOrURL");
+        fileOrURL = new FileAttribute(this, "fileOrURL");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -89,11 +89,11 @@ public class XSLTransformer extends Transformer{
     //Note: it is used to be this parameter for specifying the xslt file.
     //public Parameter xsltURL;
 	
-	/** The file name or URL from which to read.  This is a string with
-	 *  any form accepted by FileAttribute.
-	 *  @see FileAttribute
-	 */
-	public FileAttribute fileOrURL;
+    /** The file name or URL from which to read.  This is a string with
+     *  any form accepted by FileAttribute.
+     *  @see FileAttribute
+     */
+    public FileAttribute fileOrURL;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -108,7 +108,7 @@ public class XSLTransformer extends Transformer{
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
         XSLTransformer newObject = (XSLTransformer)super.clone(workspace);
-		newObject.input.setTypeEquals(BaseType.XMLTOKEN);
+        newObject.input.setTypeEquals(BaseType.XMLTOKEN);
         newObject.output.setTypeEquals(BaseType.STRING);
         return newObject;
     }
@@ -153,7 +153,7 @@ public class XSLTransformer extends Transformer{
             for (int i = 0; i < input.getWidth(); i++) {
                 if (input.hasToken(i)) {
                     XMLToken in = (XMLToken)input.get(i);
-					output.broadcast(new StringToken(in.toString()));
+                    output.broadcast(new StringToken(in.toString()));
                 }
             }
         }
@@ -162,37 +162,37 @@ public class XSLTransformer extends Transformer{
     /** Open the file at the URL.
      *  @exception IllegalActionException Not thrown in this base class
      */
-   public void initialize() throws IllegalActionException {
-		_xsltSource = null;
-		_transformer = null;
-		try {
-			BufferedReader reader;
-			// Ignore if the fileOrUL is blank.
-			if (fileOrURL.getExpression().trim().equals("")) {
-				reader = null;
-			} else {
-				reader = fileOrURL.openForReading();
-			}
-			if (reader != null) {
-				_xsltSource = new javax.xml.transform.stream.StreamSource(reader);
-			}
-			else {
-				_xsltSource = null;
-			}
-			//System.out.println("processing xsltSource change in " + getFullName());
-			if (_xsltSource != null) {
-				_transformerFactory = javax.xml.transform.TransformerFactory.newInstance();
-				_transformer = _transformerFactory.newTransformer(_xsltSource);
+    public void initialize() throws IllegalActionException {
+        _xsltSource = null;
+        _transformer = null;
+        try {
+            BufferedReader reader;
+            // Ignore if the fileOrUL is blank.
+            if (fileOrURL.getExpression().trim().equals("")) {
+                reader = null;
+            } else {
+                reader = fileOrURL.openForReading();
+            }
+            if (reader != null) {
+                _xsltSource = new javax.xml.transform.stream.StreamSource(reader);
+            }
+            else {
+                _xsltSource = null;
+            }
+            //System.out.println("processing xsltSource change in " + getFullName());
+            if (_xsltSource != null) {
+                _transformerFactory = javax.xml.transform.TransformerFactory.newInstance();
+                _transformer = _transformerFactory.newTransformer(_xsltSource);
 				//System.out.println("1 processing xsltSource change in " + getFullName());
-			}
-			else {
-				_transformer = null;
-			}
-		} catch (java.lang.Exception ex) {
-			//System.out.println("exception class is " + ex.getClass());
-			throw new IllegalActionException(this, ex.getMessage());
-		}
-	}
+            }
+            else {
+                _transformer = null;
+            }
+        } catch (java.lang.Exception ex) {
+            //System.out.println("exception class is " + ex.getClass());
+            throw new IllegalActionException(this, ex.getMessage());
+        }
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
