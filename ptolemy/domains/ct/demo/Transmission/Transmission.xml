@@ -49,12 +49,12 @@
         </property>
         <property name="CTScheduler" class="ptolemy.domains.ct.kernel.CTScheduler">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 70.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 45.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={124, 105, 754, 560}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={6, 1, 862, 590}}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[539, 442]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[647, 474]">
     </property>
     <property name="annotation" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -63,11 +63,11 @@
             <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This model represents an automobile transmission,
 a classic example of a hybrid system.
 
-The input to hybrid system are the current applied
-gear and the current throttle position.  In this model,
-the gear shift sequence is predetermined, and the
-throttle is applied constantly.  It is assumed that 
-shifts from one gear to another occur instantaneously.</text></svg></configure>
+The inputs to "car model" hybrid system are the current applied
+gear and the current throttle position.  In this model, the gear
+shift sequence is predetermined, and the throttle is applied
+constantly.  It is assumed that shifts from one gear to another
+occur instantaneously.</text></svg></configure>
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -87,9 +87,9 @@ shifts from one gear to another occur instantaneously.</text></svg></configure>
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This model also makes use of function closures to compact
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This model demonstrates the use of "function closures" to compact
 the states of the hybrid system.  Instead of having one mode for each gear,
-the model contains only one mode.  The reset action of transitions set the
+the model contains only one mode.  The reset actions of transitions set the
 efficiency function for the current gear.  The efficiency function determines
 the amount of the engine's power that is available to accelerate the vehicle.</text></svg></configure>
         </property>
@@ -104,7 +104,7 @@ the amount of the engine's power that is available to accelerate the vehicle.</t
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="0.0, 300.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="0.0, 285.0">
         </property>
     </property>
     <property name="annotation3" class="ptolemy.kernel.util.Attribute">
@@ -124,7 +124,29 @@ the amount of the engine's power that is available to accelerate the vehicle.</t
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="-5.0, 400.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="0.0, 430.0">
+        </property>
+    </property>
+    <property name="annotation4" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:12; font-family:SansSerif; fill:red">Look inside the "car model" actor
+to see how function closures are
+used to simplify the model.</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="300.0, 385.0">
         </property>
     </property>
     <entity name="Plot position" class="ptolemy.actor.lib.gui.TimedPlotter">
@@ -132,7 +154,7 @@ the amount of the engine's power that is available to accelerate the vehicle.</t
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={475, 388, 508, 355}}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={510, 414, 508, 355}}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
@@ -148,11 +170,11 @@ the amount of the engine's power that is available to accelerate the vehicle.</t
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
-<title>Position</title>
+<title>Position vs. Time</title>
 <xLabel>Time (seconds)</xLabel>
-<yLabel>Distance</yLabel>
-<xRange min="0.0" max="10.052917438668839"/>
-<yRange min="0.0" max="6.858073244318716"/>
+<yLabel>Position</yLabel>
+<xRange min="0.0" max="500.0"/>
+<yRange min="0.0" max="11485.844839026198"/>
 </plot>?>
         </configure>
     </entity>
@@ -194,13 +216,61 @@ the amount of the engine's power that is available to accelerate the vehicle.</t
             </property>
         </port>
         <entity name="_Controller" class="ptolemy.vergil.fsm.modal.ModalController">
-            <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="state2">
+            <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="init">
             </property>
             <property name="finalStateNames" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
             </property>
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
+            </property>
+            <property name="annotation" class="ptolemy.kernel.util.Attribute">
+                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
+                <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                    <configure><svg><text x="20" y="20" style="font-size:12; font-family:SansSerif; fill:red">Look inside the inGear state
+to see how the function closure
+"efficiencyFunction" is applied.</text></svg></configure>
+                </property>
+                <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                    <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+                </property>
+                <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="270.0, 180.0">
+                </property>
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 126, 815, 516}}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="annotation2" class="ptolemy.kernel.util.Attribute">
+                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
+                <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                    <configure><svg><text x="20" y="20" style="font-size:12; font-family:SansSerif; fill:red">Look inside the inGear state
+to see how the function closure
+"efficiencyFunction" is applied.</text></svg></configure>
+                </property>
+                <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                    <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+                </property>
+                <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="270.0, 180.0">
+                </property>
             </property>
             <port name="position" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="input"/>
@@ -224,7 +294,7 @@ the amount of the engine's power that is available to accelerate the vehicle.</t
                 <property name="_location" class="ptolemy.kernel.util.Location" value="535.0, 265.0">
                 </property>
             </port>
-            <entity name="state" class="ptolemy.domains.fsm.kernel.State">
+            <entity name="inGear" class="ptolemy.domains.fsm.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="state">
                 </property>
                 <property name="_centerName" class="ptolemy.kernel.util.Attribute">
@@ -238,7 +308,7 @@ the amount of the engine's power that is available to accelerate the vehicle.</t
                 <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
                 </port>
             </entity>
-            <entity name="state2" class="ptolemy.domains.fsm.kernel.State">
+            <entity name="init" class="ptolemy.domains.fsm.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
                 </property>
                 <property name="_centerName" class="ptolemy.kernel.util.Attribute">
@@ -292,10 +362,10 @@ the amount of the engine's power that is available to accelerate the vehicle.</t
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
                 </property>
             </relation>
-            <link port="state.incomingPort" relation="relation"/>
-            <link port="state.incomingPort" relation="relation2"/>
-            <link port="state.outgoingPort" relation="relation"/>
-            <link port="state2.outgoingPort" relation="relation2"/>
+            <link port="inGear.incomingPort" relation="relation"/>
+            <link port="inGear.incomingPort" relation="relation2"/>
+            <link port="inGear.outgoingPort" relation="relation"/>
+            <link port="init.outgoingPort" relation="relation2"/>
         </entity>
         <entity name="state" class="ptolemy.vergil.fsm.modal.Refinement">
             <property name="CTEmbedded Director" class="ptolemy.domains.ct.kernel.CTEmbeddedDirector">
@@ -341,10 +411,10 @@ the amount of the engine's power that is available to accelerate the vehicle.</t
                 </property>
                 <property name="CTScheduler" class="ptolemy.domains.ct.kernel.CTScheduler">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="110.0, 60.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 40.0">
                 </property>
             </property>
-            <property name="efficiencyFunction" class="ptolemy.data.expr.Parameter" value="(function(rpm:double) (1/(1+((rpm-300)/100)^2)))">
+            <property name="efficiencyFunction" class="ptolemy.data.expr.Parameter" value="(function(rpm:double) (1/(1+((rpm-1800)/100)^2)))">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -358,7 +428,7 @@ the amount of the engine's power that is available to accelerate the vehicle.</t
                 </property>
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="210.0, 80.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="175.0, 25.0">
                 </property>
             </property>
             <property name="mass" class="ptolemy.data.expr.Parameter" value="1.0">
@@ -375,33 +445,80 @@ the amount of the engine's power that is available to accelerate the vehicle.</t
                 </property>
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="210.0, 100.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="175.0, 45.0">
                 </property>
+            </property>
+            <property name="annotation" class="ptolemy.kernel.util.Attribute">
+                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
+                <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                    <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">The "efficiencyFunction" parameter is set each time this mode is entered to
+the efficiency function of a particular gear. The Expression actor (named
+"Compute Acceleration") applies the function to its other inputs (throttle
+and rpm).  The integrators model the inertia of the vehicle.</text></svg></configure>
+                </property>
+                <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                    <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+                </property>
+                <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="5.0, 60.0">
+                </property>
+            </property>
+            <property name="annotation2" class="ptolemy.kernel.util.Attribute">
+                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
+                <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                    <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Convert velocity to revolutions per minute (rpm).</text></svg></configure>
+                </property>
+                <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                    <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+                </property>
+                <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="15.0, 340.0">
+                </property>
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={88, 137, 815, 516}}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
             <port name="position" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="520.0, 285.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="565.0, 275.0">
                 </property>
             </port>
             <port name="gear" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 185.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 175.0">
                 </property>
             </port>
             <port name="throttle" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 240.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 220.0">
                 </property>
             </port>
             <port name="velocity" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="390.0, 340.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="510.0, 345.0">
                 </property>
             </port>
             <entity name="Integrator" class="ptolemy.domains.ct.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="315.0, 240.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="425.0, 230.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -417,7 +534,7 @@ the amount of the engine's power that is available to accelerate the vehicle.</t
             <entity name="Integrator2" class="ptolemy.domains.ct.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="405.0, 285.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="500.0, 275.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -430,28 +547,8 @@ the amount of the engine's power that is available to accelerate the vehicle.</t
                     </property>
                 </port>
             </entity>
-            <entity name="Const" class="ptolemy.actor.lib.Const">
-                <property name="value" class="ptolemy.data.expr.Parameter" value="efficiencyFunction">
-                </property>
-                <doc>Create a constant sequence</doc>
-                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-                    </property>
-                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
-                    </property>
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="160.0, 170.0">
-                </property>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                </port>
-                <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="multiport"/>
-                </port>
-            </entity>
-            <entity name="compute Acceleration" class="ptolemy.actor.lib.Expression">
-                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="f(rpm)*throttle*mass">
+            <entity name="Compute Acceleration" class="ptolemy.actor.lib.Expression">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="efficiencyFunction(rpm)*throttle*mass">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
@@ -459,21 +556,28 @@ the amount of the engine's power that is available to accelerate the vehicle.</t
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
                     </property>
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="210.0, 240.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="260.0, 230.0">
                 </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                     <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                     </property>
-                </port>
-                <port name="f" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
+                    <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
+                    </property>
                 </port>
                 <port name="throttle" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
+                    <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
+                    </property>
+                    <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
+                    </property>
                 </port>
                 <port name="rpm" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
+                    <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
+                    </property>
+                    <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
+                    </property>
                 </port>
             </entity>
             <entity name="Expression2" class="ptolemy.actor.lib.Expression">
@@ -496,14 +600,12 @@ the amount of the engine's power that is available to accelerate the vehicle.</t
             </entity>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
             </relation>
-            <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-            </relation>
             <relation name="relation4" class="ptolemy.actor.TypedIORelation">
             </relation>
             <relation name="relation5" class="ptolemy.actor.TypedIORelation">
             </relation>
             <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" value="360.0, 285.0">
+                <vertex name="vertex1" value="455.0, 275.0">
                 </vertex>
             </relation>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -515,11 +617,9 @@ the amount of the engine's power that is available to accelerate the vehicle.</t
             <link port="Integrator.output" relation="relation6"/>
             <link port="Integrator2.input" relation="relation6"/>
             <link port="Integrator2.output" relation="relation2"/>
-            <link port="Const.output" relation="relation3"/>
-            <link port="compute Acceleration.output" relation="relation4"/>
-            <link port="compute Acceleration.f" relation="relation3"/>
-            <link port="compute Acceleration.throttle" relation="relation5"/>
-            <link port="compute Acceleration.rpm" relation="relation"/>
+            <link port="Compute Acceleration.output" relation="relation4"/>
+            <link port="Compute Acceleration.throttle" relation="relation5"/>
+            <link port="Compute Acceleration.rpm" relation="relation"/>
             <link port="Expression2.output" relation="relation"/>
             <link port="Expression2.input" relation="relation6"/>
         </entity>
@@ -569,7 +669,7 @@ the amount of the engine's power that is available to accelerate the vehicle.</t
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={23, 387, 508, 355}}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 414, 508, 355}}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
@@ -585,11 +685,11 @@ the amount of the engine's power that is available to accelerate the vehicle.</t
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
-<title>velocity</title>
+<title>Speed vs. Time</title>
 <xLabel>time (seconds)</xLabel>
 <yLabel>speed</yLabel>
-<xRange min="0.0" max="10.052917438668839"/>
-<yRange min="0.0" max="1.732135628887806"/>
+<xRange min="0.0" max="500.0"/>
+<yRange min="0.0" max="28.591719932939142"/>
 </plot>?>
         </configure>
     </entity>
