@@ -213,8 +213,8 @@ public class CodeBook extends TypedAtomicActor {
                 }
             }
 
-            _debug("first= " + first);
-            _debug("second= " + second);
+            _debug("first = " + first);
+            _debug("second = " + second);
 
             HuffTree tree = new HuffTree();
             tree.addLeft(huffArray[first]);
@@ -230,7 +230,7 @@ public class CodeBook extends TypedAtomicActor {
         System.out.println(huffArray[0].printPreOrder());
 
         ObjectToken token = new ObjectToken(huffArray[0]);
-        output.send(0,token);
+        output.send(0, token);
         //output.broadcast(token);
     }
 

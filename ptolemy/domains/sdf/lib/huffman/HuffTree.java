@@ -144,7 +144,7 @@ public class HuffTree extends ptolemy.domains.sdf.lib.huffman.BinaryTree {
 
     /* Method that will print the tree in order*/
     public String printPreOrder() {
-        String treeString="";
+        String treeString = "";
         treeString += this.toString();
 
         if (getLeft() != null) {
