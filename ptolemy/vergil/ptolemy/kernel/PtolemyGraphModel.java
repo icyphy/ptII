@@ -480,6 +480,121 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	    return false;
 	}	
 
+	/** Append moml to the given buffer that disconnects a link with the
+	 *  given head, tail, and relation.  
+	 */
+	private void _unlinkMoML(StringBuffer moml,
+				 NamedObj linkHead, 
+				 NamedObj linkTail,
+				 Relation relation) throws Exception {
+	    // If the link is already connected, then create a bit of MoML
+	    // to unlink the link.
+ 	    if(linkHead != null && linkTail != null) {
+		NamedObj head = (NamedObj)getSemanticObject(linkHead);
+		NamedObj tail = (NamedObj)getSemanticObject(linkTail);
+	        if(head instanceof ComponentPort &&
+		   tail instanceof ComponentPort) {
+		    ComponentPort headPort = (ComponentPort)head;
+		    ComponentPort tailPort = (ComponentPort)tail;
+		    // Unlinking two ports with an anonymous relation.
+		    moml.append("<unlink port=\"" +
+				headPort.getName(getToplevel()) + 
+				"\" relation=\"" + 
+				relation.getName(getToplevel()) + 
+				"\"/>\n");
+		    moml.append("<unlink port=\"" + 
+				tailPort.getName(getToplevel()) + 
+				"\" relation=\"" + 
+				relation.getName(getToplevel()) + 
+				"\"/>\n");
+		    moml.append("<deleteRelation name=\"" + 
+				relation.getName(getToplevel()) + 
+				"\"/>\n");
+		} else if(head instanceof ComponentPort &&
+			  linkTail instanceof Vertex) {
+		    // Unlinking a port from an existing relation.
+		    moml.append("<unlink port=\"" +
+				head.getName(getToplevel()) + 
+				"\" relation=\"" + 
+				tail.getName(getToplevel()) + 
+				"\"/>\n");
+		} else if(tail instanceof ComponentPort &&
+			  linkHead instanceof Vertex) {
+		    // Unlinking a port from an existing relation.
+		    moml.append("<unlink port=\"" +
+				tail.getName(getToplevel()) + 
+				"\" relation=\"" + 
+				head.getName(getToplevel()) + 
+				"\"/>\n");
+		} else {
+		    throw new RuntimeException(
+		        "Unlink failed: " +
+			"Head = " + head + ", Tail = " + tail);
+		}
+	    } else {
+		// No unlinking to do.
+	    }
+	}
+
+	/** Append moml to the given buffer that connects a link with the
+	 *  given head, tail, and relation.  This may require addinging an
+	 *  anonymous relation to the ptolemy model.  If this is required,
+	 *  the name of the relation is returned.  
+	 *  If no relation need be added, then
+	 *  null is returned.
+	 */
+	private String _linkMoML(StringBuffer moml,
+				 NamedObj linkHead, 
+				 NamedObj linkTail) throws Exception {
+	    if(linkHead != null && linkTail != null) {
+		NamedObj head = (NamedObj)getSemanticObject(linkHead);
+		NamedObj tail = (NamedObj)getSemanticObject(linkTail);
+	        if(head instanceof ComponentPort &&
+		   tail instanceof ComponentPort) {
+		    ComponentPort headPort = (ComponentPort)head;
+		    ComponentPort tailPort = (ComponentPort)tail;
+		    // Linking two ports with a new relation.
+		    String relationName = 
+			getToplevel().uniqueName("relation");
+		    // Note that we use no class so that we use the container's
+		    // factory method when this gets parsed
+		    moml.append("<relation name=\"" + relationName + "\"/>\n");
+		    moml.append("<link port=\"" +
+				headPort.getName(getToplevel()) + 
+				"\" relation=\"" + relationName + "\"/>\n");
+		    moml.append("<link port=\"" + 
+				tailPort.getName(getToplevel()) + 
+				"\" relation=\"" + relationName + "\"/>\n");
+		    return relationName;
+		} else if(head instanceof ComponentPort &&
+			  linkTail instanceof Vertex) {
+		    // Linking a port to an existing relation.
+		    moml.append("<link port=\"" + 
+				head.getName(getToplevel()) + 
+				"\" relation=\"" + 
+				tail.getName(getToplevel()) +
+				"\"/>\n");
+		    return linkTail.getName(getToplevel());
+		} else if(tail instanceof ComponentPort &&
+			  linkHead instanceof Vertex) {
+		    // Linking a port to an existing relation.
+		    moml.append("<link port=\"" + 
+				tail.getName(getToplevel()) + 
+				"\" relation=\"" + 
+				head.getName(getToplevel()) +
+				"\"/>\n");
+		    return linkHead.getName(getToplevel());
+		} else {
+		    throw new RuntimeException(
+		        "Link failed: " +
+			"Head = " + head + ", Tail = " + tail);
+		}
+	    } else {
+		// No Linking to do.
+		return null;
+	    }
+	}
+	
 	/** Connect the given edge to the given head node.
 	 *  This class queues a new change request with the ptolemy model
 	 *  to make this modification.
@@ -487,31 +602,76 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	 *  @param head The new head for the edge, which is assumed to
 	 *  be a location representing a port, a port or a vertex.
 	 */
-	public void setHead(final Object edge, final Object head) {
-	    Link link = (Link)edge;
+	public void setHead(final Object edge, final Object newLinkHead) {
+	    final Link link = (Link)edge;
+	    NamedObj linkHead = (NamedObj)link.getHead();
+	    NamedObj linkTail = (NamedObj)link.getTail();
+	    Relation linkRelation = (Relation)link.getRelation();
+	    StringBuffer moml = new StringBuffer();
+	    moml.append("<group>\n");
+			    
+	    String relationName = "";
+    
 	    try {
-		link.unlink(PtolemyGraphModel.this);		
+		// create moml to unlink any existing. 
+		_unlinkMoML(moml, linkHead, linkTail, linkRelation);
+		
+		// create moml to make the new links. 
+		relationName =
+		    _linkMoML(moml, (NamedObj)newLinkHead, linkTail);
 	    } catch (Exception ex) {
 		throw new GraphException(ex);
 	    }
-	    link.setHead(head);
-	    try {
-		// This should remove the links and 
-		// must not leave the model in an inconsistent state.
-		link.link(PtolemyGraphModel.this);
-	    } catch (Exception ex) {
-		// If we fail here, then we remove the link entirely.
-		//_linkSet.remove(link);
-		link.setHead(null);
-		link.setTail(null);
-		throw new GraphException(ex);
-	    }
-	    if(GraphUtilities.isPartiallyContainedEdge(edge, getRoot(),
-						    PtolemyGraphModel.this)) {
-		_linkSet.add(edge);
-	    } else {
-		_linkSet.remove(edge);
-	    }
+	    moml.append("</group>\n");
+
+	    final String relationNameToAdd = relationName;
+
+	    ChangeRequest request = 
+		new MoMLChangeRequest(PtolemyGraphModel.this, 
+				      getToplevel(),
+				      moml.toString()) {
+		    protected void _execute() throws Exception {
+			super._execute();
+			link.setHead(newLinkHead);
+			if(relationNameToAdd != null) {
+			    link.setRelation(getToplevel().getRelation(relationNameToAdd));
+			} else {
+			    link.setRelation(null);
+			}
+
+			if(GraphUtilities.isPartiallyContainedEdge(edge, 
+								   getRoot(),
+			    PtolemyGraphModel.this)) {
+				_linkSet.add(edge);
+			    } else {
+				_linkSet.remove(edge);
+			    }
+		    }
+		};	    
+
+	    // Handle what happens if the mutation fails.
+	    /*	    request.addChangeListener(new ChangeListener() {
+		public void changeFailed(ChangeRequest change, 
+					 Exception exception) {
+		    // If we fail here, then we remove the link entirely.
+		    // FIXME uno the moml?
+		    _linkSet.remove(link);
+		    link.setHead(null);
+		    link.setTail(null);
+		    link.setRelation(null);
+		}
+		
+		public void changeExecuted(ChangeRequest change) {
+		    if(GraphUtilities.isPartiallyContainedEdge(edge, getRoot(),
+				   PtolemyGraphModel.this)) {
+			_linkSet.add(edge);
+		    } else {
+			_linkSet.remove(edge);
+		    }
+		}
+	    });
+	    */
+	    getToplevel().requestChange(request);
 	}	
 	
 	/** Connect the given edge to the given tail node.
@@ -521,31 +681,55 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	 *  @param tail The new tail for the edge, which is assumed to
 	 *  be a location representing a port, a port or a vertex.
 	 */
-	public void setTail(final Object edge, final Object tail) {
-	    Link link = (Link)edge;
+	public void setTail(final Object edge, final Object newLinkTail) {
+	    final Link link = (Link)edge;
+	    NamedObj linkHead = (NamedObj)link.getHead();
+	    NamedObj linkTail = (NamedObj)link.getTail();
+	    Relation linkRelation = (Relation)link.getRelation();
+	    StringBuffer moml = new StringBuffer();
+	    moml.append("<group>\n");
+		  
+	    String relationName = "";
+    
 	    try {
-		link.unlink(PtolemyGraphModel.this);		
+		// create moml to unlink any existing. 
+		_unlinkMoML(moml, linkHead, linkTail, linkRelation);
+		
+		// create moml to make the new links. 
+		relationName =
+		    _linkMoML(moml, linkHead, (NamedObj)newLinkTail);
 	    } catch (Exception ex) {
 		throw new GraphException(ex);
 	    }
-	    link.setTail(tail);
-	    try {
-		// This should remove the links and 
-		// must not leave the model in an inconsistent state.
-		link.link(PtolemyGraphModel.this);
-	    } catch (Exception ex) {
-		// If we fail here, then we remove the link entirely.
-		//_linkSet.remove(link);
-		link.setHead(null);
-		link.setTail(null);
-		throw new GraphException(ex);
-	    }
-	    if(GraphUtilities.isPartiallyContainedEdge(edge, getRoot(),
-						  PtolemyGraphModel.this)) {
-		_linkSet.add(edge);
-	    } else {
-		_linkSet.remove(edge);
-	    }
+	    
+	    moml.append("</group>\n");
+		
+	    final String relationNameToAdd = relationName;
+	    
+	    ChangeRequest request = 
+		new MoMLChangeRequest(PtolemyGraphModel.this, 
+				      getToplevel(),
+				      moml.toString()) {
+		    protected void _execute() throws Exception {
+			super._execute();
+			link.setTail(newLinkTail);
+			if(relationNameToAdd != null) {
+			    link.setRelation(getToplevel().getRelation(relationNameToAdd));
+			} else {
+			    link.setRelation(null);
+			}
+
+			if(GraphUtilities.isPartiallyContainedEdge(edge, 
+								   getRoot(),
+			    PtolemyGraphModel.this)) {
+				_linkSet.add(edge);
+			    } else {
+				_linkSet.remove(edge);
+			    }
+		    }
+	    };
+
+	    getToplevel().requestChange(request);
 	}	
     }
     
