@@ -38,6 +38,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.math;
 
 import java.lang.*;
+import java.lang.Double;		/* Needed by javadoc */
 import java.util.*;
 import java.lang.reflect.*;
 
