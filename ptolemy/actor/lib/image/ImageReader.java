@@ -113,20 +113,6 @@ public class ImageReader extends Source {
         super.attributeChanged(attribute);
     }
 
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then set the filename public member.
-     *  @param workspace The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class contains
-     *   an attribute that cannot be cloned.
-     */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        ImageReader newObject = (ImageReader)super.clone(workspace);
-        //newObject.output.setMultiport(true);
-        return newObject;
-    }
-
     /** Output the data read in the prefire.
      *  @exception IllegalActionException If there's no director.
      */
