@@ -26,7 +26,10 @@
 */
 
 package pt.actor;
+
 import pt.kernel.*;
+import pt.kernel.util.*;
+
 import java.util.*;
 
 
@@ -48,7 +51,7 @@ public class AtomicActor extends Actor{
      * @exception full-classname description
      */	
     public AtomicActor(CompositeActor container, String name) 
-            throws NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 

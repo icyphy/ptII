@@ -31,10 +31,7 @@
 package pt.actor;
 
 import pt.kernel.*;
-import pt.kernel.util.InvalidStateException;
-import pt.kernel.util.IllegalActionException;
-import pt.kernel.util.NameDuplicationException;
-import pt.kernel.util.NoSuchItemException;
+import pt.kernel.util.*;
 
 import pt.data.*;
 
