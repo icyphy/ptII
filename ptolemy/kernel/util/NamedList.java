@@ -303,8 +303,8 @@ public final class NamedList implements Cloneable, Serializable {
      *  interface to this class does not include the notion of indexes.
      *  @param index Where to insert the new element.
      *  @param element The element to insert.
-     *  @exception IllegalActionException Element to insert has no name.
-     *  @exception NameDuplicationException Element to insert has a
+     *  @exception IllegalActionException If the Element to insert has no name.
+     *  @exception NameDuplicationException If the Element to insert has a
      *   name that coincides with one already on the list.
      */
     private void _insertAt(int index, Nameable element)
