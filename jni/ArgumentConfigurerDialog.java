@@ -145,15 +145,10 @@ public class ArgumentConfigurerDialog
                         // container above this port in the hierarchy
                         // that defers its MoML definition, or the
                         // immediate parent if there is none.
-                        NamedObj container =
-                            MoMLChangeRequest.getDeferredToParent(argument);
-                        if (container == null) {
-                            container = (NamedObj) argument.getContainer();
-                        }
-
+                        NamedObj container = (NamedObj) argument.getContainer();
                         String moml =
                             "<deleteProperty name=\""
-                            + argument.getName(container)
+                            + argument.getName()
                             + "\"/>\n";
 
                         ChangeRequest request =

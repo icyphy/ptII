@@ -86,13 +86,6 @@ public class Configurer extends JPanel implements CloseListener {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         _object = object;
-
-        NamedObj parent = MoMLChangeRequest.getDeferredToParent(object);
-        // If there is no deferred to parent, just use the object itself.
-        if (parent == null) {
-            parent = object;
-        }
-        _parent = parent;
         // Record the original values so a restore can happen later.
         _originalValues = new HashMap();
         Iterator parameters = _object.attributeList(Settable.class).iterator();
@@ -193,7 +186,7 @@ public class Configurer extends JPanel implements CloseListener {
                             if (!newValue.equals(oldValue)) {
                                 hasChanges = true;                                
                                 buffer.append("<property name=\"");
-                                buffer.append(((NamedObj)parameter).getName(_parent));
+                                buffer.append(((NamedObj)parameter).getName(_object));
                                 buffer.append("\" value=\"");
                                 buffer.append(StringUtilities.escapeForXML(oldValue));
                                 buffer.append("\"/>\n");
@@ -208,7 +201,7 @@ public class Configurer extends JPanel implements CloseListener {
                     if (hasChanges) {
                         MoMLChangeRequest request = new MoMLChangeRequest(
                                 this,              // originator
-                                _parent,           // context
+                                _object,           // context
                                 buffer.toString(), // MoML code
                                 null);             // base
                         _object.requestChange(request);
@@ -241,9 +234,6 @@ public class Configurer extends JPanel implements CloseListener {
 
     // The object that this configurer configures.
     private NamedObj _object;
-
-    // The parent of the object that we will queue any change requests with.
-    private NamedObj _parent;
 
     // A record of the original values.
     private HashMap _originalValues;

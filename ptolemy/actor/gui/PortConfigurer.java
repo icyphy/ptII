@@ -175,13 +175,10 @@ public class PortConfigurer extends Query implements QueryListener {
                     // above this port in the hierarchy that defers its
                     // MoML definition, or the immediate parent
                     // if there is none.
-                    parent = MoMLChangeRequest.getDeferredToParent(port);
-                    if (parent == null) {
-                        parent = (NamedObj)port.getContainer();
-                    }
+                    parent = (NamedObj)port.getContainer();
                     foundOne = true;
                     moml.append("<port name=\"");
-                    moml.append(port.getName(parent));
+                    moml.append(port.getName());
                     moml.append("\">");
 
                     if (selectedValues.contains("input")) {
