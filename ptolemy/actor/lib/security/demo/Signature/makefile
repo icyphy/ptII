@@ -65,9 +65,12 @@ OPTIONAL_FILES = \
 
 JCLASS = $(JSRCS:%.java=%.class)
 
+# Make clean removes $(KRUFT)
+KRUFT = ptKeystore
+
 # Don't include all or install rules here, we want the user
 # to run 'make demos' to run the tests.
-all: jclass
+all: jclass ptKeystore
 	@echo "To run all the demos, run 'make demo'"
 
 install: all $(PTCLASSJAR)
