@@ -94,7 +94,7 @@ all: jclass
 
 install: all
 
-demo: compileDemo runDemo
+demo: compileDeepDemo runDeepDemo
 timeDemo: compileDemo timeOrthoCommDemo
 
 # OrthogonalCom - There is no .xml file for this model
@@ -126,9 +126,9 @@ SOOT_USER_ARGS =
 # Time that we should let code generation run before exiting in ms.
 WATCH_DOG_TIMEOUT =     600000
 # Number of Iterations to run the generated code for.
-ITERATIONS =		50000
+ITERATIONS =		200
 ITERATIONS_PARAMETER =	,iterations:$(ITERATIONS)
-compileDemo: $(JCLASS)
+compileDeepDemo: $(JCLASS)
 	@echo "generate deep code for $(SOURCECLASS)"
 	$(JAVA) $(JVM_SIZE) \
 	 -classpath "$(CLASSPATH)" \
@@ -181,7 +181,7 @@ runSnapshots:
 		-Xfuture -classpath "$(CLASSPATH)" \
 		$(TARGETPACKAGE).Main | tail -1 
 
-runDemo:
+runDeepDemo:
 	@echo "Run the deep model"
 	$(JAVA) \
 	-Xfuture -classpath "$(CLASSPATH)" \
