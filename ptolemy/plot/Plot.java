@@ -682,7 +682,17 @@ public class Plot extends PlotBox {
      */
     protected void _drawBar (Graphics graphics, int dataset,
             long xpos, long ypos, boolean clip) {
-        if (clip && ypos < _uly) ypos = _uly;
+        if (_debug > 21) {
+            System.out.println("Plot: _drawBar("+dataset+" "+
+                    xpos+" "+ypos+" "+clip+")");
+        }
+        if (clip) {
+            if (ypos < _uly) {
+                ypos = _uly;
+            } if (ypos > _lry) {
+                ypos = _lry;
+            }
+        }
         if (ypos <= _lry && xpos <= _lrx && xpos >= _ulx) {
             // left x position of bar.
             int barlx = (int)(xpos - _barwidth * _xscale/2 +
@@ -694,13 +704,18 @@ public class Plot extends PlotBox {
             if (barrx > _lrx) barrx = _lrx;
             // The y position of the zero line.
             long zeroypos = _lry - (long) ((0-_yMin) * _yscale);
+            if (_lry < zeroypos) zeroypos = _lry;
+            if (_uly > zeroypos) zeroypos = _uly;
+
             if (_debug > 20) {
                 System.out.println("Plot:_drawBar ("+barlx+" "+ypos+" "+
                         (barrx - barlx) + " "+(zeroypos-ypos)+") "+barrx+" "+
-                        barlx+" "+_lry+" xpos="+xpos+" zeroypos="+zeroypos+ 
+                        barlx+" ("+_ulx+" "+_lrx+" "+_uly+" "+_lry+
+                        ") xpos="+xpos+" ypos="+ypos+" zeroypos="+zeroypos+ 
                         " "+_barwidth+" "+_xscale+" "+_currentdataset+
                         " "+_yMin);
             }
+
             if (_yMin >= 0 || ypos <= zeroypos) {
                 graphics.fillRect(barlx, (int)ypos,
                         barrx - barlx, (int)(zeroypos - ypos));
@@ -719,14 +734,14 @@ public class Plot extends PlotBox {
      */
     protected void _drawImpulse (Graphics graphics,
             long xpos, long ypos, boolean clip) {
+        if (_debug > 20) {
+            System.out.println("Plot: _drawImpulse("+xpos+" "+ypos+" "+
+                    clip+") ");
+        }
         if (clip && ypos < _uly) ypos = _uly;
         if (ypos <= _lry && xpos <= _lrx && xpos >= _ulx) {
             // The y position of the zero line.
             double zeroypos = _lry - (long) ((0-_yMin) * _yscale);
-            if (_debug > 20) {
-                System.out.println("Plot: _drawImpulse("+xpos+" "+ypos+" "+
-                        clip+") "+zeroypos);
-            }
             graphics.drawLine((int)xpos, (int)ypos, (int)xpos,
                     (int)zeroypos);
         }
@@ -1251,6 +1266,8 @@ public class Plot extends PlotBox {
      */
     private synchronized void _drawPlotPoint(Graphics graphics,
             int dataset, int index) {
+        if (_debug > 20)
+            System.out.println("Plot: _drawPlotPoint("+dataset+" "+index+")");
         // Set the color
         if (_pointsPersistence > 0) {
             // To allow erasing to work by just redrawing the points.
