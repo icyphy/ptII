@@ -48,7 +48,7 @@ from its <i>values</i> parameter, and schedules another firing at
 a future time determined by the <i>offsets</i> and <i>period</i> parameters.
 <p>
 This actor can be used in the DE domain
-is to generate a sequence of events at regularly spaced
+to generate a sequence of events at regularly spaced
 intervals.  It cannot be used in CT, because CT will invoke it at times
 where it has not requested a firing, and it will inappropriately advance
 to the next output value.
