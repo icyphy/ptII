@@ -315,14 +315,14 @@ public class HDFFSMDirector extends FSMDirector {
                 ports.hasNext();) {
                 IOPort port = (IOPort)ports.next();
                 Parameter param = (Parameter)
-                    SDFUtilities._getRateVariable(port, "tokenConsumptionRate");
+                    SDFUtilities.getRateVariable(port, "tokenConsumptionRate");
                 list.add(param);
             }
             for(Iterator ports = container.outputPortList().iterator();
                 ports.hasNext();) {
                 IOPort port = (IOPort)ports.next();
                 Parameter param = (Parameter)
-                    SDFUtilities._getRateVariable(port, "tokenProductionRate");
+                    SDFUtilities.getRateVariable(port, "tokenProductionRate");
                 list.add(param);
             }
         }
