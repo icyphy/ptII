@@ -29,9 +29,6 @@
 
 package ptolemy.actor.gui;
 
-import ptolemy.actor.CompositeActor;
-import ptolemy.data.StringToken;
-import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.KernelException;
@@ -39,6 +36,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 
 import java.io.InputStream;
@@ -55,7 +53,7 @@ import java.util.Set;
 A directory of open models. An instance of this class is contained
 by a Configuration. Each open model is represented by an instance of
 Effigy.  An effigy represents the model data.
-It contains a parameter named "identifier"
+It contains a string attribute named "identifier"
 with a string value that uniquely identifies the model.
 A typical choice (which depend on the configuration)
 is the canonical URL for a MoML file that describes the model.
@@ -96,15 +94,11 @@ public class ModelDirectory extends CompositeEntity {
         Iterator entities = entityList(Effigy.class).iterator();
         while (entities.hasNext()) {
             Effigy entity = (Effigy)entities.next();
-            Parameter idParam = (Parameter)entity.getAttribute("identifier");
-            if (idParam != null) {
-                try {
-                    String id = ((StringToken)idParam.getToken()).stringValue();
-                    if (id.equals(identifier)) return entity;
-                } catch (IllegalActionException ex) {
-                    throw new InternalErrorException(
-                    "Can't get string value of identifier! " + ex.toString());
-                }
+            StringAttribute id =
+                    (StringAttribute)entity.getAttribute("identifier");
+            if (id != null) {
+                String idString = id.getExpression();
+                if (idString.equals(identifier)) return entity;
             }
         }
         return null;

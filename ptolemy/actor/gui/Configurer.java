@@ -31,10 +31,10 @@
 package ptolemy.actor.gui;
 
 // Ptolemy imports.
+import ptolemy.data.expr.Variable;
 import ptolemy.gui.CloseListener;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
-import ptolemy.data.expr.Parameter;
 
 // Java imports.
 import java.awt.Component;
@@ -52,17 +52,17 @@ import javax.swing.SwingUtilities;
 //////////////////////////////////////////////////////////////////////////
 //// Configurer
 /**
-This class is an editor for the parameters of an object.  It may consist
-of more than one editor panel.  If the object has any attributes that
-are instances of EditorPaneFactory, then the panes made by those
-factories are stacked vertically in this panel.  Otherwise, a
-single instance of EditorPaneFactory is created and used to
-construct an editor.
+This class is an editor for the user settable attributes of an object.
+It may consist of more than one editor panel.  If the object has
+any attributes that are instances of EditorPaneFactory, then the
+panes made by those factories are stacked vertically in this panel.
+Otherwise, a single instance of EditorPaneFactory is created and
+used to construct an editor.
 <p>
-The restore() method restores the values of the parameters of the
+The restore() method restores the values of the attributes of the
 object to their values when this object was created.  This can be used
 in a modal dialog to implement a cancel button, which restores
-the parameter values to those before the dialog was opened.
+the attribute values to those before the dialog was opened.
 
 @see EditorPaneFactory
 @author Steve Neuendorffer and Edward A. Lee
@@ -79,10 +79,10 @@ public class Configurer extends JPanel implements CloseListener {
 
         _object = object;
         Iterator params
-            = object.attributeList(Parameter.class).iterator();
+            = object.attributeList(UserSettable.class).iterator();
         while (params.hasNext()) {
-            Parameter param = (Parameter)params.next();
-            _originalValues.put(param.getName(), param.stringRepresentation());
+            UserSettable param = (UserSettable)params.next();
+            _originalValues.put(param.getName(), param.getExpression());
         }
 
         boolean foundOne = false;
@@ -117,19 +117,19 @@ public class Configurer extends JPanel implements CloseListener {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Request restoration of the parameter values to what they
+    /** Request restoration of the user settable attribute values to what they
      *  were when this object was created.  The actual restoration
      *  occurs later, in the UI thread, in order to allow all pending
-     *  changes to the parameter values to be processed first.
+     *  changes to the attribute values to be processed first.
      */
     public void restore() {
         // This is done in the UI thread in order to
         // ensure that all pending UI events have been
         // processed.  In particular, some of these events
-        // may trigger notification of new parameter values,
+        // may trigger notification of new attribute values,
         // which must not be allowed to occur after this
         // restore is done.  In particular, the default
-        // parameter editor has lines where notification
+        // attribute editor has lines where notification
         // of updates occurs when the line loses focus.
         // That notification occurs some time after the
         // window is destroyed.
@@ -141,13 +141,15 @@ public class Configurer extends JPanel implements CloseListener {
                 Iterator entries = _originalValues.entrySet().iterator();
                 while (entries.hasNext()) {
                     Map.Entry entry = (Map.Entry)entries.next();
-                    Parameter param =
-                        (Parameter)_object.getAttribute((String)entry.getKey());
-                    param.setExpression((String)entry.getValue());
-                    // Force notification of listeners, unless value is
-                    // erroneous.
+                    UserSettable param = (UserSettable)
+                            _object.getAttribute((String)entry.getKey());
                     try {
-                        param.getToken();
+                        param.setExpression((String)entry.getValue());
+                        // Force notification of listeners, unless value is
+                        // erroneous.
+                        if (param instanceof Variable) {
+                            ((Variable)param).getToken();
+                        }
                     } catch (IllegalActionException ex) {}
                 }
             }
@@ -179,6 +181,6 @@ public class Configurer extends JPanel implements CloseListener {
     // The object that this configurer configures.
     private NamedObj _object;
 
-    // The original values of the parameters.
+    // The original values of the attributes.
     private Map _originalValues = new HashMap();
 }

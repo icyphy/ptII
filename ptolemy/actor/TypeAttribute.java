@@ -23,7 +23,7 @@
  
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-@ProposedRating Yellow (yourname@eecs.berkeley.edu)
+@ProposedRating Yellow (eal@eecs.berkeley.edu)
 @AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
 */
 
@@ -31,16 +31,10 @@ package ptolemy.actor;
 
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Settable;
-
-// FIXME Spurious dependence
-import ptolemy.moml.MoMLUtilities;
-
-import java.io.IOException;
-import java.io.Writer;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.StringAttribute;
 
 //////////////////////////////////////////////////////////////////////////
 //// TypeAttribute
@@ -57,7 +51,7 @@ and calls setTypeEquals() to define its type.
 @version $Id$
 @see TypedIOPort
 */
-public class TypeAttribute extends Attribute implements Settable {
+public class TypeAttribute extends StringAttribute {
 
     /** Construct an attribute with the given name contained by the specified
      *  port. The container argument must not be null, or a
@@ -82,49 +76,6 @@ public class TypeAttribute extends Attribute implements Settable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Write a MoML description of this object.
-     *  MoML is an XML modeling markup language.
-     *  In this class, the object is identified by the "property"
-     *  element, with "name", "class", and "value" (XML) attributes.
-     *  The text that is written is indented according to the specified
-     *  depth, with each line (including the last one)
-     *  terminated with a newline.
-     *  @param output The output stream to write to.
-     *  @param depth The depth in the hierarchy, to determine indenting.
-     *  @param name The name to use instead of the current name.
-     *  @exception IOException If an I/O error occurs.
-     */
-    public void exportMoML(Writer output, int depth, String name)
-            throws IOException {
-        String value = getExpression();
-        String valueTerm = "";
-        if(value != null && !value.equals("")) {
-            // FIXME: Spurious dependence on the moml package.
-            valueTerm = " value=\"" + 
-                MoMLUtilities.escapeAttribute(value) + 
-                "\"";
-        }
-
-        output.write(_getIndentPrefix(depth)
-               + "<"
-               + getMoMLElementName()
-               + " name=\""
-               + name
-               + "\" class=\""
-               + getClass().getName()
-               + "\""
-               + valueTerm
-               + "/>\n");
-    }
-
-    /** Get the type designation that has been set by setExpression(),
-     *  or null if there is none.
-     *  @return The type designation.
-     */
-    public String getExpression() {
-        return _designation;
-    }
-
     /** Get the type class that has been set by setExpression(), or
      *  null if setExpression() has not been called.
      *  @return The type class.
@@ -133,31 +84,40 @@ public class TypeAttribute extends Attribute implements Settable {
         return _type;
     }
 
+    /** Override the base class to ensure that the proposed container
+     *  is a TypedIOPort.
+     *  @param container The proposed container.
+     *  @exception IllegalActionException If the proposed container is not a
+     *   TypedIOPort, or if the base class throws it.
+     *  @exception NameDuplicationException If the container already has
+     *   an attribute with the name of this attribute.
+     */
+    public void setContainer(NamedObj container)
+            throws IllegalActionException, NameDuplicationException {
+        if (!(container instanceof TypedIOPort) && (container != null)) {
+            throw new IllegalActionException(container, this,
+                    "TypeAttribute can only be contained by instances " +
+		    "of TypedIOPort.");
+        }
+        super.setContainer(container);
+    }
+
     /** Set the type designation.
      *  @param expression The type designation.
      *  @exception IllegalActionException If the change is not acceptable
      *   to the container.
      */
     public void setExpression(String expression) throws IllegalActionException {
-        _designation = expression;
         _type = BaseType.forName(expression);
         if (_type == null) {
             throw new IllegalActionException(this,
             "Cannot find type class: " + expression);
         }
-        TypedIOPort container = (TypedIOPort)getContainer();
-        if (container != null) {
-            container.attributeChanged(this);
-        }
+        super.setExpression(expression);
     }
-
-    // FIXME: Override setContainer to ensure it's a TypedIOPort.
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    // The type designation.
-    private String _designation;
 
     // The type.
     private Type _type;

@@ -37,16 +37,16 @@
     </rendition>
     <property name="function">
         <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
-            <property name="exp" value="&quot;exp&quot;"
-	              class="ptolemy.data.expr.Parameter"/>
-            <property name="log" value="&quot;log&quot;"
-	              class="ptolemy.data.expr.Parameter"/>
-            <property name="square" value="&quot;square&quot;"
-	              class="ptolemy.data.expr.Parameter"/>
-            <property name="sqrt" value="&quot;sqrt&quot;"
-	              class="ptolemy.data.expr.Parameter"/>
-            <property name="remainder" value="&quot;remainder&quot;"
-	              class="ptolemy.data.expr.Parameter"/>
+            <property name="exp" value="exp"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+            <property name="log" value="log"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+            <property name="square" value="square"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+            <property name="sqrt" value="sqrt"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+            <property name="remainder" value="remainder"
+	              class="ptolemy.kernel.util.StringAttribute"/>
         </property>
      </property>
   </entity>
@@ -81,14 +81,14 @@
     </rendition>
     <property name="function">
         <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
-            <property name="ceil" value="&quot;ceil&quot;"
-	              class="ptolemy.data.expr.Parameter"/>
-            <property name="fix" value="&quot;fix&quot;"
-	              class="ptolemy.data.expr.Parameter"/>
-            <property name="floor" value="&quot;floor&quot;"
-	              class="ptolemy.data.expr.Parameter"/>
-            <property name="round" value="&quot;round&quot;"
-	              class="ptolemy.data.expr.Parameter"/>
+            <property name="ceil" value="ceil"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+            <property name="fix" value="fix"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+            <property name="floor" value="floor"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+            <property name="round" value="round"
+	              class="ptolemy.kernel.util.StringAttribute"/>
         </property>
      </property>
   </entity>
@@ -111,18 +111,18 @@
     </rendition>
     <property name="function">
         <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
-            <property name="acos" value="&quot;acos&quot;"
-	              class="ptolemy.data.expr.Parameter"/>
-            <property name="asin" value="&quot;asin&quot;"
-	              class="ptolemy.data.expr.Parameter"/>
-            <property name="atan" value="&quot;atan&quot;"
-	              class="ptolemy.data.expr.Parameter"/>
-            <property name="cos" value="&quot;cos&quot;"
-	              class="ptolemy.data.expr.Parameter"/>
-            <property name="sin" value="&quot;sin&quot;"
-	              class="ptolemy.data.expr.Parameter"/>
-            <property name="tan" value="&quot;tan&quot;"
-	              class="ptolemy.data.expr.Parameter"/>
+            <property name="acos" value="acos"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+            <property name="asin" value="asin"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+            <property name="atan" value="atan"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+            <property name="cos" value="cos"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+            <property name="sin" value="sin"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+            <property name="tan" value="tan"
+	              class="ptolemy.kernel.util.StringAttribute"/>
         </property>
      </property>
   </entity>

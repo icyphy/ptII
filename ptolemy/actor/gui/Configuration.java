@@ -29,13 +29,12 @@
 
 package ptolemy.actor.gui;
 
-import ptolemy.data.StringToken;
-import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 
 import java.io.IOException;
@@ -105,8 +104,8 @@ public class Configuration extends CompositeEntity {
                 throw new InternalErrorException("No model reader!");
             }
             model = reader.read(base, in);
-	    Parameter parameter = new Parameter(model, "identifier");
-	    parameter.setToken(new StringToken(identifier));
+	    StringAttribute id = new StringAttribute(model, "identifier");
+	    id.setExpression(identifier);
             model.setName(directory.uniqueName("model"));
 	    model.setContainer(directory);
 

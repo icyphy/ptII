@@ -54,7 +54,6 @@ JSRCS =	Icon.java \
 	MoMLAttribute.java \
 	MoMLChangeRequest.java \
 	MoMLParser.java \
-	MoMLUtilities.java \
 	TypedActorLibrary.java
 
 EXTRA_SRCS =	$(JSRCS) \

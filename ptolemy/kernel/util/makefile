@@ -73,6 +73,10 @@ JSRCS = \
 	Settable.java \
 	StreamChangeListener.java \
 	StreamListener.java \
+	StringAttribute.java \
+	StringUtilities.java \
+	UserSettable.java \
+	ValueListener.java \
 	Workspace.java
 
 EXTRA_SRCS =	$(JSRCS)

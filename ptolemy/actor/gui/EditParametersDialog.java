@@ -29,14 +29,15 @@
 
 package ptolemy.actor.gui;
 
-import ptolemy.data.expr.Parameter;
 import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.Query;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ChangeListener;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.UserSettable;
+import ptolemy.kernel.util.StringUtilities;
 import ptolemy.moml.MoMLChangeRequest;
-import ptolemy.moml.MoMLUtilities;
 
 import java.awt.Frame;
 import java.util.Iterator;
@@ -46,7 +47,9 @@ import java.util.List;
 //// EditParametersDialog
 /**
 This class is a modal dialog box for editing the parameters of a target
-object, which is an instance of NamedObj. It contains an instance of
+object, which is an instance of NamedObj. All attributes that implement
+the UserSettable interface are included in the dialog. An instance of this
+class contains an instance of
 Configurer, which examines the target for attributes of type
 EditorPaneFactory.  Those attributes, if they are present, define
 the panels that are used to edit the parameters of the target.
@@ -93,12 +96,12 @@ public class EditParametersDialog extends ComponentDialog
             // EditParametersDialog.
             // First, create a string array with the names of all the
             // parameters.
-            List attList = _target.attributeList(Parameter.class);
+            List attList = _target.attributeList(UserSettable.class);
             String[] attNames = new String[attList.size()];
             Iterator params = attList.iterator();
             int index = 0;
             while (params.hasNext()) {
-                Parameter param = (Parameter)params.next();
+                Attribute param = (Attribute)params.next();
                 attNames[index++] = param.getName();
             }
             Query query = new Query();
@@ -213,7 +216,7 @@ public class EditParametersDialog extends ComponentDialog
         String newName = _query.stringValue("name");
 
         // Need to escape quotes in default value.
-        String newDefValue = MoMLUtilities.escapeAttribute(
+        String newDefValue = StringUtilities.escapeForXML(
                 _query.stringValue("default"));
 
         if (dialog.buttonPressed().equals("OK") && !newName.equals("")) {

@@ -31,7 +31,6 @@
 
 package ptolemy.data.expr;
 import ptolemy.kernel.util.*;
-import ptolemy.moml.MoMLUtilities;
 
 import java.io.Writer;
 import java.io.IOException;
@@ -40,14 +39,15 @@ import java.io.IOException;
 //// Parameter
 /**
 Parameter is almost identical to Variable, its base class, with the
-only difference being the MoML representation.  The base class has none,
+only difference being the MoML representation, and the fact that implements
+the marker interface UserSettable.  The base class has no MoML representation,
 and therefore is not a persistent object.  This class has one.
-A second reason for existence of this class is to serve as a
-marker for variables that are to made
-visible at the user interface level.  By convention, an instance
-of NamedObj has a set of attributes, some of which are instances
-of the class Parameter.  When a user interface presents these attributes
-for editing, it presents only those that are instances of Parameter.
+The UserSettable interface is an indicator to a user interface that, unlike
+a Variable, an instance of Parameter is meant to be settable by the user.
+By convention, an instance
+of NamedObj has a set of attributes, some of which implement
+UserSettable.  When a user interface presents these attributes
+for editing, it presents only those that implement UserSettable.
 And the parameters, but not any variables, are exported to MoML when
 the container object is exported.
 
@@ -59,7 +59,7 @@ the container object is exported.
 
 */
 
-public class Parameter extends Variable {
+public class Parameter extends Variable implements UserSettable {
 
     /** Construct a parameter in the default workspace with an empty
      *  string as its name. The parameter is added to the list of
@@ -146,12 +146,11 @@ public class Parameter extends Variable {
      */
     public void exportMoML(Writer output, int depth, String name)
             throws IOException {
-        String value = stringRepresentation();
+        String value = getExpression();
         String valueTerm = "";
         if(value != null && !value.equals("")) {
             valueTerm = " value=\"" + 
-                MoMLUtilities.escapeAttribute(stringRepresentation()) + 
-                "\"";
+                StringUtilities.escapeForXML(value) + "\"";
         }
 
         output.write(_getIndentPrefix(depth)

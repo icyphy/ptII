@@ -30,12 +30,11 @@
 package ptolemy.actor.gui;
 
 import ptolemy.actor.CompositeActor;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.StringToken;
-import ptolemy.kernel.util.KernelException;
 import ptolemy.gui.CancelException;
 import ptolemy.gui.MessageHandler;
 import ptolemy.gui.Top;
+import ptolemy.kernel.util.KernelException;
+import ptolemy.kernel.util.StringAttribute;
 
 import java.io.File;
 import java.io.IOException;
@@ -132,8 +131,9 @@ public abstract class PtolemyTop extends Top {
             try {
 		String newKey = file.toURL().toExternalForm();
 		Effigy proxy = (Effigy)getTableau().getContainer();
-	        Parameter id = (Parameter)proxy.getAttribute("identifier");
-		id.setToken(new StringToken(newKey));
+	        StringAttribute id = 
+                       (StringAttribute)proxy.getAttribute("identifier");
+		id.setExpression(newKey);
 	    } catch (MalformedURLException ex) {
                 try {
                     MessageHandler.warning(

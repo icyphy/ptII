@@ -56,10 +56,6 @@ If the argument is NaN, then the result is NaN.
 <li> <b>round</b>: Round towards nearest integer.
 If the argument is NaN, then the result is NaN.
 </ul>
-<p>
-(NOTE: This actor will possibly eventually be augmented to 
- operate on matrices and arrays).
-<p>
 
 @author C. Fong
 @version $Id$
@@ -83,9 +79,9 @@ public class Round extends Transformer {
         super(container, name);
 
         // parameters
-        function = new Parameter(this, "function", new StringToken("floor"));
+        function = new StringAttribute(this, "function");
+        function.setExpression("floor");
         _function = FLOOR;
-        function.setTypeEquals(BaseType.STRING);
 
         input.setTypeEquals(BaseType.DOUBLE);
         output.setTypeEquals(BaseType.DOUBLE);
@@ -97,7 +93,7 @@ public class Round extends Transformer {
     /** The function to compute.  This is a string-valued parameter
      *  that defaults to "floor".
      */
-    public Parameter function;
+    public StringAttribute function;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -111,7 +107,7 @@ public class Round extends Transformer {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == function) {
-            String spec = ((StringToken)(function.getToken())).stringValue();
+            String spec = function.getExpression();
             if (spec.equals("ceil")) {
                 _function = CEIL;
             } else if (spec.equals("fix")) {
@@ -139,7 +135,7 @@ public class Round extends Transformer {
     public Object clone(Workspace ws)
 	    throws CloneNotSupportedException {
         Round newobj = (Round)super.clone(ws);
-        newobj.function = (Parameter)newobj.getAttribute("function");
+        newobj.function = (StringAttribute)newobj.getAttribute("function");
         return newobj;
     }
 
@@ -156,7 +152,7 @@ public class Round extends Transformer {
 
     /** Invoke a specified number of iterations of this actor. Each
      *  iteration computes the rounding function specified by the
-     *  <i>function</i> parameter on a single token. An invocation
+     *  <i>function</i> attribute on a single token. An invocation
      *  of this method therefore applies the function to <i>count</i>
      *  successive input tokens.
      *  <p>
@@ -221,7 +217,7 @@ public class Round extends Transformer {
         default:
             throw new InternalErrorException(
                     "Invalid value for _function private variable. "
-                    + "TrigFunction actor (" + getFullName()
+                    + "Round actor (" + getFullName()
                     + ")");
         }
         return result;
@@ -243,4 +239,3 @@ public class Round extends Transformer {
     private static final int FLOOR = 2;
     private static final int ROUND = 3;
 }
-            

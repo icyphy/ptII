@@ -139,9 +139,10 @@ public class RunTableau extends Tableau {
 		    }
 		    if(debug != null) {
 			Effigy proxy = (Effigy)getContainer();
-			new DebugListenerTableau(proxy,
-					      proxy.uniqueName("debugListener"),
-					      debug);
+			DebugListenerTableau tableau =
+                                new DebugListenerTableau(proxy,
+                                proxy.uniqueName("debugListener"));
+                        tableau.setDebuggable(debug);
 		    }
 		} catch (KernelException ex) {
 		    try {

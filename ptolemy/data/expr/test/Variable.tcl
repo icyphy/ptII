@@ -363,20 +363,20 @@ test Variable-8.0 {Check getExpression} {
     $p1 setToken [java::new ptolemy.data.DoubleToken 2.0]
     set r2 [$p1 getExpression]
     list $r1 $r2
-} {{"1.0"} {}}
+} {{"1.0"} 2.0}
 
 #################################
 ####
 test Variable-9.0 {Check reset} {
     set p1 [java::new ptolemy.data.expr.Variable]
-    $p1 setExpression {"1.0"}
+    $p1 setExpression {1.0}
     set r1 [$p1 getExpression]
     $p1 setToken [java::new ptolemy.data.DoubleToken 2.0]
     set r2 [$p1 getExpression]
     $p1 reset
     set r3 [$p1 getExpression]
     list $r1 $r2 $r3
-} {{"1.0"} {} {"1.0"}}
+} {1.0 2.0 1.0}
 
 test Variable-9.1 {Check reset} {
     set p1 [java::new ptolemy.data.expr.Variable]
@@ -388,7 +388,7 @@ test Variable-9.1 {Check reset} {
     set r3 [$p1 getExpression]
     set r4 [[$p1 getToken] toString]
     list $r1 $r2 $r3 $r4
-} {{} 1.0 {} 3.0}
+} {3.0 1.0 3.0 3.0}
 
 #################################
 ####

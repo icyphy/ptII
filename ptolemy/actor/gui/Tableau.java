@@ -29,22 +29,21 @@
 
 package ptolemy.actor.gui;
 
-import ptolemy.data.StringToken;
-import ptolemy.data.expr.Parameter;
 import ptolemy.gui.MessageHandler;
 import ptolemy.gui.CancelException;
+import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.ComponentEntity;
-import ptolemy.kernel.CompositeEntity;
-import javax.swing.JFrame;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import ptolemy.kernel.util.StringAttribute;
 
 import java.util.Iterator;
 import java.util.List;
+import javax.swing.JFrame;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 //////////////////////////////////////////////////////////////////////////
 //// Tableau
@@ -98,9 +97,9 @@ public class Tableau extends ComponentEntity {
     public String getTitle() {
 	try {
             Effigy effigy = (Effigy)getContainer();
-            Parameter idParameter = 
-                  (Parameter)effigy.getAttribute("identifier");
-            return ((StringToken)idParameter.getToken()).stringValue();
+            StringAttribute id = 
+                  (StringAttribute)effigy.getAttribute("identifier");
+            return id.getExpression();
 	} catch (Exception ex) {
 	    return "Unnamed Tableau";
 	}

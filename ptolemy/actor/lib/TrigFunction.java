@@ -115,9 +115,9 @@ public class TrigFunction extends Transformer {
         super(container, name);
 
         // parameters
-        function = new Parameter(this, "function", new StringToken("sin"));
+        function = new StringAttribute(this, "function");
+        function.setExpression("sin");
         _function = SIN;
-	function.setTypeEquals(BaseType.STRING);
 
         input.setTypeEquals(BaseType.DOUBLE);
         output.setTypeEquals(BaseType.DOUBLE);
@@ -126,10 +126,10 @@ public class TrigFunction extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The function to compute.  This is a string-valued parameter
+    /** The function to compute.  This is a string-valued attribute
      *  that defaults to "sin".
      */
-    public Parameter function;
+    public StringAttribute function;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -142,7 +142,7 @@ public class TrigFunction extends Transformer {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == function) {
-            String spec = ((StringToken)(function.getToken())).stringValue();
+            String spec = function.getExpression();
             if (spec.equals("acos")) {
                 _function = ACOS;
             } else if (spec.equals("asin")) {
@@ -174,7 +174,7 @@ public class TrigFunction extends Transformer {
     public Object clone(Workspace ws)
 	    throws CloneNotSupportedException {
         TrigFunction newobj = (TrigFunction)super.clone(ws);
-        newobj.function = (Parameter)newobj.getAttribute("function");
+        newobj.function = (StringAttribute)newobj.getAttribute("function");
         return newobj;
     }
 
@@ -191,7 +191,7 @@ public class TrigFunction extends Transformer {
 
     /** Invoke a specified number of iterations of this actor. Each
      *  iteration computes the trigonometric function specified by the
-     *  <i>function</i> parameter on a single token. An invocation
+     *  <i>function</i> attribute on a single token. An invocation
      *  of this method therefore applies the function to <i>count</i>
      *  successive input tokens.
      *  <p>

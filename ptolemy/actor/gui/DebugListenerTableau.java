@@ -1,4 +1,4 @@
-/* An attribute representing a debug listener window for the container.
+/* A tableau representing a debug listener window.
 
  Copyright (c) 1999 The Regents of the University of California.
  All rights reserved.
@@ -50,59 +50,86 @@ import javax.swing.JPanel;
 //////////////////////////////////////////////////////////////////////////
 //// DebugListenerTableau
 /**
-An attribute representing a debug listener window for the container model.
-There can be any number of such windows associated with the model.
-The listener window is an instance of TextEditor, and can be
-accessed using the getFrame() method.
+A tableau representing a debug listener window. The constructor of this
+class creates the window.  You must then attached any object implementing
+the Debuggable interface using the setDebuggable() method.
+Once attached, the window will display any debug messages produced by
+that object.  The listener window itself is an instance of the inner class
+DebugListenerFrame, which extends TextEditor, and can be
+accessed using the getFrame() method. As with other tableaux,
+this is an entity that is contained by an effigy of the model.
+There can be any number of instances of this class in an effigy.
 
-@author  Edward A. Lee and Steve Neuendorffer
+@author  Steve Neuendorffer and Edward A. Lee
 @version $Id$
+@see Effigy
 */
 public class DebugListenerTableau extends Tableau {
 
-    /** Construct a new tableau of the given debuggable object.  All 
-     *  debug events published from the given debuggable will be displayed
-     *  in the frame.  The log of these messages can be saved to a 
-     *  text file separate from the model.
-     *  The container argument must not be null, otherwise
-     *  a NullPointerException will be thrown. This attribute will use the
-     *  workspace of the container for synchronization and version counts.
-     *  If the name argument is null, then the name is set to the empty
-     *  string. Increment the version number of the workspace.
+    /** Construct a new tableau for the model represented by the given effigy.
      *  @param container The container.
-     *  @param name The name of the attribute.
+     *  @param name The name.
      *  @exception IllegalActionException If the container does not accept
-     *   this attribute.
+     *   this entity (this should not occur).
      *  @exception NameDuplicationException If the name coincides with an 
      *   attribute already in the container.
      */
-    public DebugListenerTableau(Effigy container, 
-			     String name, 
-			     final Debuggable debug)
+    public DebugListenerTableau(Effigy container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-	_debug = debug;
         final DebugListenerFrame frame = new DebugListenerFrame();
 	setFrame(frame);
 	frame.setTableau(this);
-	debug.addDebugListener(frame);
 	// Listen for window closing events to unregister.
 	frame.addWindowListener(new WindowAdapter() {
 	    public void windowClosing(WindowEvent e) {
-		debug.removeDebugListener(frame);
+                setDebuggable(null);
 	    }
 	});
 	frame.setVisible(true);
 	frame.pack();
     }
 
-    // FIXME what are we debugging?
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Return the object that this tableau is listening to, or null
+     *  if none has been set.
+     *  @return The current debuggable.
+     */
+    public Debuggable getDebuggable() {
+        return _debug;
+    }
+
+    /** Set the object for this tableau to listen to, or null
+     *  to stop listening to the current one.  If this tableau is
+     *  already listenening to an object, then first stop listening
+     *  to that object.
+     *  @param debuggable The object to listen to.
+     */
+    public void setDebuggable(Debuggable debuggable) {
+        if (_debug != null) {
+            _debug.removeDebugListener((DebugListenerFrame)getFrame());
+        }
+        _debug = debuggable;
+	_debug.addDebugListener((DebugListenerFrame)getFrame());
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private members                   ////
+
+    // The object this is listening to.
+    private Debuggable _debug;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+
+    /** This class is a top-level window for displaying textual debug
+     *  output from an instance of Debuggable.
+     */
     public class DebugListenerFrame extends TextEditor
-	implements DebugListener {
-	
-	///////////////////////////////////////////////////////////////////
-	////                         constructors                      ////
-	
+	    implements DebugListener {
+		
 	/** Create a debug listener that displays messages in a top-level
 	 *  window.
 	 */
@@ -131,6 +158,4 @@ public class DebugListenerTableau extends Tableau {
 	    scrollToEnd();
 	}
     }
-
-    private Debuggable _debug;
 }

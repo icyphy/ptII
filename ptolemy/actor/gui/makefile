@@ -72,6 +72,7 @@ JSRCS = \
 	PtolemyTop.java \
 	RunTableau.java \
 	TextEditor.java \
+	TextEditorTableau.java \
 	Tableau.java \
 	TableauFactory.java
 

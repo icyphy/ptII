@@ -1397,7 +1397,10 @@ public class MoMLParser extends HandlerBase {
             if (reference == null) {
                 try {
                     newClass = Class.forName(className, true, _classLoader);
-                } catch (ClassNotFoundException ex) {
+                } catch (Exception ex) {
+                    // NOTE: Java sometimes throws ClassNotFoundException
+                    // and sometimes NullPointerException when the class
+                    // does not exist.  Hence the broad catch here.
                     throw new XmlException("Cannot find the class "
                             + className,
                             _currentExternalEntity(),

@@ -47,8 +47,8 @@ import javax.swing.SwingUtilities;
 //// StyleConfigurer
 /**
 This class is an editor for the styles of the parameters of an object. 
-It is very similar to Configurer, except that class edits the actual values
-of the parameters.
+It is very similar to Configurer, except that that class edits the actual
+values of the parameters.
 <p>
 The restore() method restores the values of the parameters of the
 object to their values when this object was created.  This can be used
@@ -90,15 +90,14 @@ public class StyleConfigurer extends Query implements QueryListener {
 	}
 
 	Iterator params
-            = object.attributeList(Parameter.class).iterator();
+            = object.attributeList(UserSettable.class).iterator();
         while (params.hasNext()) {
-            Parameter param = (Parameter)params.next();
-	    // _originalValues.put(param.getName(), param.stringRepresentation());
+            UserSettable param = (UserSettable)params.next();
       
 	    // Get the current style.
 	    boolean foundOne = false;
-	    Iterator styles
-		= param.attributeList(ParameterEditorStyle.class).iterator();
+	    Iterator styles = ((NamedObj)param)
+                    .attributeList(ParameterEditorStyle.class).iterator();
 	    ParameterEditorStyle foundStyle = null;
 	    while (styles.hasNext()) {
 		foundOne = true;
@@ -143,7 +142,7 @@ public class StyleConfigurer extends Query implements QueryListener {
 	ParameterEditorStyle found = null;
 	Attribute param = _object.getAttribute(name);
 	for(int i = 0; i < parameterStyles.length && found == null; i++) {
-	    if(parameterStyles[i].getName() == stringValue(name)) {
+	    if(stringValue(name).equals(parameterStyles[i].getName())) {
 		found = parameterStyles[i];
 	    }
 	}
@@ -185,9 +184,14 @@ public class StyleConfigurer extends Query implements QueryListener {
                 Iterator entries = _originalValues.entrySet().iterator();
                 while (entries.hasNext()) {
                     Map.Entry entry = (Map.Entry)entries.next();
-                    Parameter param =
-                        (Parameter)_object.getAttribute((String)entry.getKey());
-                    param.setExpression((String)entry.getValue());
+                    UserSettable param = (UserSettable)
+                            _object.getAttribute((String)entry.getKey());
+                    try {
+                        param.setExpression((String)entry.getValue());
+                    } catch (IllegalActionException ex) {
+                        throw new InternalErrorException(
+                        "Cannot restore style value!");
+                    }
                 }
             }
         });

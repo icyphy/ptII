@@ -308,9 +308,7 @@ public class TypedIOPort extends IOPort implements Typeable {
      *
      *  @param container The proposed container.
      *  @exception IllegalActionException If the proposed container is not a
-     *   ComponentEntity, doesn't implement TypedActor, or has no name,
-     *   or the port and container are not in the same workspace. Or
-     *   it's not null.
+     *   TypedActor, or if the base class throws it.
      *  @exception NameDuplicationException If the container already has
      *   a port with the name of this port.
      */

@@ -31,7 +31,6 @@
 package ptolemy.actor.gui.style;
 
 // Ptolemy imports.
-import ptolemy.data.expr.Variable;
 import ptolemy.gui.Query;
 import ptolemy.kernel.util.*;
 import ptolemy.actor.gui.PtolemyQuery;
@@ -41,7 +40,7 @@ import ptolemy.actor.gui.PtolemyQuery;
 //////////////////////////////////////////////////////////////////////////
 //// ParameterEditorStyle
 /**
-This attribute annotates parameters to suggest an interactive
+This attribute annotates user settable attributes to suggest an interactive
 mechanism for editing.  The EditorPaneFactory class observes the
 presence of this attribute to guide construction of an interactive
 parameter editor.
@@ -67,7 +66,7 @@ public abstract class ParameterEditorStyle extends Attribute {
      *  @param name The name of the attribute.
      *  @exception IllegalActionException If the attribute is not of an
      *   acceptable attribute for the container, or if the container
-     *   is not an instance of Parameter.
+     *   is not an instance of UserSettable.
      *  @exception NameDuplicationException If the name coincides with
      *   an attribute already in the container.
      */
@@ -80,36 +79,38 @@ public abstract class ParameterEditorStyle extends Attribute {
     ////                         public methods                    ////
 
     /** Return true if this style is acceptable for the given parameter.
+     *  @param The attribute that this annotates.
      */
-    public abstract boolean accept(Variable param);
+    public abstract boolean accept(UserSettable param);
 
     /** Create a new entry in the given query with the given name
-     *  with this style.  Attach the variable that
-     *  contains this style to the created entry.
+     *  with this style and attach the attribute that
+     *  contains this style to the created entry so that we are notified
+     *  of changes in value.
      *  
      *  @param query The query into which to add the entry.
-     *  @exception IllegalActionException If the containing variable
-     *  has a value that cannot be edited using this style.
+     *  @exception IllegalActionException If the containing attribute
+     *   has a value that cannot be edited using this style.
      */
     public abstract void addEntry(PtolemyQuery query)
 	throws IllegalActionException;
 
     /** Override the base class to first check that the container is
-     *  an instance of Variable.
-     *  @param container The container to attach this attribute to..
+     *  an instance of UserSettable.
+     *  @param container The container to attach this attribute to.
      *  @exception IllegalActionException If this attribute is not of the
      *   expected class for the container, or it has no name,
      *   or the attribute and container are not in the same workspace, or
      *   the proposed container would result in recursive containment, or
-     *   the proposed container is not an instance of Variable.
+     *   the proposed container is not an instance of UserSettable.
      *  @exception NameDuplicationException If the container already has
      *   an attribute with the name of this attribute.
      */
     public void setContainer(NamedObj container)
             throws IllegalActionException, NameDuplicationException {
-        if (container != null && !(container instanceof Variable)) {
+        if (container != null && !(container instanceof UserSettable)) {
             throw new IllegalActionException(this, container,
-                "ParameterEditorStyle can only be contained by Parameter.");
+                "ParameterEditorStyle can only be contained by UserSettable.");
         }
         super.setContainer(container);
     }

@@ -96,11 +96,11 @@ public class EditorPaneFactory extends Attribute {
         PtolemyQuery query = new PtolemyQuery(object);
         query.setTextWidth(25);
 
-        Iterator params = object.attributeList(Parameter.class).iterator();
+        Iterator params = object.attributeList(UserSettable.class).iterator();
         boolean foundOne = false;
         while (params.hasNext()) {
             foundOne = true;
-            Parameter param = (Parameter)params.next();
+            UserSettable param = (UserSettable)params.next();
 	    query.addStyledEntry(param);
         }
         if (!foundOne) {

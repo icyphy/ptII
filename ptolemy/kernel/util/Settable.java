@@ -40,16 +40,29 @@ externally set.
 @version $Id$
 */
 
-public interface Settable {
+public interface Settable extends Nameable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Add a listener to be notified when the value of this settable
+     *  object changes.
+     *  @param listener The listener to add.
+     */
+    public void addValueListener(ValueListener listener);
 
     /** Get the value of the attribute that has been set by setExpression(),
      *  or null if there is none.
      *  @return The expression.
      */
     public String getExpression();
+
+    /** Remove a listener from the list of listeners that is
+     *  notified when the value of this variable changes.  If no such listener
+     *  exists, do nothing.
+     *  @param listener The listener to remove.
+     */
+    public void removeValueListener(ValueListener listener);
 
     /** Set the value of the attribute by giving some expression.
      *  @param expression The value of the attribute.

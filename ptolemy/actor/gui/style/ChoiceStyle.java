@@ -31,27 +31,30 @@
 package ptolemy.actor.gui.style;
 
 // Ptolemy imports.
+import ptolemy.actor.gui.PtolemyQuery;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
-import ptolemy.data.expr.Variable;
 import ptolemy.gui.Query;
 import ptolemy.kernel.util.*;
-import ptolemy.actor.gui.PtolemyQuery;
+
 import java.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// ChoiceStyle
 /**
-This attribute annotates a parameter to suggest an interactive
+This attribute annotates a user settable attribute to suggest an interactive
 mechanism for editing that uses an uneditable combobox menu.
 For an editable combobox, use EditableChoiceStyle instead.
 The EditorPaneFactory class observes the
 presence of this attribute to guide construction of an interactive
-parameter editor.
+parameter editor.  The choices that are presented in the combobox
+are given by a set of attributes implementing the UserSettable interface,
+such as StringAttribute, contained by this attribute.
 
-@see EditorPaneFactory
 @author Steve Neuendorffer
 @version $Id$
+@see EditorPaneFactory
+@see StringAttribute
 */
 
 public class ChoiceStyle extends ParameterEditorStyle {
@@ -70,7 +73,7 @@ public class ChoiceStyle extends ParameterEditorStyle {
      *  @param name The name of the attribute.
      *  @exception IllegalActionException If the attribute is not of an
      *   acceptable attribute for the container, or if the container
-     *   is not an instance of Variable.
+     *   is not an instance of UserSettable.
      *  @exception NameDuplicationException If the name coincides with
      *   an attribute already in the container.
      */
@@ -82,38 +85,36 @@ public class ChoiceStyle extends ParameterEditorStyle {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return true if this style is acceptable for the given parameter.
-     *  @return True if the style contains some parameters representing the
-     *  choices.
+    /** Return true if this style is acceptable for the given attribute.
+     *  @return True if the style contains some attributes representing the
+     *   choices.
      */
-    public boolean accept(Variable param) {
-	return !attributeList(Variable.class).isEmpty();
+    public boolean accept(UserSettable param) {
+	return !attributeList(UserSettable.class).isEmpty();
     }
 
     /** Create a new entry in the given query with the given name
-     *  with this style.  Attach the variable that
+     *  with this style and attach the attribute that
      *  contains this style to the created entry.  
      *  This class will create a choice entry.
-     *  
+     *
      *  @param query The query into which to add the entry.
-     *  @exception IllegalActionException If the containing variable
-     *  has a value that cannot be edited using this style.
+     *  @exception IllegalActionException If the containing attribute
+     *   has a value that cannot be edited using this style.
      */
-    public void addEntry(PtolemyQuery query)
-	throws IllegalActionException {
+    public void addEntry(PtolemyQuery query) throws IllegalActionException {
         String name = getContainer().getName();
-        Variable param = (Variable)getContainer();
-	List paramList = attributeList(Variable.class);
-        Variable choices[]
-            = (Variable [])paramList.toArray(new Variable[paramList.size()]);
+	List paramList = attributeList(UserSettable.class);
+        UserSettable choices[]
+                = (UserSettable [])paramList.toArray(
+                new UserSettable[paramList.size()]);
 	String values[] = new String[choices.length];
 	for(int i = 0; i < choices.length; i++) {
-	    values[i] = choices[i].stringRepresentation();
+	    values[i] = choices[i].getExpression();
 	}
-	   
-       	String defaultChoice = param.stringRepresentation();
-
+        UserSettable container = (UserSettable)getContainer();
+       	String defaultChoice = container.getExpression();
         query.addChoice(name, name, values, defaultChoice);
-	query.attachParameter(param, name);
+        query.attachParameter(container, name);
     }
 }

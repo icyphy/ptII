@@ -58,8 +58,7 @@ public interface Typeable
      *  @return An instance of Type.
      *  @exception IllegalActionException If the type cannot be determined.
      */
-    public Type getType()
-	    throws IllegalActionException;
+    public Type getType() throws IllegalActionException;
 
     /** Return an InequalityTerm representing this object.
      *  @return An InequalityTerm.
@@ -92,16 +91,6 @@ public interface Typeable
      */
     public void setTypeAtMost(Type type) throws IllegalActionException;
 
-    /** Set a type constraint that the type of this object equal the type
-     *  corresponding to the specified Class.
-     *  @param c A Class.
-     *  @exception IllegalActionException If the type of this object already
-     *   violates this constraint; or the specified Class does not correspond
-     *   to a BaseType.
-     *  @deprecated
-     */
-    public void setTypeEquals(Class c) throws IllegalActionException;
-
     /** Set a type constraint that the type of this object equal
      *  the specified value.
      *  @param type An instance of Type.
@@ -123,12 +112,4 @@ public interface Typeable
      *  @see ptolemy.graph.Inequality
      */
     public List typeConstraintList();
-
-    /** Return the type constraints of this object.
-     *  The constraints are an enumeration of inequalities.
-     *  @return an enumeration of instances of Inequality.
-     *  @see ptolemy.graph.Inequality
-     *  @deprecated Use typeConstraintList() instead;
-     */
-    public Enumeration typeConstraints();
 }

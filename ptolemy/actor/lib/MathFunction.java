@@ -47,21 +47,22 @@ equal to the specified math function of the input.
 The input and output types are DoubleToken.  The functions
 are exactly those in the java.lang.Math class.  They are:
 <ul>
-<li> <b>EXP</b>: The exponential function.
+<li> <b>exp</b>: The exponential function.
 If the argument is NaN, then the result is NaN.
-<li> <b>LOG</b>: The natural logarithm function.
+<li> <b>log</b>: The natural logarithm function.
 If the argument is NaN, then the result is NaN.
-<li> <b>SQUARE</b>: The square function
+<li> <b>square</b>: The square function
 If the argument is NaN, then the result is NaN.
-<li> <b>SQRT</b>: The square root function.
+<li> <b>sqrt</b>: The square root function.
 If the argument is NaN, then the result is NaN.
-<li> <b>REMAINDER</b>: The remainder after division.
+<li> <b>remainder</b>: The remainder after division.
 If the second operand is zero, then the result is NaN.
 </ul>
 <p>
-(NOTE: Some functions like EXP, LOG, SQUARE, and SQRT act on a single 
-operand only.  Other functions like REMAINDER act on two operands.)
-
+NOTE: Some functions like exp, log, square, and sqrt act on a single 
+operand only.  Other functions like remainder act on two operands.
+The actor acquires a second input when the function is changed to
+remainder, and loses the input when the function is changed back.
 
 @author C. Fong
 @version $Id$
@@ -85,9 +86,9 @@ public class MathFunction extends TypedAtomicActor {
         super(container, name);
 
         // parameters
-        function = new Parameter(this, "function", new StringToken("exp"));
+        function = new StringAttribute(this, "function");
+        function.setExpression("exp");
         _function = EXP;
-        function.setTypeEquals(BaseType.STRING);
         
         // ports
         firstOperand = new TypedIOPort(this, "firstOperand", true, false);
@@ -99,19 +100,22 @@ public class MathFunction extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The function to compute.  This is a string-valued parameter
+    /** The function to compute.  This is a string-valued attribute
      *  that defaults to "exp".
      */
-    public Parameter function;
+    public StringAttribute function;
 
+    /** The port for the first operand.
+     */
     public TypedIOPort firstOperand = null;
-    public TypedIOPort secondOperand = null;
 
+    /** The port for the second operand, if it is needed.
+     */
+    public TypedIOPort secondOperand = null;
 
     /** Output port.  The type is inferred from the connections.
      */
     public TypedIOPort output = null;
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -126,35 +130,39 @@ public class MathFunction extends TypedAtomicActor {
             throws  IllegalActionException {
         try {
             if (attribute == function) {
-                String spec = ((StringToken)(function.getToken())).stringValue();
+                String spec = function.getExpression();
                 if (spec.equals("exp")) {
                     _function = EXP;
-                    if (secondOperand != null) 
+                    if (secondOperand != null) {
                         secondOperand.setContainer(null);
+                    }
                 } else if (spec.equals("log")) {
                     _function = LOG;
-                    if (secondOperand != null) 
+                    if (secondOperand != null) {
                         secondOperand.setContainer(null);
+                    }
                 } else if (spec.equals("square")) {
                     _function = SQUARE;
-                    if (secondOperand != null) 
+                    if (secondOperand != null) {
                         secondOperand.setContainer(null);
+                    }
                 } else if (spec.equals("sqrt")) {
                     _function = SQRT;
-                    if (secondOperand != null)
+                    if (secondOperand != null) {
                         secondOperand.setContainer(null);
+                    }
                 } else if (spec.equals("remainder")) {
                     _function = REMAINDER;
                     _createSecondPort();
                 } else {
                     throw new IllegalActionException(this,
-                        "Unrecognized trigonometric function: " + spec);
+                        "Unrecognized math function: " + spec);
                 }
             } else {
                 super.attributeChanged(attribute);
             }
         } catch (NameDuplicationException e) {
-            throw new IllegalActionException("Name duplication not allowed");
+            throw new InternalErrorException("Unexpected name duplication.");
         }
     }
 
@@ -168,7 +176,7 @@ public class MathFunction extends TypedAtomicActor {
     public Object clone(Workspace ws)
 	    throws CloneNotSupportedException {
         MathFunction newobj = (MathFunction)super.clone(ws);
-        newobj.function = (Parameter)newobj.getAttribute("function");
+        newobj.function = (StringAttribute)newobj.getAttribute("function");
         newobj.firstOperand = (TypedIOPort)newobj.getPort("firstOperand");
         if (secondOperand != null) {
           newobj.secondOperand = (TypedIOPort)newobj.getPort("secondOperand");
@@ -225,9 +233,12 @@ public class MathFunction extends TypedAtomicActor {
                 if (secondOperand.hasToken(0,count)) {
                     Token[] inArray2 = secondOperand.get(0,count);
                     for (int i = 0; i < count; i++) {
-                        double input1 = ((DoubleToken)(inArray1[i])).doubleValue();
-                        double input2 = ((DoubleToken)(inArray2[i])).doubleValue();
-                        _resultArray[i] = new DoubleToken(_doFunction(input1,input2));
+                        double input1 =
+                                ((DoubleToken)(inArray1[i])).doubleValue();
+                        double input2 = 
+                                ((DoubleToken)(inArray2[i])).doubleValue();
+                        _resultArray[i] = 
+                                new DoubleToken(_doFunction(input1,input2));
                     }
                     output.send(0, _resultArray, count);
                     return COMPLETED;
@@ -256,11 +267,11 @@ public class MathFunction extends TypedAtomicActor {
     private void _createSecondPort() 
         throws NameDuplicationException, IllegalActionException {
         
-        if (secondOperand == null)
+        if (secondOperand == null) {
             secondOperand = new TypedIOPort(this, "secondOperand", true, false);
-        else if (secondOperand.getContainer() == null)
+        } else if (secondOperand.getContainer() == null) {
             secondOperand = new TypedIOPort(this, "secondOperand", true, false);
-        
+        }        
         secondOperand.setTypeEquals(BaseType.DOUBLE);
     }
 
@@ -290,7 +301,7 @@ public class MathFunction extends TypedAtomicActor {
         default:
             throw new InternalErrorException(
                     "Invalid value for _function private variable. "
-                    + "TrigFunction actor (" + getFullName()
+                    + "MathFunction actor (" + getFullName()
                     + ")");
         }
         return result;

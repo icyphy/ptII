@@ -51,15 +51,16 @@ import java.util.List;
 /**
 An effigy represents model data, and is contained in the model directory.
 An effigy contains all open instances of Tableau associated with the model.
-It also contains a parameter named "identifier" with a string value that
+It also contains a string attribute named "identifier" with a value that
 uniquely identifies the model. A typical choice (which depend on
 the configuration) is the canonical URL for a MoML file that
 describes the model.
 <p>
 NOTE: It might seem more natural for the identifier
-to be the name of the effigy rather than the value of a parameter.
+to be the name of the effigy rather than the value of a string attribute.
 But the name cannot have periods in it, and a URL typically does
-have periods in it.
+have periods in it, and periods are not allowed in the names of
+Ptolemy II objects.
 
 @author Steve Neuendorffer and Edward A. Lee
 @version $Id$

@@ -334,14 +334,27 @@ public class Variable extends Attribute implements Typeable, Settable {
              throws IOException {
     }
 
-    /** Get the expression currently used by this variable. If the
-     *  variable was last set directly via setToken(),
-     *  then the variable does not have an expression and null
-     *  is returned.
+    /** Get the expression currently used by this variable. The expression
+     *  is either the value set by setExpression(), or a string representation
+     *  of the value set by setToken(), or an empty string if no value
+     *  has been set.
      *  @return The expression used by this variable.
      */
     public String getExpression() {
-        return _currentExpression;
+        String value = _currentExpression;
+        if (value == null) {
+            ptolemy.data.Token token = null;
+            try {
+                token = getToken();
+            } catch (IllegalActionException ex) {}
+            if (token != null) {
+                value = token.toString();
+            }
+        }
+        if (value == null) {
+            value = "";
+        }
+        return value;
     }
 
     /** Return a NamedList of the variables that the value of this
@@ -747,36 +760,6 @@ public class Variable extends Attribute implements Typeable, Settable {
     }
 
     /** Set a type constraint that the type of this object equal
-     *  the type corresponding to the specified Class. This is an absolute
-     *  type constraint (not relative to another Typeable object), so it is
-     *  checked every time the value of the variable is set by setToken() or
-     *  by evaluating an expression.  If the variable already has a value,
-     *  then that value is converted to the specified type, if possible, or
-     *  an exception is thrown.
-     *  @param c A Class.
-     *  @exception IllegalActionException If the type of this object
-     *   already violates this constraint, in that the currently contained
-     *   token cannot be converted losslessly to the specified type; or
-     *   the specified Class does not corresponds to a BaseType.
-     *  @deprecated Use the method with a Type argument instead.
-     */
-    public void setTypeEquals(Class c) throws IllegalActionException {
-	try {
-	    Token token = (Token)c.newInstance();
-	    setTypeEquals(token.getType());
-
-	} catch (InstantiationException ie) {
-	    throw new IllegalActionException("Variable.setTypeEquals(Class): "
-		+ "Cannot create a token from the specified Class object. " +
-		ie.getMessage());
-	} catch (IllegalAccessException iae) {
-	    throw new IllegalActionException("Variable.setTypeEquals(Class): "
-		+ "Cannot create a token from the specified Class object. " +
-		iae.getMessage());
-	}
-    }
-
-    /** Set a type constraint that the type of this object equal
      *  the specified value. This is an absolute type constraint (not
      *  relative to another Typeable object), so it is checked every time
      *  the value of the variable is set by setToken() or by evaluating
@@ -863,30 +846,12 @@ public class Variable extends Attribute implements Typeable, Settable {
 	_constraints.add(ineq);
     }
 
-    /** Return a string representing the (possibly unevaluated) value
-     *  of this variable.  If the value has been set by an expression,
-     *  then return that expression.  If the value has been set via
-     *  a token, then return a string representation of the value of that
-     *  token that can be passed to the expression language in order to
-     *  return a token with the same value.  If neither, then return an
-     *  empty string.
+    /** Same as getExpression().
      *  @return A string representation of this variable.
+     *  @deprecated
      */
     public String stringRepresentation() {
-        String value = getExpression();
-        if (value == null) {
-            ptolemy.data.Token token = null;
-            try {
-                token = getToken();
-            } catch (IllegalActionException ex) {}
-            if (token != null) {
-                value = token.toString();
-            }
-        }
-        if (value == null) {
-            value = "";
-        }
-        return value;
+        return getExpression();
     }
 
     /** Return a string representation of the current evaluated variable value.

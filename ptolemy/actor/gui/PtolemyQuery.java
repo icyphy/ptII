@@ -1,4 +1,4 @@
-/* A subclass of Query supporting Ptolemy II parameters.
+/* A subclass of Query supporting Ptolemy II attributes.
 
  Copyright (c) 1997-2000 The Regents of the University of California.
  All rights reserved.
@@ -31,7 +31,6 @@
 
 package ptolemy.actor.gui;
 
-import ptolemy.data.expr.ValueListener;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.expr.Parameter;
 import ptolemy.gui.*;
@@ -57,16 +56,17 @@ import java.util.Map;
 //// PtolemyQuery
 /**
 This class is a query dialog box with various entries for setting
-the values of Ptolemy II parameters.  One or more entries are
-associated with a parameter so that if the entry is changed, the
-parameter value is updated, and if the parameter value changes,
-the entry is updated. To change a parameter, this class queues
+the values of Ptolemy II attributes that implement the UserSettable
+interface.  One or more entries are
+associated with an attribute so that if the entry is changed, the
+attribute value is updated, and if the attribute value changes,
+the entry is updated. To change an attribute, this class queues
 a change request with a particular object called the <i>change
 handler</i>.  The change handler is specified as a constructor
 argument.
 <p>
 It is important to note that it may take
-some time before the value of a parameter is actually changed, since it
+some time before the value of a attribute is actually changed, since it
 is up to the change handler to decide when change requests are processed.
 The change handler will typically delegate change requests to the
 Manager, although this is not necessarily the case.
@@ -82,10 +82,10 @@ public class PtolemyQuery extends Query
     /** Construct a panel with no queries in it and with the specified
      *  change handler. When an entry changes, a change request is
      *  queued with the given change handler. The change handler should
-     *  normally be a composite actor that deeply contains all parameters
+     *  normally be a composite actor that deeply contains all attributes
      *  that are attached to query entries.  Otherwise, the change requests
      *  might get queued with a handler that has nothing to do with
-     *  the parameters.  The handler is also used to report errors.
+     *  the attributes.  The handler is also used to report errors.
      *  @param handler The change handler.
      */
     public PtolemyQuery(NamedObj handler) {
@@ -102,109 +102,120 @@ public class PtolemyQuery extends Query
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Add a new entry to this query that represents the given parameter.
-     *  The name of the entry will be set to the name of the parameter,
-     *  and the parameter will be attached to the entry, so that if the
-     *  parameter is updated, then the entry is updated.
-     *  If the parameter contains a parameter style, then use the style to
+    /** Add a new entry to this query that represents the given attribute.
+     *  The name of the entry will be set to the name of the attribute,
+     *  and the attribute will be attached to the entry, so that if the
+     *  attribute is updated, then the entry is updated. If the attribute
+     *  contains an editing style attribute, then use the style to
      *  create the entry, otherwise just create a new line entry.
-     *  Attach the variable to the new entry.
-     *  @param param The parameter for which to create an entry.
+     *  @param attribute The attribute for which to create an entry.
      */
-    public void addStyledEntry(Variable param) {
+    public void addStyledEntry(UserSettable attribute) {
 	// Look for a ParameterEditorStyle.
-	Iterator styles =
-            param.attributeList(ParameterEditorStyle.class).iterator();
-	boolean foundStyle = false;
-	while (styles.hasNext() && !foundStyle) {
-	    ParameterEditorStyle style =
-                (ParameterEditorStyle)styles.next();
-	    try {
-		style.addEntry(this);
-		foundStyle = true;
-	    } catch (IllegalActionException ex) {
-		// Ignore failures here, and just present the default dialog.
-	    }
+        boolean foundStyle = false;
+        if (attribute instanceof NamedObj) {
+            Iterator styles = ((NamedObj)attribute)
+                    .attributeList(ParameterEditorStyle.class).iterator();
+            while (styles.hasNext() && !foundStyle) {
+                ParameterEditorStyle style = 
+                        (ParameterEditorStyle)styles.next();
+                try {
+                    style.addEntry(this);
+                    foundStyle = true;
+                } catch (IllegalActionException ex) {
+                    // Ignore failures here, and just present
+                    // the default dialog.
+                }
+            }
 	}
+        String defaultValue = attribute.getExpression();
+        if (defaultValue == null) defaultValue = "";
 	if (!(foundStyle)) {
-	    addLine(param.getName(),
-		    param.getName(),
-		    param.stringRepresentation());
+	    addLine(attribute.getName(), attribute.getName(), defaultValue);
 	}
-        attachParameter(param, param.getName());
+        attachParameter(attribute, attribute.getName());
     }
 
-    /** Attach a parameter to an entry with name <i>entryName</i>,
-     *  of a Query. This will cause the parameter to be updated whenever
-     *  the specified entry changes, and the entry to change whenever
-     *  the parameter changes. If the entry has previously been attached
-     *  to a parameter, then it is detached first from that parameter.
-     *  If the parameter argument is null, this has the effect of detaching
-     *  the entry from any parameter.
-     *  @param parameter The parameter to attach to an entry.
-     *  @param entryName The entry to attach the parameter to.
+    /** Attach an attribute to an entry with name <i>entryName</i>,
+     *  of a Query. This will cause the attribute to be updated whenever
+     *  the specified entry changes.  In addition, a listener is registered
+     *  so that the entry will change whenever
+     *  the attribute changes. If the entry has previously been attached
+     *  to a attribute, then it is detached first from that attribute.
+     *  If the attribute argument is null, this has the effect of detaching
+     *  the entry from any attribute.
+     *  @param attribute The attribute to attach to an entry.
+     *  @param entryName The entry to attach the attribute to.
      */
-    public void attachParameter(Variable parameter, String entryName) {
-	// Put the parameter in a Map from entryName -> parameter
-	_parameters.put(entryName, parameter);
+    public void attachParameter(UserSettable attribute, String entryName) {
+	// Put the attribute in a Map from entryName -> attribute
+	_attributes.put(entryName, attribute);
 
-        // Make a record of the parameter value prior to the change,
+        // Make a record of the attribute value prior to the change,
         // in case a change fails and the user chooses to revert.
-        _revertValue.put(entryName, parameter.stringRepresentation());
-        parameter.addValueListener(this);
-        Attribute tooltipAttribute = parameter.getAttribute("tooltip");
-        if (tooltipAttribute != null
-                && tooltipAttribute instanceof Documentation) {
-            setToolTip(entryName,
-                    ((Documentation)tooltipAttribute).getValue());
+        _revertValue.put(entryName, attribute.getExpression());
+
+        // Attach the entry to the attribute by registering a listener.
+        attribute.addValueListener(this);
+
+        // Put the attribute in a Map from attribute -> (list of entry names
+        // attached to attribute), but only if entryName is not already
+        // contained by the list.
+        if (_varToListOfEntries.get(attribute) == null) {
+            // No mapping for attribute exists.
+            List entryNameList = new LinkedList();
+            entryNameList.add(entryName);
+            _varToListOfEntries.put(attribute, entryNameList);
         } else {
-            String tip = Documentation.consolidate(parameter);
-            if (tip != null) {
-                setToolTip(entryName, tip);
+            // attribute is mapped to a list of entry names, but need to
+            // check whether entryName is in the list. If not, add it.
+            List entryNameList = (List)_varToListOfEntries.get(attribute);
+            Iterator entryNames = entryNameList.iterator();
+            boolean found = false;
+            while (entryNames.hasNext()) {
+                // Check whether entryName is in the list. If not, add it.
+                String name = (String)entryNames.next();
+                if (name == entryName) {
+                    found = true;
+                }
+            }
+            if (found == false) {
+                // Add entryName to the list.
+                entryNameList.add(entryName);
             }
         }
-	// Put the parameter in a Map from parameter -> (list of entry names
-	// attached to parameter), but only if entryName is not already
-	// contained by the list.
-	if (_varToListOfEntries.get(parameter) == null) {
-	    // No mapping for parameter exists.
-	    List entryNameList = new LinkedList();
-	    entryNameList.add(entryName);
-	    _varToListOfEntries.put(parameter, entryNameList);
-	} else {
-	    // parameter is mapped to a list of entry names, but need to check
-	    // whether entryName is in the list. If not, add it.
-	    List entryNameList = (List)_varToListOfEntries.get(parameter);
-	    Iterator entryNames = entryNameList.iterator();
-	    boolean found = false;
-	    while (entryNames.hasNext()) {
-		// Check whether entryName is in the list. If not, add it.
-		String name = (String)entryNames.next();
-		if (name == entryName) {
-		    found = true;
-		}
-	    }
-	    if (found == false) {
-		// Add entryName to the list.
-		entryNameList.add(entryName);
-	    }
-	}
+        // Handle tool tips.  This is almost certainly an instance
+        // of NamedObj, but check to be sure.
+        if (attribute instanceof NamedObj) {
+            Attribute tooltipAttribute = 
+                   ((NamedObj)attribute).getAttribute("tooltip");
+            if (tooltipAttribute != null
+                    && tooltipAttribute instanceof Documentation) {
+                setToolTip(entryName,
+                        ((Documentation)tooltipAttribute).getValue());
+            } else {
+                String tip = Documentation.consolidate((NamedObj)attribute);
+                if (tip != null) {
+                    setToolTip(entryName, tip);
+                }
+            }
+        }
     }
 
-    /** Queue a change request to alter the value of the parameters
+    /** Queue a change request to alter the value of the attribute
      *  attached to the specified entry, if there is one. This method is
      *  called whenever an entry has been changed.
-     *  If no parameter is attached to the specified entry, then
+     *  If no attribute is attached to the specified entry, then
      *  do nothing.
      *  @param name The name of the entry that has changed.
      */
     public void changed(final String name) {
 
 	// Check if the entry that changed is in the mapping.
-	if (_parameters.containsKey(name)) {
-	    final Variable parameter = (Variable)(_parameters.get(name));
-            if ( parameter == null ) {
-                // No associated parameter.
+	if (_attributes.containsKey(name)) {
+	    final UserSettable attribute = (UserSettable)(_attributes.get(name));
+            if ( attribute == null ) {
+                // No associated attribute.
                 return;
             }
 
@@ -213,10 +224,15 @@ public class PtolemyQuery extends Query
             // for this simple mutation, it's probably not worth it.
             ChangeRequest request = new ChangeRequest(this, name) {
                 protected void _execute() throws IllegalActionException {
-                    parameter.setExpression(stringValue(name));
-                    // Retrieve the token to force evaluation, so as to
-                    // check the validity of the new value.
-                    parameter.getToken();
+                    attribute.setExpression(stringValue(name));
+
+                    // Here, we need to handle instances of Variable
+                    // specially.  This is too bad...
+                    if (attribute instanceof Variable) {
+                        // Retrieve the token to force evaluation, so as to
+                        // check the validity of the new value.
+                        ((Variable)attribute).getToken();
+                    }
                 }
             };
             if(_handler != null) {
@@ -236,19 +252,19 @@ public class PtolemyQuery extends Query
         if (change.getOriginator() != this) return;
 
         String name = change.getDescription();
-	if (_parameters.containsKey(name)) {
-	    final Variable parameter = (Variable)(_parameters.get(name));
+	if (_attributes.containsKey(name)) {
+	    final UserSettable attribute = (UserSettable)(_attributes.get(name));
 
-            // Make a record of the successful parameter value change
+            // Make a record of the successful attribute value change
             // in case some future change fails and the user chooses to revert.
-            _revertValue.put(name, parameter.stringRepresentation());
+            _revertValue.put(name, attribute.getExpression());
         }
     }
 
     /** Notify the listener that a change attempted by the change handler
      *  has resulted in an exception.  This method brings up a new dialog
      *  to prompt the user for a corrected entry.  If the user hits the
-     *  cancel button, then the parameter is reverted to its original
+     *  cancel button, then the attribute is reverted to its original
      *  value.
      *  @param change The change that was attempted.
      *  @param exception The exception that resulted.
@@ -273,12 +289,12 @@ public class PtolemyQuery extends Query
 
             // The name of the entry is the description of the change.
             String entryName = change.getDescription();
-            Variable variable = (Variable)_parameters.get(entryName);
-            if (variable != null) {
-                _query.addStyledEntry(variable);
+            UserSettable attribute = (UserSettable)_attributes.get(entryName);
+            if (attribute != null) {
+                _query.addStyledEntry(attribute);
             } else {
                 throw new InternalErrorException(
-                        "Expected parameter attached to entry name: "
+                        "Expected attribute attached to entry name: "
                         + entryName);
             }
             _dialog = new ComponentDialog(null, "Error", _query, null);
@@ -291,7 +307,7 @@ public class PtolemyQuery extends Query
             if (_dialog.buttonPressed().equals("Cancel")) {
                 if (_revertValue.containsKey(entryName)) {
                     String revertValue = (String)_revertValue.get(entryName);
-                    setAndNotify(variable.getName(), revertValue);
+                    setAndNotify(((NamedObj)attribute).getName(), revertValue);
                 }
             } else {
                 // Force evaluation to check validity of the entry.
@@ -301,41 +317,45 @@ public class PtolemyQuery extends Query
                 // changed, then they are not notified.  Since the original
                 // value was invalid, it is not acceptable to skip
                 // notification in this case.  So we force it.
-                try {
-                    variable.getToken();
-                } catch (IllegalActionException ex) {
-                    changeFailed(change, ex);
+                // Too bad we have to treat instances of Variable specially
+                // here...
+                if (attribute instanceof Variable) {
+                    try {
+                        ((Variable)attribute).getToken();
+                    } catch (IllegalActionException ex) {
+                        changeFailed(change, ex);
+                    }
                 }
             }
         }
     }
 
-    /** Notify this query that the value of the specified parameter has
-     *  changed.  This is called by an attached parameter when its
+    /** Notify this query that the value of the specified attribute has
+     *  changed.  This is called by an attached attribute when its
      *  value changes. This method updates the displayed value of
-     *  all entries that are attached to the parameter.
-     *  @param parameter The parameter whose value has changed.
+     *  all entries that are attached to the attribute.
+     *  @param attribute The attribute whose value has changed.
      */
-    public void valueChanged(Variable parameter) {
+    public void valueChanged(Settable attribute) {
 
-        // Check that the parameter is attached to at least one entry.
-        if (_parameters.containsValue(parameter)) {
+        // Check that the attribute is attached to at least one entry.
+        if (_attributes.containsValue(attribute)) {
 
-            // Get the list of entry names that the parameter is attached to.
-            List entryNameList = (List)_varToListOfEntries.get(parameter);
+            // Get the list of entry names that the attribute is attached to.
+            List entryNameList = (List)_varToListOfEntries.get(attribute);
 
             // For each entry name, call set() to update its
-            // value with the value of parameter.
+            // value with the value of attribute
             Iterator entryNames = entryNameList.iterator();
 
             while (entryNames.hasNext()) {
                 String name = (String)entryNames.next();
-                String newValue = parameter.stringRepresentation();
+                String newValue = attribute.getExpression();
 
                 // Compare value against what is in already to avoid
                 // changing it again.
                 if (!stringValue(name).equals(newValue)) {
-                    set(name, parameter.stringRepresentation());
+                    set(name, attribute.getExpression());
                 }
             }
         }
@@ -358,10 +378,10 @@ public class PtolemyQuery extends Query
 
         _handler.removeChangeListener(PtolemyQuery.this);
 
-        Iterator parameters = _parameters.values().iterator();
-        while(parameters.hasNext()) {
-            Variable parameter = (Variable)parameters.next();
-            parameter.removeValueListener(this);
+        Iterator attributes = _attributes.values().iterator();
+        while(attributes.hasNext()) {
+            UserSettable attribute = (UserSettable)attributes.next();
+            attribute.removeValueListener(this);
         }
     }
 
@@ -377,8 +397,8 @@ public class PtolemyQuery extends Query
     // Indicator that this is an open dialog reporting an erroneous entry.
     private boolean _isOpenErrorWindow = false;
 
-    // Maps an entry name to the variable that is attached to it.
-    private Map _parameters = new HashMap();
+    // Maps an entry name to the attribute that is attached to it.
+    private Map _attributes = new HashMap();
 
     // A query box for dealing with an erroneous entry.
     private PtolemyQuery _query = null;
@@ -386,8 +406,8 @@ public class PtolemyQuery extends Query
     // Maps an entry name to the most recent error-free value.
     private Map _revertValue = new HashMap();
 
-    // Maps a variable name to a list of entry names that the
-    // variable is attached to.
+    // Maps an attribute name to a list of entry names that the
+    // attribute is attached to.
     private Map _varToListOfEntries;
 }
 
