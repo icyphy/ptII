@@ -1,6 +1,6 @@
 /* A composite actor that apply models dynamically.
 
- Copyright (c) 1999-2002 The Regents of the University of California.
+ Copyright (c) 2003 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -66,13 +66,14 @@ input.
 Currently, it only accepts models with one input and one output, and
 requires the model name its input port as "input", output port as "output".
 
-//Fixme:maybe should have this actor have a prameter to specify whether
-//merge the change to the old inside model or not.
-
 @author Yang Zhao
-@version $Id:
+@version $Id$
+@since Ptolemy II 3.0
 */
-public class MobileModel extends TypedCompositeActor{
+public class MobileModel extends TypedCompositeActor {
+
+    // FIXME: maybe should have this actor have a parameter to specify
+    // whether merge the change to the old inside model or not.
 
     /** Construct an actor in the specified workspace with
      *  no container and an empty string as a name. You can then change
@@ -132,7 +133,7 @@ public class MobileModel extends TypedCompositeActor{
     ////                         public methods                    ////
 
     /** Initialize this actor. create a new moml parser for passing
-     * the applied model to it.
+     *  the applied model to it.
      *  @exception IllegalActionException If there is no director, or
      *  if the director's initialize() method throws it, or if the
      *  actor is not opaque.
@@ -160,12 +161,11 @@ public class MobileModel extends TypedCompositeActor{
         super.initialize();
     }
 
-    /** save the model here if there is a new model to apply. and then call
-     * super.fire().
+    /** Save the model here if there is a new model to apply. and then call
+     *  super.fire().
      *  @exception IllegalActionException If there is no director, or if
-     *   the director's fire() method throws it, or if the actor is not
-     *   opaque.
-     *
+     *  the director's fire() method throws it, or if the actor is not
+     *  opaque.
      */
     public void fire() throws IllegalActionException  {
         if (_debugging) {
@@ -187,7 +187,7 @@ public class MobileModel extends TypedCompositeActor{
         super.fire();
     }
 
-    /** return true if the actor either of its input port has token.
+    /** Return true if the actor either of its input port has token.
      *  @exception IllegalActionException should never be throwed
      */
     public boolean prefire() throws IllegalActionException {
@@ -200,10 +200,10 @@ public class MobileModel extends TypedCompositeActor{
         return false;
     }
 
-    /** update the model here to achieve consistency.
+    /** Update the model here to achieve consistency.
      *  @exception IllegalActionException If there is no director,
-     *   or if the director's postfire() method throws it, or if this actor
-     *   is not opaque.
+     *  or if the director's postfire() method throws it, or if this actor
+     *  is not opaque.
      */
     public boolean postfire() throws IllegalActionException {
         if (!_stopRequested && _model != null) {
@@ -216,7 +216,7 @@ public class MobileModel extends TypedCompositeActor{
                     null);
             requestChange(removeRequest);
             //add the entity represented by the new model string.
-            //Fixme: the reason I do the change by two change request is because
+            //FIXME: the reason I do the change by two change request is because
             //when I tried to group them in one, I got a parser error...
             MoMLChangeRequest request = new MoMLChangeRequest(
                     this,            // originator
@@ -248,19 +248,20 @@ public class MobileModel extends TypedCompositeActor{
         }
         return super.postfire();
     }
-    /**return true.
-     *
+
+    /** Return true.
      */
     public boolean isOpaque() {
         return true;
     }
-    /** clean up tha changes that have been made.
+
+    /** Clean up tha changes that have been made.
      *  @exception IllegalActionException If there is no director,
-     *   or if the director's wrapup() method throws it, or if this
-     *   actor is not opaque.
+     *  or if the director's wrapup() method throws it, or if this
+     *  actor is not opaque.
      */
     public void wrapup() throws IllegalActionException {
-        //clean the inside content.
+        // clean the inside content.
         String delete = _requestToRemoveAll(this);
         MoMLChangeRequest removeRequest = new MoMLChangeRequest(
                 this,            // originator
@@ -271,8 +272,7 @@ public class MobileModel extends TypedCompositeActor{
         super.wrapup();
     }
 
-    /** export moml description.
-     *
+    /** Export moml description.
      */
     protected void _exportMoMLContents(Writer output, int depth)
             throws IOException {
@@ -293,8 +293,9 @@ public class MobileModel extends TypedCompositeActor{
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                 ////
-    /** construct a modl string for the composite actor to delete
-     * of its entities and relations.
+
+    /** Construct a modl string for the composite actor to delete
+     *  of its entities and relations.
      *  @param actor The composite actor.
      */
     private String _requestToRemoveAll (CompositeActor actor) {
@@ -319,7 +320,7 @@ public class MobileModel extends TypedCompositeActor{
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    //the modle that dynamically defined and contained by this.
+    // The model that dynamically defined and contained by this.
     private CompositeActor _model;
 
 }
