@@ -72,7 +72,7 @@ public class MessageHandler {
      *  show the specified message and throwable information.
      *  If the throwable is an instance of CancelException, then it
      *  is not shown.  By default, only the message of the throwable
-     *  is thrown.  The stack trace information is only shown if the
+     *  is shown.  The stack trace information is only shown if the
      *  user clicks on the "Display Stack Trace" button.
      *
      *  @param info The message.
@@ -182,7 +182,7 @@ public class MessageHandler {
     /** Show the specified message and throwable information.
      *  If the throwable is an instance of CancelException, then it
      *  is not shown.  By default, only the message of the exception
-     *  is thrown.  The stack trace information is only shown if the
+     *  is shown.  The stack trace information is only shown if the
      *  user clicks on the "Display Stack Trace" button.
      *
      *  @param info The message.
@@ -223,7 +223,7 @@ public class MessageHandler {
      *  execution, something that is particularly useful if continuing
      *  execution will result in repeated warnings.
      *  By default, only the message of the throwable
-     *  is thrown.  The stack trace information is only shown if the
+     *  is shown.  The stack trace information is only shown if the
      *  user clicks on the "Display Stack Trace" button.
      *  @param info The message.
      *  @exception CancelException If the user clicks on the "Cancel" button.
