@@ -29,15 +29,16 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
+ME =		ptII/doc/coding
+
+DIRS =
+
 # Root of Ptolemy II directory
 ROOT =		../..
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
-
-# Sub directories to run make in.
-DIRS =
 
 EXTRA_SRCS = \
 	develsetup.html \
