@@ -70,6 +70,6 @@ public class UnitCategory extends Attribute {
     public UnitCategory(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        UnitSystem.addUnitCategory(this);
+        UnitUtilities.registerUnitCategory(((BaseUnit)this.getContainer()).getName());
     }
 }

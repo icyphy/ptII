@@ -151,7 +151,7 @@ public class Units extends Attribute implements Settable {
         throws IllegalActionException {
 
         if (expression.equals("")) {
-            int numCategories = _unitSystem.getNumCategories();
+            int numCategories = UnitUtilities.getNumCategories();
             for (int i = 0; i < numCategories; i++) {
                 _unitCategoryExponents[i] = 0;
             }
@@ -231,7 +231,7 @@ public class Units extends Attribute implements Settable {
     }
 
     private int[] _unitCategoryExponents() {
-        int numCategories = _unitSystem.getNumCategories();
+        int numCategories = UnitUtilities.getNumCategories();
         int[] uce = new int[numCategories];
         for (int i = 0; i < numCategories; i++) {
             uce[i] = 0;

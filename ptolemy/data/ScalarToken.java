@@ -967,9 +967,7 @@ public abstract class ScalarToken extends Token
     // FIXME: shouldn't this be protected???  it violates the immutability of
     // tokens.
     public void setUnitCategory(int index) {
-        _unitCategoryExponents = new int[index+1];
-        Arrays.fill(_unitCategoryExponents, 0);
-        _unitCategoryExponents[index] = 1;
+        _unitCategoryExponents = UnitUtilities.newUnitArrayInCategory(index);
     }
 
     /** Return a new token whose value is the value of the argument

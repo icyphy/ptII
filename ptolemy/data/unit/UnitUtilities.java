@@ -32,6 +32,9 @@
 package ptolemy.data.unit;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.ArrayList;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// UnitUtilities.
@@ -73,7 +76,10 @@ public class UnitUtilities {
      */
     public static int[] newUnitArrayInCategory(int index) {
         int[] units = new int[index+1];
-        Arrays.fill(units, 0);
+        // Note: java.util.Arrays not available on Tini Arrays.fill(units, 0);
+        for(int i = 0; i < units.length; i++) {
+            units[i] = 0;
+        }
         units[index] = 1;
         return units;
     }
@@ -90,58 +96,62 @@ public class UnitUtilities {
      *  @return A string representation of the given units array.
      */
     public static String unitsString(int[] units) {
-        // FIXME: use StringBuffer.
-        if (isUnitless(units)) {
-            return "";
-        }
-
-        String positiveUnits = "";
-        String negativeUnits = "";
-        boolean justOnePositive = true;
-        boolean justOneNegative = true;
-        for (int i = 0; i < units.length; i++) {
-            int exponent = units[i];
-            if (exponent != 0) {
-                String baseString = null;
-                baseString = UnitSystem.getBaseUnitName(i);
-                if (exponent > 0) {
-                    for (int j = 0; j < exponent; j++) {
-                        if (positiveUnits.equals("")) {
-                            positiveUnits = baseString;
-                        } else {
-                            positiveUnits += " * " + baseString;
-                            justOnePositive = false;
+        synchronized(_indexTable) {
+            // FIXME: use StringBuffer.
+            if (isUnitless(units)) {
+                return "";
+            }
+            
+            System.out.println(summarizeUnitCategories());
+            
+            String positiveUnits = "";
+            String negativeUnits = "";
+            boolean justOnePositive = true;
+            boolean justOneNegative = true;
+            for (int i = 0; i < units.length; i++) {
+                int exponent = units[i];
+                if (exponent != 0) {
+                    String baseString = null;
+                    baseString = UnitUtilities.getBaseUnitName(i);
+                    if (exponent > 0) {
+                        for (int j = 0; j < exponent; j++) {
+                            if (positiveUnits.equals("")) {
+                                positiveUnits = baseString;
+                            } else {
+                                positiveUnits += " * " + baseString;
+                                justOnePositive = false;
+                            }
                         }
-                    }
-                } else {
-                    for (int j = 0; j < -exponent; j++) {
-                        if (negativeUnits.equals("")) {
-                            negativeUnits = baseString;
-                        } else {
-                            negativeUnits += " * " + baseString;
-                            justOneNegative = false;
+                    } else {
+                        for (int j = 0; j < -exponent; j++) {
+                            if (negativeUnits.equals("")) {
+                                negativeUnits = baseString;
+                            } else {
+                                negativeUnits += " * " + baseString;
+                                justOneNegative = false;
+                            }
                         }
                     }
                 }
             }
-        }
-
-        if (positiveUnits.equals("") && negativeUnits.equals("")) {
-            return "";
-        }
-
-        if (positiveUnits.equals("")) {
-            positiveUnits = "1";
-        } else if (!justOnePositive) {
-            positiveUnits = "(" + positiveUnits + ")";
-        }
-
-        if (negativeUnits.equals("")) {
-            return positiveUnits;
-        } else if (justOneNegative) {
-            return positiveUnits + " / " + negativeUnits;
-        } else {
-            return positiveUnits + " / (" + negativeUnits + ")";
+            
+            if (positiveUnits.equals("") && negativeUnits.equals("")) {
+                return "";
+            }
+            
+            if (positiveUnits.equals("")) {
+                positiveUnits = "1";
+            } else if (!justOnePositive) {
+                positiveUnits = "(" + positiveUnits + ")";
+            }
+            
+            if (negativeUnits.equals("")) {
+                return positiveUnits;
+            } else if (justOneNegative) {
+                return positiveUnits + " / " + negativeUnits;
+            } else {
+                return positiveUnits + " / (" + negativeUnits + ")";
+            }
         }
     }
 
@@ -151,6 +161,7 @@ public class UnitUtilities {
      *  exponents of this token.
      */
     public static int[] copyUnitsArray(int[] units) {
+        
         if (isUnitless(units)) {
             return null;
         }
@@ -276,4 +287,117 @@ public class UnitUtilities {
         }
         return true;
     }
+
+    /** Register the specified unit category name.
+     *  If the category is not already registered, assign a unique index
+     *  for the category.
+     *  This method is static, so a category added here will be
+     *  available throughout the system.
+     *  <p>Note that the
+     *  {@link UnitCategory#UnitCategory(NamedObj, String)} constructor
+     *  calls this method.
+     *
+     *  @param category The unit category to be registered.
+     */
+    public static void registerUnitCategory(String categoryName) {
+        synchronized(_indexTable) {
+            Integer index = (Integer)_indexTable.get(categoryName);
+            if (index != null) {
+                return;
+            } else {
+                index = new Integer(_categories);
+                _indexTable.put(categoryName, index);
+                ++_categories;
+                _categoryList.add(categoryName);
+            }
+        }
+    }
+
+    /** Return the name of the base unit of the specified category.
+     *  @param categoryIndex The index of the unit category.
+     *  @return The name of the base unit of the category.
+     */
+    public static String getBaseUnitName(int categoryIndex) {
+        synchronized(_indexTable) {
+            if (categoryIndex < 0 || categoryIndex >= _categories) {
+                // FIXME: exception?
+                return "unknown";
+            } else {
+                String categoryName =
+                    (String)_categoryList.get(categoryIndex);
+                if (categoryName != null) {
+                    return categoryName;
+                } else {
+                    // FIXME: exception?
+                    return "unknown";
+                }
+            }
+        }
+    }
+
+    /** Return the number of currently registered categories.
+     */
+    public static int getNumCategories() {
+        return _categories;
+    }
+
+    /** Return the index assigned to the specified unit category.
+     *  @param category The unit category.
+     *  @return The index assigned to the category.
+     */
+    public static int getUnitCategoryIndex(String categoryName) {
+        synchronized(_indexTable) {
+            Integer index = (Integer)_indexTable.get(categoryName);
+            if (index == null) {
+                //FIXME: throw an exception?
+                return -1;
+            } else {
+                return index.intValue();
+            }
+        }
+    }
+
+    /** Return a string representation of the UnitSystem.
+     *  @return A string representation of the UnitSystem
+     */
+    public static String summarizeUnitCategories() {
+        synchronized(_indexTable) {
+            StringBuffer buffer = new StringBuffer(
+                    "The registered categories are:");
+            buffer.append("" + _categories);
+            buffer.append(_categoryList.toString());
+            return buffer.toString();
+        }
+    }
+
+    /** Reset the internal state of the UnitSystem.  This method is
+     * only useful for testing, and should not be called under most
+     * circumstances, since it will cause any previously created
+     * UnitTokens to have incorrect units.
+     */
+    public static void resetUnitCategories() {
+        // This method is necessary for testing.
+        // UnitSystem has static state, so it makes it difficult
+        // to create multiple small UnitSystems.
+        synchronized(_indexTable) {
+            _indexTable.clear();
+            _categories = 0;
+            _categoryList.clear();
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    // The hash table that maps the name of a unit category to its
+    // index.  This object also serves as a synchronization object for
+    // the three fields of this class.
+    private static HashMap _indexTable = new HashMap();
+
+    // The number of registered unit categories.
+    private static int _categories = 0;
+
+    // The vector that contains all registered category names ordered
+    // by index.
+    private static ArrayList _categoryList = new ArrayList();
 }

@@ -64,7 +64,7 @@ test UnitUtilities-1.0 { call newUnitArrayInCategory} {
 ####
 # 
 test UnitUtilities-2.0 {call unitsStrings with a unitless arg} {
-    java::call ptolemy.data.unit.UnitSystem reset
+    java::call ptolemy.data.unit.UnitUtilities resetUnitCategories
     set unitless [java::new {int[]} {5} {0 0 0 0 0 0}]
     java::call ptolemy.data.unit.UnitUtilities unitsString $unitless
 } {}
@@ -74,7 +74,7 @@ test UnitUtilities-2.0 {call unitsStrings with a unitless arg} {
 # 
 test UnitUtilities-2.1 {call unitsStrings an array of length 1} {
 
-    java::call ptolemy.data.unit.UnitSystem reset
+    java::call ptolemy.data.unit.UnitUtilities resetUnitCategories
 
     set e0 [java::new ptolemy.actor.TypedCompositeActor]
     set myUnitSystem [java::new ptolemy.data.unit.UnitSystem \

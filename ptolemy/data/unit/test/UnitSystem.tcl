@@ -51,23 +51,20 @@ if {[string compare test [info procs test]] == 1} then {
 ######################################################################
 ####
 # 
-test UnitSystem-0.9 {Construct an empty UnitSystem} {
+test UnitSystem-1.0 {Construct an empty UnitSystem} {
     set e0 [java::new ptolemy.actor.TypedCompositeActor]
 
-    java::call ptolemy.data.unit.UnitSystem reset
+    java::call ptolemy.data.unit.UnitUtilities resetUnitCategories
     set myUnitSystem [java::new ptolemy.data.unit.UnitSystem \
 	    $e0 "myUnitSystem"]
 
-    $myUnitSystem toString
+    java::call ptolemy.data.unit.UnitUtilities summarizeUnitCategories
+} {The registered categories are:0[]}
 
-} {ptolemy.data.unit.UnitSystem {..myUnitSystem}
- contains 0 categories
-[]}
-
-test UnitSystem-1.0 {Construct a UnitSystem add a UnitCategory twice} {
+test UnitSystem-1.1 {Construct a UnitSystem add a UnitCategory twice} {
     set e0 [java::new ptolemy.actor.TypedCompositeActor]
 
-    java::call ptolemy.data.unit.UnitSystem reset
+    java::call ptolemy.data.unit.UnitUtilities resetUnitCategories
     set myUnitSystem [java::new ptolemy.data.unit.UnitSystem \
 	    $e0 "myUnitSystem"]
 
@@ -80,28 +77,27 @@ test UnitSystem-1.0 {Construct a UnitSystem add a UnitCategory twice} {
 
 
     set index1 [java::call \
-	    ptolemy.data.unit.UnitSystem getUnitCategoryIndex $length]
+	    ptolemy.data.unit.UnitUtilities getUnitCategoryIndex "meters"]
     set name1 [java::call \
-	    ptolemy.data.unit.UnitSystem getBaseUnitName $index1]
+	    ptolemy.data.unit.UnitUtilities getBaseUnitName $index1]
 
 
     # When length gets created, we call UnitSystem.addUnitCategory()
     # but we call it here again so as to cover a basic block.
 
-    java::call ptolemy.data.unit.UnitSystem addUnitCategory $length
+    java::call ptolemy.data.unit.UnitUtilities registerUnitCategory "meters"
 
     set index2 [java::call \
-	    ptolemy.data.unit.UnitSystem getUnitCategoryIndex $length]
+	    ptolemy.data.unit.UnitUtilities getUnitCategoryIndex "meters"]
     set name2 [java::call \
-  	    ptolemy.data.unit.UnitSystem getBaseUnitName $index2]
-    list [expr {$index1 == $index2}] $name1 $name2 [$myUnitSystem toString]
+  	    ptolemy.data.unit.UnitUtilities getBaseUnitName $index2]
+    list [expr {$index1 == $index2}] $name1 $name2 \
+    [java::call ptolemy.data.unit.UnitUtilities summarizeUnitCategories]
 
-} {1 meters meters {ptolemy.data.unit.UnitSystem {..myUnitSystem}
- contains 1 categories
-[ptolemy.data.unit.UnitCategory {..myUnitSystem.meters.length}]}}
+} {1 meters meters {The registered categories are:1[meters]}}
 
 
-test UnitSystem-1.0 {Add another UnitCategory twice} {
+test UnitSystem-1.2 {Add another UnitCategory twice} {
     # Uses setup in UnitSystem-1.0 above
     set seconds [java::new \
 	    ptolemy.data.unit.BaseUnit $myUnitSystem "seconds"]
@@ -110,17 +106,16 @@ test UnitSystem-1.0 {Add another UnitCategory twice} {
 	    ptolemy.data.unit.UnitCategory $seconds "time"]
 
     set index1 [java::call \
-	    ptolemy.data.unit.UnitSystem getUnitCategoryIndex $time]
+		    ptolemy.data.unit.UnitUtilities getUnitCategoryIndex "seconds"]
     set name1 [java::call \
-	    ptolemy.data.unit.UnitSystem getBaseUnitName $index1]
+	    ptolemy.data.unit.UnitUtilities getBaseUnitName $index1]
 
-    java::call ptolemy.data.unit.UnitSystem addUnitCategory $time
+    java::call ptolemy.data.unit.UnitUtilities registerUnitCategory "seconds"
 
     set index2 [java::call \
-	    ptolemy.data.unit.UnitSystem getUnitCategoryIndex $time]
+	    ptolemy.data.unit.UnitUtilities getUnitCategoryIndex "seconds"]
     set name2 [java::call \
-  	    ptolemy.data.unit.UnitSystem getBaseUnitName $index2]
-    list [expr {$index1 == $index2}] $name1 $name2 [$myUnitSystem toString]
-} {1 seconds seconds {ptolemy.data.unit.UnitSystem {..myUnitSystem}
- contains 2 categories
-[ptolemy.data.unit.UnitCategory {..myUnitSystem.meters.length}, ptolemy.data.unit.UnitCategory {..myUnitSystem.seconds.time}]}}
+  	    ptolemy.data.unit.UnitUtilities getBaseUnitName $index2]
+    list [expr {$index1 == $index2}] $name1 $name2 \
+	[java::call ptolemy.data.unit.UnitUtilities summarizeUnitCategories]
+} {1 seconds seconds {The registered categories are:2[meters, seconds]}}
