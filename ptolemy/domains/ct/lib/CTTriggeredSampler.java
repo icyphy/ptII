@@ -118,9 +118,7 @@ public class CTTriggeredSampler extends Transformer
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
         CTTriggeredSampler newObject =
-            (CTTriggeredSampler)super.clone(workspace);
-        newObject.input.setMultiport(true);
-        newObject.output.setMultiport(true);
+                (CTTriggeredSampler)super.clone(workspace);
         newObject.output.setTypeAtLeast(newObject.input);
         return newObject;
     }
