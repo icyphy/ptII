@@ -76,11 +76,11 @@ public class FixPointQuantization extends Quantization {
      *  <i>total-bits/integer-bits</i>. 
      * 
      *  <p> <i>overflow</i> must be
-     *  one of the Overflow stategies; e.g.  <i>saturate</i> or
+     *  one of the Overflow strategies; e.g.  <i>saturate</i> or
      *  <i>modulo</i> or <i>trap</i>.   The default is <i>saturate</i>.
      *
      *  <p> <i>rounding</i> must be one
-     *  of the Rounding stategies; e.g.  <i>up</i> or <i>half_even</i>
+     *  of the Rounding strategies; e.g.  <i>up</i> or <i>half_even</i>
      *  or <i>unnecessary</i>.   The default is <i>nearest</i>.
      *
      *
