@@ -139,7 +139,7 @@
         </property>
     </entity>
     <entity name="Expression" class="ptolemy.actor.lib.Expression">
-        <property name="expression" class="ptolemy.data.expr.Parameter" value="signal*carrier + noise">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="signal*carrier + noise">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="225.0, 115.0">
         </property>

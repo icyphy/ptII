@@ -219,7 +219,7 @@
                 <property name="output"/>
             </port>
             <entity name="controlLaw" class="ptolemy.actor.lib.Expression">
-                <property name="expression" class="ptolemy.data.expr.Parameter" value="exprF">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="exprF">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">

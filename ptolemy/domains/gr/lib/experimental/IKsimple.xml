@@ -4312,7 +4312,7 @@
                 </property>
             </port>
             <entity name="Expression14" class="ptolemy.actor.lib.Expression">
-                <property name="expression" class="ptolemy.data.expr.Parameter" value="x*x+y*y">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="x*x+y*y">
                 </property>
                 <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
                     <location value="270.0, 162.0"/>
@@ -4358,7 +4358,7 @@
                 </port>
             </entity>
             <entity name="Expression17" class="ptolemy.actor.lib.Expression">
-                <property name="expression" class="ptolemy.data.expr.Parameter" value="(sXY-L1*L1-L2*L2)/(2*L1*L2)">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(sXY-L1*L1-L2*L2)/(2*L1*L2)">
                 </property>
                 <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
                     <location value="186.0, 417.0"/>
@@ -4704,7 +4704,7 @@
                 </port>
             </entity>
             <entity name="Expression12" class="ptolemy.actor.lib.Expression">
-                <property name="expression" class="ptolemy.data.expr.Parameter" value="(y*(L1-L2*s)-x*L2*c)/(x*(L1-L2*s)+y*L2*c)">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(y*(L1-L2*s)-x*L2*c)/(x*(L1-L2*s)+y*L2*c)">
                 </property>
                 <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
                     <location value="204.0, 206.0"/>

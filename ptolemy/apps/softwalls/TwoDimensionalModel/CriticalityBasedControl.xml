@@ -434,7 +434,7 @@
             </port>
         </entity>
         <entity name="Expression" class="ptolemy.actor.lib.Expression">
-            <property name="expression" class="ptolemy.data.expr.Parameter" value="(heading &gt; PI / 2) ? (PI - heading) : heading">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(heading &gt; PI / 2) ? (PI - heading) : heading">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
@@ -452,7 +452,7 @@
             </port>
         </entity>
         <entity name="Expression3" class="ptolemy.actor.lib.Expression">
-            <property name="expression" class="ptolemy.data.expr.Parameter" value="(heading &gt; PI / 2) ? (2*(heading - PI / 2) / heading_dot_max) : 0.0">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(heading &gt; PI / 2) ? (2*(heading - PI / 2) / heading_dot_max) : 0.0">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
@@ -470,7 +470,7 @@
             </port>
         </entity>
         <entity name="Expression4" class="ptolemy.actor.lib.Expression">
-            <property name="expression" class="ptolemy.data.expr.Parameter" value="heading / heading_dot_max + (boundary_x - p_x - r_min * sin(heading)) / speed">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="heading / heading_dot_max + (boundary_x - p_x - r_min * sin(heading)) / speed">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
@@ -491,7 +491,7 @@
             </port>
         </entity>
         <entity name="Expression5" class="ptolemy.actor.lib.Expression">
-            <property name="expression" class="ptolemy.data.expr.Parameter" value="(heading - asin((r_min*sin(heading) - (boundary_x - p_x)) / r_min)) / heading_dot_max">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(heading - asin((r_min*sin(heading) - (boundary_x - p_x)) / r_min)) / heading_dot_max">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
@@ -528,7 +528,7 @@
             </port>
         </entity>
         <entity name="Expression6" class="ptolemy.actor.lib.Expression">
-            <property name="expression" class="ptolemy.data.expr.Parameter" value="p_x &lt;= boundary_x - r_min*sin(heading)">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="p_x &lt;= boundary_x - r_min*sin(heading)">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
@@ -651,7 +651,7 @@
             </property>
         </port>
         <entity name="modulo_2PI" class="ptolemy.actor.lib.Expression">
-            <property name="expression" class="ptolemy.data.expr.Parameter" value="in % (2*PI)">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="in % (2*PI)">
             </property>
             <property name="_location" class="ptolemy.moml.Location" value="105.0, 175.0">
             </property>
@@ -663,7 +663,7 @@
             </port>
         </entity>
         <entity name="Expression" class="ptolemy.actor.lib.Expression">
-            <property name="expression" class="ptolemy.data.expr.Parameter" value="(in &gt; PI)?(in - 2*PI):((in &lt; -PI)?(in + 2*PI):in)">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(in &gt; PI)?(in - 2*PI):((in &lt; -PI)?(in + 2*PI):in)">
             </property>
             <property name="_location" class="ptolemy.moml.Location" value="250.0, 175.0">
             </property>
@@ -832,7 +832,7 @@
             </property>
         </port>
         <entity name="Expression" class="ptolemy.actor.lib.Expression">
-            <property name="expression" class="ptolemy.data.expr.Parameter" value="(heading &gt;= 0.0) ? 1.0 : -1.0">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(heading &gt;= 0.0) ? 1.0 : -1.0">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
@@ -850,7 +850,7 @@
             </port>
         </entity>
         <entity name="Expression2" class="ptolemy.actor.lib.Expression">
-            <property name="expression" class="ptolemy.data.expr.Parameter" value="-1.5 * m * m / (PI - 2.0) * (c - PI / m)">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="-1.5 * m * m / (PI - 2.0) * (c - PI / m)">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">

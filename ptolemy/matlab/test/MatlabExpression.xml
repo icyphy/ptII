@@ -90,7 +90,7 @@ from a library and testing against matlab...</text></svg></configure>
         </port>
     </entity>
     <entity name="DoubleMatrixExpression" class="ptolemy.actor.lib.Expression">
-        <property name="expression" class="ptolemy.data.expr.Parameter" value="input*2.0">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="input*2.0">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="335.0, 240.0">
         </property>
@@ -106,7 +106,7 @@ from a library and testing against matlab...</text></svg></configure>
         </port>
     </entity>
     <entity name="ComplexMatrixExpression" class="ptolemy.actor.lib.Expression">
-        <property name="expression" class="ptolemy.data.expr.Parameter" value="input * iteration">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="input * iteration">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="335.0, 380.0">
         </property>
@@ -157,7 +157,7 @@ from a library and testing against matlab...</text></svg></configure>
         </port>
     </entity>
     <entity name="CompareRecords" class="ptolemy.actor.lib.Expression">
-        <property name="expression" class="ptolemy.data.expr.Parameter" value="reference.isEqualTo(test)">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="reference.isEqualTo(test)">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="330.0, 520.0">
         </property>
@@ -258,7 +258,7 @@ from a library and testing against matlab...</text></svg></configure>
         </port>
     </entity>
     <entity name="MarkIteration" class="ptolemy.actor.lib.Expression">
-        <property name="expression" class="ptolemy.data.expr.Parameter" value="&quot;Iteration &quot;+iteration.toString()+&quot;:&quot;">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="&quot;Iteration &quot;+iteration.toString()+&quot;:&quot;">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="500.0, 240.0">
         </property>

@@ -13,7 +13,7 @@
            <text x="20" style="font-size:14; font-family:sanserif; fill:blue" y="20">This model repeatedly evaluates an expression, a function of two ramp
 signals, slow and fast. Try right clicking on the expr actor, select
 "Configure" and change it to "cos(slow)*cos(fast)" and then run
-the demo with View->Run Window->Go. Other interesting alternatives
+the demo with View-&gt;Run Window-&gt;Go. Other interesting alternatives
 include:
     "cos(fast*cos(slow))"
     "0.2*slow + cos(fast)"</text>
@@ -100,7 +100,7 @@ include:
         </configure>
     </entity>
     <entity name="Expression2" class="ptolemy.actor.lib.Expression">
-        <property name="expression" class="ptolemy.data.expr.Parameter" value="cos(slow) + cos(fast)">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="cos(slow) + cos(fast)">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">

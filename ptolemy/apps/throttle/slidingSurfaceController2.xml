@@ -254,7 +254,7 @@
             </port>
         </entity>
         <entity name="Expression2" class="ptolemy.actor.lib.Expression">
-            <property name="expression" class="ptolemy.data.expr.Parameter" value="(armature_resistance*J/torque_constant)*(omega_desired_dot - lambda*(omega - omega_desired))">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(armature_resistance*J/torque_constant)*(omega_desired_dot - lambda*(omega - omega_desired))">
             </property>
             <property name="_location" class="ptolemy.moml.Location" value="229.0, 437.0">
             </property>
@@ -272,7 +272,7 @@
             </port>
         </entity>
         <entity name="Expression" class="ptolemy.actor.lib.Expression">
-            <property name="expression" class="ptolemy.data.expr.Parameter" value="(theta - theta_equilibrium)*(armature_resistance*spring_constant)/torque_constant">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(theta - theta_equilibrium)*(armature_resistance*spring_constant)/torque_constant">
             </property>
             <property name="_location" class="ptolemy.moml.Location" value="181.0, 163.0">
             </property>
@@ -614,7 +614,7 @@
             </port>
         </entity>
         <entity name="Expression" class="ptolemy.actor.lib.Expression">
-            <property name="expression" class="ptolemy.data.expr.Parameter" value="-(spring_constant/J)*(theta - theta_equilibrium)">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="-(spring_constant/J)*(theta - theta_equilibrium)">
             </property>
             <property name="_location" class="ptolemy.moml.Location" value="90.0, 196.0">
             </property>
@@ -626,7 +626,7 @@
             </port>
         </entity>
         <entity name="Expression11" class="ptolemy.actor.lib.Expression">
-            <property name="expression" class="ptolemy.data.expr.Parameter" value="-((torque_constant^2)/(armature_resistance*J) + viscous_damping/J)*omega">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="-((torque_constant^2)/(armature_resistance*J) + viscous_damping/J)*omega">
             </property>
             <property name="_location" class="ptolemy.moml.Location" value="473.0, 67.0">
             </property>

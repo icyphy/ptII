@@ -97,7 +97,7 @@
         </property>
     </port>
     <entity name="B" class="ptolemy.actor.lib.Expression">
-        <property name="expression" class="ptolemy.data.expr.Parameter" value="4">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="4">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
@@ -194,7 +194,7 @@
                 </property>
             </port>
             <entity name="1:A" class="ptolemy.actor.lib.Expression">
-                <property name="expression" class="ptolemy.data.expr.Parameter" value="6">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="6">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
@@ -282,7 +282,7 @@
                 </property>
             </port>
             <entity name="1:A" class="ptolemy.actor.lib.Expression">
-                <property name="expression" class="ptolemy.data.expr.Parameter" value="6">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="6">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
@@ -330,7 +330,7 @@
             </property>
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
                 <configure>
-    <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/annotation.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property></entity></entity>
+    <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/annotation.xml"/><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"/></entity></entity>
   </configure>
             </property>
             <property name="_location" class="ptolemy.moml.Location" value="426.5, 169.5">

@@ -129,7 +129,7 @@
             </property>
         </port>
         <entity name="1:A" class="ptolemy.actor.lib.Expression">
-            <property name="expression" class="ptolemy.data.expr.Parameter" value="6">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="6">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
@@ -171,7 +171,7 @@
         <link port="1:A.input2" relation="relation6"/>
     </entity>
     <entity name="B" class="ptolemy.actor.lib.Expression">
-        <property name="expression" class="ptolemy.data.expr.Parameter" value="4">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="4">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">

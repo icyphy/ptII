@@ -200,7 +200,7 @@ of types through the system.
         </port>
     </entity>
     <entity name="Expression" class="ptolemy.actor.lib.Expression">
-        <property name="expression" class="ptolemy.data.expr.Parameter" value="input1 + input2">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="input1 + input2">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="235.0, 145.0">
         </property>

@@ -285,7 +285,7 @@ centered at zero frequency.</text>
         </configure>
     </entity>
     <entity name="Expression2" class="ptolemy.actor.lib.Expression">
-        <property name="expression" class="ptolemy.data.expr.Parameter" value="signal*carrier + noise">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="signal*carrier + noise">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">

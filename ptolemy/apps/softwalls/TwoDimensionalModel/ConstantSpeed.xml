@@ -436,7 +436,7 @@
         </configure>
     </entity>
     <entity name="Expression" class="ptolemy.actor.lib.Expression">
-        <property name="expression" class="ptolemy.data.expr.Parameter" value="1.0 - (wallYPosition - y - minimumTurnRadius)/(wallThickness - minimumTurnRadius)">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="1.0 - (wallYPosition - y - minimumTurnRadius)/(wallThickness - minimumTurnRadius)">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="465.0, 238.5">
         </property>

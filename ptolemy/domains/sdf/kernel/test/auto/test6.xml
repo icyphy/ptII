@@ -58,7 +58,7 @@
             </property>
         </port>
         <entity name="Expression" class="ptolemy.actor.lib.Expression">
-            <property name="expression" class="ptolemy.data.expr.Parameter" value="input">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="input">
             </property>
             <property name="_location" class="ptolemy.moml.Location" value="216.0, 219.0">
             </property>

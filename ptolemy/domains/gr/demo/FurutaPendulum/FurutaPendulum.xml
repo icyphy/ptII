@@ -213,7 +213,7 @@ The objective is to swing the pendulum up and then balance it.
             </port>
         </entity>
         <entity name="x1_dot" class="ptolemy.actor.lib.Expression">
-            <property name="expression" class="ptolemy.data.expr.Parameter" value="x2">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="x2">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
@@ -255,7 +255,7 @@ The objective is to swing the pendulum up and then balance it.
             </port>
         </entity>
         <entity name="x2_dot" class="ptolemy.actor.lib.Expression">
-            <property name="expression" class="ptolemy.data.expr.Parameter" value="1.0/(alfa*beta+pow(alfa*sin(x1),2.0)-pow(gamma*cos(x1),2.0))*((alfa*beta+pow(alfa*sin(x1), 2.0))*pow(x4,2.0)*sin(x1)*cos(x1)-pow(gamma*x2,2.0)*sin(x1)*cos(x1)+2.0*alfa*gamma*x2*x4*sin(x1)*pow(cos(x1),2.0)-gamma*cos(x1)*g*u+(alfa*beta+pow(alfa*sin(x1),2.0))*epsilon/alfa*sin(x1))">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="1.0/(alfa*beta+pow(alfa*sin(x1),2.0)-pow(gamma*cos(x1),2.0))*((alfa*beta+pow(alfa*sin(x1), 2.0))*pow(x4,2.0)*sin(x1)*cos(x1)-pow(gamma*x2,2.0)*sin(x1)*cos(x1)+2.0*alfa*gamma*x2*x4*sin(x1)*pow(cos(x1),2.0)-gamma*cos(x1)*g*u+(alfa*beta+pow(alfa*sin(x1),2.0))*epsilon/alfa*sin(x1))">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
@@ -297,7 +297,7 @@ The objective is to swing the pendulum up and then balance it.
             </port>
         </entity>
         <entity name="x3_dot" class="ptolemy.actor.lib.Expression">
-            <property name="expression" class="ptolemy.data.expr.Parameter" value="x4">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="x4">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
@@ -339,7 +339,7 @@ The objective is to swing the pendulum up and then balance it.
             </port>
         </entity>
         <entity name="x4_dot" class="ptolemy.actor.lib.Expression">
-            <property name="expression" class="ptolemy.data.expr.Parameter" value="1/(alfa*beta+pow(alfa*sin(x1),2.0)-pow(gamma*cos(x1),2.0))*(-gamma*alfa*pow(x4,2.0)*sin(x1)*pow(cos(x2),2.0)-gamma*epsilon*sin(x1)*cos(x1)+gamma*alfa*pow(x2,2.0)*sin(x1)-2*pow(alfa,2.0)*x2*x4*sin(x1)*cos(x1)+alfa*g*u)">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="1/(alfa*beta+pow(alfa*sin(x1),2.0)-pow(gamma*cos(x1),2.0))*(-gamma*alfa*pow(x4,2.0)*sin(x1)*pow(cos(x2),2.0)-gamma*epsilon*sin(x1)*cos(x1)+gamma*alfa*pow(x2,2.0)*sin(x1)-2*pow(alfa,2.0)*x2*x4*sin(x1)*cos(x1)+alfa*g*u)">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
@@ -367,7 +367,7 @@ The objective is to swing the pendulum up and then balance it.
             </port>
         </entity>
         <entity name="output_Theta" class="ptolemy.actor.lib.Expression">
-            <property name="expression" class="ptolemy.data.expr.Parameter" value="x1">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="x1">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
@@ -392,7 +392,7 @@ The objective is to swing the pendulum up and then balance it.
             </port>
         </entity>
         <entity name="output_dTheta" class="ptolemy.actor.lib.Expression">
-            <property name="expression" class="ptolemy.data.expr.Parameter" value="x2">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="x2">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
@@ -417,7 +417,7 @@ The objective is to swing the pendulum up and then balance it.
             </port>
         </entity>
         <entity name="output_Phi" class="ptolemy.actor.lib.Expression">
-            <property name="expression" class="ptolemy.data.expr.Parameter" value="x3">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="x3">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
@@ -442,7 +442,7 @@ The objective is to swing the pendulum up and then balance it.
             </port>
         </entity>
         <entity name="output_dPhi" class="ptolemy.actor.lib.Expression">
-            <property name="expression" class="ptolemy.data.expr.Parameter" value="x4">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="x4">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
@@ -751,7 +751,7 @@ The objective is to swing the pendulum up and then balance it.
                 </property>
             </port>
             <entity name="Expression12" class="ptolemy.actor.lib.Expression">
-                <property name="expression" class="ptolemy.data.expr.Parameter" value="abs(x) + pi">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="abs(x) + pi">
                 </property>
                 <property name="_location" class="ptolemy.moml.Location" value="205.0, 95.0">
                 </property>
@@ -1364,7 +1364,7 @@ The objective is to swing the pendulum up and then balance it.
                 </property>
                 <property name="_library" class="ptolemy.moml.LibraryAttribute">
                     <configure>
-            <entity name="state library" class="ptolemy.kernel.CompositeEntity"><entity name="state" class="ptolemy.domains.fsm.kernel.State"></entity></entity>
+            <entity name="state library" class="ptolemy.kernel.CompositeEntity"><entity name="state" class="ptolemy.domains.fsm.kernel.State"/></entity>
           </configure>
                 </property>
                 <property name="_location" class="ptolemy.moml.Location" value="340.0, 50.0">
@@ -1593,7 +1593,7 @@ The objective is to swing the pendulum up and then balance it.
                     </property>
                 </port>
                 <entity name="energyCalculation" class="ptolemy.actor.lib.Expression">
-                    <property name="expression" class="ptolemy.data.expr.Parameter" value="0.5*dTh*dTh/(w0*w0) + cos(Th) - 1">
+                    <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="0.5*dTh*dTh/(w0*w0) + cos(Th) - 1">
                     </property>
                     <property name="_location" class="ptolemy.moml.Location" value="180.0, 130.0">
                     </property>
@@ -1692,7 +1692,7 @@ The objective is to swing the pendulum up and then balance it.
                     </port>
                 </entity>
                 <entity name="Expression" class="ptolemy.actor.lib.Expression">
-                    <property name="expression" class="ptolemy.data.expr.Parameter" value="dTh*cos(Th)">
+                    <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="dTh*cos(Th)">
                     </property>
                     <property name="_location" class="ptolemy.moml.Location" value="135.0, 265.0">
                     </property>

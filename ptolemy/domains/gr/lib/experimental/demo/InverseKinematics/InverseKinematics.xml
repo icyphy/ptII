@@ -43,7 +43,7 @@ inverse kinematics algorithm</text></svg></configure>
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Select View->Run, then click anywhere on the
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Select View-&gt;Run, then click anywhere on the
 ViewScreen to direct the robotic arm motion.</text></svg></configure>
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
@@ -631,7 +631,7 @@ ViewScreen to direct the robotic arm motion.</text></svg></configure>
                     </port>
                 </entity>
                 <entity name="AxBx_AyBy" class="ptolemy.actor.lib.Expression">
-                    <property name="expression" class="ptolemy.data.expr.Parameter" value="(Ax*Bx+Ay*By)/(sqrtA*sqrtB)">
+                    <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(Ax*Bx+Ay*By)/(sqrtA*sqrtB)">
                     </property>
                     <property name="_location" class="ptolemy.moml.Location" value="314.0, 139.0">
                     </property>
@@ -750,7 +750,7 @@ ViewScreen to direct the robotic arm motion.</text></svg></configure>
                     </port>
                 </entity>
                 <entity name="AxBy-AyBx" class="ptolemy.actor.lib.Expression">
-                    <property name="expression" class="ptolemy.data.expr.Parameter" value="-(Ax*By-Ay*Bx)">
+                    <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="-(Ax*By-Ay*Bx)">
                     </property>
                     <property name="_location" class="ptolemy.moml.Location" value="290.0, 308.0">
                     </property>
@@ -1081,7 +1081,7 @@ ViewScreen to direct the robotic arm motion.</text></svg></configure>
                     </port>
                 </entity>
                 <entity name="Expression15" class="ptolemy.actor.lib.Expression">
-                    <property name="expression" class="ptolemy.data.expr.Parameter" value="pivotX+(x-pivotX)*cosine-(y-pivotY)*sine">
+                    <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="pivotX+(x-pivotX)*cosine-(y-pivotY)*sine">
                     </property>
                     <property name="_location" class="ptolemy.moml.Location" value="420.0, 135.0">
                     </property>
@@ -1108,7 +1108,7 @@ ViewScreen to direct the robotic arm motion.</text></svg></configure>
                     </port>
                 </entity>
                 <entity name="Expression16" class="ptolemy.actor.lib.Expression">
-                    <property name="expression" class="ptolemy.data.expr.Parameter" value="pivotY+(x-pivotX)*sine+(y-pivotY)*cosine">
+                    <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="pivotY+(x-pivotX)*sine+(y-pivotY)*cosine">
                     </property>
                     <property name="_location" class="ptolemy.moml.Location" value="420.0, 315.0">
                     </property>
@@ -1349,7 +1349,7 @@ ViewScreen to direct the robotic arm motion.</text></svg></configure>
                     </port>
                 </entity>
                 <entity name="Expression15" class="ptolemy.actor.lib.Expression">
-                    <property name="expression" class="ptolemy.data.expr.Parameter" value="pivotX+(x-pivotX)*cosine-(y-pivotY)*sine">
+                    <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="pivotX+(x-pivotX)*cosine-(y-pivotY)*sine">
                     </property>
                     <property name="_location" class="ptolemy.moml.Location" value="420.0, 135.0">
                     </property>
@@ -1376,7 +1376,7 @@ ViewScreen to direct the robotic arm motion.</text></svg></configure>
                     </port>
                 </entity>
                 <entity name="Expression16" class="ptolemy.actor.lib.Expression">
-                    <property name="expression" class="ptolemy.data.expr.Parameter" value="pivotY+(x-pivotX)*sine+(y-pivotY)*cosine">
+                    <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="pivotY+(x-pivotX)*sine+(y-pivotY)*cosine">
                     </property>
                     <property name="_location" class="ptolemy.moml.Location" value="420.0, 315.0">
                     </property>
@@ -1656,7 +1656,7 @@ ViewScreen to direct the robotic arm motion.</text></svg></configure>
                     </port>
                 </entity>
                 <entity name="Expression15" class="ptolemy.actor.lib.Expression">
-                    <property name="expression" class="ptolemy.data.expr.Parameter" value="pivotX+(x-pivotX)*cosine-(y-pivotY)*sine">
+                    <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="pivotX+(x-pivotX)*cosine-(y-pivotY)*sine">
                     </property>
                     <property name="_location" class="ptolemy.moml.Location" value="420.0, 135.0">
                     </property>
@@ -1683,7 +1683,7 @@ ViewScreen to direct the robotic arm motion.</text></svg></configure>
                     </port>
                 </entity>
                 <entity name="Expression16" class="ptolemy.actor.lib.Expression">
-                    <property name="expression" class="ptolemy.data.expr.Parameter" value="pivotY+(x-pivotX)*sine+(y-pivotY)*cosine">
+                    <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="pivotY+(x-pivotX)*sine+(y-pivotY)*cosine">
                     </property>
                     <property name="_location" class="ptolemy.moml.Location" value="420.0, 315.0">
                     </property>
@@ -2407,7 +2407,7 @@ ViewScreen to direct the robotic arm motion.</text></svg></configure>
                     </port>
                 </entity>
                 <entity name="AxBx_AyBy" class="ptolemy.actor.lib.Expression">
-                    <property name="expression" class="ptolemy.data.expr.Parameter" value="(Ax*Bx+Ay*By)/(sqrtA*sqrtB)">
+                    <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(Ax*Bx+Ay*By)/(sqrtA*sqrtB)">
                     </property>
                     <property name="_location" class="ptolemy.moml.Location" value="314.0, 139.0">
                     </property>
@@ -2526,7 +2526,7 @@ ViewScreen to direct the robotic arm motion.</text></svg></configure>
                     </port>
                 </entity>
                 <entity name="AxBy-AyBx" class="ptolemy.actor.lib.Expression">
-                    <property name="expression" class="ptolemy.data.expr.Parameter" value="-(Ax*By-Ay*Bx)">
+                    <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="-(Ax*By-Ay*Bx)">
                     </property>
                     <property name="_location" class="ptolemy.moml.Location" value="290.0, 308.0">
                     </property>
@@ -2857,7 +2857,7 @@ ViewScreen to direct the robotic arm motion.</text></svg></configure>
                     </port>
                 </entity>
                 <entity name="Expression15" class="ptolemy.actor.lib.Expression">
-                    <property name="expression" class="ptolemy.data.expr.Parameter" value="pivotX+(x-pivotX)*cosine-(y-pivotY)*sine">
+                    <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="pivotX+(x-pivotX)*cosine-(y-pivotY)*sine">
                     </property>
                     <property name="_location" class="ptolemy.moml.Location" value="367.0, 96.0">
                     </property>
@@ -2884,7 +2884,7 @@ ViewScreen to direct the robotic arm motion.</text></svg></configure>
                     </port>
                 </entity>
                 <entity name="Expression16" class="ptolemy.actor.lib.Expression">
-                    <property name="expression" class="ptolemy.data.expr.Parameter" value="pivotY+(x-pivotX)*sine+(y-pivotY)*cosine">
+                    <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="pivotY+(x-pivotX)*sine+(y-pivotY)*cosine">
                     </property>
                     <property name="_location" class="ptolemy.moml.Location" value="360.0, 272.0">
                     </property>
@@ -3129,7 +3129,7 @@ ViewScreen to direct the robotic arm motion.</text></svg></configure>
                     </port>
                 </entity>
                 <entity name="Expression15" class="ptolemy.actor.lib.Expression">
-                    <property name="expression" class="ptolemy.data.expr.Parameter" value="pivotX+(x-pivotX)*cosine-(y-pivotY)*sine">
+                    <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="pivotX+(x-pivotX)*cosine-(y-pivotY)*sine">
                     </property>
                     <property name="_location" class="ptolemy.moml.Location" value="367.0, 96.0">
                     </property>
@@ -3156,7 +3156,7 @@ ViewScreen to direct the robotic arm motion.</text></svg></configure>
                     </port>
                 </entity>
                 <entity name="Expression16" class="ptolemy.actor.lib.Expression">
-                    <property name="expression" class="ptolemy.data.expr.Parameter" value="pivotY+(x-pivotX)*sine+(y-pivotY)*cosine">
+                    <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="pivotY+(x-pivotX)*sine+(y-pivotY)*cosine">
                     </property>
                     <property name="_location" class="ptolemy.moml.Location" value="360.0, 272.0">
                     </property>
@@ -3831,7 +3831,7 @@ ViewScreen to direct the robotic arm motion.</text></svg></configure>
                     </port>
                 </entity>
                 <entity name="AxBx_AyBy" class="ptolemy.actor.lib.Expression">
-                    <property name="expression" class="ptolemy.data.expr.Parameter" value="(Ax*Bx+Ay*By)/(sqrtA*sqrtB)">
+                    <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(Ax*Bx+Ay*By)/(sqrtA*sqrtB)">
                     </property>
                     <property name="_location" class="ptolemy.moml.Location" value="314.0, 139.0">
                     </property>
@@ -3950,7 +3950,7 @@ ViewScreen to direct the robotic arm motion.</text></svg></configure>
                     </port>
                 </entity>
                 <entity name="AxBy-AyBx" class="ptolemy.actor.lib.Expression">
-                    <property name="expression" class="ptolemy.data.expr.Parameter" value="-(Ax*By-Ay*Bx)">
+                    <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="-(Ax*By-Ay*Bx)">
                     </property>
                     <property name="_location" class="ptolemy.moml.Location" value="290.0, 308.0">
                     </property>
@@ -4285,7 +4285,7 @@ ViewScreen to direct the robotic arm motion.</text></svg></configure>
                     </port>
                 </entity>
                 <entity name="Expression15" class="ptolemy.actor.lib.Expression">
-                    <property name="expression" class="ptolemy.data.expr.Parameter" value="pivotX+(x-pivotX)*cosine-(y-pivotY)*sine">
+                    <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="pivotX+(x-pivotX)*cosine-(y-pivotY)*sine">
                     </property>
                     <property name="_location" class="ptolemy.moml.Location" value="420.0, 135.0">
                     </property>
@@ -4312,7 +4312,7 @@ ViewScreen to direct the robotic arm motion.</text></svg></configure>
                     </port>
                 </entity>
                 <entity name="Expression16" class="ptolemy.actor.lib.Expression">
-                    <property name="expression" class="ptolemy.data.expr.Parameter" value="pivotY+(x-pivotX)*sine+(y-pivotY)*cosine">
+                    <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="pivotY+(x-pivotX)*sine+(y-pivotY)*cosine">
                     </property>
                     <property name="_location" class="ptolemy.moml.Location" value="420.0, 315.0">
                     </property>

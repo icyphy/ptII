@@ -26,7 +26,7 @@
 memory and total memory that is reported
 by the JVM.  
 To request a Garbage Collection, do
-View -> JVM Properties and hit the
+View -&gt; JVM Properties and hit the
 'Request Garbage Collection' button.</text></svg></configure>
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
@@ -61,7 +61,7 @@ View -> JVM Properties and hit the
         </property>
     </property>
     <entity name="Total Expression" class="ptolemy.actor.lib.Expression">
-        <property name="expression" class="ptolemy.data.expr.Parameter" value="input + totalMemory()">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="input + totalMemory()">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="225.0, 165.0">
         </property>
@@ -95,7 +95,7 @@ View -> JVM Properties and hit the
         </port>
     </entity>
     <entity name="Free Expression" class="ptolemy.actor.lib.Expression">
-        <property name="expression" class="ptolemy.data.expr.Parameter" value="input+freeMemory()">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="input+freeMemory()">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="225.0, 275.0">
         </property>

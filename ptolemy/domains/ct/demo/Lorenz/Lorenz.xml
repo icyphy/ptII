@@ -220,7 +220,7 @@ model is known as a Lorenz attractor.</text>
         </configure>
     </entity>
     <entity name="Expression 1" class="ptolemy.actor.lib.Expression">
-        <property name="expression" class="ptolemy.data.expr.Parameter" value="sigma*(x2-x1)">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="sigma*(x2-x1)">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
@@ -241,7 +241,7 @@ model is known as a Lorenz attractor.</text>
         </port>
     </entity>
     <entity name="Expression 2" class="ptolemy.actor.lib.Expression">
-        <property name="expression" class="ptolemy.data.expr.Parameter" value="(lambda-x3)*x1-x2">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(lambda-x3)*x1-x2">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
@@ -265,7 +265,7 @@ model is known as a Lorenz attractor.</text>
         </port>
     </entity>
     <entity name="2:1:Expression" class="ptolemy.actor.lib.Expression">
-        <property name="expression" class="ptolemy.data.expr.Parameter" value="x1*x2-b*x3">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="x1*x2-b*x3">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">

@@ -424,7 +424,7 @@ minded) control law results in a rather jerky ride.</text></svg></configure>
                 </port>
             </entity>
             <entity name="compPosition" class="ptolemy.actor.lib.Expression">
-                <property name="expression" class="ptolemy.data.expr.Parameter" value="p2 + (t2-t1)*s2">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="p2 + (t2-t1)*s2">
                 </property>
                 <property name="_location" class="ptolemy.moml.Location" value="445.0, 165.0">
                 </property>
@@ -478,7 +478,7 @@ minded) control law results in a rather jerky ride.</text></svg></configure>
                 </port>
             </entity>
             <entity name="compuSpeed" class="ptolemy.actor.lib.Expression">
-                <property name="expression" class="ptolemy.data.expr.Parameter" value="s2 + (t2-t1)* (a2 - miu * s2)">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="s2 + (t2-t1)* (a2 - miu * s2)">
                 </property>
                 <property name="_location" class="ptolemy.moml.Location" value="440.0, 380.0">
                 </property>

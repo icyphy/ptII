@@ -281,7 +281,7 @@ the 3-D graphics and ODE capabilities of Ptolemy II</text></svg></configure>
             </property>
         </port>
         <entity name="Expression" class="ptolemy.actor.lib.Expression">
-            <property name="expression" class="ptolemy.data.expr.Parameter" value="-15.0*sin(x) -0.1*y">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="-15.0*sin(x) -0.1*y">
             </property>
             <property name="_location" class="ptolemy.moml.Location" value="350.0, 130.0">
             </property>

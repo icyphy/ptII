@@ -90,7 +90,7 @@
             </port>
         </entity>
         <entity name="x1_dot" class="ptolemy.actor.lib.Expression">
-            <property name="expression" class="ptolemy.data.expr.Parameter" value="sin(x2+x1)+u">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="sin(x2+x1)+u">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -120,7 +120,7 @@
             </port>
         </entity>
         <entity name="x2_dot" class="ptolemy.actor.lib.Expression">
-            <property name="expression" class="ptolemy.data.expr.Parameter" value="u-1.0">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="u-1.0">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -136,7 +136,7 @@
             </port>
         </entity>
         <entity name="output_y" class="ptolemy.actor.lib.Expression">
-            <property name="expression" class="ptolemy.data.expr.Parameter" value="x1+x2">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="x1+x2">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>

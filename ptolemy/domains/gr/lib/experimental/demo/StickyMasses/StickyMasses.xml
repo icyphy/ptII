@@ -2516,7 +2516,7 @@ uses the GR domain to render the results</text></svg></configure>
                 </port>
             </entity>
             <entity name="E1" class="ptolemy.actor.lib.Expression">
-                <property name="expression" class="ptolemy.data.expr.Parameter" value="1.0*1.0 - 1.0*P1">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="1.0*1.0 - 1.0*P1">
                 </property>
                 <property name="_location" class="ptolemy.moml.Location" value="231.0, 73.5">
                 </property>
@@ -2560,7 +2560,7 @@ uses the GR domain to render the results</text></svg></configure>
                 </port>
             </entity>
             <entity name="E2" class="ptolemy.actor.lib.Expression">
-                <property name="expression" class="ptolemy.data.expr.Parameter" value="2.0*2.0 - 2.0*P2">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="2.0*2.0 - 2.0*P2">
                 </property>
                 <property name="_location" class="ptolemy.moml.Location" value="224.0, 196.5">
                 </property>
@@ -2790,7 +2790,7 @@ uses the GR domain to render the results</text></svg></configure>
                 </port>
             </entity>
             <entity name="E1" class="ptolemy.actor.lib.Expression">
-                <property name="expression" class="ptolemy.data.expr.Parameter" value="(1.0*1.0 + 2.0*2.0 - (1.0+2.0)*P1)/2.0">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(1.0*1.0 + 2.0*2.0 - (1.0+2.0)*P1)/2.0">
                 </property>
                 <property name="_location" class="ptolemy.moml.Location" value="336.0, 144.5">
                 </property>
@@ -2802,7 +2802,7 @@ uses the GR domain to render the results</text></svg></configure>
                 </port>
             </entity>
             <entity name="E2" class="ptolemy.actor.lib.Expression">
-                <property name="expression" class="ptolemy.data.expr.Parameter" value="1.0*1.0 - 2.0*2.0 - (1.0-2.0)*P1">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="1.0*1.0 - 2.0*2.0 - (1.0-2.0)*P1">
                 </property>
                 <property name="_location" class="ptolemy.moml.Location" value="338.0, 213.5">
                 </property>

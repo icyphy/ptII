@@ -436,7 +436,7 @@ And Control Network Data Transfer</text></svg></configure>
             </port>
         </entity>
         <entity name="1:Expression" class="ptolemy.actor.lib.Expression">
-            <property name="expression" class="ptolemy.data.expr.Parameter" value="(in&lt;5)||(in&gt;20)||(in%5==0)||(in%5==4)">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(in&lt;5)||(in&gt;20)||(in%5==0)||(in%5==4)">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
@@ -529,7 +529,7 @@ And Control Network Data Transfer</text></svg></configure>
             </port>
         </entity>
         <entity name="Expression" class="ptolemy.actor.lib.Expression">
-            <property name="expression" class="ptolemy.data.expr.Parameter" value="(in&lt;25)">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(in&lt;25)">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
@@ -549,7 +549,7 @@ And Control Network Data Transfer</text></svg></configure>
             </port>
         </entity>
         <entity name="4:Expression" class="ptolemy.actor.lib.Expression">
-            <property name="expression" class="ptolemy.data.expr.Parameter" value="(in==27)">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(in==27)">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
@@ -569,7 +569,7 @@ And Control Network Data Transfer</text></svg></configure>
             </port>
         </entity>
         <entity name="1:4:Expression" class="ptolemy.actor.lib.Expression">
-            <property name="expression" class="ptolemy.data.expr.Parameter" value="(in==28)">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(in==28)">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
@@ -732,7 +732,7 @@ And Control Network Data Transfer</text></svg></configure>
             </property>
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
                 <configure>
-    <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/annotation.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property></entity></entity>
+    <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/annotation.xml"/><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"/></entity></entity>
   </configure>
             </property>
             <property name="annotation" class="ptolemy.kernel.util.Attribute">
@@ -1141,7 +1141,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
             </property>
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
                 <configure>
-    <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/annotation.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property></entity></entity>
+    <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/annotation.xml"/><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"/></entity></entity>
   </configure>
             </property>
             <property name="annotation" class="ptolemy.kernel.util.Attribute">
@@ -2201,7 +2201,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 </property>
             </port>
             <entity name="Expression" class="ptolemy.actor.lib.Expression">
-                <property name="expression" class="ptolemy.data.expr.Parameter" value="in+1">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="in+1">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
@@ -2221,7 +2221,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 </port>
             </entity>
             <entity name="4:Expression" class="ptolemy.actor.lib.Expression">
-                <property name="expression" class="ptolemy.data.expr.Parameter" value="in-1">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="in-1">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
@@ -2241,7 +2241,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 </port>
             </entity>
             <entity name="5:Expression" class="ptolemy.actor.lib.Expression">
-                <property name="expression" class="ptolemy.data.expr.Parameter" value="in-5">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="in-5">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
@@ -2261,7 +2261,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 </port>
             </entity>
             <entity name="6:Expression" class="ptolemy.actor.lib.Expression">
-                <property name="expression" class="ptolemy.data.expr.Parameter" value="in+5">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="in+5">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
@@ -2281,7 +2281,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 </port>
             </entity>
             <entity name="7:Expression" class="ptolemy.actor.lib.Expression">
-                <property name="expression" class="ptolemy.data.expr.Parameter" value="in-4">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="in-4">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
@@ -2301,7 +2301,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 </port>
             </entity>
             <entity name="8:Expression" class="ptolemy.actor.lib.Expression">
-                <property name="expression" class="ptolemy.data.expr.Parameter" value="in+4">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="in+4">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
@@ -2321,7 +2321,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 </port>
             </entity>
             <entity name="9:8:Expression" class="ptolemy.actor.lib.Expression">
-                <property name="expression" class="ptolemy.data.expr.Parameter" value="in-6">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="in-6">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
@@ -2341,7 +2341,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 </port>
             </entity>
             <entity name="10:8:Expression" class="ptolemy.actor.lib.Expression">
-                <property name="expression" class="ptolemy.data.expr.Parameter" value="in+6">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="in+6">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
@@ -2572,7 +2572,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 </port>
             </entity>
             <entity name="1:Expression" class="ptolemy.actor.lib.Expression">
-                <property name="expression" class="ptolemy.data.expr.Parameter" value="(in &gt; 255) ? 255: in">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(in &gt; 255) ? 255: in">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
@@ -2681,7 +2681,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
             </port>
         </entity>
         <entity name="1:Expression" class="ptolemy.actor.lib.Expression">
-            <property name="expression" class="ptolemy.data.expr.Parameter" value="(in==0)">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(in==0)">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
@@ -2701,7 +2701,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
             </port>
         </entity>
         <entity name="2:1:Expression" class="ptolemy.actor.lib.Expression">
-            <property name="expression" class="ptolemy.data.expr.Parameter" value="(in&gt;=2)">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(in&gt;=2)">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
@@ -2721,7 +2721,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
             </port>
         </entity>
         <entity name="3:1:Expression" class="ptolemy.actor.lib.Expression">
-            <property name="expression" class="ptolemy.data.expr.Parameter" value="(in==0)||(in==6)||(in==7)||(in==8)||(in==11)||(in==12)||(in==13)||(in==16)||(in==17)||(in==18)">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(in==0)||(in==6)||(in==7)||(in==8)||(in==11)||(in==12)||(in==13)||(in==16)||(in==17)||(in==18)">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
@@ -2741,7 +2741,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
             </port>
         </entity>
         <entity name="4:1:Expression" class="ptolemy.actor.lib.Expression">
-            <property name="expression" class="ptolemy.data.expr.Parameter" value="(in==19)">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(in==19)">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
@@ -2761,7 +2761,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
             </port>
         </entity>
         <entity name="5:4:1:Expression" class="ptolemy.actor.lib.Expression">
-            <property name="expression" class="ptolemy.data.expr.Parameter" value="!((in==0)||(in&gt;18))">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="!((in==0)||(in&gt;18))">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
@@ -2797,7 +2797,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
             </port>
         </entity>
         <entity name="6:2:1:Expression" class="ptolemy.actor.lib.Expression">
-            <property name="expression" class="ptolemy.data.expr.Parameter" value="(in&lt;6)||(in&gt;18)">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(in&lt;6)||(in&gt;18)">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
@@ -2837,7 +2837,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
             </port>
         </entity>
         <entity name="1:1:Expression" class="ptolemy.actor.lib.Expression">
-            <property name="expression" class="ptolemy.data.expr.Parameter" value="(in==20)">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(in==20)">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">

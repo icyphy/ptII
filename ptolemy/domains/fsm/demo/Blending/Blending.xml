@@ -134,7 +134,7 @@ http://controls.ae.gatech.edu/projects/sec/status/may01.pdf
             </property>
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
                 <configure>
-    <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/annotation.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property></entity></entity>
+    <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/annotation.xml"/><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"/></entity></entity>
   </configure>
             </property>
             <property name="_location" class="ptolemy.moml.Location" value="405.0, 70.0">
@@ -563,7 +563,7 @@ http://controls.ae.gatech.edu/projects/sec/status/may01.pdf
                 </port>
             </entity>
             <entity name="Blend Step" class="ptolemy.actor.lib.Expression">
-                <property name="expression" class="ptolemy.data.expr.Parameter" value="in % STEP">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="in % STEP">
                 </property>
                 <property name="_location" class="ptolemy.moml.Location" value="270.0, 70.0">
                 </property>
@@ -581,7 +581,7 @@ http://controls.ae.gatech.edu/projects/sec/status/may01.pdf
                 </port>
             </entity>
             <entity name="Blend Expression" class="ptolemy.actor.lib.Expression">
-                <property name="expression" class="ptolemy.data.expr.Parameter" value="(step * inputB + (STEP - step) * inputA) / STEP">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(step * inputB + (STEP - step) * inputA) / STEP">
                 </property>
                 <property name="_location" class="ptolemy.moml.Location" value="440.0, 180.0">
                 </property>
@@ -700,7 +700,7 @@ http://controls.ae.gatech.edu/projects/sec/status/may01.pdf
                 </port>
             </entity>
             <entity name="Blend Step" class="ptolemy.actor.lib.Expression">
-                <property name="expression" class="ptolemy.data.expr.Parameter" value="in % STEP">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="in % STEP">
                 </property>
                 <property name="_location" class="ptolemy.moml.Location" value="265.0, 70.0">
                 </property>
@@ -718,7 +718,7 @@ http://controls.ae.gatech.edu/projects/sec/status/may01.pdf
                 </port>
             </entity>
             <entity name="Blend Expression" class="ptolemy.actor.lib.Expression">
-                <property name="expression" class="ptolemy.data.expr.Parameter" value="(step * inputA + (STEP - step) * inputB) / STEP">
+                <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(step * inputA + (STEP - step) * inputB) / STEP">
                 </property>
                 <property name="_location" class="ptolemy.moml.Location" value="435.0, 180.0">
                 </property>
