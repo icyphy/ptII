@@ -62,7 +62,7 @@ D must be an r-by-m matrix.
 </pre>
 For each firing, the actor accepts one input DoubleMatrixToken of dimension <i>m</i> x 1, and generates one output DoubleMatrixToken of dimenstion <i>r</i> x 1.
 <P>
-In addition to produce the output <i>y</i> though port <i>output</i>, the 
+In addition to produce the output <i>y</i> though port <i>output</i>, the
 actor also produce the state values <i>x</i> though port <i>state</i>.
 
 @author Jie Liu
@@ -79,8 +79,8 @@ public class LinearDifferenceEquationSystem extends Transformer {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public LinearDifferenceEquationSystem(CompositeEntity container, 
-            String name) 
+    public LinearDifferenceEquationSystem(CompositeEntity container,
+            String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input.setMultiport(false);
@@ -146,7 +146,7 @@ public class LinearDifferenceEquationSystem extends Transformer {
 
     /** The C matrix in the state-space representation. The number of
      *  columns must equal to the number of columns of the A matrix.
-     *  The number of rows must equal to the number of columns in the 
+     *  The number of rows must equal to the number of columns in the
      *  output token. The default value is [[0.0]].
      */
     public Parameter C;
@@ -160,10 +160,10 @@ public class LinearDifferenceEquationSystem extends Transformer {
     public Parameter D;
 
     /** The initial condition for the state variables. This must be
-     *  a column vector (double matrix with only one column) whose 
-     *  length equals to the number of state variables. 
+     *  a column vector (double matrix with only one column) whose
+     *  length equals to the number of state variables.
      *  The default value is [0.0].
-     *  NOTE: Changes of the initialStates will be applied at the 
+     *  NOTE: Changes of the initialStates will be applied at the
      *  next time when fire() is called.
      */
     public Parameter initialStates;
@@ -225,9 +225,9 @@ public class LinearDifferenceEquationSystem extends Transformer {
         }
     }
 
-    /** Consume the input token, compute the system response, and 
+    /** Consume the input token, compute the system response, and
      *  produces outputs. Notice that
-     *  the state is updated in postfire. That is, if multiple fire() 
+     *  the state is updated in postfire. That is, if multiple fire()
      *  are called before a calling of postfire, this actor will use
      *  the same internal state to compute the outputs.
      *  @exception IllegalActionException If the get() or send() methods
@@ -248,7 +248,7 @@ public class LinearDifferenceEquationSystem extends Transformer {
             } else {
                 state.send(0, _x);
             }
-        }   
+        }
     }
 
     /** Update the internal state.
@@ -264,7 +264,7 @@ public class LinearDifferenceEquationSystem extends Transformer {
     }
 
     /** If the parameter <i>initialStates</i> has been changed during the
-     *  laster iteration, then update the internal state to be the 
+     *  laster iteration, then update the internal state to be the
      *  new set value.
      *
      *  @exception IllegalActionException If <i>initialStates</i> parameter
@@ -283,10 +283,10 @@ public class LinearDifferenceEquationSystem extends Transformer {
         }
     }
 
-    /** Check the dimension of all parameters. If the system needs 
-     *  multiple inputs, then set the input type to be DoubleMatrix. 
+    /** Check the dimension of all parameters. If the system needs
+     *  multiple inputs, then set the input type to be DoubleMatrix.
      *  Otherwise set the input type to Double. Similar for output
-     *  types.  
+     *  types.
      *  @exception IllegalActionException If the dimensions do not
      *  match.
      */
@@ -333,7 +333,7 @@ public class LinearDifferenceEquationSystem extends Transformer {
                     "The number of rows of the D matrix should equal to "
                     + "the number of rows of the C matrix.");
         }
-        DoubleMatrixToken x0 = 
+        DoubleMatrixToken x0 =
             (DoubleMatrixToken)initialStates.getToken();
         if (x0.getRowCount() != n) {
             throw new IllegalActionException(this,

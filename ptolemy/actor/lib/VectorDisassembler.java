@@ -45,11 +45,11 @@ import ptolemy.actor.lib.Transformer;
 //////////////////////////////////////////////////////////////////////////
 //// VectorDisassembler
 /**
-On each firing, read one column vector (i.e. a DoubleMatrixToken with 
-one column) from the input port and send out individual DoubleTokens 
+On each firing, read one column vector (i.e. a DoubleMatrixToken with
+one column) from the input port and send out individual DoubleTokens
 to the output port.
-If the width of the output port (say, <i>n</i>) is less than the number 
-of rows (say <i>m</i>) in the input token, then the first <i>n<i> 
+If the width of the output port (say, <i>n</i>) is less than the number
+of rows (say <i>m</i>) in the input token, then the first <i>n<i>
 elements in the vector will be sent, and the rest is disgarded.
 If <i>n</i> is greater than <i>m<i>, then the last <i>n-m</i> channels
 in the output port will never send tokens out.
@@ -84,9 +84,9 @@ public class VectorDisassembler extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** If there is a token at the input, read one column vector 
+    /** If there is a token at the input, read one column vector
      *  (i.e. a DoubleMatrixToken with one column)
-     *  from the input port and send its first <i>n</i> elements 
+     *  from the input port and send its first <i>n</i> elements
      *  to the output port, one in each channel, where <i>n</i> is the
      *  width of the output port. Otherwise, do nothing.
      *  Note: The output tokens are copies of the corresponding elements
@@ -102,13 +102,13 @@ public class VectorDisassembler extends Transformer {
 
 	if (input.hasToken(0)) {
 	    DoubleMatrixToken vector = (DoubleMatrixToken)input.get(0);
-            
+
             if(vector.getColumnCount() != 1) {
                 throw new IllegalActionException(this, "The input must "
                         + "be a DoubleMatrixToken with one column.");
             }
-            
-            for (int i = 0; i < Math.min(vector.getRowCount(), 
+
+            for (int i = 0; i < Math.min(vector.getRowCount(),
                     output.getWidth()); i++) {
                 output.send(i, vector.getElementAsToken(i, 0));
             }
