@@ -67,23 +67,6 @@ public class TestSource extends Source {
     /////////////////////////////////////////////////////////////////////
     ////                          Public Methods                     ////
 
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then sets the <code>output</code>
-     *  variable to equal the new port.
-     *  @param ws The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class contains
-     *   an attribute that cannot be cloned.
-     */
-    public Object clone(Workspace ws)
-	    throws CloneNotSupportedException {
-        TestSource newobj = (TestSource)super.clone(ws);
-        newobj.output.setTypeEquals(BaseType.DOUBLE);
-        newobj.frequency = (Parameter)newobj.getAttribute("frequency");
-        //newobj.frequency.setTypeEquals(BaseType.DOUBLE);
-        return newobj;
-    }
-
     /** Once the frequency is updated, calculate the execution period.
      */
     public void attributeChanged(Attribute attribute) 
