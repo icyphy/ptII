@@ -29,12 +29,8 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-# Note that the Java classes contained in this directory were written
-# by Sun.  These classes came from tcljava, see license.terms for more info.
-
 # Root of the Java directory
 ROOT =		../..
-
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
@@ -50,7 +46,7 @@ PTPACKAGE_ROOTDIR = $(CLASSPATH)
 PTPACKAGE_DIR = ptolemy/automata
 PTVERSION =	1.0
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSZIP =		$(PTPACKAGE_DIR)/$(PTPACKAGE).zip
+PTCLASSZIP =	$(PTPACKAGE_DIR)/$(PTPACKAGE).zip
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
