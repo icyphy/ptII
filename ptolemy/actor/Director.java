@@ -762,6 +762,7 @@ public class Director extends Attribute implements Executable {
      *  @param newTime The new current simulation time.
      */
     public void setCurrentTime(double newTime) throws IllegalActionException {
+        newTime = Utilities.round(newTime, getTimeResolution());
         if (newTime < getCurrentTime()) {
             throw new IllegalActionException(this, "Attempt to move current "
                     + "time backwards. (newTime = " + newTime
