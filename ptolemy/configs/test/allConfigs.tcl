@@ -47,11 +47,6 @@ if {[string compare test [info procs test]] == 1} then {
 # Check for necessary classes and adjust the auto_path accordingly.
 #
 
-# NOTE:  All of the following tests use this director,
-# pretty much as a dummy.
-set director [java::new ptolemy.actor.Director]
-set manager [java::new ptolemy.actor.Manager]
-
 ######################################################################
 ####
 #
@@ -87,14 +82,18 @@ foreach i $configs {
 		set size [$constraints size]
 		set cloneSize [$cloneConstraints size]
 		if {$size != $cloneSize} {
-		    set c [join [jdkPrintArray [$constraints toArray]] "\n"]
-		    set cc [join [jdkPrintArray [$cloneConstraints toArray]] "\n"]
-		    lappend results "Actor [$actor getFullName] has \n$c\n, while clone has\n$cc"
+		    set c [join [jdkPrintArray \
+			    [$constraints toArray] "\n" ] "\n"]
+		    set cc [join [jdkPrintArray \
+			    [$cloneConstraints toArray] "\n" ] "\n"]
+		    lappend results "Actor [$actor getFullName] has \n$c, while clone has\n$cc"
 		}
 	    } 
 	}
 	
-	return $results
-    } {}
+	# Don't call return as the last line of a test proc, since return
+	# throws an exception.
+	list $results
+    } {{}}
 }
 
