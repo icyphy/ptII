@@ -390,9 +390,9 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                             effigy.setContainer(null);
                         }
                     } catch (Throwable throwable) {
-			if (throwable instanceof StackOverflowError) {
-			    Throwable newThrowable =
-				new StackOverflowError("StackOverflowError: "
+                        if (throwable instanceof StackOverflowError) {
+                            Throwable newThrowable =
+                                new StackOverflowError("StackOverflowError: "
                                         + "Which often indicates that a class "
                                         + "could not be found, but there was "
                                         + "possibly a moml file with that same "
@@ -407,11 +407,11 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                                         + "to Joystick and because of Windows "
                                         + "filename case insensitivity, we found "
                                         + "joystick.xml, which put us in a loop.");
-			    newThrowable.initCause(throwable);
-			    throwable = newThrowable;
-			}
+                            newThrowable.initCause(throwable);
+                            throwable = newThrowable;
+                        }
 
-			throwable.printStackTrace();
+                        throwable.printStackTrace();
                         // The finally clause below can result in the
                         // application exiting if there are no other
                         // effigies open.  We check for that condition,

@@ -139,12 +139,12 @@ public class BrowserTableau extends Tableau {
                             null, null);
                 }
             }
-	    String inBrowser = "#in_browser";
-	    if (url.endsWith(inBrowser)) {
-		// Strip off any trailing #in_browser, see HTMLViewer.
-		url = url.substring(0, url.length() - inBrowser.length());
-	    }
-  	    BrowserLauncher.openURL(url);
+            String inBrowser = "#in_browser";
+            if (url.endsWith(inBrowser)) {
+                // Strip off any trailing #in_browser, see HTMLViewer.
+                url = url.substring(0, url.length() - inBrowser.length());
+            }
+              BrowserLauncher.openURL(url);
             try {
                 // We set the container to null immediately because
                 // once we spawn the browser process, we have no
