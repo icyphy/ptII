@@ -51,6 +51,7 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
+	applet/applet.jar \
 	kernel/kernel.jar \
 	java/java.jar \
 	shallow/shallow.jar \
