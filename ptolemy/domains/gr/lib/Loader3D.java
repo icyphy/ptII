@@ -71,28 +71,28 @@ public class Loader3D extends GRShadedShape {
         //ap.setColoringAttributes(new ColoringAttributes(_color.x,
         // _color.y, _color.z, ColoringAttributes.SHADE_GOURAUD));
 
-    	int flags = ObjectFile.RESIZE;
-    	//if (!noTriangulate) flags |= ObjectFile.TRIANGULATE;
+            int flags = ObjectFile.RESIZE;
+            //if (!noTriangulate) flags |= ObjectFile.TRIANGULATE;
         //if (!noStripify) flags |= ObjectFile.STRIPIFY;
-    	ObjectFile f = new ObjectFile(flags,
+            ObjectFile f = new ObjectFile(flags,
                 (float)(creaseAngle * Math.PI / 180.0));
-    	Scene s = null;
-    	try {
+            Scene s = null;
+            try {
             s = f.load(fileName);
-    	}
+            }
         catch (FileNotFoundException e) {
             System.err.println(e);
             throw new IllegalActionException("File not found!");
         }
-    	catch (ParsingErrorException e) {
+            catch (ParsingErrorException e) {
             System.err.println(e);
             throw new IllegalActionException("File is not a valid 3D OBJ file");
         }
-    	catch (IncorrectFormatException e) {
+            catch (IncorrectFormatException e) {
             System.err.println(e);
             throw new IllegalActionException("File is not a valid 3D OBJ file");
         }
-    	obj = s;
+            obj = s;
     }
 
     private boolean spin = false;
