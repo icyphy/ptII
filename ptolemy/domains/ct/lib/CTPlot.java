@@ -105,7 +105,8 @@ public class  CTPlot extends CTActor {
     public void initialize() throws IllegalActionException {
 
         if (_plot == null) {
-            _plot = (new PlotFrame(getName())).plot;
+            _plot = new Plot();
+            (new PlotFrame(getName())).plot = _plot;
         }
         _plot.clear(true);
         _plot.setButtons(true);
