@@ -169,6 +169,28 @@ public class Token implements Serializable {
 	return isEqualTo(token);
     }
 
+    /** Test that the value of this Token is close to the argument
+     *  Token.  In this base class, we call isEqualTo() and the
+     *  epsilon argument is ignored.  This method should be overridden
+     *  in derived classes such as DoubleToken and ComplexToken to
+     *  provide type specific actions for equality testing using the
+     *  epsilon argument
+     *
+     *  @see #isEqualTo
+     *  @param token The token to test closeness of this token with.
+     *  @param epsilon The value that we use to determine whether two
+     *  tokens are close.  In this base class, the epsilon argument is
+     *  ignored.
+     *  @return a boolean token that contains the value true if the
+     *   value and units of this token are close to those of the argument
+     *   token.
+     *  @exception IllegalActionException If the argument token is
+     *   not of a type that can be compared with this token.  */
+    public BooleanToken isCloseTo(Token token, double epsilon)
+	throws IllegalActionException {
+	return isEqualTo(token);
+    }
+
     /** Test for equality of the values of this Token and the argument Token.
      *  It should be overridden in derived classes to provide type specific
      *  actions for equality testing.

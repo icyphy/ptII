@@ -167,7 +167,34 @@ public class ArrayToken extends Token {
      *   token.
      *  @exception IllegalActionException If the argument token is
      *   not of a type that can be compared with this token.  */
-    public BooleanToken isCloseTo(Token token) throws IllegalActionException{
+    public BooleanToken isCloseTo(Token token) throws IllegalActionException {
+	return isCloseTo(token, ptolemy.math.Complex.epsilon);
+    }
+
+    /** Test that the value of this Token is close to the argument
+     *  Token.  The value of the epsilon argument is used to determine
+     *  whether the two Tokens are close.
+     *
+     *  <p>If A and B are the values of the tokens, and if
+     *  the following is true:
+     *  <pre>
+     *  abs(A-B) < epsilon 
+     *  </pre>
+     *  then A and B are considered close.
+     * 
+     *  @see #isEqualTo
+     *  @param token The token to test closeness of this token with.
+     *  @param epsilon The value that we use to determine whether two
+     *  tokens are close.
+     *  @return a boolean token that contains the value true if the
+     *   value and units of this token are close to those of the argument
+     *   token.
+     *  @exception IllegalActionException If the argument token is
+     *   not of a type that can be compared with this token.  */
+    public BooleanToken isCloseTo(Token token,
+				  double epsilon)
+	throws IllegalActionException {
+
 	_checkArgument(token);
 	Token[] argArray = ((ArrayToken)token).arrayValue();
 	for (int i = 0; i < _value.length; i++) {
@@ -175,7 +202,7 @@ public class ArrayToken extends Token {
 
 	    // Note that we return false the first time we hit an
 	    // element token that is not close to our current element token.
-	    BooleanToken result = _value[i].isCloseTo(argArray[i]);
+	    BooleanToken result = _value[i].isCloseTo(argArray[i], epsilon);
 	    if (result.booleanValue() == false) {
 		return new BooleanToken(false);
 	    }

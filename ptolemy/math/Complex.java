@@ -274,15 +274,32 @@ public class Complex implements Cloneable, Serializable {
                 (imag*divisor.real-real*divisor.imag)/denominator);
     }
 
-    /** Return true if both the real and imaginary parts of this complex number
-     *  are close to those of the argument.  The epsilon field is used
-     *  to determine closeness.
+    /** Return true if both the real and imaginary parts of this
+     *  complex number are close to those of the argument.  The
+     *  epsilon field is used to determine closeness.
      *
-     *  @return True if the real and imaginary parts are equal.
-     */
+     *  @see #epsilon
+     *  @param z The Complex number to compare closeness of this
+     *  Complex with.
+     *  @return True if the real and imaginary parts are equal.  */
     public final boolean isCloseTo(Complex z) {
-        return (Math.abs(z.real - real) < epsilon 
-		&& Math.abs(z.imag - imag) < epsilon );
+        return isCloseTo(z, epsilon); 
+    }
+
+    /** Return true if both the real and imaginary parts of this
+     *  complex number are close to those of the argument.  The
+     *  localEpsilon argument is used to determine closeness.
+     *
+     *  @param z The Complex number to compare closeness of this
+     *  Complex with.
+     *  @param localEpsilon The epsilon value that we use to determine
+     *  whether two tokens are close.
+     *  @return True if the real and imaginary parts are equal.  */
+    public final boolean isCloseTo(Complex z, double localEpsilon) {
+	// The argument is called localEpsilon so as to differentiate
+	// it from the epsilon field
+	return (Math.abs(z.real - real) < localEpsilon
+		&& Math.abs(z.imag - imag) < localEpsilon);
     }
 
     /** Return true if the real and imaginary parts of this complex number

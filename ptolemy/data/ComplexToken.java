@@ -259,7 +259,7 @@ public class ComplexToken extends ScalarToken {
      *  </pre>
      *  then A and B are considered close.
      * 
-     *  @see #epsilon
+     *  @see ptolemy.math.Complex#epsilon
      *  @see #isEqualTo
      *  @param token The token to test closeness of this token with.
      *  @return a boolean token that contains the value true if the
@@ -269,6 +269,34 @@ public class ComplexToken extends ScalarToken {
      *   not of a type that can be compared with this token.
      */
     public BooleanToken isCloseTo(Token token) throws IllegalActionException{
+        return isCloseTo(token, ptolemy.math.Complex.epsilon);
+    }
+
+    /** Test that the value of this Token is close to the argument
+     *  Token.  The value of the ptolemy.math.Complex epsilon field is
+     *  used to determine whether the two Tokens are close.
+     *
+     *  <p>If A and B are the values of the tokens, and if the following
+     *  is true:
+     *  <pre>
+     *  abs(A-B) < epsilon 
+     *  </pre>
+     *  then A and B are considered close.
+     * 
+     *  @see #isEqualTo
+     *  @param token The token to test closeness of this token with.
+     *  @param epsilon The value that we use to determine whether two
+     *  tokens are close.
+     *  @return a boolean token that contains the value true if the
+     *   value and units of this token are close to those of the argument
+     *   token.
+     *  @exception IllegalActionException If the argument token is
+     *   not of a type that can be compared with this token.
+     */
+    public BooleanToken isCloseTo(Token token,
+				  double epsilon)
+	throws IllegalActionException {
+
         int compare = TypeLattice.compare(this, token);
 	if (compare == CPO.INCOMPARABLE) {
             throw new IllegalActionException("ComplexToken.isEqualTo: " +
@@ -287,7 +315,7 @@ public class ComplexToken extends ScalarToken {
                 return new BooleanToken(true);
 	    }
 	    // Here is where we differ from isEqualTo:
-	    return new BooleanToken(_value.isCloseTo(complexValue));
+	    return new BooleanToken(_value.isCloseTo(complexValue, epsilon));
         }
     }
 

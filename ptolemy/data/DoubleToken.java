@@ -286,8 +286,39 @@ public class DoubleToken extends ScalarToken {
      *   value and units of this token are close to those of the argument
      *   token.
      *  @exception IllegalActionException If the argument token is
-     *   not of a type that can be compared with this token.  */
+     *   not of a type that can be compared with this token.
+     */
     public BooleanToken isCloseTo(Token token) throws IllegalActionException{
+	return isCloseTo(token, ptolemy.math.Complex.epsilon);
+    }
+
+    /** Test that the value of this Token is close to the argument
+     *  Token.  The value of the epsilon argument is used to determine
+     *  whether the two Tokens are close.
+     *
+     *  <p>If A and B are the values of the tokens, and if
+     *  the following is true:
+     *  <pre>
+     *  abs(A-B) < epsilon 
+     *  </pre>
+     *  then A and B are considered close.
+     * 
+     *  <p>There are two isCloseTo() methods so that we can use
+     *  different values of epsilon in different threads without
+     *  modifying the value of math.Complex.epsilon.
+     * 
+     *  @see #isEqualTo
+     *  @param token The token to test closeness of this token with.
+     *  @param epsilon The value that we use to determine whether two
+     *  tokens are close.
+     *  @return a boolean token that contains the value true if the
+     *   value and units of this token are close to those of the argument
+     *   token.
+     *  @exception IllegalActionException If the argument token is
+     *   not of a type that can be compared with this token.  */
+    public BooleanToken isCloseTo(Token token,
+				  double epsilon)
+	throws IllegalActionException {
         int typeInfo = TypeLattice.compare(this, token);
         if (typeInfo == CPO.HIGHER || typeInfo == CPO.SAME) {
             DoubleToken doubleToken;
@@ -304,7 +335,7 @@ public class DoubleToken extends ScalarToken {
 		double difference = _value - doubleToken.doubleValue();
 		// Here is where we differ from isEqualTo().
 		return new BooleanToken(Math.abs(difference)
-					< ptolemy.math.Complex.epsilon);
+					< epsilon);
             }
 
         } else if (typeInfo == CPO.LOWER) {
@@ -318,7 +349,6 @@ public class DoubleToken extends ScalarToken {
                     + " for equality.");
         }
     }
-
 
     /** Test the value and units of this token and the argument token
      *  for equality.
