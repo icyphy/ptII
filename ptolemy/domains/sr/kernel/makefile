@@ -48,9 +48,11 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
+	IllegalOutputException.java \
 	SRDirector.java \
 	SRReceiver.java \
-	SRScheduler.java
+	SRScheduler.java \
+	UnknownTokenException.java
 
 EXTRA_SRCS =	$(JSRCS)
 

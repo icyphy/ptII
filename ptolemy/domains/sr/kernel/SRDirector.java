@@ -165,6 +165,13 @@ public class SRDirector extends StaticSchedulingDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Increment the count of known receivers.  Called by a receiver when
+     *  it changes from unknown to known status.
+     */
+    public void incrementKnownReceiverCount() {
+        _currentNumOfKnownReceivers++;
+    }
+
     /** Fire contained actors until the iteration converges.  This method
      *  also calls the prefire() method of an actor before it is fired for
      *  the first time, and at the end, calls the postfire() methods of all 
@@ -251,7 +258,7 @@ public class SRDirector extends StaticSchedulingDirector {
      */
     public Receiver newReceiver() {
         if (_receivers == null) _receivers = new LinkedList();
-        Receiver receiver = new SRReceiver();
+        Receiver receiver = new SRReceiver(this);
         _receivers.add(receiver);
         return receiver;
     }
@@ -311,6 +318,11 @@ public class SRDirector extends StaticSchedulingDirector {
     private boolean _areAllInputsKnown(Actor actor)
             throws IllegalActionException {
 
+        if (_cachedAllInputsKnown == null)
+            _cachedAllInputsKnown = new HashSet();
+
+        if (_cachedAllInputsKnown.contains(actor)) return true;
+
         Iterator inputPorts = actor.inputPortList().iterator();
 
         while (inputPorts.hasNext()) {
@@ -318,6 +330,28 @@ public class SRDirector extends StaticSchedulingDirector {
             if (!inputPort.isKnown()) return false;
         }
 
+        _cachedAllInputsKnown.add(actor);
+        return true;
+    }
+
+    /** Return true if all the outputs of the specified actor are known.
+     */
+    private boolean _areAllOutputsKnown(Actor actor)
+            throws IllegalActionException {
+
+        if (_cachedAllOutputsKnown == null)
+            _cachedAllOutputsKnown = new HashSet();
+
+        if (_cachedAllOutputsKnown.contains(actor)) return true;
+
+        Iterator outputPorts = actor.outputPortList().iterator();
+
+        while (outputPorts.hasNext()) {
+            IOPort outputPort = (IOPort)outputPorts.next();
+            if (!outputPort.isKnown()) return false;
+        }
+
+        _cachedAllOutputsKnown.add(actor);
         return true;
     }
 
@@ -326,9 +360,8 @@ public class SRDirector extends StaticSchedulingDirector {
      */
     private void _doAllowFiringOf(Actor actor) {
         if (actor != null) {
-            if (_actorsAllowedToFire == null) {
+            if (_actorsAllowedToFire == null)
                 _actorsAllowedToFire = new HashSet();
-            }
             _actorsAllowedToFire.add(actor);
         }
     }
@@ -338,9 +371,8 @@ public class SRDirector extends StaticSchedulingDirector {
      */
     private void _doNotAllowIterationOf(Actor actor) {
         if (actor != null) {
-            if (_actorsNotAllowedToIterate == null) {
+            if (_actorsNotAllowedToIterate == null)
                 _actorsNotAllowedToIterate = new HashSet();
-            }
             _debug("  Added to _actorsNotAllowedToIterate:",
                     _getNameOf(actor));
             _actorsNotAllowedToIterate.add(actor);
@@ -355,7 +387,7 @@ public class SRDirector extends StaticSchedulingDirector {
 
         if (_isReadyToFire(actor)) {
             if (_isFiringAllowed(actor)) {
-                if (!_hasCompletedFiring(actor)) {
+                if (!_isFinishedFiring(actor)) {
                     _debug("    SRDirector is firing", _getNameOf(actor));
 
                     // Whether all inputs are known must be checked before
@@ -401,29 +433,6 @@ public class SRDirector extends StaticSchedulingDirector {
         return scheduler.getSchedule();
     }
 
-    /** Return true if the specified actor has completed firing.  An actor 
-     *  has completed firing if it has defined all of its outputs.
-     */
-    private boolean _hasCompletedFiring(Actor actor)
-            throws IllegalActionException {
-
-        // Non strict actors should fire every phase in case more inputs
-        // become available (the inputs might be, for example, cached and
-        // used in a subsequent iteration.
-        if (_isNonStrict(actor)) return false;
-
-        Iterator outputPorts = actor.outputPortList().iterator();
-
-        while (outputPorts.hasNext()) {
-            IOPort outputPort = (IOPort)outputPorts.next();
-            if (!outputPort.isKnown()) return false;
-        }
-
-        // FIXMESOON:* it might be possible to improve efficiency here
-        // by caching the fact that this actor is done firing. 
-        return true;
-    }
-
     /** Return true if this iteration has converged.  The iteration has
      *  converged if both the number of known receivers has converged and
      *  the number of actors to fire has converged.
@@ -436,12 +445,7 @@ public class SRDirector extends StaticSchedulingDirector {
 
         // Get the current values for local use.
         int currentNumOfActorsAllowedToFire = _numOfActorsAllowedToFire();
-        int currentNumOfKnownReceivers = _numOfKnownReceivers();
-
-        // Update the previous values for use the next time this method
-        // is called.
-        _lastNumOfActorsAllowedToFire = currentNumOfActorsAllowedToFire;
-        _lastNumOfKnownReceivers = currentNumOfKnownReceivers;
+        int currentNumOfKnownReceivers = _currentNumOfKnownReceivers;
 
         if (_debugging) {
             _debug("  previousNumOfActorsAllowedToFire is",
@@ -455,6 +459,11 @@ public class SRDirector extends StaticSchedulingDirector {
             _debug("  total number of receivers is",
                     String.valueOf(_receivers.size()));
         }
+
+        // Update the previous values for use the next time this method
+        // is called.
+        _lastNumOfActorsAllowedToFire = currentNumOfActorsAllowedToFire;
+        _lastNumOfKnownReceivers = _currentNumOfKnownReceivers;
 
         // Note that having zero actors to fire is not sufficient for 
         // convergence.  Some actors may fire in the next phase if
@@ -516,10 +525,28 @@ public class SRDirector extends StaticSchedulingDirector {
         _postfireReturns = false;
         _actorsAllowedToFire = null;
 
+        _cachedAllInputsKnown = null;
+        _cachedAllOutputsKnown = null;
+
         _lastNumOfActorsAllowedToFire = -1;
         _lastNumOfKnownReceivers = -1;
 
         _resetAllReceivers();
+        _currentNumOfKnownReceivers = 0;
+    }
+
+    /** Return true if the specified actor is finished firing.  An actor 
+     *  has finished firing if it is strict and has defined all of its outputs.
+     */
+    private boolean _isFinishedFiring(Actor actor)
+            throws IllegalActionException {
+
+        // Non strict actors should fire every phase in case more inputs
+        // become available (the inputs might be, for example, cached and
+        // used in a subsequent iteration.
+        if (_isNonStrict(actor)) return false;
+
+        return _areAllOutputsKnown(actor);
     }
 
     /** Return true if the specified actor is allowed to fire, that is,
@@ -540,8 +567,12 @@ public class SRDirector extends StaticSchedulingDirector {
     /** Return true if the specified actor is a nonstrict actor.
      */
     private boolean _isNonStrict(Actor actor) {
+
+        // This information is not cached, since there is no semantic reason
+        // that the strictness of an actor could not change during execution.
         Attribute nonStrictAttribute = 
             ((NamedObj) actor).getAttribute(NON_STRICT_ATTRIBUTE_NAME);
+
         return (nonStrictAttribute != null);
     }
 
@@ -551,9 +582,7 @@ public class SRDirector extends StaticSchedulingDirector {
     private boolean _isReadyToFire(Actor actor) throws IllegalActionException {
 
         // Non strict actors are allowed to fire even if no inputs are known.
-        if (_isNonStrict(actor)) {
-            return true;
-        }
+        if (_isNonStrict(actor)) return true;
 
         return _areAllInputsKnown(actor);
     }
@@ -566,26 +595,6 @@ public class SRDirector extends StaticSchedulingDirector {
         }
 
         return _actorsAllowedToFire.size();
-    }
-
-    /** Return the number of receivers with known state.
-     */
-    private int _numOfKnownReceivers() {
-        if (_receivers == null) {
-           return 0;
-        }
-
-        // FIXME: optimize by having receivers notify the director, which will
-        // increment a counter.
-
-        int count = 0;
-        Iterator i = _receivers.iterator();
-
-        while (i.hasNext()) {
-            if (((SRReceiver) i.next()).isKnown()) count++;
-        }
-
-        return count;
     }
 
     /** Return the result of the postfire() method of the specified actor 
@@ -623,7 +632,7 @@ public class SRDirector extends StaticSchedulingDirector {
         if (!_isNonStrict(actor)) {
             // No need to do anything if this actor has defined all of its 
             // outputs.
-            if (!_hasCompletedFiring(actor)) {
+            if (!_isFinishedFiring(actor)) {
                 _debug("  SRDirector is calling sendAbsent()",
                         "on the output ports of", _getNameOf(actor));
 
@@ -636,9 +645,6 @@ public class SRDirector extends StaticSchedulingDirector {
                     }
                 }
             }
-
-            // FIXMESOON:* it might be possible to improve efficiency here
-            // by caching the fact that this actor is done firing. 
         }
     }
 
@@ -653,6 +659,15 @@ public class SRDirector extends StaticSchedulingDirector {
     // The set of actors that have returned true in their prefire() methods
     // on the given iteration.
     private HashSet _actorsAllowedToFire;
+
+    // The set of actors that have all inputs known in the given iteration.
+    private HashSet _cachedAllInputsKnown;
+
+    // The set of actors that have all outputs known in the given iteration.
+    private HashSet _cachedAllOutputsKnown;
+
+    // The current number of receivers with known state.
+    private int _currentNumOfKnownReceivers;
 
     // The count of iterations executed.
     private int _iteration;

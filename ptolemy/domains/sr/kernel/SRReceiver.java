@@ -30,7 +30,6 @@
 
 package ptolemy.domains.sr.kernel;
 
-import ptolemy.actor.IOPort;
 import ptolemy.actor.Mailbox;
 import ptolemy.actor.NoRoomException;
 import ptolemy.actor.NoTokenException;
@@ -84,21 +83,12 @@ for an actor to reset a receiver to have unknown status.
 */
 public class SRReceiver extends Mailbox {
 
-    /** Construct an SRReceiver with unknown state and no container.
+    /** Construct an SRReceiver with unknown state and the given director.
      */
-    public SRReceiver() {
+    public SRReceiver(SRDirector director) {
         super();
         reset();
-    }
-
-    /** Construct an SRReceiver with unknown state and the specified container.
-     *  @param container The port that contains the receiver.
-     *  @exception IllegalActionException If this receiver cannot be
-     *   contained by the proposed container.
-     */
-    public SRReceiver(IOPort container) throws IllegalActionException {
-        super(container);
-        reset();
+        _director = director;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -107,15 +97,12 @@ public class SRReceiver extends Mailbox {
     /** Get the contained Token without modifying or removing it.  If there 
      *  is none, throw an exception.
      *  @return The token contained in the receiver.
-     *  @exception NoTokenException If the state of this receiver
-     *   is unknown.
      */
-    public Token get() throws NoTokenException {
-        // FIXME: throw a runtime exception UnknownTokenException.
+    public Token get() {
         if (isKnown()) {
             return _getToken();
         } else {
-            throw new NoTokenException(getContainer(),
+            throw new UnknownTokenException(getContainer(),
                     "get() called on SRReceiver with unknown state.");
         }
     }
@@ -132,16 +119,11 @@ public class SRReceiver extends Mailbox {
      *  @return True if this receiver contains a token.
      */
     public boolean hasToken() {
-        // FIXME: throw a runtime exception UnknownTokenException.
         if (isKnown()) {
             return super.hasToken();
         } else {
-            if (super.hasToken()) {
-                throw new InvalidStateException("SRReceiver with unknown " +
+            throw new UnknownTokenException("SRReceiver with unknown " +
                         "state cannot contain a token.");
-            } else {
-                return super.hasToken();
-            }
         }
     }
 
@@ -161,8 +143,7 @@ public class SRReceiver extends Mailbox {
      *  @exception NoRoomException If this receiver already contains a 
      *   different token, or if this receiver is in an absent state.
      */
-    public void put(Token token) throws NoRoomException {
-        // FIXME: throw a runtime exception IllegalOutputException.
+    public void put(Token token) {
         if (token == null) {
             throw new InternalErrorException("SRReceiver.put(null) is " +
                     "invalid.");
@@ -174,7 +155,7 @@ public class SRReceiver extends Mailbox {
                             (token.isEqualTo(_token).booleanValue()) ) {
                         // Do nothing, because this token was already present.
                     } else {
-                        throw new NoRoomException(getContainer(), 
+                        throw new IllegalOutputException(getContainer(), 
                                 "SRReceiver cannot receive two tokens " +
                                 "that differ.");
                     }
@@ -185,7 +166,7 @@ public class SRReceiver extends Mailbox {
                             "equal.");
                 }
             } else {
-                throw new NoRoomException(getContainer(), 
+                throw new IllegalOutputException(getContainer(), 
                         "SRReceiver cannot transition from an absent state " +
                         "to a present state.");
             }
@@ -198,11 +179,10 @@ public class SRReceiver extends Mailbox {
      *  @exception NoRoomException If this receiver already contains 
      *   a token.
      */
-    public void setAbsent() throws NoRoomException {
-        // FIXME: throw a runtime exception IllegalOutputException.
+    public void setAbsent() {
         if (isKnown()) {
             if (hasToken()) {
-                throw new NoRoomException(getContainer(),
+                throw new IllegalOutputException(getContainer(),
                         "SRReceiver cannot transition from a present " +
                         "state to an absent state.");
             } else {
@@ -232,9 +212,8 @@ public class SRReceiver extends Mailbox {
 
     /** Return the contained token without modifying or removing it.
      *  @return The token contained in this receiver.
-     *  @exception NoTokenException If this receiver contains no token.
      */
-    private Token _getToken() throws NoTokenException {
+    private Token _getToken() {
         if (_token == null) {
             throw new NoTokenException(getContainer(),
                     "Attempt to get data from an empty mailbox.");
@@ -249,6 +228,7 @@ public class SRReceiver extends Mailbox {
     private void _putToken(Token token) {
         reset();
         super.put(token);
+        _director.incrementKnownReceiverCount();
         _known = true;
     }
 
@@ -260,4 +240,6 @@ public class SRReceiver extends Mailbox {
     // receiver is known not to contain a token.
     private boolean _known;
 
+    // The director of this receiver.
+    private SRDirector _director;
 }

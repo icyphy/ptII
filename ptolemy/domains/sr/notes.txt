@@ -1,7 +1,27 @@
 
+check in:
+
+pde:
+UnknownResultException.java
+Variable.java
+fsmk:
+Transition.java
+OutputActionsAttribute.java
+CommitActionsAttribute.java
+FSMActor.java
+fsmkt:
+InterfaceAutomaton.tcl
+FSMActor.tcl
+srk:
+UnknownTokenException.java - add
+IllegalOutputException.java - add
+makefile
+SRReceiver.java
+SRDirector.java
+
 To Do:
 
-5 FIXMEs
+5 FIXMEs (optimized Scheduler)
 5 code review
 9 write NonStrictSelect (prefire monotonicity, only needs known selected input)
 
