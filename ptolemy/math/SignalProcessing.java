@@ -169,7 +169,7 @@ public class SignalProcessing {
      */
     public static final double[] DCT(double[] x, int order, int type) {
 
-        _checkTransformArgs(x, order, FORWARD_TRANSFORM);
+        _checkTransformArgs(x, order, _FORWARD_TRANSFORM);
 
         if (type >= DCT_TYPES) {
             throw new IllegalArgumentException(
@@ -364,7 +364,7 @@ public class SignalProcessing {
      */
     public static final Complex[] IFFTComplexOut(Complex[] x, int order) {
 
-        x = _checkTransformArgs(x, order, INVERSE_TRANSFORM);
+        x = _checkTransformArgs(x, order, _INVERSE_TRANSFORM);
 
         Complex[] conjX = ComplexArrayMath.conjugate(x);
         Complex[] yConj = FFTComplexOut(conjX, order);
@@ -400,7 +400,7 @@ public class SignalProcessing {
      */
     public static final double[] IFFTRealOut(Complex[] x, int order) {
 
-        x = _checkTransformArgs(x, order, INVERSE_TRANSFORM);
+        x = _checkTransformArgs(x, order, _INVERSE_TRANSFORM);
 
         double[] realx = ComplexArrayMath.realParts(x);
         double[] realrealX = FFTRealOut(realx, order);
@@ -463,7 +463,7 @@ public class SignalProcessing {
      *  @return A new array of Complex's.
      */
     public static final Complex[] FFTComplexOut(Complex[] x, int order) {
-        x = _checkTransformArgs(x, order, FORWARD_TRANSFORM);
+        x = _checkTransformArgs(x, order, _FORWARD_TRANSFORM);
 
         double[] realx = ComplexArrayMath.realParts(x);
         double[] realrealX = FFTRealOut(realx, order);
@@ -530,7 +530,7 @@ public class SignalProcessing {
      *  @return A new array of doubles.
      */
     public static final double[] FFTImagOut(Complex[] x, int order) {
-        x = _checkTransformArgs(x, order, FORWARD_TRANSFORM);
+        x = _checkTransformArgs(x, order, _FORWARD_TRANSFORM);
 
         double[] realx = ComplexArrayMath.realParts(x);
         double[] imagrealX = FFTImagOut(realx, order);
@@ -566,7 +566,7 @@ public class SignalProcessing {
      *  @return A new array of doubles.
      */
     public static final double[] FFTImagOut(double[] x, int order) {
-        x = _checkTransformArgs(x, order, FORWARD_TRANSFORM);
+        x = _checkTransformArgs(x, order, _FORWARD_TRANSFORM);
 
         int size = 1 << order;
         int halfN = size >> 1;
@@ -616,7 +616,7 @@ public class SignalProcessing {
      *  @return A new array of doubles.
      */
     public static final double[] FFTRealOut(Complex[] x, int order) {
-        x = _checkTransformArgs(x, order, FORWARD_TRANSFORM);
+        x = _checkTransformArgs(x, order, _FORWARD_TRANSFORM);
 
         double[] realx = ComplexArrayMath.realParts(x);
         double[] realrealX = FFTRealOut(realx, order);
@@ -649,7 +649,7 @@ public class SignalProcessing {
      *  @return A new array of doubles.
      */
     public static final double[] FFTRealOut(double[] x, int order) {
-        x = _checkTransformArgs(x, order, FORWARD_TRANSFORM);
+        x = _checkTransformArgs(x, order, _FORWARD_TRANSFORM);
 
         int size = 1 << order;
         int halfN = size >> 1;
@@ -839,8 +839,8 @@ public class SignalProcessing {
 
         double angle = -Math.PI;
         for (int index = 0; index < freq.length; index++){
-            Complex polescontrib = new Complex(1.0);
-            Complex zeroscontrib = new Complex(1.0);
+            Complex polescontrib = Complex.ONE;
+            Complex zeroscontrib = Complex.ONE;
             Complex ejw = new Complex(Math.cos(angle), Math.sin(angle));
             if (poles.length > 0) {
                 Complex[] diffpoles = ComplexArrayMath.subtract(poles, ejw);
@@ -1514,7 +1514,7 @@ public class SignalProcessing {
 
         // Zero pad the array if necessary
         if (x.length < size) {
-           x = (inverse == INVERSE_TRANSFORM) ?
+           x = (inverse == _INVERSE_TRANSFORM) ?
                ComplexArrayMath.padMiddle(x, size) :
                ComplexArrayMath.resize(x, size);
         }
@@ -1741,6 +1741,6 @@ public class SignalProcessing {
     private static final double _LOG2SCALE  = 1.0 / Math.log(2.0);
 
     // Indicates an forward/inverse transform for checking arguments
-    private static final boolean FORWARD_TRANSFORM = false;
-    private static final boolean INVERSE_TRANSFORM = true;
+    private static final boolean _FORWARD_TRANSFORM = false;
+    private static final boolean _INVERSE_TRANSFORM = true;
 }
