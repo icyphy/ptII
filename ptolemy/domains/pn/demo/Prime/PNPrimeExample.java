@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 */
 
-package ptolemy.domains.pn.demo;
+package ptolemy.domains.pn.demo.Prime;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;

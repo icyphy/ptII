@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 */
 
-package ptolemy.domains.pn.demo;
+package ptolemy.domains.pn.demo.Prime;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
@@ -34,7 +34,6 @@ import ptolemy.domains.pn.kernel.*;
 import ptolemy.domains.pn.lib.*;
 import java.util.Enumeration;
 
-//import gui.DynamicGraphView;
 
 //////////////////////////////////////////////////////////////////////////
 //// PNPrimeExample
