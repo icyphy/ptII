@@ -445,7 +445,7 @@ public class ModelTransformer extends SceneTransformer {
     }
 
     /** Generate code in the given body of the given class before the
-     *  given stetment to set the values of variables and settable
+     *  given statement to set the values of variables and settable
      *  attributes contained by the given named object.  The given
      *  class is assumed to be associated with the given context.
      *  @param body The body to generate code in.
