@@ -64,7 +64,15 @@ import ptolemy.kernel.util.NameDuplicationException;
 Sends and receive bytes via the serial port.  Which serial port and
 baud rate to use are set by parameters.  If the specified serial port
 is not successfully opened, then another one will automatically be
-chosen if available.
+chosen if available.  FIXME: Does not find any ports from which to 
+choose!  Find out why & fix.  If problem is that laptop may not have 
+any ports, then find a way to list other kinds of ports with serial 
+ports in the mix.  That way at least, one would know it is working.
+<p>
+This actor is designed for use in DE.  It can be used in other domains, 
+such as SDF, with interesting behavior.  This actor does not block in 
+fire().  When fired, if no data is available for the serial port, then
+no token is produced.
 <p>
 Bytes to be sent must enter the actor as an array of integers.
 The lowest order byte from each integer is used.  (Negative numbers
