@@ -111,7 +111,7 @@ public class IOPort extends ComponentPort {
      */	
     public IOPort(ComponentEntity container, String name) 
             throws IllegalActionException, NameDuplicationException {
-	super(container,name);
+	super(container, name);
     }
 
     /** Construct an IOPort with a container and a name that is
@@ -132,7 +132,7 @@ public class IOPort extends ComponentPort {
     public IOPort(ComponentEntity container, String name,
             boolean isinput, boolean isoutput)
             throws IllegalActionException, NameDuplicationException {
-        this(container,name);
+        this(container, name);
         makeInput(isinput);
         makeOutput(isoutput);
     }
@@ -167,10 +167,10 @@ public class IOPort extends ComponentPort {
                 
             for (int j = 0; j < fr.length; j++) {
                 if (first) {
-                    send(j,token);
+                    send(j, token);
                     first = false;
                 } else {
-                    send(j,((Token)(token.clone())));
+                    send(j, ((Token)(token.clone())));
                 }
             }
         }
