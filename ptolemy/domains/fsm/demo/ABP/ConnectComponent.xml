@@ -25,14 +25,14 @@
         <property name="output"/>
         <property name="type" class="ptolemy.actor.TypeAttribute" value="general">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="755.0, 135.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="700.0, 135.0">
         </property>
     </port>
     <port name="error" class="ptolemy.actor.TypedIOPort">
         <property name="output"/>
         <property name="type" class="ptolemy.actor.TypeAttribute" value="general">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="755.0, 180.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="700.0, 180.0">
         </property>
     </port>
     <port name="ack" class="ptolemy.actor.TypedIOPort">
@@ -46,14 +46,14 @@
         <property name="output"/>
         <property name="type" class="ptolemy.actor.TypeAttribute" value="int">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="755.0, 40.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="700.0, 40.0">
         </property>
     </port>
     <port name="setTimer" class="ptolemy.actor.TypedIOPort">
         <property name="output"/>
         <property name="type" class="ptolemy.actor.TypeAttribute" value="double">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="755.0, 90.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="700.0, 90.0">
         </property>
     </port>
     <port name="expired" class="ptolemy.actor.TypedIOPort">
