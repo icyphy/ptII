@@ -38,9 +38,10 @@ ME =		ptolemy/apps
 #
 # PTKVM_DIR is set to kvm by configure if the kvm runtime was found
 # PTLEGO_DIR is set to lego if the commapi was found.
+# PTLEJOS_DIR is set to lejos if Legos and the commapi was found.
 # PTWABA_DIR is set to waba if waba was found
-#
-DIRS =		 agilent $(PTKVM_DIR) $(PTLEGO_DIR) tini $(PTWABA_DIR)
+DIRS =		agilent $(PTKVM_DIR) $(PTLEGO_DIR) $(PTLEJOS) \
+		tini $(PTWABA_DIR)
 
 # Root of Ptolemy II directory
 ROOT =		../..
