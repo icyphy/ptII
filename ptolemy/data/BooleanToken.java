@@ -89,7 +89,9 @@ public class BooleanToken extends Token {
         return _value;
     }
 
-    /** Negate the value stored by this BooleanToken */
+    /** Negate the value stored by this BooleanToken 
+        FIXME: should this return a new BooleanToken?
+    */
     public void negate() {
         if (_value) {
             _value = false;
