@@ -48,6 +48,13 @@ if {[string compare test [info procs test]] == 1} then {
 
 test InnerLocal-1.1 {Generate all required files for InnerLocal.java} {
     set output  [generateC InnerLocal]
+    
+    cd ../..
+    # Move generated files for inner classes to the output directory too.
+    # $outputDir is defined in generateCExec. 
+    file rename -force InnerLocal_1_Inner.c  InnerLocal_1_Inner.h  \
+        InnerLocal_1_Inner.o  InnerLocal_1_Inner_i.h testOutput/InnerLocal
+        
     set template "0 1 2 3"
     string first $template $output
 } {0}

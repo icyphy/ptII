@@ -64,25 +64,21 @@ CLEANLIB = _cleanLib.tcl
 # ONLY.
 JSIMPLE_TESTS = \
 	$(CLEANLIB) \
-    Array2DInt.tcl \
-    Array3DInt.tcl \
-    ArrayOfObjects.tcl \
-	BasicException.tcl \
+    Arrays.tcl\
     Cases.tcl \
     CommandLine.tcl \
+    CountDown.tcl \
+    Exceptions.tcl\
     FIR2.tcl \
     FIRSingle.tcl \
-    GlobalExceptions.tcl \
-    InheritedException.tcl \
     InnerField.tcl \
     InnerLocal.tcl \
-    Object.tcl \
     ObjectSingle.tcl \
     printInt.tcl \
     RightShift.tcl \
-	Simple.tcl \
-	SimpleSingle.tcl \
-	Terp.tcl 
+    Simple.tcl \
+    SimpleSingle.tcl \
+    Terp.tcl 
 
 # Disabled tests:
 #   FIR.tcl

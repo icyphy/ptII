@@ -1,5 +1,10 @@
-# Tests Copernicus C Code generation for the Array1 example that uses a
-# simple array.
+# Tests Copernicus C Code generation for Exception functionality.
+# Replaces the following tests:
+# BasicException.java
+# GlobalExceptions.java
+# InheritedException.java
+# NestedExceptions.java
+#
 #
 # @Author: Ankush Varma
 #
@@ -50,11 +55,11 @@ if {[info procs jdkClassPathSeparator] == "" } then {
 ####
 #
 
-test Array1-1.1 {Generate all required files for Array1.java} {
+test Arrays-1.1 {Generate all required files for Arrays.java} {
 
-    set outputDir testOutput/Array1.out
-    set className Array1
-    set lib testOutput/j2c_lib
+    set outputDir testOutput/Arrays.out
+    set className Arrays
+    set lib $outputDir/j2c_lib
     
     # Adds the .java suffix after a space.
     set javaFile [concat $className ".java"]
@@ -121,13 +126,17 @@ test Array1-1.1 {Generate all required files for Array1.java} {
     exec make -s -f $mkFile
 
     # Move all generated files to the output directory.
-    file rename -force $cFile $mainCFile $oFile $mainOFile $hFile $iFile $makeFile\
+    file rename -force \
+         $cFile $mainCFile $oFile $mainOFile $hFile $iFile $makeFile\
             $mkFile $exeFile $classFile $outputDir 
     
+    foreach i "[glob {Array[123O]*.[cho]}] [glob {Array[123O]*.class}]" {
+        file rename -force $i $outputDir
+    }
+
     # Run the automatically generated executible.
     cd $outputDir
 
-    # The nightly build does not have . in the path, so we use ./ here.
     # The nightly build does not have . in the path, so we use ./ here.
     set exeFile ".[java::call System getProperty file.separator]$exeFile"
     set output [exec $exeFile]
@@ -138,7 +147,7 @@ test Array1-1.1 {Generate all required files for Array1.java} {
 " $output "" output
     
     # Check if the output is correct.
-    set template "0 10 20 30 40 50 60 70 80 90"
+    set template "0 10 20 30 40 50 60 70 80 90 0 1 10 11 0 1 2 I, said the sparrow. With my bow and arrow."
     
     # Test output
     string first $template $output

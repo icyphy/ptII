@@ -64,7 +64,7 @@ proc generateC {className {commandLineArgs {}}} {
     }
 
     set outputDir testOutput/$className
-    set lib testOutput/j2c_lib
+    set lib testOutput/$className/j2c_lib
     
     # Adds the .java suffix after a space.
     set javaFile [concat $className ".java"]

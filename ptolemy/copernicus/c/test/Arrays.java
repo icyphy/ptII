@@ -1,5 +1,5 @@
 /*
-A class that sets an array of Objects and prints it out.
+A class that runs multiple array tests.
 
 Copyright (c) 2001-2003 The University of Maryland
 All rights reserved.
@@ -37,7 +37,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 //// Terp
 /**
 
-A class that sets an array of Objects and prints it out.
+A class that runs multiple array tests. Runs the Array1,
+Array2DInt, Array3DInt and ArrayOfObjects tests.
 
 @author Ankush Varma
 @version $Id$
@@ -45,23 +46,14 @@ A class that sets an array of Objects and prints it out.
 
 */
 
-public class ArrayOfObjects{
+public class Arrays{
 
     public static void main(String args[]) {
-        // Initialize array.
-        String data[] = new String[2];
-
-        // Set the data.
-        data[0] = new String("I, said the sparrow.");
-        data[1] = new String("With my bow and arrow.");
-
-        // Print out the data.
-        for (int i = 0; i < 2; i++) {
-            // The toString is because System.out.println(Object) isn't up
-            // yet.
-            System.out.println(data[i].toString());
-        }
-
-
+        String dummy[] = new String[1];
+        Array1.main(dummy);
+        Array2DInt.main(dummy);
+        Array3DInt.main(dummy);
+        ArrayOfObjects.main(dummy);
     }
+
 }

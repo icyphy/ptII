@@ -1,4 +1,10 @@
-# Tests Copernicus C Code generation for the NestedExceptions example.
+# Tests Copernicus C Code generation for Exception functionality.
+# Replaces the following tests:
+# BasicException.java
+# GlobalExceptions.java
+# InheritedException.java
+# NestedExceptions.java
+#
 #
 # @Author: Ankush Varma
 #
@@ -49,11 +55,11 @@ if {[info procs jdkClassPathSeparator] == "" } then {
 ####
 #
 
-test NestedExceptions-1.1 {Generate all required files for NestedExceptions.java} {
+test Exceptions-1.1 {Generate all required files for Exceptions.java} {
 
-    set outputDir testOutput/NestedExceptions.out
-    set className NestedExceptions
-    set lib testOutput/j2c_lib
+    set outputDir testOutput/Exceptions.out
+    set className Exceptions
+    set lib $outputDir/j2c_lib
     
     # Adds the .java suffix after a space.
     set javaFile [concat $className ".java"]
@@ -78,13 +84,11 @@ test NestedExceptions-1.1 {Generate all required files for NestedExceptions.java
     
     # Create the output directory.
     file mkdir $outputDir
-    
+
     # Remove the directory for auto-generated natives.
     if {[file isdirectory "natives"]} {
 	file delete -force "natives"
     }
-
-
     # We need to get the classpath so that we can run if we are running
     # under Javascope, which includes classes in a zip file
     set builtinClasspath [java::call System getProperty "java.class.path"]
@@ -115,30 +119,38 @@ test NestedExceptions-1.1 {Generate all required files for NestedExceptions.java
         exec java -classpath $classpath ptolemy.copernicus.c.JavaToC \
             $classpath -lib $lib $className
     }
+                
    
     exec make depend -s -f $makeFile
     #This creates the .mk file.
     exec make -s -f $mkFile
-    
-    
 
     # Move all generated files to the output directory.
-    file rename -force $cFile $mainCFile $oFile $mainOFile $hFile $iFile $makeFile\
+    file rename -force \
+         $cFile $mainCFile $oFile $mainOFile $hFile $iFile $makeFile\
             $mkFile $exeFile $classFile $outputDir 
     
+    foreach i "[glob {*Exception*.[cho]}] [glob {*Exception*.class}]" {
+        file rename -force $i $outputDir
+    }
+
     # Run the automatically generated executible.
     cd $outputDir
+
     # The nightly build does not have . in the path, so we use ./ here.
     set exeFile ".[java::call System getProperty file.separator]$exeFile"
     set output [exec $exeFile]
+    
+    # Turn newlines into spaces.
     regsub -all "\n" $output " " output
     regsub -all "
 " $output "" output
     
     # Check if the output is correct.
-    set template "Caught First Exception. Caught Second Exception."
+    set template "0 10 20 1 2 3 4 0 10 20 Caught First Exception. Caught Second Exception."
     
+    # Test output
     string first $template $output
-    
+  
 } {0}
 

@@ -85,7 +85,7 @@ test FIRSingle-1.1 {Generate .c, _i.h, and .h files for FIR \
 
     # Generate the code using singleClass compilation mode.
     exec java -classpath $classpath ptolemy.copernicus.c.JavaToC $classpath \
-            -singleClass FIRSingle
+            -compileMode singleClass FIRSingle
 
     # NOTE: JavaToC expects the class file to be converted (in this case
     # FIRSingle.class) to be in the directory from which it is invoked. It

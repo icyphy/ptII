@@ -51,9 +51,9 @@ if {[info procs jdkClassPathSeparator] == "" } then {
 
 test Object-1.1 {Generate all required files for java.lang.Object} {
 
-    set outputDir testOutput/Object.out
+    set outputDir testOutput/Object
     set className java.lang.Object
-    set lib testOutput/j2c_lib
+    set lib $outputDir/j2c_lib
     
     # Adds the .java suffix after a space.
     set javaFile [concat $className ".java"]
@@ -106,7 +106,10 @@ test Object-1.1 {Generate all required files for java.lang.Object} {
         ]]
 
     # Generate the code.
-    java::call ptolemy.copernicus.c.JavaToC main $args 
+    #java::call ptolemy.copernicus.c.JavaToC $args 
+    exec java -Xmx600m -classpath $classpath ptolemy.copernicus.c.JavaToC \
+        $classpath -lib $lib $className
+
     
     # NOTE: JavaToC expects the class file to be converted to be in the
     # directory from which it is invoked. It outputs the generated code
@@ -116,7 +119,7 @@ test Object-1.1 {Generate all required files for java.lang.Object} {
     # xyz.out directory after they are created. A better method to
     # solve this might exist.
 
-    # Move the generated files to the SimpleSingle.out directory.
+    # Move the generated files to the output directory.
     file rename -force $cFile $hFile $iFile $makeFile\
             $mainCFile $outputDir
     
