@@ -45,8 +45,7 @@ import ptolemy.data.expr.ASTPtRootNode;
 /**
 A token that contains an instance of FixPoint.
 
-@author Bart Kienhuis
-@contributor Edward A. Lee
+@author Bart Kienhuis, Contributor: Edward A. Lee
 @see ptolemy.data.Token
 @see ptolemy.math.FixPoint
 @see ptolemy.math.Precision
