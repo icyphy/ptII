@@ -79,7 +79,7 @@ public class CheckedCollection implements UpdatableCollection  {
 
 /**
  * Wrapper for clone()
- * @see clone
+ * @see #clone
 **/
 
  public synchronized Collection duplicate() {

@@ -73,7 +73,7 @@ public abstract class UpdatableImpl implements UpdatableCollection, Serializable
 
 /**
  * Wrapper for clone()
- * @see clone
+ * @see #clone
 **/
 
  public synchronized Collection duplicate() {

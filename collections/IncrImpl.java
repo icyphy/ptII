@@ -165,7 +165,7 @@ public abstract class IncrImpl implements Immutable, Collection {
 
 /**
  * Wrapper for clone()
- * @see clone
+ * @see #clone
 **/
 
  public Collection duplicate() {
