@@ -253,8 +253,8 @@ public class SearchPath extends Vector {
         // We use class names because they are . separated,
         // whereas filenames are separated by a platform dependent char.
 
-        // Create a HashSet with a size of 16217
-        // The number of .class files in JDK1.4beta2 rt.jar is 7812
+        // Create a HashSet with a size of 17011
+        // The number of .class files in Windows JDK1.4beta2 rt.jar is 7994
         // Determine that the number of .class files in rt.jar with:
         // jar -tvf rt.jar | grep '.class' | wc -l
         // The number of .class files in JavaScope.zip is 385
@@ -270,7 +270,7 @@ public class SearchPath extends Vector {
         // Note that we have a test in the test suite that will warn
         // us if the number of classes is too large and we need to adjust
         // the size of the HashSet.
-        Set classSet = new HashSet(16217);
+        Set classSet = new HashSet(17011);
 
         systemPackageSet = new HashSet();
         // Now read in the system jar file (jre/lib/rt.jar) and
