@@ -175,7 +175,7 @@ public class CNames {
         return prefixBase.hashCode();
     }
 
-    /** Return a number resprsenting the hashCode for this class.
+    /** Return a number representing the hashCode for this class.
      * @param source The class.
      * @return The hashCode.
      */
