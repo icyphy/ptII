@@ -43,6 +43,7 @@ import java.awt.event.WindowEvent;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
@@ -1300,6 +1301,37 @@ public class PortConfigurerDialog extends PtolemyDialog
         private JComboBox typeCombo;
     }
 
+    /** Editor for a table cell that takes a unit.
+     */
+    class UnitCellEditor extends StringCellEditor implements TableCellEditor,
+                                                                 ActionListener {
+        /** Construct a Unit Cell Editor. */
+        public UnitCellEditor() {
+            super();
+            unitCombo = _createPortUnitComboBox();
+        }
+
+        /** Return the message from the widget.
+         *  In this base class, the message is the text value of
+         *  the JTextField.
+         *  @return the message
+         */ 
+        protected String _getMessage() {
+            return (String)(unitCombo.getSelectedItem());
+        }
+
+        /** Set the message.
+         *  @return an Object suitable as an element in the
+         *  Object array that is passed JOptionPane.setMessage(Object[])
+         */ 
+        protected Object _setMessage() {
+            return unitCombo;
+        }
+
+        /** The JComboBox. */
+        private JComboBox unitCombo;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -1488,6 +1520,28 @@ public class PortConfigurerDialog extends PtolemyDialog
         jComboBox.addItem("{int}");
         jComboBox.addItem("[double]");
         jComboBox.addItem("{x=double, y=double}");
+        return jComboBox;
+    }
+
+    /** Generate a combo box based on the unit names. */
+    private JComboBox _createPortUnitComboBox () {
+        JComboBox jComboBox = new JComboBox();
+        jComboBox.setEditable(true); 
+
+        // Add this item first so it is first on the list.
+        jComboBox.addItem("");
+
+        ArrayList unitsArrayList = 
+            ptolemy.data.unit.UnitUtilities.categoryList();
+        Collections.sort(unitsArrayList);
+        Iterator units = unitsArrayList.iterator();
+        while (units.hasNext()) {
+            String unit = (String) (units.next());
+            jComboBox.addItem(unit);
+        }
+
+        // Add these items last so they are at the bottom.
+        jComboBox.addItem("meter second ^-1");
         return jComboBox;
     }
 
@@ -1766,7 +1820,7 @@ public class PortConfigurerDialog extends PtolemyDialog
             int col = _columnNames.indexOf(ColumnNames.COL_UNITS);
             TableColumn _portUnitColumn = ((TableColumn) (_portTable.getColumnModel()
                                                    .getColumn(col)));
-            final StringCellEditor portUnitEditor = new StringCellEditor();
+            final UnitCellEditor portUnitEditor = new UnitCellEditor();
             _portUnitColumn.setCellEditor(portUnitEditor);
 
             portUnitEditor.setValidator(new CellValidator() {
