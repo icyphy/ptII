@@ -31,7 +31,9 @@
 
 ME = 		ptolemy/domains/pn/demo
 
-DIRS =		RunLength TicTacToe
+# Prime is only present so that tests in pn/test pass
+# Do not consider Prime to be sample code
+DIRS =		RunLength TicTacToe Prime
 
 # Root of the Java directory
 ROOT =		../../../..
