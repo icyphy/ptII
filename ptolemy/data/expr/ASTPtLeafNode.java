@@ -60,14 +60,15 @@ public class ASTPtLeafNode extends ASTPtRootNode {
     /////////////////////////////////////////////////////////////////////
     /// from here until next line of dashes is code for PtParser
 
-    /** When the input String refers to another Param, we store the refered
-     *  Param in the leaf node. Thus when the value of a Param changes, by 
-     *  reevaluating the parse tree we get the correct value.
+    /** When the input String refers to another parameter, we store the 
+     *  refered parameter in the leaf node. Thus when the value of a 
+     *  parameter changes, by reevaluating the parse tree we get the 
+     *  correct result.
      */
-   protected pt.data.Param _param;  
+   protected pt.data.Parameter _param;  
 
-    /** If this leaf node represents a reference to a Param, return the
-     *  PtToken contained in that Param. Otherwise return the PtToken
+    /** If this leaf node represents a reference to a parameter, return the
+     *  PtToken contained in that parameter. Otherwise return the PtToken
      *  object stored in this node.
      *  @return The PtToken stored/refernced by this node
      *  @exception IllegalArgumentException Thrown when an error occurs 

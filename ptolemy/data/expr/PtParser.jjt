@@ -70,7 +70,7 @@ Created : May 1998
  *  X.jjt -> | JJTREE | --> X.jj  --> | JACC | --> X.java + support files
  *            --------                 ------
  *
- * The parser can also be parsed a symbol table of Params on which the 
+ * The parser can also be parsed a symbol table of parameters on which the 
  * expression to be passed can depend.
  * 
  * Anything between quotes(") is taken to be one string.
@@ -109,13 +109,13 @@ import pt.data.*;
 import java.io.*;
 
 public class PtParser {
-    /** Stores the Params to which the input expression can reference
+    /** Stores the parameters to which the input expression can reference
      */
     private NamedList _scope;
 
-    /** The Param (or other Observer) originating the call to the parser. 
-     *  Each time another Param is referenced in the input expression, 
-     *  this Param is registered as an observer of that Param. 
+    /** The Parameter (or other Observer) originating the call to the parser. 
+     *  Each time another parameter is referenced in the input expression, 
+     *  this Parameter is registered as an observer of that parameter. 
      *  If null, then no dependency is registered.
      */
     private java.util.Observer _observer;
@@ -162,7 +162,7 @@ public class PtParser {
      *  returned. To evaluate the parse tree, the method evaluateParseTree()
      *  should be called on the rootNode
      *  @param stringIn The expression to be parsed.
-     *  @param scope Params to which the expression can refer.
+     *  @param scope Parameters to which the expression can refer.
      *  @exception IllegalArgumentException Thrown if the parse failed.
      *  @return The root node of the parse tree.
      */
@@ -537,17 +537,17 @@ String tidied, x;
      <ID>
      { 
         if (_scope != null) {
-            pt.data.Param xx = (pt.data.Param)_scope.get(token.image);
+            pt.data.Parameter xx = (pt.data.Parameter)_scope.get(token.image);
             if (xx != null) {
                 // the param is stored in the node so that the tree does not 
                 // have to be reparsed
                 jjtThis._param   = xx; 
-                //register the calling Param as an Observer of this ID
+                //register the calling parameter as an Observer of this ID
                 if (_observer != null) {
                     xx.getToken().getPublisher().addObserver(_observer);
                 }
             } else { 
-                String str = " Param " + token.image + " not visible in ";
+                String str = " Parameter " + token.image + " not visible in ";
                 throw new ParseException(str + "current scope");
             }
         } else if (token.image.equalsIgnoreCase("PI")) {
@@ -555,7 +555,7 @@ String tidied, x;
         } else if (token.image.equalsIgnoreCase("E")) {
             jjtThis._ptToken = new pt.data.DoubleToken(Math.E);
         } else {
-            String str = " Param " + token.image + " not visible in ";
+            String str = " Parameter" + token.image + " not visible in ";
             throw new ParseException(str + "current scope");
         }
     }
