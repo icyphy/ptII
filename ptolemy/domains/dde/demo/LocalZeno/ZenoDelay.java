@@ -54,27 +54,27 @@ getDelay() method that approximates a Zeno condition.
 */
 public class ZenoDelay extends ListenFBDelay {
 
-    /** Construct a ZenoDelay with no container and a name that
-     *  is an empty string.
+    /** Construct a ZenoDelay actor with no container and a name 
+     *  that is an empty string.
      */
     public ZenoDelay()
             throws IllegalActionException, NameDuplicationException {
         super();
     }
 
-    /** Construct a ZenoDelay with the specified workspace and
-     *  no name.
-     * @param workspace The workspace for this ZenoDelay.
+    /** Construct a ZenoDelay actor with the specified workspace 
+     *  and no name.
+     * @param workspace The workspace for this ZenoDelay actor.
      */
     public ZenoDelay(Workspace workspace)
             throws IllegalActionException, NameDuplicationException {
 	super(workspace);
     }
 
-    /** Construct a ZenoDelay with the specified container and
-     *  name.
-     * @param container The container of this ZenoDelay.
-     * @param name The name of this ZenoDelay.
+    /** Construct a ZenoDelay actor with the specified container 
+     *  and name.
+     * @param container The container of this actor.
+     * @param name The name of this actor.
      * @exception IllegalActionException If the constructor of the
      *  superclass throws an IllegalActionException.
      * @exception NameDuplicationException If the constructor of the

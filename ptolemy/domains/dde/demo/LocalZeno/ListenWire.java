@@ -1,4 +1,4 @@
-/* ListenWire is an extension of Wire with listeners.
+/* A Wire actor that can notify an ExecEventListener of ExecEvents.
 
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
@@ -43,13 +43,19 @@ import collections.LinkedList;
 //////////////////////////////////////////////////////////////////////////
 //// ListenWire
 /**
-ListenWire is an extension of Wire with listeners. The addition
-of listener facilities allows this actor to interact with Diva via
-simple animations.
+A Wire actor that can notify an ExecEventListener of ExecEvents.
+In particular, the listener will be notified each time the prefire(), 
+postfire() and wrapup() methods of this actor are invoked. Such 
+notification is enabled by adding an ExecEventListener to this actor's 
+listener list via the addListeners() method. Listeners can be removed 
+via the removeListeners() method. ExecEventListeners are currently 
+implemented to serve as conduits between Ptolemy II and the Diva 
+graphical user interface.
 
 @author John S. Davis II
 @version $Id$
-
+@see ptolemy.actor.gui.ExecEvent
+@see ptolemy.actor.gui.ExecEventListener
 */
 
 public class ListenWire extends Wire {
@@ -83,8 +89,9 @@ public class ListenWire extends Wire {
         _listeners.insertLast(listener);
     }
 
-    /** Inform all listeners that an ExecEvent has occurred.
-     * @params event The ExecEvent that has occurred.
+    /** Inform all listeners that the specified ExecEvent 
+     *  has occurred.
+     * @params event The specified ExecEvent.
      */
     public void generateEvents(ExecEvent event) {
         if( _listeners == null ) {
@@ -100,9 +107,11 @@ public class ListenWire extends Wire {
 
     /** Generate an ExecEvent with a state value of 2. Return the
      *  value of the postfire method of this actor's superclass.
-     * @return True if this actor is enabled to call fire(). Return
+     *  Return true if this actor is enabled to call fire(); return
      *  false otherwise.
-     * @throws IllegalActionException if there is an exception
+     * @return True if this actor is enabled to call fire(); return
+     *  false otherwise.
+     * @exception IllegalActionException If there is an exception
      *  with the thread activity of this method.
      */
     public boolean postfire() throws IllegalActionException {
@@ -116,9 +125,11 @@ public class ListenWire extends Wire {
 	return super.postfire();
     }
 
-    /** Generate an ExecEvent with a state value of 1. Return the
-     *  value of the prefire method of this actor's superclass.
-     * @return True if this actor is enabled to call fire(). Return
+    /** Generate an ExecEvent with a state value of 1, cause the 
+     *  calling thread to sleep for 100 milliseconds and then call 
+     *  the superclass prefire() method. Return true if this actor
+     *  is enabled to call fire(); return false otherwise.
+     * @return True if this actor is enabled to call fire(); return
      *  false otherwise.
      * @throws IllegalActionException if there is an exception
      *  with the thread activity of this method.
@@ -134,10 +145,9 @@ public class ListenWire extends Wire {
 	return super.prefire();
     }
 
-    /** Remove an ExecEventListener from this actor's list of
-     *  listeners.
-     * @params listener The ExecEventListener being add to this
-     *  actor's list.
+    /** Remove one instance of the specified ExecEventListener 
+     *  from this actor's list of listeners. 
+     * @param listener The specified ExecEventListener.
      */
     public void removeListeners(ExecEventListener listener) {
         if( _listeners == null ) {
@@ -155,7 +165,6 @@ public class ListenWire extends Wire {
 	generateEvents( new ExecEvent( this, 3 ) );
 	super.wrapup();
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
