@@ -50,39 +50,69 @@ Created : May 1998
 
 package pt.data.parser;
 
-import pt.kernel.IllegalActionException;
+import pt.data.*;
 import java.lang.reflect.*;
 
 public class ASTPtFunctionNode extends ASTPtSimpleNode {
     protected String funcName;
 
-    protected pt.data.Token _resolveNode() throws IllegalActionException {
+    protected pt.data.Token _resolveNode() throws IllegalArgumentException {
         int args = jjtGetNumChildren();
         Class[] argTypes = new Class[args];
-        Double[] argValues = new Double[args];
+        Object[] argValues = new Object[args];
         try {
             for (int i = 0; i<args; i++) {
-                argValues[i] = new Double(((pt.data.DoubleToken)childTokens[i]).doubleValue()); 
-                argTypes[i] = argValues[i].TYPE;
+                // argValues[i] = new Double(((pt.data.ScalarToken)childTokens[i]).doubleValue()); 
+
+                 if (childTokens[i] instanceof DoubleToken) {
+                    argValues[i] = new Double(((ScalarToken)childTokens[i]).doubleValue());
+                    argTypes[i] = Double.TYPE;
+                } else if (childTokens[i] instanceof IntToken) {
+                    argValues[i] = new Integer(((ScalarToken)childTokens[i]).intValue());
+                    argTypes[i] = Integer.TYPE;
+    
+                    /* } else if (childTokens[i] instanceof FloatToken) {
+                    argValues[i] = new Float(((ScalarToken)childTokens[i]).floatValue());
+                    argTypes[i] = Float.TYPE; */
+                } else {
+                    try {
+                        argValues[i] = new Double(((pt.data.ScalarToken)childTokens[i]).doubleValue());
+                        argTypes[i] = Double.TYPE;
+                    } catch (Exception ex) {
+                        throw new IllegalArgumentException("argument to function not of a supported type, ie float, int, double, or something that can be converted");
+                    }
+                }
             }
             // Note: Java makes a dintinction between the class objects
             // for double & Double...
             Class tmp = Class.forName("java.lang.Math");
             Method m = tmp.getMethod(funcName, argTypes);
-            Double result = (Double)m.invoke(tmp, argValues);
-            return new pt.data.DoubleToken(result.doubleValue());
+            Object result = m.invoke(tmp, argValues);
+            if (result instanceof Double) {
+                return new pt.data.DoubleToken(((Double)result).doubleValue());
+            } else if (result instanceof Integer) {
+                return new pt.data.IntToken(((Integer)result).intValue());
+                /*  } else if (result instanceof Float) {
+                return new pt.data.FloatToken(((Float)result).floatValue()); */
+            } else if (result instanceof Long) { 
+                return new pt.data.LongToken(((Long)result).longValue());
+            } else  {
+                String str = "result of  function not of a supported type, ";
+                str = str + "ie float, int, double, or long";
+                throw new IllegalArgumentException(str);
+            }            
         } catch (Exception ex) {
             StringBuffer sb = new StringBuffer();
             for (int i=0; i<args; i++) {
                 if (i==0) {
-            sb.append(argValues[i].doubleValue());
+                    sb.append(argValues[i].toString());
                 } else {
-                    sb.append(", " + argValues[i].doubleValue());
+                    sb.append(", " + argValues[i].toString());
                 }
             }  
             String str = "Function " + funcName + "(" + sb;
             str = str + ") cannot be executed with given arguments";
-            throw new IllegalActionException(str + ": " + ex.getMessage());
+            throw new IllegalArgumentException(str + ": " + ex.getMessage());
         } 
     }
 
