@@ -402,11 +402,11 @@ public class SDFScheduler extends Scheduler {
 
 	    Enumeration cports = ainputPort.deepConnectedOutPorts();
 
-	    boolean isonlyexternalport = true;
+	    boolean isOnlyExternalPort = true;
 	    while(cports.hasMoreElements()) {
 		IOPort cport = (IOPort) cports.nextElement();
 		if(actorList.contains(cport.getContainer()))
-		    isonlyexternalport = false;
+		    isOnlyExternalPort = false;
 	    }
 
 	    int threshold =
@@ -415,7 +415,7 @@ public class SDFScheduler extends Scheduler {
 	    int[] tokens =
 		(int []) waitingTokens.get(ainputPort);
 
-	    boolean isalreadyfulfilled = true;
+	    boolean isAlreadyFulfilled = true;
 	    int channel;
 	    for(channel = 0;
 		channel < ainputPort.getWidth();
@@ -425,9 +425,9 @@ public class SDFScheduler extends Scheduler {
                     _debug("Waiting Tokens = " + tokens[channel]);
                 }
 		if(tokens[channel] < threshold)
-		    isalreadyfulfilled = false;
+		    isAlreadyFulfilled = false;
 	    }
-	    if(!isonlyexternalport && !isalreadyfulfilled)
+	    if(!isOnlyExternalPort && !isAlreadyFulfilled)
 		inputCount++;
 	}
 	return inputCount;
