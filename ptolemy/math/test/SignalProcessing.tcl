@@ -46,5 +46,46 @@ set PI [java::field java.lang.Math PI]
 # set VERBOSE 1
 
 ####################################################################
+test SignalProcessing-1.1 {close} {
+    set EPSILON [java::field ptolemy.math.SignalProcessing EPSILON]
+    set testpairslist [list \
+	    [list 1 1] \
+	    [list -1 [expr {-1 + $EPSILON/2}]] \
+	    [list -1 [expr {-1 - $EPSILON/2}]] \
+	    [list 1 2] \
+	    [list -1 2] \
+	    [list 1 -2] \
+	    [list -1 -2] \
+	    [list [java::field java.lang.Double POSITIVE_INFINITY] 1] \
+	    [list [java::field java.lang.Double NEGATIVE_INFINITY] 1] \
+	    [list [java::field java.lang.Double NaN] 1]\
+	    [list [java::field java.lang.Double MIN_VALUE] 1] \
+	    [list [java::field java.lang.Double MAX_VALUE] 1] \
+	    [list [java::field java.lang.Double POSITIVE_INFINITY] \
+	          [java::field java.lang.Double POSITIVE_INFINITY]] \
+	    [list [java::field java.lang.Double NEGATIVE_INFINITY] \
+	          [java::field java.lang.Double NEGATIVE_INFINITY]] \
+	    [list [java::field java.lang.Double NaN] \
+	          [java::field java.lang.Double NaN]] \
+	    [list [java::field java.lang.Double MIN_VALUE] \
+	          [java::field java.lang.Double MIN_VALUE]] \
+	    [list [java::field java.lang.Double MAX_VALUE] \
+	          [java::field java.lang.Double MAX_VALUE]] \
+	    ]
 
-# FIXME: No tests.
+    set results {}
+
+    foreach testpair $testpairslist {
+	set a [lindex $testpair 0]
+	set b [lindex $testpair 1]
+	if [catch {set callresults \
+		[java::call ptolemy.math.SignalProcessing close  $a $b]} \
+		errmsg] {
+	    lappend results $errmsg
+	} else {
+	    lappend results $callresults
+	}
+    }
+    return $results
+} {1 1 1 0 0 0 0 0 0 0 0 0 1 1 1 1 1}
+
