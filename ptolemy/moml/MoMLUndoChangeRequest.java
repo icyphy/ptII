@@ -99,7 +99,7 @@ public class MoMLUndoChangeRequest extends ChangeRequest {
      *  If there is no such container, then return null. If the specified
      *  object has other objects deferring to it, then return the specified
      *  object.
-     *  @returns An object that deeply contains this one, or null.
+     *  @return An object that deeply contains this one, or null.
      */
     public static NamedObj getDeferredToParent(NamedObj object) {
         if (object == null) {
