@@ -47,8 +47,7 @@ DIRS =
 # Keep this list alphabetized.
 JSRCS = \
 	test1.java \
-	Test.java \
-	TestSerialCombining.java
+	Test.java
 
 OTHER_FILES_TO_BE_JARED = \
 	compileCommandTemplate.txt \
