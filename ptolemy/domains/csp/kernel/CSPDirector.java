@@ -234,14 +234,24 @@ public class CSPDirector extends ProcessDirector {
      *  @exception IllegalActionException If the parent class throws it.
      */
     public void wrapup() throws IllegalActionException {
+        System.out.println("CALLING CSPDIRECTOR.WRAPUP");
         super.wrapup();
         Iterator actors =
                 ((CompositeActor)getContainer()).deepEntityList().iterator();
+        /*
         while(actors.hasNext()) {
             Object actor = actors.next();
             if (actor instanceof CSPActor) {
                 ((CSPActor)actor)._cancelDelay();
             }
+        }
+        */
+        while( _delayedActorList.size() > 0 ) {
+            DelayListLink val =
+                    (DelayListLink)_delayedActorList.get(0);
+            val._actor._cancelDelay();
+            _delayedActorList.remove(0);
+            _actorsDelayed--;
         }
     }
 
@@ -398,6 +408,9 @@ public class CSPDirector extends ProcessDirector {
         }
         */
         if( _getActiveActorsCount() == _actorsBlocked + _actorsDelayed ) {
+            System.out.println("\tActors Active = " + _actorsBlocked +
+            "\n\tActors Blocked = " + _actorsBlocked +
+            "\n\tActors Delayed = " + _actorsDelayed);
             return true;
         }
         return false;
@@ -433,6 +446,7 @@ public class CSPDirector extends ProcessDirector {
      *  @return False if real deadlock occurred, true otherwise.
      */
     protected synchronized boolean _resolveDeadlock() {
+        System.out.println("CALLING CSPDIRECTOR.RESOLVEDEADLOCK");
         if (_actorsDelayed > 0) {
             // Time deadlock.
             double nextTime = _getNextTime();
@@ -456,9 +470,11 @@ public class CSPDirector extends ProcessDirector {
             }
         } else {
             // Real deadlock.
+            System.out.println("_resolveDeadlock returns FALSE");
             return false;
         }
         // Return true for topology changes and time deadlock.
+        System.out.println("_resolveDeadlock returns TRUE");
         return true;
     }
 
