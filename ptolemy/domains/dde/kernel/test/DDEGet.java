@@ -1,4 +1,4 @@
-/* DDEGet
+/* DDEGet is used as a test class for consuming tokens.
 
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
@@ -41,6 +41,9 @@ import ptolemy.data.StringToken;
 //////////////////////////////////////////////////////////////////////////
 //// DDEGet
 /**
+DDEGet is used as a test class for consuming tokens. This class has a
+single typed output multiport. Use this class to test DDEReceiver and
+DDEThread.
 
 @author John S. Davis II
 @version $Id$
@@ -57,6 +60,7 @@ public class DDEGet extends DDEActor {
 
          inputPort = new TypedIOPort(this, "input", true, false);
 	 inputPort.setMultiport(true);
+	 inputPort.setTypeEquals(Token.class);
     }
 
     ////////////////////////////////////////////////////////////////////////

@@ -1,4 +1,4 @@
-/* DDEPut
+/* DDEPut is a test class used to test token production.
 
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
@@ -35,12 +35,14 @@ import ptolemy.actor.*;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.data.Token;
-import ptolemy.data.StringToken;
 
 
 //////////////////////////////////////////////////////////////////////////
 //// DDEPut
 /**
+DDEPut is a test class used to test token production. It has a single
+typed, input multiport. Use this class to test DDEReceiver and DDEThread. 
+
 
 @author John S. Davis II
 @version $Id$
@@ -57,6 +59,7 @@ public class DDEPut extends TypedAtomicActor {
 
          outputPort = new TypedIOPort(this, "output", false, true);
 	 outputPort.setMultiport(true);
+	 outputPort.setTypeEquals(Token.class);
     }
 
     ////////////////////////////////////////////////////////////////////////
