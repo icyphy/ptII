@@ -51,6 +51,9 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.BorderLayout;
 import java.awt.Point;
+import java.awt.print.Printable;
+import java.awt.print.PrinterJob;
+import java.awt.print.PrinterException;
 import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -434,6 +437,30 @@ public class VergilApplication extends MDIApplication {
         addAction(action);
         addMenuItem(menuFile, action, 'A',
                 "Save the current graph document to a different file");
+
+        action = new AbstractAction ("Print") {
+            public void actionPerformed(ActionEvent e) {
+                Document d = getCurrentDocument();
+                if (d == null) {
+                    System.out.println("Graph document is null");
+                } else {
+	            JComponent pane = (JComponent) getView(d);
+		    if(pane instanceof Printable) {
+			PrinterJob job = PrinterJob.getPrinterJob();
+			job.setPrintable((Printable)pane);
+			if (job.printDialog()) {
+			    try {
+				job.print();
+			    } catch (Exception ex) {
+				showError("PrintingFailed", ex);
+			    }
+			}
+		    }
+                }
+            }
+        };
+        addAction(action);
+        addMenuItem(menuFile, action, 'P', "Print current document");
 
         menuFile.addSeparator();
 
