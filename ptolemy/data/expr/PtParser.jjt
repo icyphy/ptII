@@ -21,6 +21,8 @@
  * The parser assumes any identifiers it does not recognise are strings.
  * Also anything between quotes(") is taken to be one string.
  *
+ * The expressions recognized follow as close as possible the syntax of Java.
+ *
  */
 
 options {
@@ -37,7 +39,6 @@ import pt.kernel.*;
 import pt.data.*;
 
 import java.io.*;
-import java.lang.reflect.*;
 
 public class PtParser {
     pt.data.Token _ptToken;
@@ -48,36 +49,46 @@ public class PtParser {
       this(new ByteArrayInputStream("a hack!!".getBytes()));
   }
   
-  public pt.data.Token parseFromInput(){   
+  public pt.data.Token parseFromInput() throws IllegalArgumentException {   
       System.out.print("\nEnter an Expression to be parsed: ");
       System.out.flush();
+      String str;
       ReInit(System.in);
       try {
 	ASTPtSimpleNode n = start();      	
 	_ptToken = n.resolve();
         //n.dump(" ");
         System.out.println("Thank you, result is " + _ptToken.toString());
+      } catch (ParseException x) {
+          str = "parse failed: " + x.getMessage();
+          throw new IllegalArgumentException(str);
       } catch (Exception x) {
-          System.out.println("Exiting, parse failed");
+          str = "evaluation of parse tree failed : " + x.getMessage();
+          throw new IllegalArgumentException(str);
       }
-      System.out.flush();
-    return _ptToken;
+      return _ptToken;
   }
  
 
- public pt.data.Token parse(String stringIn) {
+ public pt.data.Token parse(String stringIn) throws IllegalArgumentException {
      InputStream stream = new ByteArrayInputStream(stringIn.getBytes());
      this.ReInit(stream);
+     String str = stringIn.replace('\n', ' ');
      System.out.print("\nParsing expression: ");
-     System.out.println(stringIn.replace('\n', ' ') );
+     System.out.println(str);
      try {
      ASTPtSimpleNode n = start();  
      _ptToken = n.resolve();
      //n.dump(" ");
-     System.out.println("Thank you, result is " + _ptToken.toString());
-    } catch (Exception x) {
-     System.out.println("Exiting, parse failed");
-   }
+     System.out.println("Thank you, result is \f" + _ptToken.toString());  
+     } catch (ParseException x) {
+          str = "parse of " + stringIn + " failed: " + x.getMessage();
+          throw new IllegalArgumentException(str);
+      } catch (Exception x) {
+          str = "evaluation of parse tree of " + stringIn;
+          str = str + " failed : " + x.getMessage();
+          throw new IllegalArgumentException(str);
+      }
      return _ptToken;
  }  
 
@@ -89,9 +100,48 @@ public class PtParser {
         _param = null;
         return _ptToken;
     }
+
+    // FIXME: this method needs to be added
+    // It will reset the appropriate members of the tree & reevaluate it
+    public pt.data.Token reEvaluate() {
+        return new pt.data.DoubleToken(0);
+        //just here to remind me to put this method in later
+    }
+
 }
 
 PARSER_END(PtParser)
+
+
+/* COMMENTS */
+
+MORE :
+{
+  "//" : IN_SINGLE_LINE_COMMENT
+|
+  "/*" : IN_MULTI_LINE_COMMENT
+}
+
+<IN_SINGLE_LINE_COMMENT>
+SPECIAL_TOKEN :
+{
+  <SINGLE_LINE_COMMENT: "\n" | "\r" | "\r\n" > : DEFAULT
+}
+
+<IN_MULTI_LINE_COMMENT>
+SPECIAL_TOKEN :
+{
+  <MULTI_LINE_COMMENT: "*/" > : DEFAULT
+}
+
+<IN_SINGLE_LINE_COMMENT,IN_FORMAL_COMMENT,IN_MULTI_LINE_COMMENT>
+MORE :
+{
+  < ~[] >
+}
+
+
+/* Now come to proper tokens */
 
 SKIP :
 {
@@ -100,38 +150,65 @@ SKIP :
   |	"\t"
 }
 
-
-
 TOKEN :
 {
 	< EOL: "\n" >
 }
 
-TOKEN : /* OPERATORS */
+TOKEN : /* Arithmetic operators */
 {
 	< PLUS: "+" >
   |	< MINUS: "-" >
   |	< MULTIPLY: "*" >
   |	< DIVIDE: "/" >
-  |	< EXP: "**" >
- }
+}
 
-TOKEN : /* numeric constants */
+TOKEN : /* Relational operators */
 {
-	< CONSTANT: <FLOAT>
-	    | <FLOAT> ( ["e","E"] ([ "-","+"])? <INTEGER> )?
-    	>
-  | 	< #FLOAT: <INTEGER> 
-	    | <INTEGER> ( "." <INTEGER> )?
-	    | "." <INTEGER>
-    	>
-  | 	< #INTEGER: ( <DIGIT> )+ >
-  | 	< #DIGIT: ["0" - "9"] >
+	< GT: ">" >
+  |	< LT: "<" >
+  |	< GTE: ">=" >
+  |	< LTE: "<=" >
+  |     < NOTEQUALS: "!=" >
+  |     < EQUALS: "==" >
+}
+
+TOKEN : /* Boolean operators */
+{
+	< AND: "&&" >
+  |	< OR: "||" >
+  |     < NOT: "!" >
+}
+
+
+
+TOKEN : /* Numeric literals */
+{
+  < INTEGER:
+        <DECIMAL_LITERAL> (["l","L"])?
+      | <HEX_LITERAL> (["l","L"])?
+      | <OCTAL_LITERAL> (["l","L"])?
+  >
+|
+  < #DECIMAL_LITERAL: ["1"-"9"] (["0"-"9"])* >
+|
+  < #HEX_LITERAL: "0" ["x","X"] (["0"-"9","a"-"f","A"-"F"])+ >
+|
+  < #OCTAL_LITERAL: "0" (["0"-"7"])* >
+|
+  < DOUBLE:
+        (["0"-"9"])+ "." (["0"-"9"])* (<EXPONENT>)? (["f","F","d","D"])?
+      | "." (["0"-"9"])+ (<EXPONENT>)? (["f","F","d","D"])?
+      | (["0"-"9"])+ <EXPONENT> (["f","F","d","D"])?
+      | (["0"-"9"])+ (<EXPONENT>)? ["f","F","d","D"]
+  >
+|
+  < #EXPONENT: ["e","E"] (["+","-"])? (["0"-"9"])+ >
 }
 
 TOKEN : /* Function names */
 {
-	< ID: ( <LETTER> )+ ( <DIGIT> | <LETTER> )* >
+	< ID: ( <LETTER> )+ ( ["0"-"9"] | <LETTER> )* >
   | 	< #LETTER: ["a"-"z", "A"-"Z"] > 		
 } 
 
@@ -162,19 +239,21 @@ void sum() #PtSumNode :
 void term() #PtProductNode :
 {Token x;}
 {
-    exp() ( 
-	( x = <MULTIPLY> | x = <DIVIDE> ) exp()
+    unary() ( 
+	( x = <MULTIPLY> | x = <DIVIDE> ) unary()
 	{
             jjtThis._tokenList.insertLast(x);
 	}
     )*
 }
 
+/*in java no exponential operator, call Math.pow(a,b)
 void exp() #PtExpNode :
 {}
 {
     unary() ( LOOKAHEAD( <EXP> ) <EXP>  exp() )*
 }
+*/
 
 void unary() #PtUnaryNode :
 {}
@@ -186,32 +265,83 @@ void unary() #PtUnaryNode :
 }
 
 void element() #PtSimpleNode :
-{ASTPtSimpleNode result;}
 {
-     <CONSTANT>
+int len;
+String tidied, x;
+}
+{
+     <DOUBLE>
 	{   try 
             {
-                Double value = new Double(token.image);
-                jjtThis._ptToken = new DoubleToken(value.doubleValue());
-               
-	    } catch (NumberFormatException ee) {
-	        System.out.println("Error converting token " + token.image + "to a number");
-	        throw new ParseException();
+                x = token.image.toLowerCase();
+                len = x.length();
+                if ( x.endsWith("f") ) {                   
+                    Float value = new Float(x.substring(0, len-1 ));
+                    // FIXME: need to add a FLOATTOKEN
+                    jjtThis._ptToken = new pt.data.DoubleToken(value.floatValue());
+                } else if ( x.endsWith("d") ) {                   
+                    Double value = new Double(x.substring(0, len-1 ));
+                    jjtThis._ptToken = new pt.data.DoubleToken(value.doubleValue());
+                } else {
+                   Double value = new Double(x);
+                   jjtThis._ptToken = new pt.data.DoubleToken(value.doubleValue()); 
+                }
+            } catch (NumberFormatException ee) {
+                String str = "Unable to convert token " + token.image;
+                throw new ParseException(str + "to an float or double");
+            }
+        }
+
+  |  <INTEGER>
+	{   try 
+            {
+                x = token.image.toLowerCase();
+                len = x.length();
+                if ( x.endsWith("l") ) {                   
+                    //Long value = new Long(x.substring(0, len-1 ));
+                    //jjtThis._ptToken = new LongToken(value.longValue());
+                } else {
+                   Integer value = new Integer(x);
+                   jjtThis._ptToken = new pt.data.IntToken(value.intValue()); 
+                }
+            } catch (NumberFormatException ee) {
+                String str = "Unable to convert token " + token.image;
+                throw new ParseException(str + "to an integer or long");
 	    }
 	}
 
-  | "(" sum() ")"
-   
+  |  <STRING>
+    {
+         // Now cut the " from each end of the string
+        len = token.image.length();
+        tidied = token.image.substring(1, (len -1));
+        jjtThis._ptToken = new pt.data.StringToken(tidied);
+        //System.out.println("encountered a string \"" + tidied + "\"");    
+    }
+
+  | "(" sum() ")"<STRING>
+    {
+         // Now cut the " from each end of the string
+        len = token.image.length();
+        tidied = token.image.substring(1, (len -1));
+        jjtThis._ptToken = new pt.data.StringToken(tidied);
+        //System.out.println("encountered a string \"" + tidied + "\"");    
+    }
+
+ 
   |   LOOKAHEAD( <ID> "(" )
       function()
     
   |   <ID>
     { 
         if (_scope != null) {
-            pt.data.Token x = (pt.data.Token)_scope.get(token.image);
-            if (x != null) {
-                jjtThis._ptToken = (pt.data.Token)x.clone();
-                x.getPublisher().addObserver(_param);
+            pt.data.Param xx = (pt.data.Param)_scope.get(token.image);
+            if (xx != null) {
+                jjtThis._ptToken = xx.getToken();
+                xx.getToken().getPublisher().addObserver(_param);
+                // FIXME: eventually we'll want to store the param in the
+                // node so that can _just_ reevaluate the tree each time
+                // ie the token may change, but the param won't!
             }
         } 
         else if (token.image.equalsIgnoreCase("PI")) {
@@ -224,15 +354,6 @@ void element() #PtSimpleNode :
             jjtThis._ptToken = new pt.data.StringToken(token.image);
         }
     }
-
-  |   <STRING>
-    {
-         // Now cut the " from each end of the string
-        int len = token.image.length();
-        String tidied = token.image.substring(1, (len -1));
-        jjtThis._ptToken = new pt.data.StringToken(tidied);
-        //System.out.println("encountered a string \"" + tidied + "\"");    
-    }
 }
 
 void function() #PtFunctionNode :
@@ -243,4 +364,5 @@ void function() #PtFunctionNode :
 {    <ID> {jjtThis.funcName = token.image;} 
     "(" [  sum() ( ","  sum()  )* ]  ")"
 }
+
 
