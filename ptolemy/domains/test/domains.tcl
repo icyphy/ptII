@@ -44,16 +44,18 @@ if {[string compare test [info procs test]] == 1} then {
 #############################################
 ####
 #
-test PNDirector-1.1 {} {
-     catch {createAndExecute "auto/knownFailedTests/PNSDFtest1.xml"} errMsg
-    list $errMsg
-} {{ptolemy.kernel.util.IllegalActionException: Queue size exceeds the maximum capacity in port .PNSDFtest1.Topologia SDF.port. Perhaps you have an unbounded queue?
+test domains.1.1 {} {
+    catch {createAndExecute "auto/knownFailedTests/PNSDFtest1.xml"} errMsg
+    # Sometimes it is port, sometimes port2
+    regsub {port[^.]} $errMsg {portXXX} r1
+    list $r1
+} {{ptolemy.kernel.util.IllegalActionException: Queue size exceeds the maximum capacity in portXXX.PNSDFtest1.Topologia SDF.port. Perhaps you have an unbounded queue?
   in .PNSDFtest1.PN Director}}
 
 #############################################
 ####
 #
-test PNDirector-2.1 {} {
+test domains-2.1 {} {
      catch {createAndExecute "auto/knownFailedTests/PNSRTimedtest.xml"} errMsg
     list $errMsg
 } {}
@@ -61,7 +63,7 @@ test PNDirector-2.1 {} {
 #############################################
 ####
 #
-test PNDirector-3.1 {} {
+test domains-3.1 {} {
      catch {createAndExecute "auto/knownFailedTests/PNSRtest3.xml"} errMsg
     list $errMsg
 } {{ptolemy.kernel.util.IllegalActionException: Queue size exceeds the maximum capacity in port .PNSRtest3.AddSubtract.plus. Perhaps you have an unbounded queue?
@@ -70,7 +72,7 @@ test PNDirector-3.1 {} {
 #############################################
 ####
 #
-test PNDirector-4.1 {} {
+test domains-4.1 {} {
      catch {createAndExecute "auto/knownFailedTests/SDFSRtest2.xml"} errMsg
     list $errMsg
 } {{ptolemy.kernel.util.IllegalActionException: Actor is not ready to fire.
@@ -79,7 +81,7 @@ test PNDirector-4.1 {} {
 #############################################
 ####
 #
-test PNDirector-5.1 {} {
+test domains-5.1 {} {
      catch {createAndExecute "auto/knownFailedTests/SRSDFtest1.xml"} errMsg
     list $errMsg
 } {{ptolemy.kernel.util.IllegalActionException: Width of input is 0 but NonStrictTest only supports a width of 1.
@@ -88,7 +90,7 @@ test PNDirector-5.1 {} {
 #############################################
 ####
 #
-test PNDirector-6.1 {} {
+test domains-6.1 {} {
      catch {createAndExecute "auto/knownFailedTests/SRSDFtest2.xml"} errMsg
     list $errMsg
 } {{ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.
