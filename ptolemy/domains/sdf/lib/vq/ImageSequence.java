@@ -37,14 +37,14 @@ import java.util.Enumeration;
 import ptolemy.domains.sdf.kernel.*;
 
 //////////////////////////////////////////////////////////////////////////
-//// VQImageSequence
+//// ImageSequence
 /**
 @author Steve Neuendorffer
 @version $Id$
 */
 
-public class VQImageSequence extends SDFAtomicActor {
-    public VQImageSequence(CompositeActor container, String name) 
+public class ImageSequence extends SDFAtomicActor {
+    public ImageSequence(CompositeActor container, String name) 
             throws IllegalActionException, NameDuplicationException {
 
         super(container,name);
