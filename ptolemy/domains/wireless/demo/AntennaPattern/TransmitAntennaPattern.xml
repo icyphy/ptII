@@ -332,7 +332,7 @@ of this actor relative to the position of the Sender.</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 40.0">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {72, 273, 699, 516}, maximized = false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={72, 273, 699, 516}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[484, 400]">
         </property>
@@ -410,7 +410,7 @@ of this actor relative to the position of the Sender.</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 50.0">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {24, 149, 965, 568}, maximized = false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={24, 149, 965, 568}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[750, 452]">
             </property>
@@ -666,6 +666,8 @@ of this actor relative to the position of the Sender.</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 220.0]">
                 </property>
                 <property name="numberOfElements" class="ptolemy.data.expr.Parameter" value="numberOfElements">
+                </property>
+                <property name="steeringAngle" class="ptolemy.data.expr.Parameter" value="steeringAngle">
                 </property>
             </entity>
             <relation name="relation4" class="ptolemy.actor.TypedIORelation">
