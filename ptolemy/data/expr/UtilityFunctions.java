@@ -119,9 +119,17 @@ public class UtilityFunctions {
         return token1.getType().convert(token2);
     }
 
-    /** Concatenate two arrays.
+    /** Concatenate two arrays.  
+        The arrays must have the same type.
+	Example: concatenate({1,2,3},{4,5,6}) == {1,2,3,4,5,6}.
 	@exception IllegalActionException If the arrays do not have 
                    compatible types.
+	@param token1 First array from which tokens are copied to the result 
+	@param token2 Second array from which tokens are copied to the result
+	@return an array containing all of the elements of the first argument
+	(in order), followed by all of the arguments of the second argument
+	(in order).
+	@author Tobin Fricke
      */
 
     public static ArrayToken concatenate(ArrayToken token1, ArrayToken token2) 
@@ -139,7 +147,38 @@ public class UtilityFunctions {
 	return new ArrayToken(resultArray);
     }
 
-    
+    /** Concatenate an array of arrays into a single array.  
+	Example: concatenate({{1,2,3},{4,5},{6,7}}) == {1,2,3,4,5,6,7}.
+	@exception IllegalActionException If the argument is not an array of
+        arrays.
+	@param token Array of arrays which are to be concatenated
+	@author Tobin Fricke
+     */
+
+    public static ArrayToken concatenate(ArrayToken token) 
+	throws IllegalActionException {
+	
+	int nElements = 0;
+	
+	for (int i=0; i<token.length(); i++) {
+	    if (! (token.getElement(i) instanceof ArrayToken ))
+		throw new IllegalActionException("The argument to "+
+ 		 "concatenate(ArrayToken) must be an array of arrays.");
+	    nElements += ((ArrayToken)(token.getElement(i))).length();
+	}
+
+	Token result[] = new Token[nElements];
+	int cursor = 0;
+
+	for (int i=0; i<token.length(); i++) {
+	    Token array[] = ((ArrayToken)(token.getElement(i))).arrayValue();
+	    System.arraycopy(array, 0, result, cursor, array.length);
+	    cursor += array.length;
+	}
+
+	return new ArrayToken(result);
+    }
+
 
     /** Return a record token that contains the names of all the
      *  constants and their values.
