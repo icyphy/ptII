@@ -145,34 +145,42 @@ public class HTMLViewer extends TableauFrame
                     return;
                 }
             }
-            // Attempt to open in a new window.
-            Configuration configuration = getConfiguration();
-            // FIXME: Should detect target == "_blank" and open
-            // in a new window, rather than always opening in a new
-            // window.  However, regrettably, there appears to be
-            // no way to access the target unless the event is an
-            // instanceof HTMLFrameHyperlinkEvent, which it is only
-            // if the HTML happens to be in a frame.  Moreover, it would
-            // be tricky to do this because we would have to check that
-            // the content type is "text/html" or "text/rtf", and we
-            // would have to associate our tableau with a new effigy.
-            // Nonetheless, it's perfectly doable if we can get the
-            // target...
             try {
-                if (configuration != null) {
-                    if (useBrowser && BrowserEffigy.staticFactory != null) {
-                        configuration.openModel(
-                                newUrl,
-                                newUrl,
-                                newUrl.toExternalForm(),
-                                BrowserEffigy.staticFactory);
-                    } else {
-                        configuration.openModel(
-                                newUrl, newUrl, newUrl.toExternalForm());
-                    }
-                } else {
-                    // If there is no configuration, open in the same window.
+                // If the URL is the same as the one we are currently in,
+                // then we are dealing with a link within the same file,
+                // so we want to stay in the same window.
+                if (newUrl.getFile().equals(getPage().getFile())) {
                     pane.setPage(newUrl);
+                } else {
+                    // Attempt to open in a new window.
+                    Configuration configuration = getConfiguration();
+                    // FIXME: Should detect target == "_blank" and open
+                    // in a new window, rather than always opening in a new
+                    // window.  However, regrettably, there appears to be
+                    // no way to access the target unless the event is an
+                    // instanceof HTMLFrameHyperlinkEvent, which it is only
+                    // if the HTML happens to be in a frame.  Moreover, it would
+                    // be tricky to do this because we would have to check that
+                    // the content type is "text/html" or "text/rtf", and we
+                    // would have to associate our tableau with a new effigy.
+                    // Nonetheless, it's perfectly doable if we can get the
+                    // target...
+                    if (configuration != null) {
+                        if (useBrowser && BrowserEffigy.staticFactory != null) {
+                            configuration.openModel(
+                                    newUrl,
+                                    newUrl,
+                                    newUrl.toExternalForm(),
+                                    BrowserEffigy.staticFactory);
+                        } else {
+                            configuration.openModel(
+                                    newUrl, newUrl, newUrl.toExternalForm());
+                        }
+                    } else {
+                        // If there is no configuration,
+                        // open in the same window.
+                        pane.setPage(newUrl);
+                    }
                 }
             } catch (Exception ex) {
                 MessageHandler.error("Hyperlink reference failed", ex);
