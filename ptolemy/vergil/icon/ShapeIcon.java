@@ -36,7 +36,7 @@ import java.awt.geom.Rectangle2D;
 import java.lang.ref.WeakReference;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.ListIterator;
+import java.util.Iterator;
 
 import javax.swing.SwingUtilities;
 
@@ -57,7 +57,7 @@ An icon that displays a specified java.awt.Shape.
 @version $Id$
 @since Ptolemy II 2.0
 */
-public class ShapeIcon extends EditorIcon {
+public class ShapeIcon extends DynamicEditorIcon {
 
     /** Create a new icon with the given name in the given container.
      *  @param container The container.
@@ -103,7 +103,6 @@ public class ShapeIcon extends EditorIcon {
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
         ShapeIcon newObject = (ShapeIcon)super.clone(workspace);
-        newObject._figures = new LinkedList();
         // NOTE: Do not set back to the default shape!
         // newObject._shape = _defaultShape;
         return newObject;
@@ -144,18 +143,9 @@ public class ShapeIcon extends EditorIcon {
         newFigure.setLineWidth(_lineWidth);
         newFigure.setStrokePaint(_lineColor);
         newFigure.setFillPaint(_fillColor);
-        _figures.add(new WeakReference(newFigure));
         
-        // Trim the list of figures...
-        ListIterator figures = _figures.listIterator();
-        while (figures.hasNext()) {
-            Object figure = ((WeakReference)figures.next()).get();
-            if (figure == null) {
-                // The figure has been garbage collected, so we
-                // remove it from the list.
-                figures.remove();
-            }
-        }
+        _addLiveFigure(newFigure);
+        
         return newFigure;
     }
     
@@ -184,16 +174,10 @@ public class ShapeIcon extends EditorIcon {
         // list while this method is traversing it.
         Runnable doSet = new Runnable() {
             public void run() {
-                ListIterator figures = _figures.listIterator();
+                 Iterator figures = _liveFigureIterator();
                 while (figures.hasNext()) {
-                    Object figure = ((WeakReference)figures.next()).get();
-                    if (figure == null) {
-                        // The figure has been garbage collected, so we
-                        // remove it from the list.
-                        figures.remove();
-                    } else {
-                        ((BasicFigure)figure).setCentered(_centered);
-                    }
+                    Object figure = figures.next();
+                    ((BasicFigure)figure).setCentered(_centered);
                 }
             }
         };
@@ -215,16 +199,10 @@ public class ShapeIcon extends EditorIcon {
         // list while this method is traversing it.
         Runnable doSet = new Runnable() {
             public void run() {
-                ListIterator figures = _figures.listIterator();
+                Iterator figures = _liveFigureIterator();
                 while (figures.hasNext()) {
-                    Object figure = ((WeakReference)figures.next()).get();
-                    if (figure == null) {
-                        // The figure has been garbage collected, so we
-                        // remove it from the list.
-                        figures.remove();
-                    } else {
-                        ((BasicFigure)figure).setFillPaint(_fillColor);
-                    }
+                    Object figure = figures.next();
+                    ((BasicFigure)figure).setFillPaint(_fillColor);
                 }
             }
         };
@@ -246,16 +224,10 @@ public class ShapeIcon extends EditorIcon {
         // list while this method is traversing it.
         Runnable doSet = new Runnable() {
             public void run() {
-                ListIterator figures = _figures.listIterator();
+                Iterator figures = _liveFigureIterator();
                 while (figures.hasNext()) {
-                    Object figure = ((WeakReference)figures.next()).get();
-                    if (figure == null) {
-                        // The figure has been garbage collected, so we
-                        // remove it from the list.
-                        figures.remove();
-                    } else {
-                        ((BasicFigure)figure).setStrokePaint(_lineColor);
-                    }
+                    Object figure = figures.next();
+                    ((BasicFigure)figure).setStrokePaint(_lineColor);
                 }
             }
         };
@@ -277,16 +249,10 @@ public class ShapeIcon extends EditorIcon {
         // list while this method is traversing it.
         Runnable doSet = new Runnable() {
             public void run() {
-                ListIterator figures = _figures.listIterator();
+                Iterator figures = _liveFigureIterator();
                 while (figures.hasNext()) {
-                    Object figure = ((WeakReference)figures.next()).get();
-                    if (figure == null) {
-                        // The figure has been garbage collected, so we
-                        // remove it from the list.
-                        figures.remove();
-                    } else {
-                        ((BasicFigure)figure).setLineWidth(_lineWidth);
-                    }
+                    Object figure = figures.next();
+                    ((BasicFigure)figure).setLineWidth(_lineWidth);
                 }
             }
         };
@@ -308,16 +274,10 @@ public class ShapeIcon extends EditorIcon {
         // list while this method is traversing it.
         Runnable doSet = new Runnable() {
             public void run() {
-                ListIterator figures = _figures.listIterator();
+                Iterator figures = _liveFigureIterator();
                 while (figures.hasNext()) {
-                    Object figure = ((WeakReference)figures.next()).get();
-                    if (figure == null) {
-                        // The figure has been garbage collected, so we
-                        // remove it from the list.
-                        figures.remove();
-                    } else {
-                        ((BasicFigure)figure).setPrototypeShape(_shape);
-                    }
+                    Object figure = figures.next();
+                    ((BasicFigure)figure).setPrototypeShape(_shape);
                 }
             }
         };
@@ -332,9 +292,6 @@ public class ShapeIcon extends EditorIcon {
     
     // Default shape specified in the constructor.
     private Shape _defaultShape;
-    
-    // A list of weak references to figures that this has created.
-    private List _figures = new LinkedList();
     
     // The specified fill color.
     private Color _fillColor = Color.white;

@@ -35,7 +35,7 @@ import java.awt.Font;
 import java.lang.ref.WeakReference;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.ListIterator;
+import java.util.Iterator;
 
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
@@ -58,7 +58,7 @@ An icon that displays specified text.
 @version $Id$
 @since Ptolemy II 2.0
 */
-public class TextIcon extends EditorIcon {
+public class TextIcon extends DynamicEditorIcon {
 
     /** Create a new icon with the given name in the given container.
      *  @param container The container.
@@ -87,7 +87,6 @@ public class TextIcon extends EditorIcon {
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
         TextIcon newObject = (TextIcon)super.clone(workspace);
-        newObject._figures = new LinkedList();
         return newObject;
     }
 
@@ -122,18 +121,8 @@ public class TextIcon extends EditorIcon {
         // By default, the origin should be the upper left.
         newFigure.setAnchor(SwingConstants.NORTH_WEST);
         newFigure.setFillPaint(_textColor);
-        _figures.add(new WeakReference(newFigure));
-        
-        // Trim the list of figures...
-        ListIterator figures = _figures.listIterator();
-        while (figures.hasNext()) {
-            Object figure = ((WeakReference)figures.next()).get();
-            if (figure == null) {
-                // The figure has been garbage collected, so we
-                // remove it from the list.
-                figures.remove();
-            }
-        }
+      
+        _addLiveFigure(newFigure);
         return newFigure;
     }
 
@@ -165,20 +154,13 @@ public class TextIcon extends EditorIcon {
         // created (which may be in multiple views). This has to be
         // done in the Swing thread.  Assuming that createBackgroundFigure()
         // is also called in the Swing thread, there is no possibility of
-        // conflict here where that method is trying to add to the _figures
-        // list while this method is traversing it.
+        // conflict here in adding the figure to the list of live figures.
         Runnable doSet = new Runnable() {
             public void run() {
-                ListIterator figures = _figures.listIterator();
+                Iterator figures = _liveFigureIterator();
                 while (figures.hasNext()) {
-                    Object figure = ((WeakReference)figures.next()).get();
-                    if (figure == null) {
-                        // The figure has been garbage collected, so we
-                        // remove it from the list.
-                        figures.remove();
-                    } else {
-                        ((LabelFigure)figure).setFillPaint(_textColor);
-                    }
+                    Object figure = figures.next();
+                    ((LabelFigure)figure).setFillPaint(_textColor);
                 }
             }
         };
@@ -200,16 +182,10 @@ public class TextIcon extends EditorIcon {
         // list while this method is traversing it.
         Runnable doSet = new Runnable() {
             public void run() {
-                ListIterator figures = _figures.listIterator();
+                Iterator figures = _liveFigureIterator();
                 while (figures.hasNext()) {
-                    Object figure = ((WeakReference)figures.next()).get();
-                    if (figure == null) {
-                        // The figure has been garbage collected, so we
-                        // remove it from the list.
-                        figures.remove();
-                    } else {
-                        ((LabelFigure)figure).setFont(_font);
-                    }
+                    Object figure = figures.next();
+                    ((LabelFigure)figure).setFont(_font);
                 }
             }
         };
@@ -231,16 +207,10 @@ public class TextIcon extends EditorIcon {
         // list while this method is traversing it.
         Runnable doSet = new Runnable() {
             public void run() {
-                ListIterator figures = _figures.listIterator();
+                Iterator figures = _liveFigureIterator();
                 while (figures.hasNext()) {
-                    Object figure = ((WeakReference)figures.next()).get();
-                    if (figure == null) {
-                        // The figure has been garbage collected, so we
-                        // remove it from the list.
-                        figures.remove();
-                    } else {
-                        ((LabelFigure)figure).setString(_text);
-                    }
+                    Object figure = figures.next();
+                    ((LabelFigure)figure).setString(_text);
                 }
             }
         };
@@ -253,10 +223,7 @@ public class TextIcon extends EditorIcon {
     // Default text.
     private String _DEFAULT_TEXT = "Double click to edit text.";
 
-    // A list of weak references to figures that this has created.
-    private List _figures = new LinkedList();
-    
-    // The font to use.
+     // The font to use.
     private Font _font = new Font("SansSerif", Font.PLAIN, 12);
     
     // Default text.

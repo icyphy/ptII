@@ -102,8 +102,7 @@ public class CopyCatIcon extends XMLIcon {
         if (container instanceof CompositeEntity) {
             CompositeEntity myContainer = ((CompositeEntity)container);
             ComponentEntity entity = null;
-            Iterator entities
-                    = myContainer.entityList().iterator();
+            Iterator entities = myContainer.entityList().iterator();
             while (entities.hasNext()) {
                 entity = (ComponentEntity)entities.next();
             }
@@ -111,7 +110,8 @@ public class CopyCatIcon extends XMLIcon {
                 if (entity != null) {
                     // Look for an icon within the entity.
                     EditorIcon icon = null;
-                    Iterator icons = entity.attributeList(EditorIcon.class).iterator();
+                    Iterator icons = 
+                        entity.attributeList(EditorIcon.class).iterator();
                     while (icons.hasNext()) {
                         icon = (EditorIcon)icons.next();
                     }

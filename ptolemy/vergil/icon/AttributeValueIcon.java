@@ -105,7 +105,8 @@ public class AttributeValueIcon extends XMLIcon {
      */
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
-        AttributeValueIcon newObject = (AttributeValueIcon)super.clone(workspace);
+        AttributeValueIcon newObject = (AttributeValueIcon)
+            super.clone(workspace);
         newObject._background = null;
         newObject._label = null;
         return newObject;

@@ -37,7 +37,7 @@ import java.lang.ref.WeakReference;
 import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.ListIterator;
+import java.util.Iterator;
 
 import javax.swing.SwingUtilities;
 
@@ -58,7 +58,7 @@ An icon that displays a specified java.awt.Image.
 @version $Id$
 @since Ptolemy II 2.0
 */
-public class ImageIcon extends EditorIcon implements ImageObserver {
+public class ImageIcon extends DynamicEditorIcon implements ImageObserver {
 
     /** Create a new icon with the given name in the given container.
      *  @param container The container.
@@ -87,7 +87,6 @@ public class ImageIcon extends EditorIcon implements ImageObserver {
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
         ImageIcon newObject = (ImageIcon)super.clone(workspace);
-        newObject._figures = new LinkedList();
         newObject._image = null;
         newObject._scaledImage = null;
         return newObject;
@@ -124,7 +123,7 @@ public class ImageIcon extends EditorIcon implements ImageObserver {
             setImage(tk.getImage(url));
         }
         Figure newFigure = new ImageFigure(_scaledImage);
-        _figures.add(new WeakReference(newFigure));
+        _addLiveFigure(newFigure);
         
         return newFigure;
     }
@@ -171,18 +170,18 @@ public class ImageIcon extends EditorIcon implements ImageObserver {
             // FIXME: Set an error image.
             return false;
         }
-        // If this was called for any other reason, repaint.
-        ListIterator figures = _figures.listIterator();
-        while (figures.hasNext()) {
-            Object figure = ((WeakReference)figures.next()).get();
-            if (figure == null) {
-                // The figure has been garbage collected, so we
-                // remove it from the list.
-                figures.remove();
-            } else {
-                ((ImageFigure)figure).repaint();
-            }
-        }
+        Runnable doRepaint = new Runnable() {
+                public void run() {
+                    // If this was called for any other reason, repaint.
+                    Iterator figures = _liveFigureIterator();
+                    while (figures.hasNext()) {
+                        Object figure = figures.next();
+                        ((ImageFigure)figure).repaint();
+                    }
+                }
+            };
+        SwingUtilities.invokeLater(doRepaint);
+           
         
         // This method returns true to indicate that further
         // updates are needed.  However, I can't begin to understand
@@ -204,12 +203,13 @@ public class ImageIcon extends EditorIcon implements ImageObserver {
                     // No image has been set yet, so return.
                     return;
                 }
-                // NOTE: Oddly, the following two calls below may not return the
-                // correct sizes unless the image is already loaded.
-                // Although it is not documented, it appears that if the
-                // the returned size is not positive, then it is not correct,
-                // and imageUpdate() will be called later. So in that case,
-                // we do nothing.
+                // NOTE: Oddly, the following two calls below may not
+                // return the correct sizes unless the image is
+                // already loaded.  Although it is not documented, it
+                // appears that if the the returned size is not
+                // positive, then it is not correct, and imageUpdate()
+                // will be called later. So in that case, we do
+                // nothing.
                 int width = _image.getWidth(ImageIcon.this);
                 int height = _image.getHeight(ImageIcon.this);
                 if (width > 0 && height > 0) {
@@ -219,21 +219,15 @@ public class ImageIcon extends EditorIcon implements ImageObserver {
                            height * _scalePercentage/100.0);
                     _scaledImage = _image.getScaledInstance(
                            newWidth, newHeight, Image.SCALE_SMOOTH);
-                    ListIterator figures = _figures.listIterator();
+                    Iterator figures = _liveFigureIterator();
                     while (figures.hasNext()) {
-                        Object figure = ((WeakReference)figures.next()).get();
-                        if (figure == null) {
-                            // The figure has been garbage collected, so we
-                            // remove it from the list.
-                            figures.remove();
-                        } else {
-                            // Repaint twice since the scale has changed
-                            // and we need to cover the damage area prior
-                            // the change as well as after.
-                            ((ImageFigure)figure).repaint();
-                            ((ImageFigure)figure).setImage(_scaledImage);
-                            ((ImageFigure)figure).repaint();
-                        }
+                        Object figure = figures.next();
+                        // Repaint twice since the scale has changed
+                        // and we need to cover the damage area prior
+                        // the change as well as after.
+                        //((ImageFigure)figure).repaint();
+                        ((ImageFigure)figure).setImage(_scaledImage);
+                        // ((ImageFigure)figure).repaint();
                     }
                 }
             }
@@ -255,22 +249,15 @@ public class ImageIcon extends EditorIcon implements ImageObserver {
         // created (which may be in multiple views). This has to be
         // done in the Swing thread.  Assuming that createBackgroundFigure()
         // is also called in the Swing thread, there is no possibility of
-        // conflict here where that method is trying to add to the _figures
-        // list while this method is traversing it.
+        // conflict here in adding the figure to the list of live figures.
         Runnable doSet = new Runnable() {
             public void run() {
-                ListIterator figures = _figures.listIterator();
+                Iterator figures = _liveFigureIterator();
                 while (figures.hasNext()) {
-                    Object figure = ((WeakReference)figures.next()).get();
-                    if (figure == null) {
-                        // The figure has been garbage collected, so we
-                        // remove it from the list.
-                        figures.remove();
-                    } else {
-                        ((ImageFigure)figure).setImage(_scaledImage);
-                        if (_scalePercentage != 100.0) {
-                            scaleImage(_scalePercentage);
-                        }
+                    Object figure = figures.next();
+                    ((ImageFigure)figure).setImage(_scaledImage);
+                    if (_scalePercentage != 100.0) {
+                        scaleImage(_scalePercentage);
                     }
                 }
             }
@@ -281,9 +268,6 @@ public class ImageIcon extends EditorIcon implements ImageObserver {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // A list of weak references to figures that this has created.
-    private List _figures = new LinkedList();
-    
     // The image that is the master.
     private Image _image;
     
