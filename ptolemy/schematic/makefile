@@ -29,17 +29,13 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
+# The ptolemy.schematic package contains
+# classes that allow clients to access Ptolemy schematics
+# and icons and to build running simulations from them.
+
 ME =		ptolemy/schematic
 
-DIRS = 		util \
-		xml
-
-	# lib is no longer included
-	#lib doc demo
-
-	# demo is not included in the standard build because
-	# it requires jdk1.2 and diva
-	# demo
+DIRS = 		util xml
  
 # Root of the Java directory
 ROOT =		../..
@@ -77,7 +73,7 @@ EXTRA_SRCS =	$(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS) package.html
+MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
@@ -89,7 +85,6 @@ JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
 install: jclass $(PTCLASSJAR)
-
 
 depend:
 	@echo "no dependencies in this directory"
