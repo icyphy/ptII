@@ -391,11 +391,6 @@ fixtmpdist:
 	echo "	(cd ..; /bin/sh ./configure)" >> \
 		$(PTTMPDIR)/$(PTDIST)/bin/makefile
 	echo "" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
-	echo "clean:" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
-	echo "foo" | \
-		awk '{	 printf("\trm -f %c%s\n", 36, "(SHELL_FILES)")}' >> \
-		$(PTTMPDIR)/$(PTDIST)/bin/makefile
-	echo "" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
 	echo "# Get the rest of the rules" >> \
 		$(PTTMPDIR)/$(PTDIST)/bin/makefile
 	echo "foo" | \
