@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (chf@eecs.berkeley.edu)
-@AcceptedRating Yellow (vogel@eecs.berkeley.edu)
+@ProposedRating yellow (chf@eecs.berkeley.edu)
+@AcceptedRating yellow (vogel@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.gr.kernel;
