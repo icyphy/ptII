@@ -50,23 +50,16 @@ import java.net.URL;
 import javax.swing.JPanel;
 
 //////////////////////////////////////////////////////////////////////////
-//// DocumentationViewerTableau
+//// HTMLViewerTableau
 /**
-A tableau representing the documentation of a ptolemy class.  
-The class documentation that is viewed is given by the <i>dottedClass</i>
-parameter.  This class assumes
-that class documentation for all classes has been created in the
-<code>doc/codeDoc</code> directory relative to some point in the classpath.
-In other words, if <i>dottedClass</i>
-<code>ptolemy.gui.DocumentationViewer</code>, then this class will attempt 
-to load the resource 
-<code>doc/codeDoc/ptolemy/gui/DocumentationViewer.html</code>.
-To automatically create documentation for the ptolemy tree in 
-ptII/doc (which should be in the classpath), run make in that directory.
-<p>
-The constructor of this
-class creates the viewing window. The window itself is an instance
-of HTMLViewer, and can be accessed using the getFrame() method.
+A tableau representing a rendered HTML view in a toplevel window.
+The URL that is viewed is given by the <i>url</i> parameter, and 
+can be either an absolute URL, a system fileName, or a resource that
+can be loaded relative to the classpath.  For more information about how
+the URL is specified, see MoMLApplication.specToURL().
+<p>The constructor of thixs
+class creates the window. The text window itself is an instance
+of TextEditor, and can be accessed using the getFrame() method.
 As with other tableaux, this is an entity that is contained by
 an effigy of a model.
 There can be any number of instances of this class in an effigy.
@@ -75,7 +68,7 @@ There can be any number of instances of this class in an effigy.
 @version $Id$
 @see Effigy
 */
-public class DocumentationViewerTableau extends Tableau {
+public class HTMLViewerTableau extends Tableau {
 
     /** Construct a new tableau for the model represented by the given effigy.
      *  @param container The container.
@@ -85,11 +78,11 @@ public class DocumentationViewerTableau extends Tableau {
      *  @exception NameDuplicationException If the name coincides with an 
      *   attribute already in the container.
      */
-    public DocumentationViewerTableau(Effigy container, String name)
+    public HTMLViewerTableau(Effigy container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        dottedClass = new StringAttribute(this, "dottedClass");
+        url = new StringAttribute(this, "url");
 
         HTMLViewer frame = new HTMLViewer();
 	setFrame(frame);
@@ -102,8 +95,8 @@ public class DocumentationViewerTableau extends Tableau {
     ///////////////////////////////////////////////////////////////////
     ////                         public parameters                 ////
 
-    /** The class to display. */
-    public StringAttribute dottedClass;
+    /** The URL to display. */
+    public StringAttribute url;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -116,21 +109,17 @@ public class DocumentationViewerTableau extends Tableau {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (attribute == dottedClass) {
-            String className = ((Settable)attribute).getExpression();
-	    String docName = "doc.codeDoc." + className;
-	    try {
+        if (attribute == url) {
+            String urlSpec = ((Settable)attribute).getExpression();
+            try {
                 // NOTE: This cannot handle a URL that is relative to the
                 // MoML file within which this attribute might be being
                 // defined.  Is there any way to do that?
-                URL toRead = getClass().getClassLoader().getResource(
-		    docName.replace('.', '/') + ".html");
+                URL toRead = MoMLApplication.specToURL(urlSpec);
                 ((HTMLViewer)getFrame()).setPage(toRead);
             } catch (IOException ex) {
                 throw new IllegalActionException(this,
-                "Cannot find documentation for: " + docName + 
-		"\n" + ex.toString() + 
-		"\nTry Running \"make\" in ptII/doc.");
+                "Cannot open URL: " + urlSpec + "\n" + ex.toString());
             }
         } else {
             super.attributeChanged(attribute);
@@ -146,10 +135,9 @@ public class DocumentationViewerTableau extends Tableau {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
-        DocumentationViewerTableau newobj =
-                 (DocumentationViewerTableau)super.clone(ws);
-        newobj.dottedClass = 
-	    (StringAttribute)newobj.getAttribute("dottedClass");
+        HTMLViewerTableau newobj =
+                 (HTMLViewerTableau)super.clone(ws);
+        newobj.url = (StringAttribute)newobj.getAttribute("url");
         return newobj;
     }
 }

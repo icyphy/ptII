@@ -61,6 +61,8 @@ JSRCS = \
 	EditorPaneFactory.java \
 	EditParametersDialog.java \
 	Effigy.java \
+	HTMLViewer.java \
+	HTMLViewerTableau.java \
 	ModelDirectory.java \
 	ModelFrame.java \
 	ModelPane.java \
