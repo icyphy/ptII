@@ -137,6 +137,14 @@ expressions of double-valued inputs.
 
 </menu>
 
+<h3>Limitations in the PN Domain</h3>
+The PN domain documents that it locally handles mutations.  However, this
+is currently not true in the implementation.  For the basic PN model, this
+doesn't really matter, since mutations happen pretty much the same as they
+would otherwise.  (i.e. they are non-deterministic in when they execute) 
+However, for timed PN models, there is actually some expressiveness
+lost, since timed PN models can locally execute mutations deterministically.
+
 <h3>Limitations in the FSM Domain</h3>
 
 The FSM domain is still fairly preliminary, and is likely to change
