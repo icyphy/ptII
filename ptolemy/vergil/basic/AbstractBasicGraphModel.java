@@ -328,18 +328,22 @@ public abstract class AbstractBasicGraphModel extends ModularGraphModel {
          *  @param change The change that has been executed.
          */
         public void changeExecuted(ChangeRequest change) {
-            // Ignore anything that comes from a graph model.
+            // Ignore anything that comes from this graph model.
             // The other methods take care of issuing the graph event in
             // that case.
-            // This used to only ignore events that came from this
-            // graph model, but that had the side effect of triggering
-            // a structure changed event when you first look inside a
-            // composite actor.  This is because a new graph controller
-            // is involved in rendering the inside of the composite,
-            // but the change listener is registered with the top-level
-            // model.
-            if (change != null
-                    && change.getSource() instanceof GraphModel) {
+            // NOTE: Unfortunately, when you perform look inside, you
+            // get a new graph model, and that graph model is modified
+            // (for example, by adding icons). This means that the
+            // original graph model will be notified of changes,
+            // rather spuriously.  We tried having this ignore
+            // any change whose source was an instance of GraphModel,
+            // but this breaks MVC. If you have two views open
+            // on the graph, then the second view will not be notified
+            // of changes.
+            // Note that a change listener is registered with the top-level
+            // model, as it probably has to be, since a change to a model
+            // can have repercusions anywhere in the model.
+            if (change != null && change.getSource() == this) {
                 return;
             }
 
