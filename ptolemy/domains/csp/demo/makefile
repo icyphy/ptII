@@ -48,9 +48,9 @@ TCL_SRCS =
 
 JSRCS = \
 	BasicDemo.java \
+	MM1.java \
 	PauseTest.java \
 	ThreeActor.java \
-	TimeTest.java \
 	CSPPrimeExample.java
 
 
