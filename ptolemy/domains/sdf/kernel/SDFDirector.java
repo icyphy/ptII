@@ -271,10 +271,11 @@ public class SDFDirector extends StaticSchedulingDirector {
 		if (threshold > 0
                         && !receivers[channel][0].hasToken(threshold)) {
 		    if (_debugging) {
-                        _debug("Channel " + channel +
-                                " does not have enough tokens." +
-                                " Prefire returns false on " +
-                                container.getFullName());
+                        _debug("Channel "
+                                + channel
+                                + " does not have enough tokens."
+                                + " Prefire returns false on "
+                                + container.getFullName());
                     }
                     return false;
 		}
@@ -310,11 +311,9 @@ public class SDFDirector extends StaticSchedulingDirector {
      *  does not contain a legal value.
      */
     public boolean postfire() throws IllegalActionException {
-        int iterationsValue =
-            ((IntToken) (iterations.getToken())).intValue();
+        int iterationsValue = ((IntToken) (iterations.getToken())).intValue();
         _iterationCount++;
-        if ((iterationsValue > 0)
-                && (_iterationCount >= iterationsValue)) {
+        if ((iterationsValue > 0) && (_iterationCount >= iterationsValue)) {
             _iterationCount = 0;
             return false;
         }
@@ -364,7 +363,6 @@ public class SDFDirector extends StaticSchedulingDirector {
 	return wasTransferred;
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -386,13 +384,12 @@ public class SDFDirector extends StaticSchedulingDirector {
     private void _init()
             throws IllegalActionException, NameDuplicationException {
         SDFScheduler scheduler =
-            new SDFScheduler(this, uniqueName("Scheduler"));
+                new SDFScheduler(this, uniqueName("Scheduler"));
 
-        iterations =
-            new Parameter(this, "iterations", new IntToken(0));
+        iterations = new Parameter(this, "iterations", new IntToken(0));
         iterations.setTypeEquals(BaseType.INT);
         vectorizationFactor =
-            new Parameter(this, "vectorizationFactor", new IntToken(1));
+                new Parameter(this, "vectorizationFactor", new IntToken(1));
         vectorizationFactor.setTypeEquals(BaseType.INT);
     }
 
