@@ -82,7 +82,7 @@ a local parameter.
 			<xsl:for-each select="@*">
 				<xsl:attribute name="{name()}"><xsl:value-of select="."/></xsl:attribute>
 			</xsl:for-each>
-			<xsl:apply-templates select="*"/>
+			<xsl:apply-templates/>
 		</xsl:copy>
 	</xsl:template>
 

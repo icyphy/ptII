@@ -91,7 +91,7 @@ invariants or the expressions to be integrated, they are mapped into inputs of t
 			<xsl:for-each select="@*">
 				<xsl:attribute name="{name()}"><xsl:value-of select="."/></xsl:attribute>
 			</xsl:for-each>
-			<xsl:apply-templates select="*"/>
+			<xsl:apply-templates/>
 		</xsl:copy>
 	</xsl:template>
 	

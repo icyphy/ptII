@@ -100,6 +100,7 @@ public class HSIFUtilities {
         transforms.add("ptolemy/hsif/xsl/LocalVariablePreprocessor.xsl");
         transforms.add("ptolemy/hsif/xsl/SlimPreprocessor.xsl");
         transforms.add("ptolemy/hsif/xsl/HSIF.xsl");
+        transforms.add("ptolemy/hsif/xsl/SlimPreprocessorForLinks.xsl");
 
         Document outputDocument =
             XSLTUtilities.transform(inputDocument, transforms);

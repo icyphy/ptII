@@ -65,7 +65,9 @@ KRUFT = \
 	data/Thermostat_mid_l.xml \
 	data/SwimmingPool_mid_l.xml \
 	data/Thermostat_mid_sl.xml \
-	data/SwimmingPool_mid_sl.xml
+	data/SwimmingPool_mid_sl.xml \
+	data/Thermostat_mid.xml \
+	data/SwimmingPool_mid.xml
 
 
 # Files to be included in the jar file
@@ -105,11 +107,19 @@ install: all jars
 # In the rules below, note that the .xsl style sheet is at the end
 # of the list of dependencies.
 
-# Generating MoML files
-Thermostat_moml.xml: data/Thermostat_mid_sl.xml xsl/HSIF.xsl
+# Dealing with redundant links
+Thermostat_moml.xml: data/Thermostat_mid.xml xsl/SlimPreprocessorForLinks.xsl
 	$(XSL_TRANSFORM) $^ $@
 
-SwimmingPool_moml.xml: data/SwimmingPool_mid_sl.xml xsl/HSIF.xsl
+SwimmingPool_moml.xml: data/SwimmingPool_mid.xml xsl/SlimPreprocessorForLinks.xsl
+	$(XSL_TRANSFORM) $^ $@
+
+
+# Generating MoML files
+data/Thermostat_mid.xml: data/Thermostat_mid_sl.xml xsl/HSIF.xsl
+	$(XSL_TRANSFORM) $^ $@
+
+data/SwimmingPool_mid.xml: data/SwimmingPool_mid_sl.xml xsl/HSIF.xsl
 	$(XSL_TRANSFORM) $^ $@
 
 

@@ -49,15 +49,15 @@ CT-ModalModel-CTEmbedded.
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
                          xmlns:xalan="http://xml.apache.org/xslt" version="1.0">
 
-	<!-- index every node via attribute _id -->
-	<xsl:key name="nodeID" match="*" use="@_id"/>
-
 	<!-- DOCTYPE element includes public ID and system ID -->
 	<xsl:output doctype-system="http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd"
 		    doctype-public="-//UC Berkeley//DTD MoML 1//EN"/>
 	<xsl:output method="xml" indent="yes"/>
 	
-	<!-- features of the XSLT 2.0 language -->
+	<!-- index every node via attribute _id -->
+	<xsl:key name="nodeID" match="*" use="@_id"/>
+
+    <!-- features of the XSLT 2.0 language -->
 	<xsl:decimal-format name="comma" decimal-separator="," grouping-separator="."/>
 	
 	<!-- time function -->
@@ -193,12 +193,6 @@ CT-ModalModel-CTEmbedded.
             <xsl:with-param name="type" select="'Modal'"/>
         </xsl:call-template>
 
-        <!-- _tableau -->
-        <xsl:element name="property">
-            <xsl:attribute name="name">_tableauFactory</xsl:attribute>
-            <xsl:attribute name="class">ptolemy.vergil.fsm.modal.ModalModel$ModalTableauFactory</xsl:attribute>
-        </xsl:element>
-
         <!-- parameters -->
         <xsl:for-each select="IntegerParameter|RealParameter|BooleanParameter|Parameter">
             <xsl:call-template name="parameter"/>
@@ -328,10 +322,28 @@ For more help, choose Help from the upper menu bar.</text>
 
 <!-- Modal Director -->
 <xsl:template name="ModalDirector">
+
+        <property name="directorClass" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.HSDirector">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="style0" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.HSDirector">
+                </property>
+                <property name="style1" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.FSMDirector">
+                </property>
+            </property>
+        </property>
+        
+        <!-- _tableau -->
+        <xsl:element name="property">
+            <xsl:attribute name="name">_tableauFactory</xsl:attribute>
+            <xsl:attribute name="class">ptolemy.vergil.fsm.modal.ModalModel$ModalTableauFactory</xsl:attribute>
+        </xsl:element>
+
     <xsl:element name="property">
         <!-- attributes of entity -->
         <xsl:attribute name="name">_Director</xsl:attribute>
         <xsl:attribute name="class">ptolemy.domains.fsm.kernel.HSDirector</xsl:attribute>
+
+
         <xsl:element name="property">
             <xsl:attribute name="name">controllerName</xsl:attribute>
             <xsl:attribute name="class">ptolemy.kernel.util.StringAttribute</xsl:attribute>
@@ -662,19 +674,17 @@ For more help, choose Help from the upper menu bar.</text>
                         <xsl:attribute name="relation"><xsl:value-of select="$varName"/></xsl:attribute>
                     </xsl:element>
                 </xsl:if>
-
                 <xsl:element name="relation">
-                    <xsl:attribute name="name"><xsl:value-of select='expressionToTME'/></xsl:attribute>
+                    <xsl:attribute name="name">relationBetweenInvariantAndThrowModelError</xsl:attribute>
                     <xsl:attribute name="class">ptolemy.actor.TypedIORelation</xsl:attribute>
                 </xsl:element>
-
                 <xsl:element name="link">
                     <xsl:attribute name="port"><xsl:value-of select="concat($name, '.', 'output')"/></xsl:attribute>
-                    <xsl:attribute name="relation"><xsl:value-of select='expressionToTME'/></xsl:attribute>
+                    <xsl:attribute name="relation">relationBetweenInvariantAndThrowModelError</xsl:attribute>
                 </xsl:element>
                 <xsl:element name="link">
                     <xsl:attribute name="port"><xsl:value-of select="concat('throwModelError', '.', 'input')"/></xsl:attribute>
-                    <xsl:attribute name="relation"><xsl:value-of select='expressionToTME'/></xsl:attribute>
+                    <xsl:attribute name="relation">relationBetweenInvariantAndThrowModelError</xsl:attribute>
                 </xsl:element>
 
             </xsl:for-each>
@@ -852,7 +862,7 @@ For more help, choose Help from the upper menu bar.</text>
     <xsl:for-each select="LExprR">
         <xsl:text> </xsl:text>
         <xsl:variable name="temp">
-            <xsl:value-of disable-output-escaping="yes" select="@logicOp"/>
+            <xsl:value-of select="@logicOp"/>
         </xsl:variable>
         <xsl:choose>
             <xsl:when test="$temp='and'"><xsl:text>&amp;&amp;</xsl:text></xsl:when>
@@ -869,7 +879,7 @@ For more help, choose Help from the upper menu bar.</text>
 <xsl:template match="RExpr">
     <xsl:apply-templates select="AExpr"/>
     <xsl:for-each select="RExprR">
-        <xsl:value-of disable-output-escaping="yes" select="@relOp"/>
+        <xsl:value-of select="@relOp"/>
         <xsl:apply-templates select="RExpr|AExpr"/>
     </xsl:for-each>
 </xsl:template>
@@ -877,7 +887,7 @@ For more help, choose Help from the upper menu bar.</text>
 <xsl:template match="AExpr">
     <xsl:apply-templates select="MExpr"/>
     <xsl:for-each select="AExprR">
-        <xsl:value-of disable-output-escaping="yes" select="@addOp"/>
+        <xsl:value-of select="@addOp"/>
         <xsl:apply-templates select="AExpr"/>
     </xsl:for-each>
 </xsl:template>
@@ -885,7 +895,7 @@ For more help, choose Help from the upper menu bar.</text>
 <xsl:template match="MExpr">
     <xsl:for-each select="Const|VarRef|ParRef">
         <xsl:for-each select="@unOp">
-            <xsl:variable name="temp"><xsl:value-of disable-output-escaping="yes" select="."/></xsl:variable>
+            <xsl:variable name="temp"><xsl:value-of select="."/></xsl:variable>
             <xsl:choose>
                 <xsl:when test="$temp!='NOP'"><xsl:value-of select="$temp"/></xsl:when>
             </xsl:choose>
@@ -895,14 +905,14 @@ For more help, choose Help from the upper menu bar.</text>
     <!-- weird behaviors -->
     <xsl:apply-templates select="ParExpr"/>
     <xsl:for-each select="MExprR">
-        <xsl:value-of disable-output-escaping="yes" select="@mulOp"/>
+        <xsl:value-of select="@mulOp"/>
         <xsl:apply-templates select="MExpr"/>
     </xsl:for-each>
 </xsl:template>
 
 <xsl:template match="ParExpr">
         <xsl:variable name="temp">
-            <xsl:value-of disable-output-escaping="yes" select="@unOp"/>
+            <xsl:value-of select="@unOp"/>
         </xsl:variable>
         <xsl:choose>
             <xsl:when test="$temp='NOT'"><xsl:text>!</xsl:text></xsl:when>
