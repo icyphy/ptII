@@ -114,7 +114,7 @@ public class InvalidStateException extends RuntimeException {
             if (obj instanceof Nameable) {
                 name = _getFullName((Nameable)obj);
             } else {
-                name = "<Object of class " + 
+                name = "<Object of class " +
                     (obj.getClass()).getName() + ">";
             }
             prefix += name + ", ";
