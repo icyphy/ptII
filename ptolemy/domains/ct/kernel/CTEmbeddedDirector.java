@@ -227,7 +227,7 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
         }
 
         if (_debugging) {
-            _debug("Current time after" 
+            _debug("Current time after"
                     + " solver.resolveStates() is "
                     + getCurrentTime());
         }
