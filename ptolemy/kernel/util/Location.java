@@ -85,6 +85,7 @@ public class Location extends SingletonAttribute
     /** Add a listener to be notified when the value of this attribute changes.
      *  If the listener is already on the list of listeners, then do nothing.
      *  @param listener The listener to add.
+     *  @see #removeValueListener(ValueListener)
      */
     public void addValueListener(ValueListener listener) {
         if (_valueListeners == null) {
@@ -168,6 +169,7 @@ public class Location extends SingletonAttribute
      *  or by setLocation(), whichever was most recently called,
      *  or return an empty string if neither has been called.
      *  @return The expression.
+     *  @see setExpression(String)
      */
     public String getExpression() {
         if (_expressionSet) {
@@ -187,6 +189,7 @@ public class Location extends SingletonAttribute
 
     /** Get the location in some cartesian coordinate system.
      *  @return The location.
+     *  @see #setLocation(double[])
      */
     public double[] getLocation() {
         return _location;
@@ -195,6 +198,7 @@ public class Location extends SingletonAttribute
     /** Get the visibility of this attribute, as set by setVisibility().
      *  The visibility is set by default to NONE.
      *  @return The visibility of this attribute.
+     *  @see #setVisibility(Settable.Visibility)
      */
     public Settable.Visibility getVisibility() {
         return _visibility;
@@ -204,6 +208,7 @@ public class Location extends SingletonAttribute
      *  notified when the value of this variable changes.  If no such listener
      *  exists, do nothing.
      *  @param listener The listener to remove.
+     *  @see #addValueListener(ValueListener)
      */
     public void removeValueListener(ValueListener listener) {
         if (_valueListeners != null) {
@@ -216,6 +221,7 @@ public class Location extends SingletonAttribute
      *  the container and value listeners are not notified until validate()
      *  is called.
      *  @param expression The value of the attribute.
+     *  @see getExpression()
      */
     public void setExpression(String expression) {
         _expression = expression;
@@ -230,6 +236,9 @@ public class Location extends SingletonAttribute
      *  parameter. No notification is done if the location is the same 
      *  as before.
      *  @param location The location.
+     *  @exception IllegalActionException If throw when attributeChanged()
+     *  is called.
+     *  @see #getLocation()
      */
     public void setLocation(double[] location)
             throws IllegalActionException {
@@ -244,6 +253,7 @@ public class Location extends SingletonAttribute
     /** Set the visibility of this attribute.  The argument should be one
      *  of the public static instances in Settable.
      *  @param visibility The visibility of this attribute.
+     *  @see #getVisibility()
      */
     public void setVisibility(Settable.Visibility visibility) {
         _visibility = visibility;
@@ -302,6 +312,8 @@ public class Location extends SingletonAttribute
     /** Set the location without altering the modified status.
      *  @param location The location.
      *  @return True if the location was modified.
+     *  @exception IllegalActionException If the call to attributeChanged()
+     *  throws it.
      */
     private boolean _setLocation(double[] location)
             throws IllegalActionException {

@@ -316,6 +316,7 @@ public final class Workspace implements Nameable, Serializable {
 
     /** Get the name.
      *  @return The name of the workspace.
+     *  @see #setName(String)
      */
     public String getName() {
         return _name;
@@ -502,6 +503,7 @@ public final class Workspace implements Nameable, Serializable {
      *  its workspace (its workspace is immutable).  If the object is
      *  not in the directory, do nothing.
      *  Increment the version number.
+     *  @param item The NamedObj to be removed.
      */
     public synchronized void remove(NamedObj item) {
         _directory.remove(item);
@@ -522,6 +524,7 @@ public final class Workspace implements Nameable, Serializable {
      *  name is set to an empty string.
      *  Increment the version number.
      *  @param name The new name.
+     *  @see #getName()
      */
     public synchronized void setName(String name) {
         if (name == null) {
