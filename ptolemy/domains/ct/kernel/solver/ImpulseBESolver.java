@@ -86,11 +86,11 @@ public class ImpulseBESolver extends BackwardEulerSolver {
     /** Description
      */	
     public boolean resolveStates() throws IllegalActionException {
-        
+        CTDirector dir = (CTDirector) getContainer();
         super.resolveStates();
+System.out.println(getName() + " current time " + dir.getCurrentTime());
+
         
-        CTDirector dir = (CTDirector)getContainer();
-        /*
         Enumeration actors = ((CTScheduler)dir.getScheduler()
             ).dynamicActorSchedule();
         while(actors.hasMoreElements()) {
@@ -98,9 +98,11 @@ public class ImpulseBESolver extends BackwardEulerSolver {
             _debug(getFullName() + "update..."+((Nameable)next).getName());
             next.postfire();
         }
-        */
+        
         dir.setCurrentStepSize(-dir.getCurrentStepSize());
         super.resolveStates();
+System.out.println(getName() + " current time " + dir.getCurrentTime());
+
         dir.setCurrentStepSize(-dir.getCurrentStepSize());
         return true;
     }
