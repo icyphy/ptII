@@ -43,8 +43,9 @@ if {[string compare test [info procs test]] == 1} then {
 test SequenceToArray-1.1 {test constructor and clone} {
     set e0 [java::new ptolemy.actor.TypedCompositeActor]
     set s2abase [java::new ptolemy.domains.sdf.lib.SequenceToArray $e0 s2abase]
-    set s2a [java::cast ptolemy.domains.sdf.lib.SDFTransformer \
-							[$s2abase clone]]
+    set s2aclone [java::cast ptolemy.domains.sdf.lib.SequenceToArray \
+            [$s2abase clone]]
+    set s2a [java::cast ptolemy.domains.sdf.lib.SDFTransformer $s2aclone]
     $s2a setName s2a
     # Success here is just not throwing an exception.
     list {}
@@ -69,7 +70,7 @@ test SequenceToArray-2.1 {test double array, test prefire} {
     $s2a setContainer $e0
     set s2aIn [java::field $s2a input]
     set s2aOut [java::field $s2a output]
-    $s2aIn setTokenConsumptionRate 2
+    [java::field $s2aclone arrayLength] setExpression {2}
 
     # put in a Recorder
     set rec [java::new ptolemy.actor.lib.Recorder $e0 rec]
