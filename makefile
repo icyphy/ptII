@@ -30,12 +30,12 @@
 ##########################################################################
 
 # Order matters here, tycho depends on pn and tcl.
-DIRS = tcl pn tycho doc
+DIRS = tcl pn pt tycho doc
 
 # Root of Tycho directory
-ROOT =		../..
+ROOT =		..
 
-ME = 		lib/java
+ME = 		java
 # True source directory
 VPATH =		$(ROOT)/$(ME)
 
