@@ -283,29 +283,29 @@ public class Render extends PlotBox {
      *  @param width The proposed width of the patch.
      */
     private int[] _clipXWidth(int x, int width) {
-	int[] retrn = new int[2];
+	int[] returnArray = new int[2];
 
 	// if the patch extends across the entire width of the plot rectangle
 	if (x < _ulx + 1 && x + width > _lrx - 1) {
-	    retrn[0] = _ulx + 1;
-	    retrn[1] = _lrx - _ulx - 1;
+	    returnArray[0] = _ulx + 1;
+	    returnArray[1] = _lrx - _ulx - 1;
 	} // if the patch is on the left border line
 	else if (x < _ulx + 1 && x + width > _ulx + 1) {
-	    retrn[0] = _ulx + 1;
-	    retrn[1] = width - (_ulx - x);
+	    returnArray[0] = _ulx + 1;
+	    returnArray[1] = width - (_ulx - x);
 	} // if the patch is within the left and right borders
 	else if (x >= _ulx + 1 && x + width <= _lrx - 1) {
-	    retrn[0] = x;
-	    retrn[1] = width;
+	    returnArray[0] = x;
+	    returnArray[1] = width;
 	} // if the patch is on the right border
 	else if (x <= _lrx - 1 && x + width > _lrx - 1) {
-	    retrn[0] = x;
-	    retrn[1] = _lrx - x;
+	    returnArray[0] = x;
+	    returnArray[1] = _lrx - x;
 	} // if the patch is outside of either the left or right border
 	else {
-	    retrn[0] = _NOTVISIBLE;
+	    returnArray[0] = _NOTVISIBLE;
 	}
-	return retrn;
+	return returnArray;
     }
 
     /** Clip the patch to the visible y-range.
@@ -313,29 +313,29 @@ public class Render extends PlotBox {
      *  @param height The proposed height of the patch.
      */
     private int[] _clipYHeight(int y, int height) {
-	int[] retrn = new int[2];
+	int[] returnArray = new int[2];
 
 	// if the patch extends across the entire height of the plot rectange
 	if (y < _uly + 1 && y + height > _lry - 1) {
-	    retrn[0] = _uly + 1;
-	    retrn[1] = _lry - _uly - 1;
+	    returnArray[0] = _uly + 1;
+	    returnArray[1] = _lry - _uly - 1;
 	} // if the patch is on the top border line
 	else if (y < _uly + 1 && y + height >= _uly + 1) {
-	    retrn[0] = _uly + 1;
-	    retrn[1] = height - (_uly - y);
+	    returnArray[0] = _uly + 1;
+	    returnArray[1] = height - (_uly - y);
 	} // if the patch is within the top and bottom borders
 	else if (y >= _uly + 1 && y + height <= _lry - 1) {
-	    retrn[0] = y;
-	    retrn[1] = height;
+	    returnArray[0] = y;
+	    returnArray[1] = height;
 	} // if the patch is on the bottom border
 	else if (y <= _lry - 1 && y + height > _lry - 1) {
-	    retrn[0] = y;
-	    retrn[1] = _lry - y;
+	    returnArray[0] = y;
+	    returnArray[1] = _lry - y;
 	} // if the patch is outside of either the top or bottom border
 	else {
-	    retrn[0] = _NOTVISIBLE;
+	    returnArray[0] = _NOTVISIBLE;
 	}
-	return retrn;
+	return returnArray;
     }
 
     /** Draw a stripe.
