@@ -1,29 +1,29 @@
 /* Computation of transitive closure of a directed graph.
 
- Copyright (c) 2002 The University of Maryland. All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+   Copyright (c) 2002 The University of Maryland. All rights reserved.
+   Permission is hereby granted, without written agreement and without
+   license or royalty fees, to use, copy, modify, and distribute this
+   software and its documentation for any purpose, provided that the above
+   copyright notice and the following two paragraphs appear in all copies
+   of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+   IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
+   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+   THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
+   SUCH DAMAGE.
 
- THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+   THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+   MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+   ENHANCEMENTS, OR MODIFICATIONS.
 
-@ProposedRating Red (cxh@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+   @ProposedRating Red (cxh@eecs.berkeley.edu)
+   @AcceptedRating Red (cxh@eecs.berkeley.edu)
 
-*/
+ */
 
 package ptolemy.graph.analysis;
 
@@ -41,25 +41,25 @@ import java.util.Collections;
 //// TransitiveClosureAnalysis
 /** Computation of transitive closure in a directed graph.
 
-<em>Transitive closure</em> is a reachability graph transformed from a given
-graph. While there is a path directed from node X to Y in the given graph,
-there is an edge from X to Y in the transformed graph. Generally, transitive
-closure is expressed in terms of square matrix with graph node labels as
-indices. The {@link #result()} method returns an <code>ArrayList</code> of
-rows (also in <code>ArrayList</code>) to represent the matrix.
+    <em>Transitive closure</em> is a reachability graph transformed from a given
+    graph. While there is a path directed from node X to Y in the given graph,
+    there is an edge from X to Y in the transformed graph. Generally, transitive
+    closure is expressed in terms of square matrix with graph node labels as
+    indices. The {@link #result()} method returns an <code>ArrayList</code> of
+    rows (also in <code>ArrayList</code>) to represent the matrix.
 
-<p>
-The implementation uses Warshall's algorithm, which can be found in chapter
-6 of "Discrete Mathematics and Its Applications," 3rd Ed., by K. H. Rosen.
-The complexity of this algorithm is O(N^3), where N is the number of nodes.
+    <p>
+    The implementation uses Warshall's algorithm, which can be found in chapter
+    6 of "Discrete Mathematics and Its Applications," 3rd Ed., by K. H. Rosen.
+    The complexity of this algorithm is O(N^3), where N is the number of nodes.
 
-<p>
-Transitive closure is important in obtaining reachability information.
-One application is to check if a graph is cyclic.
+    <p>
+    Transitive closure is important in obtaining reachability information.
+    One application is to check if a graph is cyclic.
 
-@author Mingyung Ko
-@version $Id$
-*/
+    @author Mingyung Ko
+    @version $Id$
+ */
 
 public class TransitiveClosureAnalysis extends Analysis {
 
@@ -96,8 +96,8 @@ public class TransitiveClosureAnalysis extends Analysis {
      */
     public String incompatibilityDescription(Graph graph) {
         String result = "The given graph (of class " +
-                graph.getClass().getName() +
-                ") is not an instance of DirectedGraph.";
+            graph.getClass().getName() +
+            ") is not an instance of DirectedGraph.";
         return result;
     }
 
@@ -110,7 +110,7 @@ public class TransitiveClosureAnalysis extends Analysis {
      */
     public String toString() {
         return "Transitive closure analysis for the following graph.\n"
-                + graph().toString();
+            + graph().toString();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -133,10 +133,10 @@ public class TransitiveClosureAnalysis extends Analysis {
             }
             Node node = graph().node(i);
             Iterator outputEdges =
-                    ((DirectedGraph)graph()).outputEdges(node).iterator();
+                ((DirectedGraph)graph()).outputEdges(node).iterator();
             while (outputEdges.hasNext()) {
                 int sinkLabel = ((DirectedGraph)graph()).
-                        nodeLabel(((Edge)outputEdges.next()).sink());
+                    nodeLabel(((Edge)outputEdges.next()).sink());
                 transitiveClosure[i][sinkLabel] = true;
             }
         }

@@ -1,29 +1,29 @@
 /* Computation of self-loops in a graph.
 
- Copyright (c) 2002 The University of Maryland. All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+   Copyright (c) 2002 The University of Maryland. All rights reserved.
+   Permission is hereby granted, without written agreement and without
+   license or royalty fees, to use, copy, modify, and distribute this
+   software and its documentation for any purpose, provided that the above
+   copyright notice and the following two paragraphs appear in all copies
+   of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+   IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
+   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+   THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
+   SUCH DAMAGE.
 
- THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+   THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+   MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+   ENHANCEMENTS, OR MODIFICATIONS.
 
-@ProposedRating Red (cxh@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+   @ProposedRating Red (cxh@eecs.berkeley.edu)
+   @AcceptedRating Red (cxh@eecs.berkeley.edu)
 
-*/
+ */
 
 package ptolemy.graph.analysis;
 
@@ -39,20 +39,20 @@ import java.util.Collections;
 //// SelfLoopAnalysis
 /** Computation of self-loops in a graph.
 
-A <em>self-loop</em> (also called a <em>self-loop edge</em>) in a graph is an
-edge whose source and sink nodes are identical.  The <code>result</code> method
-(see {@link Analysis#result()})
-of this analysis returns the self-loop edges in the associated graph.
-The self-loop edges are returned in the form of a
-{@link java.util.Collection}, where each element in the collection is an
-{@link Edge}. The collection returned cannot be modified.
-<p>
-This analysis requires <em>O</em>(<em>E</em>) time, where <em>E</em> is the
-number of edges in the graph.
+    A <em>self-loop</em> (also called a <em>self-loop edge</em>) in a graph is an
+    edge whose source and sink nodes are identical.  The <code>result</code> method
+    (see {@link Analysis#result()})
+    of this analysis returns the self-loop edges in the associated graph.
+    The self-loop edges are returned in the form of a
+    {@link java.util.Collection}, where each element in the collection is an
+    {@link Edge}. The collection returned cannot be modified.
+    <p>
+    This analysis requires <em>O</em>(<em>E</em>) time, where <em>E</em> is the
+    number of edges in the graph.
 
-@author Shuvra S. Bhattacharyya
-@version $Id$
-*/
+    @author Shuvra S. Bhattacharyya
+    @version $Id$
+ */
 
 public class SelfLoopAnalysis extends Analysis {
 
@@ -75,7 +75,7 @@ public class SelfLoopAnalysis extends Analysis {
      */
     public String toString() {
         return "Self-loop analysis for the following graph.\n"
-                + graph().toString();
+            + graph().toString();
     }
 
     ///////////////////////////////////////////////////////////////////

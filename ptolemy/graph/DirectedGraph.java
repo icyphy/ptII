@@ -1,33 +1,33 @@
 /* A directed graph and some graph algorithms.
 
- Copyright (c) 1997-2002 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+   Copyright (c) 1997-2002 The Regents of the University of California.
+   All rights reserved.
+   Permission is hereby granted, without written agreement and without
+   license or royalty fees, to use, copy, modify, and distribute this
+   software and its documentation for any purpose, provided that the above
+   copyright notice and the following two paragraphs appear in all copies
+   of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+   SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+   THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+   CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+   ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+   PT_COPYRIGHT_VERSION_2
+   COPYRIGHTENDKEY
 
-@ProposedRating Yellow (pwhitake@eecs.berkeley.edu)
-@AcceptedRating Yellow (pwhitake@eecs.berkeley.edu)
+   @ProposedRating Yellow (pwhitake@eecs.berkeley.edu)
+   @AcceptedRating Yellow (pwhitake@eecs.berkeley.edu)
 
-*/
+ */
 
 package ptolemy.graph;
 
@@ -47,22 +47,22 @@ import java.util.List;
 //////////////////////////////////////////////////////////////////////////
 //// DirectedGraph
 /**
-A directed graph.
-Some methods in this class have two versions, one that operates
-on graph nodes, and another that operates on
-node weights. The latter form is called the <i>weights version</i>.
-More specifically, the weights version of an operation takes individual
-node weights or arrays of weights as arguments, and, when applicable, returns
-individual weights or arrays of weights.
+   A directed graph.
+   Some methods in this class have two versions, one that operates
+   on graph nodes, and another that operates on
+   node weights. The latter form is called the <i>weights version</i>.
+   More specifically, the weights version of an operation takes individual
+   node weights or arrays of weights as arguments, and, when applicable, returns
+   individual weights or arrays of weights.
 
-<p> Multiple edges in a graph can be directed between the same pair of nodes.
-Thus, directed multigraphs are supported.
+   <p> Multiple edges in a graph can be directed between the same pair of nodes.
+   Thus, directed multigraphs are supported.
 
-@author Yuhong Xiong, Jie Liu, Paul Whitaker, Shuvra S. Bhattacharyya,
-Shahrooz Shahparnia
-@version $Id$
-@since Ptolemy II 0.2
-*/
+   @author Yuhong Xiong, Jie Liu, Paul Whitaker, Shuvra S. Bhattacharyya,
+   Shahrooz Shahparnia
+   @version $Id$
+   @since Ptolemy II 0.2
+ */
 public class DirectedGraph extends Graph {
 
     /** Construct an empty directed graph.
@@ -197,7 +197,7 @@ public class DirectedGraph extends Graph {
      */
     public Object[] backwardReachableNodes(Object[] weights) {
         return weightArray(backwardReachableNodes(
-                nodes(Arrays.asList(weights))));
+                                   nodes(Arrays.asList(weights))));
     }
 
     /** Return the nodes that are in cycles. If there are multiple cycles,
@@ -640,7 +640,7 @@ public class DirectedGraph extends Graph {
         DirectedAcyclicGraph acyclicGraph;
         if (isAcyclic()) {
             acyclicGraph = (DirectedAcyclicGraph)
-                    cloneAs(new DirectedAcyclicGraph());
+                cloneAs(new DirectedAcyclicGraph());
         } else {
             throw new GraphTopologyException("This graph is not acyclic."
                     + GraphException.graphDump(this));
@@ -710,7 +710,7 @@ public class DirectedGraph extends Graph {
     public Object[] topologicalSort(Object[] weights) throws
             GraphActionException {
         return weightArray(topologicalSort(
-                nodes(Arrays.asList(weights))));
+                                   nodes(Arrays.asList(weights))));
     }
 
     /** Return transitive closure for the graph. Transitive closure

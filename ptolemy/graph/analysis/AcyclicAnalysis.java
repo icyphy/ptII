@@ -1,29 +1,29 @@
 /* Computation of acyclic property of a directed graph.
 
- Copyright (c) 2002 The University of Maryland. All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+   Copyright (c) 2002 The University of Maryland. All rights reserved.
+   Permission is hereby granted, without written agreement and without
+   license or royalty fees, to use, copy, modify, and distribute this
+   software and its documentation for any purpose, provided that the above
+   copyright notice and the following two paragraphs appear in all copies
+   of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+   IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
+   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+   THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
+   SUCH DAMAGE.
 
- THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+   THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+   MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+   ENHANCEMENTS, OR MODIFICATIONS.
 
-@ProposedRating Red (cxh@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+   @ProposedRating Red (cxh@eecs.berkeley.edu)
+   @AcceptedRating Red (cxh@eecs.berkeley.edu)
 
-*/
+ */
 
 package ptolemy.graph.analysis;
 
@@ -41,12 +41,12 @@ import java.util.Collections;
 //// AcyclicAnalysis
 /** Computation of acyclic property of a directed graph.
 
-A {@link TransitiveClosureAnalysis} is used internally to check acyclic
-property.
+    A {@link TransitiveClosureAnalysis} is used internally to check acyclic
+    property.
 
-@author Mingyung Ko
-@version $Id$
-*/
+    @author Mingyung Ko
+    @version $Id$
+ */
 
 public class AcyclicAnalysis extends Analysis {
 
@@ -94,8 +94,8 @@ public class AcyclicAnalysis extends Analysis {
      */
     public String incompatibilityDescription(Graph graph) {
         String result = "The given graph (of class " +
-                graph.getClass().getName() +
-                ") is not an instance of DirectedGraph.";
+            graph.getClass().getName() +
+            ") is not an instance of DirectedGraph.";
         return result;
     }
 
@@ -108,7 +108,7 @@ public class AcyclicAnalysis extends Analysis {
      */
     public String toString() {
         return "Acyclic checking for the following graph.\n"
-                + graph().toString();
+            + graph().toString();
     }
 
     /** Return the associated transitive closure in the form of two
@@ -129,7 +129,7 @@ public class AcyclicAnalysis extends Analysis {
      */
     protected Object _compute() {
         boolean[][] transitiveClosure =
-                (boolean[][])_transitiveClosureAnalysis.result();
+            (boolean[][])_transitiveClosureAnalysis.result();
         boolean acyclic = true;
         for (int i = 0; i < transitiveClosure.length; i++) {
             if (transitiveClosure[i][i] == true) {

@@ -1,33 +1,33 @@
 /** A directed acyclic graph (DAG).
 
- Copyright (c) 1997-2002 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+    Copyright (c) 1997-2002 The Regents of the University of California.
+    All rights reserved.
+    Permission is hereby granted, without written agreement and without
+    license or royalty fees, to use, copy, modify, and distribute this
+    software and its documentation for any purpose, provided that the above
+    copyright notice and the following two paragraphs appear in all copies
+    of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+    IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+    FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+    ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+    THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+    SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+    THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+    INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+    MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+    PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+    CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+    ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+    PT_COPYRIGHT_VERSION_2
+    COPYRIGHTENDKEY
 
-@ProposedRating Green (yuhong@eecs.berkeley.edu)
-@AcceptedRating Green (kienhuis@eecs.berkeley.edu)
+    @ProposedRating Green (yuhong@eecs.berkeley.edu)
+    @AcceptedRating Green (kienhuis@eecs.berkeley.edu)
 
-*/
+ */
 
 package ptolemy.graph;
 
@@ -65,7 +65,7 @@ import java.util.ListIterator;
    @author Yuhong Xiong, Shuvra S. Bhattacharyya
    @version $Id$
    @since Ptolemy II 0.2
-*/
+ */
 
 // The methods greatestLowerBound, downSet, greatestElement share the
 // same code with their duals, leastUpperBound, upSet, leastElement.
@@ -186,21 +186,21 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
      *   <code>false</code> otherwise.
      */
     public boolean isLattice() {
-    _validate();
+        _validate();
 
-    if (bottom() == null || top() == null) {
-        return false;
-    }
-
-    Object[] nodes = weightArray(nodes());
-    for (int i = 0; i < nodes.length-1; i++) {
-        for (int j = i+1; j < nodes.length; j++) {
-        if (leastUpperBound(nodes[i], nodes[j]) == null) {
+        if (bottom() == null || top() == null) {
             return false;
         }
+
+        Object[] nodes = weightArray(nodes());
+        for (int i = 0; i < nodes.length-1; i++) {
+            for (int j = i+1; j < nodes.length; j++) {
+                if (leastUpperBound(nodes[i], nodes[j]) == null) {
+                    return false;
+                }
+            }
         }
-    }
-    return true;
+        return true;
     }
 
     /** Compute the least element of a subset.
@@ -442,8 +442,8 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
         //         } else if (CE < all elements in list) {
         //             empty list and candidate = CE;
         //         } else {
-    //         // CE is less than some elements in list, but
-    //         // incomparable with others
+        //         // CE is less than some elements in list, but
+        //         // incomparable with others
         //             remove all elements in list that > CE;
         //             insert CE in list;
         //         }
@@ -457,10 +457,10 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
         for (int i = 0; i < ids.length; i++) {
             boolean listEmpty = incomparables.size() == 0;
             if (candidate == -1 && listEmpty) {
-        // case (1)
+                // case (1)
                 candidate = ids[i];
             } else if (candidate != -1 && listEmpty) {
-        // case (2)
+                // case (2)
                 int result = _compareNodeId(ids[i], candidate);
                 if (result == LOWER) {
                     candidate = ids[i];
@@ -472,8 +472,8 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
                     candidate = -1;
                 }
             } else if (candidate == -1 && !listEmpty) {
-        // case (3)
-        // flag indicating if the current element should be discarded
+                // case (3)
+                // flag indicating if the current element should be discarded
                 boolean discard = false;
 
                 for (ListIterator iterator = incomparables.listIterator(0);
@@ -497,8 +497,8 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
 
                 }
             } else {
-        // case (4)
-        // candidate != -1 && !listEmpty
+                // case (4)
+                // candidate != -1 && !listEmpty
                 throw new GraphStateException(
                         "Bugs in code! Inconsistent data structure!");
             }
@@ -559,7 +559,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
             int numUpperBound = 0;
             for (int i = 0; i < size; i++) {
                 isUpperBound[i] = false;
-        if (_closure[i1][i] && _closure[i2][i]) {
+                if (_closure[i1][i] && _closure[i2][i]) {
                     isUpperBound[i] = true;
                     numUpperBound++;
                 }
@@ -595,36 +595,36 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
     // of this CPO is returned, depending on whether the lub or the glb
     // is computed.
     private Object _lubShared(Object[] subset) {
-    // convert all elements to their IDs
-    int[] subsetId = new int[subset.length];
-    for (int i = 0; i < subset.length; i++) {
-        subsetId[i] = nodeLabel(subset[i]);
-    }
+        // convert all elements to their IDs
+        int[] subsetId = new int[subset.length];
+        for (int i = 0; i < subset.length; i++) {
+            subsetId[i] = nodeLabel(subset[i]);
+        }
 
-    // find all the upper bounds
-    int size = nodeCount();
-    int numUB = 0;
-    int[] ubId = new int[size];
-    for (int i = 0; i < size; i++) {
-        boolean isUB = true;
-        for (int j = 0; j < subsetId.length; j++) {
-        int compare = _compareNodeId(i, subsetId[j]);
-        if (compare == LOWER || compare == INCOMPARABLE) {
-            isUB = false;
-            break;
+        // find all the upper bounds
+        int size = nodeCount();
+        int numUB = 0;
+        int[] ubId = new int[size];
+        for (int i = 0; i < size; i++) {
+            boolean isUB = true;
+            for (int j = 0; j < subsetId.length; j++) {
+                int compare = _compareNodeId(i, subsetId[j]);
+                if (compare == LOWER || compare == INCOMPARABLE) {
+                    isUB = false;
+                    break;
+                }
+            }
+            if (isUB) {
+                ubId[numUB++] = i;
+            }
         }
-        }
-        if (isUB) {
-        ubId[numUB++] = i;
-        }
-    }
 
-    // pack all the IDs of all upper bounds into an array
-    int[] ids = new int[numUB];
-    for (int i = 0; i < numUB; i++) {
-        ids[i] = ubId[i];
-    }
-    return _leastElementNodeId(ids);
+        // pack all the IDs of all upper bounds into an array
+        int[] ids = new int[numUB];
+        for (int i = 0; i < numUB; i++) {
+            ids[i] = ubId[i];
+        }
+        return _leastElementNodeId(ids);
     }
 
     // compute the up-set of an element.
@@ -680,8 +680,8 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
                 if (_bottom == null) {
                     _bottom = nodeWeight(i);
                 } else {
-            _bottom = null;
-            break;
+                    _bottom = null;
+                    break;
                 }
             }
         }
@@ -690,7 +690,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
         _top = null;
         for (int i = 0; i < nodeCount(); i++) {
             if (outputEdgeCount(node(i)) == 0) {
-               if (_top == null) {
+                if (_top == null) {
                     _top = nodeWeight(i);
                 } else {
                     _top = null;

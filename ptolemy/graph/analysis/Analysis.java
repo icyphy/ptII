@@ -1,26 +1,26 @@
 /* A base class for analyses on graphs.
 
- Copyright (c) 2002 The University of Maryland. All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+   Copyright (c) 2002 The University of Maryland. All rights reserved.
+   Permission is hereby granted, without written agreement and without
+   license or royalty fees, to use, copy, modify, and distribute this
+   software and its documentation for any purpose, provided that the above
+   copyright notice and the following two paragraphs appear in all copies
+   of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+   IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
+   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+   THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
+   SUCH DAMAGE.
 
- THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+   THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+   MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+   ENHANCEMENTS, OR MODIFICATIONS.
 
-*/
+ */
 
 package ptolemy.graph.analysis;
 
@@ -29,32 +29,32 @@ import ptolemy.graph.Graph;
 //////////////////////////////////////////////////////////////////////////
 //// Analysis
 /** A base class for analyses on graphs. To facilitate demand-driven
-and incremental recomputation (e.g., see [1]) of analyses, analysis results
-are cached
-internally (see {@link #_cachedResult()}), and are recomputed only
-when the graph has changed since the last request (via {@link #result()})
-for the analysis result. The internally-cached result (<em>cached result</em>)
-of an analysis is directly accessible only by derived classes; however,
-its status can be queried with the {@link #obsolete()} method to determine
-if a subsequent invocation of {@link #result()} will trigger recomputation
-of the analysis.
+    and incremental recomputation (e.g., see [1]) of analyses, analysis results
+    are cached
+    internally (see {@link #_cachedResult()}), and are recomputed only
+    when the graph has changed since the last request (via {@link #result()})
+    for the analysis result. The internally-cached result (<em>cached result</em>)
+    of an analysis is directly accessible only by derived classes; however,
+    its status can be queried with the {@link #obsolete()} method to determine
+    if a subsequent invocation of {@link #result()} will trigger recomputation
+    of the analysis.
 
-<p> The graph changes tracked by an analysis are restricted to changes in the
-graph topology (the set of nodes and edges). For example, changes to edge/node
-weights that may affect the result of an analysis are not tracked, since
-analyses have no specific knowledge of weights.  In such cases, it is the
-responsibility of the client (or derived analysis class) to invalidate the
-cached result (see {@link #reset()}) when changes to graph weights or other
-non-topology information render the cached result obsolete.  For this reason,
-some caution is generally required when using analyses whose results depend on
-more than just the graph topology.
+    <p> The graph changes tracked by an analysis are restricted to changes in the
+    graph topology (the set of nodes and edges). For example, changes to edge/node
+    weights that may affect the result of an analysis are not tracked, since
+    analyses have no specific knowledge of weights.  In such cases, it is the
+    responsibility of the client (or derived analysis class) to invalidate the
+    cached result (see {@link #reset()}) when changes to graph weights or other
+    non-topology information render the cached result obsolete.  For this reason,
+    some caution is generally required when using analyses whose results depend on
+    more than just the graph topology.
 
-<p> [1] G. Ramalingam. <em>Bounded Incremental Computation</em>. PhD thesis,
-University of Wisconsin at Madison, August 1993.
+    <p> [1] G. Ramalingam. <em>Bounded Incremental Computation</em>. PhD thesis,
+    University of Wisconsin at Madison, August 1993.
 
-@author Shuvra S. Bhattacharyya and Mingyung Ko
-@version $Id$
-*/
+    @author Shuvra S. Bhattacharyya and Mingyung Ko
+    @version $Id$
+ */
 
 abstract public class Analysis {
 
@@ -159,7 +159,7 @@ abstract public class Analysis {
      *  @return A description of any incompatibilities.
      */
     public String incompatibilityDescription(Graph graph) {
-         return "";
+        return "";
     }
 
     /** Test whether or not the cached result of the analysis is
@@ -211,7 +211,7 @@ abstract public class Analysis {
      */
     public String toString() {
         return "Analysis for the following graph.\n"
-                + graph().toString();
+            + graph().toString();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -254,10 +254,10 @@ abstract public class Analysis {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-   /** Notify the analysis that the associated computation has been
-    *  performed. This method should be called immediately after
-    *  any invocation of the computation.
-    */
+    /** Notify the analysis that the associated computation has been
+     *  performed. This method should be called immediately after
+     *  any invocation of the computation.
+     */
     private void _registerComputation() {
         _lastComputation = graph().changeCount();
     }

@@ -1,34 +1,34 @@
 /** An algorithm to solve a set of inequality constraints.
 
- Copyright (c) 1997-2002 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+    Copyright (c) 1997-2002 The Regents of the University of California.
+    All rights reserved.
+    Permission is hereby granted, without written agreement and without
+    license or royalty fees, to use, copy, modify, and distribute this
+    software and its documentation for any purpose, provided that the above
+    copyright notice and the following two paragraphs appear in all copies
+    of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+    IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+    FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+    ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+    THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+    SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+    THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+    INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+    MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+    PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+    CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+    ENHANCEMENTS, OR MODIFICATIONS.
 
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
+    PT_COPYRIGHT_VERSION_2
+    COPYRIGHTENDKEY
 
-@ProposedRating Red (cxh@eecs.berkeley.edu) was green, description() method
-only makes it red
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+    @ProposedRating Red (cxh@eecs.berkeley.edu) was green, description() method
+    only makes it red
+    @AcceptedRating Red (cxh@eecs.berkeley.edu)
 
-*/
+ */
 
 package ptolemy.graph;
 
@@ -43,28 +43,28 @@ import ptolemy.kernel.util.InvalidStateException;
 //////////////////////////////////////////////////////////////////////////
 //// InequalitySolver
 /**
-An algorithm to solve a set of inequality constraints.
+   An algorithm to solve a set of inequality constraints.
 
-This algorithm is based on J. Rehof and T. Mogensen, "Tractable
-Constraints in Finite Semilattices," Third International Static Analysis
-Symposium, pp. 285-301, Vol 1145 of Lecture Notes in Computer Science,
-Springer, Sept., 1996.<p>
+   This algorithm is based on J. Rehof and T. Mogensen, "Tractable
+   Constraints in Finite Semilattices," Third International Static Analysis
+   Symposium, pp. 285-301, Vol 1145 of Lecture Notes in Computer Science,
+   Springer, Sept., 1996.<p>
 
-The algorithm in Rehof works for definite inequalities.  This
-class does not enforce this requirement.  However, if the inequalities
-are not definite, this solver may not be able to find the solution even
-when the set of inequalities is satisfiable.  See the above paper for
-details.<p>
+   The algorithm in Rehof works for definite inequalities.  This
+   class does not enforce this requirement.  However, if the inequalities
+   are not definite, this solver may not be able to find the solution even
+   when the set of inequalities is satisfiable.  See the above paper for
+   details.<p>
 
-This solver supports finding both the least and greatest solutions (if
-they exist).  It assumes that the CPO passed to the constructor is a
-lattice, but it does not verify it.  If the algorithm finds that the
-LUB or GLB of some elements does not exist, an Exception is thrown.
+   This solver supports finding both the least and greatest solutions (if
+   they exist).  It assumes that the CPO passed to the constructor is a
+   lattice, but it does not verify it.  If the algorithm finds that the
+   LUB or GLB of some elements does not exist, an Exception is thrown.
 
-@author Yuhong Xiong
-@version $Id$
-@since Ptolemy II 0.2
-*/
+   @author Yuhong Xiong
+   @version $Id$
+   @since Ptolemy II 0.2
+ */
 
 // Note: To make it easier to reference the above paper, some of the
 // private methods and variables in this class have the same names that
@@ -342,11 +342,11 @@ public class InequalitySolver {
 
         // Not Satisfied list.  Each entry is an Integer storing index to
         // _Ilist.
-            // Note: removal in jdk1.2 LinkedList is not an O(1) operation, but
-            // an O(n) operation, where n is the number of elements in list.
-            // If the size of _NS is large, writing our own linked list class
-            // with a Cell class might be better.
-            LinkedList _NS = new LinkedList();
+        // Note: removal in jdk1.2 LinkedList is not an O(1) operation, but
+        // an O(n) operation, where n is the number of elements in list.
+        // If the size of _NS is large, writing our own linked list class
+        // with a Cell class might be better.
+        LinkedList _NS = new LinkedList();
 
         for (int i = 0; i < _Ilist.size(); i++) {
             Info info = (Info)_Ilist.get(i);
@@ -354,7 +354,7 @@ public class InequalitySolver {
                 : info._ineq.getLesserTerm().isSettable();
 
             if (info._inCvar) {
-                    if (info._ineq.isSatisfied(_cpo)) {
+                if (info._ineq.isSatisfied(_cpo)) {
                     info._inserted = false;
                 } else {         // insert to _NS
                     _NS.addLast(new Integer(i));
@@ -428,7 +428,7 @@ public class InequalitySolver {
             for (int i = 0; i < _Ilist.size(); i++) {
                 Info info = (Info)_Ilist.get(i);
                 if (info._inCvar) {
-                        if (info._ineq.isSatisfied(_cpo)) {
+                    if (info._ineq.isSatisfied(_cpo)) {
                         info._inserted = false;
                     } else {         // insert to _NS
                         _NS.addLast(new Integer(i));

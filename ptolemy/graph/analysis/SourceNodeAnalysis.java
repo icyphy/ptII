@@ -1,29 +1,29 @@
 /* Computation of source nodes in a graph.
 
- Copyright (c) 2002 The University of Maryland. All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+   Copyright (c) 2002 The University of Maryland. All rights reserved.
+   Permission is hereby granted, without written agreement and without
+   license or royalty fees, to use, copy, modify, and distribute this
+   software and its documentation for any purpose, provided that the above
+   copyright notice and the following two paragraphs appear in all copies
+   of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+   IN NO EVENT SHALL THE UNIVERSITY OF MARYLAND BE LIABLE TO ANY PARTY
+   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+   THE UNIVERSITY OF MARYLAND HAS BEEN ADVISED OF THE POSSIBILITY OF
+   SUCH DAMAGE.
 
- THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+   THE UNIVERSITY OF MARYLAND SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+   MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+   ENHANCEMENTS, OR MODIFICATIONS.
 
-@ProposedRating Red (cxh@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+   @ProposedRating Red (cxh@eecs.berkeley.edu)
+   @AcceptedRating Red (cxh@eecs.berkeley.edu)
 
-*/
+ */
 
 package ptolemy.graph.analysis;
 
@@ -40,19 +40,19 @@ import java.util.Collections;
 //// SourceNodeAnalysis
 /** Computation of source nodes in a graph.
 
-A <em>source node</em> in a graph is a node without input edges. The
-<code>result</code> method (see {@link Analysis#result()})
-of this analysis returns the source nodes in the associated graph.
-The source nodes are returned in the form of a {@link java.util.Collection},
-where each element in the collection is a {@link Node}. The collection
-returned cannot be modified.
-<p>
-This analysis requires <em>O</em>(<em>N</em>) time, where <em>N</em> is the
-number of nodes in the graph.
+    A <em>source node</em> in a graph is a node without input edges. The
+    <code>result</code> method (see {@link Analysis#result()})
+    of this analysis returns the source nodes in the associated graph.
+    The source nodes are returned in the form of a {@link java.util.Collection},
+    where each element in the collection is a {@link Node}. The collection
+    returned cannot be modified.
+    <p>
+    This analysis requires <em>O</em>(<em>N</em>) time, where <em>N</em> is the
+    number of nodes in the graph.
 
-@author Mingyung Ko
-@version $Id$
-*/
+    @author Mingyung Ko
+    @version $Id$
+ */
 
 public class SourceNodeAnalysis extends Analysis {
 
@@ -87,8 +87,8 @@ public class SourceNodeAnalysis extends Analysis {
      */
     public String incompatibilityDescription(Graph graph) {
         String result = "The given graph (of class " +
-                graph.getClass().getName() +
-                ") is not an instance of DirectedGraph.";
+            graph.getClass().getName() +
+            ") is not an instance of DirectedGraph.";
         return result;
     }
 
