@@ -211,7 +211,6 @@ public class PSDFScheduler extends BaseSDFScheduler {
      *  of the model are not correct, or the computed rates for
      *  external ports are not correct.
      */
-
     protected Schedule _getSchedule()
             throws NotSchedulableException, IllegalActionException {
         PSDFDirector director = (PSDFDirector)getContainer();
@@ -277,7 +276,19 @@ public class PSDFScheduler extends BaseSDFScheduler {
                     Entity entity = (Entity)connectedPort.getContainer();
                     String name = connectedPort.getName(container);
                     String identifier = name.replaceAll("\\.", "::");
-                    String expression = identifier + "::tokenConsumptionRate * " + entity.getName() + "::firingCount";
+
+                    String sinkExpression;
+                    Variable sinkRateVariable = 
+                        SDFUtilities.getRateVariable(
+                                connectedPort, "tokenConsumptionRate");
+                    if (sinkRateVariable == null) {
+                        sinkExpression = "1";
+                    } else {
+                        sinkExpression = identifier + "::"
+                            + sinkRateVariable.getName();
+                    }
+                    String expression = sinkExpression + " * " 
+                        + entity.getName() + "::firingCount";
 
                     SDFUtilities.setExpressionIfNotDefined(
                             port, "tokenConsumptionRate",
@@ -295,7 +306,18 @@ public class PSDFScheduler extends BaseSDFScheduler {
                     Entity entity = (Entity)connectedPort.getContainer();
                     String name = connectedPort.getName(container);
                     String identifier = name.replaceAll("\\.", "::");
-                    String expression = identifier + "::tokenProductionRate * " + entity.getName() + "::firingCount";
+                    Variable sourceRateVariable = 
+                        SDFUtilities.getRateVariable(
+                                connectedPort, "tokenProductionRate");
+                    String sourceExpression;
+                    if (sourceRateVariable == null) {
+                        sourceExpression = "1";
+                    } else {
+                        sourceExpression = identifier + "::" 
+                            + sourceRateVariable.getName();
+                    }
+                    String expression = sourceExpression + " * " 
+                        + entity.getName() + "::firingCount";
 
                     SDFUtilities.setExpressionIfNotDefined(
                             port, "tokenProductionRate",
@@ -350,6 +372,9 @@ public class PSDFScheduler extends BaseSDFScheduler {
             }
         }
 
+        // Set the schedule to be valid.
+        setValid(true);
+
         if (resultSchedule instanceof Schedule) {
             return (Schedule)resultSchedule;
         } else {
@@ -388,9 +413,9 @@ public class PSDFScheduler extends BaseSDFScheduler {
     // @param apgan The scheduler that was used to build the cluster hierarchy.
     // @return The schedule saving the expansion result.
     private SymbolicScheduleElement _expandAPGAN(PSDFGraph graph,
-            ptolemy.graph.Node node, PSDFAPGANStrategy apgan) {
+            ptolemy.graph.Node node, PSDFAPGANStrategy strategy) {
         PSDFGraph childGraph =
-                (PSDFGraph)apgan.getClusterManager().getSubgraph(node);
+                (PSDFGraph)strategy.getClusterManager().getSubgraph(node);
 
         try {
             // Atomic node
@@ -409,14 +434,14 @@ public class PSDFScheduler extends BaseSDFScheduler {
                 ptolemy.graph.Node source = edge.source();
                 ptolemy.graph.Node sink   = edge.sink();
                 SymbolicScheduleElement first  =
-                    _expandAPGAN(childGraph, source, apgan);
+                    _expandAPGAN(childGraph, source, strategy);
                 SymbolicScheduleElement second =
-                    _expandAPGAN(childGraph, sink, apgan);
+                    _expandAPGAN(childGraph, sink, strategy);
 
                 // Determine the iteration counts of the source and
                 // sink clusters.
-                String producedExpression = apgan.producedExpression(edge);
-                String consumedExpression = apgan.consumedExpression(edge);
+                String producedExpression = strategy.producedExpression(edge);
+                String consumedExpression = strategy.consumedExpression(edge);
 
                 // These errors should not occur.
                 if (producedExpression == null) {
@@ -463,8 +488,8 @@ public class PSDFScheduler extends BaseSDFScheduler {
                     }
                     Iterator relations = relationList.iterator();
                     Relation relation = (Relation)relations.next();
-                    String produced = apgan.producedExpression(nextEdge);
-                    String consumed = apgan.consumedExpression(nextEdge);
+                    String produced = strategy.producedExpression(nextEdge);
+                    String consumed = strategy.consumedExpression(nextEdge);
                     String bufferSizeExpression = "(("
                         + produced
                         + ") * ("

@@ -28,10 +28,13 @@ COPYRIGHTENDKEY
 package ptolemy.domains.psdf.kernel;
 
 import ptolemy.domains.sdf.kernel.SDFDirector;
+import ptolemy.data.expr.Variable;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
+import java.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// PSDFDirector
@@ -119,6 +122,32 @@ public class PSDFDirector extends SDFDirector {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _init();
+    }
+
+    /** Indicate that a schedule for the model may no longer be valid.
+     *  This method should be called when topology changes are made,
+     *  or for that matter when any change that may invalidate the
+     *  schedule is made.  In this base class, this method sets a flag
+     *  that forces scheduling to be redone at the next opportunity.
+     *  If there is no scheduler, do nothing.
+     */
+    public void invalidateSchedule() {
+        super.invalidateSchedule();
+
+        // Kill the firing counts, which may be invalid.  If we don't
+        // kill them, then the manager might complain that they cannot
+        // be evaluated.
+        CompositeEntity container = (CompositeEntity)getContainer();
+        if(container != null) {
+            for(Iterator entities = container.deepEntityList().iterator();
+                entities.hasNext();) {
+                Entity actor = (Entity)entities.next();
+                Variable parameter = (Variable)actor.getAttribute("firingCount");
+                if (parameter != null) {
+                    parameter.setExpression("0");
+                }
+            }
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
