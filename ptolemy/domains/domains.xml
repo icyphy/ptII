@@ -18,6 +18,8 @@
 	    <!-- fsm is shipped with ptiny, so no need to list fsm here -->
 
             <input source="ptolemy/domains/giotto/giotto.xml"/>
+            
+        <input source="ptolemy/domains/hdf/lib/hdfentities.xml"/>
 
 	    <!-- GR depends on the 3D graphics package of Java being present-->             <input source="ptolemy/domains/gr/gr.xml"/>
 	    <input source="ptolemy/domains/petrinet/kernel/petrinetentities.xml"/>	   
