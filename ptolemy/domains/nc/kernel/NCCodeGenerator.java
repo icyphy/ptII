@@ -236,6 +236,9 @@ public class NCCodeGenerator extends Director {
             Actor actor = (Actor) actors.next();
             String actorName = StringUtilities.sanitizeName(
                     ((NamedObj)actor).getName());
+            if (actorName.length() == 0) {
+                actorName = "Unnamed";
+            }
             if (isFirst) {
                 codeString.append("components " + actorName);
                 isFirst = false;
