@@ -53,7 +53,6 @@ import ptolemy.data.type.BaseType;
 import ptolemy.gui.ShellInterpreter;
 import ptolemy.gui.ShellTextArea;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
@@ -204,7 +203,12 @@ public class InteractiveShell extends TypedAtomicActor
     public synchronized String getOutput() {
         while (_outputValues.size() < 1 && !_stopRequested) {
             try {
-                wait();
+                // NOTE: Do not call wait on this object directly!
+                // If another thread tries to get write access to the
+                // workspace, it will deadlock!  This method releases
+                // all read accesses on the workspace before doing the
+                // wait.
+                workspace().wait(this);
             } catch (InterruptedException ex) {
             }
         }
