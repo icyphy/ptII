@@ -141,7 +141,7 @@ public class DDEReceiver extends PrioritizedTimedQueue
      * @return The oldest token on this queue.
      * @exception NoTokenException If this method is called while
      *  hasToken() returns false.
-     * @see hasToken()
+     * @see #hasToken()
      */
     public Token get() throws NoTokenException {
         DDEDirector director = (DDEDirector)
