@@ -538,7 +538,7 @@ System.out.println("Initializing refinement "+((ComponentEntity)currentRefinemen
 
 
     public void setupScope() 
-            throws NameDuplicationException {
+            throws NameDuplicationException, IllegalActionException {
         try {
             // remove old variable lists
             if (_inputStatusVars != null) {
