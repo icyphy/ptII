@@ -85,7 +85,8 @@ import ptolemy.util.StringUtilities;
    the appropriate method to use by using reflection, matching the
    types of the arguments.
 
-   @author Christopher Hylands Brooks, Tobin Fricke, Bart Kienhuis, Edward A. Lee, Steve Neuendorffer, Neil Smyth
+   @author Christopher Hylands Brooks, Tobin Fricke, Bart Kienhuis, Edward A. Lee, 
+   Steve Neuendorffer, Neil Smyth, Yang Zhao
    @version $Id$
    @since Ptolemy II 0.2
    @Pt.ProposedRating Yellow (eal)
@@ -235,6 +236,95 @@ public class UtilityFunctions {
         } else {
             Token prototype = array.getElementPrototype();
             return new ArrayToken(prototype);
+        }
+    }
+    
+    /** Apply the specified predicate function to filter an array to produce an 
+     *  array of the specified length. For each array element, if applying
+     *  the predicate function on it returns ture, then keep it, otherwise skip it.
+     *  Do the above process until we get as many elements as the specified length 
+     *  or the entire array has been filtered. The <i>length</i> argument is 
+     *  required to be greater than 1.
+     *  @param function A single-argument predicate function.
+     *  @param length The length of the resulting array.
+     *  @param array The array to be filtered.
+     *  @return A new array that is the result of filtering the input array.
+     *  @exception IllegalActionException If the specified function does not
+     *  take exactly one argument, or if an error occurs applying the function.
+     */
+    public static ArrayToken filter(
+            FunctionToken function,
+            int length,
+            ArrayToken array)
+            throws IllegalActionException {
+        int arity = function.getNumberOfArguments();
+        if (arity != 1) {
+            throw new IllegalActionException(
+                    "filter() can only be used on functions that take "
+                    + "one argument.");
+        } else if (length < 1) {
+            throw new IllegalActionException(
+                    "filter() requires the length argument to be greater "
+                    + "than 1.");
+        } else {
+            int i = 0;
+            int j = 0;
+            LinkedList list = new LinkedList();
+            while(i<length && j < array.length()) {
+                Token t = (Token) array.getElement(j);
+                Token[] args = new Token[1];
+                args[0] = t;
+                if (((BooleanToken)function.apply(args)).booleanValue()){
+                    i++;
+                    list.add(t);
+                }
+                j++;
+            }
+            
+            Token[] result = new Token[list.size()];
+            for(i = 0; i < list.size(); i++) {
+                result[i] = (Token) list.get(i);
+            }
+
+            return new ArrayToken(result);
+        }
+    }
+
+    /** Return the return type of the filter method, given the types
+     *  of the argument.
+     *  @param functionType The type of the predicate function.
+     *  @param lengthType The type of the length argument.
+     *  @param arrayType The type of the array to be filtered.
+     *  @return The type of the result.
+     *  @exception IllegalActionException If the specified function does not
+     *   take exactly one argument, or if the type signature of the function
+     *   is not compatible with the other arguments.
+     */
+    public static Type filterReturnType(
+            Type functionType,
+            Type lengthType,
+            Type arrayTokenType)
+            throws IllegalActionException {
+        if (functionType instanceof FunctionType) {
+            FunctionType castFunctionType = (FunctionType) functionType;
+            if (castFunctionType.getArgCount() != 1) {
+                throw new IllegalActionException(
+                        "filter() can only be used on functions that take "
+                        + "one argument.");
+            } else {
+                Type argType = castFunctionType.getArgType(0);
+                int comparison = TypeLattice.compare(
+                        ((ArrayType) arrayTokenType).getElementType(), argType);
+                if (comparison != CPO.LOWER && comparison != CPO.SAME) {
+                    throw new IllegalActionException(
+                            "filter(): specified array element is not "
+                            + "compatible with function argument type.");
+                }
+
+                return (ArrayType) arrayTokenType;
+            }
+        } else {
+            return BaseType.UNKNOWN;
         }
     }
 
