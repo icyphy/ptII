@@ -127,8 +127,9 @@ public class PNSieve extends AtomicActor {
                         queuePortLinkedEvent(relation, outport);
 		    }
 		    IOPort inp = (IOPort)newSieve.getPort("input");
-		    IORelation newRelation = new IORelation();
-                    newRelation.setName(value+"_queue");
+		    IORelation newRelation = 
+                            new IORelation(container, value+"_queue");
+                    //newRelation.setName(value+"_queue");
                     //FIXME: This cast should not be required. 
                     //Mention it to johnr
                     queueRelationAddedEvent(container, 
