@@ -23,8 +23,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 52.0">
         </property>
-        <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
-        </property>
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={102, 101, 819, 565}}">
     </property>
@@ -42,8 +40,6 @@
         <property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="1">
             <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
             </property>
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -65,8 +61,6 @@
         <property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="1">
             <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
             </property>
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -100,8 +94,6 @@
         <property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="1">
             <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
             </property>
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
         </property>
         <port name="input" class="ptolemy.vergil.fsm.modal.ModalPort">
             <property name="input"/>

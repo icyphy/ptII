@@ -19,8 +19,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="130.0, 44.0">
         </property>
-        <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
-        </property>
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={102, 101, 819, 565}}">
     </property>
@@ -34,8 +32,6 @@
         <property name="repeat" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="150.0, 125.0">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
         </property>
         <property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="1">
             <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
@@ -67,8 +63,6 @@
         <property name="_Director" class="ptolemy.domains.hdf.kernel.HDFFSMDirector">
             <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
             </property>
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="340.0, 125.0">
         </property>
@@ -111,8 +105,6 @@ to another. Then delete this annotation.</text>
                 </property>
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
                 </property>
-                <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
-                </property>
             </property>
             <port name="input" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="input"/>
@@ -140,8 +132,6 @@ to another. Then delete this annotation.</text>
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
-                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="185.0, 185.0">
                 </property>
                 <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
@@ -155,8 +145,6 @@ to another. Then delete this annotation.</text>
                 <property name="_centerName" class="ptolemy.kernel.util.Attribute">
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
-                </property>
-                <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="320.0, 180.0">
                 </property>
@@ -223,8 +211,6 @@ to another. Then delete this annotation.</text>
                 <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="327.0, 61.0">
-                </property>
-                <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
                 </property>
             </property>
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 128, 815, 511}}">
@@ -307,8 +293,6 @@ to another. Then delete this annotation.</text>
                 <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="285.0, 66.0">
-                </property>
-                <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
                 </property>
             </property>
             <port name="input" class="ptolemy.vergil.fsm.modal.RefinementPort">
@@ -395,8 +379,6 @@ to another. Then delete this annotation.</text>
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="455.0, 125.0">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
         </property>
         <property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="1">
             <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">

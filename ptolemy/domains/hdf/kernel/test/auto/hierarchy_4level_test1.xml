@@ -19,8 +19,6 @@
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 105.0">
         </property>
     </property>
@@ -57,8 +55,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="465.0, 235.0">
         </property>
-        <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
-        </property>
         <property name="firingsPerIteration" class="ptolemy.data.expr.NotEditableParameter" value="1">
             <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
             </property>
@@ -89,8 +85,6 @@
         <property name="_Director" class="ptolemy.domains.fsm.kernel.HSDirector">
             <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
             </property>
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="290.0, 235.0">
         </property>
@@ -131,8 +125,6 @@
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
-                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="160.0, 170.0">
                 </property>
                 <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
@@ -146,8 +138,6 @@
                 <property name="_centerName" class="ptolemy.kernel.util.Attribute">
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
-                </property>
-                <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="245.0, 175.0">
                 </property>
@@ -217,8 +207,6 @@
                 </property>
                 <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
-                <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
-                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="55.0, 50.0">
                 </property>
             </property>
@@ -258,8 +246,6 @@
                     </property>
                 </property>
                 <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalModel$ModalTableauFactory">
-                </property>
-                <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="240.0, 155.0">
                 </property>
@@ -306,8 +292,6 @@ to another. Then delete this annotation.</text>
                         </property>
                         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
                         </property>
-                        <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
-                        </property>
                     </property>
                     <port name="input" class="ptolemy.vergil.fsm.modal.RefinementPort">
                         <property name="input"/>
@@ -335,8 +319,6 @@ to another. Then delete this annotation.</text>
                         </property>
                         <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                         </property>
-                        <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
-                        </property>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="185.0, 150.0">
                         </property>
                         <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
@@ -350,8 +332,6 @@ to another. Then delete this annotation.</text>
                         <property name="_centerName" class="ptolemy.kernel.util.Attribute">
                         </property>
                         <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
-                        </property>
-                        <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
                         </property>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="290.0, 145.0">
                         </property>
@@ -418,8 +398,6 @@ to another. Then delete this annotation.</text>
                         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
                         </property>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="185.0, 65.0">
-                        </property>
-                        <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
                         </property>
                     </property>
                     <port name="input" class="ptolemy.vergil.fsm.modal.RefinementPort">
@@ -498,8 +476,6 @@ to another. Then delete this annotation.</text>
                         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
                         </property>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="269.0, 33.0">
-                        </property>
-                        <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
                         </property>
                     </property>
                     <port name="input" class="ptolemy.vergil.fsm.modal.RefinementPort">
@@ -608,8 +584,6 @@ to another. Then delete this annotation.</text>
                 <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="289.0, 47.0">
-                </property>
-                <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
                 </property>
             </property>
             <port name="input" class="ptolemy.vergil.fsm.modal.RefinementPort">
