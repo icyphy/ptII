@@ -51,15 +51,15 @@ import ptolemy.media.javasound.*;
 /////////////////////////////////////////////////////////
 //// AudioPlayer
 /**
-This actor reads audio samples and plays them. Specifically,
-the input stream that this actor reads is interpreted as
-consisting of audio samples. This actor writes this stream
-of audio samples to the audio output port of the computer,
-which typically consists of the computer speaker of the
-headphones output. The audio samples that are supplied to
-this actor should be doubles in the range [-1.0, 1.0]. Thus,
-the input port of this actor is of type DoubleToken. Any input
-tokens that are outside of the valid range will be hard-clipped
+This actor reads audio samples and plays them. Specifically, 
+the input stream that this actor reads is interpreted as 
+consisting of audio samples. This actor writes this stream 
+of audio samples to the audio output port of the computer, 
+which typically consists of the computer speaker of the 
+headphones output. The audio samples that are supplied to 
+this actor should be doubles in the range [-1.0, 1.0]. Thus, 
+the input port of this actor is of type DoubleToken. Any input 
+tokens that are outside of the valid range will be hard-clipped 
 to fall within the range [-1.0, 1.0] before they are written
  to the audio output port of the computer.
 <p>
@@ -71,19 +71,20 @@ discontinuities (heard as clicks) in the output.
 <p>
 The following parameters
 should be set accordingly. In all cases, an exception is thrown if
-an illegal parameter value is used. Note that these parameters may
-not be changed while audio capture is active. A future version
-of this actor may support parameter changes while audio capture
-is active.
+an illegal parameter value is used. Note that these parameters may 
+be changed while audio capture is active.  If this actor is used
+in conjunction with an AudioCapture actor, changing a parameter will
+cause the parameter value of the AudioCapture to automatically be
+set to the same value.
 <p>
 <ul>
 <li><i>sampleRate</i> should be set to desired sample rate, in Hz.
-The default value is 8000. Allowable values are 8000, 11025,
+The default value is 8000. Allowable values are 8000, 11025, 
 22050, 44100, and 48000 Hz.
 <li><i>bitsPerSample</i> should be set to desired bit
 resolution. The default value is 16. Allowable values are 8 and 16.
 <li><i>channels</i> should be set to desired number of audio
-channels. Allowable values are 1 (for mono) and 2 (for stereo).
+channels. Allowable values are 1 (for mono) and 2 (for stereo). 
 The default value is 1.
 </ul>
 <p>
@@ -93,7 +94,7 @@ Note: Requires Java 2 v1.3.0 or later.
 @see ptolemy.media.javasound.LiveSound
 @see ptolemy.actor.lib.javasound.AudioCapture
 */
-public class AudioPlayer extends Sink {
+public class AudioPlayer extends Sink implements LiveSoundListener {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -109,7 +110,7 @@ public class AudioPlayer extends Sink {
 	if(_debugging) _debug("AudioPlayer: Constructor invoked");
         input.setTypeEquals(BaseType.DOUBLE);
 
-
+	
         sampleRate = new Parameter(this, "sampleRate", new IntToken(8000));
         sampleRate.setTypeEquals(BaseType.INT);
 
@@ -120,19 +121,22 @@ public class AudioPlayer extends Sink {
                 new IntToken(1));
 	channels.setTypeEquals(BaseType.INT);
 	attributeChanged(channels);
-
+	
 	// Hard code the the fraction of of the buffer to put data
 	// at a time = 1/putFactor.
 	_curElement = 0;
 	// The size of the array in samples per channel to give
 	// to LiveSound.putSamples().
 	if (_debugInfo) {
-	    System.out.println("AudioPlayer: constructor: _putSampleSize = "
+	    System.out.println("AudioPlayer: constructor: _putSampleSize = " 
 			       + _putSampleSize);
 	}
 	// The size of the array (in samples per channel) to pass
 	// to LiveSound.putSamples().
 	_putSampleSize = 128;
+	// Add this class as a listener of live sound change
+	// events.
+	LiveSound.addLiveSoundListener(this);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -147,7 +151,9 @@ public class AudioPlayer extends Sink {
      *  actor is used simultaneously with an AudioCapture actor,
      *  the same sample rate must be used for both actors,
      *  since most sound cards require the capture and playback rates
-     *  to be the same.
+     *  to be the same. This actor will automatically cause the
+     *  parameters of an AudioCapture actor to be set to the same
+     *  values as the parameters of this actor.
      *  <p>
      *  An exception will be occur if this parameter is set to an
      *  unsupported sample rate.
@@ -159,6 +165,14 @@ public class AudioPlayer extends Sink {
      *  on the audio hardware, but typically at least include
      *  8 and 16. The default value is 16.
      *  <p>
+     *  If this
+     *  actor is used simultaneously with an AudioCapture actor,
+     *  the same sample rate must be used for both actors,
+     *  since most sound cards require the capture and playback rates
+     *  to be the same. This actor will automatically cause the
+     *  parameters of an AudioCapture actor to be set to the same
+     *  values as the parameters of this actor.
+     *  <p>
      *  An exception will occur if this parameter is set to an
      *  unsupported sample size.
      */
@@ -168,6 +182,14 @@ public class AudioPlayer extends Sink {
      *  are dependent on the audio hardware (sound card), but typically
      *  at least include 1 (for mono) and 2 (for stereo). The
      *  default value is 1.
+     *  <p>
+     *  If this
+     *  actor is used simultaneously with an AudioCapture actor,
+     *  the same sample rate must be used for both actors,
+     *  since most sound cards require the capture and playback rates
+     *  to be the same. This actor will automatically cause the
+     *  parameters of an AudioCapture actor to be set to the same
+     *  values as the parameters of this actor.
      *  <p>
      *  An exception will occur if this parameter is set to an
      *  an unsupported channel number.
@@ -188,39 +210,62 @@ public class AudioPlayer extends Sink {
                 attribute.getName());
 	//System.out.println("AudioPlayer: attributeChanged() invoked on: " +
 	//      attribute.getName());
-	if (attribute == channels) {
-	    _channels =
-                ((IntToken)channels.getToken()).intValue();
-	    if (_channels < 1) {
-		throw new IllegalActionException(this,
+	try {
+	    if (attribute == channels) {
+		// FIXME: It probably dosn't make sense to allow
+		// changes in this parameter at runtime.
+		_channels =
+		    ((IntToken)channels.getToken()).intValue();
+		if (_channels < 1) {
+		    throw new IllegalActionException(this,
                         "Attempt to set channels parameter to an illegal " +
                         "value of: " +  _channels + " . The value must be a " +
                         "positive integer.");
-	    }
-	    // Check if we need to reallocate.
-	    if ((_inArray == null) || (_channels != _inArray.length)) {
-		_inArray = new Token[_channels][];
-	    }
-	    if ((_audioPutArray == null) || (_channels != _audioPutArray.length)) {
-		_audioPutArray = new double[_channels][];
-	    }
-	    if (_debugInfo) {
-		System.out.println("AudioPlayer: attributeChanged() "
+		}
+		// Check if we need to reallocate.
+		if ((_inArray == null) || (_channels != _inArray.length)) {
+		    _inArray = new Token[_channels][];
+		}
+		if ((_audioPutArray == null) || (_channels != _audioPutArray.length)) {
+		    _audioPutArray = new double[_channels][];
+		}
+		if (_debugInfo) {
+		    System.out.println("AudioPlayer: attributeChanged() "
 				   + "_putSampleSize = " + _putSampleSize);
+		}
+		for (int i = 0; i < _channels; i++) {
+		    _audioPutArray[i] = new double[_putSampleSize];
+		}
+		// Only set the channels if it is different than
+		// the currently active channels.
+		if (LiveSound.getChannels() != _channels) {
+		    LiveSound.setChannels(_channels);
+		}
+	    }  else if (attribute == sampleRate) {
+		int sampleRateInt =
+		    ((IntToken)sampleRate.getToken()).intValue();
+		// Only set the sample rate if it is different than
+		// the currently active sample rate.
+		if (LiveSound.getSampleRate() != sampleRateInt) {
+		    LiveSound.setSampleRate(sampleRateInt);
+		}
+	    } else if (attribute == bitsPerSample) {
+		int bitsPerSampleInt =
+		    ((IntToken)bitsPerSample.getToken()).intValue();
+		// Only set the bitsPerSample if it is different than
+		// the currently active bitsPerSample.
+		if (LiveSound.getBitsPerSample() != bitsPerSampleInt) {
+		    LiveSound.setBitsPerSample(bitsPerSampleInt);
+		}
+	    } else {
+		super.attributeChanged(attribute);
+		return;
 	    }
-	    for (int i = 0; i < _channels; i++) {
-		_audioPutArray[i] = new double[_putSampleSize];
-	    }
-	}  else if (attribute == sampleRate) {
-	    // _initializePlayback will handel this.
-	} else if (attribute == bitsPerSample) {
-	    // _initializePlayback will handel this.
-	} else {
-	    super.attributeChanged(attribute);
-	    return;
-	}
-	if (_safeToInitialize == true) {
-	    _initializePlayback();
+	} catch (IOException ex) {
+	    throw new IllegalActionException(
+                            "Cannot perform audio playback " +
+			    "with the specified parameter values." +
+                            ex);
 	}
     }
 
@@ -236,7 +281,13 @@ public class AudioPlayer extends Sink {
 	if(_debugging) _debug("AudioPlayer: initialize(): invoked");
 	//System.out.println("AudioPlayer: initialize(): invoked");
 	// Initialize/Reinitialize audio resources.
-	_initializePlayback();
+	try {
+	    _initializePlayback();
+	} catch (IOException ex) {
+	    throw new IllegalActionException(
+                            "Cannot initialize audio playback " +
+                            ex);
+	}
 	_safeToInitialize = true;
     }
 
@@ -315,6 +366,71 @@ public class AudioPlayer extends Sink {
 	return COMPLETED;
     }
 
+     /** Notify that the an audio parameter of LiveSound has
+     *  changed.
+     *
+     *  @param event The live sound change event.
+     *
+     *  @exception IllegalActionException If the change is not
+     *   allowed.
+     */
+    public void liveSoundChanged(LiveSoundEvent event) {
+	// Check to see what parameter was changed.
+	int changedParameter = event.getSoundParameter();
+	try {
+	    if (changedParameter == LiveSoundEvent.SAMPLE_RATE) {
+		// Get the currently active sample rate.
+		int activeSampleRate = LiveSound.getSampleRate();
+		// Get the current value of this actor's sampleRate parameter.
+		int thisActorSampleRate =
+		    ((IntToken)sampleRate.getToken()).intValue();
+		if (_debugInfo) {
+		    System.out.println("AudioPlayer: liveSoundChanged() invoked");
+		    System.out.println("AudioPlayer: liveSoundChanged() " +
+			       "activeSampleRate = " + activeSampleRate +
+			       ", thisActorSampleRate = " +
+			       thisActorSampleRate);
+		}
+		// Only set the sampleRate parameter if it is different from
+		// the new sample rate.
+		if (activeSampleRate != thisActorSampleRate) {
+		    sampleRate.setToken(new IntToken(activeSampleRate));
+		    attributeChanged(sampleRate);
+		}
+	    }  else if (changedParameter == LiveSoundEvent.CHANNELS) {
+		// Get the currently active number of channels.
+		int activeChannels = LiveSound.getChannels();
+		// Get the current value of this actor's sampleRate parameter.
+		int thisActorChannels =
+		    ((IntToken)channels.getToken()).intValue();
+		// Only set the channels parameter if it is different from
+		// the new channels.
+		if (activeChannels != thisActorChannels) {
+		    channels.setToken(new IntToken(activeChannels));
+		    attributeChanged(channels);
+		}
+	    } else if (changedParameter == LiveSoundEvent.BITS_PER_SAMPLE) {
+		// Get the currently active bitsPerSample.
+		int activeBitsPerSample = LiveSound.getBitsPerSample();
+		// Get the current value of this actor's bitsPerSample
+		// parameter.
+		int thisActorBitsPerSample =
+		    ((IntToken)bitsPerSample.getToken()).intValue();
+		// Only set the channels parameter if it is different from
+		// the new channels.
+		if (activeBitsPerSample != thisActorBitsPerSample) {
+		    bitsPerSample.setToken(new IntToken(activeBitsPerSample));
+		    attributeChanged(bitsPerSample);
+		}
+	    }
+	} catch (IllegalActionException ex) {
+	    throw new InternalErrorException(
+                        "Error responding to audio parameter change. " +
+                        ex);
+	}
+    }
+
+
     /** At most one token is read from each channel and written to the
      *  audio output. The audio output is either a sound file and/or
      *  the speaker, depending on the current mode, which is
@@ -383,7 +499,7 @@ public class AudioPlayer extends Sink {
      *   audio playback.
      */
     private synchronized void _initializePlayback()
-            throws IllegalActionException {
+            throws IllegalActionException, IOException {
 	if(_debugging) _debug("AudioPlayer: _initializePlayback() invoked.");
 	//System.out.println("AudioPlayer: _initializePlayback() invoked.");
 	// Stop playback. Close any open sound files. Free
@@ -391,13 +507,7 @@ public class AudioPlayer extends Sink {
 	// FIXME: just becuase _soundPlayback is not null does not mean
 	// that playback is active. This check may be unessesary.
 	if (LiveSound.isPlaybackActive()) {
-            try {
-		LiveSound.stopPlayback(this);
-            } catch (IOException ex) {
-                throw new IllegalActionException(
-                        "Cannot playback audio:\n" +
-                        ex);
-            }
+	    LiveSound.stopPlayback(this);
 	}
 	if (_debugInfo) {
 	    System.out.println("AudioPlayer: _initializePlayback() "
@@ -426,16 +536,10 @@ public class AudioPlayer extends Sink {
 	if (LiveSound.getTransferSize() != _putSampleSize) {
 	    LiveSound.setTransferSize(_putSampleSize);
 	}
-	try {
-	    // Start audio playback.
-	    LiveSound.startPlayback(this);
-	    // Reset the current index pointer to 0 for each channel.
-	    _curElement = 0;
-	} catch (IOException ex) {
-	    throw new IllegalActionException(
-		    "Cannot playback audio:\n" +
-		    ex);
-	}
+	// Start audio playback.
+	LiveSound.startPlayback(this);
+	// Reset the current index pointer to 0 for each channel.
+	_curElement = 0;
     }
 
     ///////////////////////////////////////////////////////////////////
