@@ -123,7 +123,7 @@ public class Scheduler extends Attribute {
      *   an attribute already in the container.
      */
     public Scheduler(Director container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
