@@ -36,7 +36,8 @@ import ptolemy.kernel.Port;
 import ptolemy.data.*;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.Variable;
-import java.util.Enumeration;
+
+import java.util.Iterator;
 
 //////////////////////////////////////////////////////////////////////////
 //// Expression
@@ -158,9 +159,9 @@ public class Expression extends TypedAtomicActor {
             throw new IllegalActionException(this, "No director!");
         }
         _time.setToken(new DoubleToken(dir.getCurrentTime()));
-        Enumeration inputPorts = inputPorts();
-        while(inputPorts.hasMoreElements()) {
-            IOPort port = (IOPort)(inputPorts.nextElement());
+        Iterator inputPorts = inputPortList().iterator();
+        while(inputPorts.hasNext()) {
+            IOPort port = (IOPort)(inputPorts.next());
             // FIXME: Handle multiports
             if(port.hasToken(0)) {
                 Token inputToken = port.get(0);
