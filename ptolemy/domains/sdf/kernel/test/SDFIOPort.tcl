@@ -84,7 +84,7 @@ test SDFIOPort-1.3 {Attempt to set erroneous container} {
     set p1 [java::new ptolemy.domains.sdf.kernel.SDFIOPort]
     catch {$p1 setContainer $e1} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: . and .:
+} {{ptolemy.kernel.util.IllegalActionException: Object names: <Unnamed Object> and <Unnamed Object>:
 TypedIOPort can only be contained by objects implementing the TypedActor interface.}}
 
 ######################################################################

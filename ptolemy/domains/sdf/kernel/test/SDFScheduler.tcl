@@ -878,7 +878,7 @@ test SDFScheduler-10.1 {input Broadcast Multirate Scheduling tests} {
     $scheduler setValid false
     catch {[$scheduler getSchedule]} e1
     list $e1
-} {{ptolemy.actor.sched.NotSchedulableException: .Toplevel.Ramp1.output and .Toplevel.Ramp2.output:
+} {{ptolemy.actor.sched.NotSchedulableException: Object names: .Toplevel.Ramp1.output and .Toplevel.Ramp2.output:
 Output ports drive the same relation. This is not legal in SDF.}}
 
 test SDFScheduler-10.11 {output Broadcast Multirate Scheduling tests} {
@@ -1332,6 +1332,8 @@ test SDFScheduler-13.3 {_debugging code coverage} {
 } {{{Ramp Cont Consumer}} Delay}
 
 test SDFScheduler-13.5 {buffersize annotation} {
+    # This test used to contain buffersize annotations, but does not
+    # now contain them
     $toplevel exportMoML
 } {<?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
@@ -1404,12 +1406,8 @@ test SDFScheduler-13.5 {buffersize annotation} {
             </port>
         </entity>
         <relation name="R2" class="ptolemy.actor.TypedIORelation">
-            <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
         </relation>
         <relation name="R3" class="ptolemy.actor.TypedIORelation">
-            <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
         </relation>
         <link port="p1" relation="R2"/>
         <link port="p2" relation="R3"/>
@@ -1428,12 +1426,8 @@ test SDFScheduler-13.5 {buffersize annotation} {
         </port>
     </entity>
     <relation name="R1" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
     </relation>
     <relation name="R4" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
     </relation>
     <link port="Ramp.output" relation="R1"/>
     <link port="Cont.p1" relation="R1"/>
@@ -1441,8 +1435,6 @@ test SDFScheduler-13.5 {buffersize annotation} {
     <link port="Consumer.input" relation="R4"/>
 </entity>
 }
-
-
 
 
 ######################################################################
