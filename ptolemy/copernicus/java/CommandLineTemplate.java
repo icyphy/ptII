@@ -155,6 +155,8 @@ public class CommandLineTemplate {
 
 
                 // Third, we gc and print memory stats.
+                // Note that these stats are only correct if no gc has 
+                // occured..  recommend using -Xmx256m -Xms256m
                 System.gc();
                 Thread.sleep(1000);
 

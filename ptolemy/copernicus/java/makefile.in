@@ -89,6 +89,12 @@ DECOMPILERTARGETPATH =		$(TARGETPATH)
 
 JVMSIZE = -Xmx256m
 
+# Flags to java when collecting memory usage information.  This should
+# (hopefully) prevent the incremental GC from being called prior to
+# the application finishing. Additionally, it will report every time
+# the GC is run.
+MEMORYJFLAGS = -Xmx256m -Xms256m -verbose:gc
+
 # Soot command line arguments for the user.  To list all the arguments, use
 # make COMPILEOPTIONS=-h
 COMPILEOPTIONS=
@@ -102,7 +108,7 @@ ITERATIONSPARAMETER =	,iterations:$(ITERATIONS)
 demo: runJava
 runJava:
 	@echo "Run the deep model"
-	"$(JAVA)" \
+	"$(JAVA)" $(MEMORYJFLAGS) \
 	-Xfuture -classpath "$(CLASSPATH)" \
 	$(TARGETPACKAGE).Main 
 
@@ -114,7 +120,7 @@ treeshake_codegen.jar: treeShake
 treeShake:
 	@echo "Create the minimal jar file from the final codegen version"
 	@"$(TREESHAKE)" "$(JAR)" $(TREESHAKE_PREFIX)_codegen.jar \
-		"$(JAVA)" \
+		"$(JAVA)" $(MEMORYJFLAGS) \
 			-classpath "$(CLASSPATH)" \
 			$(TARGETPACKAGE).Main | tail -1
 	@ls -l $(TREESHAKE_PREFIX)_codegen.jar;
@@ -127,7 +133,7 @@ runTreeShake:
 	@rm -f  $(STATSFILE)
 	@for repeat in 1 2 3 4; \
 	do \
-		"$(JAVA)" -Xmx256M -Xms256M \
+		"$(JAVA)" $(MEMORYJFLAGS) \
 			-classpath $(TREESHAKE_PREFIX)_codegen.jar \
 			$(TARGETPACKAGE).Main | tail -1 | \
 			tee -a $(STATSFILE); \
@@ -152,7 +158,8 @@ treeShakeWithoutCodegen:
 	@echo "Treeshake $(MODEL) without codegen"
 	@CLASSPATH="$(CLASSPATH)" \
 		"$(TREESHAKE)" "$(JAR)" $(TREESHAKE_PREFIX).jar \
-			"$(JAVA)" ptolemy.copernicus.java.TestApplication \
+			"$(JAVA)" $(MEMORYJFLAGS) \
+			ptolemy.copernicus.java.TestApplication \
 			"$(MODELPATH)" \
 			| tail -1
 	ls -l $(TREESHAKE_PREFIX).jar
@@ -161,7 +168,7 @@ runTreeShakeWithoutCodegen:
 	@echo "Run without codegen with treeshake.jar"
 	@for repeat in 1 2 3 4; \
 	do \
-		"$(JAVA)" -Xmx256M -Xms256M \
+		"$(JAVA)" $(MEMORYJFLAGS) \
 			-classpath $(TREESHAKE_PREFIX).jar \
 			ptolemy.copernicus.java.TestApplication \
 			$(MODELPATH) \
@@ -177,7 +184,7 @@ treeShakeAndRunSnapshots:
 		echo "Running the code from $(TARGETPATH)/$${snapshot}"; \
 		echo "Treeshake $$snapshot"; \
 		"$(TREESHAKE)" "$(JAR)" $(TREESHAKE_PREFIX)_$${snapshot}.jar \
-			"$(JAVA)" \
+			"$(JAVA)" $(MEMORYJFLAGS) \
 				-Xfuture -classpath \
 	"$(TARGETPATH)/$$snapshot$(CLASSPATHSEPARATOR)$(CLASSPATH)" \
 				$(TARGETPACKAGE).Main| tail -1 ; \
@@ -185,7 +192,7 @@ treeShakeAndRunSnapshots:
 		rm -f  $(STATSFILE); \
 		for repeat in 1 2 3 4; \
 		do \
-			"$(JAVA)" -Xmx256M -Xms256M \
+			"$(JAVA)" $(MEMORYJFLAGS) \
 				-classpath $(TREESHAKE_PREFIX)_$${snapshot}.jar \
 				$(TARGETPACKAGE).Main | tail -1 | \
 			tee -a $(STATSFILE); \
@@ -248,7 +255,7 @@ runObfuscate:
 	@rm -f  $(STATSFILE)
 	@for repeat in 1 2 3 4; \
 	do \
-		"$(JAVA)" -Xmx256M -Xms256M \
+		"$(JAVA)" $(MEMORYJFLAGS) \
 			-classpath obfuscated.jar \
 			$(TARGETPACKAGE).Main | tail -1 | \
 			tee -a $(STATSFILE); \
@@ -261,7 +268,7 @@ runObfuscate:
 treeShakeObfuscate:
 	@echo "Create the minimal jar file from the obfuscated codegen version"
 	"$(TREESHAKE)" "$(JAR)" $(TREESHAKE_PREFIX)_obfuscated.jar \
-		"$(JAVA)" \
+		"$(JAVA)" $(MEMORYJFLAGS) \
 			-classpath "obfuscated.jar$(CLASSPATHSEPARATOR)" \
 			$(TARGETPACKAGE).Main | tail -1
 	@ls -l $(TREESHAKE_PREFIX)_obfuscated.jar;
@@ -274,7 +281,7 @@ runTreeShakeObfuscate:
 	@rm -f  $(STATSFILE)
 	@for repeat in 1 2 3 4; \
 	do \
-		"$(JAVA)" -Xmx256M -Xms256M  \
+		"$(JAVA)" $(MEMORYJFLAGS) \
 			-classpath $(TREESHAKE_PREFIX)_codegen.jar \
 			$(TARGETPACKAGE).Main | tail -1 | \
 			tee -a $(STATSFILE); \
@@ -506,13 +513,13 @@ gcj3_2:
 
 timeOrthoCommDemo:
 	@echo "Time the model for $(ITERATIONS) iterations"
-	"$(JAVA)" \
+	"$(JAVA)" $(MEMORYJFLAGS) \
 	-Xfuture -classpath "$(CLASSPATH)" \
 	$(TARGETPACKAGE).Main  | tail
 
 runStaticDemo:
 	@echo "Run the deep model static"
-	"$(JAVA)" \
+	"$(JAVA)" $(MEMORYJFLAGS) \
 	-Xfuture -classpath "$(CLASSPATH)" \
 	$(TARGETPACKAGE).StaticMain 
 # -iterations 50
@@ -556,7 +563,7 @@ jodeRecompileDemo:
 		$(DECOMPILERTARGETPATH)$$relativetargetpath/$(DECOMPILERTARGETCLASS).java
 
 jodeRunRecompiledDemo:
-	$(JAVA) -Xfuture -classpath "$(DECOMPILERTARGETPATH)$(CLASSPATHSEPARATOR)$(ROOT)" \
+	$(JAVA) $(MEMORYJFLAGS) -Xfuture -classpath "$(DECOMPILERTARGETPATH)$(CLASSPATHSEPARATOR)$(ROOT)" \
 		ptolemy.actor.gui.CompositeActorApplication \
 		-class $(TARGETPACKAGE).CG$(MODEL)
 
