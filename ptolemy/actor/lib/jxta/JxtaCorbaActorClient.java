@@ -107,7 +107,7 @@ public class JxtaCorbaActorClient extends TypedAtomicActor implements QueryHandl
             }
 
 	    PropertyConfigurator.configure(System.getProperties());
-		
+
 		//String Dir = "c:/Cygwin/home/ellen_zh/ptII/ptolemy/actor/lib/jxta";
             //String _actorListFileName = "c:/Cygwin/home/ellen_zh/ptII/ptolemy/actor/lib/jxta/actors.xml";
             _properties = new Properties(System.getProperties());
