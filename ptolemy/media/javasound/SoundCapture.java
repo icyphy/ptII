@@ -67,14 +67,15 @@ public class SoundCapture {
 
     /** Construct a sound capture object. This constructor creates an
      *  object that captures audio from the computer's audio input
-     *  port (mic or line-in). Note that the FIXME method should be
+     *  port (mic or line-in). Note that getSamples() should be
      *  called often enough to prevent overflow of the internal audio
      *  input buffer.
      *  @param sampleRate Sample rate in Hz. Must be in the range (8000
      *  to 48000).
      *  @param sampleSizeInBits Number of bits per sample (choices are
      *  8 or 16).
-     *  @param channels Number of audio channels. FIXME: must be 1.
+     *  @param channels Number of audio channels. FIXME: must be 1
+     *   for now.
      *  @param bufferSize Requested size of the internal audio input
      *   buffer in samples. This controls the latency. Ideally, the
      *   smallest value that gives acceptable performance (no overflow)
@@ -96,7 +97,6 @@ public class SoundCapture {
 	this._channels = channels;
 	this._bufferSize = bufferSize;
 	this._productionRate = getSamplesSize;
-	this._constructorWasCalled = true;
 
 	System.out.println("SoundCapture: constructor 1: sampleSizeInBits = "
 			   + sampleSizeInBits);
@@ -129,7 +129,6 @@ public class SoundCapture {
 	this._isURL = isURL;
 	this._fileName = fileName;
 	this._productionRate = getSamplesSize;
-	this._constructorWasCalled = true;
     }
 
     ///////////////////////////////////////////////////////////////
@@ -141,12 +140,6 @@ public class SoundCapture {
      *  <i>stopAudio()</i>.
      */
     public void startCapture() {
-	System.out.println("SoundCapture: startCapture(): invoked");
-	if (_constructorWasCalled != true) {
-	    //FIXME: throw exception.
-	    System.out.println("SoundCapture: startCapture() ***** STOP ******* CONTSTRUCTOR NOT CALLED!!!");
-	}
-
 	
 	if (_isRealTime == true) {
 	    _startCaptureRealTime();
@@ -208,7 +201,6 @@ public class SoundCapture {
 		
 
 		// Real-time capture.
-		// numBytesRead is in samples????
 		numBytesRead = _targetLine.read(_data, 0,
 				    _productionRate*_frameSizeInBytes);
 
@@ -467,6 +459,4 @@ public class SoundCapture {
     private int _bufferSize;
 
     private TargetDataLine _targetLine;
-
-    private boolean _constructorWasCalled = false;
 }
