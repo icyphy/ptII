@@ -1703,17 +1703,17 @@ public class ASTFormatter extends ASTVisitor {
      *  output is written to the writer.
      *  
      *  @param message The message to be output.
-     *  @exception ASTIOException Thrown when a writer is provided and
+     *  @exception ASTIORuntimeException Thrown when a writer is provided and
      *   IO exception occurs when trying to write to the writer.
      */
-    private void _output(String message) throws ASTIOException {
+    private void _output(String message) throws ASTIORuntimeException {
         if (_buffer != null)
             _buffer.append(message);
         if (_writer != null)
             try {
                 _writer.write(message);
             } catch (IOException e) {
-                throw new ASTIOException(e);
+                throw new ASTIORuntimeException(e);
             }
     }
     
@@ -1722,17 +1722,17 @@ public class ASTFormatter extends ASTVisitor {
      *  output is written to the writer.
      *  
      *  @param message The message to be output.
-     *  @exception ASTIOException Thrown when a writer is provided and
+     *  @exception ASTIORuntimeException Thrown when a writer is provided and
      *   IO exception occurs when trying to write to the writer.
      */
-    private void _output(StringBuffer message) throws ASTIOException {
+    private void _output(StringBuffer message) throws ASTIORuntimeException {
         if (_buffer != null)
             _buffer.append(message);
         if (_writer != null)
             try {
                 _writer.write(message.toString());
             } catch (IOException e) {
-                throw new ASTIOException(e);
+                throw new ASTIORuntimeException(e);
             }
     }
     
