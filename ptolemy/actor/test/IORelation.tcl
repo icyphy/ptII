@@ -484,13 +484,13 @@ test IORelation-8.3 {Test description} {
 
 test IORelation-9.1 {Test clone} {
     set w [java::new ptolemy.kernel.util.Workspace W]
-    set r8 [$r1 clone $w]
+    set r8 [java::cast ptolemy.actor.IORelation [$r1 clone $w]]
     $r8 description $configuration
 } {configuration {width 1}}
 
 test IORelation-9.2 {Test clone} {
     set w [java::new ptolemy.kernel.util.Workspace W]
-    set r9 [$r2 clone $w]
+    set r9 [java::cast ptolemy.actor.IORelation [$r2 clone $w]]
     $r9 description $configuration
 } {configuration {width 3 fixed}}
 

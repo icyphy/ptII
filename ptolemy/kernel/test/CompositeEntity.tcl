@@ -327,7 +327,8 @@ test CompositeEntity-9.1 {Test transparent port} {
     $a connect $p2 $p1
     set result {}
     foreach ar [enumToObjects [$p1 insideRelations]] {
-        lappend result [enumToFullNames [$ar linkedPorts $p1]]
+        lappend result [enumToFullNames \
+                [[java::cast ptolemy.kernel.Relation $ar] linkedPorts $p1]]
     }
     list $result
 } {.A.B.P2}
@@ -415,21 +416,21 @@ test CompositeEntity-11.1 {Test deepLinkedEntities on component relations} {
     set e9 [java::new ptolemy.kernel.ComponentEntity $e10 E9]
 
     # Create ports.
-    set p0 [$e4 newPort P0]
-    set p1 [$e1 newPort P1]
-    set p2 [$e2 newPort P2]
-    set p3 [$e2 newPort P3]
-    set p4 [$e4 newPort P4]
-    set p5 [$e5 newPort P5]
-    set p6 [$e6 newPort P6]
-    set p7 [$e3 newPort P7]
-    set p8 [$e7 newPort P8]
-    set p9 [$e8 newPort P9]
-    set p10 [$e8 newPort P10]
-    set p11 [$e7 newPort P11]
-    set p12 [$e10 newPort P12]
-    set p13 [$e10 newPort P13]
-    set p14 [$e9 newPort P14]
+    set p0 [java::cast ptolemy.kernel.ComponentPort [$e4 newPort P0]]
+    set p1 [java::cast ptolemy.kernel.ComponentPort [$e1 newPort P1]]
+    set p2 [java::cast ptolemy.kernel.ComponentPort [$e2 newPort P2]]
+    set p3 [java::cast ptolemy.kernel.ComponentPort [$e2 newPort P3]]
+    set p4 [java::cast ptolemy.kernel.ComponentPort [$e4 newPort P4]]
+    set p5 [java::cast ptolemy.kernel.ComponentPort [$e5 newPort P5]]
+    set p6 [java::cast ptolemy.kernel.ComponentPort [$e6 newPort P6]]
+    set p7 [java::cast ptolemy.kernel.ComponentPort [$e3 newPort P7]]
+    set p8 [java::cast ptolemy.kernel.ComponentPort [$e7 newPort P8]]
+    set p9 [java::cast ptolemy.kernel.ComponentPort [$e8 newPort P9]]
+    set p10 [java::cast ptolemy.kernel.ComponentPort [$e8 newPort P10]]
+    set p11 [java::cast ptolemy.kernel.ComponentPort [$e7 newPort P11]]
+    set p12 [java::cast ptolemy.kernel.ComponentPort [$e10 newPort P12]]
+    set p13 [java::cast ptolemy.kernel.ComponentPort [$e10 newPort P13]]
+    set p14 [java::cast ptolemy.kernel.ComponentPort [$e9 newPort P14]]
 
     # Create links
     set r1 [$e4 connect $p1 $p0 R1]
@@ -760,7 +761,7 @@ test CompositeEntity-11.8 {Test that clone fails with level-cross xsitions} {
 ####
 # NOTE:  Uses the setup constructed in 11.1.
 test CompositeEntity-11.9 {Test clone} {
-    set ne7 [$e7 clone]
+    set ne7 [java::cast ptolemy.kernel.CompositeEntity [$e7 clone]]
     $ne7 description 31
 } {ptolemy.kernel.CompositeEntity {.E7} ports {
     {ptolemy.kernel.ComponentPort {.E7.P8} links {

@@ -204,7 +204,7 @@ test Relation-14.1 {Test clone} {
     set p1 [java::new ptolemy.kernel.Port $e1 P1]
     set r1 [java::new ptolemy.kernel.Relation $w R1]
     $p1 link $r1
-    set r2 [$r1 clone]
+    set r2 [java::cast ptolemy.kernel.Relation [$r1 clone]]
     list [$r1 description 7] [$r2 description 7]
 } {{ptolemy.kernel.Relation {.R1} links {
     {ptolemy.kernel.Port {.E1.P1}}

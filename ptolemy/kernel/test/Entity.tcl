@@ -284,7 +284,7 @@ test Entity-9.0 {Test description} {
 #
 test Entity-9.1 {Test cloning} {
     # NOTE: Uses the setup constructed in 9.0
-    set e2 [$e1 clone]
+    set e2 [java::cast ptolemy.kernel.Entity [$e1 clone]]
     $e2 description 15
 } {ptolemy.kernel.Entity {W.E1} ports {
     {ptolemy.kernel.Port {W.E1.P1} links {

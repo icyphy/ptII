@@ -116,7 +116,8 @@ test CalendarQueue-3.0 {Put 4 datas in the queue and do a single take} {
     $queue put $p3 $n3
     $queue put $p1 $n4
     list [$queue getNextKey] \
-	    [[$queue take] getName] \
+	    [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] \
+            getName] \
 	    [$queue getPreviousKey] \
 	    [$queue isEmpty]
 } {0.0 n4 0.0 0}
@@ -130,13 +131,17 @@ test CalendarQueue-3.1 {Put 4 datas in the queue and take one by one} {
     $queue put $p2 $n2
     $queue put $p3 $n3
     $queue put $p1 $n4
-    list [[$queue take] getName] \
+    list [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] \
+            getName] \
 	    [$queue getPreviousKey] \
-	    [[$queue take] getName] \
+	    [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] \
+            getName] \
 	    [$queue getPreviousKey] \
-	    [[$queue take] getName] \
+	    [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] \
+            getName] \
 	    [$queue getPreviousKey] \
-	    [[$queue take] getName] \
+	    [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] \
+            getName] \
 	    [$queue getPreviousKey]
 } {n4 0.0 n2 0.1 n3 0.2 n1 3.0}
 
@@ -150,15 +155,20 @@ test CalendarQueue-3.2 {Put 5 datas in the queue and take one by one} {
     $queue put $p4 $n3
     $queue put $p2 $n4
     $queue put $p1 $n5
-    list [[$queue take] getName] \
+    list [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] \
+            getName] \
 	    [$queue getPreviousKey] \
-	    [[$queue take] getName] \
+	    [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] \
+            getName] \
 	    [$queue getPreviousKey] \
-	    [[$queue take] getName] \
+	    [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] \
+            getName] \
 	    [$queue getPreviousKey] \
-	    [[$queue take] getName] \
+	    [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] \
+            getName] \
 	    [$queue getPreviousKey] \
-	    [[$queue take] getName] \
+	    [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] \
+            getName] \
 	    [$queue getPreviousKey]
 } {n5 0.0 n4 0.1 n2 0.2 n3 3.0 n1 4.0}
 
@@ -182,25 +192,35 @@ test CalendarQueue-3.3 {Tests the resize method and the direct search } {
     # We want FIFO operation, i.e. p1 should be before p1again
     $queue put $p3 $n11
     # This sequence of take would half the queue size to 4
-    list [[$queue take] getName] \
+    list [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] \
+            getName] \
 	    [$queue getPreviousKey]\
-	    [[$queue take] getName] \
+	    [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] \
+            getName] \
 	    [$queue getPreviousKey] \
-	    [[$queue take] getName] \
+	    [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] \
+            getName] \
 	    [$queue getPreviousKey] \
-	    [[$queue take] getName] \
+	    [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] \
+            getName] \
 	    [$queue getPreviousKey] \
-	    [[$queue take] getName] \
+	    [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] \
+            getName] \
 	    [$queue getPreviousKey] \
-	    [[$queue take] getName] \
+	    [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] \
+            getName] \
 	    [$queue getPreviousKey] \
-	    [[$queue take] getName] \
+	    [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] \
+            getName] \
 	    [$queue getPreviousKey] \
-	    [[$queue take] getName] \
+	    [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] \
+            getName] \
 	    [$queue getPreviousKey] \
-	    [[$queue take] getName] \
+	    [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] \
+            getName] \
 	    [$queue getPreviousKey] \
-	    [[$queue take] getName] \
+	    [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] \
+            getName] \
 	    [$queue getPreviousKey]
 } {n5 0.0 n10 0.0 n4 0.1 n11 0.2 n9 3.0 n2 4.0 n8 7.6 n3 8.9 n7 50.0 n1 999.1}
 
@@ -220,23 +240,32 @@ test CalendarQueue-3.4 {Again tests the direct search and more complicated put, 
     $queue put $p7 $n9
     # queue size should get doubled here, becomes 8
     # This sequence of take would half the queue size to 4
-    list [[$queue take] getName] \
+    list [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] \
+            getName] \
 	    [$queue getPreviousKey] \
-	    [[$queue take] getName] \
+            [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] \
+            getName] \
 	    [$queue getPreviousKey] \
-	    [[$queue take] getName] \
+            [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] \
+            getName] \
 	    [$queue getPreviousKey] \
-	    [[$queue take] getName] \
+            [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] \
+            getName] \
 	    [$queue getPreviousKey] \
-	    [[$queue take] getName] \
+            [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] \
+            getName] \
 	    [$queue getPreviousKey] \
-	    [[$queue take] getName] \
+            [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] \
+            getName] \
 	    [$queue getPreviousKey] \
-	    [[$queue take] getName] \
+            [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] \
+            getName] \
 	    [$queue getPreviousKey] \
-	    [[$queue take] getName] \
+            [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] \
+            getName] \
 	    [$queue getPreviousKey] \
-	    [[$queue take] getName] \
+            [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] \
+            getName] \
 	    [$queue getPreviousKey]
 } {n6 0.0 n4 0.1 n3 0.2 n2 3.0 n9 8.9 n8 50.0 n7 999.1 n16 999.3 n5 999.8}
 
@@ -253,9 +282,12 @@ test CalendarQueue-3.5 {Tests interleaved put and take} {
     $queue put $p5 $n2
 
     # This sequence of take would half the queue size to 4
-    set mylist [list [[$queue take] getName] \
-	    [$queue getPreviousKey]\
-	    [[$queue take] getName] \
+    set mylist [list \
+            [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] \
+            getName] \
+	    [$queue getPreviousKey] \
+            [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] \
+            getName] \
 	    [$queue getPreviousKey]]
 
     $queue put $p2 $n4
@@ -265,26 +297,36 @@ test CalendarQueue-3.5 {Tests interleaved put and take} {
     $queue put $p3 $n11
     $queue put $p9 $n1
 
-    lappend mylist [[$queue take] getName] \
+    lappend mylist \
+            [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] \
+            getName] \
 	    [$queue getPreviousKey] \
-	    [[$queue take] getName] \
+            [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] \
+            getName] \
 	    [$queue getPreviousKey] \
-	    [[$queue take] getName] \
+            [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] \
+            getName] \
 	    [$queue getPreviousKey] \
-	    [[$queue take] getName] \
+            [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] \
+            getName] \
 	    [$queue getPreviousKey] \
-	    [[$queue take] getName] \
+            [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] \
+            getName] \
 	    [$queue getPreviousKey]
 
     $queue put $p7 $n3
     $queue put $p10 $n16
     $queue put $p8 $n7
 
-    lappend mylist [[$queue take] getName] \
+    lappend mylist \
+            [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] \
+            getName] \
 	    [$queue getPreviousKey] \
-	    [[$queue take] getName] \
+            [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] \
+            getName] \
 	    [$queue getPreviousKey] \
-	    [[$queue take] getName] \
+            [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] \
+            getName] \
 	    [$queue getPreviousKey]
 } {n5 0.0 n10 0.0 n4 0.1 n11 0.2 n9 3.0 n2 4.0 n8 7.6 n3 8.9 n7 50.0 n1 999.1}
 
@@ -308,11 +350,13 @@ test CalendarQueue-4.1 {Tests the getNextKey method} {
 
     # This sequence of take would half the queue size to 4
     lappend mylist [$queue getNextKey] \
-	    [[$queue take] getName] \
+            [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] \
+            getName] \
 	    [$queue getPreviousKey] \
 	    [$queue getNextKey] \
-	    [[$queue take] getName] \
-	    [$queue getPreviousKey]
+            [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] \
+            getName] \
+            [$queue getPreviousKey]
 
     $queue put $p2 $n4
     $queue put $p6 $n8
@@ -321,29 +365,38 @@ test CalendarQueue-4.1 {Tests the getNextKey method} {
     $queue put $p3 $n11
     $queue put $p9 $n1
 
-    lappend mylist [[$queue take] getName] \
+    lappend mylist \
+            [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] \
+            getName] \
 	    [$queue getPreviousKey] \
-	    [[$queue take] getName] \
+            [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] \
+            getName] \
 	    [$queue getPreviousKey] \
-	    [[$queue take] getName] \
+            [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] \
+            getName] \
 	    [$queue getPreviousKey] \
-	    [[$queue take] getName] \
+            [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] \
+            getName] \
 	    [$queue getPreviousKey] \
-	    [[$queue take] getName] \
-	    [$queue getPreviousKey]
+            [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] \
+            getName] \
+            [$queue getPreviousKey]
 
     $queue put $p7 $n3
     $queue put $p10 $n16
     $queue put $p8 $n7
 
     lappend mylist [$queue getNextKey] \
-	    [[$queue take] getName] \
+            [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] \
+            getName] \
 	    [$queue getPreviousKey] \
 	    [$queue getNextKey] \
-	    [[$queue take] getName] \
+            [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] \
+            getName] \
 	    [$queue getPreviousKey] \
 	    [$queue getNextKey] \
-	    [[$queue take] getName] \
+            [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] \
+            getName] \
 	    [$queue getPreviousKey]
 } {java.lang.IllegalAccessException: Invoking getNextKey() on empty queue is not allowed. 0.0 0.0 0.0 0.0 n5 0.0 0.0 n10 0.0 n4 0.1 n11 0.2 n9 3.0 n2 4.0 n8 7.6 8.9 n3 8.9 50.0 n7 50.0 999.1 n1 999.1}
 
@@ -359,7 +412,8 @@ test CalendarQueue-5.1 {Tests remove and includes method} {
     set mylist [list [$queue getNextKey] \
 	    [$queue remove $p1 $n5] \
 	    [$queue getNextKey] \
-	    [[$queue take] getName] \
+            [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] \
+            getName] \
 	    [$queue getPreviousKey]]
 
     $queue put $p2 $n3
@@ -370,16 +424,15 @@ test CalendarQueue-5.1 {Tests remove and includes method} {
 	    [$queue remove $p3 $n7]
     $queue put $p2 $n3
     lappend mylist [$queue includes $p2 $n3] \
-	    [[$queue take] getName] \
-	    [[$queue take] getName] \
-	    [[$queue take] getName]
+            [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] \
+            getName] \
+            [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] \
+            getName] \
+            [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] \
+            getName]
     catch {[$queue take]} msg1
     catch {[$queue getNextKey]} msg2
     lappend mylist $msg1 $msg2
-
-
-
-
 } {0.0 1 0.1 n4 0.1 1 0 0 1 n3 n8 n7 {java.lang.IllegalAccessException: Invoking take() on empty queue is not allowed.} {java.lang.IllegalAccessException: Invoking getNextKey() on empty queue is not allowed.}}
 
 ######################################################################
@@ -391,7 +444,6 @@ test CalendarQueue-5.2 {Comprehensive tests of everything} {
     catch {[$queue take]} msg2
     catch {[$queue getPreviousKey]} msg3
     set mylist [list $msg1 $msg2 $msg3]
-
 
     $queue put $p1 $n5;# queue size should get doubled here, becomes 4
     lappend mylist [$queue getNextKey]
@@ -405,11 +457,13 @@ test CalendarQueue-5.2 {Comprehensive tests of everything} {
 
     # This sequence of take would half the queue size to 4
     lappend mylist [$queue getNextKey] \
-	    [[$queue take] getName] \
+            [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] \
+            getName] \
 	    [$queue getPreviousKey] \
 	    [$queue getNextKey] \
-	    [[$queue take] getName] \
-	    [$queue getPreviousKey] \
+            [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] \
+            getName] \
+            [$queue getPreviousKey] \
 	    [$queue size]
     catch {[$queue take]} msg1
     catch {[$queue getNextKey]} msg2
@@ -425,13 +479,17 @@ test CalendarQueue-5.2 {Comprehensive tests of everything} {
     lappend mylist [$queue remove $p3 $n4] \
 	    [$queue includes $p2 $n4] \
 	    [$queue remove $p6 $n8] \
-	    [[$queue take] getName] \
+            [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] \
+            getName] \
 	    [$queue getPreviousKey] \
-	    [[$queue take] getName] \
+            [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] \
+            getName] \
+            [$queue getPreviousKey] \
+            [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] \
+            getName] \
 	    [$queue getPreviousKey] \
-	    [[$queue take] getName] \
-	    [$queue getPreviousKey] \
-	    [[$queue take] getName] \
+            [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] \
+            getName] \
 	    [$queue getPreviousKey]
     catch {[$queue take]} msg1
     catch {[$queue getPreviousKey]} msg2
@@ -443,13 +501,16 @@ test CalendarQueue-5.2 {Comprehensive tests of everything} {
 
 
     lappend mylist [$queue getNextKey] \
-	    [[$queue take] getName] \
+            [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] \
+            getName] \
 	    [$queue getPreviousKey] \
 	    [$queue getNextKey] \
-	    [[$queue take] getName] \
+            [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] \
+            getName] \
 	    [$queue getPreviousKey] \
 	    [$queue getNextKey] \
-	    [[$queue take] getName] \
+            [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] \
+            getName] \
 	    [$queue getPreviousKey]
 } {{java.lang.IllegalAccessException: Invoking getNextKey() on empty queue is not allowed.} {java.lang.IllegalAccessException: Invoking take() on empty queue is not allowed.} {java.lang.IllegalAccessException: No take() or valid take() precedes this operation} 0.0 0.0 0.0 1 0.0 n5 0.0 0.0 n10 0.0 0 {java.lang.IllegalAccessException: Invoking take() on empty queue is not allowed.} {java.lang.IllegalAccessException: Invoking getNextKey() on empty queue is not allowed.} 0 0 1 1 n4 0.1 n11 0.2 n9 3.0 n1 999.1 {java.lang.IllegalAccessException: Invoking take() on empty queue is not allowed.} {java.lang.IllegalAccessException: No take() or valid take() precedes this operation} 8.9 n3 8.9 50.0 n7 50.0 999.3 n16 999.3}
 
@@ -465,7 +526,8 @@ test CalendarQueue-6.1 {Tests identical entry} {
     set mylist [list [$queue getNextKey] \
 	    [$queue remove $p1 $n5] \
 	    [$queue getNextKey] \
-	    [[$queue take] getName] \
+            [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] \
+            getName] \
 	    [$queue getPreviousKey]]
 
     $queue put $p1 $n5
@@ -476,10 +538,14 @@ test CalendarQueue-6.1 {Tests identical entry} {
 	    [$queue remove $p3 $n7]
     $queue put $p1 $n5
     lappend mylist [$queue includes $p2 $n3] \
-	    [[$queue take] getName] \
-	    [[$queue take] getName] \
-	    [[$queue take] getName] \
-	    [[$queue take] getName]
+            [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] \
+            getName] \
+            [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] \
+            getName] \
+            [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] \
+            getName] \
+            [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] \
+            getName]
     catch {[$queue getNextKey]} msg1
     lappend mylist $msg1
 

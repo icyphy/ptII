@@ -66,7 +66,7 @@ test ProcessDirector-2.1 {Constructor tests} {
 #
 test ProcessDirector-3.1 {Test clone} {
     # NOTE: Uses the setup above
-    set d4 [$d2 clone $w]
+    set d4 [java::cast ptolemy.actor.process.ProcessDirector [$d2 clone $w]]
     $d4 setName D4
     enumToFullNames [$w directory]
 } {W.D3}
@@ -75,7 +75,7 @@ test ProcessDirector-3.1 {Test clone} {
 ######################################################################
 ####
 #
-test Director-4.1 {Test _makeDirectorOf} {
+test ProcessDirector-4.1 {Test _makeDirectorOf} {
     # NOTE: Uses the setup above
     set e0 [java::new ptolemy.actor.CompositeActor $w]
     $e0 setName E0

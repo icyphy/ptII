@@ -400,7 +400,7 @@ test Port-13.1 {Test clone} {
     set p1 [java::new ptolemy.kernel.Port $e1 P1]
     set r1 [java::new ptolemy.kernel.Relation $w R1]
     $p1 link $r1
-    set p2 [$p1 clone]
+    set p2 [java::cast ptolemy.kernel.Port [$p1 clone]]
     $p2 description 7
 } {ptolemy.kernel.Port {.P1} links {
 }}

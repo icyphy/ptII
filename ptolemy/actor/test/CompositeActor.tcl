@@ -150,7 +150,7 @@ test CompositeActor-6.1 {Invoke all the action methods} {
 #
 test CompositeActor-7.1 {Test clone and description} {
     # NOTE: Uses the setup above
-    set e4 [$e3 clone $w]
+    set e4 [java::cast ptolemy.actor.CompositeActor [$e3 clone $w]]
     $e4 description
 } {ptolemy.actor.CompositeActor {W.E3} attributes {
 } ports {
@@ -247,8 +247,8 @@ test CompositeActor-10.1 {Test wormhole data transfers} {
     set p4 [java::new ptolemy.actor.IOPort $e3 P4 true false]
 
     # ports inside the wormhole
-    set p5 [$e4 getPort input]
-    set p6 [$e4 getPort output]
+    set p5 [java::cast ptolemy.actor.IOPort [$e4 getPort input]]
+    set p6 [java::cast ptolemy.actor.IOPort [$e4 getPort output]]
 
     # connections at the top level
     $e0 connect $p1 $p2

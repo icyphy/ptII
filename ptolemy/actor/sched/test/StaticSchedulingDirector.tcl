@@ -65,7 +65,8 @@ test StaticSchedulingDirector-2.1 {Constructor tests} {
 #
 test StaticSchedulingDirector-3.1 {Test clone} {
     # NOTE: Uses the setup above
-    set d4 [$d2 clone $w]
+    set d4 [java::cast ptolemy.actor.sched.StaticSchedulingDirector \
+            [$d2 clone $w]]
     $d4 setName D4
     enumToFullNames [$w directory]
 } {W.D3}

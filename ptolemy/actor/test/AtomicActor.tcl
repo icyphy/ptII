@@ -116,7 +116,7 @@ test AtomicActor-6.1 {Invoke all the action methods} {
 #
 test AtomicActor-7.1 {Test clone and description} {
     # NOTE: Uses the setup above
-    set e4 [$e3 clone $w]
+    set e4 [java::cast ptolemy.actor.AtomicActor [$e3 clone $w]]
     $e4 description
 } {ptolemy.actor.AtomicActor {W.E3} attributes {
 } ports {

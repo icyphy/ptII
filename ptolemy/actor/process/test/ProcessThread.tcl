@@ -72,7 +72,7 @@ test ProcessThread-2.1 {Constructor tests} {
 ####
 #
 test ProcessThread-3.1 {Test state methods} {
-    set a3 [$p1 getActor] 
+    set a3 [java::cast ptolemy.kernel.util.Nameable [$p1 getActor]]
     $a3 getFullName
 } {.E0.A1}
 

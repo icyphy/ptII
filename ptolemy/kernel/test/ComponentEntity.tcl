@@ -93,7 +93,7 @@ test ComponentEntity-5.1 {Create new ports} {
 } {X.Y.A X.Y.B {{A B}}}
 
 test ComponentEntity-5.2 {Test clone} {
-    set e2 [$e1 clone]
+    set e2 [java::cast ptolemy.kernel.ComponentEntity [$e1 clone]]
     $e2 description 31
 } {ptolemy.kernel.ComponentEntity {X.Y} ports {
     {ptolemy.kernel.ComponentPort {X.Y.A} links {

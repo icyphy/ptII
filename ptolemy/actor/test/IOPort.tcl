@@ -1034,11 +1034,11 @@ test IOPort-13.1 {test getReceivers()} {
     $p3 setOutput true
     $p4 setMultiport true
     $p4 setInput true
-    set r1 [$e0 connect $p1 $p2]
+    set r1 [java::cast ptolemy.actor.IORelation [$e0 connect $p1 $p2]]
     $r1 setWidth 3
-    set r2 [$e1 connect $p3 $p1]
+    set r2 [java::cast ptolemy.actor.IORelation [$e1 connect $p3 $p1]]
     $r2 setWidth 2
-    set r3 [$e2 connect $p2 $p4]
+    set r3 [java::cast ptolemy.actor.IORelation [$e2 connect $p2 $p4]]
     $r3 setWidth 4
 
     # Call initialize on the director so that the receivers get created
@@ -1143,7 +1143,7 @@ test IOPort-14.3 {test getRemoteReceivers()} {
 test IOPort-15.1 {test clone()} {
     # NOTE: Uses setup in previous test.
     set w [java::new ptolemy.kernel.util.Workspace W]
-    set p5 [$p4 clone $w]
+    set p5 [java::cast ptolemy.actor.IOPort [$p4 clone $w]]
     $p5 description
 } {ptolemy.actor.IOPort {W.P4} attributes {
 } links {

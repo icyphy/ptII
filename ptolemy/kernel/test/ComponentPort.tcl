@@ -310,7 +310,7 @@ test ComponentPort-5.4 {test description} {
 
 # NOTE: Uses topology built in 5.1
 test ComponentPort-5.5 {test clone} {
-    set pn [$p2 clone]
+    set pn [java::cast ptolemy.kernel.ComponentPort [$p2 clone]]
     $pn description 31
 } {ptolemy.kernel.ComponentPort {.P2} links {
 } insidelinks {
@@ -329,8 +329,8 @@ test ComponentPort-6.0 {unlinkAll} {
 test ComponentPort-7.0 {transparent ports in a loop} {
     set w [java::new ptolemy.kernel.CompositeEntity]
     set a [java::new ptolemy.kernel.CompositeEntity $w A]
-    set p1 [$a newPort P1]
-    set p2 [$a newPort P2]
+    set p1 [java::cast ptolemy.kernel.ComponentPort [$a newPort P1]]
+    set p2 [java::cast ptolemy.kernel.ComponentPort [$a newPort P2]]
     set rin [java::new ptolemy.kernel.ComponentRelation $a Rinside]
     set rout [java::new ptolemy.kernel.ComponentRelation $w Routside]
     $p1 link $rin
@@ -351,9 +351,9 @@ test ComponentPort-7.2 {transaprent ports in another loop} {
     set w [java::new ptolemy.kernel.CompositeEntity]
     set a [java::new ptolemy.kernel.CompositeEntity $w A]
     set b [java::new ptolemy.kernel.ComponentEntity $w B]
-    set p1 [$a newPort P1]
-    set p2 [$a newPort P2]
-    set p3 [$b newPort P3]
+    set p1 [java::cast ptolemy.kernel.ComponentPort [$a newPort P1]]
+    set p2 [java::cast ptolemy.kernel.ComponentPort [$a newPort P2]]
+    set p3 [java::cast ptolemy.kernel.ComponentPort [$b newPort P3]]
     set rin [java::new ptolemy.kernel.ComponentRelation $a Rinside]
     set rout [java::new ptolemy.kernel.ComponentRelation $w Routside]
     set rb_a [java::new ptolemy.kernel.ComponentRelation $w B_to_A]

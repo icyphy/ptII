@@ -134,14 +134,21 @@ test FIFOQueue-3.1 {Put data on a queue} {
 ####
 #
 test FIFOQueue-3.2 {Get individual items} {
-    list [[$queue get 1] getName] [$queue size] [$queue isFull]
+    list \
+	    [[java::cast ptolemy.kernel.util.NamedObj [$queue get 1]] \
+            getName] \
+            [$queue size] \
+            [$queue isFull]
 } {n2 5 0}
 
 ######################################################################
 ####
 #
 test FIFOQueue-3.3 {Take items} {
-    list [[$queue take] getName] [_testEnums elements $queue]
+    list \
+	    [[java::cast ptolemy.kernel.util.NamedObj [$queue take]] \
+            getName] \
+            [_testEnums elements $queue]
 } {n1 {{n2 n3 n4 n5}}}
 
 ######################################################################
@@ -190,9 +197,12 @@ test FIFOQueue-5.1 {Test history} {
 #
 test FIFOQueue-5.2 {Get elements from history queue} {
     list \
-            [[$queue get -1] getName] \
-            [[$queue get -2] getName] \
-            [[$queue get -3] getName]
+	    [[java::cast ptolemy.kernel.util.NamedObj [$queue get -1]] \
+            getName] \
+	    [[java::cast ptolemy.kernel.util.NamedObj [$queue get -2]] \
+            getName] \
+	    [[java::cast ptolemy.kernel.util.NamedObj [$queue get -3]] \
+            getName]
 } {n3 n2 n1}
 
 ######################################################################
@@ -232,7 +242,7 @@ test FIFOQueue-6.2 {Test clear history queue} {
     $queue setHistoryCapacity 2
     $queue take
     $queue take
-    set newqueue [$queue clone]
+    set newqueue [java::cast ptolemy.actor.util.FIFOQueue [$queue clone]]
     $queue setHistoryCapacity 0
     catch {[$queue get 0]} msg1
     catch {[$queue get -1]} msg2
