@@ -88,6 +88,7 @@ public class QueueReceiver implements Receiver {
 
     /** Take the first token (the oldest one) off the queue and return it.
      *  If the queue is empty, throw an exception.
+     *  @exception NoTokenException If there is no token.
      */
     public Token get() {
         Token t = (Token)_queue.take();
