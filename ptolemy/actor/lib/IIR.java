@@ -173,13 +173,44 @@ public class IIR extends Transformer {
 	}
     }
 
-    /** Consume an input token and compute a single output token.
-     *  @exception IllegalActionException Not thrown in this base class
+    /** If at least one input token is available, consume a single
+     *  input token, apply the filter to that input token, and
+     *  compute a single output token. If this method is invoked
+     *  multiple times in one iteration, then only the input read
+     *  on the last invocation in the iteration will affect the
+     *  filter state.
+     *
+     *  @exception IllegalActionException Not thrown here.
      */
     public void fire() throws IllegalActionException {
-	// NOTE: iterate() should never return STOP_ITERATING, so
-	// this should be safe.
- 	iterate(1);
+	// The current input sample.
+	double xCurrent;
+	// The current output sample.
+	double yCurrent;
+	double window;
+        if (input.hasToken(0)) {
+            DoubleToken in = (DoubleToken)input.get(0);
+	    xCurrent = (in).doubleValue();
+	    window = xCurrent;
+	    for (int j = 1; j < _denominator.length; j++) {
+		window += _denominator[j]*_stateVector[(_currentTap + j) %
+						      _stateVector.length];
+	    }
+	    // Shadowed state. used in postfire().
+	    _latestWindow = window;
+	    // Save state vector value.
+	    double savedState = _stateVector[_currentTap];
+	    _stateVector[_currentTap] = window;
+	    yCurrent = 0;
+	    for (int k = 0; k < _numerator.length; k++) {
+		yCurrent +=	_numerator[k]*_stateVector[(_currentTap +k) %
+							  _stateVector.length];
+	    }
+	    // Restore state vector to previous state.
+	    _stateVector[_currentTap] = savedState;
+	    DoubleToken out = new DoubleToken(yCurrent);
+            output.send(0, out);
+	}
     }
 
     /**  Initialize the filter state vector with zero state.
@@ -251,6 +282,17 @@ public class IIR extends Transformer {
         }
     }
 
+    /** Update the filter state.
+     *
+     *  @exception IllegalActionException If the base class throws it.
+     */
+    public boolean postfire() throws IllegalActionException {
+	_stateVector[_currentTap] = _latestWindow;
+	// Update the state vector pointer.
+	if (--_currentTap < 0) _currentTap = _stateVector.length - 1;
+	return super.postfire();
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -265,4 +307,7 @@ public class IIR extends Transformer {
 
     // State vector pointer
     private int _currentTap;
+
+    // Shadow state.
+    private double _latestWindow;
 }
