@@ -76,16 +76,26 @@ public class PlotDemo extends PlotApplet {
         
         boolean first = true;
         for (int i=0; i <= 100; i++) {
-            _myPlot.addPoint(0,(double)i,5 * Math.cos(Math.PI * i/20), !first);
-            _myPlot.addPoint(1,(double)i, 4.5 * Math.cos(Math.PI * i/25), !first);
-            _myPlot.addPoint(2,(double)i, 4 * Math.cos(Math.PI * i/30), !first);
-            _myPlot.addPoint(3,(double)i, 3.5* Math.cos(Math.PI * i/35), !first);
-            _myPlot.addPoint(4,(double)i, 3 * Math.cos(Math.PI * i/40), !first);
-            _myPlot.addPoint(5,(double)i, 2.5 * Math.cos(Math.PI * i/45), !first);
-            _myPlot.addPoint(6,(double)i, 2 * Math.cos(Math.PI * i/50), !first);
-            _myPlot.addPoint(7,(double)i, 1.5 * Math.cos(Math.PI * i/55), !first);
-            _myPlot.addPoint(8,(double)i, 1 * Math.cos(Math.PI * i/60), !first);
-            _myPlot.addPoint(9,(double)i, 0.5 * Math.cos(Math.PI * i/65), !first);
+            _myPlot.addPoint(0,(double)i,
+                    5 * Math.cos(Math.PI * i/20), !first);
+            _myPlot.addPoint(1,(double)i,
+                    4.5 * Math.cos(Math.PI * i/25), !first);
+            _myPlot.addPoint(2,(double)i,
+                    4 * Math.cos(Math.PI * i/30), !first);
+            _myPlot.addPoint(3,(double)i,
+                    3.5* Math.cos(Math.PI * i/35), !first);
+            _myPlot.addPoint(4,(double)i,
+                    3 * Math.cos(Math.PI * i/40), !first);
+            _myPlot.addPoint(5,(double)i,
+                    2.5 * Math.cos(Math.PI * i/45), !first);
+            _myPlot.addPoint(6,(double)i,
+                    2 * Math.cos(Math.PI * i/50), !first);
+            _myPlot.addPoint(7,(double)i,
+                    1.5 * Math.cos(Math.PI * i/55), !first);
+            _myPlot.addPoint(8,(double)i,
+                    1 * Math.cos(Math.PI * i/60), !first);
+            _myPlot.addPoint(9,(double)i,
+                    0.5 * Math.cos(Math.PI * i/65), !first);
             first = false;
         }
     }
