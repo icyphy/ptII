@@ -60,18 +60,21 @@ EXTRA_SRCS = $(JSRCS) \
 	Endian.htm \
 	ErrorBars.htm \
 	FourierSeries.htm \
+	Histogram.htm \
 	Live.htm \
 	LogAxes.htm \
 	Marks.htm \
 	Ptplot.htm \
 	Ptplot.js \
 	PtplotHelp.htm \
+	TwoPlotExample.java \
 	Sinusoids.htm \
 	bargraph.plt \
 	data.plt \
 	errorbars.plt \
 	index.htm \
-	logaxes.plt
+	logaxes.plt \
+	toc.htm
 
 # The data directory contains binary plot files that cannot be checked
 # into sccs.

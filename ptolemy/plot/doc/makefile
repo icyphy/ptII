@@ -46,6 +46,7 @@ EXTRA_SRCS = \
 	index.htm \
 	install.htm \
 	main.htm \
+	plot.pdf \
 	ptplotfaq.htm \
 	thirdparty.htm \
 	toc.htm \
@@ -53,7 +54,7 @@ EXTRA_SRCS = \
 
 # Files or directories that are present, but that 'make checkjunk'
 # should not complain about
-MISC_FILES =
+MISC_FILES =	download img 
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
