@@ -476,12 +476,12 @@ fi
 #       check to see if $PTII/vendors/sun/j2me_cldc exists
 #--------------------------------------------------------------------
 
-# PTKVM_DIR is set to jspaces and used in 
+# PTKVM_DIR is set to kvm and used in 
 # $PTII/ptolemy/makefile if kvm was found
 PTKVM_DIR=
 #
-# We only need to look for kvm if $PTII/ptolemy/kvm exists
-if test ! -d "$PTII/ptolemy/kvm"; then
+# We only need to look for kvm if $PTII/ptolemy/demo/kvm exists
+if test ! -d "$PTII/ptolemy/demo/kvm"; then
     AC_MSG_RESULT([$PTII/ptolemy/kvm is not present, so we need not
 find the PalmOS kvm])
     KVM_DIR='$(PTII)/vendors/sun/j2me_cldc'
@@ -536,6 +536,76 @@ Kvm can be downloaded from http://java.sun.com/products/cldc'])
 	# Set to kvm and used in 
 	# $PTII/ptolemy/makefile if kvm was found
 	PTKVM_DIR=kvm
+    fi    
+fi
+
+#--------------------------------------------------------------------
+#       WABA is the JDK for PalmOS
+#	See if there was a command-line option for where
+#       wabask is;  if not,
+#       check to see if $PTII/vendors/misc/waba/wabasdk exists
+#--------------------------------------------------------------------
+
+# PTWABA_DIR is set to waba and used in 
+# $PTII/ptolemy/makefile if waba was found
+PTWABA_DIR=
+#
+# We only need to look for waba if $PTII/ptolemy/demo/kvm exists
+if test ! -d "$PTII/ptolemy/demo/kvm"; then
+    AC_MSG_RESULT([$PTII/ptolemy/kvm is not present, so we need not
+find the PalmOS waba])
+    WABA_DIR='$(PTII)/vendors/misc/waba/wabasdk'
+    # Unfortunately, j2me_cldc does not ship with a jar of zip file
+    # It needs to be built	
+    WABA_CLASSES='$(WABA_DIR)/classes'
+else
+    AC_MSG_CHECKING([for waba directory])
+    AC_ARG_WITH(waba, [  --with-waba=DIR       use PalmOS WABA from DIR,
+                          defaults to \$PTII/vendors/misc/waba/wabasdk],
+	WABA_DIR=$withval,
+	WABA_DIR=$PTII/vendors/misc/waba/wabasdk)
+
+    if test -d "$WABA_DIR"; then
+	AC_MSG_RESULT([$WABA_DIR])
+        AC_MSG_CHECKING([for \$WABA_DIR/classes])
+	if test -d "$WABA_DIR/classes"; then
+	    WABA_CLASSES='$(WABA_DIR)/classes'
+	    AC_MSG_RESULT([$WABA_CLASSES])
+        else
+	    WABA_CLASSES=no
+        fi
+    else    
+	AC_MSG_RESULT([Not found in $WABA_DIR])
+	AC_MSG_CHECKING([for waba directory in /waba])
+	# Likely place for waba under windows
+	WABA_DIR=/waba/wabasdk
+        if test -d "$WABA_DIR"; then
+	    AC_MSG_RESULT([$WABA_DIR])
+            AC_MSG_CHECKING([for \$WABA_DIR/classes])
+	    if test -d "$WABA_DIR/classes"; then
+	        WABA_CLASSES='$(WABA_DIR)/classes'
+	        AC_MSG_RESULT([$WABA_CLASSES])
+            else
+	        WABA_CLASSES=no
+            fi
+        else 
+		WABA_CLASSES=no
+        fi
+
+    fi
+    if test "$WABA_CLASSES" = "no"; then
+        AC_MSG_WARN(['Failed to find waba/wabasdk
+perhaps Waba is not installed?
+You need not download Waba unless you plan on building applications
+for the Palm Pilot or Handspring Visor.
+Waba can be downloaded from http://www.wabasoft.com'])
+	# Note that we don't substitute in the $(PTII) or $(WABA_DIR) here
+	WABA_DIR='$(PTII)/vendors/misc/waba/wabasdk'
+   	WABA_CLASSES='$(WABA_DIR)/classes'
+    else 
+	# Set to waba and used in 
+	# $PTII/ptolemy/makefile if waba was found
+	PTWABA_DIR=waba
     fi    
 fi
 
@@ -604,6 +674,13 @@ AC_SUBST(PTLEGO_DIR)
 
 # Location of the PtII directory
 AC_SUBST(PTII_DEFAULT)
+
+# waba/tools/classes.jar file used by the PalmOS WABA
+AC_SUBST(WABA_CLASSES)
+
+# Directory that contains the waba used by PalmOS
+AC_SUBST(WABA_DIR)
+
 
 # Files we substitute in
 AC_OUTPUT(mk/ptII.mk bin/ptinvoke, chmod a+x bin/ptinvoke)
