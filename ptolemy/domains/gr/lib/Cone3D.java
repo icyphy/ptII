@@ -69,18 +69,18 @@ public class Cone3D extends GRShadedShape {
             throws IllegalActionException, NameDuplicationException {
 
         super(container, name);
-        
+
         radius = new Parameter(this, "radius");
         radius.setExpression("0.5");
         radius.setTypeEquals(BaseType.DOUBLE);
-        
+
         height = new Parameter(this, "height");
         height.setExpression("0.7");
         height.setTypeEquals(BaseType.DOUBLE);
-                
+
         height.moveToFirst();
         radius.moveToFirst();
-        
+
         circleDivisions = new Parameter(this, "circleDivisions");
         circleDivisions.setExpression("max(6, roundToInt(radius * 100))");
         circleDivisions.setTypeEquals(BaseType.INT);
@@ -102,7 +102,7 @@ public class Cone3D extends GRShadedShape {
      *  of rendering.
      */
     public Parameter circleDivisions;
-    
+
     /** The height of the cone. This is a double that defaults to 0.5.
      */
     public Parameter height;

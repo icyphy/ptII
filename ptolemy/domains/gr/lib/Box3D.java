@@ -75,19 +75,19 @@ public class Box3D extends GRShadedShape {
         xLength = new Parameter(this, "xLength");
         xLength.setExpression("0.1");
         xLength.setTypeEquals(BaseType.DOUBLE);
-        
+
         yHeight = new Parameter(this, "yHeight");
         yHeight.setExpression("0.1");
         yHeight.setTypeEquals(BaseType.DOUBLE);
-        
+
         zWidth = new Parameter(this, "zWidth");
         zWidth.setExpression("0.1");
         zWidth.setTypeEquals(BaseType.DOUBLE);
-        
+
         zWidth.moveToFirst();
         yHeight.moveToFirst();
         xLength.moveToFirst();
-        
+
         // The flat parameter doesn't make much sense in this case.
         flat.setVisibility(Settable.EXPERT);
     }
@@ -119,7 +119,7 @@ public class Box3D extends GRShadedShape {
      */
     protected void _createModel() throws IllegalActionException {
         super._createModel();
-        
+
         int primitiveFlags = Primitive.GENERATE_NORMALS;
         URL textureURL = texture.asURL();
         if (textureURL != null) {

@@ -79,7 +79,7 @@ public class Sphere3D extends GRShadedShape {
         radius.setExpression("0.1");
         radius.setTypeEquals(BaseType.DOUBLE);
         radius.moveToFirst();
-        
+
         divisions = new Parameter(this, "divisions");
         divisions.setExpression("max(6, roundToInt(radius * 300))");
         divisions.setTypeEquals(BaseType.INT);
@@ -96,7 +96,7 @@ public class Sphere3D extends GRShadedShape {
      *  of rendering.
      */
     public Parameter divisions;
-    
+
     /** The radius of the sphere. This is a double with default 0.1.
      */
     public Parameter radius;
@@ -126,7 +126,7 @@ public class Sphere3D extends GRShadedShape {
      */
     protected void _createModel() throws IllegalActionException {
         super._createModel();
-        
+
         int primitiveFlags = Primitive.GENERATE_NORMALS;
         URL textureURL = texture.asURL();
         if (textureURL != null) {

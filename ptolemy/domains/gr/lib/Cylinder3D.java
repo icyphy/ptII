@@ -71,10 +71,10 @@ public class Cylinder3D extends GRShadedShape {
         super(container, name);
         radius = new Parameter(this, "radius", new DoubleToken(0.5));
         height = new Parameter(this, "height", new DoubleToken(0.7));
-        
+
         height.moveToFirst();
         radius.moveToFirst();
-        
+
         circleDivisions = new Parameter(this, "circleDivisions");
         circleDivisions.setExpression("max(6, roundToInt(radius * 100))");
         circleDivisions.setTypeEquals(BaseType.INT);

@@ -108,13 +108,13 @@ abstract public class GRShadedShape extends GRActor3D {
 
         diffuseColor = new ColorAttribute(this, "diffuseColor");
         diffuseColor.setExpression("{0.7, 0.7, 0.7, 1.0}");
-        
+
         emissiveColor = new ColorAttribute(this, "emissiveColor");
         emissiveColor.setExpression("{0.0, 0.0, 0.0, 1.0}");
 
         specularColor = new ColorAttribute(this, "specularColor");
         specularColor.setExpression("{1.0, 1.0, 1.0, 1.0}");
-        
+
         texture = new FileParameter(this, "texture");
 
         shininess = new Parameter(this,"shininess");
@@ -128,7 +128,7 @@ abstract public class GRShadedShape extends GRActor3D {
         wireFrame = new Parameter(this,"wireFrame");
         wireFrame.setExpression("false");
         wireFrame.setTypeEquals(BaseType.BOOLEAN);
-        
+
         flat = new Parameter(this,"flat");
         flat.setExpression("false");
         flat.setTypeEquals(BaseType.BOOLEAN);
@@ -171,24 +171,24 @@ abstract public class GRShadedShape extends GRActor3D {
      *  illumination is reflected white.
      */
     public ColorAttribute specularColor;
-    
+
     /** Texture URL. FIXME.
-     * 
+     *
      */
     public FileParameter texture;
-    
+
     /** The transparency, where 0.0 means opaque (the default) and 1.0
-     *  means fully transparent. The type is double. 
+     *  means fully transparent. The type is double.
      */
     public Parameter transparency;
 
     /** If true, render the shape using a wire frame. This is a boolean
-     *  that defaults to false. 
+     *  that defaults to false.
      */
     public Parameter wireFrame;
 
     /** If true, render the facets flat rather than rounded.
-     *  This is a boolean that defaults to false. 
+     *  This is a boolean that defaults to false.
      */
     public Parameter flat;
 
@@ -226,7 +226,7 @@ abstract public class GRShadedShape extends GRActor3D {
 
         _material = new Material();
         _appearance = new Appearance();
-        
+
         Color3f color = new Color3f(emissiveColor.asColor());
         _material.setEmissiveColor(color);
 
@@ -243,7 +243,7 @@ abstract public class GRShadedShape extends GRActor3D {
             _material.setSpecularColor(color);
         }
         _appearance.setMaterial(_material);
-        
+
         // Deal with transparent attributes.
         float transparent = (float)
                 ((DoubleToken)transparency.getToken()).doubleValue();
@@ -253,7 +253,7 @@ abstract public class GRShadedShape extends GRActor3D {
                     TransparencyAttributes.NICEST, transparent);
             _appearance.setTransparencyAttributes(attributes);
         }
-        
+
         // Deal with flat attribute.
         if (((BooleanToken)flat.getToken()).booleanValue()) {
             ColoringAttributes coloring
@@ -261,7 +261,7 @@ abstract public class GRShadedShape extends GRActor3D {
                     ColoringAttributes.SHADE_FLAT);
             _appearance.setColoringAttributes(coloring);
         }
-        
+
         // Deal with wireFrame attribute.
         int mode = PolygonAttributes.POLYGON_FILL;
         if (((BooleanToken)wireFrame.getToken()).booleanValue()) {
@@ -274,7 +274,7 @@ abstract public class GRShadedShape extends GRActor3D {
                 PolygonAttributes.CULL_NONE,
                 0.0f);
         _appearance.setPolygonAttributes(polygonAttributes);
-        
+
         // Turn on antialiasing.
         // FIXME: Doesn't seem to work.
         LineAttributes lineAttributes = new LineAttributes(
@@ -308,9 +308,9 @@ abstract public class GRShadedShape extends GRActor3D {
             TextureLoader loader;
             loader = new TextureLoader(textureURL, _viewScreen.getCanvas());
             Texture loadedTexture = loader.getTexture();
-            
+
             if (loadedTexture != null) {
-                
+
                 TextureAttributes attributes = new TextureAttributes();
                 attributes.setTextureMode(TextureAttributes.MODULATE);
                 _appearance.setTextureAttributes(attributes);
@@ -326,7 +326,7 @@ abstract public class GRShadedShape extends GRActor3D {
 
     /** The appearance of this 3D object. */
     protected Appearance _appearance;
-    
+
     /** The material of this 3D object. */
     protected Material _material;
 }
