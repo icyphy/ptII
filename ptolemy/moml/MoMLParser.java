@@ -2612,7 +2612,8 @@ public class MoMLParser extends HandlerBase {
 
         if (_current != null && !(_current instanceof CompositeEntity)) {
             throw new XmlException("Cannot create an entity inside "
-                    + "of another that is not a CompositeEntity.",
+                    + "of another that is not a CompositeEntity "
+                    + "(Container is '" + _current + "').",
                     _currentExternalEntity(),
                     _parser.getLineNumber(),
                     _parser.getColumnNumber());
