@@ -1,11 +1,11 @@
 /* PolarToRect, CGC domain: CGCPolarToRect.java file generated from /users/ptolemy/src/domains/cgc/stars/CGCPolarToRect.pl by ptlang
- */
-/*
-  Copyright (c) 1990-1996 The Regents of the University of California.
-  All rights reserved.
-  See the file $PTOLEMY/copyright for copyright notice,
-  limitation of liability, and disclaimer of warranty provisions.
 */
+/*
+Copyright (c) 1990-1996 The Regents of the University of California.
+All rights reserved.
+See the file $PTOLEMY/copyright for copyright notice,
+limitation of liability, and disclaimer of warranty provisions.
+ */
 package ptolemy.codegen.lib;
 
 import ptolemy.data.*;
@@ -20,11 +20,11 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// CGCPolarToRect
 /**
-   Convert magnitude and phase to rectangular form.
+Convert magnitude and phase to rectangular form.
 
-   @Author S. Ha
-   @Version $Id$, based on version 1.7 of /users/ptolemy/src/domains/cgc/stars/CGCPolarToRect.pl, from Ptolemy Classic 
-   @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
+ @Author S. Ha
+ @Version $Id$, based on version 1.7 of /users/ptolemy/src/domains/cgc/stars/CGCPolarToRect.pl, from Ptolemy Classic 
+ @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCPolarToRect extends ClassicCGCActor {
     /** Construct an actor in the specified container with the specified
@@ -48,9 +48,9 @@ public class CGCPolarToRect extends ClassicCGCActor {
         y = new ClassicPort(this, "y", false, true);
         y.setTypeEquals(BaseType.DOUBLE);
 
-        /*     
-               noInternalState();
-        */
+/*     
+noInternalState();
+*/
     }
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
@@ -82,29 +82,29 @@ public class CGCPolarToRect extends ClassicCGCActor {
      */
     public int  myExecTime() {
         
-        return 50;
-    }
+return 50;
+     }
 
     /**
      */
     public void  generatePreinitializeCode() {
         
-        addInclude("<math.h>");
-    }
+addInclude("<math.h>");
+     }
 
     /**
      */
     public void  generateFireCode() {
         
-        addCode(body); 
-    }
+addCode(body); 
+     }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
     public String body = 
-    "	double m,p;\n"
-    + "	m = $ref(magnitude);\n"
-    + "	p = $ref(phase);\n"
-    + "	$ref(x) = m * cos(p);\n"
-    + "	$ref(y) = m * sin(p);\n";
+        "	double m,p;\n"
+        + "	m = $ref(magnitude);\n"
+        + "	p = $ref(phase);\n"
+        + "	$ref(x) = m * cos(p);\n"
+        + "	$ref(y) = m * sin(p);\n";
 }

@@ -455,6 +455,10 @@
 <entity name="CGCXscope" class="ptolemy.codegen.lib.CGCXscope">
 <doc></doc>
 </entity>
+
+<entity name="jindenttmp24733" class="ptolemy.codegen.lib.jindenttmp24733">
+<doc></doc>
+</entity>
       </group>
     ?>
   </configure>

@@ -1,11 +1,11 @@
 /* Abs, CGC domain: CGCAbs.java file generated from /users/ptolemy/src/domains/cgc/stars/CGCAbs.pl by ptlang
- */
-/*
-  Copyright (c) 1990-1996 The Regents of the University of California.
-  All rights reserved.
-  See the file $PTOLEMY/copyright for copyright notice,
-  limitation of liability, and disclaimer of warranty provisions.
 */
+/*
+Copyright (c) 1990-1996 The Regents of the University of California.
+All rights reserved.
+See the file $PTOLEMY/copyright for copyright notice,
+limitation of liability, and disclaimer of warranty provisions.
+ */
 package ptolemy.codegen.lib;
 
 import ptolemy.data.*;
@@ -20,14 +20,14 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// CGCAbs
 /**
-   Output the absolute value of the input value.
-   <p>
-   Outputs absolute value of the input.
-   <a name="absolute value"></a>
+Output the absolute value of the input value.
+<p>
+Outputs absolute value of the input.
+<a name="absolute value"></a>
 
-   @Author William Chen
-   @Version $Id$, based on version 1.2 of /users/ptolemy/src/domains/cgc/stars/CGCAbs.pl, from Ptolemy Classic 
-   @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
+ @Author William Chen
+ @Version $Id$, based on version 1.2 of /users/ptolemy/src/domains/cgc/stars/CGCAbs.pl, from Ptolemy Classic 
+ @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCAbs extends ClassicCGCActor {
     /** Construct an actor in the specified container with the specified
@@ -47,8 +47,8 @@ public class CGCAbs extends ClassicCGCActor {
         output = new ClassicPort(this, "output", false, true);
         output.setTypeEquals(BaseType.DOUBLE);
 
-        /* 
-         */
+/* 
+*/
     }
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
@@ -69,14 +69,14 @@ public class CGCAbs extends ClassicCGCActor {
     /**
      */
     public void  generateFireCode() {
-        //# line 27 "/users/ptolemy/src/domains/cgc/stars/CGCAbs.pl"
-        addCode(abs);
-    }
+        
+addCode(abs); 
+     }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
     public String abs = 
-    "		double t = $ref(input);\n"
-    + "		if (t < 0.0) t = -t;\n"
-    + "		$ref(output) = t;\n";
+        "		double t = $ref(input);\n"
+        + "		if (t < 0.0) t = -t;\n"
+        + "		$ref(output) = t;\n";
 }

@@ -162,6 +162,7 @@ CGCXMgraph.java \
 CGCXYgraph.java \
 CGCXgraph.java \
 CGCXscope.java \
+jindenttmp24733.java \
 
 OTHER_FILES_TO_BE_JARED = 	lib.xml
 

@@ -1,11 +1,11 @@
 /* Sgn, CGC domain: CGCSgn.java file generated from /users/ptolemy/src/domains/cgc/stars/CGCSgn.pl by ptlang
- */
-/*
-  Copyright (c) 1990-1996 The Regents of the University of California.
-  All rights reserved.
-  See the file $PTOLEMY/copyright for copyright notice,
-  limitation of liability, and disclaimer of warranty provisions.
 */
+/*
+Copyright (c) 1990-1996 The Regents of the University of California.
+All rights reserved.
+See the file $PTOLEMY/copyright for copyright notice,
+limitation of liability, and disclaimer of warranty provisions.
+ */
 package ptolemy.codegen.lib;
 
 import ptolemy.data.*;
@@ -20,15 +20,15 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// CGCSgn
 /**
-   This star computes the signum of its input.
-   The output is +/- 1.
-   Note that 0.0 maps to 1.
-   <p>
-   <a name="signum"></a>
+This star computes the signum of its input.
+The output is +/- 1.
+Note that 0.0 maps to 1.
+<p>
+<a name="signum"></a>
 
-   @Author E. A. Lee
-   @Version $Id$, based on version 1.3 of /users/ptolemy/src/domains/cgc/stars/CGCSgn.pl, from Ptolemy Classic 
-   @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
+ @Author E. A. Lee
+ @Version $Id$, based on version 1.3 of /users/ptolemy/src/domains/cgc/stars/CGCSgn.pl, from Ptolemy Classic 
+ @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCSgn extends ClassicCGCActor {
     /** Construct an actor in the specified container with the specified
@@ -48,8 +48,8 @@ public class CGCSgn extends ClassicCGCActor {
         output = new ClassicPort(this, "output", false, true);
         output.setTypeEquals(BaseType.INT);
 
-        /* 
-         */
+/* 
+*/
     }
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
@@ -71,15 +71,15 @@ public class CGCSgn extends ClassicCGCActor {
      */
     public void  generateFireCode() {
         
-        addCode(std); 
-    }
+addCode(std); 
+     }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
     public String std = 
-    "	  double x;\n"
-    + "	  int sgn;\n"
-    + "	  x = $ref(input);\n"
-    + "	  sgn = (x >= 0.0) ? 1 : -1;\n"
-    + "	  $ref(output) = sgn;\n";
+        "	  double x;\n"
+        + "	  int sgn;\n"
+        + "	  x = $ref(input);\n"
+        + "	  sgn = (x >= 0.0) ? 1 : -1;\n"
+        + "	  $ref(output) = sgn;\n";
 }

@@ -1,11 +1,11 @@
 /* CxToRect, CGC domain: CGCCxToRect.java file generated from /users/ptolemy/src/domains/cgc/stars/CGCCxToRect.pl by ptlang
- */
-/*
-  Copyright (c) 1990-1996 The Regents of the University of California.
-  All rights reserved.
-  See the file $PTOLEMY/copyright for copyright notice,
-  limitation of liability, and disclaimer of warranty provisions.
 */
+/*
+Copyright (c) 1990-1996 The Regents of the University of California.
+All rights reserved.
+See the file $PTOLEMY/copyright for copyright notice,
+limitation of liability, and disclaimer of warranty provisions.
+ */
 package ptolemy.codegen.lib;
 
 import ptolemy.data.*;
@@ -20,11 +20,11 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// CGCCxToRect
 /**
-   Convert complex data to real and imaginary parts.
+Convert complex data to real and imaginary parts.
 
-   @Author S. Ha
-   @Version $Id$, based on version 1.6 of /users/ptolemy/src/domains/cgc/stars/CGCCxToRect.pl, from Ptolemy Classic 
-   @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
+ @Author S. Ha
+ @Version $Id$, based on version 1.6 of /users/ptolemy/src/domains/cgc/stars/CGCCxToRect.pl, from Ptolemy Classic 
+ @Since Ptolemy II 4.1 and at least Ptolemy Classic 0.7.1, possibly earlier.
 */
 public class CGCCxToRect extends ClassicCGCActor {
     /** Construct an actor in the specified container with the specified
@@ -46,9 +46,9 @@ public class CGCCxToRect extends ClassicCGCActor {
         imag = new ClassicPort(this, "imag", false, true);
         imag.setTypeEquals(BaseType.DOUBLE);
 
-        /*     
-               noInternalState();
-        */
+/*     
+noInternalState();
+*/
     }
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
@@ -75,19 +75,19 @@ public class CGCCxToRect extends ClassicCGCActor {
      */
     public int  myExecTime() {
         
-        return 2;
-    }
+return 2;
+     }
 
     /**
      */
     public void  generateFireCode() {
         
-        addCode(body); 
-    }
+addCode(body); 
+     }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
     public String body = 
-    "	$ref(real) = $ref(input).real;\n"
-    + "	$ref(imag) = $ref(input).imag;\n";
+        "	$ref(real) = $ref(input).real;\n"
+        + "	$ref(imag) = $ref(input).imag;\n";
 }
