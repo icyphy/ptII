@@ -42,9 +42,11 @@ import ptolemy.kernel.util.PtolemyThread;
 import ptolemy.kernel.util.Workspace;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 //////////////////////////////////////////////////////////////////////////
 //// Manager
@@ -200,6 +202,15 @@ public class Manager extends NamedObj implements Runnable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Add a static analysis to this manager.
+     */
+    public void addAnalysis(String name, Object analysis) {
+        if(_nameToAnalysis == null) {
+            _nameToAnalysis = new HashMap();
+        }
+        _nameToAnalysis.put(name, analysis);
+    }
+
     /** Add a listener to be notified when the model execution changes state.
      *  @param listener The listener.
      */
@@ -337,6 +348,17 @@ public class Manager extends NamedObj implements Runnable {
                 }
             });
         resumeThread.start();
+    }
+
+    /** Get the analysis with the given name, or return null if no such 
+     *  analysis exists.
+     */
+    public Object getAnalysis(String name) {
+        if(_nameToAnalysis == null) {
+            return null;
+        } else {
+            return _nameToAnalysis.get(name);
+        }
     }
 
     /** Return the top-level composite actor for which this manager
@@ -639,6 +661,10 @@ public class Manager extends NamedObj implements Runnable {
             // based on the parameter values.
             // EAL 5/31/02.
             _container.preinitialize();
+
+            // Clear the preinitialization analyses.
+            _nameToAnalysis.clear();
+            _nameToAnalysis = null;
 
             _processChangeRequests();
 
@@ -1098,29 +1124,40 @@ public class Manager extends NamedObj implements Runnable {
      *  prior to the failed request are not undone.
      */
     protected void _processChangeRequests() {
+        _debug("-- Manager checking for change requests");
         while (_changeRequests != null) {
-            _setState(MUTATING);
-
-            // Clone the change request list before iterating through it
-            // in case any of the changes themselves post change requests.
-            LinkedList clonedList = new LinkedList(_changeRequests);
-
-            // Clear the request queue.  We want to discard the queue even
-            // if the changes fail.
-            // Otherwise, we could get stuck not being able to do anything
-            // further with the model.
-            _changeRequests = null;
-
-            Iterator changeRequests = clonedList.iterator();
-            while (changeRequests.hasNext()) {
-                ChangeRequest request = (ChangeRequest)changeRequests.next();
-                request.execute();
-                if (_debugging) {
-                    _debug("-- Manager executed change request "
-                            + "with description: "
-                            + request.getDescription());
+            try {
+                // Get write access once on the outside, to make
+                // getting write access on each individual
+                // modification faster.
+                _workspace.getWriteAccess();
+                
+                _setState(MUTATING);
+                
+                // Clone the change request list before iterating through it
+                // in case any of the changes themselves post change requests.
+                LinkedList clonedList = new LinkedList(_changeRequests);
+                
+                // Clear the request queue.  We want to discard the queue even
+                // if the changes fail.
+                // Otherwise, we could get stuck not being able to do anything
+                // further with the model.
+                _changeRequests = null;
+                
+                Iterator changeRequests = clonedList.iterator();
+                while (changeRequests.hasNext()) {
+                    ChangeRequest request = 
+                        (ChangeRequest)changeRequests.next();
+                    request.execute();
+                    if (_debugging) {
+                        _debug("-- Manager executed change request "
+                                + "with description: "
+                                + request.getDescription());
+                    }
                 }
-            }
+            } finally {
+                _workspace.doneWriting();
+            }   
         }
     }
 
@@ -1156,6 +1193,9 @@ public class Manager extends NamedObj implements Runnable {
 
     // Count the number of iterations completed.
     private int _iterationCount;
+
+    // The map that keeps track of analyses.
+    private HashMap _nameToAnalysis;
 
     // Flag indicating that pause() has been called.
     private boolean _pauseRequested = false;
