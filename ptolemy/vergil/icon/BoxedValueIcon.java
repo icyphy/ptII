@@ -69,8 +69,8 @@ public class BoxedValueIcon extends AttributeValueIcon {
     ////                         public methods                    ////
 
     /** Create a new background figure.  This overrides the base class
-     *  to remember the background figure so that it can center the label
-     *  over it in createFigure().
+     *  to draw a box around the value display, where the width of the
+     *  box depends on the value.
      *  @return A new figure.
      */
     public Figure createBackgroundFigure() {

@@ -51,7 +51,8 @@ import java.io.Writer;
 /**
 An icon that displays the value of an attribute of the container.
 The attribute is assumed to be an instance of Settable, and its name
-is given by the parameter <i>attributeName</i>.
+is given by the parameter <i>attributeName</i>.  The display is not
+automatically updated when the attribute value is updated.
 
 @author Edward A. Lee
 @version $Id$
@@ -107,13 +108,19 @@ public class AttributeValueIcon extends XMLIcon {
     public Figure createFigure() {
         CompositeFigure result = (CompositeFigure)super.createFigure();
         String truncated = _displayString();
-        if (truncated != null) {
-            LabelFigure label = new LabelFigure(truncated,
-                    _labelFont, 1.0, SwingConstants.CENTER);
-            Rectangle2D backBounds = _background.getBounds();
-            label.translateTo(backBounds.getCenterX(), backBounds.getCenterY());
-            result.add(label);
+        // If there is no string to display now, then create a string
+        // with a single blank.
+        if (truncated == null) {
+            truncated = " ";
         }
+        _label = new LabelFigure(truncated,
+               _labelFont, 1.0, SwingConstants.CENTER);
+        Rectangle2D backBounds = _background.getBounds();
+// FIXME:
+System.out.println("*** center: " + backBounds.getCenterX() + ", " + backBounds.getCenterY());
+System.out.println(Thread.currentThread());
+        _label.translateTo(backBounds.getCenterX(), backBounds.getCenterY());
+        result.add(_label);
         return result;
     }
 
@@ -166,10 +173,10 @@ public class AttributeValueIcon extends XMLIcon {
     protected String _displayString() {
         NamedObj container = (NamedObj)getContainer();
         if (container != null) {
-            Attribute attribute = container.getAttribute(
+            Attribute associatedAttribute = container.getAttribute(
                     attributeName.getExpression());
-            if (attribute instanceof Settable) {
-                String value = ((Settable)attribute).getExpression();
+            if (associatedAttribute instanceof Settable) {
+                String value = ((Settable)associatedAttribute).getExpression();
                 String truncated = value;
                 try {
                     int width = ((IntToken)displayWidth.getToken()).intValue();
@@ -192,6 +199,9 @@ public class AttributeValueIcon extends XMLIcon {
 
     /** The background figure. */
     protected Figure _background;
+
+    /** The label figure. */
+    protected LabelFigure _label;
 
     /** The font used. */
     protected static Font _labelFont = new Font("SansSerif", Font.PLAIN, 12);
