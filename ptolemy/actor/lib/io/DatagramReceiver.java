@@ -87,12 +87,12 @@ public class DatagramReceiver extends TypedAtomicActor {
     ////                     ports and parameters                  ////
 
     /** This port outputs the data in the packet.
-     *  FIXME: what is the type of the port?   
+     *  FIXME: what is the type of the port?
      */
     public TypedIOPort output;
 
     /** The local port number for this actor's socket.
-     *  FIXME: what is the type?  Int?  What is the default value?   
+     *  FIXME: what is the type?  Int?  What is the default value?
      */
     public Parameter port;
 
@@ -140,7 +140,7 @@ public class DatagramReceiver extends TypedAtomicActor {
     }
 
     /** Broadcasts the return address of the packet received over the Ethernet.
-     *  FIXME: @exception tag?   
+     *  FIXME: @exception tag?
      */
     public void fire() throws IllegalActionException {
         System.out.println("Actor is fired");
@@ -155,7 +155,7 @@ public class DatagramReceiver extends TypedAtomicActor {
 
     /** Preinitialize
      * FIXME: What does this do?
-     *  FIXME: @exception tag?   
+     *  FIXME: @exception tag?
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
@@ -195,7 +195,7 @@ public class DatagramReceiver extends TypedAtomicActor {
 
 
     /** Wrap up
-     *  FIXME: @exception tag?   
+     *  FIXME: @exception tag?
      */
     public void wrapup() throws IllegalActionException {
         if (_listenerThread != null) {
@@ -251,44 +251,44 @@ public class DatagramReceiver extends TypedAtomicActor {
 
         public void run() {
             byte _buf[] = {'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E',
-                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E', 
-                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E', 
-                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E', 
-                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E', 
-                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E', 
-                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E', 
-                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E', 
-                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E', 
-                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E', 
-                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E', 
-                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E', 
-                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E', 
-                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E', 
-                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E', 
-                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E', 
-                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E', 
-                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E', 
-                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E', 
-                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E', 
-                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E', 
-                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E', 
-                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E', 
-                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E', 
-                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E', 
-                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E', 
-                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E', 
-                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E', 
-                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E', 
-                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E', 
-                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E', 
-                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E', 
-                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E', 
-                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E', 
-                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E', 
-                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E', 
-                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E', 
-                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E', 
-                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E', 
+                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E',
+                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E',
+                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E',
+                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E',
+                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E',
+                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E',
+                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E',
+                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E',
+                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E',
+                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E',
+                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E',
+                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E',
+                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E',
+                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E',
+                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E',
+                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E',
+                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E',
+                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E',
+                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E',
+                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E',
+                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E',
+                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E',
+                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E',
+                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E',
+                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E',
+                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E',
+                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E',
+                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E',
+                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E',
+                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E',
+                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E',
+                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E',
+                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E',
+                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E',
+                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E',
+                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E',
+                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E',
+                    'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E',
                     'A', 'B', 'C', 'D', 'E', 'A', 'B', 'C', 'D', 'E'};
             int _offset = 0;
             while (true) {
