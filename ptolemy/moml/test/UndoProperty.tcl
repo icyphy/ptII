@@ -476,7 +476,7 @@ test UndoProperty-2.1b {Test undoing a property value change } {
 
 
 test UndoProperty-2.1c {Test redoing a property value change } {
-    set redoChange [java::new ptolemy.kernel.util.RedoChangeRequest \
+    set redoChange [java::new ptolemy.kernel.undo.RedoChangeRequest \
 	$toplevel $toplevel] 
     $manager requestChange $redoChange 
 

@@ -147,7 +147,7 @@ test MoMLUndoChangeRequest-1.2a {Undo again, with nothing to undo} {
 test MoMLUndoChangeRequest-1.3 {Redo} {
     # Uses $originalMoML from 1.2 above
     set originator [java::new ptolemy.kernel.util.NamedObj "originator"]
-    set redoChange [java::new ptolemy.kernel.util.RedoChangeRequest \
+    set redoChange [java::new ptolemy.kernel.undo.RedoChangeRequest \
 		$originator $toplevel]
     $toplevel requestChange $redoChange 
     set redoneMoML [$toplevel exportMoML]
@@ -161,7 +161,7 @@ test MoMLUndoChangeRequest-1.3 {Redo} {
 test MoMLUndoChangeRequest-1.4 {Redo again, with nothing to redo } {
     # Uses $originalMoML from 1.2 above
     set originator [java::new ptolemy.kernel.util.NamedObj "originator"]
-    set redoChange [java::new ptolemy.kernel.util.RedoChangeRequest \
+    set redoChange [java::new ptolemy.kernel.undo.RedoChangeRequest \
 	$originator $toplevel] 
     $toplevel requestChange $redoChange 
     set redoneMoML [$toplevel exportMoML]
