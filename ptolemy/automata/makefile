@@ -31,7 +31,7 @@
 
 ME =		ptolemy/automata
 
-DIRS = 		util #test doc demo
+DIRS = 		#util test doc demo
 
 # Root of the Java directory
 ROOT =		../..
