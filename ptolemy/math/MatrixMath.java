@@ -212,7 +212,7 @@ public class MatrixMath {
      *  The doubles are stored row by row, i.e. using the notation
      *  (row, column), the entries of the array are in the following order
      *  for a (m,n) matrix :
-     *  (0,0), (0,1), (0,2), ... , (0,n-1), (1,0), (1,1), ... , (m-1)(n-1)
+     *  (0, 0), (0, 1), (0, 2), ... , (0, n-1), (1, 0), (1, 1), ..., (m-1)(n-1)
      *  @param A matrix of doubles.
      *  @retval A new array of doubles.
      */
@@ -229,7 +229,7 @@ public class MatrixMath {
      *  The doubles are stored row by row, i.e. using the notation
      *  (row, column), the entries of the array are in the following order
      *  for a matrix, limited to m rows and n columns :
-     *  (0,0), (0,1), (0,2), ... , (0,n-1), (1,0), (1,1), ... , (m-1)(n-1)
+     *  (0, 0), (0, 1), (0, 2), ... , (0, n-1), (1, 0), (1, 1), ..., (m-1)(n-1)
      *  @param matrix A matrix of doubles.
      *  @retval A new array of doubles.
      */
