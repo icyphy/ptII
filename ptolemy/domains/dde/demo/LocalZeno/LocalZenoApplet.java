@@ -85,6 +85,7 @@ public class LocalZenoApplet extends DDEApplet {
 	// Panel for controls and plotter
 	JPanel topPanel = new JPanel();
 	topPanel.setSize( new Dimension(600, 200) );
+        topPanel.setBackground(getBackground());
 
 	// The '3' argument specifies a 'go', 'stop' and
         // 'layout' buttons.
