@@ -59,7 +59,9 @@ JSRCS = \
 	TransformedFigureTutorial.java \
 	VectorFigureTutorial.java
 
-EXTRA_SRCS =	$(JSRCS)
+EXTRA_SRCS =	$(JSRCS) \
+	demo.gif \
+	package.html \
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -70,7 +72,28 @@ MISC_FILES =	$(DIRS)
 OPTIONAL_FILES = \
 	doc \
 	$(PTCLASSJAR) \
-	$(PTCLASSALLJAR)
+	$(PTCLASSALLJAR) \
+	'ArcTutorial$$1.class' \
+	'ArcTutorial$$2.class' \
+	'ArcTutorial$$3.class' \
+	'ArcTutorial$$SelfPTarget.class' \
+	'CompositeFigureTutorial$$1.class' \
+	'ConnectorTutorial$$1.class' \
+	'ConnectorTutorial$$2.class' \
+	'ConnectorTutorial$$3.class' \
+	'ConnectorTutorial$$SitedRectangle.class' \
+	'ConnectorTutorial$$SRTarget.class' \
+	'DragTutorial$$1.class' \
+	'FigureTutorial$$1.class' \
+	'FigureTutorial$$CustomRectangle.class' \
+	'IconTutorial$$1.class' \
+	'LabelTutorial$$1.class' \
+	'ManipulatorTutorial$$1.class' \
+	'SimpleTutorial$$1.class' \
+	'TerminalTutorial$$1.class' \
+	'TransformedFigureTutorial$$1.class' \
+	'TransformedFigureTutorial$$CloudFigure.class' \
+	'VectorFigureTutorial$$1.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
