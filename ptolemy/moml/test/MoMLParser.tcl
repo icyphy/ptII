@@ -2953,3 +2953,26 @@ test MoMLParser-15.1 {test link persistence in instatiation of a class} {
 }
 
 
+######################################################################
+####
+#
+
+# This header has a bogus xml version number so that we can get
+# XmlParser to call MoMLParser.error() 
+
+set badHeader {<?xml version="-0.1" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">}
+
+set moml_16 "$badHeader
+<entity name=\"top\" class=\"ptolemy.actor.TypedCompositeActor\">
+    <doc>xxx</doc>
+</entity>
+"
+test MoMLParser-16.1 {get XmlParser to call MoMLParser.error() by trying to parse a bogus xml version in the header} {
+    $parser reset
+    catch {$parser parse $moml_16} errMsg
+
+    # Just get the first few characters
+    string range $errMsg 0 90
+} {com.microstar.xml.XmlException: unsupported XML version (found "-0.1") (expected "1.0") in }
