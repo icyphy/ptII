@@ -89,7 +89,7 @@ CalendarQueue.cc</i>
 </ul>
 @author Lukito Muliadi
 @version $Id$
-@see CalendarQueueComparator
+@see CQComparator
 */
 
 public class CalendarQueue {

@@ -219,7 +219,7 @@ public class AtomicActor extends ComponentEntity implements Actor {
      *  @return The new port.
      *  @exception NameDuplicationException If this actor already has a port
      *   with the specified name.
-     *  @see WorkSpace.getWriteAccess
+     *  @see ptolemy.kernel.util.Workspace#getWriteAccess()
      */
     public Port newPort(String name) throws NameDuplicationException {
         try {
