@@ -100,7 +100,7 @@ public class Pulses extends SDFApplet {
             pulse4.excessBW.setToken(new DoubleToken(0.0));
 
             // Create and configure plotter
-            TimePlot myplot = new TimePlot(_toplevel, "plot");
+            PlotActor myplot = new PlotActor(_toplevel, "plot");
             myplot.setPanel(this);
             myplot.plot.setGrid(false);
             myplot.plot.setTitle("Transmit Pulse Shapes");

@@ -95,7 +95,7 @@ public class ExpressionApplet extends SDFApplet {
             TypedIOPort fast = new TypedIOPort(_expr, "fast", true, false);
 
             // Create and configure plotter
-            TimePlot myplot = new TimePlot(_toplevel, "plot");
+            PlotActor myplot = new PlotActor(_toplevel, "plot");
             myplot.setPanel(this);
             myplot.plot.setGrid(false);
             myplot.plot.setXRange(0.0, 200.0);

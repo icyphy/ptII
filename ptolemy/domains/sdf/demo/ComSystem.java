@@ -90,7 +90,7 @@ public class ComSystem extends SDFApplet {
             matched.root.setToken(new BooleanToken(true));
 
             // Create and configure plotter
-            TimePlot myplot = new TimePlot(_toplevel, "plot");
+            PlotActor myplot = new PlotActor(_toplevel, "plot");
             myplot.setPanel(this);
             myplot.plot.setGrid(false);
             myplot.plot.setTitle("Eye Diagram");
