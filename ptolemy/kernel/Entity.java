@@ -32,8 +32,11 @@ package ptolemy.kernel;
 
 import ptolemy.kernel.util.*;
 
+import java.io.IOException;
+import java.io.Writer;
 import java.util.Enumeration;
 import java.lang.reflect.*;
+
 import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
@@ -337,6 +340,22 @@ public class Entity extends NamedObj {
         }
     }
 
+    /** Return a name that is guaranteed to not be the name of
+     *  any contained attribute or port.  In derived classes, this is
+     *  overridden so that the returned name is guaranteed to not conflict
+     *  with any contained object.
+     *  @param prefix A prefix for the name.
+     *  @return A unique name.
+     */
+    public String uniqueName(String prefix) {
+        String candidate = prefix + _uniqueNameIndex++;
+        while(getAttribute(candidate) != null 
+                || getPort(candidate) != null) {
+            candidate = prefix + _uniqueNameIndex++;
+        }
+        return candidate;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -401,6 +420,24 @@ public class Entity extends NamedObj {
             return result;
         } finally {
             _workspace.doneReading();
+        }
+    }
+
+    /** Write a MoML description of the contents of this object, which
+     *  in this class is the attributes plus the ports.  This method is called
+     *  by _exportMoML().  Each description is indented according to the
+     *  specified depth and terminated with a newline character.
+     *  @param output The output stream to write to.
+     *  @param depth The depth in the hierarchy, to determine indenting.
+     *  @throws IOException If an I/O error occurs.
+     */
+    protected void _exportMoMLContents(Writer output, int depth)
+            throws IOException {
+        super._exportMoMLContents(output, depth);
+        Enumeration ports = getPorts();
+        while (ports.hasMoreElements()) {
+            Port port = (Port)ports.nextElement();
+            port.exportMoML(output, depth);
         }
     }
 

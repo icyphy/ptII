@@ -69,6 +69,7 @@ public class Port extends NamedObj {
      */
     public Port() {
 	super();
+        setMoMLElementName("port");
         try {
             _relationsList = new CrossRefList(this);
         } catch (IllegalActionException ex) {
@@ -89,6 +90,7 @@ public class Port extends NamedObj {
      */
     public Port(Workspace workspace) {
 	super(workspace);
+        setMoMLElementName("port");
         try {
             _relationsList = new CrossRefList(this);
         } catch (IllegalActionException ex) {
@@ -117,6 +119,7 @@ public class Port extends NamedObj {
     public Port(Entity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container.workspace(), name);
+        setMoMLElementName("port");
         setContainer(container);
         try {
             _relationsList = new CrossRefList(this);

@@ -32,16 +32,23 @@
 package ptolemy.data.expr;
 import ptolemy.kernel.util.*;
 
+import java.io.Writer;
+import java.io.IOException;
+
 //////////////////////////////////////////////////////////////////////////
 //// Parameter
 /**
-Parameter is another name for Variable.  It is an identical class,
-derived from Variable, with no additional functionality.  Its reason
-for existence is to serve as a marker for variables that are to made
+Parameter is almost identical to Variable, its base class, with the
+only difference being the MoML representation.  The base class has none,
+and therefore is not a persistent object.  This class has one.
+A second reason for existence of this class is to serve as a
+marker for variables that are to made
 visible at the user interface level.  By convention, an instance
 of NamedObj has a set of attributes, some of which are instances
 of the class Parameter.  When a user interface presents these attributes
 for editing, it presents only those that are instances of Parameter.
+And the parameters, but not any variables, are exported to MoML when
+the container object is exported.
 
 @author Neil Smyth, Edward A. Lee, Xiaojun Liu
 @version $Id$
@@ -114,5 +121,54 @@ public class Parameter extends Variable {
     public Parameter(NamedObj container, String name, ptolemy.data.Token token)
             throws IllegalActionException, NameDuplicationException {
         super(container, name, token);
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Write a MoML description of this object.
+     *  MoML is an XML modeling markup language.
+     *  In this class, the object is identified by the "attribute"
+     *  element, with "name" and "class" (XML) attributes.
+     *  The body of the element, between the "&lt;attribute&gt;"
+     *  and "&lt;/attribute&gt;", is written using
+     *  the _exportMoMLContents() protected method, so that derived classes
+     *  can override that method alone to alter only how the contents
+     *  of this object are described.
+     *  The text that is written is indented according to the specified
+     *  depth, with each line (including the last one)
+     *  terminated with a newline.
+     *  @param output The output stream to write to.
+     *  @param depth The depth in the hierarchy, to determine indenting.
+     *  @throws IOException If an I/O error occurs.
+     */
+    public void exportMoML(Writer output, int depth) throws IOException {
+        String value = getExpression();
+        if (value == null) {
+            ptolemy.data.Token token = null;
+            try {
+                token = getToken();
+            } catch (IllegalActionException ex) {}
+            if (token != null) {
+                value = token.stringValue();
+            }
+        }
+        String valueTerm = "";
+        if (value != null) {
+            valueTerm = " value=\"" + value + "\"";
+        }
+        output.write(_getIndentPrefix(depth)
+               + "<"
+               + getMoMLElementName()
+               + " name=\""
+               + getName()
+               + "\" class=\""
+               + getClass().getName()
+               + "\""
+               + valueTerm
+               + ">\n");
+        _exportMoMLContents(output, depth + 1);
+        output.write(_getIndentPrefix(depth) + "</"
+                + getMoMLElementName() + ">\n");
     }
 }

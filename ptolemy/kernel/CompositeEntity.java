@@ -32,8 +32,11 @@ package ptolemy.kernel;
 
 import ptolemy.kernel.util.*;
 
+import java.io.IOException;
+import java.io.Writer;
 import java.util.Hashtable;
 import java.util.Enumeration;
+
 import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
@@ -269,7 +272,7 @@ public class CompositeEntity extends ComponentEntity {
     public ComponentRelation connect(ComponentPort port1, ComponentPort port2)
             throws IllegalActionException {
         try {
-            return connect(port1, port2, _uniqueRelationName());
+            return connect(port1, port2, uniqueName("_R"));
         } catch (NameDuplicationException ex) {
             // This exception should not be thrown.
             throw new InternalErrorException(
@@ -359,6 +362,43 @@ public class CompositeEntity extends ComponentEntity {
         } finally {
             _workspace.doneReading();
         }
+    }
+
+    /** Write a MoML description of this object with the specified 
+     *  indentation depth. MoML is an XML modeling markup language.
+     *  The element name is given by the getMoMLElementName(), and will
+     *  typically be "entity", "model", or "class".  If it is "class",
+     *  then the element is written with "name" and "extends" attributes.
+     *  Otherwise, it is written with "name" and "class" attributes.
+     *  The body of the element is written using
+     *  the _exportMoMLContents() protected method, so that derived classes
+     *  can override that method alone to alter only how the contents
+     *  of this object are described.
+     *  The text that is written is indented according to the specified
+     *  depth, with each line (including the last one)
+     *  terminated with a newline.
+     *  @param output The output stream to write to.
+     *  @param depth The depth in the hierarchy, to determine indenting.
+     *  @throws IOException If an I/O error occurs.
+     *  @see _exportMoMLContents
+     */
+    public void exportMoML(Writer output, int depth) throws IOException {
+        String classAttribute = "\" class=\"";
+        String momlElement = getMoMLElementName();
+        if (momlElement.equals("class")) {
+            classAttribute = "\" extends=\"";
+        }
+        output.write(_getIndentPrefix(depth)
+               + "<"
+               + momlElement
+               + " name=\""
+               + getName()
+               + classAttribute
+               + getClass().getName()
+               + "\">\n");
+        _exportMoMLContents(output, depth + 1);
+        output.write(_getIndentPrefix(depth) + "</"
+                + getMoMLElementName() + ">\n");
     }
 
     /** Get the attribute with the given name. The name may be compound,
@@ -658,6 +698,22 @@ public class CompositeEntity extends ComponentEntity {
         }
     }
 
+    /** Return a name that is guaranteed to not be the name of
+     *  any contained attribute, port, entity, or relation.
+     *  @param prefix A prefix for the name.
+     *  @return A unique name.
+     */
+    public String uniqueName(String prefix) {
+        String candidate = prefix + _uniqueNameIndex++;
+        while(getAttribute(candidate) != null 
+                || getPort(candidate) != null
+                || getEntity(candidate) != null
+                || getRelation(candidate) != null) {
+            candidate = prefix + _uniqueNameIndex++;
+        }
+        return candidate;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -753,6 +809,91 @@ public class CompositeEntity extends ComponentEntity {
         }
     }
 
+    /** Write a MoML description of the contents of this object, which
+     *  in this class is the attributes, ports, contained relations,
+     *  and contained entities, plus all links.  The links are written
+     *  in an order that respects the ordering in ports, but not necessarily
+     *  the ordering in relations.  This method is called
+     *  by _exportMoML().  Each description is indented according to the
+     *  specified depth and terminated with a newline character.
+     *  @param output The output stream to write to.
+     *  @param depth The depth in the hierarchy, to determine indenting.
+     *  @throws IOException If an I/O error occurs.
+     */
+    protected void _exportMoMLContents(Writer output, int depth)
+            throws IOException {
+        super._exportMoMLContents(output, depth);
+        Enumeration entities = getEntities();
+        while (entities.hasMoreElements()) {
+            ComponentEntity entity = (ComponentEntity)entities.nextElement();
+            entity.exportMoML(output, depth);
+        }
+        Enumeration relations = getRelations();
+        while (relations.hasMoreElements()) {
+            ComponentRelation relation
+                    = (ComponentRelation)relations.nextElement();
+            relation.exportMoML(output, depth);
+        }
+        // Next write the links.  To get the ordering right,
+        // we read the links from the ports, not from the relations.
+
+        // First, produce the inside links on contained ports.
+        Enumeration ports = getPorts();
+        while (ports.hasMoreElements()) {
+            ComponentPort port = (ComponentPort)ports.nextElement();
+            relations = port.insideRelations();
+            while (relations.hasMoreElements()) {
+                ComponentRelation relation
+                         = (ComponentRelation)relations.nextElement();
+                // In order to support level-crossing links, consider the
+                // possibility that the relation is not contained by this.
+                String relationName;
+                if (relation.getContainer() == this) {
+                    relationName = relation.getName();
+                } else {
+                    relationName = relation.getFullName();
+                }
+                output.write(_getIndentPrefix(depth)
+                + "<link port=\""
+                + port.getName()
+                + "\" relation=\""
+                + relationName
+                + "\"/>\n");
+            }
+        }
+
+        // Next, produce the links on ports contained by contained entities.
+        entities = getEntities();
+        while (entities.hasMoreElements()) {
+            ComponentEntity entity = (ComponentEntity)entities.nextElement();
+            ports = entity.getPorts();
+            while (ports.hasMoreElements()) {
+                ComponentPort port = (ComponentPort)ports.nextElement();
+                relations = port.linkedRelations();
+                while (relations.hasMoreElements()) {
+                    ComponentRelation relation
+                            = (ComponentRelation)relations.nextElement();
+                    // In order to support level-crossing links, consider the
+                    // possibility that the relation is not contained by this.
+                    String relationName;
+                    if (relation.getContainer() == this) {
+                        relationName = relation.getName();
+                    } else {
+                        relationName = relation.getFullName();
+                    }
+                    output.write(_getIndentPrefix(depth)
+                    + "<link port=\""
+                    + entity.getName()
+                    + "."
+                    + port.getName()
+                    + "\" relation=\""
+                    + relationName
+                    + "\"/>\n");
+                }
+            }
+        }
+    }
+
     /** Remove the specified entity. This method should not be used
      *  directly.  Call the setContainer() method of the entity instead with
      *  a null argument.
@@ -777,34 +918,6 @@ public class CompositeEntity extends ComponentEntity {
      */
     protected void _removeRelation(ComponentRelation relation) {
         _containedRelations.remove(relation);
-    }
-
-    // Return a name that is not the name of any contained entity.
-    // This can be used when it is necessary to name an entity, but you
-    // do not care what the name is.
-    //
-    protected synchronized String _uniqueEntityName() {
-        String name = new String("_E" + _entitynamecount);
-        while (getEntity(name) != null) {
-            _entitynamecount += 1;
-            name = "_E" + _entitynamecount;
-        }
-        _entitynamecount += 1;
-        return name;
-    }
-
-    // Return a name that is not the name of any contained relation.
-    // This can be used when it is necessary to name a relation, but you
-    // do not care what the name is.
-    //
-    protected synchronized String _uniqueRelationName() {
-        String name = new String("_R" + _relationnamecount);
-        while (getRelation(name) != null) {
-            _relationnamecount += 1;
-            name = "_R" + _relationnamecount;
-        }
-        _relationnamecount += 1;
-        return name;
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -62,6 +62,7 @@ public class Relation extends NamedObj {
      */
     public Relation() {
 	super();
+        setMoMLElementName("relation");
         try {
             _portList = new CrossRefList(this);
         } catch (IllegalActionException ex) {
@@ -81,6 +82,7 @@ public class Relation extends NamedObj {
      */
     public Relation(String name) throws IllegalActionException {
 	super(name);
+        setMoMLElementName("relation");
         try {
             _portList = new CrossRefList(this);
         } catch (IllegalActionException ex) {
@@ -100,6 +102,7 @@ public class Relation extends NamedObj {
      */
     public Relation(Workspace workspace) {
 	super(workspace);
+        setMoMLElementName("relation");
         try {
             _portList = new CrossRefList(this);
         } catch (IllegalActionException ex) {
@@ -121,6 +124,7 @@ public class Relation extends NamedObj {
     public Relation(Workspace workspace, String name)
            throws IllegalActionException {
 	super(workspace, name);
+        setMoMLElementName("relation");
         try {
             _portList = new CrossRefList(this);
         } catch (IllegalActionException ex) {

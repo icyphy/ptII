@@ -36,10 +36,14 @@ import ptolemy.kernel.util.*;
 import ptolemy.data.Token;
 import ptolemy.data.type.*;
 import ptolemy.graph.*;
+
 import collections.LinkedList;
+
 import java.util.Enumeration;
 import java.lang.reflect.Method;
 import java.lang.reflect.InvocationTargetException;
+import java.io.Writer;
+import java.io.IOException;
 
 //////////////////////////////////////////////////////////////////////////
 //// Variable
@@ -128,12 +132,19 @@ was originally given an expression, then this expression is placed again
 in the variable (but not evaluated), and the type is reset to BaseType.NAT.
 The type will be determined when the expression is evaluated or when
 type resolution is done.
+<p>
+A variable has no MoML description (MoML is an XML modeling markup
+language).  Thus, a variable contained by a named object is not
+persistent, in that if the object is exported to a MoML file, the
+variable will not be represented.  If you prefer that the variable
+be represented, then you should use the derived class Parameter instead.
 
 @author Neil Smyth, Xiaojun Liu, Edward A. Lee, Yuhong Xiong
 @version $Id$
 
 @see ptolemy.data.Token
 @see ptolemy.data.expr.PtParser
+@see ptolemy.data.expr.Parameter
 
 */
 
@@ -294,6 +305,15 @@ public class Variable extends Attribute implements Typeable {
 	newvar._constraints = new LinkedList();
         newvar._typeTerm = null;
         return newvar;
+    }
+
+    /** Write a MoML description of this object, which in this case is
+     *  empty.  Nothing is written.
+     *  MoML is an XML modeling markup language.
+     *  @param output The output stream to write to.
+     *  @param depth The depth in the hierarchy, to determine indenting.
+     */
+    public void exportMoML(Writer output, int depth) throws IOException {
     }
 
     /** Get the expression currently used by this variable. If the
@@ -1318,7 +1338,7 @@ public class Variable extends Attribute implements Typeable {
     // the parse tree for that expression.
     private ASTPtRootNode _parseTree;
 
-    // The token contained by this parameter.
+    // The token contained by this variable.
     private ptolemy.data.Token _token;
 
     // Type constraints.
