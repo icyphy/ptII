@@ -50,7 +50,9 @@ public class ReflectTest extends NamedObj implements Debuggable {
     ////                         public methods                    ////
 
     public static void publicMethod1() {}
-    public void publicMethod2(int a) {}
+    public void publicMethod2(int a) throws Exception {
+	throw new Exception("An Exception");
+    }
     public void publicMethod2(NamedObj [] a) {}
     public void publicMethod2(NamedObj [][] a) {}
 
