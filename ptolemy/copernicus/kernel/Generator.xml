@@ -96,7 +96,7 @@ $Id$
 
      <property name="targetPath" 
                class="ptolemy.data.expr.Parameter"
-	       value="&quot;ptolemy/copernicus/&quot; + codeGenerator + &quot;/cg/&quot;"
+	       value="&quot;ptolemy/copernicus/&quot; + codeGenerator + &quot;/cg/&quot; + modelName"
 	       >
 	       <doc>The path relative to the ptIIUserDirectory to generate code in.</doc>
      </property>
