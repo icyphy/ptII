@@ -173,11 +173,8 @@ public class BasePNDirector extends ptolemy.actor.process.ProcessDirector {
      *  will be notified of each change to the state of a process. 
      *  @param listener The PNProcessListener to add.
      */
-    public void addTopologyListener(PNProcessListener listener) {
-        if (_processListeners == null) {
-            _processListeners = new PNProcessMulticaster();
-        }
-        _processListeners.addProcessListener(listener);
+    public void addProcessListener(PNProcessListener listener) {
+        _processlisteners.insertLast(listener);
     }
 
     /** Clone the director into the specified workspace. The new object is
@@ -201,6 +198,8 @@ public class BasePNDirector extends ptolemy.actor.process.ProcessDirector {
         newobj._writeblockedQs = new LinkedList();
         return newobj;
     }
+
+
 
 
     /** Return a new receiver compatible with this director. The receiver
@@ -246,7 +245,7 @@ public class BasePNDirector extends ptolemy.actor.process.ProcessDirector {
      *  @param listener The PNProcessListener to be removed.
      */
     public void removeProcessListener(PNProcessListener listener) {
-        _processListeners.removeProcessListener(listener);
+        _processlisteners.removeOneOf(listener);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -394,9 +393,19 @@ public class BasePNDirector extends ptolemy.actor.process.ProcessDirector {
      *  execution. If either of them is detected, then notify the directing
      *  thread of the same.
      */
-    synchronized void _informOfReadBlock() {
+    synchronized void _informOfReadBlock(PNQueueReceiver receiver) {
 	_readBlockCount++;
-        
+        if (!_processlisteners.isEmpty()) {
+            Actor actor = receiver.getReadBlockedActor();
+            PNProcessEvent event = new PNProcessEvent(actor, 
+                    PNProcessEvent.PROCESS_BLOCKED, 
+                    PNProcessEvent.BLOCKED_ON_READ);
+            Enumeration enum = _processlisteners.elements();
+            while (enum.hasMoreElements()) {
+                PNProcessListener lis = (PNProcessListener)enum.nextElement();
+                lis.processStateChanged(event);
+            }
+        }
 	//System.out.println("Readblocked with count "+_readBlockCount);
 	if (_checkForDeadlock() || _checkForPause()) {
 	    notifyAll();
@@ -407,8 +416,18 @@ public class BasePNDirector extends ptolemy.actor.process.ProcessDirector {
 
     /** Decrease by 1 the count of processes blocked on a read.
      */
-    synchronized void _informOfReadUnblock() {
+    synchronized void _informOfReadUnblock(PNQueueReceiver receiver) {
 	_readBlockCount--;
+        if (!_processlisteners.isEmpty()) {
+            Actor actor = receiver.getReadBlockedActor();
+            PNProcessEvent event = new PNProcessEvent(actor, 
+                    PNProcessEvent.PROCESS_RUNNING);
+            Enumeration enum = _processlisteners.elements();
+            while (enum.hasMoreElements()) {
+                PNProcessListener lis = (PNProcessListener)enum.nextElement();
+                lis.processStateChanged(event);
+            }
+        }
 	return;
     }
 
@@ -425,14 +444,47 @@ public class BasePNDirector extends ptolemy.actor.process.ProcessDirector {
 	_writeblockedQs.insertFirst(receiver);
         
         //Inform the listeners
-        if (_processListeners != null && _processListeners.anyListeners() ) {
-            //Actor actor = receiver.getContainer();
+        if (!_processlisteners.isEmpty()) {
+            Actor actor = receiver.getWriteBlockedActor();
+            PNProcessEvent event = new PNProcessEvent(actor, 
+                    PNProcessEvent.PROCESS_BLOCKED, 
+                    PNProcessEvent.BLOCKED_ON_WRITE);
+            Enumeration enum = _processlisteners.elements();
+            while (enum.hasMoreElements()) {
+                PNProcessListener lis = (PNProcessListener)enum.nextElement();
+                lis.processStateChanged(event);
+            }
         }
 	//System.out.println("WriteBlockedQ "+_writeBlockCount );
 	if (_checkForDeadlock() || _checkForPause()) {
 	    notifyAll();
 	}
 	return;
+    }
+
+
+    /** Increases the count of active actors in the composite actor 
+     *  corresponding to this director by 1. This method should be 
+     *  called when a new thread corresponding to an actor is started 
+     *  in the model under the control of this director. This method 
+     *  is required for detection of deadlocks.
+     *  The corresponding method _decreaseActiveCount should be called
+     *  when the thread is terminated.
+     */
+    protected synchronized void _decreaseActiveCount() {
+	super._decreaseActiveCount();
+        if (!_processlisteners.isEmpty()) {
+            ProcessThread pro = (ProcessThread)Thread.currentThread();
+            Actor actor = pro.getActor();
+            PNProcessEvent event = new PNProcessEvent(actor, 
+                    PNProcessEvent.PROCESS_FINISHED);
+            Enumeration enum = _processlisteners.elements();
+            while (enum.hasMoreElements()) {
+                PNProcessListener lis = (PNProcessListener)enum.nextElement();
+                lis.processStateChanged(event);
+            }
+        }
+        
     }
 
 
@@ -443,6 +495,16 @@ public class BasePNDirector extends ptolemy.actor.process.ProcessDirector {
     synchronized protected void _informOfWriteUnblock(PNQueueReceiver queue) {
 	_writeBlockCount--;
 	_writeblockedQs.removeOneOf(queue);
+        if (!_processlisteners.isEmpty()) {
+            Actor actor = queue.getWriteBlockedActor();
+            PNProcessEvent event = new PNProcessEvent(actor, 
+                    PNProcessEvent.PROCESS_RUNNING);
+            Enumeration enum = _processlisteners.elements();
+            while (enum.hasMoreElements()) {
+                PNProcessListener lis = (PNProcessListener)enum.nextElement();
+                lis.processStateChanged(event);
+            }
+        }
 	return;
     }
 
@@ -465,7 +527,8 @@ public class BasePNDirector extends ptolemy.actor.process.ProcessDirector {
     /** The list of receivers blocked on a write to a receiver. */
     protected LinkedList _writeblockedQs = new LinkedList();
 
-    private PNProcessMulticaster _processListeners = null;
+    private LinkedList _processlisteners = new LinkedList();
+    //PNProcessMulticaster _processListeners = null;
 }
 
 
