@@ -132,6 +132,73 @@ file. This file includes support for
 
 </dl>
 
+<h3><a name="UsingEmacsAsATextEditorWithinPtolemyII">Using Emacs as
+a Text Editor Within Ptolemy II</a>
+</h3>
+Optionally, you may want to associate Emacs as the text editor
+to use when text files are viewed within Ptolemy II.
+
+<p>This feature is especially nice while running a vergil -debug
+session from within emacs and the user wants to set a breakpoint in an
+actor or director.  Typical, one starts up vergil with <code>vergil
+-debug</code< looks inside an actor, finds a source line, and hits
+<code>Control-x SPACE</code> to set a break point.
+
+
+<p>To do this, you need to have Gnuserv installed and do some other set up.
+<br><a href="http://www.gnu.org/software/emacs/windows/faq2.html#assoc" target="_top"><code>http://www.gnu.org/software/emacs/windows/faq2.html#assoc</code></a>
+discusses how to install gnuserv/gnuclient
+<ol>
+<li>Download 
+<a href="http://www.wyrdrune.com/Files/gnuserv.zip"><code>http://www.wyrdrune.com/Files/gnuserv.zip</code></a>
+<li>Unzip it anywhere, for example <code>c:/tmp/gnuserv</code>
+<li>Install <code>gnuserv.el</code> into emacs' load-path, in this case
+<pre>
+cd c:/tmp/gnuserv
+cp gnuserv.el $PTII/util/lisp
+</pre>
+<li>Install the executables into your path 
+<pre>
+cp Release/*.exe $PTII/bin
+</pre>
+<li>Make sure that <code>$PTII/bin</code> is in your path.
+<br>Under Windows XP, it is best if you add <code>$PTII/bin</code>
+(Under Windows XP, you set the environment variable via
+the Environment tab of the System control panel
+(<CODE>Start Menu </CODE> -&gt; 
+<CODE>Control Panels</CODE> -&gt; <CODE>System</CODE> -&gt;
+<CODE>Advanced</CODE> -&gt; <CODE>Environment Variables</CODE>)
+<br>The value that is added to the path should either be
+<pre>
+%PTII%\bin
+</pre>
+or you should expand <code>PTII</code> by hand
+<pre>
+c:\ptII\bin
+</pre>
+
+<li>Add 
+<pre>
+(load "gnuserv")
+(gnuserv-start)
+</pre>
+to your <code>~/.emacs</code> file
+<li>Edit <code>$PTII/bin/ptinvoke.in</code>
+and uncomment the line
+<pre>
+USERJAVAPROPERTIES=-Dptolemy.user.texteditor=emacs
+</pre>
+and then run
+<pre>
+make
+</pre>
+to update <code>$PTII/bin/vergil</code> etc.
+
+</ol>
+To test the facility start up emacs and then start up <code>vergil</code>
+and try File -&gt; New -&gt Text Editor.
+
+
 <h2><a name="InvokingTheDebugger">Invoking the debugger</a></h2>
 
 The Ptolemy II start up scripts in <code>$PTII/bin</code>
