@@ -59,8 +59,8 @@ public class FilterOutGraphicalClasses implements MoMLFilter {
      */
     public String filterAttributeValue(NamedObj container,
             String attributeName, String attributeValue) {
-        System.out.println("filterAttributeValue: " + container + "\t"
-                +  attributeName + "\t" + attributeValue);
+        // System.out.println("filterAttributeValue: " + container + "\t"
+        //        +  attributeName + "\t" + attributeValue);
         if (attributeValue != null
                 && (attributeValue
                         .equals("ptolemy.vergil.icon.AttributeValueIcon")
