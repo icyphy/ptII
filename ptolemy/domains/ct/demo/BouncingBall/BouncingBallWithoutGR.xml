@@ -132,7 +132,7 @@ to see the modal behavior.</text></svg></configure>
 <xLabel>time (sec)</xLabel>
 <yLabel>height meters</yLabel>
 <xRange min="0.0" max="30.0"/>
-<yRange min="-9.717952719409785E-5" max="10.0"/>
+<yRange min="-9.883547819358357E-5" max="10.0"/>
 </plot>?>
         </configure>
     </entity>
@@ -277,7 +277,7 @@ of motion.</text></svg></configure>
                 </property>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.19714521705895027">
                 </property>
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -306,9 +306,9 @@ of motion.</text></svg></configure>
             </property>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 102]">
             </property>
-            <property name="initialPosition" class="ptolemy.data.expr.Parameter" value="-4.68057387639E-5">
+            <property name="initialPosition" class="ptolemy.data.expr.Parameter" value="-5.0505181640044E-5">
             </property>
-            <property name="initialVelocity" class="ptolemy.data.expr.Parameter" value="0.1240640366167">
+            <property name="initialVelocity" class="ptolemy.data.expr.Parameter" value="0.2875328248298">
             </property>
             <property name="Refinement Solver" class="ptolemy.domains.ct.kernel.CTEmbeddedDirector">
                 <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -465,6 +465,8 @@ ball with the surface on which it bounces.</text></svg></configure>
                 </property>
             </entity>
             <entity name="ZeroCrossingDetector" class="ptolemy.domains.ct.lib.ZeroCrossingDetector">
+                <property name="direction" class="ptolemy.data.expr.StringParameter" value="falling">
+                </property>
                 <property name="ZeroCrossingDetectorIcon" class="ptolemy.vergil.icon.EditorIcon">
                     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
                     </property>

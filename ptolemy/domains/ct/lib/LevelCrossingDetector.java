@@ -110,12 +110,9 @@ public class LevelCrossingDetector extends TypedAtomicActor
         _detectFallingCrossing = true;
         
         direction.setTypeEquals(BaseType.STRING);
-        direction.addChoice(
-                new StringToken("both").toString());
-        direction.addChoice(
-                new StringToken("falling").toString());
-        direction.addChoice(
-                new StringToken("rising").toString());
+        direction.addChoice("both");
+        direction.addChoice("falling");
+        direction.addChoice("rising");
 
         defaultEventValue = new Parameter(this, "defaultEventValue",
                 new DoubleToken(0.0));
@@ -323,8 +320,6 @@ public class LevelCrossingDetector extends TypedAtomicActor
      *  @return True if there is no event detected in the current iteration.
      */
     public boolean isOutputAccurate() {
-        // FIXME: This basically disables the event detection in the
-        // first continuous phase of execution.
         if (_levelCrossingDetectionDisabled) {
             if (_debugging && _verbose) {
                 _debug("First firing of this actor, "
@@ -426,10 +421,11 @@ public class LevelCrossingDetector extends TypedAtomicActor
      */
     public boolean postfire() throws IllegalActionException {
         _lastTrigger = _thisTrigger;
+        CTDirector director = (CTDirector) getDirector();
         // This used to be done only in isOutputAccurate(),
         // but that results in the first step not being
         // checked. EAL 3/9/05
-        //_levelCrossingDetectionDisabled = false;
+        _levelCrossingDetectionDisabled = false;
         return super.postfire();
     }
 
@@ -469,8 +465,8 @@ public class LevelCrossingDetector extends TypedAtomicActor
                 / Math.abs(_thisTrigger - _lastTrigger);
 
             if (_debugging) {
-                _debug(getFullName() + " Event Missed: refined step at"
-                        + refinedStep);
+                _debug(getFullName() + " Event Missed: refined step to "
+                        + refinedStep + " at " + dir.getModelTime() );
             }
         }
 
