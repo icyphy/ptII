@@ -2365,7 +2365,7 @@ public class NamedObj implements
             return (NamedObj)clone(container.workspace());
         } catch (CloneNotSupportedException e) {
             throw new IllegalActionException(this, e,
-            "Failed to propogate instance.");
+                    "Failed to propogate instance.");
         }
     }
 
@@ -2645,11 +2645,11 @@ public class NamedObj implements
                                 int lastPeriod = relativeName.lastIndexOf(".");
                                 if (lastPeriod > 0) {
                                     String containerName
-                                            = relativeName.substring(
-                                            0, lastPeriod);
+                                        = relativeName.substring(
+                                                0, lastPeriod);
                                     remoteContainer = getContainer()
-                                            ._getContainedObject(
-                                            other, containerName);
+                                        ._getContainedObject(
+                                                other, containerName);
                                 }
                                 candidate =
                                     _propagateExistence(remoteContainer);
@@ -2715,13 +2715,13 @@ public class NamedObj implements
                         // will be determined by the depth of propagation from
                         // this candidate.
                         result.addAll(candidate._getDerivedList(
-                                visited,
-                                propagate,
-                                force,
-                                candidate,
-                                0,
-                                newOverride,
-                                null));
+                                              visited,
+                                              propagate,
+                                              force,
+                                              candidate,
+                                              0,
+                                              newOverride,
+                                              null));
 
                         // Note that the above recursive call will
                         // add the candidate to the HashSet, so we
