@@ -207,10 +207,11 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
 
         // First check to see if the name references a valid variable.
         ptolemy.data.Token value = null;
-                String functionName = node.getFunctionName();
+        String functionName = node.getFunctionName();
         if(_scope != null && functionName != null) {
             value = _scope.get(node.getFunctionName());
         }
+        
         if(value != null || functionName == null) {
             // The value of the first child should be either a FunctionToken,
             // an ArrayToken, or a MatrixToken.
@@ -412,7 +413,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         ParseTreeSpecializer specializer = new ParseTreeSpecializer();
         specializer.specialize(cloneTree,
                 node.getArgumentNameList(), _scope);
- 
+                 
         // // collect all free variables in the function definition
 //         ParseTreeFreeVariableCollector collector =
 //             new ParseTreeFreeVariableCollector();

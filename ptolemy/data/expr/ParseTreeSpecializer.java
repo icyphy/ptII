@@ -98,6 +98,8 @@ public class ParseTreeSpecializer extends AbstractParseTreeVisitor {
                 ptolemy.data.Token token = _scope.get(node.getName());
                 node.setToken(token);
                 node.setConstant(true);
+                // Reset the name, since it no longer makes sense.
+                node._name = null;
                 return;
             }
             throw new IllegalActionException("Expression contains identifier "
