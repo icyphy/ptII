@@ -160,7 +160,7 @@ public class Relation extends NamedObj {
         try {
             workspace().getReadAccess();
             LinkedList storedPorts = new LinkedList();
-            Enumeration ports = _portList.getLinks();
+            Enumeration ports = _portList.getContainers();
 
             while(ports.hasMoreElements()) {
                 Port p = (Port)ports.nextElement();
