@@ -123,7 +123,7 @@ public class ViewScreen extends GRActor implements Placeable {
         showAxes = new Parameter(this,"showAxes",new BooleanToken(false));
         iterationSynchronized = new Parameter(this,
                 "iterationSynchronized",new BooleanToken(false));
-        backgroundColor = new Parameter(this, "backgroundColor", new 
+        backgroundColor = new Parameter(this, "backgroundColor", new
                 DoubleMatrixToken(new double[][] {{ 0.0, 0.0, 0.0}} ));
 
 
@@ -180,7 +180,7 @@ public class ViewScreen extends GRActor implements Placeable {
          *  rgb color
          */
         public Parameter backgroundColor;
-         
+
 
     public void place(Container container) {
         GraphicsConfiguration config =
@@ -257,14 +257,14 @@ public class ViewScreen extends GRActor implements Placeable {
         return _branchRoot;
     }
 
-        
+
         /** This method creates the ViewScreen frame if it hasn't been
-         *  created (_canvas != null).  It sets up the canvas and draws any 3D 
+         *  created (_canvas != null).  It sets up the canvas and draws any 3D
          *  shapes.
          */
 
     public void initialize() throws IllegalActionException {
-            
+
             boolean addLights = false;
 
         super.initialize();
@@ -367,11 +367,11 @@ public class ViewScreen extends GRActor implements Placeable {
         // Setup the lights, if needed.
         if (addLights) {
                 BranchGroup lightRoot = new BranchGroup();
-        
+
                 AmbientLight lightA = new AmbientLight(new Color3f(0.8f, 0.8f, 0.8f));
                 lightA.setInfluencingBounds(_bounds);
                 lightRoot.addChild(lightA);
-        
+
                 DirectionalLight lightD1 = new DirectionalLight();
                 lightD1.setInfluencingBounds(_bounds);
                 Vector3f direction = new Vector3f(0.0f, -1.0f, -1.0f);
@@ -382,10 +382,10 @@ public class ViewScreen extends GRActor implements Placeable {
 
                 _simpleUniverse.getViewer().getView().setLocalEyeLightingEnable(true);
                 _simpleUniverse.addBranchGraph(lightRoot);
-                
+
             }
-            
-            
+
+
 
         if (_iterationSynchronized) {
             if (_canvas != null) _canvas.stopRenderer();
@@ -458,17 +458,17 @@ public class ViewScreen extends GRActor implements Placeable {
             _canvas.stopRenderer();
         }
     }
-    
+
     /** Makes the background for the viewScreen
      *
      *  @return javax.media.j3d.Background
      *  @exception IllegalActionException If unable to read the color parameter;
      */
     protected Background _makeBackground() throws IllegalActionException {
-            DoubleMatrixToken colorVector = 
+            DoubleMatrixToken colorVector =
                     (DoubleMatrixToken) backgroundColor.getToken();
             Color3f color = new Color3f();
-            
+
         color.x = (float) colorVector.getElementAt(0, 0);
         color.y = (float) colorVector.getElementAt(0, 1);
         color.z = (float) colorVector.getElementAt(0, 2);

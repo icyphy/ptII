@@ -95,7 +95,7 @@ public class Cylinder3D extends GRShadedShape {
 
         int xDivisions;
         int yDivisions;
-        
+
         /** These next few lines determine xDivisions and yDivisions
          *  which determine the resolution along the radius and height
          *  respectively.
@@ -104,26 +104,26 @@ public class Cylinder3D extends GRShadedShape {
          *  regardless of the cylinder's size.  This now scales up the number
          *  of divisions if the cylinder is bigger than the default size.
          *
-         *  It still, however, keeps this resolution for smaller cylinders, so 
+         *  It still, however, keeps this resolution for smaller cylinders, so
          *  old models won't lose resolution if they have small cylinders.
          */
         double currentRadius = ((DoubleToken)radius.getToken()).doubleValue();
         double currentHeight = ((DoubleToken)height.getToken()).doubleValue();
-        
+
         if (currentRadius > 0.5) {
                 xDivisions = 30 * (int)(currentRadius / 0.5);
         } else {
                 xDivisions = 30;
         }
-        
+
         if (currentHeight > 0.7) {
                 yDivisions = 10 * (int)(currentHeight / 0.7);
         } else {
                 yDivisions = 10;
         }
-        
-        _containedNode = new Cylinder((float) _getRadius(), 
-                (float) _getHeight(), Cylinder.GENERATE_NORMALS, xDivisions, 
+
+        _containedNode = new Cylinder((float) _getRadius(),
+                (float) _getHeight(), Cylinder.GENERATE_NORMALS, xDivisions,
                 yDivisions, _appearance);
     }
 
