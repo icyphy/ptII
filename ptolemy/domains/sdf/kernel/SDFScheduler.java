@@ -1030,7 +1030,9 @@ public class SDFScheduler extends Scheduler {
                 throw new NotSchedulableException("No solution " +
                         "exists for the balance equations.\n" +
                         "Graph is not " +
-                        "consistent under the SDF domain");
+                        "consistent under the SDF domain " +
+                        "detected on external port " +
+                        connectedPort.getFullName());
             }
             if (_debugging && VERBOSE) {
                 _debug("New Firing: ");
