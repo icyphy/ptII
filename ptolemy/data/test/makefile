@@ -1,6 +1,6 @@
-# Makefile for the Java classes used to test the Ptolemy data classes
+# Makefile for the Java classes used to test the Ptolemy II data package
 #
-# @Authors: Christopher Hylands, based on a file by Thomas M. Parks
+# @Authors: Christopher Hylands, Neil Smyth; based on a file by Thomas M. Parks
 #
 # @Version: $Id$
 #
@@ -29,9 +29,6 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-# Note that the Java classes contained in this directory were written
-# by Sun.  These classes came from tcljava, see license.terms for more info.
-
 # Root of the Java directory
 ROOT =		../../../..
 
@@ -44,6 +41,11 @@ include $(CONFIG)
 CLASSPATH = ../../..
 
 TCL_SRCS = \
+	description.tcl \
+	init.tcl \
+	tclshrc.tcl \
+	testDefs.tcl \
+	testEnums.tcl
 
 JSRCS = 
 
@@ -52,6 +54,8 @@ JSIMPLE_TESTS = \
 	IntToken.tcl \
 	ObjectToken.tcl \
 	StringToken.tcl \
+	Param.tcl \
+	
 
 # Graphical Java tests that use Tcl.
 # Since there are no tests, we use a dummy file so that the script that builds
