@@ -55,7 +55,7 @@ JSRCS = \
 	PNAdder.java \
 	PNAlternate.java \
 	PNAudioSource.java \
-#	PNCirConvFilter.java \
+	PNCirConvFilter.java \
 	PNDAConverter.java \
 	PNInterleave.java \
 	PNQuantizer.java \
