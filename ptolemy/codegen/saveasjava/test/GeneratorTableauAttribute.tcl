@@ -55,6 +55,11 @@ test GeneratorTableauAttribute-1.1 {create an GTA, clone it} {
 	    [java::cast ptolemy.codegen.saveasjava.GeneratorTableauAttribute \
 	    [$attribute clone [$model workspace]]]
     $clonedAttribute setContainer $model
-    puts "attribute:\n[$attribute toString]\nclonedAttribute:\n[$clonedAttribute toString]"
-    list [expr {[$attribute toString] == [$clonedAttribute toString]}]
-} {}
+    #puts "attribute:\n[$attribute toString]\nclonedAttribute:\n[$clonedAttribute toString]"
+    regsub -all ".top" "[$clonedAttribute toString]" "" clonedAttributeString
+    if  { [$attribute toString] != $clonedAttributeString} {
+	# diffText is defined in $PTII/util/testsuite/testDefs.tcl
+	puts [diffText [$attribute toString] $clonedAttributeString]]
+    }
+    list [expr {[$attribute toString] == $clonedAttributeString}]
+} {1}
