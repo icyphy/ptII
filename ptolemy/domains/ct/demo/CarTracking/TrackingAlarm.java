@@ -179,10 +179,10 @@ public class TrackingAlarm extends DEActor {
                 ((DoubleToken)leaderPosition.get(0)).doubleValue();
         }
         if (followerPosition.hasToken(0)) {
+            double follower = 
+                ((DoubleToken)followerPosition.get(0)).doubleValue();
             if (_hasLeaderInformation) {
                 _hasLeaderInformation = false;
-                double follower = 
-                    ((DoubleToken)followerPosition.get(0)).doubleValue();
                 if (_leaderPosition - follower < _closeThreshold) {
                     tooClose.send(0, new BooleanToken(true));
                     //System.out.println("TOO CLOSE");
