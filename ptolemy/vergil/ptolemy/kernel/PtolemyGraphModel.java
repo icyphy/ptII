@@ -907,6 +907,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	    moml.append("<group>\n");
 	    failmoml.append("<group>\n");
             // Make the request in the context of the container.
+            // JDK1.2.2 fails to compile the next line.
             final CompositeEntity container =
                 (CompositeEntity)_getChangeRequestParent(getPtolemyModel());
 
@@ -993,6 +994,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	    failmoml.append("<group>\n");
 
             // Make the request in the context of the container.
+            // JDK1.2.2 fails to compile the next line.
             final CompositeEntity container =
                 (CompositeEntity)_getChangeRequestParent(getPtolemyModel());
 
