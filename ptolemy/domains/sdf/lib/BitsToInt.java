@@ -1,4 +1,4 @@
-/* An actor that converts 32 BooleanTokens to an IntToken
+/* An actor that converts 32 consecutive BooleanTokens to an IntToken
 
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
@@ -39,8 +39,8 @@ import ptolemy.actor.lib.*;
 
 ///////////////////////////////////////////////////////////////
 /// BitsToInt
-/** This actor takes in a integer token and output 32 boolean tokens 
-    which represents that integer.
+/** This actor takes in 32 consecutive boolean tokens and output 
+    a single IntToken.
 
 @author Michael Leung
 @version $Id$
@@ -99,11 +99,12 @@ public class BitsToInt extends SDFAtomicActor {
     }
 
 
-    /** Consume 32 BooleanTokens on the input. First token consumed is the 
-     *  most significant bit. Output a single IntToken which the 32 
-     *  BooleanTokens represents.
+    /** Consume 32 consecutive BooleanTokens on the input. 
+     *  The first token consumed is the most significant bit. 
+     *  Output a single IntToken which is representing by the
+     *  BooleanTokens.
      *
-     *  @exception IllegalActionException If is no director.
+     *  @exception IllegalActionException If there is no director.
      */
 
     public final void fire() throws IllegalActionException  {
