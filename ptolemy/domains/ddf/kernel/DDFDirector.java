@@ -807,6 +807,9 @@ public class DDFDirector extends Director {
                     }
                     if (farReceiver.size() >= tokenConsumptionRate) {
                         deferrable = true;
+                        if (farReceiver.size() > maxSize) {
+                            maxSize = farReceiver.size();
+                        }
                     }
 
                     // Here we find the maximum number of tokens in all
@@ -821,9 +824,7 @@ public class DDFDirector extends Director {
                     // enabled actors are deferrable. Therefore another
                     // approach is to perform this operation only when needed,
                     // i.e., when all enabled actor are deferrable.
-                    if (farReceiver.size() > maxSize) {
-                        maxSize = farReceiver.size();
-                    }
+                    
                 }
         }
 
