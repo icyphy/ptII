@@ -30,6 +30,7 @@
 
 package ptolemy.domains.ct.kernel;
 
+import ptolemy.actor.IODependence;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.TimedActor;
@@ -134,6 +135,10 @@ public class CTBaseIntegrator extends TypedAtomicActor
                 new DoubleToken(0.0));
         initialState.setTypeEquals(BaseType.DOUBLE);
         _history = new History(this);
+
+        // construct the IODependence attribute 
+        _IODependence = new IODependence(this, "IODependence");
+        _IODependence.addInputPort(input).addToDelayToPorts(output);       
     }
 
     ///////////////////////////////////////////////////////////////////

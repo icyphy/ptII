@@ -30,10 +30,12 @@
 
 package ptolemy.domains.de.lib;
 
+import ptolemy.actor.IODependence;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
+import ptolemy.domains.de.kernel.DEDirector;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -94,6 +96,10 @@ public class TimedDelay extends DETransformer {
         delay = new Parameter(this, "delay", new DoubleToken(1.0));
         delay.setTypeEquals(BaseType.DOUBLE);
         input.delayTo(output);
+        
+        // construct the IODependence attribute 
+        _IODependence = new IODependence(this, "IODependence");
+        _IODependence.addInputPort(input).addToDelayToPorts(output);       
     }
 
     ///////////////////////////////////////////////////////////////////
