@@ -149,19 +149,24 @@ public class FSMTransitionController extends EdgeController {
 	    if(transition != null) {
 		c.setToolTipText(transition.getName());
                 StringBuffer buffer = new StringBuffer();
-                if(transition.guardExpression != null &&
-                       transition.guardExpression.getExpression() != null) {
-                    buffer.append(transition.guardExpression.getExpression());
+                boolean aLabel = false;
+                String guard = transition.guardExpression.getExpression();
+                if(guard != null) {
+                    buffer.append(guard);
+                    aLabel = true;
                 }
-                String action =  transition.actions.getExpression();
+                String action = transition.actions.getExpression();
                 if (action != null && !action.trim().equals("")) {
-                    buffer.append("\n");
+                    if(aLabel) buffer.append("\n");
                     buffer.append(action);
+                    aLabel = true;
                 }
-                LabelFigure label = new LabelFigure(
-                        buffer.toString(), _labelFont);
-                label.setFillPaint(Color.blue);
-                c.setLabelFigure(label);
+                if(aLabel) {
+                    LabelFigure label = new LabelFigure(
+                            buffer.toString(), _labelFont);
+                    label.setFillPaint(Color.blue);
+                    c.setLabelFigure(label);
+                }
             }
             return c;
         }
@@ -207,8 +212,7 @@ public class FSMTransitionController extends EdgeController {
             // is fully connected.  Second, edges that aren't
             // connected should be erased (which this will rather
             // conveniently take care of for us
-            // There is a bug in this I need to track down first.
-            //  getController().rerenderEdge(edge);
+            getController().rerenderEdge(edge);
         }
     }
 }
