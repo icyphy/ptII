@@ -1,4 +1,4 @@
-# Makefile for the HSIF code generator
+# Makefile for the HSIF
 #
 # @Authors: Christopher Hylands (makefile only)
 #
@@ -31,7 +31,7 @@
 
 ME =		ptolemy/apps/hsif
 
-DIRS =
+DIRS =		lib
 
 # Root of the Ptolemy II directory
 ROOT =		../../..
@@ -47,6 +47,17 @@ JSRCS = \
 	HSIFProcessor.java 
 
 EXTRA_SRCS =	$(JSRCS)
+
+# Used to build jar files
+PTPACKAGE = 	hsif
+PTDIST =	$(PTPACKAGE)$(PTVERSION)
+PTCLASSJAR =
+
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+		lib/lib.jar
+
+PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
