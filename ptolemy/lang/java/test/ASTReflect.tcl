@@ -431,18 +431,12 @@ test ASTReflect-4.1 {check out innerclasses} {
        END NameNode
  SuperClass: NameNode
               Ident: Object
-              Qualifier: NameNode
-                          Ident: lang
-                          Qualifier: NameNode
-                                      Ident: java
-                                      Qualifier: AbsentTreeNode (leaf)
-                                     END NameNode
-                         END NameNode
+              Qualifier: AbsentTreeNode (leaf)
              END NameNode
 END ClassDeclNode
 }}}
 
-test ASTReflect-4.1 {check out methods} {
+test ASTReflect-5.1 {check out methods} {
     set class [ java::call Class forName "ptolemy.lang.java.test.ReflectTest"]
     set astList [java::call ptolemy.lang.java.ASTReflect methodsASTList $class]
     list [listToStrings $astList]
@@ -535,15 +529,57 @@ END MethodDeclNode
 END MethodDeclNode
 }}}
 
-test ASTReflect-5.1 {Check out CompileUnitNode after we try out the methods that CompileUnitNode calls} {
+test ASTReflect-6.1 {Check out CompileUnitNode after we try out the methods that CompileUnitNode calls} {
     set class [ java::call Class forName "ptolemy.lang.java.test.ReflectTestInterface"]
     set ast [java::call ptolemy.lang.java.ASTReflect ASTCompileUnitNode $class]
     list [$ast toString]
-} {}
+} {{CompileUnitNode
+ DefTypes: list
+  ClassDeclNode
+   Interfaces: list
+    TypeNameNode
+     Name: NameNode
+            Ident: Debuggable
+            Qualifier: AbsentTreeNode (leaf)
+           END NameNode
+    END TypeNameNode
+   END list
+   Members: list
+    MethodDeclNode
+     Modifiers: 9
+     Name: NameNode
+            Ident: interfaceMethod
+            Qualifier: AbsentTreeNode (leaf)
+           END NameNode
+     Params: <empty list>
+     ThrowsList: <empty list>
+     Body: AbsentTreeNode (leaf)
+     ReturnType: VoidTypeNode (leaf)
+    END MethodDeclNode
+   END list
+   Modifiers: 9
+   Name: NameNode
+          Ident: ReflectTestInterface
+          Qualifier: AbsentTreeNode (leaf)
+         END NameNode
+   SuperClass: NameNode
+                Ident: Object
+                Qualifier: AbsentTreeNode (leaf)
+               END NameNode
+  END ClassDeclNode
+ END list
+ Imports: <empty list>
+ Pkg: NameNode
+       Ident: 
+       Qualifier: AbsentTreeNode (leaf)
+      END NameNode
+END CompileUnitNode
+}}
 
 
 
-test ASTReflect-5.2 {ASTCompileUnitNode on a complete class} {
+
+test ASTReflect-6.2 {ASTCompileUnitNode on a complete class} {
     set class [ java::call Class forName "ptolemy.lang.java.Skeleton"]
     set ast [java::call ptolemy.lang.java.ASTReflect ASTCompileUnitNode $class]
     list [$ast toString]
@@ -681,13 +717,7 @@ test ASTReflect-5.2 {ASTCompileUnitNode on a complete class} {
          END NameNode
    SuperClass: NameNode
                 Ident: Object
-                Qualifier: NameNode
-                            Ident: lang
-                            Qualifier: NameNode
-                                        Ident: java
-                                        Qualifier: AbsentTreeNode (leaf)
-                                       END NameNode
-                           END NameNode
+                Qualifier: AbsentTreeNode (leaf)
                END NameNode
   END ClassDeclNode
  END list
