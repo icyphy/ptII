@@ -277,7 +277,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
 
             }
 
-	    //generate "Driver functions" for actors.
+	    // Generate "Driver functions" for actors.
             actors = container.deepEntityList().iterator();
             String driverParas, outParas, typedOutParas;
             String actorName;
@@ -293,14 +293,15 @@ public class GiottoDirector extends StaticSchedulingDirector {
 			   + actorName
 			   + "_driver (");
 
-		//get the "source" ports(the driver's inputs) for
-                //each input port of this actor.
+		// Get the "source" ports(the driver's inputs) for
+                // each input port of this actor.
                 inPorts = actor.inputPortList().iterator();
                 while (inPorts.hasNext()) {
                     IOPort thisPort = (IOPort) inPorts.next();
                     String sanitizedPortName = StringUtilities.sanitizeName(
                             thisPort.getName(container));
-		    Iterator sourcePorts = thisPort.sourcePortList().iterator();
+		    Iterator sourcePorts =
+                        thisPort.sourcePortList().iterator();
 		    while(sourcePorts.hasNext()) {
 			IOPort port = (IOPort)sourcePorts.next();
 			sanitizedPortName = StringUtilities.sanitizeName(
@@ -313,7 +314,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
 		    }
 		}
 
-                //reset inPorts and get the driver's outputs
+                // Reset inPorts and get the driver's outputs.
                 inPorts = actor.inputPortList().iterator();
                 while (inPorts.hasNext()) {
                     TypedIOPort port = (TypedIOPort) inPorts.next();
@@ -331,7 +332,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
                     }
                 }
 
-                //generate the code.
+                // Generate the code.
                 pout.println(driverParas
 			     + ") output ("
 			     + typedOutParas
@@ -352,7 +353,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
 
 	    }
 
-            // generate driver functions for toplevel output ports.
+            // Generate driver functions for toplevel output ports.
 	    // which is 'motor' in the test model.
 	    // FIXME: the giotto director should do some checking to
             //avoid several outputs of actors connect to the same output port?
@@ -374,7 +375,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
 		typedOutParas += port.getType() + " " + port.getName();
 		Iterator portConnected = port.deepInsidePortList().iterator();
 		// FIXME: there should be some situations that the
-                //outputPort has no connected ports.
+                // outputPort has no connected ports.
 		if (port.deepInsidePortList().size() != 0) {
 		    while (portConnected.hasNext()) {
 			TypedIOPort outPort = (TypedIOPort)
@@ -410,9 +411,10 @@ public class GiottoDirector extends StaticSchedulingDirector {
 	      pout.println("}");
 	   }
 
-            //generate mode code
+            // Generate mode code
             String containerName = container.getName();
-	    double periodValue = ((DoubleToken)period.getToken()).doubleValue();
+	    double periodValue =
+                ((DoubleToken)period.getToken()).doubleValue();
 	    // FIXME: this should be achieved from the
             //GiottoScheduler.getFrequency(ACTOR)
 	    int actorFreq = 0;
@@ -426,10 +428,10 @@ public class GiottoDirector extends StaticSchedulingDirector {
 			 + periodValue
 			 + " {");
 
-            //generate mode code for toplevel outputs drivers
+            // Generate mode code for toplevel outputs drivers.
 	    //FIXME: if there are several OUTPUTs..., we have multiple ACTFREQ?
-	    // find the lowest frequency
-	    // trace the output port updating frequency
+	    // Find the lowest frequency
+	    // Trace the output port updating frequency
             topOutPorts = container.outputPortList().iterator();
       	    while (topOutPorts.hasNext()) {
                 outputName = "";
@@ -441,7 +443,8 @@ public class GiottoDirector extends StaticSchedulingDirector {
                 // inputPort has no connected ports.
 		if (port.deepInsidePortList().size() != 0) {
 		    while (portConnected.hasNext()) {
-			TypedIOPort outPort = (TypedIOPort) portConnected.next();
+			TypedIOPort outPort =
+                            (TypedIOPort) portConnected.next();
                         Nameable actor = outPort.getContainer();
                         if (actor instanceof Actor) {
                             Parameter actorFreqPara = (Parameter) ((NamedObj)
@@ -468,15 +471,23 @@ public class GiottoDirector extends StaticSchedulingDirector {
                       actor).getName(container));
 	      Parameter actorFreqPara = (Parameter) ((NamedObj)
                       actor).getAttribute("frequency");
-	      actorFreq = ((IntToken) actorFreqPara.getToken()).intValue();
-	      pout.println("    taskfreq "
-			   + actorFreq
-			   + " do "
-			   + actorName
-			   + "("
-			   + actorName
-			   + "_driver);"
-			   );
+              if (actorFreqPara == null) {
+                  // FIXME: Is this really a bug?  The Multimode demo
+                  // throws this exception because the ramp actor has
+                  // no frequency attribute.
+                  throw new IllegalActionException(this, "Actor '" + actor
+                          + "' has no frequency attribute");
+              } else {
+                  actorFreq = ((IntToken) actorFreqPara.getToken()).intValue();
+                  pout.println("    taskfreq "
+                          + actorFreq
+                          + " do "
+			  + actorName
+			  + "("
+			  + actorName
+			  + "_driver);"
+			  );
+              }
 	    }
 
 	    pout.println("  }");
