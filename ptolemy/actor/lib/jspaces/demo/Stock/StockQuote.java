@@ -133,7 +133,9 @@ public class StockQuote extends Source {
 	    // every char from space(32) up is a word constituents.
 	    st.wordChars(32, 127);
 
-	    while (st.nextToken() != StreamTokenizer.TT_EOF) {
+	    while (st.nextToken() != StreamTokenizer.TT_EOF
+                    && st.sval != null) {
+                //System.out.println(st);
 		if (st.sval.indexOf("No such ticker symbol") != -1) {
 		    // bad ticker
 		    throw new IllegalActionException(this, "StockQuote.fire:"
@@ -144,6 +146,15 @@ public class StockQuote extends Source {
 		    break;
 		}
 	    }
+
+            if (st.sval == null) {
+		    throw new IllegalActionException(this, "StockQuote.fire:"
+                            + " Did not find tickerString: " + tickerString
+                            + " in " + spec + ".\n" 
+                            + " Perhaps the format changed,"
+                            + " Try changing _matchString");
+
+            }
 
 	    // st.sval contains the quote now.
 	    // the quote is between <b> and </b>
@@ -196,6 +207,7 @@ public class StockQuote extends Source {
     ////                         private variables                 ////
 
     private String _urlString = "http://quote.yahoo.com/q?s=";
-    private String _matchString = "<td nowrap align=left><a href=\"/q?s=";
+    private String _matchString = 
+        "<td nowrap align=left><font face=arial size=-1><a href=\"/q?s=";
 }
 
