@@ -44,6 +44,11 @@ import diva.graph.model.*;
  * @rating Red
  */
 public class SchematicGraphImpl implements GraphImpl {
+
+    public int _terminalNumber = 0;
+
+    public int _entityNumber = 0;
+    
     /**
      * Add a node to the given graph.
      */
@@ -81,7 +86,7 @@ public class SchematicGraphImpl implements GraphImpl {
      * semantic object.
      */
     public CompositeNode createCompositeNode(Object semanticObject) {
-	CompositeNode n = new SchematicEntity();
+	CompositeNode n = new SchematicEntity("entity" + _entityNumber++, null);
         n.setSemanticObject(semanticObject);
         return n;
     }
@@ -91,7 +96,7 @@ public class SchematicGraphImpl implements GraphImpl {
      * object.
      */
     public final Node createNode(Object semanticObject) {
-	Node n = new SchematicTerminal();
+	Node n = new SchematicTerminal("terminal" + _terminalNumber++, null);
         n.setSemanticObject(semanticObject);
         return n;
     }

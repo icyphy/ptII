@@ -73,7 +73,7 @@ public class Editor {
 
     public Editor() {
         TutorialWindow f = new TutorialWindow("Simple");
-	GraphPane pane = new GraphPane(new BasicGraphController(), 
+	GraphPane pane = new GraphPane(new EditorGraphController(), 
 				       new SchematicGraphImpl());
         _editor = new JGraph(pane);
         f.getContentPane().add("Center", _editor);

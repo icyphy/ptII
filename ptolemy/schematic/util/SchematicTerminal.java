@@ -55,30 +55,30 @@ public class SchematicTerminal extends PTMLTemplateObject
 implements diva.graph.model.Node {
 
     //FIXME: hack to get unique names.
-    private static int _instance = 0;
+    //   private static int _instance = 0;
     /**
      * Create a new SchematicTerminal with the name "SchematicTerminal",
      * and no template. 
      */
-    public SchematicTerminal () {
-        this("SchematicTerminal" + _instance, null);
-        _instance++;
-    }
+    //public SchematicTerminal () {
+    //    this("SchematicTerminal" + _instance, null);
+    //    _instance++;
+    // }
 
     /** 
      * Create a new SchematicTerminal with the given name, and no template.
      */
-    public SchematicTerminal (String name) {
-        super(name, null);
-    }
+    //    public SchematicTerminal (String name) {
+    //    super(name, null);
+    //}
 
     /**
      * Create a new SchematicTerminal with the given template, and the
      * name of the template. 
      */
-    public SchematicTerminal (Terminal template) {
-        this(template.getName(), template);
-    }
+    //public SchematicTerminal (Terminal template) {
+    //    this(template.getName(), template);
+    //}
 
     /** 
      * Create a new SchematicTerminal with the given name and template.

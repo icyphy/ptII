@@ -55,17 +55,17 @@ public class SchematicEntity extends PTMLTemplateObject
      * Create a new SchematicEntity object with no template and
      * the name "SchematicEntity".
      */
-    public SchematicEntity () {
-        this("SchematicEntity", null);
-    }
+    //    public SchematicEntity () {
+    //    this("SchematicEntity", null);
+    // }
 
     /**
      * Create a new SchematicEntity object with the given entity template and
      * the name of the template.
      */
-    public SchematicEntity (EntityTemplate et) {
-        this(et.getName(), et);
-    }
+    //public SchematicEntity (EntityTemplate et) {
+    //    this(et.getName(), et);
+    //}
 
     /**
      * Create a new SchematicEntity object with the given name and entity
@@ -73,7 +73,10 @@ public class SchematicEntity extends PTMLTemplateObject
      */
     public SchematicEntity (String name, EntityTemplate et) {
         super(name, et);
-	_terminalstyle = et.getTerminalStyle();
+	if(et != null) 
+	    _terminalstyle = et.getTerminalStyle();
+	else 
+	    _terminalstyle = null;
         _x = 0;
         _y = 0;
         _ports = new NamedList();
