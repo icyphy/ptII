@@ -62,7 +62,7 @@ import ptolemy.kernel.util.NamedObj;
    or object and specifying a model error handler for that model
    that handles model errors by throwing an exception.
    <p>
-   If the model contains an instance of FileAttribute named "_help", then
+   If the model contains an instance of FileParameter named "_help", then
    the file or URL specified by that attribute will be opened when "Help"
    in the Help menu is invoked.
 
@@ -194,7 +194,7 @@ public abstract class PtolemyFrame extends TableauFrame {
     }
 
     /** Display more detailed information than given by _about().
-     *  If the model contains an instance of FileAttribute named "_help",
+     *  If the model contains an instance of FileParameter named "_help",
      *  that the file or URL given by that attribute is opened.  Otherwise,
      *  a built-in generic help file is opened.
      */

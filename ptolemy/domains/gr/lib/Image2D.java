@@ -35,7 +35,7 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.domains.gr.kernel.GRActor2D;
 import ptolemy.domains.gr.kernel.Scene2DToken;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.attributes.FileAttribute;
+import ptolemy.data.expr.FileParameter;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import diva.canvas.toolbox.ImageFigure;
@@ -68,7 +68,7 @@ public class Image2D extends GRActor2D {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        fileOrURL = new FileAttribute(this, "fileOrURL");
+        fileOrURL = new FileParameter(this, "fileOrURL");
 
         sceneGraphOut = new TypedIOPort(this, "sceneGraphOut");
         sceneGraphOut.setOutput(true);
@@ -80,7 +80,7 @@ public class Image2D extends GRActor2D {
 
     /** The location of the image file upon which to base the figure.
      */
-    public FileAttribute fileOrURL;
+    public FileParameter fileOrURL;
 
     /** The output port that produces the figure.
      */

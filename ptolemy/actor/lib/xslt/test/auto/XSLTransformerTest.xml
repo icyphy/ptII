@@ -132,7 +132,7 @@
         </port>
     </entity>
     <entity name="XSLTransformer2" class="ptolemy.actor.lib.xslt.XSLTransformer">
-        <property name="fileOrURL" class="ptolemy.kernel.attributes.FileAttribute" value="XmlQueryToMoml.xsl">
+        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="XmlQueryToMoml.xsl">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
         </property>

@@ -50,7 +50,7 @@
         </port>
     </entity>
     <entity name="ImageReader" class="ptolemy.actor.lib.image.ImageReader">
-        <property name="fileOrURL" class="ptolemy.kernel.attributes.FileAttribute" value="$PTII/doc/img/PtolemyII.jpg">
+        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$PTII/doc/img/PtolemyII.jpg">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="155.0, 220.0">
         </property>

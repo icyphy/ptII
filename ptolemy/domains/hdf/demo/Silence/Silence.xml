@@ -558,7 +558,7 @@ to another. Then delete this annotation.</text>
         </configure>
     </entity>
     <entity name="AudioReader" class="ptolemy.actor.lib.javasound.AudioReader">
-        <property name="fileOrURL" class="ptolemy.kernel.attributes.FileAttribute" value="$CLASSPATH/ptolemy/actor/lib/javasound/voice.wav">
+        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/javasound/voice.wav">
         </property>
         <property name="sourceURL" class="ptolemy.kernel.util.StringAttribute" value="file:./pt2.wav">
         </property>

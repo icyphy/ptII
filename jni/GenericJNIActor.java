@@ -121,7 +121,7 @@ public class GenericJNIActor extends TypedAtomicActor {
         super(container, name);
         _argumentsList = new NamedList(this);
 
-        // FIXME: Should libraryDirectory be a FileAttribute?
+        // FIXME: Should libraryDirectory be a FileParameter?
         libraryDirectory = new Parameter(this, "libraryDirectory",
                 (Token) new StringToken("jni/lib"));
         nativeFunction = new Parameter(this, "nativeFunction",

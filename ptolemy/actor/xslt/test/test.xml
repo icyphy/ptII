@@ -99,7 +99,7 @@
         </port>
     </entity>
     <entity name="XsltTransformer" class="ptolemy.actor.xslt.XsltTransformer">
-        <property name="fileOrURL" class="ptolemy.kernel.attributes.FileAttribute" value="XmlQueryToMoml.xsl">
+        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="XmlQueryToMoml.xsl">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="330.0, 315.0">
         </property>

@@ -171,7 +171,7 @@ public class ReplaceComplexParameters extends SceneTransformer
 
             // If we have an attribute that derives from
             // stringAttribute, or Parameter then we need to grab some
-            // code for it. (i.e. FileAttribute, and FileParameter)
+            // code for it. (i.e. FileParameter, and FileParameter)
             if ((attribute instanceof StringAttribute &&
                         !attribute.getClass().equals(StringAttribute.class)) ||
                     (attribute instanceof Parameter &&

@@ -11,7 +11,7 @@
     <property name="image2" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
         <property name="_hideName" class="ptolemy.kernel.util.Attribute">
         </property>
-        <property name="source" class="ptolemy.kernel.attributes.FileAttribute" value="$CLASSPATH/doc/img/ptIIplanet.gif">
+        <property name="source" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/doc/img/ptIIplanet.gif">
         </property>
         <property name="scale" class="ptolemy.data.expr.Parameter" value="50.0">
         </property>

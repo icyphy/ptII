@@ -38,7 +38,7 @@
         </port>
     </entity>
     <entity name="LineWriter" class="ptolemy.actor.lib.io.LineWriter">
-        <property name="fileName" class="ptolemy.kernel.attributes.FileAttribute" value="ramps.out">
+        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="ramps.out">
         </property>
         <property name="append" class="ptolemy.data.expr.Parameter" value="true">
         </property>

@@ -19,7 +19,7 @@
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
     <entity name="LineReader" class="ptolemy.actor.lib.io.LineReader">
-        <property name="fileOrURL" class="ptolemy.kernel.attributes.FileAttribute" value="CopyFile.xml">
+        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="CopyFile.xml">
         </property>
         <doc>Read one line at a time from a text file and output as a string</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="100.0, 135.0">
@@ -33,7 +33,7 @@
         </port>
     </entity>
     <entity name="LineWriter" class="ptolemy.actor.lib.io.LineWriter">
-        <property name="fileName" class="ptolemy.kernel.attributes.FileAttribute" value="CopyOfCopyFile.xml">
+        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="CopyOfCopyFile.xml">
         </property>
         <doc>Write the value of a string token, one per line, to a text file.</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="235.0, 140.0">

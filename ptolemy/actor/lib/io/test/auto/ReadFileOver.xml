@@ -16,7 +16,7 @@
         </property>
     </property>
     <entity name="LineWriter" class="ptolemy.actor.lib.io.LineWriter">
-        <property name="fileName" class="ptolemy.kernel.attributes.FileAttribute" value="System.out">
+        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="System.out">
         </property>
         <doc>Write the value of a string token, one per line, to a text file.</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="300.0, 130.0">
@@ -131,7 +131,7 @@
                 </property>
             </port>
             <entity name="LineReader" class="ptolemy.actor.lib.io.LineReader">
-                <property name="fileOrURL" class="ptolemy.kernel.attributes.FileAttribute" value="data/data.txt">
+                <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="data/data.txt">
                 </property>
                 <property name="numberOfLinesToSkip" class="ptolemy.data.expr.Parameter" value="0">
                 </property>

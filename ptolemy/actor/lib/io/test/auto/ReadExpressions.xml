@@ -19,7 +19,7 @@
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
     <entity name="ExpressionReader" class="ptolemy.actor.lib.io.ExpressionReader">
-        <property name="fileOrURL" class="ptolemy.kernel.attributes.FileAttribute" value="data.ptd">
+        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="data.ptd">
         </property>
         <doc>Read one expression per line from a text file and output the result of evaluating the expression</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 140.0">
@@ -33,7 +33,7 @@
         </port>
     </entity>
     <entity name="LineWriter" class="ptolemy.actor.lib.io.LineWriter">
-        <property name="fileName" class="ptolemy.kernel.attributes.FileAttribute" value="System.out">
+        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="System.out">
         </property>
         <doc>Write the value of a string token, one per line, to a text file.</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="240.0, 140.0">

@@ -71,7 +71,7 @@ import ptolemy.util.StringUtilities;
    <p>
    A help menu is provided with two entries, About and Help. In both
    cases, an HTML file is opened.  The configuration can specify which
-   HTML file to open by containing an instance of FileAttribute with
+   HTML file to open by containing an instance of FileParameter with
    name "_about" or "_help".  The value of this attribute is a file
    name (which may begin with the keywords $CLASSPATH or $PTII to
    specify that the file is located relative to the CLASSPATH or to

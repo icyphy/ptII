@@ -21,7 +21,7 @@
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
     <entity name="AudioReader" class="ptolemy.actor.lib.javasound.AudioReader">
-        <property name="fileOrURL" class="ptolemy.kernel.attributes.FileAttribute" value="$CLASSPATH/ptolemy/actor/lib/javasound/voice.wav">
+        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/javasound/voice.wav">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="160.0, 150.0">
         </property>

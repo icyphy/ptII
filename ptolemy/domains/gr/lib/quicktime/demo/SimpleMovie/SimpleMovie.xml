@@ -31,7 +31,7 @@
         </property>
         <property name="backgroundColor" class="ptolemy.data.expr.Parameter" value="[1.0, 1.0, 1.0]">
         </property>
-        <property name="fileName" class="ptolemy.kernel.attributes.FileAttribute" value="movie.mov">
+        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="movie.mov">
         </property>
         <property name="frameRate" class="ptolemy.data.expr.Parameter" value="30">
         </property>
