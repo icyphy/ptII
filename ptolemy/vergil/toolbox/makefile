@@ -50,8 +50,6 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
 	AnnotationEditorFactory.java \
-	AttributeValueIcon.java \
-	BoxedValueIcon.java \
 	EditParametersFactory.java \
 	FigureAction.java \
 	GraphicElement.java \
