@@ -39,7 +39,7 @@ An interface for objects storing a location.
 @version $Id$
 @since Ptolemy II 2.1
 */
-public interface Locatable extends Nameable {
+public interface Locatable extends Settable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
