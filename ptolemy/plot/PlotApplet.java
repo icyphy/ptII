@@ -37,8 +37,7 @@ import java.net.*;              // Need URL
 
 //////////////////////////////////////////////////////////////////////////
 //// PlotApplet
-/** 
- * Create an Applet that can plot data from a URL.
+/** Create an Applet that can plot data from a URL.
  * The URL can be specified using either the
  * <code>dataurl</code> or <code>pxgraphargs</code> applet parameter.  
  * <p> The <code>dataurl</code> parameter contains a single URL
@@ -54,8 +53,7 @@ import java.net.*;              // Need URL
  */
 public class PlotApplet extends Applet implements Runnable {
 
-    /**
-     * Return a string describing this applet.
+    /** Return a string describing this applet.
      */
     public String getAppletInfo() {
         return "PlotApplet 1.1: A flexible data plotter.\n" +
@@ -64,8 +62,7 @@ public class PlotApplet extends Applet implements Runnable {
             "($Id$)";
     }
 
-    /**
-     * Return information about parameters.
+    /** Return information about parameters.
      */
     public String[][] getParameterInfo () {
         String pinfo[][] = {
@@ -86,15 +83,17 @@ public class PlotApplet extends Applet implements Runnable {
         int width,height;
         setLayout(new BorderLayout());
 
-        _myPlot = new Plot();
-        add("Center",_myPlot);
+        if ( plot() == null) {
+            newPlot();
+        }
+        add("Center",plot());
         //show();
 
         // Process the documentBase applet parameter.
         // Need the catch here because applets used as components have
         // no parameters. 
         try {
-            _myPlot.setDocumentBase(getDocumentBase());
+            plot().setDocumentBase(getDocumentBase());
         } catch (NullPointerException e) {
             System.err.println("PlotApplet: init: NullPointerException while"+
                     "handling getDocumentBase" + e);
@@ -113,7 +112,7 @@ public class PlotApplet extends Applet implements Runnable {
         }
         if (_debug > 8)
             System.out.println("PlotApplet: init: about to resize"+width);
-        _myPlot.resize(width,height);
+        plot().resize(width,height);
 
         // Process the background parameter.
         try {
@@ -133,7 +132,7 @@ public class PlotApplet extends Applet implements Runnable {
         String dataurl = null;
         try {
             dataurl = getParameter("dataurl");
-            _myPlot.setDataurl(dataurl);
+            plot().setDataurl(dataurl);
         } catch (NullPointerException e) {}
 
 
@@ -141,7 +140,7 @@ public class PlotApplet extends Applet implements Runnable {
         String pxgraphargs = null;
         try {
             pxgraphargs = getParameter("pxgraphargs");
-            _myPlot.parsePxgraphargs(pxgraphargs);
+            plot().parsePxgraphargs(pxgraphargs);
         } catch (NullPointerException e) {
         } catch (CmdLineArgException e) {
             System.err.println("Plot: failed to parse `"+pxgraphargs+
@@ -149,16 +148,21 @@ public class PlotApplet extends Applet implements Runnable {
         }
 
         super.init();
-        _myPlot.init();
+        plot().init();
 
     }
 
-    /**
-     * Paint the screen with our plot.
+    /** Paint the screen with our plot.
      */
     public void paint(Graphics graphics) {
         if (_debug > 8) System.out.println("PlotApplet: paint");
         _myPlot.paint(graphics);
+    }
+
+    /** Return the Plot object to operate on.
+     */  
+    public Plot plot() {
+        return _myPlot;
     }
 
     public void run () {
@@ -166,8 +170,7 @@ public class PlotApplet extends Applet implements Runnable {
 	repaint();
     }
 
-    /**
-     * Start the plot.
+    /** Start the plot.
      */
     public void start () {
         if (_debug > 8) System.out.println("PlotApplet: start");
@@ -176,8 +179,7 @@ public class PlotApplet extends Applet implements Runnable {
         super.start();
     }
 
-    /**
-     * Stop the plot
+    /** Stop the plot.
      */
     public void stop () {
         if (_debug > 8) System.out.println("PlotApplet: stop");
@@ -186,17 +188,29 @@ public class PlotApplet extends Applet implements Runnable {
 
 
     //////////////////////////////////////////////////////////////////////////
+    ////                         protected methods                        ////
+
+    /** Create a new Plot object to operate on.  Derived classes can
+     * redefine this method to create multiple Plot objects.
+     */
+    protected void newPlot() {
+        _myPlot = new Plot();
+    }
+        
+    //////////////////////////////////////////////////////////////////////////
     ////                         protected variables                      ////
 
     // If non-zero, print out debugging messages.
     protected int _debug = 0;
-
-    // The Plot component we are running.
-    protected Plot _myPlot;
 
     //////////////////////////////////////////////////////////////////////////
     ////                         private variables                        ////
 
     // Thread for this applet.
     private Thread _plotThread;
+
+    // The Plot component we are running.
+    private Plot _myPlot;
+
+
 }
