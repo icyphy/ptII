@@ -241,10 +241,6 @@ public class FIR extends SDFTransformer {
      */
     public void fire() throws IllegalActionException {
 
-        // If an attribute has changed since the last fire(), or if
-        // this is the first fire(), then renitialize.
-        if (_reinitializeNeeded) _reinitialize();
-
         // phase keeps track of which phase of the filter coefficients
         // are used. Starting phase depends on the _decPhase value.
         int phase = _dec - _decPhase - 1;
@@ -289,6 +285,10 @@ public class FIR extends SDFTransformer {
      *  @exception IllegalActionException If the superclass throws it.
      */
     public boolean prefire() throws IllegalActionException {
+        // If an attribute has changed since the last fire(), or if
+        // this is the first fire(), then renitialize.
+        if (_reinitializeNeeded) _reinitialize();
+
         if (input.hasToken(0, _dec)) return super.prefire();
         else return false;
     }
@@ -309,6 +309,12 @@ public class FIR extends SDFTransformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
+
+    /** The delay line. */
+    protected Token[] _data;
+
+    /** The index into the delay line of the most recent input. */
+    protected int _mostRecent;
 
     /** The phaseLength is ceiling(length/interpolation), where
      *  length is the number of taps.
@@ -359,9 +365,6 @@ public class FIR extends SDFTransformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    private Token[] _data;
-    private int _mostRecent;
 
     // The tokens needed in FIR
     private Token _outToken;
