@@ -56,6 +56,7 @@ PTCLASSJAR =
 UI_FILES_TO_BE_JARED = \
 	acks.htm \
 	authors.htm \
+	coding/debugging.htm \
 	codegen.htm \
 	expression.htm \
 	webStartHelp.htm \
