@@ -19,6 +19,16 @@
             class="ptolemy.data.expr.FileParameter"
             value="$CLASSPATH/ptolemy/configs/hyvisual/about.htm"/>
 
+  <!-- Specify copyright, used by actor/gui/GenerateCopyrights.java -->
+  <property name="_applicationCopyright"
+            class="ptolemy.kernel.util.StringAttribute"
+            value="ptolemy/configs/hyvisual/copyright.htm"/>
+
+  <!-- Specify name of this application, used by actor/gui/HTMLAbout.java -->
+  <property name="_applicationName"
+            class="ptolemy.data.expr.StringParameter"
+            value="HyVisual"/>
+
   <!-- Specify the help file to open. -->
   <property name="_help"
             class="ptolemy.data.expr.FileParameter"
