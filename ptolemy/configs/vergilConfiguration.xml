@@ -17,7 +17,7 @@
       <property name="Run Window" class="ptolemy.actor.gui.RunTableau$Factory"/>
       <property name="Tree View" class="ptolemy.vergil.tree.TreeTableau$Factory"/>
       <property name="XML view" class="ptolemy.actor.gui.TextEditorTableau$Factory"/>
-      <property name="Code Generator" class="ptolemy.codegen.saveasjava.GeneratorTableau$Factory"/>
+      <property name="Code Generator" class="ptolemy.copernicus.gui.GeneratorTableau$Factory"/>
       <property name="JVM Properties" class="ptolemy.actor.gui.JVMTableau$Factory"/>
     </property>
     <property name="HTML Viewer" class="ptolemy.actor.gui.HTMLViewerTableau$Factory">
