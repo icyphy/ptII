@@ -273,18 +273,18 @@ public class ArrayType extends StructuredType {
 	    if (this.isEqualTo(newType)) {
 	        return;
 	    } else {
-	        throw new IllegalActionException("ArrayType.updateType: " +
-		    "This type is a constant and the argument is not the " +
-		    "same as this type. This type: " + this.toString() +
-		    " argument: " + newType.toString());
+	        throw new IllegalActionException("ArrayType.updateType: "
+		        + "This type is a constant and the argument is not "
+			+ "the same as this type. "
+			+ "This type: " + this.toString()
+			+ " argument: " + newType.toString());
             }
 	}
 
 	// This type is a variable.
         if ( !this.isSubstitutionInstance(newType)) {
-            throw new IllegalActionException("ArrayType.updateType: " +
-                "This type is a variable and the argument is not a " +
-		"substitution instance of this type.");
+            throw new IllegalActionException("ArrayType.updateType: "
+                    + "Cannot update the current type to the new type.");
         }
 
         Type newElemType = ((ArrayType)newType).getElementType();
@@ -497,11 +497,12 @@ public class ArrayType extends StructuredType {
             if ( !_declaredElementType.isSubstitutionInstance((Type)e)) {
                 // The LUB of the _elementType and another type is General,
                 // this is a type conflict.
-                throw new IllegalActionException("ElementTypeTerm.setValue:" +
-                        " The new type is not a substitution instance of " +
-			"the element type. element type: " +
-                        _declaredElementType.toString() + "new type: " +
-                        e.toString());
+                throw new IllegalActionException("ElementTypeTerm.setValue: "
+                        + "Cannot set the new type as the element type of "
+			+ "this array type since it violates the declared "
+			+ "element type. Declared element type: "
+                        + _declaredElementType.toString()
+			+ " new type: " + e.toString());
             }
 
             if (_declaredElementType == BaseType.NAT) {

@@ -53,7 +53,7 @@ test SequenceToArray-1.1 {test constructor and clone} {
 ######################################################################
 #### Test SequenceToArray in an SDF model
 #
-test SequenceToArray-2.1 {test double array} {
+test SequenceToArray-2.1 {test double array, test prefire} {
     set e0 [sdfModel 3]
 
     # put in a Ramp
@@ -77,6 +77,14 @@ test SequenceToArray-2.1 {test double array} {
 
     $e0 connect $rampOut $s2aIn
     $e0 connect $s2aOut $recIn
+
+    $s2a prefire
+} {0}
+
+######################################################################
+#### run above model
+#
+test SequenceToArray-2.2 {test double array, use above model} {
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
 } {{[-2.0, -1.0]} {[0.0, 1.0]} {[2.0, 3.0]}}
@@ -84,7 +92,7 @@ test SequenceToArray-2.1 {test double array} {
 ######################################################################
 #### Check types of above model
 #
-test SequenceToArray-2.2 {check types} {
+test SequenceToArray-2.3 {check types} {
     list [[$rampOut getType] toString] [[$s2aIn getType] toString] \
 	[[$s2aOut getType] toString] [[$recIn getType] toString]
 } {double double (double)array (double)array}
@@ -92,7 +100,7 @@ test SequenceToArray-2.2 {check types} {
 ######################################################################
 #### Test string array
 #
-test SequenceToArray-2.3 {test string array} {
+test SequenceToArray-2.4 {test string array} {
     $init setExpression {"A"}
     $step setExpression {"B"}
     [$e0 getManager] execute
@@ -102,7 +110,7 @@ test SequenceToArray-2.3 {test string array} {
 ######################################################################
 #### Check types of above model
 #
-test SequenceToArray-2.4 {check types} {
+test SequenceToArray-2.5 {check types} {
     list [[$rampOut getType] toString] [[$s2aIn getType] toString] \
 	[[$s2aOut getType] toString] [[$recIn getType] toString]
 } {string string (string)array (string)array}
@@ -110,7 +118,7 @@ test SequenceToArray-2.4 {check types} {
 ######################################################################
 #### Test cascading SequenceToArray
 #
-test SequenceToArray-2.5 {test cascading SequenceToArray} {
+test SequenceToArray-2.6 {test cascading SequenceToArray} {
     set s2a2 [java::cast ptolemy.domains.sdf.lib.SDFTransformer \
 							[$s2a clone]]
     $s2a2 setName s2a2
@@ -134,7 +142,7 @@ test SequenceToArray-2.5 {test cascading SequenceToArray} {
 ######################################################################
 #### Check types of above model
 #
-test SequenceToArray-2.6 {check types} {
+test SequenceToArray-2.7 {check types} {
     list [[$rampOut getType] toString] [[$s2aIn getType] toString] \
 	[[$s2aOut getType] toString] [[$s2a2In getType] toString] \
 	[[$s2a2Out getType] toString] [[$recIn getType] toString]
@@ -143,7 +151,7 @@ test SequenceToArray-2.6 {check types} {
 ######################################################################
 #### Test array of array of string
 #
-test SequenceToArray-2.7 {test array of array of string} {
+test SequenceToArray-2.8 {test array of array of string} {
     $init setExpression {"C"}
     $step setExpression {"D"}
 
@@ -154,7 +162,7 @@ test SequenceToArray-2.7 {test array of array of string} {
 ######################################################################
 #### Check types of above model
 #
-test SequenceToArray-2.8 {check types} {
+test SequenceToArray-2.9 {check types} {
     list [[$rampOut getType] toString] [[$s2aIn getType] toString] \
 	[[$s2aOut getType] toString] [[$s2a2In getType] toString] \
 	[[$s2a2Out getType] toString] [[$recIn getType] toString]

@@ -227,6 +227,46 @@ public class RecordToken extends Token {
         return new RecordToken(labels, values);
     }
 
+    /** Return a new token whose value is the field-wise subtraction of
+     *  this token and the argument. The argument must be a RecordToken.
+     *  The result is a RecordToken whose label set is the intersection
+     *  of the label sets of this token and the argument. The type of
+     *  the result token is greater than or equal to the types of this
+     *  token and the argument.
+     *  @param token The token to subtract from this token.
+     *  @return A new RecordToken.
+     *  @exception IllegalActionException If the argument is not a
+     *   RecordToken, or calling the subtract method of the element token
+     *   throws it.
+     */
+    public Token subtract(Token token) throws IllegalActionException {
+        if ( !(token instanceof RecordToken)) {
+            throw new IllegalActionException("RecordToken.subtract: The "
+	            + "argument is not a RecordToken.");
+        }
+
+        RecordToken recordToken = (RecordToken)token;
+
+        Set intersectionSet = new HashSet();
+        Set myLabelSet = _fields.keySet();
+        Set argLabelSet = recordToken._fields.keySet();
+        intersectionSet.addAll(myLabelSet);
+        intersectionSet.retainAll(argLabelSet);
+
+        Object[] labelsObjects = intersectionSet.toArray();
+        int size = labelsObjects.length;
+        String[] labels = new String[size];
+        Token[] values = new Token[size];
+        for (int i = 0; i < size; i++) {
+            labels[i] = (String)labelsObjects[i];
+            Token value1 = this.get(labels[i]);
+            Token value2 = recordToken.get(labels[i]);
+            values[i] = value1.subtract(value2);
+        }
+
+        return new RecordToken(labels, values);
+    }
+
     /** Return the value of this token as a string.
      *  The syntax is similar to the ML record:
      *  {<label> = <value>, <label> = <value>, ...}

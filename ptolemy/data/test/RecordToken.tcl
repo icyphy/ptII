@@ -265,7 +265,98 @@ test RecordToken-7.2 {Test one} {
 ######################################################################
 ####
 # 
-test RecordToken-8.0 {Test zero} {
+test RecordToken-8.1 {Test subtract} {
+    # first record is {name="foo", value=1, extra1=2}
+    set l1 [java::new {String[]} {3} {{name} {value} {extra1}}]
+
+    set nt1 [java::new {ptolemy.data.StringToken String} foo]
+    set vt1 [java::new {ptolemy.data.IntToken int} 1]
+    set et1 [java::new {ptolemy.data.IntToken int} 2]
+    set v1 [java::new {ptolemy.data.Token[]} 3 [list $nt1 $vt1 $et1]]
+
+    set r1 [java::new {ptolemy.data.RecordToken} $l1 $v1]
+
+    # second record is {name="bar", extra2=8.5, value=5.5}
+    set l2 [java::new {String[]} {3} {{name} {extra2} {value}}]
+
+    set nt2 [java::new {ptolemy.data.StringToken String} bar]
+    set et2 [java::new {ptolemy.data.DoubleToken double} 8.5]
+    set vt2 [java::new {ptolemy.data.DoubleToken double} 5.5]
+    set v2 [java::new {ptolemy.data.Token[]} 3 [list $nt2 $et2 $vt2]]
+
+    set r2 [java::new {ptolemy.data.RecordToken} $l2 $v2]
+
+    catch {[$r1 subtract $r2] toString} msg
+    list $msg
+} {{ptolemy.kernel.util.IllegalActionException: Subtraction not supported on ptolemy.data.StringToken minus ptolemy.data.StringToken.}}
+
+######################################################################
+####
+# 
+test RecordToken-8.2 {Test subtract} {
+    # first record is {name=2.5, value=1, extra1=2}
+    set l1 [java::new {String[]} {3} {{name} {value} {extra1}}]
+
+    set nt1 [java::new {ptolemy.data.DoubleToken double} 2.5]
+    set vt1 [java::new {ptolemy.data.IntToken int} 1]
+    set et1 [java::new {ptolemy.data.IntToken int} 2]
+    set v1 [java::new {ptolemy.data.Token[]} 3 [list $nt1 $vt1 $et1]]
+
+    set r1 [java::new {ptolemy.data.RecordToken} $l1 $v1]
+
+    # second record is {name=4, extra2=8.5, value=5.5}
+    set l2 [java::new {String[]} {3} {{name} {extra2} {value}}]
+
+    set nt2 [java::new {ptolemy.data.IntToken int} 4]
+    set et2 [java::new {ptolemy.data.DoubleToken double} 8.5]
+    set vt2 [java::new {ptolemy.data.DoubleToken double} 5.5]
+    set v2 [java::new {ptolemy.data.Token[]} 3 [list $nt2 $et2 $vt2]]
+
+    set r2 [java::new {ptolemy.data.RecordToken} $l2 $v2]
+
+    [$r1 subtract $r2] toString
+} {{name=-1.5, value=-4.5}}
+
+######################################################################
+####
+# 
+test RecordToken-8.3 {Test subtract, reverse the order} {
+    [$r2 subtract $r1] toString
+} {{name=1.5, value=4.5}}
+
+######################################################################
+####
+# 
+test RecordToken-8.4 {Test subtracting with empty record} {
+    # first record is empty
+    set l [java::new {String[]} {0} {}]
+    set v [java::new {ptolemy.data.Token[]} {0} {}]
+    set r [java::new {ptolemy.data.RecordToken} $l $v]
+
+    # second record is {name="foo", value=1, extra1=2}
+    set l1 [java::new {String[]} {3} {{name} {value} {extra1}}]
+
+    set nt1 [java::new {ptolemy.data.StringToken String} foo]
+    set vt1 [java::new {ptolemy.data.IntToken int} 1]
+    set et1 [java::new {ptolemy.data.IntToken int} 2]
+    set v1 [java::new {ptolemy.data.Token[]} 3 [list $nt1 $vt1 $et1]]
+
+    set r1 [java::new {ptolemy.data.RecordToken} $l1 $v1]
+
+    [$r subtract $r1] toString
+} {{}}
+
+######################################################################
+####
+# 
+test RecordToken-8.5 {Test subtracting with empty record, reverse order} {
+    [$r1 subtract $r] toString
+} {{}}
+
+######################################################################
+####
+# 
+test RecordToken-9.0 {Test zero} {
     # record is empty
     set l [java::new {String[]} {0} {}]
     set v [java::new {ptolemy.data.Token[]} {0} {}]
@@ -277,7 +368,7 @@ test RecordToken-8.0 {Test zero} {
 ######################################################################
 ####
 # 
-test RecordToken-8.1 {Test zero} {
+test RecordToken-9.1 {Test zero} {
     set l [java::new {String[]} {2} {{name} {value}}]
 
     set nt [java::new {ptolemy.data.StringToken String} foo]
@@ -292,7 +383,7 @@ test RecordToken-8.1 {Test zero} {
 ######################################################################
 ####
 # 
-test RecordToken-8.2 {Test zero} {
+test RecordToken-9.2 {Test zero} {
     set l [java::new {String[]} {2} {{value1} {value2}}]
 
     set v1 [java::new {ptolemy.data.IntToken int} 5]

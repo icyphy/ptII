@@ -377,9 +377,8 @@ public class RecordType extends StructuredType {
 	
 	// This type is a variable.
         if ( !this.isSubstitutionInstance(newType)) {
-            throw new IllegalActionException("RecordType.updateType: " +
-                "This type is a varaible and the argument is not a " +
-		"substitution instance of this type.");
+            throw new IllegalActionException("RecordType.updateType: "
+                    + "Cannot update this type to the new type."); 
         }
 
         Iterator iter = _fields.keySet().iterator();
@@ -665,11 +664,12 @@ public class RecordType extends StructuredType {
             }
 
             if ( !_declaredType.isSubstitutionInstance((Type)e)) {
-                throw new IllegalActionException("FieldType.setValue:" +
-                        " The new type is not a substitution instance of the " +
-                        "field type. field type: " +
-                        _declaredType.toString() + "new type: " +
-                        e.toString());
+                throw new IllegalActionException("FieldType.setValue: "
+                        + "Cannot set the new type to the field type of this "
+			+ "RecordType since it violates the declared field "
+			+ "type. "
+                        + "Declared field type: " + _declaredType.toString()
+			+ " New type: " + e.toString());
             }
 
             if (_declaredType == BaseType.NAT) {

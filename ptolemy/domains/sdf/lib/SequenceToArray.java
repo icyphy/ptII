@@ -97,6 +97,20 @@ public class SequenceToArray extends SDFTransformer {
         output.send(0, new ArrayToken(valueArray));
     }
 
+    /** Return true if the input port has enough tokens for this actor to
+     *  fire. The number of tokens required is determined by the token
+     *  consumption rate.
+     *  @return boolean True if there is enough tokens at the input port
+     *   for this actor to fire.
+     *  @exception IllegalActionException If the hasToken() query to the
+     *   input port throws it.
+     *  @see ptolemy.actor.IOPort#hasToken(int, int)
+     */
+    public boolean prefire() throws IllegalActionException {
+	int length = input.getTokenConsumptionRate();
+	return input.hasToken(0, length);
+    }
+
     /** Return the type constraint that the type of the elements of the
      *  output array is no less than the type of the input port.
      *  @return A list of inequalities.

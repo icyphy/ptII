@@ -59,7 +59,7 @@ test RecordAssembler-1.1 {test clone} {
     $assembler description 1
 } {ptolemy.actor.lib.RecordAssembler}
 
-test RecordAssembler-2.1 {run with one input port} {
+test RecordAssembler-2.1 {run with one input port, test prefire} {
     set fromRamp [java::new ptolemy.actor.TypedIOPort $assembler fromRamp \
                                                                  true false]
     set output [java::field $assembler output]
@@ -71,17 +71,22 @@ test RecordAssembler-2.1 {run with one input port} {
 
     set r1 [$e0 connect $rampOut $fromRamp]
     $e0 connect $output $recIn
+
+    $assembler prefire
+} {0}
+
+test RecordAssembler-2.2 {run with one input port, use above model} {
     set m [$e0 getManager]
     $m execute
     enumToTokenValues [$rec getRecord 0]
 } {{{fromRamp=0}} {{fromRamp=1}} {{fromRamp=2}}}
 
-test RecordAssembler-2.2 {check types} {
+test RecordAssembler-2.3 {check types} {
     list [[$rampOut getType] toString] [[$fromRamp getType] toString] \
          [[$output getType] toString] [[$recIn getType] toString]
 } {int int {{fromRamp:int}} {{fromRamp:int}}}
 
-test RecordAssembler-2.3 {run with two input port} {
+test RecordAssembler-2.4 {run with two input port} {
     set fromConst [java::new ptolemy.actor.TypedIOPort $assembler fromConst \
                                                                true false]
     set const [java::new ptolemy.actor.lib.Const $e0 const]   
@@ -95,7 +100,7 @@ test RecordAssembler-2.3 {run with two input port} {
     enumToTokenValues [$rec getRecord 0]
 } {{{fromConst=1, fromRamp=0}} {{fromConst=1, fromRamp=1}} {{fromConst=1, fromRamp=2}}}
 
-test RecordAssembler-2.4 {check types} {
+test RecordAssembler-2.5 {check types} {
     list [[$rampOut getType] toString] [[$constOut getType] toString] \
     	[[$fromRamp getType] toString] [[$fromConst getType] toString] \
 	[[$output getType] toString] [[$recIn getType] toString]

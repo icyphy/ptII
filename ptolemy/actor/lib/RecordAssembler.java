@@ -91,10 +91,8 @@ public class RecordAssembler extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** If all input ports have tokens, read one token from each input
-     *  port, assemble them into a RecordToken, and send the RecordToken
-     *  to the output.  If some input ports do not have a token, suspend
-     *  firing and return.
+    /** Read one token from each input port, assemble them into a RecordToken,
+     *  and send the RecordToken to the output.
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
@@ -103,15 +101,8 @@ public class RecordAssembler extends TypedAtomicActor {
             throw new IllegalActionException(this, "No director!");
         }
 
-	// check if all input ports have token
         Object[] portArray = inputPortList().toArray();
 	int size = portArray.length;
-	for (int i = 0; i < size; i++) {
-	    IOPort port = (IOPort)portArray[i];
-	    if ( !port.hasToken(0)) {
-	        return;
-	    }
-	}
 
 	// construct the RecordToken and to output
 	String[] labels = new String[size];
@@ -126,6 +117,25 @@ public class RecordAssembler extends TypedAtomicActor {
 	RecordToken result = new RecordToken(labels, values);
 
         output.send(0, result);
+    }
+
+    /** Return true if all input ports have tokens, false if some input
+     *  ports do not have a token.
+     *  @return True if all input ports have tokens.
+     *  @exception IllegalActionException If the hasToken() call to the
+     *   input port throws it.
+     *  @see ptolemy.actor.IOPort#hasToken(int)
+     */
+    public boolean prefire() throws IllegalActionException {
+        Iterator iter = inputPortList().iterator();
+	while (iter.hasNext()) {
+	    IOPort port = (IOPort)iter.next();
+	    if ( !port.hasToken(0)) {
+	        return false;
+	    }
+        }
+
+	return true;
     }
 
     /** Return the type constrains of this actor. The type constraint is
