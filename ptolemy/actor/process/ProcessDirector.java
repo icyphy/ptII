@@ -142,15 +142,7 @@ public class ProcessDirector extends Director {
             while( !_areActorsDeadlocked() ) {
 		workspace.wait(this);
             }
-	    // This is new, 11/18/00, davisjs@eecs.berkeley.edu
             _notDone = _resolveDeadlock();
-	    /*
-              if( _areActorsDeadlocked() ) {
-              _notDone = _resolveDeadlock();
-              } else {
-              _notDone = true;
-              }
-            */
         }
     }
 
@@ -180,9 +172,8 @@ public class ProcessDirector extends Director {
                 actor.initialize();
             }
         }
-        // NOTE: Used to do this with a method call, but fails
-        // with an exception on the second run.
-	// setCurrentTime(0.0);
+        // NOTE: Used to do this with a method call, but
+        // then it fails with an exception on the second run.
         _currentTime = 0.0;
     }
 
@@ -216,8 +207,8 @@ public class ProcessDirector extends Director {
     }
 
     /** Return a new receiver of a type compatible with this director.
-     *  In class, this returns an instance of MailboxBoundaryReceiver.
-     *  @return A new MailboxBoundaryReceiver.
+     *  In class, this returns a new Mailbox.
+     *  @return A new Mailbox.
      */
     public Receiver newReceiver() {
         return new Mailbox();
@@ -231,8 +222,8 @@ public class ProcessDirector extends Director {
      *  @exception IllegalActionException If a derived class throws it.
      */
     public boolean postfire() throws IllegalActionException {
-        if( _debugging ) _debug(_name+": returning _notDone = "
-                + _notDone);
+        if(_debugging) 
+            _debug(_name+": returning _notDone = " + _notDone);
 	return _notDone;
     }
 
