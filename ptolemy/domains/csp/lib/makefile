@@ -51,17 +51,12 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = \
 	CSPBuffer.java \
 	CSPChopstick.java \
-	CSPContentionAlarm.java \
-	CSPController.java \
-	CSPMemory.java \
 	CSPMultiSource.java \
 	CSPPhilosopher.java \
-	CSPProcessor.java \
 	CSPSieve.java \
 	CSPSink.java \
 	CSPSource.java \
 	DisplayBlock.java \
-	PortChannelCode.java \
 	CSPMultiSink.java
 
 
