@@ -406,7 +406,7 @@ Below are some other issues:
 directives inside the file.  This version only supports
 <code>draw</code> and <code>move</code>.
 <li>This version does not support X resources.
-<li>Hardcopy is not yet supported.
+
  * @author Christopher Hylands
  * @version $Id$
  * @see Plot
