@@ -29,7 +29,7 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-DIRS = kernel domains
+DIRS = kernel domains pitcl
 
 # Root of Tycho directory
 ROOT =		../..
