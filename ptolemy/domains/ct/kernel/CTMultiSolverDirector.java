@@ -1213,8 +1213,18 @@ public class CTMultiSolverDirector extends CTDirector {
         // constraints. 
         while (!_stopRequested) {
             while (!_stopRequested) {
-                // _setExecutionPhase(CTExecutionPhase.SOLVINGSTATES_PHASE);
-                
+               
+                // Restore the saved state of the stateful actors.
+                CTSchedule schedule = (CTSchedule)getScheduler().getSchedule();
+                Iterator actors = schedule.get(
+                        CTSchedule.STATEFUL_ACTORS).actorIterator();
+                while (actors.hasNext()) {
+                    CTStatefulActor actor = (CTStatefulActor)actors.next();
+                    if (_debugging) 
+                        _debug("Restore states " + (Nameable)actor);
+                    actor.goToMarkedState();
+                }
+
                 // Reset the round counts and the convergence to false.
                 // NOTE: some solvers have their convergency dependent on 
                 // the round counts. For example, RK-23 solver.
@@ -1271,16 +1281,6 @@ public class CTMultiSolverDirector extends CTDirector {
                                 getCurrentStepSize());
                     }
                 }
-                // Restore the saved state of the stateful actors.
-                CTSchedule schedule = (CTSchedule)getScheduler().getSchedule();
-                Iterator actors = schedule.get(
-                        CTSchedule.STATEFUL_ACTORS).actorIterator();
-                while (actors.hasNext()) {
-                    CTStatefulActor actor = (CTStatefulActor)actors.next();
-                    if (_debugging) 
-                        _debug("Restore states " + (Nameable)actor);
-                    actor.goToMarkedState();
-                }
             }
 
             // States have be resolved. Note that the current
@@ -1319,7 +1319,7 @@ public class CTMultiSolverDirector extends CTDirector {
             } else {
                 break;
             }
-        }
+       }
         
         // postfire all event generators.
         // NOTE: depending on the implementation of event generators,
