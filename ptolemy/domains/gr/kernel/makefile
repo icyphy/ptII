@@ -71,7 +71,8 @@ OPTIONAL_FILES = \
 	'GRDirector$$GRIOPort.class' \
 	'GRScheduler$$1.class' \
 	'GRScheduler$$_NamedObjComparator.class' \
-	'GRDirector$$DD3DIOPort.class'
+	'GRDirector$$DD3DIOPort.class' \
+	'SceneGraphToken$$TestType.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

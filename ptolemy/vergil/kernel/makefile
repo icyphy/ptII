@@ -75,7 +75,8 @@ OPTIONAL_FILES = \
 	'AttributeController$$Access.class' \
 	'PortDialogFactory$$1.class' \
 	'RelationController$$RelationRenderer.class' \
-	'RenameDialogFactory$$1.class'
+	'RenameDialogFactory$$1.class' \
+	'SetIconAction$$ImageFileFilter.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
