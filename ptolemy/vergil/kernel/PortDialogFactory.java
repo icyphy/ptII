@@ -124,7 +124,7 @@ public class PortDialogFactory implements MenuItemFactory {
                         DialogTableau.createDialog(
                             (Frame) parent,
                             _configuration,
-                            ((ActorGraphFrame) parent).getEffigy(),
+                            ((TableauFrame) parent).getEffigy(),
                             UnitConstraintsDialog.class,
                             (Entity) target);
                     if (dialogTableau != null) {
