@@ -99,17 +99,6 @@ public class IndentationVisitor extends JavaVisitor implements CCodeGeneratorCon
 
 
     /*
-     *  Invoke a transition visit for a constructor declaration node.
-     *  @param same as method _defaultVisit
-     *  @return same as method _defaultVisit
-     */
-    public Object visitConstructorDeclNode(ConstructorDeclNode node, LinkedList args) {
-          return _transitionVisit(node, args);
-      }
-
-
-
-    /*
      *  Invoke a transition visit for an interface declaration node.
      *  @param same as method _defaultVisit
      *  @return same as method _defaultVisit
