@@ -364,7 +364,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
      *  it will fire the actor at the registered time point minus the
      *  minimum step size, and then it will fire the actor again at
      *  exactly at each registered time point.  This ensures that if
-     *  the actor outputs a discontinuity at the resitered time point,
+     *  the actor outputs a discontinuity at the registered time point,
      *  then the output will indeed appear as a discontinuity.
      *  <p>
      *  From this director's point of view, it is irrelevant
