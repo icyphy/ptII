@@ -25,11 +25,19 @@
 		</dl>
 
 	<dt><a href="../../bin"><CODE>bin</CODE></a>
-	<dd> Start up scripts for utilities like ptplot
+	<dd> Start up scripts for utilities like ptplot.
+	Scripts that end <CODE>.in</CODE>, such as
+	<a href="../../bin/ptjacl.in"><CODE>bin/ptjacl.in</CODE></a>
+	are read in by <CODE>configure</CODE>, which generates
+	scripts like
+	<a href="../../bin/ptjacl"><CODE>bin/ptjacl</CODE></a>
 
 	<dt><a href="../../collections"><CODE>collections</CODE></a>
-	<dd> Doug Lea's Collections Java package.  This directory
-	will go away once we no longer support JDK1.1
+	<dd> Doug Lea's Collections Java package.  This package predates
+	the JDK1.2
+<a href="http://java.sun.com/products/jdk/1.2/docs/guide/collections/index.html" target="_top">Collections Framework</a>.
+	Eventually, we will convert everything to the JDK1.2 Collections
+	framework, and this directory will be removed.
 
 	<dt><CODE>com</CODE></a>
 	<dd> Commercial Java packages, which we are not shipping.
@@ -44,15 +52,18 @@
 	<dd> Used by GNU Autoconf and the <CODE>configure</CODE> 
 	script
 
-	<dt><CODE>devel/</CODE>
+	<dt><CODE>devel</CODE>
 	<dd> Code that is under development and not to be released.
 
 	<dt><CODE>diva</CODE>
-	<dd> The
-	<a href="http://ptolemy.eecs.berkeley.edu/diva/" target="_top">Diva</a> 
-	Dynamic Interactive Visualization software system.
-	Diva is used by some of the demos.  
+	<dd> The <CODE>diva</CODE> directory is not shipped with the release.
+	 <br>The
+	<a href="http://www-cad.eecs.berkeley.edu/diva/" target="_top">Diva</a> 
+	(Dynamic Interactive Visualization software system) 
+	is used by some of the demos.  
 	The Diva jar file is at <CODE>$PTII/lib/diva.jar</CODE>
+	For more information, see the <a href="../install.htm#Diva">Diva</a>
+	section of the installation guide.
 
 	<dt><a href="../../mk"><CODE>mk</CODE></a>
 	<dd> Makefiles that are included in other makefiles
@@ -72,12 +83,9 @@
 		<dd> Used in directories that contain no source files,
 		only subdirectories.
 
-		<dt> <a href="../../mk/ptdist.mk"><CODE>ptdist.mk</CODE></a>
-		<dd> Used in to build standalone distributions, such
-		as Ptplot
-
 		<dt> <a href="../../mk/ptcommon.mk"><CODE>ptcommon.mk</CODE></a>
 		<dd> Contains rules to build derived files from source files.
+
 
 		<dt> <a href="../../mk/ptdist.mk"><CODE>ptdist.mk</CODE></a>
 		<dd> Contains rules to build tar and zip distributions.
@@ -89,60 +97,79 @@
 	<dd> Java packages used to implement Ptolemy II
 		<dl>
 		<dt> <a href="../../ptolemy/actor"><CODE>actor</CODE></a> -
-		<a href="../../ptolemy/actor/doc/codeDoc/tree.html"><CODE>documentation</CODE></a>
+		<a href="../codeDoc/ptolemy/actor/package-summary.html" target="_top"><CODE>documentation</CODE></a>
 		<dd> Functional block code
 			<dt>
 			<dl> <a href="../../ptolemy/actor/lib"><CODE>lib</CODE></a> -
-		<a href="../codeDoc/ptolemy/actor/lib"><CODE>documentation</CODE></a>
+		<a href="../codeDoc/ptolemy/actor/lib/package-summary.html" target="_top"><CODE>documentation</CODE></a>
+
 			<dd> Domain Polymorphic actors
 			<dt> <a href="../../ptolemy/actor/util"><CODE>util</CODE></a> -
-		<a href="../../ptolemy/actor/util/doc/codeDoc/tree.html"><CODE>documentation</CODE></a>
+		<a href="../codeDoc/ptolemy/actor/util/package-summary.html" target="_top"><CODE>documentation</CODE></a>
 			<dd> Utility classes 
 			</dl>
 
 
 		<dt> <a href="../../ptolemy/data"><CODE>data</CODE></a> -
-		<a href="../../ptolemy/data/doc/codeDoc/tree.html"><CODE>documentation</CODE></a>
+		<a href="../codeDoc/ptolemy/data/package-summary.html" target="_top"><CODE>documentation</CODE></a>
+
 		<dd> Code used to pass data between blocks
 			<dl>
 		<dt> <a href="../../ptolemy/data/expr"><CODE>expr</CODE></a> -
-		<a href="../../ptolemy/data/expr/doc/codeDoc/tree.html"><CODE>documentation</CODE></a>
+		<a href="../codeDoc/ptolemy/data/expr/package-summary.html" target="_top"><CODE>documentation</CODE></a>
 			<dd> Expression parser
 			</dl>
 
 		<dt> <a href="../../ptolemy/domains"><CODE>domains</CODE></a>
 		<dd> Various models of computation
 			<dl>
-			<dt> <a href="../../ptolemy/domains/csp"><CODE>csp</CODE></a> -
-			<a href="../../ptolemy/domains/csp/kernel/doc/codeDoc/tree.html"><CODE>kernel documentation</CODE></a>
+			<dt> 
+		<a href="../../ptolemy/domains/csp"><CODE>csp</CODE></a> -
+		<a href="../../ptolemy/domains/csp/doc/body.htm" target="body">Demonstrations</a> -
+		<a href="../codeDoc/ptolemy/domains/csp/package-summary.html" target="_top">Java documentation</a>
 			<dd> Communicating Sequential Processes
 
+
 			<dt> <a href="../../ptolemy/domains/ct"><CODE>ct</CODE></a> -
-			<a href="../../ptolemy/domains/ct/kernel/doc/codeDoc/tree.html"><CODE>kernel documentation</CODE></a>
+		<a href="../../ptolemy/domains/ct/doc/body.htm" target="body">Demonstrations</a> -
+		<a href="../codeDoc/ptolemy/domains/ct/package-summary.html" target="_top">Java documentation</a>
 			<dd> Continuous Time
 
-			<dt> <a href="../../ptolemy/domains/de"><CODE>de</CODE></a> -
-			<a href="../../ptolemy/domains/de/kernel/doc/codeDoc/tree.html"><CODE>kernel documentation</CODE></a>
+
+			<dt>
+		<a href="../../ptolemy/domains/dde"><CODE>de</CODE></a> -
+		<a href="../../ptolemy/domains/dde/doc/body.htm" target="body">Demonstrations</a> -
+
+		<a href="../codeDoc/ptolemy/domains/dde/package-summary.html" target="_top">Java documentation</a>
+			<dd> DDE
+
+
+			<dt>
+		<a href="../../ptolemy/domains/de"><CODE>de</CODE></a> -
+		<a href="../../ptolemy/domains/de/doc/body.htm" target="body">Demonstrations</a> -
+		<a href="../codeDoc/ptolemy/domains/de/package-summary.html" target="_top">Java documentation</a>
 			<dd> Discrete Event
 
-			<dt> <a href="../../ptolemy/domains/dfm"><CODE>dfm</CODE></a> -
-			<a href="../../ptolemy/domains/dfm/kernel/doc/codeDoc/tree.html"><CODE>kernel documentation</CODE></a>
-			<dd> Design Flow Management
 
-			<dt> <a href="../../ptolemy/domains/odf"><CODE>od</CODE></a> -
-			<a href="../../ptolemy/domains/odf/kernel/doc/codeDoc/tree.html"><CODE>kernel documentation</CODE></a>
-			<dd> Ordered Dataflow
+			<dt>
+		<a href="../../ptolemy/domains/fsm"><CODE>de</CODE></a> -
+		<a href="../../ptolemy/domains/fsm/doc/body.htm" target="body">Demonstrations</a> -
 
-			<dt> <a href="../../ptolemy/domains/pn"><CODE>pn</CODE></a> -
-			<a href="../../ptolemy/domains/pn/kernel/doc/codeDoc/tree.html"><CODE>kernel documentation</CODE></a>
+		<a href="../codeDoc/ptolemy/domains/fsm/package-summary.html" target="_top">Java documentation</a>
+			<dd> Finite State Machine
+
+
+			<dt>
+		<a href="../../ptolemy/domains/pn"><CODE>pn</CODE></a> -
+		<a href="../../ptolemy/domains/pn/doc/body.htm" target="body">Demonstrations</a> -
+		<a href="../codeDoc/ptolemy/domains/pn/package-summary.html" target="_top">Java documentation</a>
 			<dd> Process Networks
 
-			<dt> <a href="../../ptolemy/domains/sc"><CODE>sc</CODE></a> -
-			<a href="../../ptolemy/domains/sc/kernel/doc/codeDoc/tree.html"><CODE>kernel documentation</CODE></a>
-			<dd> Star Charts
 
-			<dt> <a href="../../ptolemy/domains/sdf"><CODE>sdf</CODE></a> -
-			<a href="../../ptolemy/domains/sdf/kernel/doc/codeDoc/tree.html"><CODE>kernel documentation</CODE></a>
+			<dt>
+		<a href="../../ptolemy/domains/sdf"><CODE>sdf</CODE></a> -
+		<a href="../../ptolemy/domains/sdf/doc/body.htm" target="body">Demonstrations</a> -
+		<a href="../codeDoc/ptolemy/domains/sdf/package-summary.html" target="_top">Java documentation</a>
 			<dd> Synchronous Dataflow
 			</dl>
 
@@ -151,24 +178,24 @@
 		<dd> the icon libraries and demo schematics
 
 		<dt> <a href="../../ptolemy/graph"><CODE>graph</CODE></a> -
-		<a href="../../ptolemy/graph/doc/codeDoc/tree.html"><CODE>documentation</CODE></a>
+
 		<dd> Non-hierarchical graph classes
 
 		<dt> <a href="../../ptolemy/kernel"><CODE>kernel</CODE></a> -
-		<a href="../../ptolemy/kernel/doc/codeDoc/tree.html"><CODE>documentation</CODE></a>
+
 		<dd> Ptolemy II Kernel
 			<dl>
 			<dt> <a href="../../ptolemy/kernel/util"><CODE>util</CODE></a> -
-			<a href="../../ptolemy/kernel/util/doc/codeDoc/tree.html"><CODE>documentation</CODE></a>
+
 			<dd> Kernel Utilities
 			</dl>
 
 		<dt> <a href="../../ptolemy/math"><CODE>math</CODE></a> -
-		<a href="../../ptolemy/math/doc/codeDoc/tree.html"><CODE>documentation</CODE></a>
+
 		<dd> Math classes for Complex numbers and Signal Processing
 
 		<dt> <a href="../../ptolemy/plot"><CODE>plot</CODE></a> -
-		<a href="../../ptolemy/plot/doc/codeDoc/tree.html"><CODE>documentation</CODE></a>
+
 		<dd> Ptplot 2-D graphing package
 		</dl>
 
