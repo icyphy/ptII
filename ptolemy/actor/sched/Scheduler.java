@@ -1,4 +1,4 @@
-/* A base class for shcedulers.
+/* A base class for schedulers.
 
  Copyright (c) 1998 The Regents of the University of California.
  All rights reserved.
@@ -38,7 +38,7 @@ import java.util.Enumeration;
 //////////////////////////////////////////////////////////////////////////
 //// Scheduler
 /** 
-A base class for shcedulers. A scheduler schedules the execution order
+A base class for schedulers. A scheduler schedules the execution order
 of the containees of a CompositeActor. 
 <p>
 A scheduler has a reference to a StaticSchedulingDirector, and
@@ -51,19 +51,19 @@ next time if the schedule is still valid. The validation of a schedule
 is set by the <code>setValid()</code> method. If the current schedule
 is set to be not valid, the schedule() method will call the protected
 _schedule() method to reconstruct it. _schedule() is the place the
-scheduling algorthm lives, and is ready to be override by the derived
+scheduling algorithm lives, and is ready to be override by the derived
 classes.
 <p>
-Sechduler implements the MutationListener interface, and register itself
-as a MutationListener to the host director.  When a mutation occors,
-the director will inform all the mutatin listeners (including the 
+Scheduler implements the MutationListener interface, and register itself
+as a MutationListener to the host director.  When a mutation occurs,
+the director will inform all the mutation listeners (including the 
 scheduler), and the scheduler will in
 validate the current schedule.
 @author Jie Liu
 @version $Id$
 */
 public class Scheduler extends NamedObj implements MutationListener{
-    /** Construct a schduler with empty name and no container(director)
+    /** Construct a scheduler with empty name and no container(director)
      *  in the default workspace.
      *  FIXME: Need? For test
      * @see pt.kernel.util.NamedObj
@@ -73,7 +73,7 @@ public class Scheduler extends NamedObj implements MutationListener{
         super();
     }
 
-    /** Construct a schduler in the default workspace with the given name.
+    /** Construct a scheduler in the default workspace with the given name.
      *  If the name argument is null, then the name is set to the empty
      *  string. The scheduler is added to the list of objects in the workspace.
      *  Increment the version number of the workspace.
@@ -132,7 +132,7 @@ public class Scheduler extends NamedObj implements MutationListener{
     /** Clone the scheduler into the specified workspace. The new object is
      *  <i>not</i> added to the directory of that workspace (you must do this
      *  yourself if you want it there).
-     *  The result is a new scheduler with no container, and no valid schdule.
+     *  The result is a new scheduler with no container, and no valid schedule.
      *
      *  @param ws The workspace for the cloned object.
      *  @exception CloneNotSupportedException If one of the attributes
@@ -214,7 +214,7 @@ public class Scheduler extends NamedObj implements MutationListener{
      *  is set by setValid() method.
      * @return An Enumeration of the deeply contained atomic entities
      *  in the firing order.
-     * @exception NotScheduleableException If the _schedule() method 
+     * @exception NotSchedulableException If the _schedule() method 
      *  throws it. Not thrown in this base class, but may be needed
      *  by the derived scheduler.
      */	
@@ -228,7 +228,7 @@ public class Scheduler extends NamedObj implements MutationListener{
     /** Validate/invalidate the current schedule by set the _valid member.
      *  A <code>true</code> argument will indicate that the current 
      *  schedule is valid
-     *  and can be retured immediately when schedule() is called without 
+     *  and can be returned immediately when schedule() is called without 
      *  running the scheduling algorithm. A <code>false</code> argument
      *  will invalidate it.
      *  @param true to set _valid flag to true.
@@ -258,7 +258,7 @@ public class Scheduler extends NamedObj implements MutationListener{
     ////                         protected methods                      ////
 
     /** Make this scheduler the scheduler of the specified director, and 
-     *  register itself as a mutation listenner of the director.
+     *  register itself as a mutation listener of the director.
      *  This method should not be called directly.  Instead, call
      *  setScheduler of the StaticSchedulingDirector class
      *  (or a derived class).
@@ -283,8 +283,8 @@ public class Scheduler extends NamedObj implements MutationListener{
      * @see pt.kernel.CompositeEntity#deepGetEntities()
      * @return An Enumeration of the deeply contained atomic entities
      *  in the firing order.
-     * @exception NotScheduleableException If the CompositeActor is not
-     *  scheduleable. Not thrown in this base class, but may be needed
+     * @exception NotSchedulableException If the CompositeActor is not
+     *  schedulable. Not thrown in this base class, but may be needed
      *  by the derived scheduler.
      */	
     protected Enumeration _schedule() throws NotScheduleableException {
