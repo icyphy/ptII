@@ -96,8 +96,13 @@ typedef struct
 {
     PCCG_ARRAY_CLASS *class;
     int array_length;
+#if defined(sun) && defined(__GNUC__)
+    void *array_data __attribute__((aligned(8)));
+} PCCG_ARRAY_INSTANCE __attribute__((aligned(8)));
+#else
     void *array_data;
 } PCCG_ARRAY_INSTANCE;
+#endif
 
 
 //FIXME: make this structure typedef
