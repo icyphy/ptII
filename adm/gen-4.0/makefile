@@ -307,6 +307,93 @@ src_jar: #$(PTII_SRC)
 	(cd src_jar/ptII$(VERSION); $(FINDCLEAN))
 	(cd src_jar/ptII$(VERSION); rm -rf `cat ../../src.ex`)
 
+
+###############
+# Build a jar file for use inside the installer
+# Create a jar file for use in the installer.
+# 1. The files that are jar'd do not include the large pdf docs, since
+# the installer already includes those
+# 2. The top directory of the jar file is not ptII$(VERSION), instead
+# it is _inside_ ptII$(VERSION) so that when the installer unjars it
+# the files come out in the right location
+
+# Location of the jar binary.  Cygwin /bin/jar is broken.
+JAR=c:/j2sdk1.4.2_05/bin/jar
+
+# The Jar file that we create.
+hyvisual.jar: $(HYVISUAL_SRC_JAR)
+$(HYVISUAL_SRC_JAR): hyvisual_src_jar
+	(cd src_jar/hyvisual$(VERSION); $(JAR) -cf ../../hyvisual$(VERSION).src.jar .)
+
+# The directory we jar up.
+hyvisual_src_jar: ptII$(VERSION).src.jar
+	if [ ! -d src_jar/hyvisual$(VERSION) ]; then \
+		 mkdir -p src_jar/hyvisual$(VERSION); \
+	fi
+	(cd src_jar/hyvisual$(VERSION); \
+		$(JAR) -xf ../../ptII$(VERSION).src.jar)
+	(cd src_jar/hyvisual$(VERSION); \
+		rm -rf jni \
+		lib/hsif \
+		lib/jni.jar \
+		lib/chic.jar \
+		lib/jasminclasses.jar \
+		lib/java_cup.jar \
+		lib/jython.jar \
+		lib/mapss.jar \
+		lib/ptCal.jar \
+		lib/saxon7.jar \
+		lib/sootclasses.jar \
+		lib/synthesis.jar \
+		ptolemy/actor/gui/python \
+		ptolemy/actor/lib/comm \
+		ptolemy/actor/lib/io/comm \
+		ptolemy/actor/lib/jai \
+		ptolemy/actor/lib/javasound \
+		ptolemy/actor/lib/jmf \
+		ptolemy/actor/lib/joystick \
+		ptolemy/actor/lib/python \
+		ptolemy/actor/lib/security \
+		ptolemy/actor/lib/x10 \
+		ptolemy/actor/lib/xslt \
+		ptolemy/caltrop \
+		ptolemy/configs/dsp \
+		ptolemy/configs/full \
+		ptolemy/configs/jni \
+		ptolemy/configs/jxta \
+		ptolemy/configs/ptiny \
+		ptolemy/configs/SingleWindow \
+		ptolemy/configs/visualsense \
+		ptolemy/configs/copernicus \
+		ptolemy/copernicus \
+		ptolemy/doc/design/usingVergil \
+		ptolemy/domains/ci \
+		ptolemy/domains/csp \
+		ptolemy/domains/dde \
+		ptolemy/domains/de \
+		ptolemy/domains/domains.xml \
+		ptolemy/domains/dt \
+		ptolemy/domains/giotto \
+		ptolemy/domains/gr \
+		ptolemy/domains/hde \
+		ptolemy/domains/petrinet \
+		ptolemy/domains/psdf \
+		ptolemy/domains/ptinyDomains.xml \
+		ptolemy/domains/sr \
+		ptolemy/domains/tm \
+		ptolemy/domains/wireless \
+		ptolemy/kernel/util/test/TestDE.java \
+		ptolemy/kernel/util/test/ChangeRequest.tcl \
+		thales; \
+		egrep -v "TestDE.java|ChangeRequest.tcl" \
+			ptolemy/kernel/util/test/TestDE.java \
+			> foo; \
+		mv foo ptolemy/kernel/util/test/TestDE.java > foo; \
+	)
+
+	(cd src_jar/hyvisual$(VERSION); $(FINDCLEAN))
+	(cd src_jar/hyvisual$(VERSION); rm -rf `cat ../../src.ex`)
+
 ###############
 
 
