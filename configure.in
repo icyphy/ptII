@@ -475,7 +475,7 @@ AC_MSG_CHECKING([for javax.sound])
 startdir=`pwd`
 cd $srcdir/config
 # Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
-if $"JAVAC" javasoundTest.java ; then
+if $JAVAC javasoundTest.java ; then
     AC_MSG_RESULT(ok)
     PTJAVASOUND=javasound	
 else
