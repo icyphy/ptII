@@ -136,6 +136,7 @@ public class SingleEvent extends TypedAtomicActor {
      *  @exception IllegalActionException If there is no director.
      */
     public void initialize() throws IllegalActionException {
+        super.initialize();
         double eventTime = ((DoubleToken)time.getToken()).doubleValue();
         if (eventTime >= 0.0) {
             Director director = getDirector();
