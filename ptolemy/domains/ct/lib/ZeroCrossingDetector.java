@@ -115,20 +115,6 @@ public class ZeroCrossingDetector extends Transformer
         }
     }
 
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then sets the ports.
-     *  @param workspace The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class has
-     *   an attribute that cannot be cloned.
-     */
-    public Object clone(Workspace workspace)
-	    throws CloneNotSupportedException {
-        ZeroCrossingDetector newObject = (ZeroCrossingDetector)super.clone(workspace);
-        newObject.trigger.setMultiport(false);
-        return newObject;
-    }
-
     /** Emit the event at current time if there is any. There will be no
      *  current event after emitting it. If there is no current event,
      *  do nothing.
