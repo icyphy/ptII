@@ -171,26 +171,26 @@ system with forced spring pull-back.</text></svg></configure>
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="360.5, 42.0">
+            <property name="_location" class="ptolemy.moml.Location" value="20.0, 20.0">
             </property>
         </property>
         <port name="torque" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.moml.Location" value="47.0, 149.0">
+            <property name="_location" class="ptolemy.moml.Location" value="50.0, 150.0">
             </property>
         </port>
         <port name="back_emf" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.moml.Location" value="539.0, 99.0">
+            <property name="_location" class="ptolemy.moml.Location" value="410.0, 105.0">
             </property>
         </port>
         <port name="throttle_position" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.moml.Location" value="617.0, 174.0">
+            <property name="_location" class="ptolemy.moml.Location" value="520.0, 170.0">
             </property>
         </port>
         <entity name="sigma_T" class="ptolemy.actor.lib.AddSubtract">
-            <property name="_location" class="ptolemy.moml.Location" value="110.5, 159.5">
+            <property name="_location" class="ptolemy.moml.Location" value="110.0, 160.0">
             </property>
             <port name="plus" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -215,7 +215,7 @@ system with forced spring pull-back.</text></svg></configure>
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="185.0, 158.5">
+            <property name="_location" class="ptolemy.moml.Location" value="190.0, 160.0">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -227,7 +227,7 @@ system with forced spring pull-back.</text></svg></configure>
         <entity name="omega" class="ptolemy.domains.ct.lib.Integrator">
             <property name="initialState" class="ptolemy.data.expr.Parameter" value="1">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="255.5, 158.5">
+            <property name="_location" class="ptolemy.moml.Location" value="255.0, 160.0">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -243,7 +243,7 @@ system with forced spring pull-back.</text></svg></configure>
         <entity name="theta" class="ptolemy.domains.ct.lib.Integrator">
             <property name="initialState" class="ptolemy.data.expr.Parameter" value="1">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="325.0, 218.5">
+            <property name="_location" class="ptolemy.moml.Location" value="325.0, 160.0">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -279,7 +279,7 @@ system with forced spring pull-back.</text></svg></configure>
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="425.0, 373.0">
+            <property name="_location" class="ptolemy.moml.Location" value="435.0, 300.0">
             </property>
             <port name="firstOperand" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -299,7 +299,7 @@ system with forced spring pull-back.</text></svg></configure>
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="539.5, 369.5">
+            <property name="_location" class="ptolemy.moml.Location" value="525.0, 300.0">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -319,7 +319,7 @@ system with forced spring pull-back.</text></svg></configure>
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="529.0, 434.5">
+            <property name="_location" class="ptolemy.moml.Location" value="525.0, 370.0">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -339,7 +339,7 @@ system with forced spring pull-back.</text></svg></configure>
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="526.0, 304.5">
+            <property name="_location" class="ptolemy.moml.Location" value="525.0, 230.0">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -349,7 +349,7 @@ system with forced spring pull-back.</text></svg></configure>
             </port>
         </entity>
         <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-            <property name="_location" class="ptolemy.moml.Location" value="432.0, 303.5">
+            <property name="_location" class="ptolemy.moml.Location" value="435.0, 230.0">
             </property>
             <port name="plus" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -364,7 +364,7 @@ system with forced spring pull-back.</text></svg></configure>
             </port>
         </entity>
         <entity name="total gain" class="ptolemy.actor.lib.AddSubtract">
-            <property name="_location" class="ptolemy.moml.Location" value="667.5, 379.5">
+            <property name="_location" class="ptolemy.moml.Location" value="660.0, 275.0">
             </property>
             <port name="plus" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -383,7 +383,7 @@ system with forced spring pull-back.</text></svg></configure>
             </property>
             <property name="top" class="ptolemy.data.expr.Parameter" value="alpha_max">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="488.5, 174.5">
+            <property name="_location" class="ptolemy.moml.Location" value="435.0, 160.0">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -402,7 +402,7 @@ system with forced spring pull-back.</text></svg></configure>
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="336.5, 314.5">
+            <property name="_location" class="ptolemy.moml.Location" value="350.0, 260.0">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -415,11 +415,11 @@ system with forced spring pull-back.</text></svg></configure>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="286.0, 196.0">
+            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="290.0, 160.0">
             </vertex>
         </relation>
         <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="381.0, 271.0">
+            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="375.0, 160.0">
             </vertex>
         </relation>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
@@ -435,7 +435,7 @@ system with forced spring pull-back.</text></svg></configure>
         <relation name="relation15" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation16" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="701.0, 471.0">
+            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="715.0, 405.0">
             </vertex>
         </relation>
         <relation name="relation4" class="ptolemy.actor.TypedIORelation">
@@ -476,7 +476,7 @@ system with forced spring pull-back.</text></svg></configure>
         <link port="theta_eq.output" relation="relation4"/>
     </entity>
     <entity name="driver inputs" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.moml.Location" value="192.5, 319.5">
+        <property name="_location" class="ptolemy.moml.Location" value="195.0, 325.0">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
@@ -503,7 +503,7 @@ the pedal is not depressed and pi means full throttle.</text></svg></configure>
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="253.5, 87.0">
+            <property name="_location" class="ptolemy.moml.Location" value="75.0, 45.0">
             </property>
         </property>
         <port name="accelerator_position" class="ptolemy.actor.TypedIOPort">
@@ -842,6 +842,8 @@ the drivers for the pulse-width modulated (pwm) actuators.
                             </property>
                             <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.8437043216709816">
                             </property>
+                            <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
+                            </property>
                             <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                             </property>
                             <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
@@ -858,6 +860,8 @@ the drivers for the pulse-width modulated (pwm) actuators.
                             </property>
                             <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
                             </property>
+                            <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
+                            </property>
                             <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                             </property>
                             <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
@@ -873,6 +877,8 @@ the drivers for the pulse-width modulated (pwm) actuators.
                             <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
                             </property>
                             <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.7016393616785188">
+                            </property>
+                            <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
                             </property>
                             <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                             </property>
@@ -1325,6 +1331,8 @@ implemented in a single Giotto task.</text></svg></configure>
                                 </property>
                                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
                                 </property>
+                                <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
+                                </property>
                                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                                 </property>
                                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
@@ -1340,6 +1348,8 @@ implemented in a single Giotto task.</text></svg></configure>
                                 <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
                                 </property>
                                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
+                                </property>
+                                <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
                                 </property>
                                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                                 </property>
@@ -3228,16 +3238,14 @@ implemented in a single Giotto task.</text></svg></configure>
                     </relation>
                     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
                     </relation>
-                    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-                        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="200.0, 250.0">
-                        </vertex>
+                    <relation name="relation" class="ptolemy.actor.TypedIORelation">
                     </relation>
                     <link port="servo_control_output" relation="relation5"/>
                     <link port="manager_output" relation="relation4"/>
                     <link port="throttle_position" relation="relation3"/>
-                    <link port="pedal_position" relation="relation6"/>
+                    <link port="pedal_position" relation="relation"/>
                     <link port="modal_controller.throttle_positions" relation="relation3"/>
-                    <link port="modal_controller.desired_throttle_position" relation="relation6"/>
+                    <link port="modal_controller.desired_throttle_position" relation="relation"/>
                     <link port="modal_controller.current" relation="relation5"/>
                     <link port="modal_controller.mode" relation="relation4"/>
                 </entity>
@@ -3795,7 +3803,7 @@ implemented in a single Giotto task.</text></svg></configure>
         <entity name="sampled throttle_position" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
             <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="p">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="170.0, 135.0">
+            <property name="_location" class="ptolemy.moml.Location" value="200.0, 135.0">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -3896,7 +3904,7 @@ implemented in a single Giotto task.</text></svg></configure>
         <link port="sampled actual_motor_current.output" relation="relation8"/>
     </entity>
     <entity name="powertrain inputs" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.moml.Location" value="206.5, 379.5">
+        <property name="_location" class="ptolemy.moml.Location" value="215.0, 380.0">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
@@ -5392,7 +5400,7 @@ respectively pwm is on or off.</text></svg></configure>
     <relation name="relation11" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation12" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="150.0, 410.0">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="155.0, 410.0">
         </vertex>
     </relation>
     <relation name="relation15" class="ptolemy.actor.TypedIORelation">
