@@ -189,7 +189,7 @@ cd $startdir
 #--------------------------------------------------------------------
 AC_MSG_CHECKING([for the proper CLASSPATH separator])
 case "`uname -s`" in
-    CYGWIN32_NT) CLASSPATHSEPARATOR=";";;
+    CYGWIN_NT-4.0) CLASSPATHSEPARATOR=";";;
     *) CLASSPATHSEPARATOR=":";;
 esac
 AC_MSG_RESULT(['$CLASSPATHSEPARATOR'])
@@ -205,7 +205,7 @@ AC_ARG_WITH(javacc, [  --with-javacc=DIR       use JavaCC.zip from DIR,
                            defaults to \$PTII/vendors/sun/JavaCC],
     JAVACC_DIR=$withval, JAVACC_DIR=$PTII/vendors/sun/JavaCC)
 
-if test "`uname -s`" = "CYGWIN32_NT"; then
+if test "`uname -s`" = "CYGWIN_NT-4.0"; then
     JJTREE='\$(JAVA) COM.sun.labs.jjtree.Main'
     JAVACC='\$(JAVA) COM.sun.labs.javacc.Main'
     AC_MSG_WARN([Be sure that your CLASSPATH includes JavaCC.zip]);
@@ -268,9 +268,19 @@ jtclsh is a startup script for Tcl Blend, which is used to run the test suite.
 You only need to have jtclsh or tclsh if you are planning on running
 the test suite.
 See http://www.scriptics.com/java for Tcl Blend sources and binaries.])
-	AC_PATH_PROGS(TCLSH, "tclsh80 tclsh8.0 tclsh tclsh80.exe", tclsh)
+
+	case "`uname -s`" in
+		CYGWIN_NT-4.0) DEFAULT_TCLSH=tclsh80;;
+		*) DEFAULT_TCLSH=tclsh;;
+	esac
+echo "DEFAULT_TCLSH=$DEFAULT_TCLSH"
+	# Apparently AC_PATH_PROGS fails if the path contains directories
+	# with spaces in their names.
+	AC_PATH_PROGS(TCLSH, "tclsh80 tclsh8.0 tclsh tclsh80.exe",
+			 $DEFAULT_TCLSH)
         if test ! -x "$TCLSH"; then	
-		AC_MSG_WARN([tclsh80 not found either, so we default to '$TCLSH'.
+		AC_MSG_WARN([tclsh80 not found either,
+so we default to '$TCLSH'.
 tclsh is only necessary for the test suite.]);
 	fi
 	JTCLSH=$TCLSH
@@ -280,7 +290,7 @@ fi
 
 # Keep these substitutions alphabetical, with a description
 
-# Separator in CLASSPATH,  For Unix, this should be :, for Cygwin, use ;
+# Separator in CLASSPATH,  For Unix, this should be :, for Cygwin use ;
 AC_SUBST(CLASSPATHSEPARATOR)
 
 # javacc binary
