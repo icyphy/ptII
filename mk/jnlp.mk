@@ -162,6 +162,7 @@ PTINY_ONLY_JNLP_JARS = \
 	lib/jython.jar \
 	ptolemy/actor/lib/javasound/demo/demo.jar \
 	ptolemy/actor/lib/python/python.jar \
+	ptolemy/actor/lib/python/demo/demo.jar \
 	ptolemy/data/type/demo/demo.jar \
 	ptolemy/data/unit/demo/demo.jar \
 	ptolemy/domains/ct/demo/demo.jar \
@@ -221,7 +222,6 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/actor/lib/jai/jai.jar \
 	ptolemy/actor/lib/jmf/jmf.jar \
 	ptolemy/actor/lib/joystick/joystick.jar \
-	ptolemy/actor/lib/python/demo/demo.jar \
 	lib/ptCal.jar \
 	lib/saxon7.jar \
 	ptolemy/cal/cal.jar \
