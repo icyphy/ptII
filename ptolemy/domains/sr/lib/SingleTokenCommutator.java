@@ -74,9 +74,9 @@ public class  SingleTokenCommutator   extends Transformer
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Read at most one token from the current input  channel  and write that
-     *  token  the  output channel.  If there is no token on the current input
-     *  channel, do nothing.
+    /** Read at most one token from the current input channel and write that
+     *  token to the  output channel. If there is no token on the current
+     *  input channel, do nothing.
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
@@ -85,7 +85,7 @@ public class  SingleTokenCommutator   extends Transformer
         }
     }
 
-    /** Begin execution by setting the current output channel to zero.
+    /** Begin execution by setting the current input channel to zero.
      *  @exception IllegalActionException If there is no director.
      */
     public void initialize() throws IllegalActionException {
@@ -93,10 +93,10 @@ public class  SingleTokenCommutator   extends Transformer
         _currentInputPosition = 0;
     }
 
-    /** Update the output position to equal that determined by the most
-     *  recent invocation of the fire() method.  The output position is
-     *  the channel number of the output port to which the next input
-     *  will be sent.
+    /** Update the input position to equal that determined by the most
+     *  recent invocation of the fire() method.  The input position is
+     *  the channel number of the input port from which the next input
+     *  will be read.
      *  @exception IllegalActionException If there is no director.
      */
     public boolean postfire() throws IllegalActionException {
@@ -109,8 +109,20 @@ public class  SingleTokenCommutator   extends Transformer
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+    
+    /** Get the current input position. 
+     *  @return Current input position.  
+     */
+    // This method is Added by Gang Zhou so that DDFSingleTokenCommutator 
+    // can inherit this class.
+    protected int _getCurrentInputPosition() {
+        return _currentInputPosition;
+    }
+    
+    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // The channel number for the next output.
+    // The channel number for the next input.
     private int _currentInputPosition;
 }
