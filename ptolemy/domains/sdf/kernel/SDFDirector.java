@@ -264,7 +264,7 @@ public class SDFDirector extends StaticSchedulingDirector {
                     ptolemy.data.Token t = port.get(i);
                     if (insiderecs != null && insiderecs[i] != null) {
                         if(_debugging) _debug(getName(),
-                                "transfering input from " + port.getName());
+                                "transferring input from " + port.getName());
                         for (int j = 0; j < insiderecs[i].length; j++) {
                             insiderecs[i][j].put(t);
                         }

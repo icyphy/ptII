@@ -254,7 +254,7 @@ public class DEIOPort extends TypedIOPort {
     // List of ports triggered immediately by this input port.
     private Set _delayToSet = new HashSet();
 
-    // The delay to use in transfering tokens.
+    // The delay to use in transferring tokens.
     // Be careful to set this back to zero after using it.
     private double _delay = 0.0;
 
