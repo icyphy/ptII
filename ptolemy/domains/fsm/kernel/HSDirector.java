@@ -48,6 +48,10 @@ import java.util.Iterator;
 /**
 An HSDirector governs the execution of the discrete dynamics of a hybrid
 system model.
+<p>
+<a href="http://ptolemy.eecs.berkeley.edu/publications/papers/99/hybridsimu/">
+Hierarchical Hybrid System Simulation</a> describes how hybrid system models
+are built and simulated in Ptolemy II.
 
 @author Xiaojun Liu
 @version $Id$
@@ -136,14 +140,19 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
 
     /** Return true if the mode controller wishes to be scheduled for
      *  another iteration. Postfire the refinement of the current state
-     *  of the mode controller if it is ready to fire in the current
-     *  iteration. Execute the commit actions contained by the last
-     *  chosen transition of the mode controller and set its current
-     *  state to the destination state of the transition.
+     *  of the mode controller and take out event outputs that the
+     *  refinement generates. Examine the outgoing transitions of the
+     *  current state. Throw an exception if there is more than one
+     *  transition enabled. If there is exactly one transition enabled
+     *  then it is chosen and the choice actions contained by the
+     *  transition are executed. Execute the commit actions contained
+     *  by the last chosen transition of the mode controller and set
+     *  its current state to the destination state of the transition.
      *  @return True if the mode controller wishes to be scheduled for
      *   another iteration.
-     *  @exception IllegalActionException If thrown by any commit action
-     *   or there is no controller.
+     *  @exception IllegalActionException If thrown by any action, or
+     *   there is no controller, or there is more than one transition
+     *   enabled.
      */
     public boolean postfire() throws IllegalActionException {
         FSMActor ctrl = getController();
