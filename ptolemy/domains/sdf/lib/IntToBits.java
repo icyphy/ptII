@@ -95,8 +95,16 @@ public class IntToBits extends SDFTransformer {
         bits = new BooleanToken[32];
         token = (IntToken) (input.get(0));
         integer = token.intValue();
+        
+        if (integer < 0) {
+            bits[0] = new BooleanToken(true);
+            integer = (int)(2147483648L + integer);
+        } else {
+            bits[0] = new BooleanToken(false);
+        }
+        
 
-        for (i = 31; i >= 0; i--) {
+        for (i = 31; i >= 1; i--) {
             remainder = integer % 2;
             integer = integer / 2;
             if (remainder == 0)
