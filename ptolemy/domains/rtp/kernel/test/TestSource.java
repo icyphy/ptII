@@ -23,9 +23,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
-
-@ProposedRating Red (liuj)
-@AcceptedRating Red (cxh)
 */
 
 package ptolemy.domains.rtp.kernel.test;
@@ -42,6 +39,11 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 /**
    This actor produces a ramp at 2Hz.
+
+   @author Jie Liu
+   @version $Id$
+   @Pt.ProposedRating Red (liuj)
+   @Pt.AcceptedRating Red (cxh)
 */
 public class TestSource extends Source {
 
