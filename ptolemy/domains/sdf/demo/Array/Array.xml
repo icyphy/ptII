@@ -2,21 +2,15 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Array" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0-alpha">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
-        </property>
-        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 35.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={6, 3, 979, 596}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {6, 3, 979, 596}, maximized = false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[764, 487]">
     </property>
@@ -93,27 +87,19 @@ expression random(100).</text></svg></configure>
         </property>
     </property>
     <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
-        <property name="_hideName" class="ptolemy.kernel.util.Attribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="200.0, 430.0">
         </property>
         <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="2.0">
-        </property>
-        <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
         </property>
         <property name="width" class="ptolemy.data.expr.Parameter" value="270.0">
         </property>
         <property name="height" class="ptolemy.data.expr.Parameter" value="39.0">
         </property>
-        <property name="centered" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
         <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,0.4,1.0}">
-        </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.icon.ResizableAttributeControllerFactory">
         </property>
         <property name="rounding" class="ptolemy.data.expr.Parameter" value="10.0">
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="200.0, 430.0">
         </property>
     </property>
     <property name="annotation2" class="ptolemy.kernel.util.Attribute">
@@ -136,58 +122,32 @@ expression random(100).</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="190.0, 435.0">
         </property>
     </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{382.0, 243.5}">
+    </property>
     <entity name="ArrayMaximum" class="ptolemy.actor.lib.ArrayMaximum">
         <property name="_location" class="ptolemy.kernel.util.Location" value="260.0, 80.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="index" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <entity name="ArrayMinimum" class="ptolemy.actor.lib.ArrayMinimum">
         <property name="_location" class="ptolemy.kernel.util.Location" value="260.0, 145.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="index" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <entity name="ArraySort" class="ptolemy.actor.lib.ArraySort">
-        <property name="allowDuplicates" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="ascending" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="260.0, 215.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <entity name="ArrayPlotter" class="ptolemy.actor.lib.gui.ArrayPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="random, ascending, descending">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={4, 480, 508, 281}}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {4, 480, 508, 281}, maximized = false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 233]">
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="iterationsPerUpdate" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <property name="xInit" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
@@ -195,10 +155,6 @@ expression random(100).</text></svg></configure>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="355.0, 265.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
@@ -207,13 +163,13 @@ expression random(100).</text></svg></configure>
 <xLabel></xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="99.0"/>
-<yRange min="0.008778527064328467" max="0.9848510101865586"/>
+<yRange min="0.01831613455307557" max="0.9925140708489868"/>
 <default connected="no" marks="dots" stems="yes"/>
 </plot>?>
         </configure>
     </entity>
     <entity name="Maximum Value" class="ptolemy.actor.lib.MonitorValue">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="0.9848510101866">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="0.992514070849">
         </property>
         <doc>Monitor and display values</doc>
         <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
@@ -226,13 +182,9 @@ expression random(100).</text></svg></configure>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="485.0, 35.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
     <entity name="Minimum Value" class="ptolemy.actor.lib.MonitorValue">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="0.0087785270643">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="0.0183161345531">
         </property>
         <doc>Monitor and display values</doc>
         <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
@@ -245,27 +197,15 @@ expression random(100).</text></svg></configure>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="485.0, 100.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
     <entity name="ArraySort2" class="ptolemy.actor.lib.ArraySort">
-        <property name="allowDuplicates" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
         <property name="ascending" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="260.0, 305.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <entity name="Minimum Index" class="ptolemy.actor.lib.MonitorValue">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="85">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="73">
         </property>
         <doc>Monitor and display values</doc>
         <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
@@ -278,34 +218,12 @@ expression random(100).</text></svg></configure>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="485.0, 155.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
     <entity name="SequenceToArray" class="ptolemy.domains.sdf.lib.SequenceToArray">
-        <property name="arrayLength" class="ptolemy.data.expr.Parameter" value="100">
+        <property name="arrayLength" class="ptolemy.actor.parameters.PortParameter" value="100">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="130.0, 90.0">
         </property>
-        <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
-            <property name="input"/>
-            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="100">
-            </property>
-            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-        </port>
-        <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
-            <property name="output"/>
-            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
-        </port>
     </entity>
     <entity name="Uniform" class="ptolemy.actor.lib.Uniform">
         <property name="seed" class="ptolemy.data.expr.Parameter" value="0L">
@@ -317,26 +235,13 @@ expression random(100).</text></svg></configure>
         <doc>Create a sequence of uniformly distributed random numbers</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 90.0">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
     <entity name="ArrayAverage" class="ptolemy.actor.lib.ArrayAverage">
         <property name="_location" class="ptolemy.kernel.util.Location" value="260.0, 370.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <entity name="Average Value" class="ptolemy.actor.lib.MonitorValue">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="0.5578894000716">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="0.4927836398292">
         </property>
         <doc>Monitor and display values</doc>
         <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
@@ -349,28 +254,13 @@ expression random(100).</text></svg></configure>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="450.0, 370.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
     <entity name="ArrayElement" class="ptolemy.actor.lib.ArrayElement">
-        <property name="index" class="ptolemy.actor.parameters.PortParameter" value="0">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="465.0, 225.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="index" class="ptolemy.actor.parameters.ParameterPort">
-            <property name="input"/>
-        </port>
     </entity>
     <entity name="Minimum Value2" class="ptolemy.actor.lib.MonitorValue">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="0.0087785270643">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="0.0183161345531">
         </property>
         <doc>Monitor and display values</doc>
         <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
@@ -383,53 +273,25 @@ expression random(100).</text></svg></configure>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="615.0, 225.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
     <entity name="ArrayExtract" class="ptolemy.actor.lib.ArrayExtract">
-        <property name="sourcePosition" class="ptolemy.actor.parameters.PortParameter" value="0">
-        </property>
         <property name="extractLength" class="ptolemy.actor.parameters.PortParameter" value="10">
-        </property>
-        <property name="destinationPosition" class="ptolemy.actor.parameters.PortParameter" value="0">
         </property>
         <property name="outputArrayLength" class="ptolemy.actor.parameters.PortParameter" value="10">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="535.0, 290.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="sourcePosition" class="ptolemy.actor.parameters.ParameterPort">
-            <property name="input"/>
-        </port>
-        <port name="extractLength" class="ptolemy.actor.parameters.ParameterPort">
-            <property name="input"/>
-        </port>
-        <port name="destinationPosition" class="ptolemy.actor.parameters.ParameterPort">
-            <property name="input"/>
-        </port>
-        <port name="outputArrayLength" class="ptolemy.actor.parameters.ParameterPort">
-            <property name="input"/>
-        </port>
     </entity>
     <entity name="ArrayPlotter2" class="ptolemy.actor.lib.gui.ArrayPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="random, ascending, descending">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={513, 479, 508, 281}}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {513, 479, 508, 281}, maximized = false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 233]">
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="iterationsPerUpdate" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <property name="xInit" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
@@ -437,10 +299,6 @@ expression random(100).</text></svg></configure>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="630.0, 290.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
@@ -449,7 +307,7 @@ expression random(100).</text></svg></configure>
 <xLabel></xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="9.0"/>
-<yRange min="0.008778527064328467" max="0.12761533452939378"/>
+<yRange min="0.01831613455307557" max="0.08989334233777335"/>
 <default connected="no" marks="dots" stems="yes"/>
 </plot>?>
         </configure>
@@ -466,13 +324,6 @@ expression random(100).</text></svg></configure>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="410.0, 300.0">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="195.0, 125.0">

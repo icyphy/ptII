@@ -2,18 +2,10 @@
 <!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <class name="OrthogonalCom" extends="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0-alpha">
     </property>
     <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
-        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
-        </property>
-        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="20">
-        </property>
-        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="120.0, 70.0">
         </property>
@@ -45,22 +37,17 @@ See $PTII/doc/codegen.htm for details.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="210.0, 30.0">
         </property>
     </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {-4, -2, 1032, 772}, maximized = false}">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{408.5, 331.5}">
+    </property>
     <entity name="bitSource" class="ptolemy.actor.lib.DiscreteRandomSource">
         <property name="seed" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="pmf" class="ptolemy.data.expr.Parameter" value="{0.5, 0.5}">
-        </property>
-        <property name="values" class="ptolemy.data.expr.Parameter" value="{0, 1}">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 360.0">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
     <entity name="Symbol1" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="{1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0}">
@@ -73,13 +60,6 @@ See $PTII/doc/codegen.htm for details.</text></svg></configure>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
     <entity name="Symbol2" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="{1.0, 1.0, 1.0, 1.0, -1.0, -1.0, -1.0, -1.0}">
@@ -92,42 +72,14 @@ See $PTII/doc/codegen.htm for details.</text></svg></configure>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
     <entity name="Multiplexor" class="ptolemy.actor.lib.Multiplexor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="215.0, 409.5">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="select" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
     </entity>
     <entity name="addNoise" class="ptolemy.actor.lib.AddSubtract">
         <property name="_location" class="ptolemy.kernel.util.Location" value="315.0, 490.0">
         </property>
-        <port name="plus" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <port name="minus" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <entity name="Gaussian Noise" class="ptolemy.actor.lib.Gaussian">
         <property name="seed" class="ptolemy.data.expr.Parameter" value="0">
@@ -138,95 +90,34 @@ See $PTII/doc/codegen.htm for details.</text></svg></configure>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 480.0">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
     <entity name="correlator1" class="ptolemy.domains.sdf.lib.DotProduct">
         <property name="_location" class="ptolemy.kernel.util.Location" value="420.0, 195.0">
         </property>
-        <port name="input1" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="input2" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <entity name="correlator2" class="ptolemy.domains.sdf.lib.DotProduct">
         <property name="_location" class="ptolemy.kernel.util.Location" value="420.0, 275.0">
         </property>
-        <port name="input1" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="input2" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <entity name="outputBitDisplay" class="ptolemy.actor.lib.FileWriter">
         <property name="filename" class="ptolemy.data.expr.Parameter" value="&quot;&quot;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="715.0, 370.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
     <entity name="compareResults" class="ptolemy.actor.lib.AddSubtract">
         <property name="_location" class="ptolemy.kernel.util.Location" value="635.0, 350.0">
         </property>
-        <port name="plus" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <port name="minus" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <entity name="SequenceToArray" class="ptolemy.domains.sdf.lib.SequenceToArray">
         <property name="arrayLength" class="ptolemy.actor.parameters.PortParameter" value="8">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="185.0, 480.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="arrayLength" class="ptolemy.actor.parameters.ParameterPort">
-            <property name="input"/>
-        </port>
     </entity>
     <entity name="Maximum" class="ptolemy.actor.lib.Maximum">
         <property name="_location" class="ptolemy.kernel.util.Location" value="530.0, 235.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <port name="maximumValue" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="multiport"/>
-        </port>
-        <port name="channelNumber" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="multiport"/>
-        </port>
     </entity>
     <relation name="r0" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex" value="125.0, 360.0">

@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="SmartSender" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0-alpha">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -22,7 +22,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 50.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={194, 6, 815, 580}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {194, 6, 815, 580}, maximized = false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 471]">
     </property>
@@ -118,26 +118,24 @@ explanation.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="5.0, 345.0">
         </property>
     </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{300.0, 235.5}">
+    </property>
     <entity name="SmartSender" class="ptolemy.domains.de.demo.SmartSender.SmartSender">
         <property name="firingPeriod" class="ptolemy.data.expr.Parameter" value="0.5">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="110.0, 130.0">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <entity name="SmartSender2" class="ptolemy.domains.de.demo.SmartSender.SmartSender">
         <property name="firingPeriod" class="ptolemy.data.expr.Parameter" value="0.5">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="110.0, 195.0">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <entity name="MonitorValue" class="ptolemy.actor.lib.MonitorValue">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="16">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="18">
         </property>
         <doc>Monitor and display values</doc>
         <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
@@ -150,13 +148,9 @@ explanation.</text></svg></configure>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="390.0, 130.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
     <entity name="MonitorValue2" class="ptolemy.actor.lib.MonitorValue">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="16">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="18">
         </property>
         <doc>Monitor and display values</doc>
         <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
@@ -169,13 +163,9 @@ explanation.</text></svg></configure>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="390.0, 195.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
     <entity name="MonitorValue3" class="ptolemy.actor.lib.MonitorValue">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="16">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="18">
         </property>
         <doc>Monitor and display values</doc>
         <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
@@ -188,13 +178,9 @@ explanation.</text></svg></configure>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="390.0, 260.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
     <entity name="MonitorValue4" class="ptolemy.actor.lib.MonitorValue">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="16">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="18">
         </property>
         <doc>Monitor and display values</doc>
         <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
@@ -207,27 +193,33 @@ explanation.</text></svg></configure>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="390.0, 325.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
     <entity name="SmartSender3" class="ptolemy.domains.de.demo.SmartSender.SmartSender">
         <property name="firingPeriod" class="ptolemy.data.expr.Parameter" value="0.5">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="110.0, 325.0">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <entity name="SmartSender4" class="ptolemy.domains.de.demo.SmartSender.SmartSender">
         <property name="firingPeriod" class="ptolemy.data.expr.Parameter" value="0.5">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="110.0, 260.0">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
+    <relation name="_R" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="_R2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="_R3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="_R4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="SmartSender.output" relation="_R"/>
+    <link port="SmartSender2.output" relation="_R2"/>
+    <link port="MonitorValue.input" relation="_R"/>
+    <link port="MonitorValue2.input" relation="_R2"/>
+    <link port="MonitorValue3.input" relation="_R3"/>
+    <link port="MonitorValue4.input" relation="_R4"/>
+    <link port="SmartSender3.output" relation="_R3"/>
+    <link port="SmartSender4.output" relation="_R4"/>
 </entity>

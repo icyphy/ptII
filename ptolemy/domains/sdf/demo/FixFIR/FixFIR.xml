@@ -2,14 +2,10 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="FixFIR" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0-alpha">
     </property>
     <property name="SDFDirector" class="ptolemy.domains.sdf.kernel.SDFDirector">
-        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
-        </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="67.71429443359375, 39.0">
         </property>
@@ -35,9 +31,13 @@ using double precision.</text>
         <property name="_hideName" class="ptolemy.data.expr.Parameter">
         </property>
     </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {102, 154, 819, 459}, maximized = false}">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{302.0, 175.0}">
+    </property>
     <entity name="Impulse" class="ptolemy.actor.lib.Pulse">
-        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
         <property name="indexes" class="ptolemy.data.expr.Parameter" value="{0}">
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{1}">
@@ -46,118 +46,37 @@ using double precision.</text>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="45.0, 225.0">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
     <entity name="FIR Double Precision" class="ptolemy.domains.sdf.lib.FIR">
-        <property name="decimation" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-        <property name="decimationPhase" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="interpolation" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
         <property name="taps" class="ptolemy.data.expr.Parameter" value="{-0.040609, -0.001628, 0.17853, 0.37665, 0.37665, 0.17853, -0.001628, -0.040609}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="240.0, 225.0">
         </property>
-        <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
-            <property name="input"/>
-            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
-            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-        </port>
-        <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
-            <property name="output"/>
-            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
-        </port>
     </entity>
     <entity name="FIR Quantized Coefficients" class="ptolemy.domains.sdf.lib.FIR">
-        <property name="decimation" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-        <property name="decimationPhase" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="interpolation" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
         <property name="taps" class="ptolemy.data.expr.Parameter" value="{quantize(-.040609, 8, 2), quantize(-.001628, 8, 2), quantize(.17853, 8, 2), quantize(.37665, 8, 2), quantize(.37665, 8, 2), quantize(.17853, 8, 2), quantize(-.001628, 8, 2), quantize(-.040609, 8, 2)}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="240.0, 285.0">
         </property>
-        <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
-            <property name="input"/>
-            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
-            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-        </port>
-        <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
-            <property name="output"/>
-            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
-        </port>
     </entity>
     <entity name="FIR Fixed Point" class="ptolemy.domains.sdf.lib.FIR">
-        <property name="decimation" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-        <property name="decimationPhase" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="interpolation" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
         <property name="taps" class="ptolemy.data.expr.Parameter" value="{fix(-.040609, 6, 2), fix(-.001628, 6, 2), fix(.17853, 6, 2), fix(.37665, 6, 2), fix(.37665, 6, 2), fix(.17853, 6, 2), fix(-.001628, 6, 2), fix(-.040609, 6, 2)}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="235.0, 135.0">
         </property>
-        <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
-            <property name="input"/>
-            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
-            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-        </port>
-        <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
-            <property name="output"/>
-            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
-        </port>
     </entity>
     <entity name="FixToDouble" class="ptolemy.actor.lib.conversions.FixToDouble">
         <property name="_location" class="ptolemy.kernel.util.Location" value="325.0, 145.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <entity name="plot" class="ptolemy.actor.lib.gui.SequencePlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="fixed point, exact, quantized coefs">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {258, 210, 508, 348}, maximized = false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
@@ -167,10 +86,6 @@ using double precision.</text>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="540.0, 225.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
@@ -205,12 +120,7 @@ centered at zero frequency.</text>
            </svg>
            </configure>
             </property>
-            <property name="_hideName" class="ptolemy.data.expr.Parameter">
-            </property>
         </property>
-        <property name="order" class="ptolemy.data.expr.Parameter" value="8">
-        </property>
-        <doc>This composite actor calculates the spectrum of the input.</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="415.0, 165.0">
         </property>
     </entity>
@@ -235,12 +145,7 @@ centered at zero frequency.</text>
            </svg>
            </configure>
             </property>
-            <property name="_hideName" class="ptolemy.data.expr.Parameter">
-            </property>
         </property>
-        <property name="order" class="ptolemy.data.expr.Parameter" value="8">
-        </property>
-        <doc>This composite actor calculates the spectrum of the input.</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="415.0, 225.0">
         </property>
     </entity>
@@ -265,18 +170,11 @@ centered at zero frequency.</text>
            </svg>
            </configure>
             </property>
-            <property name="_hideName" class="ptolemy.data.expr.Parameter">
-            </property>
         </property>
-        <property name="order" class="ptolemy.data.expr.Parameter" value="8">
-        </property>
-        <doc>This composite actor calculates the spectrum of the input.</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="415.0, 285.0">
         </property>
     </entity>
     <entity name="DoubleToFix" class="ptolemy.actor.lib.conversions.DoubleToFix">
-        <property name="precision" class="ptolemy.data.expr.Parameter" value="[16, 2]">
-        </property>
         <property name="quantization" class="ptolemy.kernel.util.StringAttribute" value="round">
             <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
                 <property name="round" class="ptolemy.kernel.util.StringAttribute" value="round">
@@ -287,15 +185,9 @@ centered at zero frequency.</text>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="145.0, 135.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <relation name="_R0" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex0" class="ptolemy.moml.Vertex" value="101.85714721679688, 225.0">
+        <vertex name="vertex0" value="101.85714721679688, 225.0">
         </vertex>
     </relation>
     <relation name="_R4" class="ptolemy.actor.TypedIORelation">

@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="TokenRing" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0-alpha">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[804, 630]">
     </property>
@@ -20,6 +20,8 @@
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="8">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 35.0">
+        </property>
+        <property name="Scheduler" class="ptolemy.domains.sr.kernel.SROptimizedScheduler">
         </property>
     </property>
     <property name="1:annotation" class="ptolemy.kernel.util.Attribute">
@@ -55,7 +57,7 @@ This example is from:
         <property name="_location" class="ptolemy.kernel.util.Location" value="120.0, 10.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 11, 1019, 739}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {2, 11, 1019, 739}, maximized = false}">
     </property>
     <property name="annotation" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -77,6 +79,10 @@ This example is from:
         <property name="_location" class="ptolemy.kernel.util.Location" value="-5.0, 590.0">
         </property>
     </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{402.0, 315.0}">
+    </property>
     <entity name="Request1" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -89,31 +95,12 @@ This example is from:
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
     <entity name="NonStrictDisplay" class="ptolemy.domains.sr.lib.NonStrictDisplay">
-        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
-        </property>
-        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
-        </property>
-        <property name="title" class="ptolemy.kernel.util.StringAttribute">
-        </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
-        </property>
-        <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {346, 268, 332, 232}, maximized = false}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="140.0, 490.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
     <entity name="Block2" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="380.0, 385.0">
@@ -173,17 +160,8 @@ This example is from:
                     </property>
                 </property>
             </property>
-            <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="150.0, 340.0">
             </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
         </entity>
         <entity name="AND2" class="ptolemy.domains.sr.lib.NonStrictLogicFunction">
             <property name="function" class="ptolemy.kernel.util.StringAttribute" value="and">
@@ -202,17 +180,8 @@ This example is from:
                     </property>
                 </property>
             </property>
-            <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="460.0, 280.0">
             </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
         </entity>
         <entity name="AND" class="ptolemy.domains.sr.lib.NonStrictLogicFunction">
             <property name="function" class="ptolemy.kernel.util.StringAttribute" value="and">
@@ -231,17 +200,8 @@ This example is from:
                     </property>
                 </property>
             </property>
-            <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="430.0, 210.0">
             </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
         </entity>
         <entity name="NAND" class="ptolemy.domains.sr.lib.NonStrictLogicFunction">
             <property name="function" class="ptolemy.kernel.util.StringAttribute" value="nand">
@@ -260,21 +220,10 @@ This example is from:
                     </property>
                 </property>
             </property>
-            <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="150.0, 280.0">
             </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
         </entity>
         <entity name="NonStrictDelay" class="ptolemy.domains.sr.lib.NonStrictDelay">
-            <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="initialValue" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="215.0, 400.0">
@@ -392,17 +341,8 @@ This example is from:
                     </property>
                 </property>
             </property>
-            <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="150.0, 340.0">
             </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
         </entity>
         <entity name="AND2" class="ptolemy.domains.sr.lib.NonStrictLogicFunction">
             <property name="function" class="ptolemy.kernel.util.StringAttribute" value="and">
@@ -421,17 +361,8 @@ This example is from:
                     </property>
                 </property>
             </property>
-            <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="460.0, 280.0">
             </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
         </entity>
         <entity name="AND" class="ptolemy.domains.sr.lib.NonStrictLogicFunction">
             <property name="function" class="ptolemy.kernel.util.StringAttribute" value="and">
@@ -450,17 +381,8 @@ This example is from:
                     </property>
                 </property>
             </property>
-            <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="430.0, 210.0">
             </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
         </entity>
         <entity name="NAND" class="ptolemy.domains.sr.lib.NonStrictLogicFunction">
             <property name="function" class="ptolemy.kernel.util.StringAttribute" value="nand">
@@ -479,21 +401,10 @@ This example is from:
                     </property>
                 </property>
             </property>
-            <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="150.0, 280.0">
             </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
         </entity>
         <entity name="NonStrictDelay" class="ptolemy.domains.sr.lib.NonStrictDelay">
-            <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="initialValue" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="215.0, 400.0">
@@ -611,17 +522,8 @@ This example is from:
                     </property>
                 </property>
             </property>
-            <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="150.0, 340.0">
             </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
         </entity>
         <entity name="AND2" class="ptolemy.domains.sr.lib.NonStrictLogicFunction">
             <property name="function" class="ptolemy.kernel.util.StringAttribute" value="and">
@@ -640,17 +542,8 @@ This example is from:
                     </property>
                 </property>
             </property>
-            <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="460.0, 280.0">
             </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
         </entity>
         <entity name="AND" class="ptolemy.domains.sr.lib.NonStrictLogicFunction">
             <property name="function" class="ptolemy.kernel.util.StringAttribute" value="and">
@@ -669,17 +562,8 @@ This example is from:
                     </property>
                 </property>
             </property>
-            <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="430.0, 210.0">
             </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
         </entity>
         <entity name="NAND" class="ptolemy.domains.sr.lib.NonStrictLogicFunction">
             <property name="function" class="ptolemy.kernel.util.StringAttribute" value="nand">
@@ -698,21 +582,10 @@ This example is from:
                     </property>
                 </property>
             </property>
-            <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="150.0, 280.0">
             </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
         </entity>
         <entity name="NonStrictDelay" class="ptolemy.domains.sr.lib.NonStrictDelay">
-            <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
-            </property>
             <property name="initialValue" class="ptolemy.data.expr.Parameter" value="true">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="215.0, 400.0">
@@ -784,13 +657,6 @@ This example is from:
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
     <entity name="Request3" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="true">
@@ -804,20 +670,11 @@ This example is from:
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
     <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="legend" class="ptolemy.kernel.util.StringAttribute">
-        </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={504, 66, 508, 355}}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {504, 66, 508, 348}, maximized = false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
@@ -829,10 +686,6 @@ This example is from:
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="715.0, 575.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
@@ -853,12 +706,6 @@ This example is from:
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="310.0, 575.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <entity name="1:BooleanToAnything" class="ptolemy.actor.lib.conversions.BooleanToAnything">
         <property name="falseValue" class="ptolemy.data.expr.Parameter" value="0">
@@ -867,12 +714,6 @@ This example is from:
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="500.0, 535.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <entity name="2:BooleanToAnything" class="ptolemy.actor.lib.conversions.BooleanToAnything">
         <property name="falseValue" class="ptolemy.data.expr.Parameter" value="0">
@@ -881,12 +722,6 @@ This example is from:
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="660.0, 500.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
