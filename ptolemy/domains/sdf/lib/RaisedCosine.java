@@ -198,12 +198,12 @@ public class RaisedCosine extends FIR {
             double center = lengthValue * 0.5;
 
             DoubleUnaryOperation raisedCosineSampleGenerator = sqrt ?
-                   (DoubleUnaryOperation)
-                   new SignalProcessing.SqrtRaisedCosineSampleGenerator(
-                       symbolIntervalValue, excessBWValue) :
-                   (DoubleUnaryOperation)
-                   new SignalProcessing.RaisedCosineSampleGenerator(
-                       symbolIntervalValue, excessBWValue);
+                (DoubleUnaryOperation)
+                new SignalProcessing.SqrtRaisedCosineSampleGenerator(
+                        symbolIntervalValue, excessBWValue) :
+                (DoubleUnaryOperation)
+                new SignalProcessing.RaisedCosineSampleGenerator(
+                        symbolIntervalValue, excessBWValue);
 
             double[] tapsArray =
                 SignalProcessing.sampleWave(lengthValue, -center, 1.0,

@@ -153,8 +153,8 @@ public class ImageSequence extends Source {
         _frameInts = new int[_imageRows][_imageColumns];
         _frameBytes = new byte[_imageRows * _imageColumns];
         for (_frameNumber = 0;
-            _frameNumber < _frameCount;
-            _frameNumber++) {
+             _frameNumber < _frameCount;
+             _frameNumber++) {
 
             try {
                 // Assemble the file name, replacing '*'

@@ -123,7 +123,7 @@ public class UpSample extends SDFTransformer {
             int factorValue = ((IntToken)factor.getToken()).intValue();
             if (factorValue <= 0) {
                 throw new IllegalActionException(this,
-                "Invalid factor: " + factorValue);
+                        "Invalid factor: " + factorValue);
             }
             output.setTokenProductionRate(factorValue);
             Director director = getDirector();
@@ -134,7 +134,7 @@ public class UpSample extends SDFTransformer {
             int phaseValue = ((IntToken)phase.getToken()).intValue();
             if (phaseValue < 0) {
                 throw new IllegalActionException(this,
-                "Invalid phase: " + phaseValue);
+                        "Invalid phase: " + phaseValue);
             }
         } else {
             super.attributeChanged(attribute);
@@ -155,7 +155,7 @@ public class UpSample extends SDFTransformer {
         int phaseValue = ((IntToken)phase.getToken()).intValue();
         if (phaseValue >= factorValue) {
             throw new IllegalActionException(this,
-            "Phase is out of range: " + phaseValue);
+                    "Phase is out of range: " + phaseValue);
         }
 
         Token[] result = new Token[factorValue];

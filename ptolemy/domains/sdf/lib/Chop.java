@@ -135,17 +135,17 @@ public class Chop extends SDFTransformer {
      */
     public Chop(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
-        super(container, name);
+                super(container, name);
 
-        numberToRead = new Parameter(this, "numberToRead");
-        numberToRead.setExpression("128");
-        numberToWrite = new Parameter(this, "numberToWrite");
-        numberToWrite.setExpression("64");
-        offset = new Parameter(this, "offset");
-        offset.setExpression("0");
-        usePastInputs = new Parameter(this, "usePastInputs");
-        usePastInputs.setExpression("true");
-    }
+                numberToRead = new Parameter(this, "numberToRead");
+                numberToRead.setExpression("128");
+                numberToWrite = new Parameter(this, "numberToWrite");
+                numberToWrite.setExpression("64");
+                offset = new Parameter(this, "offset");
+                offset.setExpression("0");
+                usePastInputs = new Parameter(this, "usePastInputs");
+                usePastInputs.setExpression("true");
+            }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
@@ -192,11 +192,11 @@ public class Chop extends SDFTransformer {
 
             if (nRead <= 0) {
                 throw new IllegalActionException(this,
-                "Invalid numberToRead: " + nRead);
+                        "Invalid numberToRead: " + nRead);
             }
             if (nWrite <= 0) {
                 throw new IllegalActionException(this,
-                "Invalid numberToWrite: " + nRead);
+                        "Invalid numberToWrite: " + nRead);
             }
 
             input.setTokenConsumptionRate(nRead);

@@ -126,7 +126,7 @@ public class ArrayToSequence extends SDFTransformer {
             int rate = ((IntToken)arrayLength.getToken()).intValue();
             if (rate < 0) {
                 throw new IllegalActionException(this,
-                "Invalid arrayLength: " + rate);
+                        "Invalid arrayLength: " + rate);
             }
             output.setTokenProductionRate(rate);
             Director director = getDirector();
@@ -163,7 +163,7 @@ public class ArrayToSequence extends SDFTransformer {
 	ArrayToken token = (ArrayToken)input.get(0);
 	int rate = ((IntToken)arrayLength.getToken()).intValue();
 	boolean enforce = ((BooleanToken)enforceArrayLength.getToken())
-                .booleanValue();
+            .booleanValue();
 	if (enforce && token.length() != rate) {
 	    throw new IllegalActionException(this, "The " +
                     "number of elements in the input ArrayToken (" +

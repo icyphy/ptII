@@ -115,7 +115,7 @@ public class SequenceToArray extends SDFTransformer {
             int rate = ((IntToken)arrayLength.getToken()).intValue();
             if (rate < 0) {
                 throw new IllegalActionException(this,
-                "Invalid arrayLength: " + rate);
+                        "Invalid arrayLength: " + rate);
             }
             input.setTokenConsumptionRate(rate);
             Director director = getDirector();

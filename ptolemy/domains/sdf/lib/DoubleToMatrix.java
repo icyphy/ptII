@@ -111,7 +111,7 @@ public class DoubleToMatrix extends SDFConverter {
             _columns = ((IntToken)columns.getToken()).intValue();
             if (_rows <= 0 || _columns <= 0) {
                 throw new IllegalActionException(this,
-                "Number of rows and columns is required to be positive.");
+                        "Number of rows and columns is required to be positive.");
             }
             input.setTokenConsumptionRate(_rows*_columns);
             Director director = getDirector();

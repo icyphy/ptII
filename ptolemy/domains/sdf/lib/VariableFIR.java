@@ -119,7 +119,7 @@ public class VariableFIR extends FIR {
      *  @param attribute The attribute that changed.
      */
     public void attributeChanged(Attribute attribute)
-             throws IllegalActionException {
+            throws IllegalActionException {
         super.attributeChanged(attribute);
         if (attribute == interpolation
                 || attribute == decimation

@@ -162,11 +162,11 @@ public class ImagePartition extends Transformer {
         int image[][] = message.intMatrix();
 
         for (j = 0, partitionNumber = 0;
-            j < _imageRows;
-            j += _partitionRows)
+             j < _imageRows;
+             j += _partitionRows)
             for (i = 0;
-                i < _imageColumns;
-                i += _partitionColumns, partitionNumber++) {
+                 i < _imageColumns;
+                 i += _partitionColumns, partitionNumber++) {
                 for (y = 0; y < _partitionRows; y++)
                     System.arraycopy(image[j + y], i,
                             _part[y], 0, _partitionColumns);

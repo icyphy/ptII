@@ -195,16 +195,16 @@ public class Autocorrelation extends SDFTransformer {
             _numberOfInputs = ((IntToken)numberOfInputs.getToken()).intValue();
             _numberOfLags = ((IntToken)numberOfLags.getToken()).intValue();
             _symmetricOutput
-                    = ((BooleanToken)symmetricOutput.getToken()).booleanValue();
+                = ((BooleanToken)symmetricOutput.getToken()).booleanValue();
 
             if (_numberOfInputs <= 0) {
                 throw new IllegalActionException(this,
-                "Invalid numberOfInputs: " + _numberOfInputs);
+                        "Invalid numberOfInputs: " + _numberOfInputs);
             }
 
             if (_numberOfLags <= 0) {
                 throw new IllegalActionException(this,
-                "Invalid numberOfLags: " + _numberOfLags);
+                        "Invalid numberOfLags: " + _numberOfLags);
             }
 
             if (_symmetricOutput) {
@@ -257,10 +257,10 @@ public class Autocorrelation extends SDFTransformer {
             }
             if (biasedValue) {
                 _outputs[i + _numberOfLags - notSymmetric ]
-                         = sum.divide(numberOfInputs.getToken());
+                    = sum.divide(numberOfInputs.getToken());
             } else {
                 _outputs[i + _numberOfLags - notSymmetric ]
-                         = sum.divide(new IntToken(_numberOfInputs - i));
+                    = sum.divide(new IntToken(_numberOfInputs - i));
 	    }
         }
         // Now fill in the first half, which by symmetry is just

@@ -177,7 +177,7 @@ public class LMSAdaptive extends FIR {
      *  @param attribute The attribute that changed.
      */
     public void attributeChanged(Attribute attribute)
-             throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == initialTaps) {
             taps.setToken(initialTaps.getToken());
         } else {
@@ -213,7 +213,7 @@ public class LMSAdaptive extends FIR {
         int errorDelayValue = ((IntToken)errorDelay.getToken()).intValue();
         int decimationValue = ((IntToken)decimation.getToken()).intValue();
         int decimationPhaseValue = ((IntToken)decimationPhase.getToken())
-                .intValue();
+            .intValue();
         int index = errorDelayValue * decimationValue + decimationPhaseValue;
         Token factor = error.get(0).multiply(stepSize.getToken());
         for (int i = 0; i < _taps.length; i++) {

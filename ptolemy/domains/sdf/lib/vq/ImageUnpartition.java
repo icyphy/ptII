@@ -153,11 +153,11 @@ public class ImageUnpartition extends Transformer {
         Token _partitions[] = input.get(0, _partitionCount);
 
         for (j = 0, partitionNumber = 0;
-            j < _imageRows;
-            j += _partitionRows)
+             j < _imageRows;
+             j += _partitionRows)
             for (i = 0;
-                i < _imageColumns;
-                i += _partitionColumns, partitionNumber++) {
+                 i < _imageColumns;
+                 i += _partitionColumns, partitionNumber++) {
                 IntMatrixToken partition = (IntMatrixToken)
                     _partitions[partitionNumber];
                 if ((partition.getRowCount() != _partitionRows) ||
