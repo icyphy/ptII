@@ -53,9 +53,9 @@ public class ExtendedMath {
      *  IllegalArgumentException is thrown (this is a runtime
      *  exception, so it need not be declared).
      *  The returned value is positive.
-     *  FIXME: Is the range of the argument correct?
      */
     public static final double acosh(final double x) {
+        // FIXME: Is the range of the argument correct?
         if (x < 1) {
             throw new IllegalArgumentException("ExtendedMath.acosh: Argument "
                     + "is required to be greater than 1.  Got " + x);
@@ -64,9 +64,9 @@ public class ExtendedMath {
     }
 
     /** Return the inverse hyperbolic sine of the argument.
-     *  FIXME: What is the assumed range of the argument?
      */
     public static final double asinh(final double x) {
+        // FIXME: What is the assumed range of the argument?
         double result;
         if (x < 0) {
             result = -Math.log( -x+Math.sqrt(x*x+1) );
@@ -77,9 +77,9 @@ public class ExtendedMath {
     }
 
     /** Return the hyperbolic cosine of the argument.
-     *  FIXME: What is the assumed range of the argument?
      */
     public static final double cosh(final double x) {
+        // FIXME: What is the assumed range of the argument?
         return (Math.exp(x) + Math.exp(-x))/2;
     }
 
@@ -93,6 +93,12 @@ public class ExtendedMath {
         return Math.log(x) * _ONEOVERLN2;
     }
 
+    /** Round to the nearest integer.
+     *  @param x The number to round.
+     *  @return The nearest integer.
+     *  @throws IllegalArgumentException If the argument does not fit
+     *   in an integer.
+     */
     public static final int roundToInt(final double x) {
         long returnValue = Math.round(x);
         if (returnValue > Integer.MAX_VALUE 

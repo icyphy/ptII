@@ -56,27 +56,6 @@ public class ComplexMatrixMath {
     // Private constructor prevents construction of this class.
     private ComplexMatrixMath() {}
 
-    /** Return the given matrix of complex numbers with the
-     *  absolute values of the real parts.
-     *
-     *  @param matrix The matrix of complex numbers.
-     *  @return A new matrix of complex numbers formed from <i>matrix</i>
-     *  with the absolute values of the real parts.
-     */
-    public static final Complex[][] absValues(Complex[][] matrix) {
-        Complex[][] returnValue = new Complex[_rows(matrix)][_columns(matrix)];
-        int rows = _rows(matrix);
-        int columns = _columns(matrix);
-
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < columns; j++) {
-                returnValue[i][j] = new Complex(Math.abs(matrix[i][j].real),
-                        matrix[i][j].imag);
-            }
-        }
-        return returnValue;
-    }
-
     /** Return a new matrix that is constructed from the argument by
      *  adding the second argument to every element.
      *
@@ -232,6 +211,13 @@ public class ComplexMatrixMath {
             }
         }
         return returnValue;
+    }
+
+    /** Return an new identity matrix with the specified dimension. The
+     *  matrix is square, so only one dimension specifier is needed.
+     */
+    public static final Complex[][] complexIdentityMatrix(final int dim) {
+        return identity(dim);
     }
 
     /** Return a new matrix that is constructed by conjugating the elements
@@ -494,7 +480,6 @@ public class ComplexMatrixMath {
         }
         return returnValue;
     }
-
 
     /** Return a new matrix that is constructed by inverting the input
      *  matrix. If the input matrix is singular, null is returned.
@@ -1024,7 +1009,6 @@ public class ComplexMatrixMath {
         return sb.toString();
     }
 
-
     /** Return the trace of a square matrix, which is the sum of the
      *  diagonal entries A<sub>11</sub> + A<sub>22</sub> + ... + A<sub>nn</sub>
      *  Throw an IllegalArgumentException if the matrix is not square.
@@ -1064,7 +1048,6 @@ public class ComplexMatrixMath {
         }
         return returnValue;
     }
-
 
     /** Return true if all the distances between corresponding elements in
      *  <i>matrix1</i> and <i>matrix2</i> are all less than or equal to
@@ -1165,7 +1148,6 @@ public class ComplexMatrixMath {
         }
         return true;
     }
-
 
     /** Return true if all the distances between corresponding elements in
      *  <i>matrix1</i> and <i>matrix2</i> are all less than or equal to

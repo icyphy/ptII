@@ -399,6 +399,12 @@ public class LongMatrixMath {
         return returnValue;
     }
 
+    /** Return an new identity matrix with the specified dimension. The
+     *  matrix is square, so only one dimension specifier is needed.
+     */
+    public static final long[][] longIdentityMatrix(final int dim) {
+        return identity(dim);
+    }
 
     /** Return an new identity matrix with the specified dimension. The
      *  matrix is square, so only one dimension specifier is needed.
@@ -637,10 +643,6 @@ public class LongMatrixMath {
         return returnValue;
     }
 
-
-
-
-
     /** Return a new matrix that is constructed from the argument by
      *  arithmetically shifting the elements in the matrix by the
      *  second argument.  If the second argument is positive, the
@@ -776,7 +778,6 @@ public class LongMatrixMath {
         return returnValue;
     }
 
-
     /** Return a new matrix that is formed by converting the longs in
      *  the argument matrix to floats.
      *  @param array An matrix of long.
@@ -796,7 +797,6 @@ public class LongMatrixMath {
         return returnValue;
     }
 
-
     /** Return a new matrix that is formed by converting the longs in
      *  the argument matrix to integers.
      *  @param array An matrix of long.
@@ -815,9 +815,6 @@ public class LongMatrixMath {
         }
         return returnValue;
     }
-
-
-
 
     /** Return a new matrix of longs that is initialized from a 1-D array.
      *  The format of the array must be (0, 0), (0, 1), ..., (0, n-1), (1, 0),

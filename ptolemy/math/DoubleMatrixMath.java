@@ -313,6 +313,13 @@ public class DoubleMatrixMath {
         return returnValue;
     }
 
+    /** Return an new identity matrix with the specified dimension. The
+     *  matrix is square, so only one dimension specifier is needed.
+     */
+    public static final double[][] doubleIdentityMatrix(final int dim) {
+        return identity(dim);
+    }
+
     /** Return a new array that is filled with the contents of the matrix.
      *  The doubles are stored row by row, i.e. using the notation
      *  (row, column), the entries of the array are in the following order
@@ -376,8 +383,9 @@ public class DoubleMatrixMath {
     }
 
     /** Return a new matrix that is constructed by inverting the input
-     *  matrix. If the input matrix is singular, null is returned.
-     *  This method is from [1]
+     *  matrix. If the input matrix is singular, throw an exception.
+     *  This method is from [1].
+     *  @exception IllegalArgumentException If the matrix is singular.
      */
     public static final double[][] inverse(final double[][] A) {
         _checkSquare("inverse", A);
@@ -427,7 +435,8 @@ public class DoubleMatrixMath {
 
             // if the pivot is zero, the matrix is singular
             if (Ai[icol][icol] == 0.0) {
-                return null;
+                throw new IllegalArgumentException(
+                        "Attempt to invert a singular matrix.");
             }
 
             // divide the row by the pivot
@@ -714,13 +723,12 @@ public class DoubleMatrixMath {
         return orthogonalMatrix;
     }
 
-
     /** Return a pair of matrices that are the decomposition of the
      *  input matrix (which must have linearly independent column
      *  vectors), which is m x n, into the matrix product of Q, which
      *  is m x n with orthonormal column vectors, and R, which is an
-     *  invertible n x n upper triangular matrix.  Throw an
-     *  IllegalArgumentException if the columns vectors of the input
+     *  invertible n x n upper triangular matrix.
+     *  @exception IllegalArgumentException if the columns vectors of the input
      *  matrix are not linearly independent.
      *
      *  @param matrix The input matrix of doubles.
@@ -770,9 +778,6 @@ public class DoubleMatrixMath {
 
         return new double[][][] { transpose(qT), dotProducts };
     }
-
-
-
 
     /** Return a new matrix that is constructed from the argument by
      *  subtracting the second matrix from the first one.  If the two
@@ -836,7 +841,6 @@ public class DoubleMatrixMath {
         return returnValue;
     }
 
-
     /** Return a new matrix that is formed by converting the doubles in
      *  the argument matrix to integers.
      *  @param array An matrix of double.
@@ -856,7 +860,6 @@ public class DoubleMatrixMath {
         return returnValue;
     }
 
-
     /** Return a new matrix that is formed by converting the doubles in
      *  the argument matrix to longs.
      *  @param array An matrix of double.
@@ -875,7 +878,6 @@ public class DoubleMatrixMath {
         }
         return returnValue;
     }
-
 
     /** Return a new matrix of doubles that is initialized from a 1-D array.
      *  The format of the array must be (0, 0), (0, 1), ..., (0, n-1), (1, 0),
@@ -937,7 +939,6 @@ public class DoubleMatrixMath {
 
         return new String(sb);
     }
-
 
     /** Return the trace of a square matrix, which is the sum of the
      *  diagonal entries A<sub>11</sub> + A<sub>22</sub> + ... + A<sub>nn</sub>

@@ -71,13 +71,6 @@ set da2 [java::new {double[]} 4 [list 2.0 -4.0 -6.0 8.0]]
 set da5 [java::new {double[]} 5 [list 0.0 0.1 0.2 0.3 0.4]]
 
 ####################################################################
-test ComplexArrayMath-1.1 {absValues} {
-    set ca2 [java::call ptolemy.math.ComplexArrayMath absValues $ca5]
-    # jdkPrintArray is defined in $PTII/util/testsuite/testDefs.tcl
-    jdkPrintArray $ca2
-} {{1.0 + 2.0i} {3.0 - 4.0i} {4.9 - 6.0i} {7.0 + 8.0i} {0.25 + 0.4i}}
-
-####################################################################
 test ComplexArrayMath-1.2 {add} {
     set ca2 [java::call ptolemy.math.ComplexArrayMath add $ca1 $ca3]
     epsilonDiff [jdkPrintArray $ca2] {{-3.9 - 4.0i} {6.0 - 8.0i} {-11.9 + 2.0i} {-6.0 + 10.0i}}

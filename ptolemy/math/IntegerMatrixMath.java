@@ -408,6 +408,13 @@ public class IntegerMatrixMath {
         return returnValue;
     }
 
+    /** Return an new identity matrix with the specified dimension. The
+     *  matrix is square, so only one dimension specifier is needed.
+     */
+    public static final int[][] intIdentityMatrix(final int dim) {
+        return identity(dim);
+    }
+
     /** Replace the first matrix argument elements with the values of
      *  the second matrix argument. The second matrix argument must be
      *  large enough to hold all the values of second matrix argument.

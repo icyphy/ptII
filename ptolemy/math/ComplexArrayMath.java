@@ -51,23 +51,6 @@ public class ComplexArrayMath {
     // Protected constructor prevents construction of this class.
     protected ComplexArrayMath() {}
 
-   /**  For each element of the argument <i>array</i>, calculate the
-     *  absolute value of the real part and return the resulting array.
-     *
-     *  @param array An array of complex numbers.
-     *  @return A new array of complex numbers equal to the given
-     *  array but with absolute real values.
-     */
-    public static final Complex[] absValues(Complex[] array) {
-        Complex[] result = new Complex[array.length];
-        int length = array.length;
-
-        for (int i = 0; i < length; i++) {
-            result[i] = new Complex(Math.abs(array[i].real), array[i].imag);
-        }
-        return result;
-    }
-
     /** Return a new array that is constructed from <i>array</i> by
      *  adding the complex number <i>z</i> to every element of <i>array</i>.
      *
