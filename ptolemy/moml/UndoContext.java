@@ -366,9 +366,6 @@ public class UndoContext {
     // Whether or not this level is undoable
     private boolean _undoable;
 
-    // The tag to use to close out this level
-    private String _endTag;
-
     // Holds the currently generated undoable MoML for this level. Note the
     // MoML is generated in reverse element order for any given context.
     private StringBuffer _undoMoML;

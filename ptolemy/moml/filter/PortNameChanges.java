@@ -226,12 +226,6 @@ public class PortNameChanges implements MoMLFilter {
     // the actor we are working on.
     private static HashMap _portMap;
 
-    // Set to true if we are currently processing an actor
-    // that requires processing. Set to false once we are
-    // done processing that actor.  This is done for performance reasons.
-    private static boolean _currentlyProcessingActorThatRequiresUpdating =
-    false;
-
     static {
         ///////////////////////////////////////////////////////////
         // Actors with port name changes.
