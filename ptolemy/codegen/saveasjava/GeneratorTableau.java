@@ -245,6 +245,7 @@ public class GeneratorTableau extends Tableau {
             goButton.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
                         try {
+			    System.out.println(options.toString());
                             // Handle the directory entry.
                             String directoryName = options.directory
                                 .getExpression();

@@ -37,6 +37,7 @@ import ptolemy.kernel.util.*;
 import ptolemy.moml.Documentation;
 
 import java.io.File;
+import java.lang.reflect.Field;
 
 //////////////////////////////////////////////////////////////////////////
 //// GeneratorTableauAttribute
@@ -256,5 +257,36 @@ public class GeneratorTableauAttribute extends SingletonAttribute {
             newObject.getAttribute("ssbShallow");
 
         return newObject;
+    }
+
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+	System.out.println("GenerateTableauAttribute.attributeChanged()"
+			   + attribute);
+
+    }
+    /** Return a String representation of this object. */
+    public String toString() {
+	// We use reflection here so that we don't have to edit
+	// this method every time we add a field.
+	StringBuffer results = new StringBuffer();
+	Field [] fields = getClass().getFields();
+	String fieldValue;
+	for(int i = 0; i < fields.length; i++) {
+	    try {
+		Object object = fields[i].get(this);
+		if (object instanceof StringAttribute) {
+		    fieldValue = "ptolemy.kernel.util.StringAttribute "
+			+ ((StringAttribute)object).getExpression();
+		} else {
+		    fieldValue = object.toString();
+		}
+	    } catch (IllegalAccessException e) {
+		fieldValue = "IllegalAccessException?";
+	    }
+	    results.append(fields[i].getName() + " " + fieldValue
+			   + "\n");
+	}
+	return results.toString();
     }
 }
