@@ -132,6 +132,15 @@ case "`basename $0`" in
 	javastartupclass=ptolemy.plot.plotml.HistogramMLApplication
 	javasourcedir=ptolemy/plot/plotml
 	;;
+    moml)
+	# Moml application
+	javastartupclass=ptolemy.actor.gui.MoMLApplication
+	javasourcedir=
+	;;
+    ptexecute)
+	javastartupclass=ptolemy.actor.gui.PtExecuteApplication
+	javasourcedir=
+	;;
     ptinvoke)
 	# Invoke the class named by the first argument
 	javastartupclass=$1

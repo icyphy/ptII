@@ -45,6 +45,8 @@ include $(CONFIG)
 # Bourne Shell scripts for Unix and Cygwin
 SHELL_FILES = \
 	histogram \
+	moml \
+	ptexecute \
 	ptinvoke \
 	ptjacl \
 	ptjaclapp \
@@ -58,6 +60,8 @@ SHELL_FILES = \
 # DOS batch files
 BAT_FILES = \
 	histogram.bat \
+	moml.bat \
+	ptexecute.bat \
 	ptplot.bat \
 	ptolemy.bat \
 	pxgraph.bat \
@@ -81,6 +85,10 @@ all: ptinvoke
 	-chmod a+x ptinvoke
 	rm -f histogram
 	ln -s ptinvoke histogram
+	rm -f moml
+	ln -s ptinvoke moml
+	rm -f ptexecute
+	ln -s ptinvoke ptexecute
 	rm -f ptjacl
 	ln -s ptinvoke ptjacl
 	rm -f ptjaclapp
