@@ -48,7 +48,7 @@
 
 ME =		ptolemy/actor/corba
 
-DIRS = util CorbaIOUtil
+DIRS = util CorbaIOUtil CoordinatorUtil
 
 # Root of the Ptolemy II directory
 ROOT =		../../..
