@@ -47,7 +47,7 @@ PTPACKAGE = 	plot
 # If you change PTVERSION, modify the version numbers in:
 #    PlotBox.java,
 #    doc/main.htm, doc/changes.htm, doc/install.htm
-PTVERSION =	5.1p1
+PTVERSION =	5.1p2
 PTDIST =	ptplot$(PTVERSION)
 PTCLASSJAR =
 
@@ -320,6 +320,61 @@ fixtmpdist:
 	mkdir -p $(PTTMPDIR)/$(PTDIST)/com
 	cp -r "$(PTII)/com/microstar" "$(PTII)/com/makefile" \
 		$(PTTMPDIR)/$(PTDIST)/com
+	@echo "Copy over bin"
+	mkdir -p $(PTTMPDIR)/$(PTDIST)/bin
+	cp -r   "$(PTII)/bin/ptinvoke.in" \
+		"$(PTII)/bin/histogram.bat" \
+		"$(PTII)/bin/ptplot.bat" \
+		"$(PTII)/bin/pxgraph.bat" \
+		$(PTTMPDIR)/$(PTDIST)/bin
+	@echo "Create bin/makefile"
+	echo "ME =		bin" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
+	echo "ROOT =		.." >> 	$(PTTMPDIR)/$(PTDIST)/bin/makefile
+	echo "CONFIG =	$(ROOT)/mk/ptII.mk" >> \
+		$(PTTMPDIR)/$(PTDIST)/bin/makefile
+	echo "include $(CONFIG)" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
+	echo "SHELL_FILES = \\" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
+	echo "	histogram \\" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
+	echo "	ptplot \\" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
+	echo "	pxgraph" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
+	echo "# DOS batch files" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
+	echo "BAT_FILES = \\" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
+	echo "	histogram.bat \\" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
+	echo "	ptplot.bat \\" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
+	echo "	pxgraph.bat " >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
+	echo "" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
+	echo "	EXTRA_SRCS = \\" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
+	echo "	ptinvoke.in \\" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
+	echo "	$(BAT_FILES)" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
+	echo "all: ptinvoke" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
+	echo "	-chmod a+x ptinvoke" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
+	echo "	rm -f histogram" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
+	echo "	ln -s ptinvoke histogram" >> \
+		$(PTTMPDIR)/$(PTDIST)/bin/makefile
+	echo "	rm -f ptplot" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
+	echo "	ln -s ptinvoke ptplot" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
+	echo "	rm -f pxgraph" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
+	echo "	ln -s ptinvoke pxgraph" >> \
+		$(PTTMPDIR)/$(PTDIST)/bin/makefile
+	echo "" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
+	echo "	install: all" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
+	echo "	-chmod a+x $(SHELL_FILES) $(BAT_FILES)" >> \
+		$(PTTMPDIR)/$(PTDIST)/bin/makefile
+	echo "" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
+	echo "ptinvoke: ptinvoke.in ../config.status" >> \
+		$(PTTMPDIR)/$(PTDIST)/bin/makefile
+	echo "	(cd ..; ./config.status)" >> \
+		$(PTTMPDIR)/$(PTDIST)/bin/makefile
+	echo "# zip might not get the permissions of configure right, so we run /bin/sh" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
+	echo "../config.status: ../configure" >> \
+		$(PTTMPDIR)/$(PTDIST)/bin/makefile
+	echo "	(cd ..; /bin/sh ./configure)" >> \
+		$(PTTMPDIR)/$(PTDIST)/bin/makefile
+	echo "" >> $(PTTMPDIR)/$(PTDIST)/bin/makefile
+	echo "# Get the rest of the rules" >> \
+		$(PTTMPDIR)/$(PTDIST)/bin/makefile
+	echo "include $(ROOT)/mk/ptcommon.mk" >> \
+		$(PTTMPDIR)/$(PTDIST)/bin/makefile
 	@echo "Copy over gui stuff"
 	cp -r "$(PTII)/ptolemy/gui" $(PTTMPDIR)/$(PTDIST)/ptolemy
 	#

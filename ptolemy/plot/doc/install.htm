@@ -7,9 +7,9 @@
 </head>
 <body>
 <h1>Installing Ptplot</h1>
-Ptplot 5.1p1 requires Swing, which is shipped as part of JDK1.3.
+Ptplot 5.1p2 requires Swing, which is shipped as part of JDK1.3.
 (In theory, it is possible to install Swing with JDK1.1, but we have not
-tried it).  To run Ptplot 5.1p1 applets, you must install the version 1.3
+tried it).  To run Ptplot 5.1p2 applets, you must install the version 1.3
 or later of the
 <a href="http://www.javasoft.com/products/plugin/" target="_top">Javasoft Java Plugin</a>.
 In theory, it should be possible to run Ptplot using the JDK1.2 plugin,
@@ -59,7 +59,7 @@ is in your path.
 <li> Set the <CODE>PTII</CODE> environment variable to point
 to the top of the Ptplot tree.  Under C-shell, one would do:
 <pre>
-setenv PTII ~/src/ptplot5.1p1
+setenv PTII ~/src/ptplot5.1p2
 </pre>
 
 <li> cd into the <CODE>PTII</CODE> directory:
@@ -123,8 +123,8 @@ As a result, JRE1.1.7B is the JRE that is optionally downloaded for Sparcs.
 
 <li> The InstallShield installer places the <CODE>ptplot</CODE>,
 <CODE>histogram</CODE> and <CODE>pxgraph</CODE> startup scripts
-in the toplevel <CODE>ptplot5.1p1</CODE> directory rather than placing
-them in <CODE>ptplot5.1p1/bin</CODE>
+in the toplevel <CODE>ptplot5.1p2</CODE> directory rather than placing
+them in <CODE>ptplot5.1p2/bin</CODE>
 
 
 </menu>
@@ -179,7 +179,7 @@ downloaded the tar or zip files.
 <li> Set the <CODE>PTII</CODE> variable to the top-level
 directory of the Ptplot tree.
 <pre>
-C:\ptplot5.1p1&gt; PTII=c:\ptplot5.1p1
+C:\ptplot5.1p2&gt; PTII=c:\ptplot5.1p2
 </pre>
 <CODE>PTII</CODE> is used by the standalone <CODE>ptplot.bat</CODE>
 script and other scripts
@@ -199,26 +199,26 @@ Cygwin.
 ptolemy\plot.
 <CODE></CODE>
 <pre>
-C:\ptplot5.1p1&gt; cd ptolemy\plot
+C:\ptplot5.1p2&gt; cd ptolemy\plot
 </pre>
 
 
 <li> set your CLASSPATH to ..\..
 <pre>
-C:\ptplot5.1p1\ptolemy\plot&gt;set CLASSPATH=..\..
-C:\ptplot5.1p1\ptolemy\plot&gt;echo %CLASSPATH%
+C:\ptplot5.1p2\ptolemy\plot&gt;set CLASSPATH=..\..
+C:\ptplot5.1p2\ptolemy\plot&gt;echo %CLASSPATH%
 ..\..
 </pre>
 
 <li> Remove the old Java files and compile them
 <pre>
-C:\ptplot5.1p1\ptolemy\plot&gt;del  *.class
-C:\ptplot5.1p1\ptolemy\plot&gt;javac *.java
+C:\ptplot5.1p2\ptolemy\plot&gt;del  *.class
+C:\ptplot5.1p2\ptolemy\plot&gt;javac *.java
 </pre>
 
 <li> Run <CODE>ptplot.bat</CODE>, which reads <CODE>%PTII%</CODE>
 <pre>
-C:\ptplot5.1p1\ptolemy\plot&gt;ptplot.bat
+C:\ptplot5.1p2\ptolemy\plot&gt;ptplot.bat
 </pre>
 
 </ol>
