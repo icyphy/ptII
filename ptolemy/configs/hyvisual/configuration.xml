@@ -187,6 +187,9 @@ to another. Then delete this annotation.</text></svg></configure></property>
 <!-- Discrete library is added to include a few useful actors. -->
 <input source="ptolemy/configs/hyvisual/discrete.xml"/>
 
+<!-- Matlab depends on Matlab being present -->
+<input source="ptolemy/matlab/matlab.xml"/>
+
           </group>
         ?>
       </configure>
