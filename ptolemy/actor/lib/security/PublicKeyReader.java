@@ -58,7 +58,7 @@ import java.util.Enumeration;
 /** Read in a keystore file, look up a certificate by alias name and
 output the PublicKey.
 
-@see KeyReader
+@see PrivateKeyReader
 @author  Christopher Brooks
 @version $Id$
 @since Ptolemy II 3.1
@@ -81,5 +81,8 @@ public class PublicKeyReader extends KeyReader {
 
         // Hide the getPublicKey parameter.
         getPublicKey.setVisibility(Settable.EXPERT);
+
+        // The key password is not needed to get the public key, so hide it.
+        keyPassword.setVisibility(Settable.EXPERT);
     }
 }

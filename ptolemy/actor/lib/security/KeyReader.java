@@ -1,5 +1,5 @@
 /* An actor that reads a Keystore from a FileParameter, looks up
-a Certificate and outputs a PublicKey
+a Certificate and outputs a public or private key.
 
 @Copyright (c) 2003 The Regents of the University of California.
 All rights reserved.
@@ -55,7 +55,7 @@ import java.util.Enumeration;
 //////////////////////////////////////////////////////////////////////////
 //// KeyReader
 /** Read in a keystore file, look up a certificate by alias name and
-output the public key
+outputs a public or private key.
 
 <p>Keystores are ways to manage keys and certificates.  A keystore file can
 be created by using the keytool binary that comes with Java.
@@ -71,6 +71,8 @@ which will create a keystore store password and key password is
 <p>For more information, see
 <a href="http://java.sun.com/docs/books/tutorial/security1.2/summary/tools.html">Security Tools Summary</a>
 
+@see PrivateKeyReader
+@see PublicKeyReader
 @author  Christopher Brooks
 @version $Id$
 @since Ptolemy II 3.1
@@ -105,9 +107,11 @@ public class KeyReader extends Source {
                 new BooleanToken(true));
 
 
-        password = new StringParameter(this, "password");
-        password.setExpression("this.is.not.secure,it.is.for.testing.only");
+        keyPassword = new StringParameter(this, "keyPassword");
+        keyPassword.setExpression("this.is.not.secure,it.is.for.testing.only");
 
+        storePassword = new StringParameter(this, "storePassword");
+        storePassword.setExpression("this.is.not.secure,it.is.for.testing.only");
         try {
             // We could have parameters that allow the user to set
             // the KeyStore type and provider, but since most users
@@ -143,10 +147,15 @@ public class KeyReader extends Source {
      */
     public Parameter getPublicKey;
 
+    /** The password to the Key itself
+     *  The default password is "this.is.not.secure,it.is.for.testing.only".
+     */
+    public StringParameter keyPassword;
+
     /** The password to the KeyStore.
      *  The default password is "this.is.not.secure,it.is.for.testing.only".
      */
-    public StringParameter password;
+    public StringParameter storePassword;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -197,8 +206,8 @@ public class KeyReader extends Source {
         }
 
         try {
-            char [] passwordArray = password.getExpression().toCharArray();
-            _keyStore.load(keyStoreStream, passwordArray);
+            _keyStore.load(keyStoreStream, 
+                    storePassword.getExpression().toCharArray());
             // Add all the aliases as possible choices.
             for (Enumeration aliases = _keyStore.aliases();
                 aliases.hasMoreElements() ;) {
@@ -218,13 +227,13 @@ public class KeyReader extends Source {
             if (_getPublicKey) {
                 _key = _certificate.getPublicKey();
             } else {
-                _key = _keyStore.getKey(_alias, passwordArray);
+                _key = _keyStore.getKey(_alias,
+                        keyPassword.getExpression().toCharArray());
             }
         } catch (Exception ex) {
             throw new IllegalActionException(this, ex,
                     "Failed to get key store aliases or certificate");
         }
-
     }
 
     ///////////////////////////////////////////////////////////////////

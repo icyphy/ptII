@@ -58,7 +58,7 @@ import java.util.Enumeration;
 /** Read in a keystore file, look up a certificate by alias name and
 output the PrivateKey.
 
-@see KeyReader
+@see PublicKeyReader
 @author  Christopher Hylands Brooks
 @version $Id$
 @since Ptolemy II 3.1
