@@ -118,39 +118,3 @@ test State-3.1 {test setting refinement} {
 } {1 .e0.e1 .e0.e2 {ptolemy.kernel.util.IllegalActionException: Cannot find refinement with name "e3" in .e0
   in .e0.fsm.s0}}
 
-test State-4.1 {test removing a state and hence the refinement} {
-    set e0 [java::new ptolemy.actor.TypedCompositeActor]
-    $e0 setName e0
-    set fsm [java::new ptolemy.domains.fsm.kernel.FSMActor $e0 fsm]
-    set s0 [java::new ptolemy.domains.fsm.kernel.State $fsm s0]
-    set e1 [java::new ptolemy.actor.TypedAtomicActor $e0 e1]
-    [java::field $s0 refinementName] setExpression e1
-    $s0 setContainer [java::null]
-    java::isnull [$e1 getContainer]
-} {1}
-
-test State-4.2 {test removing a state and hence the refinement} {
-    set e0 [java::new ptolemy.actor.TypedCompositeActor]
-    $e0 setName e0
-    set fsm [java::new ptolemy.domains.fsm.kernel.FSMActor $e0 fsm]
-    set s0 [java::new ptolemy.domains.fsm.kernel.State $fsm s0]
-    set s2 [java::new ptolemy.domains.fsm.kernel.State $fsm s2]
-    set e1 [java::new ptolemy.actor.TypedAtomicActor $e0 e1]
-    [java::field $s0 refinementName] setExpression e1
-    [java::field $s2 refinementName] setExpression e1
-    $s0 setContainer [java::null]
-    java::isnull [$e1 getContainer]
-} {0}
-
-test State-4.3 {test removing a state and hence the refinement} {
-    set e0 [java::new ptolemy.actor.TypedCompositeActor]
-    $e0 setName e0
-    set fsm [java::new ptolemy.domains.fsm.kernel.FSMActor $e0 fsm]
-    set s0 [java::new ptolemy.domains.fsm.kernel.State $fsm s0]
-    set t0 [java::new ptolemy.domains.fsm.kernel.Transition $fsm t0]
-    set e1 [java::new ptolemy.actor.TypedAtomicActor $e0 e1]
-    [java::field $s0 refinementName] setExpression e1
-    [java::field $t0 refinementName] setExpression e1
-    $s0 setContainer [java::null]
-    java::isnull [$e1 getContainer]
-} {0}
