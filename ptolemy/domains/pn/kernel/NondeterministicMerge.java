@@ -52,7 +52,8 @@ import ptolemy.kernel.util.StringAttribute;
 //// Merge
 /**
    This actor takes any number of input streams and merges them
-   nondeterministically.  This actor is a composite actor that
+   nondeterministically.  This actor is intended for use in the
+   PN domain. Itis a composite actor that
    creates its own contents.  It contains a PNDirector and one
    actor for each input channel (it creates these actors automatically
    when a connection is created to the input multiport).  The contained
@@ -103,7 +104,7 @@ public class NondeterministicMerge extends TypedCompositeActor  {
                 + "style=\"fill:red\"/>\n" +
                 "</svg>\n");
         
-        PNDirector director = new PNDirector(this, "director");
+        PNDirector director = new MergeDirector(this, "director");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -244,5 +245,85 @@ public class NondeterministicMerge extends TypedCompositeActor  {
         }
         private int _channelIndex;
         private IntToken _channelValue;
+    }
+    
+    /** Variant of the PNDirector for the NondeterministicMerge actor.
+     */
+    private class MergeDirector extends PNDirector {
+        public MergeDirector(CompositeEntity container, String name)
+                throws IllegalActionException, NameDuplicationException {
+        	super(container, name);
+        }
+        // Return false since this director has nothing to do
+        // in its iteration loop, unless pause has been requested,
+        // in which case we need to be able to iterate again to
+        // wake up paused actors.
+        public boolean postfire() {
+            // FIXME: The problem with this is that threads do
+            // not get re-awakened after a pause because that
+            // is apparently in done in prefire() of the
+            // director, which will never again be invoked.
+            // Can we check here whether postfire() is
+            // being called because we are pausing?
+            if (_debugging) {
+            	_debug("Called postfire().");
+            }
+            if (_stopFireRequested && !_stopRequested) {
+                if (_debugging) {
+                    _debug("postfire() returns true.");
+                }
+            	return true;
+            }
+            // FIXME: This is going to return false immediately
+            // because fire() returns immediately.
+            if (_debugging) {
+                _debug("postfire() returns false.");
+            }
+        	return false;
+        }
+        // Override this to notify the containing director only.
+        // This local director does not keep a count of active
+        // actors. It delegates this to the enclosing director.
+        protected void _actorHasRestarted() {
+            Director director = getExecutiveDirector();
+            if (director instanceof PNDirector) {
+                ((PNDirector)director)._actorHasRestarted();
+            }
+        }
+        // Override this to notify the containing director as well.
+        // This local director does not keep a count of active
+        // actors. It delegates this to the enclosing director.
+        protected void _actorHasStopped() {
+            Director director = getExecutiveDirector();
+            if (director instanceof PNDirector) {
+                ((PNDirector)director)._actorHasStopped();
+            }
+        }
+        // Override this to notify the containing director as well.
+        // This local director does not keep a count of active
+        // actors. It delegates this to the enclosing director.
+        protected void _decreaseActiveCount() {
+            Director director = getExecutiveDirector();
+            if (director instanceof PNDirector) {
+                ((PNDirector)director)._decreaseActiveCount();
+            }
+        }
+        // Override this to notify the containing director as well.
+        // This local director does not keep a count of active
+        // actors. It delegates this to the enclosing director.
+        protected void _increaseActiveCount() {
+            Director director = getExecutiveDirector();
+            if (director instanceof PNDirector) {
+                ((PNDirector)director)._increaseActiveCount();
+            }
+        }
+        // Override since deadlock cannot ever occur internally.
+        protected boolean _resolveDeadlock() {
+            if (_debugging) {
+            	_debug("Deadlock is not real as " +
+                        "NondeterministicMerge can't deadlock.");
+            }
+            return true;
+        }   
     }
 }
