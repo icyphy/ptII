@@ -1,6 +1,6 @@
 /* A CompositeEntity is a cluster in a clustered graph.
 
- Copyright (c) 1997- The Regents of the University of California.
+ Copyright (c) 1997-1998 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -40,11 +40,14 @@ import collections.LinkedList;
 //// CompositeEntity
 /**
 A CompositeEntity is a cluster in a clustered graph.
-It can contain other entities and relations.  It supports transparent ports,
+I.e., it is a non-atomic entity, in that
+it can contain other entities and relations.  It supports transparent ports,
 where, in effect, the port of a contained entity is represented by a port
 of the container entity. Methods that "deeply" traverse the topology
 see right through transparent ports.
-In addition, deepGetEntities() returns the atomic entities
+It may be opaque, in which case its ports are opaque and methods
+that "deeply" traverse the topology do not see through them.
+For instance, deepGetEntities() returns the opaque entities
 directly or indirectly contained by this entity.
 <p>
 To add an entity or relation to this composite, call its setContainer() method
@@ -64,9 +67,9 @@ structures, where an entity directly or indirectly contains itself,
 are disallowed, and an exception is thrown on an attempt to set up
 such a structure.
 <p>
-A CompositeEntity can contain instances of ComponentPort.  Normally
+A CompositeEntity can contain instances of ComponentPort.  By default
 these ports will be transparent, although subclasses of CompositeEntity
-can make them opaque by overriding the isAtomic() method to return
+can make them opaque by overriding the isOpaque() method to return
 <i>true</i>. Derived classes may further constrain the ports to a
 subclass of ComponentPort.
 To do this, they should override the public method newPort() to create
@@ -75,7 +78,7 @@ to throw an exception if its argument is a port that is not of the
 appropriate subclass.
 
 @author John S. Davis II, Edward A. Lee
-@version $Id$
+@version @(#)CompositeEntity.java	1.26	06/29/98
 */
 public class CompositeEntity extends ComponentEntity {
 
@@ -307,11 +310,11 @@ public class CompositeEntity extends ComponentEntity {
         }
     }
 
-    /** Enumerate the atomic entities that are directly or indirectly
+    /** Enumerate the opaque entities that are directly or indirectly
      *  contained by this entity.  The enumeration will be empty if there
      *  are no such contained entities.
      *  This method is read-synchronized on the workspace.
-     *  @return An enumeration of atomic ComponentEntity objects.
+     *  @return An enumeration of opaque ComponentEntity objects.
      */
     public Enumeration deepGetEntities() {
         try {
@@ -322,7 +325,7 @@ public class CompositeEntity extends ComponentEntity {
 
             while (enum.hasMoreElements()) {
                 ComponentEntity entity = (ComponentEntity)enum.nextElement();
-                if (entity.isAtomic()) {
+                if (entity.isOpaque()) {
                     result.insertLast(entity);
                 } else {
                     result.appendElements(
@@ -404,11 +407,20 @@ public class CompositeEntity extends ComponentEntity {
 
     /** Return false since CompositeEntities are not atomic.
      *  Note that this will return false even if there are no contained
-     *  entities or relations.  Derived classes may override this
-     *  to return true in order to hide the contents of the entity.
+     *  entities or relations.  Derived classes may not override this.
+     *  To hide the contents of the entity, they should override isOpaque().
      *  @return False.
      */
-    public boolean isAtomic() {
+    public final boolean isAtomic() {
+	return false;
+    }
+
+    /** Return false.  Derived classes may return true in order to hide
+     *  their components behind opaque ports.
+     *  @return True if the entity is opaque.
+     *  @see pt.kernel.CompositeEntity
+     */
+    public boolean isOpaque() {
 	return false;
     }
 
