@@ -56,24 +56,27 @@ test XSLTUtilities-1.1 {Call main} {
     close $file
     file delete -force out.xml
 
-    list $results
+    # Strip out spaces.  between java 1.4.1 and 1.4.2, the
+    # output changed
+    regsub -all {[ ]+} $results { } results2
+    list $results2
 } {{<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <WMBasicEdit>
-    <Attributes>
-        <WMENC_STRING Name="Title"/>
-    </Attributes>
+ <Attributes>
+<WMENC_STRING Name="Title"/>
+</Attributes>
 
-    <RemoveAllMarkers/>
-    <RemoveAllScripts/>
-    <Scripts>
-        <Script Type="URL" Command="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide2.gif" Time="341830000"/>
-        <Script Type="URL" Command="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide3.gif" Time="816310000"/>
-    </Scripts>
+ <RemoveAllMarkers/>
+ <RemoveAllScripts/>
+ <Scripts>
+<Script Type="URL" Command="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide2.gif" Time="341830000"/>
+<Script Type="URL" Command="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide3.gif" Time="816310000"/>
+</Scripts>
 
 <Markers>
-        <Marker Time="341830000" Name="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide2.gif"/>
-        <Marker Time="816310000" Name="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide3.gif"/>
-    </Markers>
+<Marker Name="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide2.gif" Time="341830000"/>
+<Marker Name="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide3.gif" Time="816310000"/>
+</Markers>
 </WMBasicEdit>
 }}
 
@@ -86,22 +89,27 @@ test XSLTUtilities-2.1 {test parse and toString} {
 			   parse test.xml]
     set inputString [java::call ptolemy.util.XSLTUtilities toString \
 			  $inputDocument]
-} {<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+    # Strip out spaces.  between java 1.4.1 and 1.4.2, the
+    # output changed
+    regsub -all {[ ]+} $inputString { } results2
+    list $results2
+
+} {{<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <WMBasicEdit>
-    <Attributes>
-        <WMENC_STRING Name="Title"/>
+ <Attributes>
+ <WMENC_STRING Name="Title"/>
 
-    </Attributes>
+ </Attributes>
 
-    <RemoveAllMarkers/>
-    <RemoveAllScripts/>
-    <Scripts>
-        <Script Type="URL" Command="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide2.gif" Time="341830000"/>
-        <Script Type="URL" Command="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide3.gif" Time="816310000"/>
-    </Scripts>
+ <RemoveAllMarkers/>
+ <RemoveAllScripts/>
+ <Scripts>
+ <Script Type="URL" Command="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide2.gif" Time="341830000"/>
+ <Script Type="URL" Command="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide3.gif" Time="816310000"/>
+ </Scripts>
 
 </WMBasicEdit>
-}
+}}
 
 ######################################################################
 ####
@@ -129,25 +137,30 @@ test XSLTUtilities-3.2 {Call transform(Document, List) using local files} {
 			    transform $inputDocument $transformList]
     set outputString [java::call ptolemy.util.XSLTUtilities toString \
 			  $outputDocument]
-} {<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<WMBasicEdit>
-    <Attributes>
-        <WMENC_STRING Name="Title"/>
-    </Attributes>
+    # Strip out spaces.  between java 1.4.1 and 1.4.2, the
+    # output changed
+    regsub -all {[ ]+} $outputString { } results2
+    list $results2
 
-    <RemoveAllMarkers/>
-    <RemoveAllScripts/>
-    <Scripts>
-        <Script Type="URL" Command="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide2.gif" Time="341830000"/>
-        <Script Type="URL" Command="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide3.gif" Time="816310000"/>
-    </Scripts>
+} {{<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<WMBasicEdit>
+ <Attributes>
+<WMENC_STRING Name="Title"/>
+</Attributes>
+
+ <RemoveAllMarkers/>
+ <RemoveAllScripts/>
+ <Scripts>
+<Script Type="URL" Command="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide2.gif" Time="341830000"/>
+<Script Type="URL" Command="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide3.gif" Time="816310000"/>
+</Scripts>
 
 <Markers>
-        <Marker Time="341830000" Name="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide2.gif"/>
-        <Marker Time="816310000" Name="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide3.gif"/>
-    </Markers>
+<Marker Name="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide2.gif" Time="341830000"/>
+<Marker Name="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide3.gif" Time="816310000"/>
+</Markers>
 </WMBasicEdit>
-}
+}}
 
 ######################################################################
 ####
@@ -160,25 +173,29 @@ test XSLTUtilities-3.3 {Call transform(Document, List) using files found in the 
 			    transform $inputDocument $transformList]
     set outputString [java::call ptolemy.util.XSLTUtilities toString \
 			  $outputDocument]
-} {<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+    # Strip out spaces.  between java 1.4.1 and 1.4.2, the
+    # output changed
+    regsub -all {[ ]+} $outputString { } results2
+    list $results2
+} {{<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <WMBasicEdit>
-    <Attributes>
-        <WMENC_STRING Name="Title"/>
-    </Attributes>
+ <Attributes>
+<WMENC_STRING Name="Title"/>
+</Attributes>
 
-    <RemoveAllMarkers/>
-    <RemoveAllScripts/>
-    <Scripts>
-        <Script Type="URL" Command="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide2.gif" Time="341830000"/>
-        <Script Type="URL" Command="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide3.gif" Time="816310000"/>
-    </Scripts>
+ <RemoveAllMarkers/>
+ <RemoveAllScripts/>
+ <Scripts>
+<Script Type="URL" Command="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide2.gif" Time="341830000"/>
+<Script Type="URL" Command="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide3.gif" Time="816310000"/>
+</Scripts>
 
 <Markers>
-        <Marker Time="341830000" Name="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide2.gif"/>
-        <Marker Time="816310000" Name="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide3.gif"/>
-    </Markers>
+<Marker Name="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide2.gif" Time="341830000"/>
+<Marker Name="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide3.gif" Time="816310000"/>
+</Markers>
 </WMBasicEdit>
-}
+}}
 
 
 ######################################################################
@@ -199,23 +216,26 @@ test XSLTUtilities-3.4 {Call transform(String, String, String)} {
     close $file
     file delete -force out.xml
 
-    list $results
+    # Strip out spaces.  between java 1.4.1 and 1.4.2, the
+    # output changed
+    regsub -all {[ ]+} $results { } results2
+    list $results2
 } {{<?xml version="1.0" encoding="UTF-8"?>
 <WMBasicEdit>
-    <Attributes>
-        <WMENC_STRING Name="Title"/>
-    </Attributes>
+ <Attributes>
+ <WMENC_STRING Name="Title"/>
+ </Attributes>
 
-    <RemoveAllMarkers/>
-    <RemoveAllScripts/>
-    <Scripts>
-        <Script Type="URL" Command="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide2.gif" Time="341830000"/>
-        <Script Type="URL" Command="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide3.gif" Time="816310000"/>
-    </Scripts>
+ <RemoveAllMarkers/>
+ <RemoveAllScripts/>
+ <Scripts>
+ <Script Type="URL" Command="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide2.gif" Time="341830000"/>
+ <Script Type="URL" Command="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide3.gif" Time="816310000"/>
+ </Scripts>
 
-<Markers>
-        <Marker Time="341830000" Name="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide2.gif"/>
-        <Marker Time="816310000" Name="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide3.gif"/>
-    </Markers>
-</WMBasicEdit>
-}}
+
+ <Markers>
+ <Marker Name="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide2.gif" Time="341830000"/>
+ <Marker Name="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide3.gif" Time="816310000"/>
+ </Markers>
+</WMBasicEdit>}}
