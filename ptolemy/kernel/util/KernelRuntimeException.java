@@ -85,6 +85,14 @@ public class KernelRuntimeException extends RuntimeException {
         this(null, null, null, detail);
     }
 
+    /** Constructs an Exception with a cause and a detail message.
+     *  @param cause The cause of this exception.
+     *  @param detail The message.
+     */
+    public KernelRuntimeException(Throwable cause, String detail) {
+        this(null, null, cause, detail);
+    }
+
     /** Constructs an Exception with a detail message that includes the
      *  name of the first argument and the second argument string.
      *  @param obj The object.
@@ -95,7 +103,7 @@ public class KernelRuntimeException extends RuntimeException {
     }
 
     /** Constructs an Exception with a detail message that includes
-     *  the names of the first two arguments plus the third argument
+     *  the names of the first two arguments plus the fourth argument
      *  string.  If the cause argument is non-null, then the detail
      *  message of this argument will include the detail message of
      *  the cause argument.  The stack trace of the cause argument is
