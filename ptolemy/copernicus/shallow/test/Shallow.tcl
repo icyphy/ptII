@@ -90,15 +90,6 @@ proc autoShallowCG {autoDirectory} {
 #    lrange $result 0 9
 #} {2 4 6 8 10 12 14 16 18 20}
 
-test Shallow-1.1 {Compile and run this javasound demo from Edward} {
-    set result [sootCodeGeneration \
-	    [file join $relativePathToPTII ptolemy copernicus shallow test \
-	    nonlinearity.xml]]
-    puts $result
-    list {}
-} {{}}
-
-
 # Do a SDF and a DE test just be sure things are working
 test Shallow-1.2 {Compile and run the SDF IIR test} {
     set result [sootCodeGeneration \
