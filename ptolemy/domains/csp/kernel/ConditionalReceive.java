@@ -228,7 +228,7 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
      *  the top of the main loop in the run method that calls this method.
      *  Return true if this method should go to the top of the calling
      *  loop; return false otherwise.
-     * @returns true if this method should continue at the beginning of
+     * @return true if this method should continue at the beginning of
      *  the loop that calls this method; otherwise return false.
      * @param parent The csp actor that contains this conditional
      *  receive.
