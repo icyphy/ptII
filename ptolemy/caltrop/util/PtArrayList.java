@@ -33,12 +33,13 @@ import ptolemy.data.ArrayToken;
 import java.util.AbstractList;
 import java.util.List;
 
+//////////////////////////////////////////////////////////////////////////
+//// PtArrayList
 /**
- *  @author Jörn W. Janneck <janneck@eecs.berkeley.edu>
- *  @version $Id$
- *  @since Ptolemy II 3.1
+@author Jörn W. Janneck <janneck@eecs.berkeley.edu>
+@version $Id$
+@since Ptolemy II 3.1
  */
-
 public class PtArrayList extends AbstractList implements List {
     private ArrayToken _arrayToken;
 

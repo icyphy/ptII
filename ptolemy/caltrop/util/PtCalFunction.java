@@ -35,18 +35,20 @@ import ptolemy.kernel.util.IllegalActionException;
 
 import java.util.List;
 
+//////////////////////////////////////////////////////////////////////////
+//// PtCalFunction
 /**
- * This class is an adapter for {@link caltrop.interpreter.Function Function} objects that provides the Ptolemy II
- * <tt>FunctionToken.Function</tt>
- * interface. It allows them to be seamlessly used with Ptolemy II-generated function objects.
- *
- * @author Jörn W. Janneck <janneck@eecs.berkeley.edu>
- * @version $Id$
- * @since Ptolemy II 3.1
- * @see caltrop.interpreter.Context
- * @see caltrop.interpreter.Function
- */
+This class is an adapter for {@link caltrop.interpreter.Function
+Function} objects that provides the Ptolemy II
+<tt>FunctionToken.Function</tt> interface. It allows them to be
+seamlessly used with Ptolemy II-generated function objects.
 
+@author Jörn W. Janneck <janneck@eecs.berkeley.edu>
+@version $Id$
+@since Ptolemy II 3.1
+@see caltrop.interpreter.Context
+@see caltrop.interpreter.Function
+*/
 public class PtCalFunction implements FunctionToken.Function {
 
     public Token apply(List list) throws IllegalActionException {

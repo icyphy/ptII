@@ -33,12 +33,13 @@ import caltrop.interpreter.Context;
 import java.util.AbstractList;
 
 
+//////////////////////////////////////////////////////////////////////////
+//// IntegerList
 /**
- *  @author Jörn W. Janneck <janneck@eecs.berkeley.edu>
- *  @version $Id$
- *  @since Ptolemy II 3.1
- */
-
+@author Jörn W. Janneck <janneck@eecs.berkeley.edu>
+@version $Id$
+@since Ptolemy II 3.1
+*/
 public class IntegerList extends AbstractList {
 
     public IntegerList(Context context, int a, int b) {
