@@ -68,7 +68,7 @@ if test  ! -w "$PTII"; then
 fi
 
 AC_MSG_CHECKING([if $PTII contains "cygdrive"])
-grep cygdrive "$PTII" > /dev/null
+echo "$PTII" | grep cygdrive > /dev/null
 status=$?
 if test "$status" -eq 1 ; then
     AC_MSG_RESULT([ok
