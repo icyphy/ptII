@@ -99,16 +99,16 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
         boolean ok = solver.solveLeast();
 
         if (!ok) {
-            ApplicationUtility.warn("unable to solve for Token types");
+            System.err.println("Warning: unable to solve for Token types");
 
             Iterator unsatisfiedItr = solver.unsatisfiedInequalities();
 
-            ApplicationUtility.warn("unsatisfied inequalities:");
+            System.err.println("Warning: unsatisfied inequalities:");
 
             while (unsatisfiedItr.hasNext()) {
                 ApplicationUtility.warn(unsatisfiedItr.next().toString());
             }
-            ApplicationUtility.warn("end of unsatisfied inequalities");
+            System.err.println("Warning: end of unsatisfied inequalities");
         }
 
         HashMap declToTokenTypeMap = new HashMap();
@@ -128,7 +128,7 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
                     (value == PtolemyTypeIdentifier.TOKEN_DECL) ||
                     (value == PtolemyTypeIdentifier.SCALAR_TOKEN_DECL) ||
                     (value == PtolemyTypeIdentifier.MATRIX_TOKEN_DECL)) {
-                ApplicationUtility.warn("could not solve for specific token type for " +
+                System.err.println("Warning: could not solve for specific token type for " +
                         "declaration " + typedDecl.getName() + " in " + actorInfo.actor.getName());
 
                 // replace the declaration type with "Token" as an indication for
@@ -350,7 +350,7 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
             TypedIOPort port = (TypedIOPort) _actorInfo.portNameToPortMap.get(varName);
 
             if (port == null) {
-                ApplicationUtility.warn("method called on port that is not " +
+                System.err.println("Warning: method called on port that is not " +
                         "a field of the actor");
                 return null;
             }
@@ -384,7 +384,7 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
                 Token token = (Token) _actorInfo.parameterNameToTokenMap.get(varName);
 
                 if (token == null) {
-                    ApplicationUtility.warn("getToken() called on parameter that is not " +
+                    System.err.println("Warning: getToken() called on parameter that is not " +
                             "a field of the actor");
                     return null;
                 }

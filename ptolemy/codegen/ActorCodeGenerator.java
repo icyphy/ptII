@@ -326,7 +326,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
             //        filename);
 
             //if (!StaticResolution.invalidateCompileUnit(filename, passNumber)) {
-            //    ApplicationUtility.warn("failed to invalidate source filename: "                        + filename);
+            //    System.err.println("Warning: failed to invalidate source filename: "                        + filename);
             //}
 	    String className = (String) classNameItr.next();
             ApplicationUtility.status("ActorCodeGenerator._invalidate" +
@@ -335,7 +335,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
 				      passNumber);
 
             if (!StaticResolution.invalidateCompileUnit(className, passNumber)) {
-                ApplicationUtility.warn("failed to invalidate source filename: "                        + className);
+                System.err.println("Warning: failed to invalidate source filename: "                        + className);
             }
         }
 

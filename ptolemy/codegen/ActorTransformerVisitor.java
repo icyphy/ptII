@@ -541,7 +541,7 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
                     // ArrayStringFormat.exprASFormat
 
                 case PtolemyTypeIdentifier.TYPE_KIND_BOOLEAN_MATRIX_TOKEN:
-                    ApplicationUtility.warn("toString() on boolean matrix not " +
+                    System.err.println("Warning: toString() on boolean matrix not " +
                             "supported yet");
                     break;
 
@@ -596,7 +596,7 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
 
             // method not supported, create a new Token, and call the method
             // with new (converted) args. This may be a problem.
-            ApplicationUtility.warn("found unsupported method: " + methodName +
+            System.err.println("Warning: found unsupported method: " + methodName +
                     ", replacing with creation of token and method call");
 
             return new MethodCallNode(
@@ -1104,7 +1104,7 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
                 interfaceDecl)) {
                modifiedInterfaceList.add(interfaceTypeNode);   
             } else {
-               ApplicationUtility.warn("Interface \"" + 
+               System.err.println("Warning: Interface \"" + 
                 interfaceDecl.getName() + 
                 "\" removed from implements list of class \"" + 
                 node.getName().getIdent() + "\".");
@@ -1568,11 +1568,11 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
 
         if (_typeID.isSupportedTokenKind(leftKind)) {
 
-            ApplicationUtility.warn("comparison of Token found : " + leftExpr +
+            System.err.println("Warning: comparison of Token found : " + leftExpr +
                     " with " + rightExpr);
 
             if (rightExpr.classID() == NULLPNTRNODE_ID) {
-                ApplicationUtility.warn("comparison with null replaced with dummy value");
+                System.err.println("Warning: comparison with null replaced with dummy value");
 
                 node.setExpr2(_dummyValue(leftType));
 
@@ -1584,11 +1584,11 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
 
         if (_typeID.isSupportedTokenKind(rightKind)) {
 
-            ApplicationUtility.warn("comparison of Token found : " + leftExpr +
+            System.err.println("Warning: comparison of Token found : " + leftExpr +
                     " with " + rightExpr + "(may be a duplicate message)");
 
             if (leftExpr.classID() == NULLPNTRNODE_ID) {
-                ApplicationUtility.warn("comparison with null replaced with dummy value");
+                System.err.println("Warning: comparison with null replaced with dummy value");
 
                 node.setExpr1(_dummyValue(rightType));
 
