@@ -137,6 +137,8 @@ public class DerivativeResolver extends ODESolver implements BreakpointODESolver
      *  @return True always.
      */
     public boolean integratorIsAccurate(CTBaseIntegrator integrator) {
+        // NOTE: this method is never called because the firing of
+        // integrators under control of this solver is always accurate.
         return true;
     }
 
@@ -147,6 +149,7 @@ public class DerivativeResolver extends ODESolver implements BreakpointODESolver
      *  @return The initial step size.
      */
     public double integratorPredictedStepSize(CTBaseIntegrator integrator) {
+        // NOTE: this method is never called because the step size is always 0.0
         CTDirector director = (CTDirector) getContainer();
         return director.getInitialStepSize();
     }
