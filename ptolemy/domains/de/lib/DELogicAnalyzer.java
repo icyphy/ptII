@@ -118,7 +118,7 @@ public class DELogicAnalyzer extends DEActor {
         for (int i = 0; i<width; i++) {
             // check channel i.
             if (input.hasToken(i)) {
-                double curTime =((DEDirector)getDirector()).getCurrentTime();
+                double curTime = ((DEDirector)getDirector()).getCurrentTime();
                 // channel i is not empty, get all the tokens in it.
                 while (input.hasToken(i)) {
                     DoubleToken curToken = null;
@@ -144,8 +144,8 @@ public class DELogicAnalyzer extends DEActor {
         // If all channels are empty, then the scheduler is wrong.
         if (numEmptyChannel == width) {
             throw new InternalErrorException(
-                    "Discrete event scheduling error. DELogicAnalyzer fired, but there "
-                    + "is no input data.");
+                    "Discrete event scheduling error. DELogicAnalyzer fired," +
+                    " but there is no input data.");
         }
     }
 
