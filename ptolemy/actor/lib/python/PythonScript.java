@@ -36,6 +36,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.util.StringUtilities;
 
 import org.python.core.PyObject;
 import org.python.core.PyJavaInstance;
@@ -446,6 +447,16 @@ public class PythonScript extends TypedAtomicActor {
 
     // The python interpreter.
     private static PythonInterpreter _interpreter = new PythonInterpreter();
+
+    static {
+        try {
+            String ptIIDir = StringUtilities.getProperty("ptolemy.ptII.dir");
+            _interpreter.exec("import sys\n");
+            _interpreter.exec("sys.path.append('"
+                    + ptIIDir + "/vendors/jython/Lib')");
+        } catch (Exception ex) {
+        }
+    }
 
     // Map from method name to PyMethod objects.
     private HashMap _methodMap = new HashMap();
