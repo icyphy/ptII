@@ -84,6 +84,7 @@ JSRCS = \
 	BooleanExpression.java \
 	BooleanMultiplexor.java \
 	BooleanSelect.java \
+	BooleanSwitch.java \
 	ClassWrapper.java \
 	Clock.java \
 	Commutator.java \
