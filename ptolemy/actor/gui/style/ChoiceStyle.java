@@ -104,7 +104,8 @@ public class ChoiceStyle extends ParameterEditorStyle {
         String name = getContainer().getName();
         Variable param = (Variable)getContainer();
 	List paramList = attributeList(Variable.class);
-        Variable choices[] = (Variable [])paramList.toArray(new Variable[paramList.size()]);
+        Variable choices[]
+            = (Variable [])paramList.toArray(new Variable[paramList.size()]);
 	String values[] = new String[choices.length];
 	for(int i = 0; i < choices.length; i++) {
 	    values[i] = choices[i].stringRepresentation();

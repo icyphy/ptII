@@ -47,28 +47,28 @@ import ptolemy.actor.event.SetParameter;
 //////////////////////////////////////////////////////////////////////////
 //// PtolemyQuery
 /**
-This class provides a method to create a mapping from a Query entry to
-a variable. It is possible to create a mapping from more than one Querey
-entries to the same variable. The Variable will be automatically set each
-time that a corresponding Query entry that the variable is attached to
-changes. All Query entries that a variable is attached to will also be
-automatically set when the value of the variable changes.
+This class is a query dialog box with various entries for setting
+the values of Ptolemy II parameters.  One or more entries are
+associated with a parameter so that if the entry is changed, the
+parameter value is updated, and if the parameter value changes,
+the entry is updated. To change a parameter, this class queues
+a change request with a particular composite entity called the change
+handler.  The change handler can be specified as a constructor
+argument.  If it is not specified as a constructor argument, then
+it is inferred from the parameters themselves.  The containment
+hierarchy is examined to find the lowest (in the hierarchy) composite
+entity that contains the parameter.  That composite entity is the
+change handler.  If no change handler can be found, then the
+change is executed immediately.
 <p>
-One might think that this could cause a race condition, since changing
-an entry would cause the corresponding variable's value to change, 
-which would in turn cause the same entry to be set again. This class
-has code that will block such a condition from occuring, so this is
-not a problem.
-<p>
-When an entry is changed, this class queues a change request with
-the director. It is important to note, therefore, that it may take
-some time before the variable's value is actually changed, since it 
-is up to the director to decide when topology mutations may occur.
-The director will typically delagate mutation requests to the 
+It is important to note that it may take
+some time before the value of a parameter is actually changed, since it 
+is up to the change handler to decide when change requests are processed.
+The change handler will typically delagate change requests to the 
 Manager, although this is not necessarilly the case.
 <p>
-To use this class, first add an entry to
-the query, and then use the attachParameter method in this class
+To use this class, first add an entry to the query using addStyledEntry(),
+and then use the attachParameter() method in this class
 to associate a variable to that entry.
 
 @author Brian K. Vogel
@@ -86,16 +86,12 @@ public class PtolemyQuery extends Query
 
     /** Construct a panel with no queries in it.
      *  When an entry changes, a change request is
-     *  queued with the given composite entity. The director
-     *  will then schedule the corresponding variable's
-     *  value to be updated at an appropriate time in 
-     *  the execution of the model. Note that
-     *  only one PtolemyQuery object is allowed per
-     *  director.   If the entity is null, this query will
-     *  attempt to find an entity.
+     *  queued with the given composite entity.
+     *  If the entity is null, this query will
+     *  attempt to find a suitable entity (the container of the container). 
      *  @param entity The entity for a model. This should
-     *  be the entity that deeply contains all variables that
-     *  are attached to query entries.
+     *   be the entity that deeply contains all variables that
+     *   are attached to query entries.
      */
     public PtolemyQuery(CompositeEntity entity) {
 	super();
@@ -105,12 +101,12 @@ public class PtolemyQuery extends Query
         _varToListOfEntries = new HashMap();
     }
 
-    /** 
-     * Add a new entry to this query that represents the given parameter.
-     * The name of the entry will be set to the name of the parameter.
-     * If the parameter contains a parameter style, then use the style to 
-     * create the entry, otherwise just create a new line entry.
-     * Attach the variable to the new entry.
+    /** Add a new entry to this query that represents the given parameter.
+     *  The name of the entry will be set to the name of the parameter.
+     *  If the parameter contains a parameter style, then use the style to 
+     *  create the entry, otherwise just create a new line entry.
+     *  Attach the variable to the new entry.
+     *  @param param The parameter for which to create an entry.
      */
     public void addStyledEntry(Variable param) {
 	// Look for a ParameterEditorStyle.
@@ -136,7 +132,7 @@ public class PtolemyQuery extends Query
 	}
     }
 
-    /** Attach a variable <i>var</i> to an entry, <i>entryName</i>,
+    /** Attach a variable <i>var</i> to an entry with name <i>entryName</i>,
      *  of a Query. After attaching the <i>var</i> to the entry,
      *  automatically set <i>var</i> when <i>entryName</i> changes.
      *  If <i>var</i> has previously been attached to an entry,
@@ -186,17 +182,9 @@ public class PtolemyQuery extends Query
 	}
     }
 
-    /** Set the variable to the value of the Query entry that
-     *  changed. This method is called whenever an entry changes.
-     *  If the variable has a director, then queue a change request with
-     *  the director. If the variable does not have a director,
-     *  then set the variable imediately, without queuing
-     *  a change request. This method attemps to get a director
-     *  from a variable as follows: First check if the variable's
-     *  container is an actor or a director. If it is an actor,
-     *  call getDirector() and check that the director is not null.
-     *  If this fails, than repeat on the container's container, until
-     *  we reach the toplevel container.
+    /** Queue a change request to alter the value of any parameter
+     *  attached to the specified entry. This method is
+     *  called whenever an entry has been changed.
      *  @param name The name of the entry that has changed.
      */
     // FIXME: This only works with a Parameter, not a Variable.
@@ -246,6 +234,7 @@ public class PtolemyQuery extends Query
 		}
 	    }
             try {
+                // FIXME: Use a MoMLChangeRequest.
                 ChangeRequest request = new SetParameter((Parameter)var, 
                         (Parameter)var, stringValue(name));
                 if(entity != null) {
@@ -324,9 +313,11 @@ public class PtolemyQuery extends Query
 
     // Maps an entry name to the variable that is attached to it.
     private Map _parameters;
+
     // Maps a variable name to a list of entry names that the
     // variable is attached to.
     private Map _varToListOfEntries;
+
     // The entity that was specified in the constructors.
     private CompositeEntity _entity;
 }
