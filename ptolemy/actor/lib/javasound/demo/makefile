@@ -70,6 +70,8 @@ OPTIONAL_FILES = \
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
+	@echo "To run the demos, run 'make demo'"
+
 install: jclass jars
 
 demo:
