@@ -61,16 +61,7 @@ public class MenuCreator extends AbstractInteractor {
      */
     public MenuCreator(MenuFactory factory) {
         setMenuFactory(factory);
-    }
-
-    /** Test if the interactor accepts the given event. This
-     * implementation overrides the default to ignore the mouse
-     * filter.  Note that this interactor accepts, but does not
-     * consume all mouse events, in order to ensure that popupTrigger
-     * events are received.
-     */
-    public boolean accept (LayerEvent event) {
-        return isEnabled();
+        setMouseFilter(new MouseFilter(InputEvent.BUTTON3_MASK));
     }
 
     /**
