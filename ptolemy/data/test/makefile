@@ -43,7 +43,6 @@ CLASSPATH = ../../..
 TCL_SRCS = \
 	description.tcl \
 	init.tcl \
-	tclshrc.tcl \
 	testDefs.tcl \
 	testEnums.tcl
 
