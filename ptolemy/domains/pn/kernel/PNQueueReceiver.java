@@ -131,8 +131,19 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      */
     public void setContainer(IOPort port) throws IllegalActionException {
     	super.setContainer(port);
-        Director director = ((Actor)
-                (getContainer().getContainer())).getDirector();
+        Actor actor = (Actor) port.getContainer();
+        Director director;
+        // For a composite actor,
+        // the receiver type of an inpu port is decided by 
+        // the executive director.
+        // While the receiver type of an output is decided by the director.
+        // NOTE: getExecutiveDirector and getDirector is of no difference
+        // to atomic actors.
+        if (port.isInput()) {
+            director = actor.getExecutiveDirector();
+        } else {
+            director = actor.getDirector();
+        }
         if (!(director instanceof PNDirector)) {
         	throw new IllegalActionException(port,
                     "Cannot use an instance of PNQueueReceiver " +
