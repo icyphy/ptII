@@ -48,6 +48,8 @@ public class MailboxBoundaryReceiver extends Mailbox implements BoundaryReceiver
     /** Construct an empty MailboxBoundaryReceiver with no container.
      */
     public MailboxBoundaryReceiver() {
+	super();
+	_boundaryDetector = new BoundaryDetector(this);
     }
     
     /** Construct an empty MailboxBoundaryReceiver with the specified
@@ -55,6 +57,7 @@ public class MailboxBoundaryReceiver extends Mailbox implements BoundaryReceiver
      */
     public MailboxBoundaryReceiver(IOPort container) {
         super(container);
+	_boundaryDetector = new BoundaryDetector(this);
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -125,11 +128,29 @@ public class MailboxBoundaryReceiver extends Mailbox implements BoundaryReceiver
         }
     }
 
+    /**
+     */
+    public boolean isConnectedToBoundary() {
+	return _boundaryDetector.isConnectedToBoundary();
+    }
+
     /** This class serves as an example of a ConsumerReceiver and
      *  hence this method returns true;
      */
     public boolean isConsumerReceiver() {
     	return true;
+    }
+
+    /**
+     */
+    public boolean isInsideBoundary() {
+	return _boundaryDetector.isInsideBoundary();
+    }
+
+    /**
+     */
+    public boolean isOutsideBoundary() {
+	return _boundaryDetector.isOutsideBoundary();
     }
 
     /** This class serves as an example of a ProducerReceiver and
@@ -211,6 +232,7 @@ public class MailboxBoundaryReceiver extends Mailbox implements BoundaryReceiver
     	_terminate = false;
         _readPending = false;
         _writePending = false;
+	_boundaryDetector.reset();
     }
 
     /** Set a local flag that requests that the simulation be paused
@@ -233,5 +255,6 @@ public class MailboxBoundaryReceiver extends Mailbox implements BoundaryReceiver
     private boolean _terminate = false;
     private boolean _readPending = false;
     private boolean _writePending = false;
+    private BoundaryDetector _boundaryDetector;
 
 }
