@@ -109,7 +109,8 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
             System.err.println("Warning: unsatisfied inequalities:");
 
             while (unsatisfiedItr.hasNext()) {
-                ApplicationUtility.warn(unsatisfiedItr.next().toString());
+                System.err.println("Warning: " +
+                        unsatisfiedItr.next().toString());
             }
             System.err.println("Warning: end of unsatisfied inequalities");
         }
