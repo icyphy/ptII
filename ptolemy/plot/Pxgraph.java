@@ -407,9 +407,7 @@ public class Pxgraph extends Frame {
                 System.exit(0);
                 break;
             case 'x':
-                // Used for debugging, brings up pxgraph.x11.
-                if (_debug > 5)
-                    _pxgraphX11();
+                _pxgraphX11();  // Used for debugging, brings up pxgraph.x11.
                 break;
             }
         }
