@@ -118,7 +118,7 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
         while (termItr.hasNext()) {
             InequalityTerm term = (InequalityTerm) termItr.next();
 
-            ApplicationUtility.trace(term.toString());
+            //System.out.println(term.toString());
 
             ClassDecl value = (ClassDecl) term.getValue();
 

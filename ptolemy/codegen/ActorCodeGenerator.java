@@ -123,7 +123,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
         LinkedList unitList = listArray[0];
         LinkedList classNameList = listArray[1];
 
-        ApplicationUtility.trace("acg : specializing tokens " + filename);
+        //System.out.println("acg : specializing tokens " + filename);
 
         PtolemyTypeVisitor typeVisitor =
             _factory.createPtolemyTypeVisitor(actorInfo);
@@ -131,7 +131,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
         Map declToTypeMap = SpecializeTokenVisitor.specializeTokens(unitList,
                 actorInfo, typeVisitor);
 
-        ApplicationUtility.trace("acg : changing types " + filename);
+        //System.out.println("acg : changing types " + filename);
 
         TNLManip.traverseList(new ChangeTypesVisitor(),
                 TNLManip.addFirst(declToTypeMap), unitList);
@@ -188,7 +188,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
 
         LinkedList unitList = listArray[0];
 
-        ApplicationUtility.trace("pass2() : unitList has length " +
+        //System.out.println("pass2() : unitList has length " +
                 unitList.size());
 
         Iterator unitItr = unitList.iterator();
@@ -203,7 +203,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
             unitNode.accept(new RemovePropertyVisitor(),
                     TNLManip.addFirst(TYPE_KEY));
 
-            ApplicationUtility.trace("ActorCodeGenerator.pass2(): transforming code " + filename);
+            //System.out.println("ActorCodeGenerator.pass2(): transforming code " + filename);
 
             unitNode.accept(
                     _factory.createActorTransformerVisitor(actorInfo), null);
@@ -250,7 +250,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
 
         LinkedList unitList = listArray[0];
 
-        ApplicationUtility.trace("pass3() : unitList has length " + unitList.size());
+        //System.out.println("pass3() : unitList has length " + unitList.size());
 
         Iterator unitItr = unitList.iterator();
 
@@ -322,7 +322,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
             //String filename = _makeOutputFilename(
             // (String) classNameItr.next());
 
-            //ApplicationUtility.trace("invalidating source filename: "  +
+            //System.out.println("invalidating source filename: "  +
             //        filename);
 
             //if (!StaticResolution.invalidateCompileUnit(filename, passNumber)) {
@@ -409,7 +409,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
 	// Use the complete class name, including the package name
 	classNameList.addFirst(ASTReflect.getPackageName(unitNode));
 
-        ApplicationUtility.trace("_makeUnitList() : className = " + className);
+        //System.out.println("_makeUnitList() : className = " + className);
 
         do {
 
@@ -419,7 +419,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
             if ((superDecl == StaticResolution.OBJECT_DECL) ||
                     (superDecl == null)) { // just to be sure
 
-                ApplicationUtility.trace("_makeUnitList() : super class = " +
+                //System.out.println("_makeUnitList() : super class = " +
                         superDecl + " stopping.");
 
                 return new LinkedList[] { nodeList, classNameList };
@@ -429,13 +429,13 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
                 int superKind = _typeID.kindOfClassDecl(superDecl);
 
                 if (_typeID.isSupportedActorKind(superKind)) {
-                    ApplicationUtility.trace("_makeUnitList() : super class = " +
+                    //System.out.println("_makeUnitList() : super class = " +
                             superDecl + " stopping.");
 
                     return new LinkedList[] { nodeList, classNameList };
                 }
 
-                ApplicationUtility.trace("_makeUnitList() : super class = " +
+                //System.out.println("_makeUnitList() : super class = " +
                         superDecl + ", continuing. Kind = " + superKind);
 
 		// FIXME: should this be . or File.separatorChar
@@ -507,7 +507,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
 
             String newClassName = "CG_" +  className + "_" + actorName;
 
-            ApplicationUtility.trace("changing classname from " + className +
+            //System.out.println("changing classname from " + className +
                     " to " + newClassName);
 
             // add the mapping from the old class name to the new class name
@@ -529,7 +529,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
      *  argument class name list.
      */
     protected void _rewriteSources(List unitList, List classNameList) {
-        ApplicationUtility.trace("classNameList = " + classNameList);
+        //System.out.println("classNameList = " + classNameList);
 
         LinkedList filenameList = new LinkedList();
 
