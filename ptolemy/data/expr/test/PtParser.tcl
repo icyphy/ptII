@@ -119,7 +119,7 @@ test PtParser-2.4 {Construct a Parser, try simple double expressions} {
     set res4  [ $root evaluateParseTree ]
 
     list [$res toString] [$res1 toString] [$res2 toString] [$res3 toString] [$res4 toString] 
-} {pt.data.DoubleToken(9.7) pt.data.DoubleToken(-5.6) pt.data.DoubleToken(29.4) pt.data.DoubleToken(1.6) pt.data.DoubleToken(2)}
+} {pt.data.DoubleToken(9.7) pt.data.DoubleToken(-5.6) pt.data.DoubleToken(29.400) pt.data.DoubleToken(1.6) pt.data.DoubleToken(2)}
 ######################################################################
 ####
 # 
