@@ -871,7 +871,11 @@ test SDFScheduler-10.15 {output Broadcast Multirate Scheduling tests} {
     list $sched1
 } {{{Ramp Consumer1 Consumer2}}}
 
-test SDFScheduler-11.1 {Cycle Scheduling tests} {
+######################################################################
+####
+#
+# Tests 11.* test error cases.
+test SDFScheduler-11.1 {connected graph, disconnected relation} {
     set manager [java::new ptolemy.actor.Manager $w Manager]
     set toplevel [java::new ptolemy.actor.TypedCompositeActor $w]
     set director [java::new ptolemy.domains.sdf.kernel.SDFDirector $toplevel Director]
@@ -881,19 +885,22 @@ test SDFScheduler-11.1 {Cycle Scheduling tests} {
     set scheduler [java::new ptolemy.domains.sdf.kernel.SDFScheduler $w]
     $director setScheduler $scheduler
 
-    set a1 [java::new ptolemy.domains.sdf.kernel.test.SDFDelay $toplevel Actor1]
-    set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFDelay $toplevel Actor2]
-    set a3 [java::new ptolemy.domains.sdf.lib.Delay $toplevel Delay]
+    set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFRamp $toplevel Ramp2]
+    set a3 [java::new ptolemy.domains.sdf.kernel.test.SDFConsumer $toplevel Consumer]
+    set port [java::field $a3 input] 
+    $port setMultiport true
 
-    set r1 [$toplevel connect [java::field $a1 output] [java::field $a2 input] R1]
-    set r2 [$toplevel connect [java::field $a2 output] [java::field $a3 input] R2]
-    set r3 [$toplevel connect [java::field $a3 output] [java::field $a1 input] R3]
+    set r1 [java::new ptolemy.actor.TypedIORelation $toplevel R1]
+    [java::field $a3 input] link $r1
+    $toplevel connect [java::field $a2 output] [java::field $a3 input] R2
 
     $scheduler setValid false
 
-#    set l1 [java::new ptolemy.kernel.util.StreamListener]
-#    $scheduler addDebugListener $l1
+    #set debuglistener [java::new ptolemy.kernel.util.StreamListener] 
+    #$scheduler addDebugListener $debuglistener
 
-    set sched1 [_testEnums schedule $scheduler]
-    list $sched1
-} {{{Actor1 Actor2 Delay}}}
+    set err1 ""
+    set sched1 ""
+    catch {set sched1 [_testEnums schedule $scheduler]} err1
+    list $sched1 $err1
+} {{} {ptolemy.kernel.util.InternalErrorException: SDF Scheduler Failed Internal consistency check: W.Toplevel.R1 and W.Toplevel.Consumer.input: Relation is only connected to input ports}}
