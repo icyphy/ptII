@@ -65,7 +65,7 @@ OPTIONAL_FILES = \
 	doc
 
 all: jclass
-install: jclass
+install: jclass jars
 
 
 # Get the rest of the rules
