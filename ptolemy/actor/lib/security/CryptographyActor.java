@@ -111,37 +111,37 @@ abstract public class CryptographyActor extends TypedAtomicActor {
      */
     public CryptographyActor(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
-        super(container, name);
+                super(container, name);
 
-        input = new TypedIOPort(this, "input", true, false);
-        input.setTypeEquals(new ArrayType(BaseType.UNSIGNED_BYTE));
+                input = new TypedIOPort(this, "input", true, false);
+                input.setTypeEquals(new ArrayType(BaseType.UNSIGNED_BYTE));
 
-        output = new TypedIOPort(this, "output", false, true);
-        output.setTypeEquals(new ArrayType(BaseType.UNSIGNED_BYTE));
+                output = new TypedIOPort(this, "output", false, true);
+                output.setTypeEquals(new ArrayType(BaseType.UNSIGNED_BYTE));
 
-        // Add the possible algorithm choices.
-        algorithm = new StringParameter(this, "algorithm");
-        Set algorithms = Security.getAlgorithms("Cipher");
-        Iterator algorithmsIterator = algorithms.iterator();
-        for(int i = 0; algorithmsIterator.hasNext(); i++) {
-            String algorithmName = (String)algorithmsIterator.next();
-            if (i == 0) {
-                algorithm.setExpression(algorithmName);
+                // Add the possible algorithm choices.
+                algorithm = new StringParameter(this, "algorithm");
+                Set algorithms = Security.getAlgorithms("Cipher");
+                Iterator algorithmsIterator = algorithms.iterator();
+                for(int i = 0; algorithmsIterator.hasNext(); i++) {
+                    String algorithmName = (String)algorithmsIterator.next();
+                    if (i == 0) {
+                        algorithm.setExpression(algorithmName);
+                    }
+                    algorithm.addChoice(algorithmName);
+                }
+
+                // Add the possible provider choices.
+                provider = new StringParameter(this, "provider");
+                provider.setExpression("SystemDefault");
+                provider.addChoice("SystemDefault");
+                Provider [] providers = Security.getProviders();
+                for (int i = 0; i < providers.length; i++) {
+                    provider.addChoice(providers[i].getName());
+                }
+
+                keySize = new Parameter(this, "keySize", new IntToken(1024));
             }
-            algorithm.addChoice(algorithmName);
-        }
-
-        // Add the possible provider choices.
-        provider = new StringParameter(this, "provider");
-        provider.setExpression("SystemDefault");
-        provider.addChoice("SystemDefault");
-        Provider [] providers = Security.getProviders();
-        for (int i = 0; i < providers.length; i++) {
-            provider.addChoice(providers[i].getName());
-        }
-
-        keySize = new Parameter(this, "keySize", new IntToken(1024));
-    }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
@@ -219,16 +219,16 @@ abstract public class CryptographyActor extends TypedAtomicActor {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (attribute == algorithm) {
-            _algorithm = ((StringToken)algorithm.getToken()).stringValue();
-        } else if (attribute == keySize) {
-            _keySize = ((IntToken)keySize.getToken()).intValue();
-        } else if (attribute == provider) {
-            _provider = ((StringToken)provider.getToken()).stringValue();
-        } else {
-            super.attributeChanged(attribute);
-        }
-    }
+                if (attribute == algorithm) {
+                    _algorithm = ((StringToken)algorithm.getToken()).stringValue();
+                } else if (attribute == keySize) {
+                    _keySize = ((IntToken)keySize.getToken()).intValue();
+                } else if (attribute == provider) {
+                    _provider = ((StringToken)provider.getToken()).stringValue();
+                } else {
+                    super.attributeChanged(attribute);
+                }
+            }
 
     /** Read data from the from the <i>input</i> and process the
      *  data based on the <i>algorithm</i>, and <i>provider</i> by calling
@@ -279,14 +279,14 @@ abstract public class CryptographyActor extends TypedAtomicActor {
      */
     public static ArrayToken unsignedByteArrayToArrayToken(byte[] dataBytes)
             throws IllegalActionException{
-        // FIXME: Seems like this utility function should be in ArrayToken?
-        int bytesAvailable = dataBytes.length;
-        Token[] dataArrayToken = new Token[bytesAvailable];
-        for (int j = 0; j < bytesAvailable; j++) {
-            dataArrayToken[j] = new UnsignedByteToken(dataBytes[j]);
-        }
-        return new ArrayToken(dataArrayToken);
-    }
+                // FIXME: Seems like this utility function should be in ArrayToken?
+                int bytesAvailable = dataBytes.length;
+                Token[] dataArrayToken = new Token[bytesAvailable];
+                for (int j = 0; j < bytesAvailable; j++) {
+                    dataArrayToken[j] = new UnsignedByteToken(dataBytes[j]);
+                }
+                return new ArrayToken(dataArrayToken);
+            }
 
     ///////////////////////////////////////////////////////////////////
     ////                         Protected Methods                 ////
