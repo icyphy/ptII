@@ -85,8 +85,8 @@ public class InvalidStateException extends RuntimeException {
      */  
     public InvalidStateException(Nameable obj1, Nameable obj2,
             String detail) {
-        String obj1string = getFullName(obj1);
-        String obj2string = getFullName(obj2);
+        String obj1string = _getFullName(obj1);
+        String obj2string = _getFullName(obj2);
         String prefix;
         if (obj1string != "") {
             if (obj2string != "") {
@@ -97,13 +97,13 @@ public class InvalidStateException extends RuntimeException {
         } else {
             prefix = obj2string;
         }
-        setMessage(prefix);
+        _setMessage(prefix);
         if (detail != null) {
             if (!detail.equals("")) {
                 if (!prefix.equals("")) {
-                    setMessage(new String(prefix + ": " + detail));
+                    _setMessage(new String(prefix + ": " + detail));
                 } else {
-                    setMessage(detail);
+                    _setMessage(detail);
                 }
             }
         }
