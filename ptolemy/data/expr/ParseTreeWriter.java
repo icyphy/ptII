@@ -127,11 +127,13 @@ public class ParseTreeWriter extends AbstractParseTreeVisitor {
     }
     public void visitFunctionalIfNode(ASTPtFunctionalIfNode node)
             throws IllegalActionException {
+        _writer.print("(");
         _printChild(node, 0);
         _writer.print("?");
         _printChild(node, 1);
         _writer.print(":");
         _printChild(node, 2);
+        _writer.print(")");
     }
     public void visitLeafNode(ASTPtLeafNode node)
             throws IllegalActionException {
