@@ -122,15 +122,16 @@ New and Enhanced Actor Libraries
 </h2>
 <ul>
 
-<li> <a href="../ptolemy/actor/lib/security/demo/Signature/Signature.htm">
-Security library</a>.
+<li> 
+<a href="codeDoc/ptolemy/actor/lib/security/package-summary.html">Security library</a>.
 
 <li>
+<a href="codeDoc/ptolemy/actor/lib/security/package-summary.html">Array manipulatoin library</a> (See also
 <a href="../ptolemy/domains/sdf/demo/Array/Array.htm">
-Array manipulation library</a>.
+Array</a>).
 
 <li>
-<a href="../ptolemy/../doc/codeDoc/ptolemy/actor/lib/comm/package-summary.html#package_description">
+<a href="codeDoc/ptolemy/actor/lib/comm/package-summary.html#package_description">
 Communications library</a> (see also
    <a href="../ptolemy/actor/lib/comm/demo/ConvolutionalCoder/ConvolutionalCoder.htm">ConvolutionalCoder</a>,
    <a href="../ptolemy/actor/lib/comm/demo/Scrambler/Scrambler.htm">Scrambler</a>,
@@ -144,8 +145,8 @@ Communications library</a> (see also
 New Demonstrations of Older Capabilities
 </h2>
 <ul>
-<li> <a href="../ptolemy/domains/de/demo/SmartSender/SmartSender.htm">
-Self repairing model</a>.
+<!-- "../ptolemy/domains/de/demo/SmartSender/SmartSender.htm">
+Self repairing model is not a very good applet-->
 
 <li> <a href="../ptolemy/domains/ct/demo/Transmission/Transmission.htm">
 Using function closures to simplify a hybrid system model (of a car transmission)</a>.
@@ -159,16 +160,13 @@ Capabilities requiring additional software and/or hardware
 </h2>
 
 <ul>
-<li> <a href="../ptolemy/actor/lib/io/comm/demo/SerialPort/SerialPort.htm">
-Using the serial port</a>.
+<li>
+<a href="codeDoc/ptolemy/actor/lib/io/comm/SerialComm.html">
+Serial port actors</a>.
 
-(see <a href="codeDoc/ptolemy/actor/lib/io/comm/SerialComm.html">
-SerialPort actor documentation</a>).
-
-<li><a href="../ptolemy/actor/lib/x10/demo/OnOff/OnOff.htm">
-X10 power-line network</a>.
-(see <a href="codeDoc/ptolemy/actor/lib/x10/X10Interface.html">
-X10Interface actor documentation</a>).
+<li>
+<a href="codeDoc/ptolemy/actor/lib/x10/X10Interface.html">
+X10 power-line network actors</a>.
 
 <li>
 The 
@@ -183,12 +181,10 @@ foo, you can specify a Matlab expression like:
 Before, you would have to have read foo in a Const actor and
 provided it as input to the Matlab expression actor.
 
-<li> <a href="../ptolemy/actor/lib/jmf/demo/VideoCapture/VideoCapture.html">
-Java Media Framework (JMF)</a>
-(see <a href="codeDoc/ptolemy/actor/lib/jmf/package-summary.html#package_description">
-JMF actor documentation</a>).
+<li> <a href="codeDoc/ptolemy/actor/lib/jmf/package-summary.html#package_description">
+Java Media Framework (JMF) actors</a>.
 
-<li>see <a href="codeDoc/ptolemy/domains/gr/lib/quicktime/package-summary.html#package_description">
+<li><a href="codeDoc/ptolemy/domains/gr/lib/quicktime/package-summary.html#package_description">
 GR Quicktime actors</a>.
 
 </ul>
@@ -750,31 +746,31 @@ with the old port name and the new port name:
         <menu>
 	<li>ptolemy.actor.lib.comm.Scrambler
 	        <menu>
-		initial	-&gt; initialState
+		<i>initial	-&gt; initialState
 	        </menu>
 	<li>ptolemy.actor.lib.conversions.CartesianToComplex
 	        <menu>
-		imag	-&gt; y
-		real	-&gt; x
+		<i>imag	-&gt; y
+		<i>real	-&gt; x
 	        </menu>
 	<li>ptolemy.actor.lib.comm.ConvolutionalCoder
 	        <menu>
-		uncodeBlockSize	-&gt; uncodedRate
-		initial	-&gt; initialState
+		<i>uncodeBlockSize	-&gt; uncodedRate
+		<i>initial	-&gt; initialState
 	        </menu>
 	<li>ptolemy.actor.lib.comm.ViterbiDecoder
 	        <menu>
-		uncodeBlockSize	-&gt; uncodedRate
-		amplitude	-&gt; constellation
+		<i>uncodeBlockSize	-&gt; uncodedRate
+		<i>amplitude	-&gt; constellation
 	        </menu>
 	<li>ptolemy.actor.lib.Sleep
 	        <menu>
-		delay	-&gt; sleepTime
+		<i>delay	-&gt; sleepTime
 	        </menu>
 	<li>ptolemy.actor.lib.conversions.ComplexToCartesian
 	        <menu>
-		imag	-&gt; y
-		real	-&gt; x
+		<i>imag	-&gt; y
+		<i>real	-&gt; x
 	        </menu>
 
 <li>ptolemy.moml.filter.PropertyClassChanges: Update any actor port class names
@@ -802,45 +798,45 @@ and the new classname:
 	<li>ptolemy.domains.sdf.lib.UpSample
 	<li>ptolemy.domains.sdf.lib.VariableFIR
 	        <menu>
-		tokenProductionRate	-&gt; null
-		tokenInitProduction	-&gt; null
-		tokenConsumptionRate	-&gt; null
+		<i>tokenProductionRate	-&gt; null
+		<i>tokenInitProduction	-&gt; null
+		<i>tokenConsumptionRate	-&gt; null
 	        </menu>
 	<li>ptolemy.actor.lib.MathFunction
 	        <menu>
-		function	-&gt; ptolemy.data.expr.StringParameter
+		<i>function	-&gt; ptolemy.data.expr.StringParameter
 	        </menu>
 	<li>ptolemy.domains.sdf.lib.vq.ImageUnpartition
 	        <menu>
-		input	-&gt; ptolemy.actor.TypedIOPort
-		output	-&gt; ptolemy.actor.TypedIOPort
+		<i>input	-&gt; ptolemy.actor.TypedIOPort
+		<i>output	-&gt; ptolemy.actor.TypedIOPort
 	        </menu>
 	<li>ptolemy.actor.lib.TrigFunction
 	        <menu>
-		function	-&gt; ptolemy.data.expr.StringParameter
+		<i>function	-&gt; ptolemy.data.expr.StringParameter
 	        </menu>
 	<li>ptolemy.actor.lib.Expression
 	        <menu>
-		expression	-&gt; ptolemy.kernel.util.StringAttribute
+		<i>expression	-&gt; ptolemy.kernel.util.StringAttribute
 	        </menu>
 	<li>ptolemy.domains.sdf.lib.vq.HTVQEncode
 	        <menu>
-		input	-&gt; ptolemy.actor.TypedIOPort
-		output	-&gt; ptolemy.actor.TypedIOPort
+		<i>input	-&gt; ptolemy.actor.TypedIOPort
+		<i>output	-&gt; ptolemy.actor.TypedIOPort
 	        </menu>
 	<li>ptolemy.domains.sdf.lib.vq.VQDecode
 	        <menu>
-		input	-&gt; ptolemy.actor.TypedIOPort
-		output	-&gt; ptolemy.actor.TypedIOPort
+		<i>input	-&gt; ptolemy.actor.TypedIOPort
+		<i>output	-&gt; ptolemy.actor.TypedIOPort
 	        </menu>
 	<li>ptolemy.domains.sdf.lib.vq.ImagePartition
 	        <menu>
-		input	-&gt; ptolemy.actor.TypedIOPort
-		output	-&gt; ptolemy.actor.TypedIOPort
+		<i>input	-&gt; ptolemy.actor.TypedIOPort
+		<i>output	-&gt; ptolemy.actor.TypedIOPort
 	        </menu>
 	<li>ptolemy.matlab.Expression
 	        <menu>
-		expression	-&gt; ptolemy.data.expr.StringParameter
+		<i>expression	-&gt; ptolemy.data.expr.StringParameter
 	        </menu>
 
 	</menu>
