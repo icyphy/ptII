@@ -789,9 +789,9 @@ For more help, choose Help from the upper menu bar.</text>
             <xsl:value-of disable-output-escaping="yes" select="@logicOp"/>
         </xsl:variable>
         <xsl:choose>
-            <xsl:when test="$temp='and'"><xsl:text>&amp;</xsl:text></xsl:when>
+            <xsl:when test="$temp='and'"><xsl:text>&amp;&amp;</xsl:text></xsl:when>
             <xsl:when test="$temp='or'"><xsl:text>||</xsl:text></xsl:when>
-            <xsl:when test="$temp=' and '"><xsl:text>&amp;</xsl:text></xsl:when>
+            <xsl:when test="$temp=' and '"><xsl:text>&amp;&amp;</xsl:text></xsl:when>
             <xsl:when test="$temp=' or '"><xsl:text>||</xsl:text></xsl:when>
             <!--xsl:otherwise><xsl:value-of select="$temp"/></xsl:otherwise-->
         </xsl:choose>
