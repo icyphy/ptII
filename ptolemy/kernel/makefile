@@ -91,8 +91,13 @@ MISC_FILES =	doc test demo
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
-OPTIONAL_FILES =	#codeDoc
-
+OPTIONAL_FILES = \
+	'CrossRefList$$CrossRef.class' \
+	'CrossRefList$$CrossRefEnumeration.class' \
+	'NamedList$$NamedListEnumeration.class' \
+	$(JARFILE)	
+echo:
+	echo $(OPTIONAL_FILES)
 JCLASS = $(JSRCS:%.java=%.class)
 
 # Needed for compiling under Cygwin on NT
