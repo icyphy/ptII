@@ -37,7 +37,7 @@ import ptolemy.math.Complex;
 import ptolemy.data.type.*;
 
 //////////////////////////////////////////////////////////////////////////
-//// IntegerToken
+//// IntToken
 /**
  * A token that contains an integer number.
  *

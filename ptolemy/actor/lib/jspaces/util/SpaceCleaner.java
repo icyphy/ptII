@@ -40,7 +40,7 @@ import net.jini.core.lease.Lease;
 import net.jini.space.JavaSpace;
 
 //////////////////////////////////////////////////////////////////////////
-//// TestReader
+//// SpaceCleaner
 /**
 Clean all IndexEntry and TokenEntry in the java space.
 

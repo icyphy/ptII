@@ -35,7 +35,7 @@ import ptolemy.data.Token;
 import ptolemy.graph.*;
 
 //////////////////////////////////////////////////////////////////////////
-//// DataTypeLattice
+//// TypeLattice
 /**
 Type hierarchy for token classes.
 
