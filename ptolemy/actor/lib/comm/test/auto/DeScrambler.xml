@@ -22,9 +22,9 @@
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Use Bernoulli actor to generate a random input sequence.
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Use DiscreteRandomSource actor to generate a random input sequence.
 The output of the DeSrambler should be the same as the input sequence.
-The output of the "XOR" should be all "false". </text></svg></configure>
+The output of the "Equal" should be all "true".</text></svg></configure>
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -40,22 +40,6 @@ The output of the "XOR" should be all "false". </text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="170.0, 25.0">
         </property>
     </property>
-    <entity name="Bernoulli" class="ptolemy.actor.lib.Bernoulli">
-        <property name="seed" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="trueProbability" class="ptolemy.data.expr.Parameter" value="0.5">
-        </property>
-        <doc>Create a sequence of bernoulli random variables</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="95.0, 165.0">
-        </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-    </entity>
     <entity name="Scrambler2" class="ptolemy.actor.lib.comm.Scrambler">
         <property name="polynomial" class="ptolemy.data.expr.Parameter" value="023">
         </property>
@@ -75,59 +59,54 @@ The output of the "XOR" should be all "false". </text></svg></configure>
         </property>
         <property name="initial" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="400.0, 165.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="385.0, 165.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-    </entity>
-    <entity name="LogicFunction" class="ptolemy.actor.lib.logic.LogicFunction">
-        <property name="function" class="ptolemy.kernel.util.StringAttribute" value="xor">
-            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
-                <property name="and" class="ptolemy.kernel.util.StringAttribute" value="and">
-                </property>
-                <property name="or" class="ptolemy.kernel.util.StringAttribute" value="or">
-                </property>
-                <property name="xor" class="ptolemy.kernel.util.StringAttribute" value="xor">
-                </property>
-                <property name="nand" class="ptolemy.kernel.util.StringAttribute" value="nand">
-                </property>
-                <property name="nor" class="ptolemy.kernel.util.StringAttribute" value="nor">
-                </property>
-                <property name="xnor" class="ptolemy.kernel.util.StringAttribute" value="xnor">
-                </property>
-            </property>
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="370.0, 340.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
     </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="485.0, 340.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="500.0, 330.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="DiscreteRandomSource" class="ptolemy.actor.lib.DiscreteRandomSource">
+        <property name="seed" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="pmf" class="ptolemy.data.expr.Parameter" value="{0.5, 0.5}">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{0, 1}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 165.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="Equals" class="ptolemy.actor.lib.logic.Equals">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="360.0, 330.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -147,13 +126,13 @@ The output of the "XOR" should be all "false". </text></svg></configure>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="Bernoulli.output" relation="relation4"/>
     <link port="Scrambler2.input" relation="relation4"/>
     <link port="Scrambler2.output" relation="relation"/>
     <link port="DeScrambler.input" relation="relation"/>
     <link port="DeScrambler.output" relation="relation2"/>
-    <link port="LogicFunction.input" relation="relation4"/>
-    <link port="LogicFunction.input" relation="relation2"/>
-    <link port="LogicFunction.output" relation="relation3"/>
     <link port="NonStrictTest.input" relation="relation3"/>
+    <link port="DiscreteRandomSource.output" relation="relation4"/>
+    <link port="Equals.input" relation="relation4"/>
+    <link port="Equals.input" relation="relation2"/>
+    <link port="Equals.output" relation="relation3"/>
 </entity>

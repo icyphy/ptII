@@ -30,18 +30,16 @@
 
 package ptolemy.actor.lib.comm;
 
-import ptolemy.domains.sdf.lib.SDFTransformer;
 import ptolemy.actor.lib.Transformer;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
-
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.BaseType;
 import ptolemy.data.type.ArrayType;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 
@@ -53,7 +51,7 @@ transmitted through a linear finite-state shift register.
 The initial state of the shift register is given by the <i>initial</i>
 parameter, which should be a non-negative integer.
 The number of bits per time that should be shifted into and along the
-shift register is given by the <i>constraintLength</i> parameter, which
+shift register is given by the <i>inputNumber</i> parameter, which
 should be a positive integer.
 The polynomials are given by the <i>polynomialArray</i> parameter, which
 should be an array of positive integers. Each integer indicates one
@@ -62,11 +60,7 @@ The n-th bit of the polynomial indicates whether the n-th tap of the delay
 line should be taken to compute the exclusive-ored parity.
 The result is produced as a sequence of length <i>N</i>, where <i>N</i>
 is the length of the <i>polynomialArray</i>. The n-th bit in the sequence
-corresponds to the parity computed from the n-th polynomial
-<p>
-Note in this actor types of input and output port are set to be boolean.
-True and false are converted to 1 and 0 before computing the parity.
-The results are converted back to boolean and then sent to the output port.
+corresponds to the parity computed from the n-th polynomial.
 <p>
 The leading zero in each polynomial indicates an octal number.
 The order is simply the index of the highest-order non-zero in the polynomial,
@@ -82,11 +76,11 @@ use the sign bit).
 For more information on convolutional codes, see Proakis, Digital
 Communications, Fourth Edition, McGraw-Hill, 2001, pp. 471-477.
 <p>
-@author Edward A. Lee and Rachel Zhou
+b@author Rachel Zhou
 @version $Id$
 */
 
-public class ConvolutionalCoder extends SDFTransformer {
+public class ConvolutionalCoder extends Transformer {
 
     /** Construct an actor with the given container and name.
      *  The output and trigger ports are also constructed.
@@ -101,9 +95,9 @@ public class ConvolutionalCoder extends SDFTransformer {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-        constraintLength = new Parameter(this, "constraintLength");
-        constraintLength.setTypeEquals(BaseType.INT);
-        constraintLength.setExpression("1");
+        inputNumber = new Parameter(this, "inputNumber");
+        inputNumber.setTypeEquals(BaseType.INT);
+        inputNumber.setExpression("1");
 
         polynomialArray = new Parameter(this, "polynomialArray");
         polynomialArray.setTypeEquals(new ArrayType(BaseType.INT));
@@ -114,10 +108,12 @@ public class ConvolutionalCoder extends SDFTransformer {
         initial.setExpression("0");
 
         // Declare data types, consumption rate and production rate.
-        input.setTypeEquals(BaseType.BOOLEAN);
-        input.setTokenConsumptionRate(1);
-        output.setTypeEquals(BaseType.BOOLEAN);
-        output.setTokenProductionRate(1);
+        input.setTypeEquals(BaseType.INT);
+        _inputRate = new Parameter(input, "tokenConsumptionRate",
+            new IntToken(1));
+        output.setTypeEquals(BaseType.INT);
+        _outputRate = new Parameter(output, "tokenProductionRate",
+            new IntToken(1));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -142,92 +138,121 @@ public class ConvolutionalCoder extends SDFTransformer {
      *  takes in each time. It should be a positive integer. Its
      *  default value is the integer 1.
      */
-    public Parameter constraintLength;
+    public Parameter inputNumber;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** If the attribute being changed is <i>initial</i>, then verify
-     *  that it is a non-negative integer; if it is <i>constraintLength</i>,
+     *  that it is a non-negative integer; if it is <i>inputNumber</i>,
      *  then verify that it is a positive integer; if it is
      *  <i>polynomailArray</i>, then verify that each of its elements is
-     *  a positive integer.
+     *  a positive integer and compute the shift register's length,
+     *  which is the highest order of all polynomials.
      *  @exception IllegalActionException If <i>initial</i> is negative
-     *  or <i>constraintLength</i> is non-positive or any element of
+     *  or <i>inputLength</i> is non-positive or any element of
      *  <i>polynomialArray</i> is non-positive.
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == initial) {
-            int seed = ((IntToken)initial.getToken()).intValue();
-            if (seed < 0 ) {
+            int initialValue = ((IntToken)initial.getToken()).intValue();
+            if (initialValue < 0 ) {
                 throw new IllegalActionException(this,
                 "shift register's value must be non-negative.");
             }
-        } else if (attribute == constraintLength) {
-            int length = ((IntToken)constraintLength.getToken()).intValue();
-            if (length < 1 ) {
+        } else if (attribute == inputNumber) {
+            _inputNumber = ((IntToken)inputNumber.getToken()).intValue();
+            if (_inputNumber < 1 ) {
                 throw new IllegalActionException(this,
-                        "constraintLength must be non-negative.");
+                        "inputLength must be non-negative.");
             }
-            input.setTokenConsumptionRate(length);
+            // Set a flag indicating the private variable
+            // _inputNumber is invalid, but do not compute
+            // the value until all parameters have been set.
+            _inputNumberInvalid = true;
+            // Set the input comsumption rate.
+            _inputRate.setToken(new IntToken(_inputNumber));
         } else if (attribute == polynomialArray) {
             ArrayToken maskToken = ((ArrayToken)polynomialArray.getToken());
-            int maskNumber = maskToken.length();
-            for(int i = 0; i < maskNumber; i++) {
-                int mask = ((IntToken)maskToken.getElement(i)).intValue();
-                if (mask <= 0) {
+            _maskNumber = maskToken.length();
+            _mask = new int[_maskNumber];
+            int maxPolyValue = 0;
+            for(int i = 0; i < _maskNumber; i++) {
+                _mask[i] = ((IntToken)maskToken.getElement(i)).intValue();
+                if (_mask[i] <= 0) {
                     throw new IllegalActionException(this,
                     "Polynomial is required to be strictly positive.");
                 }
+                // Compute the length of the shift register, which is
+                // the highest order of all polynomials.
+                if (_mask[i] > maxPolyValue) {
+                    maxPolyValue = _mask[i];
+                }
+                _shiftRegLength = 0;
+                while (maxPolyValue > 0) {
+                    _shiftRegLength ++;
+                    maxPolyValue = maxPolyValue >> 1;
+                }
             }
-            output.setTokenProductionRate(maskNumber);
+            _inputNumberInvalid = true;
+            // Set the output production rate.
+            _outputRate.setToken(new IntToken(_maskNumber));
         } else {
             super.attributeChanged(attribute);
         }
     }
 
-    /** Read "<i>constraintLength</i>" bits from the input port and shift
-     *  them into the shift register. Compute the parity for each polynomial
-     *  specified in <i>polynomialArray</i>. If the parity is 1, convert it
-     *  to "true"; otherwise convert it to "false". Send these boolean
-     *  values in sequence to the output port. The n-th bit corresponds to
-     *  the parity computed using the n-th polynomial.
+    /** Read "<i>inputLength</i>" bits from the input port and shift
+     *  them into the shift register. Compute the parity for each
+     *  polynomial specified in <i>polynomialArray</i>. Send the results
+     *  in sequence. The n-th bit corresponds to the parity computed
+     *  using the n-th polynomial.
      */
     public void fire() throws IllegalActionException {
+
+        if (_inputNumberInvalid) {
+            if (_inputNumber > _maskNumber) {
+                throw new IllegalActionException(this,
+                "Input rate is larger than the output rate.");
+            }
+            if (_inputNumber > _shiftRegLength) {
+                throw new IllegalActionException(this,
+                "Input rate is larger than the shift register length.");
+            }
+            _inputNumberInvalid = false;
+        }
+
         _latestShiftReg = _shiftReg;
 
-        // Read from the input port.
-        int length = ((IntToken)constraintLength.getToken()).intValue();
-        Token[] inputToken = (Token[])input.get(0, length);
-
-        // Read the polynomial array.
-        ArrayToken maskToken = ((ArrayToken)polynomialArray.getToken());
-        int maskNumber = maskToken.length();
-        BooleanToken[] result = new BooleanToken[maskNumber];
-
-        // Shift the input bits into the shift register.
+        // Read from the input port and shift the bits into
+        // the shift register.
+        Token[] inputToken = (Token[])input.get(0, _inputNumber);
         int reg = _latestShiftReg;
-        for (int i = 0; i < length; i++) {
+        for (int i = 0; i < _inputNumber; i++) {
              reg = reg << 1;
-             BooleanToken input = (BooleanToken)inputToken[i];
-            if (input.booleanValue()) {
-                reg = reg | 1;
+             IntToken input = (IntToken)inputToken[i];
+             if (input.intValue() == 1 || input.intValue() == 0) {
+                reg = reg | input.intValue();
+             } else { throw new IllegalActionException(this,
+                      "Input should be either 0 or 1.");
             }
         }
         _latestShiftReg = reg;
 
-        // Compute parity for each polynomial.
-        for (int i = 0; i < maskNumber; i++) {
-            int mask = ((IntToken)maskToken.getElement(i)).intValue();
-            int parity = _calculateParity(mask, reg);
-            if (parity == 1){
-                result[i] = BooleanToken.TRUE;
+        // Compute the parities for all polynomials respectively.
+        IntToken[] result = new IntToken[_maskNumber];
+        int[] parity = new int[_maskNumber];
+        parity = _calculateParity(_mask, _maskNumber, reg);
+
+        // Send the parity results to the output.
+        for (int i = 0; i < _maskNumber; i++) {
+            if (parity[i] == 1){
+                result[i] = _tokenOne;
             }else{
-                result[i] = BooleanToken.FALSE;
+                result[i] = _tokenZero;
             }
         }
-
         output.broadcast(result, result.length);
     }
 
@@ -260,22 +285,29 @@ public class ConvolutionalCoder extends SDFTransformer {
      *  @param reg State of shift register.
      *  @return Parity.
      */
-    private int _calculateParity(int mask, int reg) {
-
-        int masked = mask & reg;
-        // Find the parity of the "masked".
-        int parity = 0;
-        // Calculate the parity of the masked word.
-        while (masked > 0){
-            parity = parity ^ (masked & 1);
-            masked = masked >> 1;
+    private int[] _calculateParity(int[] mask, int maskNumber, int reg) {
+        int[] parity = new int[maskNumber];
+        for (int i = 0; i < maskNumber; i++) {
+            int masked = mask[i] & reg;
+            // Find the parity of the "masked".
+            parity[i] = 0;
+            // Calculate the parity of the masked word.
+            while (masked > 0){
+                parity[i] = parity[i] ^ (masked & 1);
+                masked = masked >> 1;
+            }
         }
-
         return parity;
     }
 
     //////////////////////////////////////////////////////////////
-    ////                     private variables                ////
+    ////           private parameters and variables           ////
+
+    // Consumption rate of the input port.
+    private Parameter _inputRate;
+
+    // Production rate of the output port.
+    private Parameter _outputRate;
 
     // Record the state of the shift register.
     private int _shiftReg;
@@ -283,4 +315,25 @@ public class ConvolutionalCoder extends SDFTransformer {
     // Updated state of the shift register.
     private int _latestShiftReg;
 
+    // Number bits the actor consumes per firing.
+    private int _inputNumber;
+
+    // Polynomial array.
+    private int[] _mask;    
+
+    // Number of polynomials.
+    private int _maskNumber;
+
+    // Length of the shift register.
+    private int _shiftRegLength = 0;
+
+    // A flag indicating that the private variable
+    //  _inputNumber is invalid.
+    private transient boolean _inputNumberInvalid = true;
+
+    // Since this actor always sends one of two tokens,
+    // we statically create those tokens to avoid unnecessary
+    // object construction.
+    private static IntToken _tokenZero = new IntToken(0);
+    private static IntToken _tokenOne = new IntToken(1);
 }

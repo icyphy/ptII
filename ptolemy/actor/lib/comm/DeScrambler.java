@@ -82,10 +82,10 @@ public class DeScrambler extends Transformer {
         initial.setExpression("1");
 
         // Declare input data type.
-        input.setTypeEquals(BaseType.BOOLEAN);
+        input.setTypeEquals(BaseType.INT);
 
         // Declare output data type.
-        output.setTypeEquals(BaseType.BOOLEAN);
+        output.setTypeEquals(BaseType.INT);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -139,17 +139,19 @@ public class DeScrambler extends Transformer {
     }
 
     /** Read bit from the input port and fill it into the shift register
-     *  to descramble. Compute the parity and send "true" to the output
-     *  port if it is 1; otherwise send "false" to the output port.
+     *  to descramble. Compute the parity and send it to the output port.
      */
     public void fire() throws IllegalActionException {
         _latestShiftReg = _shiftReg;
         int mask = ((IntToken)polynomial.getToken()).intValue();
-        BooleanToken inputToken = ((BooleanToken)input.get(0));
+        IntToken inputToken = ((IntToken)input.get(0));
+        int inputTokenValue = inputToken.intValue();
         int reg = _latestShiftReg << 1;
         // Put the input in the low-order bit: true = 1, false = 0.
-        if (inputToken.booleanValue()){
-            reg = reg | 1;
+        if (inputTokenValue == 0 || inputTokenValue == 1){
+            reg = reg | inputTokenValue;
+        } else { throw new IllegalActionException(this,
+                         "The input must be either 0 or 1.");
         }
         // Find the parity of "masked".
         int masked = mask & reg;
@@ -162,9 +164,9 @@ public class DeScrambler extends Transformer {
 
         _latestShiftReg = reg;
         if (parity == 1){
-            output.broadcast(_tokenTrue);
+            output.broadcast(_tokenOne);
         }else {
-            output.broadcast(_tokenFalse);
+            output.broadcast(_tokenZero);
         }
     }
 
@@ -197,6 +199,6 @@ public class DeScrambler extends Transformer {
 
     // Since this actor always sends one of the two tokens, we statically
     // create those tokens to avoid unnecessary object construction.
-    private static BooleanToken _tokenTrue = new BooleanToken(true);
-    private static BooleanToken _tokenFalse = new BooleanToken(false);
+    private static IntToken _tokenOne = new IntToken(1);
+    private static IntToken _tokenZero = new IntToken(0);
 }

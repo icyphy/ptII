@@ -57,10 +57,6 @@ should be fed back, etc.
 All the bits that are fed back are exclusive-ored together (i.e., their parity
 is computed), and the result is exclusive-ored with the input bit. The
 result is produced at the output and shifted into the delay line.
-Note in this actor and the DeScrambler actor, types of input and output
-ports are set to be boolean. True and false are converted to 1 and 0
-before computing the parity. The result is converted back to boolean
-to send to the output port.
 <p>
 With a proper choice of polynomial, the resulting output appears highly
 random even if the input is highly non-random.
@@ -182,8 +178,8 @@ public class Scrambler extends Transformer {
         initial.setExpression("1");
 
         // Declare data types.
-        input.setTypeEquals(BaseType.BOOLEAN);
-        output.setTypeEquals(BaseType.BOOLEAN);
+        input.setTypeEquals(BaseType.INT);
+        output.setTypeEquals(BaseType.INT);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -257,18 +253,21 @@ public class Scrambler extends Transformer {
         // Exclusive-or with the input if there is any.
          for(int i = 0; i < input.getWidth(); i++){
             if (input.hasToken(0)){
-                BooleanToken inputToken = (BooleanToken)input.get(0);
-                if (inputToken.booleanValue()){
-                    parity = parity ^ 1;
+                IntToken inputToken = (IntToken)input.get(0);
+                int inputTokenValue = inputToken.intValue();
+                if (inputTokenValue == 1 || inputTokenValue == 0){
+                    parity = parity ^ inputTokenValue;
+                } else { throw new IllegalActionException(this,
+                                 "Input must be either 0 or 1.");
                 }
             }
         }
         _latestShiftReg = reg | parity;
 
         if (parity == 1) {
-            output.broadcast(_tokenTrue);
+            output.broadcast(_tokenOne);
         } else {
-            output.broadcast(_tokenFalse);
+            output.broadcast(_tokenZero);
         }
     }
 
@@ -301,6 +300,6 @@ public class Scrambler extends Transformer {
 
     // Since this actor always sends one of the two tokens, we statically
     // create those tokens to avoid unnecessary object construction.
-    private static BooleanToken _tokenTrue = new BooleanToken(true);
-    private static BooleanToken _tokenFalse = new BooleanToken(false);
+    private static IntToken _tokenOne = new IntToken(1);
+    private static IntToken _tokenZero = new IntToken(0);
 }

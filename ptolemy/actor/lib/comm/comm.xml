@@ -13,6 +13,8 @@
 <entity name="LMSAdaptive" class="ptolemy.domains.sdf.lib.LMSAdaptive"/>
 <entity name="RaisedCosine" class="ptolemy.domains.sdf.lib.RaisedCosine"/>
 <entity name="Scrambler" class="ptolemy.actor.lib.comm.Scrambler"/>
+<entity name="TransferMatrix" class="ptolemy.actor.lib.comm.TransferMatrix"/>
+<entity name="ViterbiDecoder" class="ptolemy.actor.lib.comm.ViterbiDecoder"/>
      </group>
     ?>
   </configure>

@@ -52,7 +52,9 @@ JSRCS = \
         ConvolutionalCoder.java \
 	DeScrambler.java \
 	HadamardCode.java \
-	Scrambler.java
+        Scrambler.java \
+        TransferMatrix.java \
+        ViterbiDecoder.java
 OTHER_FILES_TO_BE_JARED = \
 	comm.xml
 
