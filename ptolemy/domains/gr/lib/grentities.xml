@@ -49,6 +49,9 @@
 <entity name="MouseInput3D" class="ptolemy.domains.gr.lib.MouseInput3D">
 </entity>
 
+<entity name="ThreeAxisRotator3D" class="ptolemy.domains.gr.lib.ThreeAxisRotator3D">
+</entity>
+
 <entity name="ViewScreen2D" class="ptolemy.domains.gr.lib.ViewScreen2D">
 </entity>
 

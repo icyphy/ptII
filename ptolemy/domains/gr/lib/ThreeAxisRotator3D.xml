@@ -1,0 +1,174 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<class name="ThreeAxisRotator3D" extends="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
+    </property>
+    <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 75.0]">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 163, 1018, 516}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[803, 400]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{401.5, 200.0}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This is a convenience actor that provides&#10;inputs for rotating around the three axes.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 25.0]">
+        </property>
+    </property>
+    <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+        <property name="ellipse" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="0.0, 2.0">
+            </property>
+            <property name="width" class="ptolemy.data.expr.Parameter" value="60.0">
+            </property>
+            <property name="height" class="ptolemy.data.expr.Parameter" value="11.0">
+            </property>
+            <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="none">
+            </property>
+        </property>
+        <property name="ellipse2" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="0.0, 1.0">
+            </property>
+            <property name="width" class="ptolemy.data.expr.Parameter" value="13.0">
+            </property>
+            <property name="height" class="ptolemy.data.expr.Parameter" value="54.0">
+            </property>
+            <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="none">
+            </property>
+        </property>
+        <property name="line" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[11.0, 1.0]">
+            </property>
+            <property name="x" class="ptolemy.data.expr.Parameter" value="5.0">
+            </property>
+            <property name="y" class="ptolemy.data.expr.Parameter" value="5.0">
+            </property>
+        </property>
+        <property name="line2" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[11.0, 12.0]">
+            </property>
+            <property name="x" class="ptolemy.data.expr.Parameter" value="5.0">
+            </property>
+            <property name="y" class="ptolemy.data.expr.Parameter" value="-5.0">
+                <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                </property>
+            </property>
+        </property>
+        <property name="line3" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[6.0, -13.0]">
+            </property>
+            <property name="x" class="ptolemy.data.expr.Parameter" value="5.0">
+            </property>
+            <property name="y" class="ptolemy.data.expr.Parameter" value="5.0">
+            </property>
+        </property>
+        <property name="line4" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, -8.0]">
+            </property>
+            <property name="x" class="ptolemy.data.expr.Parameter" value="5.0">
+            </property>
+            <property name="y" class="ptolemy.data.expr.Parameter" value="-5.0">
+                <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                </property>
+            </property>
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 126, 815, 516}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+        </property>
+    </property>
+    <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
+        <property name="input"/>
+        <property name="multiport"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 45.0]">
+        </property>
+        <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+    </port>
+    <port name="rotateHorizontal" class="ptolemy.actor.TypedIOPort">
+        <property name="input"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[34.3359375, 133.9921875]">
+        </property>
+        <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+    </port>
+    <port name="rotateVertical" class="ptolemy.actor.TypedIOPort">
+        <property name="input"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[34.3359375, 198.9921875]">
+        </property>
+        <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+    </port>
+    <port name="tilt" class="ptolemy.actor.TypedIOPort">
+        <property name="input"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[34.3359375, 253.9921875]">
+        </property>
+        <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+    </port>
+    <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
+        <property name="output"/>
+        <property name="multiport"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 170.0]">
+        </property>
+    </port>
+    <entity name="Rotate3D" class="ptolemy.domains.gr.lib.Rotate3D">
+        <property name="axisDirection" class="ptolemy.data.expr.Parameter" value="[0.0, 1.0, 0.0]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[224.3359375, 123.9921875]">
+        </property>
+    </entity>
+    <entity name="Rotate3D2" class="ptolemy.domains.gr.lib.Rotate3D">
+        <property name="axisDirection" class="ptolemy.data.expr.Parameter" value="[1.0, 0.0, 0.0]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 145.0]">
+        </property>
+    </entity>
+    <entity name="Rotate3D3" class="ptolemy.domains.gr.lib.Rotate3D">
+        <property name="axisDirection" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 1.0]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 170.0]">
+        </property>
+    </entity>
+    <relation name="relation_1" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3_2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="sceneGraphIn" relation="relation_1"/>
+    <link port="rotateHorizontal" relation="relation3_2"/>
+    <link port="rotateVertical" relation="relation2"/>
+    <link port="tilt" relation="relation4"/>
+    <link port="sceneGraphOut" relation="relation5"/>
+    <link port="Rotate3D.sceneGraphIn" relation="relation_1"/>
+    <link port="Rotate3D.sceneGraphOut" relation="relation"/>
+    <link port="Rotate3D.angle" relation="relation3_2"/>
+    <link port="Rotate3D2.sceneGraphIn" relation="relation"/>
+    <link port="Rotate3D2.sceneGraphOut" relation="relation3"/>
+    <link port="Rotate3D2.angle" relation="relation2"/>
+    <link port="Rotate3D3.sceneGraphIn" relation="relation3"/>
+    <link port="Rotate3D3.sceneGraphOut" relation="relation5"/>
+    <link port="Rotate3D3.angle" relation="relation4"/>
+</class>

@@ -94,8 +94,16 @@ JSRCS = \
 
 
 OTHER_FILES_TO_BE_JARED = \
+	Box3DIcon.xml \
+	CircularSweep3DIcon.xml \
+	Cone3DIcon.xml \
+	Cylinder3DIcon.xml \
 	grentities.xml \
-	java3d-copyright.htm
+	java3d-copyright.htm \
+	PolyCylinder3DIcon.xml \
+	Sphere3DIcon.xml \
+	ThreeAxisRotator3D.xml \
+	ThreeAxisRotator3DIcon.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
