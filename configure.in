@@ -158,6 +158,11 @@ AC_PREFIX_DEFAULT($PTII)
 # for backward slashes
 
 case "`uname -s`" in
+CYGWIN_ME-*)
+	# Windows ME is not a real os, and it does not have CMD.
+	# So, we punt
+	PTII_DIR=$PTII
+	;;
 CYGWIN_98-*) 
 	# Windows 98 is not a real os, and it does not have CMD.
 	# So, we punt
