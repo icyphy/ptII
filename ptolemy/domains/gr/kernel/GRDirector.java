@@ -183,7 +183,7 @@ public class GRDirector extends StaticSchedulingDirector {
 
         Scheduler s = getScheduler();
         if (s == null)
-            throw new IllegalActionException("Attempted to fire " +
+            throw new IllegalActionException(this,"Attempted to fire " +
                     "GR system with no scheduler");
         Enumeration allactors = s.schedule();
         while (allactors.hasMoreElements()) {
@@ -386,7 +386,7 @@ public class GRDirector extends StaticSchedulingDirector {
     private void _buildActorTable() throws IllegalActionException {
         Scheduler currentScheduler = getScheduler();
         if (currentScheduler== null)
-            throw new IllegalActionException("Attempted to fire " +
+            throw new IllegalActionException(this,"Attempted to fire " +
                     "GR system with no scheduler");
         Enumeration allActorsScheduled = currentScheduler.schedule();
 
