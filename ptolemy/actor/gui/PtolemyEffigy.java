@@ -389,7 +389,7 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                         } else {
                             effigy.setContainer(null);
                         }
-                    } catch (Exception e) {
+                    } catch (Throwable throwable) {
                         // The finally clause below can result in the
                         // application exiting if there are no other
                         // effigies open.  We check for that condition,
@@ -427,12 +427,22 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
 
                             String errorMessage = "Failed to read " + input;
                             System.err.println(errorMessage);
-                            e.printStackTrace();
-                            MessageHandler.error(errorMessage, e);
+                            throwable.printStackTrace();
+                            MessageHandler.error(errorMessage, throwable);
                         } else {
-                            // Let the caller handle the error.
-                            throw e;
-                    
+			    if (throwable instanceof Exception) {
+				// Let the caller handle the error.
+				throw (Exception)throwable;
+
+			    } else {
+				// If we have a parameter that has a backslash
+				// then we might get a data.expr.TokenMgrError
+				// which is an error, so we rethrow this
+				// FIXME: createEffigy() should be 
+				// declared to throw Throwable, but that
+				// results in lots of changes elsewhere.
+				throw new Exception(throwable);
+			    }                    
                         }
                     }
                 } finally {
