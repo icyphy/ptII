@@ -62,8 +62,10 @@ a variable with a token, either call the appropriate constructor, or create
 the variable with the appropriate container and name, and then call
 setToken(). To set the value from an expression, call setExpression().
 The expression is not actually evaluated until you call getToken(),
-propagate() or getType(). If the expression string is null or empty,
+validate(), or getType(). If the expression string is null or empty,
 or if no value has been specified, then getToken() will return null.
+If the variable is <i>lazy</i> (set by calling setLazy(<i>true</i>),
+then validate() will not normally result in evaluating the variable.
 <p>
 Consider for example the sequence:
 <pre>
@@ -81,21 +83,23 @@ yet have values.  But there is no problem because the expression
 is not evaluated until getToken() is called.  Equivalently, we
 could have called, for example,
 <pre>
-   v1.propagate();
+   v1.validate();
 </pre>
 This will force v1 to be evaluated, as well as all variables that
 depend on v1.
 <p>
-The expression can only reference variables that are
-added to the scope of this variable using addToScope()
-before the expression is evaluated
-(i.e., before getToken() is called). Otherwise, getToken() will throw
-an exception.  By default, all variables
+The expression can reference variables that are in scope before the
+expression is evaluated (i.e., before getToken() is called).
+Otherwise, getToken() will throw an exception. All variables
 contained by the same container, and those contained by the container's
-container, are in the scope of this variable. Thus, in the above,
+container, are in the scope of this variable. An instance of
+ScopeExtendingAttribute can be used to aggregate a set of variables
+and add them to the scope as well. Thus, in the above,
 all three variables are in each other's scope because they belong
 to the same container. If there are variables in the scope with the
-same name, then those lower in the hierarchy shadow those that are higher.
+same name, then those lower in the hierarchy shadow those that are higher,
+except that variables in ScopeExtendingAttribute are shadowed by those
+in the container of the ScopeExtendingAttribute.
 <p>
 If a variable is referred
 to by expressions of other variables, then the name of the variable must be a
@@ -155,7 +159,7 @@ variable will not be represented.  If you prefer that the variable
 be represented, then you should use the derived class Parameter instead.
 <p>
 A variable is also normally not settable by users from the user
-interface.  This is because, by default, getVisibility() returns NULL.
+interface.  This is because, by default, getVisibility() returns NONE.
 The derived class Parameter is fully visible by default.
 
 @author Neil Smyth, Xiaojun Liu, Edward A. Lee, Yuhong Xiong
@@ -322,15 +326,21 @@ public class Variable extends Attribute
     }
 
     /** Return a NamedList of the variables that the value of this
-     *  variable can depend on.  These include the variables added to
-     *  the scope of this variable by the addToScope()
-     *  methods, and the variables in the container (if any) and in the
-     *  container's container (if any).
+     *  variable can depend on.  These include other variables contained
+     *  by the same container or any container that deeply contains
+     *  this variable, as well as any variables in a ScopeExtendingAttribute
+     *  contained by any of these containers.
      *  If there are variables with the same name in these various
-     *  places, then they are shadowed as follows.  The most recently
-     *  added variable using addToScope() is given priority, followed by
-     *  a variable contained by the container of this variable, followed
-     *  by a variable contained by the container of the container.
+     *  places, then they are shadowed as follows. A variable contained
+     *  by the container of this variable has priority, followed
+     *  by variables in a ScopeExtendingAttribute, followed by
+     *  by a variable contained by the container of the container, etc.
+     *  <p>
+     *  Note that this method is an extremely inefficient to refer
+     *  to the scope of a variable because it constructs a list containing
+     *  every variable in the scope.  It is best to avoid calling it
+     *  and instead just use the get() method of the VariableScope
+     *  inner class.
      *  <p>
      *  This method is read-synchronized on the workspace.
      *  @return The variables on which this variable can depend.
@@ -462,7 +472,10 @@ public class Variable extends Attribute
 
     /** Mark this variable, and all variables that depend on it, as
      *  needing to be evaluated.  Remove this variable from being
-     *  notified by the variables it used to depend on.  This might be
+     *  notified by the variables it used to depend on.  Then notify
+     *  other variables that depend on this one that its value has
+     *  changed. That notification is done by calling their valueChanged()
+     *  method, which flags them as needing to be evaluated. This might be
      *  called when something in the scope of this variable changes.
      */
     public void invalidate() {
@@ -479,7 +492,6 @@ public class Variable extends Attribute
             }
             _variablesDependentOn.clear();
         }
-
         _notifyValueListeners();
     }
 
@@ -499,6 +511,15 @@ public class Variable extends Attribute
         return true;
     }
 
+    /** Return true if this variable is lazy.  By default, a variable
+     *  is not lazy.
+     *  @return True if this variable is lazy.
+     *  @see #setLazy(boolean)
+     */
+    public boolean isLazy() {
+        return _isLazy;
+    }
+
     /** Check whether the current type of this variable is acceptable.
      *  A type is acceptable if it represents an instantiable object.
      *  @return True if the current type is acceptable.
@@ -508,37 +529,6 @@ public class Variable extends Attribute
             return true;
         }
         return false;
-    }
-
-    /** Force evaluation of this variable and the value dependents
-     *  of this variable.
-     *  This method bypasses the lazy evaluation feature of this class
-     *  by forcing eager evaluation.
-     *  @exception IllegalActionException If the expression cannot
-     *   be parsed or cannot be evaluated, or the expressions of
-     *   one of the dependent variables cannot be parsed or evaluated.
-     */
-    public void propagate() throws IllegalActionException {
-        // Force evaluation.
-        if (_needsEvaluation) _evaluate();
-        // All the value dependents now need evaluation also.
-        if (_valueListeners != null) {
-            // Avoid co-modification exception.
-            LinkedList list = new LinkedList();
-            list.addAll(_valueListeners);
-            Iterator listeners = list.iterator();
-            while (listeners.hasNext()) {
-                ValueListener listener = (ValueListener)listeners.next();
-                // Avoid doing this more than once if the the value
-                // dependent appears more than once.  This also has
-                // the advantage of stopping circular reference looping.
-                if (listener instanceof Variable) {
-                    if (((Variable)listener)._needsEvaluation) {
-                        ((Variable)listener).propagate();
-                    }
-                }
-            }
-        }
     }
 
     /** Remove a listener from the list of listeners that is
@@ -613,6 +603,11 @@ public class Variable extends Attribute
             _invalidateShadowedSettables(container);
             
             // This variable must still be valid.
+            // NOTE: This has the side effect of validating everything
+            // that depends on this variable. If the container is being
+            // set to null, this may result in errors in variables
+            // for which this is no longer in scope.  The error handling
+            // mechanism has to handle this.
             validate();
         }
     }
@@ -633,9 +628,7 @@ public class Variable extends Attribute
      *  @param expr The expression for this variable.
      */
     public void setExpression(String expr) {
-        // NOTE: This should probably be a bit smarter and detect any
-        // whitespace-only expression.
-        if (expr == null || expr.equals("")) {
+        if (expr == null || expr.trim().equals("")) {
             _token = null;
             _needsEvaluation = false;
             // set _varType
@@ -650,6 +643,38 @@ public class Variable extends Attribute
         _currentExpression = expr;
         _parseTree = null;
         _notifyValueListeners();
+    }
+
+    /** Specify whether this variable is to be lazy.  By default, it is not.
+     *  A lazy variable is a variable that is not evaluated until its
+     *  value is needed. Its value is needed when getToken() or
+     *  getType() is called, but not necessarily when validate()
+     *  is called. In particular, validate() has the effect
+     *  only of setting a flag indicating that the variable needs to be
+     *  evaluated, but the evaluation is not performed. Thus, although
+     *  validate() returns, there is no assurance that the expression
+     *  giving the value of the variable can be evaluated without error.
+     *  The validate() method, however, will validate value dependents.
+     *  If those are also lazy, then they will not be evaluated either.
+     *  If they are not lazy however (they are eager), then evaluating them
+     *  may cause this variable to be evaluated.
+     *  <p>
+     *  A lazy variable may be used whenever its value will be actively
+     *  accessed via getToken() when it is needed, and its type will be
+     *  actively accessed via getType(). In particular, the container
+     *  does not rely on a call to attributeChanged() or
+     *  attributeTypeChanged() to notify it that the variable value has
+     *  changed. Those methods will not be called when the value of the
+     *  variable changes due to some other variable value that it
+     *  depends on changing because the new value will not be
+     *  immediately evaluated.
+     *  @param lazy True to make the variable lazy.
+     *  @see #validate()
+     *  @see NamedObj#attributeChanged()
+     *  @see NamedObj#attributeTypeChanged()
+     */
+    public void setLazy(boolean lazy) {
+        _isLazy = lazy;
     }
 
     /** Put a new token in this variable. If an expression had been
@@ -764,10 +789,12 @@ public class Variable extends Attribute
                 _token = type.convert(_token);
             } else {
                 throw new IllegalActionException(this,
-                        "Variable.setTypeEquals(): the currently contained " +
-                        "token " + _token.getClass().getName() + "(" +
-                        _token.toString() + ") is not compatible " +
-                        "with the desired type " + type.toString());
+                        "The currently contained token "
+                        + _token.getClass().getName()
+                        + "("
+                        + _token.toString()
+                        + ") is not compatible with the desired type "
+                        + type.toString());
             }
         }
 
@@ -906,25 +933,46 @@ public class Variable extends Attribute
         return result;
     }
 
-    /** Evaluate the expression contained in this variable, if any.
-     *  Notify the container, if there is one, by calling its
-     *  attributeChanged() method, and then call propagate().  Also
-     *  validate any instances of Settable that this variable may contain.
-     *  @see #propagate()
-     *  @exception IllegalActionException If the change is not acceptable
-     *   to the container, or if the expression cannot be evaluated.
+    /** If this variable is not lazy (the default) then evaluate
+     *  the expression contained in this variable, and notify any
+     *  value dependents. If those are not lazy, then they too will
+     *  be evaluated.  Also, if the variable is not lazy, then
+     *  notify its container, if there is one, by calling its
+     *  attributeChanged() method.
+     *  <p>
+     *  If this variable is lazy, then mark this variable and any
+     *  of its value dependents as needing evaluation and for any
+     *  value dependents that are not lazy, evaluate them.
+     *  Note that if there are no value dependents,
+     *  or if they are all lazy, then this will not
+     *  result in evaluation of this variable, and hence will not ensure
+     *  that the expression giving its value is valid.  Call getToken()
+     *  or getType() to accomplish that.
+     *  @exception IllegalActionException If this variable or a
+     *   variable dependent on this variable cannot be evaluated (and is
+     *   not lazy) and the model error handler throws an exception.
+     *   Also thrown if the change is not acceptable to the container.
      */
     public void validate() throws IllegalActionException {
         invalidate();
-        NamedObj container = (NamedObj)getContainer();
-        if (container != null) {
-            container.attributeChanged(this);
+        List errors = _propagate();
+        if (errors != null && errors.size() > 0) {
+            Iterator errorsIterator = errors.iterator();
+            StringBuffer message = new StringBuffer();
+            while (errorsIterator.hasNext()) {
+                Exception error = (Exception)errorsIterator.next();
+                message.append(error.getMessage());
+                if (errorsIterator.hasNext()) {
+                    message.append("\n-------------- and --------------\n");
+                }
+            }
+            throw new IllegalActionException(message.toString());
         }
-        propagate();
-        Iterator attributes = attributeList(Settable.class).iterator();
-        while (attributes.hasNext()) {
-            Settable attribute = (Settable)attributes.next();
-            attribute.validate();
+        if (!_isLazy) {
+            NamedObj container = (NamedObj)getContainer();
+            if (container != null) {
+                container.attributeChanged(this);
+            }
         }
     }
 
@@ -936,13 +984,7 @@ public class Variable extends Attribute
     public void valueChanged(Settable settable) {
         if (!_needsEvaluation) {
             _needsEvaluation = true;
-            if (_valueListeners != null) {
-                Iterator listeners = _valueListeners.iterator();
-                while (listeners.hasNext()) {
-                    ValueListener listener = (ValueListener)listeners.next();
-                    listener.valueChanged(this);
-                }
-            }
+            _notifyValueListeners();
         }
     }
 
@@ -974,16 +1016,6 @@ public class Variable extends Attribute
         }
     }
 
-    /** Return true if the argument is legal to be added to the scope
-     *  of this variable. In this base class, this method only checks
-     *  that the argument is in the same workspace as this variable.
-     *  @param var The variable to be checked.
-     *  @return True if the argument is legal.
-     */
-    protected boolean _isLegalInScope(Variable var) {
-        return (var.workspace() == this.workspace());
-    }
-
     /** Notify the value listeners of this variable that this variable
      *  changed.
      */
@@ -997,8 +1029,159 @@ public class Variable extends Attribute
         }
     }
 
+    /** Force evaluation of this variable, unless it is lazy,
+     *  and call _propagate() on its value dependents.
+     *  @return A list of instances of IllegalActionException, one
+     *   for each exception triggered by a failure to evaluate a
+     *   value dependent, or null if there were no failures.
+     */
+    protected List _propagate() {
+        if (_propagating) {
+            return null;
+        }
+        _propagating = true;
+        try {
+            List result = null;
+            // Force evaluation.
+            if (_needsEvaluation && !_isLazy) {
+                try {
+                    _evaluate();
+                } catch (IllegalActionException ex) {
+                    // This is very confusing code.
+                    // Don't mess with it if it works.
+                    try {
+                        handleError(this, ex);
+                    } catch (IllegalActionException ex2) {
+                        result = new LinkedList();
+                        result.add(ex2);
+                    }
+                }
+            }
+            // All the value dependents now need evaluation also.
+            List additionalErrors = _propagateToValueListeners();
+            if (result == null) {
+                result = additionalErrors;
+            } else {
+                if (additionalErrors != null) {
+                    result.addAll(additionalErrors);
+                }
+            }
+            return result;
+        } finally {
+            _propagating = false;
+        }
+    }
+
+    /** Call propagate() on all value listeners.
+     *  @return A list of instances of IllegalActionException, one
+     *   for each exception triggered by a failure to evaluate a
+     *   value dependent, or null if there were no failures.
+     */
+    protected List _propagateToValueListeners() {
+        List result = null;
+        if (_valueListeners != null) {
+            // Avoid co-modification exception.
+            LinkedList list = new LinkedList();
+            list.addAll(_valueListeners);
+            Iterator listeners = list.iterator();
+            while (listeners.hasNext()) {
+                ValueListener listener = (ValueListener)listeners.next();
+                // Avoid doing this more than once if the the value
+                // dependent appears more than once.  This also has
+                // the advantage of stopping circular reference looping.
+                if (listener instanceof Variable) {
+                    if (((Variable)listener)._needsEvaluation) {
+                        List additionalErrors
+                               = ((Variable)listener)._propagate();
+                        if (additionalErrors != null) {
+                            if (result == null) {
+                                result = new LinkedList();
+                            }
+                            result.addAll(additionalErrors);
+                        }
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
+
+    /** Evaluate the current expression to a token. If this variable
+     *  was last set directly with a token, then do nothing. In other words,
+     *  the expression is evaluated only if the value of the token was most
+     *  recently given by an expression.  The expression is also evaluated
+     *  if any of the variables it refers to have changed since the last
+     *  evaluation.  If the value of this variable
+     *  changes due to this evaluation, then notify all
+     *  value dependents and notify the container (if there is one) by
+     *  calling its attributeChanged() and attributeTypeChanged() methods,
+     *  as appropriate. An exception is thrown
+     *  if the expression is illegal, for example if a parse error occurs
+     *  or if there is a dependency loop.
+     *  <p>
+     *  If evaluation results in a token that is not of the same type
+     *  as the current type of the variable, then the type of the variable
+     *  is changed, unless the new type is incompatible with statically
+     *  specified types (setTypeEquals() and setTypeAtMost()).
+     *  If the type is changed, the attributeTypeChanged() method of
+     *  the container is called.  The container can reject the change
+     *  by throwing an exception.
+     *  <p>
+     *  This method may trigger a model error, which is delegated up
+     *  the container hierarchy until an error handler is found, and
+     *  is ignored if no error handler is found.  A model error occurs
+     *  if the expression cannot be parsed or cannot be evaluated.
+     *  <p>
+     *  Part of this method is read-synchronized on the workspace.
+     *
+     *  @exception IllegalActionException If the expression cannot
+     *   be parsed or cannot be evaluated, or if a dependency loop is found.
+     */
+    private void _evaluate() throws IllegalActionException {
+        if (_currentExpression == null
+                || _currentExpression.trim().equals("")) {
+            _setToken(null);
+            return;
+        }
+        // If _dependencyLoop is true, then this call to evaluate() must
+        // have been triggered by evaluating the expression of this variable,
+        // which means that the expression directly or indirectly refers
+        // to itself.
+        if (_dependencyLoop) {
+            _dependencyLoop = false;
+            throw new IllegalActionException("There is a dependency loop.");
+        }
+        _dependencyLoop = true;
+
+        try {
+            workspace().getReadAccess();
+            if (_parseTree == null) {
+                PtParser parser = new PtParser();
+                _parseTree = parser.generateParseTree(_currentExpression);
+            }
+            if(_parseTreeEvaluator == null) {
+                _parseTreeEvaluator = new ParseTreeEvaluator();
+            }
+            if (_parserScope == null) {
+                _parserScope = new VariableScope();
+            }
+            Token result = _parseTreeEvaluator.evaluateParseTree(
+                    _parseTree, _parserScope);
+            _setTokenAndNotify(result);
+        } catch (IllegalActionException ex) {
+            _needsEvaluation = true;
+            throw new IllegalActionException(this, ex,
+                    "Error evaluating expression \""
+                    + _currentExpression
+                    + "\"");
+        } finally {
+            _dependencyLoop = false;
+            workspace().doneReading();
+        }
+    }
 
     private void _invalidateShadowedSettables(NamedObj object)
             throws IllegalActionException {
@@ -1036,79 +1219,14 @@ public class Variable extends Attribute
         }
     }
 
-    /** Evaluate the current expression to a token. If this variable
-     *  was last set directly with a token, then do nothing. In other words,
-     *  the expression is evaluated only if the value of the token was most
-     *  recently given by an expression.  The expression is also evaluated
-     *  if any of the variables it refers to have changed since the last
-     *  evaluation.  If the value of this variable
-     *  changes due to this evaluation, then notify all
-     *  value dependents and notify the container (if there is one) by
-     *  calling its attributeChanged() and attributeTypeChanged() methods,
-     *  as appropriate. An exception is thrown
-     *  if the expression is illegal, for example if a parse error occurs
-     *  or if there is a dependency loop.
-     *  <p>
-     *  If evaluation results in a token that is not of the same type
-     *  as the current type of the variable, then the type of the variable
-     *  is changed, unless the new type is incompatible with statically
-     *  specified types (setTypeEquals() and setTypeAtMost()).
-     *  If the type is changed, the attributeTypeChanged() method of
-     *  the container is called.  The container can reject the change
-     *  by throwing an exception.
-     *  <p>
-     *  Part of this method is read-synchronized on the workspace.
-     *
-     *  @exception IllegalActionException If the expression cannot
-     *   be parsed or cannot be evaluated.
+    /** Return true if the argument is legal to be added to the scope
+     *  of this variable. In this base class, this method only checks
+     *  that the argument is in the same workspace as this variable.
+     *  @param var The variable to be checked.
+     *  @return True if the argument is legal.
      */
-    private void _evaluate() throws IllegalActionException {
-  //       System.out.println("Calling evaluate on " + 
-//                 this.getFullName() + ":" + _currentExpression);
-        // NOTE: This should probably be a bit smarter and detect any
-        // whitespace-only expression.
-        if (_currentExpression == null || _currentExpression.equals("")) {
-            _setToken(null);
-            return;
-        }
-        // If _dependencyLoop is true, then this call to evaluate() must
-        // have been triggered by evaluating the expression of this variable,
-        // which means that the expression directly or indirectly refers
-        // to itself.
-        if (_dependencyLoop) {
-            _dependencyLoop = false;
-            throw new IllegalActionException("Found dependency loop "
-                    + "when evaluating " + getFullName()
-                    + ": " + _currentExpression);
-        }
-        _dependencyLoop = true;
-
-        try {
-            workspace().getReadAccess();
-            if (_parseTree == null) {
-                PtParser parser = new PtParser();
-                _parseTree = parser.generateParseTree(_currentExpression);
-            }
-            if(_parseTreeEvaluator == null) {
-                _parseTreeEvaluator = new ParseTreeEvaluator();
-            }
-            if (_parserScope == null) {
-                _parserScope = new VariableScope();
-            }
-            Token result = _parseTreeEvaluator.evaluateParseTree(
-                    _parseTree, _parserScope);
-            _setTokenAndNotify(result);
-        } catch (IllegalActionException ex) {
-            _needsEvaluation = true;
-            throw new IllegalActionException(this, ex,
-                    "Error evaluating expression: \""
-                    + _currentExpression
-                    + "\"\nIn variable: "
-                    + getFullName());
-        } finally {
-            _dependencyLoop = false;
-            workspace().doneReading();
-        }
+    private boolean _isLegalInScope(Variable var) {
+        return (var.workspace() == this.workspace());
     }
 
     /*  Set the token value and type of the variable.
@@ -1277,6 +1395,9 @@ public class Variable extends Attribute
     // an expression.
     private String _initialExpression;
 
+    // Indicator that this variable is lazy.
+    private boolean _isLazy;
+
     // Indicates whether this variable has been flagged as unknown.
     private boolean _isTokenUnknown = false;
 
@@ -1307,6 +1428,9 @@ public class Variable extends Attribute
 
     // the parse tree evaluator used by this variable.
     private ParseTreeEvaluator _parseTreeEvaluator;
+
+    // Flag indicating that _propagate() is in progress.
+    private boolean _propagating;
 
     // The token contained by this variable.
     private ptolemy.data.Token _token;
@@ -1485,8 +1609,12 @@ public class Variable extends Attribute
             return null;
         }
 
-        /** Return the list of attributes within the scope.
-         *  @return The list of attributes within the scope.
+        /** Return the list of variables within the scope.
+         *  Note that this method is an extremely inefficient to refer
+         *  to the scope of a variable because it constructs a list containing
+         *  every variable in the scope.  It is best to avoid calling it
+         *  and instead just use the get() method.
+         *  @return The list of variables within the scope.
          */
         public NamedList variableList() {
             return getScope();

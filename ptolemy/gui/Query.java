@@ -113,22 +113,51 @@ public class Query extends JPanel {
 
         // Left Justify.
         _entryPanel.setAlignmentX(0.0f);
-        _messagePanel.setAlignmentX(0.0f);
 
         // Add a message panel into which a message can be placed using
         // setMessage().
-        add(_messagePanel);
+        _messageArea = new JTextArea("");
+        _messageArea.setFont(new Font("SansSerif", Font.PLAIN, 12));
+        _messageArea.setEditable(false);
+        _messageArea.setLineWrap(true);
+        _messageArea.setWrapStyleWord(true);
+
+        // It seems like setLineWrap is somewhat broken.  Really,
+        // setLineWrap works best with scrollbars.  We have
+        // a couple of choices: use scrollbars or hack in something
+        // that guesses the number of lines.  Note that to
+        // use scrollbars, the tutorial at
+        // http://java.sun.com/docs/books/tutorial/uiswing/components/simpletext.html#textarea
+        // suggests: "If you put a text area in a scroll pane, be
+        // sure to set the scroll pane's preferred size or use a
+        // text area constructor that sets the number of rows and
+        // columns for the text area."
+
+        _messageArea.setBackground(null);
+
+        // Left Justify.
+        _messageArea.setAlignmentX(0.0f);
+
+        _messageScrollPane = new JScrollPane(_messageArea);
+	_messageScrollPane.setVerticalScrollBarPolicy(
+                JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        // Get rid of the border.
+        _messageScrollPane.setBorder(BorderFactory.createEmptyBorder());
+
+        add(_messageScrollPane);
+
+        // Add a spacer.
+        add(Box.createRigidArea(new Dimension(0,10)));
 
         _entryScrollPane = new JScrollPane(_entryPanel);
         // Get rid of the border.
         _entryScrollPane.setBorder(BorderFactory.createEmptyBorder());
+        _entryScrollPane.setBackground(null);
         add(_entryScrollPane);
-        //add(_entryPanel);
 
         // Setting the background to null allegedly means it inherits the
         // background color from the container.
         _entryPanel.setBackground(null);
-        _messagePanel.setBackground(null);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -909,53 +938,17 @@ public class Query extends JPanel {
      *  @param message The message to display.
      */
     public void setMessage(String message) {
-        if (_messageArea == null) {
-            _messageArea = new JTextArea(message);
-            _messageArea.setFont(new Font("SansSerif", Font.PLAIN, 12));
-            _messageArea.setEditable(false);
-            _messageArea.setLineWrap(true);
-            _messageArea.setWrapStyleWord(true);
-
-	    // It seems like setLineWrap is somewhat broken.  Really,
-	    // setLineWrap works best with scrollbars.  We have
-	    // a couple of choices: use scrollbars or hack in something
-	    // that guesses the number of lines.  Note that to
-	    // use scrollbars, the tutorial at
-	    // http://java.sun.com/docs/books/tutorial/uiswing/components/simpletext.html#textarea
-	    // suggests: "If you put a text area in a scroll pane, be
-	    // sure to set the scroll pane's preferred size or use a
-	    // text area constructor that sets the number of rows and
-	    // columns for the text area."
-
-	    // I'm not sure why we need to add 1 here?
-	    int lineCount = _messageArea.getLineCount() + 1;
-	    // Keep the line count to less than 30 lines.  If
-	    // we have more than 30 lines, we get a scroll bar.
-	    if (lineCount > 30) {
-		lineCount = 30;
-	    }
-	    _messageArea.setRows(lineCount);
-
-	    JScrollPane messageScrollPane = new JScrollPane(_messageArea);
-	    messageScrollPane.setVerticalScrollBarPolicy(
-                    JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-	    // Get rid of the border.
-	    messageScrollPane.setBorder(BorderFactory.createEmptyBorder());
-
-            _messageArea.setBackground(getBackground());
-
-            // Left Justify.
-            _messageArea.setAlignmentX(0.0f);
-
-            _messagePanel.setLayout(
-                    new BoxLayout(_messagePanel, BoxLayout.Y_AXIS));
-            _messagePanel.add(messageScrollPane);
-
-            // Add a spacer.
-            _messagePanel.add(Box.createRigidArea(new Dimension(0,10)));
-        } else {
-            _messageArea.setText(message);
+        _messageArea.setText(message);
+        // I'm not sure why we need to add 1 here?
+        int lineCount = _messageArea.getLineCount() + 1;
+        // Keep the line count to less than 30 lines.  If
+        // we have more than 30 lines, we get a scroll bar.
+        if (lineCount > 30) {
+            lineCount = 30;
         }
+        _messageArea.setRows(lineCount);
+        _messageArea.setColumns(_width);
+
         // In case size has changed.
         validate();
     }
@@ -1151,8 +1144,8 @@ public class Query extends JPanel {
     // Area for messages.
     private JTextArea _messageArea = null;
 
-    // Panel into which messages are placed.
-    private JPanel _messagePanel = new JPanel();
+    // A scroll pane that contains the _messageArea.
+    private JScrollPane _messageScrollPane;
 
     // No padding insets.
     private Insets _noPadding = new Insets(0, 0, 0, 0);

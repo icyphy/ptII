@@ -492,11 +492,10 @@ test PtParser-10.2 {Test for reasonable error messages on type problems} {
     $v1 setExpression "cos(1)"
     catch {$v1 getToken} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: Object name: .E.v1:
-Error evaluating expression: "cos(1)"
-In variable: .E.v1
-Caused by:
- ptolemy.kernel.util.IllegalActionException: No matching function cos( 1 ).}}
+} {{ptolemy.kernel.util.IllegalActionException: Error evaluating expression "cos(1)"
+  in .E.v1
+Because:
+No matching function cos( 1 ).}}
 
 ######################################################################
 ####
@@ -579,8 +578,8 @@ test PtParser-12.5 {Test matrix construction.} {
     catch {set res1 [java::cast ptolemy.data.IntMatrixToken [ $root1 evaluateParseTree ]]} msg
     list $msg
 } {{ptolemy.kernel.util.IllegalActionException: Matrix Token construction failed.
-Caused by:
- ptolemy.kernel.util.IllegalActionException: Sequence length cannot be determined because the increment has the wrong sign.}}
+Because:
+Sequence length cannot be determined because the increment has the wrong sign.}}
 
 # Test matrix construction, using regularly spaced vector as row.
 test PtParser-12.6 {Test matrix construction.} {
@@ -614,8 +613,8 @@ test PtParser-12.8 {Test matrix construction.} {
 
     list $msg
 } {{ptolemy.kernel.util.IllegalActionException: Matrix Token construction failed.
-Caused by:
- ptolemy.kernel.util.IllegalActionException: isLessThan operation not supported between ptolemy.data.ComplexToken '0.0 + 1.0i' and ptolemy.data.ComplexToken '0.0 + 0.0i' because complex numbers cannot be compared.}}
+Because:
+isLessThan operation not supported between ptolemy.data.ComplexToken '0.0 + 1.0i' and ptolemy.data.ComplexToken '0.0 + 0.0i' because complex numbers cannot be compared.}}
 
 # Test matrix construction, using regularly spaced vector as row.
 test PtParser-12.9 {Test matrix construction.} {

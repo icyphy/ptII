@@ -144,8 +144,8 @@ test Parameter-3.5 {Check that we can't convert down} {
     set intClass [java::field ptolemy.data.type.BaseType INT]
     catch {$param1 setTypeEquals $intClass} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: Object name: .entity.id1:
-Variable.setTypeEquals(): the currently contained token ptolemy.data.DoubleToken(7.0) is not compatible with the desired type int}}
+} {{ptolemy.kernel.util.IllegalActionException: The currently contained token ptolemy.data.DoubleToken(7.0) is not compatible with the desired type int
+  in .entity.id1}}
 
 test Parameter-3.6 {Check that a new token is converted} {
     set int [java::new ptolemy.data.IntToken 0]
@@ -372,6 +372,8 @@ test Parameter-13.2 {Test exportMoML} {
 #
 test Parameter-14.0 {Test the mechanism for extending scope} {
     set e1 [java::new ptolemy.kernel.CompositeEntity]
+    $e1 setModelErrorHandler \
+            [java::new ptolemy.kernel.util.BasicModelErrorHandler]
     set e2 [java::new ptolemy.kernel.ComponentEntity $e1 "e2"]
     set ext1 [java::new ptolemy.data.expr.ScopeExtendingAttribute $e1 "ext1"]
     set p1 [java::new ptolemy.data.expr.Parameter $ext1 "p"]
@@ -398,15 +400,18 @@ test Parameter-14.0 {Test the mechanism for extending scope} {
     catch {$p4 getToken} msg2
 
     list [$r1 toString] [$r2 toString] [$r3 toString] $msg1 $msg2
-} {5 0 5 {ptolemy.kernel.util.IllegalActionException: Object name: .<Unnamed Object>.p3:
-Error evaluating expression: "p"
-In variable: ..p3
-Caused by:
- ptolemy.kernel.util.IllegalActionException: The ID p is undefined.} {ptolemy.kernel.util.IllegalActionException: Object name: .<Unnamed Object>.e2.p4:
-Error evaluating expression: "p"
-In variable: ..e2.p4
-Caused by:
- ptolemy.kernel.util.IllegalActionException: The ID p is undefined.}}
+} {5 0 5 {ptolemy.kernel.util.IllegalActionException: Error evaluating expression "p"
+  in .<Unnamed Object>.p3
+Because:
+The ID p is undefined.
+-------------- and --------------
+Error evaluating expression "p"
+  in .<Unnamed Object>.e2.p4
+Because:
+The ID p is undefined.} {ptolemy.kernel.util.IllegalActionException: Error evaluating expression "p"
+  in .<Unnamed Object>.e2.p4
+Because:
+The ID p is undefined.}}
 
 ######################################################################
 ####
@@ -430,8 +435,10 @@ test Parameter-15.0 {Test for a known bug - insert a new parameter does not shad
     list [$r1 toString] [$r2 toString]
 } {5 10}
 
-test Parameter-15.1 {Removing an actor that contains a parameter should throw an exception if that parameter depends on other parameters} {
+test Parameter-15.1 {Removing an actor that contains a parameter should not throw an exception if that parameter depends on other parameters} {
     set e1 [java::new ptolemy.kernel.CompositeEntity]
+    $e1 setModelErrorHandler \
+            [java::new ptolemy.kernel.util.BasicModelErrorHandler]
     set e2 [java::new ptolemy.kernel.ComponentEntity $e1 "e2"]
     set p1 [java::new ptolemy.data.expr.Parameter $e1 "p1"]
     set p3 [java::new ptolemy.data.expr.Parameter $e2 "p3"]
@@ -445,12 +452,8 @@ test Parameter-15.1 {Removing an actor that contains a parameter should throw an
     $p1 setExpression "6"
     catch {$p1 validate} msg2
 
-    list $msg $msg2
-} {{ptolemy.kernel.util.IllegalActionException: Object name: .e2.p3:
-Error evaluating expression: "p1"
-In variable: .e2.p3
-Caused by:
- ptolemy.kernel.util.IllegalActionException: The ID p1 is undefined.} {}}
+    list [$r1 toString] $msg $msg2
+} {5 {} {}}
 
 test Parameter-15.2 {Failure to Shadow, including scopeeEtending} {
     set e1 [java::new ptolemy.kernel.CompositeEntity]
@@ -497,9 +500,13 @@ test Parameter-15.3 {Changing container of parameter depends on scope.} {
 test Parameter-15.4 {Changing container of parameter that depends on scope to an invalid scope.} {
     set e1 [java::new ptolemy.kernel.CompositeEntity]
     set e2 [java::new ptolemy.kernel.ComponentEntity $e1 "e2"]
+    $e1 setModelErrorHandler \
+            [java::new ptolemy.kernel.util.BasicModelErrorHandler]
 
     set e3 [java::new ptolemy.kernel.ComponentEntity]
- 
+    $e3 setModelErrorHandler \
+            [java::new ptolemy.kernel.util.BasicModelErrorHandler]
+
     set p1 [java::new ptolemy.data.expr.Parameter $e1 "p"]
     set p2 [java::new ptolemy.data.expr.Parameter $e2 "p"]
     set p3 [java::new ptolemy.data.expr.Parameter $e1 "p3"]
@@ -515,18 +522,18 @@ test Parameter-15.4 {Changing container of parameter that depends on scope to an
     catch {set msg3 [[$p3 getToken] toString]} msg3
     
     list $msg1 $msg2 $msg3
-} {5 {ptolemy.kernel.util.IllegalActionException: Object name: .<Unnamed Object>.p3:
-Error evaluating expression: "p"
-In variable: ..p3
-Caused by:
- ptolemy.kernel.util.IllegalActionException: The ID p is undefined.} {ptolemy.kernel.util.IllegalActionException: Object name: .<Unnamed Object>.p3:
-Error evaluating expression: "p"
-In variable: ..p3
-Caused by:
- ptolemy.kernel.util.IllegalActionException: The ID p is undefined.}}
+} {5 {ptolemy.kernel.util.IllegalActionException: Error evaluating expression "p"
+  in .<Unnamed Object>.p3
+Because:
+The ID p is undefined.} {ptolemy.kernel.util.IllegalActionException: Error evaluating expression "p"
+  in .<Unnamed Object>.p3
+Because:
+The ID p is undefined.}}
 
 test Parameter-15.5 {Changing container of parameter depends on scope.} {
     set e1 [java::new ptolemy.kernel.CompositeEntity]
+    $e1 setModelErrorHandler \
+            [java::new ptolemy.kernel.util.BasicModelErrorHandler]
     set e2 [java::new ptolemy.kernel.CompositeEntity $e1 "e2"]
     set e3 [java::new ptolemy.kernel.ComponentEntity $e2 "e3"]
  
@@ -545,15 +552,10 @@ test Parameter-15.5 {Changing container of parameter depends on scope.} {
     catch {set msg3 [[$p3 getToken] toString]} msg3
     
     list $msg1 $msg2 $msg3
-} {5 {ptolemy.kernel.util.IllegalActionException: Object name: .p3:
-Error evaluating expression: "p"
-In variable: .p3
-Caused by:
- ptolemy.kernel.util.IllegalActionException: The ID p is undefined.} {ptolemy.kernel.util.IllegalActionException: Object name: .p3:
-Error evaluating expression: "p"
-In variable: .p3
-Caused by:
- ptolemy.kernel.util.IllegalActionException: The ID p is undefined.}}
+} {5 {} {ptolemy.kernel.util.IllegalActionException: Error evaluating expression "p"
+  in .p3
+Because:
+The ID p is undefined.}}
 
 test Parameter-15.6 {Changing container of container of parameter that depends on outside scope from valid scope to valid scope} {
     set e1 [java::new ptolemy.kernel.CompositeEntity]
@@ -579,6 +581,8 @@ test Parameter-15.6 {Changing container of container of parameter that depends o
 
 test Parameter-15.7 {Removing parameter invalidate dependants.} {
     set e1 [java::new ptolemy.kernel.CompositeEntity]
+    $e1 setModelErrorHandler \
+            [java::new ptolemy.kernel.util.BasicModelErrorHandler]
     set e2 [java::new ptolemy.kernel.CompositeEntity $e1 "e2"]
  
     set p1 [java::new ptolemy.data.expr.Parameter $e1 "p"]
@@ -594,18 +598,18 @@ test Parameter-15.7 {Removing parameter invalidate dependants.} {
     catch {set msg3 [[$p3 getToken] toString]} msg3
 
     list $msg1 $msg2 $msg3
-} {5 {ptolemy.kernel.util.IllegalActionException: Object name: .<Unnamed Object>.p3:
-Error evaluating expression: "p"
-In variable: ..p3
-Caused by:
- ptolemy.kernel.util.IllegalActionException: The ID p is undefined.} {ptolemy.kernel.util.IllegalActionException: Object name: .<Unnamed Object>.p3:
-Error evaluating expression: "p"
-In variable: ..p3
-Caused by:
- ptolemy.kernel.util.IllegalActionException: The ID p is undefined.}}
+} {5 {ptolemy.kernel.util.IllegalActionException: Error evaluating expression "p"
+  in .<Unnamed Object>.p3
+Because:
+The ID p is undefined.} {ptolemy.kernel.util.IllegalActionException: Error evaluating expression "p"
+  in .<Unnamed Object>.p3
+Because:
+The ID p is undefined.}}
 
 test Parameter-15.8 {Changing container of container of parameter that depends on outside scope from valid scope to invalid scope} {
     set e1 [java::new ptolemy.kernel.CompositeEntity]
+    $e1 setModelErrorHandler \
+            [java::new ptolemy.kernel.util.BasicModelErrorHandler]
     set e2 [java::new ptolemy.kernel.CompositeEntity $e1 "e2"]
     set e3 [java::new ptolemy.kernel.ComponentEntity $e2 "e3"]
  
@@ -622,18 +626,18 @@ test Parameter-15.8 {Changing container of container of parameter that depends o
     catch {set msg3 [[$p3 getToken] toString]} msg3
 
     list $msg1 $msg2 $msg3
-} {7 {ptolemy.kernel.util.IllegalActionException: Object name: .<Unnamed Object>.p3:
-Error evaluating expression: "p"
-In variable: ..p3
-Caused by:
- ptolemy.kernel.util.IllegalActionException: The ID p is undefined.} {ptolemy.kernel.util.IllegalActionException: Object name: .<Unnamed Object>.p3:
-Error evaluating expression: "p"
-In variable: ..p3
-Caused by:
- ptolemy.kernel.util.IllegalActionException: The ID p is undefined.}}
+} {7 {ptolemy.kernel.util.IllegalActionException: Error evaluating expression "p"
+  in .<Unnamed Object>.p3
+Because:
+The ID p is undefined.} {ptolemy.kernel.util.IllegalActionException: Error evaluating expression "p"
+  in .<Unnamed Object>.p3
+Because:
+The ID p is undefined.}}
 
 test Parameter-15.9 {Changing container of container of parameter that depends on outside scope from valid scope to invalid null scope} {
     set e1 [java::new ptolemy.kernel.CompositeEntity]
+    $e1 setModelErrorHandler \
+            [java::new ptolemy.kernel.util.BasicModelErrorHandler]
     set e2 [java::new ptolemy.kernel.CompositeEntity $e1 "e2"]
     set e3 [java::new ptolemy.kernel.ComponentEntity $e2 "e3"]
  
@@ -650,15 +654,10 @@ test Parameter-15.9 {Changing container of container of parameter that depends o
     catch {set msg3 [[$p3 getToken] toString]} msg3
 
     list $msg1 $msg2 $msg3
-} {7 {ptolemy.kernel.util.IllegalActionException: Object name: .p3:
-Error evaluating expression: "p"
-In variable: .p3
-Caused by:
- ptolemy.kernel.util.IllegalActionException: The ID p is undefined.} {ptolemy.kernel.util.IllegalActionException: Object name: .p3:
-Error evaluating expression: "p"
-In variable: .p3
-Caused by:
- ptolemy.kernel.util.IllegalActionException: The ID p is undefined.}}
+} {7 {} {ptolemy.kernel.util.IllegalActionException: Error evaluating expression "p"
+  in .p3
+Because:
+The ID p is undefined.}}
 
 ######################################################################
 ####
@@ -680,12 +679,10 @@ test Parameter-16.0 {Test array and matrix references} {
     $p2 setExpression "p1(4, 5)"
     catch {$p2 getToken} msg2
     list $r1 $r2 $msg1 $msg2
-} {1 1 {ptolemy.kernel.util.IllegalActionException: Object name: .<Unnamed Object>.e2.p2:
-Error evaluating expression: "p1(10)"
-In variable: ..e2.p2
-Caused by:
- ptolemy.kernel.util.IllegalActionException: The index '10' is out of bounds to the array '{1, 2, 3}'.} {ptolemy.kernel.util.IllegalActionException: Object name: .<Unnamed Object>.e2.p2:
-Error evaluating expression: "p1(4, 5)"
-In variable: ..e2.p2
-Caused by:
- ptolemy.kernel.util.IllegalActionException: The index (4,5) is out of bounds to the matrix '[1, 2; 3, 4]'.}}
+} {1 1 {ptolemy.kernel.util.IllegalActionException: Error evaluating expression "p1(10)"
+  in .<Unnamed Object>.e2.p2
+Because:
+The index '10' is out of bounds to the array '{1, 2, 3}'.} {ptolemy.kernel.util.IllegalActionException: Error evaluating expression "p1(4, 5)"
+  in .<Unnamed Object>.e2.p2
+Because:
+The index (4,5) is out of bounds to the matrix '[1, 2; 3, 4]'.}}

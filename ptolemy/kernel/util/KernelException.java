@@ -208,7 +208,7 @@ public class KernelException extends Exception {
             Throwable cause, String detail) {
         String object1String = getFullName(object1);
         String object2String = getFullName(object2);
-        String prefix = null;
+        String whereString = null;
 
         // KernelException.getFullName() returns the empty string if
         // argument was null, and it returns "<Unnamed Object>" if the
@@ -223,17 +223,17 @@ public class KernelException extends Exception {
                 // a similar change to
                 // KernelRuntimeException(Collection, Throwable, String)
 
-                prefix = "Object names: "
+                whereString = "  in "
                     + object1String + " and " + object2String;
             } else {
-                prefix = "Object name: " + object1String;
+                whereString = "  in " + object1String;
             }
         } else {
             if (!object2String.equals("")) {
-                prefix = "Object name: " + object2String;
+                whereString = "  in " + object2String;
             }
         }
-        return generateMessage(prefix, cause, detail);
+        return generateMessage(whereString, cause, detail);
     }
 
     /** Generate a properly formatted detail message.
@@ -249,13 +249,13 @@ public class KernelException extends Exception {
      *  KernelException cannot extend RuntimeException for the same
      *  reason.
      *
-     *  @param prefix The prefix string at the start of the message
-     *  that usually contains the names of the objects involved.
+     *  @param whereString The string that identifies where the error occured,
+     *   as in for example "in object: foo".
      *  @param cause The cause of this exception.
      *  @param detail The message.
      *  @return A properly formatted message
      */
-    public static String generateMessage(String prefix,
+    public static String generateMessage(String whereString,
             Throwable cause, String detail) {
         // We need this method to support the constructors
         // in InvalidStateException that take Enumerations and Lists.
@@ -264,29 +264,30 @@ public class KernelException extends Exception {
         // upon, but in this case, the alternatives are a very large
         // and complex if/else tree or else the creation of a bunch
         // of temporary strings with a smaller if/else tree.
-        boolean prefixNullOrEmpty = (prefix == null || prefix.equals(""));
-        boolean detailNullOrEmpty = (detail == null || detail.equals(""));
+        boolean whereNullOrEmpty
+                = (whereString == null || whereString.equals(""));
+        boolean detailNullOrEmpty
+                = (detail == null || detail.equals(""));
         return
-            // Do we print the prefix?
-            (prefixNullOrEmpty ?
-                    "" : prefix)
-
-            // Do we add a \n?
-            + (prefixNullOrEmpty || detailNullOrEmpty ?
-                    "": ":\n")
-
             // Do we print the detail?
-            + (detailNullOrEmpty ?
-                    "": detail)
+            (detailNullOrEmpty ?
+                    "" : detail)
 
             // Do we add a \n?
-            + ((!prefixNullOrEmpty || !detailNullOrEmpty)
-                    && cause != null ?
+            + (!whereNullOrEmpty && !detailNullOrEmpty ?
+                    "\n" : "")
+
+            // Do we print the whereString?
+            + (whereNullOrEmpty ?
+                    "" : whereString)
+
+            // Do we add a \n?
+            + ((!whereNullOrEmpty || !detailNullOrEmpty) && cause != null ?
                     "\n" : "")
 
             // Do we print the cause?
             + ((cause == null) ?
-                    "" : ("Caused by:\n " + cause));
+                    "" : ("Because:\n" + cause.getMessage()));
     }
 
     /** Get the name of a Nameable object.

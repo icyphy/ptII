@@ -379,6 +379,12 @@ public class Manager extends NamedObj implements Runnable {
             // Initialize the topology
             _container.preinitialize();
 
+            // FIXME: This may not be needed.  It used to be done
+            // by CompositeActor and AtomicActor.  Also, it is not
+            // too clear whether this should be done before or
+            // after preinitialize().  EAL 5/22/02.
+            _container.validateSettables();
+
             resolveTypes();
             _typesResolved = true;
             _setState(INITIALIZING);
@@ -434,6 +440,13 @@ public class Manager extends NamedObj implements Runnable {
                 while (actors.hasNext()) {
                     Actor actor = (Actor)actors.next();
                     actor.preinitialize();
+                    // FIXME: This may not be needed.  It used to be done
+                    // by CompositeActor and AtomicActor.  Also, it is not
+                    // too clear whether this should be done before or
+                    // after preinitialize().  EAL 5/22/02.
+                    if (actor instanceof NamedObj) {
+                        ((NamedObj)actor).validateSettables();
+                    }
                 }
             }
             if (!_typesResolved) {

@@ -50,7 +50,7 @@ the descriptions returned by the description() method.
 @since Ptolemy II 0.2
 */
 
-public interface Nameable {
+public interface Nameable extends ModelErrorHandler {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

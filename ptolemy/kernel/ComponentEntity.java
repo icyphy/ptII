@@ -198,13 +198,17 @@ public class ComponentEntity extends Entity {
      *  this entity being garbage collected.
      *  Derived classes may further constrain the container
      *  to subclasses of CompositeEntity by overriding the protected
-     *  method _checkContainer(). This method is write-synchronized
+     *  method _checkContainer(). This method validates all
+     *  deeply contained instances of Settable, since they may no longer
+     *  be valid in the new context.  This method is write-synchronized
      *  to the workspace and increments its version number.
      *  @param container The proposed container.
      *  @exception IllegalActionException If the action would result in a
      *   recursive containment structure, or if
      *   this entity and container are not in the same workspace, or
-     *   if the protected method _checkContainer() throws it.
+     *   if the protected method _checkContainer() throws it, or if
+     *   a contained Settable becomes invalid and the error handler
+     *   throws it.
      *  @exception NameDuplicationException If the name of this entity
      *   collides with a name already in the container.
      */
@@ -245,9 +249,9 @@ public class ComponentEntity extends Entity {
                     port.unlinkAll();
                 }
             }
-            
-            // Validate all contained settables.
-            _validateDeeplyContainedSettables(this);
+            // Validate all deeply contained settables, since
+            // they may no longer be valid in the new context.
+            validateSettables();
         } finally {
             _workspace.doneWriting();
         }
@@ -330,23 +334,6 @@ public class ComponentEntity extends Entity {
                 "</svg>\n");
     }
     
-    private static void _validateDeeplyContainedSettables(Entity entity) 
-            throws IllegalActionException {
-        Iterator settables = entity.attributeList(Settable.class).iterator();
-        while (settables.hasNext()) {
-            Settable settable = (Settable)settables.next();
-            settable.validate();
-        }
-        if(entity instanceof CompositeEntity) {
-            CompositeEntity composite = (CompositeEntity)entity;
-            Iterator entities = composite.entityList().iterator();
-            while(entities.hasNext()) {
-                Entity insideEntity = (Entity)entities.next();
-                _validateDeeplyContainedSettables(insideEntity);
-            }
-        }
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

@@ -53,6 +53,9 @@ import java.util.List;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+// FIXME: Replace StringAttribute with lazy variables, and remove _guard.
+// Other places where this could be done?
+
 //////////////////////////////////////////////////////////////////////////
 //// Transition
 /**
@@ -176,8 +179,14 @@ public class Transition extends ComponentRelation {
         triggerExpression = new StringAttribute(this, "triggerExpression");
         triggerExpression.setVisibility(Settable.NONE);
         _guard = new Variable(this, "_guard");
+        // Make the variable lazy since it will often have
+        // an expression that cannot be evaluated.
+        _guard.setLazy(true);
         _guard.setTypeEquals(BaseType.BOOLEAN);
         _trigger = new Variable(this, "_trigger");
+        // Make the variable lazy since it will often have
+        // an expression that cannot be evaluated.
+        _trigger.setLazy(true);
         _trigger.setTypeEquals(BaseType.BOOLEAN);
     }
 

@@ -204,11 +204,15 @@ public class ComponentRelation extends Relation {
      *  It is not added to the workspace directory, so this could result in
      *  this relation being garbage collected.
      *  Derived classes may further constrain the class of the container
-     *  to a subclass of CompositeEntity. This method is write-synchronized
+     *  to a subclass of CompositeEntity. This method validates all
+     *  deeply contained instances of Settable, since they may no longer
+     *  be valid in the new context. This method is write-synchronized
      *  on the workspace and increments its version number.
      *  @param container The proposed container.
      *  @exception IllegalActionException If this entity and the container
-     *  are not in the same workspace.
+     *   are not in the same workspace, or if
+     *   a contained Settable becomes invalid and the error handler
+     *   throws it.
      *  @exception NameDuplicationException If the name collides with a name
      *   already on the contents list of the container.
      */
@@ -238,6 +242,9 @@ public class ComponentRelation extends Relation {
             if (container == null) {
                 unlinkAll();
             }
+            // Validate all deeply contained settables, since
+            // they may no longer be valid in the new context.
+            validateSettables();
         } finally {
             _workspace.doneWriting();
         }

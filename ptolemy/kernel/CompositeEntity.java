@@ -36,6 +36,7 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedList;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
 import java.io.IOException;
@@ -929,6 +930,43 @@ public class CompositeEntity extends ComponentEntity {
             candidate = prefix + _uniqueNameIndex++;
         }
         return candidate;
+    }
+
+    /** Validate attributes deeply contained by this object if they
+     *  implement the Settable interface by calling their validate() method.
+     *  This method overrides the base class to check attributes contained
+     *  by the contained entities and relations.
+     *  Errors that are triggered by this validation are handled by calling
+     *  handleError().
+     *  @see NamedObj#handleError()
+     */
+    public void validateSettables() throws IllegalActionException {
+        super.validateSettables();
+
+        Iterator entities = entityList().iterator();
+        while (entities.hasNext()) {
+            Entity entity = (Entity)entities.next();
+            if (entity instanceof Settable) {
+                try {
+                    ((Settable)entity).validate();
+                } catch (IllegalActionException ex) {
+                    handleError(this, ex);
+                }
+            }
+            entity.validateSettables();
+        }
+        Iterator relations = relationList().iterator();
+        while (relations.hasNext()) {
+            Relation relation = (Relation)relations.next();
+            if (relation instanceof Settable) {
+                try {
+                    ((Settable)relation).validate();
+                } catch (IllegalActionException ex) {
+                    handleError(this, ex);
+                }
+            }
+            relation.validateSettables();
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

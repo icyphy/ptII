@@ -403,7 +403,6 @@ public final class Workspace implements Nameable, Serializable {
         }
     }
 
-
     /** Get the version number.  The version number is incremented on
      *  each call to doneWriting() and also on calls to incrVersion().
      *  It is meant to track changes in the topologies within the workspace.
@@ -486,6 +485,20 @@ public final class Workspace implements Nameable, Serializable {
 		System.err.println(e.toString());
 	    }
         }
+    }
+
+    /** Handle a model error by throwing the specified exception.
+     *  @param context The object in which the error occurred.
+     *  @param exception An exception that represents the error.
+     *  @return Never returns.
+     *  @exception IllegalActionException The exception passed
+     *   as an argument is always thrown.
+     */
+    public boolean handleError(
+            NamedObj context,
+            IllegalActionException exception)
+            throws IllegalActionException {
+        throw exception;
     }
 
     /** Increment the version number by one.

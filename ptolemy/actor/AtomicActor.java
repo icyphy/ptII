@@ -25,9 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Green (eal@eecs.berkeley.edu)
-@AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
-preinitialize: validates attributes of contained ports as well..  This used
-to be done in IOPort.connectionsChanged.
+@AcceptedRating Green (neuendor@eecs.berkeley.edu)
 */
 
 package ptolemy.actor;
@@ -128,16 +126,16 @@ public class AtomicActor extends ComponentEntity implements Actor {
         return newObject;
     }
 
-    /** Validate attributes, and create new receivers if port is
+    /** Create new receivers if the port is
      *  an input port and there is a director.
      *  @param port The port that has connection changes.
      */
     public void connectionsChanged(Port port) {
         if (port instanceof IOPort) {
-            IOPort castedPort = (IOPort)port;
-            if (castedPort.isInput() && getDirector() != null) {
+            IOPort castPort = (IOPort)port;
+            if (castPort.isInput() && getDirector() != null) {
                 try {
-                    castedPort.createReceivers();
+                    castPort.createReceivers();
                 } catch(IllegalActionException ex) {
                     // Should never happen.
                     throw new InternalErrorException(
@@ -362,41 +360,23 @@ public class AtomicActor extends ComponentEntity implements Actor {
         return true;
     }
 
-    /** Create receivers and validate the attributes contained by this
-     *  actor and the ports contained by this actor. Derived classes
+    /** Create receivers. Derived classes
      *  can override this method to perform additional initialization
      *  functions, but they should call this base class methods or
-     *  create the receivers and initialize attributes themselves.
+     *  create the receivers themselves.
      *  This method gets executed exactly once prior to any other
      *  action methods.  It cannot produce output data since type
      *  resolution is typically not yet done. It also gets invoked
      *  prior to any static scheduling that might occur in the domain,
      *  so it can change scheduling information.
-     *  @see Settable#validate()
-     *
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public void preinitialize() throws IllegalActionException {
         _stopRequested = false;
+        // NOTE:  Receivers are also getting created
+        // in connectionChanged().  Perhaps this is here to ensure
+        // that the receivers are reset?
         _createReceivers();
-        // Validate the attributes of this actor.
-        for (Iterator attributes = attributeList(Settable.class).iterator();
-             attributes.hasNext();) {
-            Settable attribute = (Settable)attributes.next();
-            attribute.validate();
-        }
-        // Validate the attributes of the ports of this actor.
-        for (Iterator ports = portList().iterator(); ports.hasNext();) {
-            if (_stopRequested) break;
-            IOPort port = (IOPort)ports.next();
-            for (Iterator attributes =
-                    port.attributeList(Settable.class).iterator();
-                    attributes.hasNext();) {
-                if (_stopRequested) break;
-                Settable attribute = (Settable)attributes.next();
-                attribute.validate();
-            }
-        }
     }
 
     /** Override the base class to invalidate the schedule and

@@ -578,8 +578,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
         }
     }
 
-    /** Create Receivers and validate the attributes contained by this
-     *  actor and the ports contained by this actor.  Also invoke the
+    /** Create Receivers and invoke the
      *  preinitialize() method of its local director. If this actor is
      *  not opaque, throw an exception.  This method also resets
      *  the protected variable _stopRequested
@@ -607,35 +606,6 @@ public class CompositeActor extends CompositeEntity implements Actor {
             getDirector().preinitialize();
         } finally {
             _workspace.doneReading();
-        }
-
-        // NOTE: We used to not bother validating attributes because
-        // we assumed the attributes of atomic actors will be
-        // validated, and would force evaluation of any attributes
-        // they depend on.  It seems safer to just validate them here,
-        // which makes this code look just like the code in
-        // AtomicActor.  However, we definitely have to validate the
-        // parameters of any ports, since they will likely not be used
-        // in other places.
-
-        // Validate the attributes of this actor.
-        for (Iterator attributes = attributeList(Settable.class).iterator();
-                attributes.hasNext();) {
-            if (_stopRequested) break;
-            Settable attribute = (Settable)attributes.next();
-            attribute.validate();
-        }
-        // Validate the attributes of the ports of this actor.
-        for (Iterator ports = portList().iterator(); ports.hasNext();) {
-            if (_stopRequested) break;
-            IOPort port = (IOPort)ports.next();
-            for (Iterator attributes =
-                    port.attributeList(Settable.class).iterator();
-                    attributes.hasNext();) {
-                if (_stopRequested) break;
-                Settable attribute = (Settable)attributes.next();
-                attribute.validate();
-            }
         }
     }
 

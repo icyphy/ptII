@@ -52,6 +52,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
 	Attribute.java \
+	BasicModelErrorHandler.java \
 	ChangeListener.java \
 	ChangeRequest.java \
 	CrossRefList.java \
@@ -65,6 +66,7 @@ JSRCS = \
 	IllegalActionException.java \
 	InternalErrorException.java \
 	InvalidStateException.java \
+	ModelErrorHandler.java \
 	Nameable.java \
 	NamedList.java \
 	NamedObj.java \

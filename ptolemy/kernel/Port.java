@@ -351,13 +351,17 @@ public class Port extends NamedObj {
      *  If the argument is null, then
      *  unlink the port from any relations and remove it from its container.
      *  It is not added to the workspace directory, so this could result in
-     *  this port being garbage collected.
+     *  this port being garbage collected. This method validates all
+     *  deeply contained instances of Settable, since they may no longer
+     *  be valid in the new context.
      *  This method is write-synchronized on the
      *  workspace and increments its version number.
      *  @param entity The container.
      *  @exception IllegalActionException If this port is not of the
      *   expected class for the container, or it has no name,
-     *   or the port and container are not in the same workspace.
+     *   or the port and container are not in the same workspace, or if
+     *   a contained Settable becomes invalid and the error handler
+     *   throws it.
      *  @exception NameDuplicationException If the container already has
      *   a port with the name of this port.
      */
@@ -394,6 +398,9 @@ public class Port extends NamedObj {
             if (entity == null) {
                 unlinkAll();
             }
+            // Validate all deeply contained settables, since
+            // they may no longer be valid in the new context.
+            validateSettables();
         } finally {
             _workspace.doneWriting();
         }

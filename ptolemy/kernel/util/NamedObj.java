@@ -25,7 +25,11 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Green (eal@eecs.berkeley.edu)
-@AcceptedRating Green (cxh@eecs.berkeley.edu)
+@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
+
+FIXME: Downgraded to Yellow: Review needed for modelError(),
+getModelErrorHandler(), setModelErrorHandler(), and
+validateSettables() methods.
 */
 
 package ptolemy.kernel.util;
@@ -824,6 +828,15 @@ public class NamedObj implements Nameable, Debuggable,
 	return null;
     }
 
+    /** Get the model error handler specified by setErrorHandler().
+     *  @return The error handler, or null if none.
+     *  @see #modelError()
+     *  @see #setModelErrorHandler()
+     */
+    public ModelErrorHandler getModelErrorHandler() {
+        return _modelErrorHandler;
+    }
+
     /** Return a string of the form ".name1.name2...nameN". Here,
      *  "nameN" is the name of this object,
      *  and the intervening names are the names of the containers
@@ -953,6 +966,35 @@ public class NamedObj implements Nameable, Debuggable,
         }
     }
 
+    /** Handle a model error. If a model error handler has been registered
+     *  with setModelErrorHandler(), then handling is delegated to that
+     *  handler.  Otherwise, if there is a container, then handling is
+     *  delegated to the container.  If there is no container, then the
+     *  error is ignored.
+     *  @param context The object in which the error occurred.
+     *  @param exception An exception that represents the error.
+     *  @return True, unless the error is ignored, in which case false.
+     *  @exception IllegalActionException If the handler handles the
+     *   error by throwing an exception.
+     *  @see #setModelErrorHandler()
+     */
+    public boolean handleError(
+            NamedObj context,
+            IllegalActionException exception)
+            throws IllegalActionException {
+        if (_modelErrorHandler != null) {
+            _modelErrorHandler.handleError(context, exception);
+            return true;
+        } else {
+            ModelErrorHandler container = getContainer();
+            if (container != null) {
+                container.handleError(context, exception);
+                return true;
+            }
+        }
+        return false;
+    }
+
     /** Remove a change listener. If there is a container, delegate the
      *  request to the container.  If the specified listener is not
      *  on the list of listeners, do nothing.
@@ -1046,6 +1088,15 @@ public class NamedObj implements Nameable, Debuggable,
         }
     }
 
+    /** Set the model error handler.
+     *  @param handler The error handler, or null to specify no handler.
+     *  @see #modelError()
+     *  @see #getModelErrorHandler()
+     */
+    public void setModelErrorHandler(ModelErrorHandler handler) {
+        _modelErrorHandler = handler;
+    }
+
     /** Set or change the name.  If a null argument is given the
      *  name is set to an empty string.
      *  Increment the version of the workspace.
@@ -1115,6 +1166,28 @@ public class NamedObj implements Nameable, Debuggable,
             candidate = prefix + _uniqueNameIndex++;
         }
         return candidate;
+    }
+
+    /** Validate attributes deeply contained by this object if they
+     *  implement the Settable interface by calling their validate() method.
+     *  Errors that are triggered by this validation are handled by calling
+     *  handleError().
+     *  @see #handleError()
+     */
+    public void validateSettables() throws IllegalActionException {
+        // This base class contains only attributes, so check those.
+        Iterator attributes = attributeList().iterator();
+        while (attributes.hasNext()) {
+            Attribute attribute = (Attribute)attributes.next();
+            if (attribute instanceof Settable) {
+                try {
+                    ((Settable)attribute).validate();
+                } catch (IllegalActionException ex) {
+                    handleError(this, ex);
+                }
+            }
+            attribute.validateSettables();
+        }
     }
 
     /** Get the workspace. This method never returns null, since there
@@ -1498,6 +1571,9 @@ public class NamedObj implements Nameable, Debuggable,
 
     // Version of the workspace when cache last updated.
     private long _fullNameVersion = -1;
+
+    // The model error handler, if there is one.
+    private ModelErrorHandler _modelErrorHandler = null;
 
     // The MoML information describing this object.
     private MoMLInfo _MoMLInfo;

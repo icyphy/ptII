@@ -194,6 +194,9 @@ public abstract class AbstractActionsAttribute extends Action {
             if (transition == null) {
                 // Create the variable in the workspace.
                 evalVariable = new Variable(workspace());
+                // Make the variable lazy since it will often have
+                // an expression that cannot be evaluated.
+                evalVariable.setLazy(true);
                 try {
                     evalVariable.setName(variableName);
                 } catch (NameDuplicationException ex) {
@@ -209,6 +212,9 @@ public abstract class AbstractActionsAttribute extends Action {
                             attribute.setContainer(null);
                         }
                         evalVariable = new Variable(transition, variableName);
+                        // Make the variable lazy since it will often have
+                        // an expression that cannot be evaluated.
+                        evalVariable.setLazy(true);
                     } catch (NameDuplicationException ex) {
                         throw new InternalErrorException(this, ex, null);
                     }

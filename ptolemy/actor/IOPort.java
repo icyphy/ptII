@@ -33,7 +33,7 @@ Review isKnown/sendAbsent.
 createReceivers creates inside receivers based solely on insideWidth, and
    outsideReceivers based solely on outside width.
 connectionsChanged: no longer validates the attributes of this port.  This is
-   now done in AtomicActor and CompositeActor.preinitialize
+   now done in Manager.initialize().
 */
 
 package ptolemy.actor;

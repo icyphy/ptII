@@ -151,23 +151,19 @@ test Variable-2.5 {Check that dependency cycles are flagged as an error} {
     catch {set errormsg1 [[$p1 getToken] toString]} errormsg1
     catch {set errormsg1 [[$p3 getToken] toString]} errormsg2
     list $value1 $value2 $value3 $errormsg1 $errormsg2
-} {1.1 9.9 11.0 {ptolemy.kernel.util.IllegalActionException: Object name: .E.P1:
-Error evaluating expression: "P3"
-In variable: .E.P1
-Caused by:
- ptolemy.kernel.util.IllegalActionException: Object name: .E.P3:
-Error evaluating expression: "P1 + P2"
-In variable: .E.P3
-Caused by:
- ptolemy.kernel.util.IllegalActionException: Found dependency loop when evaluating .E.P1: P3} {ptolemy.kernel.util.IllegalActionException: Object name: .E.P3:
-Error evaluating expression: "P1 + P2"
-In variable: .E.P3
-Caused by:
- ptolemy.kernel.util.IllegalActionException: Object name: .E.P1:
-Error evaluating expression: "P3"
-In variable: .E.P1
-Caused by:
- ptolemy.kernel.util.IllegalActionException: Found dependency loop when evaluating .E.P3: P1 + P2}}
+} {1.1 9.9 11.0 {ptolemy.kernel.util.IllegalActionException: Error evaluating expression "P3"
+  in .E.P1
+Because:
+Error evaluating expression "P1 + P2"
+  in .E.P3
+Because:
+There is a dependency loop.} {ptolemy.kernel.util.IllegalActionException: Error evaluating expression "P1 + P2"
+  in .E.P3
+Because:
+Error evaluating expression "P3"
+  in .E.P1
+Because:
+There is a dependency loop.}}
 
 #################################
 ####
@@ -180,11 +176,10 @@ test Variable-3.0 {First check for no error message} {
 test Variable-3.1 {Next check for reasonable error message} {
     catch {$p1 getToken} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: Object name: .E.P1:
-Error evaluating expression: "P2"
-In variable: .E.P1
-Caused by:
- ptolemy.kernel.util.IllegalActionException: The ID P2 is undefined.}}
+} {{ptolemy.kernel.util.IllegalActionException: Error evaluating expression "P2"
+  in .E.P1
+Because:
+The ID P2 is undefined.}}
 
 #################################
 ####
@@ -234,8 +229,8 @@ test Variable-5.1 {Set types without first clearing} {
     set doubleClass [java::field ptolemy.data.type.BaseType DOUBLE]
     catch {$p1 setTypeEquals $doubleClass} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: Object name: .E.P1:
-Variable.setTypeEquals(): the currently contained token ptolemy.data.StringToken("foo") is not compatible with the desired type double}}
+} {{ptolemy.kernel.util.IllegalActionException: The currently contained token ptolemy.data.StringToken("foo") is not compatible with the desired type double
+  in .E.P1}}
 
 test Variable-5.2 {Set types with first clearing} {
     $p1 setToken [java::null]
@@ -422,6 +417,8 @@ test Variable-9.1 {Check reset} {
 ####
 test Variable-10.0 {Check setContainer} {
     set e1 [java::new {ptolemy.kernel.Entity String} E1]
+    $e1 setModelErrorHandler \
+            [java::new ptolemy.kernel.util.BasicModelErrorHandler]
     set e2 [java::new {ptolemy.kernel.Entity String} E2]
     set p1 [java::new ptolemy.data.expr.Variable $e1 P1]
     $p1 setExpression {"a"}
@@ -433,15 +430,13 @@ test Variable-10.0 {Check setContainer} {
     catch {$p2 setContainer $e2} msg2
     catch {set r3 [[$p2 getToken] toString]} r3
     list $r1 $msg1 $r2 $msg2 $r3
-} {{"a"} {ptolemy.kernel.util.IllegalActionException: Object name: .E1.P2:
-Error evaluating expression: "P1"
-In variable: .E1.P2
-Caused by:
- ptolemy.kernel.util.IllegalActionException: The ID P1 is undefined.} {ptolemy.kernel.util.IllegalActionException: Object name: .E1.P2:
-Error evaluating expression: "P1"
-In variable: .E1.P2
-Caused by:
- ptolemy.kernel.util.IllegalActionException: The ID P1 is undefined.} {} {"a"}}
+} {{"a"} {ptolemy.kernel.util.IllegalActionException: Error evaluating expression "P1"
+  in .E1.P2
+Because:
+The ID P1 is undefined.} {ptolemy.kernel.util.IllegalActionException: Error evaluating expression "P1"
+  in .E1.P2
+Because:
+The ID P1 is undefined.} {} {"a"}}
 
 #################################
 ####

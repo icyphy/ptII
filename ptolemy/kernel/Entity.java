@@ -38,6 +38,7 @@ import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedList;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
 import java.io.IOException;
@@ -415,6 +416,31 @@ public class Entity extends NamedObj {
             candidate = prefix + _uniqueNameIndex++;
         }
         return candidate;
+    }
+
+    /** Validate attributes deeply contained by this object if they
+     *  implement the Settable interface by calling their validate() method.
+     *  This method overrides the base class to check attributes contained
+     *  by the contained ports.
+     *  Errors that are triggered by this validation are handled by calling
+     *  handleError().
+     *  @see NamedObj#handleError()
+     */
+    public void validateSettables() throws IllegalActionException {
+        super.validateSettables();
+
+        Iterator ports = portList().iterator();
+        while (ports.hasNext()) {
+            Port port = (Port)ports.next();
+            if (port instanceof Settable) {
+                try {
+                    ((Settable)port).validate();
+                } catch (IllegalActionException ex) {
+                    handleError(this, ex);
+                }
+            }
+            port.validateSettables();
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -30,6 +30,7 @@
 package ptolemy.actor.gui;
 
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.BasicModelErrorHandler;
 import ptolemy.kernel.util.InternalErrorException;
 
 import java.io.File;
@@ -46,7 +47,9 @@ line like:
 <pre>
     getContentPane().add(component, BorderLayout.CENTER);
 </pre>
-This extends the base class by associating with it a Ptolemy II model.
+This extends the base class by associating with it a Ptolemy II model,
+and specifying a model error handler for that model that handles model
+errors by throwing an exception.
 
 @author Edward A. Lee
 @version $Id$
@@ -89,11 +92,13 @@ public abstract class PtolemyFrame extends TableauFrame {
         return _model;
     }
 
-    /** Set the associated model.
+    /** Set the associated model.  This also sets an error handler for
+     *  the model that results in model errors throwing an exception.
      *  @param model The associated model.
      */
     public void setModel(CompositeEntity model) {
         _model = model;
+        _model.setModelErrorHandler(new BasicModelErrorHandler());
     }
 
     ///////////////////////////////////////////////////////////////////
