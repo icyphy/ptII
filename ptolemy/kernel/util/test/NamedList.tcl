@@ -124,7 +124,7 @@ test NamedList-3.3 {Test includes} {
 ######################################################################
 ####
 #
-test NamedList-4.1 {Test insertAt, first last} {
+test NamedList-4.1 {Test prepend, first last} {
     set dir [java::new ptolemy.kernel.util.NamedList]
     set n1 [java::new ptolemy.kernel.util.NamedObj "n1"]
     set n2 [java::new ptolemy.kernel.util.NamedObj "n2"]
@@ -140,7 +140,22 @@ test NamedList-4.1 {Test insertAt, first last} {
 ######################################################################
 ####
 #
-test NamedList-4.2 {Test insertBefore} {
+test NamedList-4.1 {Test prepend with Nameables that can have null names } {
+    set dir [java::new ptolemy.kernel.util.NamedList]
+    set n1 [java::new ptolemy.kernel.util.test.TestNullNamedObj "n1"]
+    set n2 [java::new ptolemy.kernel.util.test.TestNullNamedObj]
+    set n3 [java::new ptolemy.kernel.util.test.TestNullNamedObj [java::null]]
+    $dir prepend $n1
+    $dir prepend $n2
+    catch {$dir prepend $n3} errMsg
+    list [_testEnums elements $dir] \
+	    $errMsg
+} {{{{} n1}} {ptolemy.kernel.util.IllegalActionException: Attempt to add an object with a null name to a NamedList.}}
+
+######################################################################
+####
+#
+test NamedList-4.3 {Test insertBefore} {
     set dir [java::new ptolemy.kernel.util.NamedList]
     set n1 [java::new ptolemy.kernel.util.NamedObj "n1"]
     set n2 [java::new ptolemy.kernel.util.NamedObj ""]
