@@ -44,7 +44,7 @@ include $(CONFIG)
 
 DIRS = 		test # doc
 
-CLASSPATH = "../../..$(CLASSPATHSEPARATOR)$(JAVACCDIR)/JavaCC.zip"
+CLASSPATH = ../../..$(CLASSPATHSEPARATOR)$(JAVACCDIR)/JavaCC.zip
 
 # Used to build zip files
 TYPACKAGE = 	ptolemy.data.expr
@@ -117,10 +117,10 @@ depend:
 $(OPTIONAL_JSRCS): PtParser.java
 
 PtParser.java: PtParser.jj 
-	CLASSPATH=$(CLASSPATH) $(JAVACC) PtParser.jj
+	CLASSPATH="$(CLASSPATH") $(JAVACC) PtParser.jj
 
 PtParser.jj: $(EXTRA_SRCS)
-	CLASSPATH=$(CLASSPATH) $(JJTREE) PtParser.jjt
+	CLASSPATH="$(CLASSPATH)" $(JJTREE) PtParser.jjt
 
 # Get the rest of the rules
 include $(ROOT)/mk/tycommon.mk
