@@ -372,6 +372,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
                 result.addAll(typeable.typeConstraintList());
             }
 
+            System.out.println("constraints for " + this + " = " + result);
             return result;
         } finally {
             workspace().doneReading();
@@ -525,7 +526,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
     // assuming the source port is connected to all the ports in the
     // group of destination ports.  Return a list of instances of
     // Inequality that have type conflicts.
-    private List _checkTypesFromTo(TypedIOPort sourcePort,
+    protected List _checkTypesFromTo(TypedIOPort sourcePort,
             List destinationPortList) {
         List result = new LinkedList();
 
@@ -575,7 +576,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
     // Return the type constraints on all connections starting from the
     // specified source port to all the ports in a group of destination
     // ports.
-    private List _typeConstraintsFromTo(TypedIOPort sourcePort,
+    protected List _typeConstraintsFromTo(TypedIOPort sourcePort,
             List destinationPortList) {
         List result = new LinkedList();
 
