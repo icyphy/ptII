@@ -1,0 +1,235 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="mobileFunctionRd" class="ptolemy.actor.TypedCompositeActor">
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1.7976931348623E308">
+        </property>
+        <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="isCQAdaptive" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="minBinCount" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="binCountFactor" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="135.0, 45.0">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={46, 129, 815, 509}}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="annotation" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:12; font-family:SansSerif; fill:blue">This model receive function definition changes remotely from another model. 
+To reveive the change, plese run mobileFunctionWr.xml also.
+To see how the change works, you may want to run this one first,
+then run mobileFunctionWr.xml, maybe several times if you want to.</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="10.0, 315.0">
+        </property>
+    </property>
+    <entity name="DatagramReader" class="ptolemy.actor.lib.net.DatagramReader">
+        <property name="localSocketNumber" class="ptolemy.data.expr.Parameter" value="4004">
+        </property>
+        <property name="actorBufferLength" class="ptolemy.data.expr.Parameter" value="440">
+        </property>
+        <property name="platformBufferLength" class="ptolemy.data.expr.Parameter" value="8192">
+        </property>
+        <property name="overwrite" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="blockAwaitingDatagram" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="defaultReturnAddress" class="ptolemy.data.expr.Parameter" value="&quot;localhost&quot;">
+        </property>
+        <property name="defaultReturnSocketNumber" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="defaultOutput" class="ptolemy.data.expr.Parameter" value="{0ub}">
+        </property>
+        <property name="encoding" class="ptolemy.kernel.util.Attribute">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="for_Ptolemy_parser" class="ptolemy.kernel.util.StringAttribute" value="for_Ptolemy_parser">
+                </property>
+                <property name="raw_integers_little_endian" class="ptolemy.kernel.util.StringAttribute" value="raw_integers_little_endian">
+                </property>
+                <property name="raw_low_bytes_of_integers" class="ptolemy.kernel.util.StringAttribute" value="raw_low_bytes_of_integers">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 245.0">
+        </property>
+        <port name="returnAddress" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="returnSocketNumber" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="push" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="UnsignedByteArrayToString" class="ptolemy.actor.lib.conversions.UnsignedByteArrayToString">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="190.0, 255.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Expression" class="ptolemy.actor.lib.Expression">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="eval(f)">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="325.0, 300.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="f" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="MobileFunction" class="ptolemy.actor.MobileFunction">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="450.0, 150.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="function" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+            </property>
+        </port>
+    </entity>
+    <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="init" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1">
+        </property>
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="205.0, 140.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="step" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="Clock" class="ptolemy.actor.lib.Clock">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="period" class="ptolemy.data.expr.Parameter" value="4.0">
+        </property>
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 2.0}">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 0}">
+        </property>
+        <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <doc>Create a set of pulses</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 130.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={246, 366, 508, 348}}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="545.0, 245.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>TimedPlotter</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="24.0"/>
+<yRange min="0.0" max="6.0"/>
+<default connected="no" marks="points" stems="yes"/>
+</plot>?>
+        </configure>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="DatagramReader.output" relation="relation"/>
+    <link port="UnsignedByteArrayToString.input" relation="relation"/>
+    <link port="UnsignedByteArrayToString.output" relation="relation3"/>
+    <link port="Expression.output" relation="relation5"/>
+    <link port="Expression.f" relation="relation3"/>
+    <link port="MobileFunction.input" relation="relation2"/>
+    <link port="MobileFunction.function" relation="relation5"/>
+    <link port="MobileFunction.output" relation="relation4"/>
+    <link port="Ramp.output" relation="relation2"/>
+    <link port="Ramp.trigger" relation="relation6"/>
+    <link port="Clock.output" relation="relation6"/>
+    <link port="TimedPlotter.input" relation="relation4"/>
+</entity>

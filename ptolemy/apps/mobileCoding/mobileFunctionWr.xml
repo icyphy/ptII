@@ -1,0 +1,125 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="mobileFunctionWr" class="ptolemy.actor.TypedCompositeActor">
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+        </property>
+        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="95.0, 55.0">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={12, -12, 815, 509}}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="annotation" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:12; font-family:SansSerif; fill:blue">This model send a function definition to a romote model mobileFunctionRd.xml.
+Please run that one also.
+You can modify the function closure and run it again to change the
+functionality in that model.</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 295.0">
+        </property>
+    </property>
+    <entity name="Expression" class="ptolemy.actor.lib.Expression">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="function(x) x*0.5">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 135.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="DatagramWriter" class="ptolemy.actor.lib.net.DatagramWriter">
+        <property name="defaultRemoteAddress" class="ptolemy.data.expr.Parameter" value="&quot;localhost&quot;">
+        </property>
+        <property name="defaultRemoteSocketNumber" class="ptolemy.data.expr.Parameter" value="4004">
+        </property>
+        <property name="localSocketNumber" class="ptolemy.data.expr.Parameter" value="4003">
+        </property>
+        <property name="encoding" class="ptolemy.kernel.util.Attribute">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="for_Ptolemy_parser" class="ptolemy.kernel.util.StringAttribute" value="for_Ptolemy_parser">
+                </property>
+                <property name="raw_integers_little_endian" class="ptolemy.kernel.util.StringAttribute" value="raw_integers_little_endian">
+                </property>
+                <property name="raw_low_bytes_of_integers" class="ptolemy.kernel.util.StringAttribute" value="raw_low_bytes_of_integers">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="450.9892272949219, 202.98141479492188">
+        </property>
+        <port name="remoteAddress" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="remoteSocketNumber" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="data" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="triggerOutput" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="StringToUnsignedByteArray" class="ptolemy.actor.lib.conversions.StringToUnsignedByteArray">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="250.98922729492188, 212.98141479492188">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="TokenToExpression" class="ptolemy.actor.lib.conversions.TokenToExpression">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="175.0, 135.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Expression.output" relation="relation3"/>
+    <link port="DatagramWriter.data" relation="relation"/>
+    <link port="StringToUnsignedByteArray.input" relation="relation2"/>
+    <link port="StringToUnsignedByteArray.output" relation="relation"/>
+    <link port="TokenToExpression.input" relation="relation3"/>
+    <link port="TokenToExpression.output" relation="relation2"/>
+</entity>
