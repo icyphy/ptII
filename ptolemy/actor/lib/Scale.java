@@ -79,6 +79,18 @@ public class Scale extends Transformer {
 
 	// set the type constraints.
 	output.setTypeAtLeast(new PortParamFunction(input, factor));
+
+         // icon
+	_attachText("_iconDescription", "<svg>\n" +
+                "<rect x=\"0\" y=\"0\" "
+                + "width=\"60\" height=\"40\" "
+                + "style=\"fill:white\"/>\n"
+                + "<text x=\"15\" y=\"27\" "
+                + "style=\"font-size:24\">\n"
+                + " X \n"
+                + "</text>\n"
+                + "</svg>\n");
+
     }
 
     ///////////////////////////////////////////////////////////////////
