@@ -55,6 +55,7 @@ JSRCS = \
 	HideAnnotationNames.java \
 	MultiportToSinglePort.java \
 	ParameterNameChanges.java \
+        PortClassChanges.java \
 	PortNameChanges.java \
 	PropertyClassChanges.java \
 	RemoveEmptyProperties.java \
