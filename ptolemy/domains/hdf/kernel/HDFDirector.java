@@ -303,14 +303,17 @@ public class HDFDirector extends SDFDirector {
      *  scheduler, or if the cache size parameter is not set to
      *  a valid value.
      */
+    /*
     public void initialize() throws IllegalActionException {
         super.initialize();
+       
         if (_preinitializeFlag) {
             _preinitializeFlag = false;
             SDFScheduler scheduler = (SDFScheduler)getScheduler();
             getSchedule();
         }
     }
+    */
 
     /** Get the HDF schedule since schedule may change in the postfire.
      *  If this director is at the top level, then update the number of
@@ -356,7 +359,7 @@ public class HDFDirector extends SDFDirector {
         //_scheduleKeyList.clear();
         _mostRecentRates = "";
         super.preinitialize();
-        _preinitializeFlag = true;
+        //_preinitializeFlag = true;
         CompositeActor container = (CompositeActor)getContainer();
         Director exeDirector = container.getExecutiveDirector();
         if (exeDirector == null) {
@@ -529,7 +532,7 @@ public class HDFDirector extends SDFDirector {
 
     // A flag indicating whether the intialize() method is
     // called immediately after the preinitialize() method.
-    private boolean _preinitializeFlag;
+    //private boolean _preinitializeFlag;
 
     // Number of firings per top-level iteration
     // of the current director.

@@ -245,9 +245,6 @@ public class HDFFSMDirector extends FSMDirector {
     public void initialize() throws IllegalActionException {
         super.initialize();
         if (!_resetHDFFSM) {
-            // Initialize the current firing count in the current
-            // iteration of the current schedule of the executive
-            // director.
             _firingsSoFar = 0;
             FSMActor controller = getController();
             State initialState = controller.getInitialState();
@@ -361,9 +358,10 @@ public class HDFFSMDirector extends FSMDirector {
             throw new IllegalActionException(this,
              "Can't postfire because current refinement is null.");
         }
-        if (_debug_info) {
+        //if (_debug_info) {
             //_debugPostfire(curState);
-        }
+        //}
+        
         // Postfire the current refinement.
         // FIXME
         //boolean postfireReturn = currentRefinement.postfire();
@@ -446,13 +444,7 @@ public class HDFFSMDirector extends FSMDirector {
                 // to the receivers of the current state.
                 _currentLocalReceiverMap =
                     (Map)_localReceiverMaps.get(ctrl.currentState());
-                // Now update the token consumption/production rates of
-                // the ports of the HDF actor refining to the FSM (this
-                // actor's container). I.e., queue a mutation with the
-                // manager.
-                // This will cause the SDF scheduler to compute a new
-                // schedule based in the new port rates.
-
+ 
                 // Get the new current refinement actor.
                 TypedCompositeActor actor =
                     // FIXME
@@ -477,9 +469,9 @@ public class HDFFSMDirector extends FSMDirector {
                 // Extract the token consumption/production rates from the
                 // ports of the new refinement and update the
                 // rates of the ports of the FSM actor.
-
                 _updateInputTokenConsumptionRates(actor);
                 _updateOutputTokenProductionRates(actor);
+
                 CompositeActor hdfActor = _getHighestFSM();
                 Director director = hdfActor.getExecutiveDirector();
                 if (director instanceof HDFDirector) {
@@ -526,11 +518,7 @@ public class HDFFSMDirector extends FSMDirector {
         _firingsSoFar = 0;
         _resetHDFFSM = true;
         super.preinitialize();
-        // Now propagate the type signature of the current refinment (the
-        // refinement of the initial state) out to the corresponding ports
-        // of the container of this director.
-        // Update port consumption/production rates and invalidate
-        // current SDF schedule.
+
         FSMActor ctrl = getController();
         // Attempt to get the initial state from the mode controller.
         State initialState = ctrl.getInitialState();
@@ -607,8 +595,8 @@ public class HDFFSMDirector extends FSMDirector {
         _firingsPerScheduleIteration = firings;
     }
 
-    public void setHighestHDFFSM(boolean highestHDFFSM) {
-        _resetHDFFSM = highestHDFFSM;    
+    public void setHighestHDFFSM(boolean resetHDFFSM) {
+        _resetHDFFSM = resetHDFFSM;    
     }
 
     /** Return true if data are transferred from the input port of
@@ -936,7 +924,7 @@ public class HDFFSMDirector extends FSMDirector {
             // Get all of the input ports this port is
             // linked to on the outside (should only consist
             // of 1 port).
-            //Iterator inPorts = inputPortList().iterator();
+            // Iterator inPorts = inputPortList().iterator();
             //            while (inPorts.hasNext()) {
             //                TypedIOPort inPort = (TypedIOPort)inPorts.next();
             Iterator inPortsOutside =
@@ -983,13 +971,12 @@ public class HDFFSMDirector extends FSMDirector {
         }
     }
 
-    /* Extract the token production rates from the output
-     * ports of the current refinement and update the
-     * rates of the output ports of the HDF opaque composite actor
-     * containing the refinment. The resulting mutation will cause
-     * the SDF scheduler to compute a new schedule using the
-     * updated rate information.
-     *
+    /** Extract the token production rates from the output
+     *  ports of the current refinement and update the
+     *  rates of the output ports of the HDF opaque composite actor
+     *  containing the refinment. The resulting mutation will cause
+     *  the SDF scheduler to compute a new schedule using the
+     *  updated rate information.
      * @param actor The current refinement.
      */
     private void _updateOutputTokenProductionRates(TypedCompositeActor actor)
