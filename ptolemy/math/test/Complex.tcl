@@ -32,9 +32,6 @@
 
 # Tycho test bed, see $TYCHO/doc/coding/testing.html for more information.
 
-# NOTE: there is way too much resolution in these numeric tests.
-#  The results are unlikely to be the same on all platforms.
-
 # Load up the test definitions.
 if {[string compare test [info procs test]] == 1} then { 
     source testDefs.tcl
@@ -78,8 +75,8 @@ test Complex-2.3 {add (non-static version)} {
 ####################################################################
 test Complex-2.4 {acos} {
     set c9 [java::call ptolemy.math.Complex acos $c2]
-    $c9 toString
-} {1.0001435424737994 + 1.983387029916533i}
+    epsilonDiff [$c9 toString] {1.0001435424737994 + 1.983387029916533i}
+} {}
 
 ####################################################################
 test Complex-2.5 {acosh} {
@@ -103,8 +100,8 @@ test Complex-3.1.1 {asin} {
 ####################################################################
 test Complex-3.1.2 {asinh} {
     set c9 [java::call ptolemy.math.Complex asinh $c2]
-    $c9 toString
-} {1.9686379257930964 - 0.9646585044076028i}
+    epsilonDiff [$c9 toString] {1.9686379257930964 - 0.9646585044076028i}
+} {}
 
 ####################################################################
 test Complex-3.1.3 {atan} {
@@ -121,8 +118,8 @@ test Complex-3.1.4 {atanh} {
 ####################################################################
 test Complex-3.2 {csc} {
     set c9 [java::call ptolemy.math.Complex csc $c2]
-    $c9 toString
-} {0.09047320975320743 - 0.04120098628857413i}
+    epsilonDiff [$c9 toString] {0.09047320975320743 - 0.04120098628857413i}
+} {}
 
 ####################################################################
 test Complex-4.1 {conjugate (static version)} {
@@ -147,17 +144,17 @@ test Complex-5.1 {conjugate (non-static version)} {
 ####################################################################
 test Complex-5.1.0 {cot} {
     set c9 [java::call ptolemy.math.Complex cot $c2]
-    $c9 toString
-} {-0.0037397103763367905 + 0.9967577965693585i}
+    epsilonDiff [$c9 toString] {-0.0037397103763367905 + 0.9967577965693585i}
+} {}
 
 ####################################################################
 test Complex-5.1.1 {cos} {
     set c9 [java::call ptolemy.math.Complex cos $c2]
-    $c9 toString
-} {-4.189625690968808 + 9.109227893755339i}
+    epsilonDiff [$c9 toString] {-4.189625690968808 + 9.109227893755339i}
+} {}
 
 ####################################################################
-test Complex-5.1.1 {cosh} {
+test Complex-5.1.2 {cosh} {
     set c9 [java::call ptolemy.math.Complex cosh $c2]
     $c9 toString
 } {-3.724545504915323 - 0.5118225699873846i}
@@ -231,10 +228,12 @@ test Complex-8.1 {polarToComplex} {
     set c3 [java::call ptolemy.math.Complex polarToComplex 1.0 [expr $PI/2]]
     set c4 [java::call ptolemy.math.Complex polarToComplex 0.0 [expr $PI/2]]
     set c5 [java::call ptolemy.math.Complex polarToComplex -1.0 [expr -$PI]]
-    list "[$c3 toString]\n[$c4 toString]\n[$c5 toString]"
-} {{-5.1034119692792285E-12 + 1.0i
-0.0 + 0.0i
-1.0 - 2.0694557179012918E-13i}}
+    list [epsilonDiff [$c3 toString] {-5.1034119692792285E-12 + 1.0i}] \
+	    [epsilonDiff [$c4 toString] {0.0 + 0.0i}] \
+	    [epsilonDiff [$c5 toString] {1.0 - 2.0694557179012918E-13i}]
+} {{} {} {}}
+
+
 
 ####################################################################
 test Complex-9.1 {pow} {
@@ -272,14 +271,14 @@ test Complex-11.2 {scale (non-static version)} {
 ####################################################################
 test Complex-11.2.0 {sec} {
     set c9 [java::call ptolemy.math.Complex sec $c2]
-    $c9 toString
-} {-0.04167496441114425 - 0.09061113719623758i}
+    epsilonDiff [$c9 toString] {-0.04167496441114425 - 0.09061113719623758i}
+} {}
 
 ####################################################################
 test Complex-11.2.1 {sin} {
     set c9 [java::call ptolemy.math.Complex sin $c2]
-    $c9 toString
-} {9.15449914691143 + 4.168906959966566i}
+    epsilonDiff [$c9 toString] {9.15449914691143 + 4.168906959966566i} 
+} {}
 
 ####################################################################
 test Complex-11.2.2 {sinh} {
@@ -316,8 +315,8 @@ test Complex-12.2 {subtract (non-static version)} {
 ####################################################################
 test Complex-13.1 {tan} {
     set c9 [java::call ptolemy.math.Complex tan $c2]
-    $c9 toString
-} {-0.0037640256415040793 - 1.0032386273536096i}
+    epsilonDiff [$c9 toString] {-0.0037640256415040793 - 1.0032386273536096i}
+} {}
 
 ####################################################################
 test Complex-11.2.2 {tanh} {
