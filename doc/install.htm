@@ -197,7 +197,16 @@ the Environment tab of the System control panel
 
 <li> Start up Cygwin <CODE>bash</CODE>, and cd to the Ptolemy II directory.
 
+
 <li> Run <CODE>./configure</CODE>
+
+<li> If you get a message about how you are not the owner of the
+directory, then run
+<pre>
+cd $PTII
+chmod -R a+w .
+chown -R <I>yourlogin</I>
+</pre>
 
 <li> Run <CODE>make</CODE>
 </ol>
