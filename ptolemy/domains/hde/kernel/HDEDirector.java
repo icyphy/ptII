@@ -366,7 +366,7 @@ public class HDEDirector extends DEDirector {
      *  @param port The port to transfer tokens from.
      *  @return True if data are transferred.
 
-    
+
      public boolean transferOutputs(IOPort port)
      throws IllegalActionException {
      return super.transferOutputs(port);
@@ -381,7 +381,7 @@ public class HDEDirector extends DEDirector {
         if (_debugging) _debug("Done Transferring outputs on port " +
                 port.getFullName());
         return flag;
-        
+
     }
 
 }
