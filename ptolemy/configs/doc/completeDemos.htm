@@ -62,7 +62,7 @@ set of demos that highlight the key features of Ptolemy II.
 <li> <a href="../../domains/ct/demo/SquareWave/SquareWave.xml">Square Wave Response</a>
 <li> <a href="../../domains/ct/demo/StickyMasses/StickyMasses.xml">Sticky Point Masses</a>
 <li> <a href="../../domains/ct/demo/Switch/Switch.xml">Switching Continuous Signals using Modal Models</a> 
-<li> <a href="../../domains/ct/demo/Transmission/Transmission.xml">Transmission</a>
+<li> <a href="../../domains/ct/demo/Transmission/Transmission.xml">Transmission</a> (New in Ptolemy II 4.0)
 <li> <a href="../../domains/ct/demo/Thermostat/Thermostat.xml">Thermostat</a>
 <li> <a href="../../data/unit/demo/Units/Units.xml">Units</a>
 <!-- jspaces -->
@@ -75,11 +75,30 @@ set of demos that highlight the key features of Ptolemy II.
 <!--/vergilDocs-->
 <li><a href="../../actor/parameters/demo/Bouncer/Bouncer.xml">Bouncer: location control,
 visible parameters, and MonitorValue</a> 
-<li><a href="../../actor/hoc/demo/HocDE/HocDE.xml">Higher-Order Components</a> 
+<li><a href="../../actor/lib/hoc/demo/HocDE/HocDE.xml">Higher-Order Components</a> 
 <!--vergilDocs-->
+<li><a href="../../domains/de/demo/HierarchicalModel/HierarchicalModel.xml">HierarchichalModel</a> (New in Ptolemy II 4.0)
 <li><a href="../../domains/de/demo/Inspection/Inspection.xml">Inspection Paradox</a>
 <li><a href="../../domains/de/demo/ModalModel/ModalModel.xml">Modal Model</a> 
+
+<!--/vergilDocs-->
+<!--Ptiny does not include x10--> 
+<li> <a href="../../actor/lib/x10/demo/OnOff/OnOff.xml">X10 power-line network</a>
+(Uses X10 hardware, see <a href="../../../doc/codeDoc/ptolemy/actor/lib/x10/X10Interface.html">
+X10Interface actor documentation</a>, 
+(New in Ptolemy II 4.0)
+<!--vergilDocs-->
+
 <li><a href="../../data/type/demo/Router/Router.xml">Router</a>
+
+<!--/vergilDocs-->
+<!--Ptiny does not include serial actor--> 
+<li><a href="../../actor/lib/io/comm/demo/SerialPort/SerialPort.xml">Using the serial port</a>
+(Uses the serial port, see <a href="../../../doc/codeDoc/ptolemy/actor/lib/io/comm/SerialComm.html">SerialPort actor documentation</a> , 
+(New in Ptolemy II 4.0)
+<!--vergilDocs-->
+
+<li><a href="../../domains/de/demo/SmartSender/SmartSender.xml">Smart Sender</a> (New in Ptolemy II 4.0)
 <li><a href="../../domains/de/demo/TimingParadox/TimingParadox.xml">Timing Paradox</a> 
 </ul>
 
@@ -131,12 +150,15 @@ Requires Java 3D, see the <a href="../../domains/gr/doc/main.htm">GR domain</a>
 
 <!-- hdf -->
 
+<!--/vergilDocs-->
+<!--Ptiny does not include PSDF --> 
 <h3>Parameterized Synchronous Data Flow</h3>
 <ul>
 <!-- Please keep the demos alphabetical -->
 <li><a href="../../domains/psdf/demo/Speech/Speech.xml">Speech Quantization</a>
 <li><a href="../../domains/psdf/demo/BlindCommunication/BlindCommunication.xml">BlindCommunication</a>
 </ul
+<!--vergilDocs-->
 
 <h3>Process Networks</h3>
 <ul>
@@ -151,7 +173,8 @@ Requires Java 3D, see the <a href="../../domains/gr/doc/main.htm">GR domain</a>
 <h3>Synchronous Data Flow</h3>
 <ul>
 <!-- Please keep the demos alphabetical -->
-<li><a href="../../domains/sdf/demo/Array/Array.xml">Array</a>
+<li><a href="../../vergil/kernel/attributes/demo/AnimateVergil/AnimateVergil.xml">Animate Vergil</a> (New in Ptolemy II 4.0)
+<li><a href="../../domains/sdf/demo/Array/Array.xml">Array</a> (New in Ptolemy II 4.0)
 <li><a href="../../domains/sdf/demo/Butterfly/Butterfly.xml">Butterfly</a>
 <!--/vergilDocs-->
 <li> Cal SDF demos:
@@ -160,12 +183,13 @@ Requires Java 3D, see the <a href="../../domains/gr/doc/main.htm">GR domain</a>
 <a href="../../caltrop/demo/Primes/Primes.xml">Primes</a>,
 <a href="../../caltrop/demo/SDFDDI/SDFDDI.xml">SDFDDI</a>
 
-<li><a href="../../actor/hoc/demo/DFTSubSet/DFTSubSet.xml">DFT Subset</a> 
+<li><a href="../../actor/lib/hoc/demo/DFTSubSet/DFTSubSet.xml">DFT Subset</a> 
 <!--vergilDocs-->
 <li><a href="../../domains/sdf/demo/Expression/Expression.xml">Expression</a>
 <li><a href="../../domains/sdf/demo/Eye/Eye.xml">Eye Diagram</a>
 <li><a href="../../domains/sdf/demo/FixFIR/FixFIR.xml">Fixed-Point FIR Filter</a>
 <li><a href="../../domains/sdf/demo/FixPoint/FixPoint.xml">Fixed-Point Arithmetic</a>
+<li><a href="../../domains/sdf/demo/FMSound/FMSound.xml">FMSound</a> (New in Ptolemy II 4.0) 
 <li><a href="../../domains/sdf/demo/FourierSeries/FourierSeries.xml">Fourier Series</a>
 <!--/vergilDocs-->
 <!-- Don't include HTVQ in Ptiny, the data file is 500k,
@@ -174,7 +198,8 @@ Requires Java 3D, see the <a href="../../domains/gr/doc/main.htm">GR domain</a>
 <!--vergilDocs-->
 <li><a href="../../actor/lib/javasound/demo/KarplusStrong/KarplusStrong.xml">Karplus-Strong Sound Synthesis</a>
 <li><a href="../../domains/sdf/demo/LMSAdaptive/LMSAdaptive.xml">LMS Adaptive Filter</a> 
-
+<li> <a href="../../domains/sdf/demo/MultipleRuns/MultipleRuns.xml">Multiple Runs</a> (New in Ptolemy II 4.0)
+<li><a href="../../domains/sdf/demo/SubClasses/NoisySinewave.xml">NoisySinewave</a> (New in Ptolemy II 4.0)
 <!--/vergilDocs-->
 <!--Ptiny does not include codegen-->
 <!--OrthogonalCom - Used by codegen -->
@@ -197,6 +222,7 @@ Windows only, requires that Matlab be installed locally
 
 <li> <a href="../../actor/lib/python/demo/PythonScale/PythonScale.xml">Python Integration</a>
 
+<li><a href="../../actor/lib/comm/demo/Scrambler/Scrambler.xml">Scrambler</a> (New in Ptolemy II 4.0)
 <li><a href="../../domains/sdf/demo/Sketch/Sketch.xml">Sketched Signal</a>
 
 <li><a href="../../actor/parameters/demo/SliderParameter/SliderParameter.xml">Slider Parameter and Port Parameters</a> 
@@ -204,10 +230,15 @@ Windows only, requires that Matlab be installed locally
 <li><a href="../../domains/sdf/demo/Spectrum/Spectrum.xml">Spectrum</a>
 
 <li><a href="../../domains/sdf/demo/SoundSpectrum/SoundSpectrum.xml">Sound Spectrum</a>
-
+<li><a href="../../domains/sdf/demo/SynthesizedVoice/SynthesizedVoice.xml">SynthesizedVoice</a> (New in Ptolemy II 4.0)
  <!-- Known bug: the types do not update
       ../../domains/sdf/demo/Type/Type.xml Type&nbsp;system
  -->
+<!--/vergilDocs-->
+<!--Ptiny does not include JMF--> 
+<li><a href="../../actor/lib/jmf/demo/VideoCapture.xml">Java Media Framework (JMF)</a>  
+(Uses a USB video camera, see <a href="../../../doc/codeDoc/ptolemy/actor/lib/jmf/package-summary.html#package_description">JMF actor documentation</a>).
+<!--vergilDocs-->
 
 </ul>
 
@@ -218,6 +249,7 @@ Windows only, requires that Matlab be installed locally
 	../../domains/sr/demo/ReflexGame/ReflexGame.xml -->
 
 <li><a href="../../domains/sr/demo/TokenRing/TokenRing.xml">TokenRing</a> 
+<li><a href="../../domains/sr/demo/FeedbackLoop/FeedbackLoop.xml">FeedbackLoop</a> (New in Ptolemy II 4.0)
 </ul>
 
 <!--/vergilDocs-->
@@ -228,6 +260,15 @@ Windows only, requires that Matlab be installed locally
 <li> <a href="../../domains/tm/demo/Controllers/Controllers.xml">Two control loops</a> 
 <li> <a href="../../domains/tm/demo/MergedEvents/MergedEvents.xml">Merged Events</a> 
 <li> <a href="../../domains/tm/demo/FFT/FFT.xml">FFT Background Process</a> 
+</ul>
+
+<!--vergilDocs-->
+
+<!--/vergilDocs-->
+<!--Ptiny does not include Wireless-->
+<h3>Wireless</h3>
+<ul>
+<li> <a href="../../domains/wireless/demo/WirelessSoundDetection/WirelessSoundDetection.xml">Wireless Sound Detection</a> (New in Ptolemy II 4.0)
 </ul>
 
 <!--vergilDocs-->
