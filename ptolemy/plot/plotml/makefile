@@ -31,7 +31,7 @@
 
 ME =		ptolemy/plot/plotml
 
-DIRS = 		demo
+DIRS =
 
 # Root of the Java directory
 ROOT =		../../..
