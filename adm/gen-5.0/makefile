@@ -432,7 +432,7 @@ src_jar/hyvisual$(VERSION): ptII$(VERSION).src.jar
 	mv src_jar/hyvisual$(VERSION)/doc/design/makefile.tmp \
 		src_jar/hyvisual$(VERSION)/doc/design/makefile
 	# Fix up doc/makefile
-	egrep -v "comm|python|security|ci/kernel|ci/lib|csp|dde|ddf|giotto|pn/kernel|psdf|petrinet|sr/kernel|sr/lib|tm/kernel|tm/lib|wireless" \
+	egrep -v "lib/comm|lib.comm|python|security|ci/kernel|ci/lib|csp|dde|ddf|giotto|pn/kernel|psdf|petrinet|sr/kernel|sr/lib|tm/kernel|tm/lib|wireless" \
 		src_jar/hyvisual$(VERSION)/doc/makefile \
 		> src_jar/hyvisual$(VERSION)/doc/makefile.tmp
 	mv src_jar/hyvisual$(VERSION)/doc/makefile.tmp \
