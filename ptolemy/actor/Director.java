@@ -1145,8 +1145,7 @@ public class Director extends Attribute implements Executable {
      *  actor contained by another composite actor.
      */
     protected boolean _isEmbedded() {
-        return (getContainer() != null &&
-                getContainer().getContainer() != null);
+        return !_isTopLevel();
     }
 
     /** Return true if this is a top-level director.
@@ -1154,12 +1153,19 @@ public class Director extends Attribute implements Executable {
      * @return True if this director is at the top-level.
      */
     protected boolean _isTopLevel() {
-        CompositeActor container = (CompositeActor)getContainer();
-        if (container.getExecutiveDirector() == null) {
-            return true;
-        } else {
-            return false;
+        NamedObj container = getContainer();
+        // NOTE: the container may not be a composite actor. 
+        // For example, the container may be an entity as a library,
+        // where the director is already at the top level.
+        // FIXME: can the container be any other types? 
+        if (container instanceof CompositeActor) {
+            if (((CompositeActor)container).getExecutiveDirector() == null) {
+                return true;
+            } else {
+                return false;
+            }
         }
+        return true;
     }
 
     /** Return true if this director requires write access
