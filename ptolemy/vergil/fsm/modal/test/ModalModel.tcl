@@ -94,6 +94,8 @@ test ModalModel-1.1 {Create a ModalModel} {
         <entity name="_Controller" class="ptolemy.vergil.fsm.modal.ModalController">
             <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute">
             </property>
+            <property name="finalStateNames" class="ptolemy.kernel.util.StringAttribute">
+            </property>
             <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
             </property>
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
@@ -266,6 +268,8 @@ test ModalModel-1.6 {Create a refinement in the modal model} {
         </property>
         <entity name="_Controller" class="ptolemy.vergil.fsm.modal.ModalController">
             <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+            <property name="finalStateNames" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
             </property>
