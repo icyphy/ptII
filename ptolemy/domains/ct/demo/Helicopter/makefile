@@ -54,7 +54,7 @@ JSRCS = \
 	HoverLinearizer.java \
 	XZHigherDerivatives.java 
 
-EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS)
+EXTRA_SRCS =	$(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
