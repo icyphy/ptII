@@ -158,6 +158,29 @@ public class LinkController extends EdgeController {
             AbstractConnector c = new ManhattanConnector(tailSite, headSite);
             c.setLineWidth((float)2.0);
             c.setUserObject(edge);
+	    
+	    Relation relation = (Relation)edge.getSemanticObject();
+	    if(relation == null) {
+		Node node = edge.getHead();
+		Object object = null;
+		if(node != null) {
+		    node.getSemanticObject();
+		    if(!(object instanceof Vertex)) {
+			node = edge.getTail();
+			if(node != null) 
+			    object = node.getSemanticObject();
+		    }
+		}
+		
+		if(object != null && object instanceof Vertex) {
+		    Vertex vertex = (Vertex) object;
+		    relation = (Relation)vertex.getContainer();
+		}
+	    }
+	    if(relation != null) {
+		c.setToolTipText(relation.getName());
+	    }
+
             return c;
         }
     }

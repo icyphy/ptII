@@ -125,6 +125,8 @@ public class EntityPortController extends NodeController {
 	    polygon.lineTo(-4, -4);
 	    polygon.closePath();
 	    Figure figure = new BasicFigure(polygon, Color.black);
+	    Port port = (Port)n.getSemanticObject();
+	    figure.setToolTipText(port.getName());
 	    return figure;
 	}
     }

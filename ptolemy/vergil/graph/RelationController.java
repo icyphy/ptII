@@ -117,6 +117,11 @@ public class RelationController extends LocatableNodeController {
 	    polygon.lineTo(0, -h/2);
 	    polygon.closePath();
 	    Figure figure = new BasicFigure(polygon, Color.black);
+	    if(n != null) {
+		Vertex vertex = (Vertex)n.getSemanticObject();
+		Relation relation = (Relation) vertex.getContainer();
+		figure.setToolTipText(relation.getName());
+	    }
 	    return figure;
 	}
     }
