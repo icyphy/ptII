@@ -164,8 +164,6 @@ public class Copernicus {
 
         // Save command-line parameters in the generator attribute.
         _saveParsedArgs();
-
-        System.out.println("_generatorAttribute = " + _generatorAttribute);
         
         if (_verbose) {
             System.out.println(_generatorAttribute.toString());
