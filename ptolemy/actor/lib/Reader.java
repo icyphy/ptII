@@ -79,6 +79,7 @@ should be set to "file:///tmp/test.txt" The default value is
 <p>FIXME: The type of the output ports is set to Double for now.
        It should read a line in the prefire() and refer the type
        from there.
+<p>FIXME: Reader should read in expressions and serialized tokens
 
 @see ptolemy.actor.lib.javasound.AudioReader.java
 @author  Jie Liu
