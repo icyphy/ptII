@@ -1,28 +1,28 @@
 /* A library of additional mathematical operations beyond those provided
    by the Java Math class.
- 
+
 Copyright (c) 1998 The Regents of the University of California.
 All rights reserved.
- 
+
 Permission is hereby granted, without written agreement and without
 license or royalty fees, to use, copy, modify, and distribute this
 software and its documentation for any purpose, provided that the above
 copyright notice and the following two paragraphs appear in all copies
 of this software.
- 
+
 IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
 FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
 ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
 THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
 SUCH DAMAGE.
- 
+
 THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
 INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
- 
+
 */
 
 package ptolemy.math;
@@ -33,7 +33,7 @@ import java.lang.reflect.*;
 
 
 //////////////////////////////////////////////////////////////////////////
-//// ExtendedMath 
+//// ExtendedMath
 /**
  * ExtendedMath is a library of additional mathematical operations
  * beyond those provided by the Java Math class.
@@ -49,7 +49,7 @@ public final class ExtendedMath {
      *  IllegalArgumentException is thrown (this is a runtime
      *  exception, so it need not be declared).
      *  The returned value is positive.
-     *  FIXME: Is the range of the argument correct?     
+     *  FIXME: Is the range of the argument correct?
      */
     public static double acosh (double x) {
         if (x < 1) {
@@ -57,10 +57,10 @@ public final class ExtendedMath {
             + "is required to be greater than 1.  Got " + x);
         }
         return Math.log( x+Math.sqrt(x*x-1) );
-    }        
+    }
 
     /** Return the inverse hyperbolic sine of the argument.
-     *  FIXME: What is the assumed range of the argument?     
+     *  FIXME: What is the assumed range of the argument?
      */
     public static double asinh(double x) {
         double result;
@@ -71,10 +71,10 @@ public final class ExtendedMath {
             result = Math.log( x+Math.sqrt(x*x+1) );
         }
         return result;
-    }        
+    }
 
     /** Return the hyperbolic cosine of the argument.
-     *  FIXME: What is the assumed range of the argument?     
+     *  FIXME: What is the assumed range of the argument?
      */
     public static double cosh(double x) {
         return (Math.exp(x) + Math.exp(-x))/2;

@@ -1,27 +1,27 @@
 /* A library of signal processing operations.
- 
+
 Copyright (c) 1998 The Regents of the University of California.
 All rights reserved.
- 
+
 Permission is hereby granted, without written agreement and without
 license or royalty fees, to use, copy, modify, and distribute this
 software and its documentation for any purpose, provided that the above
 copyright notice and the following two paragraphs appear in all copies
 of this software.
- 
+
 IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
 FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
 ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
 THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
 SUCH DAMAGE.
- 
+
 THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
 INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
- 
+
 */
 
 package ptolemy.math;
@@ -30,7 +30,7 @@ import java.lang.*;
 import java.util.*;
 
 //////////////////////////////////////////////////////////////////////////
-//// SignalProcessing 
+//// SignalProcessing
 /**
  * This class provides signal processing functions.
  *
@@ -76,7 +76,7 @@ public final class SignalProcessing {
         }
         return result;
     }
-    
+
     /** Return the discrete Fourier transform of an array of doubles.
      *  This is computed by the radix-two FFT algorithm with the size being
      *  the next power of two larger than or equal to the length of the
@@ -166,7 +166,7 @@ public final class SignalProcessing {
      *   integer.  This is a runtime exception, so it need
      *   not be declared by the caller explicitly.
      */
-    public static Complex[] fft(Complex[] x, int order, boolean inverse) { 
+    public static Complex[] fft(Complex[] x, int order, boolean inverse) {
         if (x == null || x.length == 0) {
             throw new IllegalArgumentException("SignalProcessing.fft: "
             + "empty array argument.");
@@ -251,7 +251,7 @@ public final class SignalProcessing {
 
     /** Return a sample of a raised cosine pulse, or if the third
      *  argument is zero, a sin(x)/x function.  The first argument <em>t</em> is
-     *  the time of the sample (the pulse is centered at zero). The second 
+     *  the time of the sample (the pulse is centered at zero). The second
      *  argument <em>T</em> is the time of the first zero crossing.
      *  This would be the symbol interval in a communications application
      *  of this pulse. The third argument <em>excess</em> is the excess
@@ -413,7 +413,7 @@ public final class SignalProcessing {
         if (excess == 0.0) {
             return sqrtT*Math.sin(Math.PI * x)/(Math.PI * t);
         }
-  
+
         double oneplus = (1.0 + excess)*Math.PI/T;
         double oneminus = (1.0 - excess)*Math.PI/T;
         // Check to see whether we will get divide by zero.
@@ -525,7 +525,7 @@ public final class SignalProcessing {
     //  integer, or if the length of the array argument is not a power of two.
     //  This is a runtime exception, so it need
     //  not be declared by the caller explicitly.
-    private static void _fft(Complex[] x, int order, boolean inverse) { 
+    private static void _fft(Complex[] x, int order, boolean inverse) {
         if (order <= 0) {
             throw new IllegalArgumentException("SignalProcessing.fft: "
             + "Invalid order argument: " + order);
