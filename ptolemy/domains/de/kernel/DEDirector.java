@@ -291,6 +291,10 @@ public class DEDirector extends Director {
      */
     public Parameter synchronizeToRealTime;
 
+    /** The resolution in comparing time.
+     *  The default value is 1e-10, of type DoubleToken.
+     */
+    public Parameter timeResolution;
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -326,6 +330,14 @@ public class DEDirector extends Director {
             _synchronizeToRealTime =
                 ((BooleanToken)synchronizeToRealTime.getToken())
                 .booleanValue();
+        } else if (attribute == timeResolution) {
+            double value = ((DoubleToken)timeResolution.getToken()).
+                doubleValue();
+            if (value < 0.0) {
+                throw new IllegalActionException(this,
+                        "Cannot set a negative time resolution.");
+            }
+            setTimeResolution(value);
         } else {
             super.attributeChanged(attribute);
         }
@@ -1704,6 +1716,10 @@ public class DEDirector extends Director {
             stopTime = new Parameter(this, "stopTime");
             stopTime.setExpression("MaxDouble");
             stopTime.setTypeEquals(BaseType.DOUBLE);
+
+            timeResolution = new Parameter(this, "timeResolution",
+                    new DoubleToken(getTimeResolution()));
+            timeResolution.setTypeEquals(BaseType.DOUBLE);
 
             stopWhenQueueIsEmpty = new Parameter(this, "stopWhenQueueIsEmpty",
                     new BooleanToken(true));
