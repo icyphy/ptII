@@ -42,24 +42,24 @@ public class PNAlternate extends PNStar {
     public PNAlternate() {
 	super();
     }
-
+    
     /** Constructor
      */
     public PNAlternate(Workspace workspace) {
         super(workspace);
     }
- 
+    
     /** Constructor
      */
     public PNAlternate(CompositeEntity container, String name)
-             throws NameDuplicationException {
+            throws NameDuplicationException {
         super(container, name);
     }
- 
+    
 
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
-
+    
     /** Initializes the Star. Should be called before execution
      * @param myExecutive is the executive responsible for execution
      * @exception NameDuplicationException is thrown if more than one port 
@@ -109,7 +109,7 @@ public class PNAlternate extends PNStar {
     
     //////////////////////////////////////////////////////////////////////////
     ////                         private variables                        ////
-
+    
     /* The input port */
     private PNInPort _input;
     /* The output port */
