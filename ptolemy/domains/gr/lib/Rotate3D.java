@@ -75,7 +75,8 @@ public class Rotate3D extends GRTransform {
         angle = new TypedIOPort(this, "angle",true,false);
 
         angle.setTypeEquals(BaseType.DOUBLE);
-        initialAngle = new Parameter(this, "initialAngle", new DoubleToken(0.0));
+        initialAngle = new Parameter(this, "initialAngle", 
+                       new DoubleToken(0.0));
 
         axisDirection = new Parameter(this, "axis direction",
                 new DoubleMatrixToken(new double[][] {{ 0.0, 1.0, 0.0}} ));
@@ -128,16 +129,18 @@ public class Rotate3D extends GRTransform {
     /** Change the rotation angle depending on the value given in the
      *  input port.
      *
-     *  @exception IllegalActionException If the value of some parameters can't
-     *   be obtained.
+     *  @exception IllegalActionException If the value of some parameters 
+     *  can't be obtained.
      */
     public void fire() throws IllegalActionException {
         if (angle.getWidth() != 0) {
             if (angle.hasToken(0)) {
                 double in = ((DoubleToken)angle.get(0)).doubleValue();
-                double originalAngle = ((DoubleToken) initialAngle.getToken()).doubleValue();
+                double originalAngle = ((DoubleToken) 
+                                      initialAngle.getToken()).doubleValue();
 
-                DoubleMatrixToken axis = (DoubleMatrixToken) axisDirection.getToken();
+                DoubleMatrixToken axis = (DoubleMatrixToken) 
+                                          axisDirection.getToken();
 
                 _xAxis = (float) axis.getElementAt(0,0);
                 _yAxis = (float) axis.getElementAt(0,1);
@@ -146,9 +149,11 @@ public class Rotate3D extends GRTransform {
                 Quat4d quat = new Quat4d();
                 if (_isAccumulating()) {
                     _accumulatedAngle = in + _accumulatedAngle;
-                    quat.set(new AxisAngle4d(_xAxis,_yAxis,_zAxis,_accumulatedAngle));
+                    quat.set(new AxisAngle4d(_xAxis,_yAxis,_zAxis,
+                                             _accumulatedAngle));
                 } else {
-                    quat.set(new AxisAngle4d(_xAxis,_yAxis,_zAxis,in + originalAngle));
+                    quat.set(new AxisAngle4d(_xAxis,_yAxis,_zAxis,
+                                             in + originalAngle));
                 }
                 _rotation.set(quat);
                 _middleRotate.setTransform(_rotation);
@@ -184,7 +189,8 @@ public class Rotate3D extends GRTransform {
         _baseY = (float) pivot.getElementAt(0,1);
         _baseZ = (float) pivot.getElementAt(0,2);
 
-        double originalAngle = ((DoubleToken) initialAngle.getToken()).doubleValue();
+        double originalAngle = ((DoubleToken) 
+                                 initialAngle.getToken()).doubleValue();
 
         _accumulatedAngle = originalAngle;
 
