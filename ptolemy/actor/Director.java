@@ -164,11 +164,25 @@ public class Director extends Attribute implements Executable {
         if (container instanceof CompositeActor) {
             Iterator actors = ((CompositeActor)container)
                 .deepEntityList().iterator();
+            int iterationCount = 1;
             while (actors.hasNext() && !_stopRequested) {
                 Actor actor = (Actor)actors.next();
-                if (actor.prefire()) {
-                    actor.fire();
-                    actor.postfire();
+                if (_debugging) {
+                    _debug(new FiringEvent(this, actor,
+                            FiringEvent.BEFORE_ITERATE,
+                            iterationCount));
+                }
+                if (actor.iterate(1) == Actor.STOP_ITERATING) {
+                    if (_debugging) {
+                        _debug("Actor requests halt: "
+                                + ((Nameable)actor).getFullName());
+                    }
+                    break;
+                }
+                if (_debugging) {
+                    _debug(new FiringEvent(this, actor,
+                            FiringEvent.AFTER_ITERATE,
+                            iterationCount));
                 }
             }
         }
