@@ -235,10 +235,10 @@ public class PHY extends NetworkActorBase {
                          }
            
                         // let us be a little picky about receiving a message
-                        /*if (power > _sensitivity && ( (_interference == 0.0) || 
+                        if (power > _sensitivity && ( (_interference == 0.0) || 
                               (power / _interference > _SNRThresholdInDB) )  )
-*/
-                        if (power > 0) 
+
+                        //if (power > _sensitivity ) 
                           { 
                             // The PHY will receive this message
                             setTimer2(RxDone, currentTime+duration, power); 

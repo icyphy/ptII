@@ -206,8 +206,6 @@ public class RxCoordination extends MACActorBase {
                                                 Token token = ((Variable) _tNavEnd).getToken();
                                                 navEnd = ((DoubleToken) token).doubleValue();
                                             } //FIXME: assume it is instanceof variable.
-                                            // has problem with navEnd, set it to 0 now
-                                            navEnd=0.0;
                                             if (navEnd <= currentTime)
                                                 {
                                                     // generate Cts

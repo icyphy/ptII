@@ -839,13 +839,7 @@
         <entity name="Display" class="ptolemy.actor.lib.gui.Display">
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {779, 556, 290, 227}, maximized = false}">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[-60.0, 75.0]">
-            </property>
-        </entity>
-        <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {710, 544, 290, 227}, maximized = false}">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 135.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, -115.0]">
             </property>
         </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -874,14 +868,12 @@
             <vertex name="vertex1" value="[100.0, 35.0]">
             </vertex>
         </relation>
-        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="{-115.0, 100.0}">
-            </vertex>
-        </relation>
         <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
         <link port="TXTXRequest" relation="relation4"/>
-        <link port="TXTXConfirm" relation="relation3"/>
+        <link port="TXTXConfirm" relation="relation2"/>
         <link port="RXTXRequest" relation="relation5"/>
         <link port="RXTXConfirm" relation="relation6"/>
         <link port="getBackoff" relation="relation8"/>
@@ -892,7 +884,7 @@
         <link port="SinkRequest" relation="relation11"/>
         <link port="fromReception" relation="relation13"/>
         <link port="TXCoordinationSTA.PduRequest" relation="relation10"/>
-        <link port="TXCoordinationSTA.TXTXConfirm" relation="relation3"/>
+        <link port="TXCoordinationSTA.TXTXConfirm" relation="relation2"/>
         <link port="TXCoordinationSTA.BkDone" relation="relation7"/>
         <link port="TXCoordinationSTA.GotAck" relation="relation9"/>
         <link port="TXCoordinationSTA.fromPowerControl" relation="relation"/>
@@ -904,8 +896,7 @@
         <link port="RXCoordination.toPowerControl" relation="relation12"/>
         <link port="RXCoordination.GotAck" relation="relation9"/>
         <link port="RXCoordination.RXTXRequest" relation="relation5"/>
-        <link port="Display.input" relation="relation3"/>
-        <link port="Display2.input" relation="relation9"/>
+        <link port="Display.input" relation="relation10"/>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
