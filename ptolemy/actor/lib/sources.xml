@@ -60,7 +60,7 @@
 </entity>
 
 <!-- Do not include SerialComm here, it requires the javacomm api, 
-which is not always present -->
+which is not always present --!>
 
 <entity name="Sinewave" class="ptolemy.actor.lib.Sinewave"/>
 
