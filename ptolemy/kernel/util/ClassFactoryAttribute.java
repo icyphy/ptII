@@ -98,7 +98,7 @@ public class ClassFactoryAttribute extends StringAttribute
      */
     public ClassFactoryAttribute() {
 	super();
-	System.out.println("ClassFactorAttribute()  after super();");
+	// System.out.println("ClassFactorAttribute()  after super();");
         setVisibility(Settable.NONE);
     }
 
@@ -120,8 +120,8 @@ public class ClassFactoryAttribute extends StringAttribute
     public ClassFactoryAttribute(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-	System.out.println("ClassFactorAttribute(" + container + "," 
-			   + name + ") after super();");
+	// System.out.println("ClassFactorAttribute(" + container + "," 
+	//		   + name + ") after super();");
         setVisibility(Settable.NONE);
     }
 
