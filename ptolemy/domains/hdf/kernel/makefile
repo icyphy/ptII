@@ -61,6 +61,9 @@ MISC_FILES =	$(DIRS)
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc
+	'HDFDirector$$1.class' \
+	'HDFFSMDirector$$1.class' \
+	'HDFFSMDirector$$2.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

@@ -82,9 +82,13 @@ MISC_FILES =	$(DIRS)
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
+	'AbstractActionsAttribute$$TypeFunction.class' \
+	'FSMActor$$1.class' \
+	'FSMActor$$PortScope.class' \
 	'FSMDirector$$1.class' \
 	'InterfaceAutomaton$$1.class' \
-	'InterfaceAutomaton$$Triple.class'
+	'InterfaceAutomaton$$Triple.class' \
+	'RelationList$$RelationNode.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

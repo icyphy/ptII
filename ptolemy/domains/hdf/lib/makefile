@@ -64,7 +64,9 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	doc
+	doc \
+	'HDFActor$$1.class' \
+	'HDFDownSample$$1.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

@@ -66,15 +66,16 @@ MISC_FILES =	$(DIRS)
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
+	'BaseSDFScheduler$$1.class' \
+	'BaseSDFScheduler$$2.class' \
 	'SDFScheduler$$1.class' \
-	'SDFScheduler$$NamedObjComparator.class'
+	'SDFScheduler$$NamedObjComparator.class' \
+	'SDFUtilities$$NamedObjComparator.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-
 all: jclass
 install: jclass $(PTCLASSJAR)
-
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

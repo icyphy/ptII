@@ -90,6 +90,7 @@ OPTIONAL_FILES = \
 	'CTReceiver$$2.class' \
 	'CTReceiver$$3.class' \
 	'CTReceiver$$SignalType.class' \
+	'CTScheduler$$1.class' \
 	'CTScheduler$$SignalTypes.class' \
 	'CTScheduler$$SignalTypeMap.class'
 
