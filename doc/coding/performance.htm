@@ -114,6 +114,20 @@ For further information, see
 and
 <a href="http://www-106.ibm.com/developerworks/java/library/j-leaks/" target="_top">IBM page about memory leaks</a>
 
+<h3>Increasing the size of the Heap</h3>
+Sometimes, as a workaround, all that is necessary is to increase the
+size of the Java heap.  The <code>java</code> command takes non-standard
+commands like <code>-Xmx<i>size</i></code> to set the maximum stack
+size.  For example, under Cygwin, to run with a 256 megabyte heap size:
+<pre>
+export JAVAFLAGS=-Xmx256m
+$PTII/bin/vergil
+</pre>
+To see what other <code>-X</code> commands are available, run
+<pre>
+java -X
+</code> 
+
 <h3>Heap Analysis Tool</h3>
 Heap Analysis Tool (HAT) is a freely available tool from Sun that
 can process -Xrunhprof data.
