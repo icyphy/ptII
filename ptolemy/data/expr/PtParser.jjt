@@ -28,11 +28,93 @@
 options {
 LOOKAHEAD=1;
 //DEBUG_PARSER = true;
+//DEBUG_TOKEN_MANAGER = true;
 MULTI = true;
 STATIC = false;
 }
 
 PARSER_BEGIN(PtParser)
+/* PtSimpleNode is the basic node type used in the parse tree
+
+ Copyright (c) 1998 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
+
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
+
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
+ 
+                                        PT_COPYRIGHT_VERSION_2
+                                        COPYRIGHTENDKEY
+
+@ProposedRating Red (nsmyth@eecs.berkeley.edu)
+
+Created : May 1998
+
+*/
+
+/** //////////////////////////////////////////////////////////////////////
+ *  //// PTParser.jjt
+ *  
+ * This file implements an expression parser for Ptolemy II using the Jacc
+ * parser generator. It can handle all the basic arithmetic operators
+ * (*, /, +, -,, %), relational operators (<, <=, >, >=, == !=), logical 
+ * operators(&&, ||, !),  and, using reflection, all of the funcionality 
+ * available in the java.lang.Math package. By editing the ASTFunctionNode
+ * file it is also relatively easy to allow refernces to functions in other
+ * math packages as well as passing strings to Matlab and Tcl to be evaluated.
+ * 
+ * Jacc by itself simply generates a file ( and support files) that allow an 
+ * input to be parsed, it does not return a parse tree. For the purposes of 
+ * type checking we require a parse tree, and this is obtained using JJTree, a 
+ * preprocesssor for Jacc. 
+
+ * JJtree operates by annotating the grammer file to support the generation
+ * of the parse tree. Thus the process is
+ *
+ *            --------                 ------
+ *  X.jjt -> | JJTREE | --> X.jj  --> | JACC | --> X.java + support files
+ *            --------                 ------
+ *
+ * The parser can also be parsed a symbol table of Params on which the 
+ * expression to be passed can depend.
+ * 
+ * The parser assumes any identifiers it does not recognise are strings.
+ * Also anything between quotes(") is taken to be one string.
+ *
+ * The expressions recognized follow as close as possible the syntax of Java.
+ * In particular the operator precedences implemented here follow exactly 
+ * those in Java. Any type conversions that are performed are lossless. If 
+ * the user wants lossy conversions, explicit casts will be neccessary.
+ *
+ * 
+ * @author Neil Smyth
+ * @version $Id$
+ * @see pt.data.parser.ASTPtSimpleNode
+ * @see pt.data.parser.ASTPtFunctionNode
+ * @see pt.data.parser.ASTPtLogicalNode
+ * @see pt.data.parser.ASTPtProductNode
+ * @see pt.data.parser.ASTPtRelationalNode
+ * @see pt.data.parser.ASTPtSumNode
+ * @see pt.data.parser.ASTPtUnaryNode
+ * @see pt.data.Token 
+*/
+
+
+
 package pt.data.parser;
 
 import pt.kernel.*;
@@ -53,10 +135,12 @@ public class PtParser {
       System.out.print("\nEnter an Expression to be parsed: ");
       System.out.flush();
       String str;
+      _scope = null;
+     _param = null;
       ReInit(System.in);
       try {
 	ASTPtSimpleNode n = start();      	
-	_ptToken = n.resolve();
+	_ptToken = n.resolveTree();
         //n.dump(" ");
         System.out.println("Thank you, result is " + _ptToken.toString());
       } catch (ParseException x) {
@@ -70,20 +154,29 @@ public class PtParser {
   }
  
 
- public pt.data.Token parse(String stringIn) throws IllegalArgumentException {
+ public pt.data.Token parseExpression(String stringIn) throws IllegalArgumentException {
      InputStream stream = new ByteArrayInputStream(stringIn.getBytes());
      this.ReInit(stream);
+     // Need to reset the state of the parser
+     _scope = null;
+     _param = null;
+
      String str = stringIn.replace('\n', ' ');
      System.out.print("\nParsing expression: ");
      System.out.println(str);
      try {
-     ASTPtSimpleNode n = start();  
-     _ptToken = n.resolve();
-     //n.dump(" ");
-     System.out.println("Thank you, result is \f" + _ptToken.toString());  
+         // First parse the expression to obtain the parse tree
+         ASTPtSimpleNode n = start();
+         // Now evaluate the parse tree to obtain the resolved Token
+         _ptToken = n.resolveTree();
+         //n.dump(" ");
+         System.out.println("Thank you, result is \f" + _ptToken.toString());  
      } catch (ParseException x) {
           str = "parse of " + stringIn + " failed: " + x.getMessage();
           throw new IllegalArgumentException(str);
+     } catch (IllegalActionException ex) {
+         str = "evaluation of parse tree of " + stringIn;
+         throw new IllegalArgumentException(str);
       } catch (Exception x) {
           str = "evaluation of parse tree of " + stringIn;
           str = str + " failed : " + x.getMessage();
@@ -92,10 +185,10 @@ public class PtParser {
      return _ptToken;
  }  
 
-    public pt.data.Token parse(String stringIn, NamedList scope, pt.data.Param param) {
+    public pt.data.Token parseExpression(String stringIn, NamedList scope, pt.data.Param param) throws IllegalArgumentException {
         _scope = scope;
         _param = param;
-        _ptToken = parse(stringIn);
+        _ptToken = parseExpression(stringIn);
         _scope = null;
         _param = null;
         return _ptToken;
@@ -161,6 +254,7 @@ TOKEN : /* Arithmetic operators */
   |	< MINUS: "-" >
   |	< MULTIPLY: "*" >
   |	< DIVIDE: "/" >
+  |     < MODULO: "%" >
 }
 
 TOKEN : /* Relational operators */
@@ -221,8 +315,48 @@ TOKEN : /* literal strings */
 ASTPtSimpleNode start() #PtSimpleNode :
 {}
 {
-    sum() ( <EOL> | <EOF> )?
+    logicalOr() ( <EOL> | <EOF> )?
 	{ return jjtThis; }
+}
+
+void logicalOr() #PtLogicalNode :
+{Token x;}
+{
+    logicalAnd() ( 
+            x = <OR> logicalAnd()
+            {  jjtThis._tokenList.insertLast(x); }
+    )*
+}
+
+void logicalAnd() #PtLogicalNode :
+{Token x;}
+{
+    logicalEquals() ( 
+            x = <AND> logicalEquals()
+            {  jjtThis._tokenList.insertLast(x); }
+    )*
+}
+
+void logicalEquals() #PtRelationalNode :
+{Token x;}
+{
+    relational() ( 
+            ( x = <EQUALS> | x = <NOTEQUALS> ) relational()
+            {
+                jjtThis._tokenList.insertLast(x);
+            }
+       )?
+}
+
+void relational() #PtRelationalNode :
+{Token x;}
+{
+    sum() ( 
+            ( x = <GT> | x = <GTE> | x = <LT> | x = <LTE> ) sum()
+            {
+                jjtThis._tokenList.insertLast(x);
+            }
+       )?
 }
 
 void sum() #PtSumNode :
@@ -240,7 +374,7 @@ void term() #PtProductNode :
 {Token x;}
 {
     unary() ( 
-	( x = <MULTIPLY> | x = <DIVIDE> ) unary()
+	( x = <MULTIPLY> | x = <DIVIDE> | x = <MODULO> ) unary()
 	{
             jjtThis._tokenList.insertLast(x);
 	}
@@ -260,8 +394,11 @@ void unary() #PtUnaryNode :
 {
     <MINUS> element()
       { jjtThis.isMinus = true;}
-    |
-    element()
+
+ |  <NOT> element()
+     { jjtThis.isNot = true;} 
+
+ |  element()
 }
 
 void element() #PtSimpleNode :
@@ -319,15 +456,7 @@ String tidied, x;
         //System.out.println("encountered a string \"" + tidied + "\"");    
     }
 
-  | "(" sum() ")"<STRING>
-    {
-         // Now cut the " from each end of the string
-        len = token.image.length();
-        tidied = token.image.substring(1, (len -1));
-        jjtThis._ptToken = new pt.data.StringToken(tidied);
-        //System.out.println("encountered a string \"" + tidied + "\"");    
-    }
-
+  | "(" logicalOr() ")"
  
   |   LOOKAHEAD( <ID> "(" )
       function()
@@ -343,12 +472,14 @@ String tidied, x;
                 // node so that can _just_ reevaluate the tree each time
                 // ie the token may change, but the param won't!
             }
-        } 
-        else if (token.image.equalsIgnoreCase("PI")) {
+        } else if (token.image.equalsIgnoreCase("PI")) {
             jjtThis._ptToken = new pt.data.DoubleToken(Math.PI);
-        }
-        else if (token.image.equalsIgnoreCase("E")) {
+        } else if (token.image.equalsIgnoreCase("E")) {
             jjtThis._ptToken = new pt.data.DoubleToken(Math.E);
+        } else if (token.image.equalsIgnoreCase("TRUE")) {
+            jjtThis._ptToken = new pt.data.BooleanToken(true);
+        } else if (token.image.equalsIgnoreCase("FALSE")) {
+            jjtThis._ptToken = new pt.data.BooleanToken(false);
         }
         else {
             jjtThis._ptToken = new pt.data.StringToken(token.image);
@@ -362,7 +493,7 @@ void function() #PtFunctionNode :
   ASTPtSimpleNode aa, bb; 
 }
 {    <ID> {jjtThis.funcName = token.image;} 
-    "(" [  sum() ( ","  sum()  )* ]  ")"
+    "(" [  logicalOr() ( ","  logicalOr()  )* ]  ")"
 }
 
 
