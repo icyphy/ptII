@@ -29,12 +29,12 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/ecsl/demo/etc
+ME =		ptolemy/actor/ecsl/lib/demo/etc
 
 DIRS = 		# test
 
 # Root of the Java directory
-ROOT =		../../../..
+ROOT =		../../../../../..
 
 # Do not add diva.jar to the CLASSPATH in actor/lib/makefile
 # instead, move any actors that require diva.jar into actor/lib/gui -cxh
