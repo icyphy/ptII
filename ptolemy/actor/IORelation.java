@@ -194,10 +194,8 @@ public class IORelation extends ComponentRelation {
                     // from the inside, then get the Receivers outside p.
                     try {
                         receivers = p.getRemoteReceivers(this);
-                    } catch (IllegalActionException e) {
-                        throw new InternalErrorException(
-                                "IORelation.deepReceivers: Internal error: "
-                                + e.getMessage());
+                    } catch (IllegalActionException ex) {
+                        throw new InternalErrorException(this, ex, null);
                     }
                 } else {
                     // if p not a transparent port, or this relation is linked
@@ -217,10 +215,8 @@ public class IORelation extends ComponentRelation {
                         seen.put(p, new Integer(occurrence));
 
                         receivers = p.getReceivers(this, occurrence);
-                    } catch (IllegalActionException e) {
-                        throw new InternalErrorException(
-                                "IORelation.deepReceivers: Internal error: "
-                                + e.getMessage());
+                    } catch (IllegalActionException ex) {
+                        throw new InternalErrorException(this, ex, null);
                     }
                 }
                 result = _cascade(result, receivers);

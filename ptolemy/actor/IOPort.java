@@ -1803,9 +1803,7 @@ public class IOPort extends ComponentPort {
                     }
                 } catch (NoTokenException ex) {
                     // this shouldn't happen.
-                    throw new InternalErrorException(
-                            "IOPort.transferInputs: Internal error: " +
-                            ex.getMessage());
+                    throw new InternalErrorException(this, ex, null);
                 }
             }
         }
@@ -1846,10 +1844,7 @@ public class IOPort extends ComponentPort {
                                 }
                             }
                         } catch (NoTokenException ex) {
-                            throw new InternalErrorException(
-                                    "IOPort.transferOutputs: " +
-                                    "Internal error: " +
-                                    ex.getMessage());
+                            throw new InternalErrorException(this, ex, null);
                         }
                     }
                 }
