@@ -53,11 +53,11 @@ an exception and we want to rethrow the exception but print
 the stacktrace where the first exception occurred.  This is called
 exception chaining.
 
-<p>JDK1.4 supports exception chaining.  We are implement a version of
+<p>JDK1.4 supports exception chaining.  We are implementing a version of
 exception chaining here ourselves here so that we can use JVMs earlier
 than JDK1.4.
 
-In this implementation, we have the following differences from
+<p>In this implementation, we have the following differences from
 the JDK1.4 exception chaining implementation:
 <menu>
 <li>In this implementation, the detail message includes the detail
