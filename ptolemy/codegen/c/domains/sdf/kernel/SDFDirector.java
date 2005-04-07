@@ -75,6 +75,9 @@ public class SDFDirector extends Director {
         super(sdfDirector);
     }
 
+    ////////////////////////////////////////////////////////////////////////
+    ////                         public methods                         ////
+
     /** Generate the code for the firing of actors according to the SDF
      *  schedule.
      *  @param code The string buffer that the generated code is appended to.
@@ -176,6 +179,11 @@ public class SDFDirector extends Director {
                 for (int channel = 0; channel < port.getWidth(); channel ++) {
                     int portOffset = totalTokens % getBufferSize(port, channel);
                     if (portOffset != 0) {
+                        // Increase the buffer size of that channel to the
+                        // power of two.
+                        int bufferSize = _ceilToPowerOfTwo(
+                                getBufferSize(port, channel));
+                        actorHelper.setBufferSize(port, channel, bufferSize);
                         // Declare the channel offset variables.
                         StringBuffer channelOffset = new StringBuffer();
                         channelOffset.append
@@ -212,7 +220,7 @@ public class SDFDirector extends Director {
         int bufferSize = 1;
         List connectedRelations = getConnectedRelations(port, channelNumber);
         if (connectedRelations.size() > 1) {
-            throw new IllegalActionException(super.getComponent(),
+            throw new IllegalActionException(getComponent(),
                     "more than one relation is connected to " 
                     + port.getFullName() + ", " + channelNumber);
         }
@@ -249,5 +257,27 @@ public class SDFDirector extends Director {
             }
         }
         return connectedRelations;
+    }
+
+    //////////////////////////////////////////////////////////////////////////
+    ////                          private methods                         ////
+
+    /** Return the minimum number of power of two that is greater than or
+     *  equal to the given integer.
+     *  @param value The given integer.
+     *  @return the minumber number of power of two that is greater than or
+     *   equal to the given integer.
+     *  @exception IllegalActionException If the given integer is not positive.
+     */
+    private int _ceilToPowerOfTwo(int value) throws IllegalActionException {
+        if (value < 1) {
+            throw new IllegalActionException(getComponent(),
+                    "The given integer must be a positive integer.");
+        }
+        int powerOfTwo = 1;
+        while (value > powerOfTwo) {
+            powerOfTwo = powerOfTwo << 1;
+        }
+        return powerOfTwo;
     }
 }
