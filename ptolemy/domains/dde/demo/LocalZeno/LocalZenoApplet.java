@@ -39,15 +39,16 @@ import javax.swing.SwingUtilities;
 
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.gui.PtolemyApplet;
+import ptolemy.actor.lib.Const;
 import ptolemy.actor.lib.gui.TimedPlotter;
 import ptolemy.data.DoubleToken;
 import ptolemy.domains.dde.kernel.DDEDirector;
-import ptolemy.domains.dde.lib.TimeAdvance;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.DebugEvent;
 import ptolemy.kernel.util.DebugListener;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.StreamListener;
 import ptolemy.kernel.util.Workspace;
 import diva.canvas.Figure;
 import diva.canvas.Site;
@@ -211,7 +212,6 @@ public class LocalZenoApplet extends PtolemyApplet {
         _clock.values.setExpression("{1, 1, 1}");
         _clock.period.setToken(new DoubleToken(20.0));
         _clock.offsets.setExpression("{5.0, 10.0, 15.0}");
-        _clock.stopTime.setToken(new DoubleToken(0.0));
 
         _join1 = new ListenWire(toplevel, "UpperJoin");
         _fork1 = new ListenFork(toplevel, "UpperFork");
@@ -223,10 +223,10 @@ public class LocalZenoApplet extends PtolemyApplet {
         _rcvr1 = new ListenSink(toplevel, "UpperRcvr");
         _rcvr2 = new ListenSink(toplevel, "LowerRcvr");
 
-        _upperTime = new TimeAdvance(toplevel, "upperTime");
+        _upperTime = new Const(toplevel, "upperTime");
         _upperPlotter = new TimedPlotter(toplevel, "upperPlotter");
 
-        _lowerTime = new TimeAdvance(toplevel, "lowerTime");
+        _lowerTime = new Const(toplevel, "lowerTime");
         _lowerPlotter = new TimedPlotter(toplevel, "lowerPlotter");
 
         _fBack1.delay.setToken(new DoubleToken(4.5));
@@ -246,10 +246,10 @@ public class LocalZenoApplet extends PtolemyApplet {
         toplevel.connect(_fork2.output2, _fBack2.input);
         toplevel.connect(_fBack2.output, _join2.input);
 
-        toplevel.connect(_fork1.output1, _upperTime.input);
+        toplevel.connect(_fork1.output1, _upperTime.trigger);
         toplevel.connect(_upperTime.output, _upperPlotter.input);
 
-        toplevel.connect(_fork2.output1, _lowerTime.input);
+        toplevel.connect(_fork2.output1, _lowerTime.trigger);
         toplevel.connect(_lowerTime.output, _lowerPlotter.input);
 
         return toplevel;
@@ -353,8 +353,8 @@ public class LocalZenoApplet extends PtolemyApplet {
     private ListenFork _fork2;
     private ZenoDelay _fBack2;
     private ListenSink _rcvr2;
-    private TimeAdvance _upperTime;
-    private TimeAdvance _lowerTime;
+    private Const _upperTime;
+    private Const _lowerTime;
     private TimedPlotter _upperPlotter;
     private TimedPlotter _lowerPlotter;
 
