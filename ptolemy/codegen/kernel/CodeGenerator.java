@@ -28,6 +28,17 @@ COPYRIGHTENDKEY
 
 package ptolemy.codegen.kernel;
 
+import java.io.File;
+import java.io.Writer;
+import java.lang.reflect.Constructor;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+import java.util.StringTokenizer;
+
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedIOPort;
@@ -47,16 +58,6 @@ import ptolemy.moml.MoMLParser;
 import ptolemy.moml.filter.BackwardCompatibility;
 import ptolemy.moml.filter.RemoveGraphicalClasses;
 import ptolemy.util.MessageHandler;
-
-import java.io.File;
-import java.io.Writer;
-import java.lang.reflect.Constructor;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Iterator;
-import java.util.StringTokenizer;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -175,6 +176,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         ComponentCodeGenerator directorHelper = _getHelper((NamedObj)director);
         ((Director)directorHelper).setCodeGenerator(this);
 
+        Set includingLibraries = new HashSet();
         Iterator actors = ((CompositeActor) getContainer())
                 .deepEntityList().iterator();
         while (actors.hasNext()) {
@@ -182,6 +184,13 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             CodeGeneratorHelper actorHelper
                     = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
             actorHelper.setCodeGenerator(this);
+            includingLibraries.addAll(actorHelper.getIncludingLibraries());
+        }
+
+        Iterator libraries = includingLibraries.iterator();
+        while (libraries.hasNext()) {
+            String library = (String) libraries.next();
+            code.append("#include " + library + "\n");
         }
 
         String initializeCode = generateInitializeCode();

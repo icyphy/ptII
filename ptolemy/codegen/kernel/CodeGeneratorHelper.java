@@ -200,6 +200,16 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         return _component;
     }
 
+    /** Get the libraries needed by the code generated from this helper class.
+     *  This base class returns an empty set.
+     *  @return A set of strings that are libraries needed by the code
+     *  generated from this helper class.
+     */
+    public Set getIncludingLibraries() {
+        Set libraries = new HashSet();
+        return libraries;
+    }
+
     /** Get the offset in the buffer of a given channel to which a token
      *  should be put. The channel is given by its containing port and
      *  the channel number in that port. The default value is 0.
