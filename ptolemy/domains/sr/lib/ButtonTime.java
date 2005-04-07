@@ -61,6 +61,11 @@ import ptolemy.kernel.util.StringAttribute;
    @Pt.AcceptedRating Red (pwhitake)
 */
 public class ButtonTime extends WallClockTime implements Placeable {
+    // FIXME: This actor is almost identitcal to the DE Event Button actor.
+    // There is no need to have a copy here. An alternative design is to
+    // put one of them into actor.lib direcory.
+
+
     /** Construct an actor with an input multiport of type GENERAL.
      *  @param container The container.
      *  @param name The name of this actor.
