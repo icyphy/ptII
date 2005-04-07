@@ -1,5 +1,5 @@
-m#!/bin/sh
-# @(#)ptIInightly	1.18 03/08/99
+#!/bin/sh
+# $Id$
 # Script to build Ptolemy II tar files and run the tests and generate
 # code coverage stats.
 
