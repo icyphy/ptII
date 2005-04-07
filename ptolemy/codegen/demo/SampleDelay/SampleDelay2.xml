@@ -55,16 +55,28 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 180.0]">
         </property>
     </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 2, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8}">
+        </property>
+        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{525, 190}">
+        </property>
+    </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="AddSubtract.plus" relation="relation"/>
+    <link port="AddSubtract.output" relation="relation2"/>
     <link port="Ramp2.output" relation="relation3"/>
     <link port="SampleDelay2.input" relation="relation4"/>
     <link port="SampleDelay2.output" relation="relation"/>
     <link port="Repeat.input" relation="relation3"/>
     <link port="Repeat.output" relation="relation4"/>
+    <link port="Test.input" relation="relation2"/>
 </entity>

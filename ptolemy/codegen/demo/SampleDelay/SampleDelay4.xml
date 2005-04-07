@@ -25,12 +25,12 @@
         </property>
     </property>
     <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 190.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 230.0]">
         </property>
     </entity>
     <entity name="Ramp2" class="ptolemy.actor.lib.Ramp">
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 220.0]">
         </property>
     </entity>
     <entity name="SampleDelay2" class="ptolemy.domains.sdf.lib.SampleDelay">
@@ -42,7 +42,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 220.0]">
         </property>
     </entity>
     <entity name="Repeat" class="ptolemy.domains.sdf.lib.Repeat">
@@ -52,7 +52,15 @@
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{325.0, 180.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 220.0]">
+        </property>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 1, 2, 2, 3, 3, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6}">
+        </property>
+        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 230.0]">
         </property>
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
@@ -61,10 +69,14 @@
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="AddSubtract.plus" relation="relation"/>
+    <link port="AddSubtract.output" relation="relation4"/>
     <link port="Ramp2.output" relation="relation2"/>
     <link port="SampleDelay2.input" relation="relation2"/>
     <link port="SampleDelay2.output" relation="relation3"/>
     <link port="Repeat.input" relation="relation3"/>
     <link port="Repeat.output" relation="relation"/>
+    <link port="Test.input" relation="relation4"/>
 </entity>

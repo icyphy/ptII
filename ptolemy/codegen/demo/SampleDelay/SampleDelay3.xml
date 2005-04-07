@@ -70,6 +70,14 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 315.0]">
         </property>
     </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{3, 4, 2, 4, 3, 5, 7, 9, 11, 13}">
+        </property>
+        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 190.0]">
+        </property>
+    </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
@@ -80,14 +88,18 @@
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="Ramp.output" relation="relation"/>
     <link port="SampleDelay.input" relation="relation"/>
     <link port="SampleDelay.output" relation="relation5"/>
     <link port="AddSubtract.plus" relation="relation5"/>
     <link port="AddSubtract.plus" relation="relation2"/>
+    <link port="AddSubtract.output" relation="relation3"/>
     <link port="Ramp3.output" relation="relation6"/>
     <link port="SampleDelay3.input" relation="relation7"/>
     <link port="SampleDelay3.output" relation="relation2"/>
     <link port="SampleDelay4.input" relation="relation6"/>
     <link port="SampleDelay4.output" relation="relation7"/>
+    <link port="Test.input" relation="relation3"/>
 </entity>
