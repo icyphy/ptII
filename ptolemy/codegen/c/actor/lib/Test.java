@@ -27,6 +27,9 @@
 
 package ptolemy.codegen.c.actor.lib;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import ptolemy.codegen.kernel.CCodeGeneratorHelper;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -88,6 +91,18 @@ public class Test extends CCodeGeneratorHelper {
         tmpStream.appendCodeBlock("codeBlock1");
 
         stream.append(processCode(tmpStream.toString()));
+    }
+
+    /** Get the libraries needed by the code generated for the
+     *  Test actor.
+     *  @return A set of strings that are names of the libraries
+     *   needed by the code generated for the Test actor.
+     */
+    public Set getIncludingLibraries() {
+        Set libraries = new HashSet();
+        libraries.add("\"stdio.h\"");
+        libraries.add("\"math.h\"");
+        return libraries;
     }
 
     ///////////////////////////////////////////////////////////////////
