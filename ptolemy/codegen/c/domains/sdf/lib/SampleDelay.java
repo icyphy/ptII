@@ -32,10 +32,7 @@ import java.util.List;
 import ptolemy.actor.IOPort;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.data.ArrayToken;
-import ptolemy.data.IntToken;
 import ptolemy.data.Token;
-import ptolemy.data.expr.Variable;
-import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
@@ -86,14 +83,6 @@ public class SampleDelay extends CodeGeneratorHelper {
         StringBuffer code = new StringBuffer();
         ptolemy.domains.sdf.lib.SampleDelay actor =
             (ptolemy.domains.sdf.lib.SampleDelay) getComponent();
-        List relations = actor.output.linkedRelationList();
-        Relation relation = (Relation) relations.get(0);
-        Variable bufferSizeToken
-                = (Variable) relation.getAttribute("bufferSize");
-        int bufferSize = 1;
-        if (bufferSizeToken != null) {
-            bufferSize = ((IntToken) bufferSizeToken.getToken()).intValue();
-        }
         Token[] initialOutputs = 
                 ((ArrayToken)actor.initialOutputs.getToken()).arrayValue();
         List sinkChannels = getSinkChannels(actor.output, 0);
@@ -105,6 +94,7 @@ public class SampleDelay extends CodeGeneratorHelper {
                 if (port.isMultiport()) {
                     code.append("[" + channel.channelNumber + "]");
                 }
+                int bufferSize = getBufferSize(port);
                 if (bufferSize > 1) {
                     code.append("[" + i + "]");
                 }

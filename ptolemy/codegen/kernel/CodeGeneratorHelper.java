@@ -138,7 +138,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      */
     public String generateInitializeCode()
             throws IllegalActionException {
-        createBufferAndOffsetMap();
+        //createBufferAndOffsetMap();
         resetOffsets();
         return "";
     }
@@ -163,11 +163,17 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     public int getBufferSize(IOPort port) 
             throws IllegalActionException {
         int bufferSize = 1;
-        for (int i = 0; i < port.getWidth(); i ++) {
-            int channelBufferSize = getBufferSize(port, i);
-            if (channelBufferSize > bufferSize) {
-                bufferSize = channelBufferSize;
+        if (port.getContainer() == _component) {
+            for (int i = 0; i < port.getWidth(); i ++) {
+                int channelBufferSize = getBufferSize(port, i);
+                if (channelBufferSize > bufferSize) {
+                    bufferSize = channelBufferSize;
+                }
             }
+        } else {
+            CodeGeneratorHelper actorHelper = (CodeGeneratorHelper)
+                    _getHelper((NamedObj) port.getContainer());
+            bufferSize = actorHelper.getBufferSize(port);
         }
         return bufferSize;
     }
@@ -334,43 +340,33 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                     if (sinkPort.isMultiport()) {
                         result.append("[" + sinkChannelNumber + "]");
                     }
-                    
+                    int sinkPortBufferSize = getBufferSize(sinkPort);
                     if (!channelAndOffset[1].equals("")
-                            && getBufferSize(port, channelNumber) > 1) {
-                        // FIXME: This is a hack. It is using the offset of the
-                        // output port to substitute the offsets of
-                        // its downstream input ports.
-                        // FIXME: It is also using the buffer size of the output
-                        // port to substitute the buffer sizes of the sink input
-                        // ports, which is not correct.
-                        // For those buffer sizes increased to more than 1, set
-                        // an attribute on the sink port so we can create an
-                        // extra dimension.
-                        // String temp = getOffset(port) + " + " + channelAndOffset[1];
+                            && getBufferSize(sinkPort) > 1) {
                         // Specified offset.
                         String temp = "";
                         if (getOffset(port, 0) instanceof Integer) {
                             int offset
-                                = ((Integer)(getOffset(port, 0))).intValue()
+                                = ((Integer)(getOffset(port, channelNumber))).intValue()
                                 + (new Integer(channelAndOffset[1])).intValue();
                             offset = offset % getBufferSize(port, channelNumber);
                             temp = new Integer(offset).toString();
                         } else {
-                            temp = "(" + (String) getOffset(port, 0)
+                            temp = "(" + (String) getOffset(port, channelNumber)
                                 + (new Integer(channelAndOffset[1])).intValue()
                                 + ")%" + getBufferSize(port, channelNumber);
                         }
                         result.append("[" + temp + "]");
-                    } else if (getBufferSize(port, channelNumber) > 1) {
+                    } else if (getBufferSize(sinkPort) > 1) {
                         // Did not specify offset, so the receiver buffer size is 1.
                         // This is multiple firing.
                         String temp = "";
-                        if (getOffset(port, 0) instanceof Integer) {
+                        if (getOffset(port, channelNumber) instanceof Integer) {
                             int offset = ((Integer) getOffset(port, 0)).intValue();
                             offset = offset % getBufferSize(port, channelNumber);
                             temp = new Integer(offset).toString();
                         } else {
-                            temp = (String) getOffset(port, 0) + "%"
+                            temp = (String) getOffset(port, channelNumber) + "%"
                                     + getBufferSize(port, channelNumber);
                         }
                         result.append("[" + temp + "]");
@@ -598,6 +594,14 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         _bufferSizes.put(port, bufferSizes);
     }
 
+    /** Set the code generator associated with this helper class.
+     *  @param codeGenerator The code generator associated with this
+     *   helper class.
+     */
+    public void setCodeGenerator(CodeGenerator codeGenerator) {
+        _codeGenerator = codeGenerator;
+    }
+
     /** Set the offset in a buffer of a given channel to which a token should
      *  be put.
      *  @param channel The given channel.
@@ -607,6 +611,14 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         Object[] offsets = (Object[]) _offsets.get(port);
         offsets[channelNumber] = offset;
         _offsets.put(port, offsets);
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     protected methods.                    ////
+
+    protected ComponentCodeGenerator _getHelper(NamedObj component)
+            throws IllegalActionException {
+        return _codeGenerator._getHelper(component);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -647,13 +659,17 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** The associated component. */
-    private NamedObj _component;
-
     /** A hashmap that keeps track of the bufferSizes of each channel
      *  of the actor.
      */
     private HashMap _bufferSizes = new HashMap();
+
+    /** The code generator that contains this helper class.
+     */
+    private CodeGenerator _codeGenerator;
+
+    /** The associated component. */
+    private NamedObj _component;
 
     /** A hashmap that keeps track of the offsets of each channel of
      *  the actor.

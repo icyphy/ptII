@@ -30,6 +30,7 @@ package ptolemy.codegen.kernel;
 
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import ptolemy.actor.Actor;
@@ -100,14 +101,19 @@ public class Director implements ActorCodeGenerator {
     public String generateInitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append("/* The initialization of the director. */\n");
-        Iterator actors = ((CompositeActor) _codeGenerator.getContainer())
-                .deepEntityList().iterator();
+        List actorsList = ((CompositeActor) _codeGenerator.getContainer())
+                .deepEntityList();
+        Iterator actors = actorsList.iterator();
         while (actors.hasNext()) {
+            // Set the buffer sizes of each channel of the actor before
+            // generating initialize code.
+            // FIXME: perhaps this part should be moved to preinitialize().
+            // need an API that CodeGenerator will call preinitialize() before
+            // generating initialize code.
             Actor actor = (Actor) actors.next();
             CodeGeneratorHelper helperObject 
-                    = (CodeGeneratorHelper) _getHelper((NamedObj)actor);
-            code.append(helperObject.generateInitializeCode());
-            // Set the buffer sizes of each channel of the actor.
+                    = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+            helperObject.createBufferAndOffsetMap();
             Set inputAndOutputPortsSet = new HashSet();
             inputAndOutputPortsSet.addAll(actor.inputPortList());
             inputAndOutputPortsSet.addAll(actor.outputPortList());
@@ -119,6 +125,13 @@ public class Director implements ActorCodeGenerator {
                     helperObject.setBufferSize(port, i, bufferSize);
                 }
             }
+        }
+        actors = actorsList.iterator();
+        while (actors.hasNext()) {
+            Actor actor = (Actor) actors.next();
+            CodeGeneratorHelper helperObject
+                    = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+            code.append(helperObject.generateInitializeCode());
         }
         return code.toString();
     }
@@ -154,18 +167,18 @@ public class Director implements ActorCodeGenerator {
         return 1;
     }
 
+    /** Get the code generator associated with this helper class.
+     *  @return The code generator associated with this helper class.
+     */
+    /*public ComponentCodeGenerator getCodeGenerator() {
+        return _codeGenerator;
+    }*/
+
     /** Return the director associated with this class.
      *  @return The director associated with this class.
      */
     public NamedObj getComponent() {
         return _director;
-    }
-
-    /** Get the code generator associated with this helper class.
-     *  @return The code generator associated with this helper class.
-     */
-    public ComponentCodeGenerator getCodeGenerator() {
-        return _codeGenerator;
     }
 
     /** Set the code generator associated with this helper class.

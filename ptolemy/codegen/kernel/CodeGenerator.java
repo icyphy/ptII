@@ -175,6 +175,15 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         ComponentCodeGenerator directorHelper = _getHelper((NamedObj)director);
         ((Director)directorHelper).setCodeGenerator(this);
 
+        Iterator actors = ((CompositeActor) getContainer())
+                .deepEntityList().iterator();
+        while (actors.hasNext()) {
+            Actor actor = (Actor) actors.next();
+            CodeGeneratorHelper actorHelper
+                    = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+            actorHelper.setCodeGenerator(this);
+        }
+
         String initializeCode = generateInitializeCode();
         String bodyCode = generateBodyCode();
         generateVariableDeclarations(code);
