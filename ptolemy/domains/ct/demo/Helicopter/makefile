@@ -63,6 +63,7 @@ OTHER_FILES_TO_BE_JARED = \
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
 	Helicopter.htm \
+	HelicopterVergil.htm \
 	modes.gif \
 	toplevel.gif
 
