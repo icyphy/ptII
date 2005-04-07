@@ -281,10 +281,13 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                         offset = offset % getBufferSize(port, channelNumber);
                         temp = new Integer(offset).toString();
                     } else {
+                        // Note: This assumes the director helper will increase
+                        // the buffer size of the channel to the power of two.
+                        // Otherwise, use "%" instead.
                         temp = (String) getOffset(port, channelNumber);
                         temp = "(" + temp
                             + (new Integer(channelAndOffset[1])).intValue()
-                            + ")%" + getBufferSize(port, channelNumber); 
+                            + ")&" + getBufferSize(port, channelNumber); 
                     }
                     result.append("[" + temp + "]");
                 } else if (getBufferSize(port) > 1) {
@@ -298,7 +301,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                         temp = new Integer(offset).toString();
                     } else {
                         temp = (String) getOffset(port, channelNumber);
-                        temp = temp + "%" + getBufferSize(port, channelNumber);
+                        temp = temp + "&" + getBufferSize(port, channelNumber);
                     }
                     result.append("[" + temp + "]");
                 }
@@ -354,7 +357,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                         } else {
                             temp = "(" + (String) getOffset(port, channelNumber)
                                 + (new Integer(channelAndOffset[1])).intValue()
-                                + ")%" + getBufferSize(port, channelNumber);
+                                + ")&" + getBufferSize(port, channelNumber);
                         }
                         result.append("[" + temp + "]");
                     } else if (getBufferSize(sinkPort) > 1) {
@@ -366,7 +369,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                             offset = offset % getBufferSize(port, channelNumber);
                             temp = new Integer(offset).toString();
                         } else {
-                            temp = (String) getOffset(port, channelNumber) + "%"
+                            temp = (String) getOffset(port, channelNumber) + "&"
                                     + getBufferSize(port, channelNumber);
                         }
                         result.append("[" + temp + "]");
