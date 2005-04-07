@@ -182,8 +182,15 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      *  @param port The given port.
      *  @return The buffer size of the given port of this actor.
      */
-    public int getBufferSize(IOPort port, int channelNumber) {
-        return ((int[]) _bufferSizes.get(port))[channelNumber];
+    public int getBufferSize(IOPort port, int channelNumber)
+            throws IllegalActionException {
+        if (port.getContainer() == _component) {
+            return ((int[]) _bufferSizes.get(port))[channelNumber];
+        } else {
+            CodeGeneratorHelper actorHelper = (CodeGeneratorHelper)
+                    _getHelper((NamedObj) port.getContainer());
+            return actorHelper.getBufferSize(port, channelNumber);
+        }
     }
 
     /** Get the component associated with this helper.
@@ -284,10 +291,15 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                         // Note: This assumes the director helper will increase
                         // the buffer size of the channel to the power of two.
                         // Otherwise, use "%" instead.
+                        // FIXME: We haven't check if modulo is 0. But this should
+                        // never happen. For offsets that need to be represented
+                        // by string expression, getBufferSize(port, channelNumber)
+                        // will always return a value at least 2.
+                        int modulo = getBufferSize(port, channelNumber) - 1;
                         temp = (String) getOffset(port, channelNumber);
                         temp = "(" + temp
                             + (new Integer(channelAndOffset[1])).intValue()
-                            + ")%" + getBufferSize(port, channelNumber); 
+                            + ")&" + modulo; 
                     }
                     result.append("[" + temp + "]");
                 } else if (getBufferSize(port) > 1) {
@@ -300,8 +312,9 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                         offset = offset % getBufferSize(port, channelNumber);
                         temp = new Integer(offset).toString();
                     } else {
+                        int modulo = getBufferSize(port, channelNumber) - 1;
                         temp = (String) getOffset(port, channelNumber);
-                        temp = temp + "%" + getBufferSize(port, channelNumber);
+                        temp = temp + "&" + modulo;
                     }
                     result.append("[" + temp + "]");
                 }
@@ -352,12 +365,13 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                             int offset
                                 = ((Integer)(getOffset(port, channelNumber))).intValue()
                                 + (new Integer(channelAndOffset[1])).intValue();
-                            offset = offset % getBufferSize(port, channelNumber);
+                            offset = offset % getBufferSize(sinkPort, sinkChannelNumber);
                             temp = new Integer(offset).toString();
                         } else {
+                            int modulo = getBufferSize(sinkPort, sinkChannelNumber) - 1;
                             temp = "(" + (String) getOffset(port, channelNumber)
                                 + (new Integer(channelAndOffset[1])).intValue()
-                                + ")%" + getBufferSize(port, channelNumber);
+                                + ")&" + modulo;
                         }
                         result.append("[" + temp + "]");
                     } else if (getBufferSize(sinkPort) > 1) {
@@ -366,11 +380,12 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                         String temp = "";
                         if (getOffset(port, channelNumber) instanceof Integer) {
                             int offset = ((Integer) getOffset(port, 0)).intValue();
-                            offset = offset % getBufferSize(port, channelNumber);
+                            offset = offset % getBufferSize(sinkPort, sinkChannelNumber);
                             temp = new Integer(offset).toString();
                         } else {
-                            temp = (String) getOffset(port, channelNumber) + "%"
-                                    + getBufferSize(port, channelNumber);
+                            int modulo = getBufferSize(sinkPort, sinkChannelNumber) - 1;
+                            temp = (String) getOffset(port, channelNumber) + "&"
+                                    + modulo;
                         }
                         result.append("[" + temp + "]");
                     }
