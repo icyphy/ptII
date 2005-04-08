@@ -343,7 +343,7 @@ public class GenericJNIActor extends TypedAtomicActor {
                         .size()].toString();
 
                 if (typ.equals("boolean")) {
-                    args.add(new Boolean(
+                    args.add(Boolean.valueOf(
                                      (boolean) ((BooleanToken) tok).booleanValue()));
                 } else if (typ.equals("int")) {
                     args.add(new Integer((int) ((IntToken) tok).intValue()));

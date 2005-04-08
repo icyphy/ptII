@@ -446,9 +446,9 @@ public class Argument extends AbstractSettableAttribute {
     /** Set the expression of the argument from its attributes
      */
     public void setExpression() {
-        String ret = new Boolean(isInput()).toString() + ","
-            + new Boolean(isOutput()).toString() + ","
-            + new Boolean(isReturn()).toString() + "," + getCType();
+        String ret = Boolean.valueOf(isInput()).toString() + ","
+            + Boolean.valueOf(isOutput()).toString() + ","
+            + Boolean.valueOf(isReturn()).toString() + "," + getCType();
         setExpression(ret);
     }
 
