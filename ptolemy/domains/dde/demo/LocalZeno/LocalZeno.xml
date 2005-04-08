@@ -41,7 +41,7 @@
         </property>
         <property name="realDelay" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="delay" class="ptolemy.data.expr.Parameter" value="4.5">
+        <property name="delay" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="220.0, 220.0">
         </property>
@@ -59,7 +59,7 @@
         </property>
         <property name="realDelay" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="delay" class="ptolemy.data.expr.Parameter" value="4.5">
+        <property name="delay" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="225.0, 365.0">
         </property>
@@ -113,7 +113,7 @@
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>lowerPlotter</title>
-<xRange min="5.0" max="90.0"/>
+<xRange min="5.0" max="50.0"/>
 <yRange min="0.0" max="0.0"/>
 </plot>?>
         </configure>
