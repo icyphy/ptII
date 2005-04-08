@@ -51,7 +51,6 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = \
 	DDESink.java \
 	DoubleFork.java \
-	TimeAdvance.java \
 	Wire.java
 
 
