@@ -428,22 +428,22 @@ public class ModelPane extends JPanel implements CloseListener {
     ////                         public variables                  ////
 
     /** Indicator to use a horizontal layout. */
-    public static int HORIZONTAL = 0;
+    public static final int HORIZONTAL = 0;
 
     /** Indicator to use a vertical layout. */
-    public static int VERTICAL = 1;
+    public static final int VERTICAL = 1;
 
     /** Indicator to create only buttons. */
-    public static int CONTROLS_ONLY = 2;
+    public static final int CONTROLS_ONLY = 2;
 
     /** Indicator to include control buttons. */
-    public static int BUTTONS = 1;
+    public static final int BUTTONS = 1;
 
     /** Indicator to include top-level parameters in the controls. */
-    public static int TOP_PARAMETERS = 2;
+    public static final int TOP_PARAMETERS = 2;
 
     /** Indicator to include director parameters in the controls. */
-    public static int DIRECTOR_PARAMETERS = 4;
+    public static final int DIRECTOR_PARAMETERS = 4;
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
