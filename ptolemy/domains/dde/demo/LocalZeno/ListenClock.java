@@ -81,13 +81,7 @@ public class ListenClock extends Clock {
     public boolean prefire() throws IllegalActionException {
         _debug(new ExecEvent(this, ExecEvent.ACCESSING));
 
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-            throw new InternalErrorException("Error with "
-                    + "sleeping thread in prefire");
-        }
-
+        LocalZenoUtilities.sleepProcess(this);
         return super.prefire();
     }
 
@@ -103,13 +97,7 @@ public class ListenClock extends Clock {
     public boolean postfire() throws IllegalActionException {
         _debug(new ExecEvent(this, ExecEvent.WAITING));
 
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-            throw new InternalErrorException("Error with "
-                    + "sleeping thread in postfire");
-        }
-
+        LocalZenoUtilities.sleepProcess(this);
         return super.postfire();
     }
 

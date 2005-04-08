@@ -28,6 +28,9 @@ COPYRIGHTENDKEY
 */
 package ptolemy.domains.dde.demo.LocalZeno;
 
+import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.process.TerminateProcessException;
+import ptolemy.actor.process.ProcessDirector;
 import ptolemy.domains.dde.lib.Wire;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -86,13 +89,7 @@ public class ListenWire extends Wire {
     public boolean postfire() throws IllegalActionException {
         _debug(new ExecEvent(this, ExecEvent.WAITING));
 
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-            throw new IllegalActionException(this,
-                    "InternalError " + "exception during a sleeping thread.");
-        }
-
+        LocalZenoUtilities.sleepProcess(this);
         return super.postfire();
     }
 
@@ -108,13 +105,7 @@ public class ListenWire extends Wire {
     public boolean prefire() throws IllegalActionException {
         _debug(new ExecEvent(this, ExecEvent.ACCESSING));
 
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-            throw new IllegalActionException(this,
-                    "InternalError " + "exception during a sleeping thread.");
-        }
-
+        LocalZenoUtilities.sleepProcess(this);
         return super.prefire();
     }
 

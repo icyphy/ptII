@@ -55,6 +55,7 @@ JSRCS = \
 	ListenSink.java \
 	ListenWire.java \
 	LocalZenoApplet.java \
+	LocalZenoUtilities.java \
 	ZenoDelay.java
 
 EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) \

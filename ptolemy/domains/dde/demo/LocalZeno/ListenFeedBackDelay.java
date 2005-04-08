@@ -104,13 +104,7 @@ public class ListenFeedBackDelay extends FeedBackDelay {
     public boolean postfire() throws IllegalActionException {
         _debug(new ExecEvent(this, ExecEvent.WAITING));
 
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-            throw new IllegalActionException(this,
-                    "InternalError " + "exception during a sleeping thread.");
-        }
-
+        LocalZenoUtilities.sleepProcess(this);
         return super.postfire();
     }
 
@@ -126,13 +120,7 @@ public class ListenFeedBackDelay extends FeedBackDelay {
     public boolean prefire() throws IllegalActionException {
         _debug(new ExecEvent(this, ExecEvent.WAITING));
 
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-            throw new IllegalActionException(this,
-                    "InternalError " + "exception during a sleeping thread.");
-        }
-
+        LocalZenoUtilities.sleepProcess(this);
         return super.prefire();
     }
 

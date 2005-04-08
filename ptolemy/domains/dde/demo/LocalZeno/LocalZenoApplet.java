@@ -252,6 +252,8 @@ public class LocalZenoApplet extends PtolemyApplet {
         toplevel.connect(_fork2.output1, _lowerTime.trigger);
         toplevel.connect(_lowerTime.output, _lowerPlotter.input);
 
+        System.out.println(toplevel.exportMoML());
+
         return toplevel;
     }
 
