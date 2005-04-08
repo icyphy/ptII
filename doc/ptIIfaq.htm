@@ -708,7 +708,7 @@ in classes in ptolemy.data.type.  A common misconception is
 that to add a type, one needs to add the new type to the type
 lattice by editing ptolemy.data.type.BaseType.
 However, you need only add a type to the type lattice if you want
-to compare that your type with the preexisting types (other
+to automatically convert your type to preexisting types (other
 than UNKNOWN and GENERAL).  If you have a type class, then the type
 system will check types for you.  For examples, see
 <CODE>$PTII/ptolemy/data/type/test/TestToken.java</CODE> and
