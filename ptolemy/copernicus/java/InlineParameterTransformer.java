@@ -795,79 +795,79 @@ public class InlineParameterTransformer extends SceneTransformer
     }
 
     // Given a local that points to an attribute, walk through the
-    // code to try to find a local that references the container of
-    // the attribute.
-    public Local getAttributeContainerRef(Entity container, SootMethod method,
-            Local local, Unit location, LocalDefs localDefs, LocalUses localUses,
-            Unit insertPoint) {
-        if (method.getName().equals("<init>")) {
-            //   System.out.println("
-        }
-
-        List definitionList = localDefs.getDefsOfAt(local, location);
-
-        if (definitionList.size() == 1) {
-            DefinitionStmt stmt = (DefinitionStmt) definitionList.get(0);
-            Value value = (Value) stmt.getRightOp();
-
-            if (value instanceof Local) {
-                return getAttributeContainerRef(container, method,
-                        (Local) value, stmt, localDefs, localUses, insertPoint);
-            } else if (value instanceof CastExpr) {
-                return getAttributeContainerRef(container, method,
-                        (Local) ((CastExpr) value).getOp(), stmt, localDefs,
-                        localUses, insertPoint);
-            } else if (value instanceof InstanceFieldRef) {
-                return (Local) ((InstanceFieldRef) value).getBase();
-            } else if (value instanceof NewExpr) {
-                // If we get to an object creation, then try
-                // to figure out where the variable is stored into a field.
-                Iterator pairs = localUses.getUsesOf(stmt).iterator();
-
-                while (pairs.hasNext()) {
-                    UnitValueBoxPair pair = (UnitValueBoxPair) pairs.next();
-
-                    if (pair.getUnit() instanceof DefinitionStmt) {
-                        DefinitionStmt useStmt = (DefinitionStmt) pair.getUnit();
-
-                        if (useStmt.getLeftOp() instanceof InstanceFieldRef) {
-                            InstanceFieldRef leftOp = ((InstanceFieldRef) useStmt
-                                    .getLeftOp());
-                            return (Local) leftOp.getBase();
-                        }
-                    }
-                }
-
-                throw new RuntimeException(
-                        "Could not determine the static value of " + local + " in "
-                        + method);
-            } else if (value instanceof NullConstant) {
-                // If we get to an assignment from null, then the
-                // attribute statically evaluates to null.
-                return null;
-            } else if (value instanceof ThisRef) {
-                JimpleBody body = (JimpleBody) method.getActiveBody();
-
-                // Manufacture a reference.
-                Local newLocal = FieldsForEntitiesTransformer
-                    .getLocalReferenceForEntity(container,
-                            method.getDeclaringClass(), body.getThisLocal(), body,
-                            insertPoint, _options);
-                return newLocal;
-            } else {
-                throw new RuntimeException("Unknown type of value: " + value
-                        + " in " + method);
-            }
-        } else {
-            String string = "More than one definition of = " + local + "\n";
-
-            for (Iterator i = definitionList.iterator(); i.hasNext();) {
-                string += ("Definition = " + i.next().toString());
-            }
-
-            throw new RuntimeException(string);
-        }
-    }
+	// code to try to find a local that references the container of
+	// the attribute.
+	public Local getAttributeContainerRef(Entity container, SootMethod method,
+	        Local local, Unit location, LocalDefs localDefs, LocalUses localUses,
+	        Unit insertPoint) {
+	    //if (method.getName().equals("<init>")) {
+	    //    //   System.out.println("
+	    //}
+	
+	    List definitionList = localDefs.getDefsOfAt(local, location);
+	
+	    if (definitionList.size() == 1) {
+	        DefinitionStmt stmt = (DefinitionStmt) definitionList.get(0);
+	        Value value = (Value) stmt.getRightOp();
+	
+	        if (value instanceof Local) {
+	            return getAttributeContainerRef(container, method,
+	                    (Local) value, stmt, localDefs, localUses, insertPoint);
+	        } else if (value instanceof CastExpr) {
+	            return getAttributeContainerRef(container, method,
+	                    (Local) ((CastExpr) value).getOp(), stmt, localDefs,
+	                    localUses, insertPoint);
+	        } else if (value instanceof InstanceFieldRef) {
+	            return (Local) ((InstanceFieldRef) value).getBase();
+	        } else if (value instanceof NewExpr) {
+	            // If we get to an object creation, then try
+	            // to figure out where the variable is stored into a field.
+	            Iterator pairs = localUses.getUsesOf(stmt).iterator();
+	
+	            while (pairs.hasNext()) {
+	                UnitValueBoxPair pair = (UnitValueBoxPair) pairs.next();
+	
+	                if (pair.getUnit() instanceof DefinitionStmt) {
+	                    DefinitionStmt useStmt = (DefinitionStmt) pair.getUnit();
+	
+	                    if (useStmt.getLeftOp() instanceof InstanceFieldRef) {
+	                        InstanceFieldRef leftOp = ((InstanceFieldRef) useStmt
+	                                .getLeftOp());
+	                        return (Local) leftOp.getBase();
+	                    }
+	                }
+	            }
+	
+	            throw new RuntimeException(
+	                    "Could not determine the static value of " + local + " in "
+	                    + method);
+	        } else if (value instanceof NullConstant) {
+	            // If we get to an assignment from null, then the
+	            // attribute statically evaluates to null.
+	            return null;
+	        } else if (value instanceof ThisRef) {
+	            JimpleBody body = (JimpleBody) method.getActiveBody();
+	
+	            // Manufacture a reference.
+	            Local newLocal = FieldsForEntitiesTransformer
+	                .getLocalReferenceForEntity(container,
+	                        method.getDeclaringClass(), body.getThisLocal(), body,
+	                        insertPoint, _options);
+	            return newLocal;
+	        } else {
+	            throw new RuntimeException("Unknown type of value: " + value
+	                    + " in " + method);
+	        }
+	    } else {
+	        String string = "More than one definition of = " + local + "\n";
+	
+	        for (Iterator i = definitionList.iterator(); i.hasNext();) {
+	            string += ("Definition = " + i.next().toString());
+	        }
+	
+	        throw new RuntimeException(string);
+	    }
+	}
 
     /** Attempt to determine the constant value of the given local,
      *  which is assumed to have a variable type.  Walk backwards
