@@ -836,6 +836,7 @@ proc createAndExecute {file} {
 	    || "$file" == "compat4/ControllersTestNonPreemptive.xml" \
 	    || "$file" == "compat4/ControllersTestPreemptive.xml" \
 	    || "$file" == "compat4/ContinuousClock.xml" \
+	    || "$file" == "compat4/CQBug1.xml" \
 	    || "$file" == "compat4/HierarchyTest.xml" \
 	    || "$file" == "compat4/LevelCrossingDetectorDetectsGlitches.xml" \
 	    || "$file" == "compat4/MultiplexorDE.xml" \
