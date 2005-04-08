@@ -142,7 +142,7 @@ public class GiottoScheduler extends Scheduler {
     /** The default Giotto frequency. Actors without a <I>frequency</I>
      *  parameter will execute with this frequency.
      */
-    protected static int _DEFAULT_GIOTTO_FREQUENCY = 1;
+    protected static final int _DEFAULT_GIOTTO_FREQUENCY = 1;
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////

@@ -91,7 +91,7 @@ public class Fraction extends Object {
      * depending how often a zero fraction is needed.  This may become
      * useful when this class is made into a Token.
      */
-    public static Fraction ZERO = new Fraction(0, 1);
+    public static final Fraction ZERO = new Fraction(0, 1);
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

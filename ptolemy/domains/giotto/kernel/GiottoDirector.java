@@ -704,7 +704,7 @@ public class GiottoDirector extends StaticSchedulingDirector
 
     /** The static default Giotto period is 100ms.
      */
-    protected static double _DEFAULT_GIOTTO_PERIOD = 0.1;
+    protected static final double _DEFAULT_GIOTTO_PERIOD = 0.1;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////

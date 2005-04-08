@@ -101,23 +101,23 @@ public class ExternalIOPortController extends AttributeController {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public members                    ////
-    // Prototype input port.
-    public static IOPort _GENERIC_INPUT = new IOPort();
+    /** Prototype input port. */
+    public static final IOPort _GENERIC_INPUT = new IOPort();
 
-    // Prototype output port.
-    public static IOPort _GENERIC_OUTPUT = new IOPort();
+    /** Prototype output port. */
+    public static final IOPort _GENERIC_OUTPUT = new IOPort();
 
-    // Prototype inout port.
-    public static IOPort _GENERIC_INOUT = new IOPort();
+    /** Prototype inout port. */
+    public static final IOPort _GENERIC_INOUT = new IOPort();
 
-    // Prototype input multiport.
-    public static IOPort _GENERIC_INPUT_MULTIPORT = new IOPort();
+    /** Prototype input multiport. */
+    public static final IOPort _GENERIC_INPUT_MULTIPORT = new IOPort();
 
-    // Prototype output multiport.
-    public static IOPort _GENERIC_OUTPUT_MULTIPORT = new IOPort();
+    /** Prototype output multiport. */
+    public static final IOPort _GENERIC_OUTPUT_MULTIPORT = new IOPort();
 
-    // Prototype inout multiport.
-    public static IOPort _GENERIC_INOUT_MULTIPORT = new IOPort();
+    /** Prototype inout multiport. */
+    public static final IOPort _GENERIC_INOUT_MULTIPORT = new IOPort();
 
     // Static initializer.
     static {

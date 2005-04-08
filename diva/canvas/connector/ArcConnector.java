@@ -106,7 +106,7 @@ public class ArcConnector extends AbstractConnector {
      *  are considered close to one another.  This determines how self-loops
      *  get drawn.
      */
-    protected static double _CLOSE_THRESHOLD = 5.0;
+    protected static final double _CLOSE_THRESHOLD = 5.0;
 
     /** The midpoint site. */
     private ArcMidpointSite _midpointSite;

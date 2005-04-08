@@ -72,16 +72,16 @@ public class MoveAction extends FigureAction {
     ////                         public variables                  ////
 
     /** Indicator for move down. */
-    public static MoveType DOWN = new MoveType();
+    public static final MoveType DOWN = new MoveType();
 
     /** Indicator for move to first. */
-    public static MoveType TO_FIRST = new MoveType();
+    public static final MoveType TO_FIRST = new MoveType();
 
     /** Indicator for move to last. */
-    public static MoveType TO_LAST = new MoveType();
+    public static final MoveType TO_LAST = new MoveType();
 
     /** Indicator for move up. */
-    public static MoveType UP = new MoveType();
+    public static final MoveType UP = new MoveType();
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
