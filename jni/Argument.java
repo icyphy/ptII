@@ -426,11 +426,11 @@ public class Argument extends AbstractSettableAttribute {
             StringTokenizer tokenizer = new StringTokenizer(_value, ",");
 
             try {
-                setInput(new Boolean(tokenizer.nextToken().toString())
+                setInput(Boolean.valueOf(tokenizer.nextToken().toString())
                         .booleanValue());
-                setOutput(new Boolean(tokenizer.nextToken().toString())
+                setOutput(Boolean.valueOf(tokenizer.nextToken().toString())
                         .booleanValue());
-                setReturn(new Boolean(tokenizer.nextToken().toString())
+                setReturn(Boolean.valueOf(tokenizer.nextToken().toString())
                         .booleanValue());
                 setCType(tokenizer.nextToken().toString());
             } catch (java.util.NoSuchElementException e) {
