@@ -859,16 +859,16 @@ public abstract class Top extends JFrame {
     ////                         protected variables               ////
 
     /** Indicator that a file is saved. */
-    static protected int _SAVED = 0;
+    protected static final int _SAVED = 0;
 
     /** Indicator that a file is discarded. */
-    static protected int _DISCARDED = 1;
+    protected static final int _DISCARDED = 1;
 
     /** Indicator that a close operation is canceled. */
-    static protected int _CANCELED = 2;
+    protected static final int _CANCELED = 2;
 
     /** Indicator that a file save failed. */
-    static protected int _FAILED = 3;
+    protected static final int _FAILED = 3;
 
     /** The most recent directory used in a file dialog. */
     protected static File _directory = null;

@@ -83,10 +83,10 @@ public class BooleanToken extends AbstractConvertibleToken
     ////                         public variables                  ////
 
     /** True-valued token. */
-    public static BooleanToken TRUE = new BooleanToken(true);
+    public static final BooleanToken TRUE = new BooleanToken(true);
 
     /** False-valued token. */
-    public static BooleanToken FALSE = new BooleanToken(false);
+    public static final BooleanToken FALSE = new BooleanToken(false);
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
