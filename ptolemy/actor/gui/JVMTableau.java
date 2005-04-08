@@ -116,6 +116,7 @@ public class JVMTableau extends Tableau {
             JButton GCButton = new JButton("Request Garbage Collection");
             GCButton.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent event) {
+                        // FindBugs warns about System.gc, but it is ok
                         System.gc();
                         updateMemoryStatistics(memoryArea);
                     }
