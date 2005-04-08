@@ -359,7 +359,7 @@ public class CGNonStrictTest extends Sink {
     /** Exception message that is used if we are running under
      *  the nightly build and the trainingMode parameter is true.
      */
-    public static String TRAINING_MODE_ERROR_MESSAGE =
+    public static final String TRAINING_MODE_ERROR_MESSAGE =
     "Training Mode set for test actor and isRunningNightlyBuild()\n"
     + "  returned true, indicating that the\n"
     + "  ptolemy.ptII.isRunningNightlyBuild property is set.\n"

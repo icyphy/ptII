@@ -43,16 +43,16 @@ public class ExtendedMouseFilter extends MouseFilter {
     /** The default mouse filter -- accepts button 1 with no
      * modifiers.
      */
-    public static MouseFilter defaultFilter = new ExtendedMouseFilter(1);
+    public static final MouseFilter defaultFilter = new ExtendedMouseFilter(1);
 
     /** The default selection filter -- accepts button 1 with <i>no</i>
      * modifiers.
      */
-    public static MouseFilter selectionFilter = new ExtendedMouseFilter(1);
+    public static final MouseFilter selectionFilter = new ExtendedMouseFilter(1);
 
     /** The alternate selection filter -- accepts button 1 with shift.
      */
-    public static MouseFilter alternateSelectionFilter = new ExtendedMouseFilter(1,
+    public static final MouseFilter alternateSelectionFilter = new ExtendedMouseFilter(1,
             InputEvent.SHIFT_DOWN_MASK);
 
     /** The mouse button mask

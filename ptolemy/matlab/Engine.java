@@ -181,7 +181,7 @@ public class Engine {
     static int engOutputBufferSize = 2048;
 
     /** Used for synchronization. */
-    public static Integer semaphore = new Integer(0);
+    public static final Integer semaphore = new Integer(0);
 
     // semaphore is public so that javadoc works.
 

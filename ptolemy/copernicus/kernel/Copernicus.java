@@ -743,7 +743,7 @@ public class Copernicus {
     ////                         public variables                  ////
 
     /** The name of the GeneratorAttribute */
-    public static String GENERATOR_NAME = "_generator";
+    public static final String GENERATOR_NAME = "_generator";
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////

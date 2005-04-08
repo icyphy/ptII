@@ -41,16 +41,16 @@ public class MouseFilter {
     /** The default mouse filter -- accepts button 1 with no
      * modifiers.
      */
-    public static MouseFilter defaultFilter = new MouseFilter(1);
+    public static final MouseFilter defaultFilter = new MouseFilter(1);
 
     /** The default selection filter -- accepts button 1 with <i>no</i>
      * modifiers.
      */
-    public static MouseFilter selectionFilter = new MouseFilter(1);
+    public static final MouseFilter selectionFilter = new MouseFilter(1);
 
     /** The alternate selection filter -- accepts button 1 with shift.
      */
-    public static MouseFilter alternateSelectionFilter = new MouseFilter(1,
+    public static final MouseFilter alternateSelectionFilter = new MouseFilter(1,
             InputEvent.SHIFT_MASK);
 
     /** The mouse button mask
