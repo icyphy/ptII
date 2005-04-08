@@ -61,6 +61,7 @@ import ptolemy.graph.Edge;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
@@ -235,6 +236,13 @@ public class PSDFScheduler extends BaseSDFScheduler {
         if (director instanceof PSDFDirector) {
             String name = ((PSDFDirector) director).vectorizationFactor.getName(model);
             vectorizationFactorExpression = name.replaceAll("\\.", "::");
+            if (vectorizationFactorExpression.indexOf(" ") != -1) {
+                throw new InternalErrorException("The vectorizationFactor "
+                        + "PSDFDirector parameter must "
+                        + "not have spaces in its value.  The original value "
+                        + "was \"" + name + "\". Try changing the name of "
+                        + "director.");
+            }
         }
 
         PSDFGraphReader graphReader = new PSDFGraphReader();
