@@ -202,9 +202,10 @@ public class RemoveProperties implements MoMLFilter {
         // The properties to be removed.
         _propertiesToBeRemoved = new HashMap();
 
-        // stopTime after Ptolemy II 5.0
+        // For the stopTime parameter after Ptolemy II 5.0, if the stop time 
+        // parameter has an old default value, remove it.
         // The stopTime used to have a default value as the Double.MAX_VALUE.
-        // Now the default value is Infinity.
+        // Now the default value is Infinity. 
         HashMap removePropertyStopTime = new HashMap();
 
         // Key = attribute name, Value = attribute value
@@ -216,5 +217,23 @@ public class RemoveProperties implements MoMLFilter {
         removePropertyStopTime.put("ptolemy.data.expr.Parameter", null);
 
         _propertiesToBeRemoved.put("stopTime", removePropertyStopTime);
+
+        // For the directorClass of ModalModel after Ptolemy II 5.0, if the
+        // default value of the directorClass is HSDirector, remove it. 
+        // Note that if the directorClass is chosedn as HSDirector, it is the
+        // same as the default settings. So there is no need to record such
+        // information in the MoML file. 
+        HashMap removePropertyDirectorClass = new HashMap();
+
+        // Key = attribute name, Value = attribute value
+        removePropertyDirectorClass.put(
+                "ptolemy.domains.fsm.kernel.HSDirector", null);
+        removePropertyDirectorClass.put(
+                "ptolemy.kernel.util.StringAttribute", null);    
+        removePropertyDirectorClass.put(
+                "ptolemy.data.expr.StringParameter", null);    
+
+        _propertiesToBeRemoved.put(
+                "directorClass", removePropertyDirectorClass);
     }
 }
