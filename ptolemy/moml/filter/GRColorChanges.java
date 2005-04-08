@@ -67,7 +67,7 @@ public class GRColorChanges implements MoMLFilter {
     public String filterAttributeValue(NamedObj container, String element,
             String attributeName, String attributeValue) {
         if ((attributeValue != null) && (attributeName != null)) {
-            if (attributeValue.equals("RGB Color")
+            if (attributeValue.equals("RGB color")
                     && attributeName.equals("name")
                     && _actorsWithRGBColor.contains(container.getClass()
                             .getName())) {
@@ -154,21 +154,22 @@ public class GRColorChanges implements MoMLFilter {
     public String toString() {
         StringBuffer results = new StringBuffer(getClass().getName()
                 + ": Update GR actor with the following changes:\n");
-        results.append("\tParameter name \"RGB Color\" --> \"diffuseColor\"");
+        results.append("\tParameter name \"RGB color\" --> \"diffuseColor\"");
         return results.toString();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** Set of actors with parameter named "RGB Color" */
+    /** Set of actors with parameter named "RGB color" */
     private static HashSet _actorsWithRGBColor = new HashSet();
 
     static {
         GRColorChanges._actorsWithRGBColor.add("ptolemy.domains.gr.lib.Box3D");
         GRColorChanges._actorsWithRGBColor.add(
                 "ptolemy.domains.gr.lib.CircularSweep3D");
-        GRColorChanges._actorsWithRGBColor.add("ptolemy.domains.gr.lib.Cone3D");
+        GRColorChanges._actorsWithRGBColor.add(
+                "ptolemy.domains.gr.lib.Cone3D");
         GRColorChanges._actorsWithRGBColor.add(
                 "ptolemy.domains.gr.lib.Cylinder3D");
         GRColorChanges._actorsWithRGBColor.add(
@@ -179,7 +180,8 @@ public class GRColorChanges implements MoMLFilter {
                 "ptolemy.domains.gr.lib.Sphere3D");
         GRColorChanges._actorsWithRGBColor.add(
                 "ptolemy.domains.gr.lib.TextString3D");
-        GRColorChanges._actorsWithRGBColor.add("ptolemy.domains.gr.lib.Torus3D");
+        GRColorChanges._actorsWithRGBColor.add(
+                "ptolemy.domains.gr.lib.Torus3D");
     }
 
     /** Flag indicating that we found one whose name needed changing. */
