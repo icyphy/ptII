@@ -158,7 +158,7 @@ public class CheckSize {
                             + " not a CompositeActor.");
                 }
 
-                if (analysis.equals("")) {
+                if (analysis.toString().equals("")) {
                     analysis.append(" seems to be OK.");
                 }
             } catch (Throwable throwable) {
