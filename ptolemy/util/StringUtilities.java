@@ -275,7 +275,7 @@ public class StringUtilities {
                 .getResource(namedObjPath);
 
             if (namedObjURL != null) {
-                String namedObjFileName = namedObjURL.getFile().toString();
+                String namedObjFileName = namedObjURL.getFile();
 
                 // FIXME: How do we get from a URL to a pathname?
                 if (namedObjFileName.startsWith("file:")) {
@@ -316,7 +316,7 @@ public class StringUtilities {
                     ptsupportJarName = "/DMptolemy/XMptsupport.jar";
 
                     if (home.lastIndexOf(ptsupportJarName) != -1) {
-                        home.substring(0, home.lastIndexOf(ptsupportJarName));
+                        home = home.substring(0, home.lastIndexOf(ptsupportJarName));
                     }
                 }
             }
