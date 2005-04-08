@@ -163,6 +163,7 @@ public class KeyToken extends Token {
          *  @return A KeyType
          */
         public Object clone() {
+            // FIXME: Note that we do not call super.clone() here.  Is that right?
             return this;
         }
 
