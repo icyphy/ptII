@@ -851,7 +851,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="315.0, 85.0">
             </property>
         </property>
-        <property name="Parameterized SDF Director" class="ptolemy.domains.psdf.kernel.PSDFDirector">
+        <property name="Parameterized_SDF_Director" class="ptolemy.domains.psdf.kernel.PSDFDirector">
             <property name="_location" class="ptolemy.kernel.util.Location" value="165.0, 85.0">
             </property>
         </property>
