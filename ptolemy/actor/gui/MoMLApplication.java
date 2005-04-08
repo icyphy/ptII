@@ -224,7 +224,9 @@ public class MoMLApplication implements ExecutionListener {
                                 System.exit(0);
                             }
                         };
-
+                    // Note that we start the thread here, which could
+                    // be risky when we subclass, since the thread will be
+                    // started before the subclass constructor finishes (FindBugs)
                     waitThread.start();
                 }
             }
