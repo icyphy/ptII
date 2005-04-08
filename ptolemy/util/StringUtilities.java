@@ -801,6 +801,8 @@ public class StringUtilities {
     public static final int ELLIPSIS_LENGTH_SHORT = 400;
 
     /** Location of Application preferences such as the user library.
+     *  This field is not final in case other applications want to
+     *  set it to a different directory.
      *  @see #preferencesDirectory()
      */
     public static String PREFERENCES_DIRECTORY = ".ptolemyII";
