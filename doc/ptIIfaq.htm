@@ -706,8 +706,7 @@ Ptolemy II Software Architecture," which can be found via
  <p>The Ptolemy Type system has a type lattice that is implemented
 in classes in ptolemy.data.type.  A common misconception is 
 that to add a type, one needs to add the new type to the type
-lattice.  As of Ptolemy II 5.0, the only
-way to add a type to the type lattice is to edit ptolemy.data.type.BaseType.
+lattice by editing ptolemy.data.type.BaseType.
 However, you need only add a type to the type lattice if you want
 to compare that your type with the preexisting types (other
 than UNKNOWN and GENERAL).  If you have a type class, then the type
