@@ -468,10 +468,11 @@ nightly: ptclean ptbuild \
 	findchanges \
 	ChangeLog \
 	jnlp \
-	remote2 \
 	remote4 \
-	remote5 \
-	remote6
+	remote5
+
+#	remote2
+#	remote6
 
 ####################################
 # Rules that operate in ~ptII
@@ -1370,7 +1371,7 @@ $(REMOTE4PTIIDIST): $(PTII_FULL)
 	@echo "#"
 	@echo "$@ `date`"
 	@echo "`uptime`"
-	(cd $(REMOTE4HOME); $(TAR) -zxf $(PTII_FULL))
+	(cd $(REMOTE4HOME); $(TAR) -xf $(PTII_FULL))
 	@echo "Creating  vendors/jode"
 	(cd $(PTIIHOME); $(TAR) -cf - vendors/jode) | \
 		(cd $(REMOTE4PTIIDIST); $(TAR) -xf -)
@@ -1469,7 +1470,7 @@ $(REMOTE5PTIIDIST): $(PTII_FULL)
 	@echo "#"
 	@echo "$@ `date`"
 	@echo "`uptime`"
-	(cd $(REMOTE5HOME); $(TAR) -zxf $(PTII_SRC))
+	(cd $(REMOTE5HOME); $(TAR) -xf $(PTII_SRC))
 
 remote5configure:
 	@echo "#"
