@@ -155,9 +155,9 @@ public class Argument extends AbstractSettableAttribute {
      * @return the string containing the argument specifications
      */
     public String getExpression() {
-        String ret = new Boolean(isInput()).toString() + ","
-            + new Boolean(isOutput()).toString() + ","
-            + new Boolean(isReturn()).toString() + "," + getCType();
+        String ret = Boolean.valueOf(isInput()).toString() + ","
+            + Boolean.valueOf(isOutput()).toString() + ","
+            + Boolean.valueOf(isReturn()).toString() + "," + getCType();
         return ret;
     }
 
