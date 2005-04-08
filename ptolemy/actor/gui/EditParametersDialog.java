@@ -347,7 +347,7 @@ public class EditParametersDialog extends ComponentDialog
 
         if (dialog.buttonPressed().equals("OK") && !newName.equals("")) {
             String moml = "<property name=\"" + newName + "\" value=\""
-                + newDefValue.toString() + "\" class=\""
+                + newDefValue + "\" class=\""
                 + _query.getStringValue("class") + "\"/>";
             _target.addChangeListener(this);
 

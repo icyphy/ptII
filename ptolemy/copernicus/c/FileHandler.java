@@ -115,7 +115,7 @@ public class FileHandler {
     public static void write(String fileName, String code) {
         try {
             PrintWriter out = new PrintWriter(new FileOutputStream(fileName));
-            out.println(code.toString());
+            out.println(code);
             out.close();
         } catch (IOException e) {
             throw new RuntimeException(e.toString()

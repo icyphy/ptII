@@ -54,7 +54,7 @@ public class MakefileGenerator_C6000 extends MakeFileGenerator {
         String code = setupVariables(source) + specifyRules()
             + specifyFiles(source) + specifyTargets(source);
 
-        FileHandler.write(className + ".make", code.toString());
+        FileHandler.write(className + ".make", code);
     }
 
     ///////////////////////////////////////////////////////////////////
