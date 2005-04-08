@@ -229,8 +229,10 @@ public class LocalZenoApplet extends PtolemyApplet {
         _lowerTime = new Const(toplevel, "lowerTime");
         _lowerPlotter = new TimedPlotter(toplevel, "lowerPlotter");
 
-        _fBack1.delay.setToken(new DoubleToken(4.5));
-        _fBack2.delay.setToken(new DoubleToken(4.5));
+        //_fBack1.delay.setToken(new DoubleToken(4.5));
+        //_fBack2.delay.setToken(new DoubleToken(4.5));
+        _fBack1.delay.setToken(new DoubleToken(1.0));
+        _fBack2.delay.setToken(new DoubleToken(1.0));
 
         // Set up ports, relations and connections
         Relation clkRelation = toplevel.connect(_clock.output, _join1.input);
@@ -252,7 +254,7 @@ public class LocalZenoApplet extends PtolemyApplet {
         toplevel.connect(_fork2.output1, _lowerTime.trigger);
         toplevel.connect(_lowerTime.output, _lowerPlotter.input);
 
-        System.out.println(toplevel.exportMoML());
+        //System.out.println(toplevel.exportMoML());
 
         return toplevel;
     }
