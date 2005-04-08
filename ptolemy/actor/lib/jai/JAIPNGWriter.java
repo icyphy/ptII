@@ -128,12 +128,6 @@ public class JAIPNGWriter extends JAIWriter {
     /** The bit depth.  The initial default is an integer of value 8. */
     public Parameter bitDepth;
 
-    /** If <i>false</i>, then overwrite the specified file if it exists
-     *  without asking.  If <i>true</i> (the default), then if the file
-     *  exists, ask for confirmation before overwriting.
-     */
-    public Parameter confirmOverwrite;
-
     /** The gamma.  The initial default is a double of value 0.455. */
     public Parameter gamma;
 
