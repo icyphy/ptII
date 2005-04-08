@@ -92,7 +92,7 @@ public class CallGraphPruner {
         sootOptions.put("double-set-new", "hybrid");
 
         //CHATransformer.v().transform("cg.cha", sootOptions);
-        SparkOptions sparkOptions = new SparkOptions(sootOptions);
+        /*SparkOptions sparkOptions = */ new SparkOptions(sootOptions);
 
         /*
           PAG analyzer = new PAG(sparkOptions);

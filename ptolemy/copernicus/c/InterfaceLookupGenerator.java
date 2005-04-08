@@ -62,7 +62,6 @@ public class InterfaceLookupGenerator {
      */
     public String generate(SootClass source) {
         StringBuffer code = new StringBuffer();
-        StringBuffer header = new StringBuffer();
 
         // Nothing needs to be done if the class implements no interfaces.
         if (AnalysisUtilities.getAllInterfacesOf(source).size() <= 0) {

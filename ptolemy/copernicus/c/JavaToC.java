@@ -132,11 +132,11 @@ public class JavaToC {
      *  @param args Application arguments.
      */
     public static void main(String[] args) throws IOException {
-        String classPath = new String(args[0]);
-        String className = new String();
+        String classPath = args[0];
+        String className = "";
 
         // Default flags.
-        String compileMode = new String("full");
+        //String compileMode = "full";
         boolean verbose = false;
 
         // Actual flags.

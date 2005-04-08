@@ -208,7 +208,7 @@ public class JAIToDoubleMatrix extends Transformer {
             }
         }
 
-        DoubleMatrixToken matrixToken = new DoubleMatrixToken(data);
+        //DoubleMatrixToken matrixToken = new DoubleMatrixToken(data);
         output.send(0, new DoubleMatrixToken(data));
     }
 

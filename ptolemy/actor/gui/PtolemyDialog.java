@@ -112,8 +112,6 @@ public abstract class PtolemyDialog extends JFrame implements ActionListener {
 
         if (screenBounds != null) {
             Dimension size = getPreferredSize();
-            int relX = (screenBounds.width / 2) - (size.width / 2);
-            int relY = (screenBounds.height / 2) - (size.height / 2);
             int x = (screenBounds.x + (screenBounds.width / 2))
                 - (size.width / 2);
             int y = (screenBounds.y + (screenBounds.height / 2))
