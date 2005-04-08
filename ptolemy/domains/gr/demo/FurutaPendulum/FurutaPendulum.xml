@@ -2,13 +2,15 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="FurutaPendulum" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[688, 479]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[16, 44]">
     </property>
     <property name="CT" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
+        <property name="timeResolution" class="ptolemy.moml.SharedParameter" value="1.0E-10">
+        </property>
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="3.0">
@@ -25,8 +27,6 @@
         </property>
         <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
         </property>
-        <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
-        </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
@@ -36,16 +36,6 @@
                 <property name="choice1" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.BackwardEulerSolver&quot;">
                 </property>
                 <property name="choice2" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ForwardEulerSolver&quot;">
-                </property>
-            </property>
-        </property>
-        <property name="breakpointODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;">
-            <property name="style" class="ptolemy.actor.gui.style.EditableChoiceStyle">
-                <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;">
-                </property>
-                <property name="choice1" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.BackwardEulerSolver&quot;">
-                </property>
-                <property name="choice2" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ImpulseBESolver&quot;">
                 </property>
             </property>
         </property>
@@ -84,7 +74,7 @@ The objective is to swing the pendulum up and then balance it.
         <property name="_location" class="ptolemy.kernel.util.Location" value="[186.5, 342.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={7, 13, 903, 595}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={7, 13, 903, 597}, maximized=false}">
     </property>
     <property name="annotation2" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -231,12 +221,9 @@ time (CT).</text></svg></configure>
         <entity name="x1_dot" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="x2">
             </property>
-            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
-                </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                </property>
-            </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
             <port name="x1" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
@@ -270,12 +257,9 @@ time (CT).</text></svg></configure>
         <entity name="x2_dot" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="1.0/(alfa*beta+pow(alfa*sin(x1),2.0)-pow(gamma*cos(x1),2.0))*((alfa*beta+pow(alfa*sin(x1), 2.0))*pow(x4,2.0)*sin(x1)*cos(x1)-pow(gamma*x2,2.0)*sin(x1)*cos(x1)+2.0*alfa*gamma*x2*x4*sin(x1)*pow(cos(x1),2.0)-gamma*cos(x1)*g*u+(alfa*beta+pow(alfa*sin(x1),2.0))*epsilon/alfa*sin(x1))">
             </property>
-            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
-                </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                </property>
-            </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
             <port name="x1" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
@@ -309,12 +293,9 @@ time (CT).</text></svg></configure>
         <entity name="x3_dot" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="x4">
             </property>
-            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
-                </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                </property>
-            </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
             <port name="x1" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
@@ -348,12 +329,9 @@ time (CT).</text></svg></configure>
         <entity name="x4_dot" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="1/(alfa*beta+pow(alfa*sin(x1),2.0)-pow(gamma*cos(x1),2.0))*(-gamma*alfa*pow(x4,2.0)*sin(x1)*pow(cos(x2),2.0)-gamma*epsilon*sin(x1)*cos(x1)+gamma*alfa*pow(x2,2.0)*sin(x1)-2*pow(alfa,2.0)*x2*x4*sin(x1)*cos(x1)+alfa*g*u)">
             </property>
-            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
-                </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                </property>
-            </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
             <port name="x1" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
@@ -373,12 +351,9 @@ time (CT).</text></svg></configure>
         <entity name="output_Theta" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="x1">
             </property>
-            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
-                </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                </property>
-            </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
             <port name="x1" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
@@ -395,12 +370,9 @@ time (CT).</text></svg></configure>
         <entity name="output_dTheta" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="x2">
             </property>
-            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
-                </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                </property>
-            </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
             <port name="x1" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
@@ -417,12 +389,9 @@ time (CT).</text></svg></configure>
         <entity name="output_Phi" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="x3">
             </property>
-            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
-                </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                </property>
-            </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
             <port name="x1" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
@@ -439,12 +408,9 @@ time (CT).</text></svg></configure>
         <entity name="output_dPhi" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="x4">
             </property>
-            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
-                </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                </property>
-            </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
             <port name="x1" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
@@ -560,7 +526,7 @@ time (CT).</text></svg></configure>
 <title>u</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="0.0" max="3.0"/>
+<xRange min="0.0" max="2.29"/>
 <yRange min="-0.5" max="0.5"/>
 </plot>?>
         </configure>
@@ -649,7 +615,7 @@ time (CT).</text></svg></configure>
 <title>E+mode</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="0.0" max="3.0"/>
+<xRange min="0.0" max="2.29"/>
 <yRange min="-2.0" max="2.0"/>
 </plot>?>
         </configure>
@@ -728,11 +694,15 @@ time (CT).</text></svg></configure>
             </property>
             <property name="height" class="ptolemy.data.expr.Parameter" value="0.6">
             </property>
-            <property name="diffuseColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.0,0.0,1.0}">
+            <property name="diffuseColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6, 0.0, 0.0}">
             </property>
-            <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
+            <property name="shininess" class="ptolemy.actor.parameters.DoubleRangeParameter" value="1.0">
             </property>
-            <property name="RGB color" class="ptolemy.data.expr.Parameter" value="[0.6, 0.0, 0.0]">
+            <property name="Cylinder3DIcon" class="ptolemy.vergil.icon.EditorIcon">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={120, 11, 815, 516}, maximized=false}">
+                </property>
+                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                </property>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 60.0]">
             </property>
@@ -742,11 +712,15 @@ time (CT).</text></svg></configure>
             </property>
             <property name="height" class="ptolemy.data.expr.Parameter" value="0.8">
             </property>
-            <property name="diffuseColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.2,0.8,1.0}">
+            <property name="diffuseColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.6, 0.0}">
             </property>
-            <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
+            <property name="shininess" class="ptolemy.actor.parameters.DoubleRangeParameter" value="1.0">
             </property>
-            <property name="RGB color" class="ptolemy.data.expr.Parameter" value="[0.0, 0.6, 0.0]">
+            <property name="Cylinder3DIcon" class="ptolemy.vergil.icon.EditorIcon">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={120, 11, 815, 516}, maximized=false}">
+                </property>
+                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                </property>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 165.0]">
             </property>
@@ -756,16 +730,20 @@ time (CT).</text></svg></configure>
             </property>
             <property name="height" class="ptolemy.data.expr.Parameter" value="0.7">
             </property>
-            <property name="diffuseColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.6,0.0,1.0}">
+            <property name="diffuseColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.7, 0.7, 0.7}">
             </property>
-            <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
+            <property name="shininess" class="ptolemy.actor.parameters.DoubleRangeParameter" value="1.0">
             </property>
-            <property name="RGB color" class="ptolemy.data.expr.Parameter" value="[0.7, 0.7, 0.7]">
+            <property name="Cylinder3DIcon" class="ptolemy.vergil.icon.EditorIcon">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={120, 11, 815, 516}, maximized=false}">
+                </property>
+                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                </property>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 320.0]">
             </property>
         </entity>
-        <entity name="ViewScreen" class="ptolemy.domains.gr.lib.ViewScreen">
+        <entity name="ViewScreen" class="ptolemy.domains.gr.lib.ViewScreen3D">
             <property name="horizontalResolution" class="ptolemy.data.expr.Parameter" value="400">
             </property>
             <property name="verticalResolution" class="ptolemy.data.expr.Parameter" value="400">
@@ -848,9 +826,15 @@ time (CT).</text></svg></configure>
         <entity name="Base Pivot" class="ptolemy.domains.gr.lib.Sphere3D">
             <property name="radius" class="ptolemy.data.expr.Parameter" value="0.05">
             </property>
-            <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
+            <property name="diffuseColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.7}">
             </property>
-            <property name="RGB color" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.7]">
+            <property name="shininess" class="ptolemy.actor.parameters.DoubleRangeParameter" value="1.0">
+            </property>
+            <property name="Sphere3DIcon" class="ptolemy.vergil.icon.EditorIcon">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={120, 11, 815, 516}, maximized=false}">
+                </property>
+                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                </property>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 240.0]">
             </property>
@@ -882,13 +866,19 @@ time (CT).</text></svg></configure>
             </property>
         </entity>
         <entity name="base" class="ptolemy.domains.gr.lib.PolyCylinder3D">
-            <property name="shininess" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
-            <property name="polygon" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.85, 0.0, 0.75, 0.10, 0.0,0.10]">
+            <property name="polygon" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, 0.85, 0.0, 0.75, 0.10, 0.0,0.10}">
             </property>
             <property name="thickness" class="ptolemy.data.expr.Parameter" value="1.0">
             </property>
-            <property name="RGB color" class="ptolemy.data.expr.Parameter" value="[0.3, 0.3, 0.0]">
+            <property name="diffuseColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.3, 0.3, 0.0}">
+            </property>
+            <property name="shininess" class="ptolemy.actor.parameters.DoubleRangeParameter" value="1.0">
+            </property>
+            <property name="PolyCylinder3DIcon" class="ptolemy.vergil.icon.EditorIcon">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={120, 11, 815, 516}, maximized=false}">
+                </property>
+                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                </property>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 425.0]">
             </property>
@@ -1234,11 +1224,7 @@ time (CT).</text></svg></configure>
             <link port="MultiplyDivide.output" relation="relation24"/>
         </entity>
         <entity name="modal controller" class="ptolemy.domains.fsm.modal.ModalModel">
-            <property name="directorClass" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.FSMDirector">
-            </property>
-            <property name="_Director" class="ptolemy.domains.fsm.kernel.FSMDirector">
-                <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
-                </property>
+            <property name="directorClass" class="ptolemy.data.expr.StringParameter" value="ptolemy.domains.fsm.kernel.FSMDirector">
             </property>
             <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
             </property>
@@ -2169,7 +2155,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                     </property>
                 </entity>
                 <entity name="Phi0" class="ptolemy.actor.lib.Const">
-                    <property name="value" class="ptolemy.data.expr.Parameter" value="-2.4921920930947">
+                    <property name="value" class="ptolemy.data.expr.Parameter" value="-2.4908407894966">
                     </property>
                     <doc>Create a constant sequence</doc>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="165.0, 315.0">
