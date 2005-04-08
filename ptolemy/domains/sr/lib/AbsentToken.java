@@ -50,5 +50,5 @@ public class AbsentToken extends Token {
     ////                         public variables                  ////
 
     /** An instance of an absent token. */
-    public static AbsentToken ABSENT = new AbsentToken();
+    public static final AbsentToken ABSENT = new AbsentToken();
 }
