@@ -199,23 +199,27 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
      *  @exception IOException If the write fails.
      */
     public void writeFile(File file) throws IOException {
-        java.io.FileWriter fileWriter = new java.io.FileWriter(file);
-        String name = getModel().getName();
-
-        String filename = file.getName();
-        int period = filename.indexOf(".");
-
-        if (period > 0) {
-            name = filename.substring(0, period);
-        } else {
-            name = filename;
-        }
-
-        try {
-            getModel().exportMoML(fileWriter, 0, name);
-        } finally {
-            fileWriter.close();
-        }
+    	java.io.FileWriter fileWriter = null;
+    	try {
+    		fileWriter = new java.io.FileWriter(file);
+    		
+    		String name = getModel().getName();
+    		
+    		String filename = file.getName();
+    		int period = filename.indexOf(".");
+    		
+    		if (period > 0) {
+    			name = filename.substring(0, period);
+    		} else {
+    			name = filename;
+    		}
+    		
+    		getModel().exportMoML(fileWriter, 0, name);
+    	} finally {
+    		if (fileWriter != null) {
+                fileWriter.close();
+            }
+    	}
     }
 
     ///////////////////////////////////////////////////////////////////
