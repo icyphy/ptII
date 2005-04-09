@@ -165,9 +165,15 @@ public class TreeTableau extends Tableau {
          *  @exception IOException If the write fails.
          */
         protected void _writeFile(File file) throws IOException {
-            java.io.FileWriter fout = new java.io.FileWriter(file);
-            getModel().exportMoML(fout);
-            fout.close();
+            java.io.FileWriter fout = null;
+            try {
+            	fout = new java.io.FileWriter(file);
+            	getModel().exportMoML(fout);
+            } finally {
+                if (fout != null) {
+                    fout.close();   
+                }
+            }
         }
     }
 

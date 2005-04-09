@@ -316,18 +316,23 @@ public class ConfigurableAttribute extends Attribute implements Configurable,
         if ((_configureSource != null) && !_configureSource.trim().equals("")) {
             URL textFile = new URL(_configureSource);
             InputStream stream = textFile.openStream();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(
-                                                               stream));
-            String line = reader.readLine();
-
-            while (line != null) {
-                value.append(line);
-                value.append("\n");
-                line = reader.readLine();
+            BufferedReader reader = null;
+            try {
+            	reader = new BufferedReader(new InputStreamReader(
+            			stream));
+            	String line = reader.readLine();
+            	
+            	while (line != null) {
+            		value.append(line);
+            		value.append("\n");
+            		line = reader.readLine();
+            	}
+            } finally {
+            	if (reader != null) {
+            		reader.close();
+            	}
             }
-
-            reader.close();
-
+            
             // NOTE: Do we need to close both?  Java docs don't say.
             stream.close();
         }
