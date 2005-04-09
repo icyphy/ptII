@@ -474,7 +474,7 @@ public class NavigableEffigy extends PtolemyEffigy {
         private boolean checkFile(URL url) {
             boolean answer = false;
 
-            BufferedReader reader;
+            BufferedReader reader = null;
 
             try {
                 reader = new BufferedReader(new InputStreamReader(
@@ -492,6 +492,15 @@ public class NavigableEffigy extends PtolemyEffigy {
                 }
             } catch (IOException e1) {
                 e1.printStackTrace();
+            } finally {
+            	if (reader != null) {
+                    try {
+                        reader.close();
+                    } catch (IOException ex) {
+                        ex.printStackTrace();   
+                    }
+                    
+                }
             }
 
             return answer;
