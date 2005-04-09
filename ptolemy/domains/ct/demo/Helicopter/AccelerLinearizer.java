@@ -144,7 +144,7 @@ public class AccelerLinearizer extends TypedAtomicActor {
         outputR.setMultiport(false);
         outputR.setTypeEquals(BaseType.DOUBLE);
 
-        String sP = new String();
+        String sP = "";
 
         for (int i = 0; i < 5; i++) {
             sP = sP + _alphaP[i] + " ";

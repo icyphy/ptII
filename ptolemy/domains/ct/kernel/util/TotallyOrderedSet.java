@@ -247,7 +247,7 @@ public class TotallyOrderedSet {
      *  @return The string description of the set.
      */
     public String toString() {
-        String result = new String();
+        String result = "";
         Iterator elements = elementList().iterator();
 
         while (elements.hasNext()) {

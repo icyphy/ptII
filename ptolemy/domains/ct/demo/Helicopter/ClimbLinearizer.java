@@ -144,7 +144,7 @@ public class ClimbLinearizer extends TypedAtomicActor {
         outputR.setMultiport(false);
         outputR.setTypeEquals(BaseType.DOUBLE);
 
-        String sV = new String();
+        String sV = "";
 
         for (int i = 0; i < 4; i++) {
             sV = sV + _alphaV[i] + " ";

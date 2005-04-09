@@ -144,7 +144,7 @@ public class HoverLinearizer extends TypedAtomicActor {
         outputR.setMultiport(false);
         outputR.setTypeEquals(BaseType.DOUBLE);
 
-        String s = new String();
+        String s = "";
 
         for (int i = 0; i < 5; i++) {
             s = s + _alphaP[i] + " ";
