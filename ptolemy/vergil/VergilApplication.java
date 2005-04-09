@@ -349,10 +349,14 @@ public class VergilApplication extends MoMLApplication {
                 }
 
                 if (!file.isFile() || !file.exists()) {
+                    FileWriter writer = null;
                     try {
-                        file.createNewFile();
+                        if (!file.createNewFile()) {
+                            throw new Exception(file
+                                    + "already exists?");
+                        }
 
-                        FileWriter writer = new FileWriter(file);
+                        writer = new FileWriter(file);
                         writer.write("<entity name=\""
                                 + BasicGraphFrame.VERGIL_USER_LIBRARY_NAME
                                 + "\" class=\"ptolemy.moml.EntityLibrary\"/>");
@@ -360,6 +364,10 @@ public class VergilApplication extends MoMLApplication {
                     } catch (Exception ex) {
                         MessageHandler.error("Failed to create an empty user "
                                 + "library: " + libraryName, ex);
+                    } finally {
+                        if (writer != null) {
+                            writer.close();
+                        }
                     }
                 }
 
@@ -403,7 +411,7 @@ public class VergilApplication extends MoMLApplication {
             _parser.reset();
             _parser.setContext(configuration);
             _parser.parse(welcomeURL, welcomeURL);
-        } catch (Exception ex) {                     
+        } catch (Throwable throwable) {                     
             // OK, that did not work, try a different method.
             if (_configurationSubdirectory == null) {
                 _configurationSubdirectory = "full";
@@ -514,7 +522,7 @@ public class VergilApplication extends MoMLApplication {
 
                 // This will throw an Exception if we can't find the config.
                 _configurationURL = specToURL(potentialConfiguration);
-            } catch (Exception ex) {
+            } catch (Throwable ex) {
                 // The argument did not name a configuration, let the parent
                 // class have a shot.
                 return false;
