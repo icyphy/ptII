@@ -459,14 +459,20 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
                     // FIXME it would be nice if MoMLChangeRequest had the
                     // ability to read from a URL
                     StringBuffer buffer = new StringBuffer();
-                    FileReader reader = new FileReader(file);
-                    char[] chars = new char[50];
-
-                    while (reader.ready()) {
-                        int count = reader.read(chars, 0, 50);
-                        buffer.append(chars, 0, count);
+                    FileReader reader = null;
+                    try {
+                    	reader = new FileReader(file);
+                    	char[] chars = new char[50];
+                    	
+                    	while (reader.ready()) {
+                    		int count = reader.read(chars, 0, 50);
+                    		buffer.append(chars, 0, count);
+                    	}
+                    } finally {
+                    	if (reader != null) {
+                    		reader.close();   
+                    	}
                     }
-
                     PtolemyEffigy effigy = (PtolemyEffigy) getTableau()
                         .getContainer();
                     Configuration configuration = (Configuration) effigy
@@ -481,8 +487,8 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
                             library, buffer.toString(), file.toURL());
                     library.requestChange(request);
                     _setDirectory(chooser.getCurrentDirectory());
-                } catch (Exception ex) {
-                    MessageHandler.error("Library import failed.", ex);
+                } catch (Throwable throwable) {
+                    MessageHandler.error("Library import failed.", throwable);
                 }
             }
         }
