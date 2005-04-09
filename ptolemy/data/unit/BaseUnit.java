@@ -96,7 +96,7 @@ public class BaseUnit extends Parameter {
             Iterator attributes = attributeList(UnitCategory.class).iterator();
 
             if (attributes.hasNext()) {
-                UnitCategory category = (UnitCategory) attributes.next();
+                //UnitCategory category = (UnitCategory) attributes.next();
                 String name = getName();
                 UnitUtilities.registerUnitCategory(name);
 
