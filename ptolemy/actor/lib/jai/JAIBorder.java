@@ -247,9 +247,9 @@ public class JAIBorder extends Transformer {
     private int _topPadding;
 
     // Constants for more efficient execution.
-    private final int _BORDER_CONSTANT = 0;
-    private final int _BORDER_COPY = 1;
-    private final int _BORDER_REFLECT = 2;
-    private final int _BORDER_WRAP = 3;
-    private final int _BORDER_ZERO = 4;
+    private static final int _BORDER_CONSTANT = 0;
+    private static final int _BORDER_COPY = 1;
+    private static final int _BORDER_REFLECT = 2;
+    private static final int _BORDER_WRAP = 3;
+    private static final int _BORDER_ZERO = 4;
 }

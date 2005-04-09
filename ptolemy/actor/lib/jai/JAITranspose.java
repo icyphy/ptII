@@ -145,11 +145,11 @@ public class JAITranspose extends Transformer {
 
     /** An indicator for the type of transposition to use */
     private TransposeType _transposeType;
-    private final int _FLIP_ANTIDIAGONAL = 3;
-    private final int _FLIP_DIAGONAL = 2;
-    private final int _FLIP_HORIZONTAL = 1;
-    private final int _FLIP_VERTICAL = 0;
-    private final int _ROTATE_90 = 4;
-    private final int _ROTATE_180 = 5;
-    private final int _ROTATE_270 = 6;
+    private static final int _FLIP_ANTIDIAGONAL = 3;
+    private static final int _FLIP_DIAGONAL = 2;
+    private static final int _FLIP_HORIZONTAL = 1;
+    private static final int _FLIP_VERTICAL = 0;
+    private static final int _ROTATE_90 = 4;
+    private static final int _ROTATE_180 = 5;
+    private static final int _ROTATE_270 = 6;
 }

@@ -211,10 +211,10 @@ public class PitchDetector {
     private static int _sampleRate;
 
     // The highest pitch to search for.
-    private final double _maxAllowablePitch = 900;
+    private static final double _maxAllowablePitch = 900;
 
     // The lowest pitch to search for.
-    private final double _minAllowablePitch = 60;
+    private static final double _minAllowablePitch = 60;
     private int _maxAutoCorInd;
     private int _minAutoCorInd;
     private double[] _outPitchArray;

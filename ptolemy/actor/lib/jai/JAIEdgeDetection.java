@@ -317,55 +317,55 @@ public class JAIEdgeDetection extends Transformer {
     };
 
     /** Prespecified masks that the user may use */
-    private final float[] _sobelHorizontalFilter = {
+    private static final float[] _sobelHorizontalFilter = {
         1.0F, 0.0F, -1.0F, 2.0F, 0.0F, -2.0F, 1.0F, 0.0F, -1.0F
     };
-    private final float[] _sobelVerticalFilter = {
+    private static final float[] _sobelVerticalFilter = {
         -1.0F, -2.0F, -1.0F, 0.0F, 0.0F, 0.0F, 1.0F, 2.0F, 1.0F
     };
-    private final float[] _robertsHorizontalFilter = {
+    private static final float[] _robertsHorizontalFilter = {
         0.0F, 0.0F, -1.0F, 0.0F, 1.0F, 0.0F, 0.0F, 0.0F, 0.0F
     };
-    private final float[] _robertsVerticalFilter = {
+    private static final float[] _robertsVerticalFilter = {
         -1.0F, 0.0F, 0.0F, 0.0F, 1.0F, 0.0F, 0.0F, 0.0F, 0.0F
     };
-    private final float[] _prewittHorizontalFilter = {
+    private static final float[] _prewittHorizontalFilter = {
         1.0F, 0.0F, -1.0F, 1.0F, 0.0F, -1.0F, 1.0F, 0.0F, -1.0F
     };
-    private final float[] _prewittVerticalFilter = {
+    private static final float[] _prewittVerticalFilter = {
         -1.0F, -1.0F, -1.0F, 0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F
     };
-    private final float[] _freiAndChenHorizontalFilter = {
+    private static final float[] _freiAndChenHorizontalFilter = {
         1.0F, 0.0F, -1.0F, 1.414F, 0.0F, -1.414F, 1.0F, 0.0F, -1.0F
     };
-    private final float[] _freiAndChenVerticalFilter = {
+    private static final float[] _freiAndChenVerticalFilter = {
         -1.0F, -1.414F, -1.0F, 0.0F, 0.0F, 0.0F, 1.0F, 1.414F, 1.0F
     };
-    private final float[] _transparentFilter = {
+    private static final float[] _transparentFilter = {
         0.0F, 0.0F, 0.0F, 0.0F, 0.707F, 0.0F, 0.0F, 0.0F, 0.0F
     };
-    private final float[] _zeroFilter = {
+    private static final float[] _zeroFilter = {
         0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F
     };
-    private final float[] _diagonalFilter = {
+    private static final float[] _diagonalFilter = {
         1.0F, 1.0F, 0.0F, 1.0F, 0.0F, -1.0F, 0.0F, -1.0F, -1.0F
     };
-    private final float[] _backDiagonalFilter = {
+    private static final float[] _backDiagonalFilter = {
         0.0F, 1.0F, 1.0F, -1.0F, 0.0F, 1.0F, -1.0F, -1.0F, 0.0F
     };
 
     //Constants used for more efficient execution
-    private final int _BACKDIAGONAL = 0;
-    private final int _DIAGONAL = 1;
-    private final int _FREICHEN_HORIZONTAL = 2;
-    private final int _FREICHEN_VERTICAL = 3;
-    private final int _PREWITT_HORIZONTAL = 4;
-    private final int _PREWITT_VERTICAL = 5;
-    private final int _ROBERTS_HORIZONTAL = 6;
-    private final int _ROBERTS_VERTICAL = 7;
-    private final int _SOBEL_HORIZONTAL = 8;
-    private final int _SOBEL_VERTICAL = 9;
-    private final int _TRANSPARENT = 10;
-    private final int _USER_SPECIFIED = 11;
-    private final int _ZERO_FILTER = 12;
+    private static final int _BACKDIAGONAL = 0;
+    private static final int _DIAGONAL = 1;
+    private static final int _FREICHEN_HORIZONTAL = 2;
+    private static final int _FREICHEN_VERTICAL = 3;
+    private static final int _PREWITT_HORIZONTAL = 4;
+    private static final int _PREWITT_VERTICAL = 5;
+    private static final int _ROBERTS_HORIZONTAL = 6;
+    private static final int _ROBERTS_VERTICAL = 7;
+    private static final int _SOBEL_HORIZONTAL = 8;
+    private static final int _SOBEL_VERTICAL = 9;
+    private static final int _TRANSPARENT = 10;
+    private static final int _USER_SPECIFIED = 11;
+    private static final int _ZERO_FILTER = 12;
 }

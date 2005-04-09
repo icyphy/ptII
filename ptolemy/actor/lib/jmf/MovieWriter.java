@@ -590,7 +590,7 @@ public class MovieWriter extends Sink implements ControllerListener,
     private Object _waitSync = new Object();
 
     // FIXME: Use a type safe enumeration.
-    private final int _AVI = 0;
-    private final int _MPEG = 1;
-    private final int _QUICKTIME = 2;
+    private static final int _AVI = 0;
+    private static final int _MPEG = 1;
+    private static final int _QUICKTIME = 2;
 }
