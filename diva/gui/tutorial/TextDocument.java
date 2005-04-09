@@ -102,17 +102,24 @@ public class TextDocument extends AbstractDocument {
      * @exception Exception If the close operation fails.
      */
     public void open() throws Exception {
-        BufferedReader reader = new BufferedReader(new FileReader(getFile()));
-        char[] buffer = new char[100];
-        StringBuffer readResult = new StringBuffer();
-        int amountRead;
-
-        while ((amountRead = reader.read(buffer, 0, 100)) == 100) {
-            readResult.append(buffer);
-        }
-
-        readResult.append(buffer, 0, amountRead);
-        _text = readResult.toString();
+    	BufferedReader reader = null;
+    	try {
+    		reader = new BufferedReader(new FileReader(getFile()));
+    		char[] buffer = new char[100];
+    		StringBuffer readResult = new StringBuffer();
+    		int amountRead;
+    		
+    		while ((amountRead = reader.read(buffer, 0, 100)) == 100) {
+    			readResult.append(buffer);
+    		}
+    		
+    		readResult.append(buffer, 0, amountRead);
+    		_text = readResult.toString();
+    	} finally {
+    		if (reader != null) {
+    			reader.close();   
+    		}
+    	}
     }
 
     /** Save the document to its current file or URL.  Throw an
@@ -137,9 +144,15 @@ public class TextDocument extends AbstractDocument {
      * @exception Exception If the save-as operation fails.
      */
     public void saveAs(File file) throws Exception {
-        Writer writer = new BufferedWriter(new FileWriter(file));
-        writer.write(_text);
-        writer.flush();
+    	Writer writer = null;
+    	try {
+    		writer = new BufferedWriter(new FileWriter(file));
+    		writer.write(_text);
+    	} finally {
+    		if (writer != null) {
+    			writer.close();   
+    		}
+    	}
     }
 
     /** Save the document to the given URL.  Throw an exception if the
@@ -160,7 +173,7 @@ public class TextDocument extends AbstractDocument {
      * different from the previously contained text, then set the dirty flag.
      */
     public void setText(String text) {
-        if (_text != text) {
+        if (!_text.equals(text)) {
             setDirty(true);
             _text = text;
         }
