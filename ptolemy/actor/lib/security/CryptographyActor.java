@@ -234,8 +234,9 @@ abstract public class CryptographyActor extends TypedAtomicActor {
                 output.send(0,
                         ArrayToken.unsignedByteArrayToArrayToken(dataBytes));
             }
-        } catch (Exception ex) {
-            throw new IllegalActionException(this, ex, "Problem sending data");
+        } catch (Throwable throwable) {
+            throw new IllegalActionException(this, throwable,
+                    "Problem sending data");
         }
     }
 

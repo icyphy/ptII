@@ -240,8 +240,8 @@ public class SignatureActor extends TypedAtomicActor {
                     _signature = Signature.getInstance(_signatureAlgorithm,
                             _provider);
                 }
-            } catch (Exception ex) {
-                throw new IllegalActionException(this, ex,
+            } catch (Throwable throwable) {
+                throw new IllegalActionException(this, throwable,
                         "Failed to initialize Signature with algorithm: '"
                         + _signatureAlgorithm + "', provider: '" + _provider + "'");
             }

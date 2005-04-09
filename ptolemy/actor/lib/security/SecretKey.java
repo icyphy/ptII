@@ -232,8 +232,8 @@ public class SecretKey extends Source {
                 keyGen.init(_keySize, new SecureRandom());
                 _secretKey = keyGen.generateKey();
                 _secretKeyToken = new KeyToken(_secretKey);
-            } catch (Exception ex) {
-                throw new IllegalActionException(this, ex,
+            } catch (Throwable throwable) {
+                throw new IllegalActionException(this, throwable,
                         "Failed to initialize Key.");
             }
 

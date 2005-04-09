@@ -306,8 +306,8 @@ abstract public class CipherActor extends CryptographyActor {
                     _cipher = Cipher.getInstance(_algorithm + modeArgument
                             + paddingArgument, _provider);
                 }
-            } catch (Exception ex) {
-                throw new IllegalActionException(this, ex,
+            } catch (Throwable throwable) {
+                throw new IllegalActionException(this, throwable,
                         "Failed to initialize Cipher with " + "algorithm: '"
                         + _algorithm + "', padding: '" + _padding
                         + "', provider: '" + _provider + "'");

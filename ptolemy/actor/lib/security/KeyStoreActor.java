@@ -31,7 +31,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.URL;
 import java.security.KeyStore;
 import java.security.Provider;
 import java.security.Security;
@@ -416,7 +415,7 @@ public class KeyStoreActor extends TypedAtomicActor {
         keyPassword.update();
         _keyPassword = ((StringToken) keyPassword.getToken()).stringValue();
 
-        if (keyPassword.getExpression() != _keyPassword) {
+        if (!keyPassword.getExpression().equals(_keyPassword)) {
             // keyPassword changed, so reload the keyStore
             _loadKeyStoreNeeded = true;
         }
@@ -506,8 +505,8 @@ public class KeyStoreActor extends TypedAtomicActor {
 
                 _initializeKeyStoreNeeded = false;
                 _loadKeyStoreNeeded = true;
-            } catch (Exception ex) {
-                throw new IllegalActionException(this, ex,
+            } catch (Throwable throwable) {
+                throw new IllegalActionException(this, throwable,
                     "Failed to get instance '" + keyStoreType + "'of keyStore");
             }
         }
@@ -625,7 +624,7 @@ public class KeyStoreActor extends TypedAtomicActor {
 
         try {
             name = ": '" + fileOrURL.stringValue() + "'";
-        } catch (Exception ex) {
+        } catch (Throwable throwable) {
             name = ": " + fileOrURL.toString();
         }
 
@@ -643,7 +642,7 @@ public class KeyStoreActor extends TypedAtomicActor {
                     exists = ", which exists and is not readable";
                 }
             }
-        } catch (Exception ex) {
+        } catch (Throwable throwable) {
             // Ignore
         }
 
@@ -653,7 +652,7 @@ public class KeyStoreActor extends TypedAtomicActor {
 
         try {
             url = " as a URL is: '" + fileOrURL.asURL().toString() + "'";
-        } catch (Exception ex) {
+        } catch (Throwable throwable) {
             // Ignore
         }
 
@@ -871,7 +870,4 @@ public class KeyStoreActor extends TypedAtomicActor {
 
     // Indicator that stopFire() has been called.
     private boolean _stopFireRequested = false;
-
-    // The URL of the file.
-    private URL _url;
 }

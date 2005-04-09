@@ -246,8 +246,8 @@ public class KeyReader extends KeyStoreActor {
                 if (!_getPublicKey) {
                     _key = _keyStore.getKey(_alias, _keyPassword.toCharArray());
                 }
-            } catch (Exception ex) {
-                throw new IllegalActionException(this, ex,
+            } catch (Throwable throwable) {
+                throw new IllegalActionException(this, throwable,
                         "Failed to get key store alias '" + _alias
                         + "' or certificate from " + fileOrURLDescription());
             }

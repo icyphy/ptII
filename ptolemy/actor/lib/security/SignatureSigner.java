@@ -146,8 +146,8 @@ public class SignatureSigner extends SignatureActor {
                         ArrayToken.unsignedByteArrayToArrayToken(dataBytes));
                 signature.send(0,
                         ArrayToken.unsignedByteArrayToArrayToken(_signature.sign()));
-            } catch (Exception ex) {
-                throw new IllegalActionException(this, ex,
+            } catch (Throwable throwable) {
+                throw new IllegalActionException(this, throwable,
                         "Problem sending data");
             }
         }
