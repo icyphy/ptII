@@ -130,7 +130,9 @@ public class KeyWriter extends KeyStoreActor {
                     keyStoreOutputStream.close();
                 } finally {
                     try {
-                        keyStoreOutputStream.close();
+                        if (keyStoreOutputStream != null) {
+                            keyStoreOutputStream.close();
+                        }
                     } catch (Throwable throwable) {
                         System.out.println("Ignoring failure to close stream "
                                 + "on " + fileOrURL.asFile());
@@ -139,8 +141,8 @@ public class KeyWriter extends KeyStoreActor {
                 }
 
                 output.broadcast(BooleanToken.TRUE);
-            } catch (Exception ex) {
-                throw new IllegalActionException(this, ex,
+            } catch (Throwable throwable) {
+                throw new IllegalActionException(this, throwable,
                         "Failed to store " + fileOrURLDescription());
             }
         }
