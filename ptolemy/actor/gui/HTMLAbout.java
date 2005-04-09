@@ -92,7 +92,7 @@ public class HTMLAbout {
             if (applicationNameAttribute != null) {
                 applicationName = applicationNameAttribute.getExpression();
             }
-        } catch (Exception ex) {
+        } catch (Throwable throwable) {
             // Ignore and use the default applicationName
         }
 
@@ -307,18 +307,24 @@ public class HTMLAbout {
 
     private static List _getURLs(URL demosURL, String regexp)
             throws IOException {
-        BufferedReader in = new BufferedReader(new InputStreamReader(
-                                                       demosURL.openStream()));
-
         StringBuffer demosBuffer = new StringBuffer();
-
-        String inputLine;
-
-        while ((inputLine = in.readLine()) != null) {
-            demosBuffer.append(inputLine);
-        }
-
-        in.close();
+    	BufferedReader in = null;
+    	try {
+    		in = new BufferedReader(new InputStreamReader(
+    				
+    				demosURL.openStream()));
+    		
+    		String inputLine;
+    		
+    		while ((inputLine = in.readLine()) != null) {
+    			demosBuffer.append(inputLine);
+    		}
+    	} finally {
+    		if (in != null){
+    			in.close();   
+    		}
+    	}
+        
 
         // demos contains the contents of the html file that has
         // links to the demos we are interested in.
@@ -369,7 +375,7 @@ public class HTMLAbout {
             if (url != null) {
                 configurationExists = true;
             }
-        } catch (Exception ex) {
+        } catch (Throwable throwable) {
             // Ignored, the configuration does not exist.
         }
 
@@ -389,9 +395,15 @@ public class HTMLAbout {
         File temporaryFile = File.createTempFile(prefix, suffix);
         temporaryFile.deleteOnExit();
 
-        FileWriter fileWriter = new FileWriter(temporaryFile);
-        fileWriter.write(contents, 0, contents.length());
-        fileWriter.close();
+        FileWriter fileWriter = null;
+        try {
+        	fileWriter = new FileWriter(temporaryFile);
+        	fileWriter.write(contents, 0, contents.length());
+        } finally {
+        	if (fileWriter != null) {
+        		fileWriter.close();
+        	}
+        }
         return temporaryFile.toURL();
     }
 }

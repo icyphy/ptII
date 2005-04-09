@@ -186,9 +186,15 @@ public class ExternalTextEffigy extends TextEffigy {
 
                 String tmpFilePathName = tmpFile.getAbsolutePath().replace('\\',
                         '/');
-                FileWriter writer = new FileWriter(tmpFile);
-                writer.write(text);
-                writer.close();
+                FileWriter writer = null;
+                try {
+                	writer = new FileWriter(tmpFile);
+                	writer.write(text);
+                } finally {
+                	if (writer != null) {
+                		writer.close();
+                	}
+                }
                 todo = "gnudoit (find-file (symbol-name '" + path + "))"
                     + "(setq buffer-read-only nil)" + "(erase-buffer)"
                     + "(insert-file-contents " + "    (symbol-name '"
@@ -223,8 +229,8 @@ public class ExternalTextEffigy extends TextEffigy {
             //- for (; buffer[i] == '\r' || buffer[i] == '\n'; i--);
             //- _bufferName = new String(buffer, 0, i + 1);
             _pathName = path;
-        } catch (Exception ex) {
-            throw new RuntimeException(getFullName() + ": " + ex.toString());
+        } catch (Throwable throwable) {
+            throw new RuntimeException(getFullName(), throwable);
         }
     }
 

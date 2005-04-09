@@ -309,9 +309,15 @@ public class HTMLViewer extends TableauFrame implements Printable,
      *  @exception IOException If the write fails.
      */
     protected void _writeFile(File file) throws IOException {
-        java.io.FileWriter fileWriter = new java.io.FileWriter(file);
-        fileWriter.write(pane.getText());
-        fileWriter.close();
+        java.io.FileWriter fileWriter = null;
+        try {
+        	fileWriter = new java.io.FileWriter(file);
+        	fileWriter.write(pane.getText());
+        } finally {
+        	if (fileWriter != null) {
+        		fileWriter.close();   
+        	}
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
