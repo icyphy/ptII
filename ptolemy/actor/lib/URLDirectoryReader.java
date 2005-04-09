@@ -328,84 +328,91 @@ public class URLDirectoryReader extends URLReader {
                     + urlConnection.getContentType());
         }
 
-        BufferedReader in = new BufferedReader(new InputStreamReader(
+        List resultsList = new LinkedList();
+
+        BufferedReader in = null;
+        try {
+        	in = new BufferedReader(new InputStreamReader(
                                                        urlConnection.getInputStream()));
 
-        if (!contentType.startsWith("text/plain")
-                && !urlConnection.getURL().toString().endsWith("/")) {
-            // text/plain urls need not end with /, but
-            // text/html urls _must_ end with / since the web server
-            // will rewrite them for us.
-            throw new RuntimeException("Could not parse '" + source
-                    + "', it does not end with '/'");
+        	if (!contentType.startsWith("text/plain")
+        			&& !urlConnection.getURL().toString().endsWith("/")) {
+        		// text/plain urls need not end with /, but
+        		// text/html urls _must_ end with / since the web server
+        		// will rewrite them for us.
+        		throw new RuntimeException("Could not parse '" + source
+        				+ "', it does not end with '/'");
+        	}
+
+        	if (!source.endsWith("/")) {
+        		source += "/";
+        	}
+
+        	// Parse the contents in a haphazard fashion.
+        	// The idea is that we look for the <BODY> line and
+        	// then looks for lines that contain HREF
+        	// If we find a line like HREF="foo">foo, then we report
+        	// foo as being a file.
+        	// A more robust way would be to use a spider, see
+        	// http://www.acme.com/java/software/WebList.html
+        	
+        	String line;
+        	String target = null;
+        	boolean sawBody = false;
+        	boolean sawHREF = false;
+        	
+        	while ((line = in.readLine()) != null) {
+        		line = line.trim();
+        		
+        		if (line.startsWith("<BODY") || line.startsWith("<body")) {
+        			sawBody = true;
+        		} else {
+        			if (sawBody) {
+        				StringTokenizer tokenizer = new StringTokenizer(line,
+        				"<\" >=");
+        				
+        				while (tokenizer.hasMoreTokens()) {
+        					String token = tokenizer.nextToken();
+        					
+        					if (token.compareToIgnoreCase("HREF") == 0) {
+        						sawHREF = true;
+        						target = null;
+        					} else {
+        						if (sawHREF) {
+        							if (target == null) {
+        								// Here, we should check that target
+        								// is a relative pathname.
+        								target = token;
+        							} else {
+        								// Check to see if the token is
+        								// the same as the last token.
+        								if (token.compareTo(target) != 0) {
+        									sawHREF = false;
+        								} else {
+        									// If we were really brave, we
+        									// could try opening a connection
+        									// here to verify that the target
+        									// exists.
+        									if ((endsWith == null)
+        											|| (endsWith.length() == 0)
+													|| target.endsWith(endsWith)) {
+        										resultsList.add(source + target);
+        									}
+        									
+        									sawHREF = false;
+        								}
+        							}
+        						}
+        					}
+        				}
+        			}
+        		}
+        	}
+        } finally {
+        	if (in != null) {
+        		in.close();
+        	}
         }
-
-        if (!source.endsWith("/")) {
-            source += "/";
-        }
-
-        // Parse the contents in a haphazard fashion.
-        // The idea is that we look for the <BODY> line and
-        // then looks for lines that contain HREF
-        // If we find a line like HREF="foo">foo, then we report
-        // foo as being a file.
-        // A more robust way would be to use a spider, see
-        // http://www.acme.com/java/software/WebList.html
-        List resultsList = new LinkedList();
-        String line;
-        String target = null;
-        boolean sawBody = false;
-        boolean sawHREF = false;
-
-        while ((line = in.readLine()) != null) {
-            line = line.trim();
-
-            if (line.startsWith("<BODY") || line.startsWith("<body")) {
-                sawBody = true;
-            } else {
-                if (sawBody) {
-                    StringTokenizer tokenizer = new StringTokenizer(line,
-                            "<\" >=");
-
-                    while (tokenizer.hasMoreTokens()) {
-                        String token = tokenizer.nextToken();
-
-                        if (token.compareToIgnoreCase("HREF") == 0) {
-                            sawHREF = true;
-                            target = null;
-                        } else {
-                            if (sawHREF) {
-                                if (target == null) {
-                                    // Here, we should check that target
-                                    // is a relative pathname.
-                                    target = token;
-                                } else {
-                                    // Check to see if the token is
-                                    // the same as the last token.
-                                    if (token.compareTo(target) != 0) {
-                                        sawHREF = false;
-                                    } else {
-                                        // If we were really brave, we
-                                        // could try opening a connection
-                                        // here to verify that the target
-                                        // exists.
-                                        if ((endsWith == null)
-                                                || (endsWith.length() == 0)
-                                                || target.endsWith(endsWith)) {
-                                            resultsList.add(source + target);
-                                        }
-
-                                        sawHREF = false;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        in.close();
 
         String[] results = new String[resultsList.size()];
         return (String[]) (resultsList.toArray(results));
