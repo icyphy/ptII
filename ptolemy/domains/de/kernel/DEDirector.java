@@ -914,12 +914,10 @@ public class DEDirector extends Director implements TimedDirector {
 
         // Now, the model time is either less than or equal to the
         // next event time.
-        if (nextEventTime.equals(modelTime)) {
-            // If there is an internal event scheduled to happen
-            // at the current time, it is the right time to fire
-            // regardless whether there are external inputs.
-            result = result && true;
-        } else {
+        // If there is an internal event scheduled to happen
+        // at the current time, it is the right time to fire
+        // regardless whether there are external inputs.
+        if (!nextEventTime.equals(modelTime)) {
             // If the event timestamp is greater than the model timestamp,
             // we check if there's any external input.
             CompositeActor container = (CompositeActor) getContainer();
@@ -937,16 +935,13 @@ public class DEDirector extends Director implements TimedDirector {
                 }
             }
 
-            if (hasInput) {
-                // If there is at least one external input.
-                result = result && true;
-            } else {
+            if (!hasInput) {
                 // If there is no internal event, it is not the correct
                 // time to fire.
                 // NOTE: This may happen because the container is statically
                 // scheduled by its director to fire at this time.
                 // For example, a DE model in a Giotto model.
-                result = result && false;
+                result = false;
             }
         }
 
@@ -1453,7 +1448,7 @@ public class DEDirector extends Director implements TimedDirector {
 
             // we skip the ports of the container and their depths are handled
             // by the upper level executive director of this container.
-            if (portContainer.equals(getContainer())) {
+            if (portContainer.equals((Actor)getContainer())) {
                 continue;
             }
 
