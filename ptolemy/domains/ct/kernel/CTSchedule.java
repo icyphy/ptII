@@ -136,7 +136,7 @@ public class CTSchedule extends Schedule {
      */
     public String toString() {
         //_schedule.ensureCapacitance();
-        String result = new String();
+        String result = "";
         Iterator iterator;
         result += "CTSchedule {\n";
         result += "    continuousActors {\n";

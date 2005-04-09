@@ -91,21 +91,21 @@ public class CTReceiver extends Mailbox {
     ////                         public variables                  ////
 
     /** Signal type: CONTINUOUS. */
-    public static SignalType CONTINUOUS = new SignalType() {
+    public final static SignalType CONTINUOUS = new SignalType() {
             public String toString() {
                 return "CONTINUOUS";
             }
         };
 
     /** Signal type: DISCRETE. */
-    public static SignalType DISCRETE = new SignalType() {
+    public final static SignalType DISCRETE = new SignalType() {
             public String toString() {
                 return "DISCRETE";
             }
         };
 
     /** Signal type: UNKNOWN. */
-    public static SignalType UNKNOWN = new SignalType() {
+    public final static SignalType UNKNOWN = new SignalType() {
             public String toString() {
                 return "UNKNOWN";
             }
