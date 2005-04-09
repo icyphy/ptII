@@ -1232,6 +1232,15 @@ public class UtilityFunctions {
             }
         } catch (FileNotFoundException ex) {
             throw new IllegalActionException(null, ex, "File not found");
+        } finally {
+            if (fin != null) {
+                try {
+                    fin.close();  
+                } catch (IOException ex) {
+                    throw new IllegalActionException(null, ex,
+                            "Problem closing '" + file + "'");
+                }
+            }   
         }
 
         return new StringToken(result.toString());
@@ -1341,35 +1350,44 @@ public class UtilityFunctions {
      *  @see #readFile(String)
      */
     public static StringToken readResource(String name)
-            throws IllegalActionException {
-        URL url = ClassLoader.getSystemResource(name);
-        StringBuffer result = new StringBuffer("");
-
-        try {
-            InputStream stream = url.openStream();
-            String line;
-            String newline = System.getProperty("line.separator");
-            BufferedReader fin = new BufferedReader(new InputStreamReader(
-                                                            stream));
-
-            while (true) {
-                try {
-                    line = fin.readLine();
-                } catch (IOException e) {
-                    break;
-                }
-
-                if (line == null) {
-                    break;
-                }
-
-                result.append(line + newline);
-            }
-        } catch (IOException ex) {
-            throw new IllegalActionException(null, ex, "File not found");
-        }
-
-        return new StringToken(result.toString());
+    throws IllegalActionException {
+    	URL url = ClassLoader.getSystemResource(name);
+    	StringBuffer result = new StringBuffer("");
+    	BufferedReader fin = null;
+    	try {
+    		InputStream stream = url.openStream();
+    		String line;
+    		String newline = System.getProperty("line.separator");
+    		fin = new BufferedReader(new InputStreamReader(
+    				stream));
+    		
+    		while (true) {
+    			try {
+    				line = fin.readLine();
+    			} catch (IOException e) {
+    				break;
+    			}
+    			
+    			if (line == null) {
+    				break;
+    			}
+    			
+    			result.append(line + newline);
+    		}
+    	} catch (IOException ex) {
+    		throw new IllegalActionException(null, ex, "File not found");
+    	} finally {
+    		if (fin != null) {
+    			try {
+    				fin.close();   
+    			} catch (IOException ex) {
+    				throw new IllegalActionException(null, ex,
+    						"Failed to close '" + name + "'");
+    			}
+    		}
+    	}
+    	
+    	return new StringToken(result.toString());
     }
 
     /** Create an array that contains the specified element
@@ -1643,7 +1661,7 @@ public class UtilityFunctions {
         PtParser parser = new PtParser();
         ASTPtRootNode parseTree = parser.generateParseTree(string);
         ParseTreeEvaluator evaluator = new ParseTreeEvaluator();
-        return evaluator.traceParseTreeEvaluation(parseTree, null).toString();
+        return evaluator.traceParseTreeEvaluation(parseTree, null);
     }
 
     /** Return true if the first argument is close in value to the second,
