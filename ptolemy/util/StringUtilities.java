@@ -699,9 +699,7 @@ public class StringUtilities {
                 break;
 
             default:
-                singleToken = (new Character((char) streamTokenizer.ttype))
-                    .toString();
-
+                singleToken = Character.toString((char) streamTokenizer.ttype);
                 if (singleToken.equals("\"")) {
                     if (inDoubleQuotedString) {
                         commandList.add(token);
