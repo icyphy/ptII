@@ -91,41 +91,43 @@ public class FileUtilities {
         }
 
         BufferedInputStream input = null;
-        BufferedOutputStream output = null;
-
         try {
-            input = new BufferedInputStream(sourceURL.openStream());
-
-            output = new BufferedOutputStream(new FileOutputStream(
-                                                      destinationFile));
-
-            int c;
-
-            while ((c = input.read()) != -1) {
-                output.write(c);
-            }
+        	input = new BufferedInputStream(sourceURL.openStream());
+        	BufferedOutputStream output = null;
+        	try {
+        		output = new BufferedOutputStream(
+        				new FileOutputStream(destinationFile));
+        		
+        		int c;
+        		
+        		while ((c = input.read()) != -1) {
+        			output.write(c);
+        		}
+        	} finally {
+        		if (output != null) {
+        			try {
+        				output.close();
+        			} catch (Throwable throwable) {
+        				System.out.println("Ignoring failure to close stream "
+        						+ "on " + destinationFile);
+        				throwable.printStackTrace();
+        			}
+        		}   
+        	}   
         } finally {
-            if (input != null) {
-                try {
-                    input.close();
-                } catch (Throwable throwable) {
-                    System.out.println("Ignoring failure to close stream "
-                            + "on " + sourceURL);
-                    throwable.printStackTrace();
-                }
-            }
-
-            if (output != null) {
-                try {
-                    output.close();
-                } catch (Throwable throwable) {
-                    System.out.println("Ignoring failure to close stream "
-                            + "on " + destinationFile);
-                    throwable.printStackTrace();
-                }
-            }
+        	if (input != null) {
+        		try {
+        			input.close();
+        		} catch (Throwable throwable) {
+        			System.out.println("Ignoring failure to close stream "
+        					+ "on " + sourceURL);
+        			throwable.printStackTrace();
+        		}
+        	}
+        	
+        	
         }
-
+        
         return true;
     }
 
@@ -366,6 +368,9 @@ public class FileUtilities {
      */
     public static Writer openForWriting(String name, URI base, boolean append)
             throws IOException {
+        if (name == null) {
+            return null;   
+        }
         if (name.trim().equals("System.out")) {
             if (STD_OUT == null) {
                 STD_OUT = new PrintWriter(System.out);
@@ -374,7 +379,7 @@ public class FileUtilities {
             return STD_OUT;
         }
 
-        if ((name == null) || name.trim().equals("")) {
+        if (name.trim().equals("")) {
             return null;
         }
 
