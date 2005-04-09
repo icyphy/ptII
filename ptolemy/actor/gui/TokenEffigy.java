@@ -149,47 +149,54 @@ public class TokenEffigy extends Effigy {
      *   or parsing the data.
      */
     public void read(URL input) throws IOException {
-        if (input == null) {
-            throw new IOException("Attempt to read from null input.");
-        }
-
-        LineNumberReader reader = new LineNumberReader(new InputStreamReader(
-                                                               input.openStream()));
-
-        while (true) {
-            // NOTE: The following tolerates all major line terminators.
-            String line = reader.readLine();
-
-            if (line == null) {
-                break;
-            }
-
-            try {
-                // Parse the line.
-                if (_variable == null) {
-                    _variable = new Variable(workspace());
-                    _variable.setName("Expression evaluator");
-                }
-
-                _variable.setExpression(line);
-
-                Token token = _variable.getToken();
-
-                if (token != null) {
-                    _tokens.add(token);
-
-                    // Notify the contained tableaux.
-                    Iterator tableaux = entityList(TokenTableau.class).iterator();
-
-                    while (tableaux.hasNext()) {
-                        ((TokenTableau) tableaux.next()).append(token);
-                    }
-                }
-            } catch (KernelException ex) {
-                throw new IOException("Error evaluating data expression: "
-                        + ex.getMessage());
-            }
-        }
+    	if (input == null) {
+    		throw new IOException("Attempt to read from null input.");
+    	}
+    	
+    	LineNumberReader reader = null;
+    	try {
+    		reader = new LineNumberReader(
+    				new InputStreamReader(input.openStream()));
+    		
+    		while (true) {
+    			// NOTE: The following tolerates all major line terminators.
+    			String line = reader.readLine();
+    			
+    			if (line == null) {
+    				break;
+    			}
+    			
+    			try {
+    				// Parse the line.
+    				if (_variable == null) {
+    					_variable = new Variable(workspace());
+    					_variable.setName("Expression evaluator");
+    				}
+    				
+    				_variable.setExpression(line);
+    				
+    				Token token = _variable.getToken();
+    				
+    				if (token != null) {
+    					_tokens.add(token);
+    					
+    					// Notify the contained tableaux.
+    					Iterator tableaux = entityList(TokenTableau.class).iterator();
+    					
+    					while (tableaux.hasNext()) {
+    						((TokenTableau) tableaux.next()).append(token);
+    					}
+    				}
+    			} catch (KernelException ex) {
+    				throw new IOException("Error evaluating data expression: "
+    						+ ex.getMessage());
+    			}
+    		}
+    	} finally {
+    		if (reader != null) {
+    			reader.close();   
+    		}
+    	}
     }
 
     /** Set the token array associated with this effigy.

@@ -86,9 +86,15 @@ public class ECSLUtilities {
     public static void ECSLToMoML(String input, String output)
             throws Exception {
         // This method makes it much easier to test the conversion,
-        FileWriter fileWriter = new FileWriter(output);
-        ECSLToMoML(input, fileWriter);
-        fileWriter.close();
+        FileWriter fileWriter = null;
+        try {
+        	fileWriter = new FileWriter(output);
+        	ECSLToMoML(input, fileWriter);
+        } finally {
+        	if (fileWriter != null) {
+        		fileWriter.close();
+        	}
+        }
     }
 
     /** Convert the first argument from a ECSL file into a MoML file
