@@ -323,19 +323,29 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
             System.out.println("AppletWriter: about to write '"
                     + newModelFileName + "'");
 
+            Writer modelFileWriter = null;
             try {
-                Writer modelFileWriter = new BufferedWriter(new OutputStreamWriter(
-                                                                    new FileOutputStream(newModelFileName)));
-                _model.exportMoML(modelFileWriter);
-
-                // FIXME: need finally?
-                modelFileWriter.close();
+            	modelFileWriter = new BufferedWriter(new OutputStreamWriter(
+            			new FileOutputStream(newModelFileName)));
+            	_model.exportMoML(modelFileWriter);
+            	
+            	// FIXME: need finally?
+            	modelFileWriter.close();
             } catch (IOException ex2) {
-                // Rethrow original exception ex.
-                throw new InternalErrorException(null, ex,
-                        "Problem reading '" + _modelPath + "' or " + "writing '"
-                        + newModelFileName + "'\n"
-                        + "Also tried calling exportMoML():" + ex2.getMessage());
+            	// Rethrow original exception ex.
+            	throw new InternalErrorException(null, ex,
+            			"Problem reading '" + _modelPath + "' or " + "writing '"
+						+ newModelFileName + "'\n"
+						+ "Also tried calling exportMoML():" + ex2.getMessage());
+            } finally {
+            	if (modelFileWriter != null) {
+            		try {
+            			modelFileWriter.close();   
+            		} catch (IOException ex2) {
+            			throw new InternalErrorException(null, ex2,
+            					"Failed to close '" + newModelFileName + "'");
+            		}
+            	}
             }
         }
 
@@ -429,9 +439,15 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
             CompositeActor toplevel = null;
             toplevel = (CompositeActor) parser.parse(modelPathURL, modelPathURL);
 
-            FileWriter writer = new FileWriter(newModelFile);
-            toplevel.exportMoML(writer);
-            writer.close();
+            FileWriter writer = null;
+            try {
+            	writer = new FileWriter(newModelFile);
+            	toplevel.exportMoML(writer);
+            } finally {
+            	if (writer != null) {
+            		writer.close();
+            	}
+            }
         } finally {
             parser.setMoMLFilters(oldFilters);
         }
@@ -674,38 +690,39 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                 + (sourceFile.length() / 1024) + "K) to " + destinationFile);
 
         BufferedInputStream in = null;
-        BufferedOutputStream out = null;
-
         try {
-            in = new BufferedInputStream(new FileInputStream(sourceFile));
-            out = new BufferedOutputStream(new FileOutputStream(destinationFile));
-
-            int c;
-
-            // Avoid end of line and localization issues.
-            while ((c = in.read()) != -1) {
-                out.write(c);
-            }
+        	in = new BufferedInputStream(new FileInputStream(sourceFile));
+        	BufferedOutputStream out = null;
+        	try {
+        		out = new BufferedOutputStream(new FileOutputStream(destinationFile));
+        		
+        		int c;
+        		
+        		// Avoid end of line and localization issues.
+        		while ((c = in.read()) != -1) {
+        			out.write(c);
+        		}
+        	} finally {
+        		if (out != null) {
+        			try {
+        				out.close();
+        			} catch (Throwable throwable) {
+        				System.out.println("Ignoring failure to close stream "
+        						+ "on '" + destinationFile + "'");
+        				throwable.printStackTrace();
+        			}
+        		}   
+        	}
         } finally {
-            if (in != null) {
-                try {
-                    in.close();
-                } catch (Throwable throwable) {
-                    System.out.println("Ignoring failure to close stream "
-                            + "on '" + sourceFile + "'");
-                    throwable.printStackTrace();
-                }
-            }
-
-            if (out != null) {
-                try {
-                    out.close();
-                } catch (Throwable throwable) {
-                    System.out.println("Ignoring failure to close stream "
-                            + "on '" + destinationFile + "'");
-                    throwable.printStackTrace();
-                }
-            }
+        	if (in != null) {
+        		try {
+        			in.close();
+        		} catch (Throwable throwable) {
+        			System.out.println("Ignoring failure to close stream "
+        					+ "on '" + sourceFile + "'");
+        			throwable.printStackTrace();
+        		}
+        	}
         }
     }
 
@@ -765,5 +782,5 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
     private String _templateDirectory;
 
     // Initial default for _templateDirectory;
-    private final String TEMPLATE_DIRECTORY_DEFAULT = "ptolemy/copernicus/applet/";
+    private static final String TEMPLATE_DIRECTORY_DEFAULT = "ptolemy/copernicus/applet/";
 }
