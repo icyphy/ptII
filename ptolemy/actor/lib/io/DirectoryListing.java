@@ -309,122 +309,123 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
                     + "'; it is not \"text/html\", " + "or \"text/plain\", it is: "
                     + urlConnection.getContentType());
         }
-
-        BufferedReader in = new BufferedReader(new InputStreamReader(
-                                                       urlConnection.getInputStream()));
-
-        if (!contentType.startsWith("text/plain")
-                && !urlConnection.getURL().toString().endsWith("/")) {
-            // text/plain urls need not end with /, but
-            // text/html urls _must_ end with / since the web server
-            // will rewrite them for us.
-            throw new IllegalActionException(this,
-                    "Could not parse '" + directoryOrURL.stringValue()
-                    + "'; it needs to end with '/'");
-        }
-
-        // Parse the contents in a haphazard fashion.
-        // The idea is that we look for the <BODY> line and
-        // then look for lines that contain HREF
-        // If we find a line like HREF="foo">foo, then we report
-        // foo as being a file.
-        // A more robust way would be to use a spider, see
-        // http://www.acme.com/java/software/WebList.html
+        
         List resultsList = new LinkedList();
-        String line;
-        String target = null;
-        boolean sawBody = false;
-        boolean sawHREF = false;
-
-        while ((line = in.readLine()) != null) {
-            line = line.trim();
-
-            if (_debugging) {
-                _debug(line);
-            }
-
-            if (line.startsWith("<BODY") || line.startsWith("<body")) {
-                sawBody = true;
-            } else {
-                if (sawBody) {
-                    StringTokenizer tokenizer = new StringTokenizer(line,
-                            "<\" >=");
-
-                    while (tokenizer.hasMoreTokens()) {
-                        String token = tokenizer.nextToken();
-
-                        if (token.compareToIgnoreCase("HREF") == 0) {
-                            sawHREF = true;
-                            target = null;
-                        } else {
-                            if (sawHREF) {
-                                if (target == null) {
-                                    // FIXME: Here, we should check that target
-                                    // is a relative pathname.
-                                    target = token;
-                                } else {
-                                    // Check to see whether the first 20
-                                    // characters of the token are
-                                    // the same as the last token.
-                                    String reference = target;
-
-                                    if (reference.length() > 20) {
-                                        reference = target.substring(0, 20);
-                                    }
-
-                                    if (!token.startsWith(reference)) {
-                                        sawHREF = false;
-                                    } else {
-                                        if (accept(null, target)) {
-                                            // Make sure directoryOrURL ends with a slash.
-                                            String base = directoryOrURL
-                                                .stringValue();
-
-                                            if (!base.endsWith("/")) {
-                                                base = base + "/";
-                                            }
-
-                                            // FIXME: Is there any way to tell whether
-                                            // the result is a directory or file?
-                                            resultsList.add(new StringToken(base
-                                                                    + target));
-                                        }
-
-                                        sawHREF = false;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+        BufferedReader in = null;
+        try {
+        	in = new BufferedReader(
+        			new InputStreamReader(urlConnection.getInputStream()));
+        	
+        	if (!contentType.startsWith("text/plain")
+        			&& !urlConnection.getURL().toString().endsWith("/")) {
+        		// text/plain urls need not end with /, but
+        		// text/html urls _must_ end with / since the web server
+        		// will rewrite them for us.
+        		throw new IllegalActionException(this,
+        				"Could not parse '" + directoryOrURL.stringValue()
+						+ "'; it needs to end with '/'");
+        	}
+        	
+        	// Parse the contents in a haphazard fashion.
+        	// The idea is that we look for the <BODY> line and
+        	// then look for lines that contain HREF
+        	// If we find a line like HREF="foo">foo, then we report
+        	// foo as being a file.
+        	// A more robust way would be to use a spider, see
+        	// http://www.acme.com/java/software/WebList.html
+        	String line;
+        	String target = null;
+        	boolean sawBody = false;
+        	boolean sawHREF = false;
+        	
+        	while ((line = in.readLine()) != null) {
+        		line = line.trim();
+        		
+        		if (_debugging) {
+        			_debug(line);
+        		}
+        		
+        		if (line.startsWith("<BODY") || line.startsWith("<body")) {
+        			sawBody = true;
+        		} else {
+        			if (sawBody) {
+        				StringTokenizer tokenizer = new StringTokenizer(line,
+        				"<\" >=");
+        				
+        				while (tokenizer.hasMoreTokens()) {
+        					String token = tokenizer.nextToken();
+        					
+        					if (token.compareToIgnoreCase("HREF") == 0) {
+        						sawHREF = true;
+        						target = null;
+        					} else {
+        						if (sawHREF) {
+        							if (target == null) {
+        								// FIXME: Here, we should check that target
+        								// is a relative pathname.
+        								target = token;
+        							} else {
+        								// Check to see whether the first 20
+        								// characters of the token are
+        								// the same as the last token.
+        								String reference = target;
+        								
+        								if (reference.length() > 20) {
+        									reference = target.substring(0, 20);
+        								}
+        								
+        								if (!token.startsWith(reference)) {
+        									sawHREF = false;
+        								} else {
+        									if (accept(null, target)) {
+        										// Make sure directoryOrURL ends with a slash.
+        										String base = directoryOrURL
+												.stringValue();
+        										
+        										if (!base.endsWith("/")) {
+        											base = base + "/";
+        										}
+        										
+        										// FIXME: Is there any way to tell whether
+        										// the result is a directory or file?
+        										resultsList.add(new StringToken(base
+        												+ target));
+        									}
+        									
+        									sawHREF = false;
+        								}
+        							}
+        						}
+        					}
+        				}
+        			}
+        		}
+        	}
+        	
+        } finally {
+        	if (in != null) {
+        		in.close();
+        	}
         }
-
-        in.close();
-
+        
         if (_debugging) {
-            _debug("----- end of listing.");
-            _debug("----- extracted results:");
-
-            Iterator results = resultsList.iterator();
-
-            while (results.hasNext()) {
-                _debug(((StringToken) results.next()).stringValue());
-            }
+        	_debug("----- end of listing.");
+        	_debug("----- extracted results:");
+        	
+        	Iterator results = resultsList.iterator();
+        	
+        	while (results.hasNext()) {
+        		_debug(((StringToken) results.next()).stringValue());
+        	}
         }
-
+        
         StringToken[] results = new StringToken[resultsList.size()];
         output.broadcast(new ArrayToken(
-                                 (StringToken[]) (resultsList.toArray(results))));
+        		(StringToken[]) (resultsList.toArray(results))));
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-    // An array containing the files and subdirectories in the directory
-    // named by sourceURL.
-    // FIXME: Should we clone this?
-    private String[] _data;
-
     // The pattern for the regular expression.
     private Pattern _pattern;
 }
