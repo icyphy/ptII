@@ -70,7 +70,7 @@ public class VariableDelay extends TimedDelay {
 
     /** The amount specifying delay. Its default value is 1.0.
      */
-    public PortParameter delay;
+    public PortParameter delayPortParameter;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -82,8 +82,8 @@ public class VariableDelay extends TimedDelay {
      *  or a negative delay is received.
      */
     public void fire() throws IllegalActionException {
-        delay.update();
-        _delay = ((DoubleToken) delay.getToken()).doubleValue();
+        delayPortParameter.update();
+        _delay = ((DoubleToken) delayPortParameter.getToken()).doubleValue();
 
         if (_delay < 0) {
             throw new IllegalActionException("Can not have a "
@@ -104,7 +104,7 @@ public class VariableDelay extends TimedDelay {
      */
     public void pruneDependencies() {
         super.pruneDependencies();
-        removeDependency(delay.getPort(), output);
+        removeDependency(delayPortParameter.getPort(), output);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -115,8 +115,8 @@ public class VariableDelay extends TimedDelay {
      */
     protected void _init()
             throws NameDuplicationException, IllegalActionException {
-        delay = new PortParameter(this, "delay");
-        delay.setExpression("1.0");
-        delay.setTypeEquals(BaseType.DOUBLE);
+        delayPortParameter = new PortParameter(this, "delay");
+        delayPortParameter.setExpression("1.0");
+        delayPortParameter.setTypeEquals(BaseType.DOUBLE);
     }
 }

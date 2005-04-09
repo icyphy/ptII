@@ -121,8 +121,8 @@ public class Server extends VariableDelay {
      */
     public void fire() throws IllegalActionException {
         // update delay value
-        delay.update();
-        _delay = ((DoubleToken) delay.getToken()).doubleValue();
+        delayPortParameter.update();
+        _delay = ((DoubleToken) delayPortParameter.getToken()).doubleValue();
 
         Time currentTime = getDirector().getModelTime();
 
@@ -212,10 +212,10 @@ public class Server extends VariableDelay {
     protected void _init()
             throws NameDuplicationException, IllegalActionException {
         super._init();
-        delay.getPort().setName("newServiceTime");
+        delayPortParameter.getPort().setName("newServiceTime");
 
         // Put the delay port at the bottom of the icon by default.
-        StringAttribute cardinality = new StringAttribute(delay.getPort(),
+        StringAttribute cardinality = new StringAttribute(delayPortParameter.getPort(),
                 "_cardinal");
         cardinality.setExpression("SOUTH");
     }
