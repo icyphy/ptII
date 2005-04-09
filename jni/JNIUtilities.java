@@ -586,9 +586,15 @@ public class JNIUtilities {
         //exporting the file
         File cFile = new File(destinationDirectory + "/jni" + actor.getName()
                 + ".cpp");
-        FileWriter writer = new FileWriter(cFile);
-        writer.write(results.toString());
-        writer.close();
+        FileWriter writer = null;
+        try {
+            writer = new FileWriter(cFile);
+            writer.write(results.toString());
+        } finally {
+            if (writer != null) {
+                writer.close();
+            }
+        }
         return cFile;
     }
 
@@ -721,9 +727,15 @@ public class JNIUtilities {
 
         File dspFile = new File(destinationDirectory + "/Jni"
                 + interNativeLibrary + ".dsp");
-        FileWriter writer = new FileWriter(dspFile);
-        writer.write(results.toString());
-        writer.close();
+        FileWriter writer = null;
+        try {
+        	writer = new FileWriter(dspFile);
+        	writer.write(results.toString());
+        } finally {
+        	if (writer != null) {
+        		writer.close();
+        	}
+        }
     }
 
     /** Create the JNI Java file.
@@ -904,9 +916,15 @@ public class JNIUtilities {
         File javaFile = new File(destinationDirectory + "/Jni"
                 + actor.getName() + ".java");
 
-        FileWriter writer = new FileWriter(javaFile);
-        writer.write(results.toString());
-        writer.close();
+        FileWriter writer = null;
+        try {
+        	writer = new FileWriter(javaFile);
+        	writer.write(results.toString());
+        } finally {
+        	if (writer != null) {
+        		writer.close();
+        	}
+        }
 
         return javaFile;
     }
@@ -951,9 +969,15 @@ public class JNIUtilities {
 
         File makeFile = new File(destinationDirectory + "/Jni"
                 + interNativeLibrary + ".mk");
-        FileWriter writer = new FileWriter(makeFile);
-        writer.write(results.toString());
-        writer.close();
+        FileWriter writer = null;
+        try {
+            writer = new FileWriter(makeFile);
+            writer.write(results.toString());
+        } finally {
+            if (writer != null) {
+                writer.close();
+            }
+        }
     }
 
     /** Get the args belonging to this entity.
