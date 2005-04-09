@@ -2,9 +2,11 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="SampledClocks" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-alpha">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
     </property>
     <property name="Continuous Time (CT) Solver" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
+        <property name="timeResolution" class="ptolemy.moml.SharedParameter" value="1.0E-10">
+        </property>
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1.0">
@@ -25,11 +27,7 @@
         </property>
         <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
         </property>
-        <property name="breakpointODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;">
-        </property>
         <property name="runAheadLength" class="ptolemy.data.expr.Parameter" value="0.1">
-        </property>
-        <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="68.0, 32.0">
         </property>
@@ -105,7 +103,7 @@ second discrete clock output is sampled.</text></svg></configure>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={511, 362, 508, 202}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={511, 566, 508, 202}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 147]">
         </property>
@@ -117,7 +115,7 @@ second discrete clock output is sampled.</text></svg></configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
-<title>Output of the Discrete Clock</title>
+<title>Sampled Output Signal of the Discrete Clock</title>
 <xLabel>time</xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="1.0"/>
@@ -192,7 +190,7 @@ second discrete clock output is sampled.</text></svg></configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
-<title>Samples of the Continuous Clock</title>
+<title>Sampled Output Signal of the Continuous Clock</title>
 <xLabel>time</xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="1.0"/>
@@ -205,7 +203,7 @@ second discrete clock output is sampled.</text></svg></configure>
     <entity name="TimedPlotter3" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={511, 560, 508, 208}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={510, 360, 508, 208}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 153]">
         </property>
@@ -217,7 +215,7 @@ second discrete clock output is sampled.</text></svg></configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
-<title>Samples of the Discrete Clock</title>
+<title>Output Signal of the Discrete Clock</title>
 <xLabel>time</xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="1.0"/>
@@ -242,7 +240,7 @@ second discrete clock output is sampled.</text></svg></configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
-<title>Continuous Clock</title>
+<title>Output Signal of the Continuous Clock</title>
 <xLabel>time</xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="1.0"/>
@@ -255,7 +253,7 @@ second discrete clock output is sampled.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 290.0]">
         </property>
     </entity>
-    <entity name="DiscreteClock2" class="ptolemy.actor.lib.Clock">
+    <entity name="SampleTimes" class="ptolemy.actor.lib.Clock">
         <property name="period" class="ptolemy.data.expr.Parameter" value="0.5">
         </property>
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.2}">
@@ -298,5 +296,5 @@ second discrete clock output is sampled.</text></svg></configure>
     <link port="Sampler.input" relation="relation6"/>
     <link port="Sampler.output" relation="relation4"/>
     <link port="Sampler.trigger" relation="relation2"/>
-    <link port="DiscreteClock2.output" relation="relation2"/>
+    <link port="SampleTimes.output" relation="relation2"/>
 </entity>
