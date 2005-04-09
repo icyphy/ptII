@@ -290,7 +290,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements Printable,
                 // Make sure the visibility is only expert.
                 pan.setVisibility(Settable.EXPERT);
             }
-        } catch (Exception ex) {
+        } catch (Throwable throwable) {
             // Ignore problems here.  Errors simply result in a default
             // size and location.
         }
@@ -737,7 +737,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements Printable,
             }
 
             //System.out.println(" new port:" + newPorts);
-            final Point2D point = new Point2D.Double();
+            //final Point2D point = new Point2D.Double();
 
             // Copy the selection.
             copy();
@@ -802,8 +802,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements Printable,
             if (request != null) {
                 container.requestChange(request);
             }
-        } catch (Exception ex) {
-            MessageHandler.error("Creating hierarchy failed", ex);
+        } catch (Throwable throwable) {
+            MessageHandler.error("Creating hierarchy failed", throwable);
         }
     }
 
@@ -1026,7 +1026,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements Printable,
                     moml.toString());
             UndoStackAttribute undoInfo = UndoStackAttribute.getUndoInfo(composite);
             undoInfo.push(undoEntry);
-        } catch (Exception e) {
+        } catch (Throwable throwable) {
             // operation not undoable
         }
 
@@ -1156,29 +1156,33 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements Printable,
             // Record the selected directory.
             _directory = fileDialog.getCurrentDirectory();
 
-            java.io.FileWriter fileWriter = new java.io.FileWriter(file);
-
-            // Make sure the entity name saved matches the file name.
-            String name = entity.getName();
-            String filename = file.getName();
-            int period = filename.indexOf(".");
-
-            if (period > 0) {
-                name = filename.substring(0, period);
-            } else {
-                name = filename;
-            }
-
+            java.io.FileWriter fileWriter = null;
             try {
-                fileWriter.write("<?xml version=\"1.0\" standalone=\"no\"?>\n"
-                        + "<!DOCTYPE " + entity.getElementName() + " PUBLIC "
-                        + "\"-//UC Berkeley//DTD MoML 1//EN\"\n"
-                        + "    \"http://ptolemy.eecs.berkeley.edu"
-                        + "/xml/dtd/MoML_1.dtd\">\n");
-
-                entity.exportMoML(fileWriter, 0, name);
+            	fileWriter = new java.io.FileWriter(file);
+            	
+            	// Make sure the entity name saved matches the file name.
+            	String name = entity.getName();
+            	String filename = file.getName();
+            	int period = filename.indexOf(".");
+            	
+            	if (period > 0) {
+            		name = filename.substring(0, period);
+            	} else {
+            		name = filename;
+            	}
+            	
+            	
+            	fileWriter.write("<?xml version=\"1.0\" standalone=\"no\"?>\n"
+            			+ "<!DOCTYPE " + entity.getElementName() + " PUBLIC "
+						+ "\"-//UC Berkeley//DTD MoML 1//EN\"\n"
+						+ "    \"http://ptolemy.eecs.berkeley.edu"
+						+ "/xml/dtd/MoML_1.dtd\">\n");
+            	
+            	entity.exportMoML(fileWriter, 0, name);
             } finally {
-                fileWriter.close();
+            	if (fileWriter != null) {
+            		fileWriter.close();
+            	}
             }
         }
     }
@@ -1666,7 +1670,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements Printable,
 
             // Make sure the visibility is only expert.
             pan.setVisibility(Settable.EXPERT);
-        } catch (Exception ex) {
+        } catch (Throwable throwable) {
             // Ignore problems here.  Errors simply result in a default
             // size and location.
         }
