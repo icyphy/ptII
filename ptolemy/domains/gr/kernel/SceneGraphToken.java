@@ -104,7 +104,7 @@ public class SceneGraphToken extends Token {
         return "SceneGraphToken(" + _node + ")";
     }
 
-    public static class TestType implements Type, Serializable {
+    public static class SceneGraphType implements Type, Serializable {
         ///////////////////////////////////////////////////////////////////
         ////                         public methods                    ////
 
@@ -200,7 +200,7 @@ public class SceneGraphToken extends Token {
         }
     }
 
-    public static final Type TYPE = new TestType();
+    public static final Type TYPE = new SceneGraphType();
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
