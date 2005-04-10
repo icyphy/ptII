@@ -545,7 +545,7 @@ public class GiottoDirector extends StaticSchedulingDirector
                 }
 
                 _periodValue = periodValue / frequencyValue;
-                period.setExpression(new Double(_periodValue).toString());
+                period.setExpression(Double.toString(_periodValue));
             }
         }
 
