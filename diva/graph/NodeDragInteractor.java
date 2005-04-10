@@ -25,7 +25,6 @@
 */
 package diva.graph;
 
-import java.awt.geom.Point2D;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -69,8 +68,6 @@ public class NodeDragInteractor extends DragInteractor {
     public void translate(LayerEvent e, double x, double y) {
         GraphModel model = _controller.getGraphModel();
         Iterator i = targets();
-        Point2D.Double pt = new Point2D.Double(x, y);
-        Point2D.Double localpt = new Point2D.Double();
         Set edgeSet = new HashSet();
 
         while (i.hasNext()) {

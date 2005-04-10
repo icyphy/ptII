@@ -208,10 +208,9 @@ public class JShadePane extends JPanel {
      */
     public void insertShade(String title, Icon icon, Component component,
             String tip, int index) {
-        Icon disabledIcon = null;
 
         if ((icon != null) && icon instanceof ImageIcon) {
-            disabledIcon = new ImageIcon(GrayFilter.createDisabledImage(
+            new ImageIcon(GrayFilter.createDisabledImage(
                                                  ((ImageIcon) icon).getImage()));
         }
 

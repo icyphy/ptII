@@ -69,7 +69,6 @@ public class Unit implements UnitPresentation {
         String name = bu.getName();
         setPrimaryLabel(name);
 
-        String spec = bu.getExpression();
         int index = UnitUtilities.getUnitCategoryIndex(name);
         _type[index] = 1;
     }
@@ -229,8 +228,6 @@ public class Unit implements UnitPresentation {
      * @return UnitExpr that is equivalent to to the Unit.
      */
     public UnitExpr factor() {
-        Vector uTerms = new Vector();
-
         // First see if it is simply an invert
         Unit invert = UnitLibrary.getUnit(invert());
 

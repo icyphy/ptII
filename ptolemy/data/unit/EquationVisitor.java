@@ -27,7 +27,6 @@ COPYRIGHTENDKEY
 package ptolemy.data.unit;
 
 import java.util.Iterator;
-import java.util.Vector;
 
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -77,7 +76,6 @@ public abstract class EquationVisitor {
     protected Object _visitUnitExpr(UnitExpr unitExpr)
             throws IllegalActionException {
         Iterator iter = unitExpr.getUTerms().iterator();
-        Vector uTerms = new Vector();
 
         while (iter.hasNext()) {
             UnitTerm term = (UnitTerm) (iter.next());

@@ -361,7 +361,6 @@ public class JPanner extends JPanel {
 
     public static void main(String[] argv) {
         JFrame f = new JFrame();
-        JList l = new JList();
         String[] data = {
             "oneeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
             "twoooooooooooooooooooooooooooooooooooooooo",

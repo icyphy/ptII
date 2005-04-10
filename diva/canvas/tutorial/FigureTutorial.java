@@ -211,7 +211,7 @@ public class FigureTutorial {
         graphicsPane = (GraphicsPane) canvas.getCanvasPane();
         createFigures();
 
-        BasicFrame frame = new BasicFrame("Figure tutorial", canvas);
+        new BasicFrame("Figure tutorial", canvas);
     }
 
     /** Create instances of the class defined

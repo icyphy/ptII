@@ -172,8 +172,7 @@ public class Locator extends TypedAtomicActor {
      *  @exception IllegalActionException If the location attribute does
      *   not exist or cannot be evaluated.
      */
-    protected double[] _getLocation() throws IllegalActionException {
-        Token[] result = new Token[2];
+    protected double[] _getLocation() throws IllegalActionException {        Token[] result = new Token[2];
         Location locationAttribute = (Location) getAttribute("_location",
                 Location.class);
 

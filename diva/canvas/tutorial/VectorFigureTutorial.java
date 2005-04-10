@@ -74,7 +74,7 @@ public class VectorFigureTutorial {
         graphicsPane = (GraphicsPane) canvas.getCanvasPane();
         createFigures();
 
-        BasicFrame frame = new BasicFrame("Vector figure tutorial", canvas);
+        new BasicFrame("Vector figure tutorial", canvas);
     }
 
     /** Create instances of Vector Figures and make them
