@@ -230,7 +230,7 @@ public class Argument extends AbstractSettableAttribute {
             try {
                 MessageHandler.warning("Type = " + _cType
                         + " not convertible in JavaType");
-            } catch (Exception e) {
+            } catch (Throwable throwable) {
             }
 
             returnJType = "void";
@@ -426,13 +426,13 @@ public class Argument extends AbstractSettableAttribute {
             StringTokenizer tokenizer = new StringTokenizer(_value, ",");
 
             try {
-                setInput(Boolean.valueOf(tokenizer.nextToken().toString())
+                setInput(Boolean.valueOf(tokenizer.nextToken())
                         .booleanValue());
-                setOutput(Boolean.valueOf(tokenizer.nextToken().toString())
+                setOutput(Boolean.valueOf(tokenizer.nextToken())
                         .booleanValue());
-                setReturn(Boolean.valueOf(tokenizer.nextToken().toString())
+                setReturn(Boolean.valueOf(tokenizer.nextToken())
                         .booleanValue());
-                setCType(tokenizer.nextToken().toString());
+                setCType(tokenizer.nextToken());
             } catch (java.util.NoSuchElementException e) {
             }
 
