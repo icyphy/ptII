@@ -62,6 +62,7 @@ import ptolemy.kernel.Entity;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
@@ -189,7 +190,7 @@ public class PSDFScheduler extends BaseSDFScheduler {
      *  @return A string representation of the buffer sizes.
      */
     public String displayBufferSizes() {
-        String result = new String();
+        StringBuffer result = new StringBuffer();
         PSDFDirector director = (PSDFDirector) getContainer();
         CompositeActor model = (CompositeActor) director.getContainer();
         Iterator relations = model.relationList().iterator();
@@ -197,18 +198,18 @@ public class PSDFScheduler extends BaseSDFScheduler {
         while (relations.hasNext()) {
             Relation relation = (Relation) relations.next();
             Variable variable = (Variable) relation.getAttribute("bufferSize");
-            result += (relation.getName() + ": ");
+            result.append(relation.getName() + ": ");
 
             if (variable == null) {
-                result += ("null");
+                result.append("null");
             } else {
-                result += variable.getExpression();
+                result.append(variable.getExpression());
             }
 
-            result += "\n";
+            result.append("\n");
         }
 
-        return result;
+        return result.toString();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -548,9 +549,9 @@ public class PSDFScheduler extends BaseSDFScheduler {
 
                 return symbolicSchedule;
             }
-        } catch (Exception exception) {
-            throw new RuntimeException("Error converting cluster hierarchy to "
-                    + "schedule.\n" + exception.getMessage());
+        } catch (Throwable throwable) {
+            throw new KernelRuntimeException(null, throwable, "Error converting cluster hierarchy to "
+                    + "schedule.\n" + throwable.getMessage());
         }
     }
 
