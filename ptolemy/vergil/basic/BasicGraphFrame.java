@@ -798,10 +798,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements Printable,
                         //_setLocation(compositeActor, point);
                     }
                 };
-
-            if (request != null) {
+     
                 container.requestChange(request);
-            }
         } catch (Throwable throwable) {
             MessageHandler.error("Creating hierarchy failed", throwable);
         }
