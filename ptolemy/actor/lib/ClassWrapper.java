@@ -264,7 +264,7 @@ public class ClassWrapper extends TypedAtomicActor {
                 } else if (arg instanceof StringToken) {
                     argValues[i] = ((StringToken) arg).stringValue();
                 } else if (arg instanceof BooleanToken) {
-                    argValues[i] = new Boolean(((BooleanToken) arg)
+                    argValues[i] = Boolean.valueOf(((BooleanToken) arg)
                             .booleanValue());
                 } else if (arg instanceof ComplexToken) {
                     argValues[i] = ((ComplexToken) arg).complexValue();
