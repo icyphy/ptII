@@ -48,7 +48,6 @@ import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.DebugEvent;
 import ptolemy.kernel.util.DebugListener;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.StreamListener;
 import ptolemy.kernel.util.Workspace;
 import diva.canvas.Figure;
 import diva.canvas.Site;
