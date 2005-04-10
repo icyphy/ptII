@@ -66,7 +66,7 @@ public class StringToken extends AbstractConvertibleToken {
         if (value != null) {
             _value = value;
         } else {
-            _value = new String("");
+            _value = "";
         }
 
         // If a String token is "has an embedded " quote", then
