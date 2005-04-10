@@ -190,8 +190,7 @@ public class BreakpointConfigurer extends Query implements ChangeListener {
                     + "\" class=\"ptolemy.vergil.debugger.DebugController\"/>";
                 ChangeRequest request = new MoMLChangeRequest(this, // originator
                         director, // context
-                        moml.toString() // MoML code
-                                                              );
+                        moml);
                 request.addChangeListener(this);
                 director.requestChange(request);
             }
