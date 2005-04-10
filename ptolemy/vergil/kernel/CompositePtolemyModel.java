@@ -245,9 +245,9 @@ public class CompositePtolemyModel implements CompositeModel {
                             // (Unlikely though since auto naming will take
                             // into account subclasses).
                             vertex.propagateExistence();
-                        } catch (Exception e) {
-                            throw new InternalErrorException(
-                                    "Failed to create a vertex! " + e.getMessage());
+                        } catch (Throwable throwable) {
+                            throw new InternalErrorException(null, throwable, 
+                                    "Failed to create a vertex!");
                         }
                     }
                 }
