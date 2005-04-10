@@ -265,23 +265,23 @@ public class FigureAction extends AbstractAction {
 
     /** When the action was fired from a canvas interactor.
      */
-    public static SourceType CANVAS_TYPE = new SourceType("canvas");
+    public static final SourceType CANVAS_TYPE = new SourceType("canvas");
 
     /** When the action was fired from a context menu.
      */
-    public static SourceType CONTEXTMENU_TYPE = new SourceType("contextmenu");
+    public static final SourceType CONTEXTMENU_TYPE = new SourceType("contextmenu");
 
     /** When the action was fired from a toolbar icon.
      */
-    public static SourceType TOOLBAR_TYPE = new SourceType("toolbar");
+    public static final SourceType TOOLBAR_TYPE = new SourceType("toolbar");
 
     /** When the action was fired from a menubar.
      */
-    public static SourceType MENUBAR_TYPE = new SourceType("menubar");
+    public static final SourceType MENUBAR_TYPE = new SourceType("menubar");
 
     /** When the action was fired from a hotkey.
      */
-    public static SourceType HOTKEY_TYPE = new SourceType("hotkey");
+    public static final SourceType HOTKEY_TYPE = new SourceType("hotkey");
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
