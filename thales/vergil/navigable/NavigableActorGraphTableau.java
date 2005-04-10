@@ -84,44 +84,44 @@ public class NavigableActorGraphTableau extends Tableau {
             LibraryAttribute defaultLibrary)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-
-        if (container instanceof PtolemyEffigy) {
-            NamedObj model = container.getModel();
-
-            if (model == null) {
-                return;
-            }
-
-            if (!(model instanceof CompositeEntity)) {
-                throw new IllegalActionException(this,
-                        "Cannot graphically edit a model "
-                        + "that is not a CompositeEntity. Model is a " + model);
-            }
-
-            CompositeEntity entity = (CompositeEntity) model;
-
-            NavigableActorGraphFrame frame = new NavigableActorGraphFrame(entity,
-                    this, defaultLibrary);
-            setFrame(frame);
-            frame.setBackground(BACKGROUND_COLOR);
+        
+        
+        NamedObj model = container.getModel();
+        
+        if (model == null) {
+        	return;
         }
+        
+        if (!(model instanceof CompositeEntity)) {
+        	throw new IllegalActionException(this,
+        			"Cannot graphically edit a model "
+        			+ "that is not a CompositeEntity. Model is a " + model);
+        }
+        
+        CompositeEntity entity = (CompositeEntity) model;
+        
+        NavigableActorGraphFrame frame = new NavigableActorGraphFrame(entity,
+        		this, defaultLibrary);
+        setFrame(frame);
+        frame.setBackground(BACKGROUND_COLOR);
+        
     }
-
+    
     /* (non-Javadoc)
      * @see ptolemy.actor.gui.Tableau#show()
      */
     public void show() {
-        JFrame frame = getFrame();
-
-        if (frame != null) {
-            if (!frame.isVisible()) {
-                frame.pack();
-            }
-        }
-
-        SingleWindowApplication._mainFrame.selectTab(frame.getName());
+    	JFrame frame = getFrame();
+    	
+    	if (frame != null) {
+    		if (!frame.isVisible()) {
+    			frame.pack();
+    		}
+    	}
+    	
+    	SingleWindowApplication._mainFrame.selectTab(frame.getName());
     }
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
     // The background color.
