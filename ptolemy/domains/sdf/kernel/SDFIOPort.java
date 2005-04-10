@@ -324,9 +324,9 @@ public final class SDFIOPort extends TypedIOPort {
                     new IntToken(0));
             tokenProductionRate = new Parameter(this, "tokenProductionRate",
                     new IntToken(0));
-        } catch (Exception e) {
+        } catch (Throwable throwable) {
             // This should never happen.
-            throw new InternalErrorException(e.getMessage());
+            throw new InternalErrorException(this, throwable, "");
         }
     }
 }
