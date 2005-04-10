@@ -1076,9 +1076,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         base = new URL("file", null, cwd + File.pathSeparator);
                         result = new URL(base, source);
                         input = result.openStream();
-                    } catch (Exception exception) {
+                    } catch (Throwable throwable) {
                         errorMessage.append("-- " + cwd + File.pathSeparator
-                                + source + "\n" + exception.getMessage() + "\n");
+                                + source + "\n" + throwable.getMessage() + "\n");
                     }
                 }
             }
