@@ -1189,17 +1189,16 @@ public class JNIUtilities {
             String add = "";
 
             if (argument.getJType().endsWith("[]")) {
-                add = "_1";
+            	add = "_1";
             }
-
-            if (argument != null) {
-                if (returnValue.length() > 0) {
-                    returnValue.append(separator);
-                }
-
-                returnValue.append(" (" + argument.getC2Type() + ")"
-                        + argument.getName() + add);
+            
+            if (returnValue.length() > 0) {
+            	returnValue.append(separator);
             }
+            
+            returnValue.append(" (" + argument.getC2Type() + ")"
+            		+ argument.getName() + add);
+            
         }
 
         return returnValue.toString();
