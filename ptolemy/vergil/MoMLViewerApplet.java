@@ -178,7 +178,7 @@ public class MoMLViewerApplet extends MoMLApplet {
             SizeAttribute vergilBounds = (SizeAttribute) _toplevel.getAttribute("_vergilSize",
                     SizeAttribute.class);
             boundsSet = vergilBounds.setSize(modelViewer);
-        } catch (Exception ex) {
+        } catch (Throwable throwable) {
             // Ignore and set to default.
         }
 
