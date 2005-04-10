@@ -268,11 +268,11 @@ public class ExecShellTableau extends Tableau implements ShellInterpreter {
 
                 // Set up a Thread to read in any error messages
                 _StreamReaderThread errorGobbler = new _StreamReaderThread(_interpreter
-                        .getErrorStream(), "ERROR", this);
+                        .getErrorStream(), this);
 
                 // Set up a Thread to read in any output messages
                 _StreamReaderThread outputGobbler = new _StreamReaderThread(_interpreter
-                        .getInputStream(), "OUTPUT", this);
+                        .getInputStream(), this);
 
                 // Start up the Threads
                 errorGobbler.start();
@@ -307,10 +307,9 @@ public class ExecShellTableau extends Tableau implements ShellInterpreter {
     // Private class that reads a stream in a thread and updates the
     // JTextArea.
     private class _StreamReaderThread extends Thread {
-        _StreamReaderThread(InputStream inputStream, String streamType,
+        _StreamReaderThread(InputStream inputStream,
                 ExecShellTableau execShellTableau) {
             _inputStream = inputStream;
-            _streamType = streamType;
             _execShellTableau = execShellTableau;
         }
 
@@ -332,9 +331,6 @@ public class ExecShellTableau extends Tableau implements ShellInterpreter {
 
         // Stream to read from.
         private InputStream _inputStream;
-
-        // Description of the Stream that we print, usually "OUTPUT" or "ERROR"
-        private String _streamType;
         private ExecShellTableau _execShellTableau;
     }
 }
