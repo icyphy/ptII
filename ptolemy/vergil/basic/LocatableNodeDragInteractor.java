@@ -27,8 +27,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.vergil.basic;
 
-import java.awt.Point;
-import java.awt.geom.Point2D;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
