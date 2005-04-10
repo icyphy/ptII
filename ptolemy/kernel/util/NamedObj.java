@@ -1720,7 +1720,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
         }
 
         if (name == null) {
-            name = new String("");
+            name = "";
         }
 
         if (name.equals(_name)) {

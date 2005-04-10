@@ -650,7 +650,7 @@ public class Port extends NamedObj {
     public void setName(String name)
             throws IllegalActionException, NameDuplicationException {
         if (name == null) {
-            name = new String("");
+            name = "";
         }
 
         Entity container = (Entity) getContainer();

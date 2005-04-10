@@ -474,7 +474,7 @@ public class ComponentRelation extends Relation {
     public void setName(String name)
             throws IllegalActionException, NameDuplicationException {
         if (name == null) {
-            name = new String("");
+            name = "";
         }
 
         CompositeEntity container = (CompositeEntity) getContainer();

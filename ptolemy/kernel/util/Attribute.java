@@ -394,7 +394,7 @@ public class Attribute extends NamedObj {
     public void setName(String name)
             throws IllegalActionException, NameDuplicationException {
         if (name == null) {
-            name = new String("");
+            name = "";
         }
 
         NamedObj container = (NamedObj) getContainer();

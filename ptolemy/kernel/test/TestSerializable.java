@@ -62,7 +62,7 @@ public class TestSerializable {
     public static void main(String[] args)
             throws NameDuplicationException, IllegalActionException {
         ExampleSystem exampleSystem = new ExampleSystem();
-        String filename = new String("TestSerializable.data");
+        String filename = "TestSerializable.data";
 
         if ((args.length > 0) && args[0].equals("write")) {
             FileOutputStream f = null;

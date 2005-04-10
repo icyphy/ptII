@@ -568,7 +568,7 @@ public class ComponentEntity extends Entity {
     public void setName(String name)
             throws IllegalActionException, NameDuplicationException {
         if (name == null) {
-            name = new String("");
+            name = "";
         }
 
         CompositeEntity container = (CompositeEntity) getContainer();
