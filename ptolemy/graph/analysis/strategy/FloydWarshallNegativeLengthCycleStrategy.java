@@ -112,7 +112,7 @@ public class FloydWarshallNegativeLengthCycleStrategy extends CachedStrategy
             }
         }
 
-        return new Boolean(negativeCycle);
+        return Boolean.valueOf(negativeCycle);
     }
 
     ///////////////////////////////////////////////////////////////////

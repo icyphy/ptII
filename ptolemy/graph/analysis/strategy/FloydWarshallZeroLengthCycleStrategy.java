@@ -111,7 +111,7 @@ public class FloydWarshallZeroLengthCycleStrategy extends CachedStrategy
             }
         }
 
-        return new Boolean(zeroCycle);
+        return Boolean.valueOf(zeroCycle);
     }
 
     ///////////////////////////////////////////////////////////////////

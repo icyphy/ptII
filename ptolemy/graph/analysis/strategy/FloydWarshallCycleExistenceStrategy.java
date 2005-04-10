@@ -105,7 +105,7 @@ public class FloydWarshallCycleExistenceStrategy extends CachedStrategy
             }
         }
 
-        return new Boolean(cyclic);
+        return Boolean.valueOf(cyclic);
     }
 
     ///////////////////////////////////////////////////////////////////

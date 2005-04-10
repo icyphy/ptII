@@ -1072,7 +1072,7 @@ public class Query extends JPanel {
             ((QueryScrollPane) result).setText(value);
         } else if (result instanceof JToggleButton) {
             // JRadioButton and JCheckButton are subclasses of JToggleButton
-            Boolean flag = new Boolean(value);
+            Boolean flag = Boolean.valueOf(value);
             setBoolean(name, flag.booleanValue());
         } else if (result instanceof JSlider) {
             Integer parsed = new Integer(value);
