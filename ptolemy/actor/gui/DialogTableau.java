@@ -80,11 +80,6 @@ public class DialogTableau extends Tableau {
             throws IllegalActionException, NameDuplicationException {
         super(container.workspace());
 
-        if (!(container instanceof Effigy)) {
-            throw new IllegalActionException(this,
-                    "Effigy for Dialog must be an instance of " + "Effigy.");
-        }
-
         setName(name);
         setContainer(container);
     }
@@ -183,9 +178,9 @@ public class DialogTableau extends Tableau {
 
             newDialogTableau.setFrame(dialog);
             return newDialogTableau;
-        } catch (Exception ex) {
+        } catch (Throwable throwable) {
             MessageHandler.error("Failed to create a DialogTableau for "
-                    + target.getFullName(), ex);
+                    + target.getFullName(), throwable);
         }
 
         return null;
