@@ -571,18 +571,12 @@ public class GRDirector extends StaticSchedulingDirector {
     }
 
     private void _reset() {
-        _formerTimeFired = 0.0;
-        _formerValidTimeFired = 0.0;
         _lastIterationTime = (long) 0;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    // The time when the previous valid prefire() was called
-    private double _formerValidTimeFired;
-
-    // The time when the previous valid or invalid prefire() was called
-    private double _formerTimeFired;
+   
     private long _lastIterationTime;
     private boolean _pseudoTimeEnabled = false;
     private Director _insideDirector;
