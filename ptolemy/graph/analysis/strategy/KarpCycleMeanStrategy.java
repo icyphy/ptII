@@ -197,7 +197,6 @@ public class KarpCycleMeanStrategy extends CachedStrategy
         // Head
         int n = directedCyclicGraph.nodeCount();
         Node resultNode = null;
-        HashMap cycle = new HashMap(n);
         HashMap[] maximumPathLength = new HashMap[n + 1];
         HashMap[] predecessor = new HashMap[n + 1];
         HashMap cycleMean = new HashMap(n);
@@ -317,23 +316,23 @@ public class KarpCycleMeanStrategy extends CachedStrategy
     }
 
     // Used for debugging purposes.
-    private void _dumpVariable(HashMap[] maximumPathLength,
-            DirectedGraph directedCyclicGraph) {
-        Collection nodeCollection = directedCyclicGraph.nodes();
-        int n = directedCyclicGraph.nodeCount();
-
-        for (int k = 0; k <= n; k++) {
-            Iterator nodes = nodeCollection.iterator();
-
-            while (nodes.hasNext()) {
-                Node node = (Node) nodes.next();
-                System.out.println(node + ":" + maximumPathLength[k].get(node)
-                        + "   ");
-            }
-
-            System.out.println();
-        }
-    }
+//    private void _dumpVariable(HashMap[] maximumPathLength,
+//            DirectedGraph directedCyclicGraph) {
+//        Collection nodeCollection = directedCyclicGraph.nodes();
+//        int n = directedCyclicGraph.nodeCount();
+//
+//        for (int k = 0; k <= n; k++) {
+//            Iterator nodes = nodeCollection.iterator();
+//
+//            while (nodes.hasNext()) {
+//                Node node = (Node) nodes.next();
+//                System.out.println(node + ":" + maximumPathLength[k].get(node)
+//                        + "   ");
+//            }
+//
+//            System.out.println();
+//        }
+//    }
 
     // Return the length of edge with maximum/minimum length between
     // the two nodes.
