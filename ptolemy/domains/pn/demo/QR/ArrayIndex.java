@@ -159,8 +159,8 @@ public class ArrayIndex {
      *
      *  @param file The filename.
      */
-    public void ReadMatrix(String filename) {
-        if (filename == "U_1000x16") {
+    public void readMatrix(String filename) {
+        if (filename.equals("U_1000x16")) {
             for (int i = 0; i < 500; i++) {
                 for (int j = 0; j < 16; j++) {
                     String key = atKey(i + 1, j + 1);
@@ -182,15 +182,11 @@ public class ArrayIndex {
         name. Currently not further implemented.
         @param filename the filename.
     */
-    public void WriteMatrix(String filename) {
+    public void writeMatrix(String filename) {
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    /** A reference to the SourceMatrix used to initialize the
-        Associate Array.*/
-    private SourceMatrix x_0;
 
     /** Associative Array that is used to store and retrieve data. */
     private Map _map = new HashMap();

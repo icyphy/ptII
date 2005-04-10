@@ -81,7 +81,7 @@ public class ND_1 extends TypedAtomicActor {
         parameter_N = new Parameter(this, "N", new IntToken(6));
         parameter_K = new Parameter(this, "K", new IntToken(6));
 
-        x_1.ReadMatrix("Zeros_64x64");
+        x_1.readMatrix("Zeros_64x64");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -102,7 +102,6 @@ public class ND_1 extends TypedAtomicActor {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _returnValue = true;
 
         // Get the correct value from the parameters
         N = ((IntToken) parameter_N.getToken()).intValue();
@@ -144,5 +143,4 @@ public class ND_1 extends TypedAtomicActor {
     private int K;
     private double out_0;
     private ArrayIndex x_1 = new ArrayIndex();
-    private boolean _returnValue = true;
 }
