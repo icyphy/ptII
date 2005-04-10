@@ -31,7 +31,6 @@ import java.net.URL;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.HTMLEffigy;
 import ptolemy.actor.gui.HTMLViewer;
-import ptolemy.actor.gui.JNLPUtilities;
 import ptolemy.actor.gui.MoMLApplication;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TableauFactory;
@@ -41,6 +40,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
+import ptolemy.util.ClassUtilities;
 
 
 /**
@@ -179,7 +179,7 @@ public class SingleWindowHTMLViewerTableau extends Tableau {
                     // that we are looking in the wrong Jar file, so
                     // we try again.
                     String urlString = effigy.uri.getURI().toString();
-                    URL anotherURL = JNLPUtilities.jarURLEntryResource(urlString);
+                    URL anotherURL = ClassUtilities.jarURLEntryResource(urlString);
 
                     if (anotherURL == null) {
                         throw io;

@@ -32,7 +32,6 @@ import java.util.List;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.EffigyFactory;
-import ptolemy.actor.gui.JNLPUtilities;
 import ptolemy.actor.gui.ModelDirectory;
 import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.kernel.CompositeEntity;
@@ -45,6 +44,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.ParserAttribute;
+import ptolemy.util.ClassUtilities;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 import thales.vergil.navigable.NavigationTreeModel;
@@ -307,7 +307,7 @@ public class NavigableEffigy extends PtolemyEffigy {
                                 // If we are running under Web Start, we
                                 // might have a URL that refers to another
                                 // jar file.
-                                URL anotherURL = JNLPUtilities
+                                URL anotherURL = ClassUtilities
                                     .jarURLEntryResource(input.toString());
 
                                 if (anotherURL != null) {
