@@ -137,9 +137,15 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
                 modelName + ".giotto");
 
         try {
-            FileWriter giottoWriter = new FileWriter(writeGiottoFile);
+            FileWriter giottoWriter = null;
+            try {
+            giottoWriter = new FileWriter(writeGiottoFile);
             giottoWriter.write(generateGiottoCode(model));
-            giottoWriter.close();
+            } finally {
+            	if (giottoWriter != null) {
+            		giottoWriter.close();
+                }
+            }
         } catch (IOException e) {
             throw new IllegalActionException(model, e,
                     "Failed to open file " + modelName + ".giotto"
@@ -187,20 +193,39 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
         File writeTHFile = new File(fcodeDirectoryName, "task_code.h");
 
         try {
-            FileWriter FCwriter = new FileWriter(writeFCFile);
+        	FileWriter FCwriter = null;
+            try {
+            FCwriter = new FileWriter(writeFCFile);
             FCwriter.write(_generateFrameworkImplementationCode(model));
-            FCwriter.close();
+            } finally {
+            	if (FCwriter != null) {
+            		FCwriter.close();
+                }
+            }
+          
 
-            FileWriter FHwriter = new FileWriter(writeFHFile);
-            FHwriter.write(_generateFrameworkHeaderCode(model));
-            FHwriter.close();
+            FileWriter FHwriter = null;
+            try {
+            	FHwriter = new FileWriter(writeFHFile);
+            	FHwriter.write(_generateFrameworkHeaderCode(model));
+            } finally {
+            	if (FHwriter != null) {
+            		FHwriter.close();
+            	}
+            }
 
             //FileWriter TCwriter = new FileWriter(writeTCFile);
             //TCwriter.write(_generateTaskImplementationCode(model));
             //TCwriter.close();
-            FileWriter THwriter = new FileWriter(writeTHFile);
-            THwriter.write(_generateTaskHeaderCode(model));
-            THwriter.close();
+            FileWriter THwriter = null;
+            try {
+            	THwriter = new FileWriter(writeTHFile);
+            	THwriter.write(_generateTaskHeaderCode(model));
+            } finally {
+            	if (THwriter != null) {
+            		THwriter.close();
+            	}
+            }
         } catch (IOException e) {
             throw new IllegalActionException(model, e,
                     "Failed to open file for writing.");
