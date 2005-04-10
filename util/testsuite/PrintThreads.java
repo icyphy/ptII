@@ -155,10 +155,10 @@ public class PrintThreads {
 
         try {
             if (thread == null) {
-                return new String("PrintThreads.toThreadDescription(): "
+                return "PrintThreads.toThreadDescription(): "
                         + "thread argument == null\n   "
                         + "This can happen if the thread was "
-                        + "killed while PrintThreads was called");
+                        + "killed while PrintThreads was called";
             }
 
             if (thread.getName() != null) {
@@ -172,8 +172,8 @@ public class PrintThreads {
 
             return _stringFormat(name, 35) + " " + _stringFormat(group, 20)
                 + " " + _stringFormat(Integer.toString(thread.getPriority()), 3)
-                + " " + _stringFormat(new Boolean(thread.isDaemon()).toString(), 6)
-                + " " + _stringFormat(new Boolean(thread.isAlive()).toString(), 5)
+                + " " + _stringFormat(Boolean.valueOf(thread.isDaemon()).toString(), 6)
+                + " " + _stringFormat(Boolean.valueOf(thread.isAlive()).toString(), 5)
                 + (Thread.currentThread().equals(thread) ? " *" : "  ");
         } catch (Exception e) {
             return _stringFormat(name, 35) + " " + _stringFormat(group, 20)
