@@ -2165,7 +2165,6 @@ public class Plot extends PlotBox {
         _firstInSet = true;
         _sawFirstDataSet = false;
         _xyInvalid = true;
-        _filename = null;
 
         if (format) {
             _showing = false;
@@ -2579,9 +2578,6 @@ public class Plot extends PlotBox {
      *  _yBottom, and _yTop.
      */
     private boolean _xyInvalid = true;
-
-    /** @serial Last filename seen in command-line arguments. */
-    private String _filename = null;
 
     /** @serial Set by _drawPlot(), and reset by clear(). */
     private boolean _showing = false;
