@@ -202,7 +202,7 @@ public class HTMLViewerTableau extends Tableau {
                     if (anotherURL == null) {
                         try {
                             anotherURL = _absolutePTIIURLToJarURL(urlString);
-                        } catch (Exception ex) {
+                        } catch (Throwable throwable) {
                             // Ignore: failed
                         }
                     }
@@ -347,7 +347,7 @@ public class HTMLViewerTableau extends Tableau {
         URL anotherURL = null;
 
         if (urlStringBase.startsWith("jar:")) {
-            anotherURL = JNLPUtilities.jarURLEntryResource(urlStringBase);
+            anotherURL = ClassUtilities.jarURLEntryResource(urlStringBase);
         } else {
             anotherURL = Thread.currentThread().getContextClassLoader()
                 .getResource(urlStringBase);

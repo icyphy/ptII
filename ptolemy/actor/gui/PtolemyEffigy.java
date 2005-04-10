@@ -44,6 +44,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.ParserAttribute;
+import ptolemy.util.ClassUtilities;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 
@@ -388,7 +389,7 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                             // If we are running under Web Start, we
                             // might have a URL that refers to another
                             // jar file.
-                            URL anotherURL = JNLPUtilities.jarURLEntryResource(input
+                            URL anotherURL = ClassUtilities.jarURLEntryResource(input
                                     .toString());
 
                             if (anotherURL != null) {
