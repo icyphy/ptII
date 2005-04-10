@@ -1424,11 +1424,11 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         // Use the current working directory as a base.
         String cwd = StringUtilities.getProperty("user.dir");
 
-        if (cwd != null) {
-            // We have to append a trailing / here for this to
-            // work under Solaris.
-            base = new URL("file", null, cwd + "/");
-        }
+//        if (cwd != null) {
+//            // We have to append a trailing / here for this to
+//            // work under Solaris.
+//            base = new URL("file", null, cwd + "/");
+//        }
 
         // Java's I/O is so lame that it can't find files in the current
         // working directory...
