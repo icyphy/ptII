@@ -158,7 +158,7 @@ public class ImageSequence extends Source {
                 int n;
                 i = _frameNumber + _startFrame;
 
-                String temporaryFileName = new String(fileRoot);
+                String temporaryFileName = fileRoot;
                 int location = temporaryFileName.lastIndexOf('*');
 
                 while (location >= 0) {
@@ -170,17 +170,17 @@ public class ImageSequence extends Source {
 
                 String fileName = new String(arr);
                 _debug("file = " + fileName + "\n");
-
-                if (fileName != null) {
-                    URL dataurl = getClass().getClassLoader().getResource(fileName);
-
-                    if (dataurl == null) {
-                        throw new FileNotFoundException("Failed to find '"
-                                + fileName + "' as " + "a resource");
-                    }
-
-                    source = dataurl.openStream();
+                
+                
+                URL dataurl = getClass().getClassLoader().getResource(fileName);
+                
+                if (dataurl == null) {
+                	throw new FileNotFoundException("Failed to find '"
+                			+ fileName + "' as " + "a resource");
                 }
+                
+                source = dataurl.openStream();
+                
 
                 // Load the frame from the file.
                 if (_fullRead(source, _frameBytes) != (_imageRows * _imageColumns)) {
@@ -266,7 +266,6 @@ public class ImageSequence extends Source {
     private IntMatrixToken[] _images;
     private byte[] _frameBytes;
     private int[][] _frameInts;
-    private int _imageURLTemplate;
     private int _imageColumns;
     private int _imageRows;
     private int _startFrame;
