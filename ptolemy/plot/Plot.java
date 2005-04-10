@@ -1479,7 +1479,7 @@ public class Plot extends PlotBox {
         } else {
             // We convert the line to lower case so that the command
             // names are case insensitive
-            String lcLine = new String(line.toLowerCase());
+            String lcLine = line.toLowerCase();
 
             if (lcLine.startsWith("marks:")) {
                 // If we have seen a dataset directive, then apply the
@@ -1690,9 +1690,9 @@ public class Plot extends PlotBox {
                             fieldsplit3 = line.indexOf(" ");
                         }
 
-                        if (fieldsplit3 == -1) {
-                            fieldsplit2 = line.indexOf("\t"); // a tab
-                        }
+                        //if (fieldsplit3 == -1) {
+                        //    fieldsplit2 = line.indexOf("\t"); // a tab
+                        //}
 
                         if (fieldsplit3 > 0) {
                             // We have more numbers, assume that this is
