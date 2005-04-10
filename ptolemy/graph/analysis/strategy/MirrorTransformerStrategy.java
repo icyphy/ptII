@@ -172,7 +172,7 @@ public class MirrorTransformerStrategy extends CachedStrategy
      *  @return The mirror graph as an {@link Object}.
      */
     protected Object _compute() {
-        String nameClone = new String("clone");
+        String nameClone = "clone";
         Graph mirrorGraph = null;
 
         try {
@@ -213,11 +213,12 @@ public class MirrorTransformerStrategy extends CachedStrategy
                     } else {
                         mirrorWeight = node.getWeight();
                     }
-                } catch (Exception e) {
+                } catch (Throwable throwable) {
                     /* Exception due to non-Cloneable weights or
                        weights without public clone(). */
                     throw new AnalysisException(
-                            "Can not clone the node weight.\n");
+                            "Can not clone the node weight.\n",
+                            throwable);
                 }
 
                 mirrorNode = new Node(mirrorWeight);
@@ -261,11 +262,12 @@ public class MirrorTransformerStrategy extends CachedStrategy
                     } else {
                         mirrorWeight = edge.getWeight();
                     }
-                } catch (Exception e) {
+                } catch (Throwable throwable) {
                     /* Exception due to non-Cloneable weights or
                        weights without public clone(). */
                     throw new RuntimeException(
-                            "Can not clone the edge weight.\n");
+                            "Can not clone the edge weight.\n",
+                            throwable);
                 }
 
                 mirrorEdge = new Edge(mirrorSource, mirrorSink, mirrorWeight);
