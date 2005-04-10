@@ -328,7 +328,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         // The auto namespace is disabled while propogating, since
         // this would otherwise just result in chaotic names for
         // propagated changes.
-        if ((_namespace == _AUTO_NAMESPACE) && (_current != null)
+        if (_namespace.equals(_AUTO_NAMESPACE) && (_current != null)
                 && (name.equals("name") || name.equals("port")
                         || name.equals("relation") || name.equals("vertex")
                         || name.equals("pathTo"))) {
@@ -377,8 +377,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         } else {
             // If we have a non-default namespace, then prepend the namespace.
             // This needs to be done for every attribute whose value is a name.
-            if ((_namespace != _DEFAULT_NAMESPACE)
-                    && (_namespace != _AUTO_NAMESPACE)
+            if (!_namespace.equals(_DEFAULT_NAMESPACE)
+                    && !_namespace.equals(_AUTO_NAMESPACE)
                     && (name.equals("name") || name.equals("port")
                             || name.equals("relation") || name.equals("vertex")
                             || name.equals("pathTo"))) {
