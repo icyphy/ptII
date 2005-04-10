@@ -1514,7 +1514,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
 
             // Note: The source is NOT the graph mode.
             MoMLChangeRequest request = new MoMLChangeRequest(this, container,
-                    moml.toString());
+                    moml);
             request.setUndoable(true);
             container.requestChange(request);
         }
