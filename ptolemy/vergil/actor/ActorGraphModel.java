@@ -522,10 +522,11 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
                     // (Unlikely though since auto naming will take
                     // into account subclasses).
                     rootVertex.propagateExistence();
-                } catch (Exception e) {
-                    throw new InternalErrorException("Failed to create "
+                } catch (Throwable throwable) {
+                    throw new InternalErrorException(null,
+                            throwable, "Failed to create "
                             + "new vertex, even though one does not "
-                            + "already exist:" + e.getMessage());
+                            + "already exist:" + throwable.getMessage());
                 }
             }
 

@@ -164,7 +164,7 @@ public abstract class AbstractBasicGraphModel extends ModularGraphModel {
             } else {
                 return t.toString();
             }
-        } catch (Exception ex) {
+        } catch (Throwable throwable) {
             return null;
         }
     }
