@@ -1346,12 +1346,12 @@ public class Director extends Attribute implements Executable {
             
             // Make sure getCurrentTime() never returns null.
             _currentTime = new Time(this, Double.NEGATIVE_INFINITY);
-        } catch (Exception e) {
+        } catch (Throwable throwable) {
             // This is the only place to create
             // the timeResolution parameter, no exception should ever
             // be thrown.
-            throw new InternalErrorException("Cannot set parameter:\n"
-                + e);
+            throw new InternalErrorException(this, throwable,
+                    "Cannot set parameter:\n" + throwable);
         }
     }
 
