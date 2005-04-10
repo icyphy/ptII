@@ -240,7 +240,7 @@ public class TextString3D extends GRShadedShape {
         Font3D font3D = new Font3D(new Font(fontFamilyValue, Font.PLAIN, 1),
                 extrusion);
 
-        _textGeometry = new Text3D(font3D, new String(textValue));
+        _textGeometry = new Text3D(font3D, textValue);
         _textGeometry.setCapability(Text3D.ALLOW_STRING_WRITE);
 
         String alignmentValue = alignment.stringValue();
