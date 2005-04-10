@@ -426,7 +426,6 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
      */
     protected void _localMemberInitialize() {
         _firingVector = new TreeMap(new DFUtilities.NamedObjComparator());
-        _firingVectorValid = true;
     }
 
     /** Normalize fractional firing ratios into a firing vector that
@@ -1567,10 +1566,9 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
         // If there are any actors left when we're done, then report the
         // error.
         if (unscheduledActorList.size() > 0) {
-            String string = new String(
-                    "Actors remain that cannot be scheduled!\n");
-
-            string += "Scheduled actors:\n";
+            StringBuffer message = new StringBuffer(
+                        "Actors remain that cannot be scheduled!\n"
+            		+ "Scheduled actors:\n");
 
             List scheduledActorList = new LinkedList();
             scheduledActorList.addAll(actorList);
@@ -1579,18 +1577,18 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
             for (Iterator actors = scheduledActorList.iterator();
                  actors.hasNext();) {
                 Entity entity = (Entity) actors.next();
-                string += (entity.getFullName() + "\n");
+                message.append(entity.getFullName() + "\n");
             }
 
-            string += "Unscheduled actors:\n";
+            message.append("Unscheduled actors:\n");
 
             for (Iterator actors = unscheduledActorList.iterator();
                  actors.hasNext();) {
                 Entity entity = (Entity) actors.next();
-                string += (entity.getFullName() + "\n");
+                message.append(entity.getFullName() + "\n");
             }
 
-            throw new NotSchedulableException(string);
+            throw new NotSchedulableException(message.toString());
         }
 
         if (_debugging) {
@@ -1611,7 +1609,6 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
      */
     private void _setFiringVector(Map newFiringVector) {
         _firingVector = newFiringVector;
-        _firingVectorValid = true;
     }
 
     /**
@@ -1880,9 +1877,6 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
      * number of times the actor will fire.
      */
     private Map _firingVector;
-
-    /** True if the firing vector contains valid information. */
-    private boolean _firingVectorValid;
 
     /** A fraction equal to -1.  Used in several places to indicate an
      * actor for which we have not determined the number of times it will
