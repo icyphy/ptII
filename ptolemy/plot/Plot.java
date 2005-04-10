@@ -1899,7 +1899,7 @@ public class Plot extends PlotBox {
             // nor did we call addLegend().
             _firstInSet = true;
             _sawFirstDataSet = true;
-            addLegend(_currentdataset, new String("Set " + _currentdataset));
+            addLegend(_currentdataset, "Set " + _currentdataset);
         }
 
         if (_firstInSet && !_reuseDatasets) {
