@@ -74,8 +74,6 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
         super(controller.getController());
         _controller = controller;
 
-        Point2D origin = new Point(0, 0);
-
         // Create a snap constraint with the default snap resolution.
         _snapConstraint = new SnapConstraint();
         appendConstraint(_snapConstraint);
