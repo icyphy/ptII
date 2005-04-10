@@ -367,8 +367,6 @@ public class UnitSolverDialog extends PtolemyDialog implements ActionListener,
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-    ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
     private String _deletesIfNecessary(NamedObj obj) {
         String retv = null;
@@ -378,8 +376,6 @@ public class UnitSolverDialog extends PtolemyDialog implements ActionListener,
         if ((color != null) && (explanation != null)) {
             retv = "<deleteProperty name=\"_color\"/>"
                 + "<deleteProperty name=\"_explanation\"/>";
-        } else if ((color != null) && (explanation == null)) {
-        } else if ((color == null) && (explanation != null)) {
         }
 
         return retv;
