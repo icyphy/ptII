@@ -163,7 +163,7 @@ public class CopyCatIcon extends XMLIcon {
                         }
                     }
                 }
-            } catch (Exception e) {
+            } catch (Throwable throwable) {
                 // Ignore and use default icon.
             }
         }

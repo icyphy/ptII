@@ -269,7 +269,7 @@ public class AttributeValueAttribute extends AbstractTextAttribute
                     return truncated;
                 }
             }
-        } catch (Exception ex) {
+        } catch (Throwable throwable) {
             return "???";
         }
 
