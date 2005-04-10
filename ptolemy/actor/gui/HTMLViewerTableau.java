@@ -38,6 +38,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
+import ptolemy.util.ClassUtilities;
 import ptolemy.util.StringUtilities;
 
 
@@ -192,7 +193,7 @@ public class HTMLViewerTableau extends Tableau {
                     // that we are looking in the wrong Jar file, so
                     // we try again.
                     String urlString = effigy.uri.getURI().toString();
-                    URL anotherURL = JNLPUtilities.jarURLEntryResource(urlString);
+                    URL anotherURL = ClassUtilities.jarURLEntryResource(urlString);
 
                     if ((anotherURL == null) && (urlString.indexOf("#") != -1)) {
                         anotherURL = _entryResourceWithoutFragment(urlString);
