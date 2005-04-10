@@ -122,8 +122,9 @@ public class FileReader extends Source {
             }
         }
 
+        BufferedReader reader = null;
         try {
-            BufferedReader reader = fileOrURL.openForReading();
+            reader = fileOrURL.openForReading();
             StringBuffer lineBuffer = new StringBuffer();
             String newline = System.getProperty("line.separator");
 
@@ -137,11 +138,14 @@ public class FileReader extends Source {
                 lineBuffer = lineBuffer.append(line);
                 lineBuffer = lineBuffer.append(newline);
             }
-
-            fileOrURL.close();
             output.broadcast(new StringToken(lineBuffer.toString()));
-        } catch (Exception ex) {
-            throw new IllegalActionException(this, ex.getMessage());
+        } catch (Throwable throwable) {
+            throw new IllegalActionException(this, throwable,
+                    "Failed to write '" + fileOrURL + "'");
+        } finally {
+            if (fileOrURL != null) {
+               fileOrURL.close();   
+            }
         }
     }
 }
