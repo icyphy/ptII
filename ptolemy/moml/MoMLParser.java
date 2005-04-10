@@ -956,7 +956,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 _toplevel.setDeferringChangeRequests(_previousDeferStatus);
                 _toplevel.executeChangeRequests();
             }
-        } catch (Exception emptyStack) {
+        } catch (Throwable throwable) {
             // Ignore any exceptions here.
         }
 
