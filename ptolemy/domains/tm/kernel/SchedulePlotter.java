@@ -206,8 +206,8 @@ public class SchedulePlotter extends Attribute implements ScheduleListener {
                 configuration.createPrimaryTableau(schedulePlotterEffigy);
 
                 plot.setVisible(true);
-            } catch (Exception ex) {
-                throw new InternalErrorException(object, ex,
+            } catch (Throwable throwable) {
+                throw new InternalErrorException(object, throwable,
                         "Cannot create Schedule Plotter");
             }
         }
