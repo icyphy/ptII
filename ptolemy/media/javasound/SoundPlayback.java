@@ -248,7 +248,7 @@ public class SoundPlayback {
     public void putSamples(double[][] putSamplesArray)
             throws IOException, IllegalStateException {
         if (_isAudioPlaybackActive == true) {
-            if (_playbackMode == "speaker") {
+            if (_playbackMode.equals("speaker")) {
                 // Convert array of double valued samples into
                 // the proper byte array format.
                 _data = _doubleArrayToByteArray(putSamplesArray,
@@ -259,7 +259,7 @@ public class SoundPlayback {
                 // Note: consumptionRate is amount of data to write, in bytes.
                 // Now write the array to output device.
                 _sourceLine.write(_data, 0, _putSamplesSize * _frameSizeInBytes);
-            } else if (_playbackMode == "file") {
+            } else if (_playbackMode.equals("file")) {
                 // Convert array of double valued samples into
                 // the proper byte array format.
                 _data = _doubleArrayToByteArray(putSamplesArray,
@@ -322,7 +322,7 @@ public class SoundPlayback {
     public void putSamplesInt(int[][] putSamplesArray)
             throws IOException, IllegalStateException {
         if (_isAudioPlaybackActive == true) {
-            if (_playbackMode == "speaker") {
+            if (_playbackMode.equals("speaker")) {
                 // Convert array of double valued samples into
                 // the proper byte array format.
                 _data = _intArrayToByteArray(putSamplesArray, _bytesPerSample,
@@ -333,7 +333,7 @@ public class SoundPlayback {
                 // Note: consumptionRate is amount of data to write, in bytes.
                 // Now write the array to output device.
                 _sourceLine.write(_data, 0, _putSamplesSize * _frameSizeInBytes);
-            } else if (_playbackMode == "file") {
+            } else if (_playbackMode.equals("file")) {
                 // Convert array of double valued samples into
                 // the proper byte array format.
                 _data = _intArrayToByteArray(putSamplesArray, _bytesPerSample,
@@ -369,10 +369,10 @@ public class SoundPlayback {
      */
     public void startPlayback() throws IOException, IllegalStateException {
         if (_isAudioPlaybackActive == false) {
-            if (_playbackMode == "speaker") {
+            if (_playbackMode.equals("speaker")) {
                 // Real time playback to speaker.
                 _startPlaybackRealTime();
-            } else if (_playbackMode == "file") {
+            } else if (_playbackMode.equals("file")) {
                 // Record data to sound file.
                 _startPlaybackToFile();
             } else {
@@ -407,7 +407,7 @@ public class SoundPlayback {
      */
     public void stopPlayback() throws IOException {
         if (_isAudioPlaybackActive == true) {
-            if (_playbackMode == "speaker") {
+            if (_playbackMode.equals("speaker")) {
                 // Stop real-time playback to speaker.
                 if (_sourceLine != null) {
                     _sourceLine.drain();
@@ -416,7 +416,7 @@ public class SoundPlayback {
                 }
 
                 _sourceLine = null;
-            } else if (_playbackMode == "file") {
+            } else if (_playbackMode.equals("file")) {
                 // Record data to sound file.
                 _stopPlaybackToFile();
             } else {
