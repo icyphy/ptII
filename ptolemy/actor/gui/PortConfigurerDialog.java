@@ -32,15 +32,12 @@ import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.awt.Toolkit;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -52,12 +49,10 @@ import java.util.TreeMap;
 import java.util.Vector;
 
 import javax.swing.AbstractAction;
-import javax.swing.AbstractCellEditor;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
-import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -68,7 +63,6 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.JTableHeader;
-import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
@@ -77,10 +71,7 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.TypeAttribute;
 import ptolemy.actor.TypedActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
-import ptolemy.data.DoubleMatrixToken;
-import ptolemy.data.RecordToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.Constants;
@@ -619,7 +610,7 @@ public class PortConfigurerDialog extends PtolemyDialog
                 Iterator it = _columnNames.iterator();
 
                 while (it.hasNext()) {
-                    String element = new String((String) it.next());
+                    String element = (String) it.next();
                     updates.put(element, Boolean.TRUE);
                 }
 
@@ -1054,7 +1045,7 @@ public class PortConfigurerDialog extends PtolemyDialog
         public void toggleHidePorts() {
             _hideAllPorts = !_hideAllPorts;
 
-            Boolean _hide = new Boolean(_hideAllPorts);
+            Boolean _hide = Boolean.valueOf(_hideAllPorts);
 
             for (int i = 0; i < getRowCount(); i++) {
                 setValueAt(_hide, i, _columnNames.indexOf(ColumnNames.COL_HIDE));
@@ -1819,10 +1810,6 @@ public class PortConfigurerDialog extends PtolemyDialog
 
     private String _momlProperty(String name) {
         return "<property name=\"" + name + "\"/>";
-    }
-
-    private String _momlProperty(String name, String clz) {
-        return "<property name=\"" + name + "\" " + "class = \"" + clz + "\"/>";
     }
 
     private String _momlProperty(String name, String clz, String value) {
