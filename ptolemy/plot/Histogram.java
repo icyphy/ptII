@@ -546,7 +546,7 @@ public class Histogram extends PlotBox {
         } else {
             // We convert the line to lower case so that the command
             // names are case insensitive
-            String lcLine = new String(line.toLowerCase());
+            String lcLine = line.toLowerCase();
 
             if (lcLine.startsWith("dataset:")) {
                 // new data set
