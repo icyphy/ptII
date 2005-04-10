@@ -562,8 +562,8 @@ public class GRDirector extends StaticSchedulingDirector {
             iterationTimeLowerBound = new Parameter(this,
                     "iterationTimeLowerBound", new IntToken(33));
             iterationTimeLowerBound.setTypeEquals(BaseType.INT);
-        } catch (Exception ex) {
-            throw new InternalErrorException(this, ex,
+        } catch (Throwable throwable) {
+            throw new InternalErrorException(this, throwable,
                     "Cannot create default iterations parameter.");
         }
 
