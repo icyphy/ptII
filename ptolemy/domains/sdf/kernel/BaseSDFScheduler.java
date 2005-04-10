@@ -197,18 +197,18 @@ public abstract class BaseSDFScheduler extends Scheduler {
 
         // Hmm...  didn't find it yet.  Port might be connected on the inside,
         // so try the inside relations.
-        receivers = port.getInsideReceivers();
+        Receiver [][] insideReceivers = port.getInsideReceivers();
 
-        for (channel = 0; channel < receivers.length; channel++) {
+        for (channel = 0; channel < insideReceivers.length; channel++) {
             if (_debugging && VERBOSE) {
                 _debug("number of inside receivers = "
                         + receivers[channel].length);
             }
 
             for (int destinationIndex = 0;
-                 destinationIndex < receivers[channel].length;
+                 destinationIndex < insideReceivers[channel].length;
                  destinationIndex++) {
-                if (receivers[channel][destinationIndex] == receiver) {
+                if (insideReceivers[channel][destinationIndex] == receiver) {
                     return channel;
                 }
             }
