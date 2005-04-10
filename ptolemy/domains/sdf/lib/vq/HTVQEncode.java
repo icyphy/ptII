@@ -282,8 +282,9 @@ public class HTVQEncode extends Transformer {
                     _lookupTable[i][x] = temp[x] & 255;
                 }
             }
-        } catch (Exception e) {
-            throw new IllegalActionException(e.getMessage());
+        } catch (Throwable throwable) {
+            throw new IllegalActionException(this, throwable,
+                    "Problem reading codebook");
         } finally {
             if (source != null) {
                 try {
@@ -403,7 +404,7 @@ public class HTVQEncode extends Transformer {
             ip = ((p5[3][6] & 255) << 8) + (p5[3][6] & 255);
             p4[3][3] = _lookupTable[stage][ip];
             stage++;
-
+            // Fall through to next case
         case 3:
 
             //XSIZE = 4, YSIZE = 4
@@ -427,7 +428,7 @@ public class HTVQEncode extends Transformer {
             ip = ((p4[3][3] & 255) << 8) + (p4[3][2] & 255);
             p3[1][3] = _lookupTable[stage][ip];
             stage++;
-
+            // Fall through to next case
         case 2:
 
             //XSIZE = 4, YSIZE = 2
@@ -441,7 +442,7 @@ public class HTVQEncode extends Transformer {
             ip = ((p3[1][3] & 255) << 8) + (p3[1][2] & 255);
             p2[1][1] = _lookupTable[stage][ip];
             stage++;
-
+            // Fall through to next case
         case 1:
 
             //XSIZE = 2, YSIZE = 2
