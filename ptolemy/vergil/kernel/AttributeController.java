@@ -96,10 +96,10 @@ public class AttributeController extends IconController {
     ////                     public members                        ////
 
     /** Indicator to give full access to the attribute. */
-    public static Access FULL = new Access();
+    public static final Access FULL = new Access();
 
     /** Indicator to give partial access to the attribute. */
-    public static Access PARTIAL = new Access();
+    public static final Access PARTIAL = new Access();
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
