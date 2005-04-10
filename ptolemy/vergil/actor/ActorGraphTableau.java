@@ -73,7 +73,7 @@ public class ActorGraphTableau extends Tableau {
             throws IllegalActionException, NameDuplicationException {
         this(container, name, null);
     }
-
+    
     /** Create a tableau with the specified container, name, and
      *  default library.
      *  @param container The container.
@@ -81,30 +81,28 @@ public class ActorGraphTableau extends Tableau {
      *  @param defaultLibrary The default library, or null to not specify one.
      */
     public ActorGraphTableau(PtolemyEffigy container, String name,
-            LibraryAttribute defaultLibrary)
-            throws IllegalActionException, NameDuplicationException {
-        super(container, name);
-
-        if (container instanceof PtolemyEffigy) {
-            NamedObj model = container.getModel();
-
-            if (model == null) {
-                return;
-            }
-
-            if (!(model instanceof CompositeEntity)) {
-                throw new IllegalActionException(this,
-                        "Cannot graphically edit a model "
-                        + "that is not a CompositeEntity. Model is a " + model);
-            }
-
-            CompositeEntity entity = (CompositeEntity) model;
-
-            ActorGraphFrame frame = new ActorGraphFrame(entity, this,
-                    defaultLibrary);
-            setFrame(frame);
-            frame.setBackground(BACKGROUND_COLOR);
-        }
+    		LibraryAttribute defaultLibrary)
+    throws IllegalActionException, NameDuplicationException {
+    	super(container, name);
+    	
+    	NamedObj model = container.getModel();
+    	
+    	if (model == null) {
+    		return;
+    	}
+    	
+    	if (!(model instanceof CompositeEntity)) {
+    		throw new IllegalActionException(this,
+    				"Cannot graphically edit a model "
+    				+ "that is not a CompositeEntity. Model is a " + model);
+    	}
+    	
+    	CompositeEntity entity = (CompositeEntity) model;
+    	
+    	ActorGraphFrame frame = new ActorGraphFrame(entity, this,
+    			defaultLibrary);
+    	setFrame(frame);
+    	frame.setBackground(BACKGROUND_COLOR);
     }
 
     ///////////////////////////////////////////////////////////////////
