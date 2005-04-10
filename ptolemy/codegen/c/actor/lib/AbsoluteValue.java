@@ -34,8 +34,6 @@
  */
 package ptolemy.codegen.c.actor.lib;
 
-import java.io.IOException;
-
 import ptolemy.codegen.kernel.CCodeGeneratorHelper;
 import ptolemy.kernel.util.IllegalActionException;
 
