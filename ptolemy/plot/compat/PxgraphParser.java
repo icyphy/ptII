@@ -791,17 +791,17 @@ public class PxgraphParser {
                         prependdash = false;
 
                         if (partialarg == null) {
-                            argvector.addElement(new String("-" + stoken.sval));
+                            argvector.addElement("-" + stoken.sval);
                         } else {
-                            argvector.addElement(new String("-" + partialarg
-                                                         + stoken.sval));
+                            argvector.addElement("-" + partialarg
+                                                         + stoken.sval);
                         }
                     } else {
                         if (partialarg == null) {
-                            argvector.addElement(new String(stoken.sval));
+                            argvector.addElement(stoken.sval);
                         } else {
-                            argvector.addElement(new String(partialarg
-                                                         + stoken.sval));
+                            argvector.addElement(partialarg
+                                                         + stoken.sval);
                         }
                     }
 
@@ -830,7 +830,7 @@ public class PxgraphParser {
                 case '\'':
 
                     //System.out.println("String: " + stoken.sval);
-                    argvector.addElement(new String(stoken.sval));
+                    argvector.addElement(stoken.sval);
                     break;
 
                 default:
@@ -1060,12 +1060,12 @@ public class PxgraphParser {
         if (_plot.getLegend(_currentdataset) == null) {
             // We did not see a "DataSet" string yet,
             // nor did we call addLegend().
-            _firstInSet = true;
-            _sawFirstDataset = true;
-            _plot.addLegend(_currentdataset,
-                    new String("Set " + _currentdataset));
+        	_firstInSet = true;
+        	_sawFirstDataset = true;
+        	_plot.addLegend(_currentdataset,
+        			"Set " + _currentdataset);
         }
-
+        
         if (_firstInSet) {
             connected = false;
             _firstInSet = false;
