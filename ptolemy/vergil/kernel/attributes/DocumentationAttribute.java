@@ -160,19 +160,16 @@ public class DocumentationAttribute extends Attribute {
                     fileDialog.setDialogTitle("Select a documentation file.");
 
                     File _directory = null;
-
-                    if (_directory != null) {
-                        fileDialog.setCurrentDirectory(_directory);
-                    } else {
-                        String cwd = StringUtilities.getProperty("user.dir");
-
-                        if (cwd != null) {
-                            fileDialog.setCurrentDirectory(new File(cwd));
-                        }
+                    
+                    String cwd = StringUtilities.getProperty("user.dir");
+                    
+                    if (cwd != null) {
+                    	fileDialog.setCurrentDirectory(new File(cwd));
                     }
-
+                    
+                    
                     if (fileDialog.showOpenDialog(parent) == JFileChooser.APPROVE_OPTION) {
-                        _directory = fileDialog.getCurrentDirectory();
+                    	_directory = fileDialog.getCurrentDirectory();
 
                         String fileName = fileDialog.getSelectedFile()
                             .getAbsolutePath();
@@ -182,8 +179,8 @@ public class DocumentationAttribute extends Attribute {
                         docAttribute.setExpression(fileName);
                     }
                 }
-            } catch (Exception ex) {
-                throw new InternalErrorException(object, ex,
+            } catch (Throwable throwable) {
+                throw new InternalErrorException(object, throwable,
                         "Cannot access Documentation");
             }
         }
