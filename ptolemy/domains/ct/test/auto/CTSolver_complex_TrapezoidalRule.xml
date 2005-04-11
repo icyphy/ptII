@@ -2,9 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="CTSolver_complex_TrapezoidalRule" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1240, 241, 815, 518}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={114, 199, 815, 518}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -31,17 +31,17 @@
                 </property>
             </property>
         </property>
-        <property name="breakpointODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;">
-            <property name="style" class="ptolemy.actor.gui.style.EditableChoiceStyle">
-                <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;">
-                </property>
-            </property>
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{110, 65}">
         </property>
     </property>
     <entity name="Integrator" class="ptolemy.domains.ct.lib.Integrator">
         <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.05">
+        </property>
+        <property name="IntegratorIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={117, 239, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{200, 150}">
         </property>
@@ -62,9 +62,9 @@
         </port>
     </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.05, 0.0526213987476, 0.0555242947726, 0.0587589953414, 0.0623991454265, 0.066492991773, 0.0711581527849, 0.0765227687588, 0.0827563328802, 0.0900878338092, 0.0988343810969}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.05, 0.0526065568581, 0.0554892775099, 0.0587051943327, 0.0623127614115, 0.0663949766952, 0.0710459973756, 0.0763931876862, 0.0826049398865, 0.0899086387207, 0.0986189831291}">
         </property>
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 150.0]">
         </property>
