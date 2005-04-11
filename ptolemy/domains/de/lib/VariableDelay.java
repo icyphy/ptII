@@ -115,7 +115,7 @@ public class VariableDelay extends TimedDelay {
      */
     protected void _init()
             throws NameDuplicationException, IllegalActionException {
-        delayPortParameter = new PortParameter(this, "delay");
+        delayPortParameter = new PortParameter(this, "delayPortParameter");
         delayPortParameter.setExpression("1.0");
         delayPortParameter.setTypeEquals(BaseType.DOUBLE);
     }
