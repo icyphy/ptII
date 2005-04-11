@@ -137,20 +137,19 @@ problems. Please send email to
 find errors or can suggest additions to this page.
 
 <H3><A NAME="jdk">Java version</A></H3>
-The applets on these pages require JDK 1.3 (JDK stands for the
+The applets on these pages require JDK 1.4 (JDK stands for the
 Java Development Kit).
 (See the <a href="install.htm#java">Java section</a> of the installation page for details)
 
 <h3><a name="plugin">The Java Plug-in</a></h3>
 The
 <a href="http://www.javasoft.com/products/plugin/" target="_top">Javasoft Java Plug-in</a>
-provides support for JDK1.3 under Netscape Communicator 4.5 and Internet
-Explorer 4.0.
-Netscape 6.x optionally includes a Java plug-in 1.3.
+provides support for JDK1.4 under Mozilla and 
+Explorer.
 
- <p>Under Windows, the Java Plug-in 1.3 is automatically installed
-when JRE 1.3 is installed (JRE stands for Java Runtime Environment).
-JRE 1.3 is available as a standalone install from Sun.
+ <p>Under Windows, the Java Plug-in 1.4 is automatically installed
+when JRE 1.4 is installed (JRE stands for Java Runtime Environment).
+JRE 1.4 is available as a standalone install from Sun.
 
 The JRE does not include the Java compiler (<CODE>javac</CODE>), so
 if you are planning on doing any development, you should install
@@ -162,13 +161,13 @@ installation instructions.
 download (which we have not tested).
 
  <p>If you are on a platform where the browser does not have
-the Java plug-in 1.3, then you can still run the demos with the
+the Java plug-in 1.4, then you can still run the demos with the
 JDK <a href="#appletviewer">Appletviewer</a>
 
 <H3><a name="Diagnosing problems">Diagnosing problems</a></H3>
 
 The Java Plug-in includes a console window which reports errors.
- <p>Under JDK1.3, the console window can be enabled by going to
+ <p>Under JDK1.4, the console window can be enabled by going to
 <CODE>Start</CODE> -&gt; <CODE>Settings</CODE> -&gt;
 <CODE>Control Panel</CODE> -&gt; <CODE>Java Plug-in</CODE>
 and selecting <CODE>Show Java Console</CODE>.  Then restart the browser.
@@ -248,7 +247,7 @@ to turn on verbose class messages:
 appletviewer -J-verbose:class myapplet.html
 </pre>
  <p>If you see the messages below, then you are running
-a JDK1.1 <CODE>appletviewer</CODE> instead of a JDK 1.3 <CODE>appletviewer</CODE>.
+a JDK1.1 <CODE>appletviewer</CODE> instead of a JDK 1.4 <CODE>appletviewer</CODE>.
 <pre>
 Warning: &lt;param&gt; tag outside &lt;applet&gt; ... &lt;/applet&gt;.
 Warning: &lt;param&gt; tag outside &lt;applet&gt; ... &lt;/applet&gt;.
@@ -260,7 +259,7 @@ Warning: No Applets were started. Make sure the input contains an &lt;applet&gt;
 usage: appletviewer [-debug] [-J&lt;javaflag&gt;] [-encoding &lt;character encoding type
  ] url|file ...
 </pre>
-The solution is to adjust your path so that the JDK1.3 appletviewer
+The solution is to adjust your path so that the JDK1.4 appletviewer
 is before the JDK1.1 version.
 
 
@@ -359,7 +358,7 @@ the <CODE>Reload</CODE> button will reload any Java
 <li> Restart your browser.
 
  <li>Verify that the Plug-In Control Panel menu choice is present.
- <br>Under JDK1.3, look for
+ <br>Under JDK1.4, look for
 <CODE>Start</CODE> -&gt; <CODE>Settings</CODE> -&gt;
 <CODE>Control Panel</CODE> -&gt; <CODE>Java Plug-in</CODE>
   <br>If the <CODE>Java Plug-In Control Panel</CODE>
@@ -373,7 +372,7 @@ See <a href="#Diagnosing problems">Diagnosing problems</a> above.
 <a href="about:plugins"><CODE>about:plugins </CODE></a>
 into the Location entry widget.
 
-The Java plug-in 1.3 should be listed.  If it is not reinstall
+The Java plug-in 1.4 should be listed.  If it is not reinstall
 the plug-in.
 
 If the plug-in is not listed after reinstalling, then remove and reinstall
@@ -385,10 +384,10 @@ See the <a href="#CLASSPATH">CLASSPATH variable</a> instructions above.
 
 <li> Verify that you are running a recent version of the browser
 
-<dt> Try out a non-Ptolemy Java 1.3 applet
+<dt> Try out a non-Ptolemy Java 1.4 applet
 <dd> If are having problems with the plug-in you may want to try
-<a href="http://www.javasoft.com/products/plugin/1.3/demos/applets.html" target="_top">Java Plug-In 1.3 Demonstration Applets</a>
-page has a few sample Java 1.3 applets.
+<a href="http://www.javasoft.com/products/plugin/1.4/demos/applets.html" target="_top">Java Plug-In 1.4 Demonstration Applets</a>
+page has a few sample Java 1.4 applets.
 
 <li> Under Internet Explorer, the Swing Query boxes will sometimes
 not respond. The workaround is to minimize the IE window and bring it back.
