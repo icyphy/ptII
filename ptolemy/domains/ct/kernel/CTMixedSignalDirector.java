@@ -273,7 +273,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
      */
     public boolean prefire() throws IllegalActionException {
         if (_debugging) {
-            _debug(getName(), " prefire: ");
+            _debug("\n", getName(), " prefire: ");
         }
 
         if (!_isTopLevel()) {
