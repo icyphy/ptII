@@ -832,7 +832,11 @@ proc createAndExecute {file} {
 	    || "$file" == "compat3/sampledClocks.xml" \
 	    || "$file" == "compat4/CarTrackingTest.xml" \
 	    || "$file" == "compat4/Cascade.xml" \
+	    || "$file" == "compat3/Clock3.xml" \
+	    || "$file" == "compat4/Clock3.xml" \
 	    || "$file" == "compat4/Clock5.xml" \
+	    || "$file" == "compat3/ContinuousClockandDiscreteClock.xml" \
+	    || "$file" == "compat4/ContinuousClockandDiscreteClock.xml" \
 	    || "$file" == "compat4/ControllersTestNonPreemptive.xml" \
 	    || "$file" == "compat4/ControllersTestPreemptive.xml" \
 	    || "$file" == "compat4/ContinuousClock.xml" \
