@@ -1030,7 +1030,7 @@ public class PortConfigurerDialog extends PtolemyDialog
         public void toggleShowAllNames() {
             _showAllNames = !_showAllNames;
 
-            Boolean show = new Boolean(_showAllNames);
+            Boolean show = Boolean.valueOf(_showAllNames);
 
             for (int i = 0; i < getRowCount(); i++) {
                 setValueAt(show, i,
