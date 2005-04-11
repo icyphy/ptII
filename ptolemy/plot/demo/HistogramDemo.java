@@ -52,6 +52,7 @@ public class HistogramDemo extends HistogramApplet {
      */
     public void init() {
         super.init();
+        // samplePlot runs in the event thread, so no need to do it here.
         plot().samplePlot();
     }
 }
