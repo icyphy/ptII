@@ -45,7 +45,7 @@ preemptive parameter to true or false.
            </svg>
            </configure>
         </property>
-        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
     </property>
     <property name="SchedulePlotter" class="ptolemy.domains.tm.kernel.SchedulePlotter">
