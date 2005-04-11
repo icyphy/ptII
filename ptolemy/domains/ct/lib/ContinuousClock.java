@@ -109,14 +109,105 @@ public class ContinuousClock extends Clock {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Output the current value of the clock.
+    /** Update the state of the actor and schedule the next firing,
+     *  if appropriate.Output the current value of the clock.
      *  @exception IllegalActionException If output can not send value.
      */
     public void fire() throws IllegalActionException {
+
         // Use the strategy pattern here so that derived classes can
         // override how this is done.
         _updateTentativeValues();
-        output.send(0, _tentativeCurrentValue);
+
+        // In initialize() method, we already ensured that the director is
+        // a CTDirector. 
+        CTDirector director = (CTDirector) getDirector();
+        if (director.isDiscretePhase()) {
+            // Get the current time and period.
+            Time currentTime = director.getModelTime();
+            double periodValue = ((DoubleToken) period.getToken()).doubleValue();
+            
+            // Use Time.NEGATIVE_INFINITY to indicate that no refire
+            // event should be scheduled because we aren't at a phase boundary.
+            _tentativeNextFiringTime = Time.NEGATIVE_INFINITY;
+            // By default, the cycle count will not be incremented.
+            _tentativeCycleCountIncrement = 0;
+            
+            // In case current time has reached or crossed a boundary between
+            // periods, update it.  Note that normally the time will not
+            // advance more than one period
+            // (unless, perhaps, the entire domain has been dormant
+            // for some time, as might happen for example in a hybrid system).
+            // But do not do this if we are before the first iteration.
+            // FIXME: why?
+            if (_tentativeCycleCount > 0) {
+                while (_tentativeCycleStartTime.add(periodValue)
+                        .compareTo(currentTime) <= 0) {
+                    _tentativeCycleStartTime = 
+                        _tentativeCycleStartTime.add(periodValue);
+                }
+            }
+
+            // Adjust the phase if the current time has moved beyond 
+            // the current phase time.
+            Time currentPhaseTime = 
+                _tentativeCycleStartTime.add(_offsets[_tentativePhase]);
+            if (currentTime.compareTo(currentPhaseTime) == 0) {
+                // Phase boundary.  Change the current value.
+                _tentativeCurrentValue = _getValue(_tentativePhase);
+                // If we are beyond the number of cycles requested, then
+                // change the output value to zero.
+                int cycleLimit = 
+                    ((IntToken) numberOfCycles.getToken()).intValue();
+                
+                // FIXME: performance suffers from this. cache the stop time.
+                // NOTE: there are two stop time. One is based on the cycles
+                // and period, and the other one is based on the stopTime 
+                // parameter.
+                Time stopTime = 
+                    _tentativeStartTime.add(cycleLimit * periodValue);
+                
+                if (((cycleLimit > 0) && (currentTime.compareTo(stopTime) >= 0))
+                        || _tentativeDone) {
+                    _tentativeCurrentValue = defaultValue.getToken();
+                }
+                
+                // Schedule the next firing in this period.
+                // NOTE: In the TM domain, this may not occur if we have
+                // missed a deadline.  As a consequence, the clock will stop.
+                _tentativeNextFiringTime = _tentativeCycleStartTime.add(_offsets[_tentativePhase]);
+                
+                if (_debugging) {
+                    _debug("next firing is at " + _tentativeNextFiringTime);
+                }
+                
+                // Increment to the next phase.
+                _tentativePhase++;
+                
+                if (_tentativePhase >= _offsets.length) {
+                    _tentativePhase = 0;
+                    
+                    // Schedule the first firing in the next period.
+                    _tentativeCycleStartTime = _tentativeCycleStartTime.add(periodValue);
+                    
+                    // Indicate that the cycle count should increase.
+                    _tentativeCycleCountIncrement++;
+                }
+                
+                if (_offsets[_tentativePhase] >= periodValue) {
+                    throw new IllegalActionException(this,
+                            "Offset number " + _tentativePhase + " with value "
+                            + _offsets[_tentativePhase]
+                                       + " must be strictly less than the "
+                                       + "period, which is " + periodValue);
+                }
+            } else if (currentTime.compareTo(currentPhaseTime) < 0) {
+                _tentativeNextFiringTime = currentPhaseTime;
+            }
+            _updateStates();
+        }
+
+        output.send(0, _currentValue);
 
         if (_debugging) {
             _debug("Output: " + _currentValue + " at "
@@ -132,8 +223,6 @@ public class ContinuousClock extends Clock {
     public void initialize() throws IllegalActionException {
         super.initialize();
         _currentValue = defaultValue.getToken();
-        _tMinus = true;
-        _tPlus = false;
         _startTime = Time.POSITIVE_INFINITY;
     }
 
@@ -150,162 +239,29 @@ public class ContinuousClock extends Clock {
         super.preinitialize();
     }
 
-    /** Update the state of the actor and schedule the next firing,
-     *  if appropriate.
+    /** Return false if the current model time exceeds the model stop time.
+     *  Otherwise, return true.
+     *  @return false if the current model time exceeds the model stop time.
      *  @exception IllegalActionException If the director throws it when
      *   scheduling the next firing.
      */
     public boolean postfire() throws IllegalActionException {
-        // Since start time and stop time are registered as breakpoints.
-        // If the current execution is not a discrete phase execution,
-        // simply returns true.
-        if (!((CTDirector) getDirector()).isDiscretePhase()) {
-            // Unlike what is defined in the super.postfire, continuous clock
-            // requires that the current time passes the stop time.
-            // That is, not only discrete phase execution, but also the continuous
-            // phase execution is performed.
-            if (getDirector().getModelTime().compareTo(getModelStopTime()) > 0) {
-                if (_debugging) {
-                    _debug(" --- Postfire returns false.");
-                }
+        boolean postfireReturns = true;
 
-                return false;
-            } else {
-                if (_debugging) {
-                    _debug(" --- Postfire returns true.");
-                }
-
-                return true;
-            }
-        }
-
-        // Get the current time and period.
-        Time currentTime = getDirector().getModelTime();
-        double periodValue = ((DoubleToken) period.getToken()).doubleValue();
-
-        if (_debugging) {
-            _debug("--- Postfiring at time " + currentTime + ".");
-        }
-
-        // Use Time.NEGATIVE_INFINITY to indicate that no refire
-        // event should be scheduled because we aren't at a phase boundary.
-        _tentativeNextFiringTime = Time.NEGATIVE_INFINITY;
-
-        // By default, the cycle count will not be incremented.
-        _tentativeCycleCountIncrement = 0;
-
-        // In case current time has reached or crossed a boundary between
-        // periods, update it.  Note that normally it will not
-        // have advanced by more than one period
-        // (unless, perhaps, the entire domain has been dormant
-        // for some time, as might happen for example in a hybrid system).
-        // But do not do this if we are before the first iteration.
-        if (_tentativeCycleCount > 0) {
-            while (_tentativeCycleStartTime.add(periodValue).compareTo(currentTime) <= 0) {
-                _tentativeCycleStartTime = _tentativeCycleStartTime.add(periodValue);
-            }
-
-            // Adjust the phase if time has moved beyond the current phase.
-            // Synchronize the _tentativePhase with the currentTime considering
-            // the time resolution.
-            // Note that in CTDirector, the time resolution causes troubles.
-            // For example, if currentTime is slightly smaller than the
-            // expected break point, it should be treated as a break point
-            // as what the director does in processBreakPoints method.
-            Time currentPhaseTime = _tentativeCycleStartTime.add(_offsets[_tentativePhase]);
-
-            // Adjust the phase if time has moved beyond the current phase.
-            if (currentTime.compareTo(currentPhaseTime) == 0) {
-                if (_tPlus) {
-                    if (_debugging) {
-                        _debug("phase is: tPlus");
-                    }
-
-                    // Increment to the next phase.
-                    _tentativePhase++;
-
-                    if (_tentativePhase >= _offsets.length) {
-                        _tentativePhase = 0;
-
-                        // Schedule the first firing in the next period.
-                        _tentativeCycleStartTime = _tentativeCycleStartTime.add(periodValue);
-
-                        // Indicate that the cycle count should increase.
-                        _tentativeCycleCountIncrement++;
-                    }
-
-                    if (_offsets[_tentativePhase] >= periodValue) {
-                        throw new IllegalActionException(this,
-                                "Offset number " + _tentativePhase + " with value "
-                                + _offsets[_tentativePhase]
-                                + " must be strictly less than the "
-                                + "period, which is " + periodValue);
-                    }
-
-                    _tMinus = !_tMinus;
-                    _tPlus = !_tPlus;
-                } else if (_tMinus) {
-                    if (_debugging) {
-                        _debug("phase is: tMinus");
-                    }
-
-                    // Phase boundary.  Change the current value.
-                    _tentativeCurrentValue = _getValue(_tentativePhase);
-
-                    _tMinus = !_tMinus;
-                    _tPlus = !_tPlus;
-                }
-
-                // Schedule the next firing in this period.
-                // NOTE: In the TM domain, this may not occur if we have
-                // missed a deadline.  As a consequence, the clock will stop.
-                _tentativeNextFiringTime = _tentativeCycleStartTime.add(_offsets[_tentativePhase]);
-
-                if (_debugging) {
-                    _debug("next firing is at " + _tentativeNextFiringTime);
-                }
-            }
-        }
-
-        // If we are beyond the number of cycles requested, then
-        // change the output value to zero.
-        // FIXME: If the current time is bigger than the stop time,
+        // NOTE: If the current time is bigger than the stop time,
         // the super class of clock, the TimedSource will return false
-        // at its postfire mathod. And the model will stop firing all
-        // its components. So, the following code does not get called.
-        int cycleLimit = ((IntToken) numberOfCycles.getToken()).intValue();
-
-        Time stopTime = _tentativeStartTime.add(cycleLimit * periodValue);
-
-        if (((cycleLimit > 0) && (currentTime.compareTo(stopTime) >= 0))
-                || _tentativeDone) {
-            _tentativeCurrentValue = defaultValue.getToken();
-        }
-
-        _updateStates();
-
+        // at its postfire() mathod. Therefore, this method does not 
+        // call that postfire() method.
         // Unlike what is defined in the super.postfire, continuous clock
         // requires that the current time passes the stop time.
         // That is, not only discrete phase execution, but also the continuous
         // phase execution is performed.
-        if (currentTime.compareTo(getModelStopTime()) > 0) {
-            if (_debugging) {
-                _debug(" --- Postfire returns false.");
-            }
-
-            return false;
+        if (getDirector().getModelTime().compareTo(getModelStopTime()) > 0) {
+            postfireReturns = false;
         }
-
         if (_debugging) {
-            _debug(" --- Postfire returns true.");
+            _debug(" --- Postfire returns " + postfireReturns + ".");
         }
-
-        return true;
+        return postfireReturns;
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-    // Boolean variables indicating the phases beside the break point.
-    private boolean _tMinus;
-    private boolean _tPlus;
 }
