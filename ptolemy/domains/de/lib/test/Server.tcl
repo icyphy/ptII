@@ -71,7 +71,7 @@ test Server-2.1 {test with the default service time value} {
 } {1.0 2.0 3.0}
 
 test Server-3.1 {test with zero service time} {
-    set serviceTime [java::field [java::cast ptolemy.domains.de.lib.VariableDelay $server] delayPortParameter]
+    set serviceTime [java::field [java::cast ptolemy.domains.de.lib.VariableDelay $server] delay]
     $serviceTime setExpression "0.0"
     [$e0 getManager] execute
     enumToObjects [$rec getTimeRecord]
@@ -96,7 +96,7 @@ test Server-4.0 {Test with service time input} {
     $values setExpression {{1.5, 0.5}}
     $e0 connect \
        [java::field [java::cast ptolemy.actor.lib.Source $clock2] output] \
-	[[java::field [java::cast ptolemy.domains.de.lib.VariableDelay $server] delayPortParameter] getPort]
+	[[java::field [java::cast ptolemy.domains.de.lib.VariableDelay $server] delay] getPort]
     [$e0 getManager] execute
     enumToObjects [$rec getTimeRecord]
 } {1.5 2.0 2.5}
