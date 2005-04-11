@@ -27,7 +27,7 @@ if (outputProduced != 0) {
     outputProduced = 0;
     currentIndex += 1;
     if (currentIndex >= $size(values)) {
-        if ($val(repeat) ! = 0) {
+        if ($val(repeat)) {
            currentIndex = 0;
         } else {
            /*To prevent overflow...*/
