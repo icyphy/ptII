@@ -58,7 +58,8 @@ JSRCS = \
 
 OTHER_FILES_TO_BE_JARED = \
 	DDFBooleanSelectIcon.xml \
-	DDFSelectIcon.xml
+	DDFSelectIcon.xml \
+	ddfentities.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
