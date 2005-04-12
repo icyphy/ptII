@@ -1,37 +1,146 @@
 package ptolemy.backtrack.ast;
 
-class TestProgram {
+class TestProgram /*implements Rollbackable*/ {
     
-    /*public static void main(String[] args) {
-        java.util.ArrayList list = new java.util.ArrayList();
-        list.setSize(10);
-    }*/
+    private int[][] buf;
+    
+    int[][] getBuf() {
+        return buf;
+    }
+    
+    void f() {
+        System.arraycopy(getBuf()[0], 0, buf[0], buf[0][0], 0);
+    }
     
     /*private int i;
     void f() {
         i = 0;
+        i = 1;
+        i = 2;
     }*/
     
-    /*private TestProgram o;
+    /*private Object o = new C();
+    
+    class C {
+    }*/
+    
+    /*private TestProgram o = new TestProgram();
     private Object o2;
     
     TestProgram f() {
-        o.f().o = (TestProgram)new Object();
+        o.f().o = new TestProgram();
         o.f().o2 = new Object();
         return null;
     }*/
     
-    private char[][][][] buf;
+    /*private char[][][][] buf;
     void f() {
-        buf = new char[1][2][3][4];
+        buf = new char[1][][][];
         buf[0] = new char[2][][];
         buf[0][1] = new char[3][];
         buf[0][1][2] = new char[4];
         buf[0][1][2][3] = 'C';
-    }
+    }*/
+    
+    /*private TestProgram[] t = new TestProgram[10];
+    
+    private int i;
+    
+    void f() {
+        t[1] = new TestProgram();
+        t[1].i = 10;
+        t[1].i = 20;
+        t = new TestProgram[1];
+        t[0] = new TestProgram();
+        t[0].i = 30;
+        t[0] = null;
+    }*/
     
     /*public static void main(String[] args) {
-        new TestProgram().f();
+        TestProgram p = new TestProgram();
+        p.f();
+        p.$CHECKPOINT.rollback(3, true);
+        System.out.println(p.t[1].i);
+    }
+    
+    protected ptolemy.backtrack.Checkpoint $CHECKPOINT = new ptolemy.backtrack.Checkpoint(this);
+
+    private TestProgram[] t = new TestProgram[10];
+
+    private int i;
+
+    void f() {
+        $CHECKPOINT.createCheckpoint(); // #1
+        $ASSIGN$t(1, new TestProgram());
+        $CHECKPOINT.createCheckpoint(); // #2
+        t[1].$ASSIGN$i(10);
+        $CHECKPOINT.createCheckpoint(); // #3
+        t[1].$ASSIGN$i(20);
+        $CHECKPOINT.createCheckpoint(); // #4
+        $ASSIGN$t(new TestProgram[1]);
+        $CHECKPOINT.createCheckpoint(); // #5
+        $ASSIGN$t(0, new TestProgram());
+        $CHECKPOINT.createCheckpoint(); // #6
+        t[0].$ASSIGN$i(30);
+        $CHECKPOINT.createCheckpoint(); // #7
+        $ASSIGN$t(0, null);
+        $CHECKPOINT.createCheckpoint(); // #8
+    }
+
+    private final ptolemy.backtrack.ast.TestProgram $ASSIGN$t(int index0, ptolemy.backtrack.ast.TestProgram newValue) {
+        if ($CHECKPOINT != null) {
+            $RECORD$t.add(new int[] {
+                    index0
+                }, t[index0], $CHECKPOINT.getTimestamp());
+        }
+        if (newValue != null && $CHECKPOINT != newValue.$CHECKPOINT) {
+            newValue.$SET$CHECKPOINT($CHECKPOINT);
+        }
+        return t[index0] = newValue;
+    }
+
+    private final ptolemy.backtrack.ast.TestProgram[] $ASSIGN$t(ptolemy.backtrack.ast.TestProgram[] newValue) {
+        if ($CHECKPOINT != null) {
+            $RECORD$t.add(null, t, $CHECKPOINT.getTimestamp());
+        }
+        return t = newValue;
+    }
+
+    private final int $ASSIGN$i(int newValue) {
+        if ($CHECKPOINT != null) {
+            $RECORD$i.add(null, i, $CHECKPOINT.getTimestamp());
+        }
+        return i = newValue;
+    }
+
+    public void $RESTORE(long timestamp, boolean trim) {
+        t = (ptolemy.backtrack.ast.TestProgram[])$RECORD$t.restore(t, timestamp, trim);
+        i = $RECORD$i.restore(i, timestamp, trim);
+    }
+    
+    public final ptolemy.backtrack.Checkpoint $GET$CHECKPOINT() {
+        return $CHECKPOINT;
+    }
+
+    public final void $SET$CHECKPOINT(ptolemy.backtrack.Checkpoint checkpoint) {
+        if ($CHECKPOINT != checkpoint) {
+            ptolemy.backtrack.Checkpoint oldCheckpoint = $CHECKPOINT;
+            $CHECKPOINT = checkpoint;
+            oldCheckpoint.setCheckpoint(checkpoint);
+            checkpoint.addObject(this);
+        }
+    }
+
+    private ptolemy.backtrack.util.FieldRecord $RECORD$t = new ptolemy.backtrack.util.FieldRecord(1);
+
+    private ptolemy.backtrack.util.FieldRecord $RECORD$i = new ptolemy.backtrack.util.FieldRecord(0);
+
+    public TestProgram() {
+    }
+
+    public TestProgram(ptolemy.backtrack.Checkpoint $CHECKPOINT) {
+        this();
+        $SET$CHECKPOINT($CHECKPOINT);
     }*/
     
     /*void f() {
@@ -42,12 +151,6 @@ class TestProgram {
                 buf[1+1][2<<2] = 'B';
             }
         };
-    }*/
-    
-    /*void f() {
-        char[][] buf = null;
-        buf[1] = new char[2];
-        buf[1+1][2<<2] = 'B';
     }*/
     
     //------------------

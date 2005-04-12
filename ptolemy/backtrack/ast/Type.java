@@ -469,7 +469,7 @@ public class Type {
      *  @param nFrom The node whose owner is fetched.
      */
     public static void propagateOwner(ASTNode nTo, ASTNode nFrom) {
-        setOwner(nTo, getType(nFrom));
+        setOwner(nTo, getOwner(nFrom));
     }
 
     /** Copy the type annotation from a node to another.

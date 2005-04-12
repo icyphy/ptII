@@ -393,6 +393,56 @@ public final class FieldRecord {
                 new Record(indices, value, timestamp));
     }
     
+    /** Backup the values in an array, and associate the record with a
+     *  timestamp. This is the same as calling <tt>backup(null, array, 
+     *  timestamp)</tt>.
+     * 
+     *  @param array The array.
+     *  @param timestamp The current timestamp to be associated with the
+     *   old value.
+     *  @return The array itself.
+     */
+    public Object backup(Object array, long timestamp) {
+        return backup(null, array, timestamp);
+    }
+    
+    /** Backup the values in an array, and associate the record with a
+     *  timestamp.
+     * 
+     *  @param indices The indices.
+     *  @param array The array.
+     *  @param timestamp The current timestamp to be associated with the
+     *   old value.
+     *  @return The array itself.
+     */
+    public Object backup(int[] indices, Object array, long timestamp) {
+        Object oldValue;
+        if (array instanceof boolean[])
+            oldValue = ((boolean[])array).clone();
+        else if (array instanceof byte[])
+            oldValue = ((byte[])array).clone();
+        else if (array instanceof char[])
+            oldValue = ((char[])array).clone();
+        else if (array instanceof double[])
+            oldValue = ((double[])array).clone();
+        else if (array instanceof float[])
+            oldValue = ((float[])array).clone();
+        else if (array instanceof int[])
+            oldValue = ((int[])array).clone();
+        else if (array instanceof long[])
+            oldValue = ((long[])array).clone();
+        else if (array instanceof short[])
+            oldValue = ((short[])array).clone();
+        else if (array instanceof Object[])
+            oldValue = ((Object[])array).clone();
+        else
+            return array;
+        
+        _addRecord(indices == null ? 0 : indices.length, 
+                new Record(indices, oldValue, timestamp, true));
+        return array;
+    }
+    
     /** Return the iterator of all the records. If the field is an array, 
      *  the records with different indices are stored in separate lists.
      *  The iterator returned by this function combines all those lists, 
@@ -845,7 +895,7 @@ public final class FieldRecord {
     //////////////////////////////////////////////////////////////////////////
     //// Record
     /**
-       Record for the old value of an assignment.
+       Record of an old value.
        
        @author Thomas Feng
        @version $Id$
@@ -892,6 +942,14 @@ public final class FieldRecord {
             return _value;
         }
         
+        /** Test if this record is a backup of an array.
+         * 
+         *  @return <tt>true</tt>if this record is a backup of an array.
+         */
+        public boolean isBackup() {
+            return _isBackup;
+        }
+        
         /** Convert this record to a readable string.
          * 
          *  @return The string.
@@ -908,14 +966,15 @@ public final class FieldRecord {
                         buffer.append(",");
                 }
             buffer.append(") timestamp(");
-            buffer.append(_timestamp);
+            buffer.append(getTimestamp());
             buffer.append(") oldValue(");
-            buffer.append(_value);
+            buffer.append(getValue());
             buffer.append(")");
             return buffer.toString();
         }
         
-        /** Construct a record and store an old value in it.
+        /** Construct a record and store an old value in it. The record is not
+         *  a backup of an array.
          * 
          *  @param indices The indices on the left-hand side of the
          *   assignment.
@@ -928,24 +987,48 @@ public final class FieldRecord {
             _indices = indices;
             _value = value;
             _timestamp = timestamp;
+            _isBackup = false;
             _identifier = _getTopState()._increaseIdentifier();
         }
+        
+        /** Construct a record and store an old value in it.
+         * 
+         *  @param indices The indices on the left-hand side of the
+         *   assignment.
+         *  @param value The old value. If the old value is of a
+         *   primitive type, it should be boxed with the corresponding
+         *   object type.
+         *  @param timestamp The current timestamp.
+         *  @param isBackup Whether this record is a backup of an array.
+         */
+        Record(int[] indices, Object value, long timestamp, 
+                boolean isBackup) {
+            _indices = indices;
+            _value = value;
+            _timestamp = timestamp;
+            _isBackup = isBackup;
+            _identifier = _getTopState()._increaseIdentifier();
+        }
+        
+        /** The identifier of this record (unique for each field).
+         */
+        private int _identifier;
         
         /** The indices.
          */
         private int[] _indices;
         
-        /** The old value.
-         */
-        private Object _value;
-        
         /** The timestamp.
          */
         private long _timestamp;
         
-        /** The identifier of this record (unique for each field).
+        /** The old value.
          */
-        private int _identifier;
+        private Object _value;
+        
+        /** Whether this record is a backup of an array.
+         */
+        private boolean _isBackup;
     }
     
     /** Get the state on the top of the states stack.
@@ -1056,6 +1139,59 @@ public final class FieldRecord {
         _getTopState()._increaseTotalNum();
     }
     
+    /** Perform a deep copy from a source array to a destination array. If
+     *  those arrays are multi-dimensional, sub-arrays of them are copied
+     *  respectively.
+     * 
+     *  @param source The source array.
+     *  @param destination The destination array.
+     *  @return <tt>true</tt> if successfully copied; otherwise, 
+     *   <tt>false</tt>.
+     */
+    private boolean deepCopyArray(Object source, Object destination) {
+        if (source instanceof boolean[]) {
+            System.arraycopy(source, 0, destination, 0, 
+                    ((boolean[])source).length);
+            return true;
+        } else if (source instanceof byte[]) {
+            System.arraycopy(source, 0, destination, 0, 
+                    ((byte[])source).length);
+            return true;
+        } else if (source instanceof char[]) {
+            System.arraycopy(source, 0, destination, 0, 
+                    ((char[])source).length);
+            return true;
+        } else if (source instanceof double[]) {
+            System.arraycopy(source, 0, destination, 0, 
+                    ((double[])source).length);
+            return true;
+        } else if (source instanceof float[]) {
+            System.arraycopy(source, 0, destination, 0, 
+                    ((float[])source).length);
+            return true;
+        } else if (source instanceof int[]) {
+            System.arraycopy(source, 0, destination, 0, 
+                    ((int[])source).length);
+            return true;
+        } else if (source instanceof long[]) {
+            System.arraycopy(source, 0, destination, 0, 
+                    ((long[])source).length);
+            return true;
+        } else if (source instanceof short[]) {
+            System.arraycopy(source, 0, destination, 0, 
+                    ((short[])source).length);
+            return true;
+        } else if (source instanceof Object[]) {
+            Object[] sourceArray = (Object[])source;
+            Object[] destinationArray = (Object[])destination;
+            for (int i = 0; i < sourceArray.length; i++)
+                if (!deepCopyArray(sourceArray[i], destinationArray[i]))
+                    sourceArray[i] = destinationArray[i];
+            return true;
+        } else
+            return false;
+    }
+    
     /** Find the record with the smallest timestamp that is larger than the
      *  given timestamp.
      * 
@@ -1081,11 +1217,21 @@ public final class FieldRecord {
         return lastRecord;
     }
     
+    /** Restore the old value in a record to the field.
+     * 
+     *  @param field The field to be restored.
+     *  @param record The record.
+     *  @return The field. It may differ from the field in the arguments.
+     */
     private Object _restoreField(Object field, Record record) {
         int[] indices = record.getIndices();
-        if (indices == null || indices.length == 0)
-            return record.getValue();
-        else {
+        if (indices == null || indices.length == 0) {
+            if (record.isBackup()) {
+                deepCopyArray(field, record.getValue());
+                return field;
+            } else
+                return record.getValue();
+        } else {
             int length = indices.length;
             Object array = field;
             for (int i = 0; i < length - 1; i++)
@@ -1115,8 +1261,13 @@ public final class FieldRecord {
             else if (array instanceof short[])
                 ((short[])array)[lastIndex] = 
                     ((Short)record.getValue()).shortValue();
-            else
-                ((Object[])array)[lastIndex] = record.getValue();
+            else {
+                if (record.isBackup())
+                    deepCopyArray(((Object[])array)[lastIndex], 
+                            record.getValue());
+                else
+                    ((Object[])array)[lastIndex] = record.getValue();
+            }
             return field;
         }
     }

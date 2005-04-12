@@ -48,6 +48,15 @@ import ptolemy.backtrack.ast.transform.ClassHandler;
 */
 public class HandlerList {
     
+    /** Add an alias handler to the list.
+     * 
+     *  @param handler The alias handler.
+     *  @see AliasHandler
+     */
+    public void addAliasHandler(AliasHandler handler) {
+        _aliasHandlers.add(handler);
+    }
+    
     /** Add an assignment handler to the list.
      * 
      *  @param handler The assignment handler.
@@ -93,6 +102,14 @@ public class HandlerList {
         _methodDeclarationHandlers.add(handler);
     }
     
+    /** Get the list of alias handlers.
+     * 
+     *  @return The list of alias handlers.
+     */
+    public List getAliasHandlers() {
+        return _aliasHandlers;
+    }
+    
     /** Get the list of assignment handlers.
      * 
      *  @return The list of assignment handlers.
@@ -131,6 +148,14 @@ public class HandlerList {
      */
     public List getMethodDeclarationHandlers() {
         return _methodDeclarationHandlers;
+    }
+    
+    /** Test if there is any alias handler.
+     * 
+     *  @return <tt>true</tt> if there are alias handlers.
+     */
+    public boolean hasAliasHandler() {
+        return !_aliasHandlers.isEmpty();
     }
     
     /** Test if there is any assignment handler.
@@ -173,6 +198,14 @@ public class HandlerList {
         return !_methodDeclarationHandlers.isEmpty();
     }
     
+    /** Remove an alias handler.
+     * 
+     *  @param handler The alias handler to be removed.
+     */
+    public void removeAliasHandler(AliasHandler handler) {
+        _aliasHandlers.remove(handler);
+    }
+
     /** Remove an assignment handler.
      * 
      *  @param handler The assignment handler to be removed.
@@ -213,6 +246,10 @@ public class HandlerList {
         _methodDeclarationHandlers.remove(handler);
     }
 
+    /** The list of alias handlers.
+     */
+    private List _aliasHandlers = new LinkedList();
+    
     /** The list of assignment handlers.
      */
     private List _assignmentHandlers = new LinkedList();

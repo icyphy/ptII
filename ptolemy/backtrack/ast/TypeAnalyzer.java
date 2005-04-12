@@ -96,6 +96,7 @@ import org.eclipse.jdt.core.dom.VariableDeclarationExpression;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 import org.eclipse.jdt.core.dom.VariableDeclarationStatement;
 
+import ptolemy.backtrack.ast.transform.AliasHandler;
 import ptolemy.backtrack.ast.transform.AssignmentHandler;
 import ptolemy.backtrack.ast.transform.ClassHandler;
 import ptolemy.backtrack.ast.transform.ConstructorHandler;
@@ -563,6 +564,15 @@ public class TypeAnalyzer extends ASTVisitor {
             Type.setOwner(node.getName(), typeAndOwner._getOwner());
             Type.setType(node, typeAndOwner._getType());
             Type.setType(node.getName(), typeAndOwner._getType());
+        }
+        
+        if (_handlers.hasAliasHandler()) {
+            List handlerList = _handlers.getAliasHandlers();
+            Iterator handlersIter = handlerList.iterator();
+            while (handlersIter.hasNext()) {
+                AliasHandler handler = (AliasHandler)handlersIter.next();
+                handler.handle(node, _state);
+            }
         }
     }
 

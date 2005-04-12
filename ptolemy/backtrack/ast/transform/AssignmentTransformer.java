@@ -100,7 +100,8 @@ import ptolemy.backtrack.util.FieldRecord;
    @Pt.AcceptedRating Red (tfeng)
 */
 public class AssignmentTransformer extends AbstractTransformer
-        implements AssignmentHandler, ClassHandler, CrossAnalysisHandler {
+        implements AliasHandler, AssignmentHandler, ClassHandler, 
+        CrossAnalysisHandler {
 
     ///////////////////////////////////////////////////////////////////
     ////                       public methods                      ////
@@ -119,6 +120,14 @@ public class AssignmentTransformer extends AbstractTransformer
      */
     public void handle(Assignment node, TypeAnalyzerState state) {
         _handleAssignment(node, state);
+    }
+    
+    public void handle(MethodInvocation node, TypeAnalyzerState state) {
+        Iterator arguments = node.arguments().iterator();
+        while (arguments.hasNext()) {
+            Expression argument = (Expression)arguments.next();
+            _handleAlias(argument, state);
+        }
     }
     
     public void handle(PostfixExpression node, TypeAnalyzerState state) {
@@ -237,10 +246,6 @@ public class AssignmentTransformer extends AbstractTransformer
     ///////////////////////////////////////////////////////////////////
     ////                       public fields                       ////
 
-    /** The prefix of assignment methods.
-     */
-    public static String ASSIGN_PREFIX = "$ASSIGN$";
-    
     /** Whether to refactor private static fields.
      */
     public static boolean HANDLE_STATIC_FIELDS = false;
@@ -252,6 +257,10 @@ public class AssignmentTransformer extends AbstractTransformer
     /** The name of the proxy class created in each anonymous class.
      */
     public static String PROXY_NAME = "_PROXY_";
+    
+    /** The prefix of backup functions.
+     */
+    public static String BACKUP_PREFIX = "$BACKUP$";
     
     /** The prefix of records (new fields to be added to a class).
      */
@@ -1237,21 +1246,6 @@ public class AssignmentTransformer extends AbstractTransformer
         return indicesList;
     }
     
-    /** Get the name of the assignment method.
-     * 
-     *  @param fieldName The field name.
-     *  @param special Whether the method handles special assign operators.
-     *  @return The name of the assignment method.
-     */
-    private String _getAssignMethodName(String fieldName, boolean special) {
-        return ASSIGN_PREFIX + (special ? "SPECIAL$" : "") + fieldName;
-    }
-    
-    private String _getExtraSetCheckpointName(String className) {
-        return SET_CHECKPOINT_NAME + "$" +
-        	Integer.toHexString(className.hashCode());
-    }
-    
     /** Get the name of the proxy class to be created in each anonymous class.
      * 
      *  @return The proxy class name.
@@ -1289,6 +1283,116 @@ public class AssignmentTransformer extends AbstractTransformer
      */
     private String _getSetCheckpointMethodName(boolean isAnonymous) {
         return SET_CHECKPOINT_NAME + (isAnonymous ? "_ANONYMOUS" : "");
+    }
+    
+    /** Handle an alias expression. If the expression is not aliased (e.g.,
+     *  an expression corresponding to an object or a primitive integer
+     *  cannot be aliased), nothing is done. If it can be aliased, in the
+     *  refactored result, the expression's <tt>clone</tt> method is called
+     *  and the copy is used as the record.
+     *  
+     *  @param node The node that may be aliased.
+     *  @param state The current state of the type analyzer.
+     */
+    private void _handleAlias(Expression node, TypeAnalyzerState state) {
+        Type owner = Type.getOwner(node);
+        String ownerName = owner == null ? null : owner.getName();
+        Type type = Type.getType(node);
+        String typeName = type.getName();
+        
+        Expression array = node;
+        Type arrayType = type;
+        
+        // Check if we need to refactor the argument.
+        boolean needRefactor = type.isArray();
+        if (node instanceof ArrayAccess) {
+            ArrayAccess arrayAccess = (ArrayAccess)node;
+            while (arrayAccess.getArray() instanceof ArrayAccess) {
+                arrayAccess = (ArrayAccess)arrayAccess.getArray();
+                arrayType = arrayType.addOneDimension();
+            }
+            array = arrayAccess.getArray();
+            arrayType = arrayType.addOneDimension();
+            if (array instanceof MethodInvocation)
+                needRefactor = false;
+        }
+        if (needRefactor)
+            if (state.getCurrentClass().getName().equals(ownerName))
+                needRefactor = true;
+            else {	
+                Iterator previousClasses = 
+                    state.getPreviousClasses().iterator();
+                while (previousClasses.hasNext()) {
+                    Class previous = (Class)previousClasses.next();
+                    if (previous != null && previous.getName().equals(ownerName))
+                        needRefactor = true;
+                }
+            }
+        
+        if (needRefactor) {
+            // Refactor the expression.
+            AST ast = node.getAST();
+            CompilationUnit root = (CompilationUnit)node.getRoot();
+            String typeClassName = getClassName(typeName, state, root);
+            
+            ArrayCreation arrayCreation = ast.newArrayCreation();
+            arrayCreation.setType((ArrayType)createType(ast, 
+                    typeClassName));
+            ArrayInitializer initializer = ast.newArrayInitializer();
+            arrayCreation.setInitializer(initializer);
+            
+            int nIndices = 0;
+            
+            Expression nodeIterator = node;
+
+            while (nodeIterator instanceof ParenthesizedExpression)
+                nodeIterator = 
+                    ((ParenthesizedExpression)nodeIterator).getExpression();
+            
+            while (nodeIterator instanceof ArrayAccess) {
+                nIndices++;
+                ArrayAccess arrayAccess = (ArrayAccess)nodeIterator;
+                initializer.expressions().add(0, 
+                        ASTNode.copySubtree(ast, arrayAccess.getIndex()));
+                nodeIterator = arrayAccess.getArray();
+                while (nodeIterator instanceof ParenthesizedExpression)
+                    nodeIterator = 
+                        ((ParenthesizedExpression)
+                                nodeIterator).getExpression();
+            }
+            
+            Expression newObject = null;
+            SimpleName name;
+            if (nodeIterator instanceof FieldAccess) {
+                Expression object = 
+                    ((FieldAccess)nodeIterator).getExpression();
+                name = ((FieldAccess)nodeIterator).getName();
+                newObject = (Expression)ASTNode.copySubtree(ast, object);
+            } else if (nodeIterator instanceof QualifiedName) {
+                Name object = ((QualifiedName)nodeIterator).getQualifier();
+                name = ((QualifiedName)nodeIterator).getName();
+                newObject = (Expression)ASTNode.copySubtree(ast, object);
+            } else if (nodeIterator instanceof SimpleName)
+                name = (SimpleName)nodeIterator;
+            else
+                return;
+            
+            MethodInvocation backup = ast.newMethodInvocation();
+            backup.setExpression(newObject);
+            backup.setName(ast.newSimpleName(BACKUP_PREFIX));
+            if (initializer.expressions().size() > 0)
+                backup.arguments().add(arrayCreation);
+            backup.arguments().add(ASTNode.copySubtree(ast, node));
+            
+            CastExpression castExpression = ast.newCastExpression();
+            castExpression.setExpression(backup);
+            castExpression.setType(createType(ast, typeClassName));
+            
+            replaceNode(node, castExpression);
+            
+            _recordField(_backupFields, owner.getName(), name.getIdentifier(), 
+                    nIndices);
+        }
     }
     
     /** Handle an explicit or implicit assignment node. An explicit assignment
@@ -1469,7 +1573,7 @@ public class AssignmentTransformer extends AbstractTransformer
             		((Assignment)node).getOperator() ==
             		    Assignment.Operator.ASSIGN) ?
                 _accessedFields : _specialAccessedFields;
-        _recordAccessedField(table, owner.getName(), name.getIdentifier(), 
+        _recordField(table, owner.getName(), name.getIdentifier(), 
                 indices.size());
     }
     
@@ -1666,7 +1770,7 @@ public class AssignmentTransformer extends AbstractTransformer
      */
     private void _recordAccessedField(String className, String fieldName, 
             int indices) {
-        _recordAccessedField(_accessedFields, className, fieldName, indices);
+        _recordField(_accessedFields, className, fieldName, indices);
     }
     
     /** Record an accessed field (and possible indices after it) in a list.
@@ -1678,7 +1782,7 @@ public class AssignmentTransformer extends AbstractTransformer
      *  @param fieldName The field name.
      *  @param indices The number of indices.
      */
-    private void _recordAccessedField(Hashtable table, String className,  
+    private void _recordField(Hashtable table, String className,  
             String fieldName, int indices) {
         Hashtable classTable = (Hashtable)table.get(className);
         if (classTable == null) {
@@ -1696,10 +1800,16 @@ public class AssignmentTransformer extends AbstractTransformer
     }
     
     /** The table of access fields and their indices. Keys are class names;
-     *  valus are hash tables. In each value, keys are field names, values
+     *  valus are hash tables. In each table, keys are field names, values
      *  are lists of indices.
      */
     private Hashtable _accessedFields = new Hashtable();
+    
+    /** The table of backup of fields and their indices. Keys are class names;
+     *  values are hash tables. In each table, keys are field names, values
+     *  are lists of indices.
+     */
+    private Hashtable _backupFields = new Hashtable();
     
     /** The table of fields accessed with special assign operators and their
      *  indices. Keys are class names; valus are hash tables. In each value, 

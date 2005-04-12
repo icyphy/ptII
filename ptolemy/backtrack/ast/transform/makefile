@@ -53,6 +53,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 #    $(wildcard *.java)
 JSRCS = \
 	AbstractTransformer.java \
+	AliasHandler.java \
 	AssignmentHandler.java \
 	AssignmentRule.java \
 	AssignmentTransformer.java \

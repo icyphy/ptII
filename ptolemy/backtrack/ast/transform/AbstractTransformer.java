@@ -291,6 +291,10 @@ public abstract class AbstractTransformer {
         }
     }
 
+    /** The prefix of assignment methods.
+     */
+    public static String ASSIGN_PREFIX = "$ASSIGN$";
+    
     /** The name of the checkpoint object.
      */
     public static String CHECKPOINT_NAME = "$CHECKPOINT";
@@ -306,6 +310,16 @@ public abstract class AbstractTransformer {
     /** The name of the method to set a checkpoint.
      */
     public static String SET_CHECKPOINT_NAME = "$SET$CHECKPOINT";
+    
+    /** Get the name of the assignment method.
+     * 
+     *  @param fieldName The field name.
+     *  @param special Whether the method handles special assign operators.
+     *  @return The name of the assignment method.
+     */
+    protected String _getAssignMethodName(String fieldName, boolean special) {
+        return ASSIGN_PREFIX + (special ? "SPECIAL$" : "") + fieldName;
+    }
     
     /** Get the shortest possible name of the a class. If there is no conflict,
      *  the class is first imported, and only the simple class is returned;

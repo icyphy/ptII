@@ -65,20 +65,24 @@ public class AssignmentRule extends TransformRule {
      *  @param root The root of the AST.
      */
     public void beforeTraverse(TypeAnalyzer analyzer, CompilationUnit root) {
-        AssignmentTransformer transformer1 = new AssignmentTransformer();
-        ConstructorTransformer transformer2 = new ConstructorTransformer();
+        AssignmentTransformer assignmentTransformer = 
+            new AssignmentTransformer();
+        ConstructorTransformer constructorTransformer = 
+            new ConstructorTransformer();
         
-        _handlers.add(transformer1);
-        _handlers.add(transformer2);
+        _handlers.add(assignmentTransformer);
+        _handlers.add(constructorTransformer);
         
-        analyzer.getHandlers().addAssignmentHandler(transformer1);
-        analyzer.getHandlers().addClassHandler(transformer1);
-        analyzer.getHandlers().addCrossAnalysisHandler(transformer1);
+        analyzer.getHandlers().addAliasHandler(assignmentTransformer);
+        analyzer.getHandlers().addAssignmentHandler(assignmentTransformer);
+        analyzer.getHandlers().addClassHandler(assignmentTransformer);
+        analyzer.getHandlers().addCrossAnalysisHandler(assignmentTransformer);
 
-        analyzer.getHandlers().addClassHandler(transformer2);
-        analyzer.getHandlers().addConstructorHandler(transformer2);
-        analyzer.getHandlers().addCrossAnalysisHandler(transformer2);
-        analyzer.getHandlers().addMethodDeclarationHandler(transformer2);
+        analyzer.getHandlers().addClassHandler(constructorTransformer);
+        analyzer.getHandlers().addConstructorHandler(constructorTransformer);
+        analyzer.getHandlers().addCrossAnalysisHandler(constructorTransformer);
+        analyzer.getHandlers().addMethodDeclarationHandler(
+                constructorTransformer);
     }
     
     /** The list of handlers used.
