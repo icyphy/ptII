@@ -229,6 +229,7 @@ FULL_ONLY_JNLP_JARS = \
 	$(PTJACL_JARS) \
 	lib/ptcolt.jar \
 	ptolemy/actor/lib/colt/colt.jar \
+	ptolemy/actor/lib/colt/demo/demo.jar \
 	ptolemy/actor/lib/hoc/demo/demo.jar \
 	ptolemy/actor/lib/io/comm/comm.jar \
 	ptolemy/actor/lib/io/comm/demo/demo.jar \
