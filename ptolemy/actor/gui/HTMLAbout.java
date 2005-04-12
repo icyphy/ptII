@@ -117,7 +117,7 @@ public class HTMLAbout {
                     + _aboutHTML("ptolemy/configs/doc/completeDemos.htm")
                     + _aboutHTML("ptolemy/configs/doc/demos.htm")
                     + _aboutHTML("ptolemy/configs/doc/whatsNew" + version + ".htm")
-                    + _aboutHTML("ptolemy/configs/doc/whatsNew4.0.htm"));
+                    + _aboutHTML("ptolemy/configs/doc/whatsNew4.0.htm")
                     + _aboutHTML("ptolemy/configs/doc/whatsNew3.0.2.htm"));
         }
 
