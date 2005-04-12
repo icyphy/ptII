@@ -245,12 +245,6 @@ public class LevelCrossingDetector extends TypedAtomicActor
         //record the input.
         _thisTrigger = ((DoubleToken) trigger.get(0)).doubleValue();
 
-        // FIXME: This basically disables the event detection in the
-        // first discrete phase of execution.
-        if (_levelCrossingDetectionDisabled) {
-            _lastTrigger = _thisTrigger;
-        }
-
         if (_debugging) {
             _debug("Consuming a trigger token: " + _thisTrigger);
         }
@@ -270,7 +264,8 @@ public class LevelCrossingDetector extends TypedAtomicActor
             if ((((_lastTrigger - _level) * (_thisTrigger - _level)) < 0.0)
                     || hasCurrentEvent()) {
                 if ((_detectFallingCrossing && !inputIsIncreasing) ||
-                        (_detectRisingCrossing && inputIsIncreasing)) {
+                        (_detectRisingCrossing && inputIsIncreasing) ||
+                        _eventNow) {
                     // Emit an event.
                     if (((BooleanToken) useDefaultEventValue.getToken())
                             .booleanValue()) {
@@ -310,30 +305,13 @@ public class LevelCrossingDetector extends TypedAtomicActor
         _eventMissed = false;
         _eventNow = false;
         _level = ((DoubleToken) level.getToken()).doubleValue();
-        _levelCrossingDetectionDisabled = true;
-
-        // Note that _lastTrigger and _thisTrigger are not initialized.
-        // Instead, they will be assigned some values at the first firing.
+        _thisTrigger = _lastTrigger = 0.0;
     }
 
     /** Return true if there is no event detected during the current step size.
      *  @return True if there is no event detected in the current iteration.
      */
     public boolean isOutputAccurate() {
-        if (_levelCrossingDetectionDisabled) {
-            if (_debugging && _verbose) {
-                _debug("First firing of this actor, "
-                        + "the output is always accurate. "
-                        + "Note that if the initial step size is too big, "
-                        + "an event may be missing.");
-            }
-
-            _levelCrossingDetectionDisabled = false;
-            _eventNow = false;
-            _eventMissed = false;
-            return !_eventMissed;
-        }
-
         if (_debugging && _verbose) {
             _debug("The last trigger is " + _lastTrigger);
             _debug("The current trigger is " + _thisTrigger);
@@ -352,34 +330,54 @@ public class LevelCrossingDetector extends TypedAtomicActor
             CTDirector director = (CTDirector) getDirector();
 
             if (Math.abs(_thisTrigger - _level) < _errorTolerance) {
-                // The current time is when the event happens.
-                if (_debugging) {
-                    _debug("Event is detected at "
-                            + getDirector().getModelTime());
-                }
-
                 if ((_detectFallingCrossing && !inputIsIncreasing) ||
                         (_detectRisingCrossing && inputIsIncreasing)) {
+                    // The current time is close enough to when the event 
+                    // happens.
+                    if (_debugging) {
+                        _debug("Event is detected at "
+                                + getDirector().getModelTime());
+                    }
                     _eventNow = true;
                     _eventMissed = false;
                 } else {
+                    // Although the current trigger is close to the level,
+                    // the direction is not right. Ignore the event.
                     _eventNow = false;
                     _eventMissed = false;
                 }
             } else {
-                _eventNow = false;
-                _eventMissed = true;
+                // Level crossing happens and the direction is right,
+                // report a missing event.
+                if ((_detectFallingCrossing && !inputIsIncreasing) ||
+                        (_detectRisingCrossing && inputIsIncreasing)) {
+                    _eventNow = false;
+                    _eventMissed = true;
+                } else {
+                    // Although level crossing happens, 
+                    // the direction is not right. Ignore the event.
+                    _eventNow = false;
+                    _eventMissed = false;
+                }
             }
         } else if (_thisTrigger == _level) {
             if ((_detectFallingCrossing && !inputIsIncreasing) ||
                     (_detectRisingCrossing && inputIsIncreasing)) {
+                // The current time is exactly when the event happens.
+                if (_debugging) {
+                    _debug("Event is detected at "
+                            + getDirector().getModelTime());
+                }
                 _eventNow = true;
                 _eventMissed = false;
             } else {
+                // Although the current trigger is equal to the level,
+                // the direction is not right. Ignore the event.
                 _eventNow = false;
                 _eventMissed = false;
             }
         } else {
+            // No level crossing happens, apperantly no events.
             _eventNow = false;
             _eventMissed = false;
         }
@@ -403,10 +401,6 @@ public class LevelCrossingDetector extends TypedAtomicActor
     public boolean postfire() throws IllegalActionException {
         _lastTrigger = _thisTrigger;
         CTDirector director = (CTDirector) getDirector();
-        // This used to be done only in isOutputAccurate(),
-        // but that results in the first step not being
-        // checked. EAL 3/9/05
-        _levelCrossingDetectionDisabled = false;
         return super.postfire();
     }
 
@@ -441,9 +435,13 @@ public class LevelCrossingDetector extends TypedAtomicActor
 
         if (_eventMissed) {
             // The refined step size is a linear interpolation.
+            // NOTE: we always to get a little overshoot to make sure the
+            // level crossing happens. The little overshoot chosen here
+            // is half of the error toelrance.
             refinedStep = 
-                (Math.abs(_lastTrigger - _level) * dir.getCurrentStepSize()) 
-                / Math.abs(_thisTrigger - _lastTrigger);
+                ((Math.abs(_lastTrigger - _level) + _errorTolerance/2) 
+                        * dir.getCurrentStepSize())
+                        / Math.abs(_thisTrigger - _lastTrigger);
 
             if (_debugging) {
                 _debug(getFullName() + " Event Missed: refined step to "
@@ -482,10 +480,6 @@ public class LevelCrossingDetector extends TypedAtomicActor
 
     // flag indicating if there is an event at the current time.
     private boolean _eventNow = false;
-
-    // flag indicating that level-crossing detection is disabled
-    // due to the lack of history information
-    private boolean _levelCrossingDetectionDisabled = true;
 
     // last trigger input.
     private double _lastTrigger;
