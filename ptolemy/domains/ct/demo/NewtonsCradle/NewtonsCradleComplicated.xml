@@ -570,6 +570,8 @@ Zoom in the velocities plot to see what actually happens.</text></svg></configur
         <link port="y position.in" relation="relation9"/>
     </class>
     <entity name="ModalModel" class="ptolemy.domains.fsm.modal.ModalModel">
+        <property name="directorClass" class="ptolemy.data.expr.StringParameter" value="ptolemy.domains.fsm.kernel.HSDirector">
+        </property>
         <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 420.0]">
@@ -618,7 +620,7 @@ Zoom in the velocities plot to see what actually happens.</text></svg></configur
         <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory"></property></entity></entity>
       </configure>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={282, 291, 835, 468}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={94, 150, 835, 468}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[620, 350]">
             </property>
@@ -723,8 +725,6 @@ Zoom in the velocities plot to see what actually happens.</text></svg></configur
             </relation>
             <relation name="relation2" class="ptolemy.domains.fsm.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
-                </property>
-                <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="x_1 = 0; x_2 = diameter; x_3=2*diameter">
                 </property>
                 <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="&#10;state.theta_1_dot_initial = initialTheta_1_dot;&#10;state.theta_2_dot_initial = initialTheta_2_dot;&#10;state.theta_3_dot_initial = initialTheta_3_dot;&#10;state.theta_1_initial = initialTheta_1;&#10;state.theta_2_initial = initialTheta_2;&#10;state.theta_3_initial = initialTheta_3">
                     <property name="style" class="ptolemy.actor.gui.style.TextStyle">
