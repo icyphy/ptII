@@ -199,7 +199,10 @@ public class PlotApplet extends JApplet {
             };
         try {
             // NOTE: Using invokeAndWait() here risks causing
-            // deadlock.  Don't do it!
+            // deadlock.  However, the Sun Tutorial recommends calling
+            // invokeAndWait so that the work finishes before returning.
+            // if we call invokeLater() then demo/PlotFourierSeries.java
+            // has problems.
             SwingUtilities.invokeAndWait(doActions);
         } catch (Exception ex) {
             // Ignore InterruptedException.
