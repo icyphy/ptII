@@ -254,6 +254,7 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/domains/gr/demo/demo.jar \
 	ptolemy/domains/gr/doc/doc.jar \
 	ptolemy/domains/gr/lib/quicktime/quicktime.jar \
+	ptolemy/domains/hdf/demo/demo.jar \
 	ptolemy/domains/psdf/psdf.jar \
 	ptolemy/domains/psdf/demo/demo.jar \
 	lib/mapss.jar \
