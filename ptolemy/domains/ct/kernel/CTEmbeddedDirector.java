@@ -154,6 +154,23 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
     public void fire() throws IllegalActionException {
         CTSchedule schedule = (CTSchedule) getScheduler().getSchedule();
 
+        // Establish the initial states if necessary. For example, if this 
+        // director resides in a refinement (not a refinement of the initial
+        // state), and the refinement gets enabled for the first time or 
+        // the refinement needs initialization.
+        // NOTE: by default the _initialStatesNotReady is set to false, which
+        // indicates this director does not need to construct the initial 
+        // states. Instead, the upper level CTDirector will establish the
+        // initial states. 
+        // The _initialStatesNotReady variable can be changed by the HSDirector.
+        // The HSDirector will set this variable to true to force a process to 
+        // construct initial states, if the container of this director is 
+        // firstly visited, or this container needs reinitialization,  
+        if (_initialStatesNotReady) {
+            establishInitialStates();
+            _initialStatesNotReady = false;
+        }
+
         // The execution phase is the execution phase of the top-level director.
         // All directors at different levels of hierarchy must be synchronized
         // to that.
@@ -254,12 +271,11 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
         }
     }
 
-    /** Restore the saved states, which include the iteration begin time and
-     *  the states of stateful actors.
+    /** Restore the saved states, which include the states of stateful actors.
      */
     public void goToMarkedState() {
         try {
-            setModelTime(_savedIterationBeginTime);
+            setModelTime(getIterationBeginTime());
 
             Iterator statefulActors = getScheduler().getSchedule()
                 .get(CTSchedule.STATEFUL_ACTORS)
@@ -275,6 +291,15 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
         }
     }
 
+    /** Call the initialize() method of the super class. Set the 
+     *  _initialStatesNotReady variable to false indicating no special
+     *  process to construct initial states is needed.  
+     */
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        _initialStatesNotReady = false;
+    }
+    
     /** Return true if this is the discrete phase execution.
      *  @return True if this is the discrete phase execution.
      */
@@ -312,13 +337,10 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
         return _stateAcceptable;
     }
 
-    /** Mark the known good states. Including the iteration begin time
-     *  and the states of the stateful actors.
+    /** Mark the known good states, including the states of the stateful actors.
      */
     public void markState() {
         try {
-            _savedIterationBeginTime = getModelTime();
-
             Iterator statefulActors = getScheduler().getSchedule()
                 .get(CTSchedule.STATEFUL_ACTORS)
                 .actorIterator();
@@ -440,9 +462,6 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
     // Indicates whether actors in the output schedule are satisfied with
     // the current step size.
     private boolean _outputAcceptable;
-
-    // A private variable that stores the known good time.
-    private Time _savedIterationBeginTime;
 
     // Indicates whether actors in the dynamic actor schedule and the
     // state transition schedule are satisfied with the current step size.
