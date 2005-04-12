@@ -284,6 +284,7 @@ public class FSMDirector extends Director implements ModelErrorHandler,
                 }
             }
         }
+        st.setVisited(true);
 
         ctrl._readOutputsFromRefinement();
 

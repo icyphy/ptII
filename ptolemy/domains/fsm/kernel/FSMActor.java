@@ -477,6 +477,18 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         // the initialize method is called. So, reset must be
         // called here.
         reset();
+        
+        // reset the visited status of all states except the current state
+        // to not visited.
+        Iterator states = deepEntityList().iterator();
+        while (states.hasNext()) {
+            State state = (State)states.next();
+            if (state == _currentState) {
+                state.setVisited(true);
+            } else {
+                state.setVisited(false);
+            }
+        }
     }
 
     /** Return a list of the input ports.
@@ -1033,6 +1045,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                     actors[i].initialize();
                 }
             }
+            _currentState.setVisited(false);
         }
 
         _setCurrentConnectionMap();

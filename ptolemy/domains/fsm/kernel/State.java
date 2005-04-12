@@ -241,6 +241,13 @@ public class State extends ComponentEntity {
         }
     }
 
+    /** Return true if this state has been visited. Otherwise, return false.
+     *  @return Returns true if this state has been visited.
+     */
+    public boolean isVisited() {
+        return _visited;
+    }
+
     /** Return the list of non-preemptive outgoing transitions from
      *  this state.
      *  @return The list of non-preemptive outgoing transitions from
@@ -265,6 +272,15 @@ public class State extends ComponentEntity {
         }
 
         return _preemptiveTransitionList;
+    }
+
+    /** Set the flag that indicates whether this state has been visited with
+     *  the given boolean value.
+     *  @param visited The boolean flag indicating whether this state has been
+     *  visited.
+     */
+    public void setVisited(boolean visited) {
+        _visited = visited;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -297,6 +313,10 @@ public class State extends ComponentEntity {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+    
+    // Flag indicating whether this state has been visited.
+    private boolean _visited = false;
+    
     // Cached list of non-preemptive outgoing transitions from this state.
     private List _nonpreemptiveTransitionList = new LinkedList();
 
