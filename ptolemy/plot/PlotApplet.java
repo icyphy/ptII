@@ -101,8 +101,13 @@ public class PlotApplet extends JApplet {
     }
 
     /** Initialize the applet.  Read the applet parameters.
-     *  Subclasses should do any UI work in the Swing Event thread 
-     *  by calling SwingUtilities.  For details, see
+
+     *  Subclasses that extend this method and call Swing UI methods
+     *  should do so in the Swing Event thread by calling 
+     *  SwingUtilities.invokeAndWait().
+     *  Note that some Plot methods will automatically run in the
+     *  Swing Event thread, some will not.
+     *  For details about SwingUtilities.invokeAndWait(), see
      *  <a href="http://java.sun.com/docs/books/tutorial/uiswing/components/applet.html#thread">The Sun Applet Tutorial</a>
      */
     public void init() {
