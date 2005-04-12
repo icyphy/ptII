@@ -228,6 +228,45 @@ public class CTMultiSolverDirector extends CTDirector {
         return true;
     }
 
+    /** Establish the initial states for discrete phase of execution. This
+     *  method should be called if the initial states are not available. For
+     *  example, the first iteration of the simulation, or the first execution
+     *  of an enabled CT refinement.
+     *  @exception IllegalActionException If any actor can not be iterated, or
+     *  can not ODE solver can not be set.
+     */
+    public void establishInitialStates() throws IllegalActionException {
+        CTSchedule schedule = (CTSchedule) getScheduler().getSchedule();
+
+        if (_debugging) {
+            _debug("Establish the initial states for " +
+                    "discrete phase of execution");
+            _debug("  ---> " + getName(),
+            ": iterating waveform generators (discrete -> continuous)");
+        }
+        _iterateWaveformGenerators(schedule);
+        
+        if (_debugging) {
+            _debug("  ---> " + getName(),
+                    ": using a breakpoint solver, find integrator output "
+                    + "values and iterate continuous actors to find all "
+                    + "continuous-time signal values.");
+        }
+        _propagateResolvedStates();
+    
+        if (_debugging) {
+            _debug("  ---> " + getName(),
+                ": iterating event generators (continuous -> discrete)");
+        }
+        _iterateEventGenerators(schedule);
+    
+        if (_debugging) {
+            _debug("  ---> " + getName(),
+                ": iterating purely discrete actors (discrete -> discrete)");
+        }
+        _iteratePurelyDiscreteActors(schedule);
+    }
+
     /** Fire the system for one iteration. One iteration is defined as
      *  solving the states of a system over a time interval [t_0, t_1].
      *  A complete iteration includes resolving final states at t_0,
@@ -514,7 +553,7 @@ public class CTMultiSolverDirector extends CTDirector {
 
         fireAt((Actor) getContainer(), getModelStopTime());
 
-        _firstIteration = true;
+        _initialStatesNotReady = true;
         
         if (_debugging) {
             _debug("----- End of Initialization of: " + getFullName());
@@ -700,6 +739,13 @@ public class CTMultiSolverDirector extends CTDirector {
         _setExecutionPhase(CTExecutionPhase.UNKNOWN_PHASE);
     }
 
+    /** Set the flag indicating that the initial states are not ready.
+     *  This method should only be used by the HSDirector.
+     */
+    public void setInitialStatesNotReady() {
+        _initialStatesNotReady = true;
+    }
+
     /** Set a new value to the current time of the model, where the new
      *  time can be earlier than the current time to support rollback.
      *  This overrides the setCurrentTime() in the Director base class.
@@ -870,42 +916,25 @@ public class CTMultiSolverDirector extends CTDirector {
 
         CTSchedule schedule = (CTSchedule) getScheduler().getSchedule();
         
-        if (_firstIteration) {
-            // Establish the initial states for discrete phase of execution.
-            if (_debugging) {
-                _debug("Iterate all actors once in the following order:");
-                _debug("  ---> " + getName(),
-                ": iterating waveform generators (discrete -> continuous)");
-            }
-            _iterateWaveformGenerators(schedule);
-            
-            if (_debugging) {
-                _debug("  ---> " + getName(),
-                        ": using a breakpoint solver, find integrator output "
-                        + "values and iterate continuous actors to find all "
-                        + "continuous-time signal values.");
-            }
-            _propagateResolvedStates();
-        }
-
-        // NOTE: If there is some event at the current time or the current
-        // iteration is the first iteraiton, perform a discrete phase of 
-        // execution. 
-        // The reason to perform such an execution at the first
+        // The reason to perform the below operation at the first
         // iteration is to establish the initial conditions for event 
         // generators. For example, make the _lastTrigger of the level
-        // crossing detector available. 
+        // crossing detector or the variable used by guard expressions 
+        // available.
+        if (_initialStatesNotReady) {
+            establishInitialStates();
+            _initialStatesNotReady = false;
+        }
+
+        // NOTE: If there is some event at the current time, 
+        // perform a discrete phase of execution. 
         // The event may be generated either by event generators or a 
         // modal model.
-
         // NOTE: To support transient states in modal models,
         // which are event generators, modal models need to register the
         // current time as a breakpoint if there is an enabled transitioin
         // at the current time.
-        while (_firstIteration || hasCurrentEvent()) {
-
-            _firstIteration = false;
-            
+        while (hasCurrentEvent()) {
             if (_debugging) {
                 _debug("Iterate all actors once in the following order:");
                 _debug("  ---> " + getName(),
@@ -1560,6 +1589,12 @@ public class CTMultiSolverDirector extends CTDirector {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         proetected variables              ////
+    
+    /** Flag indicating the initial states are not ready. */
+    protected boolean _initialStatesNotReady;
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
     // Iterate all the actors inside a given schedule, by prefiring,
     // firing and postfiring them.
@@ -1639,9 +1674,6 @@ public class CTMultiSolverDirector extends CTDirector {
     // The classname of the breakpoint ODE solver
     private String _breakpointSolverClassName;
     
-    // Flag indicating the first iteration
-    private boolean _firstIteration;
-
     // The normal solver.
     private ODESolver _normalSolver;
 
