@@ -37,6 +37,7 @@ DIRS = \
 	Collisions \
 	EvaderAndPursuer \
 	MatlabWirelessSoundDetection \
+	PersonalAreaNetwork \
 	PowerVariability \
 	SmallWorld \
 	SmartParking \
@@ -48,8 +49,7 @@ DIRS = \
 #       and add an entry to PTCLASSALLJARS below.
 OTHER_DIRS = \
 	MACProtocolModel \
-	network \
-	PersonalAreaNetwork
+	network
 
 # Root of Ptolemy II directory
 ROOT =		../../../..
@@ -70,6 +70,7 @@ PTCLASSALLJARS = \
 	Collisions/Collisions.jar \
 	EvaderAndPursuer/EvaderAndPursuer.jar \
 	MatlabWirelessSoundDetection/MatlabWirelessSoundDetection.jar \
+	PersonalAreaNetwork/PersonalAreaNetwork.jar \
 	PowerVariability/PowerVariability.jar \
 	SmallWorld/SmallWorld.jar \
 	SmartParking/SmartParking.jar \
