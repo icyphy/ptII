@@ -227,6 +227,7 @@ FULL_ONLY_JNLP_JARS = \
 	$(COPERNICUS_JARS) \
 	doc/design/design.jar \
 	$(PTJACL_JARS) \
+	ptolemy/actor/lib/colt/colt.jar \
 	ptolemy/actor/lib/hoc/demo/demo.jar \
 	ptolemy/actor/lib/io/comm/comm.jar \
 	ptolemy/actor/lib/io/comm/demo/demo.jar \
