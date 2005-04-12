@@ -13,8 +13,17 @@ for details about this release.
 
 The instructions on this page concern installing rebuilding Ptolemy II
 from sources.
+<ul>
+<li> <a href="#impatient">Instructions for the impatient</a>
+<li> <a href="#requirements">Requirements</a>
+<li> <a href="#shippedPackages">Optional packages that are shipped with Ptolemy</a>
+<li> <a href="#notshippedPackages">Optional packages not shipped with Ptolemy used at runtime</a>
+<li> <a href="#notshippedCompileTimePackages">Optional Packages not shipped with Ptolemy that are used at compile time</a>
+<li> <a href="#rebuildingFromSource">Rebuilding from source</a>
+</ul>
+<p>
 
-<h2>Instructions for the impatient</h2>
+<h2><a name="impatient">Instructions for the impatient</a></h2>
 
 <ol>
 
@@ -60,7 +69,7 @@ $PTII/bin/vergil
 </ol>
 
 
-<h2>Requirements</h2>
+<h2><a name="requirements">Requirements</a></h2>
 <h3>The PTII variable</h3>
 The PTII environment variable is used to refer to the directory
 that contains the Ptolemy II tree.
@@ -108,7 +117,7 @@ a separate plug-in or a complete Netscape installation.
 the applets with the JDK <CODE>appletviewer</CODE> command.
  <p>See the <a href="troubleshooting.htm#plugin">Plug-in section of the Ptolemy II Troubleshooting guide</a> for details.
 
-<h2>Optional packages that are shipped with Ptolemy</h2>
+<h2><a name="shippedPackages">Optional packages that are shipped with Ptolemy</a></h2>
 
 <h3><a name="Diva">Diva</a></h3>
 Diva is a visualization package used by some of the demos and by
@@ -188,7 +197,8 @@ Soot, is a Java optimization framework from
 
 
 
-<h2>Optional packages not shipped with Ptolemy used at runtime</h2>
+<h2><a name="notshippedPackages">Optional packages not shipped with Ptolemy used at runtime</a></h2>
+
 The packages below are used at runtime.  Parts of the prebuilt Ptolemy
 II installers use these packages to provide added functionality.  For
 size or licensing reasons, we do not include these packages with
@@ -352,6 +362,12 @@ using the Matlab plotter.
 In theory, the Matlab interface might work under Solaris, but
 we have not tested it.
 
+<p>Under Windows, we compile the Matlab interface with Microsoft
+Visual C if it is available.  Matlab interface has problems work with gcc-3.3
+Under Windows, the Matlab interface has problems at runtime with gcc-3.3.
+<br>Under Windows, we recommend using gcc-3.2 or Microsoft Visual C.
+<br>Below are the instructions for compiling under gcc.
+
 <p>If you do not have <code>gcc</code> or <code>dlltool</code>
 installed, you can install them as part of the 
 <a href="#cygwin">Cygwin installation</a>
@@ -417,7 +433,7 @@ This drops <code>QTJava.zip</code> into the lib/ext of all your installed JREs.
 Then you have to copy this zip file to the jre/lib/ext directory
 of your SDK, for example>
 <pre>
-cp c:/Program\ Files/java/j2re1.4.2_04/lib/ext/QTJava.zip c:/j2sdk1.4.2_04/jre/lib/ext
+cp c:/Program\ Files/java/j2re1.4.2_08/lib/ext/QTJava.zip c:/j2sdk1.4.2_08/jre/lib/ext
 </pre>
 
 <h3>X10</h3>
@@ -431,8 +447,7 @@ require the Java serial port communcations package and the X10 package.
 <a name="codeDoc/ptolemy/actor/lib/x10/X10Interface.htm">X10Interface class documentation in <code>$PTII/ptolemy/actor/lib/x10/X10Interface.java</code></a>.
 
 
-<h2>Optional Packages not shipped with Ptolemy that are used
-at compile time</h2>
+<h2><a name="notshippedCompileTimePackages">Optional Packages not shipped with Ptolemy that are used at compile time</a></h2>
 
 The packages below are used when Ptolemy II is compiled.
 <br><b>You need not install these packages if you are running
@@ -484,7 +499,7 @@ cd $PTII; rm config.*; ./configure
 </ol>
 
 
-<h2>Rebuilding from source</h2>
+<h2><a name="rebuildingFromSource">Rebuilding from source</a></h2>
 
 
 <h3><a name="Unix">Unix</a></h3>
