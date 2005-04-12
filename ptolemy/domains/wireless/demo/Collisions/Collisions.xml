@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Collisions" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0-alpha">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
     </property>
     <property name="WirelessDirector" class="ptolemy.domains.wireless.kernel.WirelessDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="20.0">
@@ -12,7 +12,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 40.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {63, 3, 897, 761}, maximized = false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={63, 3, 897, 763}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[682, 645]">
     </property>
@@ -68,9 +68,9 @@ Receiver.</text></svg></configure>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{341.0, 322.5}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
-        </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 620.0]">
         </property>
@@ -231,7 +231,13 @@ previous message is completed.</text></svg></configure>
             </property>
         </entity>
         <entity name="Server" class="ptolemy.domains.de.lib.Server">
-            <property name="serviceTime" class="ptolemy.data.expr.Parameter" value="duration + 0.1">
+            <property name="newServiceTime" class="ptolemy.actor.parameters.PortParameter" value="duration + 0.1">
+            </property>
+            <property name="ServerIcon" class="ptolemy.vergil.icon.EditorIcon">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {130, 260, 815, 516}, maximized = false}">
+                </property>
+                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                </property>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="175.0, 210.0">
             </property>
@@ -252,8 +258,6 @@ previous message is completed.</text></svg></configure>
     <entity name="Receiver" class="ptolemy.domains.wireless.kernel.WirelessComposite">
         <property name="DEDirector" class="ptolemy.domains.de.kernel.DEDirector">
             <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
-            <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1.7976931348623E308">
             </property>
             <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="true">
             </property>
@@ -342,11 +346,11 @@ displays.</text></svg></configure>
             </property>
         </property>
         <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Construct a plot with square pulses&#10;showing the received power over a&#10;time duration for each transmitter.">
-            </property>
             <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
             </property>
             <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.0,1.0}">
+            </property>
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Construct a plot with square pulses&#10;showing the received power over a&#10;time duration for each transmitter.">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 10.0]">
             </property>
@@ -372,11 +376,11 @@ displays.</text></svg></configure>
             </property>
         </property>
         <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Construct a plot showing the times&#10;at which messages are received and lost.">
-            </property>
             <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
             </property>
             <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.0,1.0}">
+            </property>
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Construct a plot showing the times&#10;at which messages are received and lost.">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 395.0]">
             </property>
@@ -538,22 +542,16 @@ displays.</text></svg></configure>
                 </property>
             </entity>
             <entity name="VariableDelay" class="ptolemy.domains.de.lib.VariableDelay">
+                <property name="VariableDelayIcon" class="ptolemy.vergil.icon.EditorIcon">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={179, 214, 815, 516}, maximized=false}">
+                    </property>
+                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                    </property>
+                </property>
                 <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="205.0, 215.0">
                 </property>
-                <port name="input" class="ptolemy.domains.de.kernel.DEIOPort">
-                    <property name="input"/>
-                    <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
-                    </property>
-                    <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
-                    </property>
-                </port>
-                <port name="output" class="ptolemy.domains.de.kernel.DEIOPort">
-                    <property name="output"/>
-                    <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
-                    </property>
-                </port>
                 <port name="delay" class="ptolemy.actor.parameters.ParameterPort">
                     <property name="input"/>
                     <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
@@ -659,22 +657,16 @@ displays.</text></svg></configure>
                 </property>
             </entity>
             <entity name="VariableDelay" class="ptolemy.domains.de.lib.VariableDelay">
+                <property name="VariableDelayIcon" class="ptolemy.vergil.icon.EditorIcon">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={179, 214, 815, 516}, maximized=false}">
+                    </property>
+                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                    </property>
+                </property>
                 <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="205.0, 215.0">
                 </property>
-                <port name="input" class="ptolemy.domains.de.kernel.DEIOPort">
-                    <property name="input"/>
-                    <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
-                    </property>
-                    <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
-                    </property>
-                </port>
-                <port name="output" class="ptolemy.domains.de.kernel.DEIOPort">
-                    <property name="output"/>
-                    <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
-                    </property>
-                </port>
                 <port name="delay" class="ptolemy.actor.parameters.ParameterPort">
                     <property name="input"/>
                     <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
@@ -761,6 +753,12 @@ displays.</text></svg></configure>
             </property>
         </entity>
         <entity name="BooleanSwitch" class="ptolemy.actor.lib.BooleanSwitch">
+            <property name="BooleanSwitchIcon" class="ptolemy.vergil.icon.EditorIcon">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {5, 136, 815, 516}, maximized = false}">
+                </property>
+                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                </property>
+            </property>
             <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 95.0]">
@@ -772,6 +770,12 @@ displays.</text></svg></configure>
             </port>
         </entity>
         <entity name="BooleanSwitch2" class="ptolemy.actor.lib.BooleanSwitch">
+            <property name="BooleanSwitchIcon" class="ptolemy.vergil.icon.EditorIcon">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {5, 136, 815, 516}, maximized = false}">
+                </property>
+                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                </property>
+            </property>
             <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 160.0]">
@@ -783,6 +787,12 @@ displays.</text></svg></configure>
             </port>
         </entity>
         <entity name="BooleanSwitch3" class="ptolemy.actor.lib.BooleanSwitch">
+            <property name="BooleanSwitchIcon" class="ptolemy.vergil.icon.EditorIcon">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {5, 136, 815, 516}, maximized = false}">
+                </property>
+                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                </property>
+            </property>
             <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[615.0, 335.0]">
@@ -1053,7 +1063,13 @@ previous message is completed.</text></svg></configure>
             </property>
         </entity>
         <entity name="Server" class="ptolemy.domains.de.lib.Server">
-            <property name="serviceTime" class="ptolemy.data.expr.Parameter" value="duration + 0.1">
+            <property name="newServiceTime" class="ptolemy.actor.parameters.PortParameter" value="duration + 0.1">
+            </property>
+            <property name="ServerIcon" class="ptolemy.vergil.icon.EditorIcon">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {130, 260, 815, 516}, maximized = false}">
+                </property>
+                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                </property>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="145.0, 170.0">
             </property>
