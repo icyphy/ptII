@@ -39,6 +39,7 @@ import ptolemy.actor.Receiver;
 import ptolemy.actor.util.Time;
 import ptolemy.domains.ct.kernel.CTCompositeActor;
 import ptolemy.domains.ct.kernel.CTDirector;
+import ptolemy.domains.ct.kernel.CTEmbeddedDirector;
 import ptolemy.domains.ct.kernel.CTExecutionPhase;
 import ptolemy.domains.ct.kernel.CTGeneralDirector;
 import ptolemy.domains.ct.kernel.CTReceiver;
@@ -136,7 +137,9 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
      *  the choice actions contained by the transition are executed. The
      *  refinement of the current state of the mode controller will not be
      *  fired. If no preemptive transition is enabled and the refinement is
-     *  ready to fire in the current iteration, fire the refinement. The
+     *  ready to fire in the current iteration, fire the refinement. If this
+     *  refinement has not been fired before, or needs initialization, 
+     *  establish the initial states of continuous variables. After this, the
      *  non-preemptive transitions from the current state of the mode
      *  controller are examined. If there is more than one transition
      *  enabled, an exception is thrown. If there is exactly one
@@ -233,6 +236,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
                 return;
             }
 
+            boolean visited = _currentState.isVisited();
             // Fire the refinements of the current state.
             Iterator actors = _enabledRefinements.iterator();
 
@@ -244,8 +248,20 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
                             ((NamedObj) actor).getName());
                 }
 
+                // If this is the first time this state is visited, check
+                // whether the director for the refinement is a CT (Embedded) 
+                // director. If so, establish the initial states for this
+                // refinement.
+                if (!visited) {
+                    Director director = actor.getDirector();
+                    if (director instanceof CTEmbeddedDirector) {
+                        ((CTEmbeddedDirector)
+                                director).setInitialStatesNotReady();
+                    }
+                }
                 actor.fire();
             }
+            _currentState.setVisited(true);
 
             _ctrl._readOutputsFromRefinement();
 
@@ -772,13 +788,15 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
      *   there is no controller.
      */
     public boolean postfire() throws IllegalActionException {
+        boolean postfireReturns = true;
+        
         CompositeActor container = (CompositeActor) getContainer();
         Director executiveDirector = container.getExecutiveDirector();
         Iterator refinements = _enabledRefinements.iterator();
 
         while (refinements.hasNext()) {
             Actor refinement = (Actor) refinements.next();
-            refinement.postfire();
+            postfireReturns = postfireReturns && refinement.postfire();
 
             // take out event outputs generated in ref.postfire()
             Iterator outports = refinement.outputPortList().iterator();
@@ -789,11 +807,10 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
             }
         }
 
-        Transition tr = _enabledTransition;
-
         // If there is one transition enabled, the HSDirector requests
         // to be fired again at the same time to see whether the next state
         // has some outgoing transition enabled.
+        Transition tr = _enabledTransition;
         if (tr != null) {
             if (_debugging) {
                 _debug("Postfire deals with enabled transition "
@@ -845,7 +862,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
             // To be more specific, for each (t, n), there is at most
             // one event.
             if ((getExecutionPhase() == CTExecutionPhase.UPDATING_CONTINUOUS_STATES_PHASE)
-                    || (getExecutiveCTGeneralDirector() == null)) {
+                    || (executiveDirector == null)) {
                 // Only clear the cached enabled transition when no more events
                 // will be generated at the current discrete phase of execution.
                 _enabledTransition = null;
@@ -879,8 +896,11 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
             }
         }
 
-        // execute the commit actions
-        return super.postfire();
+        // execute the commit actions and change the current state 
+        // to the destination state.
+        postfireReturns = postfireReturns && super.postfire();
+        
+        return postfireReturns;
     }
 
     /** Return the smallest next step size predicted by the all the
