@@ -33,6 +33,7 @@ package ptolemy.plot;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.EventQueue;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -40,6 +41,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import javax.swing.JApplet;
+import javax.swing.SwingUtilities;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -61,12 +63,18 @@ import javax.swing.JApplet;
    @see Plot
 */
 public class PlotApplet extends JApplet {
-    /** Construct a Plot applet */
-    public PlotApplet() {
-        if (_mutex == null) {
-            _mutex = new Object();
-        }
-    }
+    //     /** Construct a Plot applet */
+    //     public PlotApplet() {
+    // FIXME: having the mutex causes applets to hang.
+    // The mutex was introduced to Work around problem in Java
+    // 1.3.1_08 where if we create 6 instances of a Plot applet then
+    // navigate forward then back - IE and Navigator hang. 
+    // However, since we are now operating inside the Swing Event
+    // thread, I think this code is unnecessary.
+    //         if (_mutex == null) {
+    //             _mutex = new Object();
+    //         }
+    //     }
 
     /** Return a string describing this applet.
      *  @return A string describing the applet.
@@ -93,86 +101,107 @@ public class PlotApplet extends JApplet {
     }
 
     /** Initialize the applet.  Read the applet parameters.
+     *  Subclasses should do any UI work in the Swing Event thread 
+     *  by calling SwingUtilities.  For details, see
+     *  <a href="http://java.sun.com/docs/books/tutorial/uiswing/components/applet.html#thread">The Sun Applet Tutorial</a>
      */
     public void init() {
-        synchronized (_mutex) {
-            super.init();
+        super.init();
 
-            if (_plot == null) {
-                _plot = newPlot();
-            }
+        // FIXME: having the mutex causes applets to hang.
+        //synchronized (_mutex) {
 
-            getContentPane().add(plot(), BorderLayout.NORTH);
+        Runnable doActions = new Runnable() {
+                public void run() {
+                    if (_plot == null) {
+                        _plot = newPlot();
+                    }
 
-            // Process the width and height applet parameters
-            int width;
+                    getContentPane().add(plot(), BorderLayout.NORTH);
 
-            // Process the width and height applet parameters
-            int height;
-            String widthspec = getParameter("width");
+                    // Process the width and height applet parameters
+                    int width;
 
-            if (widthspec != null) {
-                width = Integer.parseInt(widthspec);
-            } else {
-                width = 400;
-            }
+                    // Process the width and height applet parameters
+                    int height;
+                    String widthspec = getParameter("width");
 
-            String heightspec = getParameter("height");
+                    if (widthspec != null) {
+                        width = Integer.parseInt(widthspec);
+                    } else {
+                        width = 400;
+                    }
 
-            if (heightspec != null) {
-                height = Integer.parseInt(heightspec);
-            } else {
-                height = 400;
-            }
+                    String heightspec = getParameter("height");
 
-            _setPlotSize(width, height);
-            plot().setButtons(true);
+                    if (heightspec != null) {
+                        height = Integer.parseInt(heightspec);
+                    } else {
+                        height = 400;
+                    }
 
-            // Process the background parameter.
-            Color background = Color.white;
-            String colorspec = getParameter("background");
+                    _setPlotSize(width, height);
+                    plot().setButtons(true);
 
-            if (colorspec != null) {
-                background = PlotBox.getColorByName(colorspec);
-            }
+                    // Process the background parameter.
+                    Color background = Color.white;
+                    String colorspec = getParameter("background");
 
-            setBackground(background);
-            plot().setBackground(background);
-            getContentPane().setBackground(background);
+                    if (colorspec != null) {
+                        background = PlotBox.getColorByName(colorspec);
+                    }
 
-            // Process the foreground parameter.
-            Color foreground = Color.black;
-            colorspec = getParameter("foreground");
+                    setBackground(background);
+                    plot().setBackground(background);
+                    getContentPane().setBackground(background);
 
-            if (colorspec != null) {
-                foreground = PlotBox.getColorByName(colorspec);
-            }
+                    // Process the foreground parameter.
+                    Color foreground = Color.black;
+                    colorspec = getParameter("foreground");
 
-            setForeground(foreground);
-            plot().setForeground(foreground);
-            plot().setVisible(true);
+                    if (colorspec != null) {
+                        foreground = PlotBox.getColorByName(colorspec);
+                    }
 
-            // Process the dataurl parameter.
-            String dataurlspec = getParameter("dataurl");
+                    setForeground(foreground);
+                    plot().setForeground(foreground);
+                    plot().setVisible(true);
 
-            if (dataurlspec != null) {
-                try {
-                    showStatus("Reading data");
+                    // Process the dataurl parameter.
+                    String dataurlspec = getParameter("dataurl");
 
-                    URL dataurl = new URL(getDocumentBase(), dataurlspec);
-                    InputStream in = dataurl.openStream();
-                    _read(in);
-                    showStatus("Done");
-                } catch (MalformedURLException e) {
-                    System.err.println(e.toString());
-                } catch (FileNotFoundException e) {
-                    System.err.println("PlotApplet: file not found: " + e);
-                } catch (IOException e) {
-                    System.err.println("PlotApplet: error reading input file: "
-                            + e);
+                    if (dataurlspec != null) {
+                        try {
+                            showStatus("Reading data");
+
+                            URL dataurl = new URL(getDocumentBase(),
+                                    dataurlspec);
+                            InputStream in = dataurl.openStream();
+                            _read(in);
+                            showStatus("Done");
+                        } catch (MalformedURLException e) {
+                            System.err.println(e.toString());
+                        } catch (FileNotFoundException e) {
+                            System.err.println("PlotApplet: file not found: "
+                                    + e);
+                        } catch (IOException e) {
+                            System.err.println(
+                                    "PlotApplet: error reading input file: "
+                                    + e);
+                        }
+                    }
                 }
-            }
+            };
+        try {
+            // NOTE: Using invokeAndWait() here risks causing
+            // deadlock.  Don't do it!
+            SwingUtilities.invokeAndWait(doActions);
+        } catch (Exception ex) {
+            // Ignore InterruptedException.
+            // Other exceptions should not occur.
         }
+
+        //}
     }
 
     /** Create a new Plot object for the applet.  Derived classes can
@@ -227,7 +256,8 @@ public class PlotApplet extends JApplet {
     // Work around problem in Java 1.3.1_08 where if we create
     // 6 instances of a Plot applet then navigate forward then
     // back - IE and Navigator hang. (Roger Robins)
-    private static Object _mutex = null;
+    // FIXME: having the mutex causes applets to hang.
+    //private static Object _mutex = null;
 
     // The Plot component we are running.
     private transient PlotBox _plot;
