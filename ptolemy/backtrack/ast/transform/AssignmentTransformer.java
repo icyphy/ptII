@@ -258,10 +258,6 @@ public class AssignmentTransformer extends AbstractTransformer
      */
     public static String PROXY_NAME = "_PROXY_";
     
-    /** The prefix of backup functions.
-     */
-    public static String BACKUP_PREFIX = "$BACKUP$";
-    
     /** The prefix of records (new fields to be added to a class).
      */
     public static String RECORD_PREFIX = "$RECORD$";
@@ -304,7 +300,7 @@ public class AssignmentTransformer extends AbstractTransformer
         // Check if the method is duplicated (possibly because the source
         // program is refactored twice).
         if (_isMethodDuplicated(currentClass, methodName, fieldType, 
-                indices, isStatic, loader))
+                indices, isStatic, loader, true))
             throw new ASTDuplicatedMethodException(currentClass.getName(), 
                     methodName);
         
@@ -580,6 +576,37 @@ public class AssignmentTransformer extends AbstractTransformer
         }
         
         return block;
+    }
+    
+    private MethodDeclaration _createBackupMethod(AST ast, 
+            CompilationUnit root, TypeAnalyzerState state, String fieldName, 
+            Type fieldType, int indices, boolean isStatic) {
+        Class currentClass = state.getCurrentClass();
+        ClassLoader loader = state.getClassLoader();
+        String methodName = _getBackupMethodName(fieldName);
+        
+        // Check if the method is duplicated (possibly because the source
+        // program is refactored twice).
+        if (_isMethodDuplicated(currentClass, methodName, fieldType, 
+                indices, isStatic, loader, false))
+            throw new ASTDuplicatedMethodException(currentClass.getName(), 
+                    methodName);
+        
+        // Get the type of the new value. The return value has the same
+        // type. 
+        for (int i = 0; i < indices; i++)
+            try {
+                fieldType = fieldType.removeOneDimension();
+            } catch (ClassNotFoundException e) {
+                throw new ASTClassNotFoundException(fieldType);
+            }
+        
+        String fieldTypeName = fieldType.getName();
+        
+        MethodDeclaration backup = ast.newMethodDeclaration();
+        backup.setName(ast.newSimpleName(methodName));
+        
+        return null;
     }
     
     /** Create the checkpoint field declaration for the current class.
@@ -1319,7 +1346,7 @@ public class AssignmentTransformer extends AbstractTransformer
         if (needRefactor)
             if (state.getCurrentClass().getName().equals(ownerName))
                 needRefactor = true;
-            else {	
+            else {    
                 Iterator previousClasses = 
                     state.getPreviousClasses().iterator();
                 while (previousClasses.hasNext()) {
@@ -1384,11 +1411,7 @@ public class AssignmentTransformer extends AbstractTransformer
                 backup.arguments().add(arrayCreation);
             backup.arguments().add(ASTNode.copySubtree(ast, node));
             
-            CastExpression castExpression = ast.newCastExpression();
-            castExpression.setExpression(backup);
-            castExpression.setType(createType(ast, typeClassName));
-            
-            replaceNode(node, castExpression);
+            replaceNode(node, backup);
             
             _recordField(_backupFields, owner.getName(), name.getIdentifier(), 
                     nIndices);
@@ -1570,8 +1593,8 @@ public class AssignmentTransformer extends AbstractTransformer
         // Record the field access (a corresponding method will be generated
         // later.
         Hashtable table = (node instanceof Assignment &&
-            		((Assignment)node).getOperator() ==
-            		    Assignment.Operator.ASSIGN) ?
+                    ((Assignment)node).getOperator() ==
+                        Assignment.Operator.ASSIGN) ?
                 _accessedFields : _specialAccessedFields;
         _recordField(table, owner.getName(), name.getIdentifier(), 
                 indices.size());
@@ -1626,7 +1649,7 @@ public class AssignmentTransformer extends AbstractTransformer
 
                         // Get the list of numbers of indices.
                         Hashtable[] tables = new Hashtable[] {
-                            _accessedFields, _specialAccessedFields
+                            _accessedFields, _specialAccessedFields, _backupFields
                         };
                         for (int i = 0; i < tables.length; i++) {
                             List indicesList = 
@@ -1643,8 +1666,16 @@ public class AssignmentTransformer extends AbstractTransformer
                             
                                 // Create an extra method for every different
                                 // number of indices.
-                                newMethods.add(_createAssignMethod(ast, root, state, 
-                                        fieldName, type, indices, i > 0, isStatic));
+                                if (tables[i] == _backupFields)
+                                    newMethods.add(_createBackupMethod(ast, 
+                                            root, state, fieldName, type, 
+                                            indices, isStatic));
+                                else
+                                    newMethods.add(_createAssignMethod(ast, 
+                                            root, state, 
+                                            fieldName, type, indices, 
+                                            tables[i] == _specialAccessedFields, 
+                                            isStatic));
                             }
                         }
                         
@@ -1731,15 +1762,18 @@ public class AssignmentTransformer extends AbstractTransformer
      *  @param indices The number of indices.
      *  @param isStatic Whether the field is static.
      *  @param loader The class loader to be used.
+     *  @param hasNewValue Whether there is a <tt>newValue</tt> parameter.
      *  @return <tt>true</tt> if the method is already in the class.
      */
     private boolean _isMethodDuplicated(Class c, String methodName, 
             Type fieldType, int indices, boolean isStatic, 
-            ClassLoader loader) {
+            ClassLoader loader, boolean hasNewValue) {
         try {
             for (int i = 0; i < indices; i++)
                 fieldType = fieldType.removeOneDimension();
-            int nArguments = indices + 1;
+            int nArguments = indices;
+            if (hasNewValue)
+                nArguments++;
             if (isStatic)
                 nArguments++;
             Class[] arguments = new Class[nArguments];
@@ -1748,7 +1782,8 @@ public class AssignmentTransformer extends AbstractTransformer
                 arguments[start++] = Checkpoint.class;
             for (int i = start; i < nArguments - 1; i++)
                 arguments[i] = int.class;
-            arguments[nArguments - 1] = fieldType.toClass(loader);
+            if (hasNewValue)
+                arguments[nArguments - 1] = fieldType.toClass(loader);
             try {
                 c.getDeclaredMethod(methodName, arguments);
                 return true;

@@ -295,6 +295,10 @@ public abstract class AbstractTransformer {
      */
     public static String ASSIGN_PREFIX = "$ASSIGN$";
     
+	/** The prefix of backup functions.
+     */
+    public static String BACKUP_PREFIX = "$BACKUP$";
+    
     /** The name of the checkpoint object.
      */
     public static String CHECKPOINT_NAME = "$CHECKPOINT";
@@ -320,6 +324,15 @@ public abstract class AbstractTransformer {
     protected String _getAssignMethodName(String fieldName, boolean special) {
         return ASSIGN_PREFIX + (special ? "SPECIAL$" : "") + fieldName;
     }
+	
+	/** Get the name of the backup method.
+	 * 
+	 *  @param fieldName The field name.
+	 *  @return The name of the backup method.
+	 */
+	protected String _getBackupMethodName(String fieldName) {
+		return BACKUP_PREFIX + fieldName;
+	}
     
     /** Get the shortest possible name of the a class. If there is no conflict,
      *  the class is first imported, and only the simple class is returned;
