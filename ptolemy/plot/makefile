@@ -219,6 +219,7 @@ BASECLASSFILES = \
 # Class files used in simple applets
 APPLETCLASSFILES = \
 		$(ME)/PlotApplet.class \
+		'$(ME)/PlotApplet$$1.class' \
 		'$(ME)/PlotLive$$StartButtonListener.class' \
 		'$(ME)/PlotLive$$StopButtonListener.class' \
 		$(ME)/PlotLive.class \
