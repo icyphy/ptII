@@ -2,12 +2,12 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="SmartSender" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0-alpha">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1000000000.0">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="Infinity">
         </property>
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -19,10 +19,10 @@
         </property>
         <property name="binCountFactor" class="ptolemy.data.expr.Parameter" value="2">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 50.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{65.0, 50.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {194, 6, 815, 580}, maximized = false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={194, 6, 815, 589}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 471]">
     </property>
@@ -135,7 +135,7 @@ explanation.</text></svg></configure>
         </property>
     </entity>
     <entity name="MonitorValue" class="ptolemy.actor.lib.MonitorValue">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="18">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="21">
         </property>
         <doc>Monitor and display values</doc>
         <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
@@ -150,7 +150,7 @@ explanation.</text></svg></configure>
         </property>
     </entity>
     <entity name="MonitorValue2" class="ptolemy.actor.lib.MonitorValue">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="18">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="22">
         </property>
         <doc>Monitor and display values</doc>
         <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
@@ -165,7 +165,7 @@ explanation.</text></svg></configure>
         </property>
     </entity>
     <entity name="MonitorValue3" class="ptolemy.actor.lib.MonitorValue">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="18">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="22">
         </property>
         <doc>Monitor and display values</doc>
         <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
@@ -180,7 +180,7 @@ explanation.</text></svg></configure>
         </property>
     </entity>
     <entity name="MonitorValue4" class="ptolemy.actor.lib.MonitorValue">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="18">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="22">
         </property>
         <doc>Monitor and display values</doc>
         <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
@@ -206,13 +206,13 @@ explanation.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="110.0, 260.0">
         </property>
     </entity>
-    <relation name="_R" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="_R2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="_R3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="_R4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="_R" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="SmartSender.output" relation="_R"/>
     <link port="SmartSender2.output" relation="_R2"/>
