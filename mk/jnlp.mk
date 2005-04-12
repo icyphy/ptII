@@ -246,6 +246,7 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/caltrop/demo/demo.jar \
 	ptolemy/domains/experimentalDomains.jar \
 	ptolemy/domains/ci/demo/demo.jar \
+	ptolemy/domains/ddf/demo/demo.jar \
 	ptolemy/domains/dt/demo/demo.jar \
 	ptolemy/domains/dt/doc/doc.jar \
 	ptolemy/domains/giotto/demo/demo.jar \
