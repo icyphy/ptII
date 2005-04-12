@@ -112,7 +112,7 @@ $(PTLIB): ptmatlab.cc Engine.class
 	"$(PTMATLAB_CC)" \
 		"-I$(MATLAB_DIR)/extern/include" \
 		"-I$(PTJAVA_HOME)/../include" \
-		"-I$(PTJAVA_HOME)/../include/win32" \
+		"-I$(PTJAVA_HOME)/../include/$(PTJNI_ARCHITECTURE)" \
 		$(PTMATLAB_LD_ARGS)
 
 # Rule to build under Microsoft Visual C
