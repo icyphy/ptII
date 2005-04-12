@@ -564,8 +564,6 @@ other initial states are set to 0.0.
         <link port="y position.in" relation="relation9"/>
     </class>
     <entity name="ModalModel" class="ptolemy.domains.fsm.modal.ModalModel">
-        <property name="directorClass" class="ptolemy.data.expr.StringParameter" value="ptolemy.domains.fsm.kernel.HSDirector">
-        </property>
         <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 335.0]">

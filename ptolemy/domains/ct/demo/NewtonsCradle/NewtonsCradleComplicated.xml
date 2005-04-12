@@ -570,8 +570,6 @@ Zoom in the velocities plot to see what actually happens.</text></svg></configur
         <link port="y position.in" relation="relation9"/>
     </class>
     <entity name="ModalModel" class="ptolemy.domains.fsm.modal.ModalModel">
-        <property name="directorClass" class="ptolemy.data.expr.StringParameter" value="ptolemy.domains.fsm.kernel.HSDirector">
-        </property>
         <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 420.0]">
@@ -840,8 +838,7 @@ Zoom in the velocities plot to see what actually happens.</text></svg></configur
                 </property>
                 <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                     <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      <svg>        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
       </svg>
     </configure>
                 </property>
