@@ -257,33 +257,36 @@ public class LevelCrossingDetector extends TypedAtomicActor
             }
 
             // There are two conditions when an event is generated.
-            // 1. There is a discontinuity at the current time; OR
-            // 2. By linear interpolation, an event is located at the current
-            // time.
-            boolean inputIsIncreasing = _thisTrigger > _lastTrigger;
-            if ((((_lastTrigger - _level) * (_thisTrigger - _level)) < 0.0)
-                    || hasCurrentEvent()) {
+            // 1. By linear interpolation, an event is located at the current
+            // time; OR,
+            // 2. There is a discontinuity at the current time.
+            boolean hasEvent = _eventNow;
+            if ((_lastTrigger - _level) * (_thisTrigger - _level) < 0.0) {
+                boolean inputIsIncreasing = _thisTrigger > _lastTrigger;
                 if ((_detectFallingCrossing && !inputIsIncreasing) ||
-                        (_detectRisingCrossing && inputIsIncreasing) ||
-                        _eventNow) {
-                    // Emit an event.
-                    if (((BooleanToken) useDefaultEventValue.getToken())
-                            .booleanValue()) {
-                        output.send(0, defaultEventValue.getToken());
-                        
-                        if (_debugging) {
-                            _debug("Emitting an event with a default value: "
-                                    + defaultEventValue.getToken());
-                        }
-                    } else {
-                        output.send(0, new DoubleToken(_level));
-                        
-                        if (_debugging) {
-                            _debug("Emitting an event with the level value: "
-                                    + _level);
-                        }
+                        (_detectRisingCrossing && inputIsIncreasing)) {
+                    hasEvent = true;
+                }
+            }
+            if (hasEvent) {
+                // Emit an event.
+                if (((BooleanToken) useDefaultEventValue.getToken())
+                        .booleanValue()) {
+                    output.send(0, defaultEventValue.getToken());
+                    
+                    if (_debugging) {
+                        _debug("Emitting an event with a default value: "
+                                + defaultEventValue.getToken());
+                    }
+                } else {
+                    output.send(0, new DoubleToken(_level));
+                    
+                    if (_debugging) {
+                        _debug("Emitting an event with the level value: "
+                                + _level);
                     }
                 }
+                // Event has been emitted. Clear the internal states.
                 _eventNow = false;
                 _eventMissed = false;
             }
