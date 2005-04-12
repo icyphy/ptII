@@ -1,9 +1,9 @@
 # Makefile for Ptolemy II demonstration
-# @Authors: Christopher Hylands, based on a file by Thomas M. Parks
+# @Authors: Christopher Brooks, based on a file by Thomas M. Parks
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1998-2005 The Regents of the University of California.
+# @Copyright (c) 2005 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -28,7 +28,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/ct/demo/Lorenz
+ME =		ptolemy/domains/ct/demo/NewtonsCradle
 
 # Root of the Java directory
 ROOT =		../../../../../
