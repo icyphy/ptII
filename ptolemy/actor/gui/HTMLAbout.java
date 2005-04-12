@@ -81,7 +81,7 @@ public class HTMLAbout {
     public static String about(Configuration configuration) {
         // Use an explicit version here - the name of the whatsNew file
         // does not changes as quickly as the version.
-        String version = "4.0";
+        String version = "5.0";
 
         String applicationName = "Ptolemy II";
 
@@ -117,6 +117,7 @@ public class HTMLAbout {
                     + _aboutHTML("ptolemy/configs/doc/completeDemos.htm")
                     + _aboutHTML("ptolemy/configs/doc/demos.htm")
                     + _aboutHTML("ptolemy/configs/doc/whatsNew" + version + ".htm")
+                    + _aboutHTML("ptolemy/configs/doc/whatsNew4.0.htm"));
                     + _aboutHTML("ptolemy/configs/doc/whatsNew3.0.2.htm"));
         }
 
