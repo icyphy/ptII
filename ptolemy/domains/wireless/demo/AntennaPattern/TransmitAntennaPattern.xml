@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="TransmitAntennaPattern" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
     </property>
     <property name="WirelessDirector" class="ptolemy.domains.wireless.kernel.WirelessDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -26,7 +26,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 40.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 1, 737, 643}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 1, 737, 645}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[522, 527]">
     </property>
@@ -73,8 +73,6 @@
         </property>
         <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
             <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
-            <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1.7976931348623E308">
             </property>
             <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="true">
             </property>
@@ -316,8 +314,6 @@ of this actor relative to the position of the Sender.</text></svg></configure>
         </property>
         <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
             <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
-            <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1.7976931348623E308">
             </property>
             <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="true">
             </property>
@@ -662,14 +658,6 @@ of this actor relative to the position of the Sender.</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 355.0]">
                 </property>
             </entity>
-            <entity name="AntennaModel" class="ptolemy.domains.wireless.demo.AntennaPattern.AntennaModel">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 220.0]">
-                </property>
-                <property name="numberOfElements" class="ptolemy.data.expr.Parameter" value="numberOfElements">
-                </property>
-                <property name="steeringAngle" class="ptolemy.data.expr.Parameter" value="steeringAngle">
-                </property>
-            </entity>
             <relation name="relation4" class="ptolemy.actor.TypedIORelation">
             </relation>
             <relation name="relation5" class="ptolemy.actor.TypedIORelation">
@@ -718,8 +706,6 @@ of this actor relative to the position of the Sender.</text></svg></configure>
             <link port="MultiplyDivide.multiply" relation="relation12"/>
             <link port="MultiplyDivide.multiply" relation="relation3"/>
             <link port="MultiplyDivide.output" relation="relation9"/>
-            <link port="AntennaModel.angle" relation="relation8"/>
-            <link port="AntennaModel.gain" relation="relation3"/>
         </entity>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         </relation>
