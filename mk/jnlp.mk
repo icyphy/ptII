@@ -643,8 +643,10 @@ CODEGEN_DOMAIN_JARS = \
 	ptolemy/domains/ci/ci.jar \
 	ptolemy/domains/ct/ct.jar \
 	ptolemy/domains/de/de.jar \
+	ptolemy/domains/ddf/ddf.jar \
 	ptolemy/domains/fsm/fsm.jar \
 	ptolemy/domains/gr/gr.jar \
+	ptolemy/domains/hdf/hdf.jar \
 	ptolemy/domains/pn/pn.jar \
 	ptolemy/domains/sdf/sdf.jar \
 	ptolemy/domains/wireless/wireless.jar
