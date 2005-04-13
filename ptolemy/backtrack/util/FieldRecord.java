@@ -400,10 +400,9 @@ public final class FieldRecord {
      *  @param array The array.
      *  @param timestamp The current timestamp to be associated with the
      *   old value.
-     *  @return The array itself.
      */
-    public Object backup(Object array, long timestamp) {
-        return backup(null, array, timestamp);
+    public void backup(Object array, long timestamp) {
+        backup(null, array, timestamp);
     }
     
     /** Backup the values in an array, and associate the record with a
@@ -413,9 +412,8 @@ public final class FieldRecord {
      *  @param array The array.
      *  @param timestamp The current timestamp to be associated with the
      *   old value.
-     *  @return The array itself.
      */
-    public Object backup(int[] indices, Object array, long timestamp) {
+    public void backup(int[] indices, Object array, long timestamp) {
         Object oldValue;
         if (array instanceof boolean[])
             oldValue = ((boolean[])array).clone();
@@ -436,11 +434,10 @@ public final class FieldRecord {
         else if (array instanceof Object[])
             oldValue = ((Object[])array).clone();
         else
-            return array;
+            return;
         
         _addRecord(indices == null ? 0 : indices.length, 
                 new Record(indices, oldValue, timestamp, true));
-        return array;
     }
     
     /** Return the iterator of all the records. If the field is an array, 
@@ -1227,7 +1224,7 @@ public final class FieldRecord {
         int[] indices = record.getIndices();
         if (indices == null || indices.length == 0) {
             if (record.isBackup()) {
-                deepCopyArray(field, record.getValue());
+                deepCopyArray(record.getValue(), field);
                 return field;
             } else
                 return record.getValue();
@@ -1263,8 +1260,8 @@ public final class FieldRecord {
                     ((Short)record.getValue()).shortValue();
             else {
                 if (record.isBackup())
-                    deepCopyArray(((Object[])array)[lastIndex], 
-                            record.getValue());
+                    deepCopyArray(record.getValue(), 
+                            ((Object[])array)[lastIndex]);
                 else
                     ((Object[])array)[lastIndex] = record.getValue();
             }

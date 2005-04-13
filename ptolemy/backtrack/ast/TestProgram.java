@@ -8,8 +8,48 @@ class TestProgram /*implements Rollbackable*/ {
         return buf;
     }
     
+    TestProgram getThis(int[][] x) {
+        return this;
+    }
+    
     void f() {
-        System.arraycopy(getBuf()[0], 0, buf[0], buf[0][0], 0);
+        int[][] b = getThis(buf).buf;
+    }
+    
+    public static void main(String[] args) {
+        int length1 = 10;
+        int length2 = 20;
+        do
+            length1--;
+        while (length1 > 0);
+        
+        TestProgram t = new TestProgram();
+        t.buf = new int[length1][length2];
+        for (int i = 0, k = 0; i < length1; i++)
+            for (int j = 0; j < length2; j++, k++)
+                t.buf[i][j] = k;
+        
+        int[][] buf = new int[length1][length2];
+        for (int i = 0, k = 0; i < length1; i++)
+            for (int j = 0; j < length2; j++, k++)
+                buf[i][j] = length1 * length2 - k - 1;
+        
+        System.arraycopy(buf, 0, t.buf, 0, length1);
+        
+        for (int i = 0; i < length1; i++) {
+            for (int j = 0; j < length2; j++)
+                System.out.print(formatInteger(t.buf[i][j], 4));
+            System.out.println();
+        }
+    }
+    
+    private static String formatInteger(int i, int length) {
+        StringBuffer buf = new StringBuffer();
+        buf.append(Integer.toString(i));
+        int len = buf.length();
+        while (len++ < length)
+            buf.insert(0, ' ');
+        return buf.toString();
     }
     
     /*private int i;

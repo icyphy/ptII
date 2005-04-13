@@ -119,7 +119,10 @@ public class AssignmentTransformer extends AbstractTransformer
      *  @param state The current state of the type analyzer.
      */
     public void handle(Assignment node, TypeAnalyzerState state) {
-        _handleAssignment(node, state);
+        Expression newExpression = 
+            _handleAlias(node.getRightHandSide(), state);
+        if (newExpression != null)
+            _handleAssignment(node, state);
     }
     
     public void handle(MethodInvocation node, TypeAnalyzerState state) {
@@ -136,6 +139,16 @@ public class AssignmentTransformer extends AbstractTransformer
     
     public void handle(PrefixExpression node, TypeAnalyzerState state) {
         _handleAssignment(node, state);
+    }
+    
+    public void handle(ReturnStatement node, TypeAnalyzerState state) {
+        _handleAlias(node.getExpression(), state);
+    }
+    
+    public void handle(VariableDeclarationFragment node, 
+            TypeAnalyzerState state) {
+        if (node.getInitializer() != null)
+            _handleAlias(node.getInitializer(), state);
     }
     
     /** Enter an anonymous class declaration. Nothing is done in this method.
@@ -1404,11 +1417,13 @@ public class AssignmentTransformer extends AbstractTransformer
      *  
      *  @param node The node that may be aliased.
      *  @param state The current state of the type analyzer.
+     *  @return The new node if the given node is an alias, or <tt>null</tt>
+     *   otherwise.
      */
-    private void _handleAlias(Expression node, TypeAnalyzerState state) {
+    private Expression _handleAlias(Expression node, TypeAnalyzerState state) {
         Type owner = Type.getOwner(node);
         if (owner == null)  // Not a field.
-            return;
+            return null;
         String ownerName = owner.getName();
         Type type = Type.getType(node);
         String typeName = type.getName();
@@ -1482,7 +1497,7 @@ public class AssignmentTransformer extends AbstractTransformer
             } else if (nodeIterator instanceof SimpleName)
                 name = (SimpleName)nodeIterator;
             else
-                return;
+                return null;
             
             // Get the class of the owner and test the modifiers of the field.
             Class ownerClass;
@@ -1493,17 +1508,17 @@ public class AssignmentTransformer extends AbstractTransformer
                     ownerClass.getDeclaredField(name.getIdentifier());
                 int modifiers = field.getModifiers();
                 if (!java.lang.reflect.Modifier.isPrivate(modifiers))
-                    return; // Not handling non-private fields.
+                    return null; // Not handling non-private fields.
                 isStatic = 
                     java.lang.reflect.Modifier.isStatic(modifiers);
             } catch (ClassNotFoundException e) {
                 throw new ASTClassNotFoundException(owner.getName());
             } catch (NoSuchFieldException e) {
                 // The field is not defined in this class.
-                return;
+                return null;
             }
             if (isStatic && !HANDLE_STATIC_FIELDS)
-                return;
+                return null;
             
             MethodInvocation backup = ast.newMethodInvocation();
             if (newObject != null)
@@ -1525,7 +1540,11 @@ public class AssignmentTransformer extends AbstractTransformer
             
             _recordField(_backupFields, owner.getName(), name.getIdentifier(), 
                     nIndices);
+            
+            return backup;
         }
+        
+        return null;
     }
     
     /** Handle an explicit or implicit assignment node. An explicit assignment

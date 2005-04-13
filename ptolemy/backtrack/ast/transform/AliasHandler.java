@@ -28,7 +28,10 @@ COPYRIGHTENDKEY
 
 package ptolemy.backtrack.ast.transform;
 
+import org.eclipse.jdt.core.dom.Assignment;
 import org.eclipse.jdt.core.dom.MethodInvocation;
+import org.eclipse.jdt.core.dom.ReturnStatement;
+import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 
 import ptolemy.backtrack.ast.TypeAnalyzerState;
 
@@ -45,6 +48,13 @@ import ptolemy.backtrack.ast.TypeAnalyzerState;
  */
 public interface AliasHandler {
     
-    public void handle(MethodInvocation node, TypeAnalyzerState state);
+    public void handle(Assignment node, TypeAnalyzerState state);
 
+    public void handle(MethodInvocation node, TypeAnalyzerState state);
+    
+    public void handle(ReturnStatement node, TypeAnalyzerState state);
+    
+    public void handle(VariableDeclarationFragment node, 
+            TypeAnalyzerState state);
+    
 }

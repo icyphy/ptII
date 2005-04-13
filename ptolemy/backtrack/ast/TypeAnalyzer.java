@@ -81,6 +81,7 @@ import org.eclipse.jdt.core.dom.PostfixExpression;
 import org.eclipse.jdt.core.dom.PrefixExpression;
 import org.eclipse.jdt.core.dom.PrimitiveType;
 import org.eclipse.jdt.core.dom.QualifiedName;
+import org.eclipse.jdt.core.dom.ReturnStatement;
 import org.eclipse.jdt.core.dom.SimpleName;
 import org.eclipse.jdt.core.dom.SimpleType;
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
@@ -692,6 +693,22 @@ public class TypeAnalyzer extends ASTVisitor {
             }
         }
     }
+    
+    /** Visit a return statement.
+     *
+     *  @param node The node to be visited.
+     */
+    public void endVisit(ReturnStatement node) {
+        super.visit(node);
+        if (_handlers.hasAliasHandler()) {
+            List handlerList = _handlers.getAliasHandlers();
+            Iterator handlersIter = handlerList.iterator();
+            while (handlersIter.hasNext()) {
+                AliasHandler handler = (AliasHandler)handlersIter.next();
+                handler.handle(node, _state);
+            }
+        }
+    }
 
     /** Visit a simple name, and resolve it if possible. Some simple names
      *  are not resolved, such as the name of a class to be declared, and the
@@ -949,6 +966,15 @@ public class TypeAnalyzer extends ASTVisitor {
         Type.setType(node, type);
         Type.setType(node.getName(), type);
         _state.addVariable(node.getName().getIdentifier(), type);
+        
+        if (_handlers.hasAliasHandler()) {
+            List handlerList = _handlers.getAliasHandlers();
+            Iterator handlersIter = handlerList.iterator();
+            while (handlersIter.hasNext()) {
+                AliasHandler handler = (AliasHandler)handlersIter.next();
+                handler.handle(node, _state);
+            }
+        }
     }
 
     /** Get the list of handlers to be called back when traversing the AST.
