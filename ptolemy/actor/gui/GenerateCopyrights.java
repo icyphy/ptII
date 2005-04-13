@@ -99,7 +99,7 @@ public class GenerateCopyrights {
                 "ptolemy/cal/cup-copyright.htm");
 
         _addIfPresent(copyrightsMap, "ptolemy.actor.lib.colt.ColtRandomSource",
-                "ptolemy/actor/lib/colt/doc-files/colt-copyright.htm");
+                "ptolemy/actor/lib/colt/colt-copyright.htm");
 
         _addIfPresent(copyrightsMap, "ptolemy.domains.gr.kernel.GRActor",
                 "ptolemy/domains/gr/lib/java3d-copyright.htm");
