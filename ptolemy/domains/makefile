@@ -115,7 +115,8 @@ MISC_FILES =	$(DOMAINS) test
 OPTIONAL_FILES = \
 	$(EXPERIMENTAL_DOMAINS) \
 	dfm \
-	generic
+	generic \
+	gr
 
 all: jclass
 install: jclass jars
