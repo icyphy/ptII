@@ -603,10 +603,94 @@ public class AssignmentTransformer extends AbstractTransformer
         
         String fieldTypeName = fieldType.getName();
         
-        MethodDeclaration backup = ast.newMethodDeclaration();
-        backup.setName(ast.newSimpleName(methodName));
+        MethodDeclaration method = ast.newMethodDeclaration();
+        method.setName(ast.newSimpleName(methodName));
+        method.setReturnType(createType(ast, 
+                getClassName(fieldTypeName, state, root)));
         
-        return null;
+        // If the field is static, add a checkpoint object argument.
+        if (isStatic) {
+            // Add a "$CHECKPOINT" argument.
+            SingleVariableDeclaration checkpoint = 
+                ast.newSingleVariableDeclaration();
+            String checkpointType = 
+                getClassName(Checkpoint.class, state, root);
+            checkpoint.setType(
+                    ast.newSimpleType(createName(ast, checkpointType)));
+            checkpoint.setName(ast.newSimpleName(CHECKPOINT_NAME));
+            method.parameters().add(checkpoint);
+        }
+        
+        // Add all the indices.
+        for (int i = 0; i < indices; i++) {
+            SingleVariableDeclaration index = 
+                ast.newSingleVariableDeclaration();
+            index.setType(ast.newPrimitiveType(PrimitiveType.INT));
+            index.setName(ast.newSimpleName("index" + i));
+            method.parameters().add(index);
+        }
+        
+        Block body = ast.newBlock();
+        method.setBody(body);
+        
+        // The first statement: backup the whole array.
+        MethodInvocation backup = ast.newMethodInvocation();
+        backup.setExpression(ast.newSimpleName(_getRecordName(fieldName)));
+        backup.setName(ast.newSimpleName("backup"));
+        if (indices == 0)
+            backup.arguments().add(ast.newNullLiteral());
+        else {
+            ArrayCreation arrayCreation = ast.newArrayCreation();
+            ArrayType arrayType = 
+                ast.newArrayType(ast.newPrimitiveType(PrimitiveType.INT));
+            ArrayInitializer initializer = ast.newArrayInitializer();
+            for (int i = 0; i < indices; i++)
+                initializer.expressions().add(
+                        ast.newSimpleName("index" + i));
+            arrayCreation.setType(arrayType);
+            arrayCreation.setInitializer(initializer);
+            backup.arguments().add(arrayCreation);
+        }
+        
+        //If there are indices, add them ("index0", "index1", ...) after the
+        // field.
+        Expression field  = ast.newSimpleName(fieldName);
+        if (indices > 0) {
+            for (int i = 0; i < indices; i++) {
+                ArrayAccess arrayAccess = ast.newArrayAccess();
+                arrayAccess.setArray(field);
+                arrayAccess.setIndex(ast.newSimpleName("index" + i));
+                field = arrayAccess;
+            }
+        }
+
+        // Set the field as the next argument.
+        backup.arguments().add(field);
+
+        // Get current timestamp from the checkpoint object.
+        MethodInvocation timestampGetter = ast.newMethodInvocation();
+        timestampGetter.setExpression(ast.newSimpleName(CHECKPOINT_NAME));
+        timestampGetter.setName(ast.newSimpleName("getTimestamp"));
+
+        // Set the timestamp as the next argument.
+        backup.arguments().add(timestampGetter);
+        
+        body.statements().add(ast.newExpressionStatement(backup));
+        
+        // The second statement: return the array.
+        ReturnStatement returnStatement = ast.newReturnStatement();
+        returnStatement.setExpression(
+                (Expression)ASTNode.copySubtree(ast, field));
+        body.statements().add(returnStatement);
+        
+        // If the field is static, the method is also static; the method
+        // is also private.
+        int modifiers = Modifier.PRIVATE | Modifier.FINAL;
+        if (isStatic)
+            modifiers |= Modifier.STATIC;
+        method.setModifiers(modifiers);
+        
+        return method;
     }
     
     /** Create the checkpoint field declaration for the current class.
@@ -1323,7 +1407,9 @@ public class AssignmentTransformer extends AbstractTransformer
      */
     private void _handleAlias(Expression node, TypeAnalyzerState state) {
         Type owner = Type.getOwner(node);
-        String ownerName = owner == null ? null : owner.getName();
+        if (owner == null)  // Not a field.
+            return;
+        String ownerName = owner.getName();
         Type type = Type.getType(node);
         String typeName = type.getName();
         
@@ -1362,12 +1448,6 @@ public class AssignmentTransformer extends AbstractTransformer
             CompilationUnit root = (CompilationUnit)node.getRoot();
             String typeClassName = getClassName(typeName, state, root);
             
-            ArrayCreation arrayCreation = ast.newArrayCreation();
-            arrayCreation.setType((ArrayType)createType(ast, 
-                    typeClassName));
-            ArrayInitializer initializer = ast.newArrayInitializer();
-            arrayCreation.setInitializer(initializer);
-            
             int nIndices = 0;
             
             Expression nodeIterator = node;
@@ -1376,11 +1456,11 @@ public class AssignmentTransformer extends AbstractTransformer
                 nodeIterator = 
                     ((ParenthesizedExpression)nodeIterator).getExpression();
             
+            List indices = new LinkedList();
             while (nodeIterator instanceof ArrayAccess) {
                 nIndices++;
                 ArrayAccess arrayAccess = (ArrayAccess)nodeIterator;
-                initializer.expressions().add(0, 
-                        ASTNode.copySubtree(ast, arrayAccess.getIndex()));
+                indices.add(0, ASTNode.copySubtree(ast, arrayAccess.getIndex()));
                 nodeIterator = arrayAccess.getArray();
                 while (nodeIterator instanceof ParenthesizedExpression)
                     nodeIterator = 
@@ -1404,12 +1484,42 @@ public class AssignmentTransformer extends AbstractTransformer
             else
                 return;
             
+            // Get the class of the owner and test the modifiers of the field.
+            Class ownerClass;
+            boolean isStatic;
+            try {
+                ownerClass = owner.toClass(state.getClassLoader());
+                Field field = 
+                    ownerClass.getDeclaredField(name.getIdentifier());
+                int modifiers = field.getModifiers();
+                if (!java.lang.reflect.Modifier.isPrivate(modifiers))
+                    return; // Not handling non-private fields.
+                isStatic = 
+                    java.lang.reflect.Modifier.isStatic(modifiers);
+            } catch (ClassNotFoundException e) {
+                throw new ASTClassNotFoundException(owner.getName());
+            } catch (NoSuchFieldException e) {
+                // The field is not defined in this class.
+                return;
+            }
+            if (isStatic && !HANDLE_STATIC_FIELDS)
+                return;
+            
             MethodInvocation backup = ast.newMethodInvocation();
-            backup.setExpression(newObject);
-            backup.setName(ast.newSimpleName(BACKUP_PREFIX));
-            if (initializer.expressions().size() > 0)
-                backup.arguments().add(arrayCreation);
-            backup.arguments().add(ASTNode.copySubtree(ast, node));
+            if (newObject != null)
+                backup.setExpression(newObject);
+            SimpleName newName = 
+                ast.newSimpleName(
+                        _getBackupMethodName(name.getIdentifier()));
+            backup.setName(newName);
+            
+            // If the field is static, add the checkpoint object as the first
+            // argument.
+            if (isStatic)
+                backup.arguments().add(ast.newSimpleName(CHECKPOINT_NAME));
+            
+            // Add all the indices into the argument list.
+            backup.arguments().addAll(indices);
             
             replaceNode(node, backup);
             
@@ -1529,7 +1639,7 @@ public class AssignmentTransformer extends AbstractTransformer
         // If the field is static, add the checkpoint object as the first
         // argument.
         if (isStatic)
-            invocation.arguments().add(ast.newSimpleName("$CHECKPOINT"));
+            invocation.arguments().add(ast.newSimpleName(CHECKPOINT_NAME));
         
         // Add an operator, if necessary.
         Type type = Type.getType(node);
