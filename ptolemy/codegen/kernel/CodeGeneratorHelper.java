@@ -151,6 +151,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      */
     public void generateWrapupCode(StringBuffer stream)
             throws IllegalActionException {
+        stream.append("wrapup: " + _component.getFullName() + "\n");
     }
 
     /** Return the buffer size of a given port, which is the maximum of
@@ -200,14 +201,14 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         return _component;
     }
 
-    /** Get the libraries needed by the code generated from this helper class.
+    /** Get the files needed by the code generated from this helper class.
      *  This base class returns an empty set.
      *  @return A set of strings that are libraries needed by the code
      *  generated from this helper class.
      */
-    public Set getIncludingLibraries() {
-        Set libraries = new HashSet();
-        return libraries;
+    public Set getIncludingFiles() {
+        Set files = new HashSet();
+        return files;
     }
 
     /** Get the offset in the buffer of a given channel to which a token

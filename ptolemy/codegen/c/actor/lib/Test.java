@@ -93,16 +93,16 @@ public class Test extends CCodeGeneratorHelper {
         stream.append(processCode(tmpStream.toString()));
     }
 
-    /** Get the libraries needed by the code generated for the
+    /** Get the files needed by the code generated for the
      *  Test actor.
-     *  @return A set of strings that are names of the libraries
+     *  @return A set of strings that are names of the files
      *   needed by the code generated for the Test actor.
      */
-    public Set getIncludingLibraries() {
-        Set libraries = new HashSet();
-        libraries.add("\"stdio.h\"");
-        libraries.add("\"math.h\"");
-        return libraries;
+    public Set getIncludingFiles() {
+        Set files = new HashSet();
+        files.add("\"stdio.h\"");
+        files.add("\"math.h\"");
+        return files;
     }
 
     ///////////////////////////////////////////////////////////////////

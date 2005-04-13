@@ -176,7 +176,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         ComponentCodeGenerator directorHelper = _getHelper((NamedObj)director);
         ((Director)directorHelper).setCodeGenerator(this);
 
-        Set includingLibraries = new HashSet();
+        Set includingFiles = new HashSet();
         Iterator actors = ((CompositeActor) getContainer())
                 .deepEntityList().iterator();
         while (actors.hasNext()) {
@@ -184,13 +184,13 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             CodeGeneratorHelper actorHelper
                     = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
             actorHelper.setCodeGenerator(this);
-            includingLibraries.addAll(actorHelper.getIncludingLibraries());
+            includingFiles.addAll(actorHelper.getIncludingFiles());
         }
 
-        Iterator libraries = includingLibraries.iterator();
-        while (libraries.hasNext()) {
-            String library = (String) libraries.next();
-            code.append("#include " + library + "\n");
+        Iterator files = includingFiles.iterator();
+        while (files.hasNext()) {
+            String file = (String) files.next();
+            code.append("#include " + file + "\n");
         }
 
         String initializeCode = generateInitializeCode();
