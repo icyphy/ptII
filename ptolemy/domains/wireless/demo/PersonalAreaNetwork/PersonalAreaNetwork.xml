@@ -2,12 +2,10 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="PersonalAreaNetwork" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
     </property>
     <property name="WirelessDirector" class="ptolemy.domains.wireless.kernel.WirelessDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1.7976931348623E308">
         </property>
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -28,7 +26,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 30.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1032, 776}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1032, 778}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 660]">
     </property>
@@ -57,6 +55,10 @@ in range it takes 26seconds for it to process.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="100.0, 250.0">
         </property>
     </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{408.5, 330.0}">
+    </property>
     <entity name="Follower" class="ptolemy.domains.wireless.kernel.WirelessComposite">
         <property name="_location" class="ptolemy.kernel.util.Location" value="{294.729635533386, 456.9615506024416}">
         </property>
@@ -66,8 +68,6 @@ in range it takes 26seconds for it to process.</text></svg></configure>
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="circle2" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
-                <property name="_hideName" class="ptolemy.kernel.util.Attribute">
-                </property>
                 <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="2.0">
                 </property>
                 <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
@@ -80,16 +80,12 @@ in range it takes 26seconds for it to process.</text></svg></configure>
                 </property>
                 <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="nodeColor">
                 </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.icon.ResizableAttributeControllerFactory">
-                </property>
                 <property name="vertices" class="ptolemy.data.expr.Parameter" value="{0.0, 7.0, 25.0, 0.0, 0.0, 10.0, 22.0, 25.0}">
                 </property>
             </property>
         </property>
         <property name="DEDirector" class="ptolemy.domains.de.kernel.DEDirector">
             <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
-            <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1.7976931348623E308">
             </property>
             <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="true">
             </property>
@@ -135,10 +131,6 @@ in range it takes 26seconds for it to process.</text></svg></configure>
             </property>
             <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter" value="{range = range}">
             </property>
-            <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
-            </property>
-            <property name="insideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
             </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
@@ -159,24 +151,10 @@ in range it takes 26seconds for it to process.</text></svg></configure>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="675.0, 315.0">
             </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
         </entity>
         <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
             <property name="_location" class="ptolemy.kernel.util.Location" value="410.0, 160.0">
             </property>
-            <port name="plus" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-            <port name="minus" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
         </entity>
         <entity name="Const" class="ptolemy.actor.lib.Const">
             <property name="value" class="ptolemy.data.expr.Parameter" value="-40.00">
@@ -190,13 +168,6 @@ in range it takes 26seconds for it to process.</text></svg></configure>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="255.0, 110.0">
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
         </entity>
         <entity name="RecordDisassembler" class="ptolemy.actor.lib.RecordDisassembler">
             <property name="_location" class="ptolemy.kernel.util.Location" value="200.0, 195.0">
@@ -224,17 +195,6 @@ in range it takes 26seconds for it to process.</text></svg></configure>
         <entity name="AddSubtract2" class="ptolemy.actor.lib.AddSubtract">
             <property name="_location" class="ptolemy.kernel.util.Location" value="415.0, 275.0">
             </property>
-            <port name="plus" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-            <port name="minus" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
         </entity>
         <entity name="Expression" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="{x,y}">
@@ -311,8 +271,6 @@ in range it takes 26seconds for it to process.</text></svg></configure>
     <entity name="Leader" class="ptolemy.domains.wireless.kernel.WirelessComposite">
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="circle2" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
-                <property name="_hideName" class="ptolemy.kernel.util.Attribute">
-                </property>
                 <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="2.0">
                 </property>
                 <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
@@ -325,16 +283,12 @@ in range it takes 26seconds for it to process.</text></svg></configure>
                 </property>
                 <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="nodeColor">
                 </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.icon.ResizableAttributeControllerFactory">
-                </property>
                 <property name="vertices" class="ptolemy.data.expr.Parameter" value="{0.0, 7.0, 25.0, 0.0, 0.0, 10.0, 22.0, 25.0}">
                 </property>
             </property>
         </property>
         <property name="DEDirector" class="ptolemy.domains.de.kernel.DEDirector">
             <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
-            <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1.7976931348623E308">
             </property>
             <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="true">
             </property>
@@ -384,10 +338,6 @@ in range it takes 26seconds for it to process.</text></svg></configure>
             </property>
             <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter" value="{range = range}">
             </property>
-            <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
-            </property>
-            <property name="insideTransmitProperties" class="ptolemy.data.expr.Parameter">
-            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="685.0, 160.0">
             </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
@@ -407,13 +357,6 @@ in range it takes 26seconds for it to process.</text></svg></configure>
             <doc>Create a set of pulses</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="45.0, 265.0">
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
         </entity>
         <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
             <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="_location">
@@ -426,9 +369,6 @@ in range it takes 26seconds for it to process.</text></svg></configure>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="775.0, 275.0">
             </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-            </port>
         </entity>
         <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
             <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
@@ -442,16 +382,6 @@ in range it takes 26seconds for it to process.</text></svg></configure>
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-            <port name="step" class="ptolemy.actor.parameters.ParameterPort">
-                <property name="input"/>
-            </port>
         </entity>
         <entity name="Ramp2" class="ptolemy.actor.lib.Ramp">
             <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
@@ -465,16 +395,6 @@ in range it takes 26seconds for it to process.</text></svg></configure>
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-            <port name="step" class="ptolemy.actor.parameters.ParameterPort">
-                <property name="input"/>
-            </port>
         </entity>
         <entity name="Expression2" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="sin(y)*200+300">
