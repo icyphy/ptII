@@ -289,6 +289,137 @@ $(PTII_SRC): $(PTII_FULL)
 # it is _inside_ ptII$(VERSION) so that when the installer unjars it
 # the files come out in the right location
 
+
+# Files to be removed from all source distributions
+PTII_SRC_TO_BE_REMOVED = \
+		META-INF \
+		jni \
+		bin/comm.policy \
+		bin/copernicus.bat \
+		bin/copernicusjhdl.bat \
+		bin/decompile.bat \
+		bin/emachine.bat \
+		bin/giottoc.bat \
+		bin/histogram.bat \
+		bin/jode.bat \
+		bin/mescal.bat \
+		bin/moml.bat \
+		bin/obfuscate.bat \
+		bin/ptexecute.bat \
+		bin/ptjacl.bat \
+		bin/ptjaclapp.bat \
+		bin/ptolemy.bat \
+		bin/ptinvoke \
+		bin/ptplot.bat \
+		bin/ptstartjini.bat \
+		bin/pxgraph.bat \
+		bin/soot.bat \
+		bin/startjini.gui.bat \
+		bin/tinic.bat \
+		bin/tinicomm.bat \
+		bin/tiniconverter.bat \
+		bin/vergil.bat \
+		config/jarTest.jar \
+		diva/build.xml \
+		diva/canvas/test/alljsimpletests.tcl \
+		diva/canvas/tutorial/doc-files \
+		diva/graph/test/alljsimpletests.tcl \
+		diva/util/test/alljsimpletests.tcl \
+		doc/img/banner.psd \
+		doc/img/ptIIbanner2.psd \
+		doc/img/PtolemyIISplash.psd \
+		lib/cachedir \
+		lib/ptII.properties \
+		mk/ptII.mk \
+		ptolemy/actor/gui/style/test/alljsimpletests.tcl \
+		ptolemy/actor/gui/test/alljsimpletests.tcl \
+		ptolemy/actor/lib/security/demo/Signature/ptKeystore \
+		ptolemy/actor/lib/security/test/foo.keystore \
+		ptolemy/actor/lib/test/Const.txt \
+		ptolemy/actor/lib/test/ReadFile1Output.txt \
+		ptolemy/backtrack \
+		ptolemy/codegen \
+		ptolemy/media/test/tmp2_7.au \
+		ptolemy/util/test/FileUtilities-1.1.tmp \
+		ptolemy/vergil/toolbox/test/alljsimpletests.tcl
+
+# Files to be removed from HyVisual source distributions
+HYVISUAL_SRC_TO_BE_REMOVED = \
+		doc/usingVergil \
+		doc/design/usingVergil \
+		lib/hsif \
+		lib/jni.jar \
+		lib/chic.jar \
+		lib/colt.jar \
+		lib/jasminclasses.jar \
+		lib/java_cup.jar \
+		lib/jython.jar \
+		lib/mapss.jar \
+		lib/ptCal.jar \
+		lib/saxon.jar \
+		lib/sootclasses.jar \
+		lib/synthesis.jar \
+		ptolemy/actor/gui/python \
+		ptolemy/actor/lib/colt \
+		ptolemy/actor/lib/comm \
+		ptolemy/actor/lib/conversions/test/auto/Round.xml \
+		ptolemy/actor/lib/ecsl \
+		ptolemy/actor/lib/io/comm \
+		ptolemy/actor/lib/jai \
+		ptolemy/actor/lib/javasound \
+		ptolemy/actor/lib/jmf \
+		ptolemy/actor/lib/joystick \
+		ptolemy/actor/lib/python \
+		ptolemy/actor/lib/security \
+		ptolemy/actor/lib/test/OrderedMerge.tcl \
+		ptolemy/actor/lib/test/auto/MathFunction.xml \
+		ptolemy/actor/lib/test/auto/OrderedMerge.xml \
+	        ptolemy/actor/lib/test/auto/Switch.xml \
+		ptolemy/actor/lib/x10 \
+		ptolemy/actor/lib/xslt \
+		ptolemy/build.xml \
+		ptolemy/caltrop \
+		ptolemy/component \
+		ptolemy/configs/dsp \
+		ptolemy/configs/full \
+		ptolemy/configs/jni \
+		ptolemy/configs/jxta \
+		ptolemy/configs/ptiny \
+		ptolemy/configs/SingleWindow \
+		ptolemy/configs/visualsense \
+		ptolemy/configs/copernicus \
+		ptolemy/copernicus \
+		ptolemy/domains/ci \
+		ptolemy/domains/csp \
+		ptolemy/domains/ct/lib/IPCInterface.java \
+		ptolemy/domains/ct/lib/IPCInterface.class \
+		ptolemy/domains/dde \
+		ptolemy/domains/ddf \
+		ptolemy/domains/domains.xml \
+		ptolemy/domains/dt \
+		ptolemy/domains/ddf/test/auto/controlled_kahnnet.xml \
+		ptolemy/domains/fsm/kernel/test/auto/booleanSelect.xml \
+		ptolemy/domains/fsm/kernel/test/auto/feedBackLoop.xml \
+		ptolemy/domains/fsm/test/auto/booleanSelect.xml \
+		ptolemy/domains/fsm/test/auto/feedBackLoop.xml \
+		ptolemy/domains/giotto \
+		ptolemy/domains/gr \
+		ptolemy/domains/hde \
+		ptolemy/domains/petrinet \
+		ptolemy/domains/psdf \
+		ptolemy/domains/pn \
+		ptolemy/domains/ptinyDomains.xml \
+		ptolemy/domains/sdf/test/auto/sdf_inside_pn.xml \
+		ptolemy/domains/sr \
+		ptolemy/domains/test \
+		ptolemy/domains/tm \
+		ptolemy/domains/wireless \
+		ptolemy/demo \
+		ptolemy/moml/jxta/demo/EPtolemyA/EPtolemy.properties \
+		ptolemy/plot/build.xml \
+		ptolemy/plot/plotml/build.xml \
+		thales
+
 # Location of the jar binary.  Cygwin /bin/jar is broken.
 JAR=c:/j2sdk1.4.2_06/bin/jar
 
@@ -308,7 +439,7 @@ src_jar: #$(PTII_SRC)
 	rm -f src_jar/ptII$(VERSION)/doc/design/visualsense.pdf
 	(cd src_jar/ptII$(VERSION); $(FINDCLEAN))
 	(cd src_jar/ptII$(VERSION); rm -rf `cat ../../src.ex`)
-
+	(cd src_jar/ptII$(VERSION); rm -rf $(PTII_SRC_TO_BE_REMOVED))
 
 ###############
 # Build a jar file for use inside the installer
@@ -350,129 +481,8 @@ src_jar/hyvisual$(VERSION): ptII$(VERSION).src.jar
 		$(JAR) -xf ../../ptII$(VERSION).src.jar)
 
 	(cd src_jar/hyvisual$(VERSION); \
-		rm -rf META-INF \
-		jni \
-		bin/comm.policy \
-		bin/copernicus.bat \
-		bin/copernicusjhdl.bat \
-		bin/decompile.bat \
-		bin/emachine.bat \
-		bin/giottoc.bat \
-		bin/histogram.bat \
-		bin/jode.bat \
-		bin/mescal.bat \
-		bin/moml.bat \
-		bin/obfuscate.bat \
-		bin/ptexecute.bat \
-		bin/ptjacl.bat \
-		bin/ptjaclapp.bat \
-		bin/ptolemy.bat \
-		bin/ptinvoke \
-		bin/ptplot.bat \
-		bin/ptstartjini.bat \
-		bin/pxgraph.bat \
-		bin/soot.bat \
-		bin/startjini.gui.bat \
-		bin/tinic.bat \
-		bin/tinicomm.bat \
-		bin/tiniconverter.bat \
-		bin/vergil.bat \
-		config/jarTest.jar \
-		diva/build.xml \
-		diva/canvas/test/alljsimpletests.tcl \
-		diva/canvas/tutorial/doc-files \
-		diva/graph/test/alljsimpletests.tcl \
-		diva/util/test/alljsimpletests.tcl \
-		doc/usingVergil \
-		doc/design/usingVergil \
-		doc/img/banner.psd \
-		doc/img/ptIIbanner2.psd \
-		doc/img/PtolemyIISplash.psd \
-		lib/hsif \
-		lib/jni.jar \
-		lib/cachedir \
-		lib/chic.jar \
-		lib/colt.jar \
-		lib/jasminclasses.jar \
-		lib/java_cup.jar \
-		lib/jython.jar \
-		lib/mapss.jar \
-		lib/ptCal.jar \
-		lib/ptII.properties \
-		lib/saxon.jar \
-		lib/sootclasses.jar \
-		lib/synthesis.jar \
-		mk/ptII.mk \
-		ptolemy/actor/gui/python \
-		ptolemy/actor/gui/style/test/alljsimpletests.tcl \
-		ptolemy/actor/gui/test/alljsimpletests.tcl \
-		ptolemy/actor/lib/colt \
-		ptolemy/actor/lib/comm \
-		ptolemy/actor/lib/conversions/test/auto/Round.xml \
-		ptolemy/actor/lib/ecsl \
-		ptolemy/actor/lib/io/comm \
-		ptolemy/actor/lib/jai \
-		ptolemy/actor/lib/javasound \
-		ptolemy/actor/lib/jmf \
-		ptolemy/actor/lib/joystick \
-		ptolemy/actor/lib/python \
-		ptolemy/actor/lib/security \
-		ptolemy/actor/lib/security/demo/Signature/ptKeystore \
-		ptolemy/actor/lib/security/test/foo.keystore \
-		ptolemy/actor/lib/test/Const.txt \
-		ptolemy/actor/lib/test/OrderedMerge.tcl \
-		ptolemy/actor/lib/test/ReadFile1Output.txt \
-		ptolemy/actor/lib/test/auto/MathFunction.xml \
-		ptolemy/actor/lib/test/auto/OrderedMerge.xml \
-	        ptolemy/actor/lib/test/auto/Switch.xml \
-		ptolemy/actor/lib/x10 \
-		ptolemy/actor/lib/xslt \
-		ptolemy/backtrack \
-		ptolemy/build.xml \
-		ptolemy/caltrop \
-		ptolemy/codegen \
-		ptolemy/component \
-		ptolemy/configs/dsp \
-		ptolemy/configs/full \
-		ptolemy/configs/jni \
-		ptolemy/configs/jxta \
-		ptolemy/configs/ptiny \
-		ptolemy/configs/SingleWindow \
-		ptolemy/configs/visualsense \
-		ptolemy/configs/copernicus \
-		ptolemy/copernicus \
-		ptolemy/domains/ci \
-		ptolemy/domains/csp \
-		ptolemy/domains/ct/lib/IPCInterface.java \
-		ptolemy/domains/ct/lib/IPCInterface.class \
-		ptolemy/domains/dde \
-		ptolemy/domains/ddf \
-		ptolemy/domains/domains.xml \
-		ptolemy/domains/dt \
-		ptolemy/domains/ddf/test/auto/controlled_kahnnet.xml \
-		ptolemy/domains/fsm/kernel/test/auto/booleanSelect.xml \
-		ptolemy/domains/fsm/kernel/test/auto/feedBackLoop.xml \
-		ptolemy/domains/fsm/test/auto/booleanSelect.xml \
-		ptolemy/domains/fsm/test/auto/feedBackLoop.xml \
-		ptolemy/domains/giotto \
-		ptolemy/domains/gr \
-		ptolemy/domains/hde \
-		ptolemy/domains/petrinet \
-		ptolemy/domains/psdf \
-		ptolemy/domains/pn \
-		ptolemy/domains/ptinyDomains.xml \
-		ptolemy/domains/sdf/test/auto/sdf_inside_pn.xml \
-		ptolemy/domains/sr \
-		ptolemy/domains/test \
-		ptolemy/domains/tm \
-		ptolemy/domains/wireless \
-		ptolemy/demo \
-		ptolemy/media/test/tmp2_7.au \
-		ptolemy/moml/jxta/demo/EPtolemyA/EPtolemy.properties \
-		ptolemy/plot/build.xml \
-		ptolemy/plot/plotml/build.xml \
-		ptolemy/util/test/FileUtilities-1.1.tmp \
-		ptolemy/vergil/toolbox/test/alljsimpletests.tcl \
+		rm -rf $(PTII_SRC_TO_BE_REMOVED); \
+		rm -rf $(HYVISUAL_SRC_TO_BE_REMOVED); \
 		thales; \
 	   touch configure; \
 	   chmod a+rx configure util/testsuite/chkextra; \
