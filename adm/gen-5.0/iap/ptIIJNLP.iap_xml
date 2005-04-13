@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- This script was automatically generated using Zero G's InstallAnywhere 6.1 Enterprise, Build 2325
      STATUS: Fully Functional LICENSED Edition
-     DATE:   Tue Aug 03 20:59:57 PDT 2004 -->
-<InstallAnywhere_Deployment_Project increments="7133">
+     DATE:   Wed Apr 13 08:14:03 PDT 2005 -->
+<InstallAnywhere_Deployment_Project increments="7569">
 	<!-- ** DO NOT EDIT ** Essential authorization and configuration data ** DO NOT EDIT ** -->
 	<essentialScriptInfo>
 		<versionID major="6" minor="1" revision="-1"/>
 		<editionID>54,46,49,32,69,110,116,101,114,112,114,105,115,101,32,66,117,105,108,100,32,50,51,50,53</editionID>
-		<scriptID>12,42,11,90,81,52,50,50,54,57,82,74,55,66,67,81</scriptID>
+		<scriptID>12,42,11,90,81,50,48,52,54,57,82,74,55,66,67,81</scriptID>
 		<buildID>3,13,71,87,105,110,100,111,119,115,32,88,80,44,32,53,46,49,44,32,120,56,54,59,32,74,97,118,97,32,49,46,51,46,49,95,48,56,44,32,83,117,110,32,77,105,99,114,111,115,121,115,116,101,109,115,32,73,110,99,46,44,32,104,116,116,112,58,47,47,106,97,118,97,46,115,117,110,46,99,111,109,47,59,32,101,110,44,32,85,83,59,32,67,112,49,50,53,50</buildID>
 		<!-- The authorizationID may change between project saves and builds.  This does not effect the integrity of the project, nor do changes in this value represent changes in the actual InstallAnywhere project. -->
-		<authorizationID>1,0,0,-16,35,-3,7,-128,80,112,116,103,88,98,113,97,113,65,65,88,74,65,72,71,70,69,64,69,66,69,48,79,87,5,2,11,7,20,103,14,0,0,0</authorizationID>
+		<authorizationID>1,0,0,0,51,18,-57,16,80,112,116,103,88,98,113,97,113,65,65,88,74,65,72,71,70,69,64,69,66,69,48,79,87,5,2,12,0,-33,108,3,1,0,0</authorizationID>
 	</essentialScriptInfo>
-	<installationObjects uniqueObjects="392">
+	<installationObjects uniqueObjects="406">
 		<object class="com.zerog.ia.installer.Installer" objectID="a3d1e30197df">
 			<property name="wizardME">
 				<object class="com.zerog.ia.installer.actions.MakeExecutable" objectID="a3e408bf981b">
@@ -192,7 +192,7 @@ it will search for ones in this list]]></string>
 								</object>
 							</method>
 							<method name="addElement">
-								<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="33fcc861931d">
+								<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="4f9f4c22b905">
 									<property name="propertyValue">
 										<string><![CDATA[ptolemy.actor.gui.jnlp.FullApplication]]></string>
 									</property>
@@ -314,7 +314,7 @@ and any path to a file to read from that file]]></string>
 								<string><![CDATA[diva.jar]]></string>
 							</property>
 							<property name="fileSize">
-								<long>470865</long>
+								<long>470913</long>
 							</property>
 							<property name="macBinary">
 								<boolean>false</boolean>
@@ -376,7 +376,7 @@ and any path to a file to read from that file]]></string>
 								<string><![CDATA[matlab.jar]]></string>
 							</property>
 							<property name="fileSize">
-								<long>14631</long>
+								<long>14679</long>
 							</property>
 							<property name="macBinary">
 								<boolean>false</boolean>
@@ -407,7 +407,7 @@ and any path to a file to read from that file]]></string>
 								<string><![CDATA[ptCal.jar]]></string>
 							</property>
 							<property name="fileSize">
-								<long>306595</long>
+								<long>333010</long>
 							</property>
 							<property name="macBinary">
 								<boolean>false</boolean>
@@ -522,7 +522,7 @@ and any path to a file to read from that file]]></string>
 								<boolean>false</boolean>
 							</property>
 							<property name="sourcePath">
-								<string><![CDATA[C:\cxh\ptII-5.0\vendors\misc\x10\tjx10p-11\lib\]]></string>
+								<string><![CDATA[C:\cxh\ptII-5.0\vendors\misc\x10\tjx10p-12\lib\]]></string>
 							</property>
 							<property name="shouldUninstall">
 								<boolean>true</boolean>
@@ -531,7 +531,7 @@ and any path to a file to read from that file]]></string>
 								<string><![CDATA[x10.jar]]></string>
 							</property>
 							<property name="fileSize">
-								<long>31039</long>
+								<long>31848</long>
 							</property>
 							<property name="macBinary">
 								<boolean>false</boolean>
@@ -562,7 +562,7 @@ and any path to a file to read from that file]]></string>
 								<string><![CDATA[ptsupport.jar]]></string>
 							</property>
 							<property name="fileSize">
-								<long>2314087</long>
+								<long>2444654</long>
 							</property>
 							<property name="macBinary">
 								<boolean>false</boolean>
@@ -593,7 +593,7 @@ and any path to a file to read from that file]]></string>
 								<string><![CDATA[jnlp.jar]]></string>
 							</property>
 							<property name="fileSize">
-								<long>4978</long>
+								<long>4977</long>
 							</property>
 							<property name="macBinary">
 								<boolean>false</boolean>
@@ -624,7 +624,7 @@ and any path to a file to read from that file]]></string>
 								<string><![CDATA[codeDoc.jar]]></string>
 							</property>
 							<property name="fileSize">
-								<long>10530993</long>
+								<long>11203423</long>
 							</property>
 							<property name="macBinary">
 								<boolean>false</boolean>
@@ -640,7 +640,7 @@ and any path to a file to read from that file]]></string>
 								<string><![CDATA[664]]></string>
 							</property>
 							<property name="sourceName">
-								<string><![CDATA[synthesis.jar]]></string>
+								<string><![CDATA[mapss.jar]]></string>
 							</property>
 							<property name="overrideUnixPermissions">
 								<boolean>false</boolean>
@@ -655,7 +655,7 @@ and any path to a file to read from that file]]></string>
 								<string><![CDATA[synthesis.jar]]></string>
 							</property>
 							<property name="fileSize">
-								<long>175030</long>
+								<long>203929</long>
 							</property>
 							<property name="macBinary">
 								<boolean>false</boolean>
@@ -686,7 +686,38 @@ and any path to a file to read from that file]]></string>
 								<string><![CDATA[mapss.jar]]></string>
 							</property>
 							<property name="fileSize">
-								<long>203899</long>
+								<long>203929</long>
+							</property>
+							<property name="macBinary">
+								<boolean>false</boolean>
+							</property>
+							<property name="targetCheckKind">
+								<int>0</int>
+							</property>
+						</object>
+					</method>
+					<method name="addElement">
+						<object class="com.zerog.ia.installer.actions.InstallZipfile" objectID="4d9bff5ab5de">
+							<property name="unixPermissions">
+								<string><![CDATA[664]]></string>
+							</property>
+							<property name="sourceName">
+								<string><![CDATA[ptcolt.jar]]></string>
+							</property>
+							<property name="overrideUnixPermissions">
+								<boolean>false</boolean>
+							</property>
+							<property name="sourcePath">
+								<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\lib\]]></string>
+							</property>
+							<property name="shouldUninstall">
+								<boolean>true</boolean>
+							</property>
+							<property name="destinationName">
+								<string><![CDATA[ptcolt.jar]]></string>
+							</property>
+							<property name="fileSize">
+								<long>-1</long>
 							</property>
 							<property name="macBinary">
 								<boolean>false</boolean>
@@ -739,6 +770,9 @@ and any path to a file to read from that file]]></string>
 					</method>
 					<method name="addElement">
 						<string><![CDATA[Installing...]]></string>
+					</method>
+					<method name="addElement">
+						<string><![CDATA[Start Vergil?]]></string>
 					</method>
 					<method name="addElement">
 						<string><![CDATA[Install Complete]]></string>
@@ -863,7 +897,7 @@ You may cancel this installation at any time by clicking the 'Cancel' button.]]>
 								<string><![CDATA[Installation and Use of $PRODUCT_NAME$ Requires Acceptance of the Following License Agreement:]]></string>
 							</property>
 							<property name="resourcePath">
-								<string><![CDATA[c:\cxh\ptII-5.0\adm\gen-5.0\]]></string>
+								<string><![CDATA[C:\cxh\ptII-5.0\adm\gen-5.0\]]></string>
 							</property>
 							<property name="resourceName">
 								<string><![CDATA[copyright.txt]]></string>
@@ -1117,6 +1151,81 @@ The Copernicus code generator does not work well if there are spaces in the path
 			<property name="postInstallActions">
 				<object class="java.util.Vector">
 					<method name="addElement">
+						<object class="com.zerog.ia.installer.actions.CreateDialog" objectID="4f9fa231bd8e">
+							<property name="imageOption">
+								<int>1</int>
+							</property>
+							<property name="title">
+								<string><![CDATA[Start Vergil?]]></string>
+							</property>
+							<property name="prompt">
+								<string><![CDATA[Do you want to start Vergil?]]></string>
+							</property>
+							<property name="inputMethod">
+								<string><![CDATA[Text fields]]></string>
+							</property>
+							<property name="apparentInputMethod">
+								<string><![CDATA[Text fields]]></string>
+							</property>
+							<property name="variableName">
+								<string><![CDATA[USER_INPUT_RESULTS]]></string>
+							</property>
+							<property name="labelOption">
+								<int>2</int>
+							</property>
+							<property name="labelIndex">
+								<int>8</int>
+							</property>
+							<property name="entryAtoms">
+								<object class="java.util.Vector"/>
+							</property>
+							<property name="help">
+								<object class="com.zerog.ia.installer.util.Help" objectID="4f9fa232bd8e">
+									<property name="showHelp">
+										<boolean>false</boolean>
+									</property>
+								</object>
+							</property>
+						</object>
+					</method>
+					<method name="addElement">
+						<object class="com.zerog.ia.installer.actions.ExecFile" objectID="4f9fcaeabd8e">
+							<property name="targetAction">
+								<object refID="a3e408bf981b"/>
+							</property>
+							<property name="commandLineArgs">
+								<string><![CDATA[$EXECUTE_FILE_TARGET$]]></string>
+							</property>
+							<property name="waitForProcess">
+								<boolean>false</boolean>
+							</property>
+							<property name="suppressConsoleWindow">
+								<boolean>false</boolean>
+							</property>
+							<property name="showPleaseWaitPanel">
+								<boolean>true</boolean>
+							</property>
+							<property name="showIndeterminateDialog">
+								<boolean>false</boolean>
+							</property>
+							<property name="dialogLabel">
+								<string><![CDATA[Executing...]]></string>
+							</property>
+							<property name="userLabel">
+								<string><![CDATA[vergil-full]]></string>
+							</property>
+							<property name="stdoutVar">
+								<string><![CDATA[$EXECUTE_STDOUT$]]></string>
+							</property>
+							<property name="stderrVar">
+								<string><![CDATA[$EXECUTE_STDERR$]]></string>
+							</property>
+							<property name="exitCodeVar">
+								<string><![CDATA[$EXECUTE_EXITCODE$]]></string>
+							</property>
+						</object>
+					</method>
+					<method name="addElement">
 						<object class="com.zerog.ia.installer.actions.InstallFinishAction" objectID="87689bdda89a">
 							<property name="imageOption">
 								<int>1</int>
@@ -1125,7 +1234,7 @@ The Copernicus code generator does not work well if there are spaces in the path
 								<int>2</int>
 							</property>
 							<property name="labelIndex">
-								<int>8</int>
+								<int>9</int>
 							</property>
 							<property name="help">
 								<object class="com.zerog.ia.installer.util.Help" objectID="87689bdea89a">
@@ -1247,7 +1356,7 @@ Press ""Done"" to quit the installer.]]></string>
 				<object class="java.util.Properties">
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.project.save.last.date]]></string>
-						<string><![CDATA[August 3, 2004 8:59:36 PM PDT]]></string>
+						<string><![CDATA[April 13, 2005 8:14:03 AM PDT]]></string>
 					</method>
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.build.options.optimization.platform.merge]]></string>
@@ -1295,7 +1404,7 @@ Press ""Done"" to quit the installer.]]></string>
 					</method>
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.project.build.last.date]]></string>
-						<string><![CDATA[August 3, 2004 8:59:36 PM PDT]]></string>
+						<string><![CDATA[April 12, 2005 10:33:23 PM PDT]]></string>
 					</method>
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.installer.options.stderr.redirect]]></string>
@@ -1331,7 +1440,7 @@ Press ""Done"" to quit the installer.]]></string>
 					</method>
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.build.vmpack.windows.path]]></string>
-						<string><![CDATA[SunJRE142_04i_3D_CommWin32.vm]]></string>
+						<string><![CDATA[SunJRE131_11iWin32.vm]]></string>
 					</method>
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.build.platform.solaris.novm]]></string>
@@ -1492,7 +1601,7 @@ Press ""Done"" to quit the installer.]]></string>
 						<string><![CDATA[Ptolemy II 5.0-beta]]></string>
 					</property>
 					<property name="installerName">
-						<string><![CDATA[ptII4_0_1installer]]></string>
+						<string><![CDATA[ptII5_0_beta_installer]]></string>
 					</property>
 					<property name="productName">
 						<string><![CDATA[Ptolemy II 5.0-beta]]></string>
@@ -1513,7 +1622,7 @@ heterogeneous concurrent modeling and design.
 ]]></string>
 					</property>
 					<property name="productVersionMajor">
-						<int>4</int>
+						<int>5</int>
 					</property>
 					<property name="productVersionMinor">
 						<int>0</int>
@@ -1541,7 +1650,7 @@ heterogeneous concurrent modeling and design.
 						<string><![CDATA[ptII@eecs.berkeley.edu]]></string>
 					</property>
 					<property name="copyright">
-						<string><![CDATA[1995-2004]]></string>
+						<string><![CDATA[1995-2005]]></string>
 					</property>
 				</object>
 			</property>
@@ -2028,7 +2137,7 @@ and any path to a file to read from that file]]></string>
 												<string><![CDATA[acks.htm]]></string>
 											</property>
 											<property name="fileSize">
-												<long>2848</long>
+												<long>3287</long>
 											</property>
 											<property name="macBinary">
 												<boolean>false</boolean>
@@ -2060,7 +2169,7 @@ and any path to a file to read from that file]]></string>
 												<string><![CDATA[authors.htm]]></string>
 											</property>
 											<property name="fileSize">
-												<long>4647</long>
+												<long>4687</long>
 											</property>
 											<property name="macBinary">
 												<boolean>false</boolean>
@@ -2089,7 +2198,7 @@ and any path to a file to read from that file]]></string>
 												<string><![CDATA[codegen.htm]]></string>
 											</property>
 											<property name="fileSize">
-												<long>56659</long>
+												<long>56655</long>
 											</property>
 											<property name="macBinary">
 												<boolean>false</boolean>
@@ -2150,7 +2259,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="totalSize">
-												<long>17699</long>
+												<long>1</long>
 											</property>
 											<property name="macBinary">
 												<boolean>false</boolean>
@@ -2214,7 +2323,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="totalSize">
-														<long>16847017</long>
+														<long>1</long>
 													</property>
 													<property name="macBinary">
 														<boolean>false</boolean>
@@ -2272,7 +2381,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="totalSize">
-														<long>952228</long>
+														<long>1</long>
 													</property>
 													<property name="macBinary">
 														<boolean>false</boolean>
@@ -2298,7 +2407,7 @@ and any path to a file to read from that file]]></string>
 														<string><![CDATA[mainVergil.htm]]></string>
 													</property>
 													<property name="fileSize">
-														<long>2874</long>
+														<long>2983</long>
 													</property>
 													<property name="macBinary">
 														<boolean>false</boolean>
@@ -2327,7 +2436,7 @@ and any path to a file to read from that file]]></string>
 														<string><![CDATA[ptII5.0.releaseVergil.htm]]></string>
 													</property>
 													<property name="fileSize">
-														<long>21950</long>
+														<long>24734</long>
 													</property>
 													<property name="macBinary">
 														<boolean>false</boolean>
@@ -2356,7 +2465,7 @@ and any path to a file to read from that file]]></string>
 														<string><![CDATA[troubleshootingVergil.htm]]></string>
 													</property>
 													<property name="fileSize">
-														<long>1902</long>
+														<long>1896</long>
 													</property>
 													<property name="macBinary">
 														<boolean>false</boolean>
@@ -2385,7 +2494,7 @@ and any path to a file to read from that file]]></string>
 														<string><![CDATA[webStartHelp.htm]]></string>
 													</property>
 													<property name="fileSize">
-														<long>22888</long>
+														<long>22889</long>
 													</property>
 													<property name="macBinary">
 														<boolean>false</boolean>
@@ -2414,7 +2523,7 @@ and any path to a file to read from that file]]></string>
 														<string><![CDATA[whatsnew.htm]]></string>
 													</property>
 													<property name="fileSize">
-														<long>32122</long>
+														<long>32396</long>
 													</property>
 													<property name="macBinary">
 														<boolean>false</boolean>
@@ -2443,7 +2552,7 @@ and any path to a file to read from that file]]></string>
 														<string><![CDATA[whatsnewVergil.htm]]></string>
 													</property>
 													<property name="fileSize">
-														<long>32052</long>
+														<long>32320</long>
 													</property>
 													<property name="macBinary">
 														<boolean>false</boolean>
@@ -2729,7 +2838,7 @@ it will search for ones in this list]]></string>
 														</object>
 													</method>
 													<method name="addElement">
-														<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="33fcc8d09354">
+														<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="4f9f4c55b93f">
 															<property name="propertyValue">
 																<string><![CDATA[ptolemy.actor.gui.BrowserLauncher]]></string>
 															</property>
@@ -2934,7 +3043,7 @@ it will search for ones in this list]]></string>
 														</object>
 													</method>
 													<method name="addElement">
-														<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="33fcc8da935d">
+														<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="4f9f4c5eb948">
 															<property name="propertyValue">
 																<string><![CDATA[ptolemy.actor.gui.BrowserLauncher]]></string>
 															</property>
@@ -3139,7 +3248,7 @@ it will search for ones in this list]]></string>
 														</object>
 													</method>
 													<method name="addElement">
-														<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="33fcc8e39366">
+														<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="4f9f4c5fb951">
 															<property name="propertyValue">
 																<string><![CDATA[ptolemy.actor.gui.BrowserLauncher]]></string>
 															</property>
@@ -3344,7 +3453,7 @@ it will search for ones in this list]]></string>
 														</object>
 													</method>
 													<method name="addElement">
-														<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="33fcc8ed936f">
+														<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="4f9f4c68b95a">
 															<property name="propertyValue">
 																<string><![CDATA[ptolemy.actor.gui.BrowserLauncher]]></string>
 															</property>
@@ -3549,7 +3658,7 @@ it will search for ones in this list]]></string>
 														</object>
 													</method>
 													<method name="addElement">
-														<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="33fcc9029377">
+														<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="4f9f4c73b962">
 															<property name="propertyValue">
 																<string><![CDATA[ptolemy.actor.gui.BrowserLauncher]]></string>
 															</property>
@@ -3837,7 +3946,7 @@ generated during compilation.]]></string>
 									<installChildren>
 										<object class="com.zerog.ia.installer.actions.ExpandFile" objectID="fd6819bca0db">
 											<property name="sourceName">
-												<string><![CDATA[ptII5.0-beta.src.jar]]></string>
+												<string><![CDATA[ptII-5.0.beta.src.jar]]></string>
 											</property>
 											<property name="sourcePath">
 												<string><![CDATA[C:\cxh\ptII-5.0\adm\gen-5.0\]]></string>
@@ -3849,7 +3958,7 @@ generated during compilation.]]></string>
 												<boolean>true</boolean>
 											</property>
 											<property name="sizeOfArchive">
-												<long>57423525</long>
+												<long>61965161</long>
 											</property>
 										</object>
 									</installChildren>
@@ -4080,7 +4189,7 @@ it will search for ones in this list]]></string>
 														</object>
 													</method>
 													<method name="addElement">
-														<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="33fcc915938a">
+														<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="4f9f4c7db975">
 															<property name="propertyValue">
 																<string><![CDATA[ptolemy.actor.gui.jnlp.PtinyApplication]]></string>
 															</property>
@@ -4323,7 +4432,7 @@ it will search for ones in this list]]></string>
 																</object>
 															</method>
 															<method name="addElement">
-																<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="33fcc92a9392">
+																<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="4f9f4c87b97f">
 																	<property name="propertyValue">
 																		<string><![CDATA[ptolemy.plot.plotml.EditablePlotMLApplication]]></string>
 																	</property>
@@ -4520,7 +4629,7 @@ and any path to a file to read from that file]]></string>
 												<string><![CDATA[domains.xml]]></string>
 											</property>
 											<property name="fileSize">
-												<long>1593</long>
+												<long>1720</long>
 											</property>
 											<property name="macBinary">
 												<boolean>false</boolean>
@@ -4549,7 +4658,7 @@ and any path to a file to read from that file]]></string>
 												<string><![CDATA[ptinyDomains.xml]]></string>
 											</property>
 											<property name="fileSize">
-												<long>802</long>
+												<long>871</long>
 											</property>
 											<property name="macBinary">
 												<boolean>false</boolean>
@@ -4709,7 +4818,7 @@ it will search for ones in this list]]></string>
 														</object>
 													</method>
 													<method name="addElement">
-														<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="33fcc93d939f">
+														<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="4f9f4c90b98d">
 															<property name="propertyValue">
 																<string><![CDATA[ptolemy.plot.plotml.HistogramMLApplication]]></string>
 															</property>
@@ -4783,7 +4892,7 @@ and any path to a file to read from that file]]></string>
 												<string><![CDATA[MobileFunction.xml]]></string>
 											</property>
 											<property name="fileSize">
-												<long>8136</long>
+												<long>8285</long>
 											</property>
 											<property name="macBinary">
 												<boolean>false</boolean>
@@ -4844,7 +4953,7 @@ and any path to a file to read from that file]]></string>
 												<string><![CDATA[MoMLViewerApplet.class]]></string>
 											</property>
 											<property name="fileSize">
-												<long>3905</long>
+												<long>3941</long>
 											</property>
 											<property name="macBinary">
 												<boolean>false</boolean>
@@ -4960,7 +5069,7 @@ and any path to a file to read from that file]]></string>
 												<string><![CDATA[vergilApplet.jar]]></string>
 											</property>
 											<property name="fileSize">
-												<long>416796</long>
+												<long>443834</long>
 											</property>
 											<property name="macBinary">
 												<boolean>false</boolean>
@@ -4989,7 +5098,7 @@ and any path to a file to read from that file]]></string>
 												<string><![CDATA[VergilApplication$1.class]]></string>
 											</property>
 											<property name="fileSize">
-												<long>818</long>
+												<long>879</long>
 											</property>
 											<property name="macBinary">
 												<boolean>false</boolean>
@@ -5047,7 +5156,7 @@ and any path to a file to read from that file]]></string>
 												<string><![CDATA[VergilApplication.class]]></string>
 											</property>
 											<property name="fileSize">
-												<long>10197</long>
+												<long>10830</long>
 											</property>
 											<property name="macBinary">
 												<boolean>false</boolean>
@@ -5123,6 +5232,7 @@ and any path to a file to read from that file]]></string>
 												<object refID="08baeeb1a1f5"/>
 												<object refID="752ce142947a"/>
 												<object refID="6cd7fc8f9186"/>
+												<object refID="4d9bff5ab5de"/>
 											</visualChildren>
 										</object>
 										<object class="com.zerog.ia.installer.actions.InstallDirectory" objectID="2b3863bb9032">
@@ -5148,7 +5258,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="totalSize">
-												<long>56387</long>
+												<long>1</long>
 											</property>
 											<property name="macBinary">
 												<boolean>false</boolean>
@@ -5177,7 +5287,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="totalSize">
-												<long>35157</long>
+												<long>1</long>
 											</property>
 											<property name="macBinary">
 												<boolean>false</boolean>
@@ -5206,7 +5316,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="totalSize">
-												<long>64930</long>
+												<long>1</long>
 											</property>
 											<property name="macBinary">
 												<boolean>false</boolean>
@@ -5235,7 +5345,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="totalSize">
-												<long>1395</long>
+												<long>1</long>
 											</property>
 											<property name="macBinary">
 												<boolean>false</boolean>
@@ -5264,7 +5374,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="totalSize">
-												<long>82570</long>
+												<long>1</long>
 											</property>
 											<property name="macBinary">
 												<boolean>false</boolean>
@@ -5293,7 +5403,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="totalSize">
-												<long>84528</long>
+												<long>1</long>
 											</property>
 											<property name="macBinary">
 												<boolean>false</boolean>
@@ -5322,7 +5432,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="totalSize">
-												<long>143913</long>
+												<long>1</long>
 											</property>
 											<property name="macBinary">
 												<boolean>false</boolean>
@@ -5351,7 +5461,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="totalSize">
-												<long>17852</long>
+												<long>1</long>
 											</property>
 											<property name="macBinary">
 												<boolean>false</boolean>
@@ -5380,7 +5490,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="totalSize">
-												<long>155343</long>
+												<long>1</long>
 											</property>
 											<property name="macBinary">
 												<boolean>false</boolean>
@@ -5409,7 +5519,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="totalSize">
-												<long>171500</long>
+												<long>1</long>
 											</property>
 											<property name="macBinary">
 												<boolean>false</boolean>
@@ -5487,7 +5597,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="totalSize">
-												<long>12781</long>
+												<long>1</long>
 											</property>
 											<property name="macBinary">
 												<boolean>false</boolean>
@@ -5516,7 +5626,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="totalSize">
-												<long>20012</long>
+												<long>1</long>
 											</property>
 											<property name="macBinary">
 												<boolean>false</boolean>
@@ -5545,7 +5655,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="totalSize">
-												<long>2515485</long>
+												<long>1</long>
 											</property>
 											<property name="macBinary">
 												<boolean>false</boolean>
@@ -5574,7 +5684,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="totalSize">
-												<long>259991</long>
+												<long>1</long>
 											</property>
 											<property name="macBinary">
 												<boolean>false</boolean>
@@ -5603,7 +5713,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="totalSize">
-												<long>516463</long>
+												<long>1</long>
 											</property>
 											<property name="macBinary">
 												<boolean>false</boolean>
@@ -5632,7 +5742,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="totalSize">
-												<long>256040</long>
+												<long>1</long>
 											</property>
 											<property name="macBinary">
 												<boolean>false</boolean>
@@ -5661,7 +5771,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="totalSize">
-												<long>1182761</long>
+												<long>1</long>
 											</property>
 											<property name="macBinary">
 												<boolean>false</boolean>
@@ -5719,7 +5829,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="totalSize">
-														<long>130383</long>
+														<long>1</long>
 													</property>
 													<property name="macBinary">
 														<boolean>false</boolean>
@@ -5750,7 +5860,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="totalSize">
-														<long>51631</long>
+														<long>1</long>
 													</property>
 													<property name="macBinary">
 														<boolean>false</boolean>
@@ -5781,7 +5891,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="totalSize">
-														<long>62483</long>
+														<long>1</long>
 													</property>
 													<property name="macBinary">
 														<boolean>false</boolean>
@@ -5811,7 +5921,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="totalSize">
-														<long>112019</long>
+														<long>1</long>
 													</property>
 													<property name="macBinary">
 														<boolean>false</boolean>
@@ -5840,7 +5950,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="totalSize">
-														<long>632309</long>
+														<long>1</long>
 													</property>
 													<property name="macBinary">
 														<boolean>false</boolean>
@@ -5869,7 +5979,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="totalSize">
-														<long>14924</long>
+														<long>1</long>
 													</property>
 													<property name="macBinary">
 														<boolean>false</boolean>
@@ -5957,7 +6067,7 @@ and any path to a file to read from that file]]></string>
 																		<boolean>false</boolean>
 																	</property>
 																	<property name="totalSize">
-																		<long>259554</long>
+																		<long>1</long>
 																	</property>
 																	<property name="macBinary">
 																		<boolean>false</boolean>
@@ -5986,7 +6096,7 @@ and any path to a file to read from that file]]></string>
 																		<boolean>false</boolean>
 																	</property>
 																	<property name="totalSize">
-																		<long>24940</long>
+																		<long>1</long>
 																	</property>
 																	<property name="macBinary">
 																		<boolean>false</boolean>
@@ -6017,7 +6127,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="totalSize">
-																<long>22429</long>
+																<long>1</long>
 															</property>
 															<property name="macBinary">
 																<boolean>false</boolean>
@@ -6043,7 +6153,7 @@ and any path to a file to read from that file]]></string>
 																<string><![CDATA[psdf.jar]]></string>
 															</property>
 															<property name="fileSize">
-																<long>13702</long>
+																<long>14562</long>
 															</property>
 															<property name="macBinary">
 																<boolean>false</boolean>
@@ -6137,7 +6247,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="totalSize">
-														<long>166283</long>
+														<long>1</long>
 													</property>
 													<property name="macBinary">
 														<boolean>false</boolean>
@@ -6166,7 +6276,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="totalSize">
-														<long>183843</long>
+														<long>1</long>
 													</property>
 													<property name="macBinary">
 														<boolean>false</boolean>
@@ -6279,7 +6389,7 @@ and any path to a file to read from that file]]></string>
 																				<string><![CDATA[AntennaGainTest.xml]]></string>
 																			</property>
 																			<property name="fileSize">
-																				<long>7620</long>
+																				<long>7616</long>
 																			</property>
 																			<property name="macBinary">
 																				<boolean>false</boolean>
@@ -6308,7 +6418,7 @@ and any path to a file to read from that file]]></string>
 																				<string><![CDATA[AntennaModel.xml]]></string>
 																			</property>
 																			<property name="fileSize">
-																				<long>33977</long>
+																				<long>33973</long>
 																			</property>
 																			<property name="macBinary">
 																				<boolean>false</boolean>
@@ -6337,7 +6447,7 @@ and any path to a file to read from that file]]></string>
 																				<string><![CDATA[ReceiveAntennaPattern.xml]]></string>
 																			</property>
 																			<property name="fileSize">
-																				<long>45887</long>
+																				<long>45080</long>
 																			</property>
 																			<property name="macBinary">
 																				<boolean>false</boolean>
@@ -6366,7 +6476,7 @@ and any path to a file to read from that file]]></string>
 																				<string><![CDATA[TransmitAntennaPattern.xml]]></string>
 																			</property>
 																			<property name="fileSize">
-																				<long>44270</long>
+																				<long>43463</long>
 																			</property>
 																			<property name="macBinary">
 																				<boolean>false</boolean>
@@ -6400,7 +6510,7 @@ and any path to a file to read from that file]]></string>
 																		<boolean>false</boolean>
 																	</property>
 																	<property name="totalSize">
-																		<long>27907</long>
+																		<long>1</long>
 																	</property>
 																	<property name="macBinary">
 																		<boolean>false</boolean>
@@ -6429,7 +6539,7 @@ and any path to a file to read from that file]]></string>
 																		<boolean>false</boolean>
 																	</property>
 																	<property name="totalSize">
-																		<long>119238</long>
+																		<long>1</long>
 																	</property>
 																	<property name="macBinary">
 																		<boolean>false</boolean>
@@ -6458,7 +6568,7 @@ and any path to a file to read from that file]]></string>
 																		<boolean>false</boolean>
 																	</property>
 																	<property name="totalSize">
-																		<long>103347</long>
+																		<long>1</long>
 																	</property>
 																	<property name="macBinary">
 																		<boolean>false</boolean>
@@ -6487,7 +6597,7 @@ and any path to a file to read from that file]]></string>
 																		<boolean>false</boolean>
 																	</property>
 																	<property name="totalSize">
-																		<long>45982</long>
+																		<long>1</long>
 																	</property>
 																	<property name="macBinary">
 																		<boolean>false</boolean>
@@ -6516,7 +6626,7 @@ and any path to a file to read from that file]]></string>
 																		<boolean>false</boolean>
 																	</property>
 																	<property name="totalSize">
-																		<long>34725</long>
+																		<long>1</long>
 																	</property>
 																	<property name="macBinary">
 																		<boolean>false</boolean>
@@ -6545,7 +6655,7 @@ and any path to a file to read from that file]]></string>
 																		<boolean>false</boolean>
 																	</property>
 																	<property name="totalSize">
-																		<long>491753</long>
+																		<long>1</long>
 																	</property>
 																	<property name="macBinary">
 																		<boolean>false</boolean>
@@ -6574,7 +6684,7 @@ and any path to a file to read from that file]]></string>
 																		<boolean>false</boolean>
 																	</property>
 																	<property name="totalSize">
-																		<long>23862</long>
+																		<long>1</long>
 																	</property>
 																	<property name="macBinary">
 																		<boolean>false</boolean>
@@ -6603,7 +6713,7 @@ and any path to a file to read from that file]]></string>
 																		<boolean>false</boolean>
 																	</property>
 																	<property name="totalSize">
-																		<long>100010</long>
+																		<long>1</long>
 																	</property>
 																	<property name="macBinary">
 																		<boolean>false</boolean>
@@ -6634,7 +6744,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="totalSize">
-																<long>32365</long>
+																<long>1</long>
 															</property>
 															<property name="macBinary">
 																<boolean>false</boolean>
@@ -6663,7 +6773,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="totalSize">
-																<long>75678</long>
+																<long>1</long>
 															</property>
 															<property name="macBinary">
 																<boolean>false</boolean>
@@ -6689,7 +6799,7 @@ and any path to a file to read from that file]]></string>
 																<string><![CDATA[wireless.jar]]></string>
 															</property>
 															<property name="fileSize">
-																<long>58659</long>
+																<long>59240</long>
 															</property>
 															<property name="macBinary">
 																<boolean>false</boolean>
@@ -6729,6 +6839,271 @@ and any path to a file to read from that file]]></string>
 														</object>
 													</visualChildren>
 												</object>
+												<object class="com.zerog.ia.installer.actions.InstallDirectory" objectID="4d9a1d36b5b0">
+													<property name="unixPermissions">
+														<string><![CDATA[775]]></string>
+													</property>
+													<property name="sourceName">
+														<string><![CDATA[]]></string>
+													</property>
+													<property name="overrideUnixPermissions">
+														<boolean>false</boolean>
+													</property>
+													<property name="sourcePath">
+														<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\ddf]]></string>
+													</property>
+													<property name="shouldUninstall">
+														<boolean>true</boolean>
+													</property>
+													<property name="destinationName">
+														<string><![CDATA[ddf]]></string>
+													</property>
+													<property name="removeRecursively">
+														<boolean>false</boolean>
+													</property>
+													<property name="totalSize">
+														<long>1</long>
+													</property>
+													<property name="macBinary">
+														<boolean>false</boolean>
+													</property>
+													<visualChildren>
+														<object class="com.zerog.ia.installer.actions.InstallDirectory" objectID="4d9a1d36b5b1">
+															<property name="unixPermissions">
+																<string><![CDATA[775]]></string>
+															</property>
+															<property name="sourceName">
+																<string><![CDATA[]]></string>
+															</property>
+															<property name="overrideUnixPermissions">
+																<boolean>false</boolean>
+															</property>
+															<property name="sourcePath">
+																<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\ddf\demo]]></string>
+															</property>
+															<property name="shouldUninstall">
+																<boolean>true</boolean>
+															</property>
+															<property name="destinationName">
+																<string><![CDATA[demo]]></string>
+															</property>
+															<property name="removeRecursively">
+																<boolean>false</boolean>
+															</property>
+															<property name="totalSize">
+																<long>1</long>
+															</property>
+															<property name="macBinary">
+																<boolean>false</boolean>
+															</property>
+														</object>
+														<object class="com.zerog.ia.installer.actions.InstallDirectory" objectID="4d9a1d40b5be">
+															<property name="unixPermissions">
+																<string><![CDATA[775]]></string>
+															</property>
+															<property name="sourceName">
+																<string><![CDATA[]]></string>
+															</property>
+															<property name="overrideUnixPermissions">
+																<boolean>false</boolean>
+															</property>
+															<property name="sourcePath">
+																<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\ddf\kernel]]></string>
+															</property>
+															<property name="shouldUninstall">
+																<boolean>true</boolean>
+															</property>
+															<property name="destinationName">
+																<string><![CDATA[kernel]]></string>
+															</property>
+															<property name="removeRecursively">
+																<boolean>false</boolean>
+															</property>
+															<property name="totalSize">
+																<long>1</long>
+															</property>
+															<property name="macBinary">
+																<boolean>false</boolean>
+															</property>
+														</object>
+														<object class="com.zerog.ia.installer.actions.InstallDirectory" objectID="4d9a1d4ab5c0">
+															<property name="unixPermissions">
+																<string><![CDATA[775]]></string>
+															</property>
+															<property name="sourceName">
+																<string><![CDATA[]]></string>
+															</property>
+															<property name="overrideUnixPermissions">
+																<boolean>false</boolean>
+															</property>
+															<property name="sourcePath">
+																<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\ddf\lib]]></string>
+															</property>
+															<property name="shouldUninstall">
+																<boolean>true</boolean>
+															</property>
+															<property name="destinationName">
+																<string><![CDATA[lib]]></string>
+															</property>
+															<property name="removeRecursively">
+																<boolean>false</boolean>
+															</property>
+															<property name="totalSize">
+																<long>1</long>
+															</property>
+															<property name="macBinary">
+																<boolean>false</boolean>
+															</property>
+														</object>
+														<object class="com.zerog.ia.installer.actions.InstallZipfile" objectID="4d9b32c2b5d4">
+															<property name="unixPermissions">
+																<string><![CDATA[664]]></string>
+															</property>
+															<property name="sourceName">
+																<string><![CDATA[ddf.jar]]></string>
+															</property>
+															<property name="overrideUnixPermissions">
+																<boolean>false</boolean>
+															</property>
+															<property name="sourcePath">
+																<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\ddf\]]></string>
+															</property>
+															<property name="shouldUninstall">
+																<boolean>true</boolean>
+															</property>
+															<property name="destinationName">
+																<string><![CDATA[ddf.jar]]></string>
+															</property>
+															<property name="fileSize">
+																<long>-1</long>
+															</property>
+															<property name="macBinary">
+																<boolean>false</boolean>
+															</property>
+															<property name="targetCheckKind">
+																<int>0</int>
+															</property>
+														</object>
+													</visualChildren>
+												</object>
+												<object class="com.zerog.ia.installer.actions.InstallDirectory" objectID="4d9a1d4ab5c5">
+													<property name="unixPermissions">
+														<string><![CDATA[775]]></string>
+													</property>
+													<property name="sourceName">
+														<string><![CDATA[]]></string>
+													</property>
+													<property name="overrideUnixPermissions">
+														<boolean>false</boolean>
+													</property>
+													<property name="sourcePath">
+														<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\hdf]]></string>
+													</property>
+													<property name="shouldUninstall">
+														<boolean>true</boolean>
+													</property>
+													<property name="destinationName">
+														<string><![CDATA[hdf]]></string>
+													</property>
+													<property name="removeRecursively">
+														<boolean>false</boolean>
+													</property>
+													<property name="totalSize">
+														<long>1</long>
+													</property>
+													<property name="macBinary">
+														<boolean>false</boolean>
+													</property>
+													<visualChildren>
+														<object class="com.zerog.ia.installer.actions.InstallDirectory" objectID="4d9a1d4ab5c6">
+															<property name="unixPermissions">
+																<string><![CDATA[775]]></string>
+															</property>
+															<property name="sourceName">
+																<string><![CDATA[]]></string>
+															</property>
+															<property name="overrideUnixPermissions">
+																<boolean>false</boolean>
+															</property>
+															<property name="sourcePath">
+																<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\hdf\demo]]></string>
+															</property>
+															<property name="shouldUninstall">
+																<boolean>true</boolean>
+															</property>
+															<property name="destinationName">
+																<string><![CDATA[demo]]></string>
+															</property>
+															<property name="removeRecursively">
+																<boolean>false</boolean>
+															</property>
+															<property name="totalSize">
+																<long>1</long>
+															</property>
+															<property name="macBinary">
+																<boolean>false</boolean>
+															</property>
+														</object>
+														<object class="com.zerog.ia.installer.actions.InstallDirectory" objectID="4d9a1d4ab5cd">
+															<property name="unixPermissions">
+																<string><![CDATA[775]]></string>
+															</property>
+															<property name="sourceName">
+																<string><![CDATA[]]></string>
+															</property>
+															<property name="overrideUnixPermissions">
+																<boolean>false</boolean>
+															</property>
+															<property name="sourcePath">
+																<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\hdf\kernel]]></string>
+															</property>
+															<property name="shouldUninstall">
+																<boolean>true</boolean>
+															</property>
+															<property name="destinationName">
+																<string><![CDATA[kernel]]></string>
+															</property>
+															<property name="removeRecursively">
+																<boolean>false</boolean>
+															</property>
+															<property name="totalSize">
+																<long>1</long>
+															</property>
+															<property name="macBinary">
+																<boolean>false</boolean>
+															</property>
+														</object>
+														<object class="com.zerog.ia.installer.actions.InstallZipfile" objectID="4d9b8fabb5d9">
+															<property name="unixPermissions">
+																<string><![CDATA[664]]></string>
+															</property>
+															<property name="sourceName">
+																<string><![CDATA[hdf.jar]]></string>
+															</property>
+															<property name="overrideUnixPermissions">
+																<boolean>false</boolean>
+															</property>
+															<property name="sourcePath">
+																<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\hdf\]]></string>
+															</property>
+															<property name="shouldUninstall">
+																<boolean>true</boolean>
+															</property>
+															<property name="destinationName">
+																<string><![CDATA[hdf.jar]]></string>
+															</property>
+															<property name="fileSize">
+																<long>-1</long>
+															</property>
+															<property name="macBinary">
+																<boolean>false</boolean>
+															</property>
+															<property name="targetCheckKind">
+																<int>0</int>
+															</property>
+														</object>
+													</visualChildren>
+												</object>
 											</visualChildren>
 										</object>
 										<object class="com.zerog.ia.installer.actions.InstallDirectory" objectID="2b3863949018">
@@ -6754,7 +7129,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="totalSize">
-												<long>480568</long>
+												<long>1</long>
 											</property>
 											<property name="macBinary">
 												<boolean>false</boolean>
@@ -6783,7 +7158,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="totalSize">
-												<long>51815</long>
+												<long>1</long>
 											</property>
 											<property name="macBinary">
 												<boolean>false</boolean>
@@ -6812,7 +7187,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="totalSize">
-												<long>141989</long>
+												<long>1</long>
 											</property>
 											<property name="macBinary">
 												<boolean>false</boolean>
@@ -6873,7 +7248,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="totalSize">
-												<long>23829</long>
+												<long>1</long>
 											</property>
 											<property name="macBinary">
 												<boolean>false</boolean>
@@ -6902,7 +7277,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="totalSize">
-												<long>14967</long>
+												<long>1</long>
 											</property>
 											<property name="macBinary">
 												<boolean>false</boolean>
@@ -6931,7 +7306,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="totalSize">
-												<long>5227</long>
+												<long>1</long>
 											</property>
 											<property name="macBinary">
 												<boolean>false</boolean>
@@ -7087,7 +7462,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="totalSize">
-																<long>33200</long>
+																<long>1</long>
 															</property>
 															<property name="macBinary">
 																<boolean>false</boolean>
@@ -7118,7 +7493,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="totalSize">
-														<long>198814</long>
+														<long>1</long>
 													</property>
 													<property name="macBinary">
 														<boolean>false</boolean>
@@ -7147,7 +7522,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="totalSize">
-														<long>8445</long>
+														<long>1</long>
 													</property>
 													<property name="macBinary">
 														<boolean>false</boolean>
@@ -7176,7 +7551,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="totalSize">
-														<long>353491</long>
+														<long>1</long>
 													</property>
 													<property name="macBinary">
 														<boolean>false</boolean>
@@ -7205,7 +7580,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="totalSize">
-														<long>10765</long>
+														<long>1</long>
 													</property>
 													<property name="macBinary">
 														<boolean>false</boolean>
@@ -7234,7 +7609,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="totalSize">
-														<long>40155</long>
+														<long>1</long>
 													</property>
 													<property name="macBinary">
 														<boolean>false</boolean>
@@ -7263,7 +7638,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="totalSize">
-														<long>56098</long>
+														<long>1</long>
 													</property>
 													<property name="macBinary">
 														<boolean>false</boolean>
@@ -7376,7 +7751,7 @@ and any path to a file to read from that file]]></string>
 																				<string><![CDATA[Signature.xml]]></string>
 																			</property>
 																			<property name="fileSize">
-																				<long>20589</long>
+																				<long>22780</long>
 																			</property>
 																			<property name="macBinary">
 																				<boolean>false</boolean>
@@ -7405,7 +7780,7 @@ and any path to a file to read from that file]]></string>
 																				<string><![CDATA[ptKeystore]]></string>
 																			</property>
 																			<property name="fileSize">
-																				<long>1308</long>
+																				<long>1307</long>
 																			</property>
 																			<property name="macBinary">
 																				<boolean>false</boolean>
@@ -7443,7 +7818,36 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="totalSize">
-														<long>137791</long>
+														<long>1</long>
+													</property>
+													<property name="macBinary">
+														<boolean>false</boolean>
+													</property>
+												</object>
+												<object class="com.zerog.ia.installer.actions.InstallDirectory" objectID="4d9cd338b638">
+													<property name="unixPermissions">
+														<string><![CDATA[775]]></string>
+													</property>
+													<property name="sourceName">
+														<string><![CDATA[]]></string>
+													</property>
+													<property name="overrideUnixPermissions">
+														<boolean>false</boolean>
+													</property>
+													<property name="sourcePath">
+														<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\actor\lib\colt]]></string>
+													</property>
+													<property name="shouldUninstall">
+														<boolean>true</boolean>
+													</property>
+													<property name="destinationName">
+														<string><![CDATA[colt]]></string>
+													</property>
+													<property name="removeRecursively">
+														<boolean>false</boolean>
+													</property>
+													<property name="totalSize">
+														<long>1</long>
 													</property>
 													<property name="macBinary">
 														<boolean>false</boolean>
@@ -7537,7 +7941,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="totalSize">
-														<long>183476</long>
+														<long>1</long>
 													</property>
 													<property name="macBinary">
 														<boolean>false</boolean>
@@ -7566,7 +7970,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="totalSize">
-														<long>1013058</long>
+														<long>1</long>
 													</property>
 													<property name="macBinary">
 														<boolean>false</boolean>
@@ -7597,7 +8001,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="totalSize">
-														<long>183183</long>
+														<long>1</long>
 													</property>
 													<property name="macBinary">
 														<boolean>false</boolean>
@@ -7886,7 +8290,7 @@ included.]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[C:\cxh\ptII-5.0\vendors\misc\x10\tjx10p-11\]]></string>
+												<string><![CDATA[C:\cxh\ptII-5.0\vendors\misc\x10\tjx10p-12\]]></string>
 											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
@@ -8173,7 +8577,7 @@ it will search for ones in this list]]></string>
 														</object>
 													</method>
 													<method name="addElement">
-														<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="33fcc9ca93ff">
+														<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="4f9f4cebb9f9">
 															<property name="propertyValue">
 																<string><![CDATA[ptolemy.actor.gui.jnlp.HyVisualApplication]]></string>
 															</property>
@@ -8401,7 +8805,7 @@ it will search for ones in this list]]></string>
 														</object>
 													</method>
 													<method name="addElement">
-														<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="33fcc9de9408">
+														<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="4f9f4cf5ba03">
 															<property name="propertyValue">
 																<string><![CDATA[ptolemy.actor.gui.jnlp.VisualSenseApplication]]></string>
 															</property>
@@ -8539,7 +8943,6 @@ and any path to a file to read from that file]]></string>
 										<object refID="752ce142947a"/>
 										<object refID="6323153992a2"/>
 										<object refID="6cd7fc8f9186"/>
-										<object refID="a488f5c693de"/>
 										<object refID="20896d299477"/>
 										<object refID="20896d2a9477"/>
 										<object refID="20896d299478"/>
@@ -8547,9 +8950,28 @@ and any path to a file to read from that file]]></string>
 										<object refID="20896e56948f"/>
 										<object refID="2460cd9296ac"/>
 										<object refID="20896ce39477"/>
+										<object refID="4d9b32c2b5d4"/>
+										<object refID="4d9b8fabb5d9"/>
+										<object refID="4d9bff5ab5de"/>
+										<object refID="a488f5c693de"/>
 										<object refID="2b38661491e7"/>
 										<object refID="2b38634e8fce"/>
 										<object refID="2b3863308fa8"/>
+										<object refID="4d9cd338b638"/>
+										<object refID="2b38631b8f97"/>
+										<object refID="2b3863078f8d"/>
+										<object refID="2b3862fd8f86"/>
+										<object refID="2b3862fc8f79"/>
+										<object refID="2b3862de8f5e"/>
+										<object refID="2b3862d48f5a"/>
+										<object refID="2b3862d48f59"/>
+										<object refID="4d9a1d4ab5cd"/>
+										<object refID="4d9a1d4ab5c6"/>
+										<object refID="4d9a1d4ab5c5"/>
+										<object refID="4d9a1d4ab5c0"/>
+										<object refID="4d9a1d40b5be"/>
+										<object refID="4d9a1d36b5b1"/>
+										<object refID="4d9a1d36b5b0"/>
 										<object refID="20896dab9489"/>
 										<object refID="20896d8d9486"/>
 										<object refID="20896d799485"/>
@@ -8575,13 +8997,6 @@ and any path to a file to read from that file]]></string>
 										<object refID="2b38645190b1"/>
 										<object refID="2b3864159086"/>
 										<object refID="2b3863a79027"/>
-										<object refID="2b38631b8f97"/>
-										<object refID="2b3863078f8d"/>
-										<object refID="2b3862fd8f86"/>
-										<object refID="2b3862fc8f79"/>
-										<object refID="2b3862de8f5e"/>
-										<object refID="2b3862d48f5a"/>
-										<object refID="2b3862d48f59"/>
 										<object refID="2b3863a79026"/>
 										<object refID="2b3862c08f4d"/>
 										<object refID="2b3862ac8f47"/>
@@ -8808,7 +9223,7 @@ but no sources]]></string>
 			</installChildren>
 		</object>
 	</installationObjects>
-	<restorationObjects count="58">
+	<restorationObjects count="64">
 		<object refID="08982cbf8d57"/>
 		<object refID="08982d068d58"/>
 		<object refID="08982e6e8d77"/>
@@ -8850,6 +9265,11 @@ but no sources]]></string>
 		<object refID="20896d799485"/>
 		<object refID="20896d8d9486"/>
 		<object refID="20896dab9489"/>
+		<object refID="4d9a1d36b5b1"/>
+		<object refID="4d9a1d40b5be"/>
+		<object refID="4d9a1d4ab5c0"/>
+		<object refID="4d9a1d4ab5c6"/>
+		<object refID="4d9a1d4ab5cd"/>
 		<object refID="2b3863949018"/>
 		<object refID="2b38631c8fa3"/>
 		<object refID="2b3862c08f4f"/>
@@ -8864,6 +9284,7 @@ but no sources]]></string>
 		<object refID="2b3863068f88"/>
 		<object refID="2b3863078f8d"/>
 		<object refID="2b38631b8f97"/>
+		<object refID="4d9cd338b638"/>
 		<object refID="2b3863308fa8"/>
 		<object refID="2b38634e8fce"/>
 		<object refID="2b38661491e7"/>
