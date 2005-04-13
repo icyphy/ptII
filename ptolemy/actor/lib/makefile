@@ -254,7 +254,11 @@ MISC_FILES =	$(DIRS)
 OPTIONAL_FILES = \
 	comm \
 	doc \
+	jai \
 	javasound \
+	jmf \
+	joystick \
+	x10 \
 	jspaces \
 	'AbsoluteValue$$1.class' \
 	'AbsoluteValue$$FunctionTerm.class' \
