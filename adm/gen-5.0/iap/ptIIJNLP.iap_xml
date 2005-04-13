@@ -248,10 +248,10 @@ and any path to a file to read from that file]]></string>
 								<string><![CDATA[PtolemyIIIcon.gif]]></string>
 							</property>
 							<property name="smallIconPath">
-								<string><![CDATA[C:\cxh\ptII-4.0\doc\img\]]></string>
+								<string><![CDATA[C:\cxh\ptII-5.0\doc\img\]]></string>
 							</property>
 							<property name="largeIconPath">
-								<string><![CDATA[C:\cxh\ptII-4.0\doc\img\]]></string>
+								<string><![CDATA[C:\cxh\ptII-5.0\doc\img\]]></string>
 							</property>
 						</object>
 					</property>
@@ -274,7 +274,7 @@ and any path to a file to read from that file]]></string>
 								<boolean>false</boolean>
 							</property>
 							<property name="sourcePath">
-								<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\lib\]]></string>
+								<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\lib\]]></string>
 							</property>
 							<property name="shouldUninstall">
 								<boolean>true</boolean>
@@ -305,7 +305,7 @@ and any path to a file to read from that file]]></string>
 								<boolean>false</boolean>
 							</property>
 							<property name="sourcePath">
-								<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\lib\]]></string>
+								<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\lib\]]></string>
 							</property>
 							<property name="shouldUninstall">
 								<boolean>true</boolean>
@@ -336,7 +336,7 @@ and any path to a file to read from that file]]></string>
 								<boolean>false</boolean>
 							</property>
 							<property name="sourcePath">
-								<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\lib\]]></string>
+								<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\lib\]]></string>
 							</property>
 							<property name="shouldUninstall">
 								<boolean>true</boolean>
@@ -367,7 +367,7 @@ and any path to a file to read from that file]]></string>
 								<boolean>false</boolean>
 							</property>
 							<property name="sourcePath">
-								<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\lib\]]></string>
+								<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\lib\]]></string>
 							</property>
 							<property name="shouldUninstall">
 								<boolean>true</boolean>
@@ -398,7 +398,7 @@ and any path to a file to read from that file]]></string>
 								<boolean>false</boolean>
 							</property>
 							<property name="sourcePath">
-								<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\lib\]]></string>
+								<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\lib\]]></string>
 							</property>
 							<property name="shouldUninstall">
 								<boolean>true</boolean>
@@ -429,7 +429,7 @@ and any path to a file to read from that file]]></string>
 								<boolean>false</boolean>
 							</property>
 							<property name="sourcePath">
-								<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\lib\]]></string>
+								<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\lib\]]></string>
 							</property>
 							<property name="shouldUninstall">
 								<boolean>true</boolean>
@@ -460,7 +460,7 @@ and any path to a file to read from that file]]></string>
 								<boolean>false</boolean>
 							</property>
 							<property name="sourcePath">
-								<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\lib\]]></string>
+								<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\lib\]]></string>
 							</property>
 							<property name="shouldUninstall">
 								<boolean>true</boolean>
@@ -491,7 +491,7 @@ and any path to a file to read from that file]]></string>
 								<boolean>false</boolean>
 							</property>
 							<property name="sourcePath">
-								<string><![CDATA[C:\cxh\ptII-4.0\vendors\misc\joystick\]]></string>
+								<string><![CDATA[C:\cxh\ptII-5.0\vendors\misc\joystick\]]></string>
 							</property>
 							<property name="shouldUninstall">
 								<boolean>true</boolean>
@@ -522,7 +522,7 @@ and any path to a file to read from that file]]></string>
 								<boolean>false</boolean>
 							</property>
 							<property name="sourcePath">
-								<string><![CDATA[C:\cxh\ptII-4.0\vendors\misc\x10\tjx10p-11\lib\]]></string>
+								<string><![CDATA[C:\cxh\ptII-5.0\vendors\misc\x10\tjx10p-11\lib\]]></string>
 							</property>
 							<property name="shouldUninstall">
 								<boolean>true</boolean>
@@ -553,7 +553,7 @@ and any path to a file to read from that file]]></string>
 								<boolean>false</boolean>
 							</property>
 							<property name="sourcePath">
-								<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\]]></string>
+								<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\]]></string>
 							</property>
 							<property name="shouldUninstall">
 								<boolean>true</boolean>
@@ -584,7 +584,7 @@ and any path to a file to read from that file]]></string>
 								<boolean>false</boolean>
 							</property>
 							<property name="sourcePath">
-								<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\actor\gui\jnlp\]]></string>
+								<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\actor\gui\jnlp\]]></string>
 							</property>
 							<property name="shouldUninstall">
 								<boolean>true</boolean>
@@ -615,7 +615,7 @@ and any path to a file to read from that file]]></string>
 								<boolean>false</boolean>
 							</property>
 							<property name="sourcePath">
-								<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\doc\]]></string>
+								<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\doc\]]></string>
 							</property>
 							<property name="shouldUninstall">
 								<boolean>true</boolean>
@@ -646,7 +646,7 @@ and any path to a file to read from that file]]></string>
 								<boolean>false</boolean>
 							</property>
 							<property name="sourcePath">
-								<string><![CDATA[C:\cxh\ptII-4.0\lib\]]></string>
+								<string><![CDATA[C:\cxh\ptII-5.0\lib\]]></string>
 							</property>
 							<property name="shouldUninstall">
 								<boolean>true</boolean>
@@ -677,7 +677,7 @@ and any path to a file to read from that file]]></string>
 								<boolean>false</boolean>
 							</property>
 							<property name="sourcePath">
-								<string><![CDATA[C:\cxh\ptII-4.0\lib\]]></string>
+								<string><![CDATA[C:\cxh\ptII-5.0\lib\]]></string>
 							</property>
 							<property name="shouldUninstall">
 								<boolean>true</boolean>
@@ -702,7 +702,7 @@ and any path to a file to read from that file]]></string>
 				<string><![CDATA[The installer cannot run on your configuration. It will now quit.]]></string>
 			</property>
 			<property name="userSplashPath">
-				<string><![CDATA[C:\cxh\ptII-4.0\doc\img\]]></string>
+				<string><![CDATA[C:\cxh\ptII-5.0\doc\img\]]></string>
 			</property>
 			<property name="userSplashName">
 				<string><![CDATA[PtolemyIISplash.gif]]></string>
@@ -863,7 +863,7 @@ You may cancel this installation at any time by clicking the 'Cancel' button.]]>
 								<string><![CDATA[Installation and Use of $PRODUCT_NAME$ Requires Acceptance of the Following License Agreement:]]></string>
 							</property>
 							<property name="resourcePath">
-								<string><![CDATA[c:\cxh\ptII-4.0\adm\gen-4.0\]]></string>
+								<string><![CDATA[c:\cxh\ptII-5.0\adm\gen-5.0\]]></string>
 							</property>
 							<property name="resourceName">
 								<string><![CDATA[copyright.txt]]></string>
@@ -933,7 +933,7 @@ You may cancel this installation at any time by clicking the 'Cancel' button.]]>
 								<string><![CDATA[USER_MAGIC_FOLDER_1]]></string>
 							</property>
 							<property name="value">
-								<string><![CDATA[$WIN_COMMON_PROGRAMS_MENU$$/$Ptolemy$\$ptII4.0.1]]></string>
+								<string><![CDATA[$WIN_COMMON_PROGRAMS_MENU$$/$Ptolemy$\$ptII5.0-beta]]></string>
 							</property>
 						</object>
 					</method>
@@ -943,7 +943,7 @@ You may cancel this installation at any time by clicking the 'Cancel' button.]]>
 								<string><![CDATA[USER_MAGIC_FOLDER_2]]></string>
 							</property>
 							<property name="value">
-								<string><![CDATA[$SYSTEM_DRIVE_ROOT$$/$Ptolemy$/$ptII4.0.1]]></string>
+								<string><![CDATA[$SYSTEM_DRIVE_ROOT$$/$Ptolemy$/$ptII5.0-beta]]></string>
 							</property>
 						</object>
 					</method>
@@ -1489,13 +1489,13 @@ Press ""Done"" to quit the installer.]]></string>
 			<property name="installerInfoData">
 				<object class="com.zerog.ia.installer.util.InstallerInfoData" objectID="a3d1e30297df">
 					<property name="installerTitle">
-						<string><![CDATA[Ptolemy II 4.0.1]]></string>
+						<string><![CDATA[Ptolemy II 5.0-beta]]></string>
 					</property>
 					<property name="installerName">
 						<string><![CDATA[ptII4_0_1installer]]></string>
 					</property>
 					<property name="productName">
-						<string><![CDATA[Ptolemy II 4.0.1]]></string>
+						<string><![CDATA[Ptolemy II 5.0-beta]]></string>
 					</property>
 					<property name="productID">
 						<object class="com.zerog.registry.UUID">
@@ -2019,7 +2019,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\doc\]]></string>
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\doc\]]></string>
 											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
@@ -2051,7 +2051,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\doc\]]></string>
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\doc\]]></string>
 											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
@@ -2080,7 +2080,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\doc\]]></string>
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\doc\]]></string>
 											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
@@ -2109,7 +2109,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\doc\]]></string>
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\doc\]]></string>
 											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
@@ -2138,7 +2138,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\doc\coding]]></string>
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\doc\coding]]></string>
 											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
@@ -2167,7 +2167,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\doc]]></string>
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\doc]]></string>
 											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
@@ -2202,7 +2202,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\doc\design]]></string>
+														<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\doc\design]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -2231,7 +2231,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\doc\]]></string>
+														<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\doc\]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -2260,7 +2260,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\doc\img]]></string>
+														<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\doc\img]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -2289,7 +2289,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\doc\]]></string>
+														<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\doc\]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -2312,19 +2312,19 @@ and any path to a file to read from that file]]></string>
 														<string><![CDATA[664]]></string>
 													</property>
 													<property name="sourceName">
-														<string><![CDATA[ptII4.0.releaseVergil.htm]]></string>
+														<string><![CDATA[ptII5.0.releaseVergil.htm]]></string>
 													</property>
 													<property name="overrideUnixPermissions">
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\doc\]]></string>
+														<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\doc\]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
 													</property>
 													<property name="destinationName">
-														<string><![CDATA[ptII4.0.releaseVergil.htm]]></string>
+														<string><![CDATA[ptII5.0.releaseVergil.htm]]></string>
 													</property>
 													<property name="fileSize">
 														<long>21950</long>
@@ -2347,7 +2347,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\doc\]]></string>
+														<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\doc\]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -2376,7 +2376,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\doc\]]></string>
+														<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\doc\]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -2405,7 +2405,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\doc\]]></string>
+														<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\doc\]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -2434,7 +2434,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\doc\]]></string>
+														<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\doc\]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -2463,7 +2463,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\doc\]]></string>
+														<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\doc\]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -2772,10 +2772,10 @@ and any path to a file to read from that file]]></string>
 														<string><![CDATA[PDF.gif]]></string>
 													</property>
 													<property name="smallIconPath">
-														<string><![CDATA[C:\cxh\ptII-4.0\doc\img\]]></string>
+														<string><![CDATA[C:\cxh\ptII-5.0\doc\img\]]></string>
 													</property>
 													<property name="largeIconPath">
-														<string><![CDATA[C:\cxh\ptII-4.0\doc\img\]]></string>
+														<string><![CDATA[C:\cxh\ptII-5.0\doc\img\]]></string>
 													</property>
 												</object>
 											</property>
@@ -2977,10 +2977,10 @@ and any path to a file to read from that file]]></string>
 														<string><![CDATA[PDF.gif]]></string>
 													</property>
 													<property name="smallIconPath">
-														<string><![CDATA[C:\cxh\ptII-4.0\doc\img\]]></string>
+														<string><![CDATA[C:\cxh\ptII-5.0\doc\img\]]></string>
 													</property>
 													<property name="largeIconPath">
-														<string><![CDATA[C:\cxh\ptII-4.0\doc\img\]]></string>
+														<string><![CDATA[C:\cxh\ptII-5.0\doc\img\]]></string>
 													</property>
 												</object>
 											</property>
@@ -3182,10 +3182,10 @@ and any path to a file to read from that file]]></string>
 														<string><![CDATA[PDF.gif]]></string>
 													</property>
 													<property name="smallIconPath">
-														<string><![CDATA[C:\cxh\ptII-4.0\doc\img\]]></string>
+														<string><![CDATA[C:\cxh\ptII-5.0\doc\img\]]></string>
 													</property>
 													<property name="largeIconPath">
-														<string><![CDATA[C:\cxh\ptII-4.0\doc\img\]]></string>
+														<string><![CDATA[C:\cxh\ptII-5.0\doc\img\]]></string>
 													</property>
 												</object>
 											</property>
@@ -3387,10 +3387,10 @@ and any path to a file to read from that file]]></string>
 														<string><![CDATA[PDF.gif]]></string>
 													</property>
 													<property name="smallIconPath">
-														<string><![CDATA[C:\cxh\ptII-4.0\doc\img\]]></string>
+														<string><![CDATA[C:\cxh\ptII-5.0\doc\img\]]></string>
 													</property>
 													<property name="largeIconPath">
-														<string><![CDATA[C:\cxh\ptII-4.0\doc\img\]]></string>
+														<string><![CDATA[C:\cxh\ptII-5.0\doc\img\]]></string>
 													</property>
 												</object>
 											</property>
@@ -3592,10 +3592,10 @@ and any path to a file to read from that file]]></string>
 														<string><![CDATA[PDF.gif]]></string>
 													</property>
 													<property name="smallIconPath">
-														<string><![CDATA[C:\cxh\ptII-4.0\doc\img\]]></string>
+														<string><![CDATA[C:\cxh\ptII-5.0\doc\img\]]></string>
 													</property>
 													<property name="largeIconPath">
-														<string><![CDATA[C:\cxh\ptII-4.0\doc\img\]]></string>
+														<string><![CDATA[C:\cxh\ptII-5.0\doc\img\]]></string>
 													</property>
 												</object>
 											</property>
@@ -3622,10 +3622,10 @@ and any path to a file to read from that file]]></string>
 														<string><![CDATA[PDF.gif]]></string>
 													</property>
 													<property name="smallIconPath">
-														<string><![CDATA[C:\cxh\ptII-4.0\doc\img\]]></string>
+														<string><![CDATA[C:\cxh\ptII-5.0\doc\img\]]></string>
 													</property>
 													<property name="largeIconPath">
-														<string><![CDATA[C:\cxh\ptII-4.0\doc\img\]]></string>
+														<string><![CDATA[C:\cxh\ptII-5.0\doc\img\]]></string>
 													</property>
 												</object>
 											</property>
@@ -3658,10 +3658,10 @@ and any path to a file to read from that file]]></string>
 														<string><![CDATA[PDF.gif]]></string>
 													</property>
 													<property name="smallIconPath">
-														<string><![CDATA[C:\cxh\ptII-4.0\doc\img\]]></string>
+														<string><![CDATA[C:\cxh\ptII-5.0\doc\img\]]></string>
 													</property>
 													<property name="largeIconPath">
-														<string><![CDATA[C:\cxh\ptII-4.0\doc\img\]]></string>
+														<string><![CDATA[C:\cxh\ptII-5.0\doc\img\]]></string>
 													</property>
 												</object>
 											</property>
@@ -3694,10 +3694,10 @@ and any path to a file to read from that file]]></string>
 														<string><![CDATA[PDF.gif]]></string>
 													</property>
 													<property name="smallIconPath">
-														<string><![CDATA[C:\cxh\ptII-4.0\doc\img\]]></string>
+														<string><![CDATA[C:\cxh\ptII-5.0\doc\img\]]></string>
 													</property>
 													<property name="largeIconPath">
-														<string><![CDATA[C:\cxh\ptII-4.0\doc\img\]]></string>
+														<string><![CDATA[C:\cxh\ptII-5.0\doc\img\]]></string>
 													</property>
 												</object>
 											</property>
@@ -3730,10 +3730,10 @@ and any path to a file to read from that file]]></string>
 														<string><![CDATA[PDF.gif]]></string>
 													</property>
 													<property name="smallIconPath">
-														<string><![CDATA[C:\cxh\ptII-4.0\doc\img\]]></string>
+														<string><![CDATA[C:\cxh\ptII-5.0\doc\img\]]></string>
 													</property>
 													<property name="largeIconPath">
-														<string><![CDATA[C:\cxh\ptII-4.0\doc\img\]]></string>
+														<string><![CDATA[C:\cxh\ptII-5.0\doc\img\]]></string>
 													</property>
 												</object>
 											</property>
@@ -3766,10 +3766,10 @@ and any path to a file to read from that file]]></string>
 														<string><![CDATA[PDF.gif]]></string>
 													</property>
 													<property name="smallIconPath">
-														<string><![CDATA[C:\cxh\ptII-4.0\doc\img\]]></string>
+														<string><![CDATA[C:\cxh\ptII-5.0\doc\img\]]></string>
 													</property>
 													<property name="largeIconPath">
-														<string><![CDATA[C:\cxh\ptII-4.0\doc\img\]]></string>
+														<string><![CDATA[C:\cxh\ptII-5.0\doc\img\]]></string>
 													</property>
 												</object>
 											</property>
@@ -3837,10 +3837,10 @@ generated during compilation.]]></string>
 									<installChildren>
 										<object class="com.zerog.ia.installer.actions.ExpandFile" objectID="fd6819bca0db">
 											<property name="sourceName">
-												<string><![CDATA[ptII4.0.1.src.jar]]></string>
+												<string><![CDATA[ptII5.0-beta.src.jar]]></string>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[C:\cxh\ptII-4.0\adm\gen-4.0\]]></string>
+												<string><![CDATA[C:\cxh\ptII-5.0\adm\gen-5.0\]]></string>
 											</property>
 											<property name="sourceFileType">
 												<int>0</int>
@@ -4136,10 +4136,10 @@ and any path to a file to read from that file]]></string>
 														<string><![CDATA[PtolemyIISmallIcon.gif]]></string>
 													</property>
 													<property name="smallIconPath">
-														<string><![CDATA[C:\cxh\ptII-4.0\doc\img\]]></string>
+														<string><![CDATA[C:\cxh\ptII-5.0\doc\img\]]></string>
 													</property>
 													<property name="largeIconPath">
-														<string><![CDATA[C:\cxh\ptII-4.0\doc\img\]]></string>
+														<string><![CDATA[C:\cxh\ptII-5.0\doc\img\]]></string>
 													</property>
 												</object>
 											</property>
@@ -4366,10 +4366,10 @@ and any path to a file to read from that file]]></string>
 																<string><![CDATA[ptplot32.gif]]></string>
 															</property>
 															<property name="smallIconPath">
-																<string><![CDATA[C:\cxh\ptII-4.0\ptolemy\plot\doc\img\]]></string>
+																<string><![CDATA[C:\cxh\ptII-5.0\ptolemy\plot\doc\img\]]></string>
 															</property>
 															<property name="largeIconPath">
-																<string><![CDATA[C:\cxh\ptII-4.0\ptolemy\plot\doc\img\]]></string>
+																<string><![CDATA[C:\cxh\ptII-5.0\ptolemy\plot\doc\img\]]></string>
 															</property>
 														</object>
 													</property>
@@ -4511,7 +4511,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\domains\]]></string>
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\]]></string>
 											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
@@ -4540,7 +4540,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\domains\]]></string>
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\]]></string>
 											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
@@ -4752,10 +4752,10 @@ and any path to a file to read from that file]]></string>
 														<string><![CDATA[histogram32.gif]]></string>
 													</property>
 													<property name="smallIconPath">
-														<string><![CDATA[C:\cxh\ptII-4.0\ptolemy\plot\doc\img\]]></string>
+														<string><![CDATA[C:\cxh\ptII-5.0\ptolemy\plot\doc\img\]]></string>
 													</property>
 													<property name="largeIconPath">
-														<string><![CDATA[C:\cxh\ptII-4.0\ptolemy\plot\doc\img\]]></string>
+														<string><![CDATA[C:\cxh\ptII-5.0\ptolemy\plot\doc\img\]]></string>
 													</property>
 												</object>
 											</property>
@@ -4774,7 +4774,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[C:\cxh\ptII-4.0\ptolemy\actor\lib\hoc\demo\MobileFunction\]]></string>
+												<string><![CDATA[C:\cxh\ptII-5.0\ptolemy\actor\lib\hoc\demo\MobileFunction\]]></string>
 											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
@@ -4803,7 +4803,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[C:\cxh\ptII-4.0\ptolemy\actor\lib\hoc\demo\MobileFunction]]></string>
+												<string><![CDATA[C:\cxh\ptII-5.0\ptolemy\actor\lib\hoc\demo\MobileFunction]]></string>
 											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
@@ -4835,7 +4835,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\vergil\]]></string>
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\vergil\]]></string>
 											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
@@ -4864,7 +4864,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\vergil\]]></string>
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\vergil\]]></string>
 											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
@@ -4893,7 +4893,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\vergil\]]></string>
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\vergil\]]></string>
 											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
@@ -4922,7 +4922,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\vergil\]]></string>
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\vergil\]]></string>
 											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
@@ -4951,7 +4951,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\vergil\]]></string>
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\vergil\]]></string>
 											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
@@ -4980,7 +4980,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\vergil\]]></string>
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\vergil\]]></string>
 											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
@@ -5009,7 +5009,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\vergil\]]></string>
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\vergil\]]></string>
 											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
@@ -5038,7 +5038,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\vergil\]]></string>
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\vergil\]]></string>
 											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
@@ -5067,7 +5067,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\vergil\]]></string>
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\vergil\]]></string>
 											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
@@ -5096,7 +5096,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\lib]]></string>
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\lib]]></string>
 											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
@@ -5136,7 +5136,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\domains\csp]]></string>
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\csp]]></string>
 											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
@@ -5165,7 +5165,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\vergil\tree]]></string>
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\vergil\tree]]></string>
 											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
@@ -5194,7 +5194,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\vergil\toolbox]]></string>
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\vergil\toolbox]]></string>
 											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
@@ -5223,7 +5223,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\vergil\lib]]></string>
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\vergil\lib]]></string>
 											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
@@ -5252,7 +5252,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\vergil\kernel]]></string>
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\vergil\kernel]]></string>
 											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
@@ -5281,7 +5281,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\vergil\icon]]></string>
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\vergil\icon]]></string>
 											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
@@ -5310,7 +5310,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\vergil\fsm]]></string>
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\vergil\fsm]]></string>
 											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
@@ -5339,7 +5339,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\vergil\debugger]]></string>
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\vergil\debugger]]></string>
 											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
@@ -5368,7 +5368,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\vergil\basic]]></string>
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\vergil\basic]]></string>
 											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
@@ -5397,7 +5397,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\vergil\actor]]></string>
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\vergil\actor]]></string>
 											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
@@ -5426,7 +5426,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\vergil]]></string>
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\vergil]]></string>
 											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
@@ -5475,7 +5475,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\moml]]></string>
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\moml]]></string>
 											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
@@ -5504,7 +5504,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\matlab]]></string>
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\matlab]]></string>
 											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
@@ -5533,7 +5533,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\domains\sdf]]></string>
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\sdf]]></string>
 											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
@@ -5562,7 +5562,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\domains\pn]]></string>
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\pn]]></string>
 											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
@@ -5591,7 +5591,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\domains\fsm]]></string>
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\fsm]]></string>
 											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
@@ -5620,7 +5620,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\domains\de]]></string>
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\de]]></string>
 											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
@@ -5649,7 +5649,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\domains\ct]]></string>
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\ct]]></string>
 											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
@@ -5678,7 +5678,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\domains]]></string>
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains]]></string>
 											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
@@ -5707,7 +5707,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\domains\ci]]></string>
+														<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\ci]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -5738,7 +5738,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\domains\dde]]></string>
+														<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\dde]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -5769,7 +5769,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\domains\dt]]></string>
+														<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\dt]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -5799,7 +5799,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\domains\giotto]]></string>
+														<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\giotto]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -5828,7 +5828,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\domains\gr]]></string>
+														<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\gr]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -5857,7 +5857,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\domains\petrinet]]></string>
+														<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\petrinet]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -5887,7 +5887,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\domains\psdf]]></string>
+														<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\psdf]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -5916,7 +5916,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\domains\psdf\demo]]></string>
+																<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\psdf\demo]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -5945,7 +5945,7 @@ and any path to a file to read from that file]]></string>
 																		<boolean>false</boolean>
 																	</property>
 																	<property name="sourcePath">
-																		<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\domains\psdf\demo\BlindCommunication]]></string>
+																		<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\psdf\demo\BlindCommunication]]></string>
 																	</property>
 																	<property name="shouldUninstall">
 																		<boolean>true</boolean>
@@ -5974,7 +5974,7 @@ and any path to a file to read from that file]]></string>
 																		<boolean>false</boolean>
 																	</property>
 																	<property name="sourcePath">
-																		<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\domains\psdf\demo\Speech]]></string>
+																		<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\psdf\demo\Speech]]></string>
 																	</property>
 																	<property name="shouldUninstall">
 																		<boolean>true</boolean>
@@ -6005,7 +6005,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\domains\psdf\kernel]]></string>
+																<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\psdf\kernel]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -6034,7 +6034,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\domains\psdf\]]></string>
+																<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\psdf\]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -6063,7 +6063,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\domains\psdf\]]></string>
+																<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\psdf\]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -6092,7 +6092,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[C:\cxh\ptII-4.0\ptolemy\domains\psdf\]]></string>
+																<string><![CDATA[C:\cxh\ptII-5.0\ptolemy\domains\psdf\]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -6125,7 +6125,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\domains\sr]]></string>
+														<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\sr]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -6154,7 +6154,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\domains\tm]]></string>
+														<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\tm]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -6183,7 +6183,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\domains\wireless]]></string>
+														<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\wireless]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -6212,7 +6212,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\domains\wireless\demo]]></string>
+																<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\wireless\demo]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -6241,7 +6241,7 @@ and any path to a file to read from that file]]></string>
 																		<boolean>false</boolean>
 																	</property>
 																	<property name="sourcePath">
-																		<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\domains\wireless\demo\AntennaPattern]]></string>
+																		<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\wireless\demo\AntennaPattern]]></string>
 																	</property>
 																	<property name="shouldUninstall">
 																		<boolean>true</boolean>
@@ -6270,7 +6270,7 @@ and any path to a file to read from that file]]></string>
 																				<boolean>false</boolean>
 																			</property>
 																			<property name="sourcePath">
-																				<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\domains\wireless\demo\AntennaPattern\]]></string>
+																				<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\wireless\demo\AntennaPattern\]]></string>
 																			</property>
 																			<property name="shouldUninstall">
 																				<boolean>true</boolean>
@@ -6299,7 +6299,7 @@ and any path to a file to read from that file]]></string>
 																				<boolean>false</boolean>
 																			</property>
 																			<property name="sourcePath">
-																				<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\domains\wireless\demo\AntennaPattern\]]></string>
+																				<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\wireless\demo\AntennaPattern\]]></string>
 																			</property>
 																			<property name="shouldUninstall">
 																				<boolean>true</boolean>
@@ -6328,7 +6328,7 @@ and any path to a file to read from that file]]></string>
 																				<boolean>false</boolean>
 																			</property>
 																			<property name="sourcePath">
-																				<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\domains\wireless\demo\AntennaPattern\]]></string>
+																				<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\wireless\demo\AntennaPattern\]]></string>
 																			</property>
 																			<property name="shouldUninstall">
 																				<boolean>true</boolean>
@@ -6357,7 +6357,7 @@ and any path to a file to read from that file]]></string>
 																				<boolean>false</boolean>
 																			</property>
 																			<property name="sourcePath">
-																				<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\domains\wireless\demo\AntennaPattern\]]></string>
+																				<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\wireless\demo\AntennaPattern\]]></string>
 																			</property>
 																			<property name="shouldUninstall">
 																				<boolean>true</boolean>
@@ -6388,7 +6388,7 @@ and any path to a file to read from that file]]></string>
 																		<boolean>false</boolean>
 																	</property>
 																	<property name="sourcePath">
-																		<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\domains\wireless\demo\CircularRange]]></string>
+																		<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\wireless\demo\CircularRange]]></string>
 																	</property>
 																	<property name="shouldUninstall">
 																		<boolean>true</boolean>
@@ -6417,7 +6417,7 @@ and any path to a file to read from that file]]></string>
 																		<boolean>false</boolean>
 																	</property>
 																	<property name="sourcePath">
-																		<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\domains\wireless\demo\Collisions]]></string>
+																		<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\wireless\demo\Collisions]]></string>
 																	</property>
 																	<property name="shouldUninstall">
 																		<boolean>true</boolean>
@@ -6446,7 +6446,7 @@ and any path to a file to read from that file]]></string>
 																		<boolean>false</boolean>
 																	</property>
 																	<property name="sourcePath">
-																		<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\domains\wireless\demo\EvaderAndPursuer]]></string>
+																		<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\wireless\demo\EvaderAndPursuer]]></string>
 																	</property>
 																	<property name="shouldUninstall">
 																		<boolean>true</boolean>
@@ -6475,7 +6475,7 @@ and any path to a file to read from that file]]></string>
 																		<boolean>false</boolean>
 																	</property>
 																	<property name="sourcePath">
-																		<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\domains\wireless\demo\MatlabWirelessSoundDetection]]></string>
+																		<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\wireless\demo\MatlabWirelessSoundDetection]]></string>
 																	</property>
 																	<property name="shouldUninstall">
 																		<boolean>true</boolean>
@@ -6504,7 +6504,7 @@ and any path to a file to read from that file]]></string>
 																		<boolean>false</boolean>
 																	</property>
 																	<property name="sourcePath">
-																		<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\domains\wireless\demo\PowerVariability]]></string>
+																		<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\wireless\demo\PowerVariability]]></string>
 																	</property>
 																	<property name="shouldUninstall">
 																		<boolean>true</boolean>
@@ -6533,7 +6533,7 @@ and any path to a file to read from that file]]></string>
 																		<boolean>false</boolean>
 																	</property>
 																	<property name="sourcePath">
-																		<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\domains\wireless\demo\SmallWorld]]></string>
+																		<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\wireless\demo\SmallWorld]]></string>
 																	</property>
 																	<property name="shouldUninstall">
 																		<boolean>true</boolean>
@@ -6562,7 +6562,7 @@ and any path to a file to read from that file]]></string>
 																		<boolean>false</boolean>
 																	</property>
 																	<property name="sourcePath">
-																		<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\domains\wireless\demo\TerrainModel]]></string>
+																		<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\wireless\demo\TerrainModel]]></string>
 																	</property>
 																	<property name="shouldUninstall">
 																		<boolean>true</boolean>
@@ -6591,7 +6591,7 @@ and any path to a file to read from that file]]></string>
 																		<boolean>false</boolean>
 																	</property>
 																	<property name="sourcePath">
-																		<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\domains\wireless\demo\WirelessSoundDetection]]></string>
+																		<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\wireless\demo\WirelessSoundDetection]]></string>
 																	</property>
 																	<property name="shouldUninstall">
 																		<boolean>true</boolean>
@@ -6622,7 +6622,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\domains\wireless\kernel]]></string>
+																<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\wireless\kernel]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -6651,7 +6651,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\domains\wireless\lib]]></string>
+																<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\wireless\lib]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -6680,7 +6680,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\domains\wireless\]]></string>
+																<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\wireless\]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -6709,7 +6709,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\domains\wireless\]]></string>
+																<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\domains\wireless\]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -6742,7 +6742,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\data]]></string>
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\data]]></string>
 											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
@@ -6771,7 +6771,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\actor\parameters]]></string>
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\actor\parameters]]></string>
 											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
@@ -6800,7 +6800,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\actor\lib\comm\demo]]></string>
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\actor\lib\comm\demo]]></string>
 											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
@@ -6829,7 +6829,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\actor\lib\comm]]></string>
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\actor\lib\comm]]></string>
 											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
@@ -6861,7 +6861,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\actor\lib\hoc\demo\DFTSubSet]]></string>
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\actor\lib\hoc\demo\DFTSubSet]]></string>
 											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
@@ -6890,7 +6890,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\actor\lib\hoc\demo\HocDE]]></string>
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\actor\lib\hoc\demo\HocDE]]></string>
 											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
@@ -6919,7 +6919,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\actor\lib\hoc\demo\ModelReference]]></string>
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\actor\lib\hoc\demo\ModelReference]]></string>
 											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
@@ -6948,7 +6948,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\actor\lib\hoc\demo]]></string>
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\actor\lib\hoc\demo]]></string>
 											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
@@ -6983,7 +6983,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\actor\lib\hoc]]></string>
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\actor\lib\hoc]]></string>
 											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
@@ -7015,7 +7015,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\actor\lib]]></string>
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\actor\lib]]></string>
 											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
@@ -7046,7 +7046,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\actor\lib\io]]></string>
+														<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\actor\lib\io]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -7075,7 +7075,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\actor\lib\io\comm]]></string>
+																<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\actor\lib\io\comm]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -7106,7 +7106,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\actor\lib\jai]]></string>
+														<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\actor\lib\jai]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -7135,7 +7135,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\actor\lib\javasound]]></string>
+														<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\actor\lib\javasound]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -7164,7 +7164,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\actor\lib\jmf]]></string>
+														<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\actor\lib\jmf]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -7193,7 +7193,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\actor\lib\joystick]]></string>
+														<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\actor\lib\joystick]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -7222,7 +7222,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\actor\lib\jxta]]></string>
+														<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\actor\lib\jxta]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -7251,7 +7251,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\actor\lib\python]]></string>
+														<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\actor\lib\python]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -7280,7 +7280,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\actor\lib\security]]></string>
+														<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\actor\lib\security]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -7309,7 +7309,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="sourcePath">
-																<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\actor\lib\security\demo]]></string>
+																<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\actor\lib\security\demo]]></string>
 															</property>
 															<property name="shouldUninstall">
 																<boolean>true</boolean>
@@ -7338,7 +7338,7 @@ and any path to a file to read from that file]]></string>
 																		<boolean>false</boolean>
 																	</property>
 																	<property name="sourcePath">
-																		<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\actor\lib\security\demo\Signature]]></string>
+																		<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\actor\lib\security\demo\Signature]]></string>
 																	</property>
 																	<property name="shouldUninstall">
 																		<boolean>true</boolean>
@@ -7367,7 +7367,7 @@ and any path to a file to read from that file]]></string>
 																				<boolean>false</boolean>
 																			</property>
 																			<property name="sourcePath">
-																				<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\actor\lib\security\demo\Signature\]]></string>
+																				<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\actor\lib\security\demo\Signature\]]></string>
 																			</property>
 																			<property name="shouldUninstall">
 																				<boolean>true</boolean>
@@ -7396,7 +7396,7 @@ and any path to a file to read from that file]]></string>
 																				<boolean>false</boolean>
 																			</property>
 																			<property name="sourcePath">
-																				<string><![CDATA[C:\cxh\ptII-4.0\ptolemy\actor\lib\security\demo\Signature\]]></string>
+																				<string><![CDATA[C:\cxh\ptII-5.0\ptolemy\actor\lib\security\demo\Signature\]]></string>
 																			</property>
 																			<property name="shouldUninstall">
 																				<boolean>true</boolean>
@@ -7431,7 +7431,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\actor\lib\x10]]></string>
+														<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\actor\lib\x10]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -7462,7 +7462,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\actor]]></string>
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\actor]]></string>
 											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
@@ -7495,7 +7495,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy]]></string>
+												<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy]]></string>
 											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
@@ -7525,7 +7525,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\caltrop]]></string>
+														<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\caltrop]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -7554,7 +7554,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\copernicus]]></string>
+														<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\copernicus]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -7585,7 +7585,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="sourcePath">
-														<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\hsif]]></string>
+														<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\hsif]]></string>
 													</property>
 													<property name="shouldUninstall">
 														<boolean>true</boolean>
@@ -7746,7 +7746,7 @@ included.]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[C:\cxh\ptII-4.0\vendors\misc\joystick\lib\]]></string>
+												<string><![CDATA[C:\cxh\ptII-5.0\vendors\misc\joystick\lib\]]></string>
 											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
@@ -7775,7 +7775,7 @@ included.]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[C:\cxh\ptII-4.0\vendors\misc\joystick\docs\]]></string>
+												<string><![CDATA[C:\cxh\ptII-5.0\vendors\misc\joystick\docs\]]></string>
 											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
@@ -7886,7 +7886,7 @@ included.]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="sourcePath">
-												<string><![CDATA[C:\cxh\ptII-4.0\vendors\misc\x10\tjx10p-11\]]></string>
+												<string><![CDATA[C:\cxh\ptII-5.0\vendors\misc\x10\tjx10p-11\]]></string>
 											</property>
 											<property name="shouldUninstall">
 												<boolean>true</boolean>
@@ -8229,10 +8229,10 @@ and any path to a file to read from that file]]></string>
 														<string><![CDATA[ptIIplanetIcon.gif]]></string>
 													</property>
 													<property name="smallIconPath">
-														<string><![CDATA[C:\cxh\ptII-4.0\doc\img\]]></string>
+														<string><![CDATA[C:\cxh\ptII-5.0\doc\img\]]></string>
 													</property>
 													<property name="largeIconPath">
-														<string><![CDATA[C:\cxh\ptII-4.0\doc\img\]]></string>
+														<string><![CDATA[C:\cxh\ptII-5.0\doc\img\]]></string>
 													</property>
 												</object>
 											</property>
@@ -8457,10 +8457,10 @@ and any path to a file to read from that file]]></string>
 														<string><![CDATA[visualsenseIcon.gif]]></string>
 													</property>
 													<property name="smallIconPath">
-														<string><![CDATA[C:\cxh\ptII-4.0\ptolemy\configs\visualsense\]]></string>
+														<string><![CDATA[C:\cxh\ptII-5.0\ptolemy\configs\visualsense\]]></string>
 													</property>
 													<property name="largeIconPath">
-														<string><![CDATA[C:\cxh\ptII-4.0\ptolemy\configs\visualsense\]]></string>
+														<string><![CDATA[C:\cxh\ptII-5.0\ptolemy\configs\visualsense\]]></string>
 													</property>
 												</object>
 											</property>
@@ -8717,7 +8717,7 @@ but no sources]]></string>
 								<boolean>false</boolean>
 							</property>
 							<property name="sourcePath">
-								<string><![CDATA[C:\cxh\ptII-4.0\unjar_dist\ptolemy\actor\lib\jxta\]]></string>
+								<string><![CDATA[C:\cxh\ptII-5.0\unjar_dist\ptolemy\actor\lib\jxta\]]></string>
 							</property>
 							<property name="shouldUninstall">
 								<boolean>true</boolean>
