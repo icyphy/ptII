@@ -34,7 +34,7 @@ ME =		ptolemy/domains/ct/demo
 # PTJSPACES_DIR is set by configure to jspaces if Jini was found
 DIRS = 		ContinuousClock \
 		BouncingBall CarTracking ComparedClocks \
-		Helicopter HierarchicalExecution 
+		Helicopter HierarchicalExecution \
 		Hysteresis \
 		LevelCrossingDetector \
 		LevelCrossingDetectorDetectsGlitches \
