@@ -32,14 +32,14 @@
 ME =		ptolemy/domains/ct/demo
 
 # PTJSPACES_DIR is set by configure to jspaces if Jini was found
-DIRS = 		ContinuousClock \
-		BouncingBall CarTracking ComparedClocks \
-		Helicopter HierarchicalExecution \
-		Hysteresis \
+DIRS = 		BouncingBall \
+		CarTracking ComparedClocks ContinuousClock \
+		Helicopter HierarchicalExecution Hysteresis \
 		LevelCrossingDetector \
 		LevelCrossingDetectorDetectsGlitches \
-		Lorenz SigmaDelta Spontaneous SquareWave \
-		SampledClocks StickyMasses Switch \
+		Lorenz NewtonsCradle \
+		SampledClocks Satellite SigmaDelta Spontaneous \
+		SquareWave StickyMasses Switch \
 		Transmission Thermostat V2V Corba #$(PTJSPACES_DIR)
 
 # Root of the Java directory
@@ -59,24 +59,27 @@ PTCLASSJAR =
 # Include the .class files from these jars in PTCLASSALLJAR
 # We don't include Corba/Corba.jar because we don't ship Corba.
 PTCLASSALLJARS = \
-	ContinuousClock/ContinuousClock.jar \
 	BouncingBall/BouncingBall.jar \
 	CarTracking/CarTracking.jar \
 	ComparedClocks/ComparedClocks.jar \
+	ContinuousClock/ContinuousClock.jar \
 	Helicopter/Helicopter.jar \
 	HierarchicalExecution/HierarchicalExecution.jar \
 	Hysteresis/Hysteresis.jar \
 	LevelCrossingDetector/LevelCrossingDetector.jar \
 	LevelCrossingDetectorDetectsGlitches/LevelCrossingDetectorDetectsGlitches.jar \
 	Lorenz/Lorenz.jar \
+	NewtonsCradle/NewtonsCradle.jar \
 	SampledClocks/SampledClocks.jar \
+	Satellite/Satellite.jar \
 	SigmaDelta/SigmaDelta.jar \
 	Spontaneous/Spontaneous.jar \
 	SquareWave/SquareWave.jar \
 	StickyMasses/StickyMasses.jar \
 	Switch/Switch.jar \
 	Transmission/Transmission.jar \
-	Thermostat/Thermostat.jar
+	Thermostat/Thermostat.jar \
+	V2V/V2V.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
