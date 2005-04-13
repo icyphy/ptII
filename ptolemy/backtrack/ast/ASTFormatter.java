@@ -571,8 +571,19 @@ public class ASTFormatter extends ASTVisitor {
     public boolean visit(DoStatement node) {
         _output(_indent);
         _output("do ");
+        if (node.getBody() instanceof Block)
+            _newLineAfterBlock = false;
+        else {
+            _output("\n");
+            _increaseIndent();
+        }
         node.getBody().accept(this);
-        _output(" while (");
+        if (!(node.getBody() instanceof Block)) {
+            _decreaseIndent();
+            _output(_indent);
+        } else
+            _output(" ");
+        _output("while (");
         node.getExpression().accept(this);
         _output(");\n");
         return false;
@@ -750,10 +761,18 @@ public class ASTFormatter extends ASTVisitor {
         for (Iterator it = node.updaters().iterator(); it.hasNext(); ) {
             Expression e = (Expression) it.next();
             e.accept(this);
+            if (it.hasNext())
+                _output(", ");
         }
         _output(") ");
+        if (!(node.getBody() instanceof Block)) {
+            _output("\n");
+            _increaseIndent();
+        }
         _newLineAfterBlock = true;
         node.getBody().accept(this);
+        if (!(node.getBody() instanceof Block))
+            _decreaseIndent();
         return false;
     }
 
@@ -1758,7 +1777,13 @@ public class ASTFormatter extends ASTVisitor {
         _output("while (");
         node.getExpression().accept(this);
         _output(") ");
+        if (!(node.getBody() instanceof Block)) {
+            _output("\n");
+            _increaseIndent();
+        }
         node.getBody().accept(this);
+        if (!(node.getBody() instanceof Block))
+            _decreaseIndent();
         return false;
     }
 
