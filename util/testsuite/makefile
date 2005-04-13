@@ -51,6 +51,7 @@ TCL_SRCS = \
 	codegen.tcl \
 	description.tcl \
 	enums.tcl \
+	fields.tcl \
 	init.tcl \
 	jdktools.tcl \
 	lcompare.tcl \
