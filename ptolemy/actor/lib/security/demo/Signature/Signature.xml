@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Signature" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="30">
@@ -126,7 +126,7 @@ which then causes an exception to be thrown.</text></svg></configure>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="145.0, 115.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 115.0]">
         </property>
     </entity>
     <entity name="PrivateKeyReader" class="ptolemy.actor.lib.security.PrivateKeyReader">
@@ -187,7 +187,7 @@ which then causes an exception to be thrown.</text></svg></configure>
         <property name="signatureAlgorithm" class="ptolemy.data.expr.StringParameter" value="SHA1WITHDSA">
         </property>
         <doc>Receives a key from an AsymmetricDecryption actor and&#10;          uses it to encrypt a data input based on a given asymmetric&#10;          algorithm.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 210.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 210.0]">
         </property>
     </entity>
     <entity name="Man in the middle" class="ptolemy.actor.TypedCompositeActor">

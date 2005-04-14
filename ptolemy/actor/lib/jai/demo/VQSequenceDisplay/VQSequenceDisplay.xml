@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="VQSequenceDisplay" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0-alpha">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
     </property>
     <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="28">
@@ -12,15 +12,15 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, -10.0]">
         </property>
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[494, 335]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[494, 350]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 102]">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {174, 89, 709, 444}, maximized = false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, -3, 709, 468}, maximized=false}">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{266.9482323232323, 114.9553345959596}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{266.9482323232323, 122.4553345959596}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Read in images as matrices and display them.">
@@ -49,25 +49,25 @@
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This actor reads&#10;in matrices.&#10;These matrices are&#10;also used in the&#10;SDF HTVQ demo.">
-        </property>
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This actor reads&#10;in matrices.&#10;These matrices are&#10;also used in the&#10;SDF HTVQ demo.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 95.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This actor converts&#10;the matrices to&#10;JAIImageTokens.">
-        </property>
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This actor converts&#10;the matrices to&#10;JAIImageTokens.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{175.0, 175.0}">
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The model will&#10;run much more&#10;quickly if the &#10;MatrixViewer&#10;actor is deleted.">
-        </property>
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The model will&#10;run much more&#10;quickly if the &#10;MatrixViewer&#10;actor is deleted.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 35.0]">
         </property>
@@ -109,7 +109,9 @@
         </property>
     </entity>
     <entity name="ImageDisplay" class="ptolemy.actor.lib.image.ImageDisplay">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {420, 288, 184, 192}, maximized = false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={715, 203, 184, 199}, maximized=false}">
+        </property>
+        <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute" value="[176, 144]">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[176, 144]">
         </property>
@@ -135,9 +137,13 @@
         </property>
     </entity>
     <entity name="MatrixViewer" class="ptolemy.actor.lib.gui.MatrixViewer">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {634, 519, 350, 222}, maximized = false}">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="800">
         </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[342, 174]">
+        <property name="height" class="ptolemy.data.expr.Parameter" value="400">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-1, 404, 1027, 366}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[1019, 311]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 70.0]">
         </property>

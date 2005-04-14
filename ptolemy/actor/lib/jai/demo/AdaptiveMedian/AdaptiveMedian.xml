@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="AdaptiveMedian" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0-alpha">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
@@ -13,13 +13,13 @@
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 60.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 35.0]">
         </property>
     </property>
     <property name="annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model reads an image, corrupts it with Salt and Pepper and then&#10;uses and adaptive media algorithm to clean up the corrupted image.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 15.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 10.0]">
         </property>
     </property>
     <property name="annotation2" class="ptolemy.kernel.util.Attribute">
@@ -42,7 +42,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{-5.0, 300.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {104, 129, 888, 459}, maximized = false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={6, 6, 888, 468}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[673, 350]">
     </property>
@@ -51,7 +51,7 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{336.5, 175.0}">
     </property>
     <entity name="JAIImageReader" class="ptolemy.actor.lib.jai.JAIImageReader">
-        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/doc/img/Helen256x256.png">
+        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/doc/img/Helen.png">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 120.0">
         </property>
@@ -68,8 +68,10 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 200.0]">
         </property>
     </entity>
-    <entity name="Salt and Pepper Image Display" class="ptolemy.actor.lib.image.ImageDisplay">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {380, 232, 264, 304}, maximized = false}">
+    <entity name="Salt and Pepper" class="ptolemy.actor.lib.image.ImageDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={415, 456, 208, 311}, maximized=false}">
+        </property>
+        <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[256, 256]">
         </property>
@@ -126,16 +128,20 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 285.0]">
         </property>
     </entity>
-    <entity name="Fixed Image Display" class="ptolemy.actor.lib.image.ImageDisplay">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {594, 81, 264, 304}, maximized = false}">
+    <entity name="Repaired" class="ptolemy.actor.lib.image.ImageDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={623, 456, 208, 311}, maximized=false}">
+        </property>
+        <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[256, 256]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[575.0, 300.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[590.0, 305.0]">
         </property>
     </entity>
     <entity name="Original Image" class="ptolemy.actor.lib.image.ImageDisplay">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {574, 171, 264, 304}, maximized = false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 457, 208, 311}, maximized=false}">
+        </property>
+        <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[256, 256]">
         </property>
@@ -154,8 +160,10 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 120.0]">
         </property>
     </entity>
-    <entity name="Greyscale Image Display" class="ptolemy.actor.lib.image.ImageDisplay">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {574, 171, 264, 304}, maximized = false}">
+    <entity name="Greyscale" class="ptolemy.actor.lib.image.ImageDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={208, 457, 208, 311}, maximized=false}">
+        </property>
+        <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[256, 256]">
         </property>
@@ -189,18 +197,18 @@
     <link port="JAIToDoubleMatrix.output" relation="relation2"/>
     <link port="SaltAndPepper.input" relation="relation2"/>
     <link port="SaltAndPepper.output" relation="relation3"/>
-    <link port="Salt and Pepper Image Display.input" relation="relation4"/>
+    <link port="Salt and Pepper.input" relation="relation4"/>
     <link port="DoubleMatrixToJAI.input" relation="relation3"/>
     <link port="DoubleMatrixToJAI.output" relation="relation4"/>
     <link port="AdaptiveMedian.input" relation="relation3"/>
     <link port="AdaptiveMedian.output" relation="relation5"/>
     <link port="DoubleMatrixToJAI2.input" relation="relation5"/>
     <link port="DoubleMatrixToJAI2.output" relation="relation6"/>
-    <link port="Fixed Image Display.input" relation="relation6"/>
+    <link port="Repaired.input" relation="relation6"/>
     <link port="Original Image.input" relation="relation"/>
     <link port="JAIBandCombine.input" relation="relation"/>
     <link port="JAIBandCombine.output" relation="relation7"/>
     <link port="JAIBandSelect.input" relation="relation7"/>
     <link port="JAIBandSelect.output" relation="relation8"/>
-    <link port="Greyscale Image Display.input" relation="relation8"/>
+    <link port="Greyscale.input" relation="relation8"/>
 </entity>

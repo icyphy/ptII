@@ -511,9 +511,9 @@ time (CT).</text></svg></configure>
     <entity name="Plotter for u" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={504, 512, 508, 172}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={509, 507, 508, 258}, maximized=false}">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 117]">
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 203]">
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
@@ -526,7 +526,7 @@ time (CT).</text></svg></configure>
 <title>u</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="0.0" max="2.29"/>
+<xRange min="0.0" max="3.0"/>
 <yRange min="-0.5" max="0.5"/>
 </plot>?>
         </configure>
@@ -600,9 +600,9 @@ time (CT).</text></svg></configure>
     <entity name="Plotter for E+mode" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 431, 508, 172}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 507, 508, 258}, maximized=false}">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 117]">
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 203]">
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
@@ -615,7 +615,7 @@ time (CT).</text></svg></configure>
 <title>E+mode</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="0.0" max="2.29"/>
+<xRange min="0.0" max="3.0"/>
 <yRange min="-2.0" max="2.0"/>
 </plot>?>
         </configure>

@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="ImageReconstruction" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0-alpha">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="true">
@@ -36,7 +36,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 370.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {76, 129, 864, 509}, maximized = false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-1, -1, 864, 518}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[649, 400]">
     </property>
@@ -53,13 +53,13 @@
     <entity name="JAIImageReader" class="ptolemy.actor.lib.jai.JAIImageReader">
         <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$PTII/doc/img/PtolemyII256x256.png">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{65.0, 100.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 105.0]">
         </property>
     </entity>
     <entity name="JAIImageReader2" class="ptolemy.actor.lib.jai.JAIImageReader">
         <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$PTII/doc/img/Helen256x256.png">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 170.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 170.0]">
         </property>
     </entity>
     <entity name="JAIBorder" class="ptolemy.actor.lib.jai.JAIBorder">
@@ -234,32 +234,40 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 340.0]">
         </property>
     </entity>
-    <entity name="Recoverd Helen Image Display" class="ptolemy.actor.lib.image.ImageDisplay">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {380, 232, 264, 304}, maximized = false}">
+    <entity name="Recoverd Helen" class="ptolemy.actor.lib.image.ImageDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={776, 460, 264, 311}, maximized=false}">
+        </property>
+        <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[256, 256]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 340.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{310.0, 340.0}">
         </property>
     </entity>
-    <entity name="Original Helen Image Display" class="ptolemy.actor.lib.image.ImageDisplay">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {727, 262, 264, 304}, maximized = false}">
+    <entity name="Original Helen" class="ptolemy.actor.lib.image.ImageDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={259, 459, 264, 311}, maximized=false}">
+        </property>
+        <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[256, 256]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 265.0]">
         </property>
     </entity>
-    <entity name="Original Ptolemy Image Display" class="ptolemy.actor.lib.image.ImageDisplay">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {175, 174, 264, 304}, maximized = false}">
+    <entity name="Original Ptolemy" class="ptolemy.actor.lib.image.ImageDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-1, 459, 264, 311}, maximized=false}">
+        </property>
+        <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[256, 256]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 150.0]">
         </property>
     </entity>
-    <entity name="Combined Image Display" class="ptolemy.actor.lib.image.ImageDisplay">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {652, 8, 264, 304}, maximized = false}">
+    <entity name="Combined Images" class="ptolemy.actor.lib.image.ImageDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={518, 460, 264, 311}, maximized=false}">
+        </property>
+        <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[256, 256]">
         </property>
@@ -281,7 +289,7 @@
     <entity name="JAIBandCombine" class="ptolemy.actor.lib.jai.JAIBandCombine">
         <property name="matrix" class="ptolemy.data.expr.Parameter" value="[0.333,0.333,0.33, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 110.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 105.0]">
         </property>
     </entity>
     <entity name="JAIBandSelect" class="ptolemy.actor.lib.jai.JAIBandSelect">
@@ -351,10 +359,10 @@
     <link port="JAIDataConvert.output" relation="relation11"/>
     <link port="JAICrop.input" relation="relation11"/>
     <link port="JAICrop.output" relation="relation12"/>
-    <link port="Recoverd Helen Image Display.input" relation="relation12"/>
-    <link port="Original Helen Image Display.input" relation="relation2"/>
-    <link port="Original Ptolemy Image Display.input" relation="relation"/>
-    <link port="Combined Image Display.input" relation="relation9"/>
+    <link port="Recoverd Helen.input" relation="relation12"/>
+    <link port="Original Helen.input" relation="relation2"/>
+    <link port="Original Ptolemy.input" relation="relation"/>
+    <link port="Combined Images.input" relation="relation9"/>
     <link port="JAIBandCombine2.input" relation="relation13"/>
     <link port="JAIBandCombine2.output" relation="relation14"/>
     <link port="JAIBandSelect2.input" relation="relation14"/>

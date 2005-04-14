@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="FixPoint" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0-beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
     </property>
     <property name="annotation1" class="ptolemy.kernel.util.Attribute">
         <property name="_location" class="ptolemy.kernel.util.Location" value="130.0, 5.0">
@@ -26,15 +26,15 @@ data against unquantized data.</text>
         <property name="_location" class="ptolemy.kernel.util.Location" value="62.0, 33.0">
         </property>
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[560, 216]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[560, 350]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[124, 152]">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {124, 154, 775, 325}, maximized = false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 1, 775, 468}, maximized=false}">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{280.0, 108.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{280.0, 175.0}">
     </property>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
         <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
@@ -64,6 +64,10 @@ data against unquantized data.</text>
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="second quantized, first quantized, original">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 412, 508, 355}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>

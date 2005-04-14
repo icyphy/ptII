@@ -232,6 +232,8 @@ GraphicalLocator)</text></svg></configure>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{408.5, 329.5}">
     </property>
     <property name="WirelessDirector" class="ptolemy.domains.wireless.kernel.WirelessDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="Infinity">
+        </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{75.0, 40.0}">
@@ -377,7 +379,7 @@ GraphicalLocator)</text></svg></configure>
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[146.7911113762055, 171.4424780626906]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 500.0]">
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>

@@ -2,15 +2,15 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="MobileFunction" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {65, 29, 869, 431}, maximized = false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 0, 869, 468}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[654, 313]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[654, 350]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{327.0, 156.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{327.0, 175.0}">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="50">
@@ -25,23 +25,31 @@
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The type of the output&#10;of MobileFunction has to&#10;be set manually to &quot;double&quot;&#10;using the Configure Ports&#10;dialog. It is not inferred.">
-        </property>
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The type of the output&#10;of MobileFunction has to&#10;be set manually to &quot;double&quot;&#10;using the Configure Ports&#10;dialog. It is not inferred.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 150.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The Commutator reads one token from&#10;each input channel and produces the&#10;tokens sequentially on the output.">
-        </property>
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
         </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The Commutator reads one token from&#10;each input channel and produces the&#10;tokens sequentially on the output.">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 240.0]">
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Yang Zhao and Edward A. Lee">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 325.0]">
         </property>
     </property>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
@@ -82,7 +90,7 @@
         </property>
     </entity>
     <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {507, 406, 508, 355}, maximized = false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={507, 406, 508, 355}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
@@ -104,12 +112,20 @@
         </configure>
     </entity>
     <entity name="Commutator" class="ptolemy.actor.lib.Commutator">
+        <property name="CommutatorIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {46, 101, 815, 516}, maximized = false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 210.0]">
         </property>
     </entity>
     <entity name="MobileFunction" class="ptolemy.actor.lib.hoc.MobileFunction">
         <property name="MobileFunctionIcon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {125, 297, 815, 516}, maximized = false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
         </property>
         <doc>The function it applied to its input data can be dynamically defined.</doc>

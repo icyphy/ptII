@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="FixFIR" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0-beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
     </property>
     <property name="SDFDirector" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
@@ -10,7 +10,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="67.71429443359375, 39.0">
         </property>
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[605, 314]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[605, 350]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 152]">
     </property>
@@ -31,11 +31,11 @@ using double precision.</text>
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {102, 154, 820, 423}, maximized = false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={17, 13, 820, 468}, maximized=false}">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{302.5, 157.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{302.5, 175.0}">
     </property>
     <entity name="Impulse" class="ptolemy.actor.lib.Pulse">
         <property name="indexes" class="ptolemy.data.expr.Parameter" value="{0}">
@@ -50,17 +50,35 @@ using double precision.</text>
     <entity name="FIR Double Precision" class="ptolemy.domains.sdf.lib.FIR">
         <property name="taps" class="ptolemy.data.expr.Parameter" value="{-0.040609, -0.001628, 0.17853, 0.37665, 0.37665, 0.17853, -0.001628, -0.040609}">
         </property>
+        <property name="FIRIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {104, 129, 815, 509}, maximized = false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="240.0, 225.0">
         </property>
     </entity>
     <entity name="FIR Quantized Coefficients" class="ptolemy.domains.sdf.lib.FIR">
         <property name="taps" class="ptolemy.data.expr.Parameter" value="{quantize(-.040609, 8, 2), quantize(-.001628, 8, 2), quantize(.17853, 8, 2), quantize(.37665, 8, 2), quantize(.37665, 8, 2), quantize(.17853, 8, 2), quantize(-.001628, 8, 2), quantize(-.040609, 8, 2)}">
         </property>
+        <property name="FIRIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {104, 129, 815, 509}, maximized = false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="240.0, 285.0">
         </property>
     </entity>
     <entity name="FIR Fixed Point" class="ptolemy.domains.sdf.lib.FIR">
         <property name="taps" class="ptolemy.data.expr.Parameter" value="{fix(-.040609, 6, 2), fix(-.001628, 6, 2), fix(.17853, 6, 2), fix(.37665, 6, 2), fix(.37665, 6, 2), fix(.17853, 6, 2), fix(-.001628, 6, 2), fix(-.040609, 6, 2)}">
+        </property>
+        <property name="FIRIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {104, 129, 815, 509}, maximized = false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="235.0, 135.0">
         </property>
@@ -74,7 +92,7 @@ using double precision.</text>
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="fixed point, exact, quantized coefs">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {258, 210, 508, 348}, maximized = false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={405, 432, 508, 355}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>

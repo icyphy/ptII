@@ -2,16 +2,16 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="DFTSubSet" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0-beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {47, 77, 865, 451}, maximized = false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={5, 0, 865, 468}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[650, 342]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[650, 350]">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="DFTBlockLength">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="95.0, 45.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 40.0]">
         </property>
     </property>
     <property name="NDFTCoefficients" class="ptolemy.data.expr.Parameter" value="10">
@@ -26,7 +26,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 95.0]">
         </property>
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
@@ -43,7 +43,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 75.0]">
         </property>
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
@@ -60,7 +60,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 115.0]">
         </property>
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
@@ -77,7 +77,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 135.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 135.0]">
         </property>
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
@@ -86,10 +86,10 @@
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:12; font-family:SansSerif; fill:blue">MultiInstanceComposite SDF Demo
-
-ComputeCoefficient contains a model to compute one DFT coefficient 
-using the Goertzel kernel.  NDFTCoefficients instances are used.</text></svg></configure>
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This model illustrates the MultiInstanceComposite actor, where it is
+used to compute a subsection of the discrete Fourier transform (DFT)
+using the Goertzel kernel.  The parameter NDFTCoefficients specifies
+the number of bins to calculate.</text></svg></configure>
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -102,12 +102,12 @@ using the Goertzel kernel.  NDFTCoefficients instances are used.</text></svg></c
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{150.0, 20.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 5.0]">
         </property>
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{325.0, 171.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{325.0, 175.0}">
     </property>
     <property name="annotation2" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -126,7 +126,7 @@ using the Goertzel kernel.  NDFTCoefficients instances are used.</text></svg></c
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 315.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 315.0]">
         </property>
     </property>
     <entity name="ComputeCoefficient" class="ptolemy.actor.lib.hoc.MultiInstanceComposite">
@@ -154,7 +154,7 @@ using the Goertzel kernel.  NDFTCoefficients instances are used.</text></svg></c
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={195, 377, 757, 478}}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={195, 377, 753, 479}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[538, 361]">
         </property>
@@ -291,8 +291,6 @@ using the Goertzel kernel.  NDFTCoefficients instances are used.</text></svg></c
       </svg>
     </configure>
             </property>
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
             <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                 <configure>
       <svg>
@@ -311,8 +309,6 @@ using the Goertzel kernel.  NDFTCoefficients instances are used.</text></svg></c
       </svg>
     </configure>
             </property>
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
             <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                 <configure>
       <svg>
@@ -329,6 +325,12 @@ using the Goertzel kernel.  NDFTCoefficients instances are used.</text></svg></c
         </property>
     </entity>
     <entity name="Commutator" class="ptolemy.actor.lib.Commutator">
+        <property name="CommutatorIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {46, 101, 815, 516}, maximized = false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 200.0]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
@@ -344,7 +346,7 @@ using the Goertzel kernel.  NDFTCoefficients instances are used.</text></svg></c
     <entity name="SequenceScope" class="ptolemy.actor.lib.gui.SequenceScope">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {-5, 405, 508, 348}, maximized = false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-5, 405, 508, 355}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
@@ -368,7 +370,7 @@ using the Goertzel kernel.  NDFTCoefficients instances are used.</text></svg></c
 <xLabel>Frequency</xLabel>
 <yLabel>Amplitude</yLabel>
 <xRange min="0.046875" max="0.203125"/>
-<yRange min="4.4095172811767787E-16" max="0.5000000000000001"/>
+<yRange min="1.7403575988894787E-16" max="0.5000000000000001"/>
 <wrap/>
 <default connected="no" marks="various"/>
 </plot>?>
@@ -394,7 +396,7 @@ using the Goertzel kernel.  NDFTCoefficients instances are used.</text></svg></c
     <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {514, 406, 508, 348}, maximized = false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={514, 406, 508, 355}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>

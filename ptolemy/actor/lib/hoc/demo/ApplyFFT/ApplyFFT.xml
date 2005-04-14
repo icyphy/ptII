@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="ApplyFFT" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0-beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
@@ -10,13 +10,57 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 40.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {104, 129, 815, 509}, maximized = false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 2, 886, 578}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[671, 460]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{335.5, 230.0}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model illustrates the ApplyFunction and ApplyFunctionOverSequence actors.&#10;These apply a function defined in the expression language over either an&#10;individual input token or an array constructed from a sequence of input tokens.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 10.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Steve Neuendorffer">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 395.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Generate a reference signal using conventional&#10;dataflow techniques. The other signals should match.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 80.0]">
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Create an array from a sequence of tokens, and&#10;then apply the FFT() function to it.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 195.0]">
+        </property>
+    </property>
+    <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Use tokenConsumptionRate and tokenProductionRate parameters&#10;in the ports to specify a segment of the input signal over which&#10;to apply the function.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 310.0]">
+        </property>
     </property>
     <entity name="Expression" class="ptolemy.actor.lib.Expression">
         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="signal + noise">
@@ -48,30 +92,36 @@
         <property name="standardDeviation" class="ptolemy.data.expr.Parameter" value=".1">
         </property>
         <doc>Create a sequence of gaussian random variables</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{55.0, 260.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 330.0]">
         </property>
     </entity>
     <entity name="FFT" class="ptolemy.domains.sdf.lib.FFT">
         <property name="order" class="ptolemy.data.expr.Parameter" value="8">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 230.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 155.0]">
         </property>
     </entity>
     <entity name="SequenceToArray" class="ptolemy.domains.sdf.lib.SequenceToArray">
         <property name="arrayLength" class="ptolemy.actor.parameters.PortParameter" value="256">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 315.0]">
+        <property name="SequenceToArrayIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {104, 129, 815, 509}, maximized = false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 275.0]">
         </property>
     </entity>
     <entity name="AbsoluteValue" class="ptolemy.actor.lib.AbsoluteValue">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 230.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 155.0]">
         </property>
     </entity>
     <entity name="ApplyFunction" class="ptolemy.actor.lib.hoc.ApplyFunction">
-        <property name="function" class="ptolemy.actor.parameters.PortParameter" value="function(x:{double}) abs(FFTComplexOut(x, 8))">
+        <property name="function" class="ptolemy.actor.parameters.PortParameter" value="function(x:{double}) abs(FFT(x, 8))">
         </property>
         <doc>The function is applied to its input data.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 305.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 265.0]">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -80,7 +130,7 @@
         </port>
     </entity>
     <entity name="Sinewave" class="ptolemy.actor.lib.Sinewave">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 170.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 220.0]">
         </property>
         <port name="frequency" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
@@ -94,44 +144,29 @@
         </port>
     </entity>
     <entity name="ArrayPlotter" class="ptolemy.actor.lib.gui.ArrayPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {258, 210, 508, 348}, maximized = false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={514, 261, 508, 259}, maximized=false}">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 204]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 305.0]">
-        </property>
-        <configure>
-<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
-"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
-<plot>
-<title>ArrayPlotter</title>
-<xRange min="0.0" max="255.0"/>
-<yRange min="0.20522545124440972" max="126.18179969642395"/>
-</plot>?>
-        </configure>
-    </entity>
-    <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {257, -12, 508, 348}, maximized = false}">
-        </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 230.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[560.0, 265.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
-<title>SequencePlotter</title>
+<title>FFT() applied to array</title>
+<xLabel>bin number</xLabel>
+<yLabel>magnitude</yLabel>
 <xRange min="0.0" max="255.0"/>
-<yRange min="0.20522545124440972" max="126.18179969642395"/>
+<yRange min="0.06762265079548599" max="126.3558631613895"/>
 </plot>?>
         </configure>
     </entity>
-    <entity name="ApplyFunctionOverSequence2" class="ptolemy.actor.lib.hoc.ApplyFunctionOverSequence">
-        <property name="function" class="ptolemy.actor.parameters.PortParameter" value="function(x:{double}) abs(FFTComplexOut(x, 8))">
+    <entity name="ApplyFunctionOverSequence" class="ptolemy.actor.lib.hoc.ApplyFunctionOverSequence">
+        <property name="function" class="ptolemy.actor.parameters.PortParameter" value="function(x:{double}) abs(FFT(x, 8))">
         </property>
         <doc>The function is applied to its input data.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 150.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 405.0]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -149,26 +184,43 @@
         </port>
     </entity>
     <entity name="SequencePlotter2" class="ptolemy.actor.lib.gui.SequencePlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {257, -12, 508, 348}, maximized = false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={514, 517, 508, 260}, maximized=false}">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 205]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 150.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 405.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
-<title>SequencePlotter</title>
+<title>FFT() applied over sequence</title>
+<xLabel>bin number</xLabel>
+<yLabel>magnitude</yLabel>
 <xRange min="0.0" max="255.0"/>
-<yRange min="0.20522545124440972" max="126.18179969642395"/>
+<yRange min="0.06762265079548599" max="126.3558631613895"/>
 </plot>?>
         </configure>
     </entity>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex" value="[107.36953735351562, 166.771240234375]">
-        </vertex>
-    </relation>
+    <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={516, 1, 508, 260}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 205]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 155.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>Reference</title>
+<xLabel>bin number</xLabel>
+<yLabel>magnitude</yLabel>
+<xRange min="0.0" max="255.0"/>
+<yRange min="0.06762265079548599" max="126.3558631613895"/>
+</plot>?>
+        </configure>
+    </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
@@ -179,11 +231,13 @@
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="Expression.output" relation="relation5"/>
     <link port="Expression.signal" relation="relation"/>
@@ -199,8 +253,8 @@
     <link port="ApplyFunction.input" relation="relation8"/>
     <link port="Sinewave.output" relation="relation"/>
     <link port="ArrayPlotter.input" relation="relation3"/>
-    <link port="SequencePlotter.input" relation="relation6"/>
-    <link port="ApplyFunctionOverSequence2.output" relation="relation9"/>
-    <link port="ApplyFunctionOverSequence2.input" relation="relation5"/>
+    <link port="ApplyFunctionOverSequence.output" relation="relation9"/>
+    <link port="ApplyFunctionOverSequence.input" relation="relation5"/>
     <link port="SequencePlotter2.input" relation="relation9"/>
+    <link port="SequencePlotter.input" relation="relation6"/>
 </entity>

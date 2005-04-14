@@ -2,13 +2,13 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="LMSAdaptive" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0-alpha">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="_location" class="ptolemy.kernel.util.Location" value="68.0, 32.0">
         </property>
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[577, 262]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[577, 350]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
     </property>
@@ -16,11 +16,25 @@
     </property>
     <property name="noiseStandardDeviation" class="ptolemy.data.expr.Parameter" value="0.3">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {102, 154, 792, 371}, maximized = false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 1, 792, 468}, maximized=false}">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{288.5, 131.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{288.5, 175.0}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model illustrates an LMS (least mean square) adaptive filter&#10;that learns the response of a fixed FIR (finite impulse response)&#10;filter by observing the input and noisy output of the filter.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 265.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 330.0]">
+        </property>
     </property>
     <entity name="Gaussian" class="ptolemy.actor.lib.Gaussian">
         <property name="seed" class="ptolemy.data.expr.Parameter" value="0">
@@ -32,6 +46,12 @@
     </entity>
     <entity name="FIR" class="ptolemy.domains.sdf.lib.FIR">
         <property name="taps" class="ptolemy.data.expr.Parameter" value="{-3.898043091E-17, -0.1286166, -0.2122066, -0.1800633, 3.898043091E-17, 0.3001054, 0.6366198, 0.9003163, 1.0, 0.9003163, 0.6366198, 0.3001054, 3.898043091E-17, -0.1800633, -0.2122066, -0.1286166}">
+        </property>
+        <property name="FIRIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {104, 129, 815, 509}, maximized = false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
         </property>
         <doc name="tooltip">FIR filter</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="180.0, 125.0">
@@ -70,7 +90,7 @@
     <entity name="BarGraph" class="ptolemy.actor.lib.gui.BarGraph">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {258, 210, 508, 348}, maximized = false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-2, 411, 508, 355}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
