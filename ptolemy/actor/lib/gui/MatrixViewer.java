@@ -391,11 +391,14 @@ public class MatrixViewer extends Sink implements Placeable {
     /** The frame, if one is used. */
     private DisplayWindow _frame = null;
 
+    /** Height of the matrix viewer in pixels. */
+    private int _height;
+
     /** Pane with the matrix display. */
     private MatrixPane _pane = null;
 
     /** A specification of the size of the pane if it's in its own window. */
-    protected SizeAttribute _paneSize;
+    private SizeAttribute _paneSize;
 
     /** The tableau with the display, if any. */
     private TokenTableau _tableau;
@@ -405,9 +408,6 @@ public class MatrixViewer extends Sink implements Placeable {
 
     /** A specification for the window properties of the frame. */
     private WindowPropertiesAttribute _windowProperties;
-
-    /** Height of the matrix viewer in pixels. */
-    private int _height;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
