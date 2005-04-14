@@ -58,14 +58,6 @@ public class CheckpointState {
         return ++_currentTimestamp;
     }
 
-    /** Get the current timestamp.
-     *
-     *  @return The current timestamp.
-     */
-    public long getTimestamp() {
-        return _currentTimestamp;
-    }
-
     /** Get the list of all the monitored objects.
      *
      *  @return The list of all the monitored objects.
@@ -73,6 +65,14 @@ public class CheckpointState {
     public List getMonitoredObjects() {
         return _monitoredObjects;
     }
+
+    /** Get the current timestamp.
+    *
+    *  @return The current timestamp.
+    */
+   public long getTimestamp() {
+       return _currentTimestamp;
+   }
 
     /** The current timestamp. It is static, so different checkpoint states use
      *  different timestamps, and the timestamps are always increasing in the
