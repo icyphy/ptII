@@ -21,12 +21,6 @@ public class ArrayTest1 {
                 _buf[i][j] = k;
     }
     
-    public static void main(String[] args) {
-        TestProgram t = new TestProgram();
-        t.modify();
-        t.dump();
-    }
-    
     public void modify() {
         int[][] newBuf = new int[_length1][_length2];
         for (int i = 0, k = 0; i < _length1; i++)
