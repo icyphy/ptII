@@ -27,6 +27,8 @@ COPYRIGHTENDKEY
 */
 package ptolemy.domains.gr.lib;
 
+import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GraphicsConfiguration;
@@ -41,7 +43,6 @@ import javax.media.j3d.DirectionalLight;
 import javax.media.j3d.Node;
 import javax.media.j3d.Transform3D;
 import javax.media.j3d.TransformGroup;
-import javax.swing.JFrame;
 import javax.vecmath.AxisAngle4d;
 import javax.vecmath.Color3f;
 import javax.vecmath.Point3d;
@@ -50,7 +51,13 @@ import javax.vecmath.Vector3f;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.gui.ColorAttribute;
+import ptolemy.actor.gui.Configuration;
+import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.Placeable;
+import ptolemy.actor.gui.SizeAttribute;
+import ptolemy.actor.gui.Tableau;
+import ptolemy.actor.gui.TableauFrame;
+import ptolemy.actor.gui.WindowPropertiesAttribute;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
@@ -60,6 +67,8 @@ import ptolemy.domains.gr.kernel.SceneGraphToken;
 import ptolemy.domains.gr.kernel.ViewScreenInterface;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 import com.sun.j3d.utils.behaviors.mouse.MouseRotate;
@@ -133,6 +142,10 @@ public class ViewScreen3D extends GRActor3D implements Placeable,
         backgroundColor.setExpression("{1.0, 1.0, 1.0, 1.0}");
 
         _lastTransform = new Transform3D();
+        
+        _windowProperties = new WindowPropertiesAttribute(this,
+                "_windowProperties");
+        _viewSize = new SizeAttribute(this, "_pictureSize");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -413,34 +426,64 @@ public class ViewScreen3D extends GRActor3D implements Placeable,
     }
 
     /** Create the view screen component.  If place() was called with
-     * a container, then use the container.  Otherwise, create a new
-     * frame and use that.
+     *  a container, then use the container.  Otherwise, create a new
+     *  frame and use that.
      */
     protected void _createViewScreen() {
         GraphicsConfiguration config = SimpleUniverse.getPreferredConfiguration();
 
         int horizontalDimension = 400;
         int verticalDimension = 400;
-
         try {
-            horizontalDimension = _getHorizontalPixels();
-            verticalDimension = _getVerticalPixels();
-        } catch (Exception e) {
-            // FIXME handle this
+        	horizontalDimension = ((IntToken) horizontalResolution.getToken()).intValue();
+        	verticalDimension = ((IntToken) verticalResolution.getToken()).intValue();
+        } catch (Exception ex) {
+        	// Should have been caught before this.
+            throw new InternalErrorException(ex);
         }
 
         // Create a frame, if placeable was not called.
         if (_container == null) {
-            _frame = new JFrame("ViewScreen");
-            _frame.show();
-            _frame.validate();
-            _frame.setSize(horizontalDimension + 50, verticalDimension);
-            _container = _frame.getContentPane();
-        }
+            // No current container for the pane.
+            // Need an effigy and a tableau so that menu ops work properly.
+            if (_tableau == null) {
+                Effigy containerEffigy = Configuration.findEffigy(toplevel());
+                if (containerEffigy == null) {
+                    throw new InternalErrorException(
+                            "Cannot find effigy for top level: "
+                            + toplevel().getFullName());
+                }
+                try {
+                    _effigy = new Effigy(containerEffigy,
+                            containerEffigy.uniqueName("imageEffigy"));
+                    // The default identifier is "Unnamed", which is
+                    // no good for two reasons: Wrong title bar label,
+                    // and it causes a save-as to destroy the original window.
+                    _effigy.identifier.setExpression(getFullName());
 
-        // Set the frame to be visible.
-        if (_frame != null) {
-            _frame.setVisible(true);
+                    _frame = new ViewWindow();
+
+                    _tableau = new Tableau(_effigy, "viewTableau");
+                    _tableau.setFrame(_frame);
+                    _tableau.setTitle(getName());
+                    _frame.setTableau(_tableau);
+                    _windowProperties.setProperties(_frame);
+
+                    // Regrettably, since setSize() in swing doesn't actually
+                    // set the size of the frame, we have to also set the
+                    // size of the internal component.
+                    Component[] components = _frame.getContentPane().getComponents();
+
+                    if (components.length > 0) {
+                        _viewSize.setSize(components[0]);
+                    }
+                    _frame.validate();
+                    _frame.setSize(horizontalDimension + 50, verticalDimension);
+                    _container = _frame.getContentPane();
+                } catch (KernelException ex) {
+                	throw new InternalErrorException(ex);
+                }
+            }
         }
 
         // Lastly drop the canvas in the frame.
@@ -459,7 +502,15 @@ public class ViewScreen3D extends GRActor3D implements Placeable,
         // from initialize AND from place.  (This caused some
         // artifacts if the run window was used)
         _container.validate();
-
+        
+        if (_tableau != null) {
+            // Set the frame to be visible.
+            if (_frame != null) {
+                _frame.pack();
+            }
+            _tableau.show();   
+        }
+        
         /* FIXME: experimental code for changing views.
            TransformGroup VPTG = new TransformGroup();
            VPTG = _simpleUniverse.getViewingPlatform()
@@ -477,24 +528,12 @@ public class ViewScreen3D extends GRActor3D implements Placeable,
         */
     }
 
-    /** Get the number of horizontal pixels in the rendered image.
-     */
-    protected int _getHorizontalPixels() throws IllegalActionException {
-        return ((IntToken) horizontalResolution.getToken()).intValue();
-    }
-
     /** The ViewScreen does not have an associated Java3D node
      *
      *  @return null
      */
     protected Node _getNodeObject() {
         return null;
-    }
-
-    /** Get the number of vertical pixels in the rendered image.
-     */
-    protected int _getVerticalPixels() throws IllegalActionException {
-        return ((IntToken) verticalResolution.getToken()).intValue();
     }
 
     /** Makes the background for the viewScreen
@@ -540,7 +579,36 @@ public class ViewScreen3D extends GRActor3D implements Placeable,
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    protected BoundingSphere _bounds;
+
+    // The main connection branch that connects to the universe
+    protected BranchGroup _branchRoot;
+
+    // The Java3D canvas component.
+    protected Canvas3D _canvas;
+
+    // The container set in the place() method, or the content pane of the
+    // created frame if place was not called.
+    protected Container _container;
+
+    // The frame containing our canvas, if we created it.
+    protected TableauFrame _frame;
+
+    // True for manual rendering, false for default rendering.
+    // Steve doesn't think this is entirely necessary.
+    protected boolean _iterationSynchronized = false;
+    protected Transform3D _lastTransform = new Transform3D();
+    protected MouseRotateView _mouseRotate;
+
+    // The Java3D universe, displayed inside the canvas.
+    protected SimpleUniverse _simpleUniverse;
+    protected TransformGroup _userTransformation = new TransformGroup();
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
+    
     private boolean _isIterationSynchronized() throws IllegalActionException {
         return ((BooleanToken) iterationSynchronized.getToken()).booleanValue();
     }
@@ -560,6 +628,24 @@ public class ViewScreen3D extends GRActor3D implements Placeable,
     private boolean _shouldShowAxes() throws IllegalActionException {
         return ((BooleanToken) showAxes.getToken()).booleanValue();
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                   ////
+
+    /** The effigy for the image data. */
+    private Effigy _effigy;
+    
+    /** The tableau with the display, if any. */
+    private Tableau _tableau;
+
+    /** A specification of the size of the picture if it's in its own window. */
+    private SizeAttribute _viewSize;
+
+    /** A specification for the window properties of the frame. */
+    private WindowPropertiesAttribute _windowProperties;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
 
     private class MouseRotateView extends MouseRotate {
         public MouseRotateView(ViewScreen3D viewContainer) {
@@ -607,29 +693,45 @@ public class ViewScreen3D extends GRActor3D implements Placeable,
         boolean stopped = false;
         ViewScreen3D _viewContainer;
     }
+    
+    /** Version of TableauFrame.
+     */
+    private class ViewWindow extends TableauFrame {
+        /** Construct an empty window.
+         *  After constructing this, it is necessary
+         *  to call setVisible(true) to make the frame appear
+         *  and setTableau() to associate it with a tableau.
+         */
+        public ViewWindow() {
+            // The null second argument prevents a status bar.
+            super(null, null);
 
-    protected BoundingSphere _bounds;
+            // FIXME: What's this for?
+            this.getContentPane().setLayout(new BorderLayout(15, 15));
+        }
 
-    // The main connection branch that connects to the universe
-    protected BranchGroup _branchRoot;
+        /** Close the window.  This overrides the base class to remove
+         *  the association with the ImageDisplay actor and to record window
+         *  properties.
+         *  @return True.
+         */
+        protected boolean _close() {
+            // Record the window properties before closing.
+            _windowProperties.recordProperties(this);
 
-    // The Java3D canvas component.
-    protected Canvas3D _canvas;
+            // Regrettably, have to also record the size of the contents
+            // because in Swing, setSize() methods do not set the size.
+            // Only the first component size is recorded.
+            Component[] components = getContentPane().getComponents();
 
-    // The container set in the place() method, or the content pane of the
-    // created frame if place was not called.
-    protected Container _container;
+            if (components.length > 0) {
+                _viewSize.recordSize(components[0]);
+            }
 
-    // The frame containing our canvas, if we created it.
-    protected JFrame _frame;
+            super._close();
+            place(null);
+            return true;
+        }
+    }
 
-    // True for manual rendering, false for default rendering.
-    // Steve doesn't think this is entirely necessary.
-    protected boolean _iterationSynchronized = false;
-    protected Transform3D _lastTransform = new Transform3D();
-    protected MouseRotateView _mouseRotate;
-
-    // The Java3D universe, displayed inside the canvas.
-    protected SimpleUniverse _simpleUniverse;
-    protected TransformGroup _userTransformation = new TransformGroup();
 }
