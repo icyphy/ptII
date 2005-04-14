@@ -1,7 +1,5 @@
 package ptolemy.backtrack.test.array1;
 
-import ptolemy.backtrack.ast.TestProgram;
-
 public class ArrayTest1 {
     
     public ArrayTest1() {
