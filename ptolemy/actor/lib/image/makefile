@@ -52,6 +52,7 @@ JSRCS = \
 	ImageDisplay.java \
 	ImageReader.java \
 	ImageRotate.java \
+	ImageTableau.java \
 	ImageToString.java \
 	Transform.java \
 	URLToImage.java

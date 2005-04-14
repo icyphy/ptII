@@ -32,13 +32,17 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Image;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
 
+import ptolemy.actor.gui.Configuration;
+import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.Placeable;
 import ptolemy.actor.gui.SizeAttribute;
 import ptolemy.actor.gui.TableauFrame;
+import ptolemy.actor.gui.TokenEffigy;
 import ptolemy.actor.gui.WindowPropertiesAttribute;
 import ptolemy.actor.lib.Sink;
 import ptolemy.data.ImageToken;
@@ -46,6 +50,8 @@ import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.media.Picture;
@@ -59,8 +65,7 @@ import ptolemy.media.Picture;
    class.  For a sequence of images that are all the same size, this class
    will continually update the picture with new data.   If the size of the
    input image changes, then a new Picture object is created.  This class
-   will only accept a IntMatrixToken on its input, and assumes that the
-   input image contains greyscale pixel intensities between 0 and 255 (inclusive).
+   will only accept an ImageToken on its input.
 
    @author James Yeh, Edward A. Lee
    @version $Id$
@@ -69,14 +74,6 @@ import ptolemy.media.Picture;
    @Pt.AcceptedRating Red
 */
 public class ImageDisplay extends Sink implements Placeable {
-    // FIXME:
-    // This actor and sdf.lib.vq.ImageDisplay are very similar except that this
-    // actor takes an Object token that wraps a java.awt.Image object.
-    // That actor should be removed, and instead, we need an actor that
-    // converts matrices to java.awt.Image.
-    // FIXME: We need to create an ImageEffigy and ImageTableau,
-    // similar to TokenEffigy and MatrixTokenTableau, and then associate
-    // them with this class in ways similar to what MatrixViewer does.
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -89,23 +86,23 @@ public class ImageDisplay extends Sink implements Placeable {
     public ImageDisplay(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-
+        
+        // FIXME: This is required to be an ImageToken, but
+        // we don't see to have that class.
         input.setTypeEquals(BaseType.OBJECT);
 
-        _oldxsize = 0;
-        _oldysize = 0;
         _frame = null;
         _container = null;
 
         _windowProperties = new WindowPropertiesAttribute(this,
                 "_windowProperties");
 
-        _paneSize = new SizeAttribute(this, "_paneSize");
+        _pictureSize = new SizeAttribute(this, "_pictureSize");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
+    
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then removes association with graphical objects
      *  belonging to the original class.
@@ -119,114 +116,8 @@ public class ImageDisplay extends Sink implements Placeable {
 
         newObject._container = null;
         newObject._frame = null;
-        newObject._oldxsize = 0;
-        newObject._oldysize = 0;
-        newObject._picture = null;
 
         return newObject;
-    }
-
-    /** Fire this actor.
-     *  Consume an IntMatrixToken from the input port.  If the image is
-     *  not the same size as the previous image, or this is the first
-     *  image, then create a new Picture object to represent the image,
-     *  and put it in the appropriate container (either the container
-     *  set using place, or the frame created during the initialize
-     *  phase).
-     *  Convert the pixels from greyscale to RGBA triples (setting the
-     *  image to be opaque) and update the picture.
-     *  @exception IllegalActionException If a contained method throws it,
-     *   or if a token is received that contains a null image.
-     */
-    public void fire() throws IllegalActionException {
-        if (_debugging) {
-            _debug("ImageDisplay actor firing");
-        }
-
-        if (input.hasToken(0)) {
-            //ObjectToken objectToken = (ObjectToken) input.get(0);
-            Token token = input.get(0);
-            ImageToken imageToken;
-
-            try {
-                imageToken = (ImageToken) token;
-            } catch (ClassCastException ex) {
-                throw new IllegalActionException(this, ex,
-                        "Failed to cast " + token.getClass()
-                        + " to an ImageToken.\nToken was: " + token);
-            }
-
-            // If there is no place to display, we can return after
-            // consuming the input token.
-            if (_container == null) {
-                return;
-            }
-
-            //Image image = (Image) objectToken.getValue();
-            Image image = imageToken.asAWTImage();
-
-            if (image == null) {
-                throw new IllegalActionException(this,
-                        "ImageDisplay: input image was null!");
-            } else {
-                int xsize = image.getWidth(null);
-                int ysize = image.getHeight(null);
-
-                if ((_oldxsize != xsize) || (_oldysize != ysize)) {
-                    if (_debugging) {
-                        _debug("Image size has changed.");
-                    }
-
-                    _oldxsize = xsize;
-                    _oldysize = ysize;
-
-                    if (_picture != null) {
-                        _container.remove(_picture);
-                    }
-
-                    _picture = new Picture(xsize, ysize);
-                    _picture.setImage(image);
-                    _picture.setBackground(null);
-                    _container.add("Center", _picture);
-                    _container.validate();
-                    _container.invalidate();
-                    _container.repaint();
-                    _container.doLayout();
-
-                    Container c = _container.getParent();
-
-                    while (c.getParent() != null) {
-                        c.invalidate();
-                        c.validate();
-                        c = c.getParent();
-                    }
-
-                    if (_frame != null) {
-                        _frame.pack();
-                    }
-                } else {
-                    _picture.setImage(image);
-                }
-
-                // display it.
-                _picture.displayImage();
-                _picture.repaint();
-
-                // FIXME: Why is all this needed?  In theory,
-                // the repaint() call above should be enough.
-                Runnable painter = new Runnable() {
-                        public void run() {
-                            if (_container != null) {
-                                _container.paint(_container.getGraphics());
-                            }
-                        }
-                    };
-
-                // Make sure the image gets updated.
-                SwingUtilities.invokeLater(painter);
-                Thread.yield();
-            }
-        }
     }
 
     /** Get the background */
@@ -242,12 +133,58 @@ public class ImageDisplay extends Sink implements Placeable {
     public void initialize() throws IllegalActionException {
         super.initialize();
 
-        _oldxsize = 0;
-        _oldysize = 0;
-
         if (_container == null) {
-            _frame = new ImageWindow();
-            _container = _frame.getContentPane();
+            // No current container for the pane.
+            // Need an effigy and a tableau so that menu ops work properly.
+            if (_tableau == null) {
+                Effigy containerEffigy = Configuration.findEffigy(toplevel());
+
+                if (containerEffigy == null) {
+                    throw new IllegalActionException(this,
+                            "Cannot find effigy for top level: "
+                            + toplevel().getFullName());
+                }
+
+                try {
+                    _effigy = new TokenEffigy(containerEffigy,
+                            containerEffigy.uniqueName("imageEffigy"));
+
+                    // The default identifier is "Unnamed", which is
+                    // no good for two reasons: Wrong title bar label,
+                    // and it causes a save-as to destroy the original window.
+                    _effigy.identifier.setExpression(getFullName());
+
+                    _frame = new ImageWindow();
+
+                    _tableau = new ImageTableau(_effigy, "tokenTableau",
+                            _frame, _oldxsize, _oldysize);
+                    _tableau.setTitle(getName());
+                    _frame.setTableau(_tableau);
+                    _windowProperties.setProperties(_frame);
+
+                    // Regrettably, since setSize() in swing doesn't actually
+                    // set the size of the frame, we have to also set the
+                    // size of the internal component.
+                    Component[] components = _frame.getContentPane().getComponents();
+
+                    if (components.length > 0) {
+                        _pictureSize.setSize(components[0]);
+                    }
+
+                    _tableau.show();
+                } catch (Exception ex) {
+                    throw new IllegalActionException(this, null, ex,
+                            "Error creating effigy and tableau");
+                }
+            } else {
+                // Erase previous image.
+                _effigy.clear();
+
+                if (_frame != null) {
+                    // Do not use show() as it overrides manual placement.
+                    _frame.toFront();
+                }
+            }
         }
 
         if (_frame != null) {
@@ -260,22 +197,115 @@ public class ImageDisplay extends Sink implements Placeable {
      * is not called, then the actor will create its own frame for display.
      */
     public void place(Container container) {
+        // If there was a previous container that doesn't match this one,
+        // remove the pane from it.
+        if ((_container != null) && (_picture != null)) {
+            _container.remove(_picture);
+            _container = null;
+        }
+
+        if (_frame != null) {
+            _frame.dispose();
+            _frame = null;
+        }
+
         _container = container;
 
-        // FIXME: Need full support for a separate window.
         if (container == null) {
+            // Reset everything.
+            if (_tableau != null) {
+                // This will have the side effect of removing the effigy
+                // from the directory if there are no more tableaux in it.
+                try {
+                    _tableau.setContainer(null);
+                } catch (KernelException ex) {
+                    throw new InternalErrorException(ex);
+                }
+            }
+
+            _tableau = null;
+            _effigy = null;
+            _picture = null;
+            _oldxsize = 0;
+            _oldysize = 0;
+
             return;
         }
 
-        Container c = _container.getParent();
-
-        while (c.getParent() != null) {
-            c = c.getParent();
+        if (_picture == null) {
+            // Create the pane.
+            _picture = new Picture(_oldxsize, _oldysize);
         }
 
-        if (c instanceof JFrame) {
-            _frame = (JFrame) c;
+        // Place the pane in supplied container.
+        _container.add(_picture, BorderLayout.CENTER);
+    }
+
+    /** Consume a token from the <i>input</i> port
+     *  and display the token as an image.  If a token is not available,
+     *  do nothing.
+     *  @exception IllegalActionException If there is no director, or
+     *   if the base class throws it.
+     */
+    public boolean postfire() throws IllegalActionException {
+        if (input.hasToken(0)) {
+            Token in = input.get(0);
+            if (!(in instanceof ImageToken)) {
+            	throw new IllegalActionException(this, "Input is not an ImageToken. It is: " + in);
+            }
+
+            if (_frame != null) {
+                List tokens = new LinkedList();
+                tokens.add(in);
+                _effigy.setTokens(tokens);
+            } else if (_picture != null) {
+                Image image = ((ImageToken)in).asAWTImage();
+                int xsize = image.getWidth(null);
+                int ysize = image.getHeight(null);
+
+                // If the size has changed, have to recreate the Picture object.
+                if ((_oldxsize != xsize) || (_oldysize != ysize)) {
+                    if (_debugging) {
+                        _debug("Image size has changed.");
+                    }
+
+                    _oldxsize = xsize;
+                    _oldysize = ysize;
+                    
+                    Container container = _picture.getParent();
+
+                    if (_picture != null) {
+                        container.remove(_picture);
+                    }
+
+                    _picture = new Picture(xsize, ysize);
+                    _picture.setImage(image);
+                    _picture.setBackground(null);
+                    container.add("Center", _picture);
+                    container.validate();
+                    container.invalidate();
+                    container.repaint();
+                    container.doLayout();
+
+                    Container c = container.getParent();
+
+                    while (c.getParent() != null) {
+                        c.invalidate();
+                        c.validate();
+                        c = c.getParent();
+                        if (c instanceof JFrame) {
+                            ((JFrame)c).pack();
+                        }
+                    }
+                } else {
+                    _picture.setImage(((ImageToken) in).asAWTImage());
+                    _picture.displayImage();
+                    _picture.repaint();
+                }
+            }
         }
+
+        return super.postfire();
     }
 
     /** Set the background */
@@ -284,31 +314,32 @@ public class ImageDisplay extends Sink implements Placeable {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-    /** A specification of the size of the pane if it is in its own window. */
-    protected SizeAttribute _paneSize;
-
-    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** The container for the image display. */
+    /** The container for the image display, set by calling place() */
     private Container _container;
 
-    /** The frame, if one is used. */
-    private JFrame _frame;
+    /** The effigy for the image data. */
+    private TokenEffigy _effigy;
 
+    /** The frame, if one is used. */
+    private ImageWindow _frame;
+    
     /** The horizontal size of the previous image. */
     private int _oldxsize = 0;
 
     /** The vertical size of the previous image. */
-    private int _oldysize;
+    private int _oldysize = 0;
 
-    // FIXME: Probably don't want to use Picture here.
-
-    /** A panel that displays the image. */
+    /** The picture panel. */
     private Picture _picture;
-
+    
+    /** A specification of the size of the picture if it's in its own window. */
+    private SizeAttribute _pictureSize;
+    
+    /** The tableau with the display, if any. */
+    private ImageTableau _tableau;
+    
     /** A specification for the window properties of the frame. */
     private WindowPropertiesAttribute _windowProperties;
 
@@ -347,7 +378,7 @@ public class ImageDisplay extends Sink implements Placeable {
             Component[] components = getContentPane().getComponents();
 
             if (components.length > 0) {
-                _paneSize.recordSize(components[0]);
+                _pictureSize.recordSize(components[0]);
             }
 
             super._close();
