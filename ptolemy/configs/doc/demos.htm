@@ -26,13 +26,14 @@ The reason that the xml files are upcased is so that if
 we do codegen, we get Foo.java instead of foo.java
 -->
 
-The following links open models that highlight the
+If you are viewing this from within Ptolemy II, then
+many of the following links will open models that highlight the
 key features of Ptolemy II. To run the models,
 click on the red triangle in the toolbar. The
 diagrams are fully editable, so feel free to explore.
 You can also access the <a href="completeDemos.htm">complete
 list of demos</a>
-<!-- whatNew.htm links to whatsNew4.0.htm, which has lots of features
+<!-- whatNew.htm links to whatsNew4.0.htm, which has many of features
      not present in ptiny -->
 <!--/vergilDocs-->
 and the summary of
@@ -44,6 +45,7 @@ and the summary of
 <li> <a href="#heterogeneous">Heterogeneous Modeling</a>: Mixing models of computation.
 <li> <a href="#basic">Basic Modeling Capabilities</a>: Commonly used models of computation.
 <li> <a href="#infrastructure">Modeling Infrastructure</a>: Capabilities shared by all uses of Ptolemy II.
+<li> <a href="#libraries">Actor Libraries</a>: Useful libraries of actors.
 <li> <a href="#experimental">Experimental</a>: Demonstrations of less mature capabilities.
 </ul>
 
@@ -59,15 +61,23 @@ or accessed from within Ptolemy II. Here, we illustrate some such frameworks.
 <!--/vergilDocs-->
 
 <li><i>Modeling of wireless networks</i>: <a href="../../domains/wireless/demo/WirelessSoundDetection/WirelessSoundDetection.xml">
-WirelessSoundDetection</a> (See also
-<a href="../visualsense/intro.htm">VisualSense introduction</a>)
-<br> This example illustrates the wireless domain in Ptolemy II,
-which extends discrete-event modeling with wireless channel models.
-This example models a sound localization problem. A single sound source
-moves through a field of sound sensors. The sound sensors detect the sound
+WirelessSoundDetection</a> (see also
+<a href="../visualsense/intro.htm">VisualSense introduction</a>).
+<br> The wireless domain in Ptolemy II
+provides discrete-event modeling of wireless communication systems.
+It is useful for modeling and design of communication protocols,
+networking strategies, and applications such as sensor networks.
+The <a href="../visualsense/intro.htm">VisualSense</a> package
+is a subset of Ptolemy II that includes the wireless domain and channel models
+plus domains that support the design of nodes in a wireless network.
+The <a href="../../domains/wireless/demo/WirelessSoundDetection/WirelessSoundDetection.xml">
+WirelessSoundDetection</a> example models a sound localization problem, where single sound source
+moves through a field of sound sensors. In the example, sound sensors detect the sound
 and communicate via a radio channel to a sensor fusion component that
-localizes the sound by triangulation.
-</li>
+localizes the sound by triangulation. Two distinct channel models are used,
+one that models sound propagation and one that models radio communication.
+
+<br>
 
 <!--vergilDocs-->
 
@@ -83,25 +93,42 @@ and
 <!--vergilDocs-->
 the <a href="../../configs/hyvisual/intro.htm">HyVisual introduction</a>).
 <br> <i>Hybrid systems</i> are a special case of modal models
-where the FSM domain is combined with the continuous-time (CT) domain
+where finite-state machines (FSMs) are combined with the continuous-time (CT) models
 to get mixed continuous-time and discrete-event models.
-The StickyMasses example models a physical system consisting of two point masses
+The <a href="../hyvisual/intro.htm">HyVisual</a> package
+is a subset of Ptolemy II that includes the FSM and CT domains and libraries
+that support the design of hybrid systems.
+The <a href="../../domains/gr/demo/StickyMasses/StickyMasses.xml">StickyMasses</a>
+example models a physical system consisting of two point masses
 on springs that stick together when they collide.
-</li>
 
-<li>
-<i>Stochastic hybrid systems</i>:
-<a href="../../domains/ct/demo/Hysteresis/HysteresisWithRandomDelay.xml">
-HysteresisWithRandomDelay</a>.
-<br>This example illustrates how to model random delays associated with
-state transitions of a hybrid systems.
+
+<br>
+
+<li><i>Signal Processing</i>:
+<a href="../../domains/sdf/demo/MaximumEntropySpectrum/MaximumEntropySpectrum.xml">MaximumEntropySpectrum</a>
+(See also
+<a href="../../domains/sdf/demo/LMSAdaptive/LMSAdaptive.xml">LMSAdaptive</a>,
+<a href="../../domains/sdf/demo/SynthesizedVoice/SynthesizedVoice.xml">SynthesizedVoice</a>,
+<a href="../../domains/sdf/demo/FourierSeries/FourierSeries.xml">FourierSeries</a>, and
+<a href="../../domains/sdf/demo/SoundSpectrum/SoundSpectrum.xml">SoundSpectrum</a>)
+<br>
+Ptolemy II includes an extensive library and models of computation suitable for
+digital signal processing, communication systems design, and image and video processing.
+The<a href="../../domains/sdf/demo/MaximumEntropySpectrum/MaximumEntropySpectrum.xml">MaximumEntropySpectrum</a>
+example shows spectral estimation of sinusoids in noise.
+It illustrates models the use of synchronous dataflow (SDF) for signal
+processing, and also shows many basic capabilities like
+hierarchical models,
+the Expression actor, and the signal processing actor library.
+
 
 </ul>
 <h2>
 <a name="heterogeneous">Heterogeneous Models</a>
 </h2>
 A particular capability of Ptolemy II is the ability to mix models of computation.
-These examples illustrate this.
+These examples illustrate some of these capabilities.
 <ul>
 
 <li><i>Modal Models</i>:
@@ -115,10 +142,13 @@ combined hierarchically with other models. A state in the FSM represents
 a mode of operation, and can have a refinement that gives the behavior
 in that mode.
 The refinement can be another FSM or some other model using some other
-Ptolemy domain. This example combines DE, FSM, and SDF to model a
+Ptolemy domain. The <a href="../../domains/de/demo/ModalModel/ModalModel.xml">
+ModalModel</a> example combines DE, FSM, and SDF to model a
 system where regularly sampled signals are perturbed by irregular
 events in time.
-</li>
+
+
+<br>
 
 <li><i>Mixed-Signal Modeling</i>:
 <a href="../../domains/ct/demo/SigmaDelta/SigmaDelta.xml">
@@ -135,7 +165,7 @@ Mark Lemkin).
 <h2>
 <a name="basic">Basic Modeling Capabilities</a>
 </h2>
-Many common modeling and design techniques have been implemented in
+Many common models of computation have been implemented in
 Ptolemy II.  This section illustrates some of them.
 <ul>
 
@@ -152,7 +182,9 @@ hierarchical models,
 the Expression actor, and the signal processing actor library.
 In SDF, the firing of actors is statically scheduled, and at the start of execution,
 boundedness and deadlock conditions are checked.
-</li>
+
+
+<br>
 
 <li><i>Continuous-Time Modeling</i>:
 <a href="../../domains/ct/demo/Lorenz/Lorenz.xml">
@@ -163,7 +195,9 @@ nonlinear feedback system that exhibits
 chaotic behavior (this system is called a Lorenz attractor).
 It illustrates the <i>continuous-time</i> (CT) domain,
 which uses an underlying solver for ordinary differential equations.
-</li>
+
+
+<br>
 
 <li><i>Discrete-Event Modeling</i>:
 <a href="../../domains/de/demo/Inspection/Inspection.xml">
@@ -178,18 +212,30 @@ events occur on a time line and are processed chronologically.
 In this example, random
 data stimulates a model and statistics are collected and reported
 in various ways.
-</li>
+
+
+<br>
 
 <li><i>Process Networks</i>:
 <a href="../../domains/pn/demo/OrderedMerge/OrderedMerge.xml">
 OrderedMerge</a> (see also
-<a href="../../domains/pn/demo/QR/QR.xml">QR</a>).<br>
-This example illustrates the <i>process networks</i> (PN) domain,
-where each actor executes in a separate Java thread.
-The example calculates numbers whose prime
+<a href="../../domains/pn/demo/NondeterministicMerge/NondeterministicMerge.xml">NondeterministicMerge</a>,
+<a href="../../domains/pn/demo/QR/QR.xml">QR</a>).
+<br>
+The process networks (PN) domain follows the semantics given by Kahn and MacQueen in 1977
+to get processes with their own threads of control that send messages to one another
+and achieve deterministic computation.
+The <a href="../../domains/pn/demo/OrderedMerge/OrderedMerge.xml">
+OrderedMerge</a> example implements an example given by Kahn and MacQueen
+that calculates numbers whose prime
 factors are 2, 3, and 5, only, and produces
 them in an ordered sequence.
-</li>
+As of version 5.0, we have extended this model of computation with a
+nondeterministic merge actor, illustrated in
+<a href="../../domains/pn/demo/NondeterministicMerge/NondeterministicMerge.xml">NondeterministicMerge</a>.
+
+
+<br>
 
 <!--/vergilDocs-->
 <!--sr does not get included in demosPtiny.htm -->
@@ -200,7 +246,7 @@ This example illustrates the <i>synchronous/reactive</i> (SR) domain,
 which is inspired by the synchronous languages Esterel, Lustre, and Signal.
 The example uses the fixed-point semantics of SR to arbitrate access
 to a shared medium using a token-ring protocol.
-</li>
+
 <!--vergilDocs-->
 
 </ul>
@@ -229,6 +275,8 @@ example, defining a class of models that can have instances and subclasses.
 The instances and subclasses inherit all the features of the class, and
 track any changes that are made to the class.
 
+<br>
+
 <li><i>The Type System</i>:
 <a href="../../data/type/demo/Router/Router.xml">
 Router</a>.
@@ -241,7 +289,8 @@ This example illustrates composite types, where records are
 constructed out of tokens with various types. Here, a record
 models a packet in a packet-switched network, where variable
 delays may result in out-of-order arrival of packets.
-</li>
+
+<br>
 
 <li><i>Expression Language</i>:
 <a href="../../domains/ct/demo/Transmission/Transmission.xml">
@@ -253,20 +302,27 @@ type system, allowing static type checking of polymorphic expressions
 with few type annotations.  The expression language also allows new,
 encapsulated functions, called function closures, to be defined and
 passed as data.  This model illustrates how function closures can be
-used to make models much more compact. </li>
+used to make models much more compact. 
+
+<br>
 
 <li><i>Higher-Order Components</i>:
 <a href="../../actor/lib/hoc/demo/HocDE/HocDE.xml">HocDE</a>
 (see also
+<a href="../../actor/lib/hoc/demo/MobileFunction/MobileFunction.xml">MobileFunction</a>,
+<a href="../../domains/sdf/demo/MultipleRuns/MultipleRuns.xml">MultipleRuns</a>,
+<a href="../../actor/lib/hoc/demo/IterateOverArray/IterateOverArray.xml">IterateOverArray</a>,
 <a href="../../actor/lib/hoc/demo/DFTSubset/DFTSubset.xml">DFTSubset</a>,
 <a href="../../actor/lib/hoc/demo/ApplyFFT/ApplyFFT.xml">ApplyFFT</a>
 ).
 <br>Higher-order components are components that operate on components.
-This example contains a component that is a composite actor that
+The <a href="../../actor/lib/hoc/demo/HocDE/HocDE.xml">HocDE</a>
+example contains a component that is a composite actor that
 replicates itself some specified number of times to operate on
 multiple channels of input.  This capability was created by
 Zoltan Kemenczy and Sean Simmons, Research In Motion, Ltd.
 
+<br>
 
 <li><i>Interactive Signal Plotter</i>:
 <a href="../../domains/sdf/demo/Sketch/Sketch.xml">Sketch</a>
@@ -277,6 +333,8 @@ as well as rendering output from a model.  Right click and drag
 on the plot to trace out a new signal. The model runs each time you
 do this.
 
+<br>
+
 <li><i>Matlab Integration</i>:
 <a href="../../matlab/demo/MatlabExpression/MatlabExpression.xml">
 MatlabExpression</a> (see also
@@ -286,18 +344,25 @@ This example uses the Matlab interface created by
 Zoltan Kemenczy and Sean Simmons, of Research in Motion Ltd.,
 to plot a 3-D surface. This works only if Matlab is installed locally.
 
+<br>
+
 <li><i>Model Animations</i>:
 <a href="../../actor/parameters/demo/Bouncer/Bouncer.xml">Bouncer</a>
+(see also 
+<a href="../../domains/sdf/demo/AnimateVergil/AnimateVergil">
+AnimateVergil</a>
 <!--/vergilDocs-->
-(see also <a href="../../domains/wireless/demo/WirelessSoundDetection/WirelessSoundDetection.xml">
-WirelessSoundDetection</a>)
+<a href="../../domains/wireless/demo/WirelessSoundDetection/WirelessSoundDetection.xml">
+WirelessSoundDetection</a>
 <!--vergilDocs-->
-.
+).
 <br>
 Ptolemy II models can, while executing, control their visual rendition
 in Vergil, the visual editor for Ptolemy II.
 In this example, a model alters the position in the Vergil diagram
 of one of its own actors.
+
+<br>
 
 <li><i>Statically Checked Units System</i>:
 <a href="../../data/unit/demo/StaticUnits/StaticUnits.xml">
@@ -311,7 +376,9 @@ defines a set of interrelated dimensions and measures. For example, in
 the time dimension, we might have seconds, minutes, hours, days, weeks,
 and fortnights. Ptolemy II includes two experimental units systems,
 one that is statically checked and one that is dynamically checked.
-</li>
+
+
+<br>
 
 <li><i>Network Integration</i>:
 <a href="../../moml/demo/Networked/Networked.xml">
@@ -327,7 +394,9 @@ defined component.  The component itself is at
 http://ptolemy.eecs.berkeley.edu/xml/models/Waveform.xml</a>.
 You can open that definition by clicking on the hyperlink, or by
 using the "Open URL" command in the File menu.
-</li>
+
+
+<br>
 
 <li><i>Audio</i>:
 <a href="../../actor/lib/javasound/demo/KarplusStrong/KarplusStrong.xml">
@@ -338,7 +407,56 @@ the executing machine, assuming it has one.
 This example shows the Karplus-Strong algorithm, which synthesizes
 a musical sound that closely resembles a plucked string instrument.
 It illustrates the audio capabilities of Ptolemy II.
-</li>
+
+
+<!--/vergilDocs-->
+<!--Ptiny does not include JAI or JMF--> 
+<br>
+<li><i>Image and Video Processing</i>:
+<a href="../../actor/lib/jai/demo/AdaptiveMedian/AdaptiveMedian.xml">AdaptiveMedian</a>
+(see also 
+<a href="../../actor/lib/jai/demo/ImageReconstruction/ImageReconstruction.xml">ImageReconstruction</a>,   
+<a href="../../actor/lib/jai/demo/VQSequenceDisplay/VQSequenceDisplay.xml">VQSequenceDisplay</a>,  
+<a href="../../actor/lib/jmf/demo/VideoCapture/VideoCapture.xml">VideoCapture</a>).
+<br>
+If you install the optional packages JAI (Java advanced imaging) and
+JMF (Java media framework), then you can use a library of actors
+that operates on images and video signals, including video captured
+from a video camera.
+<!--vergilDocs-->
+
+<br>
+<li><i>Fixed-Point Arithmetic</i>:
+<a href="../../domains/sdf/demo/FixFIR/FixFIR.xml">FixFIR</a>
+(see also
+<a href="../../domains/sdf/demo/FixPoint/FixPoint.xml">FixPoint</a>)
+<br>
+Ptolemy II data types include a fixed-point data type, where
+a model can explicitly control the binary representation of numbers
+and the mechanisms used to handle overflow and rounding.
+
+</ul>
+
+<h2>
+<a name="libraries">Actor Libraries</a>
+</h2>
+Ptolemy II includes several actor libraries that provide sophisticated
+functions. A few of those are illustrated by the models here.
+<ul>
+
+<li><a href="../../domains/sdf/demo/Array/Array.xml">Array</a>:
+Actors that operate on matrices and arrays.
+<li> <a href="../../actor/lib/colt/demo/ColtRandom/ColtRandom.xml">ColtRandom</a>:
+Random number generators (based on Colt).
+<!--/vergilDocs-->
+<!--Ptiny does not include the security actors-->
+<li> <a href="../../actor/lib/security/demo/Signature/Signature.xml">Signature</a>:
+Security actors (encryption and digital signatures).
+<!--vergilDocs-->
+<li> <a href="../../actor/lib/comm/demo/TrellisDecoder/TrellisDecoder.xml">TrellisDecoder</a>:
+Communication library.
+
+</ul>
 
 <h2>
 <a name="experimental">Experimental Capabililties</a>
@@ -349,8 +467,6 @@ capabilities that may continue to evolve over time.
 These are illustrated in the following examples.
 
 <ul>
-
-
 <!--/vergilDocs-->
 <!--ci does not get included in demosPtiny.htm -->
 <li> <a href="../../domains/ci/demo/Router/Router.xml">Push/Pull
@@ -362,17 +478,23 @@ illustrates the use of these styles of communication to route packets
 through queues using some policy that depends on the queue sizes.
 <!--vergilDocs-->
 
+<br>
+
 <!--/vergilDocs-->
 <!--python does not get included in demosPtiny.htm -->
-<li><a href="../../actor/lib/python/demo/PythonScale/PythonScale.xml">Python Integration</a>
-<br>This example shows a trivial implementation of the Scale actor
-using the Python language.  The advantage of using Python 
-is that Python is an interpreted language, so changes
-to the actor body can be made on the fly without restarting
-Ptolemy II.  New users may find it easier to prototype
-actors in Python and then reimplement them as necessary
-as standard Ptolemy II actors.
+<li><i>Python Integration</i>:
+<a href="../../actor/lib/python/demo/Ptolemnizer/Ptolemnizer.xml">Ptolemnizer</a>
+(see also <a href="../../actor/lib/python/demo/PythonScale/PythonScale.xml">PythonScale</a>).
+<br>Python is a popular interpreted programming language that has
+been integrated into Ptolemy II using the jython Java implementation of Python.
+This example shows that use of Python to alter a string entered by the user
+to modify any word that begins with "t" so that it begins with "pt".
+This leverages the excellent string processing capabilities in Python.
+Python can also be used to prototype
+actors by defining their functionality in Python.
 <!--vergilDocs-->
+
+<br>
 
 <!--/vergilDocs-->
 <!--caltrop does not get included in demosPtiny.htm -->
@@ -382,6 +504,8 @@ as standard Ptolemy II actors.
 <a href="../../caltrop/demo/Primes/Primes.xml">Primes</a>,
 <a href="../../caltrop/demo/SDFDDI/SDFDDI.xml">SDFDDI</a>
 <!--vergilDocs-->
+
+<br>
 
 <!--/vergilDocs-->
 <!--dt does not get included in demosPtiny.htm -->
@@ -393,8 +517,10 @@ domain, live parameter editing and
 the scope-style plotter (which shows an eye diagram).
 Note that discrete-time models can also be represented using the
 SDF domain, which is not explicit about the passage of time.
-</li>
+
 <!--vergilDocs-->
+
+<br>
 
 <!--/vergilDocs-->
 <!-- codegen does not get shipped with ptiny -->
@@ -404,8 +530,10 @@ Code Generation</a>
 This release includes a limited prototype of our code generation facility
 that will generate .class files for non-hierarchical SDF models.
 This example leads to more information about this capability.
-</li>
+
 <!--vergilDocs-->
+
+<br>
 
 <!--/vergilDocs-->
 <!--Ptiny does not include the GR domain-->
@@ -424,8 +552,10 @@ can be assembled and dynamically manipulated.  Note that clicking
 and dragging in the graphics window rotates the model.
 For further details, see the
 <a href="../../domains/gr/doc/main.htm">GR domain</a>.
-</li>
+
 <!--vergilDocs-->
+
+<br>
 
 <!--/vergilDocs-->
 <!--Ptiny does not include the TM domain-->
@@ -438,7 +568,9 @@ two control systems share a computational resource. Depending
 on the scheduling strategy chosen (preemptive or nonpreemptive)
 and the priorities, the two control systems may be both stable,
 or one may be stable, or the other may be stable.
-</li>
+
+
+<br>
 
 <!--vergilDocs-->
 </ul>
