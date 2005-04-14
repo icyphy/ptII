@@ -102,6 +102,9 @@ public class JAIImageReader extends Source {
             throws IllegalActionException {
         if (attribute == fileOrURL) {
             _fileURL = fileOrURL.asURL();
+            if (_fileURL == null) {
+            	throw new IllegalActionException("No such file: " + fileOrURL.getExpression());
+            }
         } else {
             super.attributeChanged(attribute);
         }
