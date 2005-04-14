@@ -9,9 +9,9 @@ public class ArrayTest1Main {
      */
     public static void main(String[] args) {
         ArrayTest1 test = new ArrayTest1();
-        test.$GET$CHECKPOINT().createCheckpoint();
+        long handle = test.$GET$CHECKPOINT().createCheckpoint();
         test.modify();
-        test.$GET$CHECKPOINT().rollback(1, true);
+        test.$GET$CHECKPOINT().rollback(handle, true);
         test.dump();
     }
 
