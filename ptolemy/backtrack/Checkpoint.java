@@ -1,4 +1,4 @@
-/* 
+/* The class of checkpoint objects.
 
 Copyright (c) 2005 The Regents of the University of California.
 All rights reserved.
@@ -14,11 +14,11 @@ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
 THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
 SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES, 
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
 INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, 
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
@@ -33,40 +33,93 @@ import java.util.List;
 //////////////////////////////////////////////////////////////////////////
 //// CheckPoint
 /**
- 
- 
- @author Thomas Feng
- @version $Id$
- @since Ptolemy II 5.1
- @Pt.ProposedRating Red (tfeng)
- @Pt.AcceptedRating Red (tfeng)
- */
+   The class of checkpoint objects. A checkpoint object represents the smallest
+   entity on which checkpoints are created and managed. It monitors one or more
+   objects. When the {@link #rollback(long, boolean)} function is called, all
+   the monitored objects are rolled back to their previous states, defined by a
+   <em>timestamp</em>.
+
+   @author Thomas Feng
+   @version $Id$
+   @since Ptolemy II 5.1
+   @Pt.ProposedRating Red (tfeng)
+   @Pt.AcceptedRating Red (tfeng)
+*/
 public class Checkpoint {
-    
-    public Checkpoint(Rollbackable object) {
-        addObject(object);
-    }
-    
+
+    ///////////////////////////////////////////////////////////////////
+    ////                       public methods                      ////
+
+    /** Add an object to the monitored object list.
+     *
+     *  @param object The object to be added.
+     */
     public void addObject(Rollbackable object) {
         _state.getMonitoredObjects().add(object);
     }
-    
+
+    /** Construct a checkpoint object with an initial object in its monitored
+     *  object list.
+     *
+     *  @param object The first object to be placed in the list, or
+     *   <tt>null</tt> if the list is intended to be empty.
+     */
+    public Checkpoint(Rollbackable object) {
+        if (object != null)
+            addObject(object);
+    }
+
+    /** Create a new checkpoint and return its handle. The current timestamp is
+     *  increased by one before the it (as a handle) is returned.
+     *
+     *  @return The handle of the newly created checkpoint.
+     */
     public synchronized long createCheckpoint() {
         return _state.createCheckpoint();
     }
 
+    /** Get the current timestamp (also considered as the last created handle).
+     *
+     *  @return The current timestamp.
+     */
     public synchronized long getTimestamp() {
         return _state.getTimestamp();
     }
-    
+
+    /** Test if the checkpointing facility is running.
+     *
+     *  @return <tt>true</tt> if the checkpointing facility is running.
+     */
     public boolean isCheckpointing() {
         return _state != null;
     }
-    
+
+    /** Remove an object from the monitored object list.
+     *
+     *  @param object The object to be removed.
+     */
     public void removeObject(Rollbackable object) {
         _state.getMonitoredObjects().remove(object);
     }
-    
+
+    /** Rollback all the monitored objects to their previous states defined by
+     *  the given timestamp (or, handle). The records used in the rollback are
+     *  automatically deleted. This is the same as <tt>rollback(timestamp,
+     *  true)</tt>.
+     *
+     *  @param timestamp The timestamp taken at a previous time.
+     *  @see #rollback(long, boolean)
+     */
+    public synchronized void rollback(long timestamp) {
+        rollback(timestamp, true);
+    }
+
+    /** Rollback all the monitored objects to their previous states defined by
+     *  the given timestamp (or, handle).
+     *
+     *  @param timestamp The timestamp taken at a previous time.
+     *  @param trim Whether to delete the records used for the rollback.
+     */
     public synchronized void rollback(long timestamp, boolean trim) {
         List objects = _state.getMonitoredObjects();
         int size = objects.size();
@@ -80,7 +133,14 @@ public class Checkpoint {
                 i++;
         }
     }
-    
+
+    /** Set this checkpoint object to be the same as the given checkpoint
+     *  object. The set of objects monitored by this checkpoint object is
+     *  merged with those monitored by the given checkpoint.
+     *
+     *  @param checkpoint The given checkpoint object to be merged with this
+     *   one.
+     */
     public void setCheckpoint(Checkpoint checkpoint) {
         List objects = _state.getMonitoredObjects();
         while (objects.size() > 0) {
@@ -88,6 +148,8 @@ public class Checkpoint {
             object.$SET$CHECKPOINT(checkpoint);
         }
     }
-    
+
+    /** The current state of the checkpoint object.
+     */
     private CheckpointState _state = new CheckpointState();
 }
