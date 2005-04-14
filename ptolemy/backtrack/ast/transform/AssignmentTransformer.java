@@ -125,6 +125,14 @@ public class AssignmentTransformer extends AbstractTransformer
             _handleAssignment(node, state);
     }
     
+    public void handle(ClassInstanceCreation node, TypeAnalyzerState state) {
+        Iterator arguments = node.arguments().iterator();
+        while (arguments.hasNext()) {
+            Expression argument = (Expression)arguments.next();
+            _handleAlias(argument, state);
+        }
+    }
+    
     public void handle(MethodInvocation node, TypeAnalyzerState state) {
         Iterator arguments = node.arguments().iterator();
         while (arguments.hasNext()) {

@@ -324,6 +324,14 @@ public class TypeAnalyzer extends ASTVisitor {
                handler.handle(node, _state);
            }
        }
+       if (_handlers.hasAliasHandler()) {
+           List handlerList = _handlers.getAliasHandlers();
+           Iterator handlersIter = handlerList.iterator();
+           while (handlersIter.hasNext()) {
+               AliasHandler handler = (AliasHandler)handlersIter.next();
+               handler.handle(node, _state);
+           }
+       }
     }
 
     /** Visit a conditional expression node and set its type to be
