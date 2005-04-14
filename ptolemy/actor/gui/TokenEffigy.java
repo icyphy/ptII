@@ -85,8 +85,9 @@ public class TokenEffigy extends Effigy {
 
     /** Append the specified token to the token array associated with this
      *  effigy.
+     *  @exception IllegalActionException If the token is not acceptable.
      */
-    public void append(Token token) {
+    public void append(Token token) throws IllegalActionException {
         _tokens.add(token);
 
         // Notify the contained tableaux.
@@ -201,8 +202,9 @@ public class TokenEffigy extends Effigy {
 
     /** Set the token array associated with this effigy.
      *  @param tokens An array of tokens.
+     *  @exception IllegalActionException If the tokens are not acceptable.
      */
-    public void setTokens(List tokens) {
+    public void setTokens(List tokens) throws IllegalActionException {
         _tokens.clear();
         _tokens.addAll(tokens);
 
