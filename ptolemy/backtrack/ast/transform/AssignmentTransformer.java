@@ -150,7 +150,8 @@ public class AssignmentTransformer extends AbstractTransformer
     }
     
     public void handle(ReturnStatement node, TypeAnalyzerState state) {
-        _handleAlias(node.getExpression(), state);
+        if (node.getExpression() != null)
+            _handleAlias(node.getExpression(), state);
     }
     
     public void handle(VariableDeclarationFragment node, 
