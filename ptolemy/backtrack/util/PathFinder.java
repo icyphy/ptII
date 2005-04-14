@@ -31,6 +31,8 @@ package ptolemy.backtrack.util;
 import java.io.File;
 import java.io.FileFilter;
 
+import ptolemy.util.StringUtilities;
+
 //////////////////////////////////////////////////////////////////////////
 //// PathFinder
 /**
@@ -96,7 +98,6 @@ public class PathFinder {
      *  @return The class paths.
      */
     public static String[] getPtClassPaths() {
-        String PTII = "../../..";
         String[] subdirs = new String[] {
                 "lib",
                 "vendors/sun/commapi",
@@ -106,14 +107,14 @@ public class PathFinder {
         int totalNumber = 0;
         for (int i = 0; i < subdirs.length; i++) {
             files[i] = 
-                new File(PTII + "/" + subdirs[i]).listFiles(
+                new File(PTOLEMY_PATH + subdirs[i]).listFiles(
                         new PostfixFilter(".jar")
                 );
             totalNumber += files[i].length;
         }
 
         String[] classPaths = new String[totalNumber + 1];
-        classPaths[0] = PTII;
+        classPaths[0] = PTOLEMY_PATH;
         int currentNumber = 1;
         for (int i = 0; i < files.length; i++)
             for (int j = 0; j < files[i].length; j++)
@@ -177,5 +178,15 @@ public class PathFinder {
         public boolean accept(File file) {
             return file.isDirectory();
         }
+    }
+    
+    /** The default PTII path.
+     */
+    public static String PTOLEMY_PATH = "../../../";
+    
+    static {
+        String PTII = StringUtilities.getProperty("ptolemy.ptII.dir");
+        if (PTII != null)
+            PTOLEMY_PATH = PTII + File.separatorChar;
     }
 }
