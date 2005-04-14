@@ -121,7 +121,7 @@ public class AssignmentTransformer extends AbstractTransformer
     public void handle(Assignment node, TypeAnalyzerState state) {
         Expression newExpression = 
             _handleAlias(node.getRightHandSide(), state);
-        if (newExpression != null)
+        if (newExpression == null)
             _handleAssignment(node, state);
     }
     
@@ -1071,6 +1071,9 @@ public class AssignmentTransformer extends AbstractTransformer
             String fieldName = (String)namesIter.next();
             Type fieldType = (Type)typesIter.next();
 
+            if (_getAccessedField(currentClass.getName(), fieldName) == null)
+                continue;
+            
             MethodInvocation restoreMethodCall = ast.newMethodInvocation();
             restoreMethodCall.setExpression(
                     ast.newSimpleName(_getRecordName(fieldName)));
@@ -1640,7 +1643,7 @@ public class AssignmentTransformer extends AbstractTransformer
                 ownerClass.getDeclaredField(name.getIdentifier());
             int modifiers = field.getModifiers();
             if (!java.lang.reflect.Modifier.isPrivate(modifiers))
-                return; // Not handling non-private fields.
+                return; // Not handling non-private fields or final fields.
             isStatic = 
                 java.lang.reflect.Modifier.isStatic(modifiers);
         } catch (ClassNotFoundException e) {

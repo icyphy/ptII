@@ -33,7 +33,7 @@
 
 ME =		ptolemy/backtrack/test
 
-DIRS =		test1 test2
+DIRS =		array1 test1 test2
 
 # Root of the Java directory
 ROOT =		../../..
@@ -49,8 +49,9 @@ TCL_SRCS = \
 	testDefs.tcl
 
 # Keep this list alphabetized.
-JSRCS = Test1Main.java \
-        Test2Main.java
+JSRCS = ArrayTest1Main.java \
+	Test1Main.java \
+	Test2Main.java
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
@@ -73,7 +74,7 @@ EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
 MISC_FILES =	alljtests.tcl
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
+# make distclean removes OPTIONAL_FILptolemy.backtrack.ES
 OPTIONAL_FILES =
 
 JCLASS = $(JSRCS:%.java=%.class)
