@@ -802,6 +802,9 @@ public class AssignmentTransformer extends AbstractTransformer
         Class currentClass = state.getCurrentClass();
         String recordName = _getRecordName(fieldName);
         
+        if (_getAccessedField(currentClass.getName(), fieldName) == null)
+            return null;
+        
         // Check if the field is duplicated (possibly because the source
         // program is refactored twice).
         if (isFieldDuplicated(currentClass, recordName))
@@ -987,7 +990,12 @@ public class AssignmentTransformer extends AbstractTransformer
         initializer.setInitializer(arrayInitializer);
         List expressions = arrayInitializer.expressions();
         while (fields.hasNext()) {
-            String recordName = _getRecordName((String)fields.next());
+            String fieldName = (String)fields.next();
+            Class currentClass = state.getCurrentClass();
+            if (_getAccessedField(currentClass.getName(), fieldName) == null)
+                continue;
+            
+            String recordName = _getRecordName(fieldName);
             expressions.add(ast.newSimpleName(recordName));
         }
         fragment.setInitializer(initializer);
@@ -1085,23 +1093,36 @@ public class AssignmentTransformer extends AbstractTransformer
             // Add two arguments to the restore method call.
             restoreMethodCall.arguments().add(ast.newSimpleName("timestamp"));
             restoreMethodCall.arguments().add(ast.newSimpleName("trim"));
-        
-            Assignment assignment = ast.newAssignment();
-            assignment.setLeftHandSide(ast.newSimpleName(fieldName));
-            if (fieldType.isPrimitive())
-                assignment.setRightHandSide(restoreMethodCall);
-            else {
-                CastExpression castExpression = ast.newCastExpression();
-                String typeName = 
-                    getClassName(fieldType.getName(), state, root);
-                castExpression.setType(createType(ast, typeName));
-                castExpression.setExpression(restoreMethodCall);
-                assignment.setRightHandSide(castExpression);
+            
+            boolean isFinal = false;
+            try {
+                Field field = currentClass.getDeclaredField(fieldName);
+                if (java.lang.reflect.Modifier.isFinal(field.getModifiers()))
+                    isFinal = true;
+            } catch (NoSuchFieldException e) {
             }
+            
+            if (isFinal)
+                body.statements().add(
+                        ast.newExpressionStatement(restoreMethodCall));
+            else {
+                Expression rightHandSide;
+                if (fieldType.isPrimitive())
+                    rightHandSide = restoreMethodCall;
+                else {
+                    CastExpression castExpression = ast.newCastExpression();
+                    String typeName = 
+                        getClassName(fieldType.getName(), state, root);
+                    castExpression.setType(createType(ast, typeName));
+                    castExpression.setExpression(restoreMethodCall);
+                    rightHandSide = castExpression;
+                }
         
-            ExpressionStatement assignStatement = 
-                ast.newExpressionStatement(assignment);
-            body.statements().add(assignStatement);
+                Assignment assignment = ast.newAssignment();
+                assignment.setLeftHandSide(ast.newSimpleName(fieldName));
+                assignment.setRightHandSide(rightHandSide);
+                body.statements().add(ast.newExpressionStatement(assignment));
+            }
         }
         
         // Restore the previous checkpoint, if necessary.
@@ -1823,8 +1844,11 @@ public class AssignmentTransformer extends AbstractTransformer
                         fieldTypes.add(type);
                         
                         // Create a record field.
-                        newFields.add(_createFieldRecord(ast, root, state, 
-                                fieldName, type.dimensions(), isStatic));
+                        FieldDeclaration field = 
+                            _createFieldRecord(ast, root, state, fieldName, 
+                                    type.dimensions(), isStatic);
+                        if (field != null)
+                            newFields.add(field);
                     }
                 }
             }
