@@ -1,4 +1,4 @@
-/* A polymorphic multiplexor with boolean select used in DDF domain.
+/* A type polymorphic boolean select used in the DDF domain.
 
 Copyright (c) 1998-2005 The Regents of the University of California.
 All rights reserved.
@@ -43,16 +43,16 @@ import ptolemy.kernel.util.Workspace;
 
 /**
    A type polymorphic select with boolean valued control for use in
-   DDF domain. In the first iteration, an input token at the
+   the DDF domain. In the first iteration, an input token at the
    <i>control</i> port is read and its value is noted. In the second
-   iteration, if the <i>control</i> input read from previous iteration
-   is true, then an input token at the <i>trueInput</i> port is read
-   and sent to the output. Likewise with a false input and the
-   <i>falseInput</i> port. It alternates between these two kinds of
-   iterations until stopped. The <i>control</i> port must receive
-   Boolean Tokens. The <i>trueInput</i> and <i>falseInput</i> port
-   may receive Tokens of any type. Because tokens are immutable, the
-   same Token is sent to the output, rather than a copy.
+   iteration, if the <i>control</i> input read from the previous 
+   iteration is true, then an input token at the <i>trueInput</i> port 
+   is read and sent to the output. Likewise with a false <i>control</i> 
+   input and the <i>falseInput</i> port. It alternates between these 
+   two kinds of iterations until stopped. The <i>control</i> port must 
+   receive Boolean Tokens. The <i>trueInput</i> and <i>falseInput</i> 
+   ports may receive Tokens of any type. Because tokens are immutable, 
+   the same Token is sent to the output, rather than a copy.
    <p>
    Note this actor sends an output token every two iterations. Contrast
    this with BooleanSelect which sends an output token every iteration.
@@ -156,19 +156,20 @@ public class DDFBooleanSelect extends TypedAtomicActor {
         return newObject;
     }
 
-    /** Read a new token from the <i>control</i> port and note its value
-     *  if it hasn't done so. This concludes the current firing. Otherwise
-     *  if the token read from the <i>control</i> port in previous firing
-     *  is true, output the token consumed from the <i>trueInput</i> port.
-     *  Likewise with a false <i>control</i> input and the <i>falseInput</i>
-     *  port. Then reset an internal variable so that it will read from
-     *  <i>control</i> port in the next iteration.
-     *  This method will throw a NoTokenException if any input channel
-     *  does not have a token.
+    /** Fire the actor once. If the <i>control</i> port is not read in the 
+     *  previous iteration, read a new token from the <i>control</i> port 
+     *  and record its value and this concludes the current firing. Otherwise
+     *  output the token consumed from the <i>trueInput</i> port if the 
+     *  token read from the <i>control</i> port in the previous firing is 
+     *  true. Likewise with a false <i>control</i> input and the 
+     *  <i>falseInput</i> port. Then reset an internal variable so that 
+     *  it will read from the <i>control</i> port in the next iteration.
      *  @exception IllegalActionException If there is no director, and hence
      *   no receivers have been created.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
+        
         if (_isControlRead) {
             if (_control) {
                 output.send(0, trueInput.get(0));
@@ -183,7 +184,7 @@ public class DDFBooleanSelect extends TypedAtomicActor {
         }
     }
 
-    /** Initialize this actor and rate parameters so that it will read
+    /** Initialize this actor and the rate parameters so that it will read
      *  from the <i>control</i> port in the first iteration.
      *  @exception IllegalActionException If setToken() throws it.
      */
@@ -220,9 +221,13 @@ public class DDFBooleanSelect extends TypedAtomicActor {
         return super.postfire();
     }
 
-    /** Return false if the port it needs to read from in the following
-     *  firing does not have a token.
-     *  Otherwise, return whatever the superclass returns.
+    /** Return false if the port to read from in the current
+     *  iteration does not have a token. If the <i>control</i> port is 
+     *  not read in the previous iteration, the port to read from 
+     *  in the current iteration is the <i>control</i> port. Otherwise,
+     *  it is the <i>trueInput</i> port or the <i>falseInput</i> port
+     *  depending on the <i>control</i> input value read in the
+     *  previous iteration.
      *  @return False if there are not enough tokens to fire.
      *  @exception IllegalActionException If the receivers do not support
      *   the query, or if there is no director, and hence no receivers.
@@ -249,12 +254,21 @@ public class DDFBooleanSelect extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    // The most recently read control token.
+    
+    /** The most recently read <i>control</i> token.
+     */
     private boolean _control;
 
-    // The boolean to determine to read control or true/false input.
+    /** The boolean to determine whether to read from the <i>control<i>
+     *  port or the <i>trueInput</i>/<i>falseInput</i> port.
+     */
     private boolean _isControlRead;
     
-    private IntToken _zero = new IntToken(0);
-    private IntToken _one = new IntToken(1);
+    /** A final static IntToken with value 0.
+     */
+    private final static IntToken _zero = new IntToken(0);
+    
+    /** A final static IntToken with value 1.
+     */
+    private final static IntToken _one = new IntToken(1);
 }
