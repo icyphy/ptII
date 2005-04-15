@@ -36,11 +36,11 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 355.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-15.0, 285.0]">
         </property>
     </entity>
     <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 250.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 210.0]">
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
