@@ -136,7 +136,7 @@ public class ActorRecursion extends TypedCompositeActor {
      *   IllegalActionException.
      */
     public void fire() throws IllegalActionException {
-        super.fire();
+
         try {
             // Disable redoing type resolution because type compatibility
             // has been guaranteed during initialization.
