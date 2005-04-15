@@ -129,8 +129,8 @@ pttmpdist: $(PTTMPDIR) $(PTDIST_EX)
 	 	$(GNUTAR) -cf - -X $(ME)/$(PTDIST_EX) \
 			$(ME) $(TOPFILES)) | \
 	(cd $(PTTMPDIR)/$(PTDIST); $(GNUTAR) -xf -)
-	# Remove .classpath and bin/comm.policy from configure
-	(cd $(PTTMPDIR)/$(PTDIST); sed 's@ .classpath bin/comm.policy@@' configure.in > configure.in.new; mv configure.in.new configure.in; autoconf)
+	# Remove .classpath, bin/comm.policy, lib/ptII.properties from configure
+	(cd $(PTTMPDIR)/$(PTDIST); sed 's@ .classpath bin/comm.policy lib/ptII.properties@@' configure.in > configure.in.new; mv configure.in.new configure.in; autoconf)
 
 $(PTTMPDIR):
 	@if [ ! -d $@ ]; then echo "Creating $@"; mkdir -p $@; fi
