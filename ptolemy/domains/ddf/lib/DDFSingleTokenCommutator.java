@@ -1,4 +1,4 @@
-/* A commutator that processes a single token per iteration.
+/* A commutator that processes a single token per iteration, used in DDF doamin.
 
 Copyright (c) 1997-2005 The Regents of the University of California.
 All rights reserved.
@@ -50,11 +50,10 @@ import ptolemy.kernel.util.Settable;
    port.  The types of the ports are undeclared and will be resolved by
    the type resolution mechanism, with the constraint that the output
    type must be greater than or equal to the input type. On each call to
-   the fire method, the actor reads one token from the current input,
-   and writes one token to an output channel. In the following postfire
-   method, it will update the ArrayToken with consumption rate for each
-   input channel indicating it will read token from the next channel in
-   the next iteration.
+   the fire() method, the actor reads one token from the current input 
+   channel, and writes the token to the output port. Then in the postfire()
+   method, it will update token consumption rate of the input port so that 
+   it will read token from the next channel in the next iteration.
 
    @author Gang Zhou
    @version $Id$
@@ -85,15 +84,18 @@ public class DDFSingleTokenCommutator extends SingleTokenCommutator {
     ////                          parameters                       ////
 
     /** This parameter provides token consumption rate for each input
-     *  channel.
+     *  channel. The type is array of ints.
      */
     public Parameter input_tokenConsumptionRate;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Override the base class to pre-calculate the rates to be 
-     *  set in the parameter of the input port.
+    /** Pre-calculate the rates to be set in the rate parameter of the 
+     *  <i>input</i> port. Initialize the private variable _rateArray,
+     *  each element of which indicates the <i>input</i> port needs to
+     *  consume one token from a corresponding channel and no token from 
+     *  the rest of the channels.
      *  @param port The port that has connection changes.
      */
     public void connectionsChanged(Port port) {
@@ -113,7 +115,8 @@ public class DDFSingleTokenCommutator extends SingleTokenCommutator {
                 }    
             } catch (IllegalActionException ex) {
                 // shouldn't happen
-                throw new InternalErrorException(ex);
+                throw new InternalErrorException(this, ex,
+                        "It should not happen.");
             }        
         }    
     }
@@ -137,9 +140,8 @@ public class DDFSingleTokenCommutator extends SingleTokenCommutator {
         // Call postfire first so that current input position is updated.
         boolean postfireReturn = super.postfire();
 
-        int currentInputPosition = _getCurrentInputPosition();
         input_tokenConsumptionRate
-                .setToken(_rateArray[currentInputPosition]);
+                .setToken(_rateArray[_getCurrentInputPosition()]);
 
         return postfireReturn;
     }
@@ -147,10 +149,19 @@ public class DDFSingleTokenCommutator extends SingleTokenCommutator {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     
-    private IntToken _one = new IntToken(1);
-    private IntToken _zero = new IntToken(0);
+    /** A final static IntToken with value 1.
+     */
+    private final static IntToken _one = new IntToken(1);
     
-    // The arrayTokens to be used to set tokenConsumptionRate of the 
-    // input port.
+    /** A final static IntToken with value 0.
+     */
+    private final static IntToken _zero = new IntToken(0);
+    
+    /** An array of ArrayTokens to be used to set tokenConsumptionRate 
+     *  of the input port. Each ArrayToken indicates the <i>input</i> 
+     *  port needs to consume one token from a corresponding channel and 
+     *  no token from the rest of the channels. The array is initialized
+     *  in the method connectionsChanged().
+     */
     private ArrayToken[] _rateArray;
 }

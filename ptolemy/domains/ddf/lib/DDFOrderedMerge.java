@@ -57,7 +57,7 @@ import ptolemy.kernel.util.Settable;
    Note that if the inputs are not nondecreasing, then the output is
    rather complex. The key is that in each firing, it produces the smaller
    of the recorded token and the token it is currently reading.
-   This derived class only updates rate parameters to indicate next input
+   This derived class only updates rate parameters to indicate the next input
    port.
 
    @author Gang Zhou
@@ -81,13 +81,11 @@ public class DDFOrderedMerge extends OrderedMerge {
 
         inputA_tokenConsumptionRate = new Parameter(inputA,
                 "tokenConsumptionRate");
-        inputA_tokenConsumptionRate.setToken(new IntToken(1));
         inputA_tokenConsumptionRate.setVisibility(Settable.NOT_EDITABLE);
         inputA_tokenConsumptionRate.setTypeEquals(BaseType.INT);
 
         inputB_tokenConsumptionRate = new Parameter(inputB,
                 "tokenConsumptionRate");
-        inputB_tokenConsumptionRate.setToken(new IntToken(0));
         inputB_tokenConsumptionRate.setVisibility(Settable.NOT_EDITABLE);
         inputB_tokenConsumptionRate.setTypeEquals(BaseType.INT);
     }
@@ -95,11 +93,11 @@ public class DDFOrderedMerge extends OrderedMerge {
     ///////////////////////////////////////////////////////////////////
     ////                       parameters                          ////
 
-    /** The rate parameter for the input port A.
+    /** The rate parameter for the input port A.The type is int.
      */
     public Parameter inputA_tokenConsumptionRate;
 
-    /** The rate parameter for the input port B.
+    /** The rate parameter for the input port B. The type is int.
      */
     public Parameter inputB_tokenConsumptionRate;
 
@@ -141,6 +139,12 @@ public class DDFOrderedMerge extends OrderedMerge {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////   
     
-    private IntToken _zero = new IntToken(0);
-    private IntToken _one = new IntToken(1);
+    
+    /** A final static IntToken with value 0.
+     */
+    private final static IntToken _zero = new IntToken(0);
+    
+    /** A final static IntToken with value 1.
+     */
+    private final static IntToken _one = new IntToken(1);
 }

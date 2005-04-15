@@ -299,14 +299,16 @@ public class ActorRecursion extends TypedCompositeActor {
                 throw new IllegalActionException(this,
                         "The type of the port " + port.getName() 
                         + " of the actor " + getName()
-                        + " must be the same or less than the matching port.");
+                        + " must be equal to or less than "
+                        + "that of the matching port.");
             }
 
             if (port.isOutput() && !portType.isCompatible(matchingPortType)) {
                 throw new IllegalActionException(this,
                         "The type of the port " + port.getName() 
                         + " of the actor " + getName()
-                        + " must be the same or greater than the matching port.");
+                        + " must be euqal to or greater than "
+                        + "that of the matching port.");
             }
         }
 

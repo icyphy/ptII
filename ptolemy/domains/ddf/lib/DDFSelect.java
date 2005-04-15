@@ -148,13 +148,12 @@ public class DDFSelect extends TypedAtomicActor {
         return newObject;
     }
     
-    /** Override the base class to pre-calculate the rates to be 
-     *  set in the rate parameter of the <i>input</i> port. Initialize 
-     *  the private variables _rateZero, which indicates the <i>input</i>
-     *  port does not consume any token from any channel, and _rateArray,
-     *  each element of which indicates the <i>input</i> port needs to
-     *  consume one token from a corresponding channel and no token from 
-     *  the rest of the channels.
+    /** Pre-calculate the rates to be set in the rate parameter of the 
+     *  <i>input</i> port. Initialize the private variables _rateZero, 
+     *  which indicates the <i>input</i> port does not consume any token 
+     *  from any channel, and _rateArray, each element of which indicates 
+     *  the <i>input</i> port needs to consume one token from a corresponding 
+     *  channel and no token from the rest of the channels.
      *  @param port The port that has connection changes.
      */
     public void connectionsChanged(Port port) {
@@ -282,11 +281,11 @@ public class DDFSelect extends TypedAtomicActor {
     
     /** A final static IntToken with value 1.
      */
-    private IntToken _one = new IntToken(1);
+    private final static IntToken _one = new IntToken(1);
     
     /** A final static IntToken with value 0.
      */
-    private IntToken _zero = new IntToken(0);
+    private final static IntToken _zero = new IntToken(0);
     
     /** An array of ArrayTokens to be used to set tokenConsumptionRate 
      *  of the input port. Each ArrayToken indicates the <i>input</i> 
