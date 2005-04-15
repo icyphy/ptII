@@ -151,7 +151,6 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      */
     public void generateWrapupCode(StringBuffer stream)
             throws IllegalActionException {
-        stream.append("wrapup: " + _component.getFullName() + "\n");
     }
 
     /** Return the buffer size of a given port, which is the maximum of
@@ -263,6 +262,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      */
     public String getReference(String name) throws IllegalActionException {
 
+        name = processCode(name);
         StringBuffer result = new StringBuffer();
         Actor actor = (Actor) _component;
         StringTokenizer tokenizer = new StringTokenizer(name, "#,", true);
@@ -517,7 +517,10 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
         result.append(code.substring(0, currentPos));
         while (currentPos < code.length()) {
-            int nextPos = code.indexOf("$", currentPos + 1);
+            int openParenIndex = code.indexOf("(", currentPos + 1);
+            int closeParenIndex = _findCloseParen(code, openParenIndex);
+            //int nextPos = code.indexOf("$", currentPos + 1);
+            int nextPos = code.indexOf("$", closeParenIndex + 1);
             if (nextPos < 0) {
                 //currentPos is the last "$"
                 nextPos = code.length();
@@ -531,62 +534,26 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 continue;
             }
 
-            int flag = 0;
             boolean foundIt = false;
-            StringTokenizer tokenizer
-                    = new StringTokenizer(subcode, "()", true);
-            if (tokenizer.hasMoreTokens()) {
-                // Do the trim so "$ ref (" can be recognized.
-                String token = (tokenizer.nextToken()).trim();
-                if ((token.equals("ref") || token.equals("val") 
-                        || token.equals("actorSymbol") || token.equals("size"))
-                        && tokenizer.hasMoreTokens()) {
-                    if (token.equals("ref")) {
-                        flag = 1;
-                    } else if (token.equals("val")) {
-                        flag = 2;
-                    } else if (token.equals("size")){
-                        flag = 3;
-                    } else {
-                        flag = 4;
-                    }
-                    String openParen = tokenizer.nextToken();
-                    if (openParen.equals("(") && tokenizer.hasMoreTokens()) {
-                        String name = tokenizer.nextToken();
-                        if (name.equals("(") || name.equals(")")) {
-                            throw new IllegalActionException(_component,
-                                    "Illegal expression: $" + subcode);
-                        }
-                        if (tokenizer.hasMoreTokens()) {
-                            String closeParen = tokenizer.nextToken();
-                            if (closeParen.equals(")")) {
-                                if (name.trim().equals("")) {
-                                    throw new IllegalActionException(_component,
-                                            "Illegal expression: $" + token
-                                            + "(" + name + ")");
-                                }
-                                name = name.trim();
-                                if (flag == 1) {
-                                    result.append(getReference(name));
-                                } else if (flag == 2) {
-                                    result.append(getParameterValue(name));
-                                } else if (flag == 3) {
-                                    result.append(getSize(name));
-                                } else {
-                                    result.append(_component.getFullName()
-                                            .replace('.', '_'));
-                                    result.append("_" + name);
-                                }
-                                while (tokenizer.hasMoreTokens()) {
-                                    result.append(tokenizer.nextToken());
-                                }
-                                foundIt = true;
-                            }
-                        }
-                    }
+            String macro = code.substring(currentPos + 1, openParenIndex);
+            if ((macro.equals("ref") || macro.equals("val") 
+                    || macro.equals("actorSymbol") || macro.equals("size"))) {
+                String name = code.substring(openParenIndex + 1, closeParenIndex);    
+                name = name.trim();
+                if (macro.equals("ref")) {
+                    result.append(getReference(name));
+                } else if (macro.equals("val")) {
+                    result.append(getParameterValue(name));
+                } else if (macro.equals("size")){
+                    result.append(getSize(name));
+                } else if (macro.equals("actorSymbol")){
+                    result.append(_component.getFullName()
+                            .replace('.', '_'));
+                    result.append("_" + name);
                 }
+                foundIt = true;
+                result.append(code.substring(closeParenIndex + 1, nextPos));
             }
-
             if (!foundIt) {
                 result.append("$");
                 result.append(subcode);
@@ -652,7 +619,58 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
+    /** Find the paired close parentheis given a string and an index
+     *  which is the position of an open parenthesis. Return -1 if no
+     *  paired close parenthesis is found.
+     *  @param string The given string.
+     *  @param pos The given index.
+     *  @return The index which indicates the position of the paired
+     *   close parenthesis of the string.
+     *  @exception IllegalActionException If the character at the
+     *   given position of the string is not an open parenthesis.
+     */
+    private int _findCloseParen(String string, int pos)
+            throws IllegalActionException {
+        if (string.charAt(pos) != '(') {
+            throw new IllegalActionException(_component,
+                    "The character at index " + pos + " of string: "
+                    + string + " is not a open parenthesis.");
+        }
+        int nextOpenParen = string.indexOf("(", pos + 1);
+        if (nextOpenParen < 0) {
+            nextOpenParen = string.length();
+        }
+        int nextCloseParen = string.indexOf(")", pos);
+        if (nextCloseParen < 0) {
+            return -1;
+        }
+        int count = 1;
+        int beginIndex = pos + 1;
+        while (beginIndex > 0) {
+            if (nextCloseParen < nextOpenParen) {
+                count --;
+                if (count == 0) {
+                    return nextCloseParen;
+                }
+                beginIndex = nextCloseParen + 1;
+                nextCloseParen = string.indexOf(")", beginIndex);
+                if (nextCloseParen < 0) {
+                    return -1;
+                }
+            }
+            if (nextOpenParen < nextCloseParen) {
+                count ++;
+                beginIndex = nextOpenParen + 1;
+                nextOpenParen = string.indexOf("(", beginIndex);
+                if (nextOpenParen < 0) {
+                    nextOpenParen = string.length();
+                }
+            }
+        }
+        return -1;
+    }
+
     /** Return the channel number and offset given in a string.
      *  The result is an integer array of length 2. The first element
      *  indicates the channel number, the second the offset. If either
@@ -683,7 +701,6 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         }
         return result;
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
