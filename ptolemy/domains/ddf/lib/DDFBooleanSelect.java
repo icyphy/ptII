@@ -109,16 +109,16 @@ public class DDFBooleanSelect extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** Input for tokens on the true path.  The type can be anything.
+    /** Input for tokens on the true path. The port type can be any type.
      */
     public TypedIOPort trueInput;
 
-    /** Input for tokens on the false path.  The type can be anything.
+    /** Input for tokens on the false path. The port type can be any type.
      */
     public TypedIOPort falseInput;
 
     /** Input that selects one of the other input ports.  The type is
-     *  BooleanToken.
+     *  boolean.
      */
     public TypedIOPort control;
 
@@ -127,15 +127,18 @@ public class DDFBooleanSelect extends TypedAtomicActor {
      */
     public TypedIOPort output;
 
-    /** This parameter provides token consumption rate for true input.
+    /** This parameter provides token consumption rate for <i>trueInput</i>.
+     *  The type is int.
      */
     public Parameter trueInput_tokenConsumptionRate;
 
-    /** This parameter provides token consumption rate for false input.
+    /** This parameter provides token consumption rate for <i>falseInput</i>.
+     *  The type is int.
      */
     public Parameter falseInput_tokenConsumptionRate;
 
-    /** This parameter provides token consumption rate for control.
+    /** This parameter provides token consumption rate for <i>control</i>.
+     *  The type is int.
      */
     public Parameter control_tokenConsumptionRate;
 
@@ -158,10 +161,10 @@ public class DDFBooleanSelect extends TypedAtomicActor {
 
     /** Fire the actor once. If the <i>control</i> port is not read in the 
      *  previous iteration, read a new token from the <i>control</i> port 
-     *  and record its value and this concludes the current firing. Otherwise
-     *  output the token consumed from the <i>trueInput</i> port if the 
-     *  token read from the <i>control</i> port in the previous firing is 
-     *  true. Likewise with a false <i>control</i> input and the 
+     *  and record the value of the token and this concludes the current 
+     *  firing. Otherwise output the token consumed from the <i>trueInput</i> 
+     *  port if the token read from the <i>control</i> port in the previous 
+     *  firing is true. Likewise with a false <i>control</i> input and the 
      *  <i>falseInput</i> port. Then reset an internal variable so that 
      *  it will read from the <i>control</i> port in the next iteration.
      *  @exception IllegalActionException If there is no director, and hence

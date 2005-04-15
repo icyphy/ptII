@@ -1281,32 +1281,37 @@ public class DDFDirector extends Director {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    // A flag indicating whether type resolution is disabled.
+    
+    /** A flag indicating whether type resolution is disabled.
+     */
     private boolean _isTypeResolutionDisabled = false;
 
-    // A flag indicating whether at least one actor has been fired so far.
+    /** A flag indicating whether at least one actor has been fired so far.
+     */
     private boolean _firedOne = false;
 
-    // The number of iterations.
+    /** The number of iterations.
+     */
     private int _iterationCount = 0;
 
-    // A boolean initialized with value in the parameter 
-    // runUntilDeadlockInOneIteration.
+    /** A boolean initialized with value in the parameter 
+     *  runUntilDeadlockInOneIteration.
+     */
     private boolean _runUntilDeadlock;
 
-    // HashMap containing actors' information. Each actor is mapped to 
-    // an ActorInfo object.
+    /** A HashMap containing actors' information. Each actor is mapped to 
+     *  an ActorInfo object.
+     */
     private HashMap _actorsInfo = new HashMap();
 
-    // To store those actors for which positive requiredFiringsPerIteration
-    // has been defined.
-    // We could save more space by making it a HashMap and storing
-    // requiredFiringsPerIteration and numberOfFirings in this
-    // variable instead of in _actorsFlags.
+    /** A list to store those actors for which positive 
+     *  requiredFiringsPerIteration has been defined.
+     */
     private LinkedList _actorsToCheckNumberOfFirings = new LinkedList();
     
-    // The set of actors that have returned false in their postfire()
-    // methods and therefore become disabled.
+    /** The set of actors that have returned false in their postfire()
+     *  methods and therefore become disabled.
+     */
     private Set _disabledActors = new HashSet();
     
     ///////////////////////////////////////////////////////////////////

@@ -82,6 +82,7 @@ public final class ActorEnablingStatus {
         ///////////////////////////////////////////////////////////////////
         ////                         private variables                 ////
                 
-        // string representation of this object.
+        /** String representation of this object.
+         */
         private String _status;
 }

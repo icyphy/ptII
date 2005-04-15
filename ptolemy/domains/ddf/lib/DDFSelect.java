@@ -1,4 +1,4 @@
-/* A polymorphic multiplexor with boolean select used in DDF domain.
+/* A type polymorphic select used in the DDF domain.
 
 Copyright (c) 1998-2005 The Regents of the University of California.
 All rights reserved.
@@ -47,14 +47,17 @@ import ptolemy.kernel.util.Workspace;
 
 /**
    A type polymorphic select, which routes specified input channels to
-   the output, used in DDF domain. In the first iteration, an input
-   token at the <i>control</i> port is read and its value is noted.
+   the output, used in the DDF domain. In the first iteration, an input
+   token at the <i>control</i> port is read and its value is recorded.
    In the second iteration, an input token is read from the input port
-   channel specified by the most recently seen token on the <i>control</i>
+   channel specified by the most recently seen token at the <i>control</i>
    port and sent to the output. It alternates between these two kinds of
-   iterations until stopped. The <i>control</i> port must receive Int
-   Tokens. The input port may receive Tokens of any type. Because tokens
-   are immutable, the same Token is sent to the output, rather than a copy.
+   iterations until stopped. The <i>control</i> port must receive IntTokens. 
+   The input port may receive tokens of any type. Because tokens are 
+   immutable, the same token is sent to the output, rather than a copy.
+   Note that as for any multiport, the channel number starts from 0 and 
+   increments by 1 for each additional channel in the order the channel 
+   is created (e.g., when a connection is drawn in Vergil).
    <p>
    Note this actor sends an output token every two iterations. Contrast
    this with Select which sends an output token every iteration.
@@ -86,8 +89,8 @@ public class DDFSelect extends TypedAtomicActor {
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeAtLeast(input);
 
-        input_tokenConsumptionRate 
-                = new Parameter(input, "tokenConsumptionRate");
+        input_tokenConsumptionRate = new Parameter(input, 
+                "tokenConsumptionRate");
         input_tokenConsumptionRate.setVisibility(Settable.NOT_EDITABLE);
         input_tokenConsumptionRate.setTypeEquals(new ArrayType(BaseType.INT));
 
@@ -105,24 +108,26 @@ public class DDFSelect extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The input port.  The type can be anything.
+    /** The input port.  The port type can be any type.
      */
     public TypedIOPort input;
 
-    /** Input port for control tokens, which specify the input channel
-     *  to read token from.  The type is int.
+    /** The input port for control tokens, which specifies the input 
+     *  channels to read the tokens from.  The type is int.
      */
     public TypedIOPort control;
 
-    /** The output port.  The type is at least the type of input.
+    /** The output port.  The type is at least the type of <i>input</i>.
      */
     public TypedIOPort output;
 
-    /** This parameter provides token consumption rate for input.
+    /** This parameter provides token consumption rate for <i>input</i>.
+     *  The type is array of ints.
      */
     public Parameter input_tokenConsumptionRate;
 
-    /** This parameter provides token consumption rate for control.
+    /** This parameter provides token consumption rate for <i>control</i>.
+     *  The type is int.
      */
     public Parameter control_tokenConsumptionRate;
 
@@ -136,14 +141,20 @@ public class DDFSelect extends TypedAtomicActor {
      *  @exception CloneNotSupportedException If a derived class has
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+    public Object clone(Workspace workspace) 
+            throws CloneNotSupportedException {
         DDFSelect newObject = (DDFSelect) super.clone(workspace);
         newObject.output.setTypeAtLeast(newObject.input);
         return newObject;
     }
     
     /** Override the base class to pre-calculate the rates to be 
-     *  set in the parameter of the input port.
+     *  set in the rate parameter of the <i>input</i> port. Initialize 
+     *  the private variables _rateZero, which indicates the <i>input</i>
+     *  port does not consume any token from any channel, and _rateArray,
+     *  each element of which indicates the <i>input</i> port needs to
+     *  consume one token from a corresponding channel and no token from 
+     *  the rest of the channels.
      *  @param port The port that has connection changes.
      */
     public void connectionsChanged(Port port) {
@@ -169,18 +180,22 @@ public class DDFSelect extends TypedAtomicActor {
         }    
     }
 
-    /** Read a new token from the <i>control</i> port and note its value
-     *  if it hasn't done so. This concludes the current firing. Otherwise
-     *  an input token is read from the input port channel specified by the
-     *  most recently seen token on the <i>control</i> port and sent
-     *  to the output. Then reset an internal variable so that it will
-     *  read from <i>control</i> port in the next iteration.
-     *  This method will throw a NoTokenException if any input channel
-     *  does not have a token.
+    
+    /** Fire the actor once. If the <i>control</i> port is not read in 
+     *  the previous iteration, read a new token from the <i>control</i> 
+     *  port and record the value of the token and this concludes the 
+     *  current firing. Otherwise output the token consumed from the 
+     *  <i>input</i> port channel specified by the most recently seen 
+     *  token on the <i>control</i> port.  Then reset an internal variable 
+     *  so that it will read from the <i>control</i> port in the next 
+     *  iteration.
      *  @exception IllegalActionException If there is no director, and
-     *   hence no receivers have been created.
+     *   hence no receivers have been created, or the value of the received 
+     *   control token is out of range. 
      */
     public void fire() throws IllegalActionException {
+        super.fire();
+        
         if (_isControlRead) {
             output.send(0, input.get(_control));
             _isControlRead = false;
@@ -190,9 +205,12 @@ public class DDFSelect extends TypedAtomicActor {
             if ((_control >= 0) && (_control < input.getWidth())) {
                 _isControlRead = true;
             } else {
-                // If the received control token is out of range,
-                // re-read from control port in next iteration.
-                _isControlRead = false;
+                // If the value of the received control token is out of 
+                // range, throw an IllegalActionException.
+                throw new IllegalActionException(this, "The width of the "
+                        + "input port is " + input.getWidth() + " , but "
+                        + "the value of the received control token: " 
+                        + _control + " is out of range.");
             }
         }
     }
@@ -211,7 +229,6 @@ public class DDFSelect extends TypedAtomicActor {
     }
 
     /** Update rate parameters for the next iteration.
-     *  Then return whatever the superclass returns.
      *  @return True if execution can continue into the next iteration.
      *  @exception IllegalActionException If setToken() throws it.
      */
@@ -233,7 +250,7 @@ public class DDFSelect extends TypedAtomicActor {
     /** Return false if the port or channel it needs to read from in the
      *  following firing does not have a token.
      *  Otherwise, return whatever the superclass returns.
-     *  @return False if there are not enough tokens to fire.
+     *  @return True if there are enough tokens to fire.
      *  @exception IllegalActionException If the receivers do not support
      *   the query, or if there is no director, and hence no receivers.
      */
@@ -254,18 +271,35 @@ public class DDFSelect extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     
-    // The most recently read control token.
+    /** The most recently read <i>control</i> token.
+     */
     private int _control;
 
-    // The boolean to determine whether to read from control port
-    // or from input port.
+    /** The boolean to determine whether to read from the <i>control</i> 
+     *  port or from the <i>input</i> port.
+     */
     private boolean _isControlRead;
     
+    /** A final static IntToken with value 1.
+     */
     private IntToken _one = new IntToken(1);
+    
+    /** A final static IntToken with value 0.
+     */
     private IntToken _zero = new IntToken(0);
     
-    // The arrayTokens to be used to set tokenConsumptionRate of the 
-    // input port.
+    /** An array of ArrayTokens to be used to set tokenConsumptionRate 
+     *  of the input port. Each ArrayToken indicates the <i>input</i> 
+     *  port needs to consume one token from a corresponding channel and 
+     *  no token from the rest of the channels. The array is initialized
+     *  in the method connectionsChanged().
+     */
     private ArrayToken[] _rateArray;
+    
+    /** An ArrayToken to be used to set tokenConsumptionRate of the input 
+     *  port. It indicates the <i>input</i> port does not consume any token 
+     *  from any channel. This variable is initialized in the method 
+     *  connectionsChanged().
+     */
     private ArrayToken _rateZero;
 }
