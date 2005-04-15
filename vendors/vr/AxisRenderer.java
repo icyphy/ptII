@@ -58,7 +58,7 @@ abstract public class AxisRenderer extends Renderer
     boolean		autoAxisEnable = true;
     int			autoAxis, autoDir;
 
-    BranchGroup 	root;
+    public BranchGroup 	root;
     Switch 		axisSwitch;
     int[][] 		axisIndex = new int[3][2];
     OrderedGroup[][] 	groups = new OrderedGroup[3][2];

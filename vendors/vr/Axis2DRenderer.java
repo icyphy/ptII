@@ -41,7 +41,7 @@ import com.sun.j3d.utils.behaviors.mouse.*;
 public class Axis2DRenderer extends AxisRenderer {
 
     Texture2DVolume	texVol;
-    Shape3D frontShape;
+    public Shape3D frontShape;
 
 
     public Axis2DRenderer(View view, Context context, Volume vol) {
@@ -176,7 +176,7 @@ public class Axis2DRenderer extends AxisRenderer {
 	    QuadArray quadArray = new QuadArray(4, GeometryArray.COORDINATES);
 	    quadArray.setCoordinates(0, quadCoords);
 
-	    Shape3D frontShape = new Shape3D(quadArray, a);
+	    frontShape = new Shape3D(quadArray, a);
 	    
 
 	    BranchGroup frontShapeGroup = new BranchGroup();
@@ -195,8 +195,8 @@ public class Axis2DRenderer extends AxisRenderer {
 
 	}
     } 
-    public Shape3D getNode(){
-    	return frontShape;
+    public BranchGroup getNode(){
+    	return root;
     }
  }
  
