@@ -138,7 +138,6 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      */
     public String generateInitializeCode()
             throws IllegalActionException {
-        //createBufferAndOffsetMap();
         resetOffsets();
         return "";
     }
@@ -519,16 +518,19 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         while (currentPos < code.length()) {
             int openParenIndex = code.indexOf("(", currentPos + 1);
             int closeParenIndex = _findCloseParen(code, openParenIndex);
-            //int nextPos = code.indexOf("$", currentPos + 1);
+            if (closeParenIndex < 0) {
+                // No matching close parenthesis is found.
+                result.append(code.substring(currentPos));
+                return result.toString();
+            }
             int nextPos = code.indexOf("$", closeParenIndex + 1);
             if (nextPos < 0) {
                 //currentPos is the last "$"
                 nextPos = code.length();
             }
-            String subcode = code.substring(currentPos + 1, nextPos);
+            String subcode = code.substring(currentPos, nextPos);
             if (currentPos > 0 && code.charAt(currentPos - 1) == '\\') {
                 // found "\$", do not make replacement.
-                result.append("$");
                 result.append(subcode);
                 currentPos = nextPos;
                 continue;
@@ -536,6 +538,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
             boolean foundIt = false;
             String macro = code.substring(currentPos + 1, openParenIndex);
+            macro = macro.trim();
             if ((macro.equals("ref") || macro.equals("val") 
                     || macro.equals("actorSymbol") || macro.equals("size"))) {
                 String name = code.substring(openParenIndex + 1, closeParenIndex);    
@@ -555,7 +558,6 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 result.append(code.substring(closeParenIndex + 1, nextPos));
             }
             if (!foundIt) {
-                result.append("$");
                 result.append(subcode);
             }
             currentPos = nextPos;
@@ -620,7 +622,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** Find the paired close parentheis given a string and an index
+    /** Find the paired close parenthesis given a string and an index
      *  which is the position of an open parenthesis. Return -1 if no
      *  paired close parenthesis is found.
      *  @param string The given string.
