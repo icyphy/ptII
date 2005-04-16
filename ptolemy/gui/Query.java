@@ -78,8 +78,8 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
 
-import ptolemy.kernel.util.InternalErrorException;
-
+// Avoid importing any packages from ptolemy.* here so that we
+// can ship Ptplot.
 
 //////////////////////////////////////////////////////////////////////////
 //// Query
@@ -1776,7 +1776,10 @@ public class Query extends JPanel {
             } else if (!_allowFiles && _allowDirectories) {
                 fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             } else {
-                throw new InternalErrorException(
+                // Usually, we would use InternalErrorException here,
+                // but if we do, then this package would depend on kernel.util,
+                // which causes problems when we ship Ptplot.
+                throw new RuntimeException(
                         "QueryFileChooser: nothing to be chosen.");
             }
 
