@@ -244,8 +244,12 @@ public class AssignmentTransformer extends AbstractTransformer
                     superRestore.setName(ast.newSimpleName(methodName));
                     superRestore.arguments().add(ast.newSimpleName("timestamp"));
                     superRestore.arguments().add(ast.newSimpleName("trim"));
-                    body.statements().add(0, 
-                            ast.newExpressionStatement(superRestore));
+                    
+                    List statements = body.statements();
+                    // Remove the IfStatement concerning the checkpoint.
+                    statements.remove(statements.size() - 1);
+                    // Add a call to the superclass.
+                    statements.add(ast.newExpressionStatement(superRestore));
                     nodesIter.remove();
                 }
             }
@@ -1059,21 +1063,7 @@ public class AssignmentTransformer extends AbstractTransformer
         Block body = ast.newBlock();
         method.setBody(body);
         
-        // Add a call to the restore method in the superclass, if necessary.
-        if (parent != null &&
-                (state.getCrossAnalyzedTypes().contains(parent.getName()) ||
-                 hasMethod(parent, methodName, 
-                         new Class[]{int.class, boolean.class}))) {
-            SuperMethodInvocation superRestore = 
-                ast.newSuperMethodInvocation();
-            superRestore.setName(
-                    ast.newSimpleName(_getRestoreMethodName(false)));
-            superRestore.arguments().add(ast.newSimpleName("timestamp"));
-            superRestore.arguments().add(ast.newSimpleName("trim"));
-            body.statements().add(ast.newExpressionStatement(superRestore));
-        } else
-            addToLists(_fixParentRestoreMethods, parent.getName(), body);
-        
+        // Create a restore statement for each managed field.
         Iterator namesIter = fieldNames.iterator();
         Iterator typesIter = fieldTypes.iterator();
         while (namesIter.hasNext()) {
@@ -1126,51 +1116,67 @@ public class AssignmentTransformer extends AbstractTransformer
             }
         }
         
-        // Restore the previous checkpoint, if necessary.
-        IfStatement restoreCheckpoint = ast.newIfStatement();
-        
-        InfixExpression timestampTester = ast.newInfixExpression();
-        timestampTester.setLeftOperand(ast.newSimpleName("timestamp"));
-        timestampTester.setOperator(InfixExpression.Operator.LESS_EQUALS);
-        MethodInvocation topTimestamp = ast.newMethodInvocation();
-        topTimestamp.setExpression(ast.newSimpleName(CHECKPOINT_RECORD_NAME));
-        topTimestamp.setName(ast.newSimpleName("getTopTimestamp"));
-        timestampTester.setRightOperand(topTimestamp);
-        restoreCheckpoint.setExpression(timestampTester);
-        
-        Block restoreBlock = ast.newBlock();
-        restoreCheckpoint.setThenStatement(restoreBlock);
-        
-        // Assign the old checkpoint.
-        Assignment assignCheckpoint = ast.newAssignment();
-        assignCheckpoint.setLeftHandSide(ast.newSimpleName(CHECKPOINT_NAME));
-        MethodInvocation restoreCheckpointInvocation = 
-            ast.newMethodInvocation();
-        restoreCheckpointInvocation.setExpression(
-                ast.newSimpleName(CHECKPOINT_RECORD_NAME));
-        restoreCheckpointInvocation.setName(ast.newSimpleName("restore"));
-        restoreCheckpointInvocation.arguments().add(
-                ast.newSimpleName(CHECKPOINT_NAME));
-        restoreCheckpointInvocation.arguments().add(
-                _createRollbackableObject(ast, isAnonymous));
-        restoreCheckpointInvocation.arguments().add(
-                ast.newSimpleName("timestamp"));
-        restoreCheckpointInvocation.arguments().add(
-                ast.newSimpleName("trim"));
-        assignCheckpoint.setRightHandSide(restoreCheckpointInvocation);
-        restoreBlock.statements().add(
-                ast.newExpressionStatement(assignCheckpoint));
-        
-        // Pop the old states.
-        MethodInvocation popStates = ast.newMethodInvocation();
-        String recordType = getClassName(FieldRecord.class, state, root);
-        popStates.setExpression(createName(ast, recordType));
-        popStates.setName(ast.newSimpleName("popState"));
-        popStates.arguments().add(ast.newSimpleName(RECORDS_NAME));
-        restoreBlock.statements().add(
-                ast.newExpressionStatement(popStates));
-        
-        body.statements().add(restoreCheckpoint);
+        // Add a call to the restore method in the superclass, if necessary.
+        if (parent != null &&
+                (state.getCrossAnalyzedTypes().contains(parent.getName()) ||
+                 hasMethod(parent, methodName, 
+                         new Class[]{int.class, boolean.class}))) {
+            SuperMethodInvocation superRestore = 
+                ast.newSuperMethodInvocation();
+            superRestore.setName(
+                    ast.newSimpleName(_getRestoreMethodName(false)));
+            superRestore.arguments().add(ast.newSimpleName("timestamp"));
+            superRestore.arguments().add(ast.newSimpleName("trim"));
+            body.statements().add(ast.newExpressionStatement(superRestore));
+        } else {
+            // Restore the previous checkpoint, if necessary.
+            IfStatement restoreCheckpoint = ast.newIfStatement();
+            
+            InfixExpression timestampTester = ast.newInfixExpression();
+            timestampTester.setLeftOperand(ast.newSimpleName("timestamp"));
+            timestampTester.setOperator(InfixExpression.Operator.LESS_EQUALS);
+            MethodInvocation topTimestamp = ast.newMethodInvocation();
+            topTimestamp.setExpression(ast.newSimpleName(CHECKPOINT_RECORD_NAME));
+            topTimestamp.setName(ast.newSimpleName("getTopTimestamp"));
+            timestampTester.setRightOperand(topTimestamp);
+            restoreCheckpoint.setExpression(timestampTester);
+            
+            Block restoreBlock = ast.newBlock();
+            restoreCheckpoint.setThenStatement(restoreBlock);
+            
+            // Assign the old checkpoint.
+            Assignment assignCheckpoint = ast.newAssignment();
+            assignCheckpoint.setLeftHandSide(ast.newSimpleName(CHECKPOINT_NAME));
+            MethodInvocation restoreCheckpointInvocation = 
+                ast.newMethodInvocation();
+            restoreCheckpointInvocation.setExpression(
+                    ast.newSimpleName(CHECKPOINT_RECORD_NAME));
+            restoreCheckpointInvocation.setName(ast.newSimpleName("restore"));
+            restoreCheckpointInvocation.arguments().add(
+                    ast.newSimpleName(CHECKPOINT_NAME));
+            restoreCheckpointInvocation.arguments().add(
+                    _createRollbackableObject(ast, isAnonymous));
+            restoreCheckpointInvocation.arguments().add(
+                    ast.newSimpleName("timestamp"));
+            restoreCheckpointInvocation.arguments().add(
+                    ast.newSimpleName("trim"));
+            assignCheckpoint.setRightHandSide(restoreCheckpointInvocation);
+            restoreBlock.statements().add(
+                    ast.newExpressionStatement(assignCheckpoint));
+            
+            // Pop the old states.
+            MethodInvocation popStates = ast.newMethodInvocation();
+            String recordType = getClassName(FieldRecord.class, state, root);
+            popStates.setExpression(createName(ast, recordType));
+            popStates.setName(ast.newSimpleName("popState"));
+            popStates.arguments().add(ast.newSimpleName(RECORDS_NAME));
+            restoreBlock.statements().add(
+                    ast.newExpressionStatement(popStates));
+            
+            body.statements().add(restoreCheckpoint);
+            
+            addToLists(_fixParentRestoreMethods, parent.getName(), body);
+        }
         
         method.setModifiers(Modifier.PUBLIC);
         
