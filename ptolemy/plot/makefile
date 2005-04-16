@@ -175,10 +175,24 @@ install: all jars
 
 
 # PlotBox uses PlotFormatter which uses ptolemy.gui.Query and other classes
-PTOLEMYGUIFILES = ptolemy/gui/*.class
+# ptolemy.gui has lots of classes, we need only a few of them.
+PTOLEMYGUIFILES = \
+	ptolemy/gui/Query.class \
+	ptolemy/gui/QueryListener.class \
+	'ptolemy/gui/Query$$QueryScrollPane.class' \
+	'ptolemy/gui/Query$$QueryFileChooser.class' \
+	'ptolemy/gui/Query$$QueryColorChooser.class' \
+	'ptolemy/gui/Query$$QueryActionListener.class' \
+	'ptolemy/gui/Query$$QueryFocusListener.class' \
+	'ptolemy/gui/Query$$QueryItemListener.class' \
+	'ptolemy/gui/ComponentDialog.class' \
+	'ptolemy/gui/ComponentDialog$$1.class' \
+	'ptolemy/gui/ComponentDialog$$2.class' \
+	ptolemy/gui/CloseListener.class
 
 # PlotFrame uses StringUtilities.getProperty() 
-PTOLEMYUTILFILES = ptolemy/util/*.class
+# ptolemy.util has lots of classes, we need only a few of them.
+PTOLEMYUTILFILES = ptolemy/util/StringUtilities.class
 
 # Class files used in all applets and applications
 BASECLASSFILES = \
