@@ -1,4 +1,5 @@
 ../../actor/lib/Accumulator.java
+../../actor/lib/ArrayPeakSearch.java
 ../../actor/lib/Average.java
 ../../actor/lib/BooleanSelect.java
 ../../actor/lib/BooleanSwitch.java
