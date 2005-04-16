@@ -455,7 +455,7 @@ public class Transformer {
         System.err.println(
                 "           " +
                 "[options] " +
-                "[.java_files | directories | @file_lists]");
+                "[java_files | directories | @file_lists]");
         System.err.println();
         System.err.println("Options:");
         System.err.println("          -config <file> " +
