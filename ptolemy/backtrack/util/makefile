@@ -51,6 +51,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 #    $(wildcard *.java)
 JSRCS = \
     CheckpointRecord.java \
+    ClassFileLoader.java \
 	FieldRecord.java \
 	FieldRecordState.java \
 	PathFinder.java \
