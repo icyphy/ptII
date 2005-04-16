@@ -1211,10 +1211,11 @@ public class AssignmentTransformer extends AbstractTransformer
         InfixExpression condition2 = ast.newInfixExpression();
         condition2.setLeftOperand(ast.newSimpleName(CHECKPOINT_NAME));
         condition2.setOperator(InfixExpression.Operator.NOT_EQUALS);
-        FieldAccess access = ast.newFieldAccess();
-        access.setExpression(ast.newSimpleName("newValue"));
-        access.setName(ast.newSimpleName(CHECKPOINT_NAME));
-        condition2.setRightOperand(access);
+        MethodInvocation getCheckpoint = ast.newMethodInvocation();
+        getCheckpoint.setExpression(ast.newSimpleName("newValue"));
+        getCheckpoint.setName(
+                ast.newSimpleName(_getGetCheckpointMethodName(false)));
+        condition2.setRightOperand(getCheckpoint);
         
         test.setLeftOperand(condition1);
         test.setOperator(InfixExpression.Operator.CONDITIONAL_AND);
