@@ -47,7 +47,7 @@ PTPACKAGE = 	plot
 # If you change PTVERSION, modify the version numbers in:
 #    PlotBox.java,
 #    doc/main.htm, doc/changes.htm, doc/install.htm, doc/download/index.htm
-PTVERSION =	5.5-devel
+PTVERSION =	5.5-beta
 PTDIST =	ptplot$(PTVERSION)
 PTCLASSJAR =
 
@@ -308,6 +308,8 @@ PTTMPME= $(PTTMPDIR)/$(PTDIST)/$(ME)
 fixtmpdist:
 	@echo "Fixing $(PTTMPDIR)/$(PTDIST)"
 	echo "all makefiles sources install docs depend checkjunk sccsinfo sccsclean test extraclean clean: mk/ptII.mk" > $(PTTMPDIR)/$(PTDIST)/makefile
+	echo '	cd ptolemy/gui; make $$@' >>$(PTTMPDIR)/$(PTDIST)/makefile
+	echo '	cd ptolemy/util; make $$@' >>$(PTTMPDIR)/$(PTDIST)/makefile
 	echo '	cd ptolemy/plot; make $$@' >>$(PTTMPDIR)/$(PTDIST)/makefile
 	echo '	cd bin; make $$@' >>$(PTTMPDIR)/$(PTDIST)/makefile
 	echo '# Generate ptII.mk by running configure' >> \
