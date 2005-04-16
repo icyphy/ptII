@@ -46,6 +46,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import ptolemy.backtrack.ast.transform.AssignmentRule;
 import ptolemy.backtrack.ast.transform.PackageRule;
 import ptolemy.backtrack.ast.transform.TransformRule;
+import ptolemy.backtrack.util.ClassFileLoader;
 import ptolemy.backtrack.util.PathFinder;
 import ptolemy.backtrack.util.SourceOutputStream;
 import ptolemy.backtrack.xmlparser.ConfigParser;
@@ -81,19 +82,26 @@ public class Transformer {
         boolean outputResult = true;
         
         if (args.length == 0)
-            System.err.println("USAGE: java ptolemy.backtrack.ast.Transform " +
-                    "[.java files... | directories...]");
+            _printUsage();
         else {
             String[] paths = PathFinder.getPtClassPaths();
             Writer standardWriter = 
                 outputResult ? new OutputStreamWriter(System.out) : null;
-            for (int i = 0; i < args.length;) {
-                int newPosition = _parseArguments(args, i);
-                if (newPosition != i) {
-                    i = newPosition;
-                    continue;
-                }
-                
+            
+            // Parse command-line options.
+            int start = 0;
+            while (start < args.length) {
+                int newPosition = _parseArguments(args, start);
+                if (newPosition != start)
+                    start = newPosition;
+                else
+                    break;
+            }
+            
+            // Set up the list of file names.
+            List fileList = new LinkedList();
+            List crossAnalysis = new LinkedList();
+            for (int i = start; i < args.length; i++) {
                 String pathOrFile = args[i];
                 File[] files;
                 if (pathOrFile.startsWith("@")) {
@@ -116,31 +124,50 @@ public class Transformer {
                         files[j] = new File((String)stringsIter.next());
                 } else
                     files = PathFinder.getJavaFiles(pathOrFile, true);
+                
+                ClassFileLoader loader = new ClassFileLoader();
                 for (int j = 0; j < files.length; j++) {
                     String fileName = files[j].getPath();
-                    System.err.print("Transforming \"" + fileName + "\"...");
-                    
-                    if (fileName.endsWith(".java")) {
-                        String classFileName = 
-                            fileName.substring(0, fileName.length() - 5) +
-                            ".class";
-                        if (new File(classFileName).exists())
-                            System.err.println();
-                        else {
-                            System.err.println(" SKIP");
-                            continue;
-                        }
-                    } else
+                    if (fileName.endsWith(".java"))
+                        fileName = fileName.substring(0, fileName.length() - 5)
+                                + ".class";
+                    else {
+                        System.err.println("Skipping \"" + files[j] + "\". " +
+                                "Cause: Class file not found.");
                         continue;
+                    }
                     
-                    System.err.flush();
-                    
-                    transform(files[j].getPath(), standardWriter, paths);
-                    
-                    if (outputResult)
-                        standardWriter.flush();
+                    Class c = null;
+                    try {
+                        c = loader.loadClass(new File(fileName));
+                    } catch (Exception e) {
+                        System.err.println("Skipping \"" + files[j] + "\". " +
+                                "Cause: " + e.getMessage());
+                        continue;
+                    }
+                    fileList.add(files[j]);
+                    crossAnalysis.add(c.getName());
                 }
-                i++;
+            }
+            
+            // Compute the array of cross-analyzed types.
+            String[] crossAnalyzedTypes = new String[crossAnalysis.size()];
+            Iterator crossAnalysisIter = crossAnalysis.iterator();
+            for (int i = 0; crossAnalysisIter.hasNext(); i++)
+                crossAnalyzedTypes[i] = (String)crossAnalysisIter.next();
+            
+            // Handle files.
+            Iterator filesIter = fileList.iterator();
+            while (filesIter.hasNext()) {
+                File file = (File)filesIter.next();
+                String fileName = file.getPath();
+                System.err.println("Transforming \"" + fileName + "\"...");
+                    
+                transform(file.getPath(), standardWriter, paths, 
+                        crossAnalyzedTypes);
+                    
+                if (outputResult)
+                    standardWriter.flush();
             }
             _outputConfig();
             if (outputResult)
@@ -217,9 +244,37 @@ public class Transformer {
     public static void transform(String fileName, Writer writer, 
             String[] classPaths)
             throws IOException, ASTMalformedException {
+        transform(fileName, writer, classPaths, null);
+    }
+    
+    /** Transform the Java source in the file given by its name with
+     *  given class paths, and output the result to the writer.
+     *  <p>
+     *  If a output directory is set with the <tt>-output</tt>
+     *  command-line argument, the output is written to a Java source
+     *  file with that directory as the root directory. The given
+     *  writer is not used in that case.
+     * 
+     *  @param fileName The Java file name.
+     *  @param writer The writer where output is written.
+     *  @param classPaths The class paths.
+     *  @param crossAnalyzedTypes The array of names of types to be added to
+     *   the visitor's cross-analyzed types list.
+     *  @exception IOException If IO exception occurs when reading from
+     *   the Java file or riting to the output.
+     *  @exception ASTMalformedException If the Java source is illegal.
+     *  @see #transform(String, Writer)
+     */
+    public static void transform(String fileName, Writer writer, 
+            String[] classPaths, String[] crossAnalyzedTypes)
+            throws IOException, ASTMalformedException {
         boolean needClose = false;
         
         Transformer transform = new Transformer(fileName, classPaths);
+        
+        if (crossAnalyzedTypes != null)
+            transform._visitor.addCrossAnalyzedTypes(crossAnalyzedTypes);
+        
         transform._startTransform();
         
         if (_rootPath != null) {
@@ -392,6 +447,27 @@ public class Transformer {
         _beforeTraverse();
         _ast.accept(_visitor);
         _afterTraverse();
+    }
+    
+    private static void _printUsage() {
+        System.err.println(
+                "USAGE: java ptolemy.backtrack.ast.Transform");
+        System.err.println(
+                "           " +
+                "[options] " +
+                "[.java_files | directories | @file_lists]");
+        System.err.println();
+        System.err.println("Options:");
+        System.err.println("          -config <file> " +
+                "save the configuration in a new file");
+        System.err.println("          -nooverwrite   " +
+                "do not overwrite existing Java files (default)");
+        System.err.println("          -output <root> " +
+                "root directory of output files");
+        System.err.println("          -overwrite     " +
+                "overwrite existing Java files");
+        System.err.println("          -prefix <name> " +
+                "prefix to be added to the package names");
     }
 
     /** Construct a transformer. This constructor should not be called from
