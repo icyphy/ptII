@@ -62,9 +62,9 @@ JCLASS = $(JSRCS:%.java=%.class)
 all: transform build
 
 transform:
-	# Transform the source files in "source.lst".
-	rm -rf ptolemy
-	"$(JAVA)" \
+	@echo Transform the source files in "source.lst".
+	@rm -rf ptolemy
+	@"$(JAVA)" \
 	  -classpath "$(CLASSPATH)$(CLASSPATHSEPARATOR)$(PTBACKTRACK_JARS)$(AUXCLASSPATH)" \
 	  ptolemy.backtrack.ast.Transformer \
 	  -prefix ptolemy.backtrack.automatic \
@@ -72,12 +72,33 @@ transform:
 	  -config ptolemy/configs/output.xml \
 	  @source.lst
 
-build:
-	for filename in `find . -name "*.java"`; do \
-	  "$(JAVAC)" \
-	    -classpath "$(ROOT)" \
-	    $$filename; \
+build: ptolemy_makefile
+	$(MAKE) -C ptolemy
+
+ptolemy_makefile:
+	@echo "Generating ptolemy/makefile..."
+	@echo "ME = $(ME)/ptolemy" > ptolemy/makefile
+	@echo "DIRS =" >> ptolemy/makefile
+	@echo "ROOT = $(ROOT)/.." >> ptolemy/makefile
+	@echo "CLASSPATH = \$$(ROOT)" >> ptolemy/makefile
+	@echo "CONFIG = \$$(ROOT)/mk/ptII.mk" >> ptolemy/makefile
+	@echo "include \$$(CONFIG)" >> ptolemy/makefile
+	@echo "PTPACKAGE = ptolemy" >> ptolemy/makefile
+	@echo "PTDIST = \$$(PTPACKAGE)\$$(PTVERSION)" >> ptolemy/makefile
+	@echo "PTCLASSJAR = \$$(PTPACKAGE).jar" >> ptolemy/makefile
+	@echo "JSRCS = \\" >> ptolemy/makefile
+	@for filename in `cd ptolemy && find . -name "*.java"`; do \
+	  echo "    "$$filename \\ >> ptolemy/makefile; \
 	done
+	@echo >> ptolemy/makefile
+	@echo "OTHER_FILES_TO_BE_JARED =" >> ptolemy/makefile
+	@echo "EXTRA_SRCS = \$$(JSRCS) \$$(OTHER_FILES_TO_BE_JARED)" >> ptolemy/makefile
+	@echo "MISC_FILES = \$$(DIRS)" >> ptolemy/makefile
+	@echo "OPTIONAL_FILES =" >> ptolemy/makefile
+	@echo "JCLASS = \$$(JSRCS:%.java=%.class)" >> ptolemy/makefile
+	@echo "all: jclass" >> ptolemy/makefile
+	@echo "install: jclass \$$(PTCLASSJAR)" >> ptolemy/makefile
+	@echo "include \$$(ROOT)/mk/ptcommon.mk" >> ptolemy/makefile
 
 # Remove the ptolemy directory 
 # It is generated during the testing, and should not be preserved.
