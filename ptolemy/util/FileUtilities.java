@@ -41,8 +41,8 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 
-import ptolemy.kernel.util.IllegalActionException;
-
+// Avoid importing any packages from ptolemy.* here so that we
+// can ship Ptplot.
 
 //////////////////////////////////////////////////////////////////////////
 //// FileUtilities
@@ -145,8 +145,6 @@ public class FileUtilities {
      *  @param base The base for relative URLs.
      *  @return A File, or null if the filename argument is null or
      *   an empty string.
-     *  @exception IllegalActionException If a parse error occurs
-     *   reading the file name.
      */
     public static File nameToFile(String name, URI base) {
         if ((name == null) || name.trim().equals("")) {
@@ -268,7 +266,7 @@ public class FileUtilities {
 
                 try {
                     newURI = baseDirectory.resolve(name);
-                } catch (IllegalArgumentException ex) {
+                } catch (Exception ex) {
                     // FIXME: Another hack
                     // This time, if we try to open some of the JAI
                     // demos that have actors that have defaults FileParameters
@@ -280,7 +278,7 @@ public class FileUtilities {
                     try {
                         newURI = baseDirectory.resolve(name2);
                         name = name2;
-                    } catch (IllegalArgumentException ex2) {
+                    } catch (Exception ex2) {
                         IOException io = new IOException(
                                 "Problem with URI format in '" + name + "'. "
                                 + "and '" + name2 + "'"
@@ -296,7 +294,7 @@ public class FileUtilities {
 
                 try {
                     return newURI.toURL();
-                } catch (IllegalArgumentException ex3) {
+                } catch (Exception ex3) {
                     IOException io = new IOException(
                             "Problem with URI format in '" + name + "'. "
                             + "This can happen if the '" + name
