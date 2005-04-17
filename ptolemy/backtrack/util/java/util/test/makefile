@@ -48,7 +48,8 @@ TCL_SRCS = \
 	testDefs.tcl
 
 JSRCS = \
-	RandomTest1.java
+	RandomTest1.java \
+	RandomTest2.java
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
