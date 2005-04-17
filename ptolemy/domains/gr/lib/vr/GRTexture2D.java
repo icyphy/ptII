@@ -1,4 +1,4 @@
-/* An abstract base class for shaded GR Actors.
+/* An actor that performs volume rendering using 2D textures.
 
 Copyright (c) 1998-2005 The Regents of the University of California.
 All rights reserved.
@@ -31,23 +31,35 @@ import java.io.IOException;
 import java.net.URL;
 
 import javax.media.j3d.Appearance;
+import javax.media.j3d.BranchGroup;
 import javax.media.j3d.ColoringAttributes;
+import javax.media.j3d.GeometryArray;
+import javax.media.j3d.Group;
+import javax.media.j3d.ImageComponent;
 import javax.media.j3d.LineAttributes;
 import javax.media.j3d.Material;
 import javax.media.j3d.Node;
+import javax.media.j3d.OrderedGroup;
 import javax.media.j3d.PolygonAttributes;
+import javax.media.j3d.RenderingAttributes;
+import javax.media.j3d.Switch;
+import javax.media.j3d.TexCoordGeneration;
 import javax.media.j3d.Texture;
 import javax.media.j3d.TextureAttributes;
 import javax.media.j3d.TransparencyAttributes;
+import javax.swing.ImageIcon;
 import javax.vecmath.Color3f;
+import javax.vecmath.Vector4f;
 import javax.media.j3d.View;
 import javax.media.j3d.Shape3D;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.actor.parameters.DoubleRangeParameter;
+import ptolemy.actor.parameters.IntRangeParameter;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
+import ptolemy.data.IntToken;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.actor.parameters.FilePortParameter;
 import ptolemy.data.expr.Parameter;
@@ -59,9 +71,23 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import java.io.FileNotFoundException;
 import ptolemy.kernel.util.Workspace;
 
+import javax.media.j3d.TexCoordGeneration;
 import com.sun.j3d.utils.image.TextureLoader;
+import javax.media.j3d.Texture2D;
+import javax.media.j3d.ImageComponent2D;
+import javax.media.j3d.QuadArray;
+
+//Used in filling in texture
+import java.awt.image.BufferedImage;
+import java.awt.image.ColorModel;
+import java.awt.image.ComponentColorModel;
+import java.awt.image.DataBuffer;
+import java.awt.image.DataBufferInt;
+import java.awt.image.WritableRaster;
+import java.awt.color.ColorSpace;
 
 import javax.vecmath.Point3d;
 
@@ -75,10 +101,16 @@ import vendors.vr.StringAttr;
 import vendors.vr.CoordAttr;
 import vendors.vr.VolRend;
 
-//import ij.ImagePlus;
+import java.awt.Image;
+import java.awt.Transparency;
+
+import javax.swing.ImageIcon;
+import java.io.File;
+import javax.imageio.stream.FileImageInputStream;
+import ij.ImagePlus;
 
 //////////////////////////////////////////////////////////////////////////
-//// GRVolume
+//// GRTexture2D
 
 /** An abstract base class for GR Actors that have material and color
     properties.
@@ -118,13 +150,13 @@ import vendors.vr.VolRend;
     performance, but less interactivity.  Changing this to true will
     only have an effect on the next run of the model.
 
-    @author
+    @author Tiffany Crawford
     @version 
     @since 
     @Pt.ProposedRating Red
     @Pt.AcceptedRating Red
 */
-public class GRVolume extends GRActor3D {
+public class GRTexture2D extends GRActor3D {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -133,15 +165,12 @@ public class GRVolume extends GRActor3D {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public GRVolume(CompositeEntity container, String name)
+    public GRTexture2D(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         
-        volFile = new FilePortParameter(this, "volFile");
-        volFile.setExpression("$CLASSPATH/doc/img/cubes64.vol");
-        
-        context = new FilePortParameter(this, "context");
-        context.setExpression("$CLASSPATH/doc/img/");
+        voxelFile = new FilePortParameter(this, "voxelFile");
+        voxelFile.setExpression("$CLASSPATH/doc/img/brainMRI.jpg");
      
         sceneGraphOut = new TypedIOPort(this, "sceneGraphOut");
         sceneGraphOut.setOutput(true);
@@ -155,11 +184,6 @@ public class GRVolume extends GRActor3D {
 
         specularColor = new ColorAttribute(this, "specularColor");
         specularColor.setExpression("{1.0, 1.0, 1.0, 1.0}");
-
-        //texture = new FileParameter(this, "texture");
-
-        // The following ensures that revert to defaults works properly.
-        //texture.setExpression("");
 
         shininess = new DoubleRangeParameter(this, "shininess");
         shininess.min.setExpression("1.0");
@@ -183,6 +207,10 @@ public class GRVolume extends GRActor3D {
         allowRuntimeChanges = new Parameter(this, "allowRuntimeChanges");
         allowRuntimeChanges.setExpression("false");
         allowRuntimeChanges.setTypeEquals(BaseType.BOOLEAN);
+        
+        dim = new IntRangeParameter(this, "rSize");
+        dim.setExpression("2");
+        dim.setTypeEquals(BaseType.INT);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -249,16 +277,22 @@ public class GRVolume extends GRActor3D {
      */
     public Parameter flat;
     
+    /** This parameter provides a third dimension to the images.  The
+     * value is a scaled version of the actual known slice depth.
+     */
+    public IntRangeParameter dim;
+    
+    
     /** The input port that reads a in a URL to the file holding the 
      *  volume to be rendered.
      */
-    public FilePortParameter volFile;
+    public FilePortParameter voxelFile;
     
     /** The input port that reads a in a URL to the file holding the 
      *  context.
      */
     public FilePortParameter context;
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -348,12 +382,14 @@ public class GRVolume extends GRActor3D {
     /** Override the base class to null out private variables.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        GRVolume newObject = (GRVolume) super.clone(workspace);
+        GRTexture2D newObject = (GRTexture2D) super.clone(workspace);
         newObject._appearance = null;
         newObject._coloringAttributes = null;
         newObject._material = null;
         newObject._polygonAttributes = null;
         newObject._transparencyAttributes = null;
+        newObject._textureAttributes = null;
+        newObject._texture2D = null;
         return newObject;
     }
 
@@ -375,32 +411,18 @@ public class GRVolume extends GRActor3D {
         if (_debugging) {
             _debug("Called prefire()");
         }
-       /* //Read in .vol file
-        //FIXME: Make it so that port is updated when neccessary
-        _fileURL = volFile.asURL();
         
-        //FIXME: Is this neccessary, bad coding?
-        try {
-			_imageVol = new VolFile(_fileURL);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+        voxelFile.update();
+        _fileURL = voxelFile.asURL();
         
-        //Create texture space  ???
-        _volume = new Volume(_context);
-        
-        //Load Texture
-        
-        //Get access to the Shape3D to send to Viewcreen3D
-        _renderedVolume = new Axis2DRenderer(_view, _context, _volume); */
-        
-        
-        if (_isSceneGraphInitialized) {
-            return false;
-        } else {
+        if (_fileURL != null){
+        //    _createModel();
             return true;
         }
+        else {
+         return false;
+        }
+
     }
 
     /** Override the base class to ensure that material and
@@ -461,24 +483,13 @@ public class GRVolume extends GRActor3D {
         if (shine > 1.0) {
             _material.setShininess(shine);
         }
-
+        _material.setLightingEnable(false);
         _appearance.setMaterial(_material);
 
         // Deal with transparent attributes.
-        float transparent = (float) ((DoubleToken) transparency.getToken())
-            .doubleValue();
-
-        if ((transparent > 0.0) || allowChanges) {
-            int mode = TransparencyAttributes.NICEST;
-
-            if (transparent == 0.0) {
-                mode = TransparencyAttributes.NONE;
-            }
-
-            _transparencyAttributes = new TransparencyAttributes(mode,
-                    transparent);
-            _appearance.setTransparencyAttributes(_transparencyAttributes);
-        }
+        //FIXME May not need as a parameter?
+        _transparencyAttributes = new TransparencyAttributes();
+        _transparencyAttributes.setTransparencyMode(TransparencyAttributes.BLENDED);
 
         // Deal with flat attribute.
         boolean flatValue = ((BooleanToken) flat.getToken()).booleanValue();
@@ -501,14 +512,22 @@ public class GRVolume extends GRActor3D {
 
         // Default culls back facing polygons, which is weird.
         // We disable that here.
-        _polygonAttributes = new PolygonAttributes(mode,
-                PolygonAttributes.CULL_NONE, 0.0f);
+        _polygonAttributes = new PolygonAttributes(mode, PolygonAttributes.CULL_NONE, 0.0f);
+        //FIXME May be a bit repetitive
+        _polygonAttributes.setCullFace(PolygonAttributes.CULL_NONE);
         _appearance.setPolygonAttributes(_polygonAttributes);
 
         // Turn on antialiasing.
         LineAttributes lineAttributes = new LineAttributes(1.0f,
                 LineAttributes.PATTERN_SOLID, true);
         _appearance.setLineAttributes(lineAttributes);
+        
+        /*if (dbWriteEnable == false) {
+        RenderingAttributes r = new RenderingAttributes();
+        r.setDepthBufferWriteEnable(dbWriteEnable);
+        a.setRenderingAttributes(r);
+        } */
+        
 
         // If runtime changes are allowed, we need to set the
         // appropriate capabilities.
@@ -523,107 +542,309 @@ public class GRVolume extends GRActor3D {
 
         _changesAllowedNow = allowChanges;
     }
+    
+    /** Create the geometry for the Node that will hold the texture.
+     */
+    protected void _createGeometry() throws IllegalActionException {          
+       
+        _quadArray = new QuadArray(4, GeometryArray.COORDINATES);
+        _quadArray.setCoordinates(0, _quadCoords); 
 
+    }
+    
+    
     /** Set the color and appearance of this 3D object.
      *  This has the side effect of setting the protected variable
      *  _changesAllowedNow so that derived classes can check it.
      *  @exception IllegalActionException If a parameter cannot be evaluated.
      */
     protected void _createModel() throws IllegalActionException {
-        _createAppearance();
+                 
+        _readImage();
+        
+        int rSize = (int) ((IntToken) dim.getToken()).intValue();
+        int sSize = rSize;
+        int tSize = 1;
+        
+        
+        _loadTextures();
         if (_debugging) {
-            _debug("Created Appearance()");
-        }
+            _debug("Loaded the texture");
+        }    
+      
+        /**Creates OrderedGroups for textures to be attached to. */
+        
+        //FIXME Is there a better place to define this?
+        int[][]         axisIndex = new int[3][2];
+        axisIndex[X_AXIS][FRONT] = 0;
+        axisIndex[X_AXIS][BACK] = 1;
+        axisIndex[Y_AXIS][FRONT] = 2;
+        axisIndex[Y_AXIS][BACK] = 3;
+        axisIndex[Z_AXIS][FRONT] = 4;
+        axisIndex[Z_AXIS][BACK] = 5;
+        
+        //Create axis for each dimension (front and back)
+        /*_axisSwitch = new Switch();
+        _axisSwitch.setCapability(Switch.ALLOW_SWITCH_READ);
+        _axisSwitch.setCapability(Switch.ALLOW_SWITCH_WRITE);
+        _axisSwitch.setCapability(Group.ALLOW_CHILDREN_READ);
+        _axisSwitch.setCapability(Group.ALLOW_CHILDREN_WRITE);
+        _axisSwitch.addChild(_getOrderedGroup());
+        _axisSwitch.addChild(_getOrderedGroup());
+        _axisSwitch.addChild(_getOrderedGroup());
+        _axisSwitch.addChild(_getOrderedGroup());
+        _axisSwitch.addChild(_getOrderedGroup());
+        _axisSwitch.addChild(_getOrderedGroup()); 
+        
+        //Create branch group to be sent to ViewScreen3D
+        _root = new BranchGroup();
+        //_root.addChild(_axisSwitch);
+        _root.setCapability(BranchGroup.ALLOW_DETACH);
+        _root.setCapability(BranchGroup.ALLOW_LOCAL_TO_VWORLD_READ);
+        
+        _frontGroup = (OrderedGroup)_axisSwitch.getChild(axisIndex[Z_AXIS][FRONT]);
+        _backGroup =  (OrderedGroup)_axisSwitch.getChild(axisIndex[Z_AXIS][BACK]); */
+        
+        _quadCoords = new double [12];
+        
+        // lower left
+        _quadCoords[0] = 0;
+        _quadCoords[1] = 0;
+        
+        // lower right
+        _quadCoords[3] = sSize;
+        _quadCoords[4] = 0;
+        
+        // upper right
+        _quadCoords[6] = sSize;
+        _quadCoords[7] = tSize;
+        
+        // upper left
+        _quadCoords[9] = 0;
+        _quadCoords[10] = tSize;
             
-        //Read in .vol file
-        _fileURL = volFile.asURL();
-       
+        /**For each texture create the Appearance, Geometry and send to 
+         * BranchGroup as a Shape3D to be added to the sceneGraph.
+         */
         
-    
-        //FIXME: Is this neccessary, bad coding?
-        try {
-            _imageVol = new VolFile(_fileURL);
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+         BranchGroup frontShapeGroup = new BranchGroup();
+         frontShapeGroup.setCapability(BranchGroup.ALLOW_DETACH);
+          for (int i=0; i < rSize; i ++) { 
+            
+            double curZ = i * (1/rSize);
+            _quadCoords[2] = curZ;
+            _quadCoords[5] = curZ;
+            _quadCoords[8] = curZ;
+            _quadCoords[11] = curZ;
+            
+           
+            
+            //FIXME Can textures share some node components?
+            _createAppearance();
+             if (_debugging) {
+            _debug("Created Appearance");
+        }
+
+             //Set texture attributes and texture                   
+             Texture2D tex = _textures[i];
+             _textureAttributes = new TextureAttributes();
+             _textureAttributes.setTextureMode(TextureAttributes.REPLACE);
+             _textureAttributes.setCapability(TextureAttributes.ALLOW_COLOR_TABLE_WRITE);
+             _appearance.setTexture(tex);
+             _appearance.setTextureAttributes(_textureAttributes);
+             _appearance.setTexCoordGeneration(_texCoordGeneration);
+             
+
+            _createGeometry();
+            if (_debugging) {
+            _debug("Created the geometry");
+        }    
+
+            Shape3D frontShape = new Shape3D(_quadArray, _appearance);
+            
+
+            
+            frontShapeGroup.addChild(frontShape);
+            //_frontGroup.addChild(frontShapeGroup);
+
+           /* Shape3D backShape = new Shape3D(_quadArray, _appearance);
+
+            BranchGroup backShapeGroup = new BranchGroup();
+            backShapeGroup.setCapability(BranchGroup.ALLOW_DETACH);
+            backShapeGroup.addChild(backShape);
+           _backGroup.insertChild(backShapeGroup, 0); */
+            
         }
         
-        //Read in context file
-        _fileContext = context.asURL();
+        _containedNode = frontShapeGroup;
         
-        
-        if (_debugging) {
-            _debug("Read in files");
-        }
-        
-        //FIXME: Need to get rid of context and set up some other how
-        
-        
-        
-        VolRend volRend = new VolRend(false, false); 
-        //volRend.initContext(_fileContext);
-        _context = volRend.initContext(_fileContext); 
-        
-        
-        if (_debugging) {
-            _debug("Created VolRend object and set up hashtable");
-        }
-        
-        /*Used in volume.update() to read in the VolFile.  Can get rid of this
-         * b/c we read in the file directly from the portparameter.
-         * StringAttr dataFileAttr = new StringAttr("Data File", "cubes64.vol");
-         * _context.addAttr(dataFileAttr);  */
-        
-        /* Used in volume.update to set the initial reference point
-         * of the rendered volume.  Can get rid of, by adding new parameter 
-         * to actor.  Initialize to 0,0,0.  THIS MAY BE PROBLEM WITH OUTPUT
-         * Point3d point = new Point3d(0.5, 0.5, 0.5);
-         * CoordAttr volRefAttr = new CoordAttr("Vol Ref Pt", point);
-         * _context.addAttr(volRefAttr); */
-        
-        /*Used in TextureVolume to decide if a color mapping will be used.
-         * ToggleAttr texColorMapAttr = new ToggleAttr("Tex Color Map", true);
-          _context.addAttr(texColorMapAttr); */
 
-        /*
-         * ColormapChoiceAttr  colorModeAttr; = new ColormapChoiceAttr("colorModeAttr", );
-         * _context.addAttr(texColorMapAttr); */
-
-
-
-        
-        //Create texture space  ???
-        _volume = volRend.getVolume();
-        System.out.println(_volume.hasData() + " first one"); //This was false
-       // _volume.update();
-        System.out.println(_volume.hasData() + " second one"); //This was true
-        
-        if (_debugging) {
-            _debug("Got Volume");
-        }
-        //Load Texture
-        //Texture2DVolume texture2DVolume  = new Texture2DVolume(_context, _volume);
-        //texture2DVolume.loadTexture();
-        
-        //Get access to the Shape3D to send to Viewcreen3D
-        _view = volRend.setupScene();
-        //_view = new View();
-        _renderedVolume = new Axis2DRenderer(_view, _context, _volume);
-        _renderedVolume.update();
-        _containedNode = _renderedVolume.getNode();
-  
    }
+   
+   /** Create the texture used for this 3D object.
+    * Define the texture coordinates and textureAttributes. 
+    * @throws IllegalActionException
+    */ 
+   protected void _loadTextures() throws IllegalActionException {
+    /**Generate texture coordinates */
     
+    //FIXME Can I do this once and be visible in both methods?
+    int rSize = (int) ((IntToken) dim.getToken()).intValue();
+    int sSize = rSize;
+    int tSize = rSize;
+    
+    System.out.println("dim = " + rSize);
+    
+    //FIXME  Look at scaling for images.  Is planeT correct?
+    float TexGenScale = 1/rSize;
+    int nSlices = 117;
+    _textures  = new Texture2D[rSize];
+    _texCoordGeneration = new TexCoordGeneration();
+    _texCoordGeneration.setPlaneS(new Vector4f(1/TexGenScale, 0.0f, 0.0f, 0.0f));
+    _texCoordGeneration.setPlaneT(new Vector4f(0.0f, 1/nSlices, 0.0f, 0.0f)); 
+    
+    
+    
+    /**Create ColorModel and WritableRaster for the BufferedImage**/
+    _colorSpace = ColorSpace.getInstance(ColorSpace.CS_GRAY);
+    
+    int[] nBits = {8};
+    //int[] _intData = new int[8];
+    
+    _colorModel = new ComponentColorModel(_colorSpace, nBits, false, false, 
+    Transparency.TRANSLUCENT, DataBuffer.TYPE_INT);
+    
+    
+    _raster = _colorModel.createCompatibleWritableRaster(sSize, tSize); 
+    
+    _bufferedImage = new BufferedImage(_colorModel, _raster, false, null); 
+ 
+    //Length of this array should be xDim x yDim of the image
+    /**It appears that this is filling in the bufferedImage...
+     * The line below declares that array the buffer then the loop
+     * below fills it in.
+     */
+    _intData = ((DataBufferInt)_raster.getDataBuffer()).getData(); 
+    
+    System.out.println("Length of _intData = " + _intData.length);
+    
+  
+    //for (int z = 0; z<rSize; z++){
+    	/**Create a 2D array of pixel values to load into BufferedImage */
+    	//FIXME Think about making a byte
+    	int[][] mapFinal = new int[rSize][rSize];
+        int[] vRow = new int[sSize];
+        int t = 0;
+        //int[] vRow = new int[rSize];
+        int rowIndex = 0;
+    for (int z = 0; z <rSize; z++){
+        for (int y=0; y < tSize; y++){
+            
+        	for (int x=0; x < sSize; x++){
+        		 mapFinal[x][y]= t;
+                 System.out.println("pixel value (" + x+ "," + y + ") = " + mapFinal[x][y]);
+            }
+            vRow = mapFinal[y];
+            System.out.println("vRow = " + vRow[y]); 
+            
+            //rowIndex = y * rSize;
+            rowIndex = rowIndex + rSize;
+            System.out.println("rowIndex " + rowIndex);
+            System.out.println("Size of array = " + _intData.length);
+            System.arraycopy(vRow, 0, _intData, rowIndex, rSize);             
+            System.out.println("_intData = " + _intData[y]);   
+            t = t+ 25;
+            /**Create ImageComponent2D to set the image for the textures */
+                        
+                    _texture2D = new Texture2D(Texture.BASE_LEVEL, Texture.INTENSITY, sSize, tSize);
+                    _imageComponent = new ImageComponent2D(ImageComponent.FORMAT_CHANNEL8, sSize, tSize);
+                    _imageComponent.set(_bufferedImage); 
+                
+                
+                    /**Set texture and TextureAttributes */
+                    _texture2D.setImage(0, _imageComponent);
+                    _texture2D.setEnable(true);
+                    _texture2D.setMinFilter(Texture.BASE_LEVEL_LINEAR);
+                    _texture2D.setMagFilter(Texture.BASE_LEVEL_LINEAR);
+                    //_texture2D.setMinFilter(Texture.BASE_LEVEL_POINT);
+                    //_texture2D.setMagFilter(Texture.BASE_LEVEL_POINT);
+                    _texture2D.setBoundaryModeS(Texture.CLAMP);
+                    _texture2D.setBoundaryModeT(Texture.CLAMP);
+
+                    _textures[z] = _texture2D; 
+        }
+    }
+   }
+   
+       
+    
+       /* for (int y=0; y < tSize; y++){
+            for (int x=0; x < sSize; x++){
+             //FIXME Grab one row at a time vs. a pixel.  Don't use ImagePlus
+    		    map[x][y] = _imagePlus.getPixel(x,y);
+                System.out.println("pixel (" + x + "," + y +") = " + _imagePlus.getPixel(x,y) );
+                mapFinal[x][y] = map[x][y][0];       
+            }
+            vRow = mapFinal[y];
+            //System.out.println("vRow = " + vRow); 
+            int rowIndex = 0;
+            rowIndex = y * rSize;
+            System.arraycopy(vRow, 0, _intData, rowIndex, sSize);
+            //System.out.println("pixel (" + 0 + "," + y +") = " + _imagePlus.getPixel(0,y) );   
+        
+        */
+    
+    	/**Create ImageComponent2D to set the image for the textures */
+/*            
+    	_texture2D = new Texture2D(Texture.BASE_LEVEL, Texture.INTENSITY, sSize, tSize);
+    	_imageComponent = new ImageComponent2D(ImageComponent.FORMAT_CHANNEL8, sSize, tSize);
+    	_imageComponent.set(_bufferedImage); */
+    
+    
+    	/**Set texture and TextureAttributes */
+    	/*_texture2D.setImage(0, _imageComponent);
+    	_texture2D.setEnable(true);
+    	_texture2D.setMinFilter(Texture.BASE_LEVEL_LINEAR);
+    	_texture2D.setMagFilter(Texture.BASE_LEVEL_LINEAR);
+    	//_texture2D.setMinFilter(Texture.BASE_LEVEL_POINT);
+    	//_texture2D.setMagFilter(Texture.BASE_LEVEL_POINT);
+    	_texture2D.setBoundaryModeS(Texture.CLAMP);
+    	_texture2D.setBoundaryModeT(Texture.CLAMP);
+
+    	_textures[z] = _texture2D; */
+//    }
+     
+   
+   
+   
     /** Return the ??????*/
     protected Node _getNodeObject() {
         return _containedNode;
     }
 
+    //FIXME Make more efficient, put all in one method or in a loop
+    protected OrderedGroup _getOrderedGroup() {
+        OrderedGroup og = new OrderedGroup();
+        og.setCapability(Group.ALLOW_CHILDREN_READ);
+        og.setCapability(Group.ALLOW_CHILDREN_WRITE);
+        og.setCapability(Group.ALLOW_CHILDREN_EXTEND);
+        return og;
+        }
+    
     /** Send the scene graph token on the output. */
     protected void _makeSceneGraphConnection() throws IllegalActionException {
         sceneGraphOut.send(0, new SceneGraphToken(_getNodeObject()));
     }
 
+    /**Read in file. */
+    protected void _readImage() throws IllegalActionException {
+        /**Read in image containing data to be mapped*/
+        _fileURL = voxelFile.asURL();
+        _fileRoot = _fileURL.getFile();
+        _imagePlus = new ImagePlus(_fileRoot); 
+        
+        
+    }
     /** Override the base class to set the texture, if one is specified,
      *  now that the view screen is known.
      *  @exception IllegalActionException If the given actor is not a
@@ -677,27 +898,15 @@ public class GRVolume extends GRActor3D {
 
     /** Polygon attributes. */
     protected PolygonAttributes _polygonAttributes;
-
+    
+    /** The NodeComponent defining the textureAttributes.  Must be added to the Appearance */
+    protected TextureAttributes _textureAttributes;
+    
     /** The transparency attributes, or null if not created. */
     protected TransparencyAttributes _transparencyAttributes;
     
-    /** The object holding the data from the .vol file.  */
-    protected VolFile _imageVol;
-    
-    /** ?????? */
-    protected Volume _volume;
-    
-    /** ?????? */
-    protected Context _context;
-    
     /** ?????? */
     protected View _view; 
-    
-    /** ?????? */
-    protected Axis2DRenderer _renderedVolume;
-    
-    /** ?????? */
-    protected Texture2DVolume _texture2DVolume;
     
 
     ///////////////////////////////////////////////////////////////////
@@ -705,11 +914,85 @@ public class GRVolume extends GRActor3D {
 
     /** The URL that specifies where the file is located. */
     private URL _fileURL;
-    
-    /** The URL that specifies where the file is located. */
-    private URL _fileContext;
-    
+       
     /** The Image. */
     private Node _containedNode;
     
+    /** The NodeComponent defining the texture which must be added to the Appearance */
+    private Texture2D _texture2D;
+    
+    /** ImageComponent. */
+    private ImageComponent2D _imageComponent;
+    
+    /** QuadArray. */
+    private QuadArray _quadArray;
+    
+    /** Buffer of image data */
+    private BufferedImage _bufferedImage;
+    
+    /**Defines how to translate the pixels into color and alpha components.*/
+    private ColorModel _colorModel;
+    
+    /** The ColorSpace that defines the color space of the image */
+    private ColorSpace _colorSpace;
+    
+    private Shape3D _texturedImage;
+    
+    private ImagePlus _imagePlus;
+    
+    private String _fileRoot;
+
+    private File _file;
+    
+    private FileImageInputStream _fileImageInputStream;
+    
+    private Texture2D[] _textures;  
+
+    private TexCoordGeneration _texCoordGeneration;  
+    
+    private WritableRaster _raster;
+    
+    private int[] _intData;
+    
+    private OrderedGroup _frontGroup;
+    
+    private OrderedGroup _backGroup;
+    
+    private Switch      _axisSwitch;
+    
+    private double[]        _quadCoords;
+    
+    private DataBufferInt _dataBufferInt;
+    
+    private DataBuffer _dataBuffer;
+    
+    private BranchGroup     _root;
+    
+    private BranchGroup frontShapeGroup;
+    
+    //private int[][] axisIndex = new int[3][2];
+    
+   
+    
+    
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         static  variables                 ////
+
+    static final int    X_AXIS = 0;
+    static final int    Y_AXIS = 1;
+    static final int    Z_AXIS = 2;
+
+    static final int    FRONT = 0;
+    static final int    BACK = 1;
+
+    static final int    PLUS_X = 0;
+    static final int    PLUS_Y = 1;
+    static final int    PLUS_Z = 2;
+    static final int    MINUS_X = 3;
+    static final int    MINUS_Y = 4;
+    static final int    MINUS_Z = 5;
+    
+    
+  
 }

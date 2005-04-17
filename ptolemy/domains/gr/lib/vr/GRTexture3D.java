@@ -62,6 +62,9 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
 import com.sun.j3d.utils.image.TextureLoader;
+import javax.media.j3d.Texture3D;
+import javax.media.j3d.ImageComponent3D;
+import javax.media.j3d.QuadArray;
 
 import javax.vecmath.Point3d;
 
@@ -75,10 +78,10 @@ import vendors.vr.StringAttr;
 import vendors.vr.CoordAttr;
 import vendors.vr.VolRend;
 
-//import ij.ImagePlus;
+import ij.ImagePlus;
 
 //////////////////////////////////////////////////////////////////////////
-//// GRVolume
+//// GRTexture3D
 
 /** An abstract base class for GR Actors that have material and color
     properties.
@@ -124,7 +127,7 @@ import vendors.vr.VolRend;
     @Pt.ProposedRating Red
     @Pt.AcceptedRating Red
 */
-public class GRVolume extends GRActor3D {
+public class GRTexture3D extends GRActor3D {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -133,15 +136,15 @@ public class GRVolume extends GRActor3D {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public GRVolume(CompositeEntity container, String name)
+    public GRTexture3D(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         
         volFile = new FilePortParameter(this, "volFile");
         volFile.setExpression("$CLASSPATH/doc/img/cubes64.vol");
         
-        context = new FilePortParameter(this, "context");
-        context.setExpression("$CLASSPATH/doc/img/");
+        //context = new FilePortParameter(this, "context");
+        //context.setExpression("$CLASSPATH/doc/img/");
      
         sceneGraphOut = new TypedIOPort(this, "sceneGraphOut");
         sceneGraphOut.setOutput(true);
@@ -183,6 +186,10 @@ public class GRVolume extends GRActor3D {
         allowRuntimeChanges = new Parameter(this, "allowRuntimeChanges");
         allowRuntimeChanges.setExpression("false");
         allowRuntimeChanges.setTypeEquals(BaseType.BOOLEAN);
+        
+        rSize = new DoubleRangeParameter(this, "rSize");
+        rSize.setExpression("1.0");
+        rSize.setTypeEquals(BaseType.DOUBLE);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -249,6 +256,12 @@ public class GRVolume extends GRActor3D {
      */
     public Parameter flat;
     
+    /** This parameter provides a third dimension to the images.  The
+     * value is a scaled version of the actual known slice depth.
+     */
+    public DoubleRangeParameter rSize;
+    
+    
     /** The input port that reads a in a URL to the file holding the 
      *  volume to be rendered.
      */
@@ -258,7 +271,7 @@ public class GRVolume extends GRActor3D {
      *  context.
      */
     public FilePortParameter context;
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -348,7 +361,7 @@ public class GRVolume extends GRActor3D {
     /** Override the base class to null out private variables.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        GRVolume newObject = (GRVolume) super.clone(workspace);
+        GRTexture3D newObject = (GRTexture3D) super.clone(workspace);
         newObject._appearance = null;
         newObject._coloringAttributes = null;
         newObject._material = null;
@@ -535,83 +548,7 @@ public class GRVolume extends GRActor3D {
             _debug("Created Appearance()");
         }
             
-        //Read in .vol file
-        _fileURL = volFile.asURL();
-       
         
-    
-        //FIXME: Is this neccessary, bad coding?
-        try {
-            _imageVol = new VolFile(_fileURL);
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        
-        //Read in context file
-        _fileContext = context.asURL();
-        
-        
-        if (_debugging) {
-            _debug("Read in files");
-        }
-        
-        //FIXME: Need to get rid of context and set up some other how
-        
-        
-        
-        VolRend volRend = new VolRend(false, false); 
-        //volRend.initContext(_fileContext);
-        _context = volRend.initContext(_fileContext); 
-        
-        
-        if (_debugging) {
-            _debug("Created VolRend object and set up hashtable");
-        }
-        
-        /*Used in volume.update() to read in the VolFile.  Can get rid of this
-         * b/c we read in the file directly from the portparameter.
-         * StringAttr dataFileAttr = new StringAttr("Data File", "cubes64.vol");
-         * _context.addAttr(dataFileAttr);  */
-        
-        /* Used in volume.update to set the initial reference point
-         * of the rendered volume.  Can get rid of, by adding new parameter 
-         * to actor.  Initialize to 0,0,0.  THIS MAY BE PROBLEM WITH OUTPUT
-         * Point3d point = new Point3d(0.5, 0.5, 0.5);
-         * CoordAttr volRefAttr = new CoordAttr("Vol Ref Pt", point);
-         * _context.addAttr(volRefAttr); */
-        
-        /*Used in TextureVolume to decide if a color mapping will be used.
-         * ToggleAttr texColorMapAttr = new ToggleAttr("Tex Color Map", true);
-          _context.addAttr(texColorMapAttr); */
-
-        /*
-         * ColormapChoiceAttr  colorModeAttr; = new ColormapChoiceAttr("colorModeAttr", );
-         * _context.addAttr(texColorMapAttr); */
-
-
-
-        
-        //Create texture space  ???
-        _volume = volRend.getVolume();
-        System.out.println(_volume.hasData() + " first one"); //This was false
-       // _volume.update();
-        System.out.println(_volume.hasData() + " second one"); //This was true
-        
-        if (_debugging) {
-            _debug("Got Volume");
-        }
-        //Load Texture
-        //Texture2DVolume texture2DVolume  = new Texture2DVolume(_context, _volume);
-        //texture2DVolume.loadTexture();
-        
-        //Get access to the Shape3D to send to Viewcreen3D
-        _view = volRend.setupScene();
-        //_view = new View();
-        _renderedVolume = new Axis2DRenderer(_view, _context, _volume);
-        _renderedVolume.update();
-        _containedNode = _renderedVolume.getNode();
-  
    }
     
     /** Return the ??????*/
@@ -711,5 +648,16 @@ public class GRVolume extends GRActor3D {
     
     /** The Image. */
     private Node _containedNode;
+    
+    /** 3D Texture. */
+    private Texture3D _texture;
+    
+    /** ImageComponent. */
+    private ImageComponent3D _imageComponent;
+    
+    /** QuadArray. */
+    private QuadArray _quadArray;
+    
+    
     
 }

@@ -10,6 +10,13 @@
 <entity name="GRVolume" class="ptolemy.domains.gr.lib.vr.GRVolume">
 </entity>
 
+<entity name="GRTexture2D" class="ptolemy.domains.gr.lib.vr.GRTexture2D">
+</entity>
+
+<entity name="Box3Da" class="ptolemy.domains.gr.lib.vr.Box3Da">
+</entity>
+
+
       </group>
     ?>
   </configure>
