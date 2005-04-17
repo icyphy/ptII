@@ -31,7 +31,7 @@
 
 ME =		ptolemy/backtrack/util
 
-DIRS = 		test	
+DIRS = 		java test
 
 # Root of the Java directory
 ROOT =		../../..
