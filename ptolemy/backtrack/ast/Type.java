@@ -360,6 +360,11 @@ public class Type {
         return null;
     }
 
+    /** Get the name of the element type of a type that may be array.
+     * 
+     *  @param type The name of the type.
+     *  @return The name of the element type.
+     */
     public static String getElementType(String type) {
         StringBuffer buffer = new StringBuffer(type);
         int length = buffer.length();
