@@ -49,6 +49,7 @@ import ptolemy.domains.gr.lib.GRShadedShape;
 
 import com.sun.j3d.utils.geometry.Box;
 import com.sun.j3d.utils.geometry.Primitive;
+import javax.media.j3d.BranchGroup;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -150,30 +151,75 @@ public class Box3Da extends GRShadedShape {
         }
     }
     
+   /* public void fire() throws IllegalActionException {
+        
+        if (_debugging) {
+            _debug("Called fire()");
+        }
+        if (!_isSceneGraphInitialized) {
+            _makeSceneGraphConnection();
+            _isSceneGraphInitialized = true;
+            
+        }
+    }*/
+    
+    public void fire() throws IllegalActionException {
+    	super.fire();
+        /*ParameterPort parameterPort;
+        parameterPort = xLength.getPort();
+        _doubleToken = (DoubleToken)parameterPort.get(0);
+        double portValue = _doubleToken.doubleValue();*/
+        if (_debugging) {
+            _debug("xLength before update = " + xLength);
+            _debug(" Port value before update = " + xLength);
+        }
+           
+        xLength.update();
+        
+        if (_debugging) {
+         //   _debug("Token = " + _doubleToken);
+            _debug("xLength after update = " + xLength);
+            _debug(" Port value after update = " + xLength);
+        }
+       
+    }
+
     
     public boolean prefire() throws IllegalActionException {
         if (_debugging) {
             _debug("Called prefire()");
         }
         
-        //boolean flag;
-        ParameterPort port;
-        port = xLength.getPort();
-        //boolean flag;
-        //flag = port.hasToken(0); 
-        Token token;
-        token = port.get(0);
-        
-        if (token != null){
-            _createModel();
-            xLength.update();
-            return true;   
-        }else {
-         xLength.update();
-         return false;
-        } 
+        if (_isSceneGraphInitialized){
+        	if (_doubleToken.doubleValue() > 0.0){
+        		_isSceneGraphInitialized = false;
+        		_createModel();
+                 if (_debugging) {
+                    _debug("");
+                }
+                if (_debugging) {
+                    _debug("Prefire returned true");
+                    
+                }
+        		return true;   
+        	}else {
+        		xLength.update();
+                if (_debugging) {
+                    _debug("Prefire returned false");
+					_debug("xLength = " + xLength);
+                }
+        		return false;
+            }
+        } else {
+            if (_debugging) {
+                _debug("Prefire returned true");
+            }
+        	return true;   
+        }
      
     }
+    
+    
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -192,7 +238,8 @@ public class Box3Da extends GRShadedShape {
      *  @return The Java3D box.
      */
     protected Node _getNodeObject() {
-        return _containedNode;
+        //return _containedNode;
+        return _branchGroup;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -239,6 +286,10 @@ public class Box3Da extends GRShadedShape {
                     _appearance);
             _scaleTransform = null;
         }
+        _branchGroup = new BranchGroup();
+        _branchGroup.setCapability(BranchGroup.ALLOW_CHILDREN_READ);
+        _branchGroup.setCapability(BranchGroup.ALLOW_CHILDREN_WRITE);
+        _branchGroup.addChild(_containedNode);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -251,4 +302,9 @@ public class Box3Da extends GRShadedShape {
 
     /** The box. */
     private Node _containedNode;
+    
+    /** BranchGroup */
+    private BranchGroup _branchGroup;
+    
+    private DoubleToken _doubleToken;
 }
