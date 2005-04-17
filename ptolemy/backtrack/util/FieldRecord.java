@@ -320,7 +320,7 @@ public final class FieldRecord {
      *  @param timestamp The current timestamp to be associated with the
      *   old value.
      */
-    public void add(int[] indices, long value, int timestamp) {
+    public void add(int[] indices, long value, long timestamp) {
         _addRecord(indices == null ? 0 : indices.length, 
                 new Record(indices, new Long(value), timestamp));
     }
