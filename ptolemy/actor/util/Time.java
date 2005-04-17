@@ -38,68 +38,74 @@ import ptolemy.kernel.util.InternalErrorException;
 //// Time
 
 /**
-   An object of the Time class represents model time, as distinct from
-   "wall-clock time," which is time in the physical world. An instance
-   of Time has a value that is immutable. It has no limit on the magnitude.
-   There are two time constants: NEGATIVE_INFINITY and POSITIVE_INFINITY.
-
-   <p> The time value is quantized to the time resolution specified
-   by the <i>timeResolution</i> parameter of the associated director.
-   The reason for this is that without quantization, it is extremely difficult
-   to compare two time values with digit-to-digit accuracy because of the
-   unpredictable numerical errors introduced during computation.
-   In practice, two time values can only be distinguished if their difference
-   can be detected by some measuring instrument, which always has a smallest
-   unit for measurement. This smallest unit measurement gives the physical
-   meaning of the time resolution used for quantization.
-
-   <p> The time value can be retrived in two ways, the {@link #toString()}
-   method and the {@link #getDoubleValue()} method. The first method returns a
-   string representation while the second method returns a double value. There
-   are some limitations on both methods. For the toString method, we can not
-   directly do numerical operations on strings. For the getDoubleValue method,
-   we can not guarantee that the returned double value preserves the time resolution
-   because of the limited digits for double representation. We recommend to
-   operate on time objects directly instead of the time values of time objects.
-
-   <p> Two operations, add and subtract, can be performed on a time object,
-   where the argument can be a double or a time object. If the
-   argument is not a time object, the argument is quantized before the
-   operations are performed. These operations return a new time object with a
-   quantized result.
-
-   <p> The time value of a time object can be infinite. The add and subtract
-   operations on infinite time values follow rules similar to the IEEE Standard 754
-   for Floating Point Numbers. In particular, adding two positive/negative
-   infinities yield a positive/negative infinity; adding a positive infinity
-   and a negative infinity, however, triggers an ArithmeticException;
-   the negation of a positive/negative infinity is a negative/positive infinity.
-
-   <p> This class implements the Comparable interface, where two time
-   objects can be compared in the following way. If any of the two time objects
-   contains an infinite time value, the rules are: a negative infinity is
-   equal to a negative infinity and less than anything else; a positive
-   infinity is equal to a positive infinity and bigger than anything else.
-   If none of the time objects has an infinite time value, the time values of
-   two time objects are compared. If the time values are the same, the two time
-   objects are treated equal, or they represent the same model time.
-   Otherwise, the time object containing a bigger time value is
-   regared to happen after the time object with a smaller time value.
-
-   <p> All time objects share the same time resolution, which is provided by
-   the top-level director. In some domains, such as CT and DE, users can
-   change the time resolution by configuring the <i>timeResolution</i>
-   parameter. The default value for this parameter "1E-10", which has
-   value 10<sup>-10</sup>. To preserve the consistency of time values,
-   timeResolution can not be changed when a model is running
-   (attempting to do so will trigger an exception).
-   
-   @author Haiyang Zheng, Edward A. Lee, Elaine Cheong
-   @version $Id$
-   @since Ptolemy II 4.1
-   @Pt.ProposedRating Yellow (hyzheng)
-   @Pt.AcceptedRating Red (hyzheng)
-*/
+ * An object of the Time class represents model time, as distinct from
+ * "wall-clock time," which is time in the physical world. An instance of Time
+ * has a value that is immutable. It has no limit on the magnitude. There are
+ * two time constants: NEGATIVE_INFINITY and POSITIVE_INFINITY.
+ * 
+ * <p>
+ * The time value is quantized to the time resolution specified by the
+ * <i>timeResolution </i> parameter of the associated director. The reason for
+ * this is that without quantization, it is extremely difficult to compare two
+ * time values with digit-to-digit accuracy because of the unpredictable
+ * numerical errors introduced during computation. In practice, two time values
+ * can only be distinguished if their difference can be detected by some
+ * measuring instrument, which always has a smallest unit for measurement. This
+ * smallest unit measurement gives the physical meaning of the time resolution
+ * used for quantization.
+ * 
+ * <p>
+ * The time value can be retrieved in three ways, the {@link #toString()}method
+ * and the {@link #getDoubleValue()}method and the {@link #getLongValue()}
+ * method. The first method returns a string representation while the second
+ * method returns a double value. There are some limitations on both methods.
+ * For the toString() method, we can not directly do numerical operations on
+ * strings. For the getDoubleValue() method, we can not guarantee that the
+ * returned double value preserves the time resolution because of the limited
+ * digits for double representation. We recommend to operate on time objects
+ * directly instead of the time values of time objects. getLongValue() returns
+ * an integer multiple of the director resolution.
+ * 
+ * <p>
+ * Two operations, add and subtract, can be performed on a time object, where
+ * the argument can be a double or a time object. If the argument is not a time
+ * object, the argument is quantized before the operations are performed. These
+ * operations return a new time object with a quantized result.
+ * 
+ * <p>
+ * The time value of a time object can be infinite. The add and subtract
+ * operations on infinite time values follow rules similar to the IEEE Standard
+ * 754 for Floating Point Numbers. In particular, adding two positive/negative
+ * infinities yield a positive/negative infinity; adding a positive infinity and
+ * a negative infinity, however, triggers an ArithmeticException; the negation
+ * of a positive/negative infinity is a negative/positive infinity.
+ * 
+ * <p>
+ * This class implements the Comparable interface, where two time objects can be
+ * compared in the following way. If any of the two time objects contains an
+ * infinite time value, the rules are: a negative infinity is equal to a
+ * negative infinity and less than anything else; a positive infinity is equal
+ * to a positive infinity and bigger than anything else. If none of the time
+ * objects has an infinite time value, the time values of two time objects are
+ * compared. If the time values are the same, the two time objects are treated
+ * equal, or they represent the same model time. Otherwise, the time object
+ * containing a bigger time value is regared to happen after the time object
+ * with a smaller time value.
+ * 
+ * <p>
+ * All time objects share the same time resolution, which is provided by the
+ * top-level director. In some domains, such as CT and DE, users can change the
+ * time resolution by configuring the <i>timeResolution </i> parameter. The
+ * default value for this parameter "1E-10", which has value 10 <sup>-10 </sup>.
+ * To preserve the consistency of time values, timeResolution can not be changed
+ * when a model is running (attempting to do so will trigger an exception).
+ * 
+ * @author Haiyang Zheng, Edward A. Lee, Elaine Cheong
+ * @version $Id$
+ * @since Ptolemy II 4.1
+ * @Pt.ProposedRating Yellow (hyzheng)
+ * @Pt.AcceptedRating Red (hyzheng)
+ */
 public class Time implements Comparable {
     
     /** Construct a Time object with zero as the time value. This object
