@@ -94,7 +94,7 @@ import ptolemy.kernel.util.InternalErrorException;
    timeResolution can not be changed when a model is running
    (attempting to do so will trigger an exception).
    
-   @author Haiyang Zheng and Edward A. Lee
+   @author Haiyang Zheng, Edward A. Lee, Elaine Cheong
    @version $Id$
    @since Ptolemy II 4.1
    @Pt.ProposedRating Yellow (hyzheng)
@@ -142,6 +142,15 @@ public class Time implements Comparable {
         } else {
             _timeValue = _doubleToMultiple(timeValue);
         }
+    }
+
+    /** Construct a Time object with the specified long value as its time value.
+     *  @param director The director with which this time object is associated.
+     *  @param timeValue A double value as the specified time value.
+     */
+    public Time(Director director, long timeValue) {
+        _director = director;
+        _timeValue = new BigInteger(Long.toString(timeValue));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -296,17 +305,17 @@ public class Time implements Comparable {
         }
         // Ensure the resolutions are the same.
         try {
-			double resolution = _director.getTimeResolution();
-			if (resolution != time._director.getTimeResolution()) {
-			    double thisValue = getDoubleValue();
-			    double thatValue = time.getDoubleValue();
-			    return new Time(_director, thisValue + thatValue);
-			}
-		} catch (IllegalActionException e) {
+            double resolution = _director.getTimeResolution();
+            if (resolution != time._director.getTimeResolution()) {
+                double thisValue = getDoubleValue();
+                double thatValue = time.getDoubleValue();
+                return new Time(_director, thisValue + thatValue);
+            }
+        } catch (IllegalActionException e) {
             // If the time resolution values are malformed this
             // should have been caught before this.
             throw new InternalErrorException(e);
-		}
+        }
         return new Time(_director, _timeValue.add(time._timeValue));
     }
 
@@ -351,20 +360,20 @@ public class Time implements Comparable {
                 }
             }
         }
-		double resolution = _director.getTimeResolution();
-		if (resolution == castTime._director.getTimeResolution()) {
-		    return _timeValue.compareTo(castTime._timeValue);
-		} else {
-			double thisValue = getDoubleValue();
-		    double thatValue = castTime.getDoubleValue();
-		    if (thisValue < thatValue) {
-		    	return -1;
-		    } else if (thisValue > thatValue) {
-		        return 1;
-		    } else {
-		        return 0;
-		    }
-		}
+        double resolution = _director.getTimeResolution();
+        if (resolution == castTime._director.getTimeResolution()) {
+            return _timeValue.compareTo(castTime._timeValue);
+        } else {
+            double thisValue = getDoubleValue();
+            double thatValue = castTime.getDoubleValue();
+            if (thisValue < thatValue) {
+                return -1;
+            } else if (thisValue > thatValue) {
+                return 1;
+            } else {
+                return 0;
+            }
+        }
     }
     
     /** Return the result of dividing this time by the
@@ -451,6 +460,22 @@ public class Time implements Comparable {
             // execution time... Could instead use longValue(), but the
             // result would not necessarily be accurate.
 			return _timeValue.doubleValue() * _director.getTimeResolution();
+        }
+    }
+
+    /** Return the long representation of the time value of this time
+     *  object.  The long representation is a multiple of the
+     *  resolution of the associated director.  Note that a Time value
+     *  of positive infinity will return Long.MAX_VALUE and a Time
+     *  value of negative infinity will return Long.MIN_VALUE.
+     */
+    public long getLongValue() {
+        if (_isPositiveInfinite) {
+            return Long.MAX_VALUE;
+        } else if (_isNegativeInfinite) {
+            return Long.MIN_VALUE;
+        } else {
+            return _timeValue.longValue();
         }
     }
 
@@ -590,7 +615,7 @@ public class Time implements Comparable {
         // signal precision and (-1)^(sign)x(1+significand)x2^(exponent-1023)
         // for double presision.
         
-		double precision = _director.getTimeResolution();
+        double precision = _director.getTimeResolution();
         // Note that the calculation of the lub is performed when the time
         // resolution parameter changes.
         double lub = _director.getMaximumAllowedTimeValueAsDouble();
@@ -606,7 +631,7 @@ public class Time implements Comparable {
                     + "parameter caused this exception.");
         }
         
-		return BigInteger.valueOf(Math.round(value/precision));
+        return BigInteger.valueOf(Math.round(value/precision));
     }
 
     ///////////////////////////////////////////////////////////////////
