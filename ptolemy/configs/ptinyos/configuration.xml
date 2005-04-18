@@ -13,16 +13,26 @@
 
 
 
-  <doc>Configuration for PtinyOS models</doc>
+  <doc>Configuration for VisualSense</doc>
   <!-- Specify the about file to open. -->
   <property name="_about"
             class="ptolemy.data.expr.FileParameter"
-            value="$CLASSPATH/ptolemy/configs/ptinyos/about.htm"/>
+            value="$CLASSPATH/ptolemy/configs/visualsense/about.htm"/>
+
+  <!-- Specify copyright, used by actor/gui/GenerateCopyrights.java -->
+  <property name="_applicationCopyright"
+            class="ptolemy.kernel.util.StringAttribute"
+            value="ptolemy/configs/visualsense/copyright.htm"/>
+
+  <!-- Specify name of this application, used by actor/gui/HTMLAbout.java -->
+  <property name="_applicationName"
+            class="ptolemy.kernel.util.StringAttribute"
+            value="VisualSense"/>
 
   <!-- Specify the help file to open. -->
   <property name="_help"
             class="ptolemy.data.expr.FileParameter"
-            value="$CLASSPATH/ptolemy/configs/ptinyos/help.htm"/>
+            value="$CLASSPATH/ptolemy/configs/visualsense/help.htm"/>
 
   <!-- The directory of open models, each represented by an effigy. -->
   <!-- Note that this begins empty. -->
@@ -37,13 +47,58 @@
   <!-- named "blank", then the effigy will initially refer to a clone -->
   <!-- of that blank entity. -->
   <entity name="effigyFactory" class="ptolemy.actor.gui.EffigyFactory">
-    <!-- Use a custom graph editor with a CT director already in it. -->
-    <entity name="Graph Editor" class="ptolemy.actor.gui.PtolemyEffigy$Factory">
-      <entity name="blank" class="ptolemy.actor.CompositeActor">
-        <property name="NCCodeGenerator" class="ptolemy.domains.nc.kernel.NCCodeGenerator">
-          <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 40.0">
+    <!-- Use a custom graph editor with a PtinyOS director already in it. -->
+    <entity name="PtinyOS Graph Editor" class="ptolemy.actor.gui.PtolemyEffigy$Factory">
+      <entity name="blank" class="ptolemy.domains.ptinyos.kernel.NCCompositeActor">
+      </entity>
+    </entity>
+
+    <!-- Use a custom graph editor with a PtinyOS director already in it. -->
+    <entity name="Mica Graph Editor" class="ptolemy.actor.gui.PtolemyEffigy$Factory">
+      <entity name="blank" class="ptolemy.domains.ptinyos.lib.MicaActor">
+      </entity>
+    </entity>
+
+    <!-- Use a custom graph editor with a Wireless director already in it. -->
+    <entity name="Wireless Graph Editor" class="ptolemy.actor.gui.PtolemyEffigy$Factory">
+      <entity name="blank" class="ptolemy.actor.TypedCompositeActor">
+        <property name="Wireless Director"
+                  class="ptolemy.domains.wireless.kernel.WirelessDirector">
+          <property name="_location"
+                    class="ptolemy.kernel.util.Location" value="68.0, 32.0">
           </property>
         </property>
+      </entity>
+    </entity>
+    <!-- We need an FSM editor, but do not want it to appear in the -->
+    <!-- File->New menu. -->
+    <entity name="FSM Editor"
+            class="ptolemy.actor.gui.PtolemyEffigy$FactoryWithoutNew">
+      <entity name="blank" class="ptolemy.domains.fsm.kernel.FSMActor">
+        <input source="ptolemy/configs/fsmLibrary.xml"/>
+      </entity>
+    </entity>
+    <entity name="Modal Model"
+            class="ptolemy.actor.gui.PtolemyEffigy$FactoryWithoutNew">
+      <entity name="blank" class="ptolemy.domains.fsm.modal.ModalModel">
+        <entity name="_Controller" class="ptolemy.domains.fsm.kernel.FSMActor">
+          <input source="ptolemy/configs/fsmLibrary.xml"/>
+          <property name="annotation" class="ptolemy.kernel.util.Attribute">
+            <property name="_hideName"
+                      class="ptolemy.kernel.util.SingletonAttribute"/>
+            <property name="_iconDescription"
+                      class="ptolemy.kernel.util.SingletonConfigurableAttribute"><configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Create a state machine here (and ports, if needed) and
+create refinements for the states. Create transitions
+by holding the control key and dragging from one state
+to another. Then delete this annotation.</text></svg></configure></property>
+            <property name="_location"
+                      class="ptolemy.kernel.util.Location" value="120.0, 5.0"/>
+            <property name="_controllerFactory"
+                      class="ptolemy.vergil.basic.NodeControllerFactory"/>
+            <property name="_editorFactory"
+                      class="ptolemy.vergil.toolbox.AnnotationEditorFactory"/>
+          </property>
+        </entity>
       </entity>
     </entity>
 
@@ -57,8 +112,24 @@
   <!-- is willing to open the model. Each editor contains a list -->
   <!-- of other editors that appear in the View menu.            -->
   <property name="tableauFactory" class="ptolemy.actor.gui.TableauFactory">
-    <input source="ptolemy/configs/graphTableauFactory.xml"/>
-    <input source="ptolemy/configs/extendedTableauFactories.xml"/>
+      <input source="ptolemy/configs/fsmTableauFactory.xml"/>
+
+      <property name="NCCompositeActor Editor"
+          class="ptolemy.domains.ptinyos.kernel.NCCompositeActorTableauFactory">
+          <property name="_library" class="ptolemy.moml.LibraryAttribute">
+              <input source="ptolemy/configs/ptinyos/library.xml"/>
+          </property>
+      </property>
+
+      <property name="Untyped Actor Editor"
+          class="ptolemy.vergil.actor.TypeOpaqueCompositeActorTableauFactory">
+          <property name="_library" class="ptolemy.moml.LibraryAttribute">
+              <input source="ptolemy/configs/ptinyos/library.xml"/>
+          </property>
+      </property>
+    
+      <input source="ptolemy/configs/graphTableauFactory.xml"/>
+      <input source="ptolemy/configs/extendedTableauFactories.xml"/>
   </property>
 
   <!-- Main actor library -->
@@ -69,23 +140,60 @@
               class="ptolemy.kernel.util.SingletonAttribute"/>
 
     <!-- Override utilities library. -->
-    <entity name="Utilities" class="ptolemy.moml.EntityLibrary">
+	<entity name="Utilities" class="ptolemy.moml.EntityLibrary">
+	  <class name="WirelessCompositeClass" extends="ptolemy.domains.wireless.kernel.WirelessComposite">
+		<!-- The inside MUST have a director, so we create one. -->
+		<property name="DEDirector" class="ptolemy.domains.de.kernel.DEDirector">
+			<property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 35.0]"/>
+		</property>
+	  </class>
+	  <entity name="WirelessComposite" class="ptolemy.domains.wireless.kernel.WirelessComposite">
+		<!-- The inside MUST have a director, so we create one. -->
+		<property name="DEDirector" class="ptolemy.domains.de.kernel.DEDirector">
+			<property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 35.0]"/>
+		</property>
+	  </entity>
       <class name="CompositeClass" extends="ptolemy.actor.TypedCompositeActor"/>
       <input source="ptolemy/configs/utilityCompositeActor.xml"/>
       
       <input source="ptolemy/configs/basicUtilities.xml"/>
+      <!-- Do not include this as singleton parameters are buggy. -->
+      <!-- input source="ptolemy/configs/customize.xml"/ -->
+      <input source="ptolemy/data/unit/unitSystems.xml"/>
     </entity>
 
     <!-- director library. -->
-    <input source="ptolemy/configs/ptinyos/directors.xml"/>
+    <input source="ptolemy/configs/visualsense/directors.xml"/>
+
+    <!-- channels -->
+    <input source="ptolemy/domains/wireless/lib/channels.xml"/>
 
     <!-- Default actor library. -->
     <entity name="Actors" class="ptolemy.moml.EntityLibrary">
       <configure>
         <?moml
           <group>
-            <input source="ptolemy/domains/nc/lib/lib.xml"/>
-            <input source="TOSIndex.xml"/>
+            <input source="ptolemy/domains/ptinyos/lib/lib-composite.xml"/>
+            <input source="ptolemy/domains/wireless/lib/wirelessentities.xml"/>
+            <input source="ptolemy/configs/basicActorLibrary.xml"/>
+          </group>
+        ?>
+      </configure>
+    </entity>
+  
+    <!-- Optional packages that may or may not be present  -->
+    <!-- Alphabetize these  -->
+    <entity name="MoreLibraries" class="ptolemy.moml.EntityLibrary">
+      <configure>
+        <?moml
+          <group>
+            <input source="ptolemy/vergil/actor/lib/interactive.xml"/>
+	    <!-- matlab depends on Matlab being present -->
+            <input source="ptolemy/matlab/matlab.xml"/>
+            <input source="ptolemy/actor/lib/python/python.xml"/>
+            <input source="ptolemy/actor/lib/test.xml"/>
+            <input source="ptolemy/actor/lib/security/security.xml"/>
+            <input source="ptolemy/actor/lib/xslt/xslt.xml"/>
           </group>
         ?>
       </configure>
