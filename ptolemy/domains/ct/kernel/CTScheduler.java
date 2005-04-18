@@ -86,20 +86,20 @@ import ptolemy.kernel.util.Workspace;
    discrete input and continuous output is called a <I>waveform generator</I>.
    <P>
    The interaction with some discrete domains requires that the
-   CT simulation is able to remember its state and roll-back
+   CT simulation be able to remember its state and roll-back
    to the remembered state when needed. This in turn requires
-   that all actors which have internal states to be able
+   that all actors that have internal states to be able
    to remember and restore their states. These actors are called
    <I>stateful actors</I>.
    <P>
-   In the continuous time simulation, time progresses in a discrete way.
+   In continuous-time simulation, time progresses in a discrete way.
    The distance between two consecutive time points is called the
    <I>integration step size</I> or step size, for short. Some actors
-   may put constraints on the choice of the step sizes in the integration.
+   may put constraints on the choice of the step size.
    These actors are called <I>step size control actors</I>. Examples of step
    size control actors include integrators, which control the
    accuracy and speed of numerical ODE solutions, and event generators,
-   which detect events.
+   which produce discrete events.
    <P>
    To help with scheduling, the actors are partitioned into several clusters,
    including <I>continuous actors</I>, <I>discrete actors</I>,
@@ -117,7 +117,7 @@ import ptolemy.kernel.util.Workspace;
    <I>dynamic actor schedule</I>.
    <P>
    The state transition schedule is the actors in the f() function sorted
-   in the topological order, such that, after the integrators emit their
+   in topological order, such that, after the integrators emit their
    state x, a chain of firings according to the schedule evaluates the
    f() function and returns tokens corresponding to dx/dt to the
    integrators.
@@ -328,7 +328,7 @@ public class CTScheduler extends Scheduler {
     protected Schedule _getSchedule()
             throws NotSchedulableException, IllegalActionException {
         // NOTE: This implementation creates new Lists every time,
-        // If this hurts performance a lot, consider reuse old lists.
+        // If this hurts performance a lot, consider reusing old lists.
         // This requires the Schedule class to implement clear().
         // NOTE: The current implementation focuses on the continuous
         // phase of execution, and only pays a little attantion to the
@@ -637,6 +637,8 @@ public class CTScheduler extends Scheduler {
         // We do not allow loops of dynamic actors, either.
         DirectedAcyclicGraph dynamicGraph = _toGraph(dynamicActors);
 
+        // FIXME: Why is this disallowed? If we change this, change the class
+        // comment (at the end) also.
         if (!dynamicGraph.isAcyclic()) {
             throw new NotSchedulableException(
                     "Loops of dynamic actors (e.g. integrators) "

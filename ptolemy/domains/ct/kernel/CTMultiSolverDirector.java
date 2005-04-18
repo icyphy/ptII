@@ -1580,7 +1580,6 @@ public class CTMultiSolverDirector extends CTDirector {
 
         // postfire all continuous actors to commit their states.
         // Note that event generators are postfired. 
-        // FIXME: No! This is not true!
         updateContinuousStates();
         postfireEventGenerators();
 
@@ -1591,7 +1590,10 @@ public class CTMultiSolverDirector extends CTDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         proetected variables              ////
     
-    /** Flag indicating the initial states are not ready. */
+    /** Flag indicating the initial states are not ready.
+     *  FIXME: This isn't clear.... What is this flag for?
+     *  Why is it so publically visible? 
+     */
     protected boolean _initialStatesNotReady;
 
     ///////////////////////////////////////////////////////////////////
