@@ -807,9 +807,6 @@ public class AssignmentTransformer extends AbstractTransformer
         Class currentClass = state.getCurrentClass();
         String recordName = _getRecordName(fieldName);
         
-        if (_getAccessedField(currentClass.getName(), fieldName) == null)
-            return null;
-        
         // Check if the field is duplicated (possibly because the source
         // program is refactored twice).
         if (isFieldDuplicated(currentClass, recordName))
@@ -997,8 +994,6 @@ public class AssignmentTransformer extends AbstractTransformer
         while (fields.hasNext()) {
             String fieldName = (String)fields.next();
             Class currentClass = state.getCurrentClass();
-            if (_getAccessedField(currentClass.getName(), fieldName) == null)
-                continue;
             
             String recordName = _getRecordName(fieldName);
             expressions.add(ast.newSimpleName(recordName));
@@ -1069,9 +1064,6 @@ public class AssignmentTransformer extends AbstractTransformer
         while (namesIter.hasNext()) {
             String fieldName = (String)namesIter.next();
             Type fieldType = (Type)typesIter.next();
-
-            if (_getAccessedField(currentClass.getName(), fieldName) == null)
-                continue;
             
             MethodInvocation restoreMethodCall = ast.newMethodInvocation();
             restoreMethodCall.setExpression(
@@ -1093,10 +1085,14 @@ public class AssignmentTransformer extends AbstractTransformer
             } catch (NoSuchFieldException e) {
             }
             
-            if (isFinal)
+            if (isFinal) {
+                if (_getAccessedField(currentClass.getName(), fieldName)
+                        != null ||
+                    !Type.isPrimitive(
+                            Type.getElementType(fieldType.getName())))
                 body.statements().add(
                         ast.newExpressionStatement(restoreMethodCall));
-            else {
+            } else {
                 Expression rightHandSide;
                 if (fieldType.isPrimitive())
                     rightHandSide = restoreMethodCall;

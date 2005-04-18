@@ -196,10 +196,14 @@ public class PackageRule extends TransformRule {
                 if (type != null && owner == null &&
                         _crossAnalysisTypes.contains(type.getName()) &&
                         _crossAnalysisNames.contains(id) &&
+                        !ConstructorTransformer.SPECIAL_TYPE_MAPPING.
+                                containsKey(type.getName()) &&
                         type.getName().length() == id.length())
                     convert = true;
                 else if (node.getParent() instanceof ImportDeclaration &&
-                        _crossAnalysisNames.contains(id))
+                        _crossAnalysisNames.contains(id) &&
+                        !ConstructorTransformer.SPECIAL_TYPE_MAPPING.
+                                containsKey(id))
                     convert = true;
                 else if (node.getParent() instanceof PackageDeclaration) {
                     convert = true;
@@ -211,7 +215,7 @@ public class PackageRule extends TransformRule {
                         !_crossAnalysisTypes.contains(type.getName()) &&
                         _oldPackageName != null)
                     addImport = true;
-                    
+                
                 if (convert) {
                     Name newName = _addPrefix(node, _prefix);
                     if (newName != null)

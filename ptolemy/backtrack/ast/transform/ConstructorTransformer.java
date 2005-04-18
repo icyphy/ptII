@@ -87,10 +87,15 @@ public class ConstructorTransformer extends AbstractTransformer
             // Do not refactor class instance creations within methods.
             Type type = Type.getType(node);
             String typeName = type.getName();
-            if (state.getCrossAnalyzedTypes().contains(typeName))
+            if (state.getCrossAnalyzedTypes().contains(typeName) ||
+                    (HANDLE_SPECIAL_TYPE_MAPPINGS &&
+                            SPECIAL_TYPE_MAPPING.containsKey(typeName))) {
+                if (!state.getCrossAnalyzedTypes().contains(typeName))
+                    state.getAnalyzer().addCrossAnalyzedType(typeName);
+                
                 // The type needs to be cross-analyzed.
                 _refactor(node, state);
-            else
+            } else
                 addToLists(_unhandledNodes, typeName, node);
         }
     }
@@ -136,6 +141,15 @@ public class ConstructorTransformer extends AbstractTransformer
         }
     }
     
+    public final static boolean HANDLE_SPECIAL_TYPE_MAPPINGS = true;
+    
+    public static final Hashtable SPECIAL_TYPE_MAPPING = new Hashtable();
+    
+    static {
+        SPECIAL_TYPE_MAPPING.put("java.util.Random",
+                "ptolemy.backtrack.util.java.util.Random");
+    }
+
     private void _handleDeclaration(ASTNode node, List bodyDeclarations, 
             TypeAnalyzerState state) {
     }
@@ -145,10 +159,19 @@ public class ConstructorTransformer extends AbstractTransformer
         AST ast = node.getAST();
         CompilationUnit root = (CompilationUnit)node.getRoot();
         Type type = Type.getType(node);
+        ClassInstanceCreation newNode =
+            (ClassInstanceCreation)ASTNode.copySubtree(ast, node);
+        
+        if (SPECIAL_TYPE_MAPPING.containsKey(type.getName())) {
+            type = Type.createType((String)SPECIAL_TYPE_MAPPING.get(type.getName()));
+            newNode.setName(createName(ast,
+                    getClassName(type.getName(), state, root)));
+            Type.setType(node, type);
+        }
+        
         String setCheckpointName = SET_CHECKPOINT_NAME;
         MethodInvocation extraSetCheckpoint = ast.newMethodInvocation();
-        extraSetCheckpoint.setExpression(
-                (ClassInstanceCreation)ASTNode.copySubtree(ast, node));
+        extraSetCheckpoint.setExpression(newNode);
         extraSetCheckpoint.setName(ast.newSimpleName(setCheckpointName));
         extraSetCheckpoint.arguments().add(ast.newSimpleName(CHECKPOINT_NAME));
         
