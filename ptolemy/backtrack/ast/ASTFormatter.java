@@ -752,6 +752,8 @@ public class ASTFormatter extends ASTVisitor {
         for (Iterator it = node.initializers().iterator(); it.hasNext(); ) {
             Expression e = (Expression) it.next();
             e.accept(this);
+            if (it.hasNext())
+                _output(", ");
         }
         _output("; ");
         if (node.getExpression() != null) {
