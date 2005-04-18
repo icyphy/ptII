@@ -85,6 +85,7 @@ public class Transformer {
             _printUsage();
         else {
             String[] paths = PathFinder.getPtClassPaths();
+            
             Writer standardWriter = 
                 outputResult ? new OutputStreamWriter(System.out) : null;
             
@@ -96,6 +97,15 @@ public class Transformer {
                     start = newPosition;
                 else
                     break;
+            }
+            
+            if (_extraClassPaths != null) {
+                String[] morePaths =
+                    new String[paths.length + _extraClassPaths.length];
+                System.arraycopy(paths, 0, morePaths, 0, paths.length);
+                System.arraycopy(_extraClassPaths, 0, morePaths, paths.length,
+                        _extraClassPaths.length);
+                paths = morePaths;
             }
             
             // Set up the list of file names.
@@ -400,7 +410,12 @@ public class Transformer {
      */
     protected static int _parseArguments(String[] args, int position) {
         String arg = args[position];
-        if (arg.equals("-prefix") || arg.equals("-p")) {
+        if (arg.equals("-classpath") || arg.equals("-cp")) {
+            position++;
+            String classPaths = args[position];
+            _extraClassPaths = classPaths.split(File.pathSeparator);
+            position++;
+        } else if (arg.equals("-prefix") || arg.equals("-p")) {
             position++;
             _prefix = args[position];
             for (int i = 0; i < RULES.length; i++)
@@ -458,15 +473,17 @@ public class Transformer {
                 "[java_files | directories | @file_lists]");
         System.err.println();
         System.err.println("Options:");
-        System.err.println("          -config <file> " +
+        System.err.println("          -classpath <paths> " +
+                "add extra class path(s)");
+        System.err.println("          -config <file>     " +
                 "save the configuration in a new file");
-        System.err.println("          -nooverwrite   " +
+        System.err.println("          -nooverwrite       " +
                 "do not overwrite existing Java files (default)");
-        System.err.println("          -output <root> " +
+        System.err.println("          -output <root>     " +
                 "root directory of output files");
-        System.err.println("          -overwrite     " +
+        System.err.println("          -overwrite         " +
                 "overwrite existing Java files");
-        System.err.println("          -prefix <name> " +
+        System.err.println("          -prefix <name>     " +
                 "prefix to be added to the package names");
     }
 
@@ -532,4 +549,6 @@ public class Transformer {
     /** Class names of all the source parsed.
      */
     private static List _classes = new LinkedList();
+    
+    private static String[] _extraClassPaths;
 }
