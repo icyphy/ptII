@@ -46,6 +46,7 @@ import javax.media.j3d.Switch;
 import javax.media.j3d.TexCoordGeneration;
 import javax.media.j3d.Texture;
 import javax.media.j3d.TextureAttributes;
+import com.sun.j3d.utils.image.TextureLoader;
 import javax.media.j3d.TransparencyAttributes;
 import javax.swing.ImageIcon;
 import javax.vecmath.Color3f;
@@ -208,8 +209,8 @@ public class GRTexture2D extends GRActor3D {
         allowRuntimeChanges.setExpression("false");
         allowRuntimeChanges.setTypeEquals(BaseType.BOOLEAN);
         
-        dim = new IntRangeParameter(this, "rSize");
-        dim.setExpression("2");
+        dim = new IntRangeParameter(this, "sSize");
+        dim.setExpression("256");
         dim.setTypeEquals(BaseType.INT);
     }
 
@@ -399,6 +400,8 @@ public class GRTexture2D extends GRActor3D {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
+        _sSize = (int) ((IntToken) dim.getToken()).intValue();
+        _tSize = _sSize;
        _createModel();
     }
 
@@ -546,9 +549,46 @@ public class GRTexture2D extends GRActor3D {
     /** Create the geometry for the Node that will hold the texture.
      */
     protected void _createGeometry() throws IllegalActionException {          
-       
-        _quadArray = new QuadArray(4, GeometryArray.COORDINATES);
-        _quadArray.setCoordinates(0, _quadCoords); 
+    	 //int curY = counter * scale;
+        int curY = 0;
+        _plane = new QuadArray(4, GeometryArray.COORDINATES);
+        _quadCoords = new double [12];
+        _texCoords = new float [8];
+        
+        /** Set coordinates for the plane.  These coordinates assume 
+         * that the the image's origin is at the lower left and rotates
+         * it 90 degrees about the x-axis.
+         */
+        // lower left
+        _quadCoords[0] = 0;
+        _quadCoords[1] = curY;
+        _quadCoords[2] = _tSize;
+        _texCoords[0]= 0;
+        _texCoords[1]= 0;
+        
+        // lower right
+        _quadCoords[3] = _sSize;
+        _quadCoords[4] = curY;
+        _quadCoords[5] = _tSize;
+        _texCoords[2]= 1;
+        _texCoords[3]= 0;
+        
+        // upper right
+        _quadCoords[6] = _sSize;
+        _quadCoords[7] = curY;
+        _quadCoords[8] = 0;
+        _texCoords[4]= 1;
+        _texCoords[5]= 1;
+        
+        // upper left
+        _quadCoords[9] = 0;
+        _quadCoords[10] = curY;
+        _quadCoords[11] = 0;
+        _texCoords[6]= 0;
+        _texCoords[7]= 1;
+        
+        _plane.setCoordinates(0, _quadCoords);
+        _plane.setTextureCoordinates(0, 0,_texCoords); 
 
     }
     
@@ -558,125 +598,38 @@ public class GRTexture2D extends GRActor3D {
      *  _changesAllowedNow so that derived classes can check it.
      *  @exception IllegalActionException If a parameter cannot be evaluated.
      */
-    protected void _createModel() throws IllegalActionException {
-                 
-        _readImage();
+    protected void _createModel() throws IllegalActionException {    
+        //_readImage();
         
-        int rSize = (int) ((IntToken) dim.getToken()).intValue();
-        int sSize = rSize;
-        int tSize = 1;
-        
-        
-        _loadTextures();
+        _loadTexture();
         if (_debugging) {
             _debug("Loaded the texture");
         }    
-      
-        /**Creates OrderedGroups for textures to be attached to. */
-        
-        //FIXME Is there a better place to define this?
-        int[][]         axisIndex = new int[3][2];
-        axisIndex[X_AXIS][FRONT] = 0;
-        axisIndex[X_AXIS][BACK] = 1;
-        axisIndex[Y_AXIS][FRONT] = 2;
-        axisIndex[Y_AXIS][BACK] = 3;
-        axisIndex[Z_AXIS][FRONT] = 4;
-        axisIndex[Z_AXIS][BACK] = 5;
-        
-        //Create axis for each dimension (front and back)
-        /*_axisSwitch = new Switch();
-        _axisSwitch.setCapability(Switch.ALLOW_SWITCH_READ);
-        _axisSwitch.setCapability(Switch.ALLOW_SWITCH_WRITE);
-        _axisSwitch.setCapability(Group.ALLOW_CHILDREN_READ);
-        _axisSwitch.setCapability(Group.ALLOW_CHILDREN_WRITE);
-        _axisSwitch.addChild(_getOrderedGroup());
-        _axisSwitch.addChild(_getOrderedGroup());
-        _axisSwitch.addChild(_getOrderedGroup());
-        _axisSwitch.addChild(_getOrderedGroup());
-        _axisSwitch.addChild(_getOrderedGroup());
-        _axisSwitch.addChild(_getOrderedGroup()); 
-        
-        //Create branch group to be sent to ViewScreen3D
-        _root = new BranchGroup();
-        //_root.addChild(_axisSwitch);
-        _root.setCapability(BranchGroup.ALLOW_DETACH);
-        _root.setCapability(BranchGroup.ALLOW_LOCAL_TO_VWORLD_READ);
-        
-        _frontGroup = (OrderedGroup)_axisSwitch.getChild(axisIndex[Z_AXIS][FRONT]);
-        _backGroup =  (OrderedGroup)_axisSwitch.getChild(axisIndex[Z_AXIS][BACK]); */
-        
-        _quadCoords = new double [12];
-        
-        // lower left
-        _quadCoords[0] = 0;
-        _quadCoords[1] = 0;
-        
-        // lower right
-        _quadCoords[3] = sSize;
-        _quadCoords[4] = 0;
-        
-        // upper right
-        _quadCoords[6] = sSize;
-        _quadCoords[7] = tSize;
-        
-        // upper left
-        _quadCoords[9] = 0;
-        _quadCoords[10] = tSize;
-            
-        /**For each texture create the Appearance, Geometry and send to 
-         * BranchGroup as a Shape3D to be added to the sceneGraph.
-         */
-        
-         BranchGroup frontShapeGroup = new BranchGroup();
-         frontShapeGroup.setCapability(BranchGroup.ALLOW_DETACH);
-          for (int i=0; i < rSize; i ++) { 
-            
-            double curZ = i * (1/rSize);
-            _quadCoords[2] = curZ;
-            _quadCoords[5] = curZ;
-            _quadCoords[8] = curZ;
-            _quadCoords[11] = curZ;
-            
-           
-            
-            //FIXME Can textures share some node components?
-            _createAppearance();
-             if (_debugging) {
+ 
+        _createAppearance();
+        if (_debugging) {
             _debug("Created Appearance");
         }
 
-             //Set texture attributes and texture                   
-             Texture2D tex = _textures[i];
-             _textureAttributes = new TextureAttributes();
-             _textureAttributes.setTextureMode(TextureAttributes.REPLACE);
-             _textureAttributes.setCapability(TextureAttributes.ALLOW_COLOR_TABLE_WRITE);
-             _appearance.setTexture(tex);
-             _appearance.setTextureAttributes(_textureAttributes);
-             _appearance.setTexCoordGeneration(_texCoordGeneration);
-             
+       /** Set the texture and its attributes */                   
+       _textureAttributes = new TextureAttributes();
+       _textureAttributes.setTextureMode(TextureAttributes.REPLACE);
+       _textureAttributes.setCapability(TextureAttributes.ALLOW_COLOR_TABLE_WRITE);
+       _appearance.setTexture(_texture2D);
+       _appearance.setTextureAttributes(_textureAttributes);
 
-            _createGeometry();
-            if (_debugging) {
-            _debug("Created the geometry");
-        }    
-
-            Shape3D frontShape = new Shape3D(_quadArray, _appearance);
-            
-
-            
-            frontShapeGroup.addChild(frontShape);
-            //_frontGroup.addChild(frontShapeGroup);
-
-           /* Shape3D backShape = new Shape3D(_quadArray, _appearance);
-
-            BranchGroup backShapeGroup = new BranchGroup();
-            backShapeGroup.setCapability(BranchGroup.ALLOW_DETACH);
-            backShapeGroup.addChild(backShape);
-           _backGroup.insertChild(backShapeGroup, 0); */
-            
-        }
+       _createGeometry();
+       if (_debugging) {
+       	_debug("Created the geometry");
+       }  
+       
+       BranchGroup branchGroup = new BranchGroup();
+       branchGroup.setCapability(BranchGroup.ALLOW_DETACH);
+       
+       Shape3D texturedPlane = new Shape3D(_plane, _appearance);
+       branchGroup.addChild(texturedPlane); 
         
-        _containedNode = frontShapeGroup;
+        _containedNode = branchGroup;
         
 
    }
@@ -685,135 +638,50 @@ public class GRTexture2D extends GRActor3D {
     * Define the texture coordinates and textureAttributes. 
     * @throws IllegalActionException
     */ 
-   protected void _loadTextures() throws IllegalActionException {
-    /**Generate texture coordinates */
-    
-    //FIXME Can I do this once and be visible in both methods?
-    int rSize = (int) ((IntToken) dim.getToken()).intValue();
-    int sSize = rSize;
-    int tSize = rSize;
-    
-    System.out.println("dim = " + rSize);
-    
-    //FIXME  Look at scaling for images.  Is planeT correct?
-    float TexGenScale = 1/rSize;
-    int nSlices = 117;
-    _textures  = new Texture2D[rSize];
-    _texCoordGeneration = new TexCoordGeneration();
-    _texCoordGeneration.setPlaneS(new Vector4f(1/TexGenScale, 0.0f, 0.0f, 0.0f));
-    _texCoordGeneration.setPlaneT(new Vector4f(0.0f, 1/nSlices, 0.0f, 0.0f)); 
-    
-    
-    
-    /**Create ColorModel and WritableRaster for the BufferedImage**/
-    _colorSpace = ColorSpace.getInstance(ColorSpace.CS_GRAY);
-    
-    int[] nBits = {8};
-    //int[] _intData = new int[8];
-    
-    _colorModel = new ComponentColorModel(_colorSpace, nBits, false, false, 
-    Transparency.TRANSLUCENT, DataBuffer.TYPE_INT);
-    
-    
-    _raster = _colorModel.createCompatibleWritableRaster(sSize, tSize); 
-    
-    _bufferedImage = new BufferedImage(_colorModel, _raster, false, null); 
- 
-    //Length of this array should be xDim x yDim of the image
-    /**It appears that this is filling in the bufferedImage...
-     * The line below declares that array the buffer then the loop
-     * below fills it in.
-     */
-    _intData = ((DataBufferInt)_raster.getDataBuffer()).getData(); 
-    
-    System.out.println("Length of _intData = " + _intData.length);
-    
-  
-    //for (int z = 0; z<rSize; z++){
-    	/**Create a 2D array of pixel values to load into BufferedImage */
-    	//FIXME Think about making a byte
-    	int[][] mapFinal = new int[rSize][rSize];
-        int[] vRow = new int[sSize];
-        int t = 0;
-        //int[] vRow = new int[rSize];
-        int rowIndex = 0;
-    for (int z = 0; z <rSize; z++){
-        for (int y=0; y < tSize; y++){
-            
-        	for (int x=0; x < sSize; x++){
-        		 mapFinal[x][y]= t;
-                 System.out.println("pixel value (" + x+ "," + y + ") = " + mapFinal[x][y]);
-            }
-            vRow = mapFinal[y];
-            System.out.println("vRow = " + vRow[y]); 
-            
-            //rowIndex = y * rSize;
-            rowIndex = rowIndex + rSize;
-            System.out.println("rowIndex " + rowIndex);
-            System.out.println("Size of array = " + _intData.length);
-            System.arraycopy(vRow, 0, _intData, rowIndex, rSize);             
-            System.out.println("_intData = " + _intData[y]);   
-            t = t+ 25;
-            /**Create ImageComponent2D to set the image for the textures */
-                        
-                    _texture2D = new Texture2D(Texture.BASE_LEVEL, Texture.INTENSITY, sSize, tSize);
-                    _imageComponent = new ImageComponent2D(ImageComponent.FORMAT_CHANNEL8, sSize, tSize);
-                    _imageComponent.set(_bufferedImage); 
-                
-                
-                    /**Set texture and TextureAttributes */
-                    _texture2D.setImage(0, _imageComponent);
-                    _texture2D.setEnable(true);
-                    _texture2D.setMinFilter(Texture.BASE_LEVEL_LINEAR);
-                    _texture2D.setMagFilter(Texture.BASE_LEVEL_LINEAR);
-                    //_texture2D.setMinFilter(Texture.BASE_LEVEL_POINT);
-                    //_texture2D.setMagFilter(Texture.BASE_LEVEL_POINT);
-                    _texture2D.setBoundaryModeS(Texture.CLAMP);
-                    _texture2D.setBoundaryModeT(Texture.CLAMP);
+   protected void _loadTexture() throws IllegalActionException {
 
-                    _textures[z] = _texture2D; 
-        }
-    }
+    //FIXME May be a problem as fas as where it is called.
+    /**Use TextureLoader to load the image */
+    _textureLoader = new TextureLoader(_fileURL, _viewScreen.getCanvas());
+    Texture2D _texture2D = (Texture2D)(_textureLoader.getTexture());
+
+    /** Set texture fields */
+    _texture2D.setEnable(true);
+    _texture2D.setMinFilter(Texture.BASE_LEVEL_LINEAR);
+    _texture2D.setMagFilter(Texture.BASE_LEVEL_LINEAR);
+    //_texture2D.setMinFilter(Texture.BASE_LEVEL_POINT);
+    //_texture2D.setMagFilter(Texture.BASE_LEVEL_POINT);
+    _texture2D.setBoundaryModeS(Texture.CLAMP);
+    _texture2D.setBoundaryModeT(Texture.CLAMP);
+
+                   
+                    /**Create ColorModel and WritableRaster for the BufferedImage**/
+                    /*_texture2D = new Texture2D(Texture.BASE_LEVEL, Texture.INTENSITY, _sSize, _tSize);
+                     _imageComponent = new ImageComponent2D(ImageComponent.FORMAT_CHANNEL8, _sSize, _tSize);
+                     _imageComponent.set(_bufferedImage);
+                     _texture2D.setImage(0, _imageComponent);  
+                    _colorSpace = ColorSpace.getInstance(ColorSpace.CS_GRAY);
+                     
+                     int[] nBits = {8}; 
+                     
+                     _colorModel = new ComponentColorModel(_colorSpace, nBits, false, false, 
+                     Transparency.TRANSLUCENT, DataBuffer.TYPE_INT);
+                     
+                     
+                     _raster = _colorModel.createCompatibleWritableRaster(_sSize, _tSize); 
+                     
+                     _bufferedImage = new BufferedImage(_colorModel, _raster, false, null); */
+                  
+                     //Length of this array should be xDim x yDim of the image
+                    /* _intData = ((DataBufferInt)_raster.getDataBuffer()).getData(); 
+                     
+                     System.out.println("Length of _intData = " + _intData.length); */
+
    }
    
        
     
-       /* for (int y=0; y < tSize; y++){
-            for (int x=0; x < sSize; x++){
-             //FIXME Grab one row at a time vs. a pixel.  Don't use ImagePlus
-    		    map[x][y] = _imagePlus.getPixel(x,y);
-                System.out.println("pixel (" + x + "," + y +") = " + _imagePlus.getPixel(x,y) );
-                mapFinal[x][y] = map[x][y][0];       
-            }
-            vRow = mapFinal[y];
-            //System.out.println("vRow = " + vRow); 
-            int rowIndex = 0;
-            rowIndex = y * rSize;
-            System.arraycopy(vRow, 0, _intData, rowIndex, sSize);
-            //System.out.println("pixel (" + 0 + "," + y +") = " + _imagePlus.getPixel(0,y) );   
-        
-        */
-    
-    	/**Create ImageComponent2D to set the image for the textures */
-/*            
-    	_texture2D = new Texture2D(Texture.BASE_LEVEL, Texture.INTENSITY, sSize, tSize);
-    	_imageComponent = new ImageComponent2D(ImageComponent.FORMAT_CHANNEL8, sSize, tSize);
-    	_imageComponent.set(_bufferedImage); */
-    
-    
-    	/**Set texture and TextureAttributes */
-    	/*_texture2D.setImage(0, _imageComponent);
-    	_texture2D.setEnable(true);
-    	_texture2D.setMinFilter(Texture.BASE_LEVEL_LINEAR);
-    	_texture2D.setMagFilter(Texture.BASE_LEVEL_LINEAR);
-    	//_texture2D.setMinFilter(Texture.BASE_LEVEL_POINT);
-    	//_texture2D.setMagFilter(Texture.BASE_LEVEL_POINT);
-    	_texture2D.setBoundaryModeS(Texture.CLAMP);
-    	_texture2D.setBoundaryModeT(Texture.CLAMP);
-
-    	_textures[z] = _texture2D; */
-//    }
-     
+           
    
    
    
@@ -925,7 +793,7 @@ public class GRTexture2D extends GRActor3D {
     private ImageComponent2D _imageComponent;
     
     /** QuadArray. */
-    private QuadArray _quadArray;
+    private QuadArray _plane;
     
     /** Buffer of image data */
     private BufferedImage _bufferedImage;
@@ -946,7 +814,7 @@ public class GRTexture2D extends GRActor3D {
     
     private FileImageInputStream _fileImageInputStream;
     
-    private Texture2D[] _textures;  
+    private Texture2D _texture;  
 
     private TexCoordGeneration _texCoordGeneration;  
     
@@ -960,7 +828,11 @@ public class GRTexture2D extends GRActor3D {
     
     private Switch      _axisSwitch;
     
-    private double[]        _quadCoords;
+    private double[] _quadCoords;
+    
+    private float[] _texCoords;
+    
+    private TextureLoader _textureLoader;
     
     private DataBufferInt _dataBufferInt;
     
@@ -969,6 +841,10 @@ public class GRTexture2D extends GRActor3D {
     private BranchGroup     _root;
     
     private BranchGroup frontShapeGroup;
+    
+    private int _sSize;
+    
+    private int _tSize;
     
     //private int[][] axisIndex = new int[3][2];
     
