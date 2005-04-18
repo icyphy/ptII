@@ -33,7 +33,7 @@ ME =		ptolemy/domains
 
 # Domains we do not ship
 EXPERIMENTAL_DOMAINS = \
-		hdf nc rtp 
+		hdf ptinyos rtp 
 
 # Domains, in alphabetical order.  If you change this, change
 # PTCLASSALLJARS below
@@ -81,7 +81,7 @@ PTAUXALLJARS = \
 		wireless/wireless.jar
 
 # Are we shipping these domains?
-#		nc/nc.jar 
+#		ptinyos/ptinyos.jar 
 #		pbo/pbo.jar
 #		petrinet/petrinet.jar
 
