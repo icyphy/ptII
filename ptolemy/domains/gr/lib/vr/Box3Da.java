@@ -68,7 +68,7 @@ import javax.media.j3d.BranchGroup;
     @Pt.ProposedRating Green (eal)
     @Pt.AcceptedRating Green (liuxj)
 */
-public class Box3Da extends GRShadedShape {
+public class Box3Da extends GRShadedShapea {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -159,40 +159,68 @@ public class Box3Da extends GRShadedShape {
     public boolean prefire() throws IllegalActionException {
         if (_debugging) {
             _debug("Called prefire()");
+            _debug("Port width = " + _parameterPort.getWidth());
+            _debug("Port hasToken = " + _parameterPort.hasToken(0));
+            
         }
-        _doubleToken = (DoubleToken)_parameterPort.get(0);
         
         if (_isSceneGraphInitialized){
+            
+            /** Updating the PortParameter, cannot call update()
+             * because need to access token for condition 
+             */
+            if ((_parameterPort != null) && (_parameterPort.getWidth() > 0) && _parameterPort.hasToken(0)) {
+                _doubleToken = (DoubleToken)(_parameterPort.get(0));
+                xLength.setCurrentValue(_doubleToken);
+
+                if (_debugging) {
+                    _debug("Updated parameter value to: " + _doubleToken);
+                }
+            }else {
+                if (_debugging) {
+                    _debug("Did not update parameter");
+                }   
+            }
+            
             if (_debugging) {
                 _debug("Port value = " + _doubleToken.doubleValue());
             }
         	if (_doubleToken.doubleValue() > 0.0){
                 
+                /** Set _isSceneGraphInitialized back to false so 
+                 * node can be sent. fire() will set it back to true
+                 */
         		_isSceneGraphInitialized = false;
         		_createModel();
                  
                 if (_debugging) {
                     _debug("Prefire returned true");
+                    _debug("xLength = " + xLength);
                     
                 }
-                //_getPortValue();
-                //xLength.update();
+               
                 return true;   
         	}else {
         		
                 if (_debugging) {
+         
                     _debug("Prefire returned false");
 					_debug("xLength = " + xLength);
                 }
-                //_getPortValue();
-                xLength.update();
+               
         		return false;
             }
-        } else {
+        } 
+        /** Should only reach this code during first prefire()
+         * all other times _isSceneGraphInitialized should be true from 
+         * fire method.
+         */
+        else {
             if (_debugging) {
                 _debug("Prefire returned true");
+                _debug("xLength = " + xLength);
             }
-            //_getPortValue();
+           
         	return true;   
         }
      
