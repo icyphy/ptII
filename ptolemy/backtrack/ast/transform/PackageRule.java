@@ -30,6 +30,8 @@ package ptolemy.backtrack.ast.transform;
 
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 import org.eclipse.jdt.core.dom.AST;
@@ -186,9 +188,13 @@ public class PackageRule extends TransformRule {
         private void _handleName(Name node) {
             if (node.getParent() != null) {
                 String id = node.toString();
+                if (id.equals("ptolemy.backtrack.util.java.util.Random")) {
+                    int i = 10;
+                }
                 
                 Type type = Type.getType(node);
                 Type owner = Type.getOwner(node);
+                String fullName;
                 
                 boolean convert = false;
                 boolean addImport = false;
@@ -196,19 +202,19 @@ public class PackageRule extends TransformRule {
                 if (type != null && owner == null &&
                         _crossAnalysisTypes.contains(type.getName()) &&
                         _crossAnalysisNames.contains(id) &&
-                        !ConstructorTransformer.SPECIAL_TYPE_MAPPING.
-                                containsKey(type.getName()) &&
-                        type.getName().length() == id.length())
+                        type.getName().length() == id.length()) {
+                    fullName = type.getName();
                     convert = true;
-                else if (node.getParent() instanceof ImportDeclaration &&
-                        _crossAnalysisNames.contains(id) &&
-                        !ConstructorTransformer.SPECIAL_TYPE_MAPPING.
-                                containsKey(id))
+                } else if (node.getParent() instanceof ImportDeclaration &&
+                        _crossAnalysisNames.contains(id)) {
+                    fullName = id;
                     convert = true;
-                else if (node.getParent() instanceof PackageDeclaration) {
+                } else if (node.getParent() instanceof PackageDeclaration) {
+                    fullName = id;
                     convert = true;
                     _oldPackageName = node.toString();
-                }
+                } else
+                    fullName = null;
                 
                 if (type != null && owner == null &&
                         node instanceof SimpleName &&
@@ -217,13 +223,40 @@ public class PackageRule extends TransformRule {
                     addImport = true;
                 
                 if (convert) {
-                    Name newName = _addPrefix(node, _prefix);
-                    if (newName != null)
+                    Name newName;
+                    if (ConstructorTransformer.SPECIAL_TYPE_MAPPING.
+                            containsKey(fullName))
+                        newName = AbstractTransformer.createName(node.getAST(),
+                                (String)ConstructorTransformer.
+                                SPECIAL_TYPE_MAPPING.get(fullName));
+                    else
+                        newName = _addPrefix(node, _prefix);
+                    if (newName != null) {
                         AbstractTransformer.replaceNode(node, newName);
+                        _specialTypes.add(newName.toString());
+                    }
                 }
                 
                 if (addImport)
                     _addImport(_state.getClassLoader(), node, _oldPackageName);
+                
+                if (!convert && !(node.getParent() instanceof Name)) {
+                    Iterator specialTypesIter = _specialTypes.iterator();
+                    while (specialTypesIter.hasNext()) {
+                        String specialType = (String)specialTypesIter.next();
+                        String simpleType = 
+                            specialType.substring(specialType.lastIndexOf(".") + 1);
+                        String newId = null;
+                        if (id.startsWith(specialType + "."))
+                            newId = id.substring(specialType.length() + 1 - simpleType.length());
+                        else if (id.equals(specialType))
+                            newId = id.substring(specialType.length() - simpleType.length());
+                        if (newId != null)
+                            AbstractTransformer.replaceNode(node,
+                                    AbstractTransformer.createName(
+                                            node.getAST(), newId));
+                    }
+                }
             }
         }
         
@@ -234,6 +267,8 @@ public class PackageRule extends TransformRule {
         private String _oldPackageName;
         
         private TypeAnalyzerState _state;
+        
+        private List _specialTypes = new LinkedList();
     }
 
     private String _prefix;
