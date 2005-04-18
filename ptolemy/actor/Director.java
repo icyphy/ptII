@@ -178,8 +178,9 @@ public class Director extends Attribute implements Executable {
     
     /** Override the base class to update local variables.
      *  @param attribute The attribute that changed.
-     *  @exception IllegalActionException If the change is not acceptable
-     *   to this container (not thrown in this base class).
+     *  @exception IllegalActionException If timeResolution is
+     *   being changed and the model is executing (and not in
+     *   preinitialize()).
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
@@ -191,7 +192,10 @@ public class Director extends Attribute implements Executable {
                 NamedObj container = getContainer();
                 if (container instanceof Actor) {
                     Manager manager = ((Actor)container).getManager();
-                    if (manager != null && manager.getState() != Manager.IDLE) {
+                    Manager.State state = manager.getState();
+                    if (manager != null
+                            && state != Manager.IDLE
+                            && state != Manager.PREINITIALIZING) {
                         throw new IllegalActionException(this,
                                 "Cannot change timePrecision during a run.");
                     }
