@@ -27,12 +27,13 @@ COPYRIGHTENDKEY
 */
 package ptolemy.media;
 
-import java.awt.Canvas;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.ColorModel;
 import java.awt.image.MemoryImageSource;
+
+import javax.swing.JPanel;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -49,7 +50,7 @@ import java.awt.image.MemoryImageSource;
     @Pt.ProposedRating Red (eal)
     @Pt.AcceptedRating Red (cxh)
 */
-public class Picture extends Canvas {
+public class Picture extends JPanel {
     /** Create an image with the specified width and height, in pixels.
      *  @param width The width in pixels.
      *  @param height The height in pixels.
