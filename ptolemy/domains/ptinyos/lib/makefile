@@ -1,10 +1,10 @@
-# Makefile for the NC domain lib
+# Makefile for the PtinyOS domain lib
 #
 # @Authors: Christopher Brooks (makefile only)
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2004-2005 The Regents of the University of California.
+# @Copyright (c) 2004 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/nc/lib
+ME =		ptolemy/domains/ptinyos/lib
 
 DIRS = 		test
 
@@ -48,10 +48,13 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
+	MicaActor.java \
+	MicaLeds.java \
 	NCComponentBase.java
 
 EXTRA_SRCS =	$(JSRCS) \
-	lib.xml \
+	lib-composite.xml \
+	lib-simple.xml \
 	NCComponent.nc \
 	NCComponent.xml
 
@@ -62,9 +65,7 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	doc \
-	'SDFScheduler$$1.class' \
-	'SDFScheduler$$NamedObjComparator.class'
+	doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 

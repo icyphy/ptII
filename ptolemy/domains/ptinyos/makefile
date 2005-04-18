@@ -1,10 +1,9 @@
-# Makefile for Ptolemy II NC domain documentation
-#
-# @Authors: Christopher Brooks, based on a file by Thomas M. Parks,
+# Makefile for PtolemyII NC Domain
 #
 # @Version: $Id$
+# @Author: Christopher Hylands Brooks (makefile only)
 #
-# @Copyright (c) 2004-2005 The Regents of the University of California.
+# @Copyright (c) 2003-2004 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,48 +28,40 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/nc/doc
+ME =		ptolemy/domains/ptinyos
 
-# Root of the Java directory
-ROOT =		../../../..
+DIRS =		kernel lib demo doc
 
-DIRS =
-
-CLASSPATH =	$(ROOT)
+# Root of Ptolemy II directory
+ROOT =		../../..
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
+
 # Used to build jar files
-PTPACKAGE = 	doc
-PTCLASSJAR =	$(PTPACKAGE).jar
+PTPACKAGE = 	ptinyos
+PTCLASSJAR =
 
-OTHER_FILES_TO_BE_JARED = \
-	acks.htm \
-	body.htm \
-	buttons.htm \
-	index.htm \
-	main.htm \
-	toc.htm
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+		kernel/kernel.jar \
+		lib/lib.jar
 
-# Files that are not compiled, such as .tcl and .itcl files.
-EXTRA_SRCS = \
-	$(JSRCS) \
-	$(OTHER_FILES_TO_BE_JARED) \
+PTCLASSALLJAR = $(PTPACKAGE).jar
 
-# Sources that may or may not be present, but if they are present, we don't
-# want make checkjunk to barf on them.
-MISC_FILES = $(DIRS)
+# Files or directories that are present, but that 'make checkjunk'
+# should not complain about
+# Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
+MISC_FILES =	kernel lib doc
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make realclean removes OPTIONAL_FILES
-OPTIONAL_FILES =
+# make distclean removes OPTIONAL_FILES
+OPTIONAL_FILES = demo
 
-all:
-	@echo "Nothing to be done in this directory"
-
-install: jars
+all: jclass
+install: jclass jars
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

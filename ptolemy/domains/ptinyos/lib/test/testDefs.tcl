@@ -1,9 +1,10 @@
-# Makefile for PtolemyII NC Domain
+# Load test bed definitions
+#
+# @Author: Christopher Hylands
 #
 # @Version: $Id$
-# @Author: Christopher Hylands Brooks (makefile only)
 #
-# @Copyright (c) 2003-2005 The Regents of the University of California.
+# @Copyright (c) 1997-2004 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -27,41 +28,29 @@
 #
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
+#######################################################################
 
-ME =		ptolemy/domains/nc
+# Tycho test bed, see $TYCHO/doc/coding/testing.html for more information.
 
-DIRS =		kernel lib demo doc
+if [info exist env(PTOLEMY)] {
+    set PTII $env(PTOLEMY)/tycho/java
+}
 
-# Root of Ptolemy II directory
-ROOT =		../../..
+if [info exist env(TYCHO)] {
+    set PTII $env(TYCHO)/java
+}
 
-# Get configuration info
-CONFIG =	$(ROOT)/mk/ptII.mk
-include $(CONFIG)
+if [info exist env(PTII)] {
+    set PTII $env(PTII)
+}
 
+if {![info exist PTII]} {
+    # If we are here, then we are probably running jacl and we can't
+    # read environment variables
+    set PTII [file join [pwd] .. .. .. .. ..]
+}
 
-# Used to build jar files
-PTPACKAGE = 	nc
-PTCLASSJAR =
-
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-		kernel/kernel.jar \
-		lib/lib.jar
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
-
-# Files or directories that are present, but that 'make checkjunk'
-# should not complain about
-# Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =	kernel lib doc
-
-# make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = demo
-
-all: jclass
-install: jclass jars
-
-# Get the rest of the rules
-include $(ROOT)/mk/ptcommon.mk
+# Load up the test definitions.
+if {[string compare test [info procs test]] == 1} then {
+    source [file join $PTII util testsuite testDefs.tcl]
+} {}

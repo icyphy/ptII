@@ -1,10 +1,10 @@
-# Load test bed definitions
+# Makefile for the PtinyOS domain kernel
 #
-# @Author: Christopher Hylands
+# @Authors: Christopher Hylands
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1997-2005 The Regents of the University of California.
+# @Copyright (c) 1998-2004 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -28,29 +28,47 @@
 #
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
-#######################################################################
 
-# Ptolemy II test bed, see $PTII/doc/coding/testing.html for more information.
+ME =		ptolemy/domains/ptinyos/kernel
 
-if [info exist env(PTOLEMY)] {
-    set PTII $env(PTOLEMY)/tycho/java
-}
+DIRS = 		test
 
-if [info exist env(TYCHO)] {
-    set PTII $env(TYCHO)/java
-}
+# Root of the Java directory
+ROOT =		../../../..
 
-if [info exist env(PTII)] {
-    set PTII $env(PTII)
-}
+CLASSPATH =	$(ROOT)
 
-if {![info exist PTII]} {
-    # If we are here, then we are probably running jacl and we can't
-    # read environment variables
-    set PTII [file join [pwd] .. .. .. .. ..]
-}
+# Get configuration info
+CONFIG =	$(ROOT)/mk/ptII.mk
+include $(CONFIG)
 
-# Load up the test definitions.
-if {[string compare test [info procs test]] == 1} then {
-    source [file join $PTII util testsuite testDefs.tcl]
-} {}
+# Used to build jar files
+PTPACKAGE = 	kernel
+PTDIST =	$(PTPACKAGE)$(PTVERSION)
+PTCLASSJAR = 	$(PTPACKAGE).jar
+
+JSRCS = \
+	PtinyOSActor.java \
+	PtinyOSDirector.java \
+	PtinyOSLoader.java \
+	NCCompositeActor.java \
+	NCCompositeActorTableauFactory.java
+
+EXTRA_SRCS =	$(JSRCS)
+
+# Sources that may or may not be present, but if they are present, we don't
+# want make checkjunk to barf on them.
+MISC_FILES =	$(DIRS)
+
+# make checkjunk will not report OPTIONAL_FILES as trash
+# make realclean removes OPTIONAL_FILES
+OPTIONAL_FILES = \
+	doc
+
+JCLASS = $(JSRCS:%.java=%.class)
+
+all: jclass
+install: jclass $(PTCLASSJAR)
+
+# Get the rest of the rules
+include $(ROOT)/mk/ptcommon.mk

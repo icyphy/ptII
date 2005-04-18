@@ -1,6 +1,6 @@
-/* Actor that serves as a placeholder for NC modules and configurations.
+/* Actor that serves as a placeholder for PtinyOS modules and configurations.
 
-@Copyright (c) 2003-2005 The Regents of the University of California.
+@Copyright (c) 2003-2004 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -28,7 +28,7 @@ COPYRIGHTENDKEY
 
 
 */
-package ptolemy.domains.nc.lib;
+package ptolemy.domains.ptinyos.lib;
 
 import ptolemy.actor.AtomicActor;
 import ptolemy.data.expr.FileParameter;
@@ -40,10 +40,8 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// NCComponentBase
-
 /**
    Base class for nesC component classes.  These are classes with source
    code defined in a .nc file intended for use with TinyOS to program
@@ -59,6 +57,7 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating Red (cxh)
 */
 public class NCComponentBase extends AtomicActor {
+
     /** Construct an actor in the specified workspace with an empty
      *  string as a name. You can then change the name with setName().
      *  If the workspace argument is null, then use the default workspace.
@@ -68,7 +67,6 @@ public class NCComponentBase extends AtomicActor {
      */
     public NCComponentBase(Workspace workspace) {
         super(workspace);
-
         try {
             _init();
         } catch (KernelException e) {
@@ -99,15 +97,21 @@ public class NCComponentBase extends AtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    private void _init()
-            throws IllegalActionException, NameDuplicationException {
+
+    private void _init() throws IllegalActionException, NameDuplicationException {
         source = new FileParameter(this, "source");
-        source.setExpression("$PTII/ptolemy/domains/nc/lib/NCComponent.nc");
+        source.setExpression("$PTII/ptolemy/domains/ptinyos/lib/NCComponent.nc");
         source.setVisibility(Settable.EXPERT);
-        _attachText("_iconDescription",
-                "<svg>\n" + "<rect x=\"-20\" y=\"-20\" "
-                + "width=\"60\" height=\"40\" " + "style=\"fill:white\"/>\n"
-                + "<text x=\"-3\" y=\"5\" " + "style=\"font-size:18\">\n" + "NC\n"
-                + "</text>\n" + "</svg>\n");
+        _attachText("_iconDescription", "<svg>\n" +
+                "<rect x=\"-20\" y=\"-20\" "
+                + "width=\"60\" height=\"40\" "
+                + "style=\"fill:white\"/>\n"
+                + "<text x=\"-12\" y=\"5\" "
+                + "style=\"font-size:18\">\n"
+                + "nesC\n"
+                + "</text>\n"
+                + "</svg>\n");
     }
 }
+
+

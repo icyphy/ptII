@@ -1,10 +1,10 @@
-# Makefile for Ptolemy II NC lib tests
+# Makefile for Ptolemy II PtinyOS lib tests
 #
 # @Authors: Christopher Brooks
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2004-2005 The Regents of the University of California.
+# @Copyright (c) 2004 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -30,7 +30,7 @@
 # 						COPYRIGHTENDKEY
 
 # Location of this directory, relative to the Ptolemy II directory
-ME =		ptolemy/domains/nc/lib/test
+ME =		ptolemy/domains/ptinyos/lib/test
 
 # Root of the Ptolemy II directory
 ROOT =		../../../../..

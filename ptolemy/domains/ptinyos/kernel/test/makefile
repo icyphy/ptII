@@ -1,10 +1,10 @@
-# Makefile for Ptolemy II NC kernel tests
+# Makefile for Ptolemy II PtinyOS kernel tests
 #
 # @Authors: Christopher Brooks
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2004-2005 The Regents of the University of California.
+# @Copyright (c) 2004 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -30,7 +30,7 @@
 # 						COPYRIGHTENDKEY
 
 # Location of this directory, relative to the Ptolemy II directory
-ME =		ptolemy/domains/nc/kernel/test
+ME =		ptolemy/domains/ptinyos/kernel/test
 
 # Root of the Ptolemy II directory
 ROOT =		../../../../..

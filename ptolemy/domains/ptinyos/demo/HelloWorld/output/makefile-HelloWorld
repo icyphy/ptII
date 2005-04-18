@@ -1,0 +1,4 @@
+TOSDIR=/home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tos
+COMPONENT=HelloWorld
+PFLAGS=-I%T/lib/Counters
+include /home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tos/../tools/make/Makerules
