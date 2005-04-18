@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- This script was automatically generated using Zero G's InstallAnywhere 6.1 Enterprise, Build 2325
      STATUS: Fully Functional LICENSED Edition
-     DATE:   Fri Apr 15 19:34:26 PDT 2005 -->
+     DATE:   Sat Apr 16 09:47:37 PDT 2005 -->
 <InstallAnywhere_Deployment_Project increments="6190">
 	<!-- ** DO NOT EDIT ** Essential authorization and configuration data ** DO NOT EDIT ** -->
 	<essentialScriptInfo>
@@ -10,7 +10,7 @@
 		<scriptID>12,42,11,90,81,50,48,52,54,57,82,74,55,66,67,81</scriptID>
 		<buildID>3,13,71,87,105,110,100,111,119,115,32,88,80,44,32,53,46,49,44,32,120,56,54,59,32,74,97,118,97,32,49,46,51,46,49,95,48,56,44,32,83,117,110,32,77,105,99,114,111,115,121,115,116,101,109,115,32,73,110,99,46,44,32,104,116,116,112,58,47,47,106,97,118,97,46,115,117,110,46,99,111,109,47,59,32,101,110,44,32,85,83,59,32,67,112,49,50,53,50</buildID>
 		<!-- The authorizationID may change between project saves and builds.  This does not effect the integrity of the project, nor do changes in this value represent changes in the actual InstallAnywhere project. -->
-		<authorizationID>1,0,0,0,67,-37,97,-16,80,112,116,103,88,98,113,97,113,65,65,88,74,65,72,71,70,69,64,69,66,69,48,79,87,5,2,4,2,75,104,3,1,0,0</authorizationID>
+		<authorizationID>1,0,0,0,67,-21,113,112,80,112,116,103,88,98,113,97,113,65,65,88,74,65,72,71,70,69,64,69,66,69,48,79,87,5,2,3,14,72,107,3,1,0,0</authorizationID>
 	</essentialScriptInfo>
 	<installationObjects uniqueObjects="326">
 		<object class="com.zerog.ia.installer.Installer" objectID="92a08b599096">
@@ -2171,7 +2171,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="totalSize">
-														<long>1</long>
+														<long>1700225</long>
 													</property>
 													<property name="macBinary">
 														<boolean>false</boolean>
@@ -2347,7 +2347,7 @@ and any path to a file to read from that file]]></string>
 												<boolean>false</boolean>
 											</property>
 											<property name="totalSize">
-												<long>1</long>
+												<long>12359</long>
 											</property>
 											<property name="macBinary">
 												<boolean>false</boolean>
@@ -3692,7 +3692,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="totalSize">
-																<long>1</long>
+																<long>90401</long>
 															</property>
 															<property name="macBinary">
 																<boolean>false</boolean>
@@ -4825,7 +4825,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="totalSize">
-																<long>1</long>
+																<long>339</long>
 															</property>
 															<property name="macBinary">
 																<boolean>false</boolean>
@@ -5467,7 +5467,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="totalSize">
-														<long>1</long>
+														<long>1322</long>
 													</property>
 													<property name="macBinary">
 														<boolean>false</boolean>
@@ -6485,7 +6485,7 @@ and any path to a file to read from that file]]></string>
 														<boolean>false</boolean>
 													</property>
 													<property name="totalSize">
-														<long>1</long>
+														<long>143574</long>
 													</property>
 													<property name="macBinary">
 														<boolean>false</boolean>
@@ -7463,7 +7463,7 @@ Please see the installation log for details.  Press ""Done"" to quit the install
 				<object class="java.util.Properties">
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.project.save.last.date]]></string>
-						<string><![CDATA[April 15, 2005 7:34:26 PM PDT]]></string>
+						<string><![CDATA[April 16, 2005 9:47:37 AM PDT]]></string>
 					</method>
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.build.options.optimization.platform.merge]]></string>
@@ -7503,7 +7503,7 @@ Please see the installation log for details.  Press ""Done"" to quit the install
 					</method>
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.project.build.last.date]]></string>
-						<string><![CDATA[April 15, 2005 7:33:00 PM PDT]]></string>
+						<string><![CDATA[April 16, 2005 9:47:37 AM PDT]]></string>
 					</method>
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.installer.options.stderr.redirect]]></string>
