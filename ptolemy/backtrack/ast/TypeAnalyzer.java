@@ -1039,19 +1039,37 @@ public class TypeAnalyzer extends ASTVisitor {
      */
     public boolean visit(AnonymousClassDeclaration node) {
         Class currentClass = _state.getCurrentClass();
-        StringBuffer currentName = new StringBuffer(currentClass.getName());
-        int dollarPos = currentName.indexOf("$");
-        if (dollarPos >= 0)
-            currentName.setLength(dollarPos);
-        currentName.append('$');
-        currentName.append(++_anonymousCount);
-        try {
-            currentClass = 
-                _state.getClassLoader().searchForClass(currentName.toString());
-            _state.enterClass(currentClass);
-        } catch (ClassNotFoundException e) {
-            throw new ASTClassNotFoundException(currentName.toString());
+        
+        // First, try to simply append the anonymous count to the end.
+        if (!_eclipse_anonymous_scheme) {
+            try {
+                currentClass = 
+                    _state.getClassLoader().searchForClass(
+                            currentClass.getName() + "$" +
+                            _state.nextAnonymousCount());
+                _state.nextTotalAnonymousCount();
+            } catch (ClassNotFoundException e) {
+                _eclipse_anonymous_scheme = true;
+            }
         }
+        
+        if (_eclipse_anonymous_scheme) {
+            StringBuffer currentName =
+                new StringBuffer(currentClass.getName());
+            int dollarPos = currentName.indexOf("$");
+            if (dollarPos >= 0)
+                currentName.setLength(dollarPos);
+            currentName.append('$');
+            currentName.append(_state.nextTotalAnonymousCount());
+            try {
+                currentClass = 
+                    _state.getClassLoader().searchForClass(currentName.toString());
+                _state.enterClass(currentClass);
+            } catch (ClassNotFoundException e) {
+                throw new ASTClassNotFoundException(currentName.toString());
+            }
+        }
+        _state.enterClass(currentClass);
         
         // Add the class to be cross-analyzed.
         addCrossAnalyzedType(currentClass.getName());
@@ -1823,10 +1841,6 @@ public class TypeAnalyzer extends ASTVisitor {
      */
     private TypeAnalyzerState _state = new TypeAnalyzerState(this);
 
-    /** The counter for anonymous classes.
-     */
-    private int _anonymousCount = 0;
-    
     /** The list of handlers to be called back when traversing the AST.
      */
     private HandlerList _handlers = new HandlerList();
@@ -1836,4 +1850,8 @@ public class TypeAnalyzer extends ASTVisitor {
      *  values are {@link Class} objects.
      */
     private Hashtable _classScopeRelation = new Hashtable();
+    
+    /** Whether the anonymous class naming scheme conforms to eclipse.
+     */
+    private boolean _eclipse_anonymous_scheme = false;
 }

@@ -72,6 +72,7 @@ public class TypeAnalyzerState {
      */
     public void enterClass(Class c) {
         _previousClasses.push(_currentClass);
+        _anonymousCounts.push(new Integer(0));
         _currentClass = c;
         _loader.setCurrentClass(_currentClass, false);
     }
@@ -110,7 +111,7 @@ public class TypeAnalyzerState {
     public Class getCurrentClass() {
         return _currentClass;
     }
-
+    
     /** Get the previous class stack. The previous class stack stores
      *  all the entered but not exited class definitions, not including
      *  the current class. Each element in the stack is of type {@link
@@ -203,7 +204,27 @@ public class TypeAnalyzerState {
      */
     public void leaveClass() {
         _currentClass = (Class)_previousClasses.pop();
+        _anonymousCounts.pop();
         _loader.setCurrentClass(_currentClass, false);
+    }
+    
+    /** Get the next count of anonymous classes in the current class.
+     * 
+     *  @return The count.
+     */
+    public int nextAnonymousCount() {
+        int lastCount = ((Integer)_anonymousCounts.pop()).intValue();
+        _anonymousCounts.push(new Integer(++lastCount));
+        return lastCount;
+        
+    }
+
+    /** Get the next count of total anonymous classes.
+     * 
+     *  @return The count.
+     */
+    public int nextTotalAnonymousCount() {
+        return ++_totalAnonymousCount;
     }
 
     /** Set the class loader.
@@ -315,5 +336,15 @@ public class TypeAnalyzerState {
      */
     private Set _crossAnalyzedTypes = new HashSet();
     
+    /** The type analyzer that owns this state.
+     */
     private TypeAnalyzer _analyzer;
+    
+    /** The counter for anonymous classes.
+     */
+    private int _totalAnonymousCount = 0;
+    
+    /** The stack of individual anonymous class counts.
+     */
+    private Stack _anonymousCounts = new Stack();
 }
