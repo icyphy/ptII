@@ -192,12 +192,13 @@ public class Director extends Attribute implements Executable {
                 NamedObj container = getContainer();
                 if (container instanceof Actor) {
                     Manager manager = ((Actor)container).getManager();
-                    Manager.State state = manager.getState();
-                    if (manager != null
-                            && state != Manager.IDLE
-                            && state != Manager.PREINITIALIZING) {
-                        throw new IllegalActionException(this,
-                                "Cannot change timePrecision during a run.");
+                    if (manager != null) {
+                        Manager.State state = manager.getState();
+                        if (state != Manager.IDLE
+                                && state != Manager.PREINITIALIZING) {
+                            throw new IllegalActionException(this,
+                            "Cannot change timePrecision during a run.");
+                        }
                     }
                 }
                 if (newResolution <= ExtendedMath.
