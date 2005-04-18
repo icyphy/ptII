@@ -66,7 +66,8 @@ JSRCS = \
 	ClassDefinitionController.java \
 	ExternalIOPortController.java \
 	IOPortController.java \
-	LinkController.java
+	LinkController.java \
+	TypeOpaqueCompositeActorTableauFactory.java
 
 EXTRA_SRCS =	$(JSRCS)
 
