@@ -1183,7 +1183,7 @@ public class FieldRecord {
             Object[] destinationArray = (Object[])destination;
             for (int i = 0; i < sourceArray.length; i++)
                 if (!_deepCopyArray(sourceArray[i], destinationArray[i]))
-                    sourceArray[i] = destinationArray[i];
+                    destinationArray[i] = sourceArray[i];
             return true;
         } else
             return false;
