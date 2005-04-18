@@ -259,6 +259,18 @@ public abstract class Top extends JFrame {
     public boolean getCentering() {
         return _centering;
     }
+    
+    /** If called before the first time pack() is called, this
+     *  method will prevent the appearance of a menu bar. This is
+     *  rarely desirable, but some subclasses of Top have to
+     *  contain panels that are not swing components. Such
+     *  components do not work with menus (the menu seems to
+     *  appear behind the component instead of in front of it).
+     *  Call this to prevent a menu bar.
+     */
+    public void hideMenuBar() {
+    	_hideMenuBar = true;
+    }
 
     /** Return true if the data associated with this window has been
      *  modified since it was first read or last saved.  This returns
@@ -455,7 +467,9 @@ public abstract class Top extends JFrame {
 
                         _menubar.add(_helpMenu);
 
-                        setJMenuBar(_menubar);
+                        if (!_hideMenuBar) {
+                            setJMenuBar(_menubar);
+                        }
 
                         // Add the status bar, if there is one.
                         if (_statusBar != null) {
@@ -920,6 +934,9 @@ public abstract class Top extends JFrame {
 
     // The input file.
     private File _file = null;
+    
+    // Flag to hide the menu bar.
+    private boolean _hideMenuBar = false;
 
     // The most recently entered URL in Open URL.
     private String _lastURL = "http://ptolemy.eecs.berkeley.edu/xml/models/";
