@@ -33,7 +33,7 @@
 
 ME =		ptolemy/backtrack/test
 
-DIRS =		array1 test1 test2
+DIRS =		array1 random1 test1 test2
 
 # Root of the Java directory
 ROOT =		../../..
@@ -50,6 +50,7 @@ TCL_SRCS = \
 
 # Keep this list alphabetized.
 JSRCS = ArrayTest1Main.java \
+	RandomTest1Main.java \
 	Test1Main.java \
 	Test2Main.java
 
