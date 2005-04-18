@@ -75,6 +75,14 @@ public class TypeAnalyzerState {
         _currentClass = c;
         _loader.setCurrentClass(_currentClass, false);
     }
+    
+    /** Get the type analyzer that owns this state.
+     * 
+     *  @return The type analyzer.
+     */
+    public TypeAnalyzer getAnalyzer() {
+        return _analyzer;
+    }
 
     /** Get the class loader.
      * 
@@ -252,6 +260,14 @@ public class TypeAnalyzerState {
     public void setVariableStack(Stack variableStack) {
         _variableStack = variableStack;
     }
+    
+    /** Construct a state object for a type analyzer.
+     * 
+     *  @param analyzer The type analyzer.
+     */
+    public TypeAnalyzerState(TypeAnalyzer analyzer) {
+        _analyzer = analyzer;
+    }
 
     /** Unset the current scope as a class scope (a scope opened by a
      *  class declaration).
@@ -298,4 +314,6 @@ public class TypeAnalyzerState {
     /** The set of names of types to be cross-analyzed.
      */
     private Set _crossAnalyzedTypes = new HashSet();
+    
+    private TypeAnalyzer _analyzer;
 }

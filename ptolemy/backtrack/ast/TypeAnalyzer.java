@@ -1821,7 +1821,7 @@ public class TypeAnalyzer extends ASTVisitor {
 
     /** The current state of the analyzer.
      */
-    private TypeAnalyzerState _state = new TypeAnalyzerState();
+    private TypeAnalyzerState _state = new TypeAnalyzerState(this);
 
     /** The counter for anonymous classes.
      */
