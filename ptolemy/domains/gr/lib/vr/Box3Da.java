@@ -150,70 +150,49 @@ public class Box3Da extends GRShadedShape {
             super.attributeChanged(attribute);
         }
     }
-    
-   /* public void fire() throws IllegalActionException {
-        
-        if (_debugging) {
-            _debug("Called fire()");
-        }
-        if (!_isSceneGraphInitialized) {
-            _makeSceneGraphConnection();
-            _isSceneGraphInitialized = true;
-            
-        }
-    }*/
-    
-    public void fire() throws IllegalActionException {
-    	super.fire();
-        /*ParameterPort parameterPort;
-        parameterPort = xLength.getPort();
-        _doubleToken = (DoubleToken)parameterPort.get(0);
-        double portValue = _doubleToken.doubleValue();*/
-        if (_debugging) {
-            _debug("xLength before update = " + xLength);
-            _debug(" Port value before update = " + xLength);
-        }
-           
-        xLength.update();
-        
-        if (_debugging) {
-         //   _debug("Token = " + _doubleToken);
-            _debug("xLength after update = " + xLength);
-            _debug(" Port value after update = " + xLength);
-        }
-       
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        _parameterPort = xLength.getPort();
+      
     }
-
     
     public boolean prefire() throws IllegalActionException {
         if (_debugging) {
             _debug("Called prefire()");
         }
+        _doubleToken = (DoubleToken)_parameterPort.get(0);
         
         if (_isSceneGraphInitialized){
+            if (_debugging) {
+                _debug("Port value = " + _doubleToken.doubleValue());
+            }
         	if (_doubleToken.doubleValue() > 0.0){
+                
         		_isSceneGraphInitialized = false;
         		_createModel();
-                 if (_debugging) {
-                    _debug("");
-                }
+                 
                 if (_debugging) {
                     _debug("Prefire returned true");
                     
                 }
-        		return true;   
+                //_getPortValue();
+                //xLength.update();
+                return true;   
         	}else {
-        		xLength.update();
+        		
                 if (_debugging) {
                     _debug("Prefire returned false");
 					_debug("xLength = " + xLength);
                 }
+                //_getPortValue();
+                xLength.update();
         		return false;
             }
         } else {
             if (_debugging) {
                 _debug("Prefire returned true");
             }
+            //_getPortValue();
         	return true;   
         }
      
@@ -292,6 +271,7 @@ public class Box3Da extends GRShadedShape {
         _branchGroup.addChild(_containedNode);
     }
 
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -307,4 +287,8 @@ public class Box3Da extends GRShadedShape {
     private BranchGroup _branchGroup;
     
     private DoubleToken _doubleToken;
+    
+    private double _portValue;
+    
+    private ParameterPort _parameterPort;
 }
