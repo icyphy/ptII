@@ -37,7 +37,6 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// TypeOpaqueCompositeActor
 
@@ -59,12 +58,12 @@ import ptolemy.kernel.util.Workspace;
  * @author Elaine Cheong and Edward A. Lee
  * @version $Id: TypeOpaqueCompositeActor.java,v 1.73 2004/04/13 05:12:39 cxh
  *          Exp $
- * @since Ptolemy II 0.2
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  * @see ptolemy.actor.TypedCompositeActor
  * @see ptolemy.actor.TypedIOPort
  */
+
 public class TypeOpaqueCompositeActor extends CompositeActor
     implements TypedActor {
     /** Construct an actor in the default workspace with an empty string
