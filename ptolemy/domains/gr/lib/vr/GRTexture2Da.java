@@ -110,7 +110,7 @@ import javax.imageio.stream.FileImageInputStream;
 import ij.ImagePlus;
 
 //////////////////////////////////////////////////////////////////////////
-//// GRTexture2D
+//// GRTexture2Da
 
 /** An abstract base class for GR Actors that have material and color
     properties.
@@ -156,7 +156,7 @@ import ij.ImagePlus;
     @Pt.ProposedRating Red
     @Pt.AcceptedRating Red
 */
-public class GRTexture2D extends GRActor3D {
+public class GRTexture2Da extends GRActor3D {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -165,7 +165,7 @@ public class GRTexture2D extends GRActor3D {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public GRTexture2D(CompositeEntity container, String name)
+    public GRTexture2Da(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         
@@ -382,7 +382,7 @@ public class GRTexture2D extends GRActor3D {
     /** Override the base class to null out private variables.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        GRTexture2D newObject = (GRTexture2D) super.clone(workspace);
+        GRTexture2Da newObject = (GRTexture2Da) super.clone(workspace);
         newObject._appearance = null;
         newObject._coloringAttributes = null;
         newObject._material = null;
