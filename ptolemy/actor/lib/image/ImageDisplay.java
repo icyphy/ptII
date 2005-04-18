@@ -36,6 +36,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
@@ -133,67 +134,16 @@ public class ImageDisplay extends Sink implements Placeable {
     public void initialize() throws IllegalActionException {
         super.initialize();
 
-        if (_container == null) {
-            // No current container for the pane.
-            // Need an effigy and a tableau so that menu ops work properly.
-            if (_tableau == null) {
-                Effigy containerEffigy = Configuration.findEffigy(toplevel());
-
-                if (containerEffigy == null) {
-                    throw new IllegalActionException(this,
-                            "Cannot find effigy for top level: "
-                            + toplevel().getFullName());
-                }
-
-                try {
-                    _effigy = new TokenEffigy(containerEffigy,
-                            containerEffigy.uniqueName("imageEffigy"));
-
-                    // The default identifier is "Unnamed", which is
-                    // no good for two reasons: Wrong title bar label,
-                    // and it causes a save-as to destroy the original window.
-                    _effigy.identifier.setExpression(getFullName());
-
-                    _frame = new ImageWindow();
-
-                    _tableau = new ImageTableau(_effigy, "tokenTableau",
-                            _frame, _oldxsize, _oldysize);
-                    _tableau.setTitle(getName());
-                    _frame.setTableau(_tableau);
-                    _windowProperties.setProperties(_frame);
-
-                    // Regrettably, since setSize() in swing doesn't actually
-                    // set the size of the frame, we have to also set the
-                    // size of the internal component.
-                    Component[] components = _frame.getContentPane().getComponents();
-
-                    if (components.length > 0) {
-                        _pictureSize.setSize(components[0]);
-                    }
-
-                    _tableau.show();
-                } catch (Exception ex) {
-                    throw new IllegalActionException(this, null, ex,
-                            "Error creating effigy and tableau");
-                }
-            } else {
-                // Erase previous image.
-                _effigy.clear();
-
-                if (_frame != null) {
-                    // Do not use show() as it overrides manual placement.
-                    _frame.toFront();
-                }
+        // This has to be done in the Swing event thread.
+        Runnable doDisplay = new Runnable() {
+            public void run() {
+                _createOrShowWindow();
             }
-        }
-
-        if (_frame != null) {
-            _frame.setVisible(true);
-            _frame.toFront();
-        }
+        };
+        SwingUtilities.invokeLater(doDisplay);
     }
 
-    /** Set the container that this actor should display data in.  If place
+	/** Set the container that this actor should display data in.  If place
      * is not called, then the actor will create its own frame for display.
      */
     public void place(Container container) {
@@ -249,68 +199,152 @@ public class ImageDisplay extends Sink implements Placeable {
      */
     public boolean postfire() throws IllegalActionException {
         if (input.hasToken(0)) {
-            Token in = input.get(0);
+            final Token in = input.get(0);
             if (!(in instanceof ImageToken)) {
             	throw new IllegalActionException(this, "Input is not an ImageToken. It is: " + in);
             }
 
-            if (_frame != null) {
-                List tokens = new LinkedList();
-                tokens.add(in);
-                _effigy.setTokens(tokens);
-            } else if (_picture != null) {
-                Image image = ((ImageToken)in).asAWTImage();
-                int xsize = image.getWidth(null);
-                int ysize = image.getHeight(null);
-
-                // If the size has changed, have to recreate the Picture object.
-                if ((_oldxsize != xsize) || (_oldysize != ysize)) {
-                    if (_debugging) {
-                        _debug("Image size has changed.");
-                    }
-
-                    _oldxsize = xsize;
-                    _oldysize = ysize;
-                    
-                    Container container = _picture.getParent();
-
-                    if (_picture != null) {
-                        container.remove(_picture);
-                    }
-
-                    _picture = new Picture(xsize, ysize);
-                    _picture.setImage(image);
-                    _picture.setBackground(null);
-                    container.add("Center", _picture);
-                    container.validate();
-                    container.invalidate();
-                    container.repaint();
-                    container.doLayout();
-
-                    Container c = container.getParent();
-
-                    while (c.getParent() != null) {
-                        c.invalidate();
-                        c.validate();
-                        c = c.getParent();
-                        if (c instanceof JFrame) {
-                            ((JFrame)c).pack();
-                        }
-                    }
-                } else {
-                    _picture.setImage(((ImageToken) in).asAWTImage());
-                    _picture.displayImage();
-                    _picture.repaint();
+            // Display probably to be done in the Swing event thread.
+            Runnable doDisplay = new Runnable() {
+            	public void run() {
+                    _display(in);                    
                 }
-            }
+            };
+            SwingUtilities.invokeLater(doDisplay);
         }
 
         return super.postfire();
     }
 
-    /** Set the background */
+	/** Set the background */
     public void setBackground(Color background) {
         _container.setBackground(background);
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** Create or show the top-level window, unless there already is a
+     *  container. This must be called in the Swing event thread.
+     */
+    private void _createOrShowWindow() {
+        if (_container == null) {
+            // No current container for the pane.
+            // Need an effigy and a tableau so that menu ops work properly.
+            if (_tableau == null) {
+                Effigy containerEffigy = Configuration.findEffigy(toplevel());
+
+                if (containerEffigy == null) {
+                    throw new InternalErrorException(
+                            "Cannot find effigy for top level: "
+                            + toplevel().getFullName());
+                }
+
+                try {
+                    _effigy = new TokenEffigy(containerEffigy,
+                            containerEffigy.uniqueName("imageEffigy"));
+
+                    // The default identifier is "Unnamed", which is
+                    // no good for two reasons: Wrong title bar label,
+                    // and it causes a save-as to destroy the original window.
+                    _effigy.identifier.setExpression(getFullName());
+
+                    _frame = new ImageWindow();
+
+                    _tableau = new ImageTableau(_effigy, "tokenTableau",
+                            _frame, _oldxsize, _oldysize);
+                    _tableau.setTitle(getName());
+                    _frame.setTableau(_tableau);
+                    _windowProperties.setProperties(_frame);
+
+                    // Regrettably, since setSize() in swing doesn't actually
+                    // set the size of the frame, we have to also set the
+                    // size of the internal component.
+                    Component[] components = _frame.getContentPane().getComponents();
+
+                    if (components.length > 0) {
+                        _pictureSize.setSize(components[0]);
+                    }
+
+                    _tableau.show();
+                } catch (Exception ex) {
+                    throw new InternalErrorException(ex);
+                }
+            } else {
+                // Erase previous image.
+                _effigy.clear();
+
+                if (_frame != null) {
+                    // Do not use show() as it overrides manual placement.
+                    _frame.toFront();
+                }
+            }
+        }
+
+        if (_frame != null) {
+            _frame.setVisible(true);
+            _frame.toFront();
+        }
+    }
+
+    /** Display the specified token. This must be called in the Swing
+     *  event thread.
+     *  @param in The token to display
+     */
+    private void _display(Token in) {
+        if (_frame != null) {
+            List tokens = new LinkedList();
+            tokens.add(in);
+            try {
+				_effigy.setTokens(tokens);
+			} catch (IllegalActionException e) {
+				throw new InternalErrorException(e);
+			}
+        } else if (_picture != null) {
+            Image image = ((ImageToken)in).asAWTImage();
+            int xsize = image.getWidth(null);
+            int ysize = image.getHeight(null);
+
+            // If the size has changed, have to recreate the Picture object.
+            if ((_oldxsize != xsize) || (_oldysize != ysize)) {
+                if (_debugging) {
+                    _debug("Image size has changed.");
+                }
+
+                _oldxsize = xsize;
+                _oldysize = ysize;
+                
+                Container container = _picture.getParent();
+
+                if (_picture != null) {
+                    container.remove(_picture);
+                }
+
+                _picture = new Picture(xsize, ysize);
+                _picture.setImage(image);
+                _picture.setBackground(null);
+                container.add("Center", _picture);
+                container.validate();
+                container.invalidate();
+                container.repaint();
+                container.doLayout();
+
+                Container c = container.getParent();
+
+                while (c.getParent() != null) {
+                    c.invalidate();
+                    c.validate();
+                    c = c.getParent();
+                    if (c instanceof JFrame) {
+                        ((JFrame)c).pack();
+                    }
+                }
+            } else {
+                _picture.setImage(((ImageToken) in).asAWTImage());
+                _picture.displayImage();
+                _picture.repaint();
+            }
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -358,9 +392,6 @@ public class ImageDisplay extends Sink implements Placeable {
         public ImageWindow() {
             // The null second argument prevents a status bar.
             super(null, null);
-
-            // FIXME: What's this for?
-            this.getContentPane().setLayout(new BorderLayout(15, 15));
         }
 
         /** Close the window.  This overrides the base class to remove

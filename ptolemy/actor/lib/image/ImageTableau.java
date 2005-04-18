@@ -211,35 +211,29 @@ public class ImageTableau extends TokenTableau {
                 _oldysize = ysize;
                 
                 Container container = _picture.getParent();
+                Container top = container.getParent();
+
+                while (top.getParent() != null) {
+                    top = top.getParent();
+                }
+                JFrame castTop = (JFrame)top;
 
                 if (_picture != null) {
-                    container.remove(_picture);
+                    castTop.getContentPane().remove(_picture);
                 }
 
                 _picture = new Picture(xsize, ysize);
                 _picture.setImage(image);
                 _picture.setBackground(null);
-                container.add("Center", _picture);
-                container.validate();
-                container.invalidate();
-                container.repaint();
-                container.doLayout();
-
-                Container c = container.getParent();
-
-                while (c.getParent() != null) {
-                    c.invalidate();
-                    c.validate();
-                    c = c.getParent();
-                }
-
-                while (c.getParent() != null) {
-                    c = c.getParent();
-                }
-
-                if (c instanceof JFrame) {
-                    ((JFrame)c).pack();
-                }
+                // FIXME: This messes up the menus!
+                castTop.getContentPane().add(_picture, BorderLayout.CENTER);
+                // FIXME: All the below appear to be required only by superstition.
+                castTop.getContentPane().validate();
+                // container.invalidate();
+                // container.repaint();
+                // container.doLayout();
+                
+                castTop.pack();
             } else {
                 _picture.setImage(image);
             }
@@ -248,20 +242,6 @@ public class ImageTableau extends TokenTableau {
             _picture.displayImage();
             _picture.repaint();
 
-            // FIXME: Why is all this needed?  In theory,
-            // the repaint() call above should be enough.
-            /*
-            Runnable painter = new Runnable() {
-                    public void run() {
-                        if (_container != null) {
-                            _container.paint(_container.getGraphics());
-                        }
-                    }
-                };
-
-            // Make sure the image gets updated.
-            SwingUtilities.invokeLater(painter);
-            */
             Thread.yield();
         }
     }

@@ -705,6 +705,13 @@ public class ViewScreen3D extends GRActor3D implements Placeable,
         public ViewWindow() {
             // The null second argument prevents a status bar.
             super(null, null);
+            
+            // Unfortunately, the Java 3D canvas is not a swing
+            // component, so it is incompatible with menu bars.
+            // If we don't do this, we get a menu bar, but the
+            // menus do not display (they get rendered behind
+            // the canvas).
+            hideMenuBar();
 
             // FIXME: What's this for?
             this.getContentPane().setLayout(new BorderLayout(15, 15));
