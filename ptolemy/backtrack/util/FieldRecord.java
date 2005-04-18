@@ -70,7 +70,7 @@ import java.util.Stack;
    @Pt.ProposedRating Red (tfeng)
    @Pt.AcceptedRating Red (tfeng)
 */
-public final class FieldRecord {
+public class FieldRecord {
     
     /** Construct a zero-dimensional (scalar) field record.
      */
@@ -1129,7 +1129,7 @@ public final class FieldRecord {
      *  @param indices The index.
      *  @param record The record.
      */
-    private void _addRecord(int index, Record record) {
+    protected void _addRecord(int index, Record record) {
         RecordList list = new RecordList(record);
         list._setNext(_getTopState()._getRecords()[index]);
         _getTopState()._getRecords()[index] = list;
@@ -1145,7 +1145,7 @@ public final class FieldRecord {
      *  @return <tt>true</tt> if successfully copied; otherwise, 
      *   <tt>false</tt>.
      */
-    private boolean deepCopyArray(Object source, Object destination) {
+    protected boolean _deepCopyArray(Object source, Object destination) {
         if (source instanceof boolean[]) {
             System.arraycopy(source, 0, destination, 0, 
                     ((boolean[])source).length);
@@ -1182,7 +1182,7 @@ public final class FieldRecord {
             Object[] sourceArray = (Object[])source;
             Object[] destinationArray = (Object[])destination;
             for (int i = 0; i < sourceArray.length; i++)
-                if (!deepCopyArray(sourceArray[i], destinationArray[i]))
+                if (!_deepCopyArray(sourceArray[i], destinationArray[i]))
                     sourceArray[i] = destinationArray[i];
             return true;
         } else
@@ -1199,7 +1199,7 @@ public final class FieldRecord {
      *   to or larger than the given timestamp are deleted.
      *  @return The record, if found; otherwise, <tt>null</tt>.
      */
-    private Record _findRecord(Iterator recordListIterator, long timestamp, 
+    protected Record _findRecord(Iterator recordListIterator, long timestamp, 
             boolean trim) {
         Record lastRecord = null;
         while (recordListIterator.hasNext()) {
@@ -1220,11 +1220,11 @@ public final class FieldRecord {
      *  @param record The record.
      *  @return The field. It may differ from the field in the arguments.
      */
-    private Object _restoreField(Object field, Record record) {
+    protected Object _restoreField(Object field, Record record) {
         int[] indices = record.getIndices();
         if (indices == null || indices.length == 0) {
             if (record.isBackup()) {
-                deepCopyArray(record.getValue(), field);
+                _deepCopyArray(record.getValue(), field);
                 return field;
             } else
                 return record.getValue();
@@ -1260,7 +1260,7 @@ public final class FieldRecord {
                     ((Short)record.getValue()).shortValue();
             else {
                 if (record.isBackup())
-                    deepCopyArray(record.getValue(), 
+                    _deepCopyArray(record.getValue(), 
                             ((Object[])array)[lastIndex]);
                 else
                     ((Object[])array)[lastIndex] = record.getValue();
