@@ -130,8 +130,8 @@ import ptolemy.util.StringUtilities;
    @see Workspace
 */
 public class NamedObj implements Changeable, Cloneable, Debuggable,
-                                 DebugListener, Derivable, MoMLExportable, ModelErrorHandler, Moveable,
-                                 Serializable {
+                                 DebugListener, Derivable, MoMLExportable, 
+                                 ModelErrorHandler, Moveable, Serializable {
     // Note that Nameable extends ModelErrorHandler, so this class
     // need not declare that it directly implements ModelErrorHandler.
 
@@ -179,16 +179,16 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
             workspace.add(this);
         } catch (IllegalActionException ex) {
             // This exception should not be thrown.
-            throw new InternalErrorException(
-                    "Internal error in NamedObj constructor!" + ex.getMessage());
+            throw new InternalErrorException( null, ex,
+                    "Internal error in NamedObj constructor!");
         }
 
         try {
             setName("");
         } catch (KernelException ex) {
             // This exception should not be thrown.
-            throw new InternalErrorException(
-                    "Internal error in NamedObj constructor!" + ex.getMessage());
+            throw new InternalErrorException(null, ex,
+                    "Internal error in NamedObj constructor!");
         }
     }
 
@@ -219,16 +219,16 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
             workspace.add(this);
         } catch (IllegalActionException ex) {
             // This exception should not be thrown.
-            throw new InternalErrorException(
-                    "Internal error in NamedObj constructor!" + ex.getMessage());
+            throw new InternalErrorException(null, ex,
+                    "Internal error in NamedObj constructor!");
         }
 
         try {
             setName(name);
         } catch (NameDuplicationException ex) {
             // This exception should not be thrown.
-            throw new InternalErrorException(
-                    "Internal error in NamedObj constructor!" + ex.getMessage());
+            throw new InternalErrorException(null, ex,
+                    "Internal error in NamedObj constructor!");
         }
     }
 
@@ -460,7 +460,8 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
 
                 while (parameters.hasNext()) {
                     Attribute parameter = (Attribute) parameters.next();
-                    Attribute newParameter = (Attribute) parameter.clone(workspace);
+                    Attribute newParameter =
+                        (Attribute) parameter.clone(workspace);
 
                     try {
                         newParameter.setContainer(newObject);
@@ -934,7 +935,8 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
         if (attribute != null) {
             if (!attributeClass.isInstance(attribute)) {
                 throw new IllegalActionException(attribute,
-                        "Expected attribute of class " + attributeClass.getName()
+                        "Expected attribute of class "
+                        + attributeClass.getName()
                         + " but got attribute of class "
                         + attribute.getClass().getName());
             }
@@ -1983,9 +1985,8 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
                 _attributes.append(p);
             } catch (IllegalActionException ex) {
                 // This exception should not be thrown.
-                throw new InternalErrorException(
-                        "Internal error in NamedObj _addAttribute() method!"
-                        + ex.getMessage());
+                throw new InternalErrorException(null, ex,
+                        "Internal error in NamedObj _addAttribute() method!");
             }
 
             if (_debugging) {
@@ -2013,8 +2014,8 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      */
     protected void _attachText(String name, String text) {
         try {
-            SingletonConfigurableAttribute icon = new SingletonConfigurableAttribute(this,
-                    name);
+            SingletonConfigurableAttribute icon =
+                new SingletonConfigurableAttribute(this, name);
             icon.setPersistent(false);
 
             // The first argument below is the base w.r.t. which to open
@@ -2024,8 +2025,8 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
             icon.configure(null, null, text);
         } catch (Exception ex) {
             throw new InternalErrorException(this, ex,
-                    "Error creating singleton attribute named " + name + " for "
-                    + getFullName());
+                    "Error creating singleton attribute named " + name
+                    + " for " + getFullName());
         }
     }
 
@@ -2060,7 +2061,8 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
                 // CloneNotSupportedException does not have a
                 // constructor that takes a cause argument, so we call
                 // initCause() and then throw.
-                CloneNotSupportedException cloneException = new CloneNotSupportedException(
+                CloneNotSupportedException cloneException =
+                    new CloneNotSupportedException(
                         "The field associated with " + fields[i].getName()
                         + " could not be automatically cloned because "
                         + ex.getMessage() + ".  This can be caused if "
@@ -2673,7 +2675,8 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
                 }
 
                 result.addAll(_getDerivedList(visited, propagate, force,
-                                      container, depth + 1, newOverride, newRelativeName));
+                                      container, depth + 1, newOverride,
+                                      newRelativeName));
             }
 
             if (!(context instanceof Instantiable)) {
@@ -2705,7 +2708,8 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
                         NamedObj candidate = other;
 
                         if (relativeName != null) {
-                            candidate = _getContainedObject(other, relativeName);
+                            candidate = _getContainedObject(other,
+                                    relativeName);
                         }
 
                         if (candidate == null) {
@@ -2724,7 +2728,8 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
                                                 containerName);
                                 }
 
-                                candidate = _propagateExistence(remoteContainer);
+                                candidate =
+                                    _propagateExistence(remoteContainer);
 
                                 // Indicate that the existence of the
                                 // candidate is implied by a
