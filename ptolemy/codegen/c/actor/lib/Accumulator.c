@@ -1,13 +1,12 @@
 /***initBlock*/
-int sum = 0;
+    $ref(output) = $val(init);
 /**/
 
 /***codeBlock1*/
 if ($ref(reset)) {
-	sum = $val(init);
+	$ref(output) = $val(init);
 } 
 else {
-	sum += $ref(input);
-	$ref(output) = sum;
+	$ref(output) += $ref(input);
 }
 /**/

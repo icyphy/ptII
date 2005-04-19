@@ -35,7 +35,7 @@ import ptolemy.kernel.util.IllegalActionException;
 /**
    A helper class for ptolemy.actor.lib.Sequence
 
-   @author Man-Kit (Jackie) Leung, Gang Zhou
+   @author Man-Kit Leung, Gang Zhou
    @version $Id$
    @since Ptolemy II 4.1
    @Pt.ProposedRating Red (eal)
@@ -78,7 +78,6 @@ public class Sequence extends CCodeGeneratorHelper {
         CodeStream tmpStream = new CodeStream(this);
         tmpStream.appendCodeBlock("initBlock");
 
-        //stream.append(processCode(tmpStream.toString()));
         return processCode(tmpStream.toString());
     }
 }

@@ -58,32 +58,13 @@ public class Accumulator extends CCodeGeneratorHelper {
         CodeStream tmpStream = new CodeStream(this);
         tmpStream.appendCodeBlock("codeBlock1");
         stream.append(processCode(tmpStream.toString()));
-
-        /**** Previous Code Style *******
-
-        StringBuffer tmpStream = new StringBuffer();
-
-        tmpStream.append(
-        "if ($val(reset)) {\n"
-        + "    sum = $val(init);\n"
-        + "} else {\n"
-        + "    sum += $val(input);\n"
-        + "    $val(output) = sum;\n"
-        + "}\n");
-
-        stream.append(processCode(tmpStream.toString()));
-
-        */
-
     }
 
     public String generateInitializeCode()
             throws IllegalActionException {
+        super.generateInitializeCode();
         CodeStream tmpStream = new CodeStream(this);
         tmpStream.appendCodeBlock("initBlock");
-
-        //stream.append(processCode(tmpStream.toString()));
-        //stream.append(processCode(_initBlock));
 
         return processCode(tmpStream.toString());
     }

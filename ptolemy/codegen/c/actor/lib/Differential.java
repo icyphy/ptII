@@ -63,11 +63,10 @@ public class Differential extends CCodeGeneratorHelper {
 
     public String generateInitializeCode()
             throws IllegalActionException {
-
+        super.generateInitializeCode();
         CodeStream tmpStream = new CodeStream(this);
         tmpStream.appendCodeBlock("initBlock");
 
-        //stream.append(processCode(tmpStream.toString()));
         return processCode(tmpStream.toString());
 
     }

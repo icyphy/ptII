@@ -56,9 +56,7 @@ public class TrigFunction extends CCodeGeneratorHelper {
             throws IllegalActionException {
 
         CodeStream tmpStream = new CodeStream(this);
-
         tmpStream.appendCodeBlock("codeBlock1");
-
         stream.append(processCode(tmpStream.toString()));
     }
 }

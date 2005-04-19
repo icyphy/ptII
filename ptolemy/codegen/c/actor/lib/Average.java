@@ -62,6 +62,7 @@ public class Average extends CCodeGeneratorHelper {
 
     public String generateInitializeCode()
             throws IllegalActionException {
+        super.generateInitializeCode();
         CodeStream tmpStream = new CodeStream(this);
         tmpStream.appendCodeBlock("initBlock");
 
