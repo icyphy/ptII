@@ -122,9 +122,7 @@ import ptolemy.util.StringUtilities;
    @version $Id$
    @since Ptolemy II 0.2
    @Pt.ProposedRating Green (eal)
-   @Pt.AcceptedRating Yellow (neuendor)
-
-   FIXME: Need to review move*() methods to get to green again.
+   @Pt.AcceptedRating Green (cxh)
 
    @see Attribute
    @see Workspace
@@ -1349,7 +1347,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  have a setContainer() method, and hence cannot be contained.
      *  Any derived object that implements setContainer() should
      *  also implement this method.
-     *  @return Does not return. In derived classes, it should
+     *  @return This base class does not return. In derived classes, it should
      *   return the index of the specified object prior to moving it,
      *   or -1 if it is not moved.
      *  @exception IllegalActionException Always thrown in this base class.
@@ -1367,7 +1365,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  have a setContainer() method, and hence cannot be contained.
      *  Any derived object that implements setContainer() should
      *  also implement this method.
-     *  @return Does not return. In derived classes, it should
+     *  @return This base class does not return. In derived classes, it should
      *   return the index of the specified object prior to moving it,
      *   or -1 if it is not moved.
      *  @exception IllegalActionException Always thrown in this base class.
@@ -1387,10 +1385,9 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  Any derived object that implements setContainer() should
      *  also implement this method.
      *  @param index The position to move this object to.
-     *  @return Does not return. In derived classes, it should
+     *  @return This base class does not return. In derived classes, it should
      *   return the index of the specified object prior to moving it,
      *   or -1 if it is not moved.
-     *  @exception IndexOutOfBoundsException If the index is out of bounds.
      *  @exception IllegalActionException Always thrown in this base class.
      */
     public int moveToIndex(int index) throws IllegalActionException {
@@ -1406,7 +1403,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  have a setContainer() method, and hence cannot be contained.
      *  Any derived object that implements setContainer() should
      *  also implement this method.
-     *  @return Does not return. In derived classes, it should
+     *  @return This base class does not return. In derived classes, it should
      *   return the index of the specified object prior to moving it,
      *   or -1 if it is not moved.
      *  @exception IllegalActionException Always thrown in this base class.
@@ -1424,7 +1421,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  have a setContainer() method, and hence cannot be contained.
      *  Any derived object that implements setContainer() should
      *  also implement this method.
-     *  @return Does not return. In derived classes, it should
+     *  @return This base class does not return. In derived classes, it should
      *   return the index of the specified object prior to moving it,
      *   or -1 if it is not moved.
      *  @exception IllegalActionException Always thrown in this base class.
