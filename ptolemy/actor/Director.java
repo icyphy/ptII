@@ -48,8 +48,6 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.math.ExtendedMath;
 import ptolemy.moml.SharedParameter;
-import ptolemy.util.CancelException;
-import ptolemy.util.MessageHandler;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -197,7 +195,7 @@ public class Director extends Attribute implements Executable {
                         if (state != Manager.IDLE
                                 && state != Manager.PREINITIALIZING) {
                             throw new IllegalActionException(this,
-                            "Cannot change timePrecision during a run.");
+                                    "Cannot change timePrecision during a run.");
                         }
                     }
                 }
@@ -213,61 +211,6 @@ public class Director extends Attribute implements Executable {
                             );
                 }
 
-                // NOTE: when the time value is too big a multiple of the 
-                // resolution, the division fails to deliver adequate precision. 
-
-                // Here is an example: if time resolution is 1E-12,
-                // any double that is bigger than 8191.999999999999 cannot 
-                // distinguish itself from any other bigger values (even 
-                // slightly bigger with the difference as small as the time 
-                // resolution). Therefore, 8191.999999999999 is the LUB of the 
-                // set of double values have the specified time resolution.
-
-                // NOTE: The strategy to find the LUB for a given time 
-                // resolution r: find the smallest N such that time resolution 
-                // r >=  2^(-1*N); get M = 52 - N, which is the multiplication 
-                // we can apply on the significand without loss of time 
-                // resolution; the LUB is (1 + 1 - 1.0/2^(-52)) * 2^M.
-                
-                // For example: with the above example time resolution 1e-12, 
-                // we get N = 40, M = 12. Then we get the LUB as 
-                // 8191.999999999999. For time resolution as 1e-10, the lub is
-                // 524287.99999999994.
-                
-                // NOTE: according to the IEEE754 floating point standard, 
-                // the formula to calculate a decimal value from a binary
-                // representation is 
-                // (-1)^(sign)x(1+significand)x2^(exponent-127) for 
-                // signal precision and 
-                // (-1)^(sign)x(1+significand)x2^(exponent-1023) 
-                // for double presision.
-                
-                int minimumNumberOfBits = 
-                    (int)Math.floor(-1*ExtendedMath.log2(newResolution)) + 1;
-                int maximumGain = 52 - minimumNumberOfBits;
-                double lub = ExtendedMath.DOUBLE_PRECISION_SIGNIFICAND_ONLY 
-                    * Math.pow(2.0, maximumGain);
-                // If the time resolution is reduced, give a warning.
-                if (newResolution < _timeResolution) {
-                    String warningMessage = "The time resolution is reduced to "
-                        + newResolution + ". The maximum double value that can " 
-                        + "have this time resolution is also reduced to " + lub 
-                        + ".\n If this model contains some time value greater " 
-                        + "than that, executing this model will throw an " 
-                        + "exception.";
-                    try {
-                        MessageHandler.warning(warningMessage);
-                    } catch (CancelException exception) {
-                        // If cancle button is pressed, restore the old value
-                        // of the time resolution.
-                        // FIXME: the value does not get restored immediately 
-                        // unless the another button is hit.
-                        timeResolution.setToken(
-                                new DoubleToken(_timeResolution));
-                        return;
-                    }
-                }
-                _maximumAllowedTimeValueAsDouble = lub;
                 _timeResolution = newResolution;               
             }
         }
@@ -519,18 +462,6 @@ public class Director extends Attribute implements Executable {
      */
     public double getCurrentTime() {
         return getModelTime().getDoubleValue();
-    }
-
-    /** Get the maximum allowed double value for a time object with the 
-     *  specified time resolution of the model. The time resoultion is
-     *  the value of the <i>timeResolution</i> parameter, which is the
-     *  smallest time unit for the model.
-     *  @return The aximum allowed double value for a time object with the 
-     *  specified time resolution of the model.
-     */
-    public final double getMaximumAllowedTimeValueAsDouble() {
-        // This method is final for performance reason.
-        return _maximumAllowedTimeValueAsDouble;
     }
 
     /** Return the next time of interest in the model being executed by
@@ -1363,11 +1294,6 @@ public class Director extends Attribute implements Executable {
     ///////////////////////////////////////////////////////////////////
     ////                       private variables                   ////
     
-    // The maximum allowed double value for a time object with the specified
-    // time resolution. Given the default time resolution as 1e-10, the 
-    // maximum double value is 524287.99999999994.
-    private double _maximumAllowedTimeValueAsDouble = 524287.99999999994;
-
     /** Time resolution cache, with a reasonable default value. */
     private double _timeResolution = 1E-10;
 }
