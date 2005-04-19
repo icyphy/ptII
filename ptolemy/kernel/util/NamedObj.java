@@ -2063,10 +2063,10 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
                 // initCause() and then throw.
                 CloneNotSupportedException cloneException =
                     new CloneNotSupportedException(
-                        "The field associated with " + fields[i].getName()
-                        + " could not be automatically cloned because "
-                        + ex.getMessage() + ".  This can be caused if "
-                        + "the field is not defined in a public class.");
+                            "The field associated with " + fields[i].getName()
+                            + " could not be automatically cloned because "
+                            + ex.getMessage() + ".  This can be caused if "
+                            + "the field is not defined in a public class.");
 
                 cloneException.initCause(ex);
                 throw cloneException;
