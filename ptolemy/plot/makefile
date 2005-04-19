@@ -501,7 +501,7 @@ fixtmpdist:
 
 	# Get rid of CVS directories in com and gui
 	-(cd $(PTTMPDIR)/$(PTDIST); \
-		find . \( -name CVS -o -name "META-INF" -o -name ".#*" -o -name "#*" -o -name "*.zip" -o -name "*.tar.gz" -o -name "*~" -o -name "adm" -o -name "*Build_output" -o -name ".buildinstaller*" -o -name "ptplot*locales" \) -print -exec rm -rf {} \; )
+		find . \( -name CVS -o -name "META-INF" -o -name ".#*" -o -name "#*" -o -name "*.zip" -o -name "*.tar.gz" -o -name "*~" -o -name "adm" -o -name "autom4te.cache" -o -name "*Build_output" -o -name ".buildinstaller*" -o -name "ptplot*locales" \) -print -exec rm -rf {} \; )
 	#
 	# Setting up top level doc directory
 	#
@@ -580,7 +580,7 @@ isj:
 		find . \( -name "*.class" -o -name "*.jar" \) -exec rm {} \;)
 	@echo "Cleanup META-INF dirs etc"
 	(cd $(PTTMPDIR)/installshield/; \
-		find . \( -name "META-INF" -name "#*" -o -name CVS \) -print -exec rm -rf {} \;
+		find . \( -name "META-INF" -o -name "autom4te.cache" -o -name "#*" -o -name CVS \) -print -exec rm -rf {} \;
 
 
 # Update the ftp site
