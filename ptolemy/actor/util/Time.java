@@ -668,21 +668,22 @@ public class Time implements Comparable {
         // the formula to calculate a decimal value from a binary
         // representation is (-1)^(sign)x(1+significand)x2^(exponent-127) for 
         // signal precision and (-1)^(sign)x(1+significand)x2^(exponent-1023)
-        // for double presision.
+        // for double precision.
         
-        double precision = _director.getTimeResolution();        
-        BigInteger result = BigInteger.valueOf(Math.round(value/precision));
-        if (Math.abs(result.doubleValue() * precision - value) > precision) {
+        double precision = _director.getTimeResolution();       
+        long multiple = Math.round(value/precision);
+        if (Math.abs(multiple * precision - value) > precision) {
         	throw new IllegalActionException("The given time value "
                     + value
-                    + " is too large to be converted accurately to an "
+                    + " is too large to be converted precisely to an "
                     + "instance of Time with the specified time resolution of "
                     + precision
-                    + ". The maximum value that can always be accurately converted is "
+                    + ". The maximum value that can always be precisely converted is "
                     + maximumAccurateValueAsDouble()
-                    + ".");
+                    + ". A number close to your value that can be converted is "
+                    + multiple*precision);
         }
-        return result;
+        return BigInteger.valueOf(multiple);
     }
 
     ///////////////////////////////////////////////////////////////////
