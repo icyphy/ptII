@@ -32,6 +32,7 @@ import java.math.BigInteger;
 import ptolemy.actor.Director;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.math.ExtendedMath;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -522,6 +523,54 @@ public class Time implements Comparable {
         return _isPositiveInfinite;
     }
 
+    /** Return the maximum value of time whose representation as a double
+     *  is always accurate to the specified time resolution. In other words,
+     *  if you ask this instance of Time for its value as a double, if the
+     *  returned double is larger than the number returned by this method,
+     *  then the double representation is not necessarily accurate to the
+     *  specified resolution.
+     *  @return The maximum value of time above which the double representation
+     *   may not be accurate to the specified resolution.
+     */
+    public double maximumAccurateValueAsDouble() {
+        // NOTE: when the time value is too big a multiple of the 
+        // resolution, the double representation
+        // fails to deliver adequate precision. 
+
+        // Here is an example: if time resolution is 1E-12,
+        // any double that is bigger than 8191.999999999999 cannot 
+        // distinguish itself from other bigger values (even 
+        // slightly bigger with the difference as small as the time 
+        // resolution). Therefore, 8191.999999999999 is the LUB of the 
+        // set of double values have the specified time resolution.
+
+        // NOTE: The strategy to find the LUB for a given time 
+        // resolution r: find the smallest N such that time resolution 
+        // r >=  2^(-1*N); get M = 52 - N, which is the multiplication 
+        // we can apply on the significand without loss of time 
+        // resolution; the LUB is (1 + 1 - 1.0/2^(-52)) * 2^M.
+        
+        // For example: with the above example time resolution 1e-12, 
+        // we get N = 40, M = 12. Then we get the LUB as 
+        // 8191.999999999999. For time resolution as 1e-10, the lub is
+        // 524287.99999999994.
+        
+        // NOTE: according to the IEEE754 floating point standard, 
+        // the formula to calculate a decimal value from a binary
+        // representation is 
+        // (-1)^(sign)x(1+significand)x2^(exponent-127) for 
+        // signal precision and 
+        // (-1)^(sign)x(1+significand)x2^(exponent-1023) 
+        // for double presision.
+        
+        int minimumNumberOfBits = 
+            (int)Math.floor(-1*ExtendedMath.log2(_director.getTimeResolution())) + 1;
+        int maximumGain = 52 - minimumNumberOfBits;
+
+        return ExtendedMath.DOUBLE_PRECISION_SIGNIFICAND_ONLY 
+                * Math.pow(2.0, maximumGain);
+    }
+
     /** Return the result of multiplying this time by the
      *  specified integer. If this time is infinite,
      *  then the result will be infinite.
@@ -621,23 +670,19 @@ public class Time implements Comparable {
         // signal precision and (-1)^(sign)x(1+significand)x2^(exponent-1023)
         // for double presision.
         
-        double precision = _director.getTimeResolution();
-        // Note that the calculation of the lub is performed when the time
-        // resolution parameter changes.
-        double lub = _director.getMaximumAllowedTimeValueAsDouble();
-        
-        if (value > lub) {
-            throw new IllegalActionException("The given time value " + value +
-                    " exceeds the maximum allowed value " + lub + ".\n" +
-                    "The given time value is not fit for the time resolution " 
-                    + precision + ".\n Try choosing a greater time resolution " 
-                    + "by configuring the timeResolution parameter of the " 
-                    + "director.\n"
-                    + "Check the stack trace to see which actor or "
-                    + "parameter caused this exception.");
+        double precision = _director.getTimeResolution();        
+        BigInteger result = BigInteger.valueOf(Math.round(value/precision));
+        if (Math.abs(result.doubleValue() * precision - value) > precision) {
+        	throw new IllegalActionException("The given time value "
+                    + value
+                    + " is too large to be converted accurately to an "
+                    + "instance of Time with the specified time resolution of "
+                    + precision
+                    + ". The maximum value that can always be accurately converted is "
+                    + maximumAccurateValueAsDouble()
+                    + ".");
         }
-        
-        return BigInteger.valueOf(Math.round(value/precision));
+        return result;
     }
 
     ///////////////////////////////////////////////////////////////////
