@@ -501,7 +501,7 @@ fixtmpdist:
 
 	# Get rid of CVS directories in com and gui
 	-(cd $(PTTMPDIR)/$(PTDIST); \
-		find . \( -name CVS -o -name "META-INF" -o -name ".#*" -o -name "#*" -o -name "ptplot*locales" \) -print -exec rm -rf {} \; )
+		find . \( -name CVS -o -name "META-INF" -o -name ".#*" -o -name "#*" -o -name "*.zip" -o -name "*.tar.gz" -o -name "*~" -o -name "adm" -o -name "*Build_output" -o -name "*.buildinstaller" -o -name "ptplot*locales" \) -print -exec rm -rf {} \; )
 	#
 	# Setting up top level doc directory
 	#
@@ -591,7 +591,7 @@ DIST_DIR = $(DIST_BASE)/$(PTDIST)
 
 update_ftp:
 	rm -rf $(DIST_DIR)
-	cat $(PTDIST).tar.gz | (cd $(DIST_BASE); tar -zxf -)
+	cat $(PTDIST).tar.gz | (cd $(DIST_BASE); gtar -zxf -)
 	cp -r $(DIST_BASE)/$(PTDIST)_tmp/* $(DIST_DIR)/ptolemy/plot/doc/download
 	cp doc/download/index.htm $(DIST_DIR)/ptolemy/plot/doc/download
 	cp $(PTDIST).tar.gz $(DIST_DIR)/ptolemy/plot/
