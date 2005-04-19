@@ -172,17 +172,17 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         // Get the code generator helper associated with the director of
         // the container first.
         ptolemy.actor.Director director
-                = ((CompositeActor)getContainer()).getDirector();
+            = ((CompositeActor)getContainer()).getDirector();
         ComponentCodeGenerator directorHelper = _getHelper((NamedObj)director);
         ((Director)directorHelper).setCodeGenerator(this);
 
         Set includingFiles = new HashSet();
         Iterator actors = ((CompositeActor) getContainer())
-                .deepEntityList().iterator();
+            .deepEntityList().iterator();
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
             CodeGeneratorHelper actorHelper
-                    = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+                = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
             actorHelper.setCodeGenerator(this);
             includingFiles.addAll(actorHelper.getIncludingFiles());
         }
@@ -236,7 +236,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(comment(
-                "Initialize " + getContainer().getFullName()));
+                            "Initialize " + getContainer().getFullName()));
         ptolemy.actor.Director director 
             = ((CompositeActor)getContainer()).getDirector();
         ComponentCodeGenerator directorHelper = _getHelper((NamedObj)director);
@@ -253,7 +253,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         code.append(comment("Variable Declarations "
                             + getContainer().getFullName()));
         ptolemy.actor.Director director
-                = ((CompositeActor)getContainer()).getDirector();
+            = ((CompositeActor)getContainer()).getDirector();
         Director directorHelper = (Director) _getHelper((NamedObj) director);
         Iterator actors = ((CompositeActor)getContainer())
             .deepEntityList().iterator();
@@ -320,9 +320,9 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     public void generateWrapupCode(StringBuffer code)
             throws IllegalActionException {
         code.append(comment(
-                "Wrapup " + getContainer().getFullName()));
+                            "Wrapup " + getContainer().getFullName()));
         ptolemy.actor.Director director 
-                = ((CompositeActor)getContainer()).getDirector();
+            = ((CompositeActor)getContainer()).getDirector();
         ComponentCodeGenerator directorHelper = _getHelper((NamedObj)director);
         directorHelper.generateWrapupCode(code);
     }
@@ -370,44 +370,52 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             } catch (Exception ex) {
                 throw new Exception("Could not open \"" + args[i] + "\"", ex);
             }
-            CompositeActor toplevel;
+            CompositeActor toplevel = null;
             try {
-                toplevel = (CompositeActor) parser.parse(null,
-                    modelURL);
-            } catch (Exception ex) {
-                throw new Exception("Failed to parse \"" + args[i] + "\"",
-                        ex);                
-            }
+                try {
+                    toplevel = (CompositeActor) parser.parse(null,
+                            modelURL);
+                } catch (Exception ex) {
+                    throw new Exception("Failed to parse \"" + args[i] + "\"",
+                            ex);                
+                }
 
-            Class codeGeneratorClass;
-            try {
-                codeGeneratorClass =
-                    Class.forName("ptolemy.codegen.kernel.CodeGenerator");
-            } catch (ClassNotFoundException ex) {
-                throw new RuntimeException("Could not find CodeGenerator", ex);
-            }
+                Class codeGeneratorClass;
+                try {
+                    codeGeneratorClass =
+                        Class.forName("ptolemy.codegen.kernel.CodeGenerator");
+                } catch (ClassNotFoundException ex) {
+                    throw new RuntimeException("Could not find CodeGenerator", ex);
+                }
 
-            // Get all instances of this class contained in the model
-            List codeGenerators = toplevel.entityList(codeGeneratorClass);
+                // Get all instances of this class contained in the model
+                List codeGenerators = toplevel.entityList(codeGeneratorClass);
 
-            CodeGenerator codeGenerator;
-            if (codeGenerators.size() == 0) {
-                // Add a codeGenerator 
-                codeGenerator = new CodeGenerator(toplevel,
-                        "CodeGenerator_AutoAdded");
-            } else {
-                // Get the last CodeGenerator in the list, maybe
-                // it was added last?
-                codeGenerator =
-                    (CodeGenerator) codeGenerators.get(
-                            codeGenerators.size()-1);
-            }
+                CodeGenerator codeGenerator;
+                if (codeGenerators.size() == 0) {
+                    // Add a codeGenerator 
+                    codeGenerator = new CodeGenerator(toplevel,
+                            "CodeGenerator_AutoAdded");
+                } else {
+                    // Get the last CodeGenerator in the list, maybe
+                    // it was added last?
+                    codeGenerator =
+                        (CodeGenerator) codeGenerators.get(
+                                codeGenerators.size()-1);
+                }
 
-            try {
-                codeGenerator.generateCode();
-            } catch (KernelException ex) {
-                throw new Exception("Failed to generate code for \""
-                        + args[i] + "\"", ex);
+                try {
+                    codeGenerator.generateCode();
+                } catch (KernelException ex) {
+                    throw new Exception("Failed to generate code for \""
+                            + args[i] + "\"", ex);
+                }
+            } finally {
+                // Destroy the top level so that we avoid
+                // problems with running the model after generating code
+                if (toplevel != null) {
+                    toplevel.setContainer(null);
+                }
             }
         }
     }
