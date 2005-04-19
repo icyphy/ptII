@@ -471,9 +471,26 @@ fixtmpdist:
 		awk '{	 printf("include %c%s/mk/ptcommon.mk\n", 36, "(ROOT)")}' >> \
 		$(PTTMPDIR)/$(PTDIST)/bin/makefile
 	@echo "Copy over gui stuff"
-	cp -r "$(PTII)/ptolemy/gui" $(PTTMPDIR)/$(PTDIST)/ptolemy
+	mkdir $(PTTMPDIR)/$(PTDIST)/ptolemy/gui
+	cp "$(PTII)/ptolemy/gui/Query.java" \
+		$(PTTMPDIR)/$(PTDIST)/ptolemy/gui
+	cp "$(PTII)/ptolemy/gui/QueryListener.java" \
+		$(PTTMPDIR)/$(PTDIST)/ptolemy/gui
+	cp "$(PTII)/ptolemy/gui/CloseListener.java" \
+		$(PTTMPDIR)/$(PTDIST)/ptolemy/gui
+	cp "$(PTII)/ptolemy/gui/ComponentDialog.java" $(PTTMPDIR)/$(PTDIST)/ptolemy
+	# Remove most of the .java files
+	grep -v "BasicJApplet|CancelException||GraphicalMessageHandler|JTextAreaExec|MessageHandler|ShellInterpreter|ShellTextArea|StatusBar|StreamExec|SwingWorker|Top.java" \
+	"$(PTII)/ptolemy/gui/makefile" > $(PTTMPDIR)/$(PTDIST)/
+
 	@echo "Copy over util stuff"
-	cp -r "$(PTII)/ptolemy/util" $(PTTMPDIR)/$(PTDIST)/ptolemy
+	mkdir $(PTTMPDIR)/$(PTDIST)/ptolemy/gui
+	# Remove most of the .java files
+	cp "$(PTII)/ptolemy/util/StringUtilities.java" \
+		$(PTTMPDIR)/$(PTDIST)/ptolemy/gui
+	grep -v "CancelException|ClassUtilities|FileUtilities|MessageHandler|XSLTUtilities" \
+		"$(PTII)/ptolemy/util/makefile" \
+		$(PTTMPDIR)/$(PTDIST)/ptolemy/gui
 
 	# Get rid of CVS directories in com and gui
 	-(cd $(PTTMPDIR)/$(PTDIST); \
