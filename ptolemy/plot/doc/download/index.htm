@@ -12,9 +12,9 @@ Ptplot is available for download in several format.
 <li> Tar and Zip files: 
   <menu>
   <li> <A HREF="../../ptplot5.5-beta.tar.gz"><CODE>ptplot5.5-beta.tar.gz</CODE></A> 
-	-  1.91Mb Gzipped Tar File</A>
+	-  1.9Mb Gzipped Tar File</A>
   <li> <A HREF="../../ptplot5.5-beta.zip"><CODE>ptplot5.5-beta.zip</CODE></A>
-	- 2.22Mb Compressed Zip File
+	- 2.1Mb Compressed Zip File
 
   <li> <a href="../install.htm#tarorzip">Build Instructions for Tar or Zip files</a>
  <br> Note that under Java 1.4.0_01, viewing local applets that have
@@ -26,11 +26,10 @@ the <a href="../troubleshooting.htm#spaces">Troubleshooting Guide</a>.
   </menu>
 
 <li> 
-<a href="install.htm">Run the installer as an applet or download an installer</a>.
  <br> The
-<a href="InstData/Windows/NoVM/install.exe">2.5Mb Windows executable</a>
-has been tested, the other installers are experimental.  Please
-send any feedback about these installers to
+<a href="InstData/Windows/NoVM/ptplot5-5-beta-install.exe">3.3Mb Windows installer executable</a>.
+Please
+send any feedback about this installer to
 <a href="mailto:ptplot@ptolemy.eecs.berkeley.edu"><CODE>ptplot@ptolemy.eecs.berkeley.edu</CODE></a>
 
 </menu>
@@ -40,7 +39,10 @@ send any feedback about these installers to
 <h3>1. Install Java, if necessary</h3>
 <p>
 Ptplot 5.5-beta requires Java 1.2 or later.
-Java 1.3 is preferred.
+Java 1.4 is preferred.  The <CODE>configure</CODE> script
+checks for Java 1.4 because the parent package of Ptplot requires Java 1.4.
+However, in principle, Java 1.2 or later should work to compile
+the Java files.
 
  <p>To run Ptplot, the Java runtime environment (JRE) is sufficient.
 To run the applets in a browser, the Java plug-in is required.
@@ -64,9 +66,6 @@ less than 1.3, you should install the plug-in, JRE 1.3, or JDK 1.3
 <p>
 Downloads:
 <menu>
-<li> Windows JRE: The Java runtime environment, JRE (no Java compiler): 
-<a href="j2re-1_3_0_02-win.exe"><CODE>j2re-1_3_0_02-win.exe</CODE></a> (5.1Mb)
-
 <li> Full JDK, or other Platforms:
 <a href="http://java.sun.com/j2se/1.3/" target="_top"><CODE>http://java.sun.com/j2se/1.3/</CODE></a>
 </menu>
@@ -81,7 +80,7 @@ Downloads:
 <menu>
 <li> Download the tar file and run using the java command
   <ol>
-  <li> Download <a href="../../ptplot5.5-beta.tar.gz"><CODE>ptplot5.5-beta.tar.gz</CODE></a> (1.91Mb) 
+  <li> Download <a href="../../ptplot5.5-beta.tar.gz"><CODE>ptplot5.5-beta.tar.gz</CODE></a> (1.9Mb) 
 
   <li> Untar the file.  In this example, I untared it in <CODE>d:\tmp</CODE>
 so that <CODE>d:\tmp\ptplot5.5-beta</CODE> was created.
@@ -110,28 +109,16 @@ C:\&gt;%PTII%\bin\ptplot
   </ol>
 </menu>
 
- <B>or</B>
 
-<menu>
-<li> 
-<a href="install.htm">Run the installer as an applet</a>.
-This applet, built with a commercial product from Zero G Inc.,
-will install Ptplot, from Berkeley, on your machine.
- <br>If you choose to install via the applet, a dialog will pop
-up asking if you will grant permission to run software from 
-Zero G Software.  To continue with the installation process,
-click on the 'Grant' button.
-
-</menu>
  <B>or</B>
 <menu>
 <li> Download a 
-<a href="InstData/Windows/NoVM/install.exe">2.5Mb Windows executable</a>, and execute it.
+<a href="InstData/Windows/NoVM/ptplot5-5-beta-install.exe">3.3Mb Windows executable</a>, and execute it.
 
 </menu>
 
  <p>If you are not planning on extending Ptplot, and you
-downloaded using the applet or installer, then you can run
+downloaded installer, then you can run
 Ptplot via Start-&gt;Programs -&gt;Ptolemy-&gt;Ptplot 5.5-beta
 
 <p> To extend Ptplot under Windows, you will also need the
@@ -145,23 +132,11 @@ to set up your build environment.
 
 <p>
 <li> Other Platforms: 
-There are two ways to install on certain other platforms:
-<menu>
-<li> <a href="install.htm">Run the installer as an applet or download an installer</a>.
- <br> The
-<a href="InstData/Windows/NoVM/install.exe">2.5Mb Windows executable</a>
-has been tested, the other installers are experimental.  Please
-send any feedback about these installers to
-<a href="mailto:ptplot@ptolemy.eecs.berkeley.edu"><CODE>ptplot@ptolemy.eecs.berkeley.edu</CODE></a>
-
-</menu>
-
- <B>or</B>
 
 <menu>
 <li> Standard tar file and configure method:
   <ol>
-  <li> Download <a href="../../ptplot5.5-beta.tar.gz"><CODE>ptplot5.5-beta.tar.gz</CODE></a> (1.91Mb) 
+  <li> Download <a href="../../ptplot5.5-beta.tar.gz"><CODE>ptplot5.5-beta.tar.gz</CODE></a> (1.9Mb) 
 
   <li> Follow the 
 <a href="../install.htm">Installation Instructions</a>
