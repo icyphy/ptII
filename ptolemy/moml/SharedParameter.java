@@ -266,6 +266,46 @@ public class SharedParameter extends Parameter {
         }
     }
     
+    /** Override the base class to also validate the shared instances.
+     *  @exception IllegalActionException If this variable or a
+     *   variable dependent on this variable cannot be evaluated (and is
+     *   not lazy) and the model error handler throws an exception.
+     *   Also thrown if the change is not acceptable to the container.
+     */
+    public void validate() throws IllegalActionException {
+    	super.validate();
+        
+        // NOTE: This is called by setContainer(), which is called from
+        // within a base class constructor. That call occurs before this
+        // object has been fully constructed. It doesn't make sense at
+        // that time to propagate validation to shared instances, since
+        // in fact the value of this shared parameter will be inferred
+        // from those instances if there are any. So in that case, we
+        // just return.
+        if (_containerClass == null) {
+        	return;
+        }
+
+        if (!_suppressingPropagation) {
+            NamedObj toplevel = getRoot();
+            // Do not do sharing if this is within an EntityLibrary.
+            if (toplevel != null) {
+                Iterator sharedParameters = sharedParameterList(toplevel).iterator();
+                while (sharedParameters.hasNext()) {
+                    SharedParameter sharedParameter = (SharedParameter)sharedParameters.next();
+                    if (sharedParameter != this) {
+                        try {
+                            sharedParameter._suppressingPropagation = true;
+                            sharedParameter.validate();
+                        } finally {
+                            sharedParameter._suppressingPropagation = false;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
