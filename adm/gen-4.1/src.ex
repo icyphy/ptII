@@ -143,7 +143,6 @@ ptolemy/domains/ct/lib/IPCInterface.java
 ptolemy/domains/dde/kernel/test/DDEDirector.tcl
 ptolemy/domains/dde/kernel/test/test.tcl
 ptolemy/domains/dde/kernel/DEThreadActor.java
-ptolemy/domains/de/demo/HierarchicalModel
 ptolemy/domains/de/kernel/DEEDirector.java
 ptolemy/domains/de/kernel/DETheadActor.java
 ptolemy/domains/dt/kernel/test/bugs
