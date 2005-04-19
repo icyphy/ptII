@@ -68,7 +68,7 @@ import javax.media.j3d.BranchGroup;
     @Pt.ProposedRating Green (eal)
     @Pt.AcceptedRating Green (liuxj)
 */
-public class Box3Da extends GRShadedShapea {
+public class Box3Da extends GRShadedShape {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
