@@ -79,7 +79,7 @@ set expressionMoml  "$header
     </entity>
 </entity>"
 
-test BackwardCompatibility-7.3 {Expression: ViewScreen backgroundColor} { 
+test GRColorChanges-7.3 {Expression: ViewScreen backgroundColor} { 
     set parser [java::new ptolemy.moml.MoMLParser]
     # Note that 1.1 added the filter for all the parsers
     set toplevel [$parser parse $expressionMoml]
@@ -114,10 +114,25 @@ set expressionMoml  "$header
         </entity>
 </entity>"
 
-test BackwardCompatibility-7.4 {Expression: Sphere3D: RGB color} {
+test GRColorChanges-7.4 {Expression: Sphere3D: RGB color} {
     set parser [java::new ptolemy.moml.MoMLParser]
     # Note that 1.1 added the filter for all the parsers
     set toplevel [$parser parse $expressionMoml]
     set newMoML [$toplevel exportMoML]
     list $newMoML
-} {}
+} {{<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="ViewScreenProperty" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
+    </property>
+    <entity name="Sphere3D" class="ptolemy.domains.gr.lib.Sphere3D">
+        <property name="radius" class="ptolemy.data.expr.Parameter" value="0.1">
+        </property>
+        <property name="diffuseColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.1, 0.1}">
+        </property>
+        <property name="shininess" class="ptolemy.actor.parameters.DoubleRangeParameter" value="1.0">
+        </property>
+    </entity>
+</entity>
+}}
