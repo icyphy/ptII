@@ -103,7 +103,6 @@ ptolemy/filter/*
 ptolemy/filter
 ptolemy/chic
 ptolemy/com
-ptolemy/configs/doc/whatsNew5.0.htm
 ptolemy/configs/test/vergilConfigurationNoMatlab.xml
 ptolemy/configs/test/vergilConfigurationNoMatlabNoSerialNoApps.xml
 ptolemy/configs/visualnc
