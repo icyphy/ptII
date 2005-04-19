@@ -116,7 +116,7 @@ proc speedComparison  {xmlFile \
 	    set startDirectory [pwd]
 	    cd ../cg/$modelName
 	    puts "Running builtin $codeGenType codegen $repeat times"
-	    set timeout 1200
+	    set timeout 1800
 
 	    puts "codegen.tcl: Setting watchdog for [expr {$timeout / 1000}]\
                   seconds at [clock format [clock seconds]]"
@@ -520,7 +520,7 @@ proc sootCodeGeneration {{PTII} modelPath {codeGenType Shallow} \
         }    
     } else {
 	puts "Running make MODEL=$modelName ... $command"
-	set timeout 1200000
+	set timeout 1600000
 	puts "codegen.tcl: Setting watchdog for [expr {$timeout / 1000}]\
 	      seconds at [clock format [clock seconds]]"
 	set watchDog [java::new util.testsuite.WatchDog $timeout]
