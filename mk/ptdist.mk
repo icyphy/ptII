@@ -161,12 +161,14 @@ $(PTDIST).tar.gz:  $(PTDIST_EX) $(PTTMPDIR)
 
 # Zip distribution
 $(PTDIST).zip: $(PTTMPDIR)
-	@if [ "$(ME)x" = "x" ]; then \
+	if [ "$(ME)x" = "x" ]; then \
 		echo "ME is not set in the makefile, so we"; \
 		echo "won't create a tar exclude file"; \
 	else \
 		echo "Building $@"; \
-		(cd $(PTTMPDIR); zip -rq $(RELATIVE_ME)/$@ $(PTDIST) -x \*/adm/\* -x \*/SCCS/\* -x \*/$(PTDIST).tar.gz -x \*/$(PTDIST).zip); \
+		(cd $(PTTMPDIR); \
+		 rm -f $(RELATIVE_ME)/$@; \
+		 zip -rq $(RELATIVE_ME)/$@ $(PTDIST) -x \*/adm/\* -x \*/SCCS/\* -x \*/$(PTDIST).tar.gz -x \*/$(PTDIST).zip); \
 	fi
 
 # Use InstallShield's Java installer
