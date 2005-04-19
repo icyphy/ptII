@@ -45,6 +45,7 @@ import javax.media.j3d.RenderingAttributes;
 import javax.media.j3d.Switch;
 import javax.media.j3d.TexCoordGeneration;
 import javax.media.j3d.Texture;
+import javax.vecmath.TexCoord2f;
 import javax.media.j3d.TextureAttributes;
 import com.sun.j3d.utils.image.TextureLoader;
 import javax.media.j3d.TransparencyAttributes;
@@ -60,9 +61,11 @@ import ptolemy.actor.parameters.DoubleRangeParameter;
 import ptolemy.actor.parameters.IntRangeParameter;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
+import ptolemy.data.StringToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.actor.parameters.FilePortParameter;
+import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.gr.kernel.GRActor;
@@ -400,8 +403,10 @@ public class GRTexture2D extends GRActor3D {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
+        _parameterPort = voxelFile.getPort();
         _sSize = (int) ((IntToken) dim.getToken()).intValue();
         _tSize = _sSize;
+        _counter = 0;
        _createModel();
     }
 
@@ -414,8 +419,69 @@ public class GRTexture2D extends GRActor3D {
         if (_debugging) {
             _debug("Called prefire()");
         }
-        
-        voxelFile.update();
+        if (_isSceneGraphInitialized){
+            
+            /** Updating the PortParameter, cannot call update()
+             * because need to access token for condition 
+             */
+            if ((_parameterPort != null) && (_parameterPort.getWidth() > 0) && _parameterPort.hasToken(0)) {
+                _stringToken = (StringToken)(_parameterPort.get(0));
+                voxelFile.setCurrentValue(_stringToken);
+
+                if (_debugging) {
+                    _debug("Updated parameter value to: " + _stringToken);
+                }
+            }else {
+                if (_debugging) {
+                    _debug("Did not update parameter");
+                }   
+            }
+            
+            if (_debugging) {
+                _debug("Port value = " + _stringToken.stringValue());
+            }
+            if (_stringToken.stringValue() != null){
+                
+                /** Set _isSceneGraphInitialized back to false so 
+                 * node can be sent. fire() will set it back to true
+                 */
+                _createModel();
+                _isSceneGraphInitialized = false;
+                 
+                if (_debugging) {
+                    _debug("Prefire returned true");
+                    _debug("voxelFile = " + voxelFile);
+                    
+                }
+               
+                return true;   
+            }else {
+                
+                if (_debugging) {
+         
+                    _debug("Prefire returned false");
+                    _debug("voxelFile = " + voxelFile);
+                }
+               
+                return false;
+            }
+        } 
+        /** Should only reach this code during first prefire()
+         * all other times _isSceneGraphInitialized should be true from 
+         * fire method.
+         */
+        else {
+            if (_debugging) {
+                _debug("Prefire returned true");
+                _debug("voxelFile = " + voxelFile);
+            }
+           
+            return true;   
+        }
+     
+    
+
+/*        voxelFile.update();
         _fileURL = voxelFile.asURL();
         
         if (_fileURL != null){
@@ -424,9 +490,9 @@ public class GRTexture2D extends GRActor3D {
         }
         else {
          return false;
-        }
+        } */
 
-    }
+}
 
     /** Override the base class to ensure that material and
      *  appearance objects are created anew.
@@ -548,44 +614,57 @@ public class GRTexture2D extends GRActor3D {
     
     /** Create the geometry for the Node that will hold the texture.
      */
-    protected void _createGeometry() throws IllegalActionException {          
-    	 //int curY = counter * scale;
-        int curY = 0;
-        _plane = new QuadArray(4, GeometryArray.COORDINATES);
+    protected void _createGeometry(int counter) throws IllegalActionException {          
+    	double scale = .0125;
+        double curY = _counter * scale;
+        if (_debugging) {
+         _debug("counter = " + _counter);   
+         _debug("curY = " + curY);
+         _debug("scale = " + scale);
+        }
+       
+        //int curY = 0;
+        _plane = new QuadArray(4, GeometryArray.COORDINATES|
+                GeometryArray.TEXTURE_COORDINATE_2);
         _quadCoords = new double [12];
         _texCoords = new float [8];
+        //_texCoords = new TexCoord2f[8];
         
         /** Set coordinates for the plane.  These coordinates assume 
          * that the the image's origin is at the lower left and rotates
          * it 90 degrees about the x-axis.
          */
         // lower left
-        _quadCoords[0] = 0;
+        _quadCoords[0] = -0.5;
         _quadCoords[1] = curY;
-        _quadCoords[2] = _tSize;
+        _quadCoords[2] = 0.5;
         _texCoords[0]= 0;
         _texCoords[1]= 0;
+        //_texCoords[2]= 0;
         
         // lower right
-        _quadCoords[3] = _sSize;
+        _quadCoords[3] = 0.5;
         _quadCoords[4] = curY;
-        _quadCoords[5] = _tSize;
+        _quadCoords[5] = 0.5;
         _texCoords[2]= 1;
         _texCoords[3]= 0;
+        //_texCoords[5]= 0;
         
         // upper right
-        _quadCoords[6] = _sSize;
+        _quadCoords[6] = 0.5;
         _quadCoords[7] = curY;
-        _quadCoords[8] = 0;
+        _quadCoords[8] = -0.5;
         _texCoords[4]= 1;
         _texCoords[5]= 1;
+        //_texCoords[8]= 0;
         
         // upper left
-        _quadCoords[9] = 0;
+        _quadCoords[9] = -0.5;
         _quadCoords[10] = curY;
-        _quadCoords[11] = 0;
+        _quadCoords[11] = -0.5;
         _texCoords[6]= 0;
         _texCoords[7]= 1;
+        //_texCoords[11]= 0;
         
         _plane.setCoordinates(0, _quadCoords);
         _plane.setTextureCoordinates(0, 0,_texCoords); 
@@ -599,26 +678,20 @@ public class GRTexture2D extends GRActor3D {
      *  @exception IllegalActionException If a parameter cannot be evaluated.
      */
     protected void _createModel() throws IllegalActionException {    
-        //_readImage();
+        _readImage();
         
-        _loadTexture();
-        if (_debugging) {
-            _debug("Loaded the texture");
-        }    
- 
+        _counter++;
+       
         _createAppearance();
         if (_debugging) {
             _debug("Created Appearance");
         }
-
-       /** Set the texture and its attributes */                   
-       _textureAttributes = new TextureAttributes();
-       _textureAttributes.setTextureMode(TextureAttributes.REPLACE);
-       _textureAttributes.setCapability(TextureAttributes.ALLOW_COLOR_TABLE_WRITE);
-       _appearance.setTexture(_texture2D);
-       _appearance.setTextureAttributes(_textureAttributes);
-
-       _createGeometry();
+        
+        if (_isSceneGraphInitialized){
+            _loadTexture();
+             
+        }
+       _createGeometry(_counter);
        if (_debugging) {
        	_debug("Created the geometry");
        }  
@@ -640,43 +713,31 @@ public class GRTexture2D extends GRActor3D {
     */ 
    protected void _loadTexture() throws IllegalActionException {
 
-    //FIXME May be a problem as fas as where it is called.
-    /**Use TextureLoader to load the image */
-    _textureLoader = new TextureLoader(_fileURL, _viewScreen.getCanvas());
-    Texture2D _texture2D = (Texture2D)(_textureLoader.getTexture());
+    if (_debugging) {
+        _debug("About to loadTexture");
+    }
+     TextureAttributes attributes = null;
 
-    /** Set texture fields */
-    _texture2D.setEnable(true);
-    _texture2D.setMinFilter(Texture.BASE_LEVEL_LINEAR);
-    _texture2D.setMagFilter(Texture.BASE_LEVEL_LINEAR);
-    //_texture2D.setMinFilter(Texture.BASE_LEVEL_POINT);
-    //_texture2D.setMagFilter(Texture.BASE_LEVEL_POINT);
-    _texture2D.setBoundaryModeS(Texture.CLAMP);
-    _texture2D.setBoundaryModeT(Texture.CLAMP);
+     if (_fileURL != null) {
+         TextureLoader loader;
+         loader = new TextureLoader(_fileURL, _viewScreen.getCanvas());
+         if (_debugging) {
+             _debug("Loaded texture");
+         }
+         Texture loadedTexture = loader.getTexture();
+         if (_debugging) {
+             _debug("got texture");
+         }
+         if (loadedTexture != null) {
+             attributes = new TextureAttributes();
+             attributes.setTextureMode(TextureAttributes.MODULATE);
+            
+             _appearance.setTextureAttributes(attributes);
 
-                   
-                    /**Create ColorModel and WritableRaster for the BufferedImage**/
-                    /*_texture2D = new Texture2D(Texture.BASE_LEVEL, Texture.INTENSITY, _sSize, _tSize);
-                     _imageComponent = new ImageComponent2D(ImageComponent.FORMAT_CHANNEL8, _sSize, _tSize);
-                     _imageComponent.set(_bufferedImage);
-                     _texture2D.setImage(0, _imageComponent);  
-                    _colorSpace = ColorSpace.getInstance(ColorSpace.CS_GRAY);
-                     
-                     int[] nBits = {8}; 
-                     
-                     _colorModel = new ComponentColorModel(_colorSpace, nBits, false, false, 
-                     Transparency.TRANSLUCENT, DataBuffer.TYPE_INT);
-                     
-                     
-                     _raster = _colorModel.createCompatibleWritableRaster(_sSize, _tSize); 
-                     
-                     _bufferedImage = new BufferedImage(_colorModel, _raster, false, null); */
-                  
-                     //Length of this array should be xDim x yDim of the image
-                    /* _intData = ((DataBufferInt)_raster.getDataBuffer()).getData(); 
-                     
-                     System.out.println("Length of _intData = " + _intData.length); */
-
+             _appearance.setTexture(loadedTexture);
+         }  
+     }
+     
    }
    
        
@@ -719,34 +780,48 @@ public class GRTexture2D extends GRActor3D {
      *   ViewScreen3D or if an invalid texture is specified.
      */
     protected void _setViewScreen(GRActor actor) throws IllegalActionException {
+        if (_debugging) {
+            _debug("Inside of setViewScreen");
+        }
         super._setViewScreen(actor);
+            if (_debugging) {
+               _debug("About to loadTexture");
+           }
+            TextureAttributes attributes = null;
 
-       /* URL textureURL = texture.asURL();
-        TextureAttributes attributes = null;
+            if (_fileURL != null) {
+                TextureLoader loader;
+                loader = new TextureLoader(_fileURL, _viewScreen.getCanvas());
+                if (_debugging) {
+                    _debug("Loaded texture");
+                }
+                Texture loadedTexture = loader.getTexture();
+                if (_debugging) {
+                    _debug("got texture");
+                }
+                if (loadedTexture != null) {
+                    attributes = new TextureAttributes();
+                    attributes.setTextureMode(TextureAttributes.MODULATE);
+                    _appearance.setTextureAttributes(attributes);
 
-       if (textureURL != null) {
-            TextureLoader loader;
-            loader = new TextureLoader(textureURL, _viewScreen.getCanvas());
+                    _appearance.setTexture(loadedTexture);
+                }  
+            
+       // _textureLoader = new TextureLoader(_fileURL, _viewScreen.getCanvas());
+        
 
-            Texture loadedTexture = loader.getTexture();
+        }
+        //Texture2D _texture2D = (Texture2D)(_textureLoader.getTexture());
+        
+        
+        
+        /** Set the texture and its attributes */                   
+      /*  _textureAttributes = new TextureAttributes();
+        _textureAttributes.setTextureMode(TextureAttributes.REPLACE);
+        _textureAttributes.setCapability(TextureAttributes.ALLOW_COLOR_TABLE_WRITE);
+        _appearance.setTexture(_texture2D);
+        _appearance.setTextureAttributes(_textureAttributes); */
 
-            if (loadedTexture != null) {
-                attributes = new TextureAttributes();
-                attributes.setTextureMode(TextureAttributes.MODULATE);
-                _appearance.setTextureAttributes(attributes);
-
-                _appearance.setTexture(loadedTexture);
-            } 
-        } 
-
-        // If runtime changes are allowed, then we need to set texture
-        // attributes even if not needed now.
-        if ((attributes == null)
-                && ((BooleanToken) allowRuntimeChanges.getToken()).booleanValue()) {
-            attributes = new TextureAttributes();
-            attributes.setTextureMode(TextureAttributes.MODULATE);
-            _appearance.setTextureAttributes(attributes);
-        } */
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -832,6 +907,8 @@ public class GRTexture2D extends GRActor3D {
     
     private float[] _texCoords;
     
+    //private TexCoord2f[] _texCoords;
+    
     private TextureLoader _textureLoader;
     
     private DataBufferInt _dataBufferInt;
@@ -846,7 +923,11 @@ public class GRTexture2D extends GRActor3D {
     
     private int _tSize;
     
-    //private int[][] axisIndex = new int[3][2];
+    private ParameterPort _parameterPort;
+    
+    private StringToken _stringToken;
+    
+    private int _counter;
     
    
     
