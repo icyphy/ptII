@@ -480,6 +480,8 @@ fixtmpdist:
 		$(PTTMPDIR)/$(PTDIST)/ptolemy/gui
 	cp "$(PTII)/ptolemy/gui/ComponentDialog.java" \
 		$(PTTMPDIR)/$(PTDIST)/ptolemy/gui
+	cp "$(PTII)/ptolemy/gui/package.html" \
+		$(PTTMPDIR)/$(PTDIST)/ptolemy/gui
 	# Remove most of the .java files
 	egrep -v "BasicJApplet|CancelException|GraphicalMessageHandler|JTextAreaExec|MessageHandler|ShellInterpreter|ShellTextArea|StatusBar|StreamExec|SwingWorker|Top.java" \
 		"$(PTII)/ptolemy/gui/makefile" > \
@@ -490,6 +492,8 @@ fixtmpdist:
 	cp "$(PTII)/ptolemy/util/StringUtilities.java" \
 		$(PTTMPDIR)/$(PTDIST)/ptolemy/util
 	cp "$(PTII)/ptolemy/util/FileUtilities.java" \
+		$(PTTMPDIR)/$(PTDIST)/ptolemy/util
+	cp "$(PTII)/ptolemy/util/package.html" \
 		$(PTTMPDIR)/$(PTDIST)/ptolemy/util
 	egrep -v "CancelException|ClassUtilities|MessageHandler|XSLTUtilities" \
 		"$(PTII)/ptolemy/util/makefile" > \
