@@ -31,6 +31,7 @@ package ptolemy.backtrack.ast;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -110,7 +111,7 @@ public class Transformer {
             
             // Set up the list of file names.
             List fileList = new LinkedList();
-            List crossAnalysis = new LinkedList();
+            Set crossAnalysis = new HashSet();
             for (int i = start; i < args.length; i++) {
                 String pathOrFile = args[i];
                 File[] files;
@@ -157,6 +158,9 @@ public class Transformer {
                     }
                     fileList.add(files[j]);
                     crossAnalysis.add(c.getName());
+                    _addInnerClasses(crossAnalysis, fileName,
+                            c.getPackage() == null ?
+                                    null : c.getPackage().getName());
                 }
             }
             
@@ -462,6 +466,37 @@ public class Transformer {
         _beforeTraverse();
         _ast.accept(_visitor);
         _afterTraverse();
+    }
+    
+    private static class InnerClassFilter implements FilenameFilter {
+        
+        InnerClassFilter(String className) {
+            _className = className;
+        }
+        
+        public boolean accept(File dir, String name) {
+            return name.startsWith(_className + "$") &&
+                    name.endsWith(".class");
+        }
+        
+        private String _className;
+    }
+    
+    private static void _addInnerClasses(Set crossAnalysis, String classFileName,
+            String packageName) {
+        File topFile = new File(classFileName);
+        File path = topFile.getParentFile();
+        String className =
+            topFile.getName().substring(0, topFile.getName().length() - 6);
+        File[] files = path.listFiles(new InnerClassFilter(className));
+        for (int i = 0; i < files.length; i++) {
+            File file = files[i];
+            className =
+                file.getName().substring(0, file.getName().length() - 6);
+            if (packageName != null)
+                className = packageName + "." + className;
+            crossAnalysis.add(className);
+        }
     }
     
     private static void _printUsage() {

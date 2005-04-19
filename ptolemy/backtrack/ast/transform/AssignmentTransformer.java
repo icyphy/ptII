@@ -770,7 +770,7 @@ public class AssignmentTransformer extends AbstractTransformer
         Class parent = currentClass.getSuperclass();
         if (parent != null &&
                 (state.getCrossAnalyzedTypes().contains(parent.getName()) ||
-                 isFieldDuplicated(parent, CHECKPOINT_NAME)))
+                 isFieldDuplicated(parent, CHECKPOINT_RECORD_NAME)))
             return null;
         
         VariableDeclarationFragment fragment = 
@@ -782,7 +782,7 @@ public class AssignmentTransformer extends AbstractTransformer
         fragment.setInitializer(creation);
         FieldDeclaration record = ast.newFieldDeclaration(fragment);
         record.setType(createType(ast, typeName));
-        record.setModifiers(Modifier.PRIVATE);
+        record.setModifiers(Modifier.PROTECTED);
         
         addToLists(_checkParentFields, parent.getName(), record);
         
@@ -856,9 +856,10 @@ public class AssignmentTransformer extends AbstractTransformer
             throw new ASTDuplicatedMethodException(currentClass.getName(), 
                     methodName);
         
-        if (parent != null &&
-                (state.getCrossAnalyzedTypes().contains(parent.getName())) ||
-                 hasMethod(parent, methodName, new Class[]{Checkpoint.class}))
+        if (!isAnonymous && parent != null &&
+                (state.getCrossAnalyzedTypes().
+                        contains(parent.getName()) ||
+                hasMethod(parent, methodName, new Class[]{})))
             return null;
         
         MethodDeclaration method = ast.newMethodDeclaration();
@@ -875,7 +876,8 @@ public class AssignmentTransformer extends AbstractTransformer
         
         method.setModifiers(Modifier.PUBLIC | Modifier.FINAL);
         
-        addToLists(_checkParentMethods, parent.getName(), method);
+        if (!isAnonymous)
+            addToLists(_checkParentMethods, parent.getName(), method);
         
         return method;
     }
@@ -947,6 +949,8 @@ public class AssignmentTransformer extends AbstractTransformer
         MethodDeclaration setCheckpoint = ast.newMethodDeclaration();
         setCheckpoint.setName(
                 ast.newSimpleName(_getSetCheckpointMethodName(false)));
+        setCheckpoint.setReturnType(
+                createType(ast, getClassName(Object.class, state, root)));
         
         // Add a single checkpoint parameter.
         SingleVariableDeclaration checkpoint = 
@@ -955,13 +959,19 @@ public class AssignmentTransformer extends AbstractTransformer
         checkpoint.setName(ast.newSimpleName("checkpoint"));
         setCheckpoint.parameters().add(checkpoint);
         
-        // Add a call to the restore method in the enclosing anonymous class.
+        // Add a call to the setcheckpoint method in the enclosing anonymous
+        // class.
         invocation = ast.newMethodInvocation();
         invocation.setName(ast.newSimpleName(_getSetCheckpointMethodName(true)));
         invocation.arguments().add(ast.newSimpleName("checkpoint"));
+        
+        // Return this object.
+        returnStatement = ast.newReturnStatement();
+        returnStatement.setExpression(ast.newThisExpression());
 
         body = ast.newBlock();
         body.statements().add(ast.newExpressionStatement(invocation));
+        body.statements().add(returnStatement);
         setCheckpoint.setBody(body);
         
         setCheckpoint.setModifiers(Modifier.PUBLIC | Modifier.FINAL);
@@ -1256,9 +1266,10 @@ public class AssignmentTransformer extends AbstractTransformer
             throw new ASTDuplicatedMethodException(currentClass.getName(), 
                     methodName);
         
-        if (parent != null &&
-                (state.getCrossAnalyzedTypes().contains(parent.getName())) ||
-                 hasMethod(parent, methodName, new Class[]{Checkpoint.class}))
+        if (!isAnonymous && parent != null &&
+                (state.getCrossAnalyzedTypes().
+                        contains(parent.getName()) ||
+                hasMethod(parent, methodName, new Class[]{Checkpoint.class})))
             return null;
         
         MethodDeclaration method = ast.newMethodDeclaration();
@@ -1365,7 +1376,8 @@ public class AssignmentTransformer extends AbstractTransformer
         
         method.setModifiers(Modifier.PUBLIC | Modifier.FINAL);
         
-        addToLists(_checkParentMethods, parent.getName(), method);
+        if (!isAnonymous)
+            addToLists(_checkParentMethods, parent.getName(), method);
         
         return method;
     }
@@ -1669,6 +1681,10 @@ public class AssignmentTransformer extends AbstractTransformer
             int modifiers = field.getModifiers();
             if (!java.lang.reflect.Modifier.isPrivate(modifiers))
                 return; // Not handling non-private fields or final fields.
+            if (java.lang.reflect.Modifier.isFinal(modifiers)) {
+                if (!field.getType().isArray())
+                    return;
+            }
             isStatic = 
                 java.lang.reflect.Modifier.isStatic(modifiers);
         } catch (ClassNotFoundException e) {
