@@ -68,6 +68,7 @@ import org.eclipse.jdt.core.dom.FieldDeclaration;
 import org.eclipse.jdt.core.dom.ForStatement;
 import org.eclipse.jdt.core.dom.ImportDeclaration;
 import org.eclipse.jdt.core.dom.InfixExpression;
+import org.eclipse.jdt.core.dom.Initializer;
 import org.eclipse.jdt.core.dom.InstanceofExpression;
 import org.eclipse.jdt.core.dom.LabeledStatement;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
@@ -210,7 +211,7 @@ public class TypeAnalyzer extends ASTVisitor {
                 handler.exit(node, _state);
             }
         }
-        _recordFields();
+        _unrecordFields();
         _state.unsetClassScope();
         _closeScope();
         _state.leaveClass();
@@ -396,6 +397,15 @@ public class TypeAnalyzer extends ASTVisitor {
      */
     public void endVisit(FieldDeclaration node) {
         Type.propagateType(node, node.getType());
+        if (_handlers.hasConstructorHandler()) {
+            List handlerList = _handlers.getConstructorHandlers();
+            Iterator handlersIter = handlerList.iterator();
+            while (handlersIter.hasNext()) {
+                ConstructorHandler handler =
+                    (ConstructorHandler)handlersIter.next();
+                handler.exit(node, _state);
+            }
+        }
     }
    
     /** End the visit of a for statement and close the scope opened by
@@ -922,7 +932,7 @@ public class TypeAnalyzer extends ASTVisitor {
                 handler.exit(node, _state);
             }
         }
-        _recordFields();
+        _unrecordFields();
         _state.unsetClassScope();
         _closeScope();
         _state.leaveClass();
@@ -1114,6 +1124,24 @@ public class TypeAnalyzer extends ASTVisitor {
         _openScope();
         return super.visit(node);
     }
+    
+    /** Visit a field declaration.
+     * 
+     *  @param node The node to be visited.
+     *  @return The return value of the overriden function.
+     */
+    public boolean visit(FieldDeclaration node) {
+        if (_handlers.hasConstructorHandler()) {
+            List handlerList = _handlers.getConstructorHandlers();
+            Iterator handlersIter = handlerList.iterator();
+            while (handlersIter.hasNext()) {
+                ConstructorHandler handler =
+                    (ConstructorHandler)handlersIter.next();
+                handler.enter(node, _state);
+            }
+        }
+        return super.visit(node);
+    }
 
     /** Visit a for statement and open a scope for variable declarations
      *  in it.
@@ -1122,6 +1150,10 @@ public class TypeAnalyzer extends ASTVisitor {
      *  @return The return value of the overriden function.
      */
     public boolean visit(ForStatement node) {
+        if (node.initializers() != null) {
+            List x = node.initializers();
+            int xxx = 0;
+        }
         _openScope();
         return super.visit(node);
     }
@@ -1189,17 +1221,43 @@ public class TypeAnalyzer extends ASTVisitor {
         // Enter the class.
         String typeName = node.getName().getIdentifier();
         Class currentClass = _state.getCurrentClass();
-        try {
-            if (currentClass != null) {   // A inner class is found.
-                typeName = currentClass.getName() + "$" + typeName;
+        
+        if (currentClass == null) {
+            try {
                 currentClass = _state.getClassLoader().searchForClass(typeName);
-            } else
-                currentClass = _state.getClassLoader().searchForClass(typeName);
-            _state.enterClass(currentClass);
-        } catch (ClassNotFoundException e) {
-            throw new ASTClassNotFoundException(typeName);
+            } catch (ClassNotFoundException e) {
+                throw new ASTClassNotFoundException(typeName);
+            }
+        } else {
+            if (!_eclipse_anonymous_scheme) {
+                try {
+                    if (!(node.getParent() instanceof CompilationUnit) &&
+                            !(node.getParent() instanceof TypeDeclaration))
+                        currentClass = 
+                            _state.getClassLoader().searchForClass(
+                                    currentClass.getName() + "$1" + typeName);
+                    else
+                        currentClass = 
+                            _state.getClassLoader().searchForClass(
+                                    currentClass.getName() + "$" + typeName);
+                    typeName = currentClass.getName();
+                } catch (ClassNotFoundException e) {
+                    _eclipse_anonymous_scheme = true;
+                }
+            }
+        
+            if (_eclipse_anonymous_scheme) {
+                try {
+                    typeName = currentClass.getName() + "$" + typeName;
+                    currentClass = _state.getClassLoader().searchForClass(typeName);
+                } catch (ClassNotFoundException e) {
+                    throw new ASTClassNotFoundException(typeName);
+                }
+            }
         }
         
+        _state.enterClass(currentClass);
+
         // Add the class to be cross-analyzed.
         addCrossAnalyzedType(currentClass.getName());
         
@@ -1479,7 +1537,18 @@ public class TypeAnalyzer extends ASTVisitor {
         int lastSeparator2 = name.lastIndexOf('$');
         int lastSeparator = 
             lastSeparator1 >= lastSeparator2 ? lastSeparator1 : lastSeparator2;
-        return name.substring(lastSeparator + 1);
+            
+        name = name.substring(lastSeparator + 1);
+        String newName = name;
+        char ch = newName.charAt(0);
+        while (ch >= '0' && ch <= '9' && newName.length() > 1) {
+            newName = newName.substring(1);
+            ch = newName.charAt(0);
+        }
+        if (newName.length() == 0)
+            return name;
+        else
+            return newName;
     }
 
     /** Import a class with its full name, using "." instead
@@ -1756,7 +1825,8 @@ public class TypeAnalyzer extends ASTVisitor {
                 Class[] classes = new Class[] {
                         FieldDeclaration.class, 
                         TypeDeclaration.class, 
-                        MethodDeclaration.class
+                        MethodDeclaration.class,
+                        Initializer.class
                 };
                 for (int i = 0; i < classes.length; i++)
                     if (classes[i].isInstance(o1))

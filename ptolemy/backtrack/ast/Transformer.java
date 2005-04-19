@@ -486,6 +486,8 @@ public class Transformer {
             String packageName) {
         File topFile = new File(classFileName);
         File path = topFile.getParentFile();
+        if (path == null)
+            path = new File(".");
         String className =
             topFile.getName().substring(0, topFile.getName().length() - 6);
         File[] files = path.listFiles(new InnerClassFilter(className));

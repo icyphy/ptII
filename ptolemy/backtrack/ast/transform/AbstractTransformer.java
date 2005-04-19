@@ -359,8 +359,18 @@ public abstract class AbstractTransformer {
         else
             simpleName = name.substring(lastSeparator + 1);
         
-        if (name.equals(state.getCurrentClass().getName()))
+        String currentClassName = state.getCurrentClass().getName();
+        if (name.equals(currentClassName))
             return simpleName;
+        else {
+            int dollarPos = currentClassName.length();
+            while (dollarPos >= 0) {
+                String baseName = currentClassName.substring(0, dollarPos) + "$";
+                if (name.startsWith(baseName))
+                    return name.substring(baseName.length());
+                dollarPos = currentClassName.lastIndexOf('$', dollarPos - 1);
+            }
+        }
         // FIXME
         
         Iterator importedClasses = loader.getImportedClasses().iterator();

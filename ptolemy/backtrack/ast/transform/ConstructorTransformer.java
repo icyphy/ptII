@@ -40,8 +40,10 @@ import org.eclipse.jdt.core.dom.AnonymousClassDeclaration;
 import org.eclipse.jdt.core.dom.CastExpression;
 import org.eclipse.jdt.core.dom.ClassInstanceCreation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.FieldDeclaration;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.MethodInvocation;
+import org.eclipse.jdt.core.dom.Modifier;
 import org.eclipse.jdt.core.dom.SuperConstructorInvocation;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 
@@ -63,6 +65,14 @@ public class ConstructorTransformer extends AbstractTransformer
         implements ConstructorHandler, ClassHandler, CrossAnalysisHandler, 
         MethodDeclarationHandler {
     
+    public void enter(FieldDeclaration node, TypeAnalyzerState state) {
+        _isStaticField.push(new Boolean(Modifier.isStatic(node.getModifiers())));
+    }
+    
+    public void exit(FieldDeclaration node, TypeAnalyzerState state) {
+        _isStaticField.pop();
+    }
+
     public void enter(MethodDeclaration node, TypeAnalyzerState state) {
         _currentMethods.push(node);
     }
@@ -84,6 +94,10 @@ public class ConstructorTransformer extends AbstractTransformer
      */
     public void handle(ClassInstanceCreation node, TypeAnalyzerState state) {
         if (_currentMethods.peek() == null) {
+            // Do not refactor static fields.
+            if (((Boolean)_isStaticField.peek()).booleanValue())
+                return;
+
             // Do not refactor class instance creations within methods.
             Type type = Type.getType(node);
             String typeName = type.getName();
@@ -185,4 +199,6 @@ public class ConstructorTransformer extends AbstractTransformer
     private Hashtable _unhandledNodes = new Hashtable();
     
     private Stack _currentMethods = new Stack();
+    
+    private Stack _isStaticField = new Stack();
 }
