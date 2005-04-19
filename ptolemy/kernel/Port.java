@@ -68,7 +68,7 @@ import ptolemy.kernel.util.Workspace;
    @version $Id$
    @since Ptolemy II 0.2
    @Pt.ProposedRating Green (eal)
-   @Pt.AcceptedRating Green (bart)
+   @Pt.AcceptedRating Green (cxh)
    @see Entity
    @see Relation
 */
@@ -347,7 +347,7 @@ public class Port extends NamedObj {
         }
     }
 
-    /** Move this object down by one in the list of attributes of
+    /** Move this object down by one in the list of ports of
      *  its container. If this object is already last, do nothing.
      *  Increment the version of the workspace.
      *  @return The index of the specified object prior to moving it,
@@ -383,7 +383,7 @@ public class Port extends NamedObj {
     }
 
     /** Move this object to the first position in the list
-     *  of attributes of the container. If  this object is already first,
+     *  of ports of the container. If this object is already first,
      *  do nothing. Increment the version of the workspace.
      *  @return The index of the specified object prior to moving it,
      *   or -1 if it is not moved.
@@ -418,7 +418,7 @@ public class Port extends NamedObj {
     }
 
     /** Move this object to the specified position in the list
-     *  of attributes of the container. If this object is already at the
+     *  of ports of the container. If this object is already at the
      *  specified position, do nothing. Increment the version of the
      *  workspace.
      *  @param index The position to move this object to.
@@ -455,7 +455,7 @@ public class Port extends NamedObj {
     }
 
     /** Move this object to the last position in the list
-     *  of attributes of the container.  If this object is already last,
+     *  of ports of the container.  If this object is already last,
      *  do nothing. Increment the version of the workspace.
      *  @return The index of the specified object prior to moving it,
      *   or -1 if it is not moved.
@@ -490,7 +490,7 @@ public class Port extends NamedObj {
     }
 
     /** Move this object up by one in the list of
-     *  attributes of the container. If  this object is already first, do
+     *  ports of the container. If this object is already first, do
      *  nothing. Increment the version of the workspace.
      *  @return The index of the specified object prior to moving it,
      *   or -1 if it is not moved.

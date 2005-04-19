@@ -195,7 +195,7 @@ public class ComponentRelation extends Relation {
         return _container;
     }
 
-    /** Move this object down by one in the list of attributes of
+    /** Move this object down by one in the list of relations of
      *  its container. If this object is already last, do nothing.
      *  Increment the version of the workspace.
      *  @return The index of the specified object prior to moving it,
@@ -231,7 +231,7 @@ public class ComponentRelation extends Relation {
     }
 
     /** Move this object to the first position in the list
-     *  of attributes of the container. If this object is already first,
+     *  of relations of the container. If this object is already first,
      *  do nothing. Increment the version of the workspace.
      *  @return The index of the specified object prior to moving it,
      *   or -1 if it is not moved.
@@ -266,7 +266,7 @@ public class ComponentRelation extends Relation {
     }
 
     /** Move this object to the specified position in the list
-     *  of attributes of the container. If  this object is already at
+     *  of relations of the container. If  this object is already at
      *  the specified position, do nothing. Increment the version of the
      *  workspace.
      *  @param index The position to move this object to.
@@ -303,7 +303,7 @@ public class ComponentRelation extends Relation {
     }
 
     /** Move this object to the last position in the list
-     *  of attributes of the container.  If this object is already last,
+     *  of relations of the container.  If this object is already last,
      *  do nothing. Increment the version of the workspace.
      *  @return The index of the specified object prior to moving it,
      *   or -1 if it is not moved.
@@ -338,7 +338,7 @@ public class ComponentRelation extends Relation {
     }
 
     /** Move this object up by one in the list of
-     *  attributes of the container. If this object is already first, do
+     *  relations of the container. If this object is already first, do
      *  nothing. Increment the version of the workspace.
      *  @return The index of the specified object prior to moving it,
      *   or -1 if it is not moved.
