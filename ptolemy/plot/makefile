@@ -478,19 +478,22 @@ fixtmpdist:
 		$(PTTMPDIR)/$(PTDIST)/ptolemy/gui
 	cp "$(PTII)/ptolemy/gui/CloseListener.java" \
 		$(PTTMPDIR)/$(PTDIST)/ptolemy/gui
-	cp "$(PTII)/ptolemy/gui/ComponentDialog.java" $(PTTMPDIR)/$(PTDIST)/ptolemy
+	cp "$(PTII)/ptolemy/gui/ComponentDialog.java" \
+		$(PTTMPDIR)/$(PTDIST)/ptolemy/gui
 	# Remove most of the .java files
-	grep -v "BasicJApplet|CancelException||GraphicalMessageHandler|JTextAreaExec|MessageHandler|ShellInterpreter|ShellTextArea|StatusBar|StreamExec|SwingWorker|Top.java" \
-	"$(PTII)/ptolemy/gui/makefile" > $(PTTMPDIR)/$(PTDIST)/
-
+	egrep -v "BasicJApplet|CancelException|GraphicalMessageHandler|JTextAreaExec|MessageHandler|ShellInterpreter|ShellTextArea|StatusBar|StreamExec|SwingWorker|Top.java" \
+		"$(PTII)/ptolemy/gui/makefile" > \
+		$(PTTMPDIR)/$(PTDIST)/ptolemy/gui/makefile
 	@echo "Copy over util stuff"
-	mkdir $(PTTMPDIR)/$(PTDIST)/ptolemy/gui
+	mkdir $(PTTMPDIR)/$(PTDIST)/ptolemy/util
 	# Remove most of the .java files
 	cp "$(PTII)/ptolemy/util/StringUtilities.java" \
-		$(PTTMPDIR)/$(PTDIST)/ptolemy/gui
-	grep -v "CancelException|ClassUtilities|FileUtilities|MessageHandler|XSLTUtilities" \
-		"$(PTII)/ptolemy/util/makefile" \
-		$(PTTMPDIR)/$(PTDIST)/ptolemy/gui
+		$(PTTMPDIR)/$(PTDIST)/ptolemy/util
+	cp "$(PTII)/ptolemy/util/FileUtilities.java" \
+		$(PTTMPDIR)/$(PTDIST)/ptolemy/util
+	egrep -v "CancelException|ClassUtilities|MessageHandler|XSLTUtilities" \
+		"$(PTII)/ptolemy/util/makefile" > \
+		$(PTTMPDIR)/$(PTDIST)/ptolemy/util/makefile
 
 	# Get rid of CVS directories in com and gui
 	-(cd $(PTTMPDIR)/$(PTDIST); \
