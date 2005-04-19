@@ -1308,7 +1308,6 @@ remotealldone:
 	if [ -f $(REMOTE2DONEFILE) \
 		-a -f $(REMOTE4DONEFILE) \
 		-a -f $(REMOTE5DONEFILE) \
-		-a -f $(REMOTE6DONEFILE) \
 			]; then \
 		date; \
 		echo "Remote processes finished"; \
