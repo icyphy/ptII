@@ -222,12 +222,12 @@ public class SharedParameter extends Parameter {
         if (_containerClass.isInstance(container)) {
             // If the attribute is not of the right class, get an exception.
             try {
-            	Attribute candidate = container.getAttribute(getName(), SharedParameter.class);
+                    Attribute candidate = container.getAttribute(getName(), SharedParameter.class);
                 if (candidate != null) {
-                	result.add(candidate);
+                        result.add(candidate);
                 }
             } catch (IllegalActionException ex) {
-            	// Ignore. Candidate doesn't match.
+                    // Ignore. Candidate doesn't match.
             }
         }
         Iterator containedObjects = container.containedObjectsIterator();
@@ -273,7 +273,7 @@ public class SharedParameter extends Parameter {
      *   Also thrown if the change is not acceptable to the container.
      */
     public void validate() throws IllegalActionException {
-    	super.validate();
+            super.validate();
 
         // NOTE: This is called by setContainer(), which is called from
         // within a base class constructor. That call occurs before this
@@ -283,7 +283,7 @@ public class SharedParameter extends Parameter {
         // from those instances if there are any. So in that case, we
         // just return.
         if (_containerClass == null) {
-        	return;
+                return;
         }
 
         if (!_suppressingPropagation) {
