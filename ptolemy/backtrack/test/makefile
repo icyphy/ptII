@@ -103,6 +103,7 @@ transform:
 	# The transformed code is in 
 	# package ptolemy.backtrack.test.ptolemy.backtrack.test.test1.
 	for x in $(DIRS); do \
+	  echo "# transform: $$x"; \
 	  rm -f ptolemy/backtrack/test/$$x/*.java; \
 	  "$(JAVA)" \
 	    -classpath "$(CLASSPATH)$(CLASSPATHSEPARATOR)$(PTBACKTRACK_JARS)$(AUXCLASSPATH)" \
@@ -115,6 +116,7 @@ transform:
 run:
 	# Finally, run the test program.
 	for test in $(JSRCS); do \
+	  echo "# run: $test"; \
 	  "$(JAVA)" \
 	    -classpath "$(CLASSPATH)" \
 	    ptolemy.backtrack.test.`basename $$test .java`; \
