@@ -107,7 +107,8 @@ public class SharedParameter extends Parameter {
      *  @exception NameDuplicationException If the name coincides with
      *   a parameter already in the container.
      */
-    public SharedParameter(NamedObj container, String name, Class containerClass)
+    public SharedParameter(NamedObj container, String name,
+            Class containerClass)
             throws IllegalActionException, NameDuplicationException {
         this(container, name, containerClass, "");
     }
@@ -126,7 +127,8 @@ public class SharedParameter extends Parameter {
      *  @exception NameDuplicationException If the name coincides with
      *   a parameter already in the container.
      */
-    public SharedParameter(NamedObj container, String name, Class containerClass, String defaultValue)
+    public SharedParameter(NamedObj container, String name,
+            Class containerClass, String defaultValue)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
@@ -172,7 +174,8 @@ public class SharedParameter extends Parameter {
         if (root != null) {
             Iterator sharedParameters = sharedParameterList(root).iterator();
             while (sharedParameters.hasNext()) {
-                SharedParameter candidate = (SharedParameter)sharedParameters.next();
+                SharedParameter candidate =
+                    (SharedParameter)sharedParameters.next();
                 if (candidate != this) {
                     defaultValue = candidate.getExpression();
                 }
@@ -193,6 +196,37 @@ public class SharedParameter extends Parameter {
      */
     public boolean isSuppressingPropagation() {
         return _suppressingPropagation;
+    }
+
+    /** Override the base class to also set the expression of shared
+     *  parameters.
+     */
+    public void setExpression(String expression) {
+        super.setExpression(expression);
+
+        if (!_suppressingPropagation) {
+            NamedObj toplevel = getRoot();
+            // Do not do sharing if this is within an EntityLibrary.
+            if (toplevel != null) {
+                Iterator sharedParameters =
+                    sharedParameterList(toplevel).iterator();
+                while (sharedParameters.hasNext()) {
+                    SharedParameter sharedParameter =
+                        (SharedParameter)sharedParameters.next();
+                    if (sharedParameter != this) {
+                        try {
+                            sharedParameter._suppressingPropagation = true;
+                            if (!sharedParameter.getExpression()
+                                    .equals(expression)) {
+                                sharedParameter.setExpression(expression);
+                            }
+                        } finally {
+                            sharedParameter._suppressingPropagation = false;
+                        }
+                    }
+                }
+            }
+        }
     }
 
     /** Specify whether this instance should be suppressing
@@ -222,7 +256,8 @@ public class SharedParameter extends Parameter {
         if (_containerClass.isInstance(container)) {
             // If the attribute is not of the right class, get an exception.
             try {
-                    Attribute candidate = container.getAttribute(getName(), SharedParameter.class);
+                    Attribute candidate = container.getAttribute(getName(),
+                            SharedParameter.class);
                 if (candidate != null) {
                         result.add(candidate);
                 }
@@ -236,34 +271,6 @@ public class SharedParameter extends Parameter {
             result.addAll(sharedParameterList(candidateContainer));
         }
         return result;
-    }
-
-    /** Override the base class to also set the expression of shared
-     *  parameters.
-     */
-    public void setExpression(String expression) {
-        super.setExpression(expression);
-
-        if (!_suppressingPropagation) {
-            NamedObj toplevel = getRoot();
-            // Do not do sharing if this is within an EntityLibrary.
-            if (toplevel != null) {
-                Iterator sharedParameters = sharedParameterList(toplevel).iterator();
-                while (sharedParameters.hasNext()) {
-                    SharedParameter sharedParameter = (SharedParameter)sharedParameters.next();
-                    if (sharedParameter != this) {
-                        try {
-                            sharedParameter._suppressingPropagation = true;
-                            if (!sharedParameter.getExpression().equals(expression)) {
-                                sharedParameter.setExpression(expression);
-                            }
-                        } finally {
-                            sharedParameter._suppressingPropagation = false;
-                        }
-                    }
-                }
-            }
-        }
     }
 
     /** Override the base class to also validate the shared instances.
@@ -290,9 +297,11 @@ public class SharedParameter extends Parameter {
             NamedObj toplevel = getRoot();
             // Do not do sharing if this is within an EntityLibrary.
             if (toplevel != null) {
-                Iterator sharedParameters = sharedParameterList(toplevel).iterator();
+                Iterator sharedParameters =
+                    sharedParameterList(toplevel).iterator();
                 while (sharedParameters.hasNext()) {
-                    SharedParameter sharedParameter = (SharedParameter)sharedParameters.next();
+                    SharedParameter sharedParameter =
+                        (SharedParameter)sharedParameters.next();
                     if (sharedParameter != this) {
                         try {
                             sharedParameter._suppressingPropagation = true;
