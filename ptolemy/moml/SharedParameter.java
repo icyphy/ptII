@@ -80,7 +80,7 @@ import ptolemy.moml.EntityLibrary;
    @Pt.AcceptedRating Red (cxh)
 */
 public class SharedParameter extends Parameter {
-    
+
     /** Construct a parameter with the given container and name.
      *  The container class will be used to determine which other
      *  instances of SharedParameter are shared with this one.
@@ -129,7 +129,7 @@ public class SharedParameter extends Parameter {
     public SharedParameter(NamedObj container, String name, Class containerClass, String defaultValue)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         if (containerClass == null) {
             containerClass = container.getClass();
         }
@@ -157,7 +157,7 @@ public class SharedParameter extends Parameter {
 
         return result;
     }
-    
+
     /** Infer the value of this parameter from the container
      *  context. That is, search for parameters that are
      *  shared with this one, and set the value of this parameter
@@ -194,7 +194,7 @@ public class SharedParameter extends Parameter {
     public boolean isSuppressingPropagation() {
         return _suppressingPropagation;
     }
-    
+
     /** Specify whether this instance should be suppressing
      *  propagation. If this is called with value true, then
      *  changes to the <i>seed</i> or <i>generatorClass</i> parameters of
@@ -234,7 +234,7 @@ public class SharedParameter extends Parameter {
         while (containedObjects.hasNext()) {
             NamedObj candidateContainer = (NamedObj)containedObjects.next();
             result.addAll(sharedParameterList(candidateContainer));
-        }      
+        }
         return result;
     }
 
@@ -243,7 +243,7 @@ public class SharedParameter extends Parameter {
      */
     public void setExpression(String expression) {
         super.setExpression(expression);
-        
+
         if (!_suppressingPropagation) {
             NamedObj toplevel = getRoot();
             // Do not do sharing if this is within an EntityLibrary.
@@ -265,7 +265,7 @@ public class SharedParameter extends Parameter {
             }
         }
     }
-    
+
     /** Override the base class to also validate the shared instances.
      *  @exception IllegalActionException If this variable or a
      *   variable dependent on this variable cannot be evaluated (and is
@@ -274,7 +274,7 @@ public class SharedParameter extends Parameter {
      */
     public void validate() throws IllegalActionException {
     	super.validate();
-        
+
         // NOTE: This is called by setContainer(), which is called from
         // within a base class constructor. That call occurs before this
         // object has been fully constructed. It doesn't make sense at
@@ -305,7 +305,7 @@ public class SharedParameter extends Parameter {
             }
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
