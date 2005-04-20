@@ -310,6 +310,19 @@ Wrong:
 ######################################################################
 ####
 #
+test Entity-9.4 {Test clone with port that has no container } {
+    set w [java::new ptolemy.kernel.util.Workspace W]
+    set portNameProblem [java::new ptolemy.kernel.test.PortHasNoContainer \
+			     $w E1]
+    catch {$portNameProblem clone} errMsg
+    set exception [lindex $errorCode 1]
+    set cause [$exception getCause]
+    list [$cause toString]
+} {}
+
+######################################################################
+####
+#
 test Entity-9.5 {Test connectedPorts} {
     # NOTE: Uses the setup constructed in 9.0
     enumToNames [$e1 connectedPorts]
