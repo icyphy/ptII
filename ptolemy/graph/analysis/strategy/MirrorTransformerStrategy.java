@@ -204,9 +204,12 @@ public class MirrorTransformerStrategy extends CachedStrategy
                                be called publicly. The class Method is used
                                here to call public clone(). */
                             Class[] argumentTypes = {  };
-                            Method method = oldWeight.getClass().getMethod(nameClone,
+                            Method method =
+                                oldWeight.getClass().getMethod(nameClone,
                                     argumentTypes);
-                            mirrorWeight = method.invoke(oldWeight, null);
+                            // Cast to (Object []) so as to avoid varargs call.
+                            mirrorWeight = method.invoke(oldWeight,
+                                    (Object [])null);
                         } else {
                             throw new RuntimeException();
                         }
@@ -253,9 +256,12 @@ public class MirrorTransformerStrategy extends CachedStrategy
                                be called publicly. The class Method is used
                                here to call public clone(). */
                             Class[] argumentTypes = {  };
-                            Method method = oldWeight.getClass().getMethod(nameClone,
-                                    argumentTypes);
-                            mirrorWeight = method.invoke(oldWeight, null);
+                            Method method =
+                                oldWeight.getClass().getMethod(nameClone,
+                                        argumentTypes);
+                            // Cast to (Object []) so as to avoid varargs call.
+                            mirrorWeight = method.invoke(oldWeight,
+                                    (Object []) null);
                         } else {
                             throw new RuntimeException();
                         }
