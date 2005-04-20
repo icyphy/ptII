@@ -76,7 +76,7 @@ import ptolemy.kernel.util.Workspace;
    cached labeled by their corresponding rate signatures, with the most
    recently used at the end of the queue. When a state is revisited,
    the schedule identified by its rate signatures in the cache is used.
-   Therefore, we do not need to recompute the schedule. 
+   Therefore, we do not need to recompute the schedule.
    The size of the cache can be set by the <i>scheduleCacheSize</i>
    parameter. The default value of this parameter is 100. If the cache
    is full, the least recently used schedule (at the beginning of the
@@ -266,7 +266,8 @@ public class HDFDirector extends SDFDirector {
                 // Add key/schedule to the schedule map.
                 schedule = ((SDFScheduler) scheduler).getSchedule();
 
-                Map externalRates = ((SDFScheduler) scheduler).getExternalRates();
+                Map externalRates =
+                    ((SDFScheduler) scheduler).getExternalRates();
                 _externalRatesCache.put(rateKey, externalRates);
                 _scheduleCache.put(rateKey, schedule);
             }

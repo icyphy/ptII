@@ -178,7 +178,7 @@ public class HDFFSMDirector extends MultirateFSMDirector {
     /** Initialize the modal model. Set the _sendRequest flag to be true
      *  to indicate the modal model can send a change request to the manager.
      *  Set the controller flag to indicate a new iteration begins.
-     *  @exception IllegalActionException if the base class throws it.
+     *  @exception IllegalActionException If the base class throws it.
      */
     public void initialize() throws IllegalActionException {
         State currentState;
@@ -202,7 +202,8 @@ public class HDFFSMDirector extends MultirateFSMDirector {
         if (_sendRequest) {
             _sendRequest = false;
 
-            ChangeRequest request = new ChangeRequest(this, "make a transition") {
+            ChangeRequest request = new ChangeRequest(this,
+                    "make a transition") {
                     protected void _execute() throws KernelException {
                         _sendRequest = true;
                         makeStateTransition();
@@ -228,7 +229,7 @@ public class HDFFSMDirector extends MultirateFSMDirector {
     ////                         private variables                 ////
 
     /** A flag indicating whether the FSM can send a change request.
-     *  The controller in HDFFSMDirector can only send one request per 
+     *  The controller in HDFFSMDirector can only send one request per
      *  global iteration.
      */
     private boolean _sendRequest;
