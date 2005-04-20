@@ -1524,18 +1524,6 @@ public class AssignmentTransformer extends AbstractTransformer
             if (array instanceof MethodInvocation)
                 needRefactor = false;
         }
-        if (needRefactor)
-            if (state.getCurrentClass().getName().equals(ownerName))
-                needRefactor = true;
-            else {    
-                Iterator previousClasses = 
-                    state.getPreviousClasses().iterator();
-                while (previousClasses.hasNext()) {
-                    Class previous = (Class)previousClasses.next();
-                    if (previous != null && previous.getName().equals(ownerName))
-                        needRefactor = true;
-                }
-            }
         
         if (needRefactor) {
             // Refactor the expression.

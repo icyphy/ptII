@@ -77,6 +77,14 @@ public class TypeAnalyzerState {
         _loader.setCurrentClass(_currentClass, false);
     }
     
+    /** Enter the scope of a block.
+     *  
+     *  @see #leaveBlock()
+     */
+    public void enterBlock() {
+        _previousClasses.push(new Hashtable());
+    }
+    
     /** Get the type analyzer that owns this state.
      * 
      *  @return The type analyzer.
@@ -113,9 +121,15 @@ public class TypeAnalyzerState {
     }
     
     /** Get the previous class stack. The previous class stack stores
-     *  all the entered but not exited class definitions, not including
-     *  the current class. Each element in the stack is of type {@link
-     *  Class}. The bottom element in the stack is always <tt>null</tt>.
+     *  all the entered but not exited class definitions as well as
+     *  blocks, not including the current class. Each element in the
+     *  stack is either of type {@link Class} or type {@link Hashtable}.
+     *  The bottom element in the stack is always <tt>null</tt>.
+     *  <p>
+     *  An element of type {@link Hashtable} means the previous entity is
+     *  a block, where classes can also be defined in it. In that case,
+     *  simple class names are the keys of the table, and {@link Class}
+     *  objects are its values.
      * 
      *  @return The previous class stack.
      *  @see #setPreviousClasses(Stack)
@@ -206,6 +220,14 @@ public class TypeAnalyzerState {
         _currentClass = (Class)_previousClasses.pop();
         _anonymousCounts.pop();
         _loader.setCurrentClass(_currentClass, false);
+    }
+    
+    /** Leave a block declaration.
+     *  
+     *  @see #enterBlock()
+     */
+    public void leaveBlock() {
+        _previousClasses.pop();
     }
     
     /** Get the next count of anonymous classes in the current class.

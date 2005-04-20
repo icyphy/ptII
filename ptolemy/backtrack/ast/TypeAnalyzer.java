@@ -92,6 +92,7 @@ import org.eclipse.jdt.core.dom.SuperFieldAccess;
 import org.eclipse.jdt.core.dom.SuperMethodInvocation;
 import org.eclipse.jdt.core.dom.ThisExpression;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
+import org.eclipse.jdt.core.dom.TypeDeclarationStatement;
 import org.eclipse.jdt.core.dom.TypeLiteral;
 import org.eclipse.jdt.core.dom.VariableDeclaration;
 import org.eclipse.jdt.core.dom.VariableDeclarationExpression;
@@ -276,6 +277,7 @@ public class TypeAnalyzer extends ASTVisitor {
      */
     public void endVisit(Block node) {
         _closeScope();
+        _state.leaveBlock();
     }
 
     /** Visit a literal node and set its type to be the same type as the
@@ -924,6 +926,8 @@ public class TypeAnalyzer extends ASTVisitor {
      *  @param node The node to be visited.
      */
     public void endVisit(TypeDeclaration node) {
+        Class currentClass = _state.getCurrentClass();
+        
         if (_handlers.hasClassHandler()) {
             List handlerList = _handlers.getClassHandlers();
             Iterator handlersIter = handlerList.iterator();
@@ -936,6 +940,13 @@ public class TypeAnalyzer extends ASTVisitor {
         _state.unsetClassScope();
         _closeScope();
         _state.leaveClass();
+        
+        if (node.getParent() instanceof TypeDeclarationStatement) {
+            String typeName = node.getName().getIdentifier();
+            Hashtable classTable =
+                (Hashtable)_state.getPreviousClasses().peek();
+            classTable.put(typeName, currentClass);
+        }
     }
 
     /** Visit a literal node and set its type to be the same type as the
@@ -1110,6 +1121,7 @@ public class TypeAnalyzer extends ASTVisitor {
      *  @return The return value of the overriden function.
      */
     public boolean visit(Block node) {
+        _state.enterBlock();
         _openScope();
         return super.visit(node);
     }
@@ -1588,28 +1600,43 @@ public class TypeAnalyzer extends ASTVisitor {
         else
             simpleName = partialSimpleName.substring(0, dotPos);
         Class result = null;
-
-        Stack previousClasses = _state.getPreviousClasses();
-        int previousNumber = previousClasses.size();
-        for (int i = previousNumber; i >= 0; i--) {
-            Class workingClass = 
-                i == previousNumber ?
-                        _state.getCurrentClass() :
-                        (Class)previousClasses.get(i);
-            if (workingClass != null) {
-                if (_getSimpleClassName(workingClass).equals(simpleName)) {
-                    result = workingClass;
-                    break;
+        
+        if (result == null) {
+            Stack previousClasses = _state.getPreviousClasses();
+            int previousNumber = previousClasses.size();
+            for (int i = previousNumber; i >= 0; i--) {
+                Class workingClass = null;
+                if (i == previousNumber)
+                    workingClass = _state.getCurrentClass();
+                else {
+                    Object previousObject = previousClasses.get(i);
+                    if (previousObject instanceof Class)
+                        workingClass = (Class)previousObject;
+                    else if (previousObject != null){
+                        Hashtable previousTable = (Hashtable)previousObject;
+                        if (previousTable != null &&
+                                previousTable.keySet().contains(simpleName)) {
+                            result = (Class)previousTable.get(simpleName);
+                            break;
+                        }
+                    }
                 }
-                Class[] declaredClasses = workingClass.getDeclaredClasses();
-                for (int j = 0; j < declaredClasses.length; j++)
-                    if (_getSimpleClassName(declaredClasses[j]).
-                            equals(simpleName)) {
-                        result = declaredClasses[j];
+                
+                if (workingClass != null) {
+                    if (_getSimpleClassName(workingClass).equals(simpleName)) {
+                        result = workingClass;
                         break;
                     }
-                if (result != null)
-                    break;
+                    Class[] declaredClasses = workingClass.getDeclaredClasses();
+                    for (int j = 0; j < declaredClasses.length; j++)
+                        if (_getSimpleClassName(declaredClasses[j]).
+                                equals(simpleName)) {
+                            result = declaredClasses[j];
+                            break;
+                        }
+                    if (result != null)
+                        break;
+                }
             }
         }
 
@@ -1718,9 +1745,13 @@ public class TypeAnalyzer extends ASTVisitor {
            owner = null;
            if (oldOwner == null)
                while (owner == null && previousNum > 0) {
-                   owner = (Class)previousClasses.get(--previousNum);
-                   if (handledSet.contains(owner))
-                       owner = null;
+                   previousNum--;
+                   Object previousObject = previousClasses.get(previousNum);
+                   if (previousObject instanceof Class) {
+                       owner = (Class)previousObject;
+                       if (handledSet.contains(owner))
+                           owner = null;
+                   }
                }
        } while (owner != null);
        return null;
@@ -1771,10 +1802,13 @@ public class TypeAnalyzer extends ASTVisitor {
             Stack previousClasses = _state.getPreviousClasses();
             int previousNumber = previousClasses.size() - 1;
             while (typeAndOwner == null && previousNumber >= 0) {
-                Class previousClass = 
-                    (Class)previousClasses.get(previousNumber--);
-                if (previousClass != null)
-                    typeAndOwner = _resolveNameFromClass(previousClass, name);
+                Object previousObject = previousClasses.get(previousNumber--);
+                if (previousObject instanceof Class) {
+                    Class previousClass = (Class)previousObject;
+                    if (previousClass != null)
+                        typeAndOwner =
+                            _resolveNameFromClass(previousClass, name);
+                }
             }
         }
         return typeAndOwner;

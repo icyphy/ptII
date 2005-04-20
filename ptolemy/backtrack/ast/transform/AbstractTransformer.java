@@ -114,6 +114,11 @@ public abstract class AbstractTransformer {
         while (oldPos != -1) {
             int pos = indexOf(name, new char[]{'.', '$'}, oldPos);
             String subname = pos == -1 ? name.substring(oldPos) : name.substring(oldPos, pos);
+            char c = subname.charAt(0);
+            while (c >= '0' && c <= '9') {
+                subname = subname.substring(1);
+                c = subname.charAt(0);
+            }
             if (fullName == null)
                 fullName = ast.newSimpleName(subname);
             else
