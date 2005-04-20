@@ -28,6 +28,7 @@ COPYRIGHTENDKEY
 
 package ptolemy.backtrack;
 
+import java.util.Iterator;
 import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
@@ -99,7 +100,10 @@ public class Checkpoint {
      *  @param object The object to be removed.
      */
     public void removeObject(Rollbackable object) {
-        _state.getMonitoredObjects().remove(object);
+        Iterator objectsIter = _state.getMonitoredObjects().iterator();
+        while (objectsIter.hasNext())
+            if (objectsIter.next() == object)
+                objectsIter.remove();
     }
 
     /** Rollback all the monitored objects to their previous states defined by
