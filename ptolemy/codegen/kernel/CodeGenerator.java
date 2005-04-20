@@ -397,6 +397,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                                 codeGenerators.size()-1);
                 }
 
+                System.out.println("CodeGenerator: " + codeGenerator);
                 try {
                     codeGenerator.generateCode();
                 } catch (KernelException ex) {
