@@ -123,8 +123,10 @@ OPTIONAL_FILES = \
 	'Histogram$$1.class' \
 	'Histogram$$2.class' \
 	'Histogram$$3.class' \
+	'PlotApplet$$1.class' \
 	'PlotApplication$$1.class' \
 	'PlotApplication$$2.class' \
+	'PlotApplication$$3.class' \
 	'Plot$$1.class' \
 	'Plot$$2.class' \
 	'Plot$$3.class' \
@@ -260,6 +262,7 @@ COMPLEXCLASSFILES = \
 APPLICATIONCLASSFILES = \
 		'$(ME)/PlotApplication$$1.class' \
 		'$(ME)/PlotApplication$$2.class' \
+		'$(ME)/PlotApplication$$3.class' \
 		$(ME)/PlotApplication.class
 
 # Jar file for simple applets
