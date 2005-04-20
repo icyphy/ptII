@@ -167,8 +167,8 @@ public class MovieViewScreen3D extends ViewScreen3D implements StdQTConstants,
     public void initialize() throws IllegalActionException {
         super.initialize();
         _frameNumber = 0;
-        _frameWidth = _getHorizontalPixels();
-        _frameHeight = _getVerticalPixels();
+        _frameWidth = ((IntToken) horizontalResolution.getToken()).intValue();
+        _frameHeight = ((IntToken) verticalResolution.getToken()).intValue();
 
         try {
             QTSession.open();
