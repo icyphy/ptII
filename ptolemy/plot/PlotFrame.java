@@ -226,6 +226,17 @@ public class PlotFrame extends JFrame {
         plot.samplePlot();
     }
 
+    /** Set the visibility.  As a side effect, this method
+     *  sets the background of the menus.
+     *  @param visible True if the Frame is to be visible, false
+     *  if it is not visible.
+     */ 
+    public void setVisible(boolean visible) {
+        super.setVisible(visible);
+        _editMenu.setBackground(_menubar.getBackground());
+        _fileMenu.setBackground(_menubar.getBackground());
+        _specialMenu.setBackground(_menubar.getBackground());
+    }
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
