@@ -380,16 +380,9 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                             ex);                
                 }
 
-                Class codeGeneratorClass;
-                try {
-                    codeGeneratorClass =
-                        Class.forName("ptolemy.codegen.kernel.CodeGenerator");
-                } catch (ClassNotFoundException ex) {
-                    throw new RuntimeException("Could not find CodeGenerator", ex);
-                }
-
                 // Get all instances of this class contained in the model
-                List codeGenerators = toplevel.entityList(codeGeneratorClass);
+                List codeGenerators =
+                    toplevel.attributeList(CodeGenerator.class);
 
                 CodeGenerator codeGenerator;
                 if (codeGenerators.size() == 0) {
