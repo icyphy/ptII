@@ -293,7 +293,7 @@ test Entity-9.1 {Test cloning} {
 test Entity-9.3 {Test clone with badly named ports} {
     set w [java::new ptolemy.kernel.util.Workspace W]
     set portNameProblem [java::new ptolemy.kernel.test.PortNameProblem \
-			     $w E1]
+			     $w E9_3]
     catch {$portNameProblem clone} errMsg
     set exception [lindex $errorCode 1]
     set cause [$exception getCause]
@@ -305,19 +305,25 @@ Right:
     poorlyNamedInput = new TypedIOPort(this, "poorlyNamedInputPort", true, false);
 Wrong:
     poorlyNamedInput = new TypedIOPort(this, "foo", true, false);
-  in .E1}}
+  in .E9_3}}
 
 ######################################################################
 ####
 #
 test Entity-9.4 {Test clone with port that has no container } {
-    set w [java::new ptolemy.kernel.util.Workspace W]
-    set portNameProblem [java::new ptolemy.kernel.test.PortHasNoContainer \
-			     $w E1]
-    catch {$portNameProblem clone} errMsg
-    set exception [lindex $errorCode 1]
-    set cause [$exception getCause]
-    list [$cause toString]
+    set w9_4 [java::new ptolemy.kernel.util.Workspace W9_4]
+    set portHasNoContainer [java::new ptolemy.kernel.test.PortHasNoContainer \
+			     $w9_4 E9_4]
+    set errMsg ""
+    set r ""
+    if [catch {$portHasNoContainer clone} errMsg] {
+	set exception [lindex $errorCode 1]
+	set cause [$exception getCause]
+	set r [$cause toString]
+    } else {
+	set r [$portHasNoContainer description 15]
+    }
+    list $r
 } {}
 
 ######################################################################

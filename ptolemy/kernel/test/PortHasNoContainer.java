@@ -53,8 +53,8 @@ public class PortHasNoContainer extends Entity {
 
         startTrigger = new Port(this, "startTrigger");
         new Attribute(startTrigger, "_showName");
-        startTrigger.setContainer(null);
 
+        startTrigger.setContainer(null);
     }
 
     /** This port, from actor/lib/io/DirectoryListing.java, is ok because
