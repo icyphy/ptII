@@ -74,7 +74,7 @@ OPTIONAL_FILES = \
 	$(PTCLASSJAR) \
 	'EditablePlotMLApplet$$1.class' \
 	'EditablePlotMLApplet$$ChoiceListener.class' \
-	'EditablePlotMLApplication$$SelectListener.class'
+	'EditablePlotMLApplication$$SelectListener.class' \
 	'EditablePlotMLApplication$$1.class' \
 	'HistogramMLApplication$$1.class' \
 	'PlotMLApplication$1.class'
