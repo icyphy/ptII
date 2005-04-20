@@ -162,6 +162,8 @@ public class ConstructorTransformer extends AbstractTransformer
     static {
         SPECIAL_TYPE_MAPPING.put("java.util.Random",
                 "ptolemy.backtrack.util.java.util.Random");
+        SPECIAL_TYPE_MAPPING.put("java.util.TreeMap",
+                "ptolemy.backtrack.util.java.util.TreeMap");
     }
 
     private void _handleDeclaration(ASTNode node, List bodyDeclarations, 
