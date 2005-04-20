@@ -194,8 +194,7 @@ public class PlotApplication extends PlotFrame {
             Runnable doActions = new Runnable() {
                     public void run() {
                         try {
-                            PlotApplication plotApplication =
-                                new PlotApplication(new Plot(), args);
+                            new PlotApplication(new Plot(), args);
                         } catch (Exception ex) {
                             System.err.println(ex.toString());
                             ex.printStackTrace();
