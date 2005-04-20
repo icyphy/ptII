@@ -189,7 +189,7 @@ public class HDFDirector extends SDFDirector {
             }
 
             Iterator inputPorts = _inputPortList.iterator();
-            String rates = new String();
+            String rates = "";
 
             while (inputPorts.hasNext()) {
                 IOPort inputPort = (IOPort) inputPorts.next();
