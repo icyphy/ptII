@@ -72,8 +72,86 @@ OPTIONAL_FILES = \
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-all: jclass
-install: jclass $(PTCLASSJAR)
+all: jclass gcc-compile
+install: jclass gcc-compile $(PTCLASSJAR)
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
+
+gcc: jclass gcc-source transform gcc-compile
+
+GCC_DIR = gcc/libjava
+
+GCC_FILES = \
+	java/util/AbstractCollection.java \
+	java/util/AbstractList.java \
+	java/util/AbstractMap.java \
+	java/util/AbstractSequentialList.java \
+	java/util/AbstractSet.java \
+	java/util/ArrayList.java \
+	java/util/Collection.java \
+	java/util/Collections.java \
+	java/util/HashMap.java \
+	java/util/HashSet.java \
+	java/util/Hashtable.java \
+	java/util/List.java \
+	java/util/LinkedHashMap.java \
+	java/util/LinkedHashSet.java \
+	java/util/LinkedList.java \
+	java/util/Map.java \
+	java/util/Random.java \
+	java/util/Set.java \
+	java/util/SortedMap.java \
+	java/util/SortedSet.java \
+	java/util/Stack.java \
+	java/util/TreeMap.java \
+	java/util/TreeSet.java \
+	java/util/Vector.java
+	
+GCC_CLASSES = $(GCC_FILES:%.java=%.class)
+	
+GCC_REPOSITORY = \
+	:ext:anoncvs@savannah.gnu.org:/cvsroot/gcc
+	
+SOURCE_DATE = 20040418
+
+gcc-source:
+	@echo Checking out GCC source files...
+	@rm -rf gcc
+	@for javafile in $(GCC_FILES); do \
+	  files="$$files $(GCC_DIR)/$$javafile"; \
+	done && \
+	cvs \
+	  -d $(GCC_REPOSITORY) \
+	  -z3 \
+	  checkout \
+	  -P \
+	  -D $(SOURCE_DATE) \
+	  $$files
+	@patch -p0 < gcc-patch
+	@echo Compiling GCC source files...
+	@for javafile in $(GCC_FILES); do \
+	  files="$$files $(GCC_DIR)/$$javafile"; \
+	done && \
+	"$(JAVAC)" \
+	  -classpath gcc/libjava \
+	  $$files
+
+transform:
+	@echo Transform GCC source files.
+	@rm -rf java
+	@for javafile in $(GCC_FILES); do \
+	  files="$$files $(GCC_DIR)/$$javafile"; \
+	done && \
+	"$(JAVA)" \
+	  -classpath "$(CLASSPATH)$(CLASSPATHSEPARATOR)$(PTBACKTRACK_JARS)$(AUXCLASSPATH)$(CLASSPATHSEPARATOR)gcc/libjava" \
+	  -Xbootclasspath/p:gcc/libjava \
+	  ptolemy.backtrack.ast.Transformer \
+	  -prefix ptolemy.backtrack.util \
+	  -output "$(ROOT)" \
+	  -classpath gcc/libjava \
+	  $$files
+
+gcc-compile: $(GCC_CLASSES)
+
+KRUFT = gcc java/util/*.class

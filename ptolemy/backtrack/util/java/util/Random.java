@@ -1,19 +1,21 @@
 package ptolemy.backtrack.util.java.util;
 
+import java.io.Serializable;
+import java.lang.Object;
 import ptolemy.backtrack.Checkpoint;
 import ptolemy.backtrack.Rollbackable;
 import ptolemy.backtrack.util.CheckpointRecord;
 import ptolemy.backtrack.util.FieldRecord;
 
-public class Random extends java.util.Random implements Rollbackable {
+public class Random implements Serializable, Rollbackable {
 
     protected Checkpoint $CHECKPOINT = new Checkpoint(this);
 
-    private boolean _haveNextNextGaussian;
+    private boolean haveNextNextGaussian;
 
-    private double _nextNextGaussian;
+    private double nextNextGaussian;
 
-    private long _seed;
+    private long seed;
 
     private static final long serialVersionUID = 3905348978240129619L;
 
@@ -26,13 +28,13 @@ public class Random extends java.util.Random implements Rollbackable {
     }
 
     public synchronized void setSeed(long seed) {
-        this.$ASSIGN$_seed((seed ^ 0x5DEECE66DL) & ((1L << 48) - 1));
-        $ASSIGN$_haveNextNextGaussian(false);
+        this.$ASSIGN$seed((seed ^ 0x5DEECE66DL) & ((1L << 48) - 1));
+        $ASSIGN$haveNextNextGaussian(false);
     }
 
     protected synchronized int next(int bits) {
-        $ASSIGN$_seed((_seed * 0x5DEECE66DL + 0xBL) & ((1L << 48) - 1));
-        return (int)(_seed >>> (48 - bits));
+        $ASSIGN$seed((seed * 0x5DEECE66DL + 0xBL) & ((1L << 48) - 1));
+        return (int)(seed >>> (48 - bits));
     }
 
     public void nextBytes(byte[] bytes) {
@@ -88,9 +90,9 @@ public class Random extends java.util.Random implements Rollbackable {
     }
 
     public synchronized double nextGaussian() {
-        if (_haveNextNextGaussian) {
-            $ASSIGN$_haveNextNextGaussian(false);
-            return _nextNextGaussian;
+        if (haveNextNextGaussian) {
+            $ASSIGN$haveNextNextGaussian(false);
+            return nextNextGaussian;
         }
         double v1, v2, s;
         do {
@@ -99,36 +101,36 @@ public class Random extends java.util.Random implements Rollbackable {
             s = v1 * v1 + v2 * v2;
         } while (s >= 1);
         double norm = Math.sqrt(-2 * Math.log(s) / s);
-        $ASSIGN$_nextNextGaussian(v2 * norm);
-        $ASSIGN$_haveNextNextGaussian(true);
+        $ASSIGN$nextNextGaussian(v2 * norm);
+        $ASSIGN$haveNextNextGaussian(true);
         return v1 * norm;
     }
 
-    private final boolean $ASSIGN$_haveNextNextGaussian(boolean newValue) {
+    private final boolean $ASSIGN$haveNextNextGaussian(boolean newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_haveNextNextGaussian.add(null, _haveNextNextGaussian, $CHECKPOINT.getTimestamp());
+            $RECORD$haveNextNextGaussian.add(null, haveNextNextGaussian, $CHECKPOINT.getTimestamp());
         }
-        return _haveNextNextGaussian = newValue;
+        return haveNextNextGaussian = newValue;
     }
 
-    private final double $ASSIGN$_nextNextGaussian(double newValue) {
+    private final double $ASSIGN$nextNextGaussian(double newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_nextNextGaussian.add(null, _nextNextGaussian, $CHECKPOINT.getTimestamp());
+            $RECORD$nextNextGaussian.add(null, nextNextGaussian, $CHECKPOINT.getTimestamp());
         }
-        return _nextNextGaussian = newValue;
+        return nextNextGaussian = newValue;
     }
 
-    private final long $ASSIGN$_seed(long newValue) {
+    private final long $ASSIGN$seed(long newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_seed.add(null, _seed, $CHECKPOINT.getTimestamp());
+            $RECORD$seed.add(null, seed, $CHECKPOINT.getTimestamp());
         }
-        return _seed = newValue;
+        return seed = newValue;
     }
 
     public void $RESTORE(long timestamp, boolean trim) {
-        _haveNextNextGaussian = $RECORD$_haveNextNextGaussian.restore(_haveNextNextGaussian, timestamp, trim);
-        _nextNextGaussian = $RECORD$_nextNextGaussian.restore(_nextNextGaussian, timestamp, trim);
-        _seed = $RECORD$_seed.restore(_seed, timestamp, trim);
+        haveNextNextGaussian = $RECORD$haveNextNextGaussian.restore(haveNextNextGaussian, timestamp, trim);
+        nextNextGaussian = $RECORD$nextNextGaussian.restore(nextNextGaussian, timestamp, trim);
+        seed = $RECORD$seed.restore(seed, timestamp, trim);
         if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
             $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
             FieldRecord.popState($RECORDS);
@@ -153,17 +155,17 @@ public class Random extends java.util.Random implements Rollbackable {
         return this;
     }
 
-    private CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
+    protected CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
 
-    private FieldRecord $RECORD$_haveNextNextGaussian = new FieldRecord(0);
+    private FieldRecord $RECORD$haveNextNextGaussian = new FieldRecord(0);
 
-    private FieldRecord $RECORD$_nextNextGaussian = new FieldRecord(0);
+    private FieldRecord $RECORD$nextNextGaussian = new FieldRecord(0);
 
-    private FieldRecord $RECORD$_seed = new FieldRecord(0);
+    private FieldRecord $RECORD$seed = new FieldRecord(0);
 
     private FieldRecord[] $RECORDS = new FieldRecord[] {
-            $RECORD$_haveNextNextGaussian,
-            $RECORD$_nextNextGaussian,
-            $RECORD$_seed
+            $RECORD$haveNextNextGaussian,
+            $RECORD$nextNextGaussian,
+            $RECORD$seed
         };
 }

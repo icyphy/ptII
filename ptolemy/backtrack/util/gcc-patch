@@ -1,0 +1,5484 @@
+diff -rc gcc/libjava/java/util/AbstractList.java gcc-patched/libjava/java/util/AbstractList.java
+*** gcc/libjava/java/util/AbstractList.java	Tue Jun 18 08:39:43 2002
+--- gcc-patched/libjava/java/util/AbstractList.java	Tue Apr 19 16:39:55 2005
+***************
+*** 85,91 ****
+     * <code>add(int, Object)</code> and <code>remove(int)</code> methods.
+     * Otherwise, this field may be ignored.
+     */
+!   protected int modCount;
+  
+    /**
+     * The main constructor, for use by subclasses.
+--- 85,99 ----
+     * <code>add(int, Object)</code> and <code>remove(int)</code> methods.
+     * Otherwise, this field may be ignored.
+     */
+!   private int modCount;
+!   
+!   protected int getModCount() {
+!       return modCount;
+!   }
+!   
+!   protected void setModCount(int modCount) {
+!       this.modCount = modCount;
+!   }
+  
+    /**
+     * The main constructor, for use by subclasses.
+***************
+*** 305,316 ****
+        private int pos = 0;
+        private int size = size();
+        private int last = -1;
+!       private int knownMod = modCount;
+  
+        // This will get inlined, since it is private.
+        private void checkMod()
+        {
+!         if (knownMod != modCount)
+            throw new ConcurrentModificationException();
+        }
+  
+--- 313,324 ----
+        private int pos = 0;
+        private int size = size();
+        private int last = -1;
+!       private int knownMod = getModCount();
+  
+        // This will get inlined, since it is private.
+        private void checkMod()
+        {
+!         if (knownMod != getModCount())
+            throw new ConcurrentModificationException();
+        }
+  
+***************
+*** 338,344 ****
+          pos--;
+          size--;
+          last = -1;
+!         knownMod = modCount;
+        }
+      };
+    }
+--- 346,352 ----
+          pos--;
+          size--;
+          last = -1;
+!         knownMod = getModCount();
+        }
+      };
+    }
+***************
+*** 399,405 ****
+  
+      return new ListIterator()
+      {
+!       private int knownMod = modCount;
+        private int position = index;
+        private int lastReturned = -1;
+        private int size = size();
+--- 407,413 ----
+  
+      return new ListIterator()
+      {
+!       private int knownMod = getModCount();
+        private int position = index;
+        private int lastReturned = -1;
+        private int size = size();
+***************
+*** 407,413 ****
+        // This will get inlined, since it is private.
+        private void checkMod()
+        {
+!         if (knownMod != modCount)
+            throw new ConcurrentModificationException();
+        }
+  
+--- 415,421 ----
+        // This will get inlined, since it is private.
+        private void checkMod()
+        {
+!         if (knownMod != getModCount())
+            throw new ConcurrentModificationException();
+        }
+  
+***************
+*** 462,468 ****
+          size--;
+          position = lastReturned;
+          lastReturned = -1;
+!         knownMod = modCount;
+        }
+  
+        public void set(Object o)
+--- 470,476 ----
+          size--;
+          position = lastReturned;
+          lastReturned = -1;
+!         knownMod = getModCount();
+        }
+  
+        public void set(Object o)
+***************
+*** 479,485 ****
+          AbstractList.this.add(position++, o);
+          size++;
+          lastReturned = -1;
+!         knownMod = modCount;
+        }
+      };
+    }
+--- 487,493 ----
+          AbstractList.this.add(position++, o);
+          size++;
+          lastReturned = -1;
+!         knownMod = getModCount();
+        }
+      };
+    }
+***************
+*** 623,633 ****
+  {
+    // Package visible, for use by iterator.
+    /** The original list. */
+!   final AbstractList backingList;
+    /** The index of the first element of the sublist. */
+    final int offset;
+    /** The size of the sublist. */
+!   int size;
+  
+    /**
+     * Construct the sublist.
+--- 631,650 ----
+  {
+    // Package visible, for use by iterator.
+    /** The original list. */
+!   private final AbstractList backingList;
+!   AbstractList getBackingList() {
+!       return backingList;
+!   }
+    /** The index of the first element of the sublist. */
+    final int offset;
+    /** The size of the sublist. */
+!   private int size;
+!   int getSize() {
+!       return size;
+!   }
+!   void setSize(int size) {
+!       this.size = size;
+!   }
+  
+    /**
+     * Construct the sublist.
+***************
+*** 639,645 ****
+    SubList(AbstractList backing, int fromIndex, int toIndex)
+    {
+      backingList = backing;
+!     modCount = backing.modCount;
+      offset = fromIndex;
+      size = toIndex - fromIndex;
+    }
+--- 656,662 ----
+    SubList(AbstractList backing, int fromIndex, int toIndex)
+    {
+      backingList = backing;
+!     setModCount(backing.getModCount());
+      offset = fromIndex;
+      size = toIndex - fromIndex;
+    }
+***************
+*** 654,660 ****
+    // This can be inlined. Package visible, for use by iterator.
+    void checkMod()
+    {
+!     if (modCount != backingList.modCount)
+        throw new ConcurrentModificationException();
+    }
+  
+--- 671,677 ----
+    // This can be inlined. Package visible, for use by iterator.
+    void checkMod()
+    {
+!     if (getModCount() != backingList.getModCount())
+        throw new ConcurrentModificationException();
+    }
+  
+***************
+*** 738,744 ****
+      checkBoundsInclusive(index);
+      backingList.add(index + offset, o);
+      size++;
+!     modCount = backingList.modCount;
+    }
+  
+    /**
+--- 755,761 ----
+      checkBoundsInclusive(index);
+      backingList.add(index + offset, o);
+      size++;
+!     setModCount(backingList.getModCount());
+    }
+  
+    /**
+***************
+*** 753,759 ****
+      checkBoundsExclusive(index);
+      Object o = backingList.remove(index + offset);
+      size--;
+!     modCount = backingList.modCount;
+      return o;
+    }
+  
+--- 770,776 ----
+      checkBoundsExclusive(index);
+      Object o = backingList.remove(index + offset);
+      size--;
+!     setModCount(backingList.getModCount());
+      return o;
+    }
+  
+***************
+*** 771,777 ****
+  
+      backingList.removeRange(offset + fromIndex, offset + toIndex);
+      size -= toIndex - fromIndex;
+!     modCount = backingList.modCount;
+    }
+  
+    /**
+--- 788,794 ----
+  
+      backingList.removeRange(offset + fromIndex, offset + toIndex);
+      size -= toIndex - fromIndex;
+!     setModCount(backingList.getModCount());
+    }
+  
+    /**
+***************
+*** 788,794 ****
+      int csize = c.size();
+      boolean result = backingList.addAll(offset + index, c);
+      size += csize;
+!     modCount = backingList.modCount;
+      return result;
+    }
+  
+--- 805,811 ----
+      int csize = c.size();
+      boolean result = backingList.addAll(offset + index, c);
+      size += csize;
+!     setModCount(backingList.getModCount());
+      return result;
+    }
+  
+***************
+*** 873,879 ****
+          i.remove();
+          size--;
+          position = nextIndex();
+!         modCount = backingList.modCount;
+        }
+  
+        public void set(Object o)
+--- 890,896 ----
+          i.remove();
+          size--;
+          position = nextIndex();
+!         setModCount(backingList.getModCount());
+        }
+  
+        public void set(Object o)
+***************
+*** 886,892 ****
+          i.add(o);
+          size++;
+          position++;
+!         modCount = backingList.modCount;
+        }
+  
+        // Here is the reason why the various modCount fields are mostly
+--- 903,909 ----
+          i.add(o);
+          size++;
+          position++;
+!         setModCount(backingList.getModCount());
+        }
+  
+        // Here is the reason why the various modCount fields are mostly
+diff -rc gcc/libjava/java/util/AbstractMap.java gcc-patched/libjava/java/util/AbstractMap.java
+*** gcc/libjava/java/util/AbstractMap.java	Sun Nov 10 14:06:49 2002
+--- gcc-patched/libjava/java/util/AbstractMap.java	Tue Apr 19 16:39:55 2005
+***************
+*** 76,88 ****
+     * The cache for {@link #keySet()}.
+     */
+    // Package visible for use by subclasses.
+!   Set keys;
+  
+    /**
+     * The cache for {@link #values()}.
+     */
+    // Package visible for use by subclasses.
+!   Collection values;
+  
+    /**
+     * The main constructor, for use by subclasses.
+--- 76,104 ----
+     * The cache for {@link #keySet()}.
+     */
+    // Package visible for use by subclasses.
+!   private Set keys;
+!   
+!   protected Set getKeys() {
+!       return keys;
+!   }
+!   
+!   protected void setKeys(Set keys) {
+!       this.keys = keys;
+!   }
+  
+    /**
+     * The cache for {@link #values()}.
+     */
+    // Package visible for use by subclasses.
+!   private Collection values;
+!   
+!   protected Collection getValues() {
+!       return values;
+!   }
+!   
+!   protected void setValues(Collection values) {
+!       this.values = values;
+!   }
+  
+    /**
+     * The main constructor, for use by subclasses.
+***************
+*** 538,549 ****
+      /**
+       * The key. Package visible for direct manipulation.
+       */
+!     Object key;
+  
+      /**
+       * The value. Package visible for direct manipulation.
+       */
+!     Object value;
+  
+      /**
+       * Basic constructor initializes the fields.
+--- 554,565 ----
+      /**
+       * The key. Package visible for direct manipulation.
+       */
+!     private Object key;
+  
+      /**
+       * The value. Package visible for direct manipulation.
+       */
+!     private Object value;
+  
+      /**
+       * Basic constructor initializes the fields.
+***************
+*** 594,599 ****
+--- 610,622 ----
+      {
+        return key;
+      }
++     
++     public Object setKey(Object newKey)
++     {
++       Object r = key;
++       key = newKey;
++       return r;
++     }
+  
+      /**
+       * Get the value corresponding to this entry. If you already called
+diff -rc gcc/libjava/java/util/ArrayList.java gcc-patched/libjava/java/util/ArrayList.java
+*** gcc/libjava/java/util/ArrayList.java	Sun Nov  3 12:27:31 2002
+--- gcc-patched/libjava/java/util/ArrayList.java	Tue Apr 19 16:39:55 2005
+***************
+*** 334,340 ****
+     */
+    public boolean add(Object e)
+    {
+!     modCount++;
+      if (size == data.length)
+        ensureCapacity(size + 1);
+      data[size++] = e;
+--- 334,340 ----
+     */
+    public boolean add(Object e)
+    {
+!     setModCount(getModCount() + 1);
+      if (size == data.length)
+        ensureCapacity(size + 1);
+      data[size++] = e;
+***************
+*** 352,358 ****
+    public void add(int index, Object e)
+    {
+      checkBoundInclusive(index);
+!     modCount++;
+      if (size == data.length)
+        ensureCapacity(size + 1);
+      if (index != size)
+--- 352,358 ----
+    public void add(int index, Object e)
+    {
+      checkBoundInclusive(index);
+!     setModCount(getModCount() + 1);
+      if (size == data.length)
+        ensureCapacity(size + 1);
+      if (index != size)
+***************
+*** 372,378 ****
+    {
+      checkBoundExclusive(index);
+      Object r = data[index];
+!     modCount++;
+      if (index != --size)
+        System.arraycopy(data, index + 1, data, index, size - index);
+      // Aid for garbage collection by releasing this pointer.
+--- 372,378 ----
+    {
+      checkBoundExclusive(index);
+      Object r = data[index];
+!     setModCount(getModCount() + 1);
+      if (index != --size)
+        System.arraycopy(data, index + 1, data, index, size - index);
+      // Aid for garbage collection by releasing this pointer.
+***************
+*** 387,393 ****
+    {
+      if (size > 0)
+        {
+!         modCount++;
+          // Allow for garbage collection.
+          Arrays.fill(data, 0, size, null);
+          size = 0;
+--- 387,393 ----
+    {
+      if (size > 0)
+        {
+!         setModCount(getModCount() + 1);
+          // Allow for garbage collection.
+          Arrays.fill(data, 0, size, null);
+          size = 0;
+***************
+*** 423,429 ****
+      Iterator itr = c.iterator();
+      int csize = c.size();
+  
+!     modCount++;
+      if (csize + size > data.length)
+        ensureCapacity(size + csize);
+      int end = index + csize;
+--- 423,429 ----
+      Iterator itr = c.iterator();
+      int csize = c.size();
+  
+!     setModCount(getModCount() + 1);
+      if (csize + size > data.length)
+        ensureCapacity(size + csize);
+      int end = index + csize;
+***************
+*** 448,454 ****
+      int change = toIndex - fromIndex;
+      if (change > 0)
+        {
+!         modCount++;
+          System.arraycopy(data, toIndex, data, fromIndex, size - toIndex);
+          size -= change;
+        }
+--- 448,454 ----
+      int change = toIndex - fromIndex;
+      if (change > 0)
+        {
+!         setModCount(getModCount() + 1);
+          System.arraycopy(data, toIndex, data, fromIndex, size - toIndex);
+          size -= change;
+        }
+***************
+*** 507,513 ****
+      if (i == size)
+        return false;
+  
+!     modCount++;
+      for (j = i++; i < size; i++)
+        if (! c.contains(data[i]))
+          data[j++] = data[i];
+--- 507,513 ----
+      if (i == size)
+        return false;
+  
+!     setModCount(getModCount() + 1);
+      for (j = i++; i < size; i++)
+        if (! c.contains(data[i]))
+          data[j++] = data[i];
+***************
+*** 535,541 ****
+      if (i == size)
+        return false;
+  
+!     modCount++;
+      for (j = i++; i < size; i++)
+        if (c.contains(data[i]))
+          data[j++] = data[i];
+--- 535,541 ----
+      if (i == size)
+        return false;
+  
+!     setModCount(getModCount() + 1);
+      for (j = i++; i < size; i++)
+        if (c.contains(data[i]))
+          data[j++] = data[i];
+diff -rc gcc/libjava/java/util/CVS/Entries gcc-patched/libjava/java/util/CVS/Entries
+*** gcc/libjava/java/util/CVS/Entries	Tue Apr 19 16:47:53 2005
+--- gcc-patched/libjava/java/util/CVS/Entries	Tue Apr 19 15:34:29 2005
+***************
+*** 7,25 ****
+  /Collection.java/1.4/Tue Jan 22 22:40:38 2002//D2004.04.18.07.00.00
+  /Collections.java/1.9/Tue Jun 18 15:39:49 2002//D2004.04.18.07.00.00
+  /HashMap.java/1.16/Sun Dec  7 23:00:49 2003//D2004.04.18.07.00.00
+- /HashSet.java/1.7/Tue Jan 22 22:40:38 2002//D2004.04.18.07.00.00
+  /Hashtable.java/1.22/Sun Dec  7 23:00:49 2003//D2004.04.18.07.00.00
+  /List.java/1.7/Tue Jun 18 15:39:55 2002//D2004.04.18.07.00.00
+  /LinkedHashMap.java/1.5/Sun Nov 10 22:06:49 2002//D2004.04.18.07.00.00
+- /LinkedHashSet.java/1.2/Tue Jan 22 22:40:38 2002//D2004.04.18.07.00.00
+  /LinkedList.java/1.11/Wed Oct  8 15:30:44 2003//D2004.04.18.07.00.00
+  /Map.java/1.6/Sat Oct 11 18:52:30 2003//D2004.04.18.07.00.00
+  /Random.java/1.8/Thu Nov  7 04:38:21 2002//D2004.04.18.07.00.00
+  /Set.java/1.5/Tue Jan 22 22:40:39 2002//D2004.04.18.07.00.00
+  /SortedMap.java/1.4/Tue Jan 22 22:40:39 2002//D2004.04.18.07.00.00
+  /SortedSet.java/1.4/Tue Jan 22 22:40:39 2002//D2004.04.18.07.00.00
+- /Stack.java/1.7/Tue Jan 22 22:40:39 2002//D2004.04.18.07.00.00
+  /TreeMap.java/1.10/Sun Oct 26 02:48:31 2003//D2004.04.18.07.00.00
+- /TreeSet.java/1.6/Tue Jan 22 22:40:39 2002//D2004.04.18.07.00.00
+  /Vector.java/1.15/Sun Apr  7 07:40:49 2002//D2004.04.18.07.00.00
+  D
+--- 7,21 ----
+diff -rc gcc/libjava/java/util/Collections.java gcc-patched/libjava/java/util/Collections.java
+*** gcc/libjava/java/util/Collections.java	Tue Jun 18 08:39:49 2002
+--- gcc-patched/libjava/java/util/Collections.java	Tue Apr 19 16:39:55 2005
+***************
+*** 1626,1634 ****
+       */
+      public Set keySet()
+      {
+!       if (keys == null)
+!         keys = singleton(k);
+!       return keys;
+      }
+  
+      /**
+--- 1626,1634 ----
+       */
+      public Set keySet()
+      {
+!       if (getKeys() == null)
+!         setKeys(singleton(k));
+!       return getKeys();
+      }
+  
+      /**
+***************
+*** 1645,1653 ****
+       */
+      public Collection values()
+      {
+!       if (values == null)
+!         values = singleton(v);
+!       return values;
+      }
+  
+      /**
+--- 1645,1653 ----
+       */
+      public Collection values()
+      {
+!       if (getValues() == null)
+!         setValues(singleton(v));
+!       return getValues();
+      }
+  
+      /**
+diff -rc gcc/libjava/java/util/HashMap.java gcc-patched/libjava/java/util/HashMap.java
+*** gcc/libjava/java/util/HashMap.java	Sun Dec  7 15:00:49 2003
+--- gcc-patched/libjava/java/util/HashMap.java	Tue Apr 19 16:45:53 2005
+***************
+*** 136,155 ****
+     * Array containing the actual key-value mappings.
+     * Package visible for use by nested and subclasses.
+     */
+!   transient HashEntry[] buckets;
+  
+    /**
+     * Counts the number of modifications this HashMap has undergone, used
+     * by Iterators to know when to throw ConcurrentModificationExceptions.
+     * Package visible for use by nested and subclasses.
+     */
+!   transient int modCount;
+  
+    /**
+     * The size of this HashMap:  denotes the number of key-value pairs.
+     * Package visible for use by nested and subclasses.
+     */
+!   transient int size;
+  
+    /**
+     * The cache for {@link #entrySet()}.
+--- 136,179 ----
+     * Array containing the actual key-value mappings.
+     * Package visible for use by nested and subclasses.
+     */
+!   private transient HashEntry[] buckets;
+!   
+!   protected HashEntry[] getBuckets() {
+!       return buckets;
+!   }
+!   
+!   protected HashEntry getBucket(int index) {
+!       return buckets[index];
+!   }
+!   
+!   protected void setBucket(int index, HashEntry entry) {
+!       buckets[index] = entry;
+!   }
+  
+    /**
+     * Counts the number of modifications this HashMap has undergone, used
+     * by Iterators to know when to throw ConcurrentModificationExceptions.
+     * Package visible for use by nested and subclasses.
+     */
+!   private transient int modCount;
+!   
+!   protected int getModCount() {
+!       return modCount;
+!   }
+!   
+!   protected void setModCount(int modCount) {
+!       this.modCount = modCount;
+!   }
+  
+    /**
+     * The size of this HashMap:  denotes the number of key-value pairs.
+     * Package visible for use by nested and subclasses.
+     */
+!   private transient int size;
+!   
+!   protected int getSize() {
+!       return size;
+!   }
+  
+    /**
+     * The cache for {@link #entrySet()}.
+***************
+*** 196,202 ****
+       */
+      Object cleanup()
+      {
+!       return value;
+      }
+    }
+  
+--- 220,226 ----
+       */
+      Object cleanup()
+      {
+!       return getValue();
+      }
+    }
+  
+***************
+*** 298,305 ****
+      HashEntry e = buckets[idx];
+      while (e != null)
+        {
+!         if (equals(key, e.key))
+!           return e.value;
+          e = e.next;
+        }
+      return null;
+--- 322,329 ----
+      HashEntry e = buckets[idx];
+      while (e != null)
+        {
+!         if (equals(key, e.getKey()))
+!           return e.getValue();
+          e = e.next;
+        }
+      return null;
+***************
+*** 319,325 ****
+      HashEntry e = buckets[idx];
+      while (e != null)
+        {
+!         if (equals(key, e.key))
+            return true;
+          e = e.next;
+        }
+--- 343,349 ----
+      HashEntry e = buckets[idx];
+      while (e != null)
+        {
+!         if (equals(key, e.getKey()))
+            return true;
+          e = e.next;
+        }
+***************
+*** 346,356 ****
+  
+      while (e != null)
+        {
+!         if (equals(key, e.key))
+            {
+              e.access(); // Must call this for bookkeeping in LinkedHashMap.
+!             Object r = e.value;
+!             e.value = value;
+              return r;
+            }
+          else
+--- 370,380 ----
+  
+      while (e != null)
+        {
+!         if (equals(key, e.getKey()))
+            {
+              e.access(); // Must call this for bookkeeping in LinkedHashMap.
+!             Object r = e.getValue();
+!             e.setValue(value);
+              return r;
+            }
+          else
+***************
+*** 388,394 ****
+          if (e instanceof AbstractMap.BasicMapEntry)
+            {
+              AbstractMap.BasicMapEntry entry = (AbstractMap.BasicMapEntry) e;
+!             put(entry.key, entry.value);
+            }
+          else
+            put(e.getKey(), e.getValue());
+--- 412,418 ----
+          if (e instanceof AbstractMap.BasicMapEntry)
+            {
+              AbstractMap.BasicMapEntry entry = (AbstractMap.BasicMapEntry) e;
+!             put(entry.getKey(), entry.getValue());
+            }
+          else
+            put(e.getKey(), e.getValue());
+***************
+*** 413,419 ****
+  
+      while (e != null)
+        {
+!         if (equals(key, e.key))
+            {
+              modCount++;
+              if (last == null)
+--- 437,443 ----
+  
+      while (e != null)
+        {
+!         if (equals(key, e.getKey()))
+            {
+              modCount++;
+              if (last == null)
+***************
+*** 458,464 ****
+          HashEntry e = buckets[i];
+          while (e != null)
+            {
+!             if (equals(value, e.value))
+                return true;
+              e = e.next;
+            }
+--- 482,488 ----
+          HashEntry e = buckets[i];
+          while (e != null)
+            {
+!             if (equals(value, e.getValue()))
+                return true;
+              e = e.next;
+            }
+***************
+*** 501,510 ****
+     */
+    public Set keySet()
+    {
+!     if (keys == null)
+        // Create an AbstractSet with custom implementations of those methods
+        // that can be overridden easily and efficiently.
+!       keys = new AbstractSet()
+        {
+          public int size()
+          {
+--- 525,534 ----
+     */
+    public Set keySet()
+    {
+!     if (getKeys() == null)
+        // Create an AbstractSet with custom implementations of those methods
+        // that can be overridden easily and efficiently.
+!       setKeys(new AbstractSet()
+        {
+          public int size()
+          {
+***************
+*** 536,543 ****
+            HashMap.this.remove(o);
+            return oldsize != size;
+          }
+!       };
+!     return keys;
+    }
+  
+    /**
+--- 560,567 ----
+            HashMap.this.remove(o);
+            return oldsize != size;
+          }
+!       });
+!     return getKeys();
+    }
+  
+    /**
+***************
+*** 552,561 ****
+     */
+    public Collection values()
+    {
+!     if (values == null)
+        // We don't bother overriding many of the optional methods, as doing so
+        // wouldn't provide any significant performance advantage.
+!       values = new AbstractCollection()
+        {
+          public int size()
+          {
+--- 576,585 ----
+     */
+    public Collection values()
+    {
+!     if (getValues() == null)
+        // We don't bother overriding many of the optional methods, as doing so
+        // wouldn't provide any significant performance advantage.
+!       setValues(new AbstractCollection()
+        {
+          public int size()
+          {
+***************
+*** 572,579 ****
+          {
+            HashMap.this.clear();
+          }
+!       };
+!     return values;
+    }
+  
+    /**
+--- 596,603 ----
+          {
+            HashMap.this.clear();
+          }
+!       });
+!     return getValues();
+    }
+  
+    /**
+***************
+*** 622,628 ****
+            HashEntry e = getEntry(o);
+            if (e != null)
+              {
+!               HashMap.this.remove(e.key);
+                return true;
+              }
+            return false;
+--- 646,652 ----
+            HashEntry e = getEntry(o);
+            if (e != null)
+              {
+!               HashMap.this.remove(e.getKey());
+                return true;
+              }
+            return false;
+***************
+*** 667,674 ****
+      HashEntry e = buckets[idx];
+      while (e != null)
+        {
+!         if (equals(e.key, key))
+!           return equals(e.value, me.getValue()) ? e : null;
+          e = e.next;
+        }
+      return null;
+--- 691,698 ----
+      HashEntry e = buckets[idx];
+      while (e != null)
+        {
+!         if (equals(e.getKey(), key))
+!           return equals(e.getValue(), me.getValue()) ? e : null;
+          e = e.next;
+        }
+      return null;
+***************
+*** 741,747 ****
+          HashEntry e = oldBuckets[i];
+          while (e != null)
+            {
+!             int idx = hash(e.key);
+              HashEntry dest = buckets[idx];
+  
+              if (dest != null)
+--- 765,771 ----
+          HashEntry e = oldBuckets[i];
+          while (e != null)
+            {
+!             int idx = hash(e.getKey());
+              HashEntry dest = buckets[idx];
+  
+              if (dest != null)
+***************
+*** 782,789 ****
+      while (it.hasNext())
+        {
+          HashEntry entry = (HashEntry) it.next();
+!         s.writeObject(entry.key);
+!         s.writeObject(entry.value);
+        }
+    }
+  
+--- 806,813 ----
+      while (it.hasNext())
+        {
+          HashEntry entry = (HashEntry) it.next();
+!         s.writeObject(entry.getKey());
+!         s.writeObject(entry.getValue());
+        }
+    }
+  
+***************
+*** 888,896 ****
+        next = e.next;
+        last = e;
+        if (type == VALUES)
+!         return e.value;
+        if (type == KEYS)
+!         return e.key;
+        return e;
+      }
+  
+--- 912,920 ----
+        next = e.next;
+        last = e;
+        if (type == VALUES)
+!         return e.getValue();
+        if (type == KEYS)
+!         return e.getKey();
+        return e;
+      }
+  
+***************
+*** 907,913 ****
+        if (last == null)
+          throw new IllegalStateException();
+  
+!       HashMap.this.remove(last.key);
+        last = null;
+        knownMod++;
+      }
+--- 931,937 ----
+        if (last == null)
+          throw new IllegalStateException();
+  
+!       HashMap.this.remove(last.getKey());
+        last = null;
+        knownMod++;
+      }
+diff -rc gcc/libjava/java/util/HashSet.java gcc-patched/libjava/java/util/HashSet.java
+*** gcc/libjava/java/util/HashSet.java	Tue Jan 22 14:40:38 2002
+--- gcc-patched/libjava/java/util/HashSet.java	Tue Apr 19 16:44:58 2005
+***************
+*** 198,204 ****
+     */
+    public boolean isEmpty()
+    {
+!     return map.size == 0;
+    }
+  
+    /**
+--- 198,204 ----
+     */
+    public boolean isEmpty()
+    {
+!     return map.getSize() == 0;
+    }
+  
+    /**
+***************
+*** 234,240 ****
+     */
+    public int size()
+    {
+!     return map.size;
+    }
+  
+    /**
+--- 234,240 ----
+     */
+    public int size()
+    {
+!     return map.getSize();
+    }
+  
+    /**
+***************
+*** 264,272 ****
+      s.defaultWriteObject();
+      // Avoid creating intermediate keySet() object by using non-public API.
+      Iterator it = map.iterator(HashMap.KEYS);
+!     s.writeInt(map.buckets.length);
+      s.writeFloat(map.loadFactor);
+!     s.writeInt(map.size);
+      while (it.hasNext())
+        s.writeObject(it.next());
+    }
+--- 264,272 ----
+      s.defaultWriteObject();
+      // Avoid creating intermediate keySet() object by using non-public API.
+      Iterator it = map.iterator(HashMap.KEYS);
+!     s.writeInt(map.getBuckets().length);
+      s.writeFloat(map.loadFactor);
+!     s.writeInt(map.getSize());
+      while (it.hasNext())
+        s.writeObject(it.next());
+    }
+diff -rc gcc/libjava/java/util/Hashtable.java gcc-patched/libjava/java/util/Hashtable.java
+*** gcc/libjava/java/util/Hashtable.java	Sun Dec  7 15:00:49 2003
+--- gcc-patched/libjava/java/util/Hashtable.java	Tue Apr 19 16:39:55 2005
+***************
+*** 144,163 ****
+     * Array containing the actual key-value mappings.
+     */
+    // Package visible for use by nested classes.
+!   transient HashEntry[] buckets;
+  
+    /**
+     * Counts the number of modifications this Hashtable has undergone, used
+     * by Iterators to know when to throw ConcurrentModificationExceptions.
+     */
+    // Package visible for use by nested classes.
+!   transient int modCount;
+  
+    /**
+     * The size of this Hashtable:  denotes the number of key-value pairs.
+     */
+    // Package visible for use by nested classes.
+!   transient int size;
+  
+    /**
+     * The cache for {@link #keySet()}.
+--- 144,163 ----
+     * Array containing the actual key-value mappings.
+     */
+    // Package visible for use by nested classes.
+!   private transient HashEntry[] buckets;
+  
+    /**
+     * Counts the number of modifications this Hashtable has undergone, used
+     * by Iterators to know when to throw ConcurrentModificationExceptions.
+     */
+    // Package visible for use by nested classes.
+!   private transient int modCount;
+  
+    /**
+     * The size of this Hashtable:  denotes the number of key-value pairs.
+     */
+    // Package visible for use by nested classes.
+!   private transient int size;
+  
+    /**
+     * The cache for {@link #keySet()}.
+***************
+*** 182,188 ****
+    private static final class HashEntry extends AbstractMap.BasicMapEntry
+    {
+      /** The next entry in the linked list. */
+!     HashEntry next;
+  
+      /**
+       * Simple constructor.
+--- 182,188 ----
+    private static final class HashEntry extends AbstractMap.BasicMapEntry
+    {
+      /** The next entry in the linked list. */
+!     private HashEntry next;
+  
+      /**
+       * Simple constructor.
+***************
+*** 206,211 ****
+--- 206,225 ----
+          throw new NullPointerException();
+        return super.setValue(newVal);
+      }
++ 
++     /**
++      *  @param next The next to set.
++      */
++     void setNext(HashEntry next) {
++         this.next = next;
++     }
++ 
++     /**
++      *  @return Returns the next.
++      */
++     HashEntry getNext() {
++         return next;
++     }
+    }
+  
+    /**
+***************
+*** 279,285 ****
+     */
+    public synchronized int size()
+    {
+!     return size;
+    }
+  
+    /**
+--- 293,299 ----
+     */
+    public synchronized int size()
+    {
+!     return getSize();
+    }
+  
+    /**
+***************
+*** 288,294 ****
+     */
+    public synchronized boolean isEmpty()
+    {
+!     return size == 0;
+    }
+  
+    /**
+--- 302,308 ----
+     */
+    public synchronized boolean isEmpty()
+    {
+!     return getSize() == 0;
+    }
+  
+    /**
+***************
+*** 338,346 ****
+          HashEntry e = buckets[i];
+          while (e != null)
+            {
+!             if (value.equals(e.value))
+                return true;
+!             e = e.next;
+            }
+        }
+  
+--- 352,360 ----
+          HashEntry e = buckets[i];
+          while (e != null)
+            {
+!             if (value.equals(e.getValue()))
+                return true;
+!             e = e.getNext();
+            }
+        }
+  
+***************
+*** 385,393 ****
+      HashEntry e = buckets[idx];
+      while (e != null)
+        {
+!         if (key.equals(e.key))
+            return true;
+!         e = e.next;
+        }
+      return false;
+    }
+--- 399,407 ----
+      HashEntry e = buckets[idx];
+      while (e != null)
+        {
+!         if (key.equals(e.getKey()))
+            return true;
+!         e = e.getNext();
+        }
+      return false;
+    }
+***************
+*** 408,416 ****
+      HashEntry e = buckets[idx];
+      while (e != null)
+        {
+!         if (key.equals(e.key))
+!           return e.value;
+!         e = e.next;
+        }
+      return null;
+    }
+--- 422,430 ----
+      HashEntry e = buckets[idx];
+      while (e != null)
+        {
+!         if (key.equals(e.getKey()))
+!           return e.getValue();
+!         e = e.getNext();
+        }
+      return null;
+    }
+***************
+*** 438,459 ****
+  
+      while (e != null)
+        {
+!         if (key.equals(e.key))
+            {
+              // Bypass e.setValue, since we already know value is non-null.
+!             Object r = e.value;
+!             e.value = value;
+              return r;
+            }
+          else
+            {
+!             e = e.next;
+            }
+        }
+  
+      // At this point, we know we need to add a new entry.
+      modCount++;
+!     if (++size > threshold)
+        {
+          rehash();
+          // Need a new hash value to suit the bigger table.
+--- 452,473 ----
+  
+      while (e != null)
+        {
+!         if (key.equals(e.getKey()))
+            {
+              // Bypass e.setValue, since we already know value is non-null.
+!             Object r = e.getValue();
+!             e.setValue(value);
+              return r;
+            }
+          else
+            {
+!             e = e.getNext();
+            }
+        }
+  
+      // At this point, we know we need to add a new entry.
+      modCount++;
+!     if (setSize(getSize() + 1) > threshold)
+        {
+          rehash();
+          // Need a new hash value to suit the bigger table.
+***************
+*** 462,468 ****
+  
+      e = new HashEntry(key, value);
+  
+!     e.next = buckets[idx];
+      buckets[idx] = e;
+  
+      return null;
+--- 476,482 ----
+  
+      e = new HashEntry(key, value);
+  
+!     e.setNext(buckets[idx]);
+      buckets[idx] = e;
+  
+      return null;
+***************
+*** 484,501 ****
+  
+      while (e != null)
+        {
+!         if (key.equals(e.key))
+            {
+              modCount++;
+              if (last == null)
+!               buckets[idx] = e.next;
+              else
+!               last.next = e.next;
+!             size--;
+!             return e.value;
+            }
+          last = e;
+!         e = e.next;
+        }
+      return null;
+    }
+--- 498,515 ----
+  
+      while (e != null)
+        {
+!         if (key.equals(e.getKey()))
+            {
+              modCount++;
+              if (last == null)
+!               buckets[idx] = e.getNext();
+              else
+!               last.setNext(e.getNext());
+!             setSize(getSize() - 1);
+!             return e.getValue();
+            }
+          last = e;
+!         e = e.getNext();
+        }
+      return null;
+    }
+***************
+*** 519,525 ****
+          if (e instanceof AbstractMap.BasicMapEntry)
+            {
+              AbstractMap.BasicMapEntry entry = (AbstractMap.BasicMapEntry) e;
+!             put(entry.key, entry.value);
+            }
+          else
+            {
+--- 533,539 ----
+          if (e instanceof AbstractMap.BasicMapEntry)
+            {
+              AbstractMap.BasicMapEntry entry = (AbstractMap.BasicMapEntry) e;
+!             put(entry.getKey(), entry.getValue());
+            }
+          else
+            {
+***************
+*** 533,543 ****
+     */
+    public synchronized void clear()
+    {
+!     if (size > 0)
+        {
+          modCount++;
+          Arrays.fill(buckets, null);
+!         size = 0;
+        }
+    }
+  
+--- 547,557 ----
+     */
+    public synchronized void clear()
+    {
+!     if (getSize() > 0)
+        {
+          modCount++;
+          Arrays.fill(buckets, null);
+!         setSize(0);
+        }
+    }
+  
+***************
+*** 584,590 ****
+      // unsynchronized HashIterator instead.
+      Iterator entries = new HashIterator(ENTRIES);
+      StringBuffer r = new StringBuffer("{");
+!     for (int pos = size; pos > 0; pos--)
+        {
+          r.append(entries.next());
+          if (pos > 1)
+--- 598,604 ----
+      // unsynchronized HashIterator instead.
+      Iterator entries = new HashIterator(ENTRIES);
+      StringBuffer r = new StringBuffer("{");
+!     for (int pos = getSize(); pos > 0; pos--)
+        {
+          r.append(entries.next());
+          if (pos > 1)
+***************
+*** 752,758 ****
+              HashEntry e = getEntry(o);
+              if (e != null)
+                {
+!                 Hashtable.this.remove(e.key);
+                  return true;
+                }
+              return false;
+--- 766,772 ----
+              HashEntry e = getEntry(o);
+              if (e != null)
+                {
+!                 Hashtable.this.remove(e.getKey());
+                  return true;
+                }
+              return false;
+***************
+*** 801,807 ****
+      // unsynchronized HashIterator instead.
+      Iterator itr = new HashIterator(ENTRIES);
+      int hashcode = 0;
+!     for (int pos = size; pos > 0; pos--)
+        hashcode += itr.next().hashCode();
+  
+      return hashcode;
+--- 815,821 ----
+      // unsynchronized HashIterator instead.
+      Iterator itr = new HashIterator(ENTRIES);
+      int hashcode = 0;
+!     for (int pos = getSize(); pos > 0; pos--)
+        hashcode += itr.next().hashCode();
+  
+      return hashcode;
+***************
+*** 846,852 ****
+        {
+          if (o.equals(e))
+            return e;
+!         e = e.next;
+        }
+      return null;
+    }
+--- 860,866 ----
+        {
+          if (o.equals(e))
+            return e;
+!         e = e.getNext();
+        }
+      return null;
+    }
+***************
+*** 861,876 ****
+    void putAllInternal(Map m)
+    {
+      Iterator itr = m.entrySet().iterator();
+!     size = 0;
+  
+      while (itr.hasNext())
+        {
+!         size++;
+  	Map.Entry e = (Map.Entry) itr.next();
+  	Object key = e.getKey();
+  	int idx = hash(key);
+  	HashEntry he = new HashEntry(key, e.getValue());
+! 	he.next = buckets[idx];
+  	buckets[idx] = he;
+        }
+    }
+--- 875,890 ----
+    void putAllInternal(Map m)
+    {
+      Iterator itr = m.entrySet().iterator();
+!     setSize(0);
+  
+      while (itr.hasNext())
+        {
+!         setSize(getSize() + 1);
+  	Map.Entry e = (Map.Entry) itr.next();
+  	Object key = e.getKey();
+  	int idx = hash(key);
+  	HashEntry he = new HashEntry(key, e.getValue());
+! 	he.setNext(buckets[idx]);
+  	buckets[idx] = he;
+        }
+    }
+***************
+*** 899,920 ****
+          HashEntry e = oldBuckets[i];
+          while (e != null)
+            {
+!             int idx = hash(e.key);
+              HashEntry dest = buckets[idx];
+  
+              if (dest != null)
+                {
+!                 while (dest.next != null)
+!                   dest = dest.next;
+!                 dest.next = e;
+                }
+              else
+                {
+                  buckets[idx] = e;
+                }
+  
+!             HashEntry next = e.next;
+!             e.next = null;
+              e = next;
+            }
+        }
+--- 913,934 ----
+          HashEntry e = oldBuckets[i];
+          while (e != null)
+            {
+!             int idx = hash(e.getKey());
+              HashEntry dest = buckets[idx];
+  
+              if (dest != null)
+                {
+!                 while (dest.getNext() != null)
+!                   dest = dest.getNext();
+!                 dest.setNext(e);
+                }
+              else
+                {
+                  buckets[idx] = e;
+                }
+  
+!             HashEntry next = e.getNext();
+!             e.setNext(null);
+              e = next;
+            }
+        }
+***************
+*** 937,943 ****
+      s.defaultWriteObject();
+  
+      s.writeInt(buckets.length);
+!     s.writeInt(size);
+      // Since we are already synchronized, and entrySet().iterator()
+      // would repeatedly re-lock/release the monitor, we directly use the
+      // unsynchronized HashIterator instead.
+--- 951,957 ----
+      s.defaultWriteObject();
+  
+      s.writeInt(buckets.length);
+!     s.writeInt(getSize());
+      // Since we are already synchronized, and entrySet().iterator()
+      // would repeatedly re-lock/release the monitor, we directly use the
+      // unsynchronized HashIterator instead.
+***************
+*** 945,952 ****
+      while (it.hasNext())
+        {
+          HashEntry entry = (HashEntry) it.next();
+!         s.writeObject(entry.key);
+!         s.writeObject(entry.value);
+        }
+    }
+  
+--- 959,966 ----
+      while (it.hasNext())
+        {
+          HashEntry entry = (HashEntry) it.next();
+!         s.writeObject(entry.getKey());
+!         s.writeObject(entry.getKey());
+        }
+    }
+  
+***************
+*** 978,983 ****
+--- 992,1039 ----
+    }
+  
+    /**
++  *  @param buckets The buckets to set.
++  */
++ void setBuckets(HashEntry[] buckets) {
++     this.buckets = buckets;
++ }
++ 
++ /**
++  *  @return Returns the buckets.
++  */
++ HashEntry[] getBuckets() {
++     return buckets;
++ }
++ 
++ /**
++  *  @param modCount The modCount to set.
++  */
++ void setModCount(int modCount) {
++     this.modCount = modCount;
++ }
++ 
++ /**
++  *  @return Returns the modCount.
++  */
++ int getModCount() {
++     return modCount;
++ }
++ 
++ /**
++  *  @param size The size to set.
++  */
++ int setSize(int size) {
++     return this.size = size;
++ }
++ 
++ /**
++  *  @return Returns the size.
++  */
++ int getSize() {
++     return size;
++ }
++ 
++ /**
+     * A class which implements the Iterator interface and is used for
+     * iterating over Hashtables.
+     * This implementation is parameterized to give a sequential view of
+***************
+*** 998,1016 ****
+      /**
+       * The number of modifications to the backing Hashtable that we know about.
+       */
+!     int knownMod = modCount;
+      /** The number of elements remaining to be returned by next(). */
+!     int count = size;
+      /** Current index in the physical hash table. */
+!     int idx = buckets.length;
+      /** The last Entry returned by a next() call. */
+!     HashEntry last;
+      /**
+       * The next entry that should be returned by next(). It is set to something
+       * if we're iterating through a bucket that contains multiple linked
+       * entries. It is null if next() needs to find a new bucket.
+       */
+!     HashEntry next;
+  
+      /**
+       * Construct a new HashIterator with the supplied type.
+--- 1054,1072 ----
+      /**
+       * The number of modifications to the backing Hashtable that we know about.
+       */
+!     private int knownMod = modCount;
+      /** The number of elements remaining to be returned by next(). */
+!     private int count = getSize();
+      /** Current index in the physical hash table. */
+!     private int idx = buckets.length;
+      /** The last Entry returned by a next() call. */
+!     private HashEntry last;
+      /**
+       * The next entry that should be returned by next(). It is set to something
+       * if we're iterating through a bucket that contains multiple linked
+       * entries. It is null if next() needs to find a new bucket.
+       */
+!     private HashEntry next;
+  
+      /**
+       * Construct a new HashIterator with the supplied type.
+***************
+*** 1028,1036 ****
+       */
+      public boolean hasNext()
+      {
+!       if (knownMod != modCount)
+          throw new ConcurrentModificationException();
+!       return count > 0;
+      }
+  
+      /**
+--- 1084,1092 ----
+       */
+      public boolean hasNext()
+      {
+!       if (getKnownMod() != modCount)
+          throw new ConcurrentModificationException();
+!       return getCount() > 0;
+      }
+  
+      /**
+***************
+*** 1041,1062 ****
+       */
+      public Object next()
+      {
+!       if (knownMod != modCount)
+          throw new ConcurrentModificationException();
+!       if (count == 0)
+          throw new NoSuchElementException();
+!       count--;
+!       HashEntry e = next;
+  
+        while (e == null)
+!         e = buckets[--idx];
+  
+!       next = e.next;
+!       last = e;
+        if (type == VALUES)
+!         return e.value;
+        if (type == KEYS)
+!         return e.key;
+        return e;
+      }
+  
+--- 1097,1118 ----
+       */
+      public Object next()
+      {
+!       if (getKnownMod() != modCount)
+          throw new ConcurrentModificationException();
+!       if (getCount() == 0)
+          throw new NoSuchElementException();
+!       setCount(getCount() - 1);
+!       HashEntry e = getNext();
+  
+        while (e == null)
+!         e = buckets[setIdx(getIdx() - 1)];
+  
+!       setNext(e.getNext());
+!       setLast(e);
+        if (type == VALUES)
+!         return e.getValue();
+        if (type == KEYS)
+!         return e.getKey();
+        return e;
+      }
+  
+***************
+*** 1068,1081 ****
+       */
+      public void remove()
+      {
+!       if (knownMod != modCount)
+          throw new ConcurrentModificationException();
+!       if (last == null)
+          throw new IllegalStateException();
+  
+!       Hashtable.this.remove(last.key);
+!       last = null;
+!       knownMod++;
+      }
+    } // class HashIterator
+  
+--- 1124,1207 ----
+       */
+      public void remove()
+      {
+!       if (getKnownMod() != modCount)
+          throw new ConcurrentModificationException();
+!       if (getLast() == null)
+          throw new IllegalStateException();
+  
+!       Hashtable.this.remove(getLast().getKey());
+!       setLast(null);
+!       setKnownMod(getKnownMod() + 1);
+!     }
+! 
+!     /**
+!      *  @param knownMod The knownMod to set.
+!      */
+!     void setKnownMod(int knownMod) {
+!         this.knownMod = knownMod;
+!     }
+! 
+!     /**
+!      *  @return Returns the knownMod.
+!      */
+!     int getKnownMod() {
+!         return knownMod;
+!     }
+! 
+!     /**
+!      *  @param count The count to set.
+!      */
+!     void setCount(int count) {
+!         this.count = count;
+!     }
+! 
+!     /**
+!      *  @return Returns the count.
+!      */
+!     int getCount() {
+!         return count;
+!     }
+! 
+!     /**
+!      *  @param idx The idx to set.
+!      */
+!     int setIdx(int idx) {
+!         return this.idx = idx;
+!     }
+! 
+!     /**
+!      *  @return Returns the idx.
+!      */
+!     int getIdx() {
+!         return idx;
+!     }
+! 
+!     /**
+!      *  @param last The last to set.
+!      */
+!     void setLast(HashEntry last) {
+!         this.last = last;
+!     }
+! 
+!     /**
+!      *  @return Returns the last.
+!      */
+!     HashEntry getLast() {
+!         return last;
+!     }
+! 
+!     /**
+!      *  @param next The next to set.
+!      */
+!     void setNext(HashEntry next) {
+!         this.next = next;
+!     }
+! 
+!     /**
+!      *  @return Returns the next.
+!      */
+!     HashEntry getNext() {
+!         return next;
+      }
+    } // class HashIterator
+  
+***************
+*** 1101,1115 ****
+       */
+      final int type;
+      /** The number of elements remaining to be returned by next(). */
+!     int count = size;
+      /** Current index in the physical hash table. */
+!     int idx = buckets.length;
+      /**
+       * Entry which will be returned by the next nextElement() call. It is
+       * set if we are iterating through a bucket with multiple entries, or null
+       * if we must look in the next bucket.
+       */
+!     HashEntry next;
+  
+      /**
+       * Construct the enumeration.
+--- 1227,1241 ----
+       */
+      final int type;
+      /** The number of elements remaining to be returned by next(). */
+!     private int count = getSize();
+      /** Current index in the physical hash table. */
+!     private int idx = buckets.length;
+      /**
+       * Entry which will be returned by the next nextElement() call. It is
+       * set if we are iterating through a bucket with multiple entries, or null
+       * if we must look in the next bucket.
+       */
+!     private HashEntry next;
+  
+      /**
+       * Construct the enumeration.
+***************
+*** 1126,1132 ****
+       */
+      public boolean hasMoreElements()
+      {
+!       return count > 0;
+      }
+  
+      /**
+--- 1252,1258 ----
+       */
+      public boolean hasMoreElements()
+      {
+!       return getCount() > 0;
+      }
+  
+      /**
+***************
+*** 1136,1151 ****
+       */
+      public Object nextElement()
+      {
+!       if (count == 0)
+          throw new NoSuchElementException("Hashtable Enumerator");
+!       count--;
+!       HashEntry e = next;
+  
+        while (e == null)
+!         e = buckets[--idx];
+  
+!       next = e.next;
+!       return type == VALUES ? e.value : e.key;
+      }
+    } // class Enumerator
+  } // class Hashtable
+--- 1262,1319 ----
+       */
+      public Object nextElement()
+      {
+!       if (getCount() == 0)
+          throw new NoSuchElementException("Hashtable Enumerator");
+!       setCount(getCount() - 1);
+!       HashEntry e = getNext();
+  
+        while (e == null)
+!         e = buckets[setIdx(getIdx() - 1)];
+! 
+!       setNext(e.getNext());
+!       return type == VALUES ? e.getValue() : e.getKey();
+!     }
+! 
+!     /**
+!      *  @param count The count to set.
+!      */
+!     void setCount(int count) {
+!         this.count = count;
+!     }
+  
+!     /**
+!      *  @return Returns the count.
+!      */
+!     int getCount() {
+!         return count;
+!     }
+! 
+!     /**
+!      *  @param idx The idx to set.
+!      */
+!     int setIdx(int idx) {
+!         return this.idx = idx;
+!     }
+! 
+!     /**
+!      *  @return Returns the idx.
+!      */
+!     int getIdx() {
+!         return idx;
+!     }
+! 
+!     /**
+!      *  @param next The next to set.
+!      */
+!     void setNext(HashEntry next) {
+!         this.next = next;
+!     }
+! 
+!     /**
+!      *  @return Returns the next.
+!      */
+!     HashEntry getNext() {
+!         return next;
+      }
+    } // class Enumerator
+  } // class Hashtable
+diff -rc gcc/libjava/java/util/LinkedHashMap.java gcc-patched/libjava/java/util/LinkedHashMap.java
+*** gcc/libjava/java/util/LinkedHashMap.java	Sun Nov 10 14:06:49 2002
+--- gcc-patched/libjava/java/util/LinkedHashMap.java	Tue Apr 19 16:39:55 2005
+***************
+*** 172,178 ****
+      {
+        if (accessOrder && succ != null)
+          {
+!           modCount++;
+            if (this == root)
+              {
+                root = succ;
+--- 172,178 ----
+      {
+        if (accessOrder && succ != null)
+          {
+!           setModCount(getModCount() + 1);
+            if (this == root)
+              {
+                root = succ;
+***************
+*** 214,220 ****
+            pred.succ = succ;
+            succ.pred = pred;
+          }
+!       return value;
+      }
+    } // class LinkedHashEntry
+  
+--- 214,220 ----
+            pred.succ = succ;
+            succ.pred = pred;
+          }
+!       return getValue();
+      }
+    } // class LinkedHashEntry
+  
+***************
+*** 314,320 ****
+      LinkedHashEntry e = root;
+      while (e != null)
+        {
+!         if (equals(value, e.value))
+            return true;
+          e = e.succ;
+        }
+--- 314,320 ----
+      LinkedHashEntry e = root;
+      while (e != null)
+        {
+!         if (equals(value, e.getValue()))
+            return true;
+          e = e.succ;
+        }
+***************
+*** 337,349 ****
+    public Object get(Object key)
+    {
+      int idx = hash(key);
+!     HashEntry e = buckets[idx];
+      while (e != null)
+        {
+!         if (equals(key, e.key))
+            {
+              e.access();
+!             return e.value;
+            }
+          e = e.next;
+        }
+--- 337,349 ----
+    public Object get(Object key)
+    {
+      int idx = hash(key);
+!     HashEntry e = getBucket(idx);
+      while (e != null)
+        {
+!         if (equals(key, e.getKey()))
+            {
+              e.access();
+!             return e.getValue();
+            }
+          e = e.next;
+        }
+***************
+*** 409,416 ****
+    void addEntry(Object key, Object value, int idx, boolean callRemove)
+    {
+      LinkedHashEntry e = new LinkedHashEntry(key, value);
+!     e.next = buckets[idx];
+!     buckets[idx] = e;
+      if (callRemove && removeEldestEntry(root))
+        remove(root);
+    }
+--- 409,416 ----
+    void addEntry(Object key, Object value, int idx, boolean callRemove)
+    {
+      LinkedHashEntry e = new LinkedHashEntry(key, value);
+!     e.next = getBucket(idx);
+!     setBucket(idx, e);
+      if (callRemove && removeEldestEntry(root))
+        remove(root);
+    }
+***************
+*** 445,451 ****
+        LinkedHashEntry last;
+  
+        /** The number of known modifications to the backing Map. */
+!       int knownMod = modCount;
+  
+        /**
+         * Returns true if the Iterator has more elements.
+--- 445,451 ----
+        LinkedHashEntry last;
+  
+        /** The number of known modifications to the backing Map. */
+!       int knownMod = getModCount();
+  
+        /**
+         * Returns true if the Iterator has more elements.
+***************
+*** 455,461 ****
+         */
+        public boolean hasNext()
+        {
+!         if (knownMod != modCount)
+            throw new ConcurrentModificationException();
+          return current != null;
+        }
+--- 455,461 ----
+         */
+        public boolean hasNext()
+        {
+!         if (knownMod != getModCount())
+            throw new ConcurrentModificationException();
+          return current != null;
+        }
+***************
+*** 469,481 ****
+         */
+        public Object next()
+        {
+!         if (knownMod != modCount)
+            throw new ConcurrentModificationException();
+          if (current == null)
+            throw new NoSuchElementException();
+          last = current;
+          current = current.succ;
+!         return type == VALUES ? last.value : type == KEYS ? last.key : last;
+        }
+        
+        /**
+--- 469,481 ----
+         */
+        public Object next()
+        {
+!         if (knownMod != getModCount())
+            throw new ConcurrentModificationException();
+          if (current == null)
+            throw new NoSuchElementException();
+          last = current;
+          current = current.succ;
+!         return type == VALUES ? last.getValue() : type == KEYS ? last.getKey() : last;
+        }
+        
+        /**
+***************
+*** 487,497 ****
+         */
+        public void remove()
+        {
+!         if (knownMod != modCount)
+            throw new ConcurrentModificationException();
+          if (last == null)
+            throw new IllegalStateException();
+!         LinkedHashMap.this.remove(last.key);
+          last = null;
+          knownMod++;
+        }
+--- 487,497 ----
+         */
+        public void remove()
+        {
+!         if (knownMod != getModCount())
+            throw new ConcurrentModificationException();
+          if (last == null)
+            throw new IllegalStateException();
+!         LinkedHashMap.this.remove(last.getKey());
+          last = null;
+          knownMod++;
+        }
+diff -rc gcc/libjava/java/util/LinkedList.java gcc-patched/libjava/java/util/LinkedList.java
+*** gcc/libjava/java/util/LinkedList.java	Wed Oct  8 08:30:44 2003
+--- gcc-patched/libjava/java/util/LinkedList.java	Tue Apr 19 16:39:55 2005
+***************
+*** 82,98 ****
+    /**
+     * The first element in the list.
+     */
+!   transient Entry first;
+  
+    /**
+     * The last element in the list.
+     */
+!   transient Entry last;
+  
+    /**
+     * The current length of the list.
+     */
+!   transient int size = 0;
+  
+    /**
+     * Class to represent an entry in the list. Holds a single element.
+--- 82,98 ----
+    /**
+     * The first element in the list.
+     */
+!   private transient Entry first;
+  
+    /**
+     * The last element in the list.
+     */
+!   private transient Entry last;
+  
+    /**
+     * The current length of the list.
+     */
+!   private transient int size = 0;
+  
+    /**
+     * Class to represent an entry in the list. Holds a single element.
+***************
+*** 100,112 ****
+    private static final class Entry
+    {
+      /** The element in the list. */
+!     Object data;
+  
+      /** The next list entry, null if this is last. */
+!     Entry next;
+  
+      /** The previous list entry, null if this is first. */
+!     Entry previous;
+  
+      /**
+       * Construct an entry.
+--- 100,112 ----
+    private static final class Entry
+    {
+      /** The element in the list. */
+!     private Object data;
+  
+      /** The next list entry, null if this is last. */
+!     private Entry next;
+  
+      /** The previous list entry, null if this is first. */
+!     private Entry previous;
+  
+      /**
+       * Construct an entry.
+***************
+*** 114,120 ****
+       */
+      Entry(Object data)
+      {
+!       this.data = data;
+      }
+    } // class Entry
+  
+--- 114,162 ----
+       */
+      Entry(Object data)
+      {
+!       this.setData(data);
+!     }
+! 
+!     /**
+!      *  @param data The data to set.
+!      */
+!     void setData(Object data) {
+!         this.data = data;
+!     }
+! 
+!     /**
+!      *  @return Returns the data.
+!      */
+!     Object getData() {
+!         return data;
+!     }
+! 
+!     /**
+!      *  @param next The next to set.
+!      */
+!     void setNext(Entry next) {
+!         this.next = next;
+!     }
+! 
+!     /**
+!      *  @return Returns the next.
+!      */
+!     Entry getNext() {
+!         return next;
+!     }
+! 
+!     /**
+!      *  @param previous The previous to set.
+!      */
+!     void setPrevious(Entry previous) {
+!         this.previous = previous;
+!     }
+! 
+!     /**
+!      *  @return Returns the previous.
+!      */
+!     Entry getPrevious() {
+!         return previous;
+      }
+    } // class Entry
+  
+***************
+*** 139,152 ****
+          e = first;
+          // n less than size/2, iterate from start
+          while (n-- > 0)
+!           e = e.next;
+        }
+      else
+        {
+          e = last;
+          // n greater than size/2, iterate from end
+          while (++n < size)
+!           e = e.previous;
+        }
+      return e;
+    }
+--- 181,194 ----
+          e = first;
+          // n less than size/2, iterate from start
+          while (n-- > 0)
+!           e = e.getNext();
+        }
+      else
+        {
+          e = last;
+          // n greater than size/2, iterate from end
+          while (++n < size)
+!           e = e.getPrevious();
+        }
+      return e;
+    }
+***************
+*** 160,166 ****
+    // Package visible for use in nested classes.
+    void removeEntry(Entry e)
+    {
+!     modCount++;
+      size--;
+      if (size == 0)
+        first = last = null;
+--- 202,208 ----
+    // Package visible for use in nested classes.
+    void removeEntry(Entry e)
+    {
+!     setModCount(getModCount() + 1);
+      size--;
+      if (size == 0)
+        first = last = null;
+***************
+*** 168,185 ****
+        {
+          if (e == first)
+            {
+!             first = e.next;
+!             e.next.previous = null;
+            }
+          else if (e == last)
+            {
+!             last = e.previous;
+!             e.previous.next = null;
+            }
+          else
+            {
+!             e.next.previous = e.previous;
+!             e.previous.next = e.next;
+            }
+        }
+    }
+--- 210,227 ----
+        {
+          if (e == first)
+            {
+!             first = e.getNext();
+!             e.getNext().setPrevious(null);
+            }
+          else if (e == last)
+            {
+!             last = e.getPrevious();
+!             e.getPrevious().setNext(null);
+            }
+          else
+            {
+!             e.getNext().setPrevious(e.getPrevious());
+!             e.getPrevious().setNext(e.getNext());
+            }
+        }
+    }
+***************
+*** 239,245 ****
+    {
+      if (size == 0)
+        throw new NoSuchElementException();
+!     return first.data;
+    }
+  
+    /**
+--- 281,287 ----
+    {
+      if (size == 0)
+        throw new NoSuchElementException();
+!     return first.getData();
+    }
+  
+    /**
+***************
+*** 252,258 ****
+    {
+      if (size == 0)
+        throw new NoSuchElementException();
+!     return last.data;
+    }
+  
+    /**
+--- 294,300 ----
+    {
+      if (size == 0)
+        throw new NoSuchElementException();
+!     return last.getData();
+    }
+  
+    /**
+***************
+*** 265,280 ****
+    {
+      if (size == 0)
+        throw new NoSuchElementException();
+!     modCount++;
+      size--;
+!     Object r = first.data;
+  
+!     if (first.next != null)
+!       first.next.previous = null;
+      else
+        last = null;
+  
+!     first = first.next;
+  
+      return r;
+    }
+--- 307,322 ----
+    {
+      if (size == 0)
+        throw new NoSuchElementException();
+!     setModCount(getModCount() + 1);
+      size--;
+!     Object r = first.getData();
+  
+!     if (first.getNext() != null)
+!       first.getNext().setPrevious(null);
+      else
+        last = null;
+  
+!     first = first.getNext();
+  
+      return r;
+    }
+***************
+*** 289,304 ****
+    {
+      if (size == 0)
+        throw new NoSuchElementException();
+!     modCount++;
+      size--;
+!     Object r = last.data;
+  
+!     if (last.previous != null)
+!       last.previous.next = null;
+      else
+        first = null;
+  
+!     last = last.previous;
+  
+      return r;
+    }
+--- 331,346 ----
+    {
+      if (size == 0)
+        throw new NoSuchElementException();
+!     setModCount(getModCount() + 1);
+      size--;
+!     Object r = last.getData();
+  
+!     if (last.getPrevious() != null)
+!       last.getPrevious().setNext(null);
+      else
+        first = null;
+  
+!     last = last.getPrevious();
+  
+      return r;
+    }
+***************
+*** 312,324 ****
+    {
+      Entry e = new Entry(o);
+  
+!     modCount++;
+      if (size == 0)
+        first = last = e;
+      else
+        {
+!         e.next = first;
+!         first.previous = e;
+          first = e;
+        }
+      size++;
+--- 354,366 ----
+    {
+      Entry e = new Entry(o);
+  
+!     setModCount(getModCount() + 1);
+      if (size == 0)
+        first = last = e;
+      else
+        {
+!         e.setNext(first);
+!         first.setPrevious(e);
+          first = e;
+        }
+      size++;
+***************
+*** 341,353 ****
+     */
+    private void addLastEntry(Entry e)
+    {
+!     modCount++;
+      if (size == 0)
+        first = last = e;
+      else
+        {
+!         e.previous = last;
+!         last.next = e;
+          last = e;
+        }
+      size++;
+--- 383,395 ----
+     */
+    private void addLastEntry(Entry e)
+    {
+!       setModCount(getModCount() + 1);
+      if (size == 0)
+        first = last = e;
+      else
+        {
+!         e.setPrevious(last);
+!         last.setNext(e);
+          last = e;
+        }
+      size++;
+***************
+*** 365,373 ****
+      Entry e = first;
+      while (e != null)
+        {
+!         if (equals(o, e.data))
+            return true;
+!         e = e.next;
+        }
+      return false;
+    }
+--- 407,415 ----
+      Entry e = first;
+      while (e != null)
+        {
+!         if (equals(o, e.getData()))
+            return true;
+!         e = e.getNext();
+        }
+      return false;
+    }
+***************
+*** 406,417 ****
+      Entry e = first;
+      while (e != null)
+        {
+!         if (equals(o, e.data))
+            {
+              removeEntry(e);
+              return true;
+            }
+!         e = e.next;
+        }
+      return false;
+    }
+--- 448,459 ----
+      Entry e = first;
+      while (e != null)
+        {
+!         if (equals(o, e.getData()))
+            {
+              removeEntry(e);
+              return true;
+            }
+!         e = e.getNext();
+        }
+      return false;
+    }
+***************
+*** 458,464 ****
+      if (index != size)
+        {
+          after = getEntry(index);
+!         before = after.previous;
+        }
+      else
+        before = last;
+--- 500,506 ----
+      if (index != size)
+        {
+          after = getEntry(index);
+!         before = after.getPrevious();
+        }
+      else
+        before = last;
+***************
+*** 468,474 ****
+      // [Actually, we don't have to handle this case to fufill the
+      // contract for addAll(), but Sun's implementation appears to.]
+      Entry e = new Entry(itr.next());
+!     e.previous = before;
+      Entry prev = e;
+      Entry firstNew = e;
+  
+--- 510,516 ----
+      // [Actually, we don't have to handle this case to fufill the
+      // contract for addAll(), but Sun's implementation appears to.]
+      Entry e = new Entry(itr.next());
+!     e.setPrevious(before);
+      Entry prev = e;
+      Entry firstNew = e;
+  
+***************
+*** 476,497 ****
+      for (int pos = 1; pos < csize; pos++)
+        {
+          e = new Entry(itr.next());
+!         e.previous = prev;
+!         prev.next = e;
+          prev = e;
+        }
+  
+      // Link the new chain of entries into the list.
+!     modCount++;
+      size += csize;
+!     prev.next = after;
+      if (after != null)
+!       after.previous = e;
+      else
+        last = e;
+  
+      if (before != null)
+!       before.next = firstNew;
+      else
+        first = firstNew;
+      return true;
+--- 518,539 ----
+      for (int pos = 1; pos < csize; pos++)
+        {
+          e = new Entry(itr.next());
+!         e.setPrevious(prev);
+!         prev.setNext(e);
+          prev = e;
+        }
+  
+      // Link the new chain of entries into the list.
+!     setModCount(getModCount() + 1);
+      size += csize;
+!     prev.setNext(after);
+      if (after != null)
+!       after.setPrevious(e);
+      else
+        last = e;
+  
+      if (before != null)
+!       before.setNext(firstNew);
+      else
+        first = firstNew;
+      return true;
+***************
+*** 504,510 ****
+    {
+      if (size > 0)
+        {
+!         modCount++;
+          first = null;
+          last = null;
+          size = 0;
+--- 546,552 ----
+    {
+      if (size > 0)
+        {
+!         setModCount(getModCount() + 1);
+          first = null;
+          last = null;
+          size = 0;
+***************
+*** 521,527 ****
+    public Object get(int index)
+    {
+      checkBoundsExclusive(index);
+!     return getEntry(index).data;
+    }
+  
+    /**
+--- 563,569 ----
+    public Object get(int index)
+    {
+      checkBoundsExclusive(index);
+!     return getEntry(index).getData();
+    }
+  
+    /**
+***************
+*** 536,543 ****
+    {
+      checkBoundsExclusive(index);
+      Entry e = getEntry(index);
+!     Object old = e.data;
+!     e.data = o;
+      return old;
+    }
+  
+--- 578,585 ----
+    {
+      checkBoundsExclusive(index);
+      Entry e = getEntry(index);
+!     Object old = e.getData();
+!     e.setData(o);
+      return old;
+    }
+  
+***************
+*** 555,569 ****
+  
+      if (index < size)
+        {
+!         modCount++;
+          Entry after = getEntry(index);
+!         e.next = after;
+!         e.previous = after.previous;
+!         if (after.previous == null)
+            first = e;
+          else
+!           after.previous.next = e;
+!         after.previous = e;
+          size++;
+        }
+      else
+--- 597,611 ----
+  
+      if (index < size)
+        {
+!         setModCount(getModCount() + 1);
+          Entry after = getEntry(index);
+!         e.setNext(after);
+!         e.setPrevious(after.getPrevious());
+!         if (after.getPrevious() == null)
+            first = e;
+          else
+!           after.getPrevious().setNext(e);
+!         after.setPrevious(e);
+          size++;
+        }
+      else
+***************
+*** 582,588 ****
+      checkBoundsExclusive(index);
+      Entry e = getEntry(index);
+      removeEntry(e);
+!     return e.data;
+    }
+  
+    /**
+--- 624,630 ----
+      checkBoundsExclusive(index);
+      Entry e = getEntry(index);
+      removeEntry(e);
+!     return e.getData();
+    }
+  
+    /**
+***************
+*** 597,606 ****
+      Entry e = first;
+      while (e != null)
+        {
+!         if (equals(o, e.data))
+            return index;
+          index++;
+!         e = e.next;
+        }
+      return -1;
+    }
+--- 639,648 ----
+      Entry e = first;
+      while (e != null)
+        {
+!         if (equals(o, e.getData()))
+            return index;
+          index++;
+!         e = e.getNext();
+        }
+      return -1;
+    }
+***************
+*** 617,626 ****
+      Entry e = last;
+      while (e != null)
+        {
+!         if (equals(o, e.data))
+            return index;
+          index--;
+!         e = e.previous;
+        }
+      return -1;
+    }
+--- 659,668 ----
+      Entry e = last;
+      while (e != null)
+        {
+!         if (equals(o, e.getData()))
+            return index;
+          index--;
+!         e = e.getPrevious();
+        }
+      return -1;
+    }
+***************
+*** 672,679 ****
+      Entry e = first;
+      for (int i = 0; i < size; i++)
+        {
+!         array[i] = e.data;
+!         e = e.next;
+        }
+      return array;
+    }
+--- 714,721 ----
+      Entry e = first;
+      for (int i = 0; i < size; i++)
+        {
+!         array[i] = e.getData();
+!         e = e.getNext();
+        }
+      return array;
+    }
+***************
+*** 701,708 ****
+      Entry e = first;
+      for (int i = 0; i < size; i++)
+        {
+!         a[i] = e.data;
+!         e = e.next;
+        }
+      return a;
+    }
+--- 743,750 ----
+      Entry e = first;
+      for (int i = 0; i < size; i++)
+        {
+!         a[i] = e.getData();
+!         e = e.getNext();
+        }
+      return a;
+    }
+***************
+*** 722,729 ****
+      Entry e = first;
+      while (e != null)
+        {
+!         s.writeObject(e.data);
+!         e = e.next;
+        }
+    }
+  
+--- 764,771 ----
+      Entry e = first;
+      while (e != null)
+        {
+!         s.writeObject(e.getData());
+!         e = e.getNext();
+        }
+    }
+  
+***************
+*** 746,751 ****
+--- 788,807 ----
+    }
+  
+    /**
++  *  @param size The size to set.
++  */
++ void setSize(int size) {
++     this.size = size;
++ }
++ 
++ /**
++  *  @return Returns the size.
++  */
++ int getSize() {
++     return size;
++ }
++ 
++ /**
+     * A ListIterator over the list. This class keeps track of its
+     * position in the list and the two list entries it is between.
+     *
+***************
+*** 755,761 ****
+    private final class LinkedListItr implements ListIterator
+    {
+      /** Number of modifications we know about. */
+!     private int knownMod = modCount;
+  
+      /** Entry that will be returned by next(). */
+      private Entry next;
+--- 811,817 ----
+    private final class LinkedListItr implements ListIterator
+    {
+      /** Number of modifications we know about. */
+!     private int knownMod = getModCount();
+  
+      /** Entry that will be returned by next(). */
+      private Entry next;
+***************
+*** 784,790 ****
+        else
+          {
+            next = getEntry(index);
+!           previous = next.previous;
+          }
+        position = index;
+      }
+--- 840,846 ----
+        else
+          {
+            next = getEntry(index);
+!           previous = next.getPrevious();
+          }
+        position = index;
+      }
+***************
+*** 796,802 ****
+       */
+      private void checkMod()
+      {
+!       if (knownMod != modCount)
+          throw new ConcurrentModificationException();
+      }
+  
+--- 852,858 ----
+       */
+      private void checkMod()
+      {
+!       if (knownMod != getModCount())
+          throw new ConcurrentModificationException();
+      }
+  
+***************
+*** 862,869 ****
+          throw new NoSuchElementException();
+        position++;
+        lastReturned = previous = next;
+!       next = lastReturned.next;
+!       return lastReturned.data;
+      }
+  
+      /**
+--- 918,925 ----
+          throw new NoSuchElementException();
+        position++;
+        lastReturned = previous = next;
+!       next = lastReturned.getNext();
+!       return lastReturned.getData();
+      }
+  
+      /**
+***************
+*** 880,887 ****
+          throw new NoSuchElementException();
+        position--;
+        lastReturned = next = previous;
+!       previous = lastReturned.previous;
+!       return lastReturned.data;
+      }
+  
+      /**
+--- 936,943 ----
+          throw new NoSuchElementException();
+        position--;
+        lastReturned = next = previous;
+!       previous = lastReturned.getPrevious();
+!       return lastReturned.getData();
+      }
+  
+      /**
+***************
+*** 901,908 ****
+        if (lastReturned == previous)
+          position--;
+  
+!       next = lastReturned.next;
+!       previous = lastReturned.previous;
+        removeEntry(lastReturned);
+        knownMod++;
+  
+--- 957,964 ----
+        if (lastReturned == previous)
+          position--;
+  
+!       next = lastReturned.getNext();
+!       previous = lastReturned.getPrevious();
+        removeEntry(lastReturned);
+        knownMod++;
+  
+***************
+*** 918,938 ****
+      public void add(Object o)
+      {
+        checkMod();
+!       modCount++;
+        knownMod++;
+        size++;
+        position++;
+        Entry e = new Entry(o);
+!       e.previous = previous;
+!       e.next = next;
+  
+        if (previous != null)
+!         previous.next = e;
+        else
+          first = e;
+  
+        if (next != null)
+!         next.previous = e;
+        else
+          last = e;
+  
+--- 974,994 ----
+      public void add(Object o)
+      {
+        checkMod();
+!       setModCount(getModCount() + 1);
+        knownMod++;
+        size++;
+        position++;
+        Entry e = new Entry(o);
+!       e.setPrevious(previous);
+!       e.setNext(next);
+  
+        if (previous != null)
+!         previous.setNext(e);
+        else
+          first = e;
+  
+        if (next != null)
+!         next.setPrevious(e);
+        else
+          last = e;
+  
+***************
+*** 952,958 ****
+        checkMod();
+        if (lastReturned == null)
+          throw new IllegalStateException();
+!       lastReturned.data = o;
+      }
+    } // class LinkedListItr
+  }
+--- 1008,1014 ----
+        checkMod();
+        if (lastReturned == null)
+          throw new IllegalStateException();
+!       lastReturned.setData(o);
+      }
+    } // class LinkedListItr
+  }
+diff -rc gcc/libjava/java/util/Stack.java gcc-patched/libjava/java/util/Stack.java
+*** gcc/libjava/java/util/Stack.java	Tue Jan 22 14:40:39 2002
+--- gcc-patched/libjava/java/util/Stack.java	Tue Apr 19 16:47:26 2005
+***************
+*** 103,116 ****
+     */
+    public synchronized Object pop()
+    {
+!     if (elementCount == 0)
+        throw new EmptyStackException();
+  
+!     modCount++;
+!     Object obj = elementData[--elementCount];
+  
+      // Set topmost element to null to assist the gc in cleanup.
+!     elementData[elementCount] = null;
+      return obj;
+    }
+  
+--- 103,117 ----
+     */
+    public synchronized Object pop()
+    {
+!     if (getElementCount() == 0)
+        throw new EmptyStackException();
+  
+!     setModCount(getModCount() + 1);
+!     setElementCount(getElementCount() - 1);
+!     Object obj = getElementData()[getElementCount()];
+  
+      // Set topmost element to null to assist the gc in cleanup.
+!     getElementData()[getElementCount()] = null;
+      return obj;
+    }
+  
+***************
+*** 122,131 ****
+     */
+    public synchronized Object peek()
+    {
+!     if (elementCount == 0)
+        throw new EmptyStackException();
+  
+!     return elementData[elementCount - 1];
+    }
+  
+    /**
+--- 123,132 ----
+     */
+    public synchronized Object peek()
+    {
+!     if (getElementCount() == 0)
+        throw new EmptyStackException();
+  
+!     return getElementData()[getElementCount() - 1];
+    }
+  
+    /**
+***************
+*** 135,141 ****
+     */
+    public synchronized boolean empty()
+    {
+!     return elementCount == 0;
+    }
+  
+    /**
+--- 136,142 ----
+     */
+    public synchronized boolean empty()
+    {
+!     return getElementCount() == 0;
+    }
+  
+    /**
+***************
+*** 149,158 ****
+     */
+    public synchronized int search(Object o)
+    {
+!     int i = elementCount;
+      while (--i >= 0)
+!       if (equals(o, elementData[i]))
+!         return elementCount - i;
+      return -1;
+    }
+  }
+--- 150,159 ----
+     */
+    public synchronized int search(Object o)
+    {
+!     int i = getElementCount();
+      while (--i >= 0)
+!       if (equals(o, getElementData()[i]))
+!         return getElementCount() - i;
+      return -1;
+    }
+  }
+diff -rc gcc/libjava/java/util/TreeMap.java gcc-patched/libjava/java/util/TreeMap.java
+*** gcc/libjava/java/util/TreeMap.java	Sat Oct 25 19:48:31 2003
+--- gcc-patched/libjava/java/util/TreeMap.java	Tue Apr 19 16:39:55 2005
+***************
+*** 122,130 ****
+    static
+      {
+        // Nil is self-referential, so we must initialize it after creation.
+!       nil.parent = nil;
+!       nil.left = nil;
+!       nil.right = nil;
+      }
+  
+    /**
+--- 122,130 ----
+    static
+      {
+        // Nil is self-referential, so we must initialize it after creation.
+!       nil.setParent(nil);
+!       nil.setLeft(nil);
+!       nil.setRight(nil);
+      }
+  
+    /**
+***************
+*** 135,141 ****
+    /**
+     * The size of this TreeMap. Package visible for use by nested classes.
+     */
+!   transient int size;
+  
+    /**
+     * The cache for {@link #entrySet()}.
+--- 135,141 ----
+    /**
+     * The size of this TreeMap. Package visible for use by nested classes.
+     */
+!   private transient int size;
+  
+    /**
+     * The cache for {@link #entrySet()}.
+***************
+*** 147,153 ****
+     * by Iterators to know when to throw ConcurrentModificationExceptions.
+     * Package visible for use by nested classes.
+     */
+!   transient int modCount;
+  
+    /**
+     * This TreeMap's comparator, or null for natural ordering.
+--- 147,153 ----
+     * by Iterators to know when to throw ConcurrentModificationExceptions.
+     * Package visible for use by nested classes.
+     */
+!   private transient int modCount;
+  
+    /**
+     * This TreeMap's comparator, or null for natural ordering.
+***************
+*** 166,179 ****
+    {
+      // All fields package visible for use by nested classes.
+      /** The color of this node. */
+!     int color;
+  
+      /** The left child node. */
+!     Node left = nil;
+      /** The right child node. */
+!     Node right = nil;
+      /** The parent node. */
+!     Node parent = nil;
+  
+      /**
+       * Simple constructor.
+--- 166,179 ----
+    {
+      // All fields package visible for use by nested classes.
+      /** The color of this node. */
+!     private int color;
+  
+      /** The left child node. */
+!     private Node left = nil;
+      /** The right child node. */
+!     private Node right = nil;
+      /** The parent node. */
+!     private Node parent = nil;
+  
+      /**
+       * Simple constructor.
+***************
+*** 183,189 ****
+      Node(Object key, Object value, int color)
+      {
+        super(key, value);
+!       this.color = color;
+      }
+    }
+  
+--- 183,245 ----
+      Node(Object key, Object value, int color)
+      {
+        super(key, value);
+!       this.setColor(color);
+!     }
+! 
+!     /**
+!      *  @param color The color to set.
+!      */
+!     void setColor(int color) {
+!         this.color = color;
+!     }
+! 
+!     /**
+!      *  @return Returns the color.
+!      */
+!     int getColor() {
+!         return color;
+!     }
+! 
+!     /**
+!      *  @param left The left to set.
+!      */
+!     void setLeft(Node left) {
+!         this.left = left;
+!     }
+! 
+!     /**
+!      *  @return Returns the left.
+!      */
+!     Node getLeft() {
+!         return left;
+!     }
+! 
+!     /**
+!      *  @param right The right to set.
+!      */
+!     void setRight(Node right) {
+!         this.right = right;
+!     }
+! 
+!     /**
+!      *  @return Returns the right.
+!      */
+!     Node getRight() {
+!         return right;
+!     }
+! 
+!     /**
+!      *  @param parent The parent to set.
+!      */
+!     void setParent(Node parent) {
+!         this.parent = parent;
+!     }
+! 
+!     /**
+!      *  @return Returns the parent.
+!      */
+!     Node getParent() {
+!         return parent;
+      }
+    }
+  
+***************
+*** 255,262 ****
+      while (--pos >= 0)
+        {
+          Map.Entry me = (Map.Entry) itr.next();
+!         node.key = me.getKey();
+!         node.value = me.getValue();
+          node = successor(node);
+        }
+    }
+--- 311,318 ----
+      while (--pos >= 0)
+        {
+          Map.Entry me = (Map.Entry) itr.next();
+!         node.setKey(me.getKey());
+!         node.setValue(me.getValue());
+          node = successor(node);
+        }
+    }
+***************
+*** 298,305 ****
+  
+      while (node != nil)
+        {
+!         cnode.key = node.key;
+!         cnode.value = node.value;
+          node = successor(node);
+          cnode = copy.successor(cnode);
+        }
+--- 354,361 ----
+  
+      while (node != nil)
+        {
+!         cnode.setKey(node.getKey());
+!         cnode.setValue(node.getValue());
+          node = successor(node);
+          cnode = copy.successor(cnode);
+        }
+***************
+*** 343,349 ****
+      Node node = firstNode();
+      while (node != nil)
+        {
+!         if (equals(value, node.value))
+            return true;
+          node = successor(node);
+        }
+--- 399,405 ----
+      Node node = firstNode();
+      while (node != nil)
+        {
+!         if (equals(value, node.getValue()))
+            return true;
+          node = successor(node);
+        }
+***************
+*** 391,397 ****
+              return false;
+            Map.Entry me = (Map.Entry) o;
+            Node n = getNode(me.getKey());
+!           return n != nil && AbstractSet.equals(me.getValue(), n.value);
+        }
+  
+          public boolean remove(Object o)
+--- 447,453 ----
+              return false;
+            Map.Entry me = (Map.Entry) o;
+            Node n = getNode(me.getKey());
+!           return n != nil && AbstractSet.equals(me.getValue(), n.getValue());
+        }
+  
+          public boolean remove(Object o)
+***************
+*** 400,406 ****
+              return false;
+            Map.Entry me = (Map.Entry) o;
+            Node n = getNode(me.getKey());
+!           if (n != nil && AbstractSet.equals(me.getValue(), n.value))
+              {
+                removeNode(n);
+                return true;
+--- 456,462 ----
+              return false;
+            Map.Entry me = (Map.Entry) o;
+            Node n = getNode(me.getKey());
+!           if (n != nil && AbstractSet.equals(me.getValue(), n.getValue()))
+              {
+                removeNode(n);
+                return true;
+***************
+*** 421,427 ****
+    {
+      if (root == nil)
+        throw new NoSuchElementException();
+!     return firstNode().key;
+    }
+  
+    /**
+--- 477,483 ----
+    {
+      if (root == nil)
+        throw new NoSuchElementException();
+!     return firstNode().getKey();
+    }
+  
+    /**
+***************
+*** 441,447 ****
+    public Object get(Object key)
+    {
+      // Exploit fact that nil.value == null.
+!     return getNode(key).value;
+    }
+  
+    /**
+--- 497,503 ----
+    public Object get(Object key)
+    {
+      // Exploit fact that nil.value == null.
+!     return getNode(key).getValue();
+    }
+  
+    /**
+***************
+*** 475,484 ****
+     */
+    public Set keySet()
+    {
+!     if (keys == null)
+        // Create an AbstractSet with custom implementations of those methods
+        // that can be overriden easily and efficiently.
+!       keys = new AbstractSet()
+        {
+          public int size()
+          {
+--- 531,540 ----
+     */
+    public Set keySet()
+    {
+!     if (getKeys() == null)
+        // Create an AbstractSet with custom implementations of those methods
+        // that can be overriden easily and efficiently.
+!       setKeys(new AbstractSet()
+        {
+          public int size()
+          {
+***************
+*** 508,515 ****
+            removeNode(n);
+            return true;
+          }
+!       };
+!     return keys;
+    }
+  
+    /**
+--- 564,571 ----
+            removeNode(n);
+            return true;
+          }
+!       });
+!     return getKeys();
+    }
+  
+    /**
+***************
+*** 522,528 ****
+    {
+      if (root == nil)
+        throw new NoSuchElementException("empty");
+!     return lastNode().key;
+    }
+  
+    /**
+--- 578,584 ----
+    {
+      if (root == nil)
+        throw new NoSuchElementException("empty");
+!     return lastNode().getKey();
+    }
+  
+    /**
+***************
+*** 551,568 ****
+      while (current != nil)
+        {
+          parent = current;
+!         comparison = compare(key, current.key);
+          if (comparison > 0)
+!           current = current.right;
+          else if (comparison < 0)
+!           current = current.left;
+          else // Key already in tree.
+            return current.setValue(value);
+        }
+  
+      // Set up new node.
+      Node n = new Node(key, value, RED);
+!     n.parent = parent;
+  
+      // Insert node in tree.
+      modCount++;
+--- 607,624 ----
+      while (current != nil)
+        {
+          parent = current;
+!         comparison = compare(key, current.getKey());
+          if (comparison > 0)
+!           current = current.getRight();
+          else if (comparison < 0)
+!           current = current.getLeft();
+          else // Key already in tree.
+            return current.setValue(value);
+        }
+  
+      // Set up new node.
+      Node n = new Node(key, value, RED);
+!     n.setParent(parent);
+  
+      // Insert node in tree.
+      modCount++;
+***************
+*** 574,582 ****
+          return null;
+        }
+      if (comparison > 0)
+!       parent.right = n;
+      else
+!       parent.left = n;
+  
+      // Rebalance after insert.
+      insertFixup(n);
+--- 630,638 ----
+          return null;
+        }
+      if (comparison > 0)
+!       parent.setRight(n);
+      else
+!       parent.setLeft(n);
+  
+      // Rebalance after insert.
+      insertFixup(n);
+***************
+*** 624,630 ****
+      if (n == nil)
+        return null;
+      // Note: removeNode can alter the contents of n, so save value now.
+!     Object result = n.value;
+      removeNode(n);
+      return result;
+    }
+--- 680,686 ----
+      if (n == nil)
+        return null;
+      // Note: removeNode can alter the contents of n, so save value now.
+!     Object result = n.getValue();
+      removeNode(n);
+      return result;
+    }
+***************
+*** 695,704 ****
+     */
+    public Collection values()
+    {
+!     if (values == null)
+        // We don't bother overriding many of the optional methods, as doing so
+        // wouldn't provide any significant performance advantage.
+!       values = new AbstractCollection()
+        {
+          public int size()
+          {
+--- 751,760 ----
+     */
+    public Collection values()
+    {
+!     if (getValues() == null)
+        // We don't bother overriding many of the optional methods, as doing so
+        // wouldn't provide any significant performance advantage.
+!       setValues(new AbstractCollection()
+        {
+          public int size()
+          {
+***************
+*** 714,721 ****
+          {
+            TreeMap.this.clear();
+          }
+!       };
+!     return values;
+    }
+  
+    /**
+--- 770,777 ----
+          {
+            TreeMap.this.clear();
+          }
+!       });
+!     return getValues();
+    }
+  
+    /**
+***************
+*** 748,795 ****
+      // If a black node has been removed, we need to rebalance to avoid
+      // violating the "same number of black nodes on any path" rule. If
+      // node is red, we can simply recolor it black and all is well.
+!     while (node != root && node.color == BLACK)
+        {
+!         if (node == parent.left)
+            {
+              // Rebalance left side.
+!             Node sibling = parent.right;
+              // if (sibling == nil)
+              //   throw new InternalError();
+!             if (sibling.color == RED)
+                {
+                  // Case 1: Sibling is red.
+                  // Recolor sibling and parent, and rotate parent left.
+!                 sibling.color = BLACK;
+!                 parent.color = RED;
+                  rotateLeft(parent);
+!                 sibling = parent.right;
+                }
+  
+!             if (sibling.left.color == BLACK && sibling.right.color == BLACK)
+                {
+                  // Case 2: Sibling has no red children.
+                  // Recolor sibling, and move to parent.
+!                 sibling.color = RED;
+                  node = parent;
+!                 parent = parent.parent;
+                }
+              else
+                {
+!                 if (sibling.right.color == BLACK)
+                    {
+                      // Case 3: Sibling has red left child.
+                      // Recolor sibling and left child, rotate sibling right.
+!                     sibling.left.color = BLACK;
+!                     sibling.color = RED;
+                      rotateRight(sibling);
+!                     sibling = parent.right;
+                    }
+                  // Case 4: Sibling has red right child. Recolor sibling,
+                  // right child, and parent, and rotate parent left.
+!                 sibling.color = parent.color;
+!                 parent.color = BLACK;
+!                 sibling.right.color = BLACK;
+                  rotateLeft(parent);
+                  node = root; // Finished.
+                }
+--- 804,851 ----
+      // If a black node has been removed, we need to rebalance to avoid
+      // violating the "same number of black nodes on any path" rule. If
+      // node is red, we can simply recolor it black and all is well.
+!     while (node != root && node.getColor() == BLACK)
+        {
+!         if (node == parent.getLeft())
+            {
+              // Rebalance left side.
+!             Node sibling = parent.getRight();
+              // if (sibling == nil)
+              //   throw new InternalError();
+!             if (sibling.getColor() == RED)
+                {
+                  // Case 1: Sibling is red.
+                  // Recolor sibling and parent, and rotate parent left.
+!                 sibling.setColor(BLACK);
+!                 parent.setColor(RED);
+                  rotateLeft(parent);
+!                 sibling = parent.getRight();
+                }
+  
+!             if (sibling.getLeft().getColor() == BLACK && sibling.getRight().getColor() == BLACK)
+                {
+                  // Case 2: Sibling has no red children.
+                  // Recolor sibling, and move to parent.
+!                 sibling.setColor(RED);
+                  node = parent;
+!                 parent = parent.getParent();
+                }
+              else
+                {
+!                 if (sibling.getRight().getColor() == BLACK)
+                    {
+                      // Case 3: Sibling has red left child.
+                      // Recolor sibling and left child, rotate sibling right.
+!                     sibling.getLeft().setColor(BLACK);
+!                     sibling.setColor(RED);
+                      rotateRight(sibling);
+!                     sibling = parent.getRight();
+                    }
+                  // Case 4: Sibling has red right child. Recolor sibling,
+                  // right child, and parent, and rotate parent left.
+!                 sibling.setColor(parent.getColor());
+!                 parent.setColor(BLACK);
+!                 sibling.getRight().setColor(BLACK);
+                  rotateLeft(parent);
+                  node = root; // Finished.
+                }
+***************
+*** 797,845 ****
+          else
+            {
+              // Symmetric "mirror" of left-side case.
+!             Node sibling = parent.left;
+              // if (sibling == nil)
+              //   throw new InternalError();
+!             if (sibling.color == RED)
+                {
+                  // Case 1: Sibling is red.
+                  // Recolor sibling and parent, and rotate parent right.
+!                 sibling.color = BLACK;
+!                 parent.color = RED;
+                  rotateRight(parent);
+!                 sibling = parent.left;
+                }
+  
+!             if (sibling.right.color == BLACK && sibling.left.color == BLACK)
+                {
+                  // Case 2: Sibling has no red children.
+                  // Recolor sibling, and move to parent.
+!                 sibling.color = RED;
+                  node = parent;
+!                 parent = parent.parent;
+                }
+              else
+                {
+!                 if (sibling.left.color == BLACK)
+                    {
+                      // Case 3: Sibling has red right child.
+                      // Recolor sibling and right child, rotate sibling left.
+!                     sibling.right.color = BLACK;
+!                     sibling.color = RED;
+                      rotateLeft(sibling);
+!                     sibling = parent.left;
+                    }
+                  // Case 4: Sibling has red left child. Recolor sibling,
+                  // left child, and parent, and rotate parent right.
+!                 sibling.color = parent.color;
+!                 parent.color = BLACK;
+!                 sibling.left.color = BLACK;
+                  rotateRight(parent);
+                  node = root; // Finished.
+                }
+            }
+        }
+!     node.color = BLACK;
+    }
+  
+    /**
+--- 853,901 ----
+          else
+            {
+              // Symmetric "mirror" of left-side case.
+!             Node sibling = parent.getLeft();
+              // if (sibling == nil)
+              //   throw new InternalError();
+!             if (sibling.getColor() == RED)
+                {
+                  // Case 1: Sibling is red.
+                  // Recolor sibling and parent, and rotate parent right.
+!                 sibling.setColor(BLACK);
+!                 parent.setColor(RED);
+                  rotateRight(parent);
+!                 sibling = parent.getLeft();
+                }
+  
+!             if (sibling.getRight().getColor() == BLACK && sibling.getLeft().getColor() == BLACK)
+                {
+                  // Case 2: Sibling has no red children.
+                  // Recolor sibling, and move to parent.
+!                 sibling.setColor(RED);
+                  node = parent;
+!                 parent = parent.getParent();
+                }
+              else
+                {
+!                 if (sibling.getLeft().getColor() == BLACK)
+                    {
+                      // Case 3: Sibling has red right child.
+                      // Recolor sibling and right child, rotate sibling left.
+!                     sibling.getRight().setColor(BLACK);
+!                     sibling.setColor(RED);
+                      rotateLeft(sibling);
+!                     sibling = parent.getLeft();
+                    }
+                  // Case 4: Sibling has red left child. Recolor sibling,
+                  // left child, and parent, and rotate parent right.
+!                 sibling.setColor(parent.getColor());
+!                 parent.setColor(BLACK);
+!                 sibling.getLeft().setColor(BLACK);
+                  rotateRight(parent);
+                  node = root; // Finished.
+                }
+            }
+        }
+!     node.setColor(BLACK);
+    }
+  
+    /**
+***************
+*** 873,890 ****
+            {
+              Node left = new Node(null, null, BLACK);
+              Node right = new Node(null, null, BLACK);
+!             left.parent = parent;
+!             left.right = right;
+!             right.parent = parent;
+!             parent.left = left;
+!             Node next = parent.right;
+!             parent.right = right;
+              parent = next;
+              if (last != null)
+!               last.right = left;
+              last = right;
+            }
+!         row = row.left;
+        }
+  
+      // Now do the partial final row in red.
+--- 929,946 ----
+            {
+              Node left = new Node(null, null, BLACK);
+              Node right = new Node(null, null, BLACK);
+!             left.setParent(parent);
+!             left.setRight(right);
+!             right.setParent(parent);
+!             parent.setLeft(left);
+!             Node next = parent.getRight();
+!             parent.setRight(right);
+              parent = next;
+              if (last != null)
+!               last.setRight(left);
+              last = right;
+            }
+!         row = row.getLeft();
+        }
+  
+      // Now do the partial final row in red.
+***************
+*** 895,921 ****
+        {
+          Node left = new Node(null, null, RED);
+          Node right = new Node(null, null, RED);
+!         left.parent = parent;
+!         right.parent = parent;
+!         parent.left = left;
+!         Node next = parent.right;
+!         parent.right = right;
+          parent = next;
+        }
+      // Add a lone left node if necessary.
+      if (i - overflow == 0)
+        {
+          Node left = new Node(null, null, RED);
+!         left.parent = parent;
+!         parent.left = left;
+!         parent = parent.right;
+!         left.parent.right = nil;
+        }
+      // Unlink the remaining nodes of the previous row.
+      while (parent != nil)
+        {
+!         Node next = parent.right;
+!         parent.right = nil;
+          parent = next;
+        }
+    }
+--- 951,977 ----
+        {
+          Node left = new Node(null, null, RED);
+          Node right = new Node(null, null, RED);
+!         left.setParent(parent);
+!         right.setParent(parent);
+!         parent.setLeft(left);
+!         Node next = parent.getRight();
+!         parent.setRight(right);
+          parent = next;
+        }
+      // Add a lone left node if necessary.
+      if (i - overflow == 0)
+        {
+          Node left = new Node(null, null, RED);
+!         left.setParent(parent);
+!         parent.setLeft(left);
+!         parent = parent.getRight();
+!         left.getParent().setRight(nil);
+        }
+      // Unlink the remaining nodes of the previous row.
+      while (parent != nil)
+        {
+!         Node next = parent.getRight();
+!         parent.setRight(nil);
+          parent = next;
+        }
+    }
+***************
+*** 930,937 ****
+    {
+      // Exploit fact that nil.left == nil.
+      Node node = root;
+!     while (node.left != nil)
+!       node = node.left;
+      return node;
+    }
+  
+--- 986,993 ----
+    {
+      // Exploit fact that nil.left == nil.
+      Node node = root;
+!     while (node.getLeft() != nil)
+!       node = node.getLeft();
+      return node;
+    }
+  
+***************
+*** 947,957 ****
+      Node current = root;
+      while (current != nil)
+        {
+!         int comparison = compare(key, current.key);
+          if (comparison > 0)
+!           current = current.right;
+          else if (comparison < 0)
+!           current = current.left;
+          else
+            return current;
+        }
+--- 1003,1013 ----
+      Node current = root;
+      while (current != nil)
+        {
+!         int comparison = compare(key, current.getKey());
+          if (comparison > 0)
+!           current = current.getRight();
+          else if (comparison < 0)
+!           current = current.getLeft();
+          else
+            return current;
+        }
+***************
+*** 977,987 ****
+      while (current != nil)
+        {
+          last = current;
+!         comparison = compare(key, current.key);
+          if (comparison > 0)
+!           current = current.right;
+          else if (comparison < 0)
+!           current = current.left;
+          else // Exact match.
+            return predecessor(last);
+        }
+--- 1033,1043 ----
+      while (current != nil)
+        {
+          last = current;
+!         comparison = compare(key, current.getKey());
+          if (comparison > 0)
+!           current = current.getRight();
+          else if (comparison < 0)
+!           current = current.getLeft();
+          else // Exact match.
+            return predecessor(last);
+        }
+***************
+*** 998,1066 ****
+      // Only need to rebalance when parent is a RED node, and while at least
+      // 2 levels deep into the tree (ie: node has a grandparent). Remember
+      // that nil.color == BLACK.
+!     while (n.parent.color == RED && n.parent.parent != nil)
+        {
+!         if (n.parent == n.parent.parent.left)
+            {
+!             Node uncle = n.parent.parent.right;
+              // Uncle may be nil, in which case it is BLACK.
+!             if (uncle.color == RED)
+                {
+                  // Case 1. Uncle is RED: Change colors of parent, uncle,
+                  // and grandparent, and move n to grandparent.
+!                 n.parent.color = BLACK;
+!                 uncle.color = BLACK;
+!                 uncle.parent.color = RED;
+!                 n = uncle.parent;
+                }
+              else
+                {
+!                 if (n == n.parent.right)
+                    {
+                      // Case 2. Uncle is BLACK and x is right child.
+                      // Move n to parent, and rotate n left.
+!                     n = n.parent;
+                      rotateLeft(n);
+                    }
+                  // Case 3. Uncle is BLACK and x is left child.
+                  // Recolor parent, grandparent, and rotate grandparent right.
+!                 n.parent.color = BLACK;
+!                 n.parent.parent.color = RED;
+!                 rotateRight(n.parent.parent);
+                }
+            }
+          else
+            {
+              // Mirror image of above code.
+!             Node uncle = n.parent.parent.left;
+              // Uncle may be nil, in which case it is BLACK.
+!             if (uncle.color == RED)
+                {
+                  // Case 1. Uncle is RED: Change colors of parent, uncle,
+                  // and grandparent, and move n to grandparent.
+!                 n.parent.color = BLACK;
+!                 uncle.color = BLACK;
+!                 uncle.parent.color = RED;
+!                 n = uncle.parent;
+                }
+              else
+                {
+!                 if (n == n.parent.left)
+                  {
+                      // Case 2. Uncle is BLACK and x is left child.
+                      // Move n to parent, and rotate n right.
+!                     n = n.parent;
+                      rotateRight(n);
+                    }
+                  // Case 3. Uncle is BLACK and x is right child.
+                  // Recolor parent, grandparent, and rotate grandparent left.
+!                 n.parent.color = BLACK;
+!                 n.parent.parent.color = RED;
+!                 rotateLeft(n.parent.parent);
+                }
+            }
+        }
+!     root.color = BLACK;
+    }
+  
+    /**
+--- 1054,1122 ----
+      // Only need to rebalance when parent is a RED node, and while at least
+      // 2 levels deep into the tree (ie: node has a grandparent). Remember
+      // that nil.color == BLACK.
+!     while (n.getParent().getColor() == RED && n.getParent().getParent() != nil)
+        {
+!         if (n.getParent() == n.getParent().getParent().getLeft())
+            {
+!             Node uncle = n.getParent().getParent().getRight();
+              // Uncle may be nil, in which case it is BLACK.
+!             if (uncle.getColor() == RED)
+                {
+                  // Case 1. Uncle is RED: Change colors of parent, uncle,
+                  // and grandparent, and move n to grandparent.
+!                 n.getParent().setColor(BLACK);
+!                 uncle.setColor(BLACK);
+!                 uncle.getParent().setColor(RED);
+!                 n = uncle.getParent();
+                }
+              else
+                {
+!                 if (n == n.getParent().getRight())
+                    {
+                      // Case 2. Uncle is BLACK and x is right child.
+                      // Move n to parent, and rotate n left.
+!                     n = n.getParent();
+                      rotateLeft(n);
+                    }
+                  // Case 3. Uncle is BLACK and x is left child.
+                  // Recolor parent, grandparent, and rotate grandparent right.
+!                 n.getParent().setColor(BLACK);
+!                 n.getParent().getParent().setColor(RED);
+!                 rotateRight(n.getParent().getParent());
+                }
+            }
+          else
+            {
+              // Mirror image of above code.
+!             Node uncle = n.getParent().getParent().getLeft();
+              // Uncle may be nil, in which case it is BLACK.
+!             if (uncle.getColor() == RED)
+                {
+                  // Case 1. Uncle is RED: Change colors of parent, uncle,
+                  // and grandparent, and move n to grandparent.
+!                 n.getParent().setColor(BLACK);
+!                 uncle.setColor(BLACK);
+!                 uncle.getParent().setColor(RED);
+!                 n = uncle.getParent();
+                }
+              else
+                {
+!                 if (n == n.getParent().getLeft())
+                  {
+                      // Case 2. Uncle is BLACK and x is left child.
+                      // Move n to parent, and rotate n right.
+!                     n = n.getParent();
+                      rotateRight(n);
+                    }
+                  // Case 3. Uncle is BLACK and x is right child.
+                  // Recolor parent, grandparent, and rotate grandparent left.
+!                 n.getParent().setColor(BLACK);
+!                 n.getParent().getParent().setColor(RED);
+!                 rotateLeft(n.getParent().getParent());
+                }
+            }
+        }
+!     root.setColor(BLACK);
+    }
+  
+    /**
+***************
+*** 1072,1079 ****
+    {
+      // Exploit fact that nil.right == nil.
+      Node node = root;
+!     while (node.right != nil)
+!       node = node.right;
+      return node;
+    }
+  
+--- 1128,1135 ----
+    {
+      // Exploit fact that nil.right == nil.
+      Node node = root;
+!     while (node.getRight() != nil)
+!       node = node.getRight();
+      return node;
+    }
+  
+***************
+*** 1098,1108 ****
+      while (current != nil)
+        {
+          last = current;
+!         comparison = compare(key, current.key);
+          if (comparison > 0)
+!           current = current.right;
+          else if (comparison < 0)
+!           current = current.left;
+          else
+            return current;
+        }
+--- 1154,1164 ----
+      while (current != nil)
+        {
+          last = current;
+!         comparison = compare(key, current.getKey());
+          if (comparison > 0)
+!           current = current.getRight();
+          else if (comparison < 0)
+!           current = current.getLeft();
+          else
+            return current;
+        }
+***************
+*** 1117,1136 ****
+     */
+    private Node predecessor(Node node)
+    {
+!     if (node.left != nil)
+        {
+!         node = node.left;
+!         while (node.right != nil)
+!           node = node.right;
+          return node;
+        }
+  
+!     Node parent = node.parent;
+      // Exploit fact that nil.left == nil and node is non-nil.
+!     while (node == parent.left)
+        {
+          node = parent;
+!         parent = node.parent;
+        }
+      return parent;
+    }
+--- 1173,1192 ----
+     */
+    private Node predecessor(Node node)
+    {
+!     if (node.getLeft() != nil)
+        {
+!         node = node.getLeft();
+!         while (node.getRight() != nil)
+!           node = node.getRight();
+          return node;
+        }
+  
+!     Node parent = node.getParent();
+      // Exploit fact that nil.left == nil and node is non-nil.
+!     while (node == parent.getLeft())
+        {
+          node = parent;
+!         parent = node.getParent();
+        }
+      return parent;
+    }
+***************
+*** 1156,1163 ****
+  
+      while (--count >= 0)
+        {
+!         node.key = s.readObject();
+!         node.value = readValues ? s.readObject() : "";
+          node = successor(node);
+        }
+    }
+--- 1212,1219 ----
+  
+      while (--count >= 0)
+        {
+!         node.setKey(s.readObject());
+!         node.setValue(readValues ? s.readObject() : "");
+          node = successor(node);
+        }
+    }
+***************
+*** 1177,1184 ****
+  
+      while (--count >= 0)
+        {
+!         node.key = keys.next();
+!         node.value = "";
+          node = successor(node);
+        }
+    }
+--- 1233,1240 ----
+  
+      while (--count >= 0)
+        {
+!         node.setKey(keys.next());
+!         node.setValue("");
+          node = successor(node);
+        }
+    }
+***************
+*** 1215,1260 ****
+      size--;
+  
+      // Find splice, the node at the position to actually remove from the tree.
+!     if (node.left == nil)
+        {
+          // Node to be deleted has 0 or 1 children.
+          splice = node;
+!         child = node.right;
+        }
+!     else if (node.right == nil)
+        {
+          // Node to be deleted has 1 child.
+          splice = node;
+!         child = node.left;
+        }
+      else
+        {
+          // Node has 2 children. Splice is node's predecessor, and we swap
+          // its contents into node.
+!         splice = node.left;
+!         while (splice.right != nil)
+!           splice = splice.right;
+!         child = splice.left;
+!         node.key = splice.key;
+!         node.value = splice.value;
+        }
+  
+      // Unlink splice from the tree.
+!     Node parent = splice.parent;
+      if (child != nil)
+!       child.parent = parent;
+      if (parent == nil)
+        {
+          // Special case for 0 or 1 node remaining.
+          root = child;
+          return;
+        }
+!     if (splice == parent.left)
+!       parent.left = child;
+      else
+!       parent.right = child;
+  
+!     if (splice.color == BLACK)
+        deleteFixup(child, parent);
+    }
+  
+--- 1271,1316 ----
+      size--;
+  
+      // Find splice, the node at the position to actually remove from the tree.
+!     if (node.getLeft() == nil)
+        {
+          // Node to be deleted has 0 or 1 children.
+          splice = node;
+!         child = node.getRight();
+        }
+!     else if (node.getRight() == nil)
+        {
+          // Node to be deleted has 1 child.
+          splice = node;
+!         child = node.getLeft();
+        }
+      else
+        {
+          // Node has 2 children. Splice is node's predecessor, and we swap
+          // its contents into node.
+!         splice = node.getLeft();
+!         while (splice.getRight() != nil)
+!           splice = splice.getRight();
+!         child = splice.getLeft();
+!         node.setKey(splice.getKey());
+!         node.setKey(splice.getValue());
+        }
+  
+      // Unlink splice from the tree.
+!     Node parent = splice.getParent();
+      if (child != nil)
+!       child.setParent(parent);
+      if (parent == nil)
+        {
+          // Special case for 0 or 1 node remaining.
+          root = child;
+          return;
+        }
+!     if (splice == parent.getLeft())
+!       parent.setLeft(child);
+      else
+!       parent.setRight(child);
+  
+!     if (splice.getColor() == BLACK)
+        deleteFixup(child, parent);
+    }
+  
+***************
+*** 1265,1294 ****
+     */
+    private void rotateLeft(Node node)
+    {
+!     Node child = node.right;
+      // if (node == nil || child == nil)
+      //   throw new InternalError();
+  
+      // Establish node.right link.
+!     node.right = child.left;
+!     if (child.left != nil)
+!       child.left.parent = node;
+  
+      // Establish child->parent link.
+!     child.parent = node.parent;
+!     if (node.parent != nil)
+        {
+!         if (node == node.parent.left)
+!           node.parent.left = child;
+          else
+!           node.parent.right = child;
+        }
+      else
+        root = child;
+  
+      // Link n and child.
+!     child.left = node;
+!     node.parent = child;
+    }
+  
+    /**
+--- 1321,1350 ----
+     */
+    private void rotateLeft(Node node)
+    {
+!     Node child = node.getRight();
+      // if (node == nil || child == nil)
+      //   throw new InternalError();
+  
+      // Establish node.right link.
+!     node.setRight(child.getLeft());
+!     if (child.getLeft() != nil)
+!       child.getLeft().setParent(node);
+  
+      // Establish child->parent link.
+!     child.setParent(node.getParent());
+!     if (node.getParent() != nil)
+        {
+!         if (node == node.getParent().getLeft())
+!           node.getParent().setLeft(child);
+          else
+!           node.getParent().setRight(child);
+        }
+      else
+        root = child;
+  
+      // Link n and child.
+!     child.setLeft(node);
+!     node.setParent(child);
+    }
+  
+    /**
+***************
+*** 1298,1327 ****
+     */
+    private void rotateRight(Node node)
+    {
+!     Node child = node.left;
+      // if (node == nil || child == nil)
+      //   throw new InternalError();
+  
+      // Establish node.left link.
+!     node.left = child.right;
+!     if (child.right != nil)
+!       child.right.parent = node;
+  
+      // Establish child->parent link.
+!     child.parent = node.parent;
+!     if (node.parent != nil)
+        {
+!         if (node == node.parent.right)
+!           node.parent.right = child;
+          else
+!           node.parent.left = child;
+        }
+      else
+        root = child;
+  
+      // Link n and child.
+!     child.right = node;
+!     node.parent = child;
+    }
+  
+    /**
+--- 1354,1383 ----
+     */
+    private void rotateRight(Node node)
+    {
+!     Node child = node.getLeft();
+      // if (node == nil || child == nil)
+      //   throw new InternalError();
+  
+      // Establish node.left link.
+!     node.setLeft(child.getRight());
+!     if (child.getRight() != nil)
+!       child.getRight().setParent(node);
+  
+      // Establish child->parent link.
+!     child.setParent(node.getParent());
+!     if (node.getParent() != nil)
+        {
+!         if (node == node.getParent().getRight())
+!           node.getParent().setRight(child);
+          else
+!           node.getParent().setLeft(child);
+        }
+      else
+        root = child;
+  
+      // Link n and child.
+!     child.setRight(node);
+!     node.setParent(child);
+    }
+  
+    /**
+***************
+*** 1333,1352 ****
+     */
+    final Node successor(Node node)
+    {
+!     if (node.right != nil)
+        {
+!         node = node.right;
+!         while (node.left != nil)
+!           node = node.left;
+          return node;
+        }
+  
+!     Node parent = node.parent;
+      // Exploit fact that nil.right == nil and node is non-nil.
+!     while (node == parent.right)
+        {
+          node = parent;
+!         parent = parent.parent;
+        }
+      return parent;
+    }
+--- 1389,1408 ----
+     */
+    final Node successor(Node node)
+    {
+!     if (node.getRight() != nil)
+        {
+!         node = node.getRight();
+!         while (node.getLeft() != nil)
+!           node = node.getLeft();
+          return node;
+        }
+  
+!     Node parent = node.getParent();
+      // Exploit fact that nil.right == nil and node is non-nil.
+!     while (node == parent.getRight())
+        {
+          node = parent;
+!         parent = parent.getParent();
+        }
+      return parent;
+    }
+***************
+*** 1367,1374 ****
+      s.writeInt(size);
+      while (node != nil)
+        {
+!         s.writeObject(node.key);
+!         s.writeObject(node.value);
+          node = successor(node);
+        }
+    }
+--- 1423,1430 ----
+      s.writeInt(size);
+      while (node != nil)
+        {
+!         s.writeObject(node.getKey());
+!         s.writeObject(node.getValue());
+          node = successor(node);
+        }
+    }
+***************
+*** 1454,1462 ****
+        next = successor(last);
+  
+        if (type == VALUES)
+!         return last.value;
+        else if (type == KEYS)
+!         return last.key;
+        return last;
+      }
+  
+--- 1510,1518 ----
+        next = successor(last);
+  
+        if (type == VALUES)
+!         return last.getValue();
+        else if (type == KEYS)
+!         return last.getKey();
+        return last;
+      }
+  
+***************
+*** 1605,1611 ****
+              if (! keyInRange(key))
+                return false;
+              Node n = getNode(key);
+!             return n != nil && AbstractSet.equals(me.getValue(), n.value);
+            }
+  
+            public boolean remove(Object o)
+--- 1661,1667 ----
+              if (! keyInRange(key))
+                return false;
+              Node n = getNode(key);
+!             return n != nil && AbstractSet.equals(me.getValue(), n.getValue());
+            }
+  
+            public boolean remove(Object o)
+***************
+*** 1617,1623 ****
+              if (! keyInRange(key))
+                return false;
+              Node n = getNode(key);
+!             if (n != nil && AbstractSet.equals(me.getValue(), n.value))
+                {
+                  removeNode(n);
+                  return true;
+--- 1673,1679 ----
+              if (! keyInRange(key))
+                return false;
+              Node n = getNode(key);
+!             if (n != nil && AbstractSet.equals(me.getValue(), n.getValue()))
+                {
+                  removeNode(n);
+                  return true;
+***************
+*** 1631,1639 ****
+      public Object firstKey()
+      {
+        Node node = lowestGreaterThan(minKey, true);
+!       if (node == nil || ! keyInRange(node.key))
+          throw new NoSuchElementException();
+!       return node.key;
+      }
+  
+      public Object get(Object key)
+--- 1687,1695 ----
+      public Object firstKey()
+      {
+        Node node = lowestGreaterThan(minKey, true);
+!       if (node == nil || ! keyInRange(node.getKey()))
+          throw new NoSuchElementException();
+!       return node.getKey();
+      }
+  
+      public Object get(Object key)
+***************
+*** 1652,1661 ****
+  
+      public Set keySet()
+      {
+!       if (this.keys == null)
+          // Create an AbstractSet with custom implementations of those methods
+          // that can be overriden easily and efficiently.
+!         this.keys = new AbstractSet()
+          {
+            public int size()
+            {
+--- 1708,1717 ----
+  
+      public Set keySet()
+      {
+!       if (getKeys() == null)
+          // Create an AbstractSet with custom implementations of those methods
+          // that can be overriden easily and efficiently.
+!         setKeys(new AbstractSet()
+          {
+            public int size()
+            {
+***************
+*** 1693,1708 ****
+                }
+              return false;
+            }
+!         };
+!       return this.keys;
+      }
+  
+      public Object lastKey()
+      {
+        Node node = highestLessThan(maxKey);
+!       if (node == nil || ! keyInRange(node.key))
+          throw new NoSuchElementException();
+!       return node.key;
+      }
+  
+      public Object put(Object key, Object value)
+--- 1749,1764 ----
+                }
+              return false;
+            }
+!         });
+!       return getKeys();
+      }
+  
+      public Object lastKey()
+      {
+        Node node = highestLessThan(maxKey);
+!       if (node == nil || ! keyInRange(node.getKey()))
+          throw new NoSuchElementException();
+!       return node.getKey();
+      }
+  
+      public Object put(Object key, Object value)
+***************
+*** 1748,1757 ****
+  
+      public Collection values()
+      {
+!       if (this.values == null)
+          // Create an AbstractCollection with custom implementations of those
+          // methods that can be overriden easily and efficiently.
+!         this.values = new AbstractCollection()
+          {
+            public int size()
+            {
+--- 1804,1813 ----
+  
+      public Collection values()
+      {
+!       if (getValues() == null)
+          // Create an AbstractCollection with custom implementations of those
+          // methods that can be overriden easily and efficiently.
+!         setValues(new AbstractCollection()
+          {
+            public int size()
+            {
+***************
+*** 1769,1776 ****
+            {
+              SubMap.this.clear();
+            }
+!         };
+!       return this.values;
+      }
+    } // class SubMap  
+  } // class TreeMap
+--- 1825,1832 ----
+            {
+              SubMap.this.clear();
+            }
+!         });
+!       return getValues();
+      }
+    } // class SubMap  
+  } // class TreeMap
+diff -rc gcc/libjava/java/util/Vector.java gcc-patched/libjava/java/util/Vector.java
+*** gcc/libjava/java/util/Vector.java	Sat Apr  6 23:40:49 2002
+--- gcc-patched/libjava/java/util/Vector.java	Tue Apr 19 16:39:55 2005
+***************
+*** 91,104 ****
+     * in positions 0 through elementCount - 1, and all remaining slots are null.
+     * @serial the elements
+     */
+!   protected Object[] elementData;
+  
+    /**
+     * The number of elements currently in the vector, also returned by
+     * {@link #size}.
+     * @serial the size
+     */
+!   protected int elementCount;
+  
+    /**
+     * The amount the Vector's internal array should be increased in size when
+--- 91,104 ----
+     * in positions 0 through elementCount - 1, and all remaining slots are null.
+     * @serial the elements
+     */
+!   private Object[] elementData;
+  
+    /**
+     * The number of elements currently in the vector, also returned by
+     * {@link #size}.
+     * @serial the size
+     */
+!   private int elementCount;
+  
+    /**
+     * The amount the Vector's internal array should be increased in size when
+***************
+*** 107,113 ****
+     * doubles in size.
+     * @serial the amount to grow the vector by
+     */
+!   protected int capacityIncrement;
+  
+    /**
+     * Constructs an empty vector with an initial size of 10, and
+--- 107,113 ----
+     * doubles in size.
+     * @serial the amount to grow the vector by
+     */
+!   private int capacityIncrement;
+  
+    /**
+     * Constructs an empty vector with an initial size of 10, and
+***************
+*** 128,135 ****
+     */
+    public Vector(Collection c)
+    {
+!     elementCount = c.size();
+!     elementData = c.toArray(new Object[elementCount]);
+    }
+  
+    /**
+--- 128,135 ----
+     */
+    public Vector(Collection c)
+    {
+!     setElementCount(c.size());
+!     setElementData(c.toArray(new Object[getElementCount()]));
+    }
+  
+    /**
+***************
+*** 145,151 ****
+    {
+      if (initialCapacity < 0)
+        throw new IllegalArgumentException();
+!     elementData = new Object[initialCapacity];
+      this.capacityIncrement = capacityIncrement;
+    }
+  
+--- 145,151 ----
+    {
+      if (initialCapacity < 0)
+        throw new IllegalArgumentException();
+!     setElementData(new Object[initialCapacity]);
+      this.capacityIncrement = capacityIncrement;
+    }
+  
+***************
+*** 174,180 ****
+     */
+    public synchronized void copyInto(Object[] a)
+    {
+!     System.arraycopy(elementData, 0, a, 0, elementCount);
+    }
+  
+    /**
+--- 174,180 ----
+     */
+    public synchronized void copyInto(Object[] a)
+    {
+!     System.arraycopy(getElementData(), 0, a, 0, getElementCount());
+    }
+  
+    /**
+***************
+*** 188,196 ****
+      // vector since that is a much less likely case; it's more efficient to
+      // not do the check and lose a bit of performance in that infrequent case
+  
+!     Object[] newArray = new Object[elementCount];
+!     System.arraycopy(elementData, 0, newArray, 0, elementCount);
+!     elementData = newArray;
+    }
+  
+    /**
+--- 188,196 ----
+      // vector since that is a much less likely case; it's more efficient to
+      // not do the check and lose a bit of performance in that infrequent case
+  
+!     Object[] newArray = new Object[getElementCount()];
+!     System.arraycopy(getElementData(), 0, newArray, 0, getElementCount());
+!     setElementData(newArray);
+    }
+  
+    /**
+***************
+*** 205,223 ****
+     */
+    public synchronized void ensureCapacity(int minCapacity)
+    {
+!     if (elementData.length >= minCapacity)
+        return;
+  
+      int newCapacity;
+      if (capacityIncrement <= 0)
+!       newCapacity = elementData.length * 2;
+      else
+!       newCapacity = elementData.length + capacityIncrement;
+  
+      Object[] newArray = new Object[Math.max(newCapacity, minCapacity)];
+  
+!     System.arraycopy(elementData, 0, newArray, 0, elementCount);
+!     elementData = newArray;
+    }
+  
+    /**
+--- 205,223 ----
+     */
+    public synchronized void ensureCapacity(int minCapacity)
+    {
+!     if (getElementData().length >= minCapacity)
+        return;
+  
+      int newCapacity;
+      if (capacityIncrement <= 0)
+!       newCapacity = getElementData().length * 2;
+      else
+!       newCapacity = getElementData().length + capacityIncrement;
+  
+      Object[] newArray = new Object[Math.max(newCapacity, minCapacity)];
+  
+!     System.arraycopy(getElementData(), 0, newArray, 0, getElementCount());
+!     setElementData(newArray);
+    }
+  
+    /**
+***************
+*** 234,244 ****
+      // Don't bother checking for the case where size() == the capacity of the
+      // vector since that is a much less likely case; it's more efficient to
+      // not do the check and lose a bit of performance in that infrequent case
+!     modCount++;
+      ensureCapacity(newSize);
+!     if (newSize < elementCount)
+!       Arrays.fill(elementData, newSize, elementCount, null);
+!     elementCount = newSize;
+    }
+  
+    /**
+--- 234,244 ----
+      // Don't bother checking for the case where size() == the capacity of the
+      // vector since that is a much less likely case; it's more efficient to
+      // not do the check and lose a bit of performance in that infrequent case
+!     setModCount(getModCount() + 1);
+      ensureCapacity(newSize);
+!     if (newSize < getElementCount())
+!       Arrays.fill(getElementData(), newSize, getElementCount(), null);
+!     setElementCount(newSize);
+    }
+  
+    /**
+***************
+*** 249,255 ****
+     */
+    public synchronized int capacity()
+    {
+!     return elementData.length;
+    }
+  
+    /**
+--- 249,255 ----
+     */
+    public synchronized int capacity()
+    {
+!     return getElementData().length;
+    }
+  
+    /**
+***************
+*** 259,265 ****
+     */
+    public synchronized int size()
+    {
+!     return elementCount;
+    }
+  
+    /**
+--- 259,265 ----
+     */
+    public synchronized int size()
+    {
+!     return getElementCount();
+    }
+  
+    /**
+***************
+*** 269,275 ****
+     */
+    public synchronized boolean isEmpty()
+    {
+!     return elementCount == 0;
+    }
+  
+    /**
+--- 269,275 ----
+     */
+    public synchronized boolean isEmpty()
+    {
+!     return getElementCount() == 0;
+    }
+  
+    /**
+***************
+*** 336,343 ****
+     */
+    public synchronized int indexOf(Object e, int index)
+    {
+!     for (int i = index; i < elementCount; i++)
+!       if (equals(e, elementData[i]))
+          return i;
+      return -1;
+    }
+--- 336,343 ----
+     */
+    public synchronized int indexOf(Object e, int index)
+    {
+!     for (int i = index; i < getElementCount(); i++)
+!       if (equals(e, getElementData()[i]))
+          return i;
+      return -1;
+    }
+***************
+*** 351,357 ****
+     */
+    public int lastIndexOf(Object elem)
+    {
+!     return lastIndexOf(elem, elementCount - 1);
+    }
+  
+    /**
+--- 351,357 ----
+     */
+    public int lastIndexOf(Object elem)
+    {
+!     return lastIndexOf(elem, getElementCount() - 1);
+    }
+  
+    /**
+***************
+*** 368,374 ****
+    {
+      checkBoundExclusive(index);
+      for (int i = index; i >= 0; i--)
+!       if (equals(e, elementData[i]))
+          return i;
+      return -1;
+    }
+--- 368,374 ----
+    {
+      checkBoundExclusive(index);
+      for (int i = index; i >= 0; i--)
+!       if (equals(e, getElementData()[i]))
+          return i;
+      return -1;
+    }
+***************
+*** 384,390 ****
+    public synchronized Object elementAt(int index)
+    {
+      checkBoundExclusive(index);
+!     return elementData[index];
+    }
+  
+    /**
+--- 384,390 ----
+    public synchronized Object elementAt(int index)
+    {
+      checkBoundExclusive(index);
+!     return getElementData()[index];
+    }
+  
+    /**
+***************
+*** 395,404 ****
+     */
+    public synchronized Object firstElement()
+    {
+!     if (elementCount == 0)
+        throw new NoSuchElementException();
+  
+!     return elementData[0];
+    }
+  
+    /**
+--- 395,404 ----
+     */
+    public synchronized Object firstElement()
+    {
+!     if (getElementCount() == 0)
+        throw new NoSuchElementException();
+  
+!     return getElementData()[0];
+    }
+  
+    /**
+***************
+*** 409,418 ****
+     */
+    public synchronized Object lastElement()
+    {
+!     if (elementCount == 0)
+        throw new NoSuchElementException();
+  
+!     return elementData[elementCount - 1];
+    }
+  
+    /**
+--- 409,418 ----
+     */
+    public synchronized Object lastElement()
+    {
+!     if (getElementCount() == 0)
+        throw new NoSuchElementException();
+  
+!     return getElementData()[getElementCount() - 1];
+    }
+  
+    /**
+***************
+*** 453,465 ****
+    public synchronized void insertElementAt(Object obj, int index)
+    {
+      checkBoundInclusive(index);
+!     if (elementCount == elementData.length)
+!       ensureCapacity(elementCount + 1);
+!     modCount++;
+!     System.arraycopy(elementData, index, elementData, index + 1,
+!                      elementCount - index);
+!     elementCount++;
+!     elementData[index] = obj;
+    }
+  
+    /**
+--- 453,465 ----
+    public synchronized void insertElementAt(Object obj, int index)
+    {
+      checkBoundInclusive(index);
+!     if (getElementCount() == getElementData().length)
+!       ensureCapacity(getElementCount() + 1);
+!     setModCount(getModCount() + 1);
+!     System.arraycopy(getElementData(), index, getElementData(), index + 1,
+!                      getElementCount() - index);
+!     setElementCount(getElementCount() + 1);
+!     getElementData()[index] = obj;
+    }
+  
+    /**
+***************
+*** 470,479 ****
+     */
+    public synchronized void addElement(Object obj)
+    {
+!     if (elementCount == elementData.length)
+!       ensureCapacity(elementCount + 1);
+!     modCount++;
+!     elementData[elementCount++] = obj;
+    }
+  
+    /**
+--- 470,479 ----
+     */
+    public synchronized void addElement(Object obj)
+    {
+!     if (getElementCount() == getElementData().length)
+!       ensureCapacity(getElementCount() + 1);
+!     setModCount(getModCount() + 1);
+!     getElementData()[elementCount++] = obj;
+    }
+  
+    /**
+***************
+*** 504,515 ****
+     */
+    public synchronized void removeAllElements()
+    {
+!     if (elementCount == 0)
+        return;
+  
+!     modCount++;
+!     Arrays.fill(elementData, 0, elementCount, null);
+!     elementCount = 0;
+    }
+  
+    /**
+--- 504,515 ----
+     */
+    public synchronized void removeAllElements()
+    {
+!     if (getElementCount() == 0)
+        return;
+  
+!     setModCount(getModCount() + 1);
+!     Arrays.fill(getElementData(), 0, getElementCount(), null);
+!     setElementCount(0);
+    }
+  
+    /**
+***************
+*** 523,529 ****
+      try
+        {
+          Vector clone = (Vector) super.clone();
+!         clone.elementData = (Object[]) elementData.clone();
+          return clone;
+        }
+      catch (CloneNotSupportedException ex)
+--- 523,529 ----
+      try
+        {
+          Vector clone = (Vector) super.clone();
+!         clone.setElementData((Object[]) getElementData().clone());
+          return clone;
+        }
+      catch (CloneNotSupportedException ex)
+***************
+*** 545,551 ****
+     */
+    public synchronized Object[] toArray()
+    {
+!     Object[] newArray = new Object[elementCount];
+      copyInto(newArray);
+      return newArray;
+    }
+--- 545,551 ----
+     */
+    public synchronized Object[] toArray()
+    {
+!     Object[] newArray = new Object[getElementCount()];
+      copyInto(newArray);
+      return newArray;
+    }
+***************
+*** 568,579 ****
+     */
+    public synchronized Object[] toArray(Object[] a)
+    {
+!     if (a.length < elementCount)
+        a = (Object[]) Array.newInstance(a.getClass().getComponentType(),
+!                                        elementCount);
+!     else if (a.length > elementCount)
+!       a[elementCount] = null;
+!     System.arraycopy(elementData, 0, a, 0, elementCount);
+      return a;
+    }
+  
+--- 568,579 ----
+     */
+    public synchronized Object[] toArray(Object[] a)
+    {
+!     if (a.length < getElementCount())
+        a = (Object[]) Array.newInstance(a.getClass().getComponentType(),
+!                                        getElementCount());
+!     else if (a.length > getElementCount())
+!       a[getElementCount()] = null;
+!     System.arraycopy(getElementData(), 0, a, 0, getElementCount());
+      return a;
+    }
+  
+***************
+*** 603,610 ****
+    public synchronized Object set(int index, Object element)
+    {
+      checkBoundExclusive(index);
+!     Object temp = elementData[index];
+!     elementData[index] = element;
+      return temp;
+    }
+  
+--- 603,610 ----
+    public synchronized Object set(int index, Object element)
+    {
+      checkBoundExclusive(index);
+!     Object temp = getElementData()[index];
+!     getElementData()[index] = element;
+      return temp;
+    }
+  
+***************
+*** 659,671 ****
+    public synchronized Object remove(int index)
+    {
+      checkBoundExclusive(index);
+!     Object temp = elementData[index];
+!     modCount++;
+!     elementCount--;
+!     if (index < elementCount)
+!       System.arraycopy(elementData, index + 1, elementData, index,
+!                        elementCount - index);
+!     elementData[elementCount] = null;
+      return temp;
+    }
+  
+--- 659,671 ----
+    public synchronized Object remove(int index)
+    {
+      checkBoundExclusive(index);
+!     Object temp = getElementData()[index];
+!     setModCount(getModCount() + 1);
+!     setElementCount(getElementCount() - 1);
+!     if (index < getElementCount())
+!       System.arraycopy(getElementData(), index + 1, getElementData(), index,
+!                        getElementCount() - index);
+!     getElementData()[getElementCount()] = null;
+      return temp;
+    }
+  
+***************
+*** 703,709 ****
+     */
+    public synchronized boolean addAll(Collection c)
+    {
+!     return addAll(elementCount, c);
+    }
+  
+    /**
+--- 703,709 ----
+     */
+    public synchronized boolean addAll(Collection c)
+    {
+!     return addAll(getElementCount(), c);
+    }
+  
+    /**
+***************
+*** 721,737 ****
+  
+      int i;
+      int j;
+!     for (i = 0; i < elementCount; i++)
+!       if (c.contains(elementData[i]))
+          break;
+!     if (i == elementCount)
+        return false;
+  
+!     modCount++;
+!     for (j = i++; i < elementCount; i++)
+!       if (! c.contains(elementData[i]))
+!         elementData[j++] = elementData[i];
+!     elementCount -= i - j;
+      return true;
+    }
+  
+--- 721,737 ----
+  
+      int i;
+      int j;
+!     for (i = 0; i < getElementCount(); i++)
+!       if (c.contains(getElementData()[i]))
+          break;
+!     if (i == getElementCount())
+        return false;
+  
+!     setModCount(getModCount() + 1);
+!     for (j = i++; i < getElementCount(); i++)
+!       if (! c.contains(getElementData()[i]))
+!         getElementData()[j++] = getElementData()[i];
+!     setElementCount(getElementCount() - (i - j));
+      return true;
+    }
+  
+***************
+*** 750,766 ****
+  
+      int i;
+      int j;
+!     for (i = 0; i < elementCount; i++)
+!       if (! c.contains(elementData[i]))
+          break;
+!     if (i == elementCount)
+        return false;
+  
+!     modCount++;
+!     for (j = i++; i < elementCount; i++)
+!       if (c.contains(elementData[i]))
+!         elementData[j++] = elementData[i];
+!     elementCount -= i - j;
+      return true;
+    }
+  
+--- 750,766 ----
+  
+      int i;
+      int j;
+!     for (i = 0; i < getElementCount(); i++)
+!       if (! c.contains(getElementData()[i]))
+          break;
+!     if (i == getElementCount())
+        return false;
+  
+!     setModCount(getModCount() + 1);
+!     for (j = i++; i < getElementCount(); i++)
+!       if (c.contains(getElementData()[i]))
+!         getElementData()[j++] = getElementData()[i];
+!     setElementCount(getElementCount() - (i - j));
+      return true;
+    }
+  
+***************
+*** 781,795 ****
+      Iterator itr = c.iterator();
+      int csize = c.size();
+  
+!     modCount++;
+!     ensureCapacity(elementCount + csize);
+      int end = index + csize;
+!     if (elementCount > 0 && index != elementCount)
+!       System.arraycopy(elementData, index,
+! 		       elementData, end, elementCount - index);
+!     elementCount += csize;
+      for ( ; index < end; index++)
+!       elementData[index] = itr.next();
+      return (csize > 0);
+    }
+  
+--- 781,795 ----
+      Iterator itr = c.iterator();
+      int csize = c.size();
+  
+!     setModCount(getModCount() + 1);
+!     ensureCapacity(getElementCount() + csize);
+      int end = index + csize;
+!     if (getElementCount() > 0 && index != getElementCount())
+!       System.arraycopy(getElementData(), index,
+! 		       getElementData(), end, getElementCount() - index);
+!     setElementCount(getElementCount() + csize);
+      for ( ; index < end; index++)
+!       getElementData()[index] = itr.next();
+      return (csize > 0);
+    }
+  
+***************
+*** 872,883 ****
+      int change = toIndex - fromIndex;
+      if (change > 0)
+        {
+!         modCount++;
+!         System.arraycopy(elementData, toIndex, elementData, fromIndex,
+!                          elementCount - toIndex);
+!         int save = elementCount;
+!         elementCount -= change;
+!         Arrays.fill(elementData, elementCount, save, null);
+        }
+      else if (change < 0)
+        throw new IndexOutOfBoundsException();
+--- 872,883 ----
+      int change = toIndex - fromIndex;
+      if (change > 0)
+        {
+!         setModCount(getModCount() + 1);
+!         System.arraycopy(getElementData(), toIndex, getElementData(), fromIndex,
+!                          getElementCount() - toIndex);
+!         int save = getElementCount();
+!         setElementCount(getElementCount() - change);
+!         Arrays.fill(getElementData(), getElementCount(), save, null);
+        }
+      else if (change < 0)
+        throw new IndexOutOfBoundsException();
+***************
+*** 894,901 ****
+      // Implementation note: we do not check for negative ranges here, since
+      // use of a negative index will cause an ArrayIndexOutOfBoundsException
+      // with no effort on our part.
+!     if (index > elementCount)
+!       throw new ArrayIndexOutOfBoundsException(index + " > " + elementCount);
+    }
+  
+    /**
+--- 894,901 ----
+      // Implementation note: we do not check for negative ranges here, since
+      // use of a negative index will cause an ArrayIndexOutOfBoundsException
+      // with no effort on our part.
+!     if (index > getElementCount())
+!       throw new ArrayIndexOutOfBoundsException(index + " > " + getElementCount());
+    }
+  
+    /**
+***************
+*** 909,915 ****
+      // Implementation note: we do not check for negative ranges here, since
+      // use of a negative index will cause an ArrayIndexOutOfBoundsException
+      // with no effort on our part.
+!     if (index >= elementCount)
+!       throw new ArrayIndexOutOfBoundsException(index + " >= " + elementCount);
+    }
+  }
+--- 909,957 ----
+      // Implementation note: we do not check for negative ranges here, since
+      // use of a negative index will cause an ArrayIndexOutOfBoundsException
+      // with no effort on our part.
+!     if (index >= getElementCount())
+!       throw new ArrayIndexOutOfBoundsException(index + " >= " + getElementCount());
+    }
++ 
++ /**
++  *  @param capacityIncrement The capacityIncrement to set.
++  */
++ protected void setCapacityIncrement(int capacityIncrement) {
++     this.capacityIncrement = capacityIncrement;
++ }
++ 
++ /**
++  *  @return Returns the capacityIncrement.
++  */
++ protected int getCapacityIncrement() {
++     return capacityIncrement;
++ }
++ 
++ /**
++  *  @param elementCount The elementCount to set.
++  */
++ protected void setElementCount(int elementCount) {
++     this.elementCount = elementCount;
++ }
++ 
++ /**
++  *  @return Returns the elementCount.
++  */
++ protected int getElementCount() {
++     return elementCount;
++ }
++ 
++ /**
++  *  @param elementData The elementData to set.
++  */
++ protected void setElementData(Object[] elementData) {
++     this.elementData = elementData;
++ }
++ 
++ /**
++  *  @return Returns the elementData.
++  */
++ protected Object[] getElementData() {
++     return elementData;
++ }
+  }
