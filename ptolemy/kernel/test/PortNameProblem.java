@@ -37,7 +37,8 @@ import ptolemy.kernel.util.Workspace;
 /**
  *  Illustrates a problem with port naming and cloning.
  *  <p> In this actor, the Java variable of the port is named
- *  "badlyNamedInput" but the constructor uses the wrong name.
+ *  "poorlyNamedInput" but the constructor uses "input", which
+ *  is the wrong name.
  *  This used to result in a NullPointerException.
  *  Now, we test for this in Entity.clone().
  *  @author Christopher Brooks, based on code from Xiaowen Xin and Ilkay Altintas
