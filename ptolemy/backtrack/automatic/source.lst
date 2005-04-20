@@ -26,6 +26,7 @@
 ../../actor/lib/RecursiveLattice.java
 ../../actor/lib/Select.java
 ../../actor/lib/Sequence.java
+../../actor/lib/Sequencer.java
 ../../actor/lib/SequentialClock.java
 ../../actor/lib/Switch.java
 ../../domains/sdf/lib/Autocorrelation.java
