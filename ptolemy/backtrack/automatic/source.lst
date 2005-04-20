@@ -10,6 +10,7 @@
 ../../actor/lib/Differential.java
 ../../actor/lib/Distributor.java
 ../../actor/lib/DoubleReader.java
+../../actor/lib/Gaussian.java
 ../../actor/lib/GradientAdaptiveLattice.java
 ../../actor/lib/IIR.java
 ../../actor/lib/Interpolator.java
@@ -20,6 +21,7 @@
 ../../actor/lib/PoissonClock.java
 ../../actor/lib/Pulse.java
 ../../actor/lib/Ramp.java
+../../actor/lib/RandomSource.java
 ../../actor/lib/Recorder.java
 ../../actor/lib/RecursiveLattice.java
 ../../actor/lib/Select.java
