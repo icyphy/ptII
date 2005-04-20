@@ -77,7 +77,7 @@ OPTIONAL_FILES = \
 	'EditablePlotMLApplication$$SelectListener.class' \
 	'EditablePlotMLApplication$$1.class' \
 	'HistogramMLApplication$$1.class' \
-	'PlotMLApplication$1.class'
+	'PlotMLApplication$$1.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
