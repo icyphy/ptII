@@ -224,8 +224,9 @@ public class CachedMethod {
 
                 // Invoke the function, and save the return type.
                 try {
+                    // Cast to (Object []) so as to avoid varargs warning.
                     _returnType = (Type) typeFunction.invoke(null,
-                            _argumentTypes);
+                            (Object []) _argumentTypes);
                 } catch (IllegalAccessException ex) {
                     throw new RuntimeException(ex); // TODO
                 } catch (InvocationTargetException ex) {
