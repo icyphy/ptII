@@ -72,7 +72,7 @@ JSRCS = \
 
 OTHER_FILES_TO_BE_JARED = \
 	colt.xml \
-	doc-files/colt-copyright.htm
+	colt-copyright.htm
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
