@@ -40,6 +40,7 @@ import javax.swing.JComponent;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
 
 import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.Query;
@@ -108,8 +109,11 @@ public class EditablePlotMLApplication extends PlotMLApplication {
         // Note that under Windows, the setLookAndFeel() in
         // PlotApplication causes problems here with this new
         // JMenuItem: the font and background color may be wrong.
+        // Setting the background works here because the parent
+        // class has called setVisible() already.  
         // Unfortunately, setting the background helps, but the
         // result does not have the etch border
+
         select.setBackground(_editMenu.getBackground());
 
         // Under Java 1.3.1_06, at least the font is right, but not
@@ -134,10 +138,27 @@ public class EditablePlotMLApplication extends PlotMLApplication {
 
     /** Create a new plot window and map it to the screen.
      */
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         try {
-            EditablePlotMLApplication plot = new EditablePlotMLApplication(new EditablePlot(),
-                    args);
+            Runnable doActions = new Runnable() {
+                    public void run() {
+                        try {
+                            EditablePlotMLApplication plot =
+                                new EditablePlotMLApplication(
+                                        new EditablePlot(), args);
+                        } catch (Exception ex) {
+                            System.err.println(ex.toString());
+                            ex.printStackTrace();
+                        }
+                    }
+                };
+            // NOTE: Using invokeAndWait() here risks causing
+            // deadlock.  However, the Sun Tutorial recommends calling
+            // invokeAndWait so that the work finishes before returning.
+            // if we call invokeLater() then demo/PlotFourierSeries.java
+            // has problems.
+            SwingUtilities.invokeAndWait(doActions);
+
         } catch (Exception ex) {
             System.err.println(ex.toString());
             ex.printStackTrace();
