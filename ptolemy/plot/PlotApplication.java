@@ -190,6 +190,7 @@ public class PlotApplication extends PlotFrame {
      */
     public static void main(final String[] args) {
         try {
+            // Run this in the Swing Event Thread.
             Runnable doActions = new Runnable() {
                     public void run() {
                         try {
