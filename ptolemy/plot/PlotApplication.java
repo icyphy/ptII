@@ -150,14 +150,6 @@ public class PlotApplication extends PlotFrame {
                 }
             });
 
-        // The Java look & feel is pretty lame, so we use the native
-        // look and feel of the platform we are running on.
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (Exception e) {
-            // Ignore exceptions, which only result in the wrong look and feel.
-        }
-
         _parseArgs(args);
 
         if ((args == null) || (args.length == 0)) {
@@ -188,14 +180,6 @@ public class PlotApplication extends PlotFrame {
                 }
             });
 
-        // The Java look & feel is pretty lame, so we use the native
-        // look and feel of the platform we are running on.
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (Exception e) {
-            // Ignore exceptions, which only result in the wrong look and feel.
-        }
-
         setVisible(true);
     }
 
@@ -209,7 +193,8 @@ public class PlotApplication extends PlotFrame {
             Runnable doActions = new Runnable() {
                     public void run() {
                         try {
-                            new PlotApplication(new Plot(), args);
+                            PlotApplication plotApplication =
+                                new PlotApplication(new Plot(), args);
                         } catch (Exception ex) {
                             System.err.println(ex.toString());
                             ex.printStackTrace();

@@ -53,6 +53,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import javax.swing.filechooser.FileFilter;
+import javax.swing.UIManager;
 
 import ptolemy.util.StringUtilities;
 
@@ -122,6 +123,14 @@ public class PlotFrame extends JFrame {
      */
     public PlotFrame(String title, PlotBox plotArg) {
         super(title);
+
+        // The Java look & feel is pretty lame, so we use the native
+        // look and feel of the platform we are running on.
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception e) {
+            // Ignore exceptions, which only result in the wrong look and feel.
+        }
 
         if (plotArg == null) {
             plot = new Plot();
@@ -237,6 +246,7 @@ public class PlotFrame extends JFrame {
         _fileMenu.setBackground(_menubar.getBackground());
         _specialMenu.setBackground(_menubar.getBackground());
     }
+
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
