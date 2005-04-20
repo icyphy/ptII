@@ -27,7 +27,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.domains.gr.lib;
 
-import java.awt.Dimension;
 import java.awt.GraphicsConfiguration;
 import java.awt.image.BufferedImage;
 
@@ -36,9 +35,9 @@ import javax.media.j3d.GraphicsContext3D;
 import javax.media.j3d.ImageComponent;
 import javax.media.j3d.ImageComponent2D;
 import javax.media.j3d.Raster;
-import javax.swing.JFrame;
 import javax.vecmath.Point3f;
 
+import ptolemy.data.IntToken;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -51,7 +50,7 @@ import com.sun.j3d.utils.universe.SimpleUniverse;
 //// IconViewScreen3D
 
 /**
-   A sink actor that renders a two-dimensional scene into an Icon.
+   A sink actor that renders a three-dimensional scene into an Icon.
 
    NOTE: This doesn't seem to be possible (using the techniques I tried)
    in the current version of Java3D without having the frame visible.
@@ -98,52 +97,18 @@ public class IconViewScreen3D extends ViewScreen3D {
     public void initialize() throws IllegalActionException {
         super.initialize();
         _frameNumber = 0;
-        _frameWidth = _getHorizontalPixels();
-        _frameHeight = _getVerticalPixels();
+        _frameWidth = ((IntToken) horizontalResolution.getToken()).intValue();
+        _frameHeight = ((IntToken) verticalResolution.getToken()).intValue();
     }
-
-    /** Create the view screen component.  If place() was called with
-     * a container, then use the container.  Otherwise, create a new
-     * frame and use that.
+   
+    /** Return a new canvas. This is protected so that subclasses
+     *  can return a different kind of canvas (using the "strategy
+     *  pattern").
+     *  @return A new canvas.
      */
-    protected void _createViewScreen() {
+    protected Canvas3D _newCanvas() {
         GraphicsConfiguration config = SimpleUniverse.getPreferredConfiguration();
-
-        int horizontalDimension = 400;
-        int verticalDimension = 400;
-
-        try {
-            horizontalDimension = _getHorizontalPixels();
-            verticalDimension = _getVerticalPixels();
-        } catch (Exception e) {
-            // FIXME handle this
-        }
-
-        // Create a frame, if placeable was not called.
-        if (_container == null) {
-            _frame = new JFrame("ViewScreen");
-            _frame.show();
-            _frame.validate();
-            _frame.setSize(horizontalDimension + 50, verticalDimension);
-            _container = _frame.getContentPane();
-        }
-
-        // Set the frame to be visible.
-        if (_frame != null) {
-            _frame.setVisible(true);
-        }
-
-        // Lastly drop the canvas in the frame.
-        if (_canvas != null) {
-            _container.remove(_canvas);
-        }
-
-        _canvas = new CapturingCanvas3D(config, false);
-
-        _container.add("Center", _canvas);
-        _canvas.setSize(new Dimension(horizontalDimension, verticalDimension));
-        _simpleUniverse = new SimpleUniverse(_canvas);
-        _simpleUniverse.getViewingPlatform().setNominalViewingTransform();
+        return new CapturingCanvas3D(config, false);
     }
 
     ///////////////////////////////////////////////////////////////////
