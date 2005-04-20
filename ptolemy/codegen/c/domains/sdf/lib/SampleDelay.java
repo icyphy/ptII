@@ -30,7 +30,8 @@ package ptolemy.codegen.c.domains.sdf.lib;
 import java.util.List;
 
 import ptolemy.actor.IOPort;
-import ptolemy.codegen.kernel.CodeGeneratorHelper;
+import ptolemy.codegen.c.actor.lib.CodeStream;
+import ptolemy.codegen.kernel.CCodeGeneratorHelper;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
@@ -47,7 +48,7 @@ A code generation helper class for ptolemy.domains.sdf.lib.SampleDelay
 @Pt.AcceptedRating Red (eal)
 */
 
-public class SampleDelay extends CodeGeneratorHelper {
+public class SampleDelay extends CCodeGeneratorHelper {
 
     /** Construct a helper with the given 
      *  ptolemy.domains.sdf.lib.SampleDelay actor.
@@ -66,7 +67,10 @@ public class SampleDelay extends CodeGeneratorHelper {
      */
     public void generateFireCode(StringBuffer stream)
             throws IllegalActionException {
-        stream.append(processCode("$ref(output) = $ref(input);\n"));
+        CodeStream tmpStream = new CodeStream(this);
+        tmpStream.appendCodeBlock("codeBlock1");
+        stream.append(processCode(tmpStream.toString()));
+        //stream.append(processCode("$ref(output) = $ref(input);\n"));
     }
 
     /** Generate the initialize code for the SampleDelay actor by
