@@ -291,21 +291,25 @@ test Entity-9.1 {Test cloning} {
 ####
 #
 test Entity-9.3 {Test clone with badly named ports} {
+    # We used to require names to match
     set w [java::new ptolemy.kernel.util.Workspace W]
     set portNameProblem [java::new ptolemy.kernel.test.PortNameProblem \
 			     $w E9_3]
-    catch {$portNameProblem clone} errMsg
-    set exception [lindex $errorCode 1]
-    set cause [$exception getCause]
-    list [$cause toString]
-} {{ptolemy.kernel.util.IllegalActionException: Could not find a port named 'poorlyNamedInput' or 'poorlyNamedInputPort'. This can occur when the name of the variable does not match the name passed to the constructor of the actor.
-Right:
-    poorlyNamedInput = new TypedIOPort(this, "poorlyNamedInput", true, false);
-Right:
-    poorlyNamedInput = new TypedIOPort(this, "poorlyNamedInputPort", true, false);
-Wrong:
-    poorlyNamedInput = new TypedIOPort(this, "foo", true, false);
-  in .E9_3}}
+
+    if [catch {$portNameProblem clone} errMsg] {
+	set exception [lindex $errorCode 1]
+	set cause [$exception getCause]
+	set r [$cause toString]
+    } else {
+	set r [$portNameProblem description 15]
+    }
+    list $r
+} {{ptolemy.kernel.test.PortNameProblem {.E9_3} ports {
+    {ptolemy.kernel.Port {.E9_3.directoryOrURL} links {
+    }}
+    {ptolemy.kernel.Port {.E9_3.input} links {
+    }}
+}}}
 
 ######################################################################
 ####
