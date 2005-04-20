@@ -1,4 +1,4 @@
-# Tests for the FieldRecord class
+# Tests for the XmlHandler class
 #
 # @Author: Christopher Brooks
 #
@@ -42,10 +42,29 @@ if {[string compare jdkCapture [info procs jdkCapture]] == 1} then {
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
 
+#
+# Invoke the main method of className and return the results of stdout.
+proc util {className} {
+    jdkCapture {    	
+        if [catch {
+		java::call ptolemy.backtrack.util.test.$className main \
+		    [java::new {String[]} 0]} errMsg] {
+	    puts $errMsg
+	}
+    } results
+    return $results
+}
+
 ######################################################################
 ####
 #
 
-test FieldRecord-1.1 {} {
-    list foo
-} {foo} 
+test Random-1.1 {} {
+    util RandomTest1
+} {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+}
+
+test Random-2.1 {} {
+    util RandomTest2
+} {0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 
+}
