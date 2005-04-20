@@ -37,6 +37,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 
@@ -203,9 +204,19 @@ public class PlotApplication extends PlotFrame {
 
     /** Create a new plot window and map it to the screen.
      */
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         try {
-            new PlotApplication(new Plot(), args);
+            Runnable doActions = new Runnable() {
+                    public void run() {
+                        try {
+                            new PlotApplication(new Plot(), args);
+                        } catch (Exception ex) {
+                            System.err.println(ex.toString());
+                            ex.printStackTrace();
+                        }
+                    }
+                };
+            SwingUtilities.invokeAndWait(doActions);
         } catch (Exception ex) {
             System.err.println(ex.toString());
             ex.printStackTrace();
