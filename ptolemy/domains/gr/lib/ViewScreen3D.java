@@ -145,7 +145,7 @@ public class ViewScreen3D extends GRActor3D implements Placeable,
         
         _windowProperties = new WindowPropertiesAttribute(this,
                 "_windowProperties");
-        _viewSize = new SizeAttribute(this, "_pictureSize");
+        _viewSize = new SizeAttribute(this, "_viewSize");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -430,8 +430,6 @@ public class ViewScreen3D extends GRActor3D implements Placeable,
      *  frame and use that.
      */
     protected void _createViewScreen() {
-        GraphicsConfiguration config = SimpleUniverse.getPreferredConfiguration();
-
         int horizontalDimension = 400;
         int verticalDimension = 400;
         try {
@@ -491,7 +489,7 @@ public class ViewScreen3D extends GRActor3D implements Placeable,
             _container.remove(_canvas);
         }
 
-        _canvas = new Canvas3D(config);
+        _canvas = _newCanvas();
 
         _container.add("Center", _canvas);
         _canvas.setSize(new Dimension(horizontalDimension, verticalDimension));
@@ -560,6 +558,16 @@ public class ViewScreen3D extends GRActor3D implements Placeable,
 
         _branchRoot.compile();
         _simpleUniverse.addBranchGraph(_branchRoot);
+    }
+    
+    /** Return a new canvas. This is protected so that subclasses
+     *  can return a different kind of canvas (using the "strategy
+     *  pattern").
+     *  @return A new canvas.
+     */
+    protected Canvas3D _newCanvas() {
+        GraphicsConfiguration config = SimpleUniverse.getPreferredConfiguration();
+    	return new Canvas3D(config);
     }
 
     /** Start the internal Java3D renderer
