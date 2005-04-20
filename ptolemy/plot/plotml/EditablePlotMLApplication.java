@@ -114,11 +114,13 @@ public class EditablePlotMLApplication extends PlotMLApplication {
         // Unfortunately, setting the background helps, but the
         // result does not have the etch border
 
-        select.setBackground(_editMenu.getBackground());
+        //select.setBorderPainted(true);
+        //select.setBorder(javax.swing.BorderFactory.createMatteBorder(0,1,0,0,java.awt.Color.white));
+        //select.setBackground(_editMenu.getBackground());
 
         // Under Java 1.3.1_06, at least the font is right, but not
         // under 1.4.1_02
-        select.setFont(_editMenu.getFont());
+        //select.setFont(_editMenu.getFont());
 
         // http://developer.java.sun.com/developer/bugParade/bugs/4736093.html
         // suggests this, which does not seem to help
