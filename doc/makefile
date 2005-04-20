@@ -200,10 +200,9 @@ DIVAPACKAGES = \
 EXPERIMENTALPACKAGES =
 
 # Commented out experimental packages for release
-#			ptolemy.domains.hdf.kernel
-#			ptolemy.domains.hdf.lib
-#			ptolemy.domains.nc.kernel
-#			ptolemy.domains.nc.lib
+
+#			ptolemy.domains.ptinyos.kernel
+#			ptolemy.domains.ptinyos.lib
 #			ptolemy.domains.rtp.kernel
 #			ptolemy.domains.rtp.lib
 
@@ -315,6 +314,7 @@ ALLPACKAGES =		$(COMPACKAGES) \
 			ptolemy.domains.ddf.lib \
 			ptolemy.domains.dt.kernel \
 			ptolemy.domains.giotto.kernel \
+			ptolemy.domains.hdf.kernel \
 			ptolemy.domains.petrinet.kernel \
 			ptolemy.domains.psdf.kernel \
 			ptolemy.domains.sr.kernel \
