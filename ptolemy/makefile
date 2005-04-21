@@ -71,7 +71,8 @@ PTAUXALLJARS = \
 		math/math.jar \
 		media/media.jar \
 		moml/moml.jar \
-		plot/plotmlapplet.jar
+		plot/plotmlapplet.jar \
+		util/util.jar
 
 # No need for util/util.jar, plotmlapplet.jar includes those classes
 # util/util.jar
