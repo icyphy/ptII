@@ -789,7 +789,7 @@ public class Transition extends ComponentRelation {
         
         _exeDirectorIsHSDirector = false;
 
-        CompositeEntity container = (CompositeEntity) getContainer();
+        //CompositeEntity container = (CompositeEntity) getContainer();
 
         _parseTreeEvaluator = new ParseTreeEvaluator();
 
