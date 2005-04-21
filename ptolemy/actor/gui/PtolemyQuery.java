@@ -381,7 +381,7 @@ public class PtolemyQuery extends Query implements QueryListener, ValueListener,
                 // Check whether entryName is in the list. If not, add it.
                 String name = (String) entryNames.next();
 
-                if (name == entryName) {
+                if (name.equals(entryName)) {
                     found = true;
                 }
             }
