@@ -74,7 +74,7 @@ SIGNED_LIB_JARS =	$(NATIVE_SIGNED_LIB_JARS) \
 # work, the jars you want to load eagerly need to be at the front of the
 # list.  In general, large jars such as diva.jar and ptsupport.jar
 # should be loaded eagerly.
-NUMBER_OF_JARS_TO_LOAD_EAGERLY = 10
+NUMBER_OF_JARS_TO_LOAD_EAGERLY = 11
 
 # Jar files that will appear in most Ptolemy II JNLP files.
 # HyVisual has its own set of core jars
