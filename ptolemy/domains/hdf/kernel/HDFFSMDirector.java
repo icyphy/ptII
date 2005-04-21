@@ -196,7 +196,6 @@ public class HDFFSMDirector extends MultirateFSMDirector {
      *   if there is no controller.
      */
     public boolean postfire() throws IllegalActionException {
-        FSMActor controller = getController();
         CompositeActor container = (CompositeActor) getContainer();
 
         if (_sendRequest) {
