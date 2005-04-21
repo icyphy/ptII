@@ -87,7 +87,9 @@ public class ImageAttribute extends Attribute {
         _icon.setPersistent(false);
 
         source = new FileParameter(this, "source");
-        source.setExpression("$CLASSPATH/doc/img/ptIIplanetIcon.gif");
+        // Put the gif in the local directory so that it stays with this actor.
+        source.setExpression(
+                "$CLASSPATH/ptolemy/vergil/kernel/attributes/ptIIplanetIcon.gif");
 
         scale = new Parameter(this, "scale");
         scale.setTypeEquals(BaseType.DOUBLE);
@@ -112,7 +114,7 @@ public class ImageAttribute extends Attribute {
     public Parameter scale;
 
     /** The source image file. This is a file name or URL, where the default
-     *  is "$CLASSPATH/doc/img/ptIIplanetIcon.gif".
+     *  is "$CLASSPATH/ptolemy/vergil/kernel/attributes/ptIIplanetIcon.gif".
      */
     public FileParameter source;
 
