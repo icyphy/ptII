@@ -198,7 +198,7 @@
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{-2, 0, 2}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{-12, -20, -28}">
         </property>
         <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
         </property>
@@ -206,11 +206,20 @@
         </property>
     </entity>
     <entity name="Test2" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{-3, 0, 3}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{-18, -30, -42}">
         </property>
         <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 285.0]">
+        </property>
+    </entity>
+    <entity name="Ramp4" class="ptolemy.actor.lib.Ramp">
+        <property name="init" class="ptolemy.data.expr.Parameter" value="5">
+        </property>
+        <property name="step" class="ptolemy.actor.parameters.PortParameter" value="5">
+        </property>
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 355.0]">
         </property>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -227,11 +236,14 @@
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="Scale.input" relation="relation5"/>
     <link port="Scale.output" relation="relation4"/>
     <link port="AddSubtract.plus" relation="relation2"/>
     <link port="AddSubtract.plus" relation="relation"/>
     <link port="AddSubtract.minus" relation="relation3"/>
+    <link port="AddSubtract.minus" relation="relation7"/>
     <link port="AddSubtract.output" relation="relation5"/>
     <link port="Ramp.output" relation="relation2"/>
     <link port="Ramp2.output" relation="relation"/>
@@ -240,4 +252,5 @@
     <link port="Scale2.output" relation="relation6"/>
     <link port="Test.input" relation="relation4"/>
     <link port="Test2.input" relation="relation6"/>
+    <link port="Ramp4.output" relation="relation7"/>
 </entity>
