@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- This script was automatically generated using Zero G's InstallAnywhere 6.1 Enterprise, Build 2325
      STATUS: Fully Functional LICENSED Edition
-     DATE:   Mon Apr 18 18:08:57 PDT 2005 -->
+     DATE:   Wed Apr 20 08:25:07 PDT 2005 -->
 <InstallAnywhere_Deployment_Project increments="6608">
 	<!-- ** DO NOT EDIT ** Essential authorization and configuration data ** DO NOT EDIT ** -->
 	<essentialScriptInfo>
@@ -10,7 +10,7 @@
 		<scriptID>12,42,11,90,81,50,48,52,54,57,82,74,55,66,67,81</scriptID>
 		<buildID>3,13,71,87,105,110,100,111,119,115,32,88,80,44,32,53,46,49,44,32,120,56,54,59,32,74,97,118,97,32,49,46,51,46,49,95,48,56,44,32,83,117,110,32,77,105,99,114,111,115,121,115,116,101,109,115,32,73,110,99,46,44,32,104,116,116,112,58,47,47,106,97,118,97,46,115,117,110,46,99,111,109,47,59,32,101,110,44,32,85,83,59,32,67,112,49,50,53,50</buildID>
 		<!-- The authorizationID may change between project saves and builds.  This does not effect the integrity of the project, nor do changes in this value represent changes in the actual InstallAnywhere project. -->
-		<authorizationID>1,0,0,0,83,10,49,32,80,112,116,103,88,98,113,97,113,65,65,88,74,65,72,71,70,69,64,69,66,69,48,79,87,5,2,14,1,48,104,3,1,0,0</authorizationID>
+		<authorizationID>1,0,0,0,99,58,97,-48,80,112,116,103,88,98,113,97,113,65,65,88,74,65,72,71,70,69,64,69,66,69,48,79,87,5,2,14,5,54,96,3,1,0,0</authorizationID>
 	</essentialScriptInfo>
 	<installationObjects uniqueObjects="347">
 		<object class="com.zerog.ia.installer.Installer" objectID="92a08b599096">
@@ -244,7 +244,7 @@ and any path to a file to read from that file]]></string>
 								<string><![CDATA[compat.jar]]></string>
 							</property>
 							<property name="fileSize">
-								<long>12698</long>
+								<long>13558</long>
 							</property>
 							<property name="macBinary">
 								<boolean>false</boolean>
@@ -275,7 +275,7 @@ and any path to a file to read from that file]]></string>
 								<string><![CDATA[plotapplication.jar]]></string>
 							</property>
 							<property name="fileSize">
-								<long>171873</long>
+								<long>175266</long>
 							</property>
 							<property name="macBinary">
 								<boolean>false</boolean>
@@ -584,7 +584,7 @@ and any path to a file to read from that file]]></string>
 												<string><![CDATA[histogram.bat]]></string>
 											</property>
 											<property name="fileSize">
-												<long>1816</long>
+												<long>1716</long>
 											</property>
 											<property name="macBinary">
 												<boolean>false</boolean>
@@ -671,7 +671,7 @@ and any path to a file to read from that file]]></string>
 												<string><![CDATA[ptplot.bat]]></string>
 											</property>
 											<property name="fileSize">
-												<long>1819</long>
+												<long>1719</long>
 											</property>
 											<property name="macBinary">
 												<boolean>false</boolean>
@@ -700,7 +700,7 @@ and any path to a file to read from that file]]></string>
 												<string><![CDATA[pxgraph.bat]]></string>
 											</property>
 											<property name="fileSize">
-												<long>1812</long>
+												<long>1712</long>
 											</property>
 											<property name="macBinary">
 												<boolean>false</boolean>
@@ -1965,7 +1965,7 @@ and any path to a file to read from that file]]></string>
 														<string><![CDATA[index-all.html]]></string>
 													</property>
 													<property name="fileSize">
-														<long>205058</long>
+														<long>205303</long>
 													</property>
 													<property name="macBinary">
 														<boolean>false</boolean>
@@ -2434,7 +2434,7 @@ and any path to a file to read from that file]]></string>
 																<boolean>false</boolean>
 															</property>
 															<property name="totalSize">
-																<long>1122885</long>
+																<long>1124893</long>
 															</property>
 															<property name="macBinary">
 																<boolean>false</boolean>
@@ -3019,7 +3019,7 @@ and any path to a file to read from that file]]></string>
 												<string><![CDATA[ptdist.mk]]></string>
 											</property>
 											<property name="fileSize">
-												<long>7139</long>
+												<long>7196</long>
 											</property>
 											<property name="macBinary">
 												<boolean>false</boolean>
@@ -3430,7 +3430,7 @@ and any path to a file to read from that file]]></string>
 																<string><![CDATA[makefile]]></string>
 															</property>
 															<property name="fileSize">
-																<long>2241</long>
+																<long>2275</long>
 															</property>
 															<property name="macBinary">
 																<boolean>false</boolean>
@@ -3488,7 +3488,7 @@ and any path to a file to read from that file]]></string>
 																<string><![CDATA[PxgraphApplication.java]]></string>
 															</property>
 															<property name="fileSize">
-																<long>13547</long>
+																<long>14069</long>
 															</property>
 															<property name="macBinary">
 																<boolean>false</boolean>
@@ -3780,7 +3780,7 @@ and any path to a file to read from that file]]></string>
 																<string><![CDATA[demo.jar]]></string>
 															</property>
 															<property name="fileSize">
-																<long>8996</long>
+																<long>9888</long>
 															</property>
 															<property name="macBinary">
 																<boolean>false</boolean>
@@ -4157,7 +4157,7 @@ and any path to a file to read from that file]]></string>
 																<string><![CDATA[makefile]]></string>
 															</property>
 															<property name="fileSize">
-																<long>2759</long>
+																<long>2787</long>
 															</property>
 															<property name="macBinary">
 																<boolean>false</boolean>
@@ -4331,7 +4331,7 @@ and any path to a file to read from that file]]></string>
 																<string><![CDATA[PlotLiveDemo$1.class]]></string>
 															</property>
 															<property name="fileSize">
-																<long>764</long>
+																<long>1462</long>
 															</property>
 															<property name="macBinary">
 																<boolean>false</boolean>
@@ -4360,7 +4360,7 @@ and any path to a file to read from that file]]></string>
 																<string><![CDATA[PlotLiveDemo.class]]></string>
 															</property>
 															<property name="fileSize">
-																<long>1987</long>
+																<long>1787</long>
 															</property>
 															<property name="macBinary">
 																<boolean>false</boolean>
@@ -4389,7 +4389,7 @@ and any path to a file to read from that file]]></string>
 																<string><![CDATA[PlotLiveDemo.java]]></string>
 															</property>
 															<property name="fileSize">
-																<long>4297</long>
+																<long>5065</long>
 															</property>
 															<property name="macBinary">
 																<boolean>false</boolean>
@@ -4739,7 +4739,7 @@ and any path to a file to read from that file]]></string>
 																<string><![CDATA[acks.htm]]></string>
 															</property>
 															<property name="fileSize">
-																<long>983</long>
+																<long>728</long>
 															</property>
 															<property name="macBinary">
 																<boolean>false</boolean>
@@ -4797,7 +4797,7 @@ and any path to a file to read from that file]]></string>
 																<string><![CDATA[changes.htm]]></string>
 															</property>
 															<property name="fileSize">
-																<long>22483</long>
+																<long>22673</long>
 															</property>
 															<property name="macBinary">
 																<boolean>false</boolean>
@@ -5089,7 +5089,7 @@ and any path to a file to read from that file]]></string>
 																<string><![CDATA[install.htm]]></string>
 															</property>
 															<property name="fileSize">
-																<long>11853</long>
+																<long>11867</long>
 															</property>
 															<property name="macBinary">
 																<boolean>false</boolean>
@@ -5555,7 +5555,7 @@ and any path to a file to read from that file]]></string>
 														<string><![CDATA[makefile]]></string>
 													</property>
 													<property name="fileSize">
-														<long>22731</long>
+														<long>23001</long>
 													</property>
 													<property name="macBinary">
 														<boolean>false</boolean>
@@ -5613,7 +5613,7 @@ and any path to a file to read from that file]]></string>
 														<string><![CDATA[plot.jar]]></string>
 													</property>
 													<property name="fileSize">
-														<long>129405</long>
+														<long>133658</long>
 													</property>
 													<property name="macBinary">
 														<boolean>false</boolean>
@@ -5730,7 +5730,7 @@ and any path to a file to read from that file]]></string>
 														<string><![CDATA[PlotApplication.java]]></string>
 													</property>
 													<property name="fileSize">
-														<long>15014</long>
+														<long>14826</long>
 													</property>
 													<property name="macBinary">
 														<boolean>false</boolean>
@@ -5846,7 +5846,7 @@ and any path to a file to read from that file]]></string>
 														<string><![CDATA[PlotFrame.java]]></string>
 													</property>
 													<property name="fileSize">
-														<long>25464</long>
+														<long>26335</long>
 													</property>
 													<property name="macBinary">
 														<boolean>false</boolean>
@@ -5991,7 +5991,7 @@ and any path to a file to read from that file]]></string>
 																<string><![CDATA[EditablePlotMLApplication.java]]></string>
 															</property>
 															<property name="fileSize">
-																<long>8858</long>
+																<long>10141</long>
 															</property>
 															<property name="macBinary">
 																<boolean>false</boolean>
@@ -6049,7 +6049,7 @@ and any path to a file to read from that file]]></string>
 																<string><![CDATA[HistogramMLApplication.java]]></string>
 															</property>
 															<property name="fileSize">
-																<long>5670</long>
+																<long>6763</long>
 															</property>
 															<property name="macBinary">
 																<boolean>false</boolean>
@@ -6107,7 +6107,7 @@ and any path to a file to read from that file]]></string>
 																<string><![CDATA[makefile]]></string>
 															</property>
 															<property name="fileSize">
-																<long>2607</long>
+																<long>2719</long>
 															</property>
 															<property name="macBinary">
 																<boolean>false</boolean>
@@ -6223,7 +6223,7 @@ and any path to a file to read from that file]]></string>
 																<string><![CDATA[PlotMLApplication.java]]></string>
 															</property>
 															<property name="fileSize">
-																<long>7493</long>
+																<long>8504</long>
 															</property>
 															<property name="macBinary">
 																<boolean>false</boolean>
@@ -6341,7 +6341,7 @@ and any path to a file to read from that file]]></string>
 														<string><![CDATA[plotmlapplet.jar]]></string>
 													</property>
 													<property name="fileSize">
-														<long>178340</long>
+														<long>181733</long>
 													</property>
 													<property name="macBinary">
 														<boolean>false</boolean>
@@ -6399,7 +6399,7 @@ and any path to a file to read from that file]]></string>
 														<string><![CDATA[ptplot.iap_xml]]></string>
 													</property>
 													<property name="fileSize">
-														<long>365732</long>
+														<long>381601</long>
 													</property>
 													<property name="macBinary">
 														<boolean>false</boolean>
@@ -6515,7 +6515,7 @@ and any path to a file to read from that file]]></string>
 														<string><![CDATA[pxgraphapplet.jar]]></string>
 													</property>
 													<property name="fileSize">
-														<long>114382</long>
+														<long>114495</long>
 													</property>
 													<property name="macBinary">
 														<boolean>false</boolean>
@@ -7996,7 +7996,7 @@ Please see the installation log for details.  Press ""Done"" to quit the install
 				<object class="java.util.Properties">
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.project.save.last.date]]></string>
-						<string><![CDATA[April 18, 2005 6:08:57 PM PDT]]></string>
+						<string><![CDATA[April 20, 2005 8:25:07 AM PDT]]></string>
 					</method>
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.build.options.optimization.platform.merge]]></string>
@@ -8036,7 +8036,7 @@ Please see the installation log for details.  Press ""Done"" to quit the install
 					</method>
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.project.build.last.date]]></string>
-						<string><![CDATA[April 18, 2005 6:08:57 PM PDT]]></string>
+						<string><![CDATA[April 20, 2005 8:25:07 AM PDT]]></string>
 					</method>
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.installer.options.stderr.redirect]]></string>
@@ -8120,7 +8120,7 @@ Please see the installation log for details.  Press ""Done"" to quit the install
 					</method>
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.build.platform.windows.vm]]></string>
-						<string><![CDATA[true]]></string>
+						<string><![CDATA[false]]></string>
 					</method>
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.installer.options.stdout.redirect]]></string>
@@ -8424,7 +8424,7 @@ This will remove features installed by InstallAnywhere.  It will not remove file
 								<boolean>true</boolean>
 							</property>
 							<property name="showsRebootStatusMessage">
-								<boolean>true</boolean>
+								<boolean>false</boolean>
 							</property>
 							<property name="showsInstallStatusMessage">
 								<boolean>true</boolean>
