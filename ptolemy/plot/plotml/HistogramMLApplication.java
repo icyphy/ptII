@@ -95,8 +95,7 @@ public class HistogramMLApplication extends PlotMLApplication {
      *  java -classpath $PTII ptolemy.plot.plotml.HistogramMLApplication
      *  <pre>
      *  @param args Arguments suitable for the 
-     *  {@link ptolemy.plot.plot.Histogram} class.
-     *  @param args Arguments suitable for the Histogram class.
+     *  {@link ptolemy.plot.Histogram} class.
      */
     public static void main(final String[] args) {
         try {
