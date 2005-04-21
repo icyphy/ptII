@@ -225,7 +225,7 @@ public class HDFDirector extends SDFDirector {
                 _externalRatesKeyList = new ArrayList(cacheSize);
             }
 
-            if (rateKey == _mostRecentRates) {
+            if (rateKey.equals(_mostRecentRates)) {
                 schedule = ((SDFScheduler) scheduler).getSchedule();
             } else if (_scheduleCache.containsKey(rateKey)) {
                 // cache hit.
@@ -323,9 +323,8 @@ public class HDFDirector extends SDFDirector {
         List actors = container.deepEntityList();
         Iterator actorIterator = actors.iterator();
         List inputPortList = new LinkedList();
-        ;
-
-        List inputPortRateList = new LinkedList();
+        
+  
 
         while (actorIterator.hasNext()) {
             Actor containedActor = (Actor) actorIterator.next();
@@ -350,10 +349,6 @@ public class HDFDirector extends SDFDirector {
         List actors = container.deepEntityList();
         Iterator actorIterator2 = actors.iterator();
         List outputPortList = new LinkedList();
-        ;
-
-        List outputPortRateList = new LinkedList();
-
         while (actorIterator2.hasNext()) {
             Actor containedActor = (Actor) actorIterator2.next();
             List temporaryOutputPortList = containedActor.outputPortList();
@@ -412,9 +407,4 @@ public class HDFDirector extends SDFDirector {
     private List _inputPortList;
     private List _outputPortList;
     private int _cacheSize = 100;
-    private boolean _debugInfo = false;
-
-    // Number of firings per global iteration
-    // of the current director.
-    private int _directorFiringsPerIteration = 1;
 }
