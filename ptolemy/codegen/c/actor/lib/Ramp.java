@@ -44,21 +44,37 @@ import ptolemy.kernel.util.IllegalActionException;
 */
 public class Ramp extends CCodeGeneratorHelper {
 
-    /** FIXME
-     *
+    /**
+     * Constructor method for the Ramp helper
+     * @param actor the associated actor
      */
     public Ramp(ptolemy.actor.lib.Ramp actor) {
         super(actor);
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
+    /**
+     * Generate fire code
+     * The method reads in codeBlock1 and puts into the 
+     * given stream buffer
+     * @param stream the given buffer to append the code to
+     */
     public void generateFireCode(StringBuffer stream)
             throws IllegalActionException {
         CodeStream tmpStream = new CodeStream(this);
         tmpStream.appendCodeBlock("codeBlock1");
-
         stream.append(processCode(tmpStream.toString()));
+    }
+    
+    /** Generate initialization code.
+     *  This method reads the <code>initBlock</code> from Ramp.c,
+     *  replaces macros with their values and returns the results.
+     *  @return The processed <code>initBlock</code>.
+     */
+    public String generateInitializeCode()
+            throws IllegalActionException {
+        super.generateInitializeCode();
+        CodeStream tmpStream = new CodeStream(this);
+        tmpStream.appendCodeBlock("initBlock");
+        return processCode(tmpStream.toString());
     }
 }

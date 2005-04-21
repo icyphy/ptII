@@ -34,6 +34,9 @@
  */
 package ptolemy.codegen.c.actor.lib;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import ptolemy.codegen.kernel.CCodeGeneratorHelper;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -46,22 +49,38 @@ import ptolemy.kernel.util.IllegalActionException;
 public class AbsoluteValue extends CCodeGeneratorHelper {
 
     /**
-     * @param component
+     * Constructor method for the AbsoluteValue helper
+     * @param actor the associated actor
      */
     public AbsoluteValue(ptolemy.actor.lib.AbsoluteValue actor) {
         super(actor);
     }
 
+
+    /**
+     * Generate fire code
+     * The method reads in codeBlock1 and puts into the 
+     * given stream buffer
+     * @param stream the given buffer to append the code to
+     */
     public void  generateFireCode(StringBuffer stream)
             throws IllegalActionException {
 
         CodeStream tmpStream = new CodeStream(this);
-        tmpStream.appendCodeBlock("codeBlock1");   //"$val(output) = ($val(input) < 0)? -$val(input) : $val(input);\n");
-
+        tmpStream.appendCodeBlock("codeBlock1");
         stream.append(processCode(tmpStream.toString()));
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variable                ////
+    
+    /** Get the files needed by the code generated for the
+     *  AbsoluteValue actor.
+     *  @return A set of strings that are names of the files
+     *   needed by the code generated for the AbsoluteValue actor.
+     */
+    public Set getIncludingFiles() {
+        Set files = new HashSet();
+        files.add("\"math.h\"");
+        return files;
+    }
 }
 

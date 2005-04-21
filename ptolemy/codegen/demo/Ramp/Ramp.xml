@@ -1,10 +1,10 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="Ramp" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-alpha">
+<entity name="XYPlot" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={181, 72, 815, 518}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={115, 94, 815, 516}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -144,38 +144,30 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 80.0]">
         </property>
     </property>
-    <entity name="Scale" class="ptolemy.actor.lib.Scale">
-        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 195.0]">
-        </property>
-    </entity>
-    <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 195.0]">
-        </property>
-    </entity>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{55, 140}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 205.0]">
         </property>
     </entity>
     <entity name="Ramp2" class="ptolemy.actor.lib.Ramp">
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 235.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 300.0]">
+        </property>
+    </entity>
+    <entity name="XYPlotter" class="ptolemy.actor.lib.gui.XYPlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 260.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <link port="Scale.input" relation="relation"/>
-    <link port="AddSubtract.plus" relation="relation2"/>
-    <link port="AddSubtract.minus" relation="relation3"/>
-    <link port="AddSubtract.output" relation="relation"/>
-    <link port="Ramp.output" relation="relation2"/>
-    <link port="Ramp2.output" relation="relation3"/>
+    <link port="Ramp.output" relation="relation"/>
+    <link port="Ramp2.output" relation="relation2"/>
+    <link port="XYPlotter.inputX" relation="relation"/>
+    <link port="XYPlotter.inputY" relation="relation2"/>
 </entity>

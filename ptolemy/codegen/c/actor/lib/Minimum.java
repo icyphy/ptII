@@ -43,70 +43,35 @@ import ptolemy.kernel.util.IllegalActionException;
 */
 public class Minimum extends CCodeGeneratorHelper {
 
-    /** FIXME
-     *
+    /**
+     * Constructor method for the Minimum helper
+     * @param actor the associated actor
      */
     public Minimum (ptolemy.actor.lib.Minimum actor) {
         super(actor);
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
-
+    /**
+     * Generate fire code
+     * The method reads in codeBlock1 and puts into the 
+     * given stream buffer
+     * @param stream the given buffer to append the code to
+     */
     public void  generateFireCode(StringBuffer stream)
             throws IllegalActionException {
-
-        ptolemy.actor.lib.Sequence actor =
-            (ptolemy.actor.lib.Sequence)getComponent();
-
-        StringBuffer tmpStream = new StringBuffer();
-
-        if (actor.enable.getWidth() == 0) {
-            tmpStream.append(
-                    "if (currentIndex < $size(values)) {\n"
-                    + "    $ref(output) = $ref(values, currentIndex);\n"
-                    + "    outputProduced = 1;\n"
-                    + "}\n");
-        } else {
-            tmpStream.append(
-                    "if ($ref(enable) != 0)\n"
-                    + "        && currentIndex < $size(values)) {\n"
-                    + "    $ref(output) = $ref(values, currentIndex);\n"
-                    + "    outputProduced = 1;\n"
-                    + "}\n");
-        }
-
-        tmpStream.append(
-                "if (outputProduced != 0) {\n"
-                + "    outputProduced = 0;\n"
-                + "    currentIndex += 1;\n"
-                + "    if (currentIndex >= $size(values)) {\n"
-                + "        if ($val(repeat) ! = 0) {\n"
-                + "           currentIndex = 0;\n"
-                + "        } else {\n"
-                + "           /*To prevent overflow...*/\n"
-                + "           currentIndex = $size(values);\n"
-                + "        }\n"
-                + "    }\n"
-                + "}\n");
-
-
-        _codeBlock = tmpStream.toString();
-        stream.append(processCode(_codeBlock));
+    	// FIXME: ???????????
     }
 
-    public void generateInitializeCode(StringBuffer stream)
+    /** Generate initialization code.
+     *  This method reads the <code>initBlock</code> from Minimum.c,
+     *  replaces macros with their values and returns the results.
+     *  @return The processed <code>initBlock</code>.
+     */
+    public String generateInitializeCode(StringBuffer stream)
             throws IllegalActionException {
-        stream.append(processCode(_initBlock));
+        super.generateInitializeCode();
+        CodeStream tmpStream = new CodeStream(this);
+        tmpStream.appendCodeBlock("initBlock");
+        return processCode(tmpStream.toString());
     }
-
-
-    ///////////////////////////////////////////////////////////////////
-    ////                     protected variables                   ////
-
-    protected String _codeBlock;
-
-    protected String _initBlock =
-    "int max = 0;\n"
-    + "int maxChannel = 0;\n";
 }

@@ -46,12 +46,19 @@ import ptolemy.kernel.util.IllegalActionException;
 public class Counter extends CCodeGeneratorHelper {
 
     /**
-     * @param component
+     * Constructor method for the Counter helper
+     * @param actor the associated actor
      */
     public Counter(ptolemy.actor.lib.Counter actor) {
         super(actor);
     }
 
+    /**
+     * Generate fire code
+     * The method reads in codeBlock1 and puts into the 
+     * given stream buffer
+     * @param stream the given buffer to append the code to
+     */
     public void  generateFireCode(StringBuffer stream)
             throws IllegalActionException {
 

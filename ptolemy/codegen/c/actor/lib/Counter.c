@@ -1,8 +1,8 @@
 /***codeBlock1*/
-if ($val(increment)) {
-    $ref(output)++;
-} 
-else if ($val(decrement)) {
-    $ref(output)--;
-}
+    if ($ref(increment)) {
+        $ref(output)++;
+    } 
+    else if ($ref(decrement)) {
+        $ref(output)--;
+    }
 /**/

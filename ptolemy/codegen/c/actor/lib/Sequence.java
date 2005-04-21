@@ -43,16 +43,20 @@ import ptolemy.kernel.util.IllegalActionException;
 */
 public class Sequence extends CCodeGeneratorHelper {
 
-    /** FIXME
-     *
+    /**
+     * Constructor method for the Sequence helper
+     * @param actor the associated actor
      */
     public Sequence(ptolemy.actor.lib.Sequence actor) {
         super(actor);
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
+    /**
+     * Generate fire code
+     * The method reads in codeBlock1 and puts into the 
+     * given stream buffer
+     * @param stream the given buffer to append the code to
+     */
     public void  generateFireCode(StringBuffer stream)
             throws IllegalActionException {
 
@@ -72,6 +76,11 @@ public class Sequence extends CCodeGeneratorHelper {
 
     }
 
+    /** Generate initialization code.
+     *  This method reads the <code>initBlock</code> from Sequence.c,
+     *  replaces macros with their values and returns the results.
+     *  @return The processed <code>initBlock</code>.
+     */
     public String generateInitializeCode()
             throws IllegalActionException {
         super.generateInitializeCode();

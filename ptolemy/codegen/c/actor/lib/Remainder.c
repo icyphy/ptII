@@ -1,3 +1,3 @@
 /***codeBlock1*/
-$ref(output) = $ref(input) % $val(divisor);
+    $ref(output) = $ref(input) % $val(divisor);
 /**/

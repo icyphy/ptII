@@ -1,7 +1,7 @@
 /***initBlock*/
-int previousInput = 0;
+    $actorSymbol(previousInput) = 0;
 /**/
 
 /***codeBlock1*/
-$ref(output) = $ref(input) - previousInput;
+    $ref(output) = $ref(input) - $actorSymbol(previousInput);
 /**/

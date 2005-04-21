@@ -1,4 +1,10 @@
-/***codeBlock1*/
-$ref(output) = $ref(init);
-$ref(init) += $val(step);
+/***initBlock*/
+    $ref(output) = $val(init);
 /**/
+
+
+/***codeBlock1*/
+    $ref(output) += $val(step);
+/**/
+
+

@@ -1,15 +1,15 @@
 /***initBlock*/
-int sum = 0;
-int count = 0; 
+$actorSymbol(sum) = 0;
+$actorSymbol(count) = 0; 
 /**/
 
 /***codeBlock1*/
 if ($ref(reset)) {
-    sum = 0;
-    count = 0;
+    $actorSymbol(sum) = 0;
+    $actorSymbol(count) = 0;
 } else {
-    sum += $ref(input);
-    count++;
-    $ref(output) = sum / count;
+    $actorSymbol(sum) += $ref(input);
+    $actorSymbol(count)++;
+    $ref(output) = $actorSymbol(sum) / $actorSymbol(count);
 }
 /**/

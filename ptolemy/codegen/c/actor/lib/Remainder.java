@@ -46,18 +46,24 @@ import ptolemy.kernel.util.IllegalActionException;
 public class Remainder extends CCodeGeneratorHelper {
 
     /**
-     * @param component
+     * Constructor method for the Remainder helper
+     * @param actor the associated actor
      */
     public Remainder(ptolemy.actor.lib.Remainder actor) {
         super(actor);
     }
 
+    /**
+     * Generate fire code
+     * The method reads in codeBlock1 and puts into the 
+     * given stream buffer
+     * @param stream the given buffer to append the code to
+     */
     public void  generateFireCode(StringBuffer stream)
             throws IllegalActionException {
 
         CodeStream tmpStream = new CodeStream(this);
         tmpStream.appendCodeBlock("codeBlock1");
-
         stream.append(processCode(tmpStream.toString()));
     }
 }

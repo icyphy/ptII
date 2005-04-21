@@ -1,8 +1,34 @@
 /*
+@Copyright (c) 2005 The Regents of the University of California.
+All rights reserved.
+
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the
+above copyright notice and the following two paragraphs appear in all
+copies of this software.
+
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
+
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
+
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
+
+
+*/
+/*
  * Created on Apr 5, 2005
  *
- * TODO To change the template for this generated file go to
- * Window - Preferences - Java - Code Style - Code Templates
  */
 package ptolemy.codegen.c.actor.lib.io;
 
@@ -17,20 +43,22 @@ import ptolemy.util.FileUtilities;
 /**
  * @author Jackie
  *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
  */
 public class LineWriter extends CCodeGeneratorHelper {
 
-	/**
-	 * @param actor
-	 */
+    /**
+     * Constructor method for the LineWriter helper
+     * @param actor the associated actor
+     */
 	public LineWriter(ptolemy.actor.lib.io.LineWriter actor) {
 		super(actor);
 	}
     
     /**
-     * @param stream
+     * Generate fire code
+     * The method reads in codeBlock1 and puts into the 
+     * given stream buffer
+     * @param stream the given buffer to append the code to
      */
     public void  generateFireCode(StringBuffer stream)
         throws IllegalActionException {
@@ -39,6 +67,11 @@ public class LineWriter extends CCodeGeneratorHelper {
         stream.append(processCode(tmpStream.toString()));
     }
 
+    /** Generate initialization code.
+     *  This method reads the <code>initBlock</code> from Test.c,
+     *  replaces macros with their values and returns the results.
+     *  @return The processed <code>initBlock</code>.
+     */
     public String generateInitializeCode()
         throws IllegalActionException {
         super.generateInitializeCode();
@@ -66,19 +99,20 @@ public class LineWriter extends CCodeGeneratorHelper {
             if (fileExist && askForOverwrite) {
                 tmpStream.appendCodeBlock("confirmOverwrite");            
             }
-          
+            
             if (actor.append.getExpression().equals("true")) {
                 tmpStream.appendCodeBlock("openForAppend");
             } else {
                 tmpStream.appendCodeBlock("openForWrite");
             }
-            
         }
         return processCode(tmpStream.toString());
     }
 
-    /**
-     * @param stream
+    /** Generate wrap up code.
+     *  This method reads the <code>wrapUpBlock</code> from LineWriter.c,
+     *  replaces macros with their values and returns the results.
+     *  @return The processed <code>wrapUpBlock</code>.
      */
     public void generateWrapupCode(StringBuffer stream)
         throws IllegalActionException {

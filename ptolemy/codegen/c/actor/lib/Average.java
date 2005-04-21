@@ -46,12 +46,20 @@ import ptolemy.kernel.util.IllegalActionException;
 public class Average extends CCodeGeneratorHelper {
 
     /**
-     * @param component
+     * Constructor method for the Average helper
+     * @param actor the associated actor
      */
     public Average(ptolemy.actor.lib.Average actor) {
         super(actor);
     }
 
+    /**
+     * Generate fire code
+     * The method generate code that loops through each 
+     * INPUT [multi-ports] and combine (add or substract) them. 
+     * The result code is put into the given stream buffer
+     * @param stream the given buffer to append the code to
+     */
     public void  generateFireCode(StringBuffer stream)
             throws IllegalActionException {
 
@@ -60,13 +68,16 @@ public class Average extends CCodeGeneratorHelper {
         stream.append(processCode(tmpStream.toString()));
     }
 
+    /** Generate initialization code.
+     *  This method reads the <code>initBlock</code> from Average.c,
+     *  replaces macros with their values and returns the results.
+     *  @return The processed <code>initBlock</code>.
+     */
     public String generateInitializeCode()
             throws IllegalActionException {
         super.generateInitializeCode();
         CodeStream tmpStream = new CodeStream(this);
         tmpStream.appendCodeBlock("initBlock");
-
-        //stream.append(processCode(tmpStream.toString()));
         return processCode(tmpStream.toString());
     }
 }

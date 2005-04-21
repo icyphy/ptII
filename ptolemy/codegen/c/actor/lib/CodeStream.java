@@ -87,8 +87,8 @@ public class CodeStream {
 
     /** To append an specific code block.
      * First, it checks if the code file is parsed already.
-     * If so, it gets the code block from the well-constructed code block table.
-     * If not, it has to construct the table.
+     * If so, it gets the code block from the well-constructed code 
+     * block table.  If not, it has to construct the table.
      * @param blockName the name of the code block
      * @throws IllegalActionException Thrown if an error occurs during parsing.
      */
@@ -126,8 +126,7 @@ public class CodeStream {
         System.out.println("----------Testing--------------------------------");
         System.out.print("please input class name: ");
         _testingClassName = in.readLine();
-        System.out.println("\n----------Result----------------------------------");
-
+        System.out.println("\n----------Result--------------------------------");
         System.out.println(CodeStream._testing());
     }
 
@@ -180,7 +179,6 @@ public class CodeStream {
                     line = reader.readLine()) {
                 codeInFile.append(line+"\n");
             }
-
             // recursively parse the file
             while (_parseCodeBlock(codeInFile) != null);
 

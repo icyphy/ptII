@@ -34,6 +34,9 @@
  */
 package ptolemy.codegen.c.actor.lib;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import ptolemy.codegen.kernel.CCodeGeneratorHelper;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -46,18 +49,46 @@ import ptolemy.kernel.util.IllegalActionException;
 public class TrigFunction extends CCodeGeneratorHelper {
 
     /**
-     * @param component
+     * Constructor method for the TrigFunction helper
+     * @param actor the associated actor
      */
     public TrigFunction(ptolemy.actor.lib.TrigFunction actor) {
         super(actor);
     }
 
+    /**
+     * Generate fire code
+     * The method reads in codeBlock1 and puts into the 
+     * given stream buffer
+     * @param stream the given buffer to append the code to
+     */
     public void  generateFireCode(StringBuffer stream)
             throws IllegalActionException {
 
+        ptolemy.actor.lib.TrigFunction actor =
+            (ptolemy.actor.lib.TrigFunction)getComponent();
+        
+        String function = actor.function.getExpression();
+        String code =   (function.equals("sin")) ? "sinBlock" :
+                        (function.equals("cos")) ? "cosBlock" :
+                        (function.equals("tan")) ? "tanBlock" :
+                        (function.equals("asin")) ? "asinBlock" :
+                        (function.equals("acos")) ? "acosBlock" : "atanBlock";
+        
         CodeStream tmpStream = new CodeStream(this);
-        tmpStream.appendCodeBlock("codeBlock1");
+        tmpStream.appendCodeBlock(code);            
         stream.append(processCode(tmpStream.toString()));
+    }
+    
+    /** Get the files needed by the code generated for the
+     *  TrigFunction actor.
+     *  @return A set of strings that are names of the files
+     *   needed by the code generated for the TrigFunction actor.
+     */
+    public Set getIncludingFiles() {
+        Set files = new HashSet();
+        files.add("\"math.h\"");
+        return files;
     }
 }
 

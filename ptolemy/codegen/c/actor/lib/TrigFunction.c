@@ -1,8 +1,29 @@
-/***codeBlock1*/
-$ref(output) = 	(!strcmp($val(function), "sin")) ? sin($ref(input)) : 
-           		(!strcmp($val(function), "cos")) ? cos($ref(input)) : 
-           		(!strcmp($val(function), "tan")) ? tan($ref(input)) : 
-           		(!strcmp($val(function), "asin")) ? asin($ref(input)) : 
-           		(!strcmp($val(function), "acos")) ? acos($ref(input)) : 
-           		atan($ref(input));
+/***sinBlock*/
+    $ref(output) = sin($ref(input));
+/**/
+
+
+/***asinBlock*/
+    $ref(output) = asin($ref(input));
+/**/
+
+
+
+/***cosBlock*/
+    $ref(output) = cos($ref(input));
+/**/
+
+
+/***acosBlock*/
+    $ref(output) = acos($ref(input));
+/**/
+
+
+/***tanBlock*/
+    $ref(output) = tan($ref(input));
+/**/
+
+
+/***atanBlock*/
+    $ref(output) = atan($ref(input));
 /**/

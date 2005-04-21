@@ -39,19 +39,23 @@ import ptolemy.kernel.util.IllegalActionException;
 
 /**
  * @author Man-Kit Leung
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
  */
 public class Accumulator extends CCodeGeneratorHelper {
 
     /**
-     * @param component
+     * Constructor method for the Accumulator helper
+     * @param actor the associated actor
      */
     public Accumulator(ptolemy.actor.lib.Accumulator actor) {
         super(actor);
     }
 
+    /**
+     * Generate fire code
+     * The method reads in codeBlock1 and puts into the 
+     * given stream buffer
+     * @param stream the given buffer to append the code to
+     */
     public void  generateFireCode(StringBuffer stream)
             throws IllegalActionException {
 
@@ -60,6 +64,11 @@ public class Accumulator extends CCodeGeneratorHelper {
         stream.append(processCode(tmpStream.toString()));
     }
 
+    /**
+     * Generate initialization code
+     * The method reads in codeBlock1 and returns the code
+     * @return the initialization code  
+     */
     public String generateInitializeCode()
             throws IllegalActionException {
         super.generateInitializeCode();
@@ -68,12 +77,4 @@ public class Accumulator extends CCodeGeneratorHelper {
 
         return processCode(tmpStream.toString());
     }
-
-
-    ///////////////////////////////////////////////////////////////////
-    ////                     protected variables                   ////
-
-    protected String _codeBlock;
-
-    protected String _initBlock = "int sum = 0;\n";
 }
