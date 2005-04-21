@@ -454,7 +454,7 @@ public class NonStrictFSMDirector extends FSMDirector {
             Transition transition = (Transition) transitions.next();
             String string = transition.getGuardExpression();
 
-            if (string == "") {
+            if (string.equals("")) {
                 throw new IllegalActionException(this,
                         "guard expression on " + transition.getName() + "is null!");
             }
