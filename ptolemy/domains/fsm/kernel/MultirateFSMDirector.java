@@ -114,6 +114,29 @@ public class MultirateFSMDirector extends FSMDirector {
     /////////////////////////////////////////////////////////////////////
     ////                           public methods                    ////
 
+    /** Choose the next non-transient state given the current state.
+     *  @param currentState The current state.
+     *  @exception IllegalActionException If a transient state is reached
+     *   but no further transition is enabled.
+     */
+    public void chooseNonTransientTransition(State currentState)
+            throws IllegalActionException {
+        State state = chooseTransition(currentState);
+        Actor[] actors = state.getRefinement();
+        Transition transition;
+        while (actors == null) {
+            super.postfire();
+            state = chooseTransition(state);
+            transition = _getLastChosenTransition();
+            if (transition == null) {
+                throw new IllegalActionException(this,
+                        "Reached a state without a refinement: "
+                        + state.getName());
+            }
+            actors = (transition.destinationState()).getRefinement();
+        }
+    }
+
     /** Choose an enabled transition leaving the given state.
      *  If the transition refinement is null, then first evaluate preemptive
      *  transitions. If no preemptive transition is enabled or the transition
@@ -147,7 +170,8 @@ public class MultirateFSMDirector extends FSMDirector {
 
         if (transition == null) {
             // No preemptiveTransition enabled. Choose nonpreemptiveTransition.
-            transition = _chooseTransition(state.nonpreemptiveTransitionList());
+            transition =
+                _chooseTransition(state.nonpreemptiveTransitionList());
         }
 
         if (transition != null) {
@@ -159,7 +183,8 @@ public class MultirateFSMDirector extends FSMDirector {
 
             if (actors != null) {
                 throw new IllegalActionException(this,
-                        "MultirateFSM Director does not support transition refinements.");
+                        "MultirateFSM Director does not support "
+                        + "transition refinements.");
             }
 
             _readOutputsFromRefinement();
@@ -176,29 +201,6 @@ public class MultirateFSMDirector extends FSMDirector {
         }
 
         return destinationState;
-    }
-
-    /** Choose the next non-transient state given the current state.
-     *  @param currentState The current state.
-     *  @throws IllegalActionException If a transient state is reached
-     *   but no further transition is enabled.
-     */
-    public void chooseNonTransientTransition(State currentState)
-            throws IllegalActionException {
-        State state = chooseTransition(currentState);
-        Actor[] actors = state.getRefinement();
-        Transition transition;
-        while (actors == null) {
-            super.postfire();
-            state = chooseTransition(state);
-            transition = _getLastChosenTransition();
-            if (transition == null) {
-                throw new IllegalActionException(this,
-                        "Reached a state without a refinement: "
-                        + state.getName());
-            }
-            actors = (transition.destinationState()).getRefinement();
-        }
     }
 
     /** Fire the modal model.
@@ -297,7 +299,8 @@ public class MultirateFSMDirector extends FSMDirector {
                 // Set the next intransient state as the current state.
                 _setCurrentState(currentState);
                 _setCurrentConnectionMap();
-                _currentLocalReceiverMap = (Map) _localReceiverMaps.get(currentState);
+                _currentLocalReceiverMap =
+                    (Map) _localReceiverMaps.get(currentState);
             }
         } else {
             // This is a sub-layer MultirateFSMDirector.
@@ -318,13 +321,15 @@ public class MultirateFSMDirector extends FSMDirector {
                         + currentState.getName());
             }
 
-            TypedCompositeActor curRefinement = (TypedCompositeActor) (curRefinements[0]);
+            TypedCompositeActor curRefinement =
+                (TypedCompositeActor) (curRefinements[0]);
             Director refinementDir = curRefinement.getDirector();
 
             if (refinementDir instanceof MultirateFSMDirector) {
                 refinementDir.initialize();
             } /*else if (refinementDir instanceof StaticSchedulingDirector) {
-                // Recompute the schedule if the refinement domain has a schedule.
+                // Recompute the schedule if the refinement domain
+                // has a schedule.
                 //refinementDir.invalidateSchedule();
                 //((StaticSchedulingDirector) refinementDir).getScheduler()
                   //  .getSchedule();
@@ -371,7 +376,8 @@ public class MultirateFSMDirector extends FSMDirector {
 
             if ((actors == null) || (actors.length != 1)) {
                 throw new IllegalActionException(this,
-                        "Current state is required to have exactly one refinement: "
+                        "Current state is required to have exactly "
+                        + "one refinement: "
                         + currentState.getName());
             }
             actor = (TypedCompositeActor) (actors[0]);
@@ -386,7 +392,8 @@ public class MultirateFSMDirector extends FSMDirector {
 
             if ((actors == null) || (actors.length != 1)) {
                 throw new IllegalActionException(this,
-                        "Current state is required to have exactly one refinement: "
+                        "Current state is required to have exactly "
+                        + "one refinement: "
                         + currentState.getName());
             }
 
@@ -467,7 +474,8 @@ public class MultirateFSMDirector extends FSMDirector {
                     + controller.currentState().getName());
         }
 
-        TypedCompositeActor curRefinement = (TypedCompositeActor) (currentRefinements[0]);
+        TypedCompositeActor curRefinement =
+            (TypedCompositeActor) (currentRefinements[0]);
         Director refinementDir = curRefinement.getDirector();
 
         _updateInputTokenConsumptionRates(curRefinement);
@@ -536,12 +544,15 @@ public class MultirateFSMDirector extends FSMDirector {
             try {
                 if ((insideReceivers != null) && (insideReceivers[i] != null)) {
                     for (int j = 0; j < insideReceivers[i].length; j++) {
-                        // Since we only transfer number of tokens declared by
-                        // the port rate, we should be safe to clear the receivers.
-                        // Maybe we should move this step to prefire() or postfire(),
-                        // as in FSMDirector. But if the port consumes more tokens
-                        // than the refinement actually consumes (The SDF sneaky trick),
-                        // then perhaps we are in great trouble.
+                        // Since we only transfer number of tokens
+                        // declared by the port rate, we should be
+                        // safe to clear the receivers.  Maybe we
+                        // should move this step to prefire() or
+                        // postfire(), as in FSMDirector. But if the
+                        // port consumes more tokens than the
+                        // refinement actually consumes (The SDF
+                        // sneaky trick), then perhaps we are in great
+                        // trouble.
                         insideReceivers[i][j].clear();
 
                         /*
@@ -674,7 +685,8 @@ public class MultirateFSMDirector extends FSMDirector {
      *  variable does not contain a constant value.
      */
     protected void _declareReconfigurationDependencyForRefinementRateVariables(
-            ConstVariableModelAnalysis analysis, IOPort port, String parameterName)
+            ConstVariableModelAnalysis analysis,
+            IOPort port, String parameterName)
             throws IllegalActionException {
         List refinementRateVariables = _getRefinementRateVariables(port,
                 parameterName);
@@ -704,7 +716,8 @@ public class MultirateFSMDirector extends FSMDirector {
 
         if (!isConstantAndIdentical) {
             // Has this as ChangeContext.
-            // System.out.println("Found rate parameter " + parameterName + " of port " + port.getFullName() + " that changes.");
+            // System.out.println("Found rate parameter " + parameterName
+            //    + " of port " + port.getFullName() + " that changes.");
             // FIXME: Declare this somehow so that we can check it.
         }
     }
@@ -758,8 +771,9 @@ public class MultirateFSMDirector extends FSMDirector {
         for (Iterator insidePorts = port.deepInsidePortList().iterator();
              insidePorts.hasNext();) {
             IOPort insidePort = (IOPort) insidePorts.next();
-            Variable variable = (Variable) DFUtilities.getRateVariable(insidePort,
-                    parameterName);
+            Variable variable =
+                (Variable) DFUtilities.getRateVariable(insidePort,
+                        parameterName);
 
             if (variable != null) {
                 list.add(variable);
@@ -779,7 +793,8 @@ public class MultirateFSMDirector extends FSMDirector {
      *  the port connections between controller and refinements are not
      *  correct, or can not get valid token consumption rates for input ports.
      */
-    protected boolean _updateInputTokenConsumptionRates(TypedCompositeActor actor)
+    protected boolean _updateInputTokenConsumptionRates(
+            TypedCompositeActor actor)
             throws IllegalActionException {
         FSMActor ctrl = getController();
         boolean inputRateChanged = false;
@@ -810,16 +825,18 @@ public class MultirateFSMDirector extends FSMDirector {
 
                 // Check if the current port is contained by the
                 // container of the current refinement.
-                ComponentEntity thisPortContainer = (ComponentEntity) inputPortOutside
+                ComponentEntity thisPortContainer =
+                    (ComponentEntity) inputPortOutside
                     .getContainer();
 
                 if (thisPortContainer.getFullName() == refineInPortContainer
                         .getFullName()) {
                     // set the outside port rate equal to the port rate
                     // of the refinement.
-                    int previousPortRate
-                            = DFUtilities.getTokenConsumptionRate(inputPortOutside);
-                    int portRateToSet = DFUtilities.getTokenConsumptionRate(refineInPort);
+                    int previousPortRate = DFUtilities
+                        .getTokenConsumptionRate(inputPortOutside);
+                    int portRateToSet = DFUtilities
+                        .getTokenConsumptionRate(refineInPort);
                     if (previousPortRate != portRateToSet) {
                         inputRateChanged = true;
                     }
@@ -837,10 +854,11 @@ public class MultirateFSMDirector extends FSMDirector {
      *  @param actor The current refinement.
      *  @return True if any of the output token production rate is changed from
      *   its previous value.
-     *  @exception IllegalActionException If can not get valid token consumption
-     *  rates for input ports.
+     *  @exception IllegalActionException If we cannot get valid token
+     *  consumption rates for input ports.
      */
-    protected boolean _updateOutputTokenProductionRates(TypedCompositeActor actor)
+    protected boolean _updateOutputTokenProductionRates(
+            TypedCompositeActor actor)
             throws IllegalActionException {
 
         boolean outputRateChanged = false;
@@ -862,16 +880,20 @@ public class MultirateFSMDirector extends FSMDirector {
 
                 // Check if the current port is contained by the
                 // container of the current refinment.
-                ComponentEntity thisPortContainer = (ComponentEntity) outputPortOutside
+                ComponentEntity thisPortContainer =
+                    (ComponentEntity) outputPortOutside
                     .getContainer();
                 if (thisPortContainer.getFullName() == refineOutPortContainer
                         .getFullName()) {
                     // set the outside port rate equal to the port rate
                     // of the refinement.
                     int previousPortRate
-                            = DFUtilities.getTokenProductionRate(outputPortOutside);
-                    int portRateToSet = DFUtilities.getTokenProductionRate(refineOutPort);
-                    int portInitRateToSet = DFUtilities.getTokenInitProduction(refineOutPort);
+                            = DFUtilities.getTokenProductionRate(
+                                    outputPortOutside);
+                    int portRateToSet =
+                        DFUtilities.getTokenProductionRate(refineOutPort);
+                    int portInitRateToSet =
+                        DFUtilities.getTokenInitProduction(refineOutPort);
                     if (previousPortRate != portRateToSet) {
                         outputRateChanged = true;
                     }
