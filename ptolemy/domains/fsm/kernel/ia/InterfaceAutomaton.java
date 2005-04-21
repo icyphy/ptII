@@ -38,7 +38,6 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.data.expr.Parameter;
 import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.domains.fsm.kernel.State;
-import ptolemy.domains.fsm.kernel.Transition;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.CompositeEntity;
@@ -1242,10 +1241,10 @@ public class InterfaceAutomaton extends FSMActor {
     //
     //          end when frontier is empty
     //
-    private InterfaceAutomaton _computeProduct(InterfaceAutomaton automaton)
-            throws IllegalActionException {
-        return _computeProduct(automaton, false);
-    }
+    //private InterfaceAutomaton _computeProduct(InterfaceAutomaton automaton)
+    //        throws IllegalActionException {
+    //    return _computeProduct(automaton, false);
+    //}
 
     // Compute the product of this automaton and the argument. Also store
     // the illegal states found in the Set _illegalStates.
@@ -2176,7 +2175,7 @@ public class InterfaceAutomaton extends FSMActor {
     //     transitions.
     // The name of the product automaton is
     // <thisName><NAME_CONNECTOR><argumentName>
-    private final String NAME_CONNECTOR = "_";
+    private final static String NAME_CONNECTOR = "_";
 
     // The following variables are used to store intermediate results
     // during the computation of compose().
