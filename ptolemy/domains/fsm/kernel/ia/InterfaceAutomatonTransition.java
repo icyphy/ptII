@@ -146,7 +146,7 @@ public class InterfaceAutomatonTransition extends Transition {
 
                 if (container.getAttribute(name) == null) {
                     try {
-                        Parameter param = new Parameter(container, name);
+                        new Parameter(container, name);
                     } catch (NameDuplicationException exception) {
                         // should not happen
                         throw new InternalErrorException(
