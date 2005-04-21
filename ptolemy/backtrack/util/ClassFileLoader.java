@@ -51,8 +51,20 @@ public class ClassFileLoader extends ClassLoader {
         FileInputStream inputStream = new FileInputStream(classFile);
         byte[] buffer = new byte[inputStream.available()];
         inputStream.read(buffer);
+        
         try {
             return defineClass(null, buffer, 0, buffer.length);
+        } catch (IllegalAccessError e) {
+            String errorPrefix = "class ";
+            String message = e.getMessage();
+            if (message.startsWith(errorPrefix)) {
+                String className = message.substring(errorPrefix.length());
+                int pos;
+                if ((pos = className.indexOf(' ')) >= 0)
+                    className = className.substring(0, pos);
+                return loadClass(className);
+            } else
+                throw e;
         } catch (LinkageError e) {
             // Class already loaded.
             // FIXME: Any better solution here?
