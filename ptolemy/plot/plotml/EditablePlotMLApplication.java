@@ -139,15 +139,20 @@ public class EditablePlotMLApplication extends PlotMLApplication {
     ////                         public methods                    ////
 
     /** Create a new plot window and map it to the screen.
+     *  The command to run would be:
+     *  <pre>
+     *  java -classpath $PTII ptolemy.plot.plotml.EditablePlotMLApplication
+     *  <pre>
+     *  @param args Arguments suitable for the 
+     *  {@link ptolemy.plot.EditablePlot} class.
      */
     public static void main(final String[] args) {
         try {
             Runnable doActions = new Runnable() {
                     public void run() {
                         try {
-                            EditablePlotMLApplication plot =
-                                new EditablePlotMLApplication(
-                                        new EditablePlot(), args);
+                            new EditablePlotMLApplication(
+                                    new EditablePlot(), args);
                         } catch (Exception ex) {
                             System.err.println(ex.toString());
                             ex.printStackTrace();

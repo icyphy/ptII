@@ -39,6 +39,7 @@ import java.net.URL;
 import java.util.StringTokenizer;
 
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 import ptolemy.plot.CmdLineArgException;
 import ptolemy.plot.Plot;
@@ -104,9 +105,20 @@ public class PxgraphApplication extends PlotApplication {
      *  @param args The command line arguments.  To see what command
      *  line arguments are available, run with "-help" as the first element.
      */
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         try {
-            new PxgraphApplication(new Plot(), args);
+            // Run this in the Swing Event Thread.
+            Runnable doActions = new Runnable() {
+                    public void run() {
+                        try {
+                            new PxgraphApplication(new Plot(), args);
+                        } catch (Exception ex) {
+                            System.err.println(ex.toString());
+                            ex.printStackTrace();
+                        }
+                    }
+                };
+            SwingUtilities.invokeAndWait(doActions);
         } catch (Exception ex) {
             ex.printStackTrace();
         }

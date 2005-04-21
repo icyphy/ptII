@@ -32,6 +32,7 @@ COPYRIGHTENDKEY
 package ptolemy.plot.plotml;
 
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 import ptolemy.plot.Histogram;
 import ptolemy.plot.PlotBox;
@@ -89,10 +90,33 @@ public class HistogramMLApplication extends PlotMLApplication {
     ////                         public methods                    ////
 
     /** Create a new plot window and map it to the screen.
+     *  The command to run would be:
+     *  <pre>
+     *  java -classpath $PTII ptolemy.plot.plotml.HistogramMLApplication
+     *  <pre>
+     *  @param args Arguments suitable for the 
+     *  {@link ptolemy.plot.plot.Histogram} class.
+     *  @param args Arguments suitable for the Histogram class.
      */
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         try {
-            new HistogramMLApplication(new Histogram(), args);
+            Runnable doActions = new Runnable() {
+                    public void run() {
+                        try {
+                            new HistogramMLApplication(new Histogram(), args);
+                        } catch (Exception ex) {
+                            System.err.println(ex.toString());
+                            ex.printStackTrace();
+                        }
+                    }
+                };
+            // NOTE: Using invokeAndWait() here risks causing
+            // deadlock.  However, the Sun Tutorial recommends calling
+            // invokeAndWait so that the work finishes before returning.
+            // if we call invokeLater() then demo/PlotFourierSeries.java
+            // has problems.
+            SwingUtilities.invokeAndWait(doActions);
+
         } catch (Exception ex) {
             System.err.println(ex.toString());
             ex.printStackTrace();

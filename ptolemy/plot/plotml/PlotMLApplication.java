@@ -37,6 +37,7 @@ import java.io.InputStream;
 import java.net.URL;
 
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 import ptolemy.plot.Plot;
 import ptolemy.plot.PlotApplication;
@@ -97,10 +98,31 @@ public class PlotMLApplication extends PlotApplication {
     ////                         public methods                    ////
 
     /** Create a new plot window and map it to the screen.
+     *  The command to run would be:
+     *  <pre>
+     *  java -classpath $PTII ptolemy.plot.plotml.PlotMLApplication
+     *  <pre>
+     *  @param args Arguments suitable for the 
+     *  {@link ptolemy.plot.Plot} class.
      */
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         try {
-            new PlotMLApplication(new Plot(), args);
+            Runnable doActions = new Runnable() {
+                    public void run() {
+                        try {
+                            new PlotMLApplication(new Plot(), args);
+                        } catch (Exception ex) {
+                            System.err.println(ex.toString());
+                            ex.printStackTrace();
+                        }
+                    }
+                };
+            // NOTE: Using invokeAndWait() here risks causing
+            // deadlock.  However, the Sun Tutorial recommends calling
+            // invokeAndWait so that the work finishes before returning.
+            // if we call invokeLater() then demo/PlotFourierSeries.java
+            // has problems.
+            SwingUtilities.invokeAndWait(doActions);
         } catch (Exception ex) {
             System.err.println(ex.toString());
             ex.printStackTrace();

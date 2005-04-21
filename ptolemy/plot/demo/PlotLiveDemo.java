@@ -31,6 +31,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 
 import ptolemy.plot.PlotLive;
 
@@ -92,21 +93,36 @@ public class PlotLiveDemo extends PlotLive {
      * java -classpath $PTII ptolemy.plot.demo.PlotLiveDemo
      */
     public static void main(String[] args) {
-        final PlotLiveDemo plotLiveDemo = new PlotLiveDemo();
-        System.runFinalizersOnExit(true);
+        // Run this in the Swing Event Thread.
+        Runnable doActions = new Runnable() {
+                public void run() {
+                    try {
+                        final PlotLiveDemo plotLiveDemo = new PlotLiveDemo();
 
-        JFrame frame = new JFrame("PlotLiveDemo");
-        frame.addWindowListener(new WindowAdapter() {
-                public void windowClosing(WindowEvent event) {
-                    plotLiveDemo.stop();
-                    System.exit(0);
+                        JFrame frame = new JFrame("PlotLiveDemo");
+                        frame.addWindowListener(new WindowAdapter() {
+                                public void windowClosing(WindowEvent event) {
+                                    plotLiveDemo.stop();
+                                    System.exit(0);
+                                }
+                            });
+                        frame.getContentPane().add("Center", plotLiveDemo);
+                        frame.show();
+                        plotLiveDemo.setButtons(true);
+                        plotLiveDemo.start();
+                        frame.pack();
+                    } catch (Exception ex) {
+                        System.err.println(ex.toString());
+                        ex.printStackTrace();
+                    }
                 }
-            });
-        frame.getContentPane().add("Center", plotLiveDemo);
-        frame.show();
-        plotLiveDemo.setButtons(true);
-        plotLiveDemo.start();
-        frame.pack();
+            };
+        try {
+            SwingUtilities.invokeAndWait(doActions);
+        } catch (Exception ex) {
+            System.err.println(ex.toString());
+            ex.printStackTrace();
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
