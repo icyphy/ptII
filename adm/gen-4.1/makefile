@@ -1450,6 +1450,7 @@ remote5: $(PTII_FULL) $(GENLOGDIR)
 	@echo "#"
 	@echo "$@ `date`"
 	@echo "`uptime`"
+	-ssh $(REMOTE5HOST) "cd $(GENDIR); cp $(REMOTE5LOG) $(REMOTE5LOG).old"
 	ssh $(REMOTE5HOST) "cd $(GENDIR); make -k EMAILTO=$(EMAILTO) \
 		remote5nuke remote5ptiidist remote5configure \
 		remote5build \
