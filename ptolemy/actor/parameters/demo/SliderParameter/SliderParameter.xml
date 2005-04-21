@@ -2,9 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="SliderParameter" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0-alpha">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {48, 115, 815, 509}, maximized = false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={48, 115, 815, 518}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -173,8 +173,6 @@ Lissajous curves.</text></svg></configure>
       </svg>
     </configure>
             </property>
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
             <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                 <configure>
       <svg>
@@ -192,8 +190,6 @@ Lissajous curves.</text></svg></configure>
 	<polyline points="-15,-15, -3,-5, -16,5" style="stroke:black"></polyline>
       </svg>
     </configure>
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
             </property>
             <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                 <configure>
@@ -241,8 +237,6 @@ Lissajous curves.</text></svg></configure>
       </svg>
     </configure>
             </property>
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
             <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                 <configure>
       <svg>
@@ -261,8 +255,6 @@ Lissajous curves.</text></svg></configure>
       </svg>
     </configure>
             </property>
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
             <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                 <configure>
       <svg>
@@ -280,6 +272,8 @@ Lissajous curves.</text></svg></configure>
     </entity>
     <entity name="XYScope" class="ptolemy.actor.lib.gui.XYScope">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
