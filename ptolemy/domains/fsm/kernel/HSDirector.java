@@ -713,9 +713,9 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
             }
 
             return result && _outputAccurate;
-        } catch (Exception e) {
+        } catch (Throwable throwable) {
             // Can not evaluate guard expression.
-            throw new InternalErrorException(e);
+            throw new InternalErrorException(throwable);
         }
     }
 
@@ -726,8 +726,8 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
      */
     public boolean isStateAccurate() {
         boolean result = true;
-        CTDirector dir = (CTDirector) (((Actor) getContainer())
-                .getExecutiveDirector());
+        //CTDirector dir = (CTDirector) (((Actor) getContainer())
+        //        .getExecutiveDirector());
 
         if (_enabledRefinements != null) {
             Iterator refinements = _enabledRefinements.iterator();
@@ -1057,22 +1057,19 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    // Cached reference to mode controller.
+    /** Cached reference to mode controller. */
     private FSMActor _ctrl = null;
 
-    // Cached reference to current state.
+    /** Cached reference to current state. */
     private State _currentState = null;
 
-    // Lcoal variable to indicate the distance to boundary.
+    /** Local variable to indicate the distance to boundary. */
     private double _distanceToBoundary = 0.0;
 
-    // Lcoal variable to indicate the last distance to boundary.
+    /** Local variable to indicate the last distance to boundary. */
     private double _lastDistanceToBoundary = 0.0;
 
-    // Lcoal variable to indicate the last step size.
-    private double _lastStepSize = 0.0;
-
-    // Lcoal variable to indicate whether the output is accurate.
+    /** Local variable to indicate whether the output is accurate. */
     private boolean _outputAccurate = true;
 
     // Boolean variable to indicate whether there is an enabled transtion to
