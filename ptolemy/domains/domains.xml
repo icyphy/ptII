@@ -28,7 +28,6 @@
 	    <!-- GR depends on the 3D graphics package of Java being present-->             
 	    <input source="ptolemy/domains/gr/gr.xml"/>
 	    <input source="ptolemy/domains/petrinet/kernel/petrinetentities.xml"/>	   
-	    <input source="ptolemy/domains/pn/pn.xml"/>	   
 	    <input source="ptolemy/domains/psdf/psdf.xml"/>	   
 	    <!-- RTP is not shipping in 4.0 -->
 	    <!-- input source="ptolemy/domains/rtp/lib/rtpentities.xml"/-->
