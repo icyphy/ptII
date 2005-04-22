@@ -131,6 +131,7 @@ HYBRID_SYSTEMS_ONLY_JNLP_JARS = \
 	doc/design/hyvisual.jar \
 	doc/codeDocHyVisual.jar \
 	ptolemy/domains/ct/ct.jar \
+	ptolemy/domains/de/de.jar \
 	ptolemy/domains/fsm/fsm.jar \
 	ptolemy/domains/sdf/lib/lib.jar \
 	ptolemy/domains/sdf/kernel/kernel.jar \
@@ -242,6 +243,7 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/actor/lib/jxta/jxta.jar \
 	ptolemy/actor/lib/x10/x10.jar \
 	ptolemy/actor/lib/x10/demo/demo.jar \
+	vendors/misc/x10/tjx10p-12/lib/x10.jar \
 	lib/ptCal.jar \
 	lib/saxon7.jar \
 	ptolemy/caltrop/caltrop.jar \
