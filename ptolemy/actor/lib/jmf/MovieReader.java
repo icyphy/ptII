@@ -28,6 +28,7 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.lib.jmf;
 
+import java.io.File;
 import java.net.URL;
 
 import javax.media.Buffer;
@@ -123,15 +124,18 @@ public class MovieReader extends Source implements ControllerListener {
                     _dataSource = Manager.createDataSource(url);
                 } catch (Exception ex) {
                     URL urlCopy = null;
+                    String copyFileName = "";
                     try {
                         // Web Start: javax.media.Manager.createDataSource()
                         // does not deal with jar urls because it cannot
                         // find a data source, so we copy the jar file.
-                        urlCopy = new URL(JNLPUtilities.saveJarURLAsTempFile(
+                        copyFileName = JNLPUtilities.saveJarURLAsTempFile(
                                                   url.toString(),
                                                   "JMFMovieReader",
-                                                  null, null));
-                        _dataSource = Manager.createDataSource(url);
+                                                  null, null);
+                        File copyFile = new File(copyFileName);
+                        urlCopy = copyFile.toURL();
+                        _dataSource = Manager.createDataSource(urlCopy);
                     } catch (Exception ex2) {
                         // Ignore this exception, throw the original.
                         throw new IllegalActionException(this, ex,
@@ -139,7 +143,8 @@ public class MovieReader extends Source implements ControllerListener {
                                 + url.toString() + "', to '"
                                 + ((urlCopy == null) ? "null"
                                         : urlCopy.toString())
-                                + "' but that failed with:\n"
+                                + "', (copyFileName was: '" + copyFileName
+                                + "') but that failed with:\n"
                                 + KernelException.stackTraceToString(ex2));
                     }
                 }
