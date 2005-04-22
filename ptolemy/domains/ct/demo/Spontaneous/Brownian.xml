@@ -12,31 +12,31 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{95.0, 60.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1032, 742}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, -1, 880, 464}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 624]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[665, 346]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{408.5, 312.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{332.5, 173.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,0.2,0.2,1.0}">
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Ye Zhou">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 360.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 325.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="FIXME: CT has multiple firings. Fix it.(Haiyang) FIXED!&#10;Need more comments.&#10;&#10;Note that we need a clock to drive this model.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Note that we need a clock to drive this model.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 350.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 275.0]">
         </property>
     </property>
     <entity name="Gaussian" class="ptolemy.actor.lib.Gaussian">
         <doc>Create a sequence of gaussian random variables</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 150.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 150.0]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -51,17 +51,17 @@
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 150.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 150.0]">
         </property>
     </entity>
     <entity name="XYPlotter" class="ptolemy.actor.lib.gui.XYPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={300, 133, 508, 490}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={517, 36, 508, 490}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 435]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[680.0, 190.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 220.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -70,14 +70,14 @@
 <title>XYPlotter</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="-4.141546272159975" max="32.29148767855112"/>
-<yRange min="-8.945670423915491" max="77.03227871064564"/>
+<xRange min="-27.48402688467277" max="8.382307965743722"/>
+<yRange min="-10.819956885865842" max="21.096334814987145"/>
 </plot>?>
         </configure>
     </entity>
     <entity name="Gaussian2" class="ptolemy.actor.lib.Gaussian">
         <doc>Create a sequence of gaussian random variables</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 235.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 230.0]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -92,15 +92,15 @@
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 235.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 230.0]">
         </property>
     </entity>
     <entity name="ZeroOrderHold" class="ptolemy.domains.ct.lib.ZeroOrderHold">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 150.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 150.0]">
         </property>
     </entity>
     <entity name="ZeroOrderHold2" class="ptolemy.domains.ct.lib.ZeroOrderHold">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 235.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 230.0]">
         </property>
     </entity>
     <entity name="Clock" class="ptolemy.actor.lib.Clock">
@@ -118,19 +118,19 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="displayWidth">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[700.0, 305.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 295.0]">
         </property>
     </entity>
     <entity name="Average" class="ptolemy.actor.lib.Average">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 305.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 295.0]">
         </property>
     </entity>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={510, 417, 508, 355}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={517, 527, 508, 245}, maximized=false}">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 190]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[680.0, 100.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 105.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -140,17 +140,17 @@
 <xLabel></xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="1000.0"/>
-<yRange min="-4.141546272159975" max="32.29148767855112"/>
+<yRange min="-27.48402688467277" max="8.382307965743722"/>
 <default marks="dots"/>
 </plot>?>
         </configure>
     </entity>
     <entity name="TimedPlotter2" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 418, 508, 355}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={4, 527, 508, 246}, maximized=false}">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 191]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 75.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 75.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -160,7 +160,7 @@
 <xLabel></xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="1000.0"/>
-<yRange min="-3.2327794023012775" max="2.997224028040193"/>
+<yRange min="-3.1174534626914077" max="4.040384499577657"/>
 <default marks="dots"/>
 </plot>?>
         </configure>
@@ -168,11 +168,11 @@
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation11" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[550.0, 150.0]">
+        <vertex name="vertex1" value="[455.0, 150.0]">
         </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[410.0, 150.0]">
+        <vertex name="vertex1" value="[325.0, 150.0]">
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -182,7 +182,7 @@
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation13" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[110.0, 195.0]">
+        <vertex name="vertex1" value="[90.0, 195.0]">
         </vertex>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
