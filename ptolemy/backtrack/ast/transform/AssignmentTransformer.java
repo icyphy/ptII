@@ -288,6 +288,30 @@ public class AssignmentTransformer extends AbstractTransformer
                     nodesIter.remove();
                 }
             }
+            
+            list = (List)_rehandleDeclaration.get(nextClassName);
+            if (list != null) {
+                Iterator recordsIter = list.iterator();
+                while (recordsIter.hasNext()) {
+                    RehandleDeclarationRecord record =
+                        (RehandleDeclarationRecord)recordsIter.next();
+                    Iterator extendedIter =
+                        record._getExtendedDeclarations().iterator();
+                    while (extendedIter.hasNext()) {
+                        ASTNode declaration = (ASTNode)extendedIter.next();
+                        if (declaration != null)
+                            removeNode(declaration);
+                    }
+                    Iterator fixedIter =
+                        record._getFixedDeclarations().iterator();
+                    while (fixedIter.hasNext()) {
+                        ASTNode declaration = (ASTNode)fixedIter.next();
+                        if (declaration != null)
+                            record._getBodyDeclarations().add(declaration);
+                    }
+                    recordsIter.remove();
+                }
+            }
         }
     }
     
@@ -1902,70 +1926,131 @@ public class AssignmentTransformer extends AbstractTransformer
         if (isAnonymous) {
             Class[] interfaces = currentClass.getInterfaces();
             for (int i = 0; i < interfaces.length; i++)
-                // FIXME: cross-analyzed types may change.
                 if (state.getCrossAnalyzedTypes().contains(
                         interfaces[i].getName()))
                 isAnonymous = false;
         }
         
+        RehandleDeclarationRecord declarationRecord = null;
+        if (isAnonymous) {
+            Class[] interfaces = currentClass.getInterfaces();
+            if (interfaces.length == 1) {
+                declarationRecord =
+                    new RehandleDeclarationRecord(bodyDeclarations);
+                addToLists(_rehandleDeclaration, interfaces[0].getName(),
+                        declarationRecord);
+            }
+        }
+        
         // Do not handle anonymous class declarations in a static method.
-        if (!_isInStaticMethod.isEmpty() && _isInStaticMethod.peek() == Boolean.TRUE && isAnonymous)
-            return;
+        boolean ignore = !_isInStaticMethod.isEmpty() &&
+                _isInStaticMethod.peek() == Boolean.TRUE &&
+                isAnonymous;
         
         // Add an array of all the records.
-        if (!isInterface)
+        if (!isInterface && !ignore)
             newFields.add(_createRecordArray(ast, root, state, fieldNames));
 
         // Add a restore method.
-        newMethods.add(_createRestoreMethod(ast, root, state, fieldNames, 
-                fieldTypes, isAnonymous, isInterface));
+        MethodDeclaration restoreMethod = null;
+        if (!ignore) {
+            restoreMethod =
+                _createRestoreMethod(ast, root, state, fieldNames, 
+                        fieldTypes, isAnonymous, isInterface);
+            newMethods.add(restoreMethod);
+        }
+        if (declarationRecord != null) {
+            if (!ignore)
+                declarationRecord._addExtendedDeclaration(restoreMethod);
+            
+            MethodDeclaration fixedRestoreMethod =
+                _createRestoreMethod(ast, root, state, fieldNames, 
+                        fieldTypes, false, isInterface);
+            declarationRecord._addFixedDeclaration(fixedRestoreMethod);
+        }
         
         // Get checkpoint method.
-        MethodDeclaration getCheckpoint = 
-            _createGetCheckpointMethod(ast, root, state, 
-                    isAnonymous, isInterface);
-        if (getCheckpoint != null)
-            newMethods.add(getCheckpoint);
+        MethodDeclaration getCheckpoint = null;
+        if (!ignore) {
+            getCheckpoint = 
+                _createGetCheckpointMethod(ast, root, state, isAnonymous,
+                        isInterface);
+            if (getCheckpoint != null)
+                newMethods.add(getCheckpoint);
+        }
+        if (declarationRecord != null) {
+            if (!ignore)
+                declarationRecord._addExtendedDeclaration(getCheckpoint);
+            
+            MethodDeclaration fixedGetCheckpoint =
+                _createGetCheckpointMethod(ast, root, state, false,
+                        isInterface);
+            declarationRecord._addFixedDeclaration(fixedGetCheckpoint);
+        }
         
         // Set checkpoint method.
-        MethodDeclaration setCheckpoint = 
-            _createSetCheckpointMethod(ast, root, state, 
-                    isAnonymous, isInterface);
-        if (setCheckpoint != null)
-            newMethods.add(setCheckpoint);
+        MethodDeclaration setCheckpoint = null;
+        if (!ignore) {
+            setCheckpoint = 
+                _createSetCheckpointMethod(ast, root, state, 
+                        isAnonymous, isInterface);
+            if (setCheckpoint != null)
+                newMethods.add(setCheckpoint);
+        }
+        if (declarationRecord != null) {
+            if (!ignore)
+                declarationRecord._addExtendedDeclaration(setCheckpoint);
+            
+            MethodDeclaration fixedSetCheckpoint =
+                _createSetCheckpointMethod(ast, root, state, 
+                        false, isInterface);
+            declarationRecord._addFixedDeclaration(fixedSetCheckpoint);
+        }
         
         // Add an interface.
-        if (isAnonymous) 
-            bodyDeclarations.add(_createProxyClass(ast, root, state));
-        else {
-            // Set the class to implement Rollbackable.
-            if (node instanceof TypeDeclaration) {
-                String rollbackType = 
-                    getClassName(Rollbackable.class, state, root);
-                ((TypeDeclaration)node).superInterfaces().add(
-                        createName(ast, rollbackType));
-            }
-            
-            if (!isInterface) {
-                // Create a checkpoint field.
-                FieldDeclaration checkpointField = 
-                    _createCheckpointField(ast, root, state);
-                if (checkpointField != null)
-                    bodyDeclarations.add(0, checkpointField);
+        if (!ignore) {
+            if (isAnonymous) {
+                TypeDeclaration proxy = _createProxyClass(ast, root, state);
+                bodyDeclarations.add(proxy);
+                if (declarationRecord != null)
+                    declarationRecord._addExtendedDeclaration(proxy);
+            } else {
+                // Set the class to implement Rollbackable.
+                if (node instanceof TypeDeclaration) {
+                    String rollbackType = 
+                        getClassName(Rollbackable.class, state, root);
+                    ((TypeDeclaration)node).superInterfaces().add(
+                            createName(ast, rollbackType));
+                }
                 
-                // Create a record for the checkpoint field.
-                FieldDeclaration record = 
-                    _createCheckpointRecord(ast, root, state);
-                if (record != null)
-                    newFields.add(0, record);
+                if (!isInterface) {
+                    // Create a checkpoint field.
+                    FieldDeclaration checkpointField = 
+                        _createCheckpointField(ast, root, state);
+                    if (checkpointField != null)
+                        bodyDeclarations.add(0, checkpointField);
+                    
+                    // Create a record for the checkpoint field.
+                    FieldDeclaration record = 
+                        _createCheckpointRecord(ast, root, state);
+                    if (record != null)
+                        newFields.add(0, record);
+                }
             }
         }
         
         // Add all the methods and then all the fields.
-        bodyDeclarations.addAll(newMethods);
-        bodyDeclarations.addAll(newFields);
+        if (!ignore) {
+            bodyDeclarations.addAll(newMethods);
+            bodyDeclarations.addAll(newFields);
+        } else {
+            if (declarationRecord != null) {
+                declarationRecord._addFixedDeclarations(newMethods);
+                declarationRecord._addFixedDeclarations(newFields);
+            }
+        }
         
-        if (isAnonymous) {
+        if (isAnonymous && !ignore) {
             // Create a simple initializer.
             Initializer initializer = ast.newInitializer();
             Block body = ast.newBlock();
@@ -1978,6 +2063,8 @@ public class AssignmentTransformer extends AbstractTransformer
             addInvocation.arguments().add(proxy);
             body.statements().add(ast.newExpressionStatement(addInvocation));
             bodyDeclarations.add(initializer);
+            if (declarationRecord != null)
+                declarationRecord._addExtendedDeclaration(initializer);
         }
     }
     
@@ -2118,6 +2205,53 @@ public class AssignmentTransformer extends AbstractTransformer
     /** Whether the analyzer is currently analyzing a static method.
      */
     private Stack _isInStaticMethod = new Stack();
+    
+    /** Keys are names of classes; values are lists of {@link
+     *  RehandleDeclarationRecord} objects. If the classes are cross-analyzed,
+     *  declarations of anonymous classes recorded in this table must be fixed.
+     */
+    private Hashtable _rehandleDeclaration = new Hashtable();
+    
+    private class RehandleDeclarationRecord {
+        
+        RehandleDeclarationRecord(List bodyDeclarations) {
+            _bodyDeclarations = bodyDeclarations;
+        }
+        
+        void _addExtendedDeclaration(ASTNode node) {
+            _extendedDeclarations.add(node);
+        }
+        
+        void _addExtendedDeclarations(List nodes) {
+            _extendedDeclarations.addAll(nodes);
+        }
+        
+        void _addFixedDeclaration(ASTNode node) {
+            _fixedDeclarations.add(node);
+        }
+        
+        void _addFixedDeclarations(List nodes) {
+            _fixedDeclarations.addAll(nodes);
+        }
+        
+        List _getExtendedDeclarations() {
+            return _extendedDeclarations;
+        }
+        
+        List _getFixedDeclarations() {
+            return _fixedDeclarations;
+        }
+        
+        List _getBodyDeclarations() {
+            return _bodyDeclarations;
+        }
+        
+        private List _bodyDeclarations;
+        
+        private List _extendedDeclarations = new LinkedList();
+        
+        private List _fixedDeclarations = new LinkedList();
+    }
     
     static {
         _assignOperators.put("boolean", new String[]{
