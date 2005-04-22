@@ -86,22 +86,27 @@ public class FileUtilities {
         // If sourceURL is of the form file:./foo, then we need to try again.
         File sourceFile = new File(sourceURL.getFile());
 
-        File canonicalFile = null;
-        try {
-            canonicalFile = sourceFile.getCanonicalFile();
-        } catch (IOException ex) {
-            // JNLP Jar urls sometimes throw an exception here.
-            // IOException constructor does not take a cause
-            IOException ioException = new IOException(
-                            "Cannot find canonical file name of '"
-                            + sourceFile + "'");
-            ioException.initCause(ex);
-            throw ioException;
+        // If the sourceURL is not a jar URL, then check to see if we
+        // have the same file.
+        if (sourceFile.getPath().indexOf("!/") != -1) {
+            File canonicalFile = null;
+            try {
+                canonicalFile = sourceFile.getCanonicalFile();
+                if (sourceFile.getCanonicalFile().
+                        toURL().sameFile(destinationURL)) {
+                    return false;
+                }
+            } catch (IOException ex) {
+                // JNLP Jar urls sometimes throw an exception here.
+                // IOException constructor does not take a cause
+                IOException ioException = new IOException(
+                        "Cannot find canonical file name of '"
+                        + sourceFile + "'");
+                ioException.initCause(ex);
+                throw ioException;
+            }
         }
 
-        if (sourceFile.getCanonicalFile().toURL().sameFile(destinationURL)) {
-            return false;
-        }
 
         BufferedInputStream input = null;
         try {
