@@ -94,13 +94,19 @@ JSRCS = \
 
 
 OTHER_FILES_TO_BE_JARED = \
+	Box3D.gif \
 	Box3DIcon.xml \
+	CircularSweep3D.gif \
 	CircularSweep3DIcon.xml \
+	Cone3D.gif \
 	Cone3DIcon.xml \
+	Cylinder3D.gif \
 	Cylinder3DIcon.xml \
 	grentities.xml \
 	java3d-copyright.htm \
+	PolyCylinder3D.gif \
 	PolyCylinder3DIcon.xml \
+	Sphere3D.gif \
 	Sphere3DIcon.xml \
 	ThreeAxisRotator3D.xml \
 	ThreeAxisRotator3DIcon.xml
