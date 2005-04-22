@@ -121,6 +121,7 @@ OTHER_FILES_TO_BE_JARED = \
 	expressions9.gif \
 	expressionsa.gif \
 	Helen256x256.png  \
+	Helen.png  \
 	PtolemyII256x256.png \
 	ptIIplanet.gif \
 	ptIIplanetIcon.gif \
