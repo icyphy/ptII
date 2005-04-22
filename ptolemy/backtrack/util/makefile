@@ -31,7 +31,7 @@
 
 ME =		ptolemy/backtrack/util
 
-DIRS = 		java test
+DIRS = 		test
 
 # Root of the Java directory
 ROOT =		../../..
@@ -137,7 +137,7 @@ gcc-source:
 	  -classpath gcc/libjava \
 	  $$files
 
-transform:
+transform: gcc-source
 	@echo Transform GCC source files.
 	@rm -rf java
 	@for javafile in $(GCC_FILES); do \
@@ -151,6 +151,13 @@ transform:
 	  -output "$(ROOT)" \
 	  -classpath gcc/libjava \
 	  $$files
+	@ echo Add GCC license header to each source file.
+	@for javafile in $(GCC_FILES); do \
+	  mv $$javafile $$javafile.bak; \
+	  cat gcc-header > $$javafile; \
+	  cat $$javafile.bak >> $$javafile; \
+	  rm $$javafile.bak; \
+	done
 
 gcc-compile: $(GCC_CLASSES)
 
