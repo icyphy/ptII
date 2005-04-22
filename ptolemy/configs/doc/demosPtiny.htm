@@ -30,50 +30,157 @@ The reason that the xml files are upcased is so that if
 we do codegen, we get Foo.java instead of foo.java
 -->
 
-The following links open models that highlight the
+If you are viewing this from within Ptolemy II, then
+many of the following links will open models that highlight the
 key features of Ptolemy II. To run the models,
-follow the link, then select "Run Window" from the "View" menu. The
-diagrams are fully editable, so feel free to explore. The top-level
-parameters are the model are shown in the run window. Edit these to
-explore the models. They can be edited while the models are running.
+click on the red triangle in the toolbar. The
+diagrams are fully editable, so feel free to explore.
 You can also access the <a href="completeDemosPtiny.htm">complete
 list of demos</a>
-<!-- whatNew.htm links to whatsNew4.0.htm, which has lots of features
+<!-- whatNew.htm links to whatsNew4.0.htm, which has many of features
      not present in ptiny -->
 <!--vergilDocs-->
-.
-
+. Contents:
 <ul>
-<li><a href="../../domains/sdf/demo/Spectrum/Spectrum.xml">
-Simple Signal Processing</a> (See also
-<a href="../../domains/sdf/demo/MaximumEntropySpectrum/MaximumEntropySpectrum.xml">Maximum Entropy Spectrum</a>,
-<a href="../../domains/sdf/demo/FourierSeries/FourierSeries.xml">Fourier Series</a>, and
-<a href="../../domains/sdf/demo/SoundSpectrum/SoundSpectrum.xml">Sound Spectrum</a>)
-<br> This example shows simple spectral estimation of the product
-of two sinusoids in noise.  It illustrates models for signal
-processing, hierarchical models,
-the Expression actor, and the FFT actor.
-This model is build using the <i>synchronous dataflow</i> (SDF) domain,
-which statically schedules the firing of the actors.
-</li>
+<li> <a href="#domain">Domain-Specific Modeling</a>: Domain-specific modeling and design.
+<li> <a href="#heterogeneous">Heterogeneous Modeling</a>: Mixing models of computation.
+<li> <a href="#basic">Basic Modeling Capabilities</a>: Commonly used models of computation.
+<li> <a href="#infrastructure">Modeling Infrastructure</a>: Capabilities shared by all uses of Ptolemy II.
+<li> <a href="#libraries">Actor Libraries</a>: Useful libraries of actors.
+<li> <a href="#experimental">Experimental</a>: Demonstrations of less mature capabilities.
+</ul>
+
+<h2>
+<a name="domain">Domain-Specific Modeling</a>
+</h2>
+Ptolemy II can be used to build sophisticated domain-specific modeling capabilities
+and domain-specific frameworks. These frameworks can be packaged as separate executable
+applications (e.g. HyVisual or VisualSense)
+or accessed from within Ptolemy II. Here, we illustrate some such frameworks.
+<ul>
 
 <!--vergilDocs-->
 
-<li><a href="../../domains/ct/demo/Lorenz/Lorenz.xml">
-Continuous-Time Modeling</a> (see also
-<a href="../../domains/ct/demo/SquareWave/SquareWave.xml">Square Wave Response</a>)
+<li>
+<i>Modeling of hybrid systems</i>: <a href="../../domains/gr/demo/StickyMasses/StickyMasses.xml">
+StickyMasses</a> 
+(see also
+<!-- GR does not get included in demosPtiny.htm -->
+<!--vergilDocs-->
+the <a href="../../configs/hyvisual/intro.htm">HyVisual introduction</a>).
+<br> <i>Hybrid systems</i> are a special case of modal models
+where finite-state machines (FSMs) are combined with the continuous-time (CT) models
+to get mixed continuous-time and discrete-event models.
+The <a href="../hyvisual/intro.htm">HyVisual</a> package
+is a subset of Ptolemy II that includes the FSM and CT domains and libraries
+that support the design of hybrid systems.
+The <a href="../../domains/gr/demo/StickyMasses/StickyMasses.xml">StickyMasses</a>
+example models a physical system consisting of two point masses
+on springs that stick together when they collide.
+
+
+<br>
+
+<li><i>Signal Processing</i>:
+<a href="../../domains/sdf/demo/MaximumEntropySpectrum/MaximumEntropySpectrum.xml">MaximumEntropySpectrum</a>
+(See also
+<a href="../../domains/sdf/demo/LMSAdaptive/LMSAdaptive.xml">LMSAdaptive</a>,
+<a href="../../domains/sdf/demo/SynthesizedVoice/SynthesizedVoice.xml">SynthesizedVoice</a>,
+<a href="../../domains/sdf/demo/FourierSeries/FourierSeries.xml">FourierSeries</a>, and
+<a href="../../domains/sdf/demo/SoundSpectrum/SoundSpectrum.xml">SoundSpectrum</a>)
+<br>
+Ptolemy II includes an extensive library and models of computation suitable for
+digital signal processing, communication systems design, and image and video processing.
+The<a href="../../domains/sdf/demo/MaximumEntropySpectrum/MaximumEntropySpectrum.xml">MaximumEntropySpectrum</a>
+example shows spectral estimation of sinusoids in noise.
+It illustrates models the use of synchronous dataflow (SDF) for signal
+processing, and also shows many basic capabilities like
+hierarchical models,
+the Expression actor, and the signal processing actor library.
+
+
+</ul>
+<h2>
+<a name="heterogeneous">Heterogeneous Models</a>
+</h2>
+A particular capability of Ptolemy II is the ability to mix models of computation.
+These examples illustrate some of these capabilities.
+<ul>
+
+<li><i>Modal Models</i>:
+<a href="../../domains/de/demo/ModalModel/ModalModel.xml">
+ModalModel</a>
+<br>
+A modal model is one whose behavior depends on its "mode"
+of operation. A modal model in Ptolemy II heterogeneously combines the
+<i>finite state machine</i> (FSM) domain
+combined hierarchically with other models. A state in the FSM represents
+a mode of operation, and can have a refinement that gives the behavior
+in that mode.
+The refinement can be another FSM or some other model using some other
+Ptolemy domain. The <a href="../../domains/de/demo/ModalModel/ModalModel.xml">
+ModalModel</a> example combines DE, FSM, and SDF to model a
+system where regularly sampled signals are perturbed by irregular
+events in time.
+
+
+<br>
+
+<li><i>Mixed-Signal Modeling</i>:
+<a href="../../domains/ct/demo/SigmaDelta/SigmaDelta.xml">
+SigmaDelta</a> (see also
+<a href="../../domains/ct/demo/Switch/Switch.xml">Switching Continuous</a>)
+<br>
+This example shows how to combine continuous-time modeling
+with discrete-event modeling to get mixed-signal modeling.
+The example models a MEMS accelerometer where a digital circuit
+implements feedback control and A/D conversion (a design due to
+Mark Lemkin).
+
+</ul>
+<h2>
+<a name="basic">Basic Modeling Capabilities</a>
+</h2>
+Many common models of computation have been implemented in
+Ptolemy II.  This section illustrates some of them.
+<ul>
+
+<li><i>Synchronous Dataflow</i>:
+<a href="../../domains/sdf/demo/Spectrum/Spectrum.xml">
+Spectrum</a> (See also
+<a href="../../domains/sdf/demo/MaximumEntropySpectrum/MaximumEntropySpectrum.xml">MaximumEntropySpectrum</a>,
+<a href="../../domains/sdf/demo/FourierSeries/FourierSeries.xml">FourierSeries</a>, and
+<a href="../../domains/sdf/demo/SoundSpectrum/SoundSpectrum.xml">SoundSpectrum</a>)
+<br> This example shows simple spectral estimation of the product
+of two sinusoids in noise.  It illustrates models the use of synchronous dataflow (SDF) for signal
+processing, and also shows many basic capabilities like
+hierarchical models,
+the Expression actor, and the signal processing actor library.
+In SDF, the firing of actors is statically scheduled, and at the start of execution,
+boundedness and deadlock conditions are checked.
+
+
+<br>
+
+<li><i>Continuous-Time Modeling</i>:
+<a href="../../domains/ct/demo/Lorenz/Lorenz.xml">
+Lorenz</a> (see also
+<a href="../../domains/ct/demo/SquareWave/SquareWave.xml">SquareWave</a>)
 <br> This example shows a continuous-time
 nonlinear feedback system that exhibits
 chaotic behavior (this system is called a Lorenz attractor).
 It illustrates the <i>continuous-time</i> (CT) domain,
 which uses an underlying solver for ordinary differential equations.
-</li>
 
-<li><a href="../../domains/de/demo/Inspection/Inspection.xml">
-Discrete-Event Modeling</a> (see also
+
+<br>
+
+<li><i>Discrete-Event Modeling</i>:
+<a href="../../domains/de/demo/Inspection/Inspection.xml">
+Inspection</a> (see also
 <a href="../../data/type/demo/Router/Router.xml">Router</a>
 and <a href="../../domains/de/demo/TimingParadox/TimingParadox.xml">
-Timing Paradox</a>).
+TimingParadox</a>).
 <br> This example shows
 a famous paradox in probability called the inspection paradox.
 It illustrates use of the <i>discrete-event</i> (DE) domain, where
@@ -81,80 +188,64 @@ events occur on a time line and are processed chronologically.
 In this example, random
 data stimulates a model and statistics are collected and reported
 in various ways.
-</li>
 
-<li> <a href="../../domains/ct/demo/SigmaDelta/SigmaDelta.xml">
-Mixed-Signal Modeling</a> (see also
-<a href="../../domains/ct/demo/Switch/Switch.xml">Switching Continuous</a>)
-<br> This example shows how to combine continuous-time modeling
-with discrete-event modeling to get mixed-signal modeling.
-The example models a MEMS accelerometer where a digital circuit
-implements feedback control and A/D conversion (a design due to
-Mark Lemkin).
 
-<li> <a href="../../domains/de/demo/ModalModel/ModalModel.xml">
-Modal Models</a>
-<br>A modal model is one whose behavior depends on its "mode"
-of operation. A modal model in Ptolemy II uses the
-<i>finite state machine</i> (FSM) domain
-combined hierarchically with other models. A state in the FSM represents
-a mode of operation, and can have a refinement that gives the behavior
-in that mode.
-The refinement can be another FSM or some other model using some other
-Ptolemy domain. This example combines DE, FSM, and SDF to model a
-system where regularly sampled signals are perturbed by irregular
-events in time.
-</li>
+<br>
 
-<li><a href="../../domains/ct/demo/StickyMasses/StickyMasses.xml">
-Hybrid Systems</a> 
-(see also
-<!-- GR does not get included in demosPtiny.htm -->
+<li><i>Process Networks</i>:
+<a href="../../domains/pn/demo/OrderedMerge/OrderedMerge.xml">
+OrderedMerge</a> (see also
+<a href="../../domains/pn/demo/NondeterministicMerge/NondeterministicMerge.xml">NondeterministicMerge</a>,
+<a href="../../domains/pn/demo/QR/QR.xml">QR</a>).
+<br>
+The process networks (PN) domain follows the semantics given by Kahn and MacQueen in 1977
+to get processes with their own threads of control that send messages to one another
+and achieve deterministic computation.
+The <a href="../../domains/pn/demo/OrderedMerge/OrderedMerge.xml">
+OrderedMerge</a> example implements an example given by Kahn and MacQueen
+that calculates numbers whose prime
+factors are 2, 3, and 5, only, and produces
+them in an ordered sequence.
+As of version 5.0, we have extended this model of computation with a
+nondeterministic merge actor, illustrated in
+<a href="../../domains/pn/demo/NondeterministicMerge/NondeterministicMerge.xml">NondeterministicMerge</a>.
+
+
+<br>
+
 <!--vergilDocs-->
-<a href="../../domains/ct/demo/Transmission/Transmission.xml">Transmission</a>,
-<!--Ptiny does not include the GR domain-->
-<!--vergilDocs-->
-and
-<a href="../../domains/ct/demo/CarTracking/CarTracking.xml">Car Tracking</a>).
-<br> <i>Hybrid systems</i> are a special case of modal models
-where the FSM domain is combined with the CT domain
-to get mixed continuous-time and discrete-event models.
-This example models a physical system consisting of two point masses
-on springs that stick together when they collide.
-</li>
 
-<li> <a href="../../domains/ct/demo/Hysteresis/HysteresisWithRandomDelay.xml">
-Stochastic Hybrid System</a>.
-<br>This example illustrates how to model random delays associated with
-state transitions of a hybrid systems.
-
+</ul>
+<h2>
+<a name="infrastructure">Modeling Infrastructure</a>
+</h2>
+Ptolemy II models are built on an underlying framework that provides a rich
+set of generic capabilities that are available in all models.
+This section illustrates that infrastructure.
+<ul>
 
 <li>
+<i>Classes, subclasses, and inner classes</i>:
 <a href="ClassesIllustrated.xml">
-Classes, subclasses, and inner classes</a> (see also
+ClassesIllustrated</a> (see also
 <a href="../../domains/sdf/demo/NoisySinewave/NoisySinewave.xml">
 Noisy sinewaves</a> and
 <a href="../../domains/sdf/demo/RijndaelEncryption/RijndaelEncryption.xml">
 Rijndael Encryption</a>).
 <br>
-Version 4.0 introduces actor-oriented classes, subclasses, and
-inner classes with inheritance. This is a major improvement in
-the modularity mechanisms available in actor-oriented design. 
+Actor-oriented classes, subclasses, and
+inner classes with inheritance are a special feature of Ptolemy II.
+They provide modularity mechanisms analogous to those of object-oriented
+design, but adapted to actor-oriented design. This capability permits, for
+example, defining a class of models that can have instances and subclasses.
+The instances and subclasses inherit all the features of the class, and
+track any changes that are made to the class.
 
-<li><a href="../../domains/pn/demo/OrderedMerge/OrderedMerge.xml">
-Process Networks</a> (see also
-<a href="../../domains/pn/demo/QR/QR.xml">QR</a>).<br>
-This example illustrates the <i>process networks</i> (PN) domain,
-where each actor executes in a separate Ptolemy II thread.
-The example calculates numbers whose prime
-factors are 2, 3, and 5, only, and produces
-them in an ordered sequence.
-</li>
+<br>
 
-<!--vergilDocs-->
-
-<li><a href="../../data/type/demo/Router/Router.xml">
-The Type System</a>.
+<li><i>The Type System</i>:
+<a href="../../data/type/demo/Router/Router.xml">
+Router</a>.
 <br>
 This model illustrates the very sophisticated type system
 of Ptolemy II, where type constraints propagate transparently,
@@ -164,10 +255,12 @@ This example illustrates composite types, where records are
 constructed out of tokens with various types. Here, a record
 models a packet in a packet-switched network, where variable
 delays may result in out-of-order arrival of packets.
-</li>
 
-<li><a href="../../domains/ct/demo/Transmission/Transmission.xml">
-Higher-order expressions</a>.
+<br>
+
+<li><i>Expression Language</i>:
+<a href="../../domains/ct/demo/Transmission/Transmission.xml">
+Transmission</a>.
 <br>
 To simplify creating new components, Ptolemy II contains a functional
 expression language.  The expression language is integrated with the
@@ -175,39 +268,70 @@ type system, allowing static type checking of polymorphic expressions
 with few type annotations.  The expression language also allows new,
 encapsulated functions, called function closures, to be defined and
 passed as data.  This model illustrates how function closures can be
-used to make model much more compact. </li>
+used to make models much more compact. 
 
-<li><a href="../../domains/sdf/demo/Sketch/Sketch.xml">Sketched Signal</a>
-(see also <a href="../../domains/sdf/demo/FourierSeries/FourierSeries.xml">Fourier Series</a>).
+<br>
+
+<li><i>Higher-Order Components</i>:
+<a href="../../actor/lib/hoc/demo/HocDE/HocDE.xml">HocDE</a>
+(see also
+<a href="../../actor/lib/hoc/demo/MobileFunction/MobileFunction.xml">MobileFunction</a>,
+<a href="../../domains/sdf/demo/MultipleRuns/MultipleRuns.xml">MultipleRuns</a>,
+<a href="../../actor/lib/hoc/demo/IterateOverArray/IterateOverArray.xml">IterateOverArray</a>,
+<a href="../../actor/lib/hoc/demo/DFTSubset/DFTSubset.xml">DFTSubset</a>,
+<a href="../../actor/lib/hoc/demo/ApplyFFT/ApplyFFT.xml">ApplyFFT</a>
+).
+<br>Higher-order components are components that operate on components.
+The <a href="../../actor/lib/hoc/demo/HocDE/HocDE.xml">HocDE</a>
+example contains a component that is a composite actor that
+replicates itself some specified number of times to operate on
+multiple channels of input.  This capability was created by
+Zoltan Kemenczy and Sean Simmons, Research In Motion, Ltd.
+
+<br>
+
+<li><i>Interactive Signal Plotter</i>:
+<a href="../../domains/sdf/demo/Sketch/Sketch.xml">Sketch</a>
+(see also <a href="../../domains/sdf/demo/FourierSeries/FourierSeries.xml">FourierSeries</a>).
 <br>
 This model illustrates the use of plotter to provide input
 as well as rendering output from a model.  Right click and drag
 on the plot to trace out a new signal. The model runs each time you
 do this.
 
-<li><a href="../../matlab/demo/MatlabExpression/MatlabExpression.xml">
-Matlab Integration</a> (see also
+<br>
+
+<li><i>Matlab Integration</i>:
+<a href="../../matlab/demo/MatlabExpression/MatlabExpression.xml">
+MatlabExpression</a> (see also
 <a href="../../matlab/demo/MatlabCT/MatlabCT.xml">Matlab in CT</a>).
 <br>
 This example uses the Matlab interface created by
 Zoltan Kemenczy and Sean Simmons, of Research in Motion Ltd.,
 to plot a 3-D surface. This works only if Matlab is installed locally.
 
-<li><a href="../../actor/parameters/demo/SliderParameter/SliderParameter.xml">Interactive
-User Interface</a>  (see also
-<a href="../../actor/parameters/demo/Bouncer/Bouncer.xml">Bouncer</a>).
 <br>
-This model illustrates features of the user interface that
-make it easier to create models that execute with rich interaction
-with the user.  In this example, sliders in the run control parameter
-control the values of "port parameters," which in turn control the
-execution of a model.
 
-<li>
+<li><i>Model Animations</i>:
+<a href="../../actor/parameters/demo/Bouncer/Bouncer.xml">Bouncer</a>
+(see also 
+<a href="../../domains/sdf/demo/AnimateVergil/AnimateVergil">
+AnimateVergil</a>
+<!--vergilDocs-->
+).
+<br>
+Ptolemy II models can, while executing, control their visual rendition
+in Vergil, the visual editor for Ptolemy II.
+In this example, a model alters the position in the Vergil diagram
+of one of its own actors.
+
+<br>
+
+<li><i>Statically Checked Units System</i>:
 <a href="../../data/unit/demo/StaticUnits/StaticUnits.xml">
-Statically Checked Units System</a> (see also
-<a href="../../data/unit/demo/Units/Units.xml">
-Dynamically Checked Units System</a>).
+StaticUnits</a> (see also
+<a href="../../data/unit/demo/Units/Units.xml">Units</a>, the
+dynamically checked units system).
 <br>
 This model illustrates the use of the statically
 checked units system. A unit system
@@ -215,10 +339,13 @@ defines a set of interrelated dimensions and measures. For example, in
 the time dimension, we might have seconds, minutes, hours, days, weeks,
 and fortnights. Ptolemy II includes two experimental units systems,
 one that is statically checked and one that is dynamically checked.
-</li>
 
-<li><a href="../../moml/demo/Networked/Networked.xml">
-Network Integration</a>.<br>
+
+<br>
+
+<li><i>Network Integration</i>:
+<a href="../../moml/demo/Networked/Networked.xml">
+Networked</a>.<br>
 This example illustrates that models may be defined in a networked,
 distributed fashion.
 This model contains a component that is defined on the Ptolemy project
@@ -230,45 +357,84 @@ defined component.  The component itself is at
 http://ptolemy.eecs.berkeley.edu/xml/models/Waveform.xml</a>.
 You can open that definition by clicking on the hyperlink, or by
 using the "Open URL" command in the File menu.
-</li>
 
-<li><a href="../../actor/lib/javasound/demo/KarplusStrong/KarplusStrong.xml">
-Audio</a> (see also <a href="../../domains/sdf/demo/SoundSpectrum/SoundSpectrum.xml">SoundSpectrum</a>).
+
 <br>
+
+<li><i>Audio</i>:
+<a href="../../actor/lib/javasound/demo/KarplusStrong/KarplusStrong.xml">
+KarplusStrong</a> (see also <a href="../../domains/sdf/demo/SoundSpectrum/SoundSpectrum.xml">SoundSpectrum</a>).
+<br>
+Ptolemy II includes actors that interface to the audio system on
+the executing machine, assuming it has one.
 This example shows the Karplus-Strong algorithm, which synthesizes
 a musical sound that closely resembles a plucked string instrument.
 It illustrates the audio capabilities of Ptolemy II.
-</li>
+
+
+<!--vergilDocs-->
+
+<br>
+<li><i>Fixed-Point Arithmetic</i>:
+<a href="../../domains/sdf/demo/FixFIR/FixFIR.xml">FixFIR</a>
+(see also
+<a href="../../domains/sdf/demo/FixPoint/FixPoint.xml">FixPoint</a>)
+<br>
+Ptolemy II data types include a fixed-point data type, where
+a model can explicitly control the binary representation of numbers
+and the mechanisms used to handle overflow and rounding.
 
 </ul>
 
+<h2>
+<a name="libraries">Actor Libraries</a>
+</h2>
+Ptolemy II includes several actor libraries that provide sophisticated
+functions. A few of those are illustrated by the models here.
+<ul>
+
+<li><a href="../../domains/sdf/demo/Array/Array.xml">Array</a>:
+Actors that operate on matrices and arrays.
+<li> <a href="../../actor/lib/colt/demo/ColtRandom/ColtRandom.xml">ColtRandom</a>:
+Random number generators (based on Colt).
 <!--vergilDocs-->
-<h1>Experimental Facilities</h1>
+<li> <a href="../../actor/lib/comm/demo/TrellisDecoder/TrellisDecoder.xml">TrellisDecoder</a>:
+Communication library.
+
+</ul>
+
+<h2>
+<a name="experimental">Experimental Capabililties</a>
+</h2>
 <p>
 Ptolemy II has a number of less well-developed experimental
 capabilities that may continue to evolve over time.
 These are illustrated in the following examples.
 
 <ul>
-<li><a href="../../actor/lib/hoc/demo/HocDE/HocDE.xml">Higher-Order Components</a>.
-<br>Higher-order components are components that operate on components.
-This example contains a component that is a composite actor that
-replicates itself some specified number of times to operate on
-multiple channels of input.  This capability was created by
-Zoltan Kemenczy and Sean Simmons, Research In Motion, Ltd.
+<!--vergilDocs-->
 
+<br>
 
 <!--vergilDocs-->
 
-<!--vergilDocs-->
+<br>
 
 <!--vergilDocs-->
 
-<!--vergilDocs-->
+<br>
 
 <!--vergilDocs-->
 
+<br>
+
 <!--vergilDocs-->
+
+<br>
+
+<!--vergilDocs-->
+
+<br>
 
 <!--vergilDocs-->
 </ul>
