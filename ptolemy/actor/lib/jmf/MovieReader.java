@@ -53,7 +53,9 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
+
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -120,16 +122,25 @@ public class MovieReader extends Source implements ControllerListener {
                 try {
                     _dataSource = Manager.createDataSource(url);
                 } catch (Exception ex) {
+                    URL urlCopy = null;
                     try {
                         // Web Start: javax.media.Manager.createDataSource()
                         // does not deal with jar urls because it cannot
                         // find a data source, so we copy the jar file.
-                        url = new URL(JNLPUtilities.saveJarURLAsTempFile(
-                                              url.toString(), "JMFMovieReader", null, null));
+                        urlCopy = new URL(JNLPUtilities.saveJarURLAsTempFile(
+                                                  url.toString(),
+                                                  "JMFMovieReader",
+                                                  null, null));
                         _dataSource = Manager.createDataSource(url);
                     } catch (Exception ex2) {
                         // Ignore this exception, throw the original.
-                        throw new IllegalActionException(this, ex, "Invalid URL");
+                        throw new IllegalActionException(this, ex,
+                                "Invalid URL.\n(Tried copying the file '"
+                                + url.toString() + "', to '"
+                                + ((urlCopy == null) ? "null"
+                                        : urlCopy.toString())
+                                + "' but that failed with:\n"
+                                + KernelException.stackTraceToString(ex2));
                     }
                 }
             }
