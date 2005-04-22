@@ -51,13 +51,13 @@
         </property>
     </property>
     <entity name="JAIImageReader" class="ptolemy.actor.lib.jai.JAIImageReader">
-        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$PTII/doc/img/PtolemyII256x256.png">
+        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/doc/img/PtolemyII256x256.png">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 105.0]">
         </property>
     </entity>
     <entity name="JAIImageReader2" class="ptolemy.actor.lib.jai.JAIImageReader">
-        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$PTII/doc/img/Helen256x256.png">
+        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/doc/img/Helen256x256.png">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 170.0]">
         </property>
