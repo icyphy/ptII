@@ -65,7 +65,6 @@ SIGNED_LIB_JARS =	$(NATIVE_SIGNED_LIB_JARS) \
 			lib/jython.jar \
 			lib/matlab.jar \
 			lib/ptCal.jar \
-			lib/saxon7.jar \
 			lib/sootclasses.jar
 
 # Web Start can load jars either eagerly or lazily.
@@ -130,6 +129,7 @@ DSP_JNLP_JARS =	\
 HYBRID_SYSTEMS_ONLY_JNLP_JARS = \
 	doc/design/hyvisual.jar \
 	doc/codeDocHyVisual.jar \
+	lib/saxon7.jar \
 	ptolemy/domains/ct/ct.jar \
 	ptolemy/domains/de/de.jar \
 	ptolemy/domains/fsm/fsm.jar \
