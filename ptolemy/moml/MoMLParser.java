@@ -77,6 +77,8 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Singleton;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.util.CancelException;
+import ptolemy.util.ClassUtilities;
+
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 
@@ -1177,7 +1179,22 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 }
             }
 
-            NamedObj result = parse(base, input.openStream());
+            InputStream inputStream = null;
+            try {
+                inputStream = input.openStream();
+            } catch (Exception ex) {
+                // Try opening it up as a Jar URL.
+                // vergilPtiny.jnlp needs this.
+                URL jarURL = ClassUtilities.jarURLEntryResource(
+                        input.toExternalForm());
+                if (jarURL != null) { 
+                    inputStream = jarURL.openStream();
+                } else {
+                    throw ex;
+                }
+                
+            }
+            NamedObj result = parse(base, inputStream);
             _imports.put(input, new WeakReference(result));
             return result;
         } finally {
