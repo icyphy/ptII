@@ -2,9 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="FireAtDE" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[653, 429]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[549, 503]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[-9, 236]">
     </property>
@@ -26,11 +26,11 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 45.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={78, 111, 868, 547}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, -1, 764, 621}, maximized=false}">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{326.5, 214.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{274.5, 251.5}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This demo shows how a Giotto model works inside a DE model.&#10;The trigger events from DE model simply update the inputs &#10;for the computation specified inside the Giotto model. However,&#10;whether the inputs are consumed by the Giotto model is defined by&#10;the its period.&#10;The Giotto model starts at the same time the whole starts,&#10;and keeps running until its iteration counts are met or the top &#10;level (the DE model) stop time is met.">
@@ -41,11 +41,11 @@
     <property name="ModelID" class="ptolemy.vergil.kernel.attributes.IDAttribute">
         <property name="created" class="ptolemy.kernel.util.StringAttribute" value="Sep 16, 2004 12:15:31 PM">
         </property>
-        <property name="lastUpdated" class="ptolemy.kernel.util.StringAttribute" value="Sep 16, 2004 12:43:49 PM">
+        <property name="lastUpdated" class="ptolemy.kernel.util.StringAttribute" value="Apr 22, 2005 2:34:18 PM">
         </property>
         <property name="author" class="ptolemy.kernel.util.StringAttribute" value="hyzheng">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 440.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 440.0]">
         </property>
     </property>
     <entity name="giotto" class="ptolemy.actor.TypedCompositeActor">
@@ -139,6 +139,10 @@
         <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
             <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="internal state, seen inputs">
             </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={516, 47, 508, 355}, maximized=false}">
+            </property>
+            <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 170.0]">
             </property>
             <configure>
@@ -176,6 +180,12 @@
         </property>
         <property name="value" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
+        <property name="SingleEventIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={292, 266, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 345.0]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
@@ -193,6 +203,12 @@
         </property>
         <property name="value" class="ptolemy.data.expr.Parameter" value="3.0">
         </property>
+        <property name="SingleEventIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={292, 266, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 270.0]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
@@ -203,6 +219,10 @@
     </entity>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="time from Giotto model, trigger events">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={517, 409, 508, 355}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 295.0]">
         </property>
