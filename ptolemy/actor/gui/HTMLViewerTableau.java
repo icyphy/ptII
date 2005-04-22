@@ -212,10 +212,24 @@ public class HTMLViewerTableau extends Tableau {
                     }
 
                     // Try to set the title bar?
-                    effigy.uri.setURI(new URI(anotherURL.toString()));
-                    tableau.setTitle(anotherURL.toString());
-
+                    try {
+                        effigy.uri.setURI(new URI(anotherURL.toString()));
+                        tableau.setTitle(anotherURL.toString());
+                    } catch (Exception ex) {
+                        try {
+                            // URI's can't deal with spaces, so we
+                            // convert to %20
+                            URL canonicalizedURL =
+                                JNLPUtilities.canonicalizeJarURL(anotherURL);
+                            effigy.uri.setURI(
+                                    new URI(canonicalizedURL.toString()));
+                            tableau.setTitle(canonicalizedURL.toString());
+                        } catch (Exception ex2) {
+                            throw ex;
+                        }
+                    }
                     ((HTMLViewer) tableau.getFrame()).setPage(anotherURL);
+
                 }
 
                 // Don't call show() here.  If show() is called here,
