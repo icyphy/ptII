@@ -226,7 +226,7 @@ WIRELESS_JARS = \
 FULL_ONLY_JNLP_JARS = \
 	$(COPERNICUS_JARS) \
 	doc/design/design.jar \
-	doc/img.jar \
+	doc/img/img.jar \
 	$(PTJACL_JARS) \
 	lib/ptcolt.jar \
 	ptolemy/actor/lib/colt/colt.jar \
