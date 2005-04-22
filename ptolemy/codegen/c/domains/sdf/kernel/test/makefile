@@ -1,6 +1,6 @@
-# Makefile for Ptolemy II Dataflow CGC actors imported from Ptolemy Classic
+# Makefile for the Java classes used to test CGC actors
 #
-# @Authors: Christopher Brooks (makefile only)
+# @Authors: Christopher Brooks
 #
 # @Version: $Id$
 #
@@ -26,66 +26,69 @@
 # CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 # ENHANCEMENTS, OR MODIFICATIONS.
 #
-#                                               PT_COPYRIGHT_VERSION_2
-#                                               COPYRIGHTENDKEY
+# 						PT_COPYRIGHT_VERSION_2
+# 						COPYRIGHTENDKEY
 
-ME =            ptolemy/codegen/dsp/lib
+# Location of this directory, relative to the Ptolemy II directory
+ME =		ptolemy/codegen/c/domains/sdf/kernel/test
 
-# Rule for index.xml uses this
-TITLE = 	"Dataflow CGC dsp Actors"
-
-DIRS =		demo test    	
-
-# Root of the Java directory
-ROOT =          ../../../..
+# Root of the Ptolemy II directory
+ROOT =		../../../../../../..
 
 CLASSPATH =	$(ROOT)
 
 # Get configuration info
-CONFIG =        $(ROOT)/mk/ptII.mk
+CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-# Used to build jar files
-PTPACKAGE =     lib
-PTCLASSJAR = 	$(PTPACKAGE).jar
+# Tcl sources that are part of the testing infrastructure
+TCL_SRCS = \
+	testDefs.tcl
 
-# Keep this list alphabetized.
-JSRCS =        CGCBiquad.java \
-CGCDTMFPostTest.java \
-CGCDirichlet.java \
-CGCFFTCx.java \
-CGCFIR.java \
-CGCFIRFix.java \
-CGCFastFIR.java \
-CGCGAL.java \
-CGCGGAL.java \
-CGCGoertzel.java \
-CGCGoertzelBase.java \
-CGCGoertzelPower.java \
-CGCIIR.java \
-CGCLMS.java \
-CGCLMSOscDet.java \
-CGCParametricEq.java \
-CGCRaisedCosine.java \
-CGCSinc.java \
-CGCWindow.java \
+JSRCS =
 
-OTHER_FILES_TO_BE_JARED = 	lib.xml
+# Non-graphical Java tests written in Tcl
+JSIMPLE_TESTS = \
+	SDFDirector.tcl
 
-EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+# Graphical Java tests that use Tcl.
+# If there are no tests, we use a dummy file so that the script that builds
+# alljtests.tcl works.  If you add a test, be sure to add
+# $(JGRAPHICAL_TESTS) to EXTRA_SRCS
+JGRAPHICAL_TESTS = \
+	dummy.tcl
 
-JCLASS = $(JSRCS:%.java=%.class)
+EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) \
+	#$(JGRAPHICAL_TESTS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-# Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =	test
+MISC_FILES =	alljtests.tcl
+
+#       auto
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES =         index.xml 	demo 
-all: jclass index.xml
-install: jclass jars
+OPTIONAL_FILES =
+
+JCLASS =	$(JSRCS:%.java=%.class)
+
+# Don't include all or install rules here, we want the user
+# to run 'make tests' to run the tests.
+
+tests:: $(EXTRA_SRCS) jclass test_java test_jsimple
+
+test_java: jclass
+
+# PtolemyII-wide test definitions.
+KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
+
+# These tests do not require a graphics terminal, but do use Jacl and Java
+test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl #test_auto
+	$(JTCLSH) alljtests.tcl
+
+# 'make clean' removes $(KRUFT)
+KRUFT = 
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
