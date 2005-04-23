@@ -2,10 +2,10 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="test2" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
     </property>
     <property name="SDF10" class="ptolemy.domains.sdf.kernel.SDFDirector">
-        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+        <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="3">
         </property>
@@ -13,10 +13,18 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="77.0, 44.0">
         </property>
+        <property name="copernicus_iterations" class="ptolemy.data.expr.Parameter" value="300">
+        </property>
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 450]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 102]">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 100, 815, 568}, maximized=false}">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 225.0}">
     </property>
     <entity name="ImageSequence0" class="ptolemy.domains.sdf.lib.vq.ImageSequence">
         <property name="imageURLTemplate" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy/domains/sdf/lib/vq/data/seq/missa/missa***.qcf&quot;">
@@ -31,13 +39,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="58.0, 124.0">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
     <entity name="ImagePartition3" class="ptolemy.domains.sdf.lib.vq.ImagePartition">
         <property name="imageColumns" class="ptolemy.data.expr.Parameter" value="176">
@@ -50,9 +51,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="158.0, 124.0">
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="3168">
@@ -74,9 +72,6 @@
             <property name="input"/>
             <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="3168">
             </property>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
         </port>
     </entity>
     <entity name="HTVQEncode1" class="ptolemy.domains.sdf.lib.vq.HTVQEncode">
