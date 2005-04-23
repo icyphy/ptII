@@ -150,10 +150,6 @@ public abstract class ActorController extends AttributeController {
             }
         }
 
-        // NOTE: This requires that the configuration be non null, or it
-        // will report an error.
-        _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                                                new SaveInLibraryAction()));
 
         /* The following proves not so useful since atomic actors
          * do not typically have suitable constructors (that take
@@ -164,10 +160,17 @@ public abstract class ActorController extends AttributeController {
 
         if (((BasicGraphController)getController()).getFrame() != null) {
             // If we are in an applet, then we have no frame, so no need
-            // for a "Listen to Actor" menu choice.
+            // for a "Listen to Actor" or "Save in Library" menu choices.
+
             // FIXME: this is not perfect, it would be better if we
             // could just test if we are in an applet or else fix this
             // so we have a frame.
+
+            // NOTE: This requires that the configuration be non null, or it
+            // will report an error.
+            _menuFactory.addMenuItemFactory(new MenuActionFactory(
+                                                   new SaveInLibraryAction()));
+
             _listenToActorAction = new ListenToActorAction(
                     (BasicGraphController) getController());
             _menuFactory.addMenuItemFactory(new MenuActionFactory(
