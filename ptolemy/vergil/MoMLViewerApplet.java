@@ -145,6 +145,10 @@ public class MoMLViewerApplet extends MoMLApplet {
     protected NamedObj _createModel(Workspace workspace)
             throws Exception {
         // Do not filter out graphical classes.
+
+        // FIXME: if we have a configuration, then we are parsing
+        // the model twice!!!
+
         return _createModel(workspace, false);
     }
 
@@ -172,89 +176,97 @@ public class MoMLViewerApplet extends MoMLApplet {
             }
         }
 
-        // FIXME: Temporary hack so we can view FSMs properly.
-        // This should be replaced with a proper tableau mechanism.
-        GraphPane pane = null;
+        if (_configuration != null) {
+            // We have a configuration
+            try {
+                URL docBase = getDocumentBase();
+                URL inURL = new URL(docBase, _modelURL);
+                String key = inURL.toExternalForm();
 
-        if (_toplevel instanceof FSMActor) {
-            FSMGraphController controller = new FSMGraphController();
-            FSMGraphModel graphModel = new FSMGraphModel((FSMActor) _toplevel);
+                // Now defer to the model reader.
+                Tableau tableau = _configuration.openModel(inURL, inURL,
+                        key);
+                getContentPane().add(tableau.getFrame().getContentPane(), BorderLayout.NORTH);
 
-            // FIXME: To get things like open documentation to work, have
-            // to specify a configuration.  But currently, there isn't one.
-            if (_configuration != null) {
-                controller.setConfiguration(_configuration);
+            } catch (Exception ex) {
+                throw new RuntimeException("Failed to open '"
+                        + _modelURL + "'.", ex);
             }
-            pane = new GraphPane(controller, graphModel);
         } else {
-            // top level is not an FSM actor.
-            ActorViewerGraphController controller = new ActorViewerGraphController();
+            GraphPane pane = null;
+            // FIXME: Temporary hack so we can view FSMs properly.
+            // This should be replaced with a proper tableau mechanism.
 
-            // FIXME: To get things like open documentation to work, have
-            // to specify a configuration.  But currently, there isn't one.
-            if (_configuration != null) {
-            	try {
-					// controller.setConfiguration(configuration);
-                    URL docBase = getDocumentBase();
-                    URL inURL = new URL(docBase, getParameter("modelURL"));
-					String key = inURL.toExternalForm();
+            if (_toplevel instanceof FSMActor) {
+                FSMGraphController controller = new FSMGraphController();
+                FSMGraphModel graphModel =
+                    new FSMGraphModel((FSMActor) _toplevel);
 
-					//long startTime = (new Date()).getTime();
-					// Now defer to the model reader.
-					Tableau tableau = _configuration.openModel(inURL, inURL,
-					        key);
-				} catch (Exception ex) {
-					throw new RuntimeException(ex);
-				}
+                // FIXME: To get things like open documentation to work, have
+                // to specify a configuration.  But currently, there isn't one.
+                if (_configuration != null) {
+                    controller.setConfiguration(_configuration);
+                }
+                pane = new GraphPane(controller, graphModel);
+            } else {
+                // top level is not an FSM actor.
+                ActorViewerGraphController controller =
+                    new ActorViewerGraphController();
+
+                // controller.setConfiguration(configuration);
+
+                GraphModel model =
+                    new ActorGraphModel((CompositeEntity) _toplevel);
+                pane = new GraphPane(controller, model);
             }
-            GraphModel model = new ActorGraphModel((CompositeEntity) _toplevel);
 
-            pane = new GraphPane(controller, model);
-        }
+            JGraph modelViewer = new JGraph(pane);
+            // Get dimensions from the model, if they are present.
+            // Otherwise, use the same defaults used by vergil.
+            boolean boundsSet = false;
 
-        JGraph modelViewer = new JGraph(pane);
+            try {
+                SizeAttribute vergilBounds =
+                    (SizeAttribute) _toplevel.getAttribute("_vergilSize",
+                            SizeAttribute.class);
+                boundsSet = vergilBounds.setSize(modelViewer);
+            } catch (Throwable throwable) {
+                // Ignore and set to default.
+            }
 
-        // Get dimensions from the model, if they are present.
-        // Otherwise, use the same defaults used by vergil.
-        boolean boundsSet = false;
+            if (!boundsSet) {
+                // Set default size
+                Dimension size = new Dimension(400, 300);
+                modelViewer.setMinimumSize(size);
+                modelViewer.setPreferredSize(size);
+            }
 
-        try {
-            SizeAttribute vergilBounds = (SizeAttribute) _toplevel.getAttribute("_vergilSize",
-                    SizeAttribute.class);
-            boundsSet = vergilBounds.setSize(modelViewer);
-        } catch (Throwable throwable) {
-            // Ignore and set to default.
-        }
+            // Inherit the background color from the applet parameter.
+            modelViewer.setBackground(getBackground());
 
-        if (!boundsSet) {
-            // Set default size
-            Dimension size = new Dimension(400, 300);
-            modelViewer.setMinimumSize(size);
-            modelViewer.setPreferredSize(size);
-        }
+            // Do not include a scroll pane, since generally we size the
+            // applet to show the entire model.
+            // JScrollPane scrollPane = new JScrollPane(modelViewer);
+            // getContentPane().add(scrollPane, BorderLayout.NORTH);
+            // scrollPane.setBackground(getBackground());
+            getContentPane().add(modelViewer, BorderLayout.NORTH);
 
-        // Inherit the background color from the applet parameter.
-        modelViewer.setBackground(getBackground());
+            // Call the superclass here to get a control panel
+            // below the schematic.
+            String panelFlag = getParameter("includeRunPanel");
 
-        // Do not include a scroll pane, since generally we size the
-        // applet to show the entire model.
-        // JScrollPane scrollPane = new JScrollPane(modelViewer);
-        // getContentPane().add(scrollPane, BorderLayout.NORTH);
-        // scrollPane.setBackground(getBackground());
-        getContentPane().add(modelViewer, BorderLayout.NORTH);
-
-        // Call the superclass here to get a control panel
-        // below the schematic.
-        String panelFlag = getParameter("includeRunPanel");
-
-        if ((panelFlag != null)
-                && panelFlag.trim().toLowerCase().equals("true")) {
-            // NOTE: We could create a separator between the schematic
-            // and the control panel here.
-            super._createView();
+            if ((panelFlag != null)
+                    && panelFlag.trim().toLowerCase().equals("true")) {
+                // NOTE: We could create a separator between the schematic
+                // and the control panel here.
+                super._createView();
+            }
         }
     }
     
-    Configuration _configuration;
-    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private fields                    ////
+
+    /** The configuration that is read from the configuration applet param. */
+    private Configuration _configuration;
 }
