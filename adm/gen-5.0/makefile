@@ -82,6 +82,7 @@ PTII_FTP = /vol/ptolemy/pt0/ptweb/ptolemyII/ptII$(MAJOR_VERSION)
 # make USER=cxh PTIIHOME=/vol/maury/maury2/cxh/ptII PTIIADM=/vol/maury/maury2/cxh/ptII/adm TAR=/usr/local/bin/tar
 #make USER=cxh PTIIHOME=/tmp/cxh/ptII-5.0 PTIIADM=/tmp/cxh/ptII-5.0/adm TAR=/bin/tar JAR=/usr/local/j2sdk1.4.2_01/bin/jar clean all src.jar 
 #make USER=cxh PTIIHOME=/tmp/cxh/tmp/ptII PTIIADM=/tmp/cxh/tmp/ptII/adm TAR=/bin/tar JAR=/usr/local/j2sdk1.4.2_01/bin/jar src.jar
+
 #make USER=cxh PTIIHOME=/tmp/cxh/ptII PTIIADM=/tmp/cxh/ptII/adm TAR=/bin/tar JAR=/usr/local/j2sdk1.4.2_01/bin/jar clean all src.jar hyvisual.jar hyvisual.tar
 
 USER =		ptII
@@ -554,7 +555,7 @@ update_ptii_ftp:
 		messier:$(PTII_FTP)
 untar:
 	ssh messier rm -rf $(PTII_FTP)/ptII$(VERSION)
-	ssh messier "cd $(PTII_FTP); /usr/local/bin/tar -zxf ptII$(VERSION).tar$(SUFFIX)"
+	ssh messier "cd $(PTII_FTP); /usr/local/bin/tar -xf ptII$(VERSION).tar$(SUFFIX)"
 
 # Make the distribution, run htmlchek
 htmlchek:
