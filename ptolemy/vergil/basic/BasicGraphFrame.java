@@ -337,6 +337,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements Printable,
                     _topLibrary = defaultLibrary.getLibrary();
                     gotLibrary = true;
                 }
+            } catch (SecurityException ex) {
+                // Ignore, we are in an applet or sandbox.
+                // We already printed a message, why print it again?
             } catch (Exception ex) {
                 try {
                     MessageHandler.warning("Invalid default library for the frame.",
