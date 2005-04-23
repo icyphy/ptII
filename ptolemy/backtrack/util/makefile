@@ -47,10 +47,39 @@ PTPACKAGE = 	util
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
+# GCC files.
+GCC_FILES = \
+	java/util/AbstractCollection.java \
+	java/util/AbstractList.java \
+	java/util/AbstractMap.java \
+	java/util/AbstractSequentialList.java \
+	java/util/AbstractSet.java \
+	java/util/ArrayList.java \
+	java/util/Collection.java \
+	java/util/Collections.java \
+	java/util/HashMap.java \
+	java/util/HashSet.java \
+	java/util/Hashtable.java \
+	java/util/List.java \
+	java/util/LinkedHashMap.java \
+	java/util/LinkedHashSet.java \
+	java/util/LinkedList.java \
+	java/util/Map.java \
+	java/util/Random.java \
+	java/util/Set.java \
+	java/util/SortedMap.java \
+	java/util/SortedSet.java \
+	java/util/Stack.java \
+	java/util/TreeMap.java \
+	java/util/TreeSet.java \
+	java/util/Vector.java
+	
+GCC_CLASSES = $(GCC_FILES:%.java=%.class)
+
 # Don't use GNU make extensions here
 #    $(wildcard *.java)
 JSRCS = \
-	$(GCC_CLASSES) \
+	$(GCC_FILES) \
     CheckpointRecord.java \
     ClassFileLoader.java \
 	FieldRecord.java \
@@ -83,34 +112,6 @@ gcc: jclass gcc-source transform gcc-compile
 
 GCC_DIR = gcc/libjava
 
-GCC_FILES = \
-	java/util/AbstractCollection.java \
-	java/util/AbstractList.java \
-	java/util/AbstractMap.java \
-	java/util/AbstractSequentialList.java \
-	java/util/AbstractSet.java \
-	java/util/ArrayList.java \
-	java/util/Collection.java \
-	java/util/Collections.java \
-	java/util/HashMap.java \
-	java/util/HashSet.java \
-	java/util/Hashtable.java \
-	java/util/List.java \
-	java/util/LinkedHashMap.java \
-	java/util/LinkedHashSet.java \
-	java/util/LinkedList.java \
-	java/util/Map.java \
-	java/util/Random.java \
-	java/util/Set.java \
-	java/util/SortedMap.java \
-	java/util/SortedSet.java \
-	java/util/Stack.java \
-	java/util/TreeMap.java \
-	java/util/TreeSet.java \
-	java/util/Vector.java
-	
-GCC_CLASSES = $(GCC_FILES:%.java=%.class)
-	
 GCC_REPOSITORY = \
 	:ext:anoncvs@savannah.gnu.org:/cvsroot/gcc
 	
