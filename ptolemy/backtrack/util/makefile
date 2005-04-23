@@ -50,6 +50,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 # Don't use GNU make extensions here
 #    $(wildcard *.java)
 JSRCS = \
+	$(GCC_CLASSES) \
     CheckpointRecord.java \
     ClassFileLoader.java \
 	FieldRecord.java \
@@ -72,8 +73,8 @@ OPTIONAL_FILES = \
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-all: jclass gcc-compile
-install: jclass gcc-compile $(PTCLASSJAR)
+all: jclass
+install: jclass $(PTCLASSJAR)
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
