@@ -185,86 +185,85 @@ public class MoMLViewerApplet extends MoMLApplet {
                 String key = inURL.toExternalForm();
 
                 // Now defer to the model reader.
-                Tableau tableau = _configuration.openModel(inURL, inURL,
-                        key);
+                //Tableau tableau = _configuration.openModel(inURL, inURL,
+                //        key);
                 //JFrame frame = new JFrame();
                 //tableau.setFrame(frame);
-                getContentPane().add(tableau.getFrame().getContentPane(),
-                        BorderLayout.NORTH);
+                //getContentPane().add(tableau.getFrame().getContentPane(),
+                //        BorderLayout.NORTH);
 
             } catch (Exception ex) {
                 throw new RuntimeException("Failed to open '"
                         + _modelURL + "'.", ex);
             }
+        }
+        GraphPane pane = null;
+        // FIXME: Temporary hack so we can view FSMs properly.
+        // This should be replaced with a proper tableau mechanism.
+
+        if (_toplevel instanceof FSMActor) {
+            FSMGraphController controller = new FSMGraphController();
+            FSMGraphModel graphModel =
+                new FSMGraphModel((FSMActor) _toplevel);
+
+            // FIXME: To get things like open documentation to work, have
+            // to specify a configuration.  But currently, there isn't one.
+            if (_configuration != null) {
+                controller.setConfiguration(_configuration);
+            }
+            pane = new GraphPane(controller, graphModel);
         } else {
-            GraphPane pane = null;
-            // FIXME: Temporary hack so we can view FSMs properly.
-            // This should be replaced with a proper tableau mechanism.
+            // top level is not an FSM actor.
+            ActorViewerGraphController controller =
+                new ActorViewerGraphController();
 
-            if (_toplevel instanceof FSMActor) {
-                FSMGraphController controller = new FSMGraphController();
-                FSMGraphModel graphModel =
-                    new FSMGraphModel((FSMActor) _toplevel);
+            controller.setConfiguration(_configuration);
 
-                // FIXME: To get things like open documentation to work, have
-                // to specify a configuration.  But currently, there isn't one.
-                if (_configuration != null) {
-                    controller.setConfiguration(_configuration);
-                }
-                pane = new GraphPane(controller, graphModel);
-            } else {
-                // top level is not an FSM actor.
-                ActorViewerGraphController controller =
-                    new ActorViewerGraphController();
+            GraphModel model =
+                new ActorGraphModel((CompositeEntity) _toplevel);
+            pane = new GraphPane(controller, model);
+        }
 
-                // controller.setConfiguration(configuration);
+        JGraph modelViewer = new JGraph(pane);
+        // Get dimensions from the model, if they are present.
+        // Otherwise, use the same defaults used by vergil.
+        boolean boundsSet = false;
 
-                GraphModel model =
-                    new ActorGraphModel((CompositeEntity) _toplevel);
-                pane = new GraphPane(controller, model);
-            }
+        try {
+            SizeAttribute vergilBounds =
+                (SizeAttribute) _toplevel.getAttribute("_vergilSize",
+                        SizeAttribute.class);
+            boundsSet = vergilBounds.setSize(modelViewer);
+        } catch (Throwable throwable) {
+            // Ignore and set to default.
+        }
 
-            JGraph modelViewer = new JGraph(pane);
-            // Get dimensions from the model, if they are present.
-            // Otherwise, use the same defaults used by vergil.
-            boolean boundsSet = false;
+        if (!boundsSet) {
+            // Set default size
+            Dimension size = new Dimension(400, 300);
+            modelViewer.setMinimumSize(size);
+            modelViewer.setPreferredSize(size);
+        }
 
-            try {
-                SizeAttribute vergilBounds =
-                    (SizeAttribute) _toplevel.getAttribute("_vergilSize",
-                            SizeAttribute.class);
-                boundsSet = vergilBounds.setSize(modelViewer);
-            } catch (Throwable throwable) {
-                // Ignore and set to default.
-            }
+        // Inherit the background color from the applet parameter.
+        modelViewer.setBackground(getBackground());
 
-            if (!boundsSet) {
-                // Set default size
-                Dimension size = new Dimension(400, 300);
-                modelViewer.setMinimumSize(size);
-                modelViewer.setPreferredSize(size);
-            }
+        // Do not include a scroll pane, since generally we size the
+        // applet to show the entire model.
+        // JScrollPane scrollPane = new JScrollPane(modelViewer);
+        // getContentPane().add(scrollPane, BorderLayout.NORTH);
+        // scrollPane.setBackground(getBackground());
+        getContentPane().add(modelViewer, BorderLayout.NORTH);
 
-            // Inherit the background color from the applet parameter.
-            modelViewer.setBackground(getBackground());
+        // Call the superclass here to get a control panel
+        // below the schematic.
+        String panelFlag = getParameter("includeRunPanel");
 
-            // Do not include a scroll pane, since generally we size the
-            // applet to show the entire model.
-            // JScrollPane scrollPane = new JScrollPane(modelViewer);
-            // getContentPane().add(scrollPane, BorderLayout.NORTH);
-            // scrollPane.setBackground(getBackground());
-            getContentPane().add(modelViewer, BorderLayout.NORTH);
-
-            // Call the superclass here to get a control panel
-            // below the schematic.
-            String panelFlag = getParameter("includeRunPanel");
-
-            if ((panelFlag != null)
-                    && panelFlag.trim().toLowerCase().equals("true")) {
-                // NOTE: We could create a separator between the schematic
-                // and the control panel here.
-                super._createView();
-            }
+        if ((panelFlag != null)
+                && panelFlag.trim().toLowerCase().equals("true")) {
+            // NOTE: We could create a separator between the schematic
+            // and the control panel here.
+            super._createView();
         }
     }
     
