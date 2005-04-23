@@ -314,8 +314,14 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements Printable,
 
             if (libraryAttribute != null) {
                 // The model contains a library.
-                _topLibrary = libraryAttribute.getLibrary();
-                gotLibrary = true;
+                try {
+                    _topLibrary = libraryAttribute.getLibrary();
+                    gotLibrary = true;
+                } catch (SecurityException ex) {
+                    System.out.println("Warning: failed to parse "
+                            + "_library attribute (running in an applet "
+                            + "or sandbox always causes this)");
+                }
             }
         } catch (Exception ex) {
             try {
