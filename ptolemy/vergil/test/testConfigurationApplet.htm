@@ -1,0 +1,38 @@
+<!-- $Id$-->
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<link href="../../../doc/default.css" rel="stylesheet" type="text/css">
+<TITLE>Modulation MoML Applet</TITLE>
+</HEAD>
+<BODY>
+
+<H1>MoML Applet Implementing Modulation</H1>
+<P>
+The following plot is the result of executing a Ptolemy II model
+specified in an MoML file referenced via a URL.  MoML is an XML
+dialect for specifying component-based models.
+<CENTER>
+<P>
+
+<APPLET 
+    code = "ptolemy.vergil.MoMLViewerApplet"
+    codebase = "../../.."
+    archive = "lib/diva.jar"
+    width = "600"
+    height = "500"
+    <PARAM NAME = "NAME" VALUE = "MoML" >
+    <PARAM NAME = "background" VALUE = "#faf0e6" >
+    <PARAM NAME = "runControls" VALUE = "1" >
+    <PARAM NAME = "configuration"
+           VALUE = "ptolemy/configs/full/configuration.xml" >
+    <PARAM NAME = "modelURL" VALUE = "testschematic.xml" >
+<BR><I>If you were able to run applets, you would have one here.</I>
+<BR>
+</APPLET>
+
+</CENTER>
+See the <a href="testschematic.xml">MoML file</a> specifying this model.
+</BODY>
+</HTML>
+

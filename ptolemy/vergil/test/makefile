@@ -65,6 +65,7 @@ EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) \
 	bad.xml \
 	nongraphicalschematic.xml \
 	notationschematic.xml \
+	testConfigurationApplet.htm \
 	testapplet.htm \
 	testschematic.xml
 	#$(JGRAPHICAL_TESTS)
