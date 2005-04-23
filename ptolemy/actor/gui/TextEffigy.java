@@ -193,7 +193,12 @@ public class TextEffigy extends Effigy {
                 String filename = in.getFile();
                 File file = new File(filename);
 
-                if (!file.canWrite()) {
+                try {
+                    if (!file.canWrite()) {
+                        effigy.setModifiable(false);
+                    }
+                } catch (SecurityException ex) {
+                    // We are in an applet or sandbox.
                     effigy.setModifiable(false);
                 }
             } else {
