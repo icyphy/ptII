@@ -29,9 +29,14 @@ package ptolemy.vergil;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.net.MalformedURLException;
+import java.net.URL;
 
+import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.MoMLApplet;
+import ptolemy.actor.gui.MoMLApplication;
 import ptolemy.actor.gui.SizeAttribute;
+import ptolemy.actor.gui.Tableau;
 import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.NamedObj;
@@ -58,6 +63,13 @@ import diva.graph.JGraph;
    number of the form "#<i>rrggbb</i>" where <i>rr</i> gives the red
    component, <i>gg</i> gives the green component, and <i>bb</i> gives
    the blue component.
+   <li>
+   <i>configuration</i>:
+   The relative pathname to a Ptolemy II xml configuration file.
+   for example, if the configuration applet parameter is set to
+   "ptolemy/configs/full/configuration.xml", then the user will
+   have the full vergil interface, including look inside capability.
+   (<b>Experimental</b>).
    <li>
    <i>controls</i>:
    This gives a comma-separated list
@@ -107,6 +119,7 @@ public class MoMLViewerApplet extends MoMLApplet {
     public String[][] getParameterInfo() {
         String[][] newinfo = {
             { "includeRunPanel", "", "Indicator to include run panel" },
+            { "configuration", "", "Ptolemy II configuration"},
         };
         return _concatStringArrays(super.getParameterInfo(), newinfo);
     }
@@ -144,6 +157,21 @@ public class MoMLViewerApplet extends MoMLApplet {
             return;
         }
 
+        // Get the configuration, if any
+        String configurationPath = getParameter("configuration");
+        if (configurationPath != null) {
+            try {
+            	URL specificationURL =
+                    MoMLApplication.specToURL(configurationPath);
+            	_configuration =
+            		MoMLApplication.readConfiguration(specificationURL);
+            	report("Opened '" + specificationURL + "': " + _configuration);
+            } catch (Exception ex) {
+            	throw new RuntimeException("Failed to open '"
+                        + configurationPath + "':", ex);
+            }
+        }
+
         // FIXME: Temporary hack so we can view FSMs properly.
         // This should be replaced with a proper tableau mechanism.
         GraphPane pane = null;
@@ -154,7 +182,9 @@ public class MoMLViewerApplet extends MoMLApplet {
 
             // FIXME: To get things like open documentation to work, have
             // to specify a configuration.  But currently, there isn't one.
-            // controller.setConfiguration(getConfiguration());
+            if (_configuration != null) {
+                controller.setConfiguration(_configuration);
+            }
             pane = new GraphPane(controller, graphModel);
         } else {
             // top level is not an FSM actor.
@@ -162,7 +192,21 @@ public class MoMLViewerApplet extends MoMLApplet {
 
             // FIXME: To get things like open documentation to work, have
             // to specify a configuration.  But currently, there isn't one.
-            // controller.setConfiguration(getConfiguration());
+            if (_configuration != null) {
+            	try {
+					// controller.setConfiguration(configuration);
+                    URL docBase = getDocumentBase();
+                    URL inURL = new URL(docBase, getParameter("modelURL"));
+					String key = inURL.toExternalForm();
+
+					//long startTime = (new Date()).getTime();
+					// Now defer to the model reader.
+					Tableau tableau = _configuration.openModel(inURL, inURL,
+					        key);
+				} catch (Exception ex) {
+					throw new RuntimeException(ex);
+				}
+            }
             GraphModel model = new ActorGraphModel((CompositeEntity) _toplevel);
 
             pane = new GraphPane(controller, model);
@@ -210,4 +254,7 @@ public class MoMLViewerApplet extends MoMLApplet {
             super._createView();
         }
     }
+    
+    Configuration _configuration;
+    
 }
