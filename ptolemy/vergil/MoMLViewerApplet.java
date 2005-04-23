@@ -31,6 +31,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.net.MalformedURLException;
 import java.net.URL;
+import javax.swing.JFrame;
 
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.MoMLApplet;
@@ -186,7 +187,10 @@ public class MoMLViewerApplet extends MoMLApplet {
                 // Now defer to the model reader.
                 Tableau tableau = _configuration.openModel(inURL, inURL,
                         key);
-                getContentPane().add(tableau.getFrame().getContentPane(), BorderLayout.NORTH);
+                //JFrame frame = new JFrame();
+                //tableau.setFrame(frame);
+                getContentPane().add(tableau.getFrame().getContentPane(),
+                        BorderLayout.NORTH);
 
             } catch (Exception ex) {
                 throw new RuntimeException("Failed to open '"
