@@ -339,6 +339,39 @@ public class MoMLApplication implements ExecutionListener {
 
         return result;
     }
+    
+    /** Read a Configuration from the URL given by the specified string.
+     *  The URL may absolute, or relative to the Ptolemy II tree root,
+     *  or in the classpath.  To convert a String to a URL suitable for
+     *  use by this method, call specToURL(String).
+     *  @param specificationURL A string describing a URL.
+     *  @return A configuration.
+     *  @exception Exception If the configuration cannot be opened, or
+     *   if the contents of the URL is not a configuration.
+     */
+    public static Configuration readConfiguration(URL specificationURL)
+            throws Exception {
+        MoMLParser parser = new MoMLParser();
+        parser.reset();
+
+        Configuration toplevel = (Configuration) parser.parse(specificationURL,
+                specificationURL);
+
+        // If the toplevel model is a configuration containing a directory,
+        // then create an effigy for the configuration itself, and put it
+        // in the directory.
+        ComponentEntity directory = ((Configuration) toplevel).getEntity(
+                "directory");
+
+        if (directory instanceof ModelDirectory) {
+            PtolemyEffigy effigy = new PtolemyEffigy((ModelDirectory) directory,
+                    toplevel.getName());
+            effigy.setModel(toplevel);
+            effigy.identifier.setExpression(specificationURL.toExternalForm());
+        }
+
+        return toplevel;
+    }
 
     /** Start the models running, each in a new thread, then return.
      *  @exception IllegalActionException If the manager throws it.
@@ -947,7 +980,8 @@ public class MoMLApplication implements ExecutionListener {
 
         _configuration.showAll();
     }
-
+    
+   
     /** Read a Configuration from the URL given by the specified string.
      *  The URL may absolute, or relative to the Ptolemy II tree root,
      *  or in the classpath.  To convert a String to a URL suitable for
@@ -956,30 +990,13 @@ public class MoMLApplication implements ExecutionListener {
      *  @return A configuration.
      *  @exception Exception If the configuration cannot be opened, or
      *   if the contents of the URL is not a configuration.
+     *  @deprecated Use readConfiguration() instead.
      */
     protected Configuration _readConfiguration(URL specificationURL)
             throws Exception {
-        _parser.reset();
-
-        Configuration toplevel = (Configuration) _parser.parse(specificationURL,
-                specificationURL);
-
-        // If the toplevel model is a configuration containing a directory,
-        // then create an effigy for the configuration itself, and put it
-        // in the directory.
-        ComponentEntity directory = ((Configuration) toplevel).getEntity(
-                "directory");
-
-        if (directory instanceof ModelDirectory) {
-            PtolemyEffigy effigy = new PtolemyEffigy((ModelDirectory) directory,
-                    toplevel.getName());
-            effigy.setModel(toplevel);
-            effigy.identifier.setExpression(specificationURL.toExternalForm());
-        }
-
-        return toplevel;
+        return readConfiguration(specificationURL);
     }
-
+    
     /** Return a string summarizing the command-line arguments.
      *  @return A usage string.
      */
@@ -987,8 +1004,8 @@ public class MoMLApplication implements ExecutionListener {
         // Call the static method that generates the usage strings.
         return StringUtilities.usageString(_commandTemplate, _commandOptions,
                 _commandFlags);
-    }
-
+    }   
+    
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
