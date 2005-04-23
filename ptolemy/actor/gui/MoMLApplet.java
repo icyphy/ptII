@@ -144,6 +144,9 @@ public class MoMLApplet extends PtolemyApplet {
         return _concatStringArrays(super.getParameterInfo(), newInfo);
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
     /** Read the model from the <i>modelURL</i> applet parameter
      *  and filter out any graphical classes that might require us
      *  to have diva.jar in the classpath.
@@ -168,31 +171,8 @@ public class MoMLApplet extends PtolemyApplet {
             boolean filterGraphicalClasses) throws Exception {
         // ptolemy.vergil.MoMLViewerApplet() calls this with
         // filterGraphicalClasses set to false.
-        String modelURL = getParameter("modelURL");
 
-        if (modelURL == null) {
-            // For backward compatibility, try name "model".
-            modelURL = getParameter("model");
-
-            if (modelURL == null) {
-                throw new Exception("Applet does not not specify a modelURL.");
-            }
-        }
-
-        // NOTE: Regrettably, Java's URL class is too dumb
-        // to handle a fragment part of a URL.  Thus, if
-        // there is one, we have to remove it.  Note that
-        // Java calls this a "fragment", a "ref", and
-        // and "reference", all in different parts of the
-        // docs.
-        int sharp = modelURL.indexOf("#");
-        String fragment = null;
-
-        if (sharp > 0) {
-            fragment = modelURL.substring(sharp + 1);
-            modelURL = modelURL.substring(0, sharp);
-        }
-
+        _modelURL = _readModelURLParameter();
         MoMLParser parser = new MoMLParser();
 
         // FIXME: if we call _createModel twice, then we will add
@@ -208,23 +188,23 @@ public class MoMLApplet extends PtolemyApplet {
         }
 
         URL docBase = getDocumentBase();
-        URL xmlFile = new URL(docBase, modelURL);
+        URL xmlFile = new URL(docBase, _modelURL);
         _manager = null;
 
         NamedObj toplevel = parser.parse(docBase, xmlFile);
         _workspace = toplevel.workspace();
 
-        if ((fragment != null) && !fragment.trim().equals("")) {
+        if ((_fragment != null) && !_fragment.trim().equals("")) {
             // A fragment was specified, so we should look inside.
             ComponentEntity inside = null;
 
             if (toplevel instanceof CompositeEntity) {
-                inside = ((CompositeEntity) toplevel).getEntity(fragment);
+                inside = ((CompositeEntity) toplevel).getEntity(_fragment);
             }
 
             if (inside == null) {
                 throw new IllegalActionException(toplevel,
-                        "No such contained entity: " + fragment);
+                        "No such contained entity: " + _fragment);
             }
 
             toplevel = inside;
@@ -242,4 +222,52 @@ public class MoMLApplet extends PtolemyApplet {
 
         return toplevel;
     }
+
+    /** Read the modelURL applet parameter. 
+     *  If the modelURL applet parameter does not exist, then
+     *  read the model applet parameter.  As a side effect,
+     *  the _fragment field is set with any text after a "#".
+     *  @exception Exception Thrown if there is no modelURL or model
+     *  applet parameter.
+     *  @return the value of the modelURL or model parameter.
+     */
+    protected String _readModelURLParameter() throws Exception {
+        _modelURL = getParameter("modelURL");
+
+        if (_modelURL == null) {
+            // For backward compatibility, try name "model".
+            _modelURL = getParameter("model");
+
+            if (_modelURL == null) {
+                throw new Exception("Applet does not not specify a modelURL.");
+            }
+        }
+
+        // NOTE: Regrettably, Java's URL class is too dumb
+        // to handle a fragment part of a URL.  Thus, if
+        // there is one, we have to remove it.  Note that
+        // Java calls this a "fragment", a "ref", and
+        // and "reference", all in different parts of the
+        // docs.
+        int sharp = _modelURL.indexOf("#");
+
+        if (sharp > 0) {
+            _fragment = _modelURL.substring(sharp + 1);
+            _modelURL = _modelURL.substring(0, sharp);
+        }
+        return _modelURL;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected fields                  ////
+
+    /** The fragment of the modelURL, if any.  This field is set after
+     *  _readMoMLAppletParameter() is called.
+     */
+    protected String _fragment = "";
+
+    /** The modelURL.  This field is set after
+     * _readMoMLAppletParameter() is called.
+     */
+    protected String _modelURL = "";
 }
