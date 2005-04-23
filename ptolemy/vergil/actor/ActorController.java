@@ -161,10 +161,19 @@ public abstract class ActorController extends AttributeController {
          _menuFactory.addMenuItemFactory(
          new MenuActionFactory(new SaveInFileAction()));
         */
-        _listenToActorAction = new ListenToActorAction((BasicGraphController) getController());
-        _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                                                _listenToActorAction));
-        _listenToActorAction.setConfiguration(_configuration);
+
+        if (((BasicGraphController)getController()).getFrame() != null) {
+            // If we are in an applet, then we have no frame, so no need
+            // for a "Listen to Actor" menu choice.
+            // FIXME: this is not perfect, it would be better if we
+            // could just test if we are in an applet or else fix this
+            // so we have a frame.
+            _listenToActorAction = new ListenToActorAction(
+                    (BasicGraphController) getController());
+            _menuFactory.addMenuItemFactory(new MenuActionFactory(
+                                                    _listenToActorAction));
+            _listenToActorAction.setConfiguration(_configuration);
+        }
 
         // "Set Breakpoints"
         if (access == FULL) {
