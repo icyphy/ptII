@@ -158,6 +158,10 @@ public abstract class AbstractList extends AbstractCollection implements List, R
 
             final class _PROXY_ implements Rollbackable {
 
+                public final void $COMMIT(long timestamp) {
+                    $COMMIT_ANONYMOUS(timestamp);
+                }
+
                 public final void $RESTORE(long timestamp, boolean trim) {
                     $RESTORE_ANONYMOUS(timestamp, trim);
                 }
@@ -264,6 +268,11 @@ public abstract class AbstractList extends AbstractCollection implements List, R
                     $RECORD$knownMod.add(null, knownMod, $CHECKPOINT.getTimestamp());
                 }
                 return knownMod = newValue;
+            }
+
+            public void $COMMIT_ANONYMOUS(long timestamp) {
+                FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                $RECORD$$CHECKPOINT.commit(timestamp);
             }
 
             public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
@@ -411,6 +420,10 @@ public abstract class AbstractList extends AbstractCollection implements List, R
 
             final class _PROXY_ implements Rollbackable {
 
+                public final void $COMMIT(long timestamp) {
+                    $COMMIT_ANONYMOUS(timestamp);
+                }
+
                 public final void $RESTORE(long timestamp, boolean trim) {
                     $RESTORE_ANONYMOUS(timestamp, trim);
                 }
@@ -526,6 +539,11 @@ public abstract class AbstractList extends AbstractCollection implements List, R
                 }
             }
 
+            public void $COMMIT_ANONYMOUS(long timestamp) {
+                FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                $RECORD$$CHECKPOINT.commit(timestamp);
+            }
+
             public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
                 knownMod = $RECORD$knownMod.restore(knownMod, timestamp, trim);
                 position = $RECORD$position.restore(position, timestamp, trim);
@@ -607,6 +625,11 @@ public abstract class AbstractList extends AbstractCollection implements List, R
             $RECORD$modCount.add(null, modCount, $CHECKPOINT.getTimestamp());
         }
         return modCount = newValue;
+    }
+
+    public void $COMMIT(long timestamp) {
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+        super.$COMMIT(timestamp);
     }
 
     public void $RESTORE(long timestamp, boolean trim) {
@@ -783,6 +806,10 @@ class SubList extends AbstractList implements Rollbackable {
 
             final class _PROXY_ implements Rollbackable {
 
+                public final void $COMMIT(long timestamp) {
+                    $COMMIT_ANONYMOUS(timestamp);
+                }
+
                 public final void $RESTORE(long timestamp, boolean trim) {
                     $RESTORE_ANONYMOUS(timestamp, trim);
                 }
@@ -842,6 +869,11 @@ class SubList extends AbstractList implements Rollbackable {
                     default:
                         return position;
                 }
+            }
+
+            public void $COMMIT_ANONYMOUS(long timestamp) {
+                FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                $RECORD$$CHECKPOINT.commit(timestamp);
             }
 
             public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
@@ -933,6 +965,11 @@ class SubList extends AbstractList implements Rollbackable {
         }
     }
 
+    public void $COMMIT(long timestamp) {
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+        super.$COMMIT(timestamp);
+    }
+
     public void $RESTORE(long timestamp, boolean trim) {
         $RECORD$backingList.restore(backingList, timestamp, trim);
         size = $RECORD$size.restore(size, timestamp, trim);
@@ -953,6 +990,11 @@ final class RandomAccessSubList extends SubList implements RandomAccess, Rollbac
 
     RandomAccessSubList(AbstractList backing, int fromIndex, int toIndex) {
         super(backing, fromIndex, toIndex);
+    }
+
+    public void $COMMIT(long timestamp) {
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+        super.$COMMIT(timestamp);
     }
 
     public void $RESTORE(long timestamp, boolean trim) {

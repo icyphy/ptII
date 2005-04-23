@@ -124,6 +124,11 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
             return previous = newValue;
         }
 
+        public void $COMMIT(long timestamp) {
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            $RECORD$$CHECKPOINT.commit(timestamp);
+        }
+
         public void $RESTORE(long timestamp, boolean trim) {
             data = (Object)$RECORD$data.restore(data, timestamp, trim);
             next = (Entry)$RECORD$next.restore(next, timestamp, trim);
@@ -393,6 +398,11 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
                 default:
                     return position;
             }
+        }
+
+        public void $COMMIT(long timestamp) {
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            $RECORD$$CHECKPOINT.commit(timestamp);
         }
 
         public void $RESTORE(long timestamp, boolean trim) {
@@ -837,6 +847,11 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
             default:
                 return size;
         }
+    }
+
+    public void $COMMIT(long timestamp) {
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+        super.$COMMIT(timestamp);
     }
 
     public void $RESTORE(long timestamp, boolean trim) {

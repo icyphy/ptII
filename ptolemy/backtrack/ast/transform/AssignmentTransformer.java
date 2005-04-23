@@ -155,6 +155,70 @@ public class AssignmentTransformer extends AbstractTransformer
             _handleAlias(node.getExpression(), state);
     }
     
+    /** Fix the refactoring when the set of cross-analyzed types changes.
+     * 
+     *  @param state The current state of the type analyzer.
+     */
+    public void handle(TypeAnalyzerState state) {
+        Set crossAnalyzedTypes = state.getCrossAnalyzedTypes();
+        Iterator crossAnalysisIter = crossAnalyzedTypes.iterator();
+        while (crossAnalysisIter.hasNext()) {
+            String nextClassName = (String)crossAnalysisIter.next();
+            List list;
+            
+            list = (List)_fixSetCheckpoint.get(nextClassName);
+            if (list != null) {
+                Iterator nodesIter = list.iterator();
+                while (nodesIter.hasNext()) {
+                    Block body = (Block)nodesIter.next();
+                    AST ast = body.getAST();
+                    Statement invocation = _createSetCheckpointInvocation(ast);
+                    List statements = body.statements();
+                    statements.add(statements.size() - 2, invocation);
+                    nodesIter.remove();
+                }
+            }
+            
+            list = (List)_rehandleDeclaration.get(nextClassName);
+            if (list != null) {
+                Iterator recordsIter = list.iterator();
+                while (recordsIter.hasNext()) {
+                    RehandleDeclarationRecord record =
+                        (RehandleDeclarationRecord)recordsIter.next();
+                    Iterator extendedIter =
+                        record._getExtendedDeclarations().iterator();
+                    while (extendedIter.hasNext()) {
+                        ASTNode declaration = (ASTNode)extendedIter.next();
+                        if (declaration != null)
+                            removeNode(declaration);
+                    }
+                    Iterator fixedIter =
+                        record._getFixedDeclarations().iterator();
+                    while (fixedIter.hasNext()) {
+                        ASTNode declaration = (ASTNode)fixedIter.next();
+                        if (declaration != null)
+                            record._getBodyDeclarations().add(declaration);
+                    }
+                    recordsIter.remove();
+                }
+            }
+            
+            list = (List)_nodeSubstitution.get(nextClassName);
+            if (list != null) {
+                Iterator replaceIter = list.iterator();
+                while (replaceIter.hasNext()) {
+                    NodeReplace nodeReplace = (NodeReplace)replaceIter.next();
+                    if (nodeReplace._getToNode() == null)
+                        removeNode(nodeReplace._getFromNode());
+                    else
+                        replaceNode(nodeReplace._getFromNode(),
+                                nodeReplace._getToNode());
+                    replaceIter.remove();
+                }
+            }
+        }
+    }
+    
     public void handle(VariableDeclarationFragment node, 
             TypeAnalyzerState state) {
         if (node.getInitializer() != null)
@@ -227,97 +291,13 @@ public class AssignmentTransformer extends AbstractTransformer
         _handleDeclaration(node, node.bodyDeclarations(), state);
     }
     
-    /** Fix the refactoring when the set of cross-analyzed types changes.
-     * 
-     *  @param state The current state of the type analyzer.
-     */
-    public void handle(TypeAnalyzerState state) {
-        Set crossAnalyzedTypes = state.getCrossAnalyzedTypes();
-        Iterator crossAnalysisIter = crossAnalyzedTypes.iterator();
-        while (crossAnalysisIter.hasNext()) {
-            String nextClassName = (String)crossAnalysisIter.next();
-            List list = (List)_checkParentFields.get(nextClassName);
-            if (list != null) {
-                Iterator nodesIter = list.iterator();
-                while (nodesIter.hasNext()) {
-                    removeNode((ASTNode)nodesIter.next());
-                    nodesIter.remove();
-                }
-            }
-            
-            list = (List)_checkParentMethods.get(nextClassName);
-            if (list != null) {
-                Iterator nodesIter = list.iterator();
-                while (nodesIter.hasNext()) {
-                    removeNode((ASTNode)nodesIter.next());
-                    nodesIter.remove();
-                }
-            }
-            
-            list = (List)_fixParentRestoreMethods.get(nextClassName);
-            if (list != null) {
-                Iterator nodesIter = list.iterator();
-                while (nodesIter.hasNext()) {
-                    Block body = (Block)nodesIter.next();
-                    AST ast = body.getAST();
-                    String methodName = _getRestoreMethodName(false);
-                    SuperMethodInvocation superRestore = 
-                        ast.newSuperMethodInvocation();
-                    superRestore.setName(ast.newSimpleName(methodName));
-                    superRestore.arguments().add(ast.newSimpleName("timestamp"));
-                    superRestore.arguments().add(ast.newSimpleName("trim"));
-                    
-                    List statements = body.statements();
-                    // Remove the IfStatement concerning the checkpoint.
-                    statements.remove(statements.size() - 1);
-                    // Add a call to the superclass.
-                    statements.add(ast.newExpressionStatement(superRestore));
-                    nodesIter.remove();
-                }
-            }
-            
-            list = (List)_fixSetCheckpoint.get(nextClassName);
-            if (list != null) {
-                Iterator nodesIter = list.iterator();
-                while (nodesIter.hasNext()) {
-                    Block body = (Block)nodesIter.next();
-                    AST ast = body.getAST();
-                    Statement invocation = _createSetCheckpointInvocation(ast);
-                    List statements = body.statements();
-                    statements.add(statements.size() - 2, invocation);
-                    nodesIter.remove();
-                }
-            }
-            
-            list = (List)_rehandleDeclaration.get(nextClassName);
-            if (list != null) {
-                Iterator recordsIter = list.iterator();
-                while (recordsIter.hasNext()) {
-                    RehandleDeclarationRecord record =
-                        (RehandleDeclarationRecord)recordsIter.next();
-                    Iterator extendedIter =
-                        record._getExtendedDeclarations().iterator();
-                    while (extendedIter.hasNext()) {
-                        ASTNode declaration = (ASTNode)extendedIter.next();
-                        if (declaration != null)
-                            removeNode(declaration);
-                    }
-                    Iterator fixedIter =
-                        record._getFixedDeclarations().iterator();
-                    while (fixedIter.hasNext()) {
-                        ASTNode declaration = (ASTNode)fixedIter.next();
-                        if (declaration != null)
-                            record._getBodyDeclarations().add(declaration);
-                    }
-                    recordsIter.remove();
-                }
-            }
-        }
-    }
-    
     ///////////////////////////////////////////////////////////////////
     ////                       public fields                       ////
 
+    /** The name of commit methods.
+     */
+    public static String COMMIT_NAME = "$COMMIT";
+    
     /** Whether to refactor private static fields.
      */
     public static boolean HANDLE_STATIC_FIELDS = false;
@@ -798,7 +778,8 @@ public class AssignmentTransformer extends AbstractTransformer
         checkpointField.setModifiers(Modifier.PROTECTED);
         
         if (parent != null)
-            addToLists(_checkParentFields, parent.getName(), checkpointField);
+            addToLists(_nodeSubstitution, parent.getName(),
+                    new NodeReplace(checkpointField, null));
         
         return checkpointField;
     }
@@ -832,9 +813,102 @@ public class AssignmentTransformer extends AbstractTransformer
         record.setModifiers(Modifier.PROTECTED);
         
         if (parent != null)
-            addToLists(_checkParentFields, parent.getName(), record);
+            addToLists(_nodeSubstitution, parent.getName(),
+                    new NodeReplace(record, null));
         
         return record;
+    }
+    
+    /** Create a commit method for a class, which commits its state up to the
+     *  given time.
+     * 
+     *  @param ast The {@link AST} object.
+     *  @param root The root of the AST.
+     *  @param state The current state of the type analyzer.
+     *  @param fieldNames The list of all the accessed fields.
+     *  @param fieldTypes The types corresponding to the accessed fields.
+     *  @param isAnonymous Whether the current class is anonymous.
+     *  @param isInterface Whether the current type is an interface.
+     *  @return The declaration of the method that restores the old value
+     *   of all the private fields.
+     */
+    private MethodDeclaration _createCommitMethod(AST ast, 
+            CompilationUnit root, TypeAnalyzerState state, List fieldNames, 
+            List fieldTypes, boolean isAnonymous, boolean isInterface) {
+        Class currentClass = state.getCurrentClass();
+        Class parent = currentClass.getSuperclass();
+        String methodName = _getCommitMethodName(isAnonymous);
+        
+        // Check if the method is duplicated (possibly because the source
+        // program is refactored twice).
+        if (hasMethod(currentClass, methodName, 
+                new Class[]{int.class}, true))
+            throw new ASTDuplicatedMethodException(currentClass.getName(), 
+                    methodName);
+
+        MethodDeclaration method = ast.newMethodDeclaration();
+        
+        // Set the method name.
+        method.setName(ast.newSimpleName(methodName));
+        
+        // Add a timestamp parameter.
+        SingleVariableDeclaration timestamp = 
+            ast.newSingleVariableDeclaration();
+        timestamp.setType(ast.newPrimitiveType(PrimitiveType.LONG));
+        timestamp.setName(ast.newSimpleName("timestamp"));
+        method.parameters().add(timestamp);
+        
+        // Return type default to "void".
+        
+        if (!isInterface) {
+            // The method body.
+            Block body = ast.newBlock();
+            method.setBody(body);
+        
+            // Add a call to the static commit method of FieldRecord.
+            MethodInvocation commitFields = ast.newMethodInvocation();
+            commitFields.setExpression(
+                    createName(ast, getClassName(
+                            FieldRecord.class.getName(), state, root)));
+            commitFields.setName(ast.newSimpleName("commit"));
+            commitFields.arguments().add(ast.newSimpleName(RECORDS_NAME));
+            commitFields.arguments().add(ast.newSimpleName("timestamp"));
+            MethodInvocation topTimestamp = ast.newMethodInvocation();
+            topTimestamp.setExpression(ast.newSimpleName(CHECKPOINT_RECORD_NAME));
+            topTimestamp.setName(ast.newSimpleName("getTopTimestamp"));
+            commitFields.arguments().add(topTimestamp);
+            body.statements().add(ast.newExpressionStatement(commitFields));
+        
+            // Add a call to the commit method in the superclass, if necessary.
+            SuperMethodInvocation superRestore = 
+                ast.newSuperMethodInvocation();
+            superRestore.setName(
+                    ast.newSimpleName(_getCommitMethodName(false)));
+            superRestore.arguments().add(ast.newSimpleName("timestamp"));
+            if (parent != null &&
+                    (state.getCrossAnalyzedTypes().contains(parent.getName()) ||
+                     hasMethod(parent, methodName, 
+                             new Class[]{int.class, boolean.class})))
+                body.statements().add(ast.newExpressionStatement(superRestore));
+            else {
+                // Commit the checkpoint record.
+                MethodInvocation commitCheckpoint = ast.newMethodInvocation();
+                commitCheckpoint.setExpression(
+                        ast.newSimpleName(CHECKPOINT_RECORD_NAME));
+                commitCheckpoint.setName(ast.newSimpleName("commit"));
+                commitCheckpoint.arguments().add(ast.newSimpleName("timestamp"));
+                body.statements().add(
+                        ast.newExpressionStatement(commitCheckpoint));
+                
+                if (parent != null)
+                    addToLists(_nodeSubstitution, parent.getName(),
+                            new NodeReplace(commitCheckpoint, superRestore));
+            }
+        }
+        
+        method.setModifiers(Modifier.PUBLIC);
+        
+        return method;
     }
     
     /** Create the record of a field. The record is stored in an extra private
@@ -927,7 +1001,8 @@ public class AssignmentTransformer extends AbstractTransformer
         method.setModifiers(isInterface ? Modifier.PUBLIC : (Modifier.PUBLIC | Modifier.FINAL));
         
         if (!isAnonymous && parent != null)
-            addToLists(_checkParentMethods, parent.getName(), method);
+            addToLists(_nodeSubstitution, parent.getName(),
+                    new NodeReplace(method, null));
         
         return method;
     }
@@ -948,35 +1023,57 @@ public class AssignmentTransformer extends AbstractTransformer
         String rollbackType = getClassName(Rollbackable.class, state, root);
         classDeclaration.superInterfaces().add(createName(ast, rollbackType));
         
-        // Add a restore method.
-        MethodDeclaration proxy = ast.newMethodDeclaration();
-        proxy.setName(ast.newSimpleName(_getRestoreMethodName(false)));
+        // Add a commit method.
+        MethodDeclaration commit = ast.newMethodDeclaration();
+        commit.setName(ast.newSimpleName(_getCommitMethodName(false)));
         
         // Add two parameters.
         SingleVariableDeclaration timestamp = 
             ast.newSingleVariableDeclaration();
         timestamp.setType(ast.newPrimitiveType(PrimitiveType.LONG));
         timestamp.setName(ast.newSimpleName("timestamp"));
-        proxy.parameters().add(timestamp);
+        commit.parameters().add(timestamp);
+        
+        // Add a call to the restore method in the enclosing anonymous class.
+        MethodInvocation invocation = ast.newMethodInvocation();
+        invocation.setName(ast.newSimpleName(_getCommitMethodName(true)));
+        invocation.arguments().add(ast.newSimpleName("timestamp"));
+
+        Block body = ast.newBlock();
+        body.statements().add(ast.newExpressionStatement(invocation));
+        commit.setBody(body);
+        
+        commit.setModifiers(Modifier.PUBLIC | Modifier.FINAL);
+        classDeclaration.bodyDeclarations().add(commit);
+        
+        // Add a restore method.
+        MethodDeclaration restore = ast.newMethodDeclaration();
+        restore.setName(ast.newSimpleName(_getRestoreMethodName(false)));
+        
+        // Add two parameters.
+        timestamp = ast.newSingleVariableDeclaration();
+        timestamp.setType(ast.newPrimitiveType(PrimitiveType.LONG));
+        timestamp.setName(ast.newSimpleName("timestamp"));
+        restore.parameters().add(timestamp);
         
         SingleVariableDeclaration trim = 
             ast.newSingleVariableDeclaration();
         trim.setType(ast.newPrimitiveType(PrimitiveType.BOOLEAN));
         trim.setName(ast.newSimpleName("trim"));
-        proxy.parameters().add(trim);
+        restore.parameters().add(trim);
         
         // Add a call to the restore method in the enclosing anonymous class.
-        MethodInvocation invocation = ast.newMethodInvocation();
+        invocation = ast.newMethodInvocation();
         invocation.setName(ast.newSimpleName(_getRestoreMethodName(true)));
         invocation.arguments().add(ast.newSimpleName("timestamp"));
         invocation.arguments().add(ast.newSimpleName("trim"));
 
-        Block body = ast.newBlock();
+        body = ast.newBlock();
         body.statements().add(ast.newExpressionStatement(invocation));
-        proxy.setBody(body);
+        restore.setBody(body);
         
-        proxy.setModifiers(Modifier.PUBLIC | Modifier.FINAL);
-        classDeclaration.bodyDeclarations().add(proxy);
+        restore.setModifiers(Modifier.PUBLIC | Modifier.FINAL);
+        classDeclaration.bodyDeclarations().add(restore);
         
         // Add a get checkpoint method.
         MethodDeclaration getCheckpoint = ast.newMethodDeclaration();
@@ -1175,18 +1272,20 @@ public class AssignmentTransformer extends AbstractTransformer
             }
         
             // Add a call to the restore method in the superclass, if necessary.
+            SuperMethodInvocation superRestore = 
+                ast.newSuperMethodInvocation();
+            superRestore.setName(
+                    ast.newSimpleName(_getRestoreMethodName(false)));
+            superRestore.arguments().add(ast.newSimpleName("timestamp"));
+            superRestore.arguments().add(ast.newSimpleName("trim"));
+            Statement superRestoreStatement =
+                ast.newExpressionStatement(superRestore);
             if (parent != null &&
                     (state.getCrossAnalyzedTypes().contains(parent.getName()) ||
                      hasMethod(parent, methodName, 
-                             new Class[]{int.class, boolean.class}))) {
-                SuperMethodInvocation superRestore = 
-                    ast.newSuperMethodInvocation();
-                superRestore.setName(
-                        ast.newSimpleName(_getRestoreMethodName(false)));
-                superRestore.arguments().add(ast.newSimpleName("timestamp"));
-                superRestore.arguments().add(ast.newSimpleName("trim"));
-                body.statements().add(ast.newExpressionStatement(superRestore));
-            } else {
+                             new Class[]{int.class, boolean.class})))
+                body.statements().add(superRestoreStatement);
+            else {
                 // Restore the previous checkpoint, if necessary.
                 IfStatement restoreCheckpoint = ast.newIfStatement();
                 
@@ -1234,7 +1333,8 @@ public class AssignmentTransformer extends AbstractTransformer
                 body.statements().add(restoreCheckpoint);
                 
                 if (parent != null)
-                    addToLists(_fixParentRestoreMethods, parent.getName(), body);
+                    addToLists(_nodeSubstitution, parent.getName(),
+                            new NodeReplace(restoreCheckpoint, superRestoreStatement));
             }
         }
         
@@ -1433,7 +1533,8 @@ public class AssignmentTransformer extends AbstractTransformer
         method.setModifiers(isInterface ? Modifier.PUBLIC : (Modifier.PUBLIC | Modifier.FINAL));
         
         if (!isAnonymous && parent != null)
-            addToLists(_checkParentMethods, parent.getName(), method);
+            addToLists(_nodeSubstitution, parent.getName(),
+                    new NodeReplace(method, null));
         
         return method;
     }
@@ -1472,6 +1573,15 @@ public class AssignmentTransformer extends AbstractTransformer
             return null;
         List indicesList = (List)classTable.get(fieldName);
         return indicesList;
+    }
+    
+    /** Get the name of the commit method.
+     * 
+     *  @param isAnonymous Whether the current class is an anonymous class.
+     *  @return The name of the commit method.
+     */
+    private String _getCommitMethodName(boolean isAnonymous) {
+        return COMMIT_NAME + (isAnonymous ? "_ANONYMOUS" : "");
     }
     
     /** Get the name of the proxy class to be created in each anonymous class.
@@ -1842,7 +1952,6 @@ public class AssignmentTransformer extends AbstractTransformer
         AST ast = node.getAST();
         CompilationUnit root = (CompilationUnit)node.getRoot();
         
-        // The lists for _createRestoreMethod.
         List fieldNames = new LinkedList();
         List fieldTypes = new LinkedList();
         
@@ -1951,6 +2060,24 @@ public class AssignmentTransformer extends AbstractTransformer
         if (!isInterface && !ignore)
             newFields.add(_createRecordArray(ast, root, state, fieldNames));
 
+        // Add a commit method.
+        MethodDeclaration commitMethod = null;
+        if (!ignore) {
+            commitMethod =
+                _createCommitMethod(ast, root, state, fieldNames, 
+                        fieldTypes, isAnonymous, isInterface);
+            newMethods.add(commitMethod);
+        }
+        if (declarationRecord != null) {
+            if (!ignore)
+                declarationRecord._addExtendedDeclaration(commitMethod);
+            
+            MethodDeclaration fixedCommitMethod =
+                _createCommitMethod(ast, root, state, fieldNames, 
+                        fieldTypes, false, isInterface);
+            declarationRecord._addFixedDeclaration(fixedCommitMethod);
+        }
+        
         // Add a restore method.
         MethodDeclaration restoreMethod = null;
         if (!ignore) {
@@ -2166,28 +2293,6 @@ public class AssignmentTransformer extends AbstractTransformer
      */
     private Hashtable _specialAccessedFields = new Hashtable();
     
-    /** Keys are names of superclasses; values are lists of AST nodes
-     *  corresponding to the fields of children classes.
-     *  <p>
-     *  Used to avoid collision with superclasses.
-     */
-    private Hashtable _checkParentFields = new Hashtable();
-    
-    /** Keys are names of superclasses; values are lists of AST nodes
-     *  corresponding to the methods of children classes.
-     *  <p>
-     *  Used to avoid collision with superclasses.
-     */
-    private Hashtable _checkParentMethods = new Hashtable();
-    
-    /** Keys are names of superclasses; values are {@link Block} nodes of
-     *  restore methods in children classes.
-     *  <p>
-     *  When the superclasses are analyzed and refactored, calls to the
-     *  restore methods in superclasses are added to the body.
-     */
-    private Hashtable _fixParentRestoreMethods = new Hashtable();
-    
     /** Keys are names of classes; values are {@link Block} nodes of assign
      *  method bodies. If the classes are cross-analyzed, calls to set
      *  checkpoints need to be added to those blocks.
@@ -2211,6 +2316,8 @@ public class AssignmentTransformer extends AbstractTransformer
      *  declarations of anonymous classes recorded in this table must be fixed.
      */
     private Hashtable _rehandleDeclaration = new Hashtable();
+    
+    private Hashtable _nodeSubstitution = new Hashtable();
     
     private class RehandleDeclarationRecord {
         
@@ -2251,6 +2358,26 @@ public class AssignmentTransformer extends AbstractTransformer
         private List _extendedDeclarations = new LinkedList();
         
         private List _fixedDeclarations = new LinkedList();
+    }
+    
+    private class NodeReplace {
+        
+        NodeReplace(ASTNode fromNode, ASTNode toNode) {
+            _fromNode = fromNode;
+            _toNode = toNode;
+        }
+        
+        ASTNode _getFromNode() {
+            return _fromNode;
+        }
+        
+        ASTNode _getToNode() {
+            return _toNode;
+        }
+        
+        private ASTNode _fromNode;
+        
+        private ASTNode _toNode;
     }
     
     static {

@@ -71,6 +71,8 @@ public interface Collection extends Rollbackable {
 
     Object[] toArray(Object[] a);
 
+    public void $COMMIT(long timestamp);
+
     public void $RESTORE(long timestamp, boolean trim);
 
     public Checkpoint $GET$CHECKPOINT();

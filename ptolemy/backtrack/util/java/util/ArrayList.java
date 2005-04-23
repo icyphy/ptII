@@ -344,6 +344,11 @@ public class ArrayList extends AbstractList implements List, RandomAccess, Clone
         return data;
     }
 
+    public void $COMMIT(long timestamp) {
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+        super.$COMMIT(timestamp);
+    }
+
     public void $RESTORE(long timestamp, boolean trim) {
         size = $RECORD$size.restore(size, timestamp, trim);
         data = (Object[])$RECORD$data.restore(data, timestamp, trim);

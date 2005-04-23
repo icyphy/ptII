@@ -41,6 +41,13 @@ package ptolemy.backtrack;
 */
 public interface Rollbackable {
 
+    /** Commit changes up to the given timestamp, but not including changes
+     *  made at timestamp and afterward.
+     * 
+     *  @param timestamp The timestamp.
+     */
+    public void $COMMIT(long timestamp);
+    
     /** Get the checkpoint object that monitors this rollbackable object.
      *
      *  @return The checkpoint object.

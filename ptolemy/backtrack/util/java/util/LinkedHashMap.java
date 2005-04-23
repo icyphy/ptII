@@ -100,6 +100,11 @@ public class LinkedHashMap extends HashMap implements Rollbackable {
             return getValue();
         }
 
+        public void $COMMIT(long timestamp) {
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            super.$COMMIT(timestamp);
+        }
+
         public void $RESTORE(long timestamp, boolean trim) {
             super.$RESTORE(timestamp, trim);
         }
@@ -215,6 +220,10 @@ public class LinkedHashMap extends HashMap implements Rollbackable {
 
             final class _PROXY_ implements Rollbackable {
 
+                public final void $COMMIT(long timestamp) {
+                    $COMMIT_ANONYMOUS(timestamp);
+                }
+
                 public final void $RESTORE(long timestamp, boolean trim) {
                     $RESTORE_ANONYMOUS(timestamp, trim);
                 }
@@ -227,6 +236,11 @@ public class LinkedHashMap extends HashMap implements Rollbackable {
                     $SET$CHECKPOINT_ANONYMOUS(checkpoint);
                     return this;
                 }
+            }
+
+            public void $COMMIT_ANONYMOUS(long timestamp) {
+                FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                $RECORD$$CHECKPOINT.commit(timestamp);
             }
 
             public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
@@ -261,6 +275,11 @@ public class LinkedHashMap extends HashMap implements Rollbackable {
                 $CHECKPOINT.addObject(new _PROXY_());
             }
         };
+    }
+
+    public void $COMMIT(long timestamp) {
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+        super.$COMMIT(timestamp);
     }
 
     public void $RESTORE(long timestamp, boolean trim) {

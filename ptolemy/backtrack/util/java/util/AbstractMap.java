@@ -119,6 +119,11 @@ public abstract class AbstractMap implements Map, Rollbackable {
             return value = newValue;
         }
 
+        public void $COMMIT(long timestamp) {
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            $RECORD$$CHECKPOINT.commit(timestamp);
+        }
+
         public void $RESTORE(long timestamp, boolean trim) {
             key = (Object)$RECORD$key.restore(key, timestamp, trim);
             value = (Object)$RECORD$value.restore(value, timestamp, trim);
@@ -262,6 +267,10 @@ public abstract class AbstractMap implements Map, Rollbackable {
 
                         final class _PROXY_ implements Rollbackable {
 
+                            public final void $COMMIT(long timestamp) {
+                                $COMMIT_ANONYMOUS(timestamp);
+                            }
+
                             public final void $RESTORE(long timestamp, boolean trim) {
                                 $RESTORE_ANONYMOUS(timestamp, trim);
                             }
@@ -274,6 +283,11 @@ public abstract class AbstractMap implements Map, Rollbackable {
                                 $SET$CHECKPOINT_ANONYMOUS(checkpoint);
                                 return this;
                             }
+                        }
+
+                        public void $COMMIT_ANONYMOUS(long timestamp) {
+                            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                            $RECORD$$CHECKPOINT.commit(timestamp);
                         }
 
                         public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
@@ -316,6 +330,10 @@ public abstract class AbstractMap implements Map, Rollbackable {
 
                 final class _PROXY_ implements Rollbackable {
 
+                    public final void $COMMIT(long timestamp) {
+                        $COMMIT_ANONYMOUS(timestamp);
+                    }
+
                     public final void $RESTORE(long timestamp, boolean trim) {
                         $RESTORE_ANONYMOUS(timestamp, trim);
                     }
@@ -328,6 +346,11 @@ public abstract class AbstractMap implements Map, Rollbackable {
                         $SET$CHECKPOINT_ANONYMOUS(checkpoint);
                         return this;
                     }
+                }
+
+                public void $COMMIT_ANONYMOUS(long timestamp) {
+                    FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                    super.$COMMIT(timestamp);
                 }
 
                 public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
@@ -439,6 +462,10 @@ public abstract class AbstractMap implements Map, Rollbackable {
 
                         final class _PROXY_ implements Rollbackable {
 
+                            public final void $COMMIT(long timestamp) {
+                                $COMMIT_ANONYMOUS(timestamp);
+                            }
+
                             public final void $RESTORE(long timestamp, boolean trim) {
                                 $RESTORE_ANONYMOUS(timestamp, trim);
                             }
@@ -451,6 +478,11 @@ public abstract class AbstractMap implements Map, Rollbackable {
                                 $SET$CHECKPOINT_ANONYMOUS(checkpoint);
                                 return this;
                             }
+                        }
+
+                        public void $COMMIT_ANONYMOUS(long timestamp) {
+                            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                            $RECORD$$CHECKPOINT.commit(timestamp);
                         }
 
                         public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
@@ -493,6 +525,10 @@ public abstract class AbstractMap implements Map, Rollbackable {
 
                 final class _PROXY_ implements Rollbackable {
 
+                    public final void $COMMIT(long timestamp) {
+                        $COMMIT_ANONYMOUS(timestamp);
+                    }
+
                     public final void $RESTORE(long timestamp, boolean trim) {
                         $RESTORE_ANONYMOUS(timestamp, trim);
                     }
@@ -505,6 +541,11 @@ public abstract class AbstractMap implements Map, Rollbackable {
                         $SET$CHECKPOINT_ANONYMOUS(checkpoint);
                         return this;
                     }
+                }
+
+                public void $COMMIT_ANONYMOUS(long timestamp) {
+                    FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                    super.$COMMIT(timestamp);
                 }
 
                 public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
@@ -565,6 +606,11 @@ public abstract class AbstractMap implements Map, Rollbackable {
             newValue.$SET$CHECKPOINT($CHECKPOINT);
         }
         return values = newValue;
+    }
+
+    public void $COMMIT(long timestamp) {
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+        $RECORD$$CHECKPOINT.commit(timestamp);
     }
 
     public void $RESTORE(long timestamp, boolean trim) {

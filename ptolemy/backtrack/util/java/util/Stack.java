@@ -78,6 +78,11 @@ public class Stack extends Vector implements Rollbackable {
         return -1;
     }
 
+    public void $COMMIT(long timestamp) {
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+        super.$COMMIT(timestamp);
+    }
+
     public void $RESTORE(long timestamp, boolean trim) {
         super.$RESTORE(timestamp, trim);
     }

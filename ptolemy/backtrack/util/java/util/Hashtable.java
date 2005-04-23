@@ -112,6 +112,11 @@ public class Hashtable extends Dictionary implements Map, Cloneable, Serializabl
             return next = newValue;
         }
 
+        public void $COMMIT(long timestamp) {
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            super.$COMMIT(timestamp);
+        }
+
         public void $RESTORE(long timestamp, boolean trim) {
             next = (HashEntry)$RECORD$next.restore(next, timestamp, trim);
             super.$RESTORE(timestamp, trim);
@@ -259,6 +264,11 @@ public class Hashtable extends Dictionary implements Map, Cloneable, Serializabl
             return next = newValue;
         }
 
+        public void $COMMIT(long timestamp) {
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            $RECORD$$CHECKPOINT.commit(timestamp);
+        }
+
         public void $RESTORE(long timestamp, boolean trim) {
             knownMod = $RECORD$knownMod.restore(knownMod, timestamp, trim);
             count = $RECORD$count.restore(count, timestamp, trim);
@@ -387,6 +397,11 @@ public class Hashtable extends Dictionary implements Map, Cloneable, Serializabl
                 newValue.$SET$CHECKPOINT($CHECKPOINT);
             }
             return next = newValue;
+        }
+
+        public void $COMMIT(long timestamp) {
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            $RECORD$$CHECKPOINT.commit(timestamp);
         }
 
         public void $RESTORE(long timestamp, boolean trim) {
@@ -633,6 +648,10 @@ public class Hashtable extends Dictionary implements Map, Cloneable, Serializabl
 
                 final class _PROXY_ implements Rollbackable {
 
+                    public final void $COMMIT(long timestamp) {
+                        $COMMIT_ANONYMOUS(timestamp);
+                    }
+
                     public final void $RESTORE(long timestamp, boolean trim) {
                         $RESTORE_ANONYMOUS(timestamp, trim);
                     }
@@ -645,6 +664,11 @@ public class Hashtable extends Dictionary implements Map, Cloneable, Serializabl
                         $SET$CHECKPOINT_ANONYMOUS(checkpoint);
                         return this;
                     }
+                }
+
+                public void $COMMIT_ANONYMOUS(long timestamp) {
+                    FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                    super.$COMMIT(timestamp);
                 }
 
                 public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
@@ -699,6 +723,10 @@ public class Hashtable extends Dictionary implements Map, Cloneable, Serializabl
 
                 final class _PROXY_ implements Rollbackable {
 
+                    public final void $COMMIT(long timestamp) {
+                        $COMMIT_ANONYMOUS(timestamp);
+                    }
+
                     public final void $RESTORE(long timestamp, boolean trim) {
                         $RESTORE_ANONYMOUS(timestamp, trim);
                     }
@@ -711,6 +739,11 @@ public class Hashtable extends Dictionary implements Map, Cloneable, Serializabl
                         $SET$CHECKPOINT_ANONYMOUS(checkpoint);
                         return this;
                     }
+                }
+
+                public void $COMMIT_ANONYMOUS(long timestamp) {
+                    FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                    super.$COMMIT(timestamp);
                 }
 
                 public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
@@ -778,6 +811,10 @@ public class Hashtable extends Dictionary implements Map, Cloneable, Serializabl
 
                 final class _PROXY_ implements Rollbackable {
 
+                    public final void $COMMIT(long timestamp) {
+                        $COMMIT_ANONYMOUS(timestamp);
+                    }
+
                     public final void $RESTORE(long timestamp, boolean trim) {
                         $RESTORE_ANONYMOUS(timestamp, trim);
                     }
@@ -790,6 +827,11 @@ public class Hashtable extends Dictionary implements Map, Cloneable, Serializabl
                         $SET$CHECKPOINT_ANONYMOUS(checkpoint);
                         return this;
                     }
+                }
+
+                public void $COMMIT_ANONYMOUS(long timestamp) {
+                    FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                    super.$COMMIT(timestamp);
                 }
 
                 public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
@@ -1058,6 +1100,11 @@ public class Hashtable extends Dictionary implements Map, Cloneable, Serializabl
             newValue.$SET$CHECKPOINT($CHECKPOINT);
         }
         return entries = newValue;
+    }
+
+    public void $COMMIT(long timestamp) {
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+        $RECORD$$CHECKPOINT.commit(timestamp);
     }
 
     public void $RESTORE(long timestamp, boolean trim) {

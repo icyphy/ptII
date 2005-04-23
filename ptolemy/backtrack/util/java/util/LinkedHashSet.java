@@ -62,6 +62,11 @@ public class LinkedHashSet extends HashSet implements Set, Cloneable, Serializab
         return new LinkedHashMap(capacity, load);
     }
 
+    public void $COMMIT(long timestamp) {
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+        super.$COMMIT(timestamp);
+    }
+
     public void $RESTORE(long timestamp, boolean trim) {
         super.$RESTORE(timestamp, trim);
     }

@@ -161,6 +161,11 @@ public class Random implements Serializable, Rollbackable {
         return seed = newValue;
     }
 
+    public void $COMMIT(long timestamp) {
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+        $RECORD$$CHECKPOINT.commit(timestamp);
+    }
+
     public void $RESTORE(long timestamp, boolean trim) {
         haveNextNextGaussian = $RECORD$haveNextNextGaussian.restore(haveNextNextGaussian, timestamp, trim);
         nextNextGaussian = $RECORD$nextNextGaussian.restore(nextNextGaussian, timestamp, trim);

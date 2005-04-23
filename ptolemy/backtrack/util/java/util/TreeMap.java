@@ -151,6 +151,11 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
             return parent = newValue;
         }
 
+        public void $COMMIT(long timestamp) {
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            super.$COMMIT(timestamp);
+        }
+
         public void $RESTORE(long timestamp, boolean trim) {
             color = $RECORD$color.restore(color, timestamp, trim);
             left = (Node)$RECORD$left.restore(left, timestamp, trim);
@@ -289,6 +294,11 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
                 newValue.$SET$CHECKPOINT($CHECKPOINT);
             }
             return next = newValue;
+        }
+
+        public void $COMMIT(long timestamp) {
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            $RECORD$$CHECKPOINT.commit(timestamp);
         }
 
         public void $RESTORE(long timestamp, boolean trim) {
@@ -435,6 +445,10 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
 
                     final class _PROXY_ implements Rollbackable {
 
+                        public final void $COMMIT(long timestamp) {
+                            $COMMIT_ANONYMOUS(timestamp);
+                        }
+
                         public final void $RESTORE(long timestamp, boolean trim) {
                             $RESTORE_ANONYMOUS(timestamp, trim);
                         }
@@ -447,6 +461,11 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
                             $SET$CHECKPOINT_ANONYMOUS(checkpoint);
                             return this;
                         }
+                    }
+
+                    public void $COMMIT_ANONYMOUS(long timestamp) {
+                        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                        super.$COMMIT(timestamp);
                     }
 
                     public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
@@ -537,6 +556,10 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
 
                     final class _PROXY_ implements Rollbackable {
 
+                        public final void $COMMIT(long timestamp) {
+                            $COMMIT_ANONYMOUS(timestamp);
+                        }
+
                         public final void $RESTORE(long timestamp, boolean trim) {
                             $RESTORE_ANONYMOUS(timestamp, trim);
                         }
@@ -549,6 +572,11 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
                             $SET$CHECKPOINT_ANONYMOUS(checkpoint);
                             return this;
                         }
+                    }
+
+                    public void $COMMIT_ANONYMOUS(long timestamp) {
+                        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                        super.$COMMIT(timestamp);
                     }
 
                     public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
@@ -645,6 +673,10 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
 
                     final class _PROXY_ implements Rollbackable {
 
+                        public final void $COMMIT(long timestamp) {
+                            $COMMIT_ANONYMOUS(timestamp);
+                        }
+
                         public final void $RESTORE(long timestamp, boolean trim) {
                             $RESTORE_ANONYMOUS(timestamp, trim);
                         }
@@ -657,6 +689,11 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
                             $SET$CHECKPOINT_ANONYMOUS(checkpoint);
                             return this;
                         }
+                    }
+
+                    public void $COMMIT_ANONYMOUS(long timestamp) {
+                        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                        super.$COMMIT(timestamp);
                     }
 
                     public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
@@ -699,6 +736,11 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
                 newValue.$SET$CHECKPOINT($CHECKPOINT);
             }
             return entries = newValue;
+        }
+
+        public void $COMMIT(long timestamp) {
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            super.$COMMIT(timestamp);
         }
 
         public void $RESTORE(long timestamp, boolean trim) {
@@ -823,6 +865,10 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
 
                 final class _PROXY_ implements Rollbackable {
 
+                    public final void $COMMIT(long timestamp) {
+                        $COMMIT_ANONYMOUS(timestamp);
+                    }
+
                     public final void $RESTORE(long timestamp, boolean trim) {
                         $RESTORE_ANONYMOUS(timestamp, trim);
                     }
@@ -835,6 +881,11 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
                         $SET$CHECKPOINT_ANONYMOUS(checkpoint);
                         return this;
                     }
+                }
+
+                public void $COMMIT_ANONYMOUS(long timestamp) {
+                    FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                    super.$COMMIT(timestamp);
                 }
 
                 public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
@@ -913,6 +964,10 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
 
                 final class _PROXY_ implements Rollbackable {
 
+                    public final void $COMMIT(long timestamp) {
+                        $COMMIT_ANONYMOUS(timestamp);
+                    }
+
                     public final void $RESTORE(long timestamp, boolean trim) {
                         $RESTORE_ANONYMOUS(timestamp, trim);
                     }
@@ -925,6 +980,11 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
                         $SET$CHECKPOINT_ANONYMOUS(checkpoint);
                         return this;
                     }
+                }
+
+                public void $COMMIT_ANONYMOUS(long timestamp) {
+                    FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                    super.$COMMIT(timestamp);
                 }
 
                 public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
@@ -1043,6 +1103,10 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
 
                 final class _PROXY_ implements Rollbackable {
 
+                    public final void $COMMIT(long timestamp) {
+                        $COMMIT_ANONYMOUS(timestamp);
+                    }
+
                     public final void $RESTORE(long timestamp, boolean trim) {
                         $RESTORE_ANONYMOUS(timestamp, trim);
                     }
@@ -1055,6 +1119,11 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
                         $SET$CHECKPOINT_ANONYMOUS(checkpoint);
                         return this;
                     }
+                }
+
+                public void $COMMIT_ANONYMOUS(long timestamp) {
+                    FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                    super.$COMMIT(timestamp);
                 }
 
                 public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
@@ -1554,6 +1623,11 @@ static     {
             default:
                 return modCount;
         }
+    }
+
+    public void $COMMIT(long timestamp) {
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+        super.$COMMIT(timestamp);
     }
 
     public void $RESTORE(long timestamp, boolean trim) {

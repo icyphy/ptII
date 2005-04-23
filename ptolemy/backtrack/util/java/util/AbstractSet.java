@@ -70,6 +70,11 @@ public abstract class AbstractSet extends AbstractCollection implements Set, Rol
         return oldsize != size();
     }
 
+    public void $COMMIT(long timestamp) {
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+        super.$COMMIT(timestamp);
+    }
+
     public void $RESTORE(long timestamp, boolean trim) {
         super.$RESTORE(timestamp, trim);
     }

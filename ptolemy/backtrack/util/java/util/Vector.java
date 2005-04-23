@@ -136,6 +136,10 @@ public class Vector extends AbstractList implements List, RandomAccess, Cloneabl
 
             final class _PROXY_ implements Rollbackable {
 
+                public final void $COMMIT(long timestamp) {
+                    $COMMIT_ANONYMOUS(timestamp);
+                }
+
                 public final void $RESTORE(long timestamp, boolean trim) {
                     $RESTORE_ANONYMOUS(timestamp, trim);
                 }
@@ -188,6 +192,11 @@ public class Vector extends AbstractList implements List, RandomAccess, Cloneabl
                     default:
                         return i;
                 }
+            }
+
+            public void $COMMIT_ANONYMOUS(long timestamp) {
+                FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                $RECORD$$CHECKPOINT.commit(timestamp);
             }
 
             public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
@@ -564,6 +573,11 @@ public class Vector extends AbstractList implements List, RandomAccess, Cloneabl
             $RECORD$capacityIncrement.add(null, capacityIncrement, $CHECKPOINT.getTimestamp());
         }
         return capacityIncrement = newValue;
+    }
+
+    public void $COMMIT(long timestamp) {
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+        super.$COMMIT(timestamp);
     }
 
     public void $RESTORE(long timestamp, boolean trim) {

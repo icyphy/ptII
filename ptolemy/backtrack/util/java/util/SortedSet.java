@@ -53,6 +53,8 @@ public interface SortedSet extends Set, Rollbackable {
 
     SortedSet tailSet(Object fromElement);
 
+    public void $COMMIT(long timestamp);
+
     public void $RESTORE(long timestamp, boolean trim);
 
     public Checkpoint $GET$CHECKPOINT();

@@ -52,6 +52,8 @@ public interface Map extends Rollbackable {
 
         boolean equals(Object o);
 
+        public void $COMMIT(long timestamp);
+
         public void $RESTORE(long timestamp, boolean trim);
 
         public Checkpoint $GET$CHECKPOINT();
@@ -86,6 +88,8 @@ public interface Map extends Rollbackable {
     int size();
 
     Collection values();
+
+    public void $COMMIT(long timestamp);
 
     public void $RESTORE(long timestamp, boolean trim);
 

@@ -84,6 +84,11 @@ public class HashMap extends AbstractMap implements Map, Cloneable, Serializable
             return getValue();
         }
 
+        public void $COMMIT(long timestamp) {
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            super.$COMMIT(timestamp);
+        }
+
         public void $RESTORE(long timestamp, boolean trim) {
             super.$RESTORE(timestamp, trim);
         }
@@ -284,6 +289,11 @@ public class HashMap extends AbstractMap implements Map, Cloneable, Serializable
                 newValue.$SET$CHECKPOINT($CHECKPOINT);
             }
             return next = newValue;
+        }
+
+        public void $COMMIT(long timestamp) {
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            $RECORD$$CHECKPOINT.commit(timestamp);
         }
 
         public void $RESTORE(long timestamp, boolean trim) {
@@ -532,6 +542,10 @@ public class HashMap extends AbstractMap implements Map, Cloneable, Serializable
 
                 final class _PROXY_ implements Rollbackable {
 
+                    public final void $COMMIT(long timestamp) {
+                        $COMMIT_ANONYMOUS(timestamp);
+                    }
+
                     public final void $RESTORE(long timestamp, boolean trim) {
                         $RESTORE_ANONYMOUS(timestamp, trim);
                     }
@@ -544,6 +558,11 @@ public class HashMap extends AbstractMap implements Map, Cloneable, Serializable
                         $SET$CHECKPOINT_ANONYMOUS(checkpoint);
                         return this;
                     }
+                }
+
+                public void $COMMIT_ANONYMOUS(long timestamp) {
+                    FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                    super.$COMMIT(timestamp);
                 }
 
                 public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
@@ -596,6 +615,10 @@ public class HashMap extends AbstractMap implements Map, Cloneable, Serializable
 
                 final class _PROXY_ implements Rollbackable {
 
+                    public final void $COMMIT(long timestamp) {
+                        $COMMIT_ANONYMOUS(timestamp);
+                    }
+
                     public final void $RESTORE(long timestamp, boolean trim) {
                         $RESTORE_ANONYMOUS(timestamp, trim);
                     }
@@ -608,6 +631,11 @@ public class HashMap extends AbstractMap implements Map, Cloneable, Serializable
                         $SET$CHECKPOINT_ANONYMOUS(checkpoint);
                         return this;
                     }
+                }
+
+                public void $COMMIT_ANONYMOUS(long timestamp) {
+                    FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                    super.$COMMIT(timestamp);
                 }
 
                 public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
@@ -673,6 +701,10 @@ public class HashMap extends AbstractMap implements Map, Cloneable, Serializable
 
                 final class _PROXY_ implements Rollbackable {
 
+                    public final void $COMMIT(long timestamp) {
+                        $COMMIT_ANONYMOUS(timestamp);
+                    }
+
                     public final void $RESTORE(long timestamp, boolean trim) {
                         $RESTORE_ANONYMOUS(timestamp, trim);
                     }
@@ -685,6 +717,11 @@ public class HashMap extends AbstractMap implements Map, Cloneable, Serializable
                         $SET$CHECKPOINT_ANONYMOUS(checkpoint);
                         return this;
                     }
+                }
+
+                public void $COMMIT_ANONYMOUS(long timestamp) {
+                    FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                    super.$COMMIT(timestamp);
                 }
 
                 public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
@@ -939,6 +976,11 @@ public class HashMap extends AbstractMap implements Map, Cloneable, Serializable
             newValue.$SET$CHECKPOINT($CHECKPOINT);
         }
         return entries = newValue;
+    }
+
+    public void $COMMIT(long timestamp) {
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+        super.$COMMIT(timestamp);
     }
 
     public void $RESTORE(long timestamp, boolean trim) {

@@ -50,6 +50,11 @@ public class CheckpointRecord {
         _records.push(new Record(checkpoint, timestamp));
     }
     
+    public void commit(long timestamp) {
+        if (timestamp > getTopTimestamp())
+            _records.clear();
+    }
+    
     public long getTopTimestamp() {
         if (_records.isEmpty())
             return -1;

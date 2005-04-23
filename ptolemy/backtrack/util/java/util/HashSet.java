@@ -135,6 +135,11 @@ public class HashSet extends AbstractSet implements Set, Cloneable, Serializable
         return map = newValue;
     }
 
+    public void $COMMIT(long timestamp) {
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+        super.$COMMIT(timestamp);
+    }
+
     public void $RESTORE(long timestamp, boolean trim) {
         map = (HashMap)$RECORD$map.restore(map, timestamp, trim);
         super.$RESTORE(timestamp, trim);

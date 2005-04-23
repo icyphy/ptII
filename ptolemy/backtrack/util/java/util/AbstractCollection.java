@@ -181,6 +181,11 @@ public abstract class AbstractCollection implements Collection, Rollbackable {
         return o == null?0:o.hashCode();
     }
 
+    public void $COMMIT(long timestamp) {
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+        $RECORD$$CHECKPOINT.commit(timestamp);
+    }
+
     public void $RESTORE(long timestamp, boolean trim) {
         if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
             $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);

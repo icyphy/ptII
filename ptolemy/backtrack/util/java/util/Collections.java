@@ -124,6 +124,11 @@ public class Collections implements Rollbackable {
             return "[]";
         }
 
+        public void $COMMIT(long timestamp) {
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            super.$COMMIT(timestamp);
+        }
+
         public void $RESTORE(long timestamp, boolean trim) {
             super.$RESTORE(timestamp, trim);
         }
@@ -197,6 +202,11 @@ public class Collections implements Rollbackable {
             return "[]";
         }
 
+        public void $COMMIT(long timestamp) {
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            super.$COMMIT(timestamp);
+        }
+
         public void $RESTORE(long timestamp, boolean trim) {
             super.$RESTORE(timestamp, trim);
         }
@@ -254,6 +264,11 @@ public class Collections implements Rollbackable {
 
         public String toString() {
             return "[]";
+        }
+
+        public void $COMMIT(long timestamp) {
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            super.$COMMIT(timestamp);
         }
 
         public void $RESTORE(long timestamp, boolean trim) {
@@ -321,6 +336,11 @@ public class Collections implements Rollbackable {
             return r.toString();
         }
 
+        public void $COMMIT(long timestamp) {
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            super.$COMMIT(timestamp);
+        }
+
         public void $RESTORE(long timestamp, boolean trim) {
             $RECORD$element.restore(element, timestamp, trim);
             super.$RESTORE(timestamp, trim);
@@ -347,6 +367,11 @@ public class Collections implements Rollbackable {
 
         public int compare(Object a, Object b) {
             return ((Comparable)b).compareTo(a);
+        }
+
+        public void $COMMIT(long timestamp) {
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            $RECORD$$CHECKPOINT.commit(timestamp);
         }
 
         public void $RESTORE(long timestamp, boolean trim) {
@@ -417,6 +442,10 @@ public class Collections implements Rollbackable {
 
                 final class _PROXY_ implements Rollbackable {
 
+                    public final void $COMMIT(long timestamp) {
+                        $COMMIT_ANONYMOUS(timestamp);
+                    }
+
                     public final void $RESTORE(long timestamp, boolean trim) {
                         $RESTORE_ANONYMOUS(timestamp, trim);
                     }
@@ -436,6 +465,11 @@ public class Collections implements Rollbackable {
                         $RECORD$hasNext.add(null, hasNext, $CHECKPOINT.getTimestamp());
                     }
                     return hasNext = newValue;
+                }
+
+                public void $COMMIT_ANONYMOUS(long timestamp) {
+                    FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                    $RECORD$$CHECKPOINT.commit(timestamp);
                 }
 
                 public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
@@ -501,6 +535,11 @@ public class Collections implements Rollbackable {
 
         public String toString() {
             return "[" + element+"]";
+        }
+
+        public void $COMMIT(long timestamp) {
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            super.$COMMIT(timestamp);
         }
 
         public void $RESTORE(long timestamp, boolean trim) {
@@ -576,6 +615,11 @@ public class Collections implements Rollbackable {
             return "[" + element+"]";
         }
 
+        public void $COMMIT(long timestamp) {
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            super.$COMMIT(timestamp);
+        }
+
         public void $RESTORE(long timestamp, boolean trim) {
             $RECORD$element.restore(element, timestamp, trim);
             super.$RESTORE(timestamp, trim);
@@ -613,6 +657,10 @@ public class Collections implements Rollbackable {
 
                     final class _PROXY_ implements Rollbackable {
 
+                        public final void $COMMIT(long timestamp) {
+                            $COMMIT_ANONYMOUS(timestamp);
+                        }
+
                         public final void $RESTORE(long timestamp, boolean trim) {
                             $RESTORE_ANONYMOUS(timestamp, trim);
                         }
@@ -625,6 +673,11 @@ public class Collections implements Rollbackable {
                             $SET$CHECKPOINT_ANONYMOUS(checkpoint);
                             return this;
                         }
+                    }
+
+                    public void $COMMIT_ANONYMOUS(long timestamp) {
+                        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                        super.$COMMIT(timestamp);
                     }
 
                     public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
@@ -703,6 +756,11 @@ public class Collections implements Rollbackable {
                 newValue.$SET$CHECKPOINT($CHECKPOINT);
             }
             return entries = newValue;
+        }
+
+        public void $COMMIT(long timestamp) {
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            super.$COMMIT(timestamp);
         }
 
         public void $RESTORE(long timestamp, boolean trim) {
@@ -831,6 +889,11 @@ public class Collections implements Rollbackable {
             }
         }
 
+        public void $COMMIT(long timestamp) {
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            $RECORD$$CHECKPOINT.commit(timestamp);
+        }
+
         public void $RESTORE(long timestamp, boolean trim) {
             if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
                 $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
@@ -891,6 +954,11 @@ public class Collections implements Rollbackable {
             synchronized (mutex) {
                 i.remove();
             }
+        }
+
+        public void $COMMIT(long timestamp) {
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            $RECORD$$CHECKPOINT.commit(timestamp);
         }
 
         public void $RESTORE(long timestamp, boolean trim) {
@@ -1016,6 +1084,11 @@ public class Collections implements Rollbackable {
             }
         }
 
+        public void $COMMIT(long timestamp) {
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            super.$COMMIT(timestamp);
+        }
+
         public void $RESTORE(long timestamp, boolean trim) {
             super.$RESTORE(timestamp, trim);
         }
@@ -1040,6 +1113,11 @@ public class Collections implements Rollbackable {
             synchronized (mutex) {
                 return new SynchronizedRandomAccessList(mutex, list.subList(fromIndex, toIndex));
             }
+        }
+
+        public void $COMMIT(long timestamp) {
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            super.$COMMIT(timestamp);
         }
 
         public void $RESTORE(long timestamp, boolean trim) {
@@ -1093,6 +1171,11 @@ public class Collections implements Rollbackable {
             synchronized (mutex) {
                 li.set(o);
             }
+        }
+
+        public void $COMMIT(long timestamp) {
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            super.$COMMIT(timestamp);
         }
 
         public void $RESTORE(long timestamp, boolean trim) {
@@ -1201,6 +1284,11 @@ public class Collections implements Rollbackable {
                     }
                 }
 
+                public void $COMMIT(long timestamp) {
+                    FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                    $RECORD$$CHECKPOINT.commit(timestamp);
+                }
+
                 public void $RESTORE(long timestamp, boolean trim) {
                     if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
                         $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
@@ -1247,6 +1335,10 @@ public class Collections implements Rollbackable {
 
                                     final class _PROXY_ implements Rollbackable {
 
+                                        public final void $COMMIT(long timestamp) {
+                                            $COMMIT_ANONYMOUS(timestamp);
+                                        }
+
                                         public final void $RESTORE(long timestamp, boolean trim) {
                                             $RESTORE_ANONYMOUS(timestamp, trim);
                                         }
@@ -1259,6 +1351,11 @@ public class Collections implements Rollbackable {
                                             $SET$CHECKPOINT_ANONYMOUS(checkpoint);
                                             return this;
                                         }
+                                    }
+
+                                    public void $COMMIT_ANONYMOUS(long timestamp) {
+                                        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                                        super.$COMMIT(timestamp);
                                     }
 
                                     public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
@@ -1295,6 +1392,10 @@ public class Collections implements Rollbackable {
 
                         final class _PROXY_ implements Rollbackable {
 
+                            public final void $COMMIT(long timestamp) {
+                                $COMMIT_ANONYMOUS(timestamp);
+                            }
+
                             public final void $RESTORE(long timestamp, boolean trim) {
                                 $RESTORE_ANONYMOUS(timestamp, trim);
                             }
@@ -1307,6 +1408,11 @@ public class Collections implements Rollbackable {
                                 $SET$CHECKPOINT_ANONYMOUS(checkpoint);
                                 return this;
                             }
+                        }
+
+                        public void $COMMIT_ANONYMOUS(long timestamp) {
+                            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                            super.$COMMIT(timestamp);
                         }
 
                         public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
@@ -1442,6 +1548,11 @@ public class Collections implements Rollbackable {
             return values = newValue;
         }
 
+        public void $COMMIT(long timestamp) {
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            $RECORD$$CHECKPOINT.commit(timestamp);
+        }
+
         public void $RESTORE(long timestamp, boolean trim) {
             $RECORD$m.restore(m, timestamp, trim);
             entries = (Set)$RECORD$entries.restore(entries, timestamp, trim);
@@ -1513,6 +1624,11 @@ public class Collections implements Rollbackable {
             }
         }
 
+        public void $COMMIT(long timestamp) {
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            super.$COMMIT(timestamp);
+        }
+
         public void $RESTORE(long timestamp, boolean trim) {
             super.$RESTORE(timestamp, trim);
         }
@@ -1571,6 +1687,11 @@ public class Collections implements Rollbackable {
             synchronized (mutex) {
                 return new SynchronizedSortedMap(mutex, sm.tailMap(fromKey));
             }
+        }
+
+        public void $COMMIT(long timestamp) {
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            super.$COMMIT(timestamp);
         }
 
         public void $RESTORE(long timestamp, boolean trim) {
@@ -1635,6 +1756,11 @@ public class Collections implements Rollbackable {
             synchronized (mutex) {
                 return new SynchronizedSortedSet(mutex, ss.tailSet(fromElement));
             }
+        }
+
+        public void $COMMIT(long timestamp) {
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            super.$COMMIT(timestamp);
         }
 
         public void $RESTORE(long timestamp, boolean trim) {
@@ -1719,6 +1845,11 @@ public class Collections implements Rollbackable {
             return c.toString();
         }
 
+        public void $COMMIT(long timestamp) {
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            $RECORD$$CHECKPOINT.commit(timestamp);
+        }
+
         public void $RESTORE(long timestamp, boolean trim) {
             if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
                 $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
@@ -1770,6 +1901,11 @@ public class Collections implements Rollbackable {
 
         public void remove() {
             throw new UnsupportedOperationException();
+        }
+
+        public void $COMMIT(long timestamp) {
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            $RECORD$$CHECKPOINT.commit(timestamp);
         }
 
         public void $RESTORE(long timestamp, boolean trim) {
@@ -1866,6 +2002,11 @@ public class Collections implements Rollbackable {
             return unmodifiableList(list.subList(fromIndex, toIndex));
         }
 
+        public void $COMMIT(long timestamp) {
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            super.$COMMIT(timestamp);
+        }
+
         public void $RESTORE(long timestamp, boolean trim) {
             super.$RESTORE(timestamp, trim);
         }
@@ -1880,6 +2021,11 @@ public class Collections implements Rollbackable {
 
         UnmodifiableRandomAccessList(List l) {
             super(l);
+        }
+
+        public void $COMMIT(long timestamp) {
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            super.$COMMIT(timestamp);
         }
 
         public void $RESTORE(long timestamp, boolean trim) {
@@ -1921,6 +2067,11 @@ public class Collections implements Rollbackable {
 
         public void set(Object o) {
             throw new UnsupportedOperationException();
+        }
+
+        public void $COMMIT(long timestamp) {
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            super.$COMMIT(timestamp);
         }
 
         public void $RESTORE(long timestamp, boolean trim) {
@@ -1990,6 +2141,11 @@ public class Collections implements Rollbackable {
                                 return e.toString();
                             }
 
+                            public void $COMMIT(long timestamp) {
+                                FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                                $RECORD$$CHECKPOINT.commit(timestamp);
+                            }
+
                             public void $RESTORE(long timestamp, boolean trim) {
                                 if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
                                     $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
@@ -2024,6 +2180,10 @@ public class Collections implements Rollbackable {
 
                     final class _PROXY_ implements Rollbackable {
 
+                        public final void $COMMIT(long timestamp) {
+                            $COMMIT_ANONYMOUS(timestamp);
+                        }
+
                         public final void $RESTORE(long timestamp, boolean trim) {
                             $RESTORE_ANONYMOUS(timestamp, trim);
                         }
@@ -2036,6 +2196,11 @@ public class Collections implements Rollbackable {
                             $SET$CHECKPOINT_ANONYMOUS(checkpoint);
                             return this;
                         }
+                    }
+
+                    public void $COMMIT_ANONYMOUS(long timestamp) {
+                        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                        super.$COMMIT(timestamp);
                     }
 
                     public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
@@ -2067,6 +2232,11 @@ public class Collections implements Rollbackable {
                         $CHECKPOINT.addObject(new _PROXY_());
                     }
                 };
+            }
+
+            public void $COMMIT(long timestamp) {
+                FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                super.$COMMIT(timestamp);
             }
 
             public void $RESTORE(long timestamp, boolean trim) {
@@ -2179,6 +2349,11 @@ public class Collections implements Rollbackable {
             return values = newValue;
         }
 
+        public void $COMMIT(long timestamp) {
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            $RECORD$$CHECKPOINT.commit(timestamp);
+        }
+
         public void $RESTORE(long timestamp, boolean trim) {
             $RECORD$m.restore(m, timestamp, trim);
             entries = (Set)$RECORD$entries.restore(entries, timestamp, trim);
@@ -2242,6 +2417,11 @@ public class Collections implements Rollbackable {
             return c.hashCode();
         }
 
+        public void $COMMIT(long timestamp) {
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            super.$COMMIT(timestamp);
+        }
+
         public void $RESTORE(long timestamp, boolean trim) {
             super.$RESTORE(timestamp, trim);
         }
@@ -2283,6 +2463,11 @@ public class Collections implements Rollbackable {
 
         public SortedMap tailMap(Object fromKey) {
             return new UnmodifiableSortedMap(sm.tailMap(fromKey));
+        }
+
+        public void $COMMIT(long timestamp) {
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            super.$COMMIT(timestamp);
         }
 
         public void $RESTORE(long timestamp, boolean trim) {
@@ -2340,6 +2525,11 @@ public class Collections implements Rollbackable {
                 newValue.$SET$CHECKPOINT($CHECKPOINT);
             }
             return ss = newValue;
+        }
+
+        public void $COMMIT(long timestamp) {
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            super.$COMMIT(timestamp);
         }
 
         public void $RESTORE(long timestamp, boolean trim) {
@@ -2666,6 +2856,11 @@ public class Collections implements Rollbackable {
 
     public static SortedSet unmodifiableSortedSet(SortedSet s) {
         return new UnmodifiableSortedSet(s);
+    }
+
+    public void $COMMIT(long timestamp) {
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+        $RECORD$$CHECKPOINT.commit(timestamp);
     }
 
     public void $RESTORE(long timestamp, boolean trim) {

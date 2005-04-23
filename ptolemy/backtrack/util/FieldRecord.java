@@ -454,6 +454,67 @@ public class FieldRecord {
         return new CombinedIterator();
     }
     
+    /** Commit the changes up to the time represented by the timestamp. Records
+     *  older than that time are deleted.
+     *  
+     *  @param timestamp The timestamp.
+     */
+    public void commit(long timestamp) {
+        FieldRecordState topState = _getTopState();
+        if (topState != null) {
+            RecordList[] recordLists = topState._getRecords();
+            for (int i = 0; i < recordLists.length; i++)
+                if (recordLists[i] != null) {
+                    RecordList list = recordLists[i];
+                    while (list != null &&
+                            list._getRecord().getTimestamp() >= timestamp)
+                        list = list._getNext();
+                    if (list != null)
+                        if (list._getPrevious() != null)
+                            list._getPrevious()._setNext(null);
+                        else
+                            recordLists[i] = null;
+                }
+        }
+    }
+    
+    /** Commit the changes in all the <tt>FieldRecord</tt> objects up to the
+     *  time represented by the timestamp. Records older than that time are
+     *  deleted.
+     *  
+     *  @param records The array of field records.
+     *  @param timestamp The timestamp.
+     *  @param topStackTimestamp The timestamp taken when the checkpoint object
+     *   was assigned.
+     *  @see #commit(long)
+     *  @see CheckpointRecord#getTopTimestamp()
+     */
+    public static void commit(FieldRecord[] records, long timestamp,
+            long topStackTimestamp) {
+        for (int i = 0; i < records.length; i++)
+            records[i].commit(timestamp);
+        if (timestamp > topStackTimestamp)
+            for (int i = 0; i < records.length; i++)
+                records[i].commitState();
+    }
+    
+    /** Commit the state of this field record, and delete older states in its
+     *  stack.
+     *  <p>
+     *  Old states of field records are kept when a new checkpoint object is
+     *  assigned to a monitored object. This function deletes those old states,
+     *  but keep only the last (current) state.
+     *  
+     *  @see #popState()
+     *  @see #pushState()
+     */
+    public void commitState() {
+        FieldRecordState lastState = _getTopState();
+        _states.clear();
+        if (lastState != null)
+            _states.push(lastState);
+    }
+    
     /** Return the iterator of the records with the specified index.
      *  E.g., for a field <tt>f</tt> of type <tt>int[][]</tt>
      *  (2-dimensional):
