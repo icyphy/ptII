@@ -36,6 +36,7 @@ config.status
 core
 doc/design/src
 doc/design/html
+doc/img/PtolemyIISplash.psd
 doc/uml
 doc/uml/*
 java.hprof.txt
