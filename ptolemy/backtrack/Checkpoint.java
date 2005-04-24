@@ -69,6 +69,18 @@ public class Checkpoint {
         if (object != null)
             addObject(object);
     }
+    
+    /** Commit the changes on all the monitored objects up to the given
+     *  timestamp. Records of changes with timestamps less than the given
+     *  timestamp are deleted.
+     * 
+     *  @param timestamp The timestamp.
+     */
+    public synchronized void commit(long timestamp) {
+        Iterator objectsIter = _state.getMonitoredObjects().iterator();
+        while (objectsIter.hasNext())
+            ((Rollbackable)objectsIter.next()).$COMMIT(timestamp);
+    }
 
     /** Create a new checkpoint and return its handle. The current timestamp is
      *  increased by one before the it (as a handle) is returned.
