@@ -1,6 +1,6 @@
 diff -rc gcc/libjava/java/util/AbstractList.java gcc-patched/libjava/java/util/AbstractList.java
 *** gcc/libjava/java/util/AbstractList.java	Tue Jun 18 08:39:43 2002
---- gcc-patched/libjava/java/util/AbstractList.java	Tue Apr 19 16:39:55 2005
+--- gcc-patched/libjava/java/util/AbstractList.java	Sat Apr 23 21:09:27 2005
 ***************
 *** 85,91 ****
      * <code>add(int, Object)</code> and <code>remove(int)</code> methods.
@@ -310,7 +310,7 @@ diff -rc gcc/libjava/java/util/AbstractList.java gcc-patched/libjava/java/util/A
         // Here is the reason why the various modCount fields are mostly
 diff -rc gcc/libjava/java/util/AbstractMap.java gcc-patched/libjava/java/util/AbstractMap.java
 *** gcc/libjava/java/util/AbstractMap.java	Sun Nov 10 14:06:49 2002
---- gcc-patched/libjava/java/util/AbstractMap.java	Tue Apr 19 16:39:55 2005
+--- gcc-patched/libjava/java/util/AbstractMap.java	Sat Apr 23 21:09:27 2005
 ***************
 *** 76,88 ****
      * The cache for {@link #keySet()}.
@@ -401,7 +401,7 @@ diff -rc gcc/libjava/java/util/AbstractMap.java gcc-patched/libjava/java/util/Ab
        * Get the value corresponding to this entry. If you already called
 diff -rc gcc/libjava/java/util/ArrayList.java gcc-patched/libjava/java/util/ArrayList.java
 *** gcc/libjava/java/util/ArrayList.java	Sun Nov  3 12:27:31 2002
---- gcc-patched/libjava/java/util/ArrayList.java	Tue Apr 19 16:39:55 2005
+--- gcc-patched/libjava/java/util/ArrayList.java	Sat Apr 23 21:09:27 2005
 ***************
 *** 334,340 ****
      */
@@ -538,34 +538,9 @@ diff -rc gcc/libjava/java/util/ArrayList.java gcc-patched/libjava/java/util/Arra
       for (j = i++; i < size; i++)
         if (c.contains(data[i]))
           data[j++] = data[i];
-diff -rc gcc/libjava/java/util/CVS/Entries gcc-patched/libjava/java/util/CVS/Entries
-*** gcc/libjava/java/util/CVS/Entries	Tue Apr 19 16:47:53 2005
---- gcc-patched/libjava/java/util/CVS/Entries	Tue Apr 19 15:34:29 2005
-***************
-*** 7,25 ****
-  /Collection.java/1.4/Tue Jan 22 22:40:38 2002//D2004.04.18.07.00.00
-  /Collections.java/1.9/Tue Jun 18 15:39:49 2002//D2004.04.18.07.00.00
-  /HashMap.java/1.16/Sun Dec  7 23:00:49 2003//D2004.04.18.07.00.00
-- /HashSet.java/1.7/Tue Jan 22 22:40:38 2002//D2004.04.18.07.00.00
-  /Hashtable.java/1.22/Sun Dec  7 23:00:49 2003//D2004.04.18.07.00.00
-  /List.java/1.7/Tue Jun 18 15:39:55 2002//D2004.04.18.07.00.00
-  /LinkedHashMap.java/1.5/Sun Nov 10 22:06:49 2002//D2004.04.18.07.00.00
-- /LinkedHashSet.java/1.2/Tue Jan 22 22:40:38 2002//D2004.04.18.07.00.00
-  /LinkedList.java/1.11/Wed Oct  8 15:30:44 2003//D2004.04.18.07.00.00
-  /Map.java/1.6/Sat Oct 11 18:52:30 2003//D2004.04.18.07.00.00
-  /Random.java/1.8/Thu Nov  7 04:38:21 2002//D2004.04.18.07.00.00
-  /Set.java/1.5/Tue Jan 22 22:40:39 2002//D2004.04.18.07.00.00
-  /SortedMap.java/1.4/Tue Jan 22 22:40:39 2002//D2004.04.18.07.00.00
-  /SortedSet.java/1.4/Tue Jan 22 22:40:39 2002//D2004.04.18.07.00.00
-- /Stack.java/1.7/Tue Jan 22 22:40:39 2002//D2004.04.18.07.00.00
-  /TreeMap.java/1.10/Sun Oct 26 02:48:31 2003//D2004.04.18.07.00.00
-- /TreeSet.java/1.6/Tue Jan 22 22:40:39 2002//D2004.04.18.07.00.00
-  /Vector.java/1.15/Sun Apr  7 07:40:49 2002//D2004.04.18.07.00.00
-  D
---- 7,21 ----
 diff -rc gcc/libjava/java/util/Collections.java gcc-patched/libjava/java/util/Collections.java
 *** gcc/libjava/java/util/Collections.java	Tue Jun 18 08:39:49 2002
---- gcc-patched/libjava/java/util/Collections.java	Tue Apr 19 16:39:55 2005
+--- gcc-patched/libjava/java/util/Collections.java	Sat Apr 23 21:09:27 2005
 ***************
 *** 1626,1634 ****
        */
@@ -610,7 +585,7 @@ diff -rc gcc/libjava/java/util/Collections.java gcc-patched/libjava/java/util/Co
       /**
 diff -rc gcc/libjava/java/util/HashMap.java gcc-patched/libjava/java/util/HashMap.java
 *** gcc/libjava/java/util/HashMap.java	Sun Dec  7 15:00:49 2003
---- gcc-patched/libjava/java/util/HashMap.java	Tue Apr 19 16:45:53 2005
+--- gcc-patched/libjava/java/util/HashMap.java	Sat Apr 23 21:09:27 2005
 ***************
 *** 136,155 ****
      * Array containing the actual key-value mappings.
@@ -1003,7 +978,7 @@ diff -rc gcc/libjava/java/util/HashMap.java gcc-patched/libjava/java/util/HashMa
       }
 diff -rc gcc/libjava/java/util/HashSet.java gcc-patched/libjava/java/util/HashSet.java
 *** gcc/libjava/java/util/HashSet.java	Tue Jan 22 14:40:38 2002
---- gcc-patched/libjava/java/util/HashSet.java	Tue Apr 19 16:44:58 2005
+--- gcc-patched/libjava/java/util/HashSet.java	Sat Apr 23 21:09:27 2005
 ***************
 *** 198,204 ****
      */
@@ -1061,7 +1036,7 @@ diff -rc gcc/libjava/java/util/HashSet.java gcc-patched/libjava/java/util/HashSe
     }
 diff -rc gcc/libjava/java/util/Hashtable.java gcc-patched/libjava/java/util/Hashtable.java
 *** gcc/libjava/java/util/Hashtable.java	Sun Dec  7 15:00:49 2003
---- gcc-patched/libjava/java/util/Hashtable.java	Tue Apr 19 16:39:55 2005
+--- gcc-patched/libjava/java/util/Hashtable.java	Sat Apr 23 21:09:27 2005
 ***************
 *** 144,163 ****
      * Array containing the actual key-value mappings.
@@ -1963,7 +1938,47 @@ diff -rc gcc/libjava/java/util/Hashtable.java gcc-patched/libjava/java/util/Hash
   } // class Hashtable
 diff -rc gcc/libjava/java/util/LinkedHashMap.java gcc-patched/libjava/java/util/LinkedHashMap.java
 *** gcc/libjava/java/util/LinkedHashMap.java	Sun Nov 10 14:06:49 2002
---- gcc-patched/libjava/java/util/LinkedHashMap.java	Tue Apr 19 16:39:55 2005
+--- gcc-patched/libjava/java/util/LinkedHashMap.java	Sat Apr 23 21:09:27 2005
+***************
+*** 116,122 ****
+    /**
+     * The oldest Entry to begin iteration at.
+     */
+!   transient LinkedHashEntry root;
+  
+    /**
+     * The iteration order of this linked hash map: <code>true</code> for
+--- 116,122 ----
+    /**
+     * The oldest Entry to begin iteration at.
+     */
+!   private transient LinkedHashEntry root;
+  
+    /**
+     * The iteration order of this linked hash map: <code>true</code> for
+***************
+*** 136,145 ****
+       * The predecessor in the iteration list. If this entry is the root
+       * (eldest), pred points to the newest entry.
+       */
+!     LinkedHashEntry pred;
+  
+      /** The successor in the iteration list, null if this is the newest. */
+!     LinkedHashEntry succ;
+  
+      /**
+       * Simple constructor.
+--- 136,145 ----
+       * The predecessor in the iteration list. If this entry is the root
+       * (eldest), pred points to the newest entry.
+       */
+!     private LinkedHashEntry pred;
+  
+      /** The successor in the iteration list, null if this is the newest. */
+!     private LinkedHashEntry succ;
+  
+      /**
+       * Simple constructor.
 ***************
 *** 172,178 ****
       {
@@ -2064,19 +2079,31 @@ diff -rc gcc/libjava/java/util/LinkedHashMap.java gcc-patched/libjava/java/util/
         remove(root);
     }
 ***************
-*** 445,451 ****
-        LinkedHashEntry last;
+*** 439,451 ****
+      return new Iterator()
+      {
+        /** The current Entry. */
+!       LinkedHashEntry current = root;
+  
+        /** The previous Entry returned by next(). */
+!       LinkedHashEntry last;
   
         /** The number of known modifications to the backing Map. */
 !       int knownMod = modCount;
   
         /**
          * Returns true if the Iterator has more elements.
---- 445,451 ----
-        LinkedHashEntry last;
+--- 439,451 ----
+      return new Iterator()
+      {
+        /** The current Entry. */
+!       private LinkedHashEntry current = root;
+  
+        /** The previous Entry returned by next(). */
+!       private LinkedHashEntry last;
   
         /** The number of known modifications to the backing Map. */
-!       int knownMod = getModCount();
+!       private int knownMod = getModCount();
   
         /**
          * Returns true if the Iterator has more elements.
@@ -2153,7 +2180,7 @@ diff -rc gcc/libjava/java/util/LinkedHashMap.java gcc-patched/libjava/java/util/
         }
 diff -rc gcc/libjava/java/util/LinkedList.java gcc-patched/libjava/java/util/LinkedList.java
 *** gcc/libjava/java/util/LinkedList.java	Wed Oct  8 08:30:44 2003
---- gcc-patched/libjava/java/util/LinkedList.java	Tue Apr 19 16:39:55 2005
+--- gcc-patched/libjava/java/util/LinkedList.java	Sat Apr 23 21:09:27 2005
 ***************
 *** 82,98 ****
     /**
@@ -3058,7 +3085,7 @@ diff -rc gcc/libjava/java/util/LinkedList.java gcc-patched/libjava/java/util/Lin
   }
 diff -rc gcc/libjava/java/util/Stack.java gcc-patched/libjava/java/util/Stack.java
 *** gcc/libjava/java/util/Stack.java	Tue Jan 22 14:40:39 2002
---- gcc-patched/libjava/java/util/Stack.java	Tue Apr 19 16:47:26 2005
+--- gcc-patched/libjava/java/util/Stack.java	Sat Apr 23 21:09:27 2005
 ***************
 *** 103,116 ****
      */
@@ -3156,7 +3183,7 @@ diff -rc gcc/libjava/java/util/Stack.java gcc-patched/libjava/java/util/Stack.ja
   }
 diff -rc gcc/libjava/java/util/TreeMap.java gcc-patched/libjava/java/util/TreeMap.java
 *** gcc/libjava/java/util/TreeMap.java	Sat Oct 25 19:48:31 2003
---- gcc-patched/libjava/java/util/TreeMap.java	Tue Apr 19 16:39:55 2005
+--- gcc-patched/libjava/java/util/TreeMap.java	Sat Apr 23 21:09:27 2005
 ***************
 *** 122,130 ****
     static
@@ -4709,7 +4736,7 @@ diff -rc gcc/libjava/java/util/TreeMap.java gcc-patched/libjava/java/util/TreeMa
   } // class TreeMap
 diff -rc gcc/libjava/java/util/Vector.java gcc-patched/libjava/java/util/Vector.java
 *** gcc/libjava/java/util/Vector.java	Sat Apr  6 23:40:49 2002
---- gcc-patched/libjava/java/util/Vector.java	Tue Apr 19 16:39:55 2005
+--- gcc-patched/libjava/java/util/Vector.java	Sat Apr 23 21:09:27 2005
 ***************
 *** 91,104 ****
      * in positions 0 through elementCount - 1, and all remaining slots are null.
