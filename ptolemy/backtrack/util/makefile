@@ -108,7 +108,7 @@ install: jclass $(PTCLASSJAR)
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
 
-gcc: jclass gcc-source transform gcc-compile
+gcc: gcc-source transform gcc-compile
 
 GCC_DIR = gcc/libjava
 
