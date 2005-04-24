@@ -50,9 +50,9 @@ TCL_SRCS = \
 JSRCS = \
 	RandomTest1.java \
 	RandomTest2.java \
-	TreeMapTest1.java \
-	TreeMapTest2.java \
-	TreeMapTest3.java
+	MapTest1.java \
+	MapTest2.java \
+	MapTest3.java
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
