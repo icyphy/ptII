@@ -378,6 +378,7 @@ public class Collections implements Rollbackable {
             if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
                 $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
                 FieldRecord.popState($RECORDS);
+                $RESTORE(timestamp, trim);
             }
         }
 
@@ -477,6 +478,7 @@ public class Collections implements Rollbackable {
                     if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
                         $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, new _PROXY_(), timestamp, trim);
                         FieldRecord.popState($RECORDS);
+                        $RESTORE_ANONYMOUS(timestamp, trim);
                     }
                 }
 
@@ -898,6 +900,7 @@ public class Collections implements Rollbackable {
             if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
                 $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
                 FieldRecord.popState($RECORDS);
+                $RESTORE(timestamp, trim);
             }
         }
 
@@ -966,6 +969,7 @@ public class Collections implements Rollbackable {
             if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
                 $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
                 FieldRecord.popState($RECORDS);
+                $RESTORE(timestamp, trim);
             }
         }
 
@@ -1293,6 +1297,7 @@ public class Collections implements Rollbackable {
                     if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
                         $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
                         FieldRecord.popState($RECORDS);
+                        $RESTORE(timestamp, trim);
                     }
                 }
 
@@ -1561,6 +1566,7 @@ public class Collections implements Rollbackable {
             if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
                 $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
                 FieldRecord.popState($RECORDS);
+                $RESTORE(timestamp, trim);
             }
         }
 
@@ -1854,6 +1860,7 @@ public class Collections implements Rollbackable {
             if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
                 $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
                 FieldRecord.popState($RECORDS);
+                $RESTORE(timestamp, trim);
             }
         }
 
@@ -1913,6 +1920,7 @@ public class Collections implements Rollbackable {
             if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
                 $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
                 FieldRecord.popState($RECORDS);
+                $RESTORE(timestamp, trim);
             }
         }
 
@@ -2150,6 +2158,7 @@ public class Collections implements Rollbackable {
                                 if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
                                     $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
                                     FieldRecord.popState($RECORDS);
+                                    $RESTORE(timestamp, trim);
                                 }
                             }
 
@@ -2362,6 +2371,7 @@ public class Collections implements Rollbackable {
             if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
                 $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
                 FieldRecord.popState($RECORDS);
+                $RESTORE(timestamp, trim);
             }
         }
 
@@ -2867,6 +2877,7 @@ public class Collections implements Rollbackable {
         if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
             $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
             FieldRecord.popState($RECORDS);
+            $RESTORE(timestamp, trim);
         }
     }
 

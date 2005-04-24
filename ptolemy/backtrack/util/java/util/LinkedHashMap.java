@@ -46,25 +46,25 @@ public class LinkedHashMap extends HashMap implements Rollbackable {
 
     private static final long serialVersionUID = 3801124242820219131L;
 
-    transient LinkedHashEntry root;
+    private transient LinkedHashEntry root;
 
     final boolean accessOrder;
 
     class LinkedHashEntry extends HashEntry implements Rollbackable {
 
-        LinkedHashEntry pred;
+        private LinkedHashEntry pred;
 
-        LinkedHashEntry succ;
+        private LinkedHashEntry succ;
 
         LinkedHashEntry(Object key, Object value) {
             super(key, value);
             if (root == null) {
-                root = this;
-                pred = this;
+                $ASSIGN$root(this);
+                $ASSIGN$pred(this);
             } else {
-                pred = root.pred;
-                pred.succ = this;
-                root.pred = this;
+                $ASSIGN$pred(root.pred);
+                pred.$ASSIGN$succ(this);
+                root.$ASSIGN$pred(this);
             }
         }
 
@@ -72,32 +72,52 @@ public class LinkedHashMap extends HashMap implements Rollbackable {
             if (accessOrder && succ != null) {
                 setModCount(getModCount() + 1);
                 if (this == root) {
-                    root = succ;
-                    pred.succ = this;
-                    succ = null;
+                    $ASSIGN$root(succ);
+                    pred.$ASSIGN$succ(this);
+                    $ASSIGN$succ(null);
                 } else {
-                    pred.succ = succ;
-                    succ.pred = pred;
-                    succ = null;
-                    pred = root.pred;
-                    pred.succ = this;
+                    pred.$ASSIGN$succ(succ);
+                    succ.$ASSIGN$pred(pred);
+                    $ASSIGN$succ(null);
+                    $ASSIGN$pred(root.pred);
+                    pred.$ASSIGN$succ(this);
                 }
             }
         }
 
         Object cleanup() {
             if (this == root) {
-                root = succ;
+                $ASSIGN$root(succ);
                 if (succ != null)
-                    succ.pred = pred;
+                    succ.$ASSIGN$pred(pred);
             } else if (succ == null) {
-                pred.succ = null;
-                root.pred = pred;
+                pred.$ASSIGN$succ(null);
+                root.$ASSIGN$pred(pred);
             } else {
-                pred.succ = succ;
-                succ.pred = pred;
+                pred.$ASSIGN$succ(succ);
+                succ.$ASSIGN$pred(pred);
             }
             return getValue();
+        }
+
+        private final LinkedHashEntry $ASSIGN$pred(LinkedHashEntry newValue) {
+            if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+                $RECORD$pred.add(null, pred, $CHECKPOINT.getTimestamp());
+            }
+            if (newValue != null && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
+                newValue.$SET$CHECKPOINT($CHECKPOINT);
+            }
+            return pred = newValue;
+        }
+
+        private final LinkedHashEntry $ASSIGN$succ(LinkedHashEntry newValue) {
+            if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+                $RECORD$succ.add(null, succ, $CHECKPOINT.getTimestamp());
+            }
+            if (newValue != null && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
+                newValue.$SET$CHECKPOINT($CHECKPOINT);
+            }
+            return succ = newValue;
         }
 
         public void $COMMIT(long timestamp) {
@@ -106,10 +126,18 @@ public class LinkedHashMap extends HashMap implements Rollbackable {
         }
 
         public void $RESTORE(long timestamp, boolean trim) {
+            pred = (LinkedHashEntry)$RECORD$pred.restore(pred, timestamp, trim);
+            succ = (LinkedHashEntry)$RECORD$succ.restore(succ, timestamp, trim);
             super.$RESTORE(timestamp, trim);
         }
 
+        private FieldRecord $RECORD$pred = new FieldRecord(0);
+
+        private FieldRecord $RECORD$succ = new FieldRecord(0);
+
         private FieldRecord[] $RECORDS = new FieldRecord[] {
+                $RECORD$pred,
+                $RECORD$succ
             };
     }
 
@@ -140,7 +168,7 @@ public class LinkedHashMap extends HashMap implements Rollbackable {
 
     public void clear() {
         super.clear();
-        root = null;
+        $ASSIGN$root(null);
     }
 
     public boolean containsValue(Object value) {
@@ -179,18 +207,18 @@ public class LinkedHashMap extends HashMap implements Rollbackable {
     }
 
     void putAllInternal(Map m) {
-        root = null;
+        $ASSIGN$root(null);
         super.putAllInternal(m);
     }
 
     Iterator iterator(final int type) {
         return new Iterator() {
 
-            LinkedHashEntry current = root;
+            private LinkedHashEntry current = root;
 
-            LinkedHashEntry last;
+            private LinkedHashEntry last;
 
-            int knownMod = getModCount();
+            private int knownMod = getModCount();
 
             public boolean hasNext() {
                 if (knownMod != getModCount())
@@ -203,8 +231,8 @@ public class LinkedHashMap extends HashMap implements Rollbackable {
                     throw new ConcurrentModificationException();
                 if (current == null)
                     throw new NoSuchElementException();
-                last = current;
-                current = current.succ;
+                $ASSIGN$last(current);
+                $ASSIGN$current(current.succ);
                 return type == VALUES?last.getValue():type == KEYS?last.getKey():last;
             }
 
@@ -214,8 +242,8 @@ public class LinkedHashMap extends HashMap implements Rollbackable {
                 if (last == null)
                     throw new IllegalStateException();
                 LinkedHashMap.this.remove(last.getKey());
-                last = null;
-                knownMod++;
+                $ASSIGN$last(null);
+                $ASSIGN$SPECIAL$knownMod(11, knownMod);
             }
 
             final class _PROXY_ implements Rollbackable {
@@ -238,15 +266,79 @@ public class LinkedHashMap extends HashMap implements Rollbackable {
                 }
             }
 
+            private final LinkedHashEntry $ASSIGN$current(LinkedHashEntry newValue) {
+                if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+                    $RECORD$current.add(null, current, $CHECKPOINT.getTimestamp());
+                }
+                if (newValue != null && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
+                    newValue.$SET$CHECKPOINT($CHECKPOINT);
+                }
+                return current = newValue;
+            }
+
+            private final LinkedHashEntry $ASSIGN$last(LinkedHashEntry newValue) {
+                if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+                    $RECORD$last.add(null, last, $CHECKPOINT.getTimestamp());
+                }
+                if (newValue != null && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
+                    newValue.$SET$CHECKPOINT($CHECKPOINT);
+                }
+                return last = newValue;
+            }
+
+            private final int $ASSIGN$SPECIAL$knownMod(int operator, long newValue) {
+                if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+                    $RECORD$knownMod.add(null, knownMod, $CHECKPOINT.getTimestamp());
+                }
+                switch (operator) {
+                    case 0:
+                        return knownMod += newValue;
+                    case 1:
+                        return knownMod -= newValue;
+                    case 2:
+                        return knownMod *= newValue;
+                    case 3:
+                        return knownMod /= newValue;
+                    case 4:
+                        return knownMod &= newValue;
+                    case 5:
+                        return knownMod |= newValue;
+                    case 6:
+                        return knownMod ^= newValue;
+                    case 7:
+                        return knownMod %= newValue;
+                    case 8:
+                        return knownMod <<= newValue;
+                    case 9:
+                        return knownMod >>= newValue;
+                    case 10:
+                        return knownMod >>>= newValue;
+                    case 11:
+                        return knownMod++;
+                    case 12:
+                        return knownMod--;
+                    case 13:
+                        return ++knownMod;
+                    case 14:
+                        return --knownMod;
+                    default:
+                        return knownMod;
+                }
+            }
+
             public void $COMMIT_ANONYMOUS(long timestamp) {
                 FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
                 $RECORD$$CHECKPOINT.commit(timestamp);
             }
 
             public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
+                current = (LinkedHashEntry)$RECORD$current.restore(current, timestamp, trim);
+                last = (LinkedHashEntry)$RECORD$last.restore(last, timestamp, trim);
+                knownMod = $RECORD$knownMod.restore(knownMod, timestamp, trim);
                 if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
                     $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, new _PROXY_(), timestamp, trim);
                     FieldRecord.popState($RECORDS);
+                    $RESTORE_ANONYMOUS(timestamp, trim);
                 }
             }
 
@@ -268,7 +360,16 @@ public class LinkedHashMap extends HashMap implements Rollbackable {
                 return this;
             }
 
+            private FieldRecord $RECORD$current = new FieldRecord(0);
+
+            private FieldRecord $RECORD$last = new FieldRecord(0);
+
+            private FieldRecord $RECORD$knownMod = new FieldRecord(0);
+
             private FieldRecord[] $RECORDS = new FieldRecord[] {
+                    $RECORD$current,
+                    $RECORD$last,
+                    $RECORD$knownMod
                 };
 
             {
@@ -277,15 +378,29 @@ public class LinkedHashMap extends HashMap implements Rollbackable {
         };
     }
 
+    private final LinkedHashEntry $ASSIGN$root(LinkedHashEntry newValue) {
+        if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+            $RECORD$root.add(null, root, $CHECKPOINT.getTimestamp());
+        }
+        if (newValue != null && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
+            newValue.$SET$CHECKPOINT($CHECKPOINT);
+        }
+        return root = newValue;
+    }
+
     public void $COMMIT(long timestamp) {
         FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
         super.$COMMIT(timestamp);
     }
 
     public void $RESTORE(long timestamp, boolean trim) {
+        root = (LinkedHashEntry)$RECORD$root.restore(root, timestamp, trim);
         super.$RESTORE(timestamp, trim);
     }
 
+    private FieldRecord $RECORD$root = new FieldRecord(0);
+
     private FieldRecord[] $RECORDS = new FieldRecord[] {
+            $RECORD$root
         };
 }

@@ -283,6 +283,7 @@ public abstract class AbstractList extends AbstractCollection implements List, R
                 if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
                     $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, new _PROXY_(), timestamp, trim);
                     FieldRecord.popState($RECORDS);
+                    $RESTORE_ANONYMOUS(timestamp, trim);
                 }
             }
 
@@ -552,6 +553,7 @@ public abstract class AbstractList extends AbstractCollection implements List, R
                 if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
                     $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, new _PROXY_(), timestamp, trim);
                     FieldRecord.popState($RECORDS);
+                    $RESTORE_ANONYMOUS(timestamp, trim);
                 }
             }
 
@@ -882,6 +884,7 @@ class SubList extends AbstractList implements Rollbackable {
                 if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
                     $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, new _PROXY_(), timestamp, trim);
                     FieldRecord.popState($RECORDS);
+                    $RESTORE_ANONYMOUS(timestamp, trim);
                 }
             }
 

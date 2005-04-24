@@ -278,6 +278,7 @@ public class Hashtable extends Dictionary implements Map, Cloneable, Serializabl
             if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
                 $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
                 FieldRecord.popState($RECORDS);
+                $RESTORE(timestamp, trim);
             }
         }
 
@@ -411,6 +412,7 @@ public class Hashtable extends Dictionary implements Map, Cloneable, Serializabl
             if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
                 $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
                 FieldRecord.popState($RECORDS);
+                $RESTORE(timestamp, trim);
             }
         }
 
@@ -1118,6 +1120,7 @@ public class Hashtable extends Dictionary implements Map, Cloneable, Serializabl
         if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
             $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
             FieldRecord.popState($RECORDS);
+            $RESTORE(timestamp, trim);
         }
     }
 

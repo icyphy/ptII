@@ -1330,6 +1330,14 @@ public class AssignmentTransformer extends AbstractTransformer
                 restoreBlock.statements().add(
                         ast.newExpressionStatement(popStates));
                 
+                // Recall the restore method.
+                MethodInvocation recursion = ast.newMethodInvocation();
+                recursion.setName(ast.newSimpleName(methodName));
+                recursion.arguments().add(ast.newSimpleName("timestamp"));
+                recursion.arguments().add(ast.newSimpleName("trim"));
+                restoreBlock.statements().add(
+                        ast.newExpressionStatement(recursion));
+                
                 body.statements().add(restoreCheckpoint);
                 
                 if (parent != null)

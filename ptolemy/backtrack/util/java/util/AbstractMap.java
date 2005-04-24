@@ -130,6 +130,7 @@ public abstract class AbstractMap implements Map, Rollbackable {
             if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
                 $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
                 FieldRecord.popState($RECORDS);
+                $RESTORE(timestamp, trim);
             }
         }
 
@@ -295,6 +296,7 @@ public abstract class AbstractMap implements Map, Rollbackable {
                             if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
                                 $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, new _PROXY_(), timestamp, trim);
                                 FieldRecord.popState($RECORDS);
+                                $RESTORE_ANONYMOUS(timestamp, trim);
                             }
                         }
 
@@ -490,6 +492,7 @@ public abstract class AbstractMap implements Map, Rollbackable {
                             if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
                                 $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, new _PROXY_(), timestamp, trim);
                                 FieldRecord.popState($RECORDS);
+                                $RESTORE_ANONYMOUS(timestamp, trim);
                             }
                         }
 
@@ -619,6 +622,7 @@ public abstract class AbstractMap implements Map, Rollbackable {
         if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
             $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
             FieldRecord.popState($RECORDS);
+            $RESTORE(timestamp, trim);
         }
     }
 

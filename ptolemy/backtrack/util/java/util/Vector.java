@@ -204,6 +204,7 @@ public class Vector extends AbstractList implements List, RandomAccess, Cloneabl
                 if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
                     $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, new _PROXY_(), timestamp, trim);
                     FieldRecord.popState($RECORDS);
+                    $RESTORE_ANONYMOUS(timestamp, trim);
                 }
             }
 

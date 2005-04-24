@@ -136,6 +136,7 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
             if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
                 $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
                 FieldRecord.popState($RECORDS);
+                $RESTORE(timestamp, trim);
             }
         }
 
@@ -414,6 +415,7 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
             if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
                 $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
                 FieldRecord.popState($RECORDS);
+                $RESTORE(timestamp, trim);
             }
         }
 

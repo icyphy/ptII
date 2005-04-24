@@ -305,6 +305,7 @@ public class HashMap extends AbstractMap implements Map, Cloneable, Serializable
             if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
                 $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
                 FieldRecord.popState($RECORDS);
+                $RESTORE(timestamp, trim);
             }
         }
 
