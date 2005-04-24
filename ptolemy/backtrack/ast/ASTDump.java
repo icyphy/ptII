@@ -33,11 +33,11 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 
 import org.eclipse.jdt.core.dom.ASTNode;
+import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.AbstractTypeDeclaration;
 import org.eclipse.jdt.core.dom.AnonymousClassDeclaration;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.Expression;
-import org.eclipse.jdt.internal.core.dom.rewrite.GenericVisitor;
 
 //////////////////////////////////////////////////////////////////////////
 //// ASTDump
@@ -51,7 +51,7 @@ import org.eclipse.jdt.internal.core.dom.rewrite.GenericVisitor;
    @Pt.ProposedRating Red (tfeng)
    @Pt.AcceptedRating Red (tfeng)
 */
-public class ASTDump extends GenericVisitor {
+public class ASTDump extends ASTVisitor {
 
     /** Construct an AST dump with a {@link StringBuffer} where the
      *  output will be added.
@@ -98,9 +98,9 @@ public class ASTDump extends GenericVisitor {
      *
      *  @param node The node that have been visited.
      */
-    protected void endVisitNode(ASTNode node) {
+    public void postVisit(ASTNode node) {
         _decreaseIndent();
-        super.endVisitNode(node);
+        super.postVisit(node);
     }
 
     /** Visit a node in the AST and output it. If the node is an {@link
@@ -109,9 +109,8 @@ public class ASTDump extends GenericVisitor {
      *  associated with each node is also output.
      *
      *  @param node The node to be visited.
-     *  @return The return value of the overridden function.
      */
-    protected boolean visitNode(ASTNode node) {
+    public void preVisit(ASTNode node) {
         if (node instanceof AbstractTypeDeclaration)
             TypeAnalyzer._sortBodyDeclarations((AbstractTypeDeclaration)node);
         else if (node instanceof AnonymousClassDeclaration)
@@ -135,7 +134,7 @@ public class ASTDump extends GenericVisitor {
 
         _output("\n");
         _increaseIndent();
-        return super.visitNode(node);
+        super.preVisit(node);
     }
 
     /** Decrease the current indentation by a unit (four spaces).
