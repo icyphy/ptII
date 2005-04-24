@@ -14,7 +14,7 @@ to generate demosPtiny.htm.
 <body>
 <!--vergilDocs-->
 <h1>
-Quick Tour
+Tour of Ptolemy II
 </h1>
 
 <!--
@@ -41,7 +41,7 @@ and the summary of
 <!--vergilDocs-->
 . Contents:
 <ul>
-<li> <a href="#domain">Domain-Specific Modeling</a>: Domain-specific modeling and design.
+<li> <a href="#domain">Application Domain-Specific Modeling</a>: Application Domain-specific modeling and design.
 <li> <a href="#heterogeneous">Heterogeneous Modeling</a>: Mixing models of computation.
 <li> <a href="#basic">Basic Modeling Capabilities</a>: Commonly used models of computation.
 <li> <a href="#infrastructure">Modeling Infrastructure</a>: Capabilities shared by all uses of Ptolemy II.
@@ -50,10 +50,10 @@ and the summary of
 </ul>
 
 <h2>
-<a name="domain">Domain-Specific Modeling</a>
+<a name="domain">Application Domain-Specific Modeling</a>
 </h2>
-Ptolemy II can be used to build sophisticated domain-specific modeling capabilities
-and domain-specific frameworks. These frameworks can be packaged as separate executable
+Ptolemy II can be used to build sophisticated application domain-specific modeling capabilities
+and frameworks. These frameworks can be packaged as separate executable
 applications (e.g. HyVisual or VisualSense)
 or accessed from within Ptolemy II. Here, we illustrate some such frameworks.
 <ul>
@@ -268,25 +268,6 @@ set of generic capabilities that are available in all models.
 This section illustrates that infrastructure.
 <ul>
 
-<li>
-<i>Classes, subclasses, and inner classes</i>:
-<a href="ClassesIllustrated.xml">
-ClassesIllustrated</a> (see also
-<a href="../../domains/sdf/demo/NoisySinewave/NoisySinewave.xml">
-Noisy sinewaves</a> and
-<a href="../../domains/sdf/demo/RijndaelEncryption/RijndaelEncryption.xml">
-Rijndael Encryption</a>).
-<br>
-Actor-oriented classes, subclasses, and
-inner classes with inheritance are a special feature of Ptolemy II.
-They provide modularity mechanisms analogous to those of object-oriented
-design, but adapted to actor-oriented design. This capability permits, for
-example, defining a class of models that can have instances and subclasses.
-The instances and subclasses inherit all the features of the class, and
-track any changes that are made to the class.
-
-<br>
-
 <li><i>The Type System</i>:
 <a href="../../data/type/demo/Router/Router.xml">
 Router</a>.
@@ -358,6 +339,25 @@ to plot a 3-D surface. This works only if Matlab is installed locally.
 
 <br>
 
+<li>
+<i>Classes, subclasses, and inner classes</i>:
+<a href="ClassesIllustrated.xml">
+ClassesIllustrated</a> (see also
+<a href="../../domains/sdf/demo/NoisySinewave/NoisySinewave.xml">
+Noisy sinewaves</a> and
+<a href="../../domains/sdf/demo/RijndaelEncryption/RijndaelEncryption.xml">
+Rijndael Encryption</a>).
+<br>
+Actor-oriented classes, subclasses, and
+inner classes with inheritance are a special feature of Ptolemy II.
+They provide modularity mechanisms analogous to those of object-oriented
+design, but adapted to actor-oriented design. This capability permits, for
+example, defining a class of models that can have instances and subclasses.
+The instances and subclasses inherit all the features of the class, and
+track any changes that are made to the class.
+
+<br>
+
 <li><i>Model Animations</i>:
 <a href="../../actor/parameters/demo/Bouncer/Bouncer.xml">Bouncer</a>
 (see also 
@@ -376,6 +376,27 @@ of one of its own actors.
 
 <br>
 
+<li><i>Three-Dimensional Graphics</i>:
+<a href="../../domains/gr/demo/Pendulum/Pendulum.xml">
+Pendulum</a> (see also
+<a href="../../domains/gr/demo/Helen/Helen.xml">Helen</a>,
+<a href="../../domains/gr/demo/SolarSystem/SolarSystem.xml">SolarSystem</a>,
+<a href="../../domains/gr/demo/StickyMasses/StickyMasses.xml">Sticky Masses</a>
+and <a href="../../domains/ct/demo/BouncingBall/BouncingBall.xml">Bouncing Ball</a>).
+<br>
+<font color="red">NOTE: These models require that you have
+installed Java 3D from Sun
+(see http://java.sun.com/products/java-media/3D/).</font>
+The <a href="../../domains/gr/demo/Pendulum/Pendulum.xml">
+Pendulum</a> example shows a continuous-time physical model of pendulum
+animated in the <i>graphics</i> (GR) domain, in which graphical components
+can be assembled and dynamically manipulated.  Note that clicking
+and dragging in the graphics window rotates the model.
+For further details, see the
+<a href="../../domains/gr/doc/main.htm">GR domain</a>.
+
+<br>
+
 <li><i>Statically Checked Units System</i>:
 <a href="../../data/unit/demo/StaticUnits/StaticUnits.xml">
 StaticUnits</a> (see also
@@ -388,7 +409,6 @@ defines a set of interrelated dimensions and measures. For example, in
 the time dimension, we might have seconds, minutes, hours, days, weeks,
 and fortnights. Ptolemy II includes two experimental units systems,
 one that is statically checked and one that is dynamically checked.
-
 
 <br>
 
@@ -407,7 +427,6 @@ http://ptolemy.eecs.berkeley.edu/xml/models/Waveform.xml</a>.
 You can open that definition by clicking on the hyperlink, or by
 using the "Open URL" command in the File menu.
 
-
 <br>
 
 <li><i>Audio</i>:
@@ -420,10 +439,24 @@ This example shows the Karplus-Strong algorithm, which synthesizes
 a musical sound that closely resembles a plucked string instrument.
 It illustrates the audio capabilities of Ptolemy II.
 
+<br>
+
+<li><i>Python Integration</i>:
+<a href="../../actor/lib/python/demo/Ptolemnizer/Ptolemnizer.xml">Ptolemnizer</a>
+(see also <a href="../../actor/lib/python/demo/PythonScale/PythonScale.xml">PythonScale</a>).
+<br>Python is a popular interpreted programming language that has
+been integrated into Ptolemy II using the jython Java implementation of Python.
+This example shows that use of Python to alter a string entered by the user
+to modify any word that begins with "t" so that it begins with "pt".
+This leverages the excellent string processing capabilities in Python.
+Python can also be used to prototype
+actors by defining their functionality in Python.
 
 <!--/vergilDocs-->
 <!--Ptiny does not include JAI or JMF--> 
+
 <br>
+
 <li><i>Image and Video Processing</i>:
 <a href="../../actor/lib/jai/demo/AdaptiveMedian/AdaptiveMedian.xml">AdaptiveMedian</a>
 (see also 
@@ -494,19 +527,6 @@ through queues using some policy that depends on the queue sizes.
 
 <br>
 
-<li><i>Python Integration</i>:
-<a href="../../actor/lib/python/demo/Ptolemnizer/Ptolemnizer.xml">Ptolemnizer</a>
-(see also <a href="../../actor/lib/python/demo/PythonScale/PythonScale.xml">PythonScale</a>).
-<br>Python is a popular interpreted programming language that has
-been integrated into Ptolemy II using the jython Java implementation of Python.
-This example shows that use of Python to alter a string entered by the user
-to modify any word that begins with "t" so that it begins with "pt".
-This leverages the excellent string processing capabilities in Python.
-Python can also be used to prototype
-actors by defining their functionality in Python.
-
-<br>
-
 <li>Cal: an interpreted actor definition language.
 <a href="../../caltrop/demo/FunctionClosures/FunctionClosures.xml">Function Closures</a>,
 <a href="../../caltrop/demo/FunctionDefinition/FunctionDefinition.xml">Function Definition</a>,
@@ -532,24 +552,6 @@ Code Generation</a>
 This release includes a limited prototype of our code generation facility
 that will generate .class files for non-hierarchical SDF models.
 This example leads to more information about this capability.
-
-<br>
-
-<li><a href="../../domains/gr/demo/Pendulum/Pendulum.xml">
-Three-Dimensional Graphics</a> (see also
-<a href="../../domains/gr/demo/Universe/Universe.xml">Universe</a>,
-<a href="../../domains/gr/demo/StickyMasses/StickyMasses.xml">Sticky Masses</a>)
-and <a href="../../domains/ct/demo/BouncingBall/BouncingBall.xml">Bouncing Ball</a>).
-<br>
-<font color="red">NOTE: This model requires that you have
-installed Java 3D from Sun
-(see http://java.sun.com/products/java-media/3D/).</font>
-This example shows a continuous-time physical model of pendulum
-animated in the <i>graphics</i> (GR) domain, in which graphical components
-can be assembled and dynamically manipulated.  Note that clicking
-and dragging in the graphics window rotates the model.
-For further details, see the
-<a href="../../domains/gr/doc/main.htm">GR domain</a>.
 
 <br>
 

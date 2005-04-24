@@ -41,7 +41,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	Spontaneous
+PTPACKAGE = 	Brownian
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =
@@ -49,13 +49,11 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
-	IncreasingRatePoisson.xml \
-	Poisson.xml
+	Brownian.xml
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
-	IncreasingRatePoisson.htm \
-	Poisson.htm
+	Brownian.htm
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.

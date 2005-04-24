@@ -7,42 +7,37 @@
     <property name="CT Director" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1000">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="100">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{95.0, 60.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, -1, 880, 464}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, -1, 880, 521}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[665, 346]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[665, 403]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{332.5, 173.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{332.5, 201.5}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,0.2,0.2,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Ye Zhou">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Ye Zhou and Edward A. Lee">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 325.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 365.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Note that we need a clock to drive this model.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Brownian motion is the integral of white noise.&#10;This model generates two Brownian motion random&#10;processes and plots the value of one vs. the other.&#10;This creates a random walk effect. White noise is&#10;approximated as a signal where any two samples&#10;are independent and identically distributed&#10;Gaussian random variables.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 275.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 265.0]">
         </property>
     </property>
     <entity name="Gaussian" class="ptolemy.actor.lib.Gaussian">
         <doc>Create a sequence of gaussian random variables</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 150.0]">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
-            </property>
-        </port>
     </entity>
     <entity name="Integrator" class="ptolemy.domains.ct.lib.Integrator">
         <property name="IntegratorIcon" class="ptolemy.vergil.icon.EditorIcon">
@@ -55,7 +50,7 @@
         </property>
     </entity>
     <entity name="XYPlotter" class="ptolemy.actor.lib.gui.XYPlotter">
-        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={517, 36, 508, 490}, maximized=false}">
         </property>
@@ -67,11 +62,12 @@
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
-<title>XYPlotter</title>
+<title>Brownian Motion</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="-27.48402688467277" max="8.382307965743722"/>
-<yRange min="-10.819956885865842" max="21.096334814987145"/>
+<xRange min="-1.0" max="1.0"/>
+<yRange min="-1.0" max="1.0"/>
+<noGrid/>
 </plot>?>
         </configure>
     </entity>
@@ -79,11 +75,6 @@
         <doc>Create a sequence of gaussian random variables</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 230.0]">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
-            </property>
-        </port>
     </entity>
     <entity name="Integrator2" class="ptolemy.domains.ct.lib.Integrator">
         <property name="IntegratorIcon" class="ptolemy.vergil.icon.EditorIcon">
@@ -93,36 +84,6 @@
             </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 230.0]">
-        </property>
-    </entity>
-    <entity name="ZeroOrderHold" class="ptolemy.domains.ct.lib.ZeroOrderHold">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 150.0]">
-        </property>
-    </entity>
-    <entity name="ZeroOrderHold2" class="ptolemy.domains.ct.lib.ZeroOrderHold">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 230.0]">
-        </property>
-    </entity>
-    <entity name="Clock" class="ptolemy.actor.lib.Clock">
-        <doc>Create a set of pulses</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 195.0]">
-        </property>
-    </entity>
-    <entity name="MonitorValue" class="ptolemy.actor.lib.MonitorValue">
-        <doc>Monitor and display values</doc>
-        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="displayWidth">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 295.0]">
-        </property>
-    </entity>
-    <entity name="Average" class="ptolemy.actor.lib.Average">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 295.0]">
         </property>
     </entity>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
@@ -136,12 +97,11 @@
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
-<title>TimedPlotter</title>
+<title>X Axis Brownian Motion</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="0.0" max="1000.0"/>
-<yRange min="-27.48402688467277" max="8.382307965743722"/>
-<default marks="dots"/>
+<xRange min="0.0" max="100.0"/>
+<yRange min="-1.3732190585218176" max="0.22707363483602439"/>
 </plot>?>
         </configure>
     </entity>
@@ -156,12 +116,12 @@
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
-<title>TimedPlotter2</title>
+<title>White Noise</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="0.0" max="1000.0"/>
-<yRange min="-3.1174534626914077" max="4.040384499577657"/>
-<default marks="dots"/>
+<xRange min="0.0" max="100.0"/>
+<yRange min="-4.429647757109736" max="3.9797842201877116"/>
+<noGrid/>
 </plot>?>
         </configure>
     </entity>
@@ -171,40 +131,20 @@
         <vertex name="vertex1" value="[455.0, 150.0]">
         </vertex>
     </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[325.0, 150.0]">
-        </vertex>
-    </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[90.0, 195.0]">
+        <vertex name="vertex1" value="{325.0, 150.0}">
         </vertex>
     </relation>
-    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <link port="Gaussian.output" relation="relation"/>
-    <link port="Gaussian.trigger" relation="relation13"/>
-    <link port="Integrator.input" relation="relation3"/>
+    <link port="Gaussian.output" relation="relation2"/>
+    <link port="Integrator.input" relation="relation2"/>
     <link port="Integrator.output" relation="relation11"/>
     <link port="XYPlotter.inputX" relation="relation11"/>
     <link port="XYPlotter.inputY" relation="relation4"/>
-    <link port="Gaussian2.output" relation="relation2"/>
-    <link port="Gaussian2.trigger" relation="relation13"/>
-    <link port="Integrator2.input" relation="relation12"/>
+    <link port="Gaussian2.output" relation="relation"/>
+    <link port="Integrator2.input" relation="relation"/>
     <link port="Integrator2.output" relation="relation4"/>
-    <link port="ZeroOrderHold.input" relation="relation"/>
-    <link port="ZeroOrderHold.output" relation="relation3"/>
-    <link port="ZeroOrderHold2.input" relation="relation2"/>
-    <link port="ZeroOrderHold2.output" relation="relation12"/>
-    <link port="Clock.output" relation="relation13"/>
-    <link port="MonitorValue.input" relation="relation5"/>
-    <link port="Average.input" relation="relation3"/>
-    <link port="Average.output" relation="relation5"/>
     <link port="TimedPlotter.input" relation="relation11"/>
-    <link port="TimedPlotter2.input" relation="relation3"/>
+    <link port="TimedPlotter2.input" relation="relation2"/>
 </entity>

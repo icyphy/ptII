@@ -32,7 +32,7 @@
 ME =		ptolemy/domains/ct/demo
 
 # PTJSPACES_DIR is set by configure to jspaces if Jini was found
-DIRS = 		BouncingBall \
+DIRS = 		BouncingBall Brownian \
 		CarTracking ComparedClocks ContinuousClock \
 		Helicopter HierarchicalExecution Hysteresis \
 		LevelCrossingDetector \
