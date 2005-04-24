@@ -71,6 +71,10 @@ public class FieldRecordState {
         return ++_totalNum;
     }
     
+    protected void _setTotalNum(int totalNum) {
+        _totalNum = totalNum;
+    }
+    
     /** The record lists for all the dimensions.
      */
     private RecordList[] _records;

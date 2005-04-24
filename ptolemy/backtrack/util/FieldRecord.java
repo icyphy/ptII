@@ -463,18 +463,22 @@ public class FieldRecord {
         FieldRecordState topState = _getTopState();
         if (topState != null) {
             RecordList[] recordLists = topState._getRecords();
+            int totalNum = 0;
             for (int i = 0; i < recordLists.length; i++)
                 if (recordLists[i] != null) {
                     RecordList list = recordLists[i];
                     while (list != null &&
-                            list._getRecord().getTimestamp() >= timestamp)
+                            list._getRecord().getTimestamp() >= timestamp) {
                         list = list._getNext();
+                        totalNum++;
+                    }
                     if (list != null)
                         if (list._getPrevious() != null)
                             list._getPrevious()._setNext(null);
                         else
                             recordLists[i] = null;
                 }
+            topState._setTotalNum(totalNum);
         }
     }
     
