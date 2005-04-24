@@ -184,8 +184,19 @@ a time stamp less than some specified value.
 <h2><a name="ddf">DDF</a></h2>
 <p>
 The Dynamic Dataflow (DDF) domain, created by Gang Zhou,
-is a superset of the Synchronous
-Dataflow (SDF) and Boolean dataflow (BDF) domains.
+is a superset of the Synchronous Dataflow (SDF) and Boolean dataflow (BDF) domains.
+In the SDF domain, an actor consumes and produces a fixed number of tokens per firing.
+This static information makes possible compile-time scheduling. In the DDF domain, 
+an actor could change the production and consumption rates after each firing. 
+The scheduler makes no attempt to construct a compile-time schedule, neither does it
+attempt to statically answer questions about deadlock and boundedness, which are
+fundamentally undecidable. Instead, each actor has a set of sequential firing 
+rules (patterns) and can be fired if one of them is satisfied, i.e., one particular 
+firing pattern forms a prefix of sequences of unconsumed tokens at input ports. 
+The scheduler dynamically schedules the firing of actors according to some criteria.  
+The canonical actors in the DDF domain include Select and Switch, which consume 
+or produce tokens on different channels based on the token received from the 
+control port.
 
 <p> The DDF domain is experimental and is shipped only with the full Ptolemy II release.
 
@@ -391,11 +402,6 @@ dataflow (BDF) models sometimes yield to deadlock and boundedness
 analysis, although fundamentally these questions are undecidable.
 Dynamic dataflow (DDF) uses only run-time analysis, and thus makes no
 attempt to statically answer questions about deadlock and boundedness.
-Neither a BDF nor DDF domain has yet been written in Ptolemy II,
-although both are available in Ptolemy Classic, and could be fairly
-easily ported.
-Process networks (PN) serves in the interrim to handle computations
-that do not match the restrictions of SDF.
 
 <h2><a name="sr">SR</a></h2>
 <p>
