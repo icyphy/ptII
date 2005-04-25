@@ -2591,7 +2591,7 @@ the message. Modify the "exponent" parameter to see different behavior. </text><
             </property>
             <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                 <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Set to red if the signal is 
-transmited by 1 hop.</text></svg></configure>
+transmitted by 1 hop.</text></svg></configure>
             </property>
             <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                 <configure>

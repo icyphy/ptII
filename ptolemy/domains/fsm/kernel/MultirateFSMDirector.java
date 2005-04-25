@@ -678,7 +678,7 @@ public class MultirateFSMDirector extends FSMDirector {
     }
 
     /** Declare the reconfiguration dependency in the given analysis
-     *  associated wiht the parameter name of the given port.
+     *  associated with the parameter name of the given port.
      *  @param analysis The object that contains the dependency declarations.
      *  @param port The IOPort to get refinement rate variables from.
      *  @param parameterName The name of the rate variables.

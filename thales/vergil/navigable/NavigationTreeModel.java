@@ -88,7 +88,7 @@ public class NavigationTreeModel extends ClassAndEntityTreeModel {
     /**
      * remove a listener
      * @param tree
-     * @return wether the tree was in the listeners or not
+     * @return True if the tree was in the listeners, otherwise return false.
      */
     public boolean unRegister(NavigationPTree tree) {
         return listeners.remove(tree);

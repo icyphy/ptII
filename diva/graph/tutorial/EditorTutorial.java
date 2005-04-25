@@ -55,7 +55,7 @@ import javax.swing.SwingUtilities;
 
 
 /**
- * This turotial expands on the simple tutorial and turns it into
+ * This tutorial expands on the simple tutorial and turns it into
  * a more complete graph editor.  Along with the editing window,
  * the user has the ability to layout the graph.
  * Control-click to add nodes,

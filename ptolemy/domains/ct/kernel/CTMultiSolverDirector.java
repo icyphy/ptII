@@ -902,7 +902,7 @@ public class CTMultiSolverDirector extends CTDirector {
 
     /** Perform a discrete phase of execution by processing all discrete events
      *  happening at the current model time. In this method, event generators,
-     *  purely discrete actors, wavefore generators, and continuous actors are
+     *  purely discrete actors, waveform generators, and continuous actors are
      *  repeatedly iterated until the execution reaches a fixed point, where no
      *  more events exist at the current time.
      *  @exception IllegalActionException If one of the actors throws it or

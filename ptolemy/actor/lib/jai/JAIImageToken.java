@@ -57,7 +57,7 @@ import javax.media.jai.RenderedOp;
 */
 public class JAIImageToken extends ImageToken {
     /** Construct a token with a specified RenderedOp.
-     *  @param value The RenderedOp with whic to construct the JAIImageToken.
+     *  @param value The RenderedOp with which to construct the JAIImageToken.
      */
     public JAIImageToken(RenderedOp value) {
         _renderedOp = value;

@@ -290,7 +290,7 @@ public class GiottoDirector extends StaticSchedulingDirector
      */
     public void fireAt(Actor actor, Time time) throws IllegalActionException {
         // The lower level keeps requesting refiring unless its firing
-        // counts are met. So, the upper level needs to check whetehr the
+        // counts are met. So, the upper level needs to check whether the
         // firing can be granted. If the requested time is before the
         // scheduled next iteraton time, grant it. Otherwise, discard
         // the request.

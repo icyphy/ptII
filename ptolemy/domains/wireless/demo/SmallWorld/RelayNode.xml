@@ -225,9 +225,9 @@ Discard the rest.</text></svg></configure>
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Set to green if the signal is 
-transmited more than 1 hops.
+transmitted more than 1 hop.
 Set to red if the signal is 
-transmited by 1 hop.</text></svg></configure>
+transmitted by 1 hop.</text></svg></configure>
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>

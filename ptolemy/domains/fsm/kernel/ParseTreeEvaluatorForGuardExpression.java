@@ -56,7 +56,7 @@ import java.util.Set;
    Here a relation means an expression that does not contain a logical operator.
    <p>
    This visitor has two modes of operation: <i>construction</i> mode and
-   <i>updat mode</i>. During the construction mode, this visotor constructs a
+   <i>update mode</i>. During the construction mode, this visitor constructs a
    relation list where each element of the list corresponds to a relation of
    the guard expression. The order of the elements is fixed and it is the same
    as the order of the relations appear in the guard expression. If the guard

@@ -544,7 +544,7 @@ public class FSMDirector extends Director implements ModelErrorHandler,
      *  an exception will be thrown. For future designs, different ways to
      *  handle this situation will be introduced here.
      *  <p>
-     *  When an invariant is violated, this method checks whetehr there exits
+     *  When an invariant is violated, this method checks whether there exits
      *  an enabled (non-preemptive) transition. If there is one, the model
      *  error is ignored and this director will handle the enabled transition
      *  later. Otherwise, an exception will be thrown.

@@ -54,7 +54,7 @@ import java.util.Iterator;
    transmit properties received from the <i>properties</i> input port. If
    there is no token received on the <i>properties</i> input port, this actor
    will not modify the <i>outsideTransmitProperties</i> of the connected
-   wirelessIOPort, i.e. the payload will be transmited with the previous
+   wirelessIOPort, i.e. the payload will be transmitted with the previous
    transmit properties.
 
    @author Yang Zhao, Edward A. Lee
