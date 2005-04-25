@@ -29,27 +29,26 @@ package ptolemy.domains.gr.lib.vr;
 
 import java.net.URL;
 
+import javax.media.j3d.BranchGroup;
 import javax.media.j3d.Node;
 import javax.media.j3d.Transform3D;
 import javax.media.j3d.TransformGroup;
 import javax.vecmath.Vector3d;
 
+import ptolemy.actor.parameters.ParameterPort;
+import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
-import ptolemy.actor.parameters.PortParameter;
-import ptolemy.actor.parameters.ParameterPort;
-import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
+import ptolemy.domains.gr.lib.GRShadedShape;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
-import ptolemy.domains.gr.lib.GRShadedShape;
 
 import com.sun.j3d.utils.geometry.Box;
 import com.sun.j3d.utils.geometry.Primitive;
-import javax.media.j3d.BranchGroup;
 
 
 //////////////////////////////////////////////////////////////////////////

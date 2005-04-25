@@ -27,29 +27,27 @@ COPYRIGHTENDKEY
 */
 package ptolemy.domains.gr.lib.vr;
 
-import java.io.IOException;
 import java.net.URL;
 
 import javax.media.j3d.Appearance;
 import javax.media.j3d.ColoringAttributes;
+import javax.media.j3d.ImageComponent3D;
 import javax.media.j3d.LineAttributes;
 import javax.media.j3d.Material;
 import javax.media.j3d.Node;
 import javax.media.j3d.PolygonAttributes;
-import javax.media.j3d.Texture;
-import javax.media.j3d.TextureAttributes;
+import javax.media.j3d.QuadArray;
+import javax.media.j3d.Texture3D;
 import javax.media.j3d.TransparencyAttributes;
-import javax.vecmath.Color3f;
 import javax.media.j3d.View;
-import javax.media.j3d.Shape3D;
+import javax.vecmath.Color3f;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.actor.parameters.DoubleRangeParameter;
+import ptolemy.actor.parameters.FilePortParameter;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
-import ptolemy.data.expr.FileParameter;
-import ptolemy.actor.parameters.FilePortParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.gr.kernel.GRActor;
@@ -60,25 +58,11 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
-
-import com.sun.j3d.utils.image.TextureLoader;
-import javax.media.j3d.Texture3D;
-import javax.media.j3d.ImageComponent3D;
-import javax.media.j3d.QuadArray;
-
-import javax.vecmath.Point3d;
-
-import vendors.vr.ColormapChoiceAttr;
+import vendors.vr.Axis2DRenderer;
 import vendors.vr.Context;
+import vendors.vr.Texture2DVolume;
 import vendors.vr.VolFile;
 import vendors.vr.Volume;
-import vendors.vr.Texture2DVolume;
-import vendors.vr.Axis2DRenderer;
-import vendors.vr.StringAttr;
-import vendors.vr.CoordAttr;
-import vendors.vr.VolRend;
-
-import ij.ImagePlus;
 
 //////////////////////////////////////////////////////////////////////////
 //// GRTexture3D

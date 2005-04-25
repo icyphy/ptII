@@ -27,45 +27,48 @@ COPYRIGHTENDKEY
 */
 package ptolemy.domains.gr.lib.vr;
 
-import java.io.IOException;
+import java.awt.color.ColorSpace;
+import java.awt.image.BufferedImage;
+import java.awt.image.ColorModel;
+import java.awt.image.DataBuffer;
+import java.awt.image.DataBufferInt;
+import java.awt.image.WritableRaster;
+import java.io.File;
 import java.net.URL;
 
+import javax.imageio.stream.FileImageInputStream;
 import javax.media.j3d.Appearance;
 import javax.media.j3d.BranchGroup;
 import javax.media.j3d.ColoringAttributes;
 import javax.media.j3d.GeometryArray;
 import javax.media.j3d.Group;
-import javax.media.j3d.ImageComponent;
+import javax.media.j3d.ImageComponent2D;
 import javax.media.j3d.LineAttributes;
 import javax.media.j3d.Material;
 import javax.media.j3d.Node;
 import javax.media.j3d.OrderedGroup;
 import javax.media.j3d.PolygonAttributes;
-import javax.media.j3d.RenderingAttributes;
+import javax.media.j3d.QuadArray;
+import javax.media.j3d.Shape3D;
 import javax.media.j3d.Switch;
 import javax.media.j3d.TexCoordGeneration;
 import javax.media.j3d.Texture;
-import javax.vecmath.TexCoord2f;
+import javax.media.j3d.Texture2D;
 import javax.media.j3d.TextureAttributes;
-import com.sun.j3d.utils.image.TextureLoader;
 import javax.media.j3d.TransparencyAttributes;
-import javax.swing.ImageIcon;
-import javax.vecmath.Color3f;
-import javax.vecmath.Vector4f;
 import javax.media.j3d.View;
-import javax.media.j3d.Shape3D;
+import javax.vecmath.Color3f;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.actor.parameters.DoubleRangeParameter;
+import ptolemy.actor.parameters.FilePortParameter;
 import ptolemy.actor.parameters.IntRangeParameter;
+import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
-import ptolemy.data.StringToken;
 import ptolemy.data.IntToken;
-import ptolemy.data.expr.FileParameter;
-import ptolemy.actor.parameters.FilePortParameter;
-import ptolemy.actor.parameters.ParameterPort;
+import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.gr.kernel.GRActor;
@@ -75,43 +78,9 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import java.io.FileNotFoundException;
 import ptolemy.kernel.util.Workspace;
 
-import javax.media.j3d.TexCoordGeneration;
 import com.sun.j3d.utils.image.TextureLoader;
-import javax.media.j3d.Texture2D;
-import javax.media.j3d.ImageComponent2D;
-import javax.media.j3d.QuadArray;
-
-//Used in filling in texture
-import java.awt.image.BufferedImage;
-import java.awt.image.ColorModel;
-import java.awt.image.ComponentColorModel;
-import java.awt.image.DataBuffer;
-import java.awt.image.DataBufferInt;
-import java.awt.image.WritableRaster;
-import java.awt.color.ColorSpace;
-
-import javax.vecmath.Point3d;
-
-import vendors.vr.ColormapChoiceAttr;
-import vendors.vr.Context;
-import vendors.vr.VolFile;
-import vendors.vr.Volume;
-import vendors.vr.Texture2DVolume;
-import vendors.vr.Axis2DRenderer;
-import vendors.vr.StringAttr;
-import vendors.vr.CoordAttr;
-import vendors.vr.VolRend;
-
-import java.awt.Image;
-import java.awt.Transparency;
-
-import javax.swing.ImageIcon;
-import java.io.File;
-import javax.imageio.stream.FileImageInputStream;
-import ij.ImagePlus;
 
 //////////////////////////////////////////////////////////////////////////
 //// GRTexture2D
@@ -770,9 +739,7 @@ public class GRTexture2D extends GRActor3D {
         /**Read in image containing data to be mapped*/
         _fileURL = voxelFile.asURL();
         _fileRoot = _fileURL.getFile();
-        _imagePlus = new ImagePlus(_fileRoot); 
-        
-        
+       
     }
     /** Override the base class to set the texture, if one is specified,
      *  now that the view screen is known.
@@ -880,8 +847,6 @@ public class GRTexture2D extends GRActor3D {
     private ColorSpace _colorSpace;
     
     private Shape3D _texturedImage;
-    
-    private ImagePlus _imagePlus;
     
     private String _fileRoot;
 

@@ -35,7 +35,6 @@ import javax.media.j3d.LineAttributes;
 import javax.media.j3d.Material;
 import javax.media.j3d.PolygonAttributes;
 import javax.media.j3d.Texture;
-import javax.media.j3d.Texture2D;
 import javax.media.j3d.Texture3D;
 import javax.media.j3d.TextureAttributes;
 import javax.media.j3d.TransparencyAttributes;
