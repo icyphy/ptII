@@ -857,7 +857,7 @@ public class CTMultiSolverDirector extends CTDirector {
     ////                         protected methods                 ////
 
     /** This method performs a continuous phase of execution. At this phase,
-     *  a normal ODE solver tries to solve the initial states at a futhre time
+     *  a normal ODE solver tries to solve the initial states at a further time
      *  t_1, based on the inputs and final states at t_0, where t_0 < t_1.
      *  At the end of this method, outputs are generated.
      *  <p>
@@ -1415,7 +1415,7 @@ public class CTMultiSolverDirector extends CTDirector {
         _setExecutionPhase(CTExecutionPhase.UNKNOWN_PHASE);
     }
 
-    /** Resolve the initial states with a normal ODE solver at a futhre time.
+    /** Resolve the initial states with a normal ODE solver at a further time.
      *  The future time is the current time puls the step size used by the
      *  solver. Return immediately if any actor returns false in their
      *  prefire() method. After this method is called, time advances to the

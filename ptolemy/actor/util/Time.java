@@ -458,13 +458,14 @@ public class Time implements Comparable {
         return (this.compareTo(time) == 0);
     }
 
-    /** Return the double representation of the time value of this time object.
-     *  Note that the returned result is not necessarily as accurate as
-     *  the internal representation. In particular, if the internal representation
-     *  is too large, then then the returned result may be infinite.
-     *  In addition, if the magnitude of the retuned number is large
-     *  relative to the time resolution of the associated director,
-     *  then the result may be innacurrate by more than the time resolution.
+    /** Return the double representation of the time value of this
+     *  time object.  Note that the returned result is not necessarily
+     *  as accurate as the internal representation. In particular, if
+     *  the internal representation is too large, then then the
+     *  returned result may be infinite.  In addition, if the
+     *  magnitude of the retuned number is large relative to the time
+     *  resolution of the associated director, then the result may be
+     *  inaccurate by more than the time resolution.
      *  @return The double representation of the time value.
      */
     public double getDoubleValue() {

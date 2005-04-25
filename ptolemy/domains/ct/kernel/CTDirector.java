@@ -798,7 +798,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
 
     /** Return an array of suggested ModalModel directors  to use
      *  with CTDirector. The default director is HSDirector, which
-     *  is used in hybird system. FSMDirector could also be used
+     *  is used in hybrid system. FSMDirector could also be used
      *  with CTDirector in some simple cases.
      *  @return An array of suggested directors to be used with ModalModel.
      *  @see ptolemy.actor.Director#suggestedModalModelDirectors()

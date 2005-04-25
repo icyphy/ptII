@@ -133,8 +133,9 @@ public abstract class ODESolver extends NamedObj {
         }
     }
 
-    /** Fire state transition actors. See {@link CTScheduler} for explanation
-     *  of state transition actors. Derived classes may increse the round count.
+    /** Fire state transition actors. See {@link CTScheduler} for
+     *  explanation of state transition actors. Derived classes may
+     *  increase the round count.
      *  @exception IllegalActionException If schedule can not be found or
      *  state transition actors throw it from their fire() methods.
      */

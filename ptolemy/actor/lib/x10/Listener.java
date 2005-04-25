@@ -82,7 +82,8 @@ public class Listener extends Receiver {
      *  commands pending, then request another firing at the current
      *  time before returning.
      *  @exception IllegalActionException If super class throws and exception.
-     *  @exception InterruptedException If the thread is interupted by another.
+     *  @exception InterruptedException If the thread is interrupted
+     *  by another.
      */
     public void fire() throws IllegalActionException {
         super.fire();

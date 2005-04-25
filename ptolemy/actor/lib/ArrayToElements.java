@@ -45,7 +45,7 @@ import java.util.List;
 
 /**
    An actor that disassembles an ArrayToken to a multiport output.
-   <p>On each firing, this actor reads an ArrayToken frome the input
+   <p>On each firing, this actor reads an ArrayToken from the input
    port and send out each element token to each channel of the output
    port. If the width of the output port (say, <i>n</i>) is less than
    the number of elements in the array (say <i>m</i>), then the first

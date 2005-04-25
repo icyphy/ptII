@@ -941,7 +941,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
 
     /** Set the controller and current state. Call super.prefire().
      *  @return True if the prefire() method of the super class returns true.
-     *  @exception IllegalActionException If the controller does not exixt,
+     *  @exception IllegalActionException If the controller does not exit,
      *  or can not find the specified refinements associated with the current
      *  state, or the prefire() method of refinements throw it, or the super
      *  class throws it.

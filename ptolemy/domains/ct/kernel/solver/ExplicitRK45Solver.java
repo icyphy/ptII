@@ -48,7 +48,7 @@ import ptolemy.kernel.util.Workspace;
    Method for Initial Value Problems with Rapidly Varying Right-Hand Sides"
    by J. R. Cash and Alan H. Karp, ACM Transactions on Mathematical Software,
    vol 16, pp. 201-222, 1990. For completeness, a brief explanation of the
-   algorithm is explaned below.
+   algorithm is explained below.
    <p>
    For an ODE of the form:
    <pre>

@@ -344,7 +344,7 @@ public class UtilityFunctions {
 
     /** Find all true-valued elements in an array of boolean values,
      *  returning an array containing the indices (in ascending order)
-     *  of all occurances of the value 'true'.
+     *  of all occurrances of the value 'true'.
      *  @param array An array of boolean tokens.
      *  @return An array of integers giving the indices of 'true' elements
      *   in the array given as an argument.

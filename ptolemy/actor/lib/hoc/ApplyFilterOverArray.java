@@ -132,7 +132,7 @@ public class ApplyFilterOverArray extends TypedAtomicActor
      */
     public TypedIOPort inputArray;
 
-    /** The output port for output the filted array. It has the same
+    /** The output port for output the filtered array. It has the same
      *  type as the inputArray port.
      */
     public TypedIOPort outputArray;

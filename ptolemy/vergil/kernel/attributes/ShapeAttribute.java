@@ -193,7 +193,7 @@ public abstract class ShapeAttribute extends Attribute {
     protected ShapeIcon _icon;
 
     /** A color parameter whose value is a fully transparent white
-     *  (alpha = 0.0), which is interepreted as no color.
+     *  (alpha = 0.0), which is interpreted as no color.
      */
     protected Variable _none;
 }

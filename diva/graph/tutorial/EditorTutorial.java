@@ -171,7 +171,7 @@ public class EditorTutorial {
         }
 
         /**
-         * A method that initalizes a bunch of default layouts.
+         * A method that initializes a bunch of default layouts.
          */
         public void initDefaultLayouts() {
             addLayout("Random", new RandomLayout(_target), null);

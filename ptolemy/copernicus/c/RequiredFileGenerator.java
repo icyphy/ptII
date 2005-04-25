@@ -96,7 +96,7 @@ public class RequiredFileGenerator {
      * library files. This is used by the MakeFileGenerator.
      * @param code The StringBuffer to which the C filenames of user
      * classes are to be added.
-     * @return The list of C filesnames of required library files.
+     * @return The list of C file names of required library files.
      */
     public static HashSet generateUserClasses(StringBuffer code) {
         HashSet libSources = new HashSet();
