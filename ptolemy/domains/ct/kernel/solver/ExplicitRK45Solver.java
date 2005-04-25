@@ -43,8 +43,8 @@ import ptolemy.kernel.util.Workspace;
 //// ExplicitRK45Solver
 
 /**
-   This class implements the classical fourth-order Runge-Kutta ODE solving 
-   method. The algorithm was introduced in "A Variable Order Runge-Kutta 
+   This class implements a fourth-order Runge-Kutta ODE solving method. 
+   The algorithm was introduced in "A Variable Order Runge-Kutta 
    Method for Initial Value Problems with Rapidly Varying Right-Hand Sides" 
    by J. R. Cash and Alan H. Karp, ACM Transactions on Mathematical Software, 
    vol 16, pp. 201-222, 1990. For completeness, a brief explanation of the 
