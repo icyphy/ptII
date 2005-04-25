@@ -174,7 +174,7 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
         String nodeName = node.getName();
 
         // Check whether this leaf node contains a discrete variable.
-        // If there is a discrete variable, record its name as 
+        // If there is a discrete variable, record its name as
         // the discreteVariableName.
         String discreteVariableName = "";
 
@@ -189,14 +189,14 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
 
         // Note usually the usage is "x_isPresent && x" or "x_isPresent"
         // If we know that the nodeName is one of the absent discrete varialbes,
-        // such as x, we do not evaluate the "x" after the "&&". 
+        // such as x, we do not evaluate the "x" after the "&&".
         if (_absentDiscreteVariables.contains(nodeName)) {
             // Set the result token to be false token
             // because the variable is discrete and has no value.
             _evaluatedChildToken = new BooleanToken(false);
 
-            // If the current mode of the evaluator is the construction mode, 
-            // add a relation node into the relation list.            
+            // If the current mode of the evaluator is the construction mode,
+            // add a relation node into the relation list.
             if (_constructingRelationList) {
                 _relationList.addRelation(0, 0.0);
             }
@@ -224,7 +224,7 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
             return;
         }
 
-        // If the result is a boolean token, calculate the relation type. 
+        // If the result is a boolean token, calculate the relation type.
         // Meanwhile, if the nodeName is "x_isPresent", the discreteVariableName
         // is "x", based on the evaluation reaults of the node, we add or remove
         // the discrete variable from the list of absent discrete variables.
@@ -332,7 +332,7 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
 
         // Check whether the relation node has some absent discrete variables.
         // If yes, skip the node, otherwise, evaluate (visit) the node.
-        // For example, if we have "x_isPresent && x < 10.0", in the 
+        // For example, if we have "x_isPresent && x < 10.0", in the
         // visitLeafNode() method, we should know that x is either present or
         // absent. If x is absent, we do not evaluate the "x < 10.0" part here.
         Set variablesOfNode = _variableCollector.collectFreeVariables(node);
@@ -385,11 +385,11 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
 
             // If both the left and right tokens are scalars:
             // The following code basically works as a level crossing detector
-            // that detects level crossing in both rising and falling 
-            // directions. 
-            // Note we can not two double values exactly equal, therefore, we 
-            // need an error tolerance. This is the only place ther error 
-            // tolerance is used. 
+            // that detects level crossing in both rising and falling
+            // directions.
+            // Note we can not two double values exactly equal, therefore, we
+            // need an error tolerance. This is the only place ther error
+            // tolerance is used.
             if ((leftToken instanceof ScalarToken)
                             && (rightToken instanceof ScalarToken)) {
                 // handle the relations like x == 2.0

@@ -734,7 +734,7 @@ public class MoMLApplication implements ExecutionListener {
                 if (_configuration != null) {
                     _configuration.openModel(newModel);
 
-                    // FIXME: we can probably delete this code.                    
+                    // FIXME: we can probably delete this code.
                     //                     // Create an effigy for the model.
                     //                     PtolemyEffigy effigy = new PtolemyEffigy(_configuration
                     //                             .workspace());

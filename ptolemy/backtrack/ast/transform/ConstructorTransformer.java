@@ -1,4 +1,4 @@
-/* 
+/*
 
 Copyright (c) 2005 The Regents of the University of California.
 All rights reserved.
@@ -14,11 +14,11 @@ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
 THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
 SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES, 
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
 INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, 
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
@@ -53,8 +53,8 @@ import ptolemy.backtrack.ast.TypeAnalyzerState;
 //////////////////////////////////////////////////////////////////////////
 //// ConstructorTransformer
 /**
- 
- 
+
+
  @author Thomas Feng
  @version $Id$
  @since Ptolemy II 5.1
@@ -62,13 +62,13 @@ import ptolemy.backtrack.ast.TypeAnalyzerState;
  @Pt.AcceptedRating Red (tfeng)
  */
 public class ConstructorTransformer extends AbstractTransformer
-        implements ConstructorHandler, ClassHandler, CrossAnalysisHandler, 
+        implements ConstructorHandler, ClassHandler, CrossAnalysisHandler,
         MethodDeclarationHandler {
-    
+
     public void enter(FieldDeclaration node, TypeAnalyzerState state) {
         _isStaticField.push(new Boolean(Modifier.isStatic(node.getModifiers())));
     }
-    
+
     public void exit(FieldDeclaration node, TypeAnalyzerState state) {
         _isStaticField.pop();
     }
@@ -76,7 +76,7 @@ public class ConstructorTransformer extends AbstractTransformer
     public void enter(MethodDeclaration node, TypeAnalyzerState state) {
         _currentMethods.push(node);
     }
-    
+
     public void exit(MethodDeclaration node, TypeAnalyzerState state) {
         _currentMethods.pop();
     }
@@ -106,37 +106,37 @@ public class ConstructorTransformer extends AbstractTransformer
                             SPECIAL_TYPE_MAPPING.containsKey(typeName))) {
                 if (!state.getCrossAnalyzedTypes().contains(typeName))
                     state.getAnalyzer().addCrossAnalyzedType(typeName);
-                
+
                 // The type needs to be cross-analyzed.
                 _refactor(node, state);
             } else
                 addToLists(_unhandledNodes, typeName, node);
         }
     }
-    
+
     public void handle(SuperConstructorInvocation node, TypeAnalyzerState state) {
     }
-    
-    public void enter(AnonymousClassDeclaration node, 
+
+    public void enter(AnonymousClassDeclaration node,
             TypeAnalyzerState state) {
         _currentMethods.push(null);
     }
 
-    public void exit(AnonymousClassDeclaration node, 
+    public void exit(AnonymousClassDeclaration node,
             TypeAnalyzerState state) {
         _handleDeclaration(node, node.bodyDeclarations(), state);
         _currentMethods.pop();
     }
-    
+
     public void enter(TypeDeclaration node, TypeAnalyzerState state) {
         _currentMethods.push(null);
     }
-    
+
     public void exit(TypeDeclaration node, TypeAnalyzerState state) {
         _handleDeclaration(node, node.bodyDeclarations(), state);
         _currentMethods.pop();
     }
-    
+
     public void handle(TypeAnalyzerState state) {
         Set crossAnalyzedTypes = state.getCrossAnalyzedTypes();
         Iterator crossAnalysisIter = crossAnalyzedTypes.iterator();
@@ -154,11 +154,11 @@ public class ConstructorTransformer extends AbstractTransformer
             }
         }
     }
-    
+
     public final static boolean HANDLE_SPECIAL_TYPE_MAPPINGS = true;
-    
+
     public static final Hashtable SPECIAL_TYPE_MAPPING = new Hashtable();
-    
+
     static {
         SPECIAL_TYPE_MAPPING.put("java.util.Random",
                 "ptolemy.backtrack.util.java.util.Random");
@@ -166,41 +166,41 @@ public class ConstructorTransformer extends AbstractTransformer
                 "ptolemy.backtrack.util.java.util.TreeMap");
     }
 
-    private void _handleDeclaration(ASTNode node, List bodyDeclarations, 
+    private void _handleDeclaration(ASTNode node, List bodyDeclarations,
             TypeAnalyzerState state) {
     }
-    
-    private void _refactor(ClassInstanceCreation node, 
+
+    private void _refactor(ClassInstanceCreation node,
             TypeAnalyzerState state) {
         AST ast = node.getAST();
         CompilationUnit root = (CompilationUnit)node.getRoot();
         Type type = Type.getType(node);
         ClassInstanceCreation newNode =
             (ClassInstanceCreation)ASTNode.copySubtree(ast, node);
-        
+
         if (SPECIAL_TYPE_MAPPING.containsKey(type.getName())) {
             type = Type.createType((String)SPECIAL_TYPE_MAPPING.get(type.getName()));
             newNode.setName(createName(ast,
                     getClassName(type.getName(), state, root)));
             Type.setType(node, type);
         }
-        
+
         String setCheckpointName = SET_CHECKPOINT_NAME;
         MethodInvocation extraSetCheckpoint = ast.newMethodInvocation();
         extraSetCheckpoint.setExpression(newNode);
         extraSetCheckpoint.setName(ast.newSimpleName(setCheckpointName));
         extraSetCheckpoint.arguments().add(ast.newSimpleName(CHECKPOINT_NAME));
-        
+
         CastExpression typeCast = ast.newCastExpression();
         typeCast.setExpression(extraSetCheckpoint);
         typeCast.setType(
                 createType(ast, getClassName(type.getName(), state, root)));
         replaceNode(node, typeCast);
     }
-    
+
     private Hashtable _unhandledNodes = new Hashtable();
-    
+
     private Stack _currentMethods = new Stack();
-    
+
     private Stack _isStaticField = new Stack();
 }

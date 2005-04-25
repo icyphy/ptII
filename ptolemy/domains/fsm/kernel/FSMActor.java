@@ -919,7 +919,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             enabledTransitions.add(transition);
         }
 
-        // NOTE: It is the _chooseTransition method that decides which 
+        // NOTE: It is the _chooseTransition method that decides which
         // enabled transition is actually taken. This method simply returns
         // all enabled transitions.
         return enabledTransitions;
@@ -962,18 +962,18 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             }
         }
 
-        // Randomly choose one transition from the list of the 
+        // Randomly choose one transition from the list of the
         // enabled trnasitions.
         int length = enabledTransitions.size();
 
         if (length != 0) {
-            // Since the size of the list of enabled transitions usually (almost 
-            // always) is less than the maximum value of integer. We can safely 
+            // Since the size of the list of enabled transitions usually (almost
+            // always) is less than the maximum value of integer. We can safely
             // do the cast from long to int in the following statement.
             int randomChoice = (int) Math.floor(Math.random() * length);
 
-            // There is a tiny chance that randomChoice equals length. 
-            // When this happens, we deduct 1 from the randomChoice. 
+            // There is a tiny chance that randomChoice equals length.
+            // When this happens, we deduct 1 from the randomChoice.
             if (randomChoice == length) {
                 randomChoice--;
             }

@@ -610,7 +610,7 @@ public class GRTexture2Da extends GRActor3D {
                 _debug("Created Appearance");
             }
 
-            //Set texture attributes and texture                   
+            //Set texture attributes and texture
             Texture2D tex = _textures[i];
             _textureAttributes = new TextureAttributes();
             _textureAttributes.setTextureMode(TextureAttributes.REPLACE);

@@ -197,7 +197,7 @@ public abstract class AbstractMap implements Map, Rollbackable {
     public boolean containsKey(Object key) {
         Iterator entries = entrySet().iterator();
         int pos = size();
-        while (--pos >= 0) 
+        while (--pos >= 0)
             if (equals(key, ((Map.Entry)entries.next()).getKey()))
                 return true;
         return false;
@@ -206,7 +206,7 @@ public abstract class AbstractMap implements Map, Rollbackable {
     public boolean containsValue(Object value) {
         Iterator entries = entrySet().iterator();
         int pos = size();
-        while (--pos >= 0) 
+        while (--pos >= 0)
             if (equals(value, ((Map.Entry)entries.next()).getValue()))
                 return true;
         return false;

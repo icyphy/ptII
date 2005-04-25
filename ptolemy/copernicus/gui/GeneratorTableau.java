@@ -409,7 +409,7 @@ public class GeneratorTableau extends Tableau {
     // "applet" or "java" or "shallow".
     private List _generateCodeGeneratorCommands(CompositeEntity model,
         GeneratorAttribute generatorAttribute, String codeGenerator)
-        throws IllegalArgumentException, IllegalActionException, 
+        throws IllegalArgumentException, IllegalActionException,
             InternalErrorException, NameDuplicationException {
         List results = new LinkedList();
 

@@ -147,7 +147,7 @@ public class ModelGraph2Entity {
     }
 
     protected void _processNode(Node node)
-            throws IllegalActionException, NameDuplicationException, 
+            throws IllegalActionException, NameDuplicationException,
             JHDLUnsupportedException {
         // Process Node
         Object nweight = node.getWeight();
@@ -175,7 +175,7 @@ public class ModelGraph2Entity {
 
     // No hardware (thus no port linking
     protected void _processLocal(Node node)
-            throws JHDLUnsupportedException, IllegalActionException, 
+            throws JHDLUnsupportedException, IllegalActionException,
             NameDuplicationException {
         // should have one input and one output. Just update the _wireMap
         // TODO: I should use the local to provide some more naming
@@ -197,7 +197,7 @@ public class ModelGraph2Entity {
     }
 
     protected void _processConstant(Node node)
-            throws IllegalActionException, NameDuplicationException, 
+            throws IllegalActionException, NameDuplicationException,
             JHDLUnsupportedException {
         Object weight = node.getWeight();
 
@@ -217,7 +217,7 @@ public class ModelGraph2Entity {
     }
 
     protected void _processBinopExpr(Node node)
-            throws IllegalActionException, NameDuplicationException, 
+            throws IllegalActionException, NameDuplicationException,
             JHDLUnsupportedException {
         // get two Relations coming into this op
         JHDLIORelation r1 = null;
@@ -289,7 +289,7 @@ public class ModelGraph2Entity {
     }
 
     protected void _processUnopExpr(Node node)
-            throws IllegalActionException, NameDuplicationException, 
+            throws IllegalActionException, NameDuplicationException,
             JHDLUnsupportedException {
         // get nodes coming into this op
         Collection inEdges = _graph.inputEdges(node);
@@ -418,7 +418,7 @@ public class ModelGraph2Entity {
         ModelGraph2Entity process = null;
         JHDLActorTestbench testbench = null;
         int descriptionLevel = NamedObj.LINKS | NamedObj.FULLNAME
-            | 
+            |
             //NamedObj.ATTRIBUTES |
             NamedObj.CONTENTS | NamedObj.DEEP;
 

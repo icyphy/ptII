@@ -205,7 +205,7 @@ public class DDFSelect extends TypedAtomicActor {
             if ((_control >= 0) && (_control < input.getWidth())) {
                 _isControlRead = true;
             } else {
-                // If the value of the received control token is out of 
+                // If the value of the received control token is out of
                 // range, throw an IllegalActionException.
                 throw new IllegalActionException(this,
                     "The width of the " + "input port is " + input.getWidth()

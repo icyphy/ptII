@@ -1,48 +1,48 @@
 package ptolemy.backtrack.ast;
 
 class TestProgram /*implements Rollbackable*/ {
-    
+
     private int[][] buf;
-    
+
     int[][] getBuf() {
         return buf;
     }
-    
+
     TestProgram getThis(int[][] x) {
         return this;
     }
-    
+
     void f() {
         int[][] b = getThis(buf).buf;
     }
-    
+
     public static void main(String[] args) {
         int length1 = 10;
         int length2 = 20;
         do
             length1--;
         while (length1 > 0);
-        
+
         TestProgram t = new TestProgram();
         t.buf = new int[length1][length2];
         for (int i = 0, k = 0; i < length1; i++)
             for (int j = 0; j < length2; j++, k++)
                 t.buf[i][j] = k;
-        
+
         int[][] buf = new int[length1][length2];
         for (int i = 0, k = 0; i < length1; i++)
             for (int j = 0; j < length2; j++, k++)
                 buf[i][j] = length1 * length2 - k - 1;
-        
+
         System.arraycopy(buf, 0, t.buf, 0, length1);
-        
+
         for (int i = 0; i < length1; i++) {
             for (int j = 0; j < length2; j++)
                 System.out.print(formatInteger(t.buf[i][j], 4));
             System.out.println();
         }
     }
-    
+
     private static String formatInteger(int i, int length) {
         StringBuffer buf = new StringBuffer();
         buf.append(Integer.toString(i));
@@ -51,28 +51,28 @@ class TestProgram /*implements Rollbackable*/ {
             buf.insert(0, ' ');
         return buf.toString();
     }
-    
+
     /*private int i;
     void f() {
         i = 0;
         i = 1;
         i = 2;
     }*/
-    
+
     /*private Object o = new C();
-    
+
     class C {
     }*/
-    
+
     /*private TestProgram o = new TestProgram();
     private Object o2;
-    
+
     TestProgram f() {
         o.f().o = new TestProgram();
         o.f().o2 = new Object();
         return null;
     }*/
-    
+
     /*private char[][][][] buf;
     void f() {
         buf = new char[1][][][];
@@ -81,11 +81,11 @@ class TestProgram /*implements Rollbackable*/ {
         buf[0][1][2] = new char[4];
         buf[0][1][2][3] = 'C';
     }*/
-    
+
     /*private TestProgram[] t = new TestProgram[10];
-    
+
     private int i;
-    
+
     void f() {
         t[1] = new TestProgram();
         t[1].i = 10;
@@ -95,14 +95,14 @@ class TestProgram /*implements Rollbackable*/ {
         t[0].i = 30;
         t[0] = null;
     }*/
-    
+
     /*public static void main(String[] args) {
         TestProgram p = new TestProgram();
         p.f();
         p.$CHECKPOINT.rollback(3, true);
         System.out.println(p.t[1].i);
     }
-    
+
     protected ptolemy.backtrack.Checkpoint $CHECKPOINT = new ptolemy.backtrack.Checkpoint(this);
 
     private TestProgram[] t = new TestProgram[10];
@@ -157,7 +157,7 @@ class TestProgram /*implements Rollbackable*/ {
         t = (ptolemy.backtrack.ast.TestProgram[])$RECORD$t.restore(t, timestamp, trim);
         i = $RECORD$i.restore(i, timestamp, trim);
     }
-    
+
     public final ptolemy.backtrack.Checkpoint $GET$CHECKPOINT() {
         return $CHECKPOINT;
     }
@@ -182,7 +182,7 @@ class TestProgram /*implements Rollbackable*/ {
         this();
         $SET$CHECKPOINT($CHECKPOINT);
     }*/
-    
+
     /*void f() {
         new Object() {
             private char[][] buf;
@@ -192,11 +192,11 @@ class TestProgram /*implements Rollbackable*/ {
             }
         };
     }*/
-    
+
     //------------------
     //     Problems
     //------------------
-    
+
     /*private char[][] buf;
     void g() {
         char[][] buf = this.buf;

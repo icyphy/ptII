@@ -44,7 +44,7 @@ public abstract class Attr {
     }
 
     Attr(String label) {
-	this.label = label; 
+	this.label = label;
 	this.name = toName(label);
     }
     public String getLabel() {

@@ -51,7 +51,7 @@ public abstract class AbstractSet extends AbstractCollection implements Set, Rol
         Iterator itr = iterator();
         int hash = 0;
         int pos = size();
-        while (--pos >= 0) 
+        while (--pos >= 0)
             hash += hashCode(itr.next());
         return hash;
     }
@@ -61,11 +61,11 @@ public abstract class AbstractSet extends AbstractCollection implements Set, Rol
         int count = c.size();
         Iterator i;
         if (oldsize < count) {
-            for (i = iterator(), count = oldsize; count > 0; count--) 
+            for (i = iterator(), count = oldsize; count > 0; count--)
                 if (c.contains(i.next()))
                     i.remove();
         } else
-            for (i = c.iterator(); count > 0; count--) 
+            for (i = c.iterator(); count > 0; count--)
                 remove(i.next());
         return oldsize != size();
     }

@@ -63,7 +63,7 @@ public class SlicePlane3DRenderer extends SlicePlaneRenderer {
 	appearance.setPolygonAttributes(p);
 	appearance.setCapability(Appearance.ALLOW_TEXTURE_WRITE);
 	appearance.setCapability(Appearance.ALLOW_TEXGEN_WRITE);
-	
+
 	shape = new Shape3D(null, appearance);
 	shape.setCapability(Shape3D.ALLOW_GEOMETRY_READ);
 	shape.setCapability(Shape3D.ALLOW_GEOMETRY_WRITE);

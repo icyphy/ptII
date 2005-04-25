@@ -1265,8 +1265,8 @@ public class CTScheduler extends Scheduler {
                 IOPort nextPort = (IOPort) connectedPorts.next();
 
                 if (!_map.containsKey(nextPort)) {
-                    // check whether the nextPort has a parameter setting 
-                    // its signal type. compare it with the propagateType 
+                    // check whether the nextPort has a parameter setting
+                    // its signal type. compare it with the propagateType
                     // to see whether type conflict happens.
                     Parameter signalType = (Parameter) nextPort.getAttribute(
                             "signalType");

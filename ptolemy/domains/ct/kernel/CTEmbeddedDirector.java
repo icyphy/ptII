@@ -154,18 +154,18 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
     public void fire() throws IllegalActionException {
         CTSchedule schedule = (CTSchedule) getScheduler().getSchedule();
 
-        // Establish the initial states if necessary. For example, if this 
+        // Establish the initial states if necessary. For example, if this
         // director resides in a refinement (not a refinement of the initial
-        // state), and the refinement gets enabled for the first time or 
+        // state), and the refinement gets enabled for the first time or
         // the refinement needs initialization.
         // NOTE: by default the _initialStatesNotReady is set to false, which
-        // indicates this director does not need to construct the initial 
+        // indicates this director does not need to construct the initial
         // states. Instead, the upper level CTDirector will establish the
-        // initial states. 
+        // initial states.
         // The _initialStatesNotReady variable can be changed by the HSDirector.
-        // The HSDirector will set this variable to true to force a process to 
-        // construct initial states, if the container of this director is 
-        // firstly visited, or this container needs reinitialization,  
+        // The HSDirector will set this variable to true to force a process to
+        // construct initial states, if the container of this director is
+        // firstly visited, or this container needs reinitialization,
         if (_initialStatesNotReady) {
             establishInitialStates();
             _initialStatesNotReady = false;

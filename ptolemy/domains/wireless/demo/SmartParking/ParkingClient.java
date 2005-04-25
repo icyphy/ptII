@@ -118,7 +118,7 @@ public class ParkingClient extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                ////
-    //  Generate random number uniformly distributed between 0 and the 
+    //  Generate random number uniformly distributed between 0 and the
     // <i>size</i> parameter.
     private int _getRandom(int size) {
         // Generate a double between 0 and 1, uniformly distributed.

@@ -45,9 +45,9 @@ public class Texture2DVolume extends TextureVolume {
 
     // sets of textures, one for each axis, sizes of the arrays are set
     // by the dimensions of the Volume
-    Texture2D[]		xTextures;	
-    Texture2D[]		yTextures;	
-    Texture2D[]		zTextures;	
+    Texture2D[]		xTextures;
+    Texture2D[]		yTextures;
+    Texture2D[]		zTextures;
 
     TexCoordGeneration 	xTg = new TexCoordGeneration();
     TexCoordGeneration 	yTg = new TexCoordGeneration();
@@ -66,7 +66,7 @@ public class Texture2DVolume extends TextureVolume {
 	} else {
 	    ColorSpace cs = ColorSpace.getInstance(ColorSpace.CS_GRAY);
 	    int[] nBits = {8};
-	    colorModel = new ComponentColorModel(cs, nBits, false, false, 
+	    colorModel = new ComponentColorModel(cs, nBits, false, false,
 		Transparency.TRANSLUCENT, DataBuffer.TYPE_BYTE);
 	}
 
@@ -86,7 +86,7 @@ public class Texture2DVolume extends TextureVolume {
 	//if (timing) {
 	//    long end = System.currentTimeMillis();
 	//    double elapsed = (end - start) / 1000.0;
-	//    System.out.println("Load took " + numFormat(elapsed) + 
+	//    System.out.println("Load took " + numFormat(elapsed) +
 	//		" seconds");
 	//}
     }
@@ -94,7 +94,7 @@ public class Texture2DVolume extends TextureVolume {
     private void loadAxis(int axis) {
 	int	rSize = 0;        // number of tex maps to create
 	int	sSize = 0; 	  // s,t = size of texture map to create
-	int 	tSize = 0; 
+	int 	tSize = 0;
 	Texture2D[] textures = null;
 
 	switch (axis) {
@@ -127,21 +127,21 @@ public class Texture2DVolume extends TextureVolume {
 	    break;
 	}
 
-	raster = colorModel.createCompatibleWritableRaster(sSize, tSize); 
+	raster = colorModel.createCompatibleWritableRaster(sSize, tSize);
 
-	BufferedImage bImage = 
-		new BufferedImage(colorModel, raster, false, null); 
+	BufferedImage bImage =
+		new BufferedImage(colorModel, raster, false, null);
 
 	int[] intData = null;
 	byte[] byteData = null;
 	if (useCmap) {
-	    intData = ((DataBufferInt)raster.getDataBuffer()).getData(); 
+	    intData = ((DataBufferInt)raster.getDataBuffer()).getData();
 	} else {
-	    byteData = ((DataBufferByte)raster.getDataBuffer()).getData(); 
+	    byteData = ((DataBufferByte)raster.getDataBuffer()).getData();
 	}
 
 
-	for (int i=0; i < rSize; i ++) { 
+	for (int i=0; i < rSize; i ++) {
 	    switch (axis) {
 	      case Z_AXIS:
 		if (useCmap) {
@@ -169,19 +169,19 @@ public class Texture2DVolume extends TextureVolume {
 	    Texture2D tex;
 	    ImageComponent2D pArray;
 	    if (useCmap) {
-		tex = new Texture2D(Texture.BASE_LEVEL, 
+		tex = new Texture2D(Texture.BASE_LEVEL,
 		    Texture.RGBA, sSize, tSize);
 		pArray = new ImageComponent2D(
 			ImageComponent.FORMAT_RGBA, sSize, tSize);
 	    } else {
-		tex = new Texture2D(Texture.BASE_LEVEL, 
+		tex = new Texture2D(Texture.BASE_LEVEL,
 		    Texture.INTENSITY, sSize, tSize);
 		pArray = new ImageComponent2D(
 			ImageComponent.FORMAT_CHANNEL8, sSize, tSize);
 	    }
 	    pArray.set(bImage);
 
-	
+
 	    tex.setImage(0, pArray);
 	    tex.setEnable(true);
 	    tex.setMinFilter(Texture.BASE_LEVEL_LINEAR);
@@ -194,6 +194,6 @@ public class Texture2DVolume extends TextureVolume {
 	    textures[i] = tex;
 	    System.out.print(".");
 
-	} 
-    } 
+	}
+    }
 }

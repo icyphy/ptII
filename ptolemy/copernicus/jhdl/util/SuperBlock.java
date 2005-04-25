@@ -330,7 +330,7 @@ public class SuperBlock implements GraphNode {
 
         boolean done = false;
 
-        OUTER: 
+        OUTER:
         while (!done) {
             //Iterate over all labels
             //  get all keys in hashMap

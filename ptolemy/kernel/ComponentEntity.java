@@ -169,7 +169,7 @@ public class ComponentEntity extends Entity {
      *   an object already in the container.
      */
     public Instantiable instantiate(NamedObj container, String name)
-        throws CloneNotSupportedException, IllegalActionException, 
+        throws CloneNotSupportedException, IllegalActionException,
             NameDuplicationException {
         if ((container != null) && !(container instanceof CompositeEntity)) {
             throw new IllegalActionException(this,

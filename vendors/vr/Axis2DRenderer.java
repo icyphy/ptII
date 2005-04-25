@@ -113,9 +113,9 @@ public class Axis2DRenderer extends AxisRenderer {
 
 	switch (axis) {
 	  case Z_AXIS:
-	    frontGroup = 
+	    frontGroup =
 		(OrderedGroup)axisSwitch.getChild(axisIndex[Z_AXIS][FRONT]);
-	    backGroup = 
+	    backGroup =
 		(OrderedGroup)axisSwitch.getChild(axisIndex[Z_AXIS][BACK]);
 	    rSize = volume.zDim;
 	    textures = texVol.zTextures;
@@ -123,9 +123,9 @@ public class Axis2DRenderer extends AxisRenderer {
 	    setCoordsZ();
 	    break;
 	  case Y_AXIS:
-	    frontGroup = 
+	    frontGroup =
 		(OrderedGroup)axisSwitch.getChild(axisIndex[Y_AXIS][FRONT]);
-	    backGroup = 
+	    backGroup =
 		(OrderedGroup)axisSwitch.getChild(axisIndex[Y_AXIS][BACK]);
 	    rSize = volume.yDim;
 	    textures = texVol.yTextures;
@@ -133,9 +133,9 @@ public class Axis2DRenderer extends AxisRenderer {
 	    setCoordsY();
 	    break;
 	  case X_AXIS:
-	    frontGroup = 
+	    frontGroup =
 		(OrderedGroup)axisSwitch.getChild(axisIndex[X_AXIS][FRONT]);
-	    backGroup = 
+	    backGroup =
 		(OrderedGroup)axisSwitch.getChild(axisIndex[X_AXIS][BACK]);
 	    rSize = volume.xDim;
 	    textures = texVol.xTextures;
@@ -144,7 +144,7 @@ public class Axis2DRenderer extends AxisRenderer {
 	    break;
 	}
 
-	for (int i=0; i < rSize; i ++) { 
+	for (int i=0; i < rSize; i ++) {
 
 	    switch (axis) {
 	      case Z_AXIS:
@@ -177,7 +177,7 @@ public class Axis2DRenderer extends AxisRenderer {
 	    quadArray.setCoordinates(0, quadCoords);
 
 	    frontShape = new Shape3D(quadArray, a);
-	    
+
 
 	    BranchGroup frontShapeGroup = new BranchGroup();
 	    frontShapeGroup.setCapability(BranchGroup.ALLOW_DETACH);
@@ -190,14 +190,14 @@ public class Axis2DRenderer extends AxisRenderer {
 	    backShapeGroup.setCapability(BranchGroup.ALLOW_DETACH);
 	    backShapeGroup.addChild(backShape);
 	    backGroup.insertChild(backShapeGroup, 0);
-        
-    
+
+
 
 	}
-    } 
+    }
     public BranchGroup getNode(){
     	return root;
     }
  }
- 
+
 

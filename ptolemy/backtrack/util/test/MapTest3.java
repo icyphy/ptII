@@ -1,4 +1,4 @@
-/* 
+/*
 
 Copyright (c) 2005 The Regents of the University of California.
 All rights reserved.
@@ -14,11 +14,11 @@ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
 THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
 SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES, 
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
 INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, 
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
@@ -35,8 +35,8 @@ import ptolemy.backtrack.util.java.util.Map;
 //////////////////////////////////////////////////////////////////////////
 //// TreeMapTest1
 /**
- 
- 
+
+
  @author Thomas Feng
  @version $Id$
  @since Ptolemy II 5.1
@@ -53,7 +53,7 @@ public class MapTest3 {
         Class mapClass = MapTest1.class.getClassLoader().loadClass(className);
         Map map = (Map)mapClass.newInstance();
         int iteration = 20;
-        
+
         // Test clear() function.
         for (int i = 0; i < iteration; i++)
             map.put(new Integer(i), new Integer(iteration - i));
@@ -61,7 +61,7 @@ public class MapTest3 {
         map.clear();
         map.$GET$CHECKPOINT().rollback(handle1, true);
         System.out.println(map);
-        
+
         // Test keySet() and clear() of the key set.
         for (int i = 0; i < iteration; i++)
             map.put(new Integer(i), new Integer(iteration - i));
@@ -69,7 +69,7 @@ public class MapTest3 {
         map.keySet().clear();
         map.$GET$CHECKPOINT().rollback(handle2, true);
         System.out.println(map);
-        
+
         // Test entrySet() and clear() of the entry set.
         for (int i = 0; i < iteration; i++)
             map.put(new Integer(i), new Integer(iteration - i));
@@ -77,7 +77,7 @@ public class MapTest3 {
         map.entrySet().clear();
         map.$GET$CHECKPOINT().rollback(handle2, true);
         System.out.println(map);
-        
+
         // Test removal with iterator().
         for (int i = 0; i < iteration; i++)
             map.put(new Integer(i), new Integer(iteration - i));

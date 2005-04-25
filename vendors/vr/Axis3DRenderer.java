@@ -107,25 +107,25 @@ public class Axis3DRenderer extends AxisRenderer {
 
 	switch (axis) {
 	  case Z_AXIS:
-	    frontGroup = 
+	    frontGroup =
 		(OrderedGroup)axisSwitch.getChild(axisIndex[Z_AXIS][FRONT]);
-	    backGroup = 
+	    backGroup =
 		(OrderedGroup)axisSwitch.getChild(axisIndex[Z_AXIS][BACK]);
 	    rSize = volume.zDim;
 	    setCoordsZ();
 	    break;
 	  case Y_AXIS:
-	    frontGroup = 
+	    frontGroup =
 		(OrderedGroup)axisSwitch.getChild(axisIndex[Y_AXIS][FRONT]);
-	    backGroup = 
+	    backGroup =
 		(OrderedGroup)axisSwitch.getChild(axisIndex[Y_AXIS][BACK]);
 	    rSize = volume.yDim;
 	    setCoordsY();
 	    break;
 	  case X_AXIS:
-	    frontGroup = 
+	    frontGroup =
 		(OrderedGroup)axisSwitch.getChild(axisIndex[X_AXIS][FRONT]);
-	    backGroup = 
+	    backGroup =
 		(OrderedGroup)axisSwitch.getChild(axisIndex[X_AXIS][BACK]);
 	    rSize = volume.xDim;
 	    setCoordsX();
@@ -133,7 +133,7 @@ public class Axis3DRenderer extends AxisRenderer {
 	}
 
 
-	for (int i=0; i < rSize; i ++) { 
+	for (int i=0; i < rSize; i ++) {
 	    switch (axis) {
 	      case Z_AXIS:
 		setCurCoordZ(i);
@@ -176,6 +176,6 @@ public class Axis3DRenderer extends AxisRenderer {
 	    backShapeGroup.setCapability(BranchGroup.ALLOW_DETACH);
 	    backShapeGroup.addChild(backShape);
 	    backGroup.insertChild(backShapeGroup, 0);
-	} 
-    } 
+	}
+    }
 }

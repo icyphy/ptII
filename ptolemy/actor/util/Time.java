@@ -543,30 +543,30 @@ public class Time implements Comparable {
      *   may not be accurate to the specified resolution.
      */
     public double maximumAccurateValueAsDouble() {
-        // NOTE: when the time value is too big a multiple of the 
+        // NOTE: when the time value is too big a multiple of the
         // resolution, the double representation
-        // fails to deliver adequate precision. 
+        // fails to deliver adequate precision.
         // Here is an example: if time resolution is 1E-12,
-        // any double that is bigger than 8191.999999999999 cannot 
-        // distinguish itself from other bigger values (even 
-        // slightly bigger with the difference as small as the time 
-        // resolution). Therefore, 8191.999999999999 is the LUB of the 
+        // any double that is bigger than 8191.999999999999 cannot
+        // distinguish itself from other bigger values (even
+        // slightly bigger with the difference as small as the time
+        // resolution). Therefore, 8191.999999999999 is the LUB of the
         // set of double values have the specified time resolution.
-        // NOTE: The strategy to find the LUB for a given time 
-        // resolution r: find the smallest N such that time resolution 
-        // r >=  2^(-1*N); get M = 52 - N, which is the multiplication 
-        // we can apply on the significand without loss of time 
+        // NOTE: The strategy to find the LUB for a given time
+        // resolution r: find the smallest N such that time resolution
+        // r >=  2^(-1*N); get M = 52 - N, which is the multiplication
+        // we can apply on the significand without loss of time
         // resolution; the LUB is (1 + 1 - 1.0/2^(-52)) * 2^M.
-        // For example: with the above example time resolution 1e-12, 
-        // we get N = 40, M = 12. Then we get the LUB as 
+        // For example: with the above example time resolution 1e-12,
+        // we get N = 40, M = 12. Then we get the LUB as
         // 8191.999999999999. For time resolution as 1e-10, the lub is
         // 524287.99999999994.
-        // NOTE: according to the IEEE754 floating point standard, 
+        // NOTE: according to the IEEE754 floating point standard,
         // the formula to calculate a decimal value from a binary
-        // representation is 
-        // (-1)^(sign)x(1+significand)x2^(exponent-127) for 
-        // signal precision and 
-        // (-1)^(sign)x(1+significand)x2^(exponent-1023) 
+        // representation is
+        // (-1)^(sign)x(1+significand)x2^(exponent-127) for
+        // signal precision and
+        // (-1)^(sign)x(1+significand)x2^(exponent-1023)
         // for double presision.
         int minimumNumberOfBits = (int) Math.floor(-1 * ExtendedMath.log2(
                                 _director.getTimeResolution())) + 1;
@@ -655,21 +655,21 @@ public class Time implements Comparable {
         // an illegal action exception will be thrown indicating the double
         // value does not match the specified time resolution.
         // Here is an example: if time resolution is 1E-12,
-        // any double that is bigger than 8191.999999999999 cannot distinguish 
-        // itself from any other bigger values (even slightly bigger with the 
-        // difference as small as the time resolution). Therefore, 
-        // 8191.999999999999 is the LUB of the set of double values have the 
+        // any double that is bigger than 8191.999999999999 cannot distinguish
+        // itself from any other bigger values (even slightly bigger with the
+        // difference as small as the time resolution). Therefore,
+        // 8191.999999999999 is the LUB of the set of double values have the
         // specified time resolution.
         // NOTE: The strategy to find the LUB for a given time resolution r:
         // find the smallest N such that time resolution r >=  2^(-1*N);
         // get M = 52 - N, which is the multiplication we can apply on the
         // significand without loss of time resolution;
         // the LUB is (1 + 1 - 1.0/2^(-52)) * 2^M.
-        // For example: with the above example time resolution 1e-12, we get 
-        // N = 40, M = 12. Then we get the LUB as 8191.999999999999. 
-        // NOTE: according to the IEEE754 floating point standard, 
+        // For example: with the above example time resolution 1e-12, we get
+        // N = 40, M = 12. Then we get the LUB as 8191.999999999999.
+        // NOTE: according to the IEEE754 floating point standard,
         // the formula to calculate a decimal value from a binary
-        // representation is (-1)^(sign)x(1+significand)x2^(exponent-127) for 
+        // representation is (-1)^(sign)x(1+significand)x2^(exponent-127) for
         // signal precision and (-1)^(sign)x(1+significand)x2^(exponent-1023)
         // for double precision.
         double precision = _director.getTimeResolution();

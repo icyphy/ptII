@@ -57,7 +57,7 @@ abstract public class Renderer {
 //	timing = Boolean.getBoolean("timing");
     }
 
-    /** 
+    /**
      * Attach the branchgroups for this renderer to the display
      */
     abstract public void attach(Group dynamicGroup, Group staticGroup);
@@ -70,21 +70,21 @@ abstract public class Renderer {
     /**
      * Returns the number of pixels drawn in the current display
      */
-    abstract public double calcRenderSize(ScreenSizeCalculator screenSize, 
+    abstract public double calcRenderSize(ScreenSizeCalculator screenSize,
 		Canvas3D canvas);
 
     /**
      * Called when the tranform for the volume has changed
      */
-    public void transformChanged(int type, Transform3D trans) {}; 
+    public void transformChanged(int type, Transform3D trans) {};
 
     /**
      * Called when the view position relative to the renderer changes
      */
-    public void eyePtChanged() {}; 
+    public void eyePtChanged() {};
 
 
-    /** 
+    /**
      * return the eye's position in <node>'s coordinate space
      */
     Point3d getViewPosInLocal(Node node) {

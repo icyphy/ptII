@@ -1344,7 +1344,7 @@ public class JavaFragmentParserTokenManager
 
             if (curChar < 64) {
                 long l = 1L << curChar;
-MatchLoop: 
+MatchLoop:
                 do {
                     switch (jjstateSet[--i]) {
                     case 3:
@@ -1790,7 +1790,7 @@ MatchLoop:
                 } while (i != startsAt);
             } else if (curChar < 128) {
                 long l = 1L << (curChar & 077);
-MatchLoop: 
+MatchLoop:
                 do {
                     switch (jjstateSet[--i]) {
                     case 3:
@@ -1942,7 +1942,7 @@ MatchLoop:
                 long l1 = 1L << (hiByte & 077);
                 int i2 = (curChar & 0xff) >> 6;
                 long l2 = 1L << (curChar & 077);
-MatchLoop: 
+MatchLoop:
                 do {
                     switch (jjstateSet[--i]) {
                     case 3:
@@ -2065,7 +2065,7 @@ MatchLoop:
 
             if (curChar < 64) {
                 long l = 1L << curChar;
-MatchLoop: 
+MatchLoop:
                 do {
                     switch (jjstateSet[--i]) {
                     case 0:
@@ -2104,7 +2104,7 @@ MatchLoop:
                 } while (i != startsAt);
             } else if (curChar < 128) {
                 long l = 1L << (curChar & 077);
-MatchLoop: 
+MatchLoop:
                 do {
                     switch (jjstateSet[--i]) {
                     default:
@@ -2117,7 +2117,7 @@ MatchLoop:
                 long l1 = 1L << (hiByte & 077);
                 int i2 = (curChar & 0xff) >> 6;
                 long l2 = 1L << (curChar & 077);
-MatchLoop: 
+MatchLoop:
                 do {
                     switch (jjstateSet[--i]) {
                     default:
@@ -2614,7 +2614,7 @@ MatchLoop:
         Token matchedToken;
         int curPos = 0;
 
-EOFLoop: 
+EOFLoop:
         for (;;) {
             try {
                 curChar = input_stream.BeginToken();

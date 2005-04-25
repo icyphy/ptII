@@ -253,7 +253,7 @@ public class BreakpointConfigurer extends Query implements ChangeListener {
      * Labels of FiringEventTypes to show in the dialog box.
      */
     protected static String[] _firingEventTypeLabels = {
-            
+
             // FIXME: Only BEFORE_ITERATE and AFTER_ITERATE work with SDF
             //"before prefire",
             //"after prefire",
@@ -267,7 +267,7 @@ public class BreakpointConfigurer extends Query implements ChangeListener {
 
     /** FiringEventTypes that the user can set breakpoints on. */
     protected static FiringEventType[] _firingEventTypes = {
-            
+
             // FIXME: Only BEFORE_ITERATE and AFTER_ITERATE work with SDF
             //FiringEvent.BEFORE_PREFIRE,
             //FiringEvent.AFTER_PREFIRE,

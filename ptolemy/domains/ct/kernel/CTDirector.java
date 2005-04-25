@@ -1034,8 +1034,8 @@ public abstract class CTDirector extends StaticSchedulingDirector
     // the first step size used by solver.
     private double _initStepSize;
 
-    // he iteration begin time is the start time for one integration step. 
-    // This variable is used when the integration step is failed, and need 
+    // he iteration begin time is the start time for one integration step.
+    // This variable is used when the integration step is failed, and need
     // to be restarte with another step size.
     private Time _iterationBeginTime;
 

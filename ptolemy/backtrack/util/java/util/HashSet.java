@@ -114,14 +114,14 @@ public class HashSet extends AbstractSet implements Set, Cloneable, Serializable
         s.writeInt(map.getBuckets().length);
         s.writeFloat(map.loadFactor);
         s.writeInt(map.getSize());
-        while (it.hasNext()) 
+        while (it.hasNext())
             s.writeObject(it.next());
     }
 
     private void readObject(ObjectInputStream s) throws IOException, ClassNotFoundException  {
         s.defaultReadObject();
         $ASSIGN$map(init(s.readInt(), s.readFloat()));
-        for (int size = s.readInt(); size > 0; size--) 
+        for (int size = s.readInt(); size > 0; size--)
             map.put(s.readObject(), "");
     }
 

@@ -14,11 +14,11 @@ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
 THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
 SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES, 
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
 INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, 
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
@@ -52,8 +52,8 @@ import ptolemy.kernel.util.Workspace;
    <p>
    As a property of CT, only one-level backtracking is needed. This means the
    previous states of the actors earlier than the last state can be safely
-   discarded. 
- 
+   discarded.
+
    @author Thomas Feng
    @version $Id$
    @since Ptolemy II 5.1
@@ -133,10 +133,10 @@ public class CTCompositeActor extends TypedCompositeActor implements
         // here to be CTCompositeActor.
         setClassName("ptolemy.backtrack.manual.ptolemy.domains.ct.kernel.CTCompositeActor");
     }
-    
+
     /** Restore the previously recorded state to all the actors in this
      *  composite actor.
-     * 
+     *
      *  @throws IllegalActionException Not thowned.
      */
     public void goToMarkedState() throws IllegalActionException {

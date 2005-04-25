@@ -14,11 +14,11 @@ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
 THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
 SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES, 
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
 INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, 
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
@@ -39,7 +39,7 @@ import ptolemy.util.StringUtilities;
    A tool to search paths and set up class paths. It provides functions to
    search paths for certain files, and set up customized class paths from
    which class can be loaded with {@link LocalClassLoader}.
- 
+
    @author Thomas Feng
    @version $Id$
    @since Ptolemy II 5.1
@@ -47,9 +47,9 @@ import ptolemy.util.StringUtilities;
    @Pt.AcceptedRating Red (tfeng)
 */
 public class PathFinder {
-    
+
     /** Get all the Java source files in a path.
-     * 
+     *
      *  @param path The path to be searched.
      *  @param subdirs If <tt>true</tt>, sub-directories of the path are
      *   also searched.
@@ -74,10 +74,10 @@ public class PathFinder {
                 filesInSubdirs[i] = getJavaFiles(Directories[i].getPath(), true);
                 nTotal += filesInSubdirs[i].length;
             }
-            
+
             File[] files =  file.listFiles(new PostfixFilter(".java"));
             nTotal += files.length;
-            
+
             File[] result = new File[nTotal];
             int pos = 0;
             for (int i = 0; i < filesInSubdirs.length; i++) {
@@ -86,13 +86,13 @@ public class PathFinder {
                 pos += length;
             }
             System.arraycopy(files, 0, result, pos, files.length);
-            
+
             return result;
         }
     }
 
-    /** Return the class paths containing the root of the Ptolemy tree, 
-     *  and the Jar files in sub-directories <tt>lib/</tt>, 
+    /** Return the class paths containing the root of the Ptolemy tree,
+     *  and the Jar files in sub-directories <tt>lib/</tt>,
      *  <tt>vendors/sun/commapi/</tt> and <tt>vendors/sun/jxta</tt>.
      *
      *  @return The class paths.
@@ -106,7 +106,7 @@ public class PathFinder {
         File[][]files = new File[subdirs.length][];
         int totalNumber = 0;
         for (int i = 0; i < subdirs.length; i++) {
-            files[i] = 
+            files[i] =
                 new File(PTOLEMY_PATH + subdirs[i]).listFiles(
                         new PostfixFilter(".jar")
                 );
@@ -135,9 +135,9 @@ public class PathFinder {
      *  @Pt.ProposedRating Red (tfeng)
      */
     public static class PostfixFilter implements FileFilter {
-        
+
         /** Construct a filter.
-         * 
+         *
          *  @param postfix
          */
         PostfixFilter(String postfix) {
@@ -153,15 +153,15 @@ public class PathFinder {
         public boolean accept(File file) {
             return file.getName().endsWith(_postfix);
         }
-        
+
         private String _postfix;
     }
-    
+
     //////////////////////////////////////////////////////////////////////////
     //// DirectoryFilter
     /**
        Filter out all the files in a directory, except for sub-directories.
-       
+
        @author Thomas Feng
        @version $Id$
        @since Ptolemy II 5.1
@@ -169,9 +169,9 @@ public class PathFinder {
        @Pt.AcceptedRating Red (tfeng)
     */
     public static class DirectoryFilter implements FileFilter {
-        
+
         /** Accept only directories.
-         * 
+         *
          *  @param pathname The file to be inspected.
          *  @return <tt>true</tt> if the file corresponds to a directory.
          */
@@ -179,11 +179,11 @@ public class PathFinder {
             return file.isDirectory();
         }
     }
-    
+
     /** The default PTII path.
      */
     public static String PTOLEMY_PATH = "../../../";
-    
+
     static {
         String PTII = StringUtilities.getProperty("ptolemy.ptII.dir");
         if (PTII != null)

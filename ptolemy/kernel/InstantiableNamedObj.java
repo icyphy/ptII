@@ -358,7 +358,7 @@ public class InstantiableNamedObj extends NamedObj implements Instantiable {
      *  @see Instantiable
      */
     public Instantiable instantiate(NamedObj container, String name)
-        throws CloneNotSupportedException, IllegalActionException, 
+        throws CloneNotSupportedException, IllegalActionException,
             NameDuplicationException {
         if (!isClassDefinition()) {
             throw new IllegalActionException(this,

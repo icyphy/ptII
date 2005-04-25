@@ -224,7 +224,7 @@ public class ModelServer implements QueryHandler {
      * @see net.jxta.resolver.QueryHandler#processQuery(ResolverQueryMsg)
      */
     public ResolverResponseMsg processQuery(ResolverQueryMsg query)
-        throws NoResponseException, ResendQueryException, DiscardQueryException, 
+        throws NoResponseException, ResendQueryException, DiscardQueryException,
             IOException {
         String qry = query.getQuery();
 

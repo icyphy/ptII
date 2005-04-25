@@ -14,11 +14,11 @@ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
 THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
 SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES, 
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
 INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, 
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
@@ -119,17 +119,17 @@ public class LocalClassLoader extends URLClassLoader {
             throw new UnknownASTException();
         }
     }
-    
+
     /** Get the list of names of imported classes.
-     * 
+     *
      *  @return The list.
      */
     public List getImportedClasses() {
         return _importedClasses;
     }
-    
+
     /** Get the list of names of imported packages.
-     * 
+     *
      *  @return The list.
      */
     public List getImportedPackages() {
@@ -153,7 +153,7 @@ public class LocalClassLoader extends URLClassLoader {
     public void importClass(String classFullName) {
         int lastDotPos = classFullName.lastIndexOf('.');
         _importedClasses.add(
-                new ClassImport(classFullName.substring(0, lastDotPos), 
+                new ClassImport(classFullName.substring(0, lastDotPos),
                         classFullName.substring(lastDotPos + 1)));
     }
 
@@ -205,7 +205,7 @@ public class LocalClassLoader extends URLClassLoader {
      *      names are separated with "$" from their containers. If
      *      so, the nested class is returned.
      *    </li>
-     *    <li>Check if the name is already a full class name, e.g., 
+     *    <li>Check if the name is already a full class name, e.g.,
      *      "<tt>java.lang.Class</tt>". If so, the class is loaded
      *      with {@link URLClassLoader#loadClass(String, boolean)}
      *      and returned. Nested classes (case 2) take precedence
@@ -228,7 +228,7 @@ public class LocalClassLoader extends URLClassLoader {
      *    </li>
      *  </ol>
      *  <p>
-     *  This function is considerably slower than {@link #loadClass(String)}, 
+     *  This function is considerably slower than {@link #loadClass(String)},
      *  which does not do a search but takes the given name for the
      *  full class name.
      *
@@ -244,7 +244,7 @@ public class LocalClassLoader extends URLClassLoader {
     public Class searchForClass(StringBuffer name, Class currentClass)
             throws ClassNotFoundException {
         // Nested classes requires "$" separator between classes.
-        StringBuffer dollarName = 
+        StringBuffer dollarName =
             new StringBuffer(name.toString().replace('.', '$'));
 
         // Check if the name represents an array.
@@ -261,7 +261,7 @@ public class LocalClassLoader extends URLClassLoader {
         if (c == null) {
             Iterator importedClassesIter = _importedClasses.iterator();
             while (c == null && importedClassesIter.hasNext())
-                c = _checkClassNameWithImportClass(dollarName, 
+                c = _checkClassNameWithImportClass(dollarName,
                         (ClassImport)importedClassesIter.next());
         }
 
@@ -271,7 +271,7 @@ public class LocalClassLoader extends URLClassLoader {
         if (c == null) {
             Iterator importedPackagesIter = _importedPackages.iterator();
             while (c == null && importedPackagesIter.hasNext())
-                c = _checkClassNameWithImportPackage(dollarName, 
+                c = _checkClassNameWithImportPackage(dollarName,
                         (String)importedPackagesIter.next());
         }
 
@@ -306,7 +306,7 @@ public class LocalClassLoader extends URLClassLoader {
      *  an interface, a nested class, and an anonymous class
      *  (created at instantiation), as well as any normal class.
      *  <p>
-     *  This function is the same as call <tt>setCurrentClass(c, 
+     *  This function is the same as call <tt>setCurrentClass(c,
      *  true)</tt>.
      *
      *  @param c The class to be set as the current class. When it
@@ -403,11 +403,11 @@ public class LocalClassLoader extends URLClassLoader {
             _packageName = packageName;
             _className = className;
         }
-        
+
         public String getPackageName() {
             return _packageName;
         }
-        
+
         public String getClassName() {
             return _className;
         }
@@ -511,7 +511,7 @@ public class LocalClassLoader extends URLClassLoader {
         } else if (name.charAt(nameEnd) == ']') {
             while (name.charAt(nameEnd) == ']')
                 nameEnd -= 2;   // Remove "[]".
-            isPrimitiveArray = 
+            isPrimitiveArray =
                 Type.isPrimitive(name.substring(nameStart, nameEnd + 1));
         } else
             return null;    // Not array.
@@ -526,9 +526,9 @@ public class LocalClassLoader extends URLClassLoader {
             Class c = search ?
                     searchForClass(
                             new StringBuffer(
-                                    name.substring(nameStart, nameEnd + 1)), 
+                                    name.substring(nameStart, nameEnd + 1)),
                                     _currentClass) :
-                    super.loadClass(name.substring(nameStart, nameEnd + 1), 
+                    super.loadClass(name.substring(nameStart, nameEnd + 1),
                             true);
             name.delete(nameStart, nameEnd + 1);
             name.insert(nameStart, c.getName());
@@ -549,10 +549,10 @@ public class LocalClassLoader extends URLClassLoader {
      *   enclosing class.
      *  @param importedClass The data structure that specifies an imported
      *   class.
-     *  @return The class loaded if found. If no such class is found, 
+     *  @return The class loaded if found. If no such class is found,
      *   <tt>null</tt> is returned.
      */
-    private Class _checkClassNameWithImportClass(StringBuffer dollarName, 
+    private Class _checkClassNameWithImportClass(StringBuffer dollarName,
             ClassImport importedClass) {
         int dotPos = dollarName.indexOf("$");
         if (dotPos == -1)
@@ -586,10 +586,10 @@ public class LocalClassLoader extends URLClassLoader {
      *   enclosing class.
      *  @param packageName The name of the package (may contain ".") in
      *   which the class is searched for.
-     *  @return The class loaded if found. If no such class is found, 
+     *  @return The class loaded if found. If no such class is found,
      *   <tt>null</tt> is returned.
      */
-    private Class _checkClassNameWithImportPackage(StringBuffer dollarName, 
+    private Class _checkClassNameWithImportPackage(StringBuffer dollarName,
             String packageName) {
         dollarName.insert(0, '.');
         dollarName.insert(0, packageName);
@@ -612,7 +612,7 @@ public class LocalClassLoader extends URLClassLoader {
      *  its postfix, separated with a ".".
      *
      *  @param name The name of the class to be loaded.
-     *  @return The class loaded if found. If no such class is found, 
+     *  @return The class loaded if found. If no such class is found,
      *   <tt>null</tt> is returned.
      */
     private Class _checkFullClassName(StringBuffer name) {
@@ -647,7 +647,7 @@ public class LocalClassLoader extends URLClassLoader {
      *   error occurs while loading, the return value is <tt>null</tt>.
      *  @see #searchForClass(StringBuffer, boolean, Class)
      */
-    private Class _checkNestedClass(StringBuffer dollarName, 
+    private Class _checkNestedClass(StringBuffer dollarName,
             Class currentClass) {
         if (currentClass == null)
             return null;
@@ -724,7 +724,7 @@ public class LocalClassLoader extends URLClassLoader {
     ///////////////////////////////////////////////////////////////////
     ////                        private fields                     ////
 
-    /** The list of imported packages. Each element is a {@link String}, 
+    /** The list of imported packages. Each element is a {@link String},
      *  possibly with "." in it.
      */
     private List _importedPackages = new LinkedList();

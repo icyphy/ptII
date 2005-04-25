@@ -143,7 +143,7 @@ public class NonlinearServant extends _CorbaActorImplBase {
         @exception CorbaUnknownPortException If port name is not known.
     */
     public boolean hasData(java.lang.String portName, short portIndex)
-        throws CorbaIllegalActionException, CorbaIndexOutofBoundException, 
+        throws CorbaIllegalActionException, CorbaIndexOutofBoundException,
             CorbaUnknownPortException {
         if (portName.equals("input")) {
             throw new CorbaIllegalActionException("port is an input");
@@ -290,7 +290,7 @@ public class NonlinearServant extends _CorbaActorImplBase {
      */
     public void setParameter(java.lang.String paramName,
         java.lang.String paramValue)
-        throws CorbaIllegalActionException, CorbaUnknownParamException, 
+        throws CorbaIllegalActionException, CorbaUnknownParamException,
             CorbaIllegalValueException {
         //throw new CorbaIllegalActionException(
         //        " No parameter is allowed to set.");
@@ -358,7 +358,7 @@ public class NonlinearServant extends _CorbaActorImplBase {
      */
     public void transferInput(java.lang.String portName, short portIndex,
         java.lang.String tokenValue)
-        throws CorbaIllegalActionException, CorbaUnknownPortException, 
+        throws CorbaIllegalActionException, CorbaUnknownPortException,
             CorbaIndexOutofBoundException, CorbaIllegalValueException {
         if (portName.equals("output")) {
             throw new CorbaIllegalActionException(
@@ -407,7 +407,7 @@ public class NonlinearServant extends _CorbaActorImplBase {
      */
     public java.lang.String transferOutput(java.lang.String portName,
         short portIndex)
-        throws CorbaIllegalActionException, CorbaUnknownPortException, 
+        throws CorbaIllegalActionException, CorbaUnknownPortException,
             CorbaIndexOutofBoundException {
         if (portName.equals("input")) {
             throw new CorbaIllegalActionException(

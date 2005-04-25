@@ -26,13 +26,13 @@ public class ConfigXmlHandler extends XmlHandler {
 
     ConfigXmlHandler(ConfigXmlTree tree, String systemId, Set includedClasses) {
         super(tree, systemId);
-        
+
         this.includedClasses = includedClasses;
     }
-    
+
     public void startElement(String elname) throws Exception {
         super.startElement(elname);
-        
+
         if (elname.equals("input")) {
             String fileName = currentTree.getAttribute("source");
             try {
@@ -57,7 +57,7 @@ public class ConfigXmlHandler extends XmlHandler {
                        (                            // A match in the set.
                            currentTree.hasAttribute("class") &&
                            includedClasses.contains(currentTree.getAttribute("class"))
-                       );  
+                       );
         if (keep) {
             String className = currentTree.getAttribute("class");
             if (REMOVE_ELEMENT_SET.contains(elname) ||
@@ -68,10 +68,10 @@ public class ConfigXmlHandler extends XmlHandler {
             } else
                 currentTree.getParent().addChild(currentTree);
         }
-        
+
         super.endElement(elname);
     }
-    
+
     public void processingInstruction(String target, String data)
             throws Exception {
         if (target.equals("moml")) {
@@ -83,29 +83,29 @@ public class ConfigXmlHandler extends XmlHandler {
             dataReader.close();
         }
     }
-    
+
     public static String PTOLEMY_PATH = "../../../";
-    
+
     public static final String[] REMOVE_ELEMENTS = new String[] {
         "configure",
         "input"
     };
-    
+
     public static final String[] REMOVE_CLASSES = new String[] {
         "ptolemy.kernel.CompositeEntity",
         "ptolemy.actor.gui.Configuration"
     };
-    
+
     private static Set REMOVE_ELEMENT_SET = new HashSet();
-    
+
     private static Set REMOVE_CLASS_SET = new HashSet();
-    
+
     private Set includedClasses;    // If null, every element matches.
-    
+
     static {
         REMOVE_ELEMENT_SET.addAll(Arrays.asList(REMOVE_ELEMENTS));
         REMOVE_CLASS_SET.addAll(Arrays.asList(REMOVE_CLASSES));
-        
+
         String PTII = StringUtilities.getProperty("ptolemy.ptII.dir");
         if (PTII != null)
             PTOLEMY_PATH = PTII + File.separatorChar;

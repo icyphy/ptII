@@ -46,17 +46,17 @@ public class AnnotationsEditor extends JPanel implements ItemListener,
 	boxPanel.setLayout(new BoxLayout(boxPanel, BoxLayout.Y_AXIS));
 
 	boxPanel.add(new JLabel("Outline Boxes"));
-	AttrComponent px = 
+	AttrComponent px =
 			new JPanelToggle(this, boxPanel, volRend.plusXBoxAttr);
-	AttrComponent py = 
+	AttrComponent py =
 			new JPanelToggle(this, boxPanel, volRend.plusYBoxAttr);
-	AttrComponent pz = 
+	AttrComponent pz =
 			new JPanelToggle(this, boxPanel, volRend.plusZBoxAttr);
-	AttrComponent mx = 
+	AttrComponent mx =
 			new JPanelToggle(this, boxPanel, volRend.minusXBoxAttr);
-	AttrComponent my = 
+	AttrComponent my =
 			new JPanelToggle(this, boxPanel, volRend.minusYBoxAttr);
-	AttrComponent mz = 
+	AttrComponent mz =
 			new JPanelToggle(this, boxPanel, volRend.minusZBoxAttr);
 	add(boxPanel);
 
@@ -64,17 +64,17 @@ public class AnnotationsEditor extends JPanel implements ItemListener,
 	imagePanel.setLayout(new BoxLayout(imagePanel, BoxLayout.Y_AXIS));
 
 	imagePanel.add(new JLabel("Face Images"));
-	AttrComponent pxi = 
+	AttrComponent pxi =
 		    new JPanelString(this, imagePanel, volRend.plusXImageAttr);
-	AttrComponent pyi = 
+	AttrComponent pyi =
 		    new JPanelString(this, imagePanel, volRend.plusYImageAttr);
-	AttrComponent pzi = 
+	AttrComponent pzi =
 		    new JPanelString(this, imagePanel, volRend.plusZImageAttr);
-	AttrComponent mxi = 
+	AttrComponent mxi =
 		    new JPanelString(this, imagePanel, volRend.minusXImageAttr);
-	AttrComponent myi = 
+	AttrComponent myi =
 		    new JPanelString(this, imagePanel, volRend.minusYImageAttr);
-	AttrComponent mzi = 
+	AttrComponent mzi =
 		    new JPanelString(this, imagePanel, volRend.minusZImageAttr);
 	add(imagePanel);
     }

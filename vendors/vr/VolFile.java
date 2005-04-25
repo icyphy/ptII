@@ -85,12 +85,12 @@ public class VolFile {
 	try {
 	     file = new DataInputStream(voldat.openStream());
 	} catch(FileNotFoundException fnf) {
-	     System.out.println(fnf.getMessage()); 
+	     System.out.println(fnf.getMessage());
 	}
 	byte[] magicBuffer = new byte[4];
 	file.read(magicBuffer, 0, 4);
 	pos += 4;
-	String magic = new String(magicBuffer, 0, 4); 
+	String magic = new String(magicBuffer, 0, 4);
 	if (!magic.equals("vol3")) {
 	    System.out.println("file specified is not a .vol file" +
 		" header begins with " + magic);
@@ -148,7 +148,7 @@ public class VolFile {
 		    file.readFully(buffer, 0, xDim * 2);
 		    for (int x = 0; x < xDim; x++) {
 			int index = x * 2;
-			// Map the pair of bytes into a short and then window 
+			// Map the pair of bytes into a short and then window
 			// into a byte
 			int low = buffer[index+1];
 			if (low < 0) {

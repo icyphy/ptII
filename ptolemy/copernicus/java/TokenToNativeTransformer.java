@@ -631,7 +631,7 @@ public class TokenToNativeTransformer extends SceneTransformer
                 methodList = new LinkedList();
                 methodList.add(targetMethod);
             } else {
-                methodList = 
+                methodList =
                     //      invokeGraph.getTargetsOf((Stmt)unit);
                     hierarchy.resolveAbstractDispatch(type.getSootClass(),
                         r.getMethod());

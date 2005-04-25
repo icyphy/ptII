@@ -54,7 +54,7 @@ public abstract class AbstractSequentialList extends AbstractList implements Rol
         Iterator ci = c.iterator();
         int size = c.size();
         ListIterator i = listIterator(index);
-        for (int pos = size; pos > 0; pos--) 
+        for (int pos = size; pos > 0; pos--)
             i.add(ci.next());
         return size > 0;
     }

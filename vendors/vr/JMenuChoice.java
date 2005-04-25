@@ -44,7 +44,7 @@ public class JMenuChoice extends AttrComponent {
 	super(attr);
 	items = new JRadioButtonMenuItem[attr.valueLabels.length];
 	for (int i = 0; i < attr.valueLabels.length; i++) {
-	    items[i] = 
+	    items[i] =
 		new JRadioButtonMenuItem(attr.valueLabels[i]);
 	    items[i].setName(attr.getName());
 	    items[i].setActionCommand(attr.valueNames[i]);

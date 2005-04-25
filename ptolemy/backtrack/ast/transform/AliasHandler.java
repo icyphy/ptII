@@ -1,4 +1,4 @@
-/* 
+/*
 
 Copyright (c) 2005 The Regents of the University of California.
 All rights reserved.
@@ -14,11 +14,11 @@ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
 THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
 SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES, 
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
 INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, 
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
@@ -39,8 +39,8 @@ import ptolemy.backtrack.ast.TypeAnalyzerState;
 //////////////////////////////////////////////////////////////////////////
 //// AliasHandler
 /**
- 
- 
+
+
  @author Thomas Feng
  @version $Id$
  @since Ptolemy II 5.1
@@ -48,16 +48,16 @@ import ptolemy.backtrack.ast.TypeAnalyzerState;
  @Pt.AcceptedRating Red (tfeng)
  */
 public interface AliasHandler {
-    
+
     public void handle(Assignment node, TypeAnalyzerState state);
-    
+
     public void handle(ClassInstanceCreation node, TypeAnalyzerState state);
 
     public void handle(MethodInvocation node, TypeAnalyzerState state);
-    
+
     public void handle(ReturnStatement node, TypeAnalyzerState state);
-    
-    public void handle(VariableDeclarationFragment node, 
+
+    public void handle(VariableDeclarationFragment node,
             TypeAnalyzerState state);
-    
+
 }

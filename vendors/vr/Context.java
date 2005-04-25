@@ -38,7 +38,7 @@ import java.net.*;
 
 public class Context {
     Vector attrs = new Vector();
-    Hashtable lookup = new Hashtable(); 
+    Hashtable lookup = new Hashtable();
     String ident = "Java3D Volume Rendering Demo Attrs";
     URL codebase;
 
@@ -86,7 +86,7 @@ public class Context {
 	    String line;
 	    line = in.readLine();
 	    if (!line.equals(ident)) {
-		System.err.println("File " + filename + 
+		System.err.println("File " + filename +
 			" doesn't have a valid header: \"" + line + "\"");
 	    }
 	    line = in.readLine();
@@ -117,10 +117,10 @@ public class Context {
     Attr getAttr(String label) {
 	String name = Attr.toName(label);
 	Attr retval  = (Attr)lookup.get(name);
-    
+
     //System.out.println(lookup);
     //System.out.println("in getAttr");
-	
+
     if (retval == null) {
 	    System.err.println("Attr not found: " + name);
 	    // TODO: dump the names in the table
@@ -134,5 +134,5 @@ public class Context {
 	return codebase;
     }
 
-  
+
 }

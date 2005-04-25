@@ -7,6 +7,6 @@ public class ASTTest {
     public int incrementFoo() {
         foo += 1;
         return foo;
-    } 
+    }
     private int foo;
 }

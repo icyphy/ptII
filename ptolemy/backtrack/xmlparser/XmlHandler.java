@@ -24,7 +24,7 @@ public class XmlHandler implements com.microstar.xml.XmlHandler {
         currentTree = this.tree = tree;
         this.systemId = systemId;
     }
-    
+
     /* (non-Javadoc)
      * @see com.microstar.xml.XmlHandler#startDocument()
      */
@@ -84,7 +84,7 @@ public class XmlHandler implements com.microstar.xml.XmlHandler {
         ConfigXmlTree newtree = new ConfigXmlTree(elname);
         newtree.setParent(currentTree);
         currentTree = newtree;
-        
+
         Enumeration attrenu = currentAttrs.keys();
         while (attrenu.hasMoreElements()) {
             String attr = (String)attrenu.nextElement();
@@ -127,19 +127,19 @@ public class XmlHandler implements com.microstar.xml.XmlHandler {
     public void error(String message, String systemId, int line, int column)
             throws Exception {
     }
-    
+
     public int getTotalElements() {
         return totalElements;
     }
-    
+
     protected ConfigXmlTree tree;
-    
+
     protected String systemId;
-    
+
     protected Hashtable currentAttrs = new Hashtable();
 
     protected ConfigXmlTree currentTree;
-    
+
     private int totalElements = 0;
 
 }

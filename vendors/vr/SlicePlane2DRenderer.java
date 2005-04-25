@@ -33,7 +33,7 @@ package vendors.vr;
 import javax.media.j3d.*;
 import javax.vecmath.*;
 
-public class SlicePlane2DRenderer extends SlicePlaneRenderer 
+public class SlicePlane2DRenderer extends SlicePlaneRenderer
 		implements VolRendConstants  {
 
 
@@ -142,9 +142,9 @@ public class SlicePlane2DRenderer extends SlicePlaneRenderer
 	BranchGroup polyGroup = new BranchGroup();
 	polyGroup.setCapability(BranchGroup.ALLOW_DETACH);
 	if (numSlicePts > 0) {
-	    // for each triangle... 
+	    // for each triangle...
 	    for (int i = 0; i < numSlicePts-2; i++) {
-		tesselateTri(polyGroup, slicePts[0], slicePts[i+1], 
+		tesselateTri(polyGroup, slicePts[0], slicePts[i+1],
 			slicePts[i+2]);
 	    }
 	}
@@ -158,7 +158,7 @@ public class SlicePlane2DRenderer extends SlicePlaneRenderer
 	OrderedGroup triGroup = new OrderedGroup();
 	polyGroup.addChild(triGroup);
 
-	// select axis and dir, determine r range 
+	// select axis and dir, determine r range
 	// Axis is dependent on the "normal" of the geo in texture space
 	// and the density of the texture in each dimension.
 
@@ -214,7 +214,7 @@ public class SlicePlane2DRenderer extends SlicePlaneRenderer
 	    System.out.println("adj norm texNorm = " + texNorm);
 	}
 
-	// select the axis with the greatest magnitude and not the sign 
+	// select the axis with the greatest magnitude and not the sign
 	int maxDir = X_AXIS;
 	double maxMag = texNorm.x;
 	if (Math.abs(texNorm.y) > Math.abs(maxMag)) {
@@ -239,7 +239,7 @@ public class SlicePlane2DRenderer extends SlicePlaneRenderer
 	}
 
 	// Create an "rCoord" for each point. This is the a float with
-	// the integer specifying the texture index and the fraction 
+	// the integer specifying the texture index and the fraction
 	// specifying the weight
 	Texture2D[] textures = null;
 	TexCoordGeneration tg = null;
@@ -312,7 +312,7 @@ public class SlicePlane2DRenderer extends SlicePlaneRenderer
 	intersect(midCalc, pt[bot], rCoord[bot], pt[top], rCoord[top],
 	    rCoord[mid]);
 
-	// determine if mid is left or right pt to preserve winding of 
+	// determine if mid is left or right pt to preserve winding of
 	// original triangle.  Use the ordering of bot, mid, top to tell
 	//
 	boolean midIsRight = false;
@@ -321,7 +321,7 @@ public class SlicePlane2DRenderer extends SlicePlaneRenderer
 	    ((bot == 2) && (mid == 0))) {
 		midIsRight = true;
 	}
-    
+
 	/* now have two tris:
 
 		top
@@ -344,23 +344,23 @@ public class SlicePlane2DRenderer extends SlicePlaneRenderer
 
 	if (midIsRight) {
 	    if (rCoord[bot] < rCoord[mid]) {
-		tesselateBottomTri(triGroup, orderDir, tg, textures, 
-			pt[bot], rCoord[bot], 
+		tesselateBottomTri(triGroup, orderDir, tg, textures,
+			pt[bot], rCoord[bot],
 			midCalc, pt[mid], rCoord[mid]);
 	    }
 	    if (rCoord[mid] < rCoord[top]) {
-		tesselateTopTri(triGroup, orderDir, tg, textures, 
+		tesselateTopTri(triGroup, orderDir, tg, textures,
 		    midCalc, pt[mid], rCoord[mid],
 		    pt[top], rCoord[top]);
 	    }
 	} else {
 	    if (rCoord[bot] < rCoord[mid]) {
-		tesselateBottomTri(triGroup, orderDir, tg, textures, 
-			pt[bot], rCoord[bot], 
+		tesselateBottomTri(triGroup, orderDir, tg, textures,
+			pt[bot], rCoord[bot],
 			pt[mid], midCalc, rCoord[mid]);
 	    }
 	    if (rCoord[mid] < rCoord[top]) {
-		tesselateTopTri(triGroup, orderDir, tg, textures, 
+		tesselateTopTri(triGroup, orderDir, tg, textures,
 			pt[mid], midCalc, rCoord[mid],
 			pt[top], rCoord[top]);
 	    }
@@ -375,8 +375,8 @@ public class SlicePlane2DRenderer extends SlicePlaneRenderer
 	}
     }
 
-    private void tesselateTopTri(OrderedGroup triGroup, int orderDir, 
-	TexCoordGeneration tg, Texture2D[] textures, 
+    private void tesselateTopTri(OrderedGroup triGroup, int orderDir,
+	TexCoordGeneration tg, Texture2D[] textures,
 	Point3d midLeft, Point3d midRight, double rMid,
 	Point3d top, double rTop)  {
 
@@ -393,7 +393,7 @@ public class SlicePlane2DRenderer extends SlicePlaneRenderer
 	// moving from mid to top, we'll have a quad from mid to first
 	// cut, quads in the middle between cuts and then a tri at the top
 	// between the last cut and the top
-	
+
 	// these are the texture index and weight for the lower and upper
 	// limits of the current segment
 	int lowerIndex = (int) Math.floor(rMid);
@@ -415,13 +415,13 @@ public class SlicePlane2DRenderer extends SlicePlaneRenderer
 	    System.out.println("upperWeight = " + upperWeight);
 	}
 
-	// check for no-cut case first 
+	// check for no-cut case first
 	if (upperIndex == lowerIndex) {
 	   // output the tri directly
 	   if (verbose) {
 	       System.out.println("TopTri: single tri");
 	   }
-	   outputTopTri(triGroup, orderDir, tg, textures, lowerIndex, 
+	   outputTopTri(triGroup, orderDir, tg, textures, lowerIndex,
 			midLeft, midRight, lowerWeight,
 			top, upperWeight);
 	} else {
@@ -449,34 +449,34 @@ public class SlicePlane2DRenderer extends SlicePlaneRenderer
 	    }
 	    if ((upperIndex - lowerIndex) > 1) {
 	        // output middle cut quads
-		outputCutQuads(triGroup, orderDir, tg, textures, 
-			lowerIndex+1, upperIndex, 
+		outputCutQuads(triGroup, orderDir, tg, textures,
+			lowerIndex+1, upperIndex,
 			midLeft, midRight, rMid,
 			top, top, rTop);
-	    } 
+	    }
 
 	    if (verbose) {
 		System.out.println("Top tri: top tri");
 	    }
-	    intersect(lowerLeftCut, midLeft, rMid, top, rTop, 
+	    intersect(lowerLeftCut, midLeft, rMid, top, rTop,
 			(double)upperIndex);
-	    intersect(lowerRightCut, midRight, rMid, top, rTop, 
+	    intersect(lowerRightCut, midRight, rMid, top, rTop,
 			(double)upperIndex);
 	    if (verbose) {
 		System.out.println("lowerLeftCut = " + lowerLeftCut);
 		System.out.println("lowerRightCut = " + lowerRightCut);
 	    }
 
-	    outputTopTri(triGroup, orderDir, tg, textures, upperIndex, 
+	    outputTopTri(triGroup, orderDir, tg, textures, upperIndex,
 			lowerLeftCut, lowerRightCut, 0.0,
 			top, upperWeight);
 	}
 
     }
 
-    private void tesselateBottomTri(OrderedGroup triGroup, int orderDir, 
-	TexCoordGeneration tg, Texture2D[] textures, 
-	Point3d bottom, double rBottom, 
+    private void tesselateBottomTri(OrderedGroup triGroup, int orderDir,
+	TexCoordGeneration tg, Texture2D[] textures,
+	Point3d bottom, double rBottom,
 	Point3d midLeft, Point3d midRight, double rMid)  {
 
 	if (verbose) {
@@ -490,7 +490,7 @@ public class SlicePlane2DRenderer extends SlicePlaneRenderer
 	// moving from bottom to mid, we'll have a tri from bottom to first
 	// cut, quads in the middle between cuts and then a quad at the top
 	// between the last cut and the mid's
-	
+
 	// these are the texture index and weight for the lower and upper
 	// limits of the current segment
 	int lowerIndex = (int) Math.floor(rBottom);
@@ -512,14 +512,14 @@ public class SlicePlane2DRenderer extends SlicePlaneRenderer
 	    System.out.println("upperWeight = " + upperWeight);
 	}
 
-	// check for no-cut case first 
+	// check for no-cut case first
 	if (upperIndex == lowerIndex) {
 	    // output the tri directly
 	    if (verbose) {
 	       System.out.println("BottomTri: single tri");
 	    }
-	    outputBottomTri(triGroup, orderDir, tg, textures, lowerIndex, 
-			bottom, lowerWeight, 
+	    outputBottomTri(triGroup, orderDir, tg, textures, lowerIndex,
+			bottom, lowerWeight,
 			midLeft, midRight, upperWeight);
 	} else {
 	    if (verbose) {
@@ -536,8 +536,8 @@ public class SlicePlane2DRenderer extends SlicePlaneRenderer
 		System.out.println("upperRightCut = " + upperRightCut);
 	    }
 
-	    outputBottomTri(triGroup, orderDir, tg, textures, lowerIndex, 
-			bottom, lowerWeight, 
+	    outputBottomTri(triGroup, orderDir, tg, textures, lowerIndex,
+			bottom, lowerWeight,
 			upperLeftCut, upperRightCut, 1.0);
 
 	    if (verbose) {
@@ -546,11 +546,11 @@ public class SlicePlane2DRenderer extends SlicePlaneRenderer
 	    // if more than one cut, find uppermost cut
 	    if ((upperIndex - lowerIndex) > 1) {
 	        // output middle cut quads
-		outputCutQuads(triGroup, orderDir, tg, textures, 
-			lowerIndex + 1, upperIndex, 
-			bottom, bottom, rBottom, 
+		outputCutQuads(triGroup, orderDir, tg, textures,
+			lowerIndex + 1, upperIndex,
+			bottom, bottom, rBottom,
 			midLeft, midRight, rMid);
-	    } 
+	    }
 
 	    if (verbose) {
 		System.out.println("BottomTri: Top Quad:");
@@ -568,15 +568,15 @@ public class SlicePlane2DRenderer extends SlicePlaneRenderer
 
 	    // output quad
 	    outputQuad(triGroup, orderDir, tg, textures, upperIndex,
-		lowerLeftCut, lowerRightCut, 0.0, 
+		lowerLeftCut, lowerRightCut, 0.0,
 		midLeft, midRight, upperWeight);
 	}
 
     }
 
     private void outputCutQuads(OrderedGroup triGroup, int orderDir,
-		TexCoordGeneration tg, Texture2D[] textures, 
-		int lowerIndex, int upperIndex, 
+		TexCoordGeneration tg, Texture2D[] textures,
+		int lowerIndex, int upperIndex,
 		Point3d bottomLeft, Point3d bottomRight, double rBottom,
 		Point3d topLeft, Point3d topRight, double rTop) {
 
@@ -584,7 +584,7 @@ public class SlicePlane2DRenderer extends SlicePlaneRenderer
 	    System.out.println("outputCutQuads lowerIndex = " + lowerIndex +
 		    " upperIndex = " + upperIndex);
 	}
-	intersect(lowerLeftCut, bottomLeft, rBottom, topLeft, rTop, 
+	intersect(lowerLeftCut, bottomLeft, rBottom, topLeft, rTop,
 		(double)lowerIndex);
 	intersect(lowerRightCut, bottomRight, rBottom, topRight, rTop,
 		(double)lowerIndex);
@@ -610,7 +610,7 @@ public class SlicePlane2DRenderer extends SlicePlaneRenderer
 	    lowerLeftCut.set(upperLeftCut);
 	    lowerRightCut.set(upperRightCut);
 	}
-	
+
     }
 
     private void printShape(int numPoints, int texIndex) {
@@ -623,9 +623,9 @@ public class SlicePlane2DRenderer extends SlicePlaneRenderer
 
     // output routines:  the weights are the fraction of the top texture
     // on that edge.
-    private void outputBottomTri(OrderedGroup triGroup, int orderDir, 
-		TexCoordGeneration tg, Texture2D[] textures, int lowerIndex, 
-		Point3d lower, double lowerWeight, 
+    private void outputBottomTri(OrderedGroup triGroup, int orderDir,
+		TexCoordGeneration tg, Texture2D[] textures, int lowerIndex,
+		Point3d lower, double lowerWeight,
 		Point3d upperLeft, Point3d upperRight, double upperWeight) {
 
 	shapePts[0] = lower;
@@ -637,7 +637,7 @@ public class SlicePlane2DRenderer extends SlicePlaneRenderer
 	if (verbose) {
 	    printShape(3, lowerIndex);
 	}
-	outputShape(triGroup, orderDir, tg, textures[lowerIndex], 
+	outputShape(triGroup, orderDir, tg, textures[lowerIndex],
 	    3, shapePts, shapeColrs);
 
 	// shift the colrs for the other layer
@@ -654,9 +654,9 @@ public class SlicePlane2DRenderer extends SlicePlaneRenderer
 	outputShape(triGroup, orderDir, tg, tex, 3, shapePts, shapeColrs);
     }
 
-    private void outputTopTri(OrderedGroup triGroup, int orderDir, 
-		TexCoordGeneration tg, Texture2D[] textures, int lowerIndex, 
-		Point3d lowerLeft, Point3d lowerRight, double lowerWeight, 
+    private void outputTopTri(OrderedGroup triGroup, int orderDir,
+		TexCoordGeneration tg, Texture2D[] textures, int lowerIndex,
+		Point3d lowerLeft, Point3d lowerRight, double lowerWeight,
 		Point3d upper, double upperWeight) {
 
 	shapePts[0] = upper;
@@ -668,7 +668,7 @@ public class SlicePlane2DRenderer extends SlicePlaneRenderer
 	if (verbose) {
 	    printShape(3, lowerIndex);
 	}
-	outputShape(triGroup, orderDir, tg, textures[lowerIndex], 
+	outputShape(triGroup, orderDir, tg, textures[lowerIndex],
 	    3, shapePts, shapeColrs);
 
 	// shift the colrs for the other layer
@@ -685,12 +685,12 @@ public class SlicePlane2DRenderer extends SlicePlaneRenderer
 	outputShape(triGroup, orderDir, tg, tex, 3, shapePts, shapeColrs);
     }
 
-    private void outputQuad(OrderedGroup triGroup, int orderDir, 
-		TexCoordGeneration tg, Texture2D[] textures, int lowerIndex, 
-		Point3d lowerLeft, Point3d lowerRight, double lowerWeight, 
+    private void outputQuad(OrderedGroup triGroup, int orderDir,
+		TexCoordGeneration tg, Texture2D[] textures, int lowerIndex,
+		Point3d lowerLeft, Point3d lowerRight, double lowerWeight,
 		Point3d upperLeft, Point3d upperRight, double upperWeight) {
 
-	shapePts[0] = lowerLeft; 
+	shapePts[0] = lowerLeft;
 	colrOneMinusWeight(shapeColrs[0], lowerWeight);
 	shapePts[1] = lowerRight;
 	colrOneMinusWeight(shapeColrs[1], lowerWeight);
@@ -722,10 +722,10 @@ public class SlicePlane2DRenderer extends SlicePlaneRenderer
 	outputShape(triGroup, orderDir, tg, tex, 4, shapePts, shapeColrs);
     }
 
-    private void outputShape(OrderedGroup triGroup, int orderDir, 
-		TexCoordGeneration tg, Texture2D texture, 
+    private void outputShape(OrderedGroup triGroup, int orderDir,
+		TexCoordGeneration tg, Texture2D texture,
 		int numPts, Point3d[] pts, Color4f[] colrs) {
-	
+
 	count[0] = numPts;
 	TriangleFanArray pgonGeo = new TriangleFanArray(numPts,
 	    TriangleFanArray.COORDINATES | TriangleFanArray.COLOR_4, count);
@@ -776,13 +776,13 @@ public class SlicePlane2DRenderer extends SlicePlaneRenderer
 
 
     // result == pt between lower and upper with R=desiredR
-    private void intersect(Point3d result, Point3d lowerPt, double lowerR, 
+    private void intersect(Point3d result, Point3d lowerPt, double lowerR,
 		Point3d upperPt, double upperR, double desiredR) {
 
 	double deltaR = upperR - lowerR;
 	double desiredDeltaR = desiredR - lowerR;
 	double fraction = 0.0;
-	if (deltaR > 0.00001) { 
+	if (deltaR > 0.00001) {
 	    fraction = desiredDeltaR / deltaR;
 	    if (fraction > 1.0) {
 		fraction = 1.0;

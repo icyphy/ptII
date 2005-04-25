@@ -14,11 +14,11 @@ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
 THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
 SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES, 
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
 INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, 
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
@@ -41,7 +41,7 @@ import java.util.Stack;
    class. This state is passed to the handlers that handle special events
    in the traversal. The handlers may then retrieve information about the
    current state of the analyzer.
- 
+
    @author Thomas Feng
    @version $Id$
    @since Ptolemy II 5.1
@@ -54,7 +54,7 @@ public class TypeAnalyzerState {
     ////                       public methods                      ////
 
     /** Add a variable to the current scope.
-     *  
+     *
      *  @param name The name of the variable.
      *  @param type The type of the variable.
      */
@@ -66,7 +66,7 @@ public class TypeAnalyzerState {
     /** Enter the scope of a class. The current class is set to the class
      *  entered and the last current class is pushed to the previous class
      *  stack.
-     *  
+     *
      *  @param c The class entered.
      *  @see #leaveClass()
      */
@@ -76,17 +76,17 @@ public class TypeAnalyzerState {
         _currentClass = c;
         _loader.setCurrentClass(_currentClass, false);
     }
-    
+
     /** Enter the scope of a block.
-     *  
+     *
      *  @see #leaveBlock()
      */
     public void enterBlock() {
         _previousClasses.push(new Hashtable());
     }
-    
+
     /** Get the type analyzer that owns this state.
-     * 
+     *
      *  @return The type analyzer.
      */
     public TypeAnalyzer getAnalyzer() {
@@ -94,16 +94,16 @@ public class TypeAnalyzerState {
     }
 
     /** Get the class loader.
-     * 
+     *
      *  @return The class loader used to load unresolved classes.
      *  @see #setClassLoader(LocalClassLoader)
      */
     public LocalClassLoader getClassLoader() {
         return _loader;
     }
-    
+
     /** Get the set of cross-analyzed types.
-     * 
+     *
      *  @return The set of names of types to be cross-analyzed.
      */
     public Set getCrossAnalyzedTypes() {
@@ -111,7 +111,7 @@ public class TypeAnalyzerState {
     }
 
     /** Get the current class (the class currently being inspected).
-     * 
+     *
      *  @return The current class. It may be <tt>null</tt> when there
      *   is no current class.
      *  @see #setCurrentClass(Class)
@@ -119,7 +119,7 @@ public class TypeAnalyzerState {
     public Class getCurrentClass() {
         return _currentClass;
     }
-    
+
     /** Get the previous class stack. The previous class stack stores
      *  all the entered but not exited class definitions as well as
      *  blocks, not including the current class. Each element in the
@@ -130,7 +130,7 @@ public class TypeAnalyzerState {
      *  a block, where classes can also be defined in it. In that case,
      *  simple class names are the keys of the table, and {@link Class}
      *  objects are its values.
-     * 
+     *
      *  @return The previous class stack.
      *  @see #setPreviousClasses(Stack)
      */
@@ -152,7 +152,7 @@ public class TypeAnalyzerState {
     public Type getVariable(String name) {
         return getVariable(name, false);
     }
-    
+
     /** Get the type of a variable with its name in the current scope
      *  and all the scopes enclosing the current scope. If it is not
      *  in the current scope, scopes enclosing the current scope are
@@ -160,7 +160,7 @@ public class TypeAnalyzerState {
      *  <p>
      *  If <tt>variableOnly</tt> is true, only variable scopes are
      *  checked, but class scopes are ignored.
-     *  
+     *
      *  @param name The variable name.
      *  @param variablesOnly Whether to check variable scopes only.
      *  @return The type of the variable, or <tt>null</tt> if it is not
@@ -189,14 +189,14 @@ public class TypeAnalyzerState {
      *  values. The top element in this stack is considered the current
      *  scope. Other elements in it are scopes enclosing the current
      *  scope.
-     *  
+     *
      *  @return The variable stack.
      *  @see #setVariableStack(Stack)
      */
     public Stack getVariableStack() {
         return _variableStack;
     }
-    
+
     public boolean isVariable(String name) {
         int i = _variableStack.size() - 1;
         if (i == -1)
@@ -206,14 +206,14 @@ public class TypeAnalyzerState {
         while (!table.containsKey(name) && i >= 1)
             table = (Hashtable)_variableStack.get(--i);
 
-        return table.containsKey(name) && 
+        return table.containsKey(name) &&
             !_classScopes.contains(new Integer(i));
     }
 
     /** Leave a class declaration. The current class is set back to the
      *  last current class (the class on the top of the previous class
      *  stack).
-     *  
+     *
      *  @see #enterClass(Class)
      */
     public void leaveClass() {
@@ -221,28 +221,28 @@ public class TypeAnalyzerState {
         _anonymousCounts.pop();
         _loader.setCurrentClass(_currentClass, false);
     }
-    
+
     /** Leave a block declaration.
-     *  
+     *
      *  @see #enterBlock()
      */
     public void leaveBlock() {
         _previousClasses.pop();
     }
-    
+
     /** Get the next count of anonymous classes in the current class.
-     * 
+     *
      *  @return The count.
      */
     public int nextAnonymousCount() {
         int lastCount = ((Integer)_anonymousCounts.pop()).intValue();
         _anonymousCounts.push(new Integer(++lastCount));
         return lastCount;
-        
+
     }
 
     /** Get the next count of total anonymous classes.
-     * 
+     *
      *  @return The count.
      */
     public int nextTotalAnonymousCount() {
@@ -250,17 +250,17 @@ public class TypeAnalyzerState {
     }
 
     /** Set the class loader.
-     * 
+     *
      *  @param loader The class loader.
      *  @see #getClassLoader()
      */
     public void setClassLoader(LocalClassLoader loader) {
         _loader = loader;
     }
-    
+
     /** Set the current scope to be a class scope (a scope opened by
      *  a class declaration).
-     *  
+     *
      *  @param scope The scope to be set.
      *  @see #unsetClassScope()
      */
@@ -269,7 +269,7 @@ public class TypeAnalyzerState {
     }
 
     /** Get the current class (the class currently being inspected).
-     * 
+     *
      *  @param currentClass The current class, or <tt>null</tt> if there
      *   is no current class.
      *  @see #setCurrentClass(Class)
@@ -282,7 +282,7 @@ public class TypeAnalyzerState {
      *  all the entered but not exited class definitions, not including
      *  the current class. Each element in the stack is of type {@link
      *  Class}. The bottom element in the stack is always <tt>null</tt>.
-     * 
+     *
      *  @param previousClasses The previous class stack.
      *  @see #getPreviousClasses()
      */
@@ -296,16 +296,16 @@ public class TypeAnalyzerState {
      *  values. The top element in this stack is considered the current
      *  scope. Other elements in it are scopes enclosing the current
      *  scope.
-     * 
+     *
      *  @param variableStack The variable stack.
      *  @see #getVariableStack()
      */
     public void setVariableStack(Stack variableStack) {
         _variableStack = variableStack;
     }
-    
+
     /** Construct a state object for a type analyzer.
-     * 
+     *
      *  @param analyzer The type analyzer.
      */
     public TypeAnalyzerState(TypeAnalyzer analyzer) {
@@ -316,7 +316,7 @@ public class TypeAnalyzerState {
      *  class declaration).
      *  <p>
      *  A class scope should be unset when removed from the scope stack.
-     *  
+     *
      *  @param scope The scope to be set.
      *  @see #setClassScope()
      */
@@ -328,7 +328,7 @@ public class TypeAnalyzerState {
     ////                        private fields                     ////
 
     /** The stack of currently opened scopes for variable
-     *  declaration. Each element is a {@link Hashtable}. In each table, 
+     *  declaration. Each element is a {@link Hashtable}. In each table,
      *  keys are variable names while values are {@link Type}'s of the
      *  corresponding variables.
      */
@@ -349,23 +349,23 @@ public class TypeAnalyzerState {
      *  yet.
      */
     private Stack _previousClasses = new Stack();
-    
+
     /** The set of scopes that correspond to class declarations.
      */
     private Set _classScopes = new HashSet();
-    
+
     /** The set of names of types to be cross-analyzed.
      */
     private Set _crossAnalyzedTypes = new HashSet();
-    
+
     /** The type analyzer that owns this state.
      */
     private TypeAnalyzer _analyzer;
-    
+
     /** The counter for anonymous classes.
      */
     private int _totalAnonymousCount = 0;
-    
+
     /** The stack of individual anonymous class counts.
      */
     private Stack _anonymousCounts = new Stack();

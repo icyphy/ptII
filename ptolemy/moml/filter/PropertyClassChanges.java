@@ -200,7 +200,7 @@ public class PropertyClassChanges implements MoMLFilter {
     //      *  @param className The name of the class to be filtered
     //      *  out, for example "ptolemy.copernicus.kernel.GeneratorAttribute".
     //      *  @param propertyClassMap The HashMap that has the property
-    //      *  name as a Key and the new class name as a value.  
+    //      *  name as a Key and the new class name as a value.
     //      *  If the value of the HashMap is null then the
     //      *  rest of the attribute is skipped.
     //      *  @see #remove(String)
@@ -357,7 +357,7 @@ public class PropertyClassChanges implements MoMLFilter {
             srDirectorClassChanges);
 
         // There is only one BreakpointODESolver. Some old models have the
-        // wrong choices of break point ODE solvers. The following filters 
+        // wrong choices of break point ODE solvers. The following filters
         // remove them.
         // CTEmbeddedDirector
         HashMap CTEmbeddedDirectorClassChanges = new HashMap();

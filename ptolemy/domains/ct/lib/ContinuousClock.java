@@ -119,7 +119,7 @@ public class ContinuousClock extends Clock {
         _updateTentativeValues();
 
         // In initialize() method, we already ensured that the director is
-        // a CTDirector. 
+        // a CTDirector.
         CTDirector director = (CTDirector) getDirector();
 
         if (director.isDiscretePhase()) {
@@ -147,7 +147,7 @@ public class ContinuousClock extends Clock {
                 }
             }
 
-            // Adjust the phase if the current time has moved beyond 
+            // Adjust the phase if the current time has moved beyond
             // the current phase time.
             Time currentPhaseTime = _tentativeCycleStartTime.add(_offsets[_tentativePhase]);
 
@@ -162,7 +162,7 @@ public class ContinuousClock extends Clock {
 
                 // FIXME: performance suffers from this. cache the stop time.
                 // NOTE: there are two stop time. One is based on the cycles
-                // and period, and the other one is based on the stopTime 
+                // and period, and the other one is based on the stopTime
                 // parameter.
                 Time stopTime = _tentativeStartTime.add(cycleLimit * periodValue);
 
@@ -250,7 +250,7 @@ public class ContinuousClock extends Clock {
 
         // NOTE: If the current time is bigger than the stop time,
         // the super class of clock, the TimedSource will return false
-        // at its postfire() mathod. Therefore, this method does not 
+        // at its postfire() mathod. Therefore, this method does not
         // call that postfire() method.
         // Unlike what is defined in the super.postfire, continuous clock
         // requires that the current time passes the stop time.

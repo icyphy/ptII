@@ -95,7 +95,7 @@ public abstract class TextureVolume implements VolRendConstants {
 	    cmap = colorModeAttr.getColormap();
 	    if (cmap != null) {
 		cmapEditId = cmap.update();
-	    } 
+	    }
         else {
 		cmapEditId = -1;
 	    }
@@ -103,26 +103,26 @@ public abstract class TextureVolume implements VolRendConstants {
 		tctReloadNeeded = true;
 		useCmap = false;
     		useTextureColorTable = true;
-	    } 
+	    }
         else {
         	if (cmap != null) {
         		useCmap = true;
-        	} 
+        	}
             else {
             	useCmap = false;
             }
         	useTextureColorTable = false;
         	volumeReloadNeeded = true;
 	    }
-	} 
-    else if ((cmap != null) && 
+	}
+    else if ((cmap != null) &&
 		   (((newCmapEditId = cmap.update()) != cmapEditId) ||
 	            (texColorMapEnable != newTexColorMapEnable))) {
 	    if (texColorMapAvailable && newTexColorMapEnable) {
 	    	tctReloadNeeded = true;
 	    	useCmap = false;
     		useTextureColorTable = true;
-	        if (!texColorMapEnable) { 
+	        if (!texColorMapEnable) {
 		    /* previously loaded with color table, need to reload
 		     * w/o color table
 		     */
@@ -142,11 +142,11 @@ public abstract class TextureVolume implements VolRendConstants {
 	    volumeReload();
 	    tctReload();
 	    return RELOAD_VOLUME;
-	} 
+	}
     else if (tctReloadNeeded) {
 	    tctReload();
 	    return RELOAD_CMAP;
-	} 
+	}
     else {
 	    return RELOAD_NONE;
 	}
@@ -162,14 +162,14 @@ public abstract class TextureVolume implements VolRendConstants {
 	    if (timing) {
 		long end = System.currentTimeMillis();
 		double elapsed = (end - start) / 1000.0;
-		System.out.println("Texture load took " + 
+		System.out.println("Texture load took " +
 			/*numFormat*/ (elapsed) + " seconds");
 	    }
 	}
 	volumeReloadNeeded = false;
     }
 
-    int byteToInt(int byteValue) 
+    int byteToInt(int byteValue)
     {
 	return (int)((byteValue / 255.0f) * Integer.MAX_VALUE);
     }
@@ -177,13 +177,13 @@ public abstract class TextureVolume implements VolRendConstants {
     void tctReload() {
 	if ((cmap != null) && texColorMapEnable) {
 	    for (int i = 0; i < 256; i++) {
-		texColorMap[RED][i] = 
+		texColorMap[RED][i] =
 			byteToInt((cmap.colorMapping[i] & 0x00ff0000) >> 16);
-		texColorMap[GREEN][i] = 
+		texColorMap[GREEN][i] =
 			byteToInt((cmap.colorMapping[i] & 0x0000ff00) >> 8);
-		texColorMap[BLUE][i] = 
+		texColorMap[BLUE][i] =
 			byteToInt((cmap.colorMapping[i] & 0x000000ff));
-		texColorMap[ALPHA][i] = 
+		texColorMap[ALPHA][i] =
 			byteToInt((cmap.colorMapping[i] & 0xff000000) >> 24);
 	    }
 	    useTextureColorTable = true;

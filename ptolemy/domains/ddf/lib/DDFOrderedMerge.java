@@ -137,7 +137,7 @@ public class DDFOrderedMerge extends OrderedMerge {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////   
+    ////                         private variables                 ////
 
     /** A final static IntToken with value 0.
      */

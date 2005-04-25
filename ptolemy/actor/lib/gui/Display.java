@@ -409,11 +409,11 @@ public class Display extends Sink implements Placeable {
                     value = value.substring(1, value.length() - 1);
                 }
 
-                // If the value is not an empty string, set the 
+                // If the value is not an empty string, set the
                 // currentInputIsBlankLine to false.
-                // Note that if there are multiple input ports, and if any of 
+                // Note that if there are multiple input ports, and if any of
                 // the input ports has data, the current input is considered
-                // to be non-empty. 
+                // to be non-empty.
                 if (value.length() > 0) {
                     currentInputIsBlankLine = false;
                 }
@@ -442,7 +442,7 @@ public class Display extends Sink implements Placeable {
             }
         }
 
-        // If the current input is not a blank line, or the supressBlankLines 
+        // If the current input is not a blank line, or the supressBlankLines
         // parameter is configured to false, append a newline character.
         if ((textArea != null)
                         && !(_suppressBlankLines && currentInputIsBlankLine)) {

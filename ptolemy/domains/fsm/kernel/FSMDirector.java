@@ -560,7 +560,7 @@ public class FSMDirector extends Director implements ModelErrorHandler,
     public boolean handleModelError(NamedObj context,
         IllegalActionException exception) throws IllegalActionException {
         // NOTE: Besides throwing exception directly, we can handle
-        // multiple enabled transitions in different ways by the derived 
+        // multiple enabled transitions in different ways by the derived
         // sub classes.
         if (exception instanceof MultipleEnabledTransitionsException) {
             throw exception;

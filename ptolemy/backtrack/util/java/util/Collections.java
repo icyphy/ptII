@@ -330,7 +330,7 @@ public class Collections implements Rollbackable {
 
         public String toString() {
             StringBuffer r = new StringBuffer("{");
-            for (int i = n - 1; --i > 0; ) 
+            for (int i = n - 1; --i > 0; )
                 r.append(element).append(", ");
             r.append(element).append("}");
             return r.toString();
@@ -519,7 +519,7 @@ public class Collections implements Rollbackable {
         public boolean containsAll(Collection c) {
             Iterator i = c.iterator();
             int pos = c.size();
-            while (--pos >= 0) 
+            while (--pos >= 0)
                 if (!equals(i.next(), element))
                     return false;
             return true;
@@ -579,7 +579,7 @@ public class Collections implements Rollbackable {
         public boolean containsAll(Collection c) {
             Iterator i = c.iterator();
             int pos = c.size();
-            while (--pos >= 0) 
+            while (--pos >= 0)
                 if (!equals(i.next(), element))
                     return false;
             return true;
@@ -2579,10 +2579,10 @@ public class Collections implements Rollbackable {
             while (low <= hi) {
                 pos = (low + hi) >> 1;
                 if (i < pos)
-                    for (; i != pos; i++, itr.next()) 
+                    for (; i != pos; i++, itr.next())
                         ;
                 else
-                    for (; i != pos; i--, itr.previous()) 
+                    for (; i != pos; i--, itr.previous())
                         ;
                 final int d = compare(key, itr.next(), c);
                 if (d == 0)
@@ -2642,7 +2642,7 @@ public class Collections implements Rollbackable {
 
     public static int indexOfSubList(List source, List target) {
         int ssize = source.size();
-        for (int i = 0, j = target.size(); j <= ssize; i++, j++) 
+        for (int i = 0, j = target.size(); j <= ssize; i++, j++)
             if (source.subList(i, j).equals(target))
                 return i;
         return -1;
@@ -2650,7 +2650,7 @@ public class Collections implements Rollbackable {
 
     public static int lastIndexOfSubList(List source, List target) {
         int ssize = source.size();
-        for (int i = ssize - target.size(), j = ssize; i >= 0; i--, j--) 
+        for (int i = ssize - target.size(), j = ssize; i >= 0; i--, j--)
             if (source.subList(i, j).equals(target))
                 return i;
         return -1;
@@ -2658,7 +2658,7 @@ public class Collections implements Rollbackable {
 
     public static ArrayList list(Enumeration e) {
         ArrayList l = new ArrayList();
-        while (e.hasMoreElements()) 
+        while (e.hasMoreElements())
             l.add(e.nextElement());
         return l;
     }
@@ -2702,7 +2702,7 @@ public class Collections implements Rollbackable {
     public static boolean replaceAll(List list, Object oldval, Object newval) {
         ListIterator itr = list.listIterator();
         boolean replace_occured = false;
-        for (int i = list.size(); --i >= 0; ) 
+        for (int i = list.size(); --i >= 0; )
             if (AbstractCollection.equals(oldval, itr.next())) {
                 itr.set(newval);
                 replace_occured = true;
@@ -2750,7 +2750,7 @@ public class Collections implements Rollbackable {
             }
             while (--lcm >= 0) {
                 Object o = list.get(lcm);
-                for (int i = lcm + distance; i != lcm; i = (i + distance) % size) 
+                for (int i = lcm + distance; i != lcm; i = (i + distance) % size)
                     o = list.set(i, o);
                 list.set(lcm, o);
             }

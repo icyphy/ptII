@@ -66,7 +66,7 @@ public class VirtualTinyOS extends TypedAtomicActor {
      *   actor with this name.
      */
     public VirtualTinyOS(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException, 
+        throws NameDuplicationException, IllegalActionException,
             java.lang.Exception {
         super(container, name);
 

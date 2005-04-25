@@ -393,7 +393,7 @@ public class ActorRecursion extends TypedCompositeActor {
 
         // If DDF domain is inside another domain and the
         // receiver is contained by an opaque output port...
-        // The default production rate is -1 which means all 
+        // The default production rate is -1 which means all
         // tokens in the receiver are transferred to the outside.
         if (port.isOutput()) {
             rateVariable = DFUtilities.getRateVariable(port,
@@ -430,10 +430,10 @@ public class ActorRecursion extends TypedCompositeActor {
         if (token instanceof ArrayToken) {
             Token[] tokens = ((ArrayToken) token).arrayValue();
 
-            // Scan the contained receivers of the port to find 
+            // Scan the contained receivers of the port to find
             // out channel index.
             int channelIndex = 0;
-foundChannelIndex: 
+foundChannelIndex:
             for (int m = 0; m < portReceivers.length; m++) {
                 for (int n = 0; n < portReceivers[m].length; n++) {
                     if (receiver == portReceivers[m][n]) {
@@ -495,8 +495,8 @@ foundChannelIndex:
             int[] productionRate = new int[outputPort.getWidthInside()];
 
             // If there are more inside channels than outside channels,
-            // it sets default rates of these extra inside channels to 
-            // be -1 which then won't cause an upstream actor to be 
+            // it sets default rates of these extra inside channels to
+            // be -1 which then won't cause an upstream actor to be
             // deferrable because any tokens on these extra channels
             // are discarded.
             Arrays.fill(productionRate, -1);

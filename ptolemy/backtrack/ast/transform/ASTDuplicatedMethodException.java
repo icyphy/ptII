@@ -14,11 +14,11 @@ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
 THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
 SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES, 
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
 INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, 
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
@@ -36,7 +36,7 @@ import ptolemy.backtrack.ast.ASTRuntimeException;
    Thrown on an attempt to create a method in a class declaration, which
    already contains a method with the same name and an argument of the
    same type.
- 
+
    @author Thomas Feng
    @version $Id$
    @since Ptolemy II 5.1
@@ -46,7 +46,7 @@ import ptolemy.backtrack.ast.ASTRuntimeException;
 public class ASTDuplicatedMethodException extends ASTRuntimeException {
 
     /** Construct an exception about creating a duplicated method in a class.
-     * 
+     *
      *  @param className The class name.
      *  @param methodName The method name.
      */
@@ -57,5 +57,5 @@ public class ASTDuplicatedMethodException extends ASTRuntimeException {
                 className +
                 "\".");
     }
-    
+
 }

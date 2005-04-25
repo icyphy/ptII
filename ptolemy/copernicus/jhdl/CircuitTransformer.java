@@ -148,7 +148,7 @@ public class CircuitTransformer extends SceneTransformer {
             System.out.println("here");
 
             int descriptionLevel = NamedObj.LINKS | NamedObj.FULLNAME
-                | 
+                |
                 //NamedObj.ATTRIBUTES |
                 NamedObj.CONTENTS | NamedObj.DEEP;
             System.out.println(c.description(descriptionLevel));

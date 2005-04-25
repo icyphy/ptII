@@ -139,7 +139,7 @@ public class FilterMpdu extends MACActorBase {
                 RecordToken msgout = new RecordToken(RxIndicateMessageFields,
                         new Token[] {
                             new IntToken(RxIndicate),
-                            
+
                         //TODO: how to implement this?
                         //msgout->pdu=pdu->copyEncapMsg();
                         pdu,
@@ -164,7 +164,7 @@ public class FilterMpdu extends MACActorBase {
                     RecordToken msgout = new RecordToken(RxIndicateMessageFields,
                             new Token[] {
                                 new IntToken(RxIndicate),
-                                
+
                             //TODO: how to implement this?
                             //msgout->pdu=pdu->copyEncapMsg();
                             pdu,

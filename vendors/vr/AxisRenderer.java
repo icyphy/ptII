@@ -310,7 +310,7 @@ abstract public class AxisRenderer extends Renderer implements VolRendConstants 
             eyeVec.y /= volume.ySpace;
             eyeVec.z /= volume.zSpace;
 
-            // select the axis with the greatest magnitude 
+            // select the axis with the greatest magnitude
             int axis = X_AXIS;
             double value = eyeVec.x;
             double max = Math.abs(eyeVec.x);
@@ -336,7 +336,7 @@ abstract public class AxisRenderer extends Renderer implements VolRendConstants 
                 dir = BACK;
             }
 
-            //System.out.println("Selected axis: " + dirStrings[dir] + 
+            //System.out.println("Selected axis: " + dirStrings[dir] +
             //    axisStrings[axis]);
             if ((axis != autoAxis) || (dir != autoDir)) {
                 autoAxis = axis;

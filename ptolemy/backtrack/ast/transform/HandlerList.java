@@ -14,11 +14,11 @@ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
 THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
 SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES, 
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
 INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, 
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
@@ -39,7 +39,7 @@ import ptolemy.backtrack.ast.transform.ClassHandler;
 /**
     List of different handlers to be called back by {@link TypeAnalyzer}
     during the traversal of the AST.
-   
+
     @author Thomas Feng
     @version $Id$
     @since Ptolemy II 5.1
@@ -47,159 +47,159 @@ import ptolemy.backtrack.ast.transform.ClassHandler;
     @Pt.AcceptedRating Red (tfeng)
 */
 public class HandlerList {
-    
+
     /** Add an alias handler to the list.
-     * 
+     *
      *  @param handler The alias handler.
      *  @see AliasHandler
      */
     public void addAliasHandler(AliasHandler handler) {
         _aliasHandlers.add(handler);
     }
-    
+
     /** Add an assignment handler to the list.
-     * 
+     *
      *  @param handler The assignment handler.
      *  @see AssignmentHandler
      */
     public void addAssignmentHandler(AssignmentHandler handler) {
         _assignmentHandlers.add(handler);
     }
-    
+
     /** Add a class declaration handler to the list.
-     * 
+     *
      *  @param handler The class declaration handler.
      *  @see ClassHandler
      */
     public void addClassHandler(ClassHandler handler) {
         _classHandlers.add(handler);
     }
-    
+
     /** Add a constructor handler to the list.
-     * 
+     *
      *  @param handler The constructor handler.
      *  @see ConstructorHandler
      */
     public void addConstructorHandler(ConstructorHandler handler) {
         _constructorHandlers.add(handler);
     }
-    
+
     /** Add a cross-analysis handler to the list.
-     * 
+     *
      *  @param handler The cross-analysis handler.
      *  @see CrossAnalysisHandler
      */
     public void addCrossAnalysisHandler(CrossAnalysisHandler handler) {
         _crossAnalysisHandlers.add(handler);
     }
-    
+
     /** Add a method declaration handler to the list.
-     * 
+     *
      *  @param handler The method declaration handler.
      *  @see MethodDeclarationHandler
      */
     public void addMethodDeclarationHandler(MethodDeclarationHandler handler) {
         _methodDeclarationHandlers.add(handler);
     }
-    
+
     /** Get the list of alias handlers.
-     * 
+     *
      *  @return The list of alias handlers.
      */
     public List getAliasHandlers() {
         return _aliasHandlers;
     }
-    
+
     /** Get the list of assignment handlers.
-     * 
+     *
      *  @return The list of assignment handlers.
      */
     public List getAssignmentHandlers() {
         return _assignmentHandlers;
     }
-    
+
     /** Get the list of class declaration handlers.
-     * 
+     *
      *  @return The list of class declaration handlers.
      */
     public List getClassHandlers() {
         return _classHandlers;
     }
-    
+
     /** Get the list of constructor handlers.
-     * 
+     *
      *  @return The list of constructor handlers.
      */
     public List getConstructorHandlers() {
         return _constructorHandlers;
     }
-    
+
     /** Get the list of cross-analysis handlers.
-     * 
+     *
      *  @return The list of cross-analysis handlers.
      */
     public List getCrossAnalysisHandlers() {
         return _crossAnalysisHandlers;
     }
-    
+
     /** Get the list of method declaration handlers.
-     * 
+     *
      *  @return The list of method declaration handlers.
      */
     public List getMethodDeclarationHandlers() {
         return _methodDeclarationHandlers;
     }
-    
+
     /** Test if there is any alias handler.
-     * 
+     *
      *  @return <tt>true</tt> if there are alias handlers.
      */
     public boolean hasAliasHandler() {
         return !_aliasHandlers.isEmpty();
     }
-    
+
     /** Test if there is any assignment handler.
-     * 
+     *
      *  @return <tt>true</tt> if there are assignment handlers.
      */
     public boolean hasAssignmentHandler() {
         return !_assignmentHandlers.isEmpty();
     }
-    
+
     /** Test if there is any class declaration handler.
-     * 
+     *
      *  @return <tt>true</tt> if there are class declaration handlers.
      */
     public boolean hasClassHandler() {
         return !_classHandlers.isEmpty();
     }
-    
+
     /** Test is there is any constructor handler.
-     * 
+     *
      *  @return <tt>true</tt> if there are constructor handlers.
      */
     public boolean hasConstructorHandler() {
         return !_constructorHandlers.isEmpty();
     }
-    
+
     /** Test is there is any cross-analysis handler.
-     * 
+     *
      *  @return <tt>true</tt> if there are cross-analysis handlers.
      */
     public boolean hasCrossAnalysisHandler() {
         return !_crossAnalysisHandlers.isEmpty();
     }
-    
+
     /** Test is there is any method declaration handler.
-     * 
+     *
      *  @return <tt>true</tt> if there are method declaration handlers.
      */
     public boolean hasMethodDeclarationHandler() {
         return !_methodDeclarationHandlers.isEmpty();
     }
-    
+
     /** Remove an alias handler.
-     * 
+     *
      *  @param handler The alias handler to be removed.
      */
     public void removeAliasHandler(AliasHandler handler) {
@@ -207,7 +207,7 @@ public class HandlerList {
     }
 
     /** Remove an assignment handler.
-     * 
+     *
      *  @param handler The assignment handler to be removed.
      */
     public void removeAssignmentHandler(AssignmentHandler handler) {
@@ -215,15 +215,15 @@ public class HandlerList {
     }
 
     /** Remove a class declaration handler.
-     * 
+     *
      *  @param handler The class declaration handler to be removed.
      */
     public void removeClassHandler(ClassHandler handler) {
         _classHandlers.remove(handler);
     }
-    
+
     /** Remove a constructor handler.
-     * 
+     *
      *  @param handler The constructor handler to be removed.
      */
     public void removeConstructorHandler(ConstructorHandler handler) {
@@ -231,7 +231,7 @@ public class HandlerList {
     }
 
     /** Remove a cross-analysis handler.
-     * 
+     *
      *  @param handler The cross-analysis handler to be removed.
      */
     public void removeCrossAnalysisHandler(CrossAnalysisHandler handler) {
@@ -239,7 +239,7 @@ public class HandlerList {
     }
 
     /** Remove a method declaration handler.
-     * 
+     *
      *  @param handler The method declaration handler to be removed.
      */
     public void removeMethodDeclarationHandler(MethodDeclarationHandler handler) {
@@ -249,23 +249,23 @@ public class HandlerList {
     /** The list of alias handlers.
      */
     private List _aliasHandlers = new LinkedList();
-    
+
     /** The list of assignment handlers.
      */
     private List _assignmentHandlers = new LinkedList();
-    
+
     /** The list of class declaration handlers.
      */
     private List _classHandlers = new LinkedList();
-    
+
     /** The list of constructor handlers.
      */
     private List _constructorHandlers = new LinkedList();
-    
+
     /** The list of cross-analysis handlers.
      */
     private List _crossAnalysisHandlers = new LinkedList();
-    
+
     /** The list of method declaration handlers.
      */
     private List _methodDeclarationHandlers = new LinkedList();

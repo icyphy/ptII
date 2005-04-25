@@ -15,11 +15,11 @@ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
 THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
 SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES, 
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
 INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, 
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
@@ -130,7 +130,7 @@ import ptolemy.backtrack.util.PathFinder;
    classes indirectly referred to) have been compiled with the Java
    compiler. It does not check for type errors in the AST, but it mimics
    the typing semantics of the Java compiler.
-   
+
    @author Thomas Feng
    @version $Id$
    @since Ptolemy II 5.1
@@ -163,7 +163,7 @@ public class TypeAnalyzer extends ASTVisitor {
     ////                       public methods                      ////
 
     /** Add a name of a type to the set of types to be cross-analyzed.
-     * 
+     *
      *  @param fullName The name of the type to be added.
      *  @see #addCrossAnalyzedTypes(String[])
      */
@@ -173,16 +173,16 @@ public class TypeAnalyzer extends ASTVisitor {
             List handlerList = _handlers.getCrossAnalysisHandlers();
             Iterator handlersIter = handlerList.iterator();
             while (handlersIter.hasNext()) {
-                CrossAnalysisHandler handler = 
+                CrossAnalysisHandler handler =
                     (CrossAnalysisHandler)handlersIter.next();
                 handler.handle(_state);
             }
         }
     }
-    
+
     /** Add an array of names of types to the set of types to be
      *  cross-analyzed.
-     * 
+     *
      *  @param fullNames The array of names of types to be added.
      *  @see #addCrossAnalyzedType(String)
      */
@@ -192,13 +192,13 @@ public class TypeAnalyzer extends ASTVisitor {
             List handlerList = _handlers.getCrossAnalysisHandlers();
             Iterator handlersIter = handlerList.iterator();
             while (handlersIter.hasNext()) {
-                CrossAnalysisHandler handler = 
+                CrossAnalysisHandler handler =
                     (CrossAnalysisHandler)handlersIter.next();
                 handler.handle(_state);
             }
         }
     }
-    
+
     /** End the visit of an anonymous class declaration and close its
      *  scope. The current class is set back to the last visited class.
      *  @param node
@@ -263,7 +263,7 @@ public class TypeAnalyzer extends ASTVisitor {
             List handlerList = _handlers.getAssignmentHandlers();
             Iterator handlersIter = handlerList.iterator();
             while (handlersIter.hasNext()) {
-                AssignmentHandler handler = 
+                AssignmentHandler handler =
                     (AssignmentHandler)handlersIter.next();
                 handler.handle(node, _state);
             }
@@ -313,16 +313,16 @@ public class TypeAnalyzer extends ASTVisitor {
      */
     public void endVisit(ClassInstanceCreation node) {
        Type.propagateType(node, node.getName());
-       
+
        Expression expression = node.getExpression();
        if (expression != null)
             Type.setOwner(node, Type.getType(expression));
-       
+
        if (_handlers.hasConstructorHandler()) {
            List handlerList = _handlers.getConstructorHandlers();
            Iterator handlersIter = handlerList.iterator();
            while (handlersIter.hasNext()) {
-               ConstructorHandler handler = 
+               ConstructorHandler handler =
                    (ConstructorHandler)handlersIter.next();
                handler.handle(node, _state);
            }
@@ -409,7 +409,7 @@ public class TypeAnalyzer extends ASTVisitor {
             }
         }
     }
-   
+
     /** End the visit of a for statement and close the scope opened by
      *  the previous visit function.
      *
@@ -458,14 +458,14 @@ public class TypeAnalyzer extends ASTVisitor {
             operator.equals(InfixExpression.Operator.AND) ||
             operator.equals(InfixExpression.Operator.OR) ||
             operator.equals(InfixExpression.Operator.XOR)) {
-          
-            type = Type.getCommonType(Type.getType(leftHand), 
+
+            type = Type.getCommonType(Type.getType(leftHand),
                     Type.getType(rightHand));
             Iterator extendedIter = extendedOps.iterator();
             while (type != null && extendedIter.hasNext())
-                type = Type.getCommonType(type, 
+                type = Type.getCommonType(type,
                         Type.getType((Expression)extendedIter.next()));
-          
+
         } else if (operator.equals(InfixExpression.Operator.LESS) ||
                 operator.equals(InfixExpression.Operator.LESS_EQUALS) ||
                 operator.equals(InfixExpression.Operator.GREATER) ||
@@ -536,7 +536,7 @@ public class TypeAnalyzer extends ASTVisitor {
             List handlerList = _handlers.getConstructorHandlers();
             Iterator handlersIter = handlerList.iterator();
             while (handlersIter.hasNext()) {
-                ConstructorHandler handler = 
+                ConstructorHandler handler =
                     (ConstructorHandler)handlersIter.next();
                 handler.handle(node, _state);
             }
@@ -545,7 +545,7 @@ public class TypeAnalyzer extends ASTVisitor {
             List handlerList = _handlers.getMethodDeclarationHandlers();
             Iterator handlersIter = handlerList.iterator();
             while (handlersIter.hasNext()) {
-                MethodDeclarationHandler handler = 
+                MethodDeclarationHandler handler =
                     (MethodDeclarationHandler)handlersIter.next();
                 handler.exit(node, _state);
             }
@@ -573,12 +573,12 @@ public class TypeAnalyzer extends ASTVisitor {
         }
 
         Type[] types = _argumentsToTypes(node.arguments());
-        TypeAndOwner typeAndOwner = 
+        TypeAndOwner typeAndOwner =
             _resolveMethod(owner, node.getName().getIdentifier(), types);
         if (typeAndOwner == null)
             throw new ASTResolutionException(
                     owner == null ? _state.getCurrentClass().getName() :
-                        owner.getName(), 
+                        owner.getName(),
                     node.getName().getIdentifier());
         else {
             Type.setOwner(node, typeAndOwner._getOwner());
@@ -586,7 +586,7 @@ public class TypeAnalyzer extends ASTVisitor {
             Type.setType(node, typeAndOwner._getType());
             Type.setType(node.getName(), typeAndOwner._getType());
         }
-        
+
         if (_handlers.hasAliasHandler()) {
             List handlerList = _handlers.getAliasHandlers();
             Iterator handlersIter = handlerList.iterator();
@@ -629,7 +629,7 @@ public class TypeAnalyzer extends ASTVisitor {
             List handlerList = _handlers.getAssignmentHandlers();
             Iterator handlersIter = handlerList.iterator();
             while (handlersIter.hasNext()) {
-                AssignmentHandler handler = 
+                AssignmentHandler handler =
                     (AssignmentHandler)handlersIter.next();
                 handler.handle(node, _state);
             }
@@ -649,7 +649,7 @@ public class TypeAnalyzer extends ASTVisitor {
             List handlerList = _handlers.getAssignmentHandlers();
             Iterator handlersIter = handlerList.iterator();
             while (handlersIter.hasNext()) {
-                AssignmentHandler handler = 
+                AssignmentHandler handler =
                     (AssignmentHandler)handlersIter.next();
                 handler.handle(node, _state);
             }
@@ -678,7 +678,7 @@ public class TypeAnalyzer extends ASTVisitor {
             Type owner;
 
             if (qualifier instanceof SimpleName) {
-                TypeAndOwner ownerTypeAndOwner = 
+                TypeAndOwner ownerTypeAndOwner =
                     _resolveName(((SimpleName)qualifier).getIdentifier(), null);
                 if (ownerTypeAndOwner == null)
                     owner = null;
@@ -703,7 +703,7 @@ public class TypeAnalyzer extends ASTVisitor {
                 if (!(node.getParent() instanceof QualifiedName))
                     throw new ASTResolutionException(
                             owner == null ? _state.getCurrentClass().getName() :
-                                owner.getName(), 
+                                owner.getName(),
                                 resolveName);
             } else {
                 Type.setOwner(node, nodeTypeAndOwner._getOwner());
@@ -713,7 +713,7 @@ public class TypeAnalyzer extends ASTVisitor {
             }
         }
     }
-    
+
     /** Visit a return statement.
      *
      *  @param node The node to be visited.
@@ -758,7 +758,7 @@ public class TypeAnalyzer extends ASTVisitor {
             else if (parent instanceof ClassInstanceCreation &&
                     ((ClassInstanceCreation)parent).getExpression() != null &&
                     ((ClassInstanceCreation)parent).getName() == node)
-                owner = 
+                owner =
                     Type.getType(((ClassInstanceCreation)parent).getExpression());
             else if (parent instanceof FieldAccess &&
                     ((FieldAccess)parent).getName() == node)
@@ -813,13 +813,13 @@ public class TypeAnalyzer extends ASTVisitor {
     public void endVisit(StringLiteral node) {
         Type.setType(node, Type.createType("java.lang.String"));
     }
-    
+
     public void endVisit(SuperConstructorInvocation node) {
         if (_handlers.hasConstructorHandler()) {
             List handlerList = _handlers.getConstructorHandlers();
             Iterator handlersIter = handlerList.iterator();
             while (handlersIter.hasNext()) {
-                ConstructorHandler handler = 
+                ConstructorHandler handler =
                     (ConstructorHandler)handlersIter.next();
                 handler.handle(node, _state);
             }
@@ -851,19 +851,19 @@ public class TypeAnalyzer extends ASTVisitor {
         if (owner == null)
             throw new UnknownASTException();
 
-        TypeAndOwner typeAndOwner = 
-            _resolveName(node.getName().getIdentifier(), 
+        TypeAndOwner typeAndOwner =
+            _resolveName(node.getName().getIdentifier(),
                     Type.createType(owner.getName()));
         if (typeAndOwner == null)
             throw new ASTResolutionException(
                     owner == null ? _state.getCurrentClass().getName() :
-                        owner.getName(), 
+                        owner.getName(),
                     node.getName().getIdentifier());
         Type.setOwner(node, typeAndOwner._getOwner());
         Type.setType(node, typeAndOwner._getType());
     }
 
-    /** Visit a super method invocation node (<tt>super.method(...)</tt>), 
+    /** Visit a super method invocation node (<tt>super.method(...)</tt>),
      *  resolve the method from the superclass of the given class name
      *  (if any, like <tt>ClassName.super.FieldName</tt>) or from the
      *  superclass of the class being inspected. The type of the node is
@@ -890,12 +890,12 @@ public class TypeAnalyzer extends ASTVisitor {
             throw new UnknownASTException();
 
         Type[] types = _argumentsToTypes(node.arguments());
-        TypeAndOwner typeAndOwner = 
+        TypeAndOwner typeAndOwner =
             _resolveMethod(owner, node.getName().getIdentifier(), types);
         if (typeAndOwner == null)
             throw new ASTResolutionException(
                     owner == null ? _state.getCurrentClass().getName() :
-                        owner.getName(), 
+                        owner.getName(),
                     node.getName().getIdentifier());
         else {
             Type.setOwner(node, typeAndOwner._getOwner());
@@ -916,7 +916,7 @@ public class TypeAnalyzer extends ASTVisitor {
         if (qualifier != null)
             Type.propagateType(node, qualifier);
         else
-            Type.setType(node, 
+            Type.setType(node,
                     Type.createType(_state.getCurrentClass().getName()));
     }
 
@@ -927,7 +927,7 @@ public class TypeAnalyzer extends ASTVisitor {
      */
     public void endVisit(TypeDeclaration node) {
         Class currentClass = _state.getCurrentClass();
-        
+
         if (_handlers.hasClassHandler()) {
             List handlerList = _handlers.getClassHandlers();
             Iterator handlersIter = handlerList.iterator();
@@ -940,7 +940,7 @@ public class TypeAnalyzer extends ASTVisitor {
         _state.unsetClassScope();
         _closeScope();
         _state.leaveClass();
-        
+
         if (node.getParent() instanceof TypeDeclarationStatement) {
             String typeName = node.getName().getIdentifier();
             Hashtable classTable =
@@ -980,12 +980,12 @@ public class TypeAnalyzer extends ASTVisitor {
         Type type = null;
         ASTNode parent = node.getParent();
         if (parent instanceof VariableDeclarationStatement)
-            type = 
+            type =
                 Type.getType(((VariableDeclarationStatement)parent).getType());
         else if (parent instanceof FieldDeclaration)
             type = Type.getType(((FieldDeclaration)parent).getType());
         else if (parent instanceof VariableDeclarationExpression)
-            type = 
+            type =
                 Type.getType(((VariableDeclarationExpression)parent).getType());
         else
             throw new UnknownASTException();
@@ -995,7 +995,7 @@ public class TypeAnalyzer extends ASTVisitor {
         Type.setType(node, type);
         Type.setType(node.getName(), type);
         _state.addVariable(node.getName().getIdentifier(), type);
-        
+
         if (_handlers.hasAliasHandler()) {
             List handlerList = _handlers.getAliasHandlers();
             Iterator handlersIter = handlerList.iterator();
@@ -1007,15 +1007,15 @@ public class TypeAnalyzer extends ASTVisitor {
     }
 
     /** Get the list of handlers to be called back when traversing the AST.
-     * 
+     *
      *  @return The list of handlers.
      */
     public HandlerList getHandlers() {
         return _handlers;
     }
-    
+
     /** Get the current state of the analyzer.
-     * 
+     *
      *  @return The state.
      */
     public TypeAnalyzerState getState() {
@@ -1060,11 +1060,11 @@ public class TypeAnalyzer extends ASTVisitor {
      */
     public boolean visit(AnonymousClassDeclaration node) {
         Class currentClass = _state.getCurrentClass();
-        
+
         // First, try to simply append the anonymous count to the end.
         if (!_eclipse_anonymous_scheme) {
             try {
-                currentClass = 
+                currentClass =
                     _state.getClassLoader().searchForClass(
                             currentClass.getName() + "$" +
                             _state.nextAnonymousCount());
@@ -1073,7 +1073,7 @@ public class TypeAnalyzer extends ASTVisitor {
                 _eclipse_anonymous_scheme = true;
             }
         }
-        
+
         if (_eclipse_anonymous_scheme) {
             StringBuffer currentName =
                 new StringBuffer(currentClass.getName());
@@ -1083,7 +1083,7 @@ public class TypeAnalyzer extends ASTVisitor {
             currentName.append('$');
             currentName.append(_state.nextTotalAnonymousCount());
             try {
-                currentClass = 
+                currentClass =
                     _state.getClassLoader().searchForClass(currentName.toString());
                 _state.enterClass(currentClass);
             } catch (ClassNotFoundException e) {
@@ -1091,7 +1091,7 @@ public class TypeAnalyzer extends ASTVisitor {
             }
         }
         _state.enterClass(currentClass);
-        
+
         // Add the class to be cross-analyzed.
         addCrossAnalyzedType(currentClass.getName());
 
@@ -1102,7 +1102,7 @@ public class TypeAnalyzer extends ASTVisitor {
 
         // Sort body declarations.
         _sortBodyDeclarations(node);
-        
+
         if (_handlers.hasClassHandler()) {
             List handlerList = _handlers.getClassHandlers();
             Iterator handlersIter = handlerList.iterator();
@@ -1136,9 +1136,9 @@ public class TypeAnalyzer extends ASTVisitor {
         _openScope();
         return super.visit(node);
     }
-    
+
     /** Visit a field declaration.
-     * 
+     *
      *  @param node The node to be visited.
      *  @return The return value of the overriden function.
      */
@@ -1191,7 +1191,7 @@ public class TypeAnalyzer extends ASTVisitor {
             List handlerList = _handlers.getMethodDeclarationHandlers();
             Iterator handlersIter = handlerList.iterator();
             while (handlersIter.hasNext()) {
-                MethodDeclarationHandler handler = 
+                MethodDeclarationHandler handler =
                     (MethodDeclarationHandler)handlersIter.next();
                 handler.enter(node, _state);
             }
@@ -1207,7 +1207,7 @@ public class TypeAnalyzer extends ASTVisitor {
     public boolean visit(PackageDeclaration node) {
         return super.visit(node);
     }
-    
+
     /** Visit a simple type node and set its type to be the same as the
      *  type associated with its name.
      *
@@ -1218,7 +1218,7 @@ public class TypeAnalyzer extends ASTVisitor {
         Class c = _lookupClass(node.getName().toString());
         Type type = Type.createType(c.getName());
         Type.setType(node, type);
-        
+
         return super.visit(node);
     }
 
@@ -1233,7 +1233,7 @@ public class TypeAnalyzer extends ASTVisitor {
         // Enter the class.
         String typeName = node.getName().getIdentifier();
         Class currentClass = _state.getCurrentClass();
-        
+
         if (currentClass == null) {
             try {
                 currentClass = _state.getClassLoader().searchForClass(typeName);
@@ -1245,11 +1245,11 @@ public class TypeAnalyzer extends ASTVisitor {
                 try {
                     if (!(node.getParent() instanceof CompilationUnit) &&
                             !(node.getParent() instanceof TypeDeclaration))
-                        currentClass = 
+                        currentClass =
                             _state.getClassLoader().searchForClass(
                                     currentClass.getName() + "$1" + typeName);
                     else
-                        currentClass = 
+                        currentClass =
                             _state.getClassLoader().searchForClass(
                                     currentClass.getName() + "$" + typeName);
                     typeName = currentClass.getName();
@@ -1257,7 +1257,7 @@ public class TypeAnalyzer extends ASTVisitor {
                     _eclipse_anonymous_scheme = true;
                 }
             }
-        
+
             if (_eclipse_anonymous_scheme) {
                 try {
                     typeName = currentClass.getName() + "$" + typeName;
@@ -1267,12 +1267,12 @@ public class TypeAnalyzer extends ASTVisitor {
                 }
             }
         }
-        
+
         _state.enterClass(currentClass);
 
         // Add the class to be cross-analyzed.
         addCrossAnalyzedType(currentClass.getName());
-        
+
         // A class declaration starts a new scope.
         _openScope();
         _state.setClassScope();
@@ -1280,7 +1280,7 @@ public class TypeAnalyzer extends ASTVisitor {
 
         // Sort body declarations.
         _sortBodyDeclarations(node);
-        
+
         if (_handlers.hasClassHandler()) {
             List handlerList = _handlers.getClassHandlers();
             Iterator handlersIter = handlerList.iterator();
@@ -1324,7 +1324,7 @@ public class TypeAnalyzer extends ASTVisitor {
             try {
                 field = topClass.getDeclaredField(name);
                 return new TypeAndOwner(
-                        Type.createType(field.getType().getName()), 
+                        Type.createType(field.getType().getName()),
                         Type.createType(topClass.getName()));
             } catch (NoSuchFieldException e1) {
             }
@@ -1359,7 +1359,7 @@ public class TypeAnalyzer extends ASTVisitor {
      *  @param c The class from which the method is resolved.
      *  @param name The name of the field.
      *  @param args The types of actural arguments for a call.
-     *  @return The return type of the method if found; otherwise, 
+     *  @return The return type of the method if found; otherwise,
      *   <tt>null</tt>.
      *  @see #_getFieldTypeAndOwner(Class, String)
      *  @see Type#compatibility(Type, ClassLoader)
@@ -1389,10 +1389,10 @@ public class TypeAnalyzer extends ASTVisitor {
                         int compatibility = 0;
                         for (int j = 0; j < formalParams.length; j++)
                             try {
-                                Type formalType = 
+                                Type formalType =
                                     Type.createType(formalParams[j].getName());
-                                int comp = 
-                                    args[j].compatibility(formalType, 
+                                int comp =
+                                    args[j].compatibility(formalType,
                                             _state.getClassLoader());
                                 if (comp == -1) {
                                     compatibility = -1;
@@ -1510,7 +1510,7 @@ public class TypeAnalyzer extends ASTVisitor {
     }
 
     /** Find a variable of field from the current scope.
-     * 
+     *
      *  @param name The name of the variable or field.
      *  @return
      */
@@ -1528,14 +1528,14 @@ public class TypeAnalyzer extends ASTVisitor {
             Type type = (Type)table.get(name);
             Integer hashCode = new Integer(i);
             Class ownerClass = (Class)_classScopeRelation.get(hashCode);
-            Type owner = ownerClass == null ? 
+            Type owner = ownerClass == null ?
                     null : Type.createType(ownerClass.getName());
             return new TypeAndOwner(type, owner);
         }
         else
             return null;
     }
-    
+
     /** Get the simple class name of a class (not including any
      *  "." or "$"). The same function is provided in {@link
      *  Class} class in Java 1.5.
@@ -1547,9 +1547,9 @@ public class TypeAnalyzer extends ASTVisitor {
         String name = c.getName();
         int lastSeparator1 = name.lastIndexOf('.');
         int lastSeparator2 = name.lastIndexOf('$');
-        int lastSeparator = 
+        int lastSeparator =
             lastSeparator1 >= lastSeparator2 ? lastSeparator1 : lastSeparator2;
-            
+
         name = name.substring(lastSeparator + 1);
         String newName = name;
         char ch = newName.charAt(0);
@@ -1575,7 +1575,7 @@ public class TypeAnalyzer extends ASTVisitor {
         int lastDotPos = classFullName.lastIndexOf('.');
         String simpleName = classFullName.substring(lastDotPos + 1);
         try {
-            _importedClasses.put(simpleName, 
+            _importedClasses.put(simpleName,
                     _state.getClassLoader().loadClass(classFullName));
         } catch (ClassNotFoundException e) {
             throw new ASTClassNotFoundException(classFullName);
@@ -1600,7 +1600,7 @@ public class TypeAnalyzer extends ASTVisitor {
         else
             simpleName = partialSimpleName.substring(0, dotPos);
         Class result = null;
-        
+
         if (result == null) {
             Stack previousClasses = _state.getPreviousClasses();
             int previousNumber = previousClasses.size();
@@ -1621,7 +1621,7 @@ public class TypeAnalyzer extends ASTVisitor {
                         }
                     }
                 }
-                
+
                 if (workingClass != null) {
                     if (_getSimpleClassName(workingClass).equals(simpleName)) {
                         result = workingClass;
@@ -1647,7 +1647,7 @@ public class TypeAnalyzer extends ASTVisitor {
         // A result is found for simpleName.
         if (result != null && dotPos >= 0)
             try {
-                result = 
+                result =
                     _state.getClassLoader().loadClass(result.getName() +
                             partialSimpleName.substring(dotPos));
             } catch (ClassNotFoundException e) {
@@ -1657,7 +1657,7 @@ public class TypeAnalyzer extends ASTVisitor {
         // Fall back to simple class loader.
         if (result == null)
             try {
-                result = 
+                result =
                     _state.getClassLoader().searchForClass(partialSimpleName);
             } catch (ClassNotFoundException e) {
             }
@@ -1673,7 +1673,7 @@ public class TypeAnalyzer extends ASTVisitor {
 
     /** Record all the fields of the currently inspected class
      *  in the variable table on the top of the variable stack.
-     *  
+     *
      *  @see #_unrecordFields()
      */
     private void _recordFields() {
@@ -1704,7 +1704,7 @@ public class TypeAnalyzer extends ASTVisitor {
                     String fieldName = fields[j].getName();
                     if (!table.containsKey(fieldName)) {
                         Class fieldType = fields[j].getType();
-                        table.put(fieldName, 
+                        table.put(fieldName,
                                 Type.createType(fieldType.getName()));
                     }
                 }
@@ -1719,7 +1719,7 @@ public class TypeAnalyzer extends ASTVisitor {
 
     /** Resolve a method in the given class with an array of arguments.
     *
-    *  @param owner The class where the method belongs to. If it is null, 
+    *  @param owner The class where the method belongs to. If it is null,
     *   the current class is assumed, and all the enclosing classes are
     *   searched, if necessary.
     *  @param methodName The name of the method.
@@ -1728,7 +1728,7 @@ public class TypeAnalyzer extends ASTVisitor {
     *   if the method cannot be found.
     *  @see #_getMethodType(Class, String, Type[])
     */
-   private TypeAndOwner _resolveMethod(Class owner, String methodName, 
+   private TypeAndOwner _resolveMethod(Class owner, String methodName,
            Type[] arguments) {
        Set handledSet = new HashSet();
        Stack previousClasses = _state.getPreviousClasses();
@@ -1766,7 +1766,7 @@ public class TypeAnalyzer extends ASTVisitor {
      *  @param lastType The type from which the name is resolved. It is used as
      *   the scope for the name. If it is null, the name is resolved in the
      *   current scope.
-     *  @return The type and owner of the name. If the name cannot be found, 
+     *  @return The type and owner of the name. If the name cannot be found,
      *   <tt>null</tt> is returned.
      */
     private TypeAndOwner _resolveName(String name, Type lastType) {
@@ -1786,11 +1786,11 @@ public class TypeAnalyzer extends ASTVisitor {
 
         TypeAndOwner typeAndOwner;
         if (lastType == null)
-            typeAndOwner = _resolveNameFromClass(_state.getCurrentClass(), 
+            typeAndOwner = _resolveNameFromClass(_state.getCurrentClass(),
                     name);
         else
             try {
-                typeAndOwner = 
+                typeAndOwner =
                     _resolveNameFromClass(lastType.
                             toClass(_state.getClassLoader()), name);
             } catch (ClassNotFoundException e) {
@@ -1833,8 +1833,8 @@ public class TypeAnalyzer extends ASTVisitor {
 
         // Try class name resolution.
         try {
-            Class c = 
-                _state.getClassLoader().searchForClass(new StringBuffer(name), 
+            Class c =
+                _state.getClassLoader().searchForClass(new StringBuffer(name),
                         owner);
             return new TypeAndOwner(Type.createType(c.getName()), null);
         } catch (ClassNotFoundException e) {
@@ -1857,8 +1857,8 @@ public class TypeAnalyzer extends ASTVisitor {
                     return 0;
 
                 Class[] classes = new Class[] {
-                        FieldDeclaration.class, 
-                        TypeDeclaration.class, 
+                        FieldDeclaration.class,
+                        TypeDeclaration.class,
                         MethodDeclaration.class,
                         Initializer.class
                 };
@@ -1873,17 +1873,17 @@ public class TypeAnalyzer extends ASTVisitor {
         bodyDeclarations.clear();
         bodyDeclarations.addAll(Arrays.asList(bodyArray));
     }
-    
+
     /** Undo the recording of all the fields of the currently inspected
      *  class.
-     *  
+     *
      *  @see #_recordFields()
      */
     private void _unrecordFields() {
         Integer hashCode = new Integer(_state.getVariableStack().size() - 1);
         _classScopeRelation.remove(hashCode);
     }
-    
+
     //////////////////////////////////////////////////////////////////////////
     //// TypeAndOwner
     /**
@@ -1891,7 +1891,7 @@ public class TypeAnalyzer extends ASTVisitor {
        and a type of its owner (the class that owns that name). The owner may
        be <tt>null</tt> when that name does not belong to any type (e.g., a
        local variable).
-       
+
        @author Thomas Feng
        @version $Id$
        @since Ptolemy II 5.1
@@ -1899,9 +1899,9 @@ public class TypeAnalyzer extends ASTVisitor {
        @Pt.AcceptedRating Red (tfeng)
     */
     private class TypeAndOwner {
-        
+
         /** Construct a type and owner tuple.
-         * 
+         *
          *  @param type The type.
          *  @param owner The owner.
          */
@@ -1909,27 +1909,27 @@ public class TypeAnalyzer extends ASTVisitor {
             _type = type;
             _owner = owner;
         }
-        
+
         /** Get the owner.
-         * 
+         *
          *  @return The owner.
          */
         Type _getOwner() {
             return _owner;
         }
-        
+
         /** Get the type.
-         * 
+         *
          *  @return The type.
          */
         Type _getType() {
             return _type;
         }
-        
+
         /** The type.
          */
         private Type _type;
-        
+
         /** The owner.
          */
         private Type _owner;
@@ -1948,13 +1948,13 @@ public class TypeAnalyzer extends ASTVisitor {
     /** The list of handlers to be called back when traversing the AST.
      */
     private HandlerList _handlers = new HandlerList();
-    
+
     /** A relation between classes and their scopes. Keys are {@link
      *  Integer} objects of the hash code of scopes ({@link Hashtable});
      *  values are {@link Class} objects.
      */
     private Hashtable _classScopeRelation = new Hashtable();
-    
+
     /** Whether the anonymous class naming scheme conforms to eclipse.
      */
     private boolean _eclipse_anonymous_scheme = false;

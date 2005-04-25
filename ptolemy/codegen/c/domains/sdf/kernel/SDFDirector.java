@@ -94,7 +94,7 @@ public class SDFDirector extends Director {
             if (iterationCount <= 0) {
                 code.append("while (true) {\n");
             } else {
-                // Declare iteration outside of the loop to avoid 
+                // Declare iteration outside of the loop to avoid
                 // "error: `for' loop initial declaration used outside C99
                 // mode" with gcc-3.3.3
                 code.append("int iteration = 0;\n"

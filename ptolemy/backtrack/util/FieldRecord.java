@@ -14,11 +14,11 @@ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
 THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
 SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES, 
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
 INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, 
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
@@ -44,7 +44,7 @@ import java.util.Stack;
    <p>
    It is possible the records of a field have more than zero dimension, when the
    field is an array. In that case, records of different dimensions are stored
-   in different tables. E.g., an <tt>int</tt> is considered zero-dimensional, 
+   in different tables. E.g., an <tt>int</tt> is considered zero-dimensional,
    and only one list is used to store its change history. an <tt>int[]</tt> is
    considered one-dimensional (with one possible index). Two lists are used in
    order to record assignments to the array itself, and the assignment to one
@@ -63,7 +63,7 @@ import java.util.Stack;
    iterators. <tt>add</tt> functions cannot be called while accessing any list
    with an iterator, either. If changes are made simultaneously, the effect is
    unpredictable.
- 
+
    @author Thomas Feng
    @version $Id$
    @since Ptolemy II 5.1
@@ -71,27 +71,27 @@ import java.util.Stack;
    @Pt.AcceptedRating Red (tfeng)
 */
 public class FieldRecord {
-    
+
     /** Construct a zero-dimensional (scalar) field record.
      */
     public FieldRecord() {
         this(0);
     }
-    
+
     /** Construct a multi-dimensional field record.
-     * 
+     *
      *  @param dimensions Number of dimensions; can be omitted
      *   when it is 1.
      */
     public FieldRecord(int dimensions) {
         _states.push(new FieldRecordState(dimensions + 1));
     }
-    
+
     /** Add an old value to the records, associated with a timestamp. This
      *  is the same as calling <tt>add(null, value, timestamp)</tt>, where
      *  the value is stored without any indexing (e.g., the field is not
      *  an array, or no indexing is needed for the value).
-     * 
+     *
      *  @param value The old value.
      *  @param timestamp The current timestamp to be associated with the
      *   old value.
@@ -100,7 +100,7 @@ public class FieldRecord {
     public void add(boolean value, long timestamp) {
         _addRecord(0, new Record(null, new Boolean(value), timestamp));
     }
-    
+
     /** Add an old value to the specified indices of the records, and
      *  associate it with a timestamp. The indices is the array of indices
      *  to locate the element in the array. E.g., the following assignment
@@ -110,22 +110,22 @@ public class FieldRecord {
      *  <p>
      *  If the indices array is null, it is assumed that no index is
      *  needed.
-     *  
+     *
      *  @param indices The indices.
      *  @param value The old value.
      *  @param timestamp The current timestamp to be associated with the
      *   old value.
      */
     public void add(int[] indices, boolean value, long timestamp) {
-        _addRecord(indices == null ? 0 : indices.length, 
+        _addRecord(indices == null ? 0 : indices.length,
                 new Record(indices, new Boolean(value), timestamp));
     }
-    
+
     /** Add an old value to the records, associated with a timestamp. This
      *  is the same as calling <tt>add(null, value, timestamp)</tt>, where
      *  the value is stored without any indexing (e.g., the field is not
      *  an array, or no indexing is needed for the value).
-     * 
+     *
      *  @param value The old value.
      *  @param timestamp The current timestamp to be associated with the
      *   old value.
@@ -134,7 +134,7 @@ public class FieldRecord {
     public void add(byte value, long timestamp) {
         _addRecord(0, new Record(null, new Byte(value), timestamp));
     }
-    
+
     /** Add an old value to the specified indices of the records, and
      *  associate it with a timestamp. The indices is the array of indices
      *  to locate the element in the array. E.g., the following assignment
@@ -144,22 +144,22 @@ public class FieldRecord {
      *  <p>
      *  If the indices array is null, it is assumed that no index is
      *  needed.
-     *  
+     *
      *  @param indices The indices.
      *  @param value The old value.
      *  @param timestamp The current timestamp to be associated with the
      *   old value.
      */
     public void add(int[] indices, byte value, long timestamp) {
-        _addRecord(indices == null ? 0 : indices.length, 
+        _addRecord(indices == null ? 0 : indices.length,
                 new Record(indices, new Byte(value), timestamp));
     }
-    
+
     /** Add an old value to the records, associated with a timestamp. This
      *  is the same as calling <tt>add(null, value, timestamp)</tt>, where
      *  the value is stored without any indexing (e.g., the field is not
      *  an array, or no indexing is needed for the value).
-     * 
+     *
      *  @param value The old value.
      *  @param timestamp The current timestamp to be associated with the
      *   old value.
@@ -168,7 +168,7 @@ public class FieldRecord {
     public void add(char value, long timestamp) {
         _addRecord(0, new Record(null, new Character(value), timestamp));
     }
-    
+
     /** Add an old value to the specified indices of the records, and
      *  associate it with a timestamp. The indices is the array of indices
      *  to locate the element in the array. E.g., the following assignment
@@ -178,22 +178,22 @@ public class FieldRecord {
      *  <p>
      *  If the indices array is null, it is assumed that no index is
      *  needed.
-     *  
+     *
      *  @param indices The indices.
      *  @param value The old value.
      *  @param timestamp The current timestamp to be associated with the
      *   old value.
      */
     public void add(int[] indices, char value, long timestamp) {
-        _addRecord(indices == null ? 0 : indices.length, 
+        _addRecord(indices == null ? 0 : indices.length,
                 new Record(indices, new Character(value), timestamp));
     }
-    
+
     /** Add an old value to the records, associated with a timestamp. This
      *  is the same as calling <tt>add(null, value, timestamp)</tt>, where
      *  the value is stored without any indexing (e.g., the field is not
      *  an array, or no indexing is needed for the value).
-     * 
+     *
      *  @param value The old value.
      *  @param timestamp The current timestamp to be associated with the
      *   old value.
@@ -202,7 +202,7 @@ public class FieldRecord {
     public void add(double value, long timestamp) {
         _addRecord(0, new Record(null, new Double(value), timestamp));
     }
-    
+
     /** Add an old value to the specified indices of the records, and
      *  associate it with a timestamp. The indices is the array of indices
      *  to locate the element in the array. E.g., the following assignment
@@ -212,22 +212,22 @@ public class FieldRecord {
      *  <p>
      *  If the indices array is null, it is assumed that no index is
      *  needed.
-     *  
+     *
      *  @param indices The indices.
      *  @param value The old value.
      *  @param timestamp The current timestamp to be associated with the
      *   old value.
      */
     public void add(int[] indices, double value, long timestamp) {
-        _addRecord(indices == null ? 0 : indices.length, 
+        _addRecord(indices == null ? 0 : indices.length,
                 new Record(indices, new Double(value), timestamp));
     }
-    
+
     /** Add an old value to the records, associated with a timestamp. This
      *  is the same as calling <tt>add(null, value, timestamp)</tt>, where
      *  the value is stored without any indexing (e.g., the field is not
      *  an array, or no indexing is needed for the value).
-     * 
+     *
      *  @param value The old value.
      *  @param timestamp The current timestamp to be associated with the
      *   old value.
@@ -236,7 +236,7 @@ public class FieldRecord {
     public void add(float value, long timestamp) {
         _addRecord(0, new Record(null, new Float(value), timestamp));
     }
-    
+
     /** Add an old value to the specified indices of the records, and
      *  associate it with a timestamp. The indices is the array of indices
      *  to locate the element in the array. E.g., the following assignment
@@ -246,22 +246,22 @@ public class FieldRecord {
      *  <p>
      *  If the indices array is null, it is assumed that no index is
      *  needed.
-     *  
+     *
      *  @param indices The indices.
      *  @param value The old value.
      *  @param timestamp The current timestamp to be associated with the
      *   old value.
      */
     public void add(int[] indices, float value, long timestamp) {
-        _addRecord(indices == null ? 0 : indices.length, 
+        _addRecord(indices == null ? 0 : indices.length,
                 new Record(indices, new Float(value), timestamp));
     }
-    
+
     /** Add an old value to the records, associated with a timestamp. This
      *  is the same as calling <tt>add(null, value, timestamp)</tt>, where
      *  the value is stored without any indexing (e.g., the field is not
      *  an array, or no indexing is needed for the value).
-     * 
+     *
      *  @param value The old value.
      *  @param timestamp The current timestamp to be associated with the
      *   old value.
@@ -270,7 +270,7 @@ public class FieldRecord {
     public void add(int value, long timestamp) {
         _addRecord(0, new Record(null, new Integer(value), timestamp));
     }
-    
+
     /** Add an old value to the specified indices of the records, and
      *  associate it with a timestamp. The indices is the array of indices
      *  to locate the element in the array. E.g., the following assignment
@@ -280,22 +280,22 @@ public class FieldRecord {
      *  <p>
      *  If the indices array is null, it is assumed that no index is
      *  needed.
-     *  
+     *
      *  @param indices The indices.
      *  @param value The old value.
      *  @param timestamp The current timestamp to be associated with the
      *   old value.
      */
     public void add(int[] indices, int value, long timestamp) {
-        _addRecord(indices == null ? 0 : indices.length, 
+        _addRecord(indices == null ? 0 : indices.length,
                 new Record(indices, new Integer(value), timestamp));
     }
-    
+
     /** Add an old value to the records, associated with a timestamp. This
      *  is the same as calling <tt>add(null, value, timestamp)</tt>, where
      *  the value is stored without any indexing (e.g., the field is not
      *  an array, or no indexing is needed for the value).
-     * 
+     *
      *  @param value The old value.
      *  @param timestamp The current timestamp to be associated with the
      *   old value.
@@ -304,7 +304,7 @@ public class FieldRecord {
     public void add(long value, long timestamp) {
         _addRecord(0, new Record(null, new Long(value), timestamp));
     }
-    
+
     /** Add an old value to the specified indices of the records, and
      *  associate it with a timestamp. The indices is the array of indices
      *  to locate the element in the array. E.g., the following assignment
@@ -314,22 +314,22 @@ public class FieldRecord {
      *  <p>
      *  If the indices array is null, it is assumed that no index is
      *  needed.
-     *  
+     *
      *  @param indices The indices.
      *  @param value The old value.
      *  @param timestamp The current timestamp to be associated with the
      *   old value.
      */
     public void add(int[] indices, long value, long timestamp) {
-        _addRecord(indices == null ? 0 : indices.length, 
+        _addRecord(indices == null ? 0 : indices.length,
                 new Record(indices, new Long(value), timestamp));
     }
-    
+
     /** Add an old value to the records, associated with a timestamp. This
      *  is the same as calling <tt>add(null, value, timestamp)</tt>, where
      *  the value is stored without any indexing (e.g., the field is not
      *  an array, or no indexing is needed for the value).
-     * 
+     *
      *  @param value The old value.
      *  @param timestamp The current timestamp to be associated with the
      *   old value.
@@ -338,7 +338,7 @@ public class FieldRecord {
     public void add(short value, long timestamp) {
         _addRecord(0, new Record(null, new Short(value), timestamp));
     }
-    
+
     /** Add an old value to the specified indices of the records, and
      *  associate it with a timestamp. The indices is the array of indices
      *  to locate the element in the array. E.g., the following assignment
@@ -348,22 +348,22 @@ public class FieldRecord {
      *  <p>
      *  If the indices array is null, it is assumed that no index is
      *  needed.
-     *  
+     *
      *  @param indices The indices.
      *  @param value The old value.
      *  @param timestamp The current timestamp to be associated with the
      *   old value.
      */
     public void add(int[] indices, short value, long timestamp) {
-        _addRecord(indices == null ? 0 : indices.length, 
+        _addRecord(indices == null ? 0 : indices.length,
                 new Record(indices, new Short(value), timestamp));
     }
-    
+
     /** Add an old value to the records, associated with a timestamp. This
      *  is the same as calling <tt>add(null, value, timestamp)</tt>, where
      *  the value is stored without any indexing (e.g., the field is not
      *  an array, or no indexing is needed for the value).
-     * 
+     *
      *  @param value The old value.
      *  @param timestamp The current timestamp to be associated with the
      *   old value.
@@ -372,7 +372,7 @@ public class FieldRecord {
     public void add(Object value, long timestamp) {
         _addRecord(0, new Record(null, value, timestamp));
     }
-    
+
     /** Add an old value to the specified indices of the records, and
      *  associate it with a timestamp. The indices is the array of indices
      *  to locate the element in the array. E.g., the following assignment
@@ -382,21 +382,21 @@ public class FieldRecord {
      *  <p>
      *  If the indices array is null, it is assumed that no index is
      *  needed.
-     *  
+     *
      *  @param indices The indices.
      *  @param value The old value.
      *  @param timestamp The current timestamp to be associated with the
      *   old value.
      */
     public void add(int[] indices, Object value, long timestamp) {
-        _addRecord(indices == null ? 0 : indices.length, 
+        _addRecord(indices == null ? 0 : indices.length,
                 new Record(indices, value, timestamp));
     }
-    
+
     /** Backup the values in an array, and associate the record with a
-     *  timestamp. This is the same as calling <tt>backup(null, array, 
+     *  timestamp. This is the same as calling <tt>backup(null, array,
      *  timestamp)</tt>.
-     * 
+     *
      *  @param array The array.
      *  @param timestamp The current timestamp to be associated with the
      *   old value.
@@ -404,10 +404,10 @@ public class FieldRecord {
     public void backup(Object array, long timestamp) {
         backup(null, array, timestamp);
     }
-    
+
     /** Backup the values in an array, and associate the record with a
      *  timestamp.
-     * 
+     *
      *  @param indices The indices.
      *  @param array The array.
      *  @param timestamp The current timestamp to be associated with the
@@ -435,28 +435,28 @@ public class FieldRecord {
             oldValue = ((Object[])array).clone();
         else
             return;
-        
-        _addRecord(indices == null ? 0 : indices.length, 
+
+        _addRecord(indices == null ? 0 : indices.length,
                 new Record(indices, oldValue, timestamp, true));
     }
-    
-    /** Return the iterator of all the records. If the field is an array, 
+
+    /** Return the iterator of all the records. If the field is an array,
      *  the records with different indices are stored in separate lists.
-     *  The iterator returned by this function combines all those lists, 
+     *  The iterator returned by this function combines all those lists,
      *  and the records that it returns are sorted with their timestamps.
      *  Records created more recently are returned earlier with {@link
      *  Iterator#next()}.
-     *  
+     *
      *  @return The iterator.
      *  @see #iterator(int)
      */
     public Iterator iterator() {
         return new CombinedIterator();
     }
-    
+
     /** Commit the changes up to the time represented by the timestamp. Records
      *  older than that time are deleted.
-     *  
+     *
      *  @param timestamp The timestamp.
      */
     public void commit(long timestamp) {
@@ -481,11 +481,11 @@ public class FieldRecord {
             topState._setTotalNum(totalNum);
         }
     }
-    
+
     /** Commit the changes in all the <tt>FieldRecord</tt> objects up to the
      *  time represented by the timestamp. Records older than that time are
      *  deleted.
-     *  
+     *
      *  @param records The array of field records.
      *  @param timestamp The timestamp.
      *  @param topStackTimestamp The timestamp taken when the checkpoint object
@@ -501,14 +501,14 @@ public class FieldRecord {
             for (int i = 0; i < records.length; i++)
                 records[i].commitState();
     }
-    
+
     /** Commit the state of this field record, and delete older states in its
      *  stack.
      *  <p>
      *  Old states of field records are kept when a new checkpoint object is
      *  assigned to a monitored object. This function deletes those old states,
      *  but keep only the last (current) state.
-     *  
+     *
      *  @see #popState()
      *  @see #pushState()
      */
@@ -518,7 +518,7 @@ public class FieldRecord {
         if (lastState != null)
             _states.push(lastState);
     }
-    
+
     /** Return the iterator of the records with the specified index.
      *  E.g., for a field <tt>f</tt> of type <tt>int[][]</tt>
      *  (2-dimensional):
@@ -532,7 +532,7 @@ public class FieldRecord {
      *      records saved for assignments to the field with two
      *      indices (e.g., <tt>f[1][2] = 3</tt>).</li>
      *  </ol>
-     *  
+     *
      *  @param index The index.
      *  @return The iterator.
      *  @see #iterator()
@@ -540,7 +540,7 @@ public class FieldRecord {
     public Iterator iterator(int index) {
         return new IndividualIterator(index);
     }
-    
+
     /** Pop out the top state in the states stack, and the state next to it
      *  becomes the top state. The states stack must have at least two states
      *  in it.
@@ -548,10 +548,10 @@ public class FieldRecord {
     public void popState() {
         _states.pop();
     }
-    
+
     /** For each state in the given array, pop out the top state. Used to
      *  simplify the implementation of refactoring.
-     * 
+     *
      *  @param records The array of field records.
      *  @see #popState()
      */
@@ -559,7 +559,7 @@ public class FieldRecord {
         for (int i = 0; i < records.length; i++)
             records[i].popState();
     }
-    
+
     /** Push a new state onto the top of the states stack, and the current top
      *  state becomes the one right below it.
      */
@@ -567,10 +567,10 @@ public class FieldRecord {
         _states.push(
                 new FieldRecordState(_getTopState()._getRecords().length));
     }
-    
+
     /** For each state in the given array, push in a new state. Used to
      *  simplify the implementation of refactoring.
-     * 
+     *
      *  @param records The array of field records.
      *  @see #pushState()
      */
@@ -578,21 +578,21 @@ public class FieldRecord {
         for (int i = 0; i < records.length; i++)
             records[i].pushState();
     }
-    
+
     /** Restore the old value at the timestamp to the field.
      *  <p>
      *  The given timestamp refers to the time when the field still possesses
      *  its old value. If the timestamp is increased at an assignment, the old
      *  value at that timestamp refers to the value of the field before
      *  assignment.
-     * 
+     *
      *  @param current The current value of the field.
      *  @param timestamp The timestamp.
      *  @param trim If <tt>true</tt>, any values newer than the restored value
      *   are deleted from the record.
      *  @return The old value to be assigned back to the field.
      */
-    public boolean restore(boolean current, long timestamp, 
+    public boolean restore(boolean current, long timestamp,
             boolean trim) {
         Iterator recordIter = iterator(0);
         Record record = _findRecord(recordIter, timestamp, trim);
@@ -601,14 +601,14 @@ public class FieldRecord {
         else
             return ((Boolean)record.getValue()).booleanValue();
     }
-    
+
     /** Restore the old value at the timestamp to the field.
      *  <p>
      *  The given timestamp refers to the time when the field still possesses
      *  its old value. If the timestamp is increased at an assignment, the old
      *  value at that timestamp refers to the value of the field before
      *  assignment.
-     * 
+     *
      *  @param current The current value of the field.
      *  @param timestamp The timestamp.
      *  @param trim If <tt>true</tt>, any values newer than the restored value
@@ -623,14 +623,14 @@ public class FieldRecord {
         else
             return ((Byte)record.getValue()).byteValue();
     }
-    
+
     /** Restore the old value at the timestamp to the field.
      *  <p>
      *  The given timestamp refers to the time when the field still possesses
      *  its old value. If the timestamp is increased at an assignment, the old
      *  value at that timestamp refers to the value of the field before
      *  assignment.
-     * 
+     *
      *  @param current The current value of the field.
      *  @param timestamp The timestamp.
      *  @param trim If <tt>true</tt>, any values newer than the restored value
@@ -645,14 +645,14 @@ public class FieldRecord {
         else
             return ((Character)record.getValue()).charValue();
     }
-    
+
     /** Restore the old value at the timestamp to the field.
      *  <p>
      *  The given timestamp refers to the time when the field still possesses
      *  its old value. If the timestamp is increased at an assignment, the old
      *  value at that timestamp refers to the value of the field before
      *  assignment.
-     * 
+     *
      *  @param current The current value of the field.
      *  @param timestamp The timestamp.
      *  @param trim If <tt>true</tt>, any values newer than the restored value
@@ -667,14 +667,14 @@ public class FieldRecord {
         else
             return ((Double)record.getValue()).doubleValue();
     }
-    
+
     /** Restore the old value at the timestamp to the field.
      *  <p>
      *  The given timestamp refers to the time when the field still possesses
      *  its old value. If the timestamp is increased at an assignment, the old
      *  value at that timestamp refers to the value of the field before
      *  assignment.
-     * 
+     *
      *  @param current The current value of the field.
      *  @param timestamp The timestamp.
      *  @param trim If <tt>true</tt>, any values newer than the restored value
@@ -689,14 +689,14 @@ public class FieldRecord {
         else
             return ((Float)record.getValue()).floatValue();
     }
-    
+
     /** Restore the old value at the timestamp to the field.
      *  <p>
      *  The given timestamp refers to the time when the field still possesses
      *  its old value. If the timestamp is increased at an assignment, the old
      *  value at that timestamp refers to the value of the field before
      *  assignment.
-     * 
+     *
      *  @param current The current value of the field.
      *  @param timestamp The timestamp.
      *  @param trim If <tt>true</tt>, any values newer than the restored value
@@ -711,14 +711,14 @@ public class FieldRecord {
         else
             return ((Integer)record.getValue()).intValue();
     }
-    
+
     /** Restore the old value at the timestamp to the field.
      *  <p>
      *  The given timestamp refers to the time when the field still possesses
      *  its old value. If the timestamp is increased at an assignment, the old
      *  value at that timestamp refers to the value of the field before
      *  assignment.
-     * 
+     *
      *  @param current The current value of the field.
      *  @param timestamp The timestamp.
      *  @param trim If <tt>true</tt>, any values newer than the restored value
@@ -733,7 +733,7 @@ public class FieldRecord {
         else
             return ((Long)record.getValue()).longValue();
     }
-    
+
     public Object restore(Object current, long timestamp, boolean trim) {
         int indices = _getTopState()._getRecords().length;
         if (indices == 1) {
@@ -754,14 +754,14 @@ public class FieldRecord {
             return current;
         }
     }
-    
+
     /** Restore the old value at the timestamp to the field.
      *  <p>
      *  The given timestamp refers to the time when the field still possesses
      *  its old value. If the timestamp is increased at an assignment, the old
      *  value at that timestamp refers to the value of the field before
      *  assignment.
-     * 
+     *
      *  @param current The current value of the field.
      *  @param timestamp The timestamp.
      *  @param trim If <tt>true</tt>, any values newer than the restored value
@@ -776,13 +776,13 @@ public class FieldRecord {
         else
             return ((Short)record.getValue()).shortValue();
     }
-    
+
     //////////////////////////////////////////////////////////////////////////
     //// CombinedIterator
     /**
        Combinated iterator of all the dimensions. It returns records in their
        reversed timestamp order.
-       
+
        @author Thomas Feng
        @version $Id$
        @since Ptolemy II 5.1
@@ -793,26 +793,26 @@ public class FieldRecord {
     public class CombinedIterator implements Iterator {
 
         /** Test if there are more elements.
-         * 
+         *
          *  @return <tt>true</tt> if there are more elements.
          */
         public boolean hasNext() {
             return _currentNum < _getTopState()._getTotalNum();
         }
-        
+
         /** Return the next element.
-         * 
+         *
          *  @return The next element.
          */
         public Object next() {
             _currentNum++;
             _lastIndex = _maxTimestampIndex();
             _lastRecord = _currentRecords[_lastIndex];
-            _currentRecords[_lastIndex] = 
+            _currentRecords[_lastIndex] =
                 _currentRecords[_lastIndex]._getNext();
             return _lastRecord._getRecord();
         }
-        
+
         /** Remove the last element returned by {@link #next()}.
          *  This function must be called after {@link #next()}.
          */
@@ -829,7 +829,7 @@ public class FieldRecord {
             _getTopState()._decreaseTotalNum();
             _currentNum--;
         }
-        
+
         /** Construct an iterator.
          */
         CombinedIterator() {
@@ -838,10 +838,10 @@ public class FieldRecord {
             for (int i = 0; i < indices; i++)
                 _currentRecords[i] = _getTopState()._getRecords()[i];
         }
-        
+
         /** Get the index of the maximum timestamp in the current
          *  records.
-         *  
+         *
          *  @return The index.
          */
         private int _maxTimestampIndex() {
@@ -865,31 +865,31 @@ public class FieldRecord {
             }
             return maxIndex;
         }
-        
+
         /** The current record for each dimension. Each current record is the
          *  next record to be returned by {@link #next()} for that index, or
          *  <tt>null</tt> if no more record for that dimension.
          */
         private RecordList[] _currentRecords;
-        
+
         /** The number of records that have been returned by {@link #next()}.
          */
         private int _currentNum = 0;
-        
+
         /** The dimension of the last returned record.
          */
         private int _lastIndex;
-        
+
         /** The last returned record.
          */
         private RecordList _lastRecord;
     }
-    
+
     //////////////////////////////////////////////////////////////////////////
     //// IndividualIterator
     /**
        Iterator of the records for the given dimension.
-       
+
        @author Thomas Feng
        @version $Id$
        @since Ptolemy II 5.1
@@ -898,17 +898,17 @@ public class FieldRecord {
        @see FieldRecord#iterator(int)
     */
     public class IndividualIterator implements Iterator {
-        
+
         /** Test if there are more elements.
-         * 
+         *
          *  @return <tt>true</tt> if there are more elements.
          */
         public boolean hasNext() {
             return _currentList != null;
         }
-        
+
         /** Return the next element.
-         * 
+         *
          *  @return The next element.
          */
         public Object next() {
@@ -916,7 +916,7 @@ public class FieldRecord {
             _currentList = _currentList._getNext();
             return _lastRecord._getRecord();
         }
-        
+
         /** Remove the last element returned by {@link #next()}.
          *  This function must be called after {@link #next()}.
          */
@@ -930,9 +930,9 @@ public class FieldRecord {
                 previous._setNext(_currentList);
             _getTopState()._decreaseTotalNum();
         }
-        
+
         /** Construct an iterator for the given index of dimensions.
-         * 
+         *
          *  @param index The index.
          *  @see FieldRecord#iterator(int)
          */
@@ -940,25 +940,25 @@ public class FieldRecord {
             _index = index;
             _currentList = _getTopState()._getRecords()[index];
         }
-        
+
         /** The index.
          */
         private int _index;
-        
+
         /** The current record for that dimension.
          */
         private RecordList _currentList;
-        
+
         /** The last record returned by {@link #next()}.
          */
         private RecordList _lastRecord;
     }
-    
+
     //////////////////////////////////////////////////////////////////////////
     //// Record
     /**
        Record of an old value.
-       
+
        @author Thomas Feng
        @version $Id$
        @since Ptolemy II 5.1
@@ -966,54 +966,54 @@ public class FieldRecord {
        @Pt.AcceptedRating Red (tfeng)
     */
     public class Record {
-        
+
         /** Get the identifier of this record. Each record for a field has a
          *  unique identifier. Identifiers increase over time. Records for
          *  different fields may have the same identifier.
-         * 
+         *
          *  @return The identifier.
          */
         public int getIdentifier() {
             return _identifier;
         }
-        
+
         /** Get the indices on the left-hand side of the assignment.
-         * 
+         *
          *  @return The indices, or <tt>null</tt> if no index is used.
          */
         public int[] getIndices() {
             return _indices;
         }
-        
+
         /** Get the timestamp taken at the time when the record is
          *  created.
-         * 
+         *
          *  @return The timestamp.
          */
         public long getTimestamp() {
             return _timestamp;
         }
-        
+
         /** Get the old value of this record. If the old value is
          *  of a primitive type, it is boxed with the corresponding
          *  object type.
-         * 
+         *
          *  @return The old value.
          */
         public Object getValue() {
             return _value;
         }
-        
+
         /** Test if this record is a backup of an array.
-         * 
+         *
          *  @return <tt>true</tt>if this record is a backup of an array.
          */
         public boolean isBackup() {
             return _isBackup;
         }
-        
+
         /** Convert this record to a readable string.
-         * 
+         *
          *  @return The string.
          */
         public String toString() {
@@ -1034,10 +1034,10 @@ public class FieldRecord {
             buffer.append(")");
             return buffer.toString();
         }
-        
+
         /** Construct a record and store an old value in it. The record is not
          *  a backup of an array.
-         * 
+         *
          *  @param indices The indices on the left-hand side of the
          *   assignment.
          *  @param value The old value. If the old value is of a
@@ -1052,9 +1052,9 @@ public class FieldRecord {
             _isBackup = false;
             _identifier = _getTopState()._increaseIdentifier();
         }
-        
+
         /** Construct a record and store an old value in it.
-         * 
+         *
          *  @param indices The indices on the left-hand side of the
          *   assignment.
          *  @param value The old value. If the old value is of a
@@ -1063,7 +1063,7 @@ public class FieldRecord {
          *  @param timestamp The current timestamp.
          *  @param isBackup Whether this record is a backup of an array.
          */
-        Record(int[] indices, Object value, long timestamp, 
+        Record(int[] indices, Object value, long timestamp,
                 boolean isBackup) {
             _indices = indices;
             _value = value;
@@ -1071,30 +1071,30 @@ public class FieldRecord {
             _isBackup = isBackup;
             _identifier = _getTopState()._increaseIdentifier();
         }
-        
+
         /** The identifier of this record (unique for each field).
          */
         private int _identifier;
-        
+
         /** The indices.
          */
         private int[] _indices;
-        
+
         /** The timestamp.
          */
         private long _timestamp;
-        
+
         /** The old value.
          */
         private Object _value;
-        
+
         /** Whether this record is a backup of an array.
          */
         private boolean _isBackup;
     }
-    
+
     /** Get the state on the top of the states stack.
-     * 
+     *
      *  @return The state on the top, or <tt>null</tt> if the states stack is
      *   empty.
      */
@@ -1104,12 +1104,12 @@ public class FieldRecord {
         else
             return (FieldRecordState)_states.peek();
     }
-    
+
     //////////////////////////////////////////////////////////////////////////
     //// RecordList
     /**
        Double linked list of records.
-       
+
        @author Thomas Feng
        @version $Id$
        @since Ptolemy II 5.1
@@ -1117,44 +1117,44 @@ public class FieldRecord {
        @Pt.AcceptedRating Red (tfeng)
     */
     protected class RecordList {
-        
+
         /** Construct a record list object with a record stored in it.
-         * 
+         *
          *  @param record
          */
         RecordList(Record record) {
             _record = record;
         }
-        
+
         /** Get the record list next to this one.
-         * 
+         *
          *  @return The next record list.
          *  @see #_getPrevious()
          */
         protected RecordList _getNext() {
             return _next;
         }
-        
+
         /** Get the record list previous to this one.
-         * 
+         *
          *  @return The previous record list.
          *  @see #_getNext()
          */
         protected RecordList _getPrevious() {
             return _previous;
         }
-        
+
         /** Get the record.
-         * 
+         *
          *  @return The record.
          */
         protected Record _getRecord() {
             return _record;
         }
-        
+
         /** Set the record list next to this one. Its previous
          *  record list is also set to this one.
-         * 
+         *
          *  @param next The next record list.
          *  @see #_setPrevious(RecordList)
          */
@@ -1163,10 +1163,10 @@ public class FieldRecord {
             if (next != null)
                 next._previous = this;
         }
-        
+
         /** Set the record list previous to this one. Its
          *  next record list is also set to this one.
-         *  
+         *
          *  @param previous The previous record list.
          *  @see #_setNext(RecordList)
          */
@@ -1175,22 +1175,22 @@ public class FieldRecord {
             if (previous != null)
                 previous._next = this;
         }
-        
+
         /** The record.
          */
         private Record _record;
-        
+
         /** The record list previous to this one.
          */
         private RecordList _previous = null;
-        
+
         /** The record list next to this one.
          */
         private RecordList _next = null;
     }
 
     /** Add a record to the list at the given index.
-     * 
+     *
      *  @param indices The index.
      *  @param record The record.
      */
@@ -1200,47 +1200,47 @@ public class FieldRecord {
         _getTopState()._getRecords()[index] = list;
         _getTopState()._increaseTotalNum();
     }
-    
+
     /** Perform a deep copy from a source array to a destination array. If
      *  those arrays are multi-dimensional, sub-arrays of them are copied
      *  respectively.
-     * 
+     *
      *  @param source The source array.
      *  @param destination The destination array.
-     *  @return <tt>true</tt> if successfully copied; otherwise, 
+     *  @return <tt>true</tt> if successfully copied; otherwise,
      *   <tt>false</tt>.
      */
     protected boolean _deepCopyArray(Object source, Object destination) {
         if (source instanceof boolean[]) {
-            System.arraycopy(source, 0, destination, 0, 
+            System.arraycopy(source, 0, destination, 0,
                     ((boolean[])source).length);
             return true;
         } else if (source instanceof byte[]) {
-            System.arraycopy(source, 0, destination, 0, 
+            System.arraycopy(source, 0, destination, 0,
                     ((byte[])source).length);
             return true;
         } else if (source instanceof char[]) {
-            System.arraycopy(source, 0, destination, 0, 
+            System.arraycopy(source, 0, destination, 0,
                     ((char[])source).length);
             return true;
         } else if (source instanceof double[]) {
-            System.arraycopy(source, 0, destination, 0, 
+            System.arraycopy(source, 0, destination, 0,
                     ((double[])source).length);
             return true;
         } else if (source instanceof float[]) {
-            System.arraycopy(source, 0, destination, 0, 
+            System.arraycopy(source, 0, destination, 0,
                     ((float[])source).length);
             return true;
         } else if (source instanceof int[]) {
-            System.arraycopy(source, 0, destination, 0, 
+            System.arraycopy(source, 0, destination, 0,
                     ((int[])source).length);
             return true;
         } else if (source instanceof long[]) {
-            System.arraycopy(source, 0, destination, 0, 
+            System.arraycopy(source, 0, destination, 0,
                     ((long[])source).length);
             return true;
         } else if (source instanceof short[]) {
-            System.arraycopy(source, 0, destination, 0, 
+            System.arraycopy(source, 0, destination, 0,
                     ((short[])source).length);
             return true;
         } else if (source instanceof Object[]) {
@@ -1253,10 +1253,10 @@ public class FieldRecord {
         } else
             return false;
     }
-    
+
     /** Find the record with the smallest timestamp that is larger than the
      *  given timestamp.
-     * 
+     *
      *  @param recordListIterator The iterator with which the records are
      *   searched.
      *  @param timestamp The timestamp.
@@ -1264,7 +1264,7 @@ public class FieldRecord {
      *   to or larger than the given timestamp are deleted.
      *  @return The record, if found; otherwise, <tt>null</tt>.
      */
-    protected Record _findRecord(Iterator recordListIterator, long timestamp, 
+    protected Record _findRecord(Iterator recordListIterator, long timestamp,
             boolean trim) {
         Record lastRecord = null;
         while (recordListIterator.hasNext()) {
@@ -1278,9 +1278,9 @@ public class FieldRecord {
         }
         return lastRecord;
     }
-    
+
     /** Restore the old value in a record to the field.
-     * 
+     *
      *  @param field The field to be restored.
      *  @param record The record.
      *  @return The field. It may differ from the field in the arguments.
@@ -1300,32 +1300,32 @@ public class FieldRecord {
                 array = ((Object[])array)[indices[i]];
             int lastIndex = indices[length - 1];
             if (array instanceof boolean[])
-                ((boolean[])array)[lastIndex] = 
+                ((boolean[])array)[lastIndex] =
                     ((Boolean)record.getValue()).booleanValue();
             else if (array instanceof byte[])
-                ((byte[])array)[lastIndex] = 
+                ((byte[])array)[lastIndex] =
                     ((Byte)record.getValue()).byteValue();
             else if (array instanceof char[])
-                ((char[])array)[lastIndex] = 
+                ((char[])array)[lastIndex] =
                     ((Character)record.getValue()).charValue();
             else if (array instanceof double[])
-                ((double[])array)[lastIndex] = 
+                ((double[])array)[lastIndex] =
                     ((Double)record.getValue()).doubleValue();
             else if (array instanceof float[])
-                ((float[])array)[lastIndex] = 
+                ((float[])array)[lastIndex] =
                     ((Float)record.getValue()).floatValue();
             else if (array instanceof int[])
-                ((int[])array)[lastIndex] = 
+                ((int[])array)[lastIndex] =
                     ((Integer)record.getValue()).intValue();
             else if (array instanceof long[])
-                ((long[])array)[lastIndex] = 
+                ((long[])array)[lastIndex] =
                     ((Long)record.getValue()).longValue();
             else if (array instanceof short[])
-                ((short[])array)[lastIndex] = 
+                ((short[])array)[lastIndex] =
                     ((Short)record.getValue()).shortValue();
             else {
                 if (record.isBackup())
-                    _deepCopyArray(record.getValue(), 
+                    _deepCopyArray(record.getValue(),
                             ((Object[])array)[lastIndex]);
                 else
                     ((Object[])array)[lastIndex] = record.getValue();
@@ -1333,6 +1333,6 @@ public class FieldRecord {
             return field;
         }
     }
-    
+
     private Stack _states = new Stack();
 }

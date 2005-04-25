@@ -62,7 +62,7 @@ public class MicaLeds extends TypedAtomicActor {
      *   actor with this name.
      */
     public MicaLeds(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException, 
+        throws NameDuplicationException, IllegalActionException,
             java.lang.Exception {
         super(container, name);
 

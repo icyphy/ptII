@@ -342,7 +342,7 @@ public class LevelCrossingDetector extends TypedAtomicActor
             if (Math.abs(_thisTrigger - _level) < _errorTolerance) {
                 if ((_detectFallingCrossing && !inputIsIncreasing)
                                 || (_detectRisingCrossing && inputIsIncreasing)) {
-                    // The current time is close enough to when the event 
+                    // The current time is close enough to when the event
                     // happens.
                     if (_debugging) {
                         _debug("Event is detected at "
@@ -365,7 +365,7 @@ public class LevelCrossingDetector extends TypedAtomicActor
                     _eventNow = false;
                     _eventMissed = true;
                 } else {
-                    // Although level crossing happens, 
+                    // Although level crossing happens,
                     // the direction is not right. Ignore the event.
                     _eventNow = false;
                     _eventMissed = false;
@@ -476,11 +476,11 @@ public class LevelCrossingDetector extends TypedAtomicActor
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    // flag indicating whether this actor detects the level crossing 
+    // flag indicating whether this actor detects the level crossing
     // when the input value is rising.
     private boolean _detectRisingCrossing;
 
-    // flag indicating whether this actor detects the level crossing 
+    // flag indicating whether this actor detects the level crossing
     // when the input value is falling.
     private boolean _detectFallingCrossing;
 

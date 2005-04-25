@@ -67,7 +67,7 @@ public class PlotApplet extends JApplet {
     // FIXME: having the mutex causes applets to hang.
     // The mutex was introduced to Work around problem in Java
     // 1.3.1_08 where if we create 6 instances of a Plot applet then
-    // navigate forward then back - IE and Navigator hang. 
+    // navigate forward then back - IE and Navigator hang.
     // However, since we are now operating inside the Swing Event
     // thread, I think this code is unnecessary.
     //         if (_mutex == null) {

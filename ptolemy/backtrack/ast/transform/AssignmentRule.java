@@ -14,11 +14,11 @@ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
 THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
 SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES, 
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
 INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, 
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
@@ -41,7 +41,7 @@ import ptolemy.backtrack.ast.TypeAnalyzer;
     Assignment transformation rule. This rule specifies the actions to be
     executed before and after {@link TypeAnalyzer} traverses an AST. Those
     actions refactor the AST to add in support for backtracking.
-   
+
     @author Thomas Feng
     @version $Id$
     @since Ptolemy II 5.1
@@ -49,30 +49,30 @@ import ptolemy.backtrack.ast.TypeAnalyzer;
     @Pt.AcceptedRating Red (tfeng)
 */
 public class AssignmentRule extends TransformRule {
-    
+
     /** Execution actions after the AST is traversed. (Not necessary for
      *  this rule.)
-     *  
+     *
      *  @param root The root of the AST.
      */
     public void afterTraverse(TypeAnalyzer analyzer, CompilationUnit root) {
     }
-    
+
     /** Add a handler (@link AssignmentTransformer) to the type analyzer.
      *  The handler refactors the AST while the type analyzer traverses it.
-     * 
+     *
      *  @param analyzer The type analyzer.
      *  @param root The root of the AST.
      */
     public void beforeTraverse(TypeAnalyzer analyzer, CompilationUnit root) {
-        AssignmentTransformer assignmentTransformer = 
+        AssignmentTransformer assignmentTransformer =
             new AssignmentTransformer();
-        ConstructorTransformer constructorTransformer = 
+        ConstructorTransformer constructorTransformer =
             new ConstructorTransformer();
-        
+
         _handlers.add(assignmentTransformer);
         _handlers.add(constructorTransformer);
-        
+
         analyzer.getHandlers().addAliasHandler(assignmentTransformer);
         analyzer.getHandlers().addAssignmentHandler(assignmentTransformer);
         analyzer.getHandlers().addClassHandler(assignmentTransformer);
@@ -85,7 +85,7 @@ public class AssignmentRule extends TransformRule {
         analyzer.getHandlers().addMethodDeclarationHandler(
                 constructorTransformer);
     }
-    
+
     /** The list of handlers used.
      */
     private List _handlers = new LinkedList();

@@ -202,7 +202,7 @@ public class RatingTaglet implements Taglet {
     // For info about running under Java 1.4.0, see
     // http://forum.java.sun.com/thread.jspa?threadID=586411&tstart=15
     // Test test this under Java 1.4.0, try:
-    // make JAVAC=c:/j2sdk1.4.2_06/bin/javac TOOLS_JAR=c:/j2sdk1.4.2_06/lib/tools.jar 
+    // make JAVAC=c:/j2sdk1.4.2_06/bin/javac TOOLS_JAR=c:/j2sdk1.4.2_06/lib/tools.jar
     private static void _register(Map tagletMap, Taglet taglet) {
         final String tagName = taglet.getName();
 

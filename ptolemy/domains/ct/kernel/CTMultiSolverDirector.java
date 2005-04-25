@@ -452,18 +452,18 @@ public class CTMultiSolverDirector extends CTDirector {
      *  @return True if there is an event at current time.
      */
     public boolean hasCurrentEvent() {
-        // NOTE: we need to make this method public because it is also used 
-        // by the CTEmbeddedDirector class, which implements the 
+        // NOTE: we need to make this method public because it is also used
+        // by the CTEmbeddedDirector class, which implements the
         // CTTransparentDirector interface.
         // NOTE: We have to check both the breakpoint table and event
         // generators, because event generators do not post breakpoints to the
         // breakpoint tables directly.
-        // The reason for not posting possible events to the breakpoint table 
-        // is that not all events detected will happen. In fact, if multiple 
+        // The reason for not posting possible events to the breakpoint table
+        // is that not all events detected will happen. In fact, if multiple
         // events are detected during an continuous phase of execution with a
-        // integration step size, only the earliest one is guaranteed to 
-        // happen. The integration step size needs to be reduced 
-        // according to that event. Consequently, the rest of events may not 
+        // integration step size, only the earliest one is guaranteed to
+        // happen. The integration step size needs to be reduced
+        // according to that event. Consequently, the rest of events may not
         // occur in reality.
         // In summary, breakpoints and unpredictable events have to
         // be dinstinguished and treated differently.
@@ -475,7 +475,7 @@ public class CTMultiSolverDirector extends CTDirector {
 
             // Note that we do not have to go over all event generators.
             // As long as one of them has event, we need a discrete phase of
-            // execution. 
+            // execution.
             while (!discreteEventsExists && eventGenerators.hasNext()) {
                 CTEventGenerator eventGenerator = (CTEventGenerator) eventGenerators
                                 .next();
@@ -923,18 +923,18 @@ public class CTMultiSolverDirector extends CTDirector {
         CTSchedule schedule = (CTSchedule) getScheduler().getSchedule();
 
         // The reason to perform the below operation at the first
-        // iteration is to establish the initial conditions for event 
+        // iteration is to establish the initial conditions for event
         // generators. For example, make the _lastTrigger of the level
-        // crossing detector or the variable used by guard expressions 
+        // crossing detector or the variable used by guard expressions
         // available.
         if (_initialStatesNotReady) {
             establishInitialStates();
             _initialStatesNotReady = false;
         }
 
-        // NOTE: If there is some event at the current time, 
-        // perform a discrete phase of execution. 
-        // The event may be generated either by event generators or a 
+        // NOTE: If there is some event at the current time,
+        // perform a discrete phase of execution.
+        // The event may be generated either by event generators or a
         // modal model.
         // NOTE: To support transient states in modal models,
         // which are event generators, modal models need to register the
@@ -956,8 +956,8 @@ public class CTMultiSolverDirector extends CTDirector {
 
             _iteratePurelyDiscreteActors(schedule);
 
-            // Reacts to discrete events. 
-            // If a modal model takes a transition, that transition may 
+            // Reacts to discrete events.
+            // If a modal model takes a transition, that transition may
             // generate a discrete event or change the value of a continuous
             // variable. Therefore, waveform generators and continuous actors
             // need to be iterated to catch the event and the value change.
@@ -984,7 +984,7 @@ public class CTMultiSolverDirector extends CTDirector {
         }
 
         // When we jump out of the previous loop, the _propagateResolvedStates()
-        // method already created the final states at the current model time. 
+        // method already created the final states at the current model time.
         // These states will be used by the immediately following continuous
         // phase of execution to predict the initial states at some future time.
         if (_debugging) {
@@ -1577,7 +1577,7 @@ public class CTMultiSolverDirector extends CTDirector {
         }
 
         // postfire all continuous actors to commit their states.
-        // Note that event generators are postfired. 
+        // Note that event generators are postfired.
         updateContinuousStates();
         postfireEventGenerators();
 

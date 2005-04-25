@@ -75,7 +75,7 @@ public class MultiplyDivide extends CCodeGeneratorHelper {
             }
         }
 
-        // assume numerator of 1, if no input is connected to 
+        // assume numerator of 1, if no input is connected to
         // the multiply ports
         if (actor.multiply.getWidth() == 0) {
             tmpStream.append(" 1.0 / ");

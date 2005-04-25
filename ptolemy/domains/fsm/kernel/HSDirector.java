@@ -250,7 +250,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
                 }
 
                 // If this is the first time this state is visited, check
-                // whether the director for the refinement is a CT (Embedded) 
+                // whether the director for the refinement is a CT (Embedded)
                 // director. If so, establish the initial states for this
                 // refinement.
                 if (!visited) {
@@ -904,7 +904,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
             }
         }
 
-        // execute the commit actions and change the current state 
+        // execute the commit actions and change the current state
         // to the destination state.
         postfireReturns = postfireReturns && super.postfire();
 

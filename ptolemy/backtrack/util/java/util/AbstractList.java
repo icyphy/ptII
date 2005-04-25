@@ -73,7 +73,7 @@ public abstract class AbstractList extends AbstractCollection implements List, R
     public boolean addAll(int index, Collection c) {
         Iterator itr = c.iterator();
         int size = c.size();
-        for (int pos = size; pos > 0; pos--) 
+        for (int pos = size; pos > 0; pos--)
             add(index++, itr.next());
         return size > 0;
     }
@@ -92,7 +92,7 @@ public abstract class AbstractList extends AbstractCollection implements List, R
             return false;
         Iterator itr1 = iterator();
         Iterator itr2 = ((List)o).iterator();
-        while (--size >= 0) 
+        while (--size >= 0)
             if (!equals(itr1.next(), itr2.next()))
                 return false;
         return true;
@@ -102,7 +102,7 @@ public abstract class AbstractList extends AbstractCollection implements List, R
         int hashCode = 1;
         Iterator itr = iterator();
         int pos = size();
-        while (--pos >= 0) 
+        while (--pos >= 0)
             hashCode = 31 * hashCode + hashCode(itr.next());
         return hashCode;
     }
@@ -110,7 +110,7 @@ public abstract class AbstractList extends AbstractCollection implements List, R
     public int indexOf(Object o) {
         ListIterator itr = listIterator();
         int size = size();
-        for (int pos = 0; pos < size; pos++) 
+        for (int pos = 0; pos < size; pos++)
             if (equals(o, itr.next()))
                 return pos;
         return -1;
@@ -329,7 +329,7 @@ public abstract class AbstractList extends AbstractCollection implements List, R
     public int lastIndexOf(Object o) {
         int pos = size();
         ListIterator itr = listIterator(pos);
-        while (--pos >= 0) 
+        while (--pos >= 0)
             if (equals(o, itr.previous()))
                 return pos;
         return -1;

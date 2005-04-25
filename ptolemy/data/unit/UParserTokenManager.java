@@ -151,7 +151,7 @@ public class UParserTokenManager implements UParserConstants {
 
             if (curChar < 64) {
                 long l = 1L << curChar;
-MatchLoop: 
+MatchLoop:
                 do {
                     switch (jjstateSet[--i]) {
                     case 0:
@@ -380,7 +380,7 @@ MatchLoop:
                 } while (i != startsAt);
             } else if (curChar < 128) {
                 long l = 1L << (curChar & 077);
-MatchLoop: 
+MatchLoop:
                 do {
                     switch (jjstateSet[--i]) {
                     case 0:
@@ -483,7 +483,7 @@ MatchLoop:
             } else {
                 int i2 = (curChar & 0xff) >> 6;
                 long l2 = 1L << (curChar & 077);
-MatchLoop: 
+MatchLoop:
                 do {
                     switch (jjstateSet[--i]) {
                     default:
@@ -648,7 +648,7 @@ MatchLoop:
         Token matchedToken;
         int curPos = 0;
 
-EOFLoop: 
+EOFLoop:
         for (;;) {
             try {
                 curChar = input_stream.BeginToken();

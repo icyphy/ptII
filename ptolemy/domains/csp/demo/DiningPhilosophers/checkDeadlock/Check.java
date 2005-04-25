@@ -375,7 +375,7 @@ public class Check {
 
     // compose the simple or the full version of conditional send.
     private InterfaceAutomaton _composeSend(int index)
-        throws CloneNotSupportedException, IllegalActionException, 
+        throws CloneNotSupportedException, IllegalActionException,
             NameDuplicationException {
         InterfaceAutomaton send;
 

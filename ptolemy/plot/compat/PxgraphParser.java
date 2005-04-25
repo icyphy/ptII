@@ -781,7 +781,7 @@ public class PxgraphParser {
 
             int c;
             String partialarg = null;
-out: 
+out:
             while (true) {
                 c = stoken.nextToken();
 

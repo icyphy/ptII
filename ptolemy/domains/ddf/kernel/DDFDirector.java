@@ -451,7 +451,7 @@ public class DDFDirector extends Director {
         super.initialize(actor);
 
         // Since an actor may produce initial tokens during initialization,
-        // the enabling status of those directly connected actors as well 
+        // the enabling status of those directly connected actors as well
         // as itself must be updated.
         _updateConnectedActorsStatus(actor);
 
@@ -552,7 +552,7 @@ public class DDFDirector extends Director {
             return false;
         }
 
-        // The DDF domain is deadlocked if no actor is fired in the last 
+        // The DDF domain is deadlocked if no actor is fired in the last
         // basic iteration. However, if the DDF domain is embedded inside
         // another domain, then we have to check whether transferring
         // more tokens into the DDF domain will break the deadlock.
@@ -565,7 +565,7 @@ public class DDFDirector extends Director {
             while (inputPorts.hasNext()) {
                 IOPort inputPort = (IOPort) inputPorts.next();
                 Receiver[][] deepReceivers = inputPort.deepGetReceivers();
-foundNotSatisfiedReceiver: 
+foundNotSatisfiedReceiver:
                 for (int i = 0; i < deepReceivers.length; i++) {
                     for (int j = 0; j < deepReceivers[i].length; j++) {
                         QueueReceiver deepReceiver = (QueueReceiver) deepReceivers[i][j];
@@ -696,7 +696,7 @@ foundNotSatisfiedReceiver:
         for (int i = 0; i < port.getWidth(); i++) {
             try {
                 // If the parameter tokenConsumptionRate is defined,
-                // _getTokenConsumptionRate(port) returns an array 
+                // _getTokenConsumptionRate(port) returns an array
                 // of non-negative int.
                 if (rate[i] >= 0) {
                     for (int k = 0; k < rate[i]; k++) {
@@ -792,7 +792,7 @@ foundNotSatisfiedReceiver:
         for (int i = 0; i < port.getWidthInside(); i++) {
             try {
                 // If the parameter tokenProductionRate is defined,
-                // _getTokenProductionRate(port) returns an array 
+                // _getTokenProductionRate(port) returns an array
                 // of non-negative int.
                 if (rate[i] >= 0) {
                     for (int k = 0; k < rate[i]; k++) {
@@ -877,8 +877,8 @@ foundNotSatisfiedReceiver:
             _actorsToCheckNumberOfFirings.remove(actor);
         }
 
-        // If the returnValue is NOT_READY, this method returns false. 
-        // Because the token consumption rates of input ports provide only 
+        // If the returnValue is NOT_READY, this method returns false.
+        // Because the token consumption rates of input ports provide only
         // a guideline for firing instead of a contract, we allow an enabled
         // (as determined by the director) actor to return false in its
         // prefire().
@@ -1149,7 +1149,7 @@ foundNotSatisfiedReceiver:
 
         // If DDF domain is inside another domain and the
         // receiver is contained by an opaque output port...
-        // The default production rate is -1 which means all 
+        // The default production rate is -1 which means all
         // tokens in the receiver are transferred to the outside.
         if (port.isOutput()) {
             rateVariable = DFUtilities.getRateVariable(port,
@@ -1190,10 +1190,10 @@ foundNotSatisfiedReceiver:
         if (token instanceof ArrayToken) {
             Token[] tokens = ((ArrayToken) token).arrayValue();
 
-            // Scan the contained receivers of the port to find 
+            // Scan the contained receivers of the port to find
             // out channel index.
             int channelIndex = 0;
-foundChannelIndex: 
+foundChannelIndex:
             for (int m = 0; m < portReceivers.length; m++) {
                 for (int n = 0; n < portReceivers[m].length; n++) {
                     if (receiver == portReceivers[m][n]) {

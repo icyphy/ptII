@@ -1,4 +1,4 @@
-/* 
+/*
 
 Copyright (c) 2005 The Regents of the University of California.
 All rights reserved.
@@ -14,11 +14,11 @@ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
 THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
 SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES, 
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
 INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, 
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
@@ -51,8 +51,8 @@ import ptolemy.backtrack.ast.TypeAnalyzerState;
 //////////////////////////////////////////////////////////////////////////
 //// PackageRule
 /**
- 
- 
+
+
  @author Thomas Feng
  @version $Id$
  @since Ptolemy II 5.1
@@ -60,11 +60,11 @@ import ptolemy.backtrack.ast.TypeAnalyzerState;
  @Pt.AcceptedRating Red (tfeng)
  */
 public class PackageRule extends TransformRule {
-    
+
     public String getPrefix() {
         return _prefix;
     }
-    
+
     public void setPrefix(String prefix) {
         _prefix = prefix;
     }
@@ -86,16 +86,16 @@ public class PackageRule extends TransformRule {
      */
     public void beforeTraverse(TypeAnalyzer analyzer, CompilationUnit root) {
     }
-    
-    private void _addImport(LocalClassLoader loader, Name name, 
+
+    private void _addImport(LocalClassLoader loader, Name name,
             String oldPackageName) {
         CompilationUnit root = (CompilationUnit)name.getRoot();
         AST ast = name.getAST();
         String className = name.toString();
         String fullName = oldPackageName + "." + className;
-        
+
         boolean transform = true;
-        
+
         // Try to load the class within the package.
         try {
             loader.loadClass(fullName);
@@ -104,21 +104,21 @@ public class PackageRule extends TransformRule {
         } catch (NoClassDefFoundError e) {
             transform = false;
         }
-        
+
         // Check conflict.
         if (transform) {
             Iterator classesIter = loader.getImportedClasses().iterator();
             while (classesIter.hasNext()) {
-                LocalClassLoader.ClassImport classImport = 
+                LocalClassLoader.ClassImport classImport =
                     (LocalClassLoader.ClassImport)classesIter.next();
                 if (classImport.getClassName().equals(className)) {
                     transform = false;
                     break;
                 }
             }
-        
+
             if (transform) {
-                ImportDeclaration importDeclaration = 
+                ImportDeclaration importDeclaration =
                     ast.newImportDeclaration();
                 importDeclaration.setName(AbstractTransformer.createName(ast, fullName));
                 root.imports().add(importDeclaration);
@@ -126,7 +126,7 @@ public class PackageRule extends TransformRule {
             }
         }
     }
-    
+
     private Name _addPrefix(Name name, String prefix) {
         AST ast = name.getAST();
         Name newName = null;
@@ -145,17 +145,17 @@ public class PackageRule extends TransformRule {
                 newName = name;
             } else if (name instanceof SimpleName) {
                 name = ast.newQualifiedName(
-                        ast.newSimpleName(part), 
+                        ast.newSimpleName(part),
                         ast.newSimpleName(
                                 ((SimpleName)name).getIdentifier()));
                 newName = name;
             } else {
                 QualifiedName qualifiedName = (QualifiedName)name;
-                SimpleName leftPart = 
+                SimpleName leftPart =
                     (SimpleName)qualifiedName.getQualifier();
                 qualifiedName.setQualifier(
                         ast.newQualifiedName(
-                                ast.newSimpleName(part), 
+                                ast.newSimpleName(part),
                                 ast.newSimpleName(
                                         leftPart.getIdentifier())));
                 name = qualifiedName.getQualifier();
@@ -163,9 +163,9 @@ public class PackageRule extends TransformRule {
         }
         return newName;
     }
-    
+
     private class Renamer extends ASTVisitor {
-        
+
         Renamer(TypeAnalyzerState state) {
             _state = state;
             _crossAnalysisTypes = state.getCrossAnalyzedTypes();
@@ -176,26 +176,26 @@ public class PackageRule extends TransformRule {
                 _crossAnalysisNames.add(className.replace('$', '.'));
             }
         }
-        
+
         public void endVisit(SimpleName node) {
             _handleName(node);
         }
-        
+
         public void endVisit(QualifiedName node) {
             _handleName(node);
         }
-        
+
         private void _handleName(Name node) {
             if (node.getParent() != null) {
                 String id = node.toString();
                 if (id.equals("ptolemy.backtrack.util.java.util.Random")) {
                     int i = 10;
                 }
-                
+
                 Type type = Type.getType(node);
                 Type owner = Type.getOwner(node);
                 String fullName;
-                
+
                 boolean convert = false;
                 boolean addImport = false;
 
@@ -215,13 +215,13 @@ public class PackageRule extends TransformRule {
                     _oldPackageName = node.toString();
                 } else
                     fullName = null;
-                
+
                 if (type != null && owner == null &&
                         node instanceof SimpleName &&
                         !_crossAnalysisTypes.contains(type.getName()) &&
                         _oldPackageName != null)
                     addImport = true;
-                
+
                 if (convert) {
                     Name newName;
                     if (ConstructorTransformer.SPECIAL_TYPE_MAPPING.
@@ -236,15 +236,15 @@ public class PackageRule extends TransformRule {
                         _specialTypes.add(newName.toString());
                     }
                 }
-                
+
                 if (addImport)
                     _addImport(_state.getClassLoader(), node, _oldPackageName);
-                
+
                 if (!convert && !(node.getParent() instanceof Name)) {
                     Iterator specialTypesIter = _specialTypes.iterator();
                     while (specialTypesIter.hasNext()) {
                         String specialType = (String)specialTypesIter.next();
-                        String simpleType = 
+                        String simpleType =
                             specialType.substring(specialType.lastIndexOf(".") + 1);
                         String newId = null;
                         if (id.startsWith(specialType + "."))
@@ -259,15 +259,15 @@ public class PackageRule extends TransformRule {
                 }
             }
         }
-        
+
         private Set _crossAnalysisTypes;
-        
+
         private Set _crossAnalysisNames;
-        
+
         private String _oldPackageName;
-        
+
         private TypeAnalyzerState _state;
-        
+
         private List _specialTypes = new LinkedList();
     }
 

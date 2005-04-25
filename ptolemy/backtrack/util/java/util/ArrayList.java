@@ -101,14 +101,14 @@ public class ArrayList extends AbstractList implements List, RandomAccess, Clone
     }
 
     public int indexOf(Object e) {
-        for (int i = 0; i < size; i++) 
+        for (int i = 0; i < size; i++)
             if (equals(e, data[i]))
                 return i;
         return -1;
     }
 
     public int lastIndexOf(Object e) {
-        for (int i = size - 1; i >= 0; i--) 
+        for (int i = size - 1; i >= 0; i--)
             if (equals(e, data[i]))
                 return i;
         return -1;
@@ -203,7 +203,7 @@ public class ArrayList extends AbstractList implements List, RandomAccess, Clone
         if (size > 0 && index != size)
             System.arraycopy($BACKUP$data(), index, $BACKUP$data(), end, size - index);
         $ASSIGN$SPECIAL$size(0, csize);
-        for (; index < end; index++) 
+        for (; index < end; index++)
             $ASSIGN$data(index, itr.next());
         return csize > 0;
     }
@@ -231,13 +231,13 @@ public class ArrayList extends AbstractList implements List, RandomAccess, Clone
     boolean removeAllInternal(Collection c) {
         int i;
         int j;
-        for (i = 0; i < size; i++) 
+        for (i = 0; i < size; i++)
             if (c.contains(data[i]))
                 break;
         if (i == size)
             return false;
         setModCount(getModCount() + 1);
-        for (j = i++; i < size; i++) 
+        for (j = i++; i < size; i++)
             if (!c.contains(data[i]))
                 $ASSIGN$data(j++, data[i]);
         $ASSIGN$SPECIAL$size(1, i - j);
@@ -247,13 +247,13 @@ public class ArrayList extends AbstractList implements List, RandomAccess, Clone
     boolean retainAllInternal(Collection c) {
         int i;
         int j;
-        for (i = 0; i < size; i++) 
+        for (i = 0; i < size; i++)
             if (!c.contains(data[i]))
                 break;
         if (i == size)
             return false;
         setModCount(getModCount() + 1);
-        for (j = i++; i < size; i++) 
+        for (j = i++; i < size; i++)
             if (c.contains(data[i]))
                 $ASSIGN$data(j++, data[i]);
         $ASSIGN$SPECIAL$size(1, i - j);
@@ -264,7 +264,7 @@ public class ArrayList extends AbstractList implements List, RandomAccess, Clone
         s.defaultWriteObject();
         int len = data.length;
         s.writeInt(len);
-        for (int i = 0; i < size; i++) 
+        for (int i = 0; i < size; i++)
             s.writeObject(data[i]);
     }
 
@@ -272,7 +272,7 @@ public class ArrayList extends AbstractList implements List, RandomAccess, Clone
         s.defaultReadObject();
         int capacity = s.readInt();
         $ASSIGN$data(new Object[capacity]);
-        for (int i = 0; i < size; i++) 
+        for (int i = 0; i < size; i++)
             $ASSIGN$data(i, s.readObject());
     }
 

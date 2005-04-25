@@ -181,17 +181,17 @@ public class Annotations extends Renderer implements VolRendConstants {
 	    imageSwitch[i].setCapability(Switch.ALLOW_SWITCH_WRITE);
 	    imageFile[i] = imageAttr[i].getValue();
 	    if (imageFile[i].length() > 0) {
-		try { 
+		try {
 		    URL imageURL = new URL(
-			    context.getCodeBase().toString() + 
+			    context.getCodeBase().toString() +
 			    imageFile[i]);
-		    imageTexture[i] = 
-			new TextureLoader(imageURL, null).getTexture();  
+		    imageTexture[i] =
+			new TextureLoader(imageURL, null).getTexture();
 		} catch (Exception e) {
-		    System.err.println("Error " + e + 
+		    System.err.println("Error " + e +
 				" loading image:" + imageFile[i] + ".");
 		}
-	    } 
+	    }
 	    imageAppearance[i].setTexture(imageTexture[i]);
 	    if (imageTexture[i] != null) {
 		imageSwitch[i].setWhichChild(Switch.CHILD_ALL);
@@ -291,17 +291,17 @@ public class Annotations extends Renderer implements VolRendConstants {
 	    if (curImageFile != imageFile[i]) {
 		imageFile[i] = curImageFile;
 		if (imageFile[i].length() > 0) {
-		    try { 
+		    try {
 			URL imageURL = new URL(
-				context.getCodeBase().toString() + 
+				context.getCodeBase().toString() +
 				imageFile[i]);
-			imageTexture[i] = 
-			    new TextureLoader(imageURL, null).getTexture();  
+			imageTexture[i] =
+			    new TextureLoader(imageURL, null).getTexture();
 		    } catch (Exception e) {
-			System.err.println("Error " + e + 
+			System.err.println("Error " + e +
 				" loading image:" + imageFile[i] + ".");
 		    }
-		} 
+		}
 		imageAppearance[i].setTexture(imageTexture[i]);
 		if (imageTexture[i] != null) {
 		    imageSwitch[i].setWhichChild(Switch.CHILD_ALL);

@@ -64,7 +64,7 @@ public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl
      *  name is not known by the actor.
      */
     public String getParameter(String paramName)
-        throws ptolemy.actor.corba.util.CorbaIllegalActionException, 
+        throws ptolemy.actor.corba.util.CorbaIllegalActionException,
             ptolemy.actor.corba.util.CorbaUnknownParamException {
         org.omg.CORBA.portable.InputStream _in = null;
 
@@ -138,8 +138,8 @@ public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl
      *   channel index is out of the width of the port.
      */
     public boolean hasData(String portName, short portIndex)
-        throws ptolemy.actor.corba.util.CorbaIllegalActionException, 
-            ptolemy.actor.corba.util.CorbaIndexOutofBoundException, 
+        throws ptolemy.actor.corba.util.CorbaIllegalActionException,
+            ptolemy.actor.corba.util.CorbaIndexOutofBoundException,
             ptolemy.actor.corba.util.CorbaUnknownPortException {
         org.omg.CORBA.portable.InputStream _in = null;
 
@@ -245,7 +245,7 @@ public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl
      *  not known by the actor.
      */
     public void setPortWidth(String portName, short width)
-        throws ptolemy.actor.corba.util.CorbaIllegalActionException, 
+        throws ptolemy.actor.corba.util.CorbaIllegalActionException,
             ptolemy.actor.corba.util.CorbaUnknownPortException {
         org.omg.CORBA.portable.InputStream _in = null;
 
@@ -387,8 +387,8 @@ public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl
      *  is invalid for this parameter.
      */
     public void setParameter(String paramName, String paramValue)
-        throws ptolemy.actor.corba.util.CorbaIllegalActionException, 
-            ptolemy.actor.corba.util.CorbaUnknownParamException, 
+        throws ptolemy.actor.corba.util.CorbaIllegalActionException,
+            ptolemy.actor.corba.util.CorbaUnknownParamException,
             ptolemy.actor.corba.util.CorbaIllegalValueException {
         org.omg.CORBA.portable.InputStream _in = null;
 
@@ -498,9 +498,9 @@ public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl
      */
     public void transferInput(String portName, short portIndex,
         String tokenValue)
-        throws ptolemy.actor.corba.util.CorbaIllegalActionException, 
-            ptolemy.actor.corba.util.CorbaUnknownPortException, 
-            ptolemy.actor.corba.util.CorbaIndexOutofBoundException, 
+        throws ptolemy.actor.corba.util.CorbaIllegalActionException,
+            ptolemy.actor.corba.util.CorbaUnknownPortException,
+            ptolemy.actor.corba.util.CorbaIndexOutofBoundException,
             ptolemy.actor.corba.util.CorbaIllegalValueException {
         org.omg.CORBA.portable.InputStream _in = null;
 
@@ -549,8 +549,8 @@ public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl
      *  number is out of the width of the port.
      */
     public String transferOutput(String portName, short portIndex)
-        throws ptolemy.actor.corba.util.CorbaIllegalActionException, 
-            ptolemy.actor.corba.util.CorbaUnknownPortException, 
+        throws ptolemy.actor.corba.util.CorbaIllegalActionException,
+            ptolemy.actor.corba.util.CorbaUnknownPortException,
             ptolemy.actor.corba.util.CorbaIndexOutofBoundException {
         org.omg.CORBA.portable.InputStream _in = null;
 

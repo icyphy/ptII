@@ -130,7 +130,7 @@ public class HashMap extends AbstractMap implements Map, Cloneable, Serializable
                 throw new NoSuchElementException();
             $ASSIGN$SPECIAL$count(12, count);
             HashEntry e = next;
-            while (e == null) 
+            while (e == null)
                 e = buckets[$ASSIGN$SPECIAL$idx(14, idx)];
             $ASSIGN$next(e.next);
             $ASSIGN$last(e);
@@ -809,7 +809,7 @@ public class HashMap extends AbstractMap implements Map, Cloneable, Serializable
                 int idx = hash(e.getKey());
                 HashEntry dest = buckets[idx];
                 if (dest != null) {
-                    while (dest.next != null) 
+                    while (dest.next != null)
                         dest = dest.next;
                     dest.next = e;
                 } else

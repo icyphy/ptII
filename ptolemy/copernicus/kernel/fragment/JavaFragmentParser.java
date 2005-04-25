@@ -150,7 +150,7 @@ public class JavaFragmentParser implements JavaFragmentParserConstants {
             SootClass refClass;
 
             if (baseValue == null) {
-                // No required baseValue..  If method is not static, then 
+                // No required baseValue..  If method is not static, then
                 // We can use the thisLocal as the baseValue.
                 refClass = _body.getMethod().getDeclaringClass();
 
@@ -210,7 +210,7 @@ public class JavaFragmentParser implements JavaFragmentParserConstants {
             SootClass refClass;
 
             if (baseValue == null) {
-                // No required baseValue..  If method is not static, then 
+                // No required baseValue..  If method is not static, then
                 // We can use the thisLocal as the baseValue.
                 refClass = _body.getMethod().getDeclaringClass();
 
@@ -300,7 +300,7 @@ public class JavaFragmentParser implements JavaFragmentParserConstants {
             ;
         }
 
-label_1: 
+label_1:
         while (true) {
             switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
             case IMPORT:
@@ -315,7 +315,7 @@ label_1:
             ImportDeclaration();
         }
 
-label_2: 
+label_2:
         while (true) {
             switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
             case ABSTRACT:
@@ -389,7 +389,7 @@ label_2:
      * Declaration syntax follows.
      */
     final public void ClassDeclaration() throws ParseException {
-label_3: 
+label_3:
         while (true) {
             switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
             case ABSTRACT:
@@ -457,7 +457,7 @@ label_3:
 
     final public void ClassBody() throws ParseException {
         jj_consume_token(LBRACE);
-label_4: 
+label_4:
         while (true) {
             switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
             case ABSTRACT:
@@ -498,7 +498,7 @@ label_4:
     }
 
     final public void NestedClassDeclaration() throws ParseException {
-label_5: 
+label_5:
         while (true) {
             switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
             case ABSTRACT:
@@ -592,7 +592,7 @@ label_5:
 
     // This production is to determine lookahead only.
     final public void MethodDeclarationLookahead() throws ParseException {
-label_6: 
+label_6:
         while (true) {
             switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
             case ABSTRACT:
@@ -657,7 +657,7 @@ label_6:
     }
 
     final public void InterfaceDeclaration() throws ParseException {
-label_7: 
+label_7:
         while (true) {
             switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
             case ABSTRACT:
@@ -690,7 +690,7 @@ label_7:
     }
 
     final public void NestedInterfaceDeclaration() throws ParseException {
-label_8: 
+label_8:
         while (true) {
             switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
             case ABSTRACT:
@@ -759,7 +759,7 @@ label_8:
         }
 
         jj_consume_token(LBRACE);
-label_9: 
+label_9:
         while (true) {
             switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
             case ABSTRACT:
@@ -836,7 +836,7 @@ label_9:
 
     final public void FieldDeclaration() throws ParseException {
         Type type;
-label_10: 
+label_10:
         while (true) {
             switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
             case FINAL:
@@ -892,7 +892,7 @@ label_10:
 
         type = Type();
         FieldDeclarator(type);
-label_11: 
+label_11:
         while (true) {
             switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
             case COMMA:
@@ -930,7 +930,7 @@ label_11:
         String name;
         jj_consume_token(IDENTIFIER);
         name = token.image;
-label_12: 
+label_12:
         while (true) {
             switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
             case LBRACKET:
@@ -951,7 +951,7 @@ label_12:
     }
 
     final public void MethodDeclaration() throws ParseException {
-label_13: 
+label_13:
         while (true) {
             switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
             case ABSTRACT:
@@ -1043,7 +1043,7 @@ label_13:
     final public void MethodDeclarator() throws ParseException {
         jj_consume_token(IDENTIFIER);
         FormalParameters();
-label_14: 
+label_14:
         while (true) {
             switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
             case LBRACKET:
@@ -1075,7 +1075,7 @@ label_14:
         case SHORT:
         case IDENTIFIER:
             FormalParameter();
-label_15: 
+label_15:
             while (true) {
                 switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
                 case COMMA:
@@ -1118,7 +1118,7 @@ label_15:
         type = Type();
         jj_consume_token(IDENTIFIER);
         name = token.image;
-label_16: 
+label_16:
         while (true) {
             switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
             case LBRACKET:
@@ -1196,7 +1196,7 @@ label_16:
             ;
         }
 
-label_17: 
+label_17:
         while (true) {
             switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
             case BOOLEAN:
@@ -1363,7 +1363,7 @@ label_17:
     final public Type Type() throws ParseException {
         Type type;
         type = NamedType();
-label_18: 
+label_18:
         while (true) {
             switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
             case LBRACKET:
@@ -1523,7 +1523,7 @@ label_18:
         StringBuffer name;
         jj_consume_token(IDENTIFIER);
         name = new StringBuffer(token.image);
-label_19: 
+label_19:
         while (true) {
             if (jj_2_13(2)) {
                 ;
@@ -1546,7 +1546,7 @@ label_19:
 
     final public void NameList() throws ParseException {
         Name();
-label_20: 
+label_20:
         while (true) {
             switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
             case COMMA:
@@ -1680,7 +1680,7 @@ label_20:
         Value value1;
         Value value2;
         value1 = ConditionalAndExpression();
-label_21: 
+label_21:
         while (true) {
             switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
             case SC_OR:
@@ -1709,7 +1709,7 @@ label_21:
         Value value1;
         Value value2;
         value1 = InclusiveOrExpression();
-label_22: 
+label_22:
         while (true) {
             switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
             case SC_AND:
@@ -1738,7 +1738,7 @@ label_22:
         Value value1;
         Value value2;
         value1 = ExclusiveOrExpression();
-label_23: 
+label_23:
         while (true) {
             switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
             case BIT_OR:
@@ -1766,7 +1766,7 @@ label_23:
         Value value1;
         Value value2;
         value1 = AndExpression();
-label_24: 
+label_24:
         while (true) {
             switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
             case XOR:
@@ -1794,7 +1794,7 @@ label_24:
         Value value1;
         Value value2;
         value1 = EqualityExpression();
-label_25: 
+label_25:
         while (true) {
             switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
             case BIT_AND:
@@ -1822,7 +1822,7 @@ label_25:
         Value value1;
         Value value2;
         value1 = InstanceOfExpression();
-label_26: 
+label_26:
         while (true) {
             switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
             case EQ:
@@ -1893,7 +1893,7 @@ label_26:
         Value value1;
         Value value2;
         value1 = ShiftExpression();
-label_27: 
+label_27:
         while (true) {
             switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
             case GT:
@@ -1955,7 +1955,7 @@ label_27:
         Value value1;
         Value value2;
         value1 = AdditiveExpression();
-label_28: 
+label_28:
         while (true) {
             switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
             case LSHIFT:
@@ -2009,7 +2009,7 @@ label_28:
         Value value1;
         Value value2;
         value1 = MultiplicativeExpression();
-label_29: 
+label_29:
         while (true) {
             switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
             case PLUS:
@@ -2055,7 +2055,7 @@ label_29:
         Value value1;
         Value value2;
         value1 = UnaryExpression();
-label_30: 
+label_30:
         while (true) {
             switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
             case STAR:
@@ -2488,7 +2488,7 @@ label_30:
     final public Value PrimaryExpression() throws ParseException {
         Value value;
         value = PrimaryPrefix();
-label_31: 
+label_31:
         while (true) {
             if (jj_2_17(2)) {
                 ;
@@ -2855,7 +2855,7 @@ label_31:
         case PLUS:
         case MINUS:
             Argument(list);
-label_32: 
+label_32:
             while (true) {
                 switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
                 case COMMA:
@@ -2958,7 +2958,7 @@ label_32:
         List sizeValues = new LinkedList();
 
         if (jj_2_23(2)) {
-label_33: 
+label_33:
             while (true) {
                 jj_consume_token(LBRACKET);
                 sizeValue = Expression();
@@ -2972,7 +2972,7 @@ label_33:
                 }
             }
 
-label_34: 
+label_34:
             while (true) {
                 if (jj_2_22(2)) {
                     ;
@@ -3003,7 +3003,7 @@ label_34:
         } else {
             switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
             case LBRACKET:
-label_35: 
+label_35:
                 while (true) {
                     jj_consume_token(LBRACKET);
                     jj_consume_token(RBRACKET);
@@ -3143,7 +3143,7 @@ label_35:
 
     final public void Block() throws ParseException {
         jj_consume_token(LBRACE);
-label_36: 
+label_36:
         while (true) {
             switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
             case BOOLEAN:
@@ -3271,7 +3271,7 @@ label_36:
 
         type = Type();
         VariableDeclarator(type);
-label_37: 
+label_37:
         while (true) {
             switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
             case COMMA:
@@ -3292,7 +3292,7 @@ label_37:
         String name;
         jj_consume_token(IDENTIFIER);
         name = token.image;
-label_38: 
+label_38:
         while (true) {
             switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
             case LBRACKET:
@@ -3406,7 +3406,7 @@ label_38:
         case PLUS:
         case MINUS:
             VariableInitializer(null);
-label_39: 
+label_39:
             while (true) {
                 if (jj_2_27(2)) {
                     ;
@@ -3638,7 +3638,7 @@ label_39:
         expression = Expression();
         jj_consume_token(RPAREN);
         jj_consume_token(LBRACE);
-label_40: 
+label_40:
         while (true) {
             switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
             case CASE:
@@ -3661,7 +3661,7 @@ label_40:
                 Stmt branchTarget = Jimple.v().newNopStmt();
                 _insert(branchTarget);
                 targetList.add(branchTarget);
-label_41: 
+label_41:
                 while (true) {
                     switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
                     case BOOLEAN:
@@ -3721,7 +3721,7 @@ label_41:
                 jj_consume_token(COLON);
                 defaultBranchTarget = Jimple.v().newNopStmt();
                 _insert(defaultBranchTarget);
-label_42: 
+label_42:
                 while (true) {
                     switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
                     case BOOLEAN:
@@ -4063,7 +4063,7 @@ label_42:
 
     final public void StatementExpressionList() throws ParseException {
         StatementExpression();
-label_43: 
+label_43:
         while (true) {
             switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
             case COMMA:
@@ -4200,7 +4200,7 @@ label_43:
 
         Stmt continuation = Jimple.v().newNopStmt();
         _insert(Jimple.v().newGotoStmt(continuation));
-label_44: 
+label_44:
         while (true) {
             switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
             case CATCH:

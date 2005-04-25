@@ -61,7 +61,7 @@ public abstract class AbstractCollection implements Collection, Rollbackable {
         Iterator itr = c.iterator();
         boolean modified = false;
         int pos = c.size();
-        while (--pos >= 0) 
+        while (--pos >= 0)
             modified |= add(itr.next());
         return modified;
     }
@@ -78,7 +78,7 @@ public abstract class AbstractCollection implements Collection, Rollbackable {
     public boolean contains(Object o) {
         Iterator itr = iterator();
         int pos = size();
-        while (--pos >= 0) 
+        while (--pos >= 0)
             if (equals(o, itr.next()))
                 return true;
         return false;
@@ -87,7 +87,7 @@ public abstract class AbstractCollection implements Collection, Rollbackable {
     public boolean containsAll(Collection c) {
         Iterator itr = c.iterator();
         int pos = c.size();
-        while (--pos >= 0) 
+        while (--pos >= 0)
             if (!contains(itr.next()))
                 return false;
         return true;
@@ -100,7 +100,7 @@ public abstract class AbstractCollection implements Collection, Rollbackable {
     public boolean remove(Object o) {
         Iterator itr = iterator();
         int pos = size();
-        while (--pos >= 0) 
+        while (--pos >= 0)
             if (equals(o, itr.next())) {
                 itr.remove();
                 return true;
@@ -116,7 +116,7 @@ public abstract class AbstractCollection implements Collection, Rollbackable {
         Iterator itr = iterator();
         boolean modified = false;
         int pos = size();
-        while (--pos >= 0) 
+        while (--pos >= 0)
             if (c.contains(itr.next())) {
                 itr.remove();
                 modified = true;
@@ -132,7 +132,7 @@ public abstract class AbstractCollection implements Collection, Rollbackable {
         Iterator itr = iterator();
         boolean modified = false;
         int pos = size();
-        while (--pos >= 0) 
+        while (--pos >= 0)
             if (!c.contains(itr.next())) {
                 itr.remove();
                 modified = true;
@@ -144,7 +144,7 @@ public abstract class AbstractCollection implements Collection, Rollbackable {
         Iterator itr = iterator();
         int size = size();
         Object[] a = new Object[size];
-        for (int pos = 0; pos < size; pos++) 
+        for (int pos = 0; pos < size; pos++)
             a[pos] = itr.next();
         return a;
     }
@@ -156,7 +156,7 @@ public abstract class AbstractCollection implements Collection, Rollbackable {
         else if (a.length > size)
             a[size] = null;
         Iterator itr = iterator();
-        for (int pos = 0; pos < size; pos++) 
+        for (int pos = 0; pos < size; pos++)
             a[pos] = itr.next();
         return a;
     }

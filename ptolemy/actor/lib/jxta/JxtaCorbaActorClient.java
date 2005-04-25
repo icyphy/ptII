@@ -428,7 +428,7 @@ public class JxtaCorbaActorClient extends TypedAtomicActor
      * @see net.jxta.resolver.QueryHandler#processQuery(ResolverQueryMsg)
      */
     public ResolverResponseMsg processQuery(ResolverQueryMsg query)
-        throws NoResponseException, ResendQueryException, DiscardQueryException, 
+        throws NoResponseException, ResendQueryException, DiscardQueryException,
             IOException {
         //do nothing.
         return null;

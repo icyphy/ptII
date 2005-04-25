@@ -162,7 +162,7 @@ public class Hashtable extends Dictionary implements Map, Cloneable, Serializabl
                 throw new NoSuchElementException();
             setCount(getCount() - 1);
             HashEntry e = getNext();
-            while (e == null) 
+            while (e == null)
                 e = buckets[setIdx(getIdx() - 1)];
             setNext(e.getNext());
             setLast(e);
@@ -346,7 +346,7 @@ public class Hashtable extends Dictionary implements Map, Cloneable, Serializabl
                 throw new NoSuchElementException("Hashtable Enumerator");
             setCount(getCount() - 1);
             HashEntry e = getNext();
-            while (e == null) 
+            while (e == null)
                 e = buckets[setIdx(getIdx() - 1)];
             setNext(e.getNext());
             return type == VALUES?e.getValue():e.getKey();
@@ -881,7 +881,7 @@ public class Hashtable extends Dictionary implements Map, Cloneable, Serializabl
     public synchronized int hashCode() {
         Iterator itr = new HashIterator(ENTRIES);
         int hashcode = 0;
-        for (int pos = getSize(); pos > 0; pos--) 
+        for (int pos = getSize(); pos > 0; pos--)
             hashcode += itr.next().hashCode();
         return hashcode;
     }
@@ -932,7 +932,7 @@ public class Hashtable extends Dictionary implements Map, Cloneable, Serializabl
                 int idx = hash(e.getKey());
                 HashEntry dest = buckets[idx];
                 if (dest != null) {
-                    while (dest.getNext() != null) 
+                    while (dest.getNext() != null)
                         dest = dest.getNext();
                     dest.setNext(e);
                 } else {
@@ -961,7 +961,7 @@ public class Hashtable extends Dictionary implements Map, Cloneable, Serializabl
         s.defaultReadObject();
         $ASSIGN$buckets(new HashEntry[s.readInt()]);
         int len = s.readInt();
-        while (--len >= 0) 
+        while (--len >= 0)
             put(s.readObject(), s.readObject());
     }
 

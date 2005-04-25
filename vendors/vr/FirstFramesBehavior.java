@@ -33,8 +33,8 @@ package vendors.vr;
 import javax.media.j3d.*;
 import java.util.Enumeration;
 
-/** 
- * A Behavior waits for the initial frame to be displayed, calls 
+/**
+ * A Behavior waits for the initial frame to be displayed, calls
  * VolRend.eyePtChanged() and stops running
  */
 
@@ -47,7 +47,7 @@ public class FirstFramesBehavior extends Behavior {
 	this.volRend = volRend;
     }
 
-    WakeupCriterion criterion[] = { 
+    WakeupCriterion criterion[] = {
     		new WakeupOnElapsedFrames(0),
 		};
 
@@ -59,7 +59,7 @@ public class FirstFramesBehavior extends Behavior {
 
     public void processStimulus( Enumeration criteria ) {
 	//System.out.println("frame");
-	volRend.eyePtChanged();   
+	volRend.eyePtChanged();
 
 	// don't wakeup after the first couple frame
 	if (numFrames++ < 5) {

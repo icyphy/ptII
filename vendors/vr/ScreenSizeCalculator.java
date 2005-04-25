@@ -113,7 +113,7 @@ public class ScreenSizeCalculator {
 
     double quadScreenSize(double[] coords) {
 	double area = 0.0f;
-	//System.out.println("wc pts = \n\t(" + 
+	//System.out.println("wc pts = \n\t(" +
 	//	coords[0] + ", " + coords[1] + ", " + coords[2] + ") (" +
 	//	coords[3] + ", " + coords[4] + ", " + coords[5] + ")\n\t(" +
 	//	coords[6] + ", " + coords[7] + ", " + coords[8] + ") (" +

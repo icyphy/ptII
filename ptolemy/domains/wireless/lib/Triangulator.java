@@ -389,7 +389,7 @@ public class Triangulator extends TypedAtomicActor {
         double[] c = {
                 (((t1 * t1 * v2) - (t2 * t2 * v2) + (x2 * x2)) - (x1 * x1)
                 + (y2 * y2)) - (y1 * y1),
-                
+
                 (((t1 * t1 * v2) - (t3 * t3 * v2) + (x3 * x3)) - (x1 * x1)
                 + (y3 * y3)) - (y1 * y1)
             };

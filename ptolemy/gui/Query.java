@@ -713,7 +713,7 @@ public class Query extends JPanel {
      *   need not be declared explicitly.
      */
     public double doubleValue(String name)
-        throws IllegalArgumentException, NoSuchElementException, 
+        throws IllegalArgumentException, NoSuchElementException,
             NumberFormatException {
         return getDoubleValue(name);
     }
@@ -794,7 +794,7 @@ public class Query extends JPanel {
      *   need not be declared explicitly.
      */
     public double getDoubleValue(String name)
-        throws IllegalArgumentException, NoSuchElementException, 
+        throws IllegalArgumentException, NoSuchElementException,
             NumberFormatException {
         Object result = _entries.get(name);
 
@@ -835,7 +835,7 @@ public class Query extends JPanel {
      *   need not be declared explicitly.
      */
     public int getIntValue(String name)
-        throws IllegalArgumentException, NoSuchElementException, 
+        throws IllegalArgumentException, NoSuchElementException,
             NumberFormatException {
         Object result = _entries.get(name);
 
@@ -1007,7 +1007,7 @@ public class Query extends JPanel {
      *   need not be declared explicitly.
      */
     public int intValue(String name)
-        throws IllegalArgumentException, NoSuchElementException, 
+        throws IllegalArgumentException, NoSuchElementException,
             NumberFormatException {
         return getIntValue(name);
     }

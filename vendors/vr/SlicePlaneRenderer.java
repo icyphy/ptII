@@ -45,7 +45,7 @@ public abstract class SlicePlaneRenderer extends Renderer {
     Shape3D		borderShape;
 
     int			numSlicePts;
-    Point3d[]		slicePts = new Point3d[7]; 
+    Point3d[]		slicePts = new Point3d[7];
     int[] 		count = new int[1];
 
     BranchGroup 	root;
@@ -101,7 +101,7 @@ public abstract class SlicePlaneRenderer extends Renderer {
 
     /**
      * Intersect the VOI "cube" and a slice plane.  Put the resulting points
-     * into slicePts[] 
+     * into slicePts[]
      */
     void calcSlicePts(Vector4d plane) {
 	int 		numOutEdges = 0;
@@ -109,7 +109,7 @@ public abstract class SlicePlaneRenderer extends Renderer {
 	Point3d		wantVtx;
 	Point3d[]	points = volume.voiPts;
 	double[]	ptDist = new double[8]; // dist of pt from plane
-	int[][] 	edges = { // edges of the cube 
+	int[][] 	edges = { // edges of the cube
 			    /* 0  */{ 0, 1},
 			    /* 1  */{ 1, 2},
 			    /* 2  */{ 2, 3},
@@ -193,7 +193,7 @@ public abstract class SlicePlaneRenderer extends Renderer {
 		   }
 	       }
 	    }
-	} 
+	}
 
 	numSlicePts = numOutEdges;
 	for (int i = 0; i < numOutEdges; i++ ) {
@@ -281,7 +281,7 @@ public abstract class SlicePlaneRenderer extends Renderer {
     /**
      * Returns the number of pixels drawn in the current display
      */
-    public double calcRenderSize(ScreenSizeCalculator screenSize, 
+    public double calcRenderSize(ScreenSizeCalculator screenSize,
 		Canvas3D canvas) {
 	int	rSize = 0;
 	double  area = 0.0;

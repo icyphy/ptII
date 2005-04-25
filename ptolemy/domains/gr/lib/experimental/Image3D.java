@@ -202,7 +202,7 @@ public class Image3D extends GRPickActor {
     ////                         private variables                 ////
     private Shape3D _containedNode;
     private static final float[] verts = {
-            
+
         // front face
         1.0f, -1.0f, 1.0f, 1.0f, 1.0f, 1.0f, -1.0f, 1.0f, 1.0f, -1.0f, -1.0f,
         1.0f

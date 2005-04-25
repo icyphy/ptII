@@ -355,7 +355,7 @@ public class BrowserLauncher {
             process = Runtime.getRuntime().exec(new String[] {
                         (String) browser,
                         NETSCAPE_REMOTE_PARAMETER,
-                        
+
                     NETSCAPE_OPEN_PARAMETER_START + url
                         + NETSCAPE_OPEN_PARAMETER_END
                     });

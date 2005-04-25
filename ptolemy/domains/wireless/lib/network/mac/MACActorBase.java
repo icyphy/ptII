@@ -491,7 +491,7 @@ public class MACActorBase extends NetworkActorBase {
             "pwrMgt",
             "moreData",
             "wepBit",
-            
+
             //"orderBit", "FCS", "durId", "RA","Length"};
             "orderBit",
             "FCS",
@@ -510,7 +510,7 @@ public class MACActorBase extends NetworkActorBase {
             "pwrMgt",
             "moreData",
             "wepBit",
-            
+
             //     "orderBit", "FCS", "durId", "RA", "TA","Length"};
             "orderBit",
             "FCS",

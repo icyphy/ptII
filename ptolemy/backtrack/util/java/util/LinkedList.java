@@ -462,11 +462,11 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
         Entry e;
         if (n < size / 2) {
             e = first;
-            while (n-- > 0) 
+            while (n-- > 0)
                 e = e.getNext();
         } else {
             e = last;
-            while (++n < size) 
+            while (++n < size)
                 e = e.getPrevious();
         }
         return e;
@@ -772,7 +772,7 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
     private void readObject(ObjectInputStream s) throws IOException, ClassNotFoundException  {
         s.defaultReadObject();
         int i = s.readInt();
-        while (--i >= 0) 
+        while (--i >= 0)
             addLastEntry(new Entry(s.readObject()));
     }
 

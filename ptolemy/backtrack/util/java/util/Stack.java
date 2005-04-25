@@ -72,7 +72,7 @@ public class Stack extends Vector implements Rollbackable {
 
     public synchronized int search(Object o) {
         int i = getElementCount();
-        while (--i >= 0) 
+        while (--i >= 0)
             if (equals(o, getElementData()[i]))
                 return getElementCount() - i;
         return -1;

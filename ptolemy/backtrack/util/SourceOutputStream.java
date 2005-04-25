@@ -1,4 +1,4 @@
-/* 
+/*
 
 Copyright (c) 2005 The Regents of the University of California.
 All rights reserved.
@@ -14,11 +14,11 @@ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
 THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
 SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES, 
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
 INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, 
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
@@ -36,8 +36,8 @@ import java.io.IOException;
 //////////////////////////////////////////////////////////////////////////
 //// SourceOutputStream
 /**
- 
- 
+
+
  @author Thomas Feng
  @version $Id$
  @since Ptolemy II 5.1
@@ -45,8 +45,8 @@ import java.io.IOException;
  @Pt.AcceptedRating Red (tfeng)
  */
 public class SourceOutputStream extends FileOutputStream {
-    
-    public static SourceOutputStream getStream(String fileName, 
+
+    public static SourceOutputStream getStream(String fileName,
             boolean overwrite)
     		throws IOException {
         File file = new File(fileName);
@@ -60,19 +60,19 @@ public class SourceOutputStream extends FileOutputStream {
         else
             return new SourceOutputStream(fileName);
     }
-    
-    public static SourceOutputStream getStream(String root, String packageName, 
+
+    public static SourceOutputStream getStream(String root, String packageName,
             String fileName, boolean overwrite)
     		throws FileNotFoundException, IOException {
         if (packageName != null && packageName.length() > 0)
             root = root +
                     File.separator +
                     packageName.replace('.', File.separatorChar);
-        
+
         File rootFile = new File(root);
         if (!rootFile.exists())
             rootFile.mkdirs();
-        
+
         String fullName = root + File.separator + fileName;
         if (!overwrite && new File(fullName).exists())
             throw new IOException("File \"" + fullName + "\" already exists.");

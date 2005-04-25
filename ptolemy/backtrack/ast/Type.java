@@ -14,11 +14,11 @@ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
 THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
 SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES, 
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
 INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, 
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
@@ -45,8 +45,8 @@ import org.eclipse.jdt.core.dom.ASTNode;
    in a Java program. This class represents the type objects to be assigned
    to those expressions.
    <p>
-   This class represents primitive Java types (<tt>boolean</tt>, <tt>byte</tt>, 
-   <tt>char</tt>, <tt>double</tt>, <tt>float</tt>, <tt>int</tt>, <tt>long</tt>, 
+   This class represents primitive Java types (<tt>boolean</tt>, <tt>byte</tt>,
+   <tt>char</tt>, <tt>double</tt>, <tt>float</tt>, <tt>int</tt>, <tt>long</tt>,
    and <tt>short</tt>) as well as object types (including arrays). It
    treats <tt>null</tt> and </tt>void</tt> (the "return value" of a
    <tt>void</tt> method) as </tt>null</tt> type, which is also considered as
@@ -64,7 +64,7 @@ import org.eclipse.jdt.core.dom.ASTNode;
    expression or sub-expression in the Java program, it creates a type and
    associates it with that node with {@link #setType(ASTNode, Type)}. This
    information can be extracted with {@link #getType(ASTNode)}.
- 
+
    @author Thomas Feng
    @version $Id$
    @since Ptolemy II 5.1
@@ -312,7 +312,7 @@ public class Type {
         int dimensions = dimensions(type);
         for (int i = 0; i < dimensions; i++)
             buffer.append("[]");
-        
+
         return buffer.toString();
     }
 
@@ -320,7 +320,7 @@ public class Type {
      *  expression. The following rules are followed:
      *  <ol>
      *    <li>
-     *    <li>Two object types cannot be computed in an expression, 
+     *    <li>Two object types cannot be computed in an expression,
      *      unless one of them is {@link String}, in which case the
      *      result type is {@link String}, or they are the same
      *      type.
@@ -349,10 +349,10 @@ public class Type {
             else if (type2.getName().equals("java.lang.String"))
                 return type2;
             else if (type1.isPrimitive() && type2.isPrimitive())
-                if (type1.compatibility(type2, 
+                if (type1.compatibility(type2,
                         ClassLoader.getSystemClassLoader()) >= 0)
                     return type2;
-                else if (type2.compatibility(type1, 
+                else if (type2.compatibility(type1,
                         ClassLoader.getSystemClassLoader()) >= 0)
                     return type1;
         } catch (ClassNotFoundException e) {
@@ -361,7 +361,7 @@ public class Type {
     }
 
     /** Get the name of the element type of a type that may be array.
-     * 
+     *
      *  @param type The name of the type.
      *  @return The name of the element type.
      */
@@ -370,14 +370,14 @@ public class Type {
         int length = buffer.length();
         int dimensions = 0;
         boolean isPrimitive = true;
-        
+
         // Count dimensions.
         while (length > 0 && buffer.charAt(0) == '[') {
             buffer.deleteCharAt(0);
             length--;
             dimensions++;
         }
-        
+
         // Special treatment for object arrays.
         if (dimensions > 0 && buffer.charAt(length - 1) == ';') {
             buffer.deleteCharAt(length - 1);
@@ -385,7 +385,7 @@ public class Type {
             length -= 2;
             isPrimitive = false;
         }
-        
+
         // Resolve primitive types.
         String elementType = buffer.toString();
         if (isPrimitive && dimensions > 0) {
@@ -398,10 +398,10 @@ public class Type {
                 }
             }
         }
-        
+
         return elementType;
     }
-    
+
     /** Get the name of this type.
      *
      *  @return The name.
@@ -409,11 +409,11 @@ public class Type {
     public String getName() {
         return _fullName;
     }
-    
+
     /** Get the owner associated with an AST node, if it is resolved
      *  as a field or method. The owner is the type that the field or
      *  method belongs to.
-     *  
+     *
      *  @param node The node with an owner associated with it.
      *  @return The owner. <tt>null</tt> if the node is not a class
      *   member or there is no owner associated with it.
@@ -442,8 +442,8 @@ public class Type {
         return _fullName.indexOf("[") >= 0;
     }
 
-    /** Test if this type is primitive (<tt>boolean</tt>, 
-     *  <tt>byte</tt>, <tt>char</tt>, <tt>double</tt>, <tt>float</tt>, 
+    /** Test if this type is primitive (<tt>boolean</tt>,
+     *  <tt>byte</tt>, <tt>char</tt>, <tt>double</tt>, <tt>float</tt>,
      *  <tt>int</tt>, <tt>long</tt>, <tt>short</tt>, and
      *  <tt>null</tt>).
      *
@@ -455,9 +455,9 @@ public class Type {
     }
 
     /** Test if the type given by the name is primitive. Name of
-     *  primitive types include ("<tt>boolean</tt>", 
-     *  "<tt>byte</tt>", "<tt>char</tt>", "<tt>double</tt>", "<tt>float</tt>", 
-     *  "<tt>int</tt>", "<tt>long</tt>", "<tt>short</tt>", "<tt>null</tt>", 
+     *  primitive types include ("<tt>boolean</tt>",
+     *  "<tt>byte</tt>", "<tt>char</tt>", "<tt>double</tt>", "<tt>float</tt>",
+     *  "<tt>int</tt>", "<tt>long</tt>", "<tt>short</tt>", "<tt>null</tt>",
      *  and "<tt>void</tt>").
      *
      *  @param typeName The name of the type.
@@ -523,7 +523,7 @@ public class Type {
     /** Set the owner associated with an AST node, if it is resolved
      *  as a field or method. The owner is the type that the field or
      *  method belongs to.
-     *  
+     *
      *  @param node The node with an owner associated with it.
      *  @param owner The type of the owner.
      *  @see #setOwner(ASTNode, Type)
@@ -580,7 +580,7 @@ public class Type {
                 if (elementType.equals("null"))
                     return "null";
                 else
-                    buffer.replace(dims, length, 
+                    buffer.replace(dims, length,
                             (String)PRIMITIVE_ARRAY_TYPES.get(elementType));
             } else {
                 buffer.insert(dims, 'L');
@@ -713,7 +713,7 @@ public class Type {
      *
      *  @param primitiveNum The integer identifier of primitive types;
      *   -1 if the type to be obtained is not primitive.
-     *  @param fullName The full name of the type. If it is an array, 
+     *  @param fullName The full name of the type. If it is an array,
      *   it must be converted to the run-time representation (with
      *   leading "[").
      */
@@ -728,7 +728,7 @@ public class Type {
      *  primitive, even if the full name is a primitive name by
      *  mistake.
      *
-     *  @param fullName The full name of the type. If it is an array, 
+     *  @param fullName The full name of the type. If it is an array,
      *   it must be converted to the run-time representation (with
      *   leading "[").
      */

@@ -42,13 +42,13 @@ import javax.vecmath.*;
  * com.sun.j3d.utils.behaviors.mouse.MouseRotate class which filters the
  * mouse events to only process the last mouse event.
  *
- * MouseRotate is a Java3D behavior object that lets users control the 
+ * MouseRotate is a Java3D behavior object that lets users control the
  * rotation of an object via a mouse.
  * <p>
- * To use this utility, first create a transform group that this 
+ * To use this utility, first create a transform group that this
  * rotate behavior will operate on. Then,
  *<blockquote><pre>
- * 
+ *
  *   MouseRotate behavior = new MouseRotate();
  *   behavior.setTransformGroup(objTrans);
  *   objTrans.addChild(behavior);
@@ -111,7 +111,7 @@ public class MouseRotate extends MouseBehavior {
   public double getXFactor() {
     return x_factor;
   }
-  
+
   /**
    * Return the y-axis movement multipler.
    **/
@@ -119,16 +119,16 @@ public class MouseRotate extends MouseBehavior {
   public double getYFactor() {
     return y_factor;
   }
-  
+
   /**
    * Set the x-axis amd y-axis movement multipler with factor.
    **/
 
   public void setFactor( double factor) {
     x_factor = y_factor = factor;
-    
+
   }
-  
+
   /**
    * Set the x-axis amd y-axis movement multipler with xFactor and yFactor
    * respectively.
@@ -136,7 +136,7 @@ public class MouseRotate extends MouseBehavior {
 
   public void setFactor( double xFactor, double yFactor) {
     x_factor = xFactor;
-    y_factor = yFactor;    
+    y_factor = yFactor;
   }
 
   public void processStimulus (Enumeration criteria) {
@@ -153,15 +153,15 @@ public class MouseRotate extends MouseBehavior {
 	    // Only process the last drag event to avoid queuing up
 	    // lots of events when the per-frame compute time is high
 	    MouseEvent lastDragEvent = null;
-            for (int i=0; i<event.length; i++) { 
+            for (int i=0; i<event.length; i++) {
 	      processMouseEvent((MouseEvent) event[i]);
 
 	      if (((buttonPress)&&((flags & MANUAL_WAKEUP) == 0)) ||
 		  ((wakeUp)&&((flags & MANUAL_WAKEUP) != 0))){
-		
+
 		id = event[i].getID();
-		if ((id == MouseEvent.MOUSE_DRAGGED) && 
-		    !((MouseEvent)event[i]).isMetaDown() && 
+		if ((id == MouseEvent.MOUSE_DRAGGED) &&
+		    !((MouseEvent)event[i]).isMetaDown() &&
 		    !((MouseEvent)event[i]).isAltDown()){
 		    lastDragEvent = (MouseEvent) event[i];
 		} else if (id == MouseEvent.MOUSE_PRESSED) {
@@ -171,29 +171,29 @@ public class MouseRotate extends MouseBehavior {
 	      }
 	    }
 	    if (lastDragEvent != null) {
-		  
+
                   x = lastDragEvent.getX();
                   y = lastDragEvent.getY();
 
                   dx = x - x_last;
                   dy = y - y_last;
 
-		  if (!reset){	    
+		  if (!reset){
 		    x_angle = dy * y_factor;
 		    y_angle = dx * x_factor;
-		    
+
 		    transformX.rotX(x_angle);
 		    transformY.rotY(y_angle);
-		    
+
 		    transformGroup.getTransform(currXform);
-		    
+
 		    //Vector3d translation = new Vector3d();
 		    //Matrix3f rotation = new Matrix3f();
 		    Matrix4d mat = new Matrix4d();
-		    
+
 		    // Remember old matrix
 		    currXform.get(mat);
-		    
+
 		    // Translate to origin
 		    currXform.setTranslation(new Vector3d(0.0,0.0,0.0));
 		    if (invert) {
@@ -203,12 +203,12 @@ public class MouseRotate extends MouseBehavior {
 			currXform.mul(transformX, currXform);
 			currXform.mul(transformY, currXform);
 		    }
-		    
+
 		    // Set old translation back
-		    Vector3d translation = new 
+		    Vector3d translation = new
 		      Vector3d(mat.m03, mat.m13, mat.m23);
 		    currXform.setTranslation(translation);
-		    
+
 		    // Update xform
 		    transformGroup.setTransform(currXform);
 
@@ -231,7 +231,7 @@ public class MouseRotate extends MouseBehavior {
       }
 
       wakeupOn (mouseCriterion);
-      
+
    }
 
   /**

@@ -29,10 +29,10 @@
  */
 
 /**
- * Utility class for doing local->window transformations for case where 
- * Canvas3D is a simple display such as a monitor. This won't work for the 
+ * Utility class for doing local->window transformations for case where
+ * Canvas3D is a simple display such as a monitor. This won't work for the
  * more complex cases (i.e. a multiple canvases, head tracking, etc).
- * 
+ *
  * Usage:
  *    // after the canvas and node are created
  *    LocalToWindow locToWindow = LocalToWindow(node, canvas);
@@ -78,13 +78,13 @@ public class LocalToWindow {
     Point2d	screenPt = new Point2d();
     Point2d	tempPt2d = new Point2d();
 
-    /** 
-     * Creates a LocalToWindow object with no associated node or canvas.  
+    /**
+     * Creates a LocalToWindow object with no associated node or canvas.
      * The node and canvas must be set before transforming points
      */
     public LocalToWindow() {};
 
-    /** 
+    /**
      * Called with the Node which specifies the local coordinates for the
      * points to be transformed and the Canvas3D where the points are
      * displayed
@@ -97,9 +97,9 @@ public class LocalToWindow {
 
     /**
      * Either create LocalToWindow() just before transforming points or call
-     * this method to ensure that the transforms are up to date.  Note: if 
-     * you are transforming several points, you only need to call this method 
-     * once.  
+     * this method to ensure that the transforms are up to date.  Note: if
+     * you are transforming several points, you only need to call this method
+     * once.
      */
     public void update() {
 	if ((this.canvas != null) && (this.node != null)) {
@@ -112,7 +112,7 @@ public class LocalToWindow {
 	    // imagePlatePt = VworldToImagePlate * LocalToVworld * localPt;
 	    localToImagePlate.mul(vworldToImagePlate, localToVworld);
 
-	    // we need these to project the point from Image Plate coords to 
+	    // we need these to project the point from Image Plate coords to
 	    // the actual image plate (i.e. perpsective)
 	    canvas.getCenterEyeInImagePlate(eyePos);
 	    //System.out.println("eyePos = " + eyePos);
@@ -140,10 +140,10 @@ public class LocalToWindow {
 	update();
     }
 
-    /** 
+    /**
      * Transform the point from local coords to window coords
      */
-    public void transformPt(Point3d localPt, Point2d windowPt) { 
+    public void transformPt(Point3d localPt, Point2d windowPt) {
 	// TODO: throw some kind of error if node and canvas haven't been
 	// set
 
@@ -158,7 +158,7 @@ public class LocalToWindow {
 	    projVec.sub(imagePlatePt, eyePos);
 
 	    // Scale this vector to make it end at the projection plane.
-	    // Scale is ratio : 
+	    // Scale is ratio :
 	    //     eye->imagePlate Plane dist  / eye->imagePlatePt dist
 	    // eye dist to plane is eyePos.z (eye is in +z space)
 	    // image->eye dist is -projVec.z (image->eye is in -z dir)
@@ -177,16 +177,16 @@ public class LocalToWindow {
 
 	// Transform from image plate coords to screen coords
 	windowPt.x = (screenPt.x / metersPerPixelX) - canvasScr.x;
-	windowPt.y = screenSize.height - 1 - (screenPt.y / metersPerPixelY) - 
+	windowPt.y = screenSize.height - 1 - (screenPt.y / metersPerPixelY) -
 		canvasScr.y;
 	//System.out.println("windowPt = " + windowPt);
 
     }
 
-    /** 
+    /**
      * Transform the point from local coords to window coords
      */
-    public void transformPt(Point3d localPt, Point windowPt) { 
+    public void transformPt(Point3d localPt, Point windowPt) {
 	transformPt(localPt, tempPt2d);
 	windowPt.x = (int)Math.round(tempPt2d.x);
 	windowPt.y = (int)Math.round(tempPt2d.y);

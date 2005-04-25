@@ -56,7 +56,7 @@ public class Texture3DVolume extends TextureVolume {
 
         System.out.print("Loading 3D texture map");
 
-	// set up the texture coordinate generation 
+	// set up the texture coordinate generation
 	tg = new TexCoordGeneration();
 	tg.setFormat(TexCoordGeneration.TEXTURE_COORDINATE_3);
 	tg.setPlaneS(new Vector4f(volume.xTexGenScale, 0.0f, 0.0f, 0.0f));
@@ -68,34 +68,34 @@ public class Texture3DVolume extends TextureVolume {
 	} else {
 	    ColorSpace cs = ColorSpace.getInstance(ColorSpace.CS_GRAY);
 	    int[] nBits = {8};
-	    colorModel = new ComponentColorModel(cs, nBits, false, false, 
+	    colorModel = new ComponentColorModel(cs, nBits, false, false,
 		Transparency.TRANSLUCENT, DataBuffer.TYPE_BYTE);
 	}
 	int sSize = volume.xTexSize;
 	int tSize = volume.yTexSize;
 	int rSize = volume.zTexSize;
 
-	raster = colorModel.createCompatibleWritableRaster(sSize, tSize); 
-	BufferedImage bImage = 
-		new BufferedImage(colorModel, raster, false, null); 
+	raster = colorModel.createCompatibleWritableRaster(sSize, tSize);
+	BufferedImage bImage =
+		new BufferedImage(colorModel, raster, false, null);
 
 	int[] intData = null;
 	byte[] byteData = null;
 	ImageComponent3D pArray;
 	if (useCmap) {
-	    intData = ((DataBufferInt)raster.getDataBuffer()).getData(); 
-	    texture = new Texture3D(Texture.BASE_LEVEL, Texture.RGBA, 
+	    intData = ((DataBufferInt)raster.getDataBuffer()).getData();
+	    texture = new Texture3D(Texture.BASE_LEVEL, Texture.RGBA,
 		sSize, tSize, rSize);
 	    pArray = new ImageComponent3D(
 		    ImageComponent.FORMAT_RGBA, sSize, tSize, rSize);
 	} else {
-	    byteData = ((DataBufferByte)raster.getDataBuffer()).getData(); 
-	    texture = new Texture3D(Texture.BASE_LEVEL, Texture.INTENSITY, 
+	    byteData = ((DataBufferByte)raster.getDataBuffer()).getData();
+	    texture = new Texture3D(Texture.BASE_LEVEL, Texture.INTENSITY,
 		sSize, tSize, rSize);
 	    pArray = new ImageComponent3D(
 		    ImageComponent.FORMAT_CHANNEL8, sSize, tSize, rSize);
 	}
-	for (int i=0; i < volume.zDim; i ++) { 
+	for (int i=0; i < volume.zDim; i ++) {
 	    if (useCmap) {
 		volume.loadZRGBA(i, intData, cmap);
 	    } else {

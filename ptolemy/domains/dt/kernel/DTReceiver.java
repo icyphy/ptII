@@ -201,7 +201,7 @@ public class DTReceiver extends SDFReceiver {
 
         Iterator portListIterator = listOfConnectedPorts.iterator();
 
-foundReceiver: 
+foundReceiver:
         while (portListIterator.hasNext()) {
             connectedPort = (IOPort) portListIterator.next();
 

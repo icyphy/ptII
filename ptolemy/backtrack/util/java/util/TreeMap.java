@@ -1275,7 +1275,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
 
     final Node firstNode() {
         Node node = root;
-        while (node.getLeft() != nil) 
+        while (node.getLeft() != nil)
             node = node.getLeft();
         return node;
     }
@@ -1354,7 +1354,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
 
     private Node lastNode() {
         Node node = root;
-        while (node.getRight() != nil) 
+        while (node.getRight() != nil)
             node = node.getRight();
         return node;
     }
@@ -1381,7 +1381,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
     private Node predecessor(Node node) {
         if (node.getLeft() != nil) {
             node = node.getLeft();
-            while (node.getRight() != nil) 
+            while (node.getRight() != nil)
                 node = node.getRight();
             return node;
         }
@@ -1432,7 +1432,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
             child = node.getLeft();
         } else {
             splice = node.getLeft();
-            while (splice.getRight() != nil) 
+            while (splice.getRight() != nil)
                 splice = splice.getRight();
             child = splice.getLeft();
             node.setKey(splice.getKey());
@@ -1490,7 +1490,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
     final Node successor(Node node) {
         if (node.getRight() != nil) {
             node = node.getRight();
-            while (node.getLeft() != nil) 
+            while (node.getLeft() != nil)
                 node = node.getLeft();
             return node;
         }

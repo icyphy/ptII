@@ -247,7 +247,7 @@ public class Vector extends AbstractList implements List, RandomAccess, Cloneabl
     }
 
     public synchronized int indexOf(Object e, int index) {
-        for (int i = index; i < getElementCount(); i++) 
+        for (int i = index; i < getElementCount(); i++)
             if (equals(e, getElementData()[i]))
                 return i;
         return -1;
@@ -259,7 +259,7 @@ public class Vector extends AbstractList implements List, RandomAccess, Cloneabl
 
     public synchronized int lastIndexOf(Object e, int index) {
         checkBoundExclusive(index);
-        for (int i = index; i >= 0; i--) 
+        for (int i = index; i >= 0; i--)
             if (equals(e, getElementData()[i]))
                 return i;
         return -1;
@@ -401,13 +401,13 @@ public class Vector extends AbstractList implements List, RandomAccess, Cloneabl
             throw new NullPointerException();
         int i;
         int j;
-        for (i = 0; i < getElementCount(); i++) 
+        for (i = 0; i < getElementCount(); i++)
             if (c.contains(getElementData()[i]))
                 break;
         if (i == getElementCount())
             return false;
         setModCount(getModCount() + 1);
-        for (j = i++; i < getElementCount(); i++) 
+        for (j = i++; i < getElementCount(); i++)
             if (!c.contains(getElementData()[i]))
                 getElementData()[j++] = getElementData()[i];
         setElementCount(getElementCount() - (i - j));
@@ -419,13 +419,13 @@ public class Vector extends AbstractList implements List, RandomAccess, Cloneabl
             throw new NullPointerException();
         int i;
         int j;
-        for (i = 0; i < getElementCount(); i++) 
+        for (i = 0; i < getElementCount(); i++)
             if (!c.contains(getElementData()[i]))
                 break;
         if (i == getElementCount())
             return false;
         setModCount(getModCount() + 1);
-        for (j = i++; i < getElementCount(); i++) 
+        for (j = i++; i < getElementCount(); i++)
             if (c.contains(getElementData()[i]))
                 getElementData()[j++] = getElementData()[i];
         setElementCount(getElementCount() - (i - j));
@@ -442,7 +442,7 @@ public class Vector extends AbstractList implements List, RandomAccess, Cloneabl
         if (getElementCount() > 0 && index != getElementCount())
             System.arraycopy(getElementData(), index, getElementData(), end, getElementCount() - index);
         setElementCount(getElementCount() + csize);
-        for (; index < end; index++) 
+        for (; index < end; index++)
             getElementData()[index] = itr.next();
         return (csize > 0);
     }

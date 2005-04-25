@@ -67,7 +67,7 @@ public class TimingCanvas3D extends Canvas3D {
 	    double renderRate = renderSize / renderTime;
 
 	    if (renderSize != 0) {
-		System.out.println("Last frame: " + 
+		System.out.println("Last frame: " +
 			numFormat.format(renderTime) +
 			" sec " +
 			numFormat.format(renderSize) +
@@ -77,14 +77,14 @@ public class TimingCanvas3D extends Canvas3D {
 	    }
 	}
 	if ((numFrames % 10) == 0) {
-	    double framesDuration  = (System.currentTimeMillis() - 
+	    double framesDuration  = (System.currentTimeMillis() -
 						frameStartTime) / 1000.0;
 
-	    System.out.println("Last 10 frames rendered at " + 
+	    System.out.println("Last 10 frames rendered at " +
 		numFormat.format(10.0 / framesDuration) + " frames/sec");
 
 	    frameStartTime = System.currentTimeMillis();
-		
+
 	}
     }
 }

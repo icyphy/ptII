@@ -374,9 +374,9 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         for (int i = 0; i < args.length; i++) {
             // Note: the code below uses explicit try catch blocks
             // so we can provide very clear error messages about what
-            // failed to the end user.  The alternative is to wrap the 
-            // entire body in one try/catch block and say 
-            // "Code generation failed for foo", which is not clear. 
+            // failed to the end user.  The alternative is to wrap the
+            // entire body in one try/catch block and say
+            // "Code generation failed for foo", which is not clear.
             URL modelURL;
 
             try {
@@ -401,7 +401,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                 CodeGenerator codeGenerator;
 
                 if (codeGenerators.size() == 0) {
-                    // Add a codeGenerator 
+                    // Add a codeGenerator
                     codeGenerator = new CodeGenerator(toplevel,
                             "CodeGenerator_AutoAdded");
                 } else {

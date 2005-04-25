@@ -224,7 +224,7 @@ public class KernelException extends Exception {
         boolean whereNullOrEmpty = ((whereString == null)
                         || whereString.equals(""));
         boolean detailNullOrEmpty = ((detail == null) || detail.equals(""));
-        return 
+        return
         // Do we print the detail?
         (detailNullOrEmpty ? "" : detail)
         // Do we add a \n?

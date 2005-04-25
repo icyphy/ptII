@@ -60,7 +60,7 @@ public class HelloWorld {
     /**
      */
     public static void main(String[] args)
-        throws IllegalActionException, IllegalStateException, 
+        throws IllegalActionException, IllegalStateException,
             NameDuplicationException {
         // Set up Manager, Director and top level CompositeActor
         Workspace workSpc = new Workspace();

@@ -283,7 +283,7 @@ public class VergilApplication extends MoMLApplication {
             }
         } catch (IOException ex) {
             try {
-                // If we ship HyVisual without a full installation, then 
+                // If we ship HyVisual without a full installation, then
                 // we try the hyvisual configuration.
                 // vergil -help needs this.
                 // FIXME: we could do better than this and either

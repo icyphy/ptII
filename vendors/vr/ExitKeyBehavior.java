@@ -43,15 +43,15 @@ import java.awt.event.ComponentListener;
 import java.awt.event.WindowEvent;
 import javax.vecmath.*;
 
-/** 
+/**
  * A KeyBehavior which called exit when the ESC key is pressed
  */
 
 public class ExitKeyBehavior extends Behavior {
 
-    // look for released events since sometimes ESCAPE only generates a 
+    // look for released events since sometimes ESCAPE only generates a
     // RELEASE event
-    WakeupCriterion criterion[] = { 
+    WakeupCriterion criterion[] = {
     		new WakeupOnAWTEvent( Event.KEY_PRESS ),
     		new WakeupOnAWTEvent( Event.KEY_RELEASE ),
 		};

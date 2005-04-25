@@ -333,7 +333,7 @@ public class Peer extends TypedAtomicActor implements QueryHandler,
      * @see net.jxta.resolver.QueryHandler#processQuery(ResolverQueryMsg)
      */
     public ResolverResponseMsg processQuery(ResolverQueryMsg query)
-        throws NoResponseException, ResendQueryException, DiscardQueryException, 
+        throws NoResponseException, ResendQueryException, DiscardQueryException,
             IOException {
         System.out.println("Got query from " + query.getSrc() + " "
             + query.getQueryId());

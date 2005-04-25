@@ -14,11 +14,11 @@ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
 THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
 SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES, 
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
 INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, 
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
@@ -50,7 +50,7 @@ import ptolemy.backtrack.ast.TypeAnalyzerState;
    subtree rooted at the assignment is completely visited by the analyzer.
    However, modifying any node out of this subtree (e.g., changing the parent
    of this assignment to another one) may cause unexpected effect.
-  
+
    @author Thomas Feng
    @version $Id$
    @since Ptolemy II 5.1
@@ -64,28 +64,28 @@ public interface AssignmentHandler {
      *  Assignments in field declarations or local variable declarations are
      *  not handled by this function, because they are initializers, where the
      *  old values of the declared fields or variables are meaningless.
-     * 
+     *
      *  @param node The assignment to be handled.
      *  @param state The current state of the analyzer.
      */
     public void handle(Assignment node, TypeAnalyzerState state);
-    
+
     /** Handle a postfix expression with a "++" operator or a "--" operator.
      *  The assignment can be an assignment acting as a statement, or an
      *  assignment as a sub-expression in a larger expression.
-     * 
+     *
      *  @param node The assignment to be handled.
      *  @param state The current state of the analyzer.
      */
     public void handle(PostfixExpression node, TypeAnalyzerState state);
-    
+
     /** Handle a prefix expression with a "++" operator or a "--" operator. The
      *  assignment can be an assignment acting as a statement, or an assignment
      *  as a sub-expression in a larger expression.
-     * 
+     *
      *  @param node The assignment to be handled.
      *  @param state The current state of the analyzer.
      */
     public void handle(PrefixExpression node, TypeAnalyzerState state);
-    
+
 }

@@ -14,11 +14,11 @@ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
 THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
 SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES, 
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
 INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, 
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
@@ -31,7 +31,7 @@ COPYRIGHTENDKEY
   are made available under the terms of the Common Public License v1.0
   which accompanies this distribution, and is available at
   http://www.eclipse.org/legal/cpl-v10.html
- 
+
   Contributors:
       IBM Corporation - initial API and implementation
 *******************************************************************************/
@@ -145,7 +145,7 @@ import org.eclipse.jdt.core.dom.WildcardType;
    (usually a {@link CompilationUnit} object), and outputs the formatted
    Java source code. It is modified from {@link
    org.eclipse.jdt.core.dom.NaiveASTFlattener} in Eclipse 3.0.
- 
+
    @author Thomas Feng
    @version $Id$
    @since Ptolemy II 5.1
@@ -351,7 +351,7 @@ public class ASTFormatter extends ASTVisitor {
      */
     public boolean visit(Block node) {
         boolean newLineAfterBlock = _newLineAfterBlock;
-        
+
         // Indent if it is in a list of statements.
         if (node.getLocationInParent().isChildListProperty())
             _output(_indent);
@@ -493,7 +493,7 @@ public class ASTFormatter extends ASTVisitor {
                     imports.add(j, ASTNode.copySubtree(ast, import1));
                 }
             }
-        
+
         if (node.getPackage() != null) {
             node.getPackage().accept(this);
         }
@@ -732,7 +732,7 @@ public class ASTFormatter extends ASTVisitor {
         node.getType().accept(this);
         _output(" ");
         for (Iterator it = node.fragments().iterator(); it.hasNext(); ) {
-            VariableDeclarationFragment f = 
+            VariableDeclarationFragment f =
                 (VariableDeclarationFragment) it.next();
             f.accept(this);
             if (it.hasNext()) {
@@ -1039,7 +1039,7 @@ public class ASTFormatter extends ASTVisitor {
         node.getName().accept(this);
         _output("(");
         for (Iterator it = node.parameters().iterator(); it.hasNext(); ) {
-            SingleVariableDeclaration v = 
+            SingleVariableDeclaration v =
                 (SingleVariableDeclaration) it.next();
             v.accept(this);
             if (it.hasNext()) {
@@ -1491,7 +1491,7 @@ public class ASTFormatter extends ASTVisitor {
                 _output(" ");
             }
             e.accept(this);
-            previousRequiresWhiteSpace = 
+            previousRequiresWhiteSpace =
                 !currentIncludesWhiteSpace && !(e instanceof TagElement);
         }
         if (node.isNested()) {
@@ -1616,7 +1616,7 @@ public class ASTFormatter extends ASTVisitor {
                 _output(node.isInterface() ? "extends " : "implements ");
                     //$NON-NLS-2$
                 Iterator it;
-                for (it = node.superInterfaceTypes().iterator(); 
+                for (it = node.superInterfaceTypes().iterator();
                         it.hasNext(); ) {
                     Type t = (Type) it.next();
                     t.accept(this);
@@ -1703,7 +1703,7 @@ public class ASTFormatter extends ASTVisitor {
         node.getType().accept(this);
         _output(" ");
         for (Iterator it = node.fragments().iterator(); it.hasNext(); ) {
-            VariableDeclarationFragment f = 
+            VariableDeclarationFragment f =
                 (VariableDeclarationFragment) it.next();
             f.accept(this);
             if (it.hasNext()) {
@@ -1742,7 +1742,7 @@ public class ASTFormatter extends ASTVisitor {
         node.getType().accept(this);
         _output(" ");
         for (Iterator it = node.fragments().iterator(); it.hasNext(); ) {
-            VariableDeclarationFragment f = 
+            VariableDeclarationFragment f =
                 (VariableDeclarationFragment) it.next();
             f.accept(this);
             if (it.hasNext()) {
@@ -1871,7 +1871,7 @@ public class ASTFormatter extends ASTVisitor {
     }
 
     /**
-     * Appends the text representation of the given modifier flags, 
+     * Appends the text representation of the given modifier flags,
      * followed by a single space.
      * Used for 3.0 modifiers and annotations.
      *
@@ -1887,7 +1887,7 @@ public class ASTFormatter extends ASTVisitor {
     }
 
     /**
-     * Appends the text representation of the given modifier flags, 
+     * Appends the text representation of the given modifier flags,
      * followed by a single space.
      * Used for JLS2 modifiers.
      *

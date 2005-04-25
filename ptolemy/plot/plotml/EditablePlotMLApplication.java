@@ -110,7 +110,7 @@ public class EditablePlotMLApplication extends PlotMLApplication {
         // PlotApplication causes problems here with this new
         // JMenuItem: the font and background color may be wrong.
         // Setting the background works here because the parent
-        // class has called setVisible() already.  
+        // class has called setVisible() already.
         // Unfortunately, setting the background helps, but the
         // result does not have the etch border
         //select.setBorderPainted(true);

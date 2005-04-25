@@ -109,7 +109,7 @@ public class Volume implements VolRendConstants {
         context = initContext;
 	dataFileAttr = (StringAttr) context.getAttr("Data File");
 	volRefPtAttr = (CoordAttr) context.getAttr("Vol Ref Pt");
-    
+
     System.out.println("Got Attrs");
     System.out.println(dataFileAttr);
     System.out.println(volRefPtAttr);
@@ -125,42 +125,42 @@ public class Volume implements VolRendConstants {
 	facePoints[PLUS_X][1] =  voiPts[4];
 	facePoints[PLUS_X][2] =  voiPts[7];
 	facePoints[PLUS_X][3] =  voiPts[6];
-   
+
     System.out.println("Assigned plus_X face points");
-	
+
     facePoints[PLUS_Y][0] =  voiPts[2];
 	facePoints[PLUS_Y][1] =  voiPts[3];
 	facePoints[PLUS_Y][2] =  voiPts[7];
 	facePoints[PLUS_Y][3] =  voiPts[6];
-    
+
     System.out.println("Assigned plus_Y face points");
-	
+
     facePoints[PLUS_Z][0] =  voiPts[1];
 	facePoints[PLUS_Z][1] =  voiPts[2];
 	facePoints[PLUS_Z][2] =  voiPts[6];
 	facePoints[PLUS_Z][3] =  voiPts[5];
 
 	System.out.println("Assigned plus_Z face points");
-    
+
     facePoints[MINUS_X][0] =  voiPts[0];
 	facePoints[MINUS_X][1] =  voiPts[1];
 	facePoints[MINUS_X][2] =  voiPts[2];
 	facePoints[MINUS_X][3] =  voiPts[3];
 
 	System.out.println("Assigned minus_X face points");
-    
+
     facePoints[MINUS_Y][0] =  voiPts[0];
 	facePoints[MINUS_Y][1] =  voiPts[4];
 	facePoints[MINUS_Y][2] =  voiPts[5];
 	facePoints[MINUS_Y][3] =  voiPts[1];
 
     System.out.println("Assigned minus_Y face points");
-    
+
 	facePoints[MINUS_Z][0] =  voiPts[0];
 	facePoints[MINUS_Z][1] =  voiPts[3];
 	facePoints[MINUS_Z][2] =  voiPts[7];
 	facePoints[MINUS_Z][3] =  voiPts[4];
-    
+
     System.out.println("Finish assigning points");
     System.out.println("Got Volume");
     }
@@ -177,7 +177,7 @@ public class Volume implements VolRendConstants {
 	return voiBoxShape;
     }
 
-    
+
     // returns the edit id for the volume
     public int update() {
     System.out.println("Got Attrs");
@@ -195,7 +195,7 @@ public class Volume implements VolRendConstants {
 	}
     System.out.println(editId);
     System.out.println(filename);
-    
+
 	URL fileURL = null;
 	try {
 	    URL path = context.getCodeBase();
@@ -301,7 +301,7 @@ public class Volume implements VolRendConstants {
 	//System.out.println("maxCoord = " + maxCoord);
     System.out.println("Got Attrs");
 	return editId;
-    
+
     }
 
     public boolean hasData() {

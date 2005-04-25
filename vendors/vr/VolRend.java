@@ -51,14 +51,14 @@ import java.net.*;
  */
 public class VolRend implements VolRendListener, MouseBehaviorCallback {
 
-    // 
+    //
     static final int 	POST_AWT_CHANGE = 1;
 
     // parameters settable by setting corresponding property
     boolean 		timing = false;
     boolean 		debug = false;
-    
-    
+
+
     Volume 		volume;
     Renderer 		renderer;
     Annotations         annotations;
@@ -146,7 +146,7 @@ public class VolRend implements VolRendListener, MouseBehaviorCallback {
 
 	// get the primary view
 	view = u.getViewer().getView();
-    
+
     System.out.println("Got View");
 
 	// switch to a parallel projection, which is faster for texture mapping
@@ -171,11 +171,11 @@ public class VolRend implements VolRendListener, MouseBehaviorCallback {
 
         // Set up the annotations
         annotations = new Annotations(view, context, volume);
-        annotations.attach(dynamicFrontAnnotationSwitch, 
+        annotations.attach(dynamicFrontAnnotationSwitch,
 					staticFrontAnnotationSwitch);
-        annotations.attachBack(dynamicBackAnnotationSwitch, 
+        annotations.attachBack(dynamicBackAnnotationSwitch,
 					staticBackAnnotationSwitch);
-        
+
         return view;
 
     }
@@ -279,8 +279,8 @@ public class VolRend implements VolRendListener, MouseBehaviorCallback {
 
 	// initialize the volume
 	volume = new Volume(context);
-    
-      
+
+
     System.out.println("Created VolRend object and set up hashtable");
 
 	// initialize the scene graph
@@ -300,15 +300,15 @@ public class VolRend implements VolRendListener, MouseBehaviorCallback {
 	    axisDepthWriteAttr = new ToggleAttr("Depth Write", true);
 	    context.addAttr(axisDepthWriteAttr);
 	}*/
-    
+
     return context;
     }
-    
+
     public Volume getVolume()
     {
-     return volume;   
+     return volume;
     }
-    
+
 
     private void doUpdate() {
 	if (restorePending) {
@@ -478,9 +478,9 @@ public class VolRend implements VolRendListener, MouseBehaviorCallback {
 
         // Create the annotations
         Annotations annotations = new Annotations(view, context, volume);
-        annotations.attachBack(dynamicBackAnnotationSwitch, 
+        annotations.attachBack(dynamicBackAnnotationSwitch,
 				staticBackAnnotationSwitch);
-        annotations.attach(dynamicFrontAnnotationSwitch, 
+        annotations.attach(dynamicFrontAnnotationSwitch,
 				staticFrontAnnotationSwitch);
 
 	coordSwitch = new Switch(Switch.CHILD_ALL);
