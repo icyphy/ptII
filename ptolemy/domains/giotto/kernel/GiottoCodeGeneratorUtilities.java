@@ -430,7 +430,7 @@ public class GiottoCodeGeneratorUtilities {
             + "*/\n";
     }
 
-    /** Initialize the code geenration process by checking whether the
+    /** Initialize the code generation process by checking whether the
      *  given model is a Giotto model. Return false if it is not.
      *  @param model A model to generate Giotto code from.
      *  @return True if in the given model is a giotto model.
