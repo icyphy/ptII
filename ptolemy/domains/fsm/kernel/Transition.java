@@ -291,12 +291,13 @@ public class Transition extends ComponentRelation {
             _refinementVersion = -1;
         } else if ((attribute == outputActions) || (attribute == setActions)) {
             _actionListsVersion = -1;
-        } else if ((attribute == outputActions) && _debugging) {
+        } else {
+            super.attributeChanged(attribute);
+        }
+        if ((attribute == outputActions) && _debugging) {
             outputActions.addDebugListener(new StreamListener());
         } else if ((attribute == setActions) && _debugging) {
             setActions.addDebugListener(new StreamListener());
-        } else {
-            super.attributeChanged(attribute);
         }
     }
 
