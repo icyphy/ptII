@@ -510,7 +510,7 @@ public class TableauFrame extends Top {
 
     /** Confirm that writing the specified model to the specified file is OK.
      *  In particular, if the file exists, ask the user whether it is OK
-     *  to overwrited. If there is an open model from the specified file,
+     *  to overwrite. If there is an open model from the specified file,
      *  determine whether it has been modified, and prompt to discard changes
      *  if it has.  Close the previously open model. If the previously open
      *  model on this file contains the specified model, the it is never

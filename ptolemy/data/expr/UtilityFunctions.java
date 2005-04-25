@@ -213,7 +213,7 @@ public class UtilityFunctions {
      *  @return The subarray of this array containing exactly those
      *   elements, in order, for which the given function returns
      *   a BooleanToken with value true.  Any other return value
-     *   results in the element being ommitted. If the given function
+     *   results in the element being omitted. If the given function
      *   never returns true, then return an empty array with an
      *   element type that matches the specified array.
      *  @exception IllegalActionException If applying the function
@@ -241,7 +241,7 @@ public class UtilityFunctions {
      *  @return The subarray of this array containing exactly those
      *   elements, in order, for which the given function returns
      *   a BooleanToken with value true.  Any other return value
-     *   results in the element being ommitted. If the given function
+     *   results in the element being omitted. If the given function
      *   never returns true, then return an empty array with an
      *   element type that matches the specified array.
      *  @exception IllegalActionException If applying the function

@@ -46,7 +46,7 @@ import ptolemy.kernel.util.Workspace;
    local truncation error.
    <p>
    NOTE: The design of this solver, in particular, the design of estimation of
-   the local truncation error, is still priliminary.
+   the local truncation error, is still preliminary.
    <p>
 
    For an ODE

@@ -552,7 +552,7 @@ public class Clock extends TimedSource {
     /** The tentative time for next firing. */
     protected transient Time _tentativeNextFiringTime;
 
-    /** The tentative phase of the next otuput. */
+    /** The tentative phase of the next output. */
     protected transient int _tentativePhase;
 
     /** The tentative start time for the clock to produce output. */

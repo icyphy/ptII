@@ -40,7 +40,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 /**
    This actor is a non-strict version of the TokenToExpression actor.
-   When its input is unknown, it ouptuts "unknown". When its input is
+   When its input is unknown, it outputs "unknown". When its input is
    known but has no token, it outputs "absent". Otherwise, it
    does the same thing as TokenToExpression actor does.
 

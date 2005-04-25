@@ -299,7 +299,7 @@ public class CTBaseIntegrator extends TypedAtomicActor implements TimedActor,
      *  calling this method will bring the integrator back to the
      *  marked state. This method is used for rollbacking the execution
      *  to a previous time point. Note that derivative is not stored.
-     *  Therefore, when states are restored, they need to be propogated
+     *  Therefore, when states are restored, they need to be propagated
      *  through state transition actors such that the derivatives are
      *  restored (reconstructured) too.
      */

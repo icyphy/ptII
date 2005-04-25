@@ -194,8 +194,8 @@ public class BooleanNotCompactor {
         AssignStmt a = new JAssignStmt(falseAssignValue, v);
         System.out.println(a);
 
-        Unit preceeding = (Unit) chain.getPredOf(root);
-        chain.insertAfter(a, preceeding);
+        Unit preceding = (Unit) chain.getPredOf(root);
+        chain.insertAfter(a, preceding);
 
         // Remove units
         chain.remove(root);

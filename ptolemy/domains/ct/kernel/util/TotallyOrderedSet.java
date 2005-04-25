@@ -42,7 +42,7 @@ import java.util.List;
    An object of this class is a totally ordered set with an increasing order.
    The order between any two elements in the set can be checked by calling the
    compare method of a comparator associated with this object. An element, a,
-   in this set is said to preceed another one, b, if compare(a, b) returns -1.
+   in this set is said to precede another one, b, if compare(a, b) returns -1.
    <p>
    The set does not containt repeated elements, which means comparing any two
    elements in this set never returns 0.
