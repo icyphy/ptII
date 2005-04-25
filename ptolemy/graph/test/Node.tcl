@@ -4,7 +4,7 @@
 #
 # $Id$
 #
-# @Copyright (c) 2001-2004 The Regents of the University of Maryland.
+# @Copyright (c) 2001-2005 The Regents of the University of Maryland.
 # All rights reserved.
 # 
 # Permission is hereby granted, without written agreement and without

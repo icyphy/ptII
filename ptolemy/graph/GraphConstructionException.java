@@ -1,6 +1,6 @@
 /* Exception of modifying graph in wrong ways.
 
-Copyright (c) 2002-2004 The University of Maryland.
+Copyright (c) 2002-2005 The University of Maryland.
 All rights reserved.
 Permission is hereby granted, without written agreement and without
 license or royalty fees, to use, copy, modify, and distribute this

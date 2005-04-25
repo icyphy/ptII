@@ -1,6 +1,6 @@
 /* An actor to display the LEDs of the simulated mote.
 
-   Copyright (c) 2004 The Regents of the University of California and
+   Copyright (c) 2004-2005 The Regents of the University of California and
    Research in Motion Limited.
    All rights reserved.
    Permission is hereby granted, without written agreement and without

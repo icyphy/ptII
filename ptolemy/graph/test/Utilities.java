@@ -1,6 +1,6 @@
 /** Utilities for testing graphs.
 
-Copyright (c) 2001-2004 The University of Maryland. All rights reserved.
+Copyright (c) 2001-2005 The University of Maryland. All rights reserved.
 Permission is hereby granted, without written agreement and without
 license or royalty fees, to use, copy, modify, and distribute this
 software and its documentation for any purpose, provided that the above
