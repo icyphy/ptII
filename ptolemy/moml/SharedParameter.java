@@ -1,6 +1,6 @@
 /* A parameter that is shared globally in a model.
 
-Copyright (c) 2003-2005 The Regents of the University of California.
+Copyright (c) 2004-2005 The Regents of the University of California.
 All rights reserved.
 Permission is hereby granted, without written agreement and without
 license or royalty fees, to use, copy, modify, and distribute this
@@ -74,7 +74,7 @@ import java.util.List;
 
    @author Edward A. Lee
    @version $Id$
-   @since Ptolemy II 4.0
+   @since Ptolemy II 4.1
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Red (cxh)
 */

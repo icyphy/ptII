@@ -1,6 +1,6 @@
 /* A factory that creates graph editing tableux for untyped models.
 
-Copyright (c) 1997-2005 The Regents of the University of California.
+Copyright (c) 2004-2005 The Regents of the University of California.
 All rights reserved.
 Permission is hereby granted, without written agreement and without
 license or royalty fees, to use, copy, modify, and distribute this
@@ -44,6 +44,7 @@ import ptolemy.kernel.util.NamedObj;
  *
  * @author Elaine Cheong and Edward A. Lee
  * @version $Id: TypeOpaqueCompositeActor.java,v 1.73 2004/04/13 05:12:39 cxh
+@since Ptolemy II 4.1
  *          Exp $
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)

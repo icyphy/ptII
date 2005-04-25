@@ -1,6 +1,6 @@
 /* An actor that computes a specified math function of the input.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
+Copyright (c) 2004-2005 The Regents of the University of California.
 All rights reserved.
 Permission is hereby granted, without written agreement and without
 license or royalty fees, to use, copy, modify, and distribute this
@@ -64,7 +64,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
    @author C. Fong, Steve Neuendorffer
    @version $Id$
-   @since Ptolemy II 1.0
+   @since Ptolemy II 4.1
    @Pt.ProposedRating Yellow (neuendor)
    @Pt.AcceptedRating Red (neuendor)
    @see AbsoluteValue

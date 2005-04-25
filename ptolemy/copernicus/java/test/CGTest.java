@@ -1,7 +1,7 @@
 /* Check the input streams against a parameter value and outputs
  a boolean true if result is correct.
 
- Copyright (c) 1998-2005 The Regents of the University of California.
+ Copyright (c) 2004-2005 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -54,7 +54,7 @@ the trainingMode parameter is a Parameter, not a SharedParameter.
 @see Test
 @author Christopher Brooks
 @version $Id$
-@since Ptolemy II 5.0
+@since Ptolemy II 4.1
 @Pt.ProposedRating Red (cxh)
 @Pt.AcceptedRating Redw (cxh)
 */

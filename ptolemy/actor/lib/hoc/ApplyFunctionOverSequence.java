@@ -1,6 +1,6 @@
 /* An actor that applies a function over each element of a sequence.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
+Copyright (c) 2004-2005 The Regents of the University of California.
 All rights reserved.
 Permission is hereby granted, without written agreement and without
 license or royalty fees, to use, copy, modify, and distribute this
@@ -77,7 +77,7 @@ ignored until the next execution of the model.
 
 @author Steve Neuendorffer (Contributor: Edward A. Lee)
 @version $Id$
-@since Ptolemy II 0.4
+@since Ptolemy II 4.1
 @Pt.ProposedRating Green (neuendor)
 @Pt.AcceptedRating Yellow (neuendor)
 @see ptolemy.actor.lib.hoc.ApplyFunction

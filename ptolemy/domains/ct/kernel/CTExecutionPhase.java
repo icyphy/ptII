@@ -1,6 +1,6 @@
 /* A type-safe enumeration of all possible execution phases of a CT director.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
+Copyright (c) 2004-2005 The Regents of the University of California.
 All rights reserved.
 Permission is hereby granted, without written agreement and without
 license or royalty fees, to use, copy, modify, and distribute this

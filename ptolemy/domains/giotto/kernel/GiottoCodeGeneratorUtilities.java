@@ -1,6 +1,6 @@
 /* Giotto Code Generator Utilties
 
-Copyright (c) 1998-2005 The Regents of the University of California.
+Copyright (c) 2004-2005 The Regents of the University of California.
 All rights reserved.
 Permission is hereby granted, without written agreement and without
 license or royalty fees, to use, copy, modify, and distribute this
@@ -71,7 +71,7 @@ import java.util.Map;
 
    @author Edward A. Lee, Steve Neuendorffer, Haiyang Zheng, Christopher Brooks
    @version $Id$
-   @since Ptolemy II 2.0
+   @since Ptolemy II 4.1
    @Pt.ProposedRating Red (eal)
    @Pt.AcceptedRating Red (johnr)
 */

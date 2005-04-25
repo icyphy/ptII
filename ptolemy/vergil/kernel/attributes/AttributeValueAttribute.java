@@ -1,6 +1,6 @@
 /* An attribute that displays the value of an attribute of the container.
 
-Copyright (c) 2003-2005 The Regents of the University of California.
+Copyright (c) 2004-2005 The Regents of the University of California.
 All rights reserved.
 Permission is hereby granted, without written agreement and without
 license or royalty fees, to use, copy, modify, and distribute this
@@ -50,7 +50,7 @@ import ptolemy.kernel.util.ValueListener;
 
    @author Steve Neuendorffer
    @version $Id$
-   @since Ptolemy II 4.0
+   @since Ptolemy II 4.1
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Red (cxh)
 */

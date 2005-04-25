@@ -1,6 +1,6 @@
 /* A constant source with a string value.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
+Copyright (c) 2004-2005 The Regents of the University of California.
 All rights reserved.
 Permission is hereby granted, without written agreement and without
 license or royalty fees, to use, copy, modify, and distribute this
@@ -48,7 +48,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @see ptolemy.data.expr.Variable
    @author Edward A. Lee
    @version $Id$
-   @since Ptolemy II 0.2
+   @since Ptolemy II 4.1
    @Pt.ProposedRating Green (eal)
    @Pt.AcceptedRating Red (bilung)
 */

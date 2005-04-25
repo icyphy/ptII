@@ -1,7 +1,7 @@
 /* A MultirateFSM director that extends FSMDirector by supporting production
    and consumption of multiple tokens on a port in a firing.
 
-Copyright (c) 1999-2005 The Regents of the University of California.
+Copyright (c) 2004-2005 The Regents of the University of California.
 All rights reserved.
 Permission is hereby granted, without written agreement and without
 license or royalty fees, to use, copy, modify, and distribute this
@@ -87,7 +87,7 @@ import java.util.Map;
 
    @author Ye Zhou
    @version $Id$
-   @since Ptolemy II 5.0
+   @since Ptolemy II 4.1
    @Pt.ProposedRating Red (hyzheng)
    @Pt.AcceptedRating Red (hyzheng)
    @see FSMDirector

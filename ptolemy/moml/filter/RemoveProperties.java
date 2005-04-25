@@ -1,6 +1,6 @@
 /* Filter for removing properties.
 
-Copyright (c) 2002-2005 The Regents of the University of California.
+Copyright (c) 2004-2005 The Regents of the University of California.
 All rights reserved.
 Permission is hereby granted, without written agreement and without
 license or royalty fees, to use, copy, modify, and distribute this
@@ -82,7 +82,7 @@ import java.util.Iterator;
 
     @author Haiyang Zheng
     @version $Id$
-    @since Ptolemy II 5.0
+    @since Ptolemy II 4.1
     @Pt.ProposedRating Red (hyzheng)
     @Pt.AcceptedRating Red (hyzheng)
 */

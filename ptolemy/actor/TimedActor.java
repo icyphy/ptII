@@ -1,6 +1,6 @@
 /* Marker interface for actors that operate on time-based signals.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
+Copyright (c) 2004-2005 The Regents of the University of California.
 All rights reserved.
 Permission is hereby granted, without written agreement and without
 license or royalty fees, to use, copy, modify, and distribute this
@@ -40,7 +40,7 @@ package ptolemy.actor;
    @see TimedDirector
    @author Edward A. Lee
    @version $Id$
-   @since Ptolemy II 0.3
+   @since Ptolemy II 4.1
    @Pt.ProposedRating Green (eal)
    @Pt.AcceptedRating Green (bilung)
 */
