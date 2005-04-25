@@ -635,7 +635,8 @@ public class ASTFormatter extends ASTVisitor {
             }
             _output(")");
         }
-        if (!node.bodyDeclarations().isEmpty()) {
+        // bodyDeclarations() no longer exists in JDT 3.1.
+        /*if (!node.bodyDeclarations().isEmpty()) {
             _openBrace();
             Iterator it;
             for (it = node.bodyDeclarations().iterator(); it.hasNext(); ) {
@@ -643,7 +644,7 @@ public class ASTFormatter extends ASTVisitor {
                 d.accept(this);
             }
             _closeBrace();
-        }
+        }*/
         return false;
     }
 
