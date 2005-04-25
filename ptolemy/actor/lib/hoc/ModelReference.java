@@ -28,10 +28,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.lib.hoc;
 
-import java.io.File;
-import java.net.URL;
-import java.util.Iterator;
-
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.Executable;
@@ -59,6 +55,10 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLParser;
+
+import java.io.File;
+import java.net.URL;
+import java.util.Iterator;
 
 
 //////////////////////////////////////////////////////////////////////////

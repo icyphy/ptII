@@ -26,6 +26,9 @@
   */
 package diva.canvas.toolbox;
 
+import diva.canvas.CanvasLayer;
+import diva.canvas.VisibleComponent;
+
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -35,9 +38,6 @@ import java.awt.Stroke;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-
-import diva.canvas.CanvasLayer;
-import diva.canvas.VisibleComponent;
 
 
 /**

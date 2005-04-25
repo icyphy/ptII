@@ -26,15 +26,15 @@ COPYRIGHTENDKEY
 */
 package ptolemy.domains.petrinet.kernel;
 
-import java.util.Iterator;
-import java.util.LinkedList;
-
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.Workspace;
+
+import java.util.Iterator;
+import java.util.LinkedList;
 
 
 //////////////////////////////////////////////////////////////////////////

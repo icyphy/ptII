@@ -22,13 +22,6 @@
 */
 package thales.actor.gui;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URI;
-import java.net.URL;
-import java.util.List;
-
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.EffigyFactory;
@@ -47,7 +40,15 @@ import ptolemy.moml.ParserAttribute;
 import ptolemy.util.ClassUtilities;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
+
 import thales.vergil.navigable.NavigationTreeModel;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URI;
+import java.net.URL;
+import java.util.List;
 
 
 //////////////////////////////////////////////////////////////////////////

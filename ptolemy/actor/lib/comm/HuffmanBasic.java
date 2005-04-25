@@ -27,8 +27,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.lib.comm;
 
-import java.util.LinkedList;
-
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.Transformer;
 import ptolemy.data.ArrayToken;
@@ -42,6 +40,8 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+
+import java.util.LinkedList;
 
 
 //////////////////////////////////////////////////////////////////////////

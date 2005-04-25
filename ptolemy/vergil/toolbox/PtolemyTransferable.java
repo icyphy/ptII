@@ -27,6 +27,9 @@ COPYRIGHTENDKEY
 */
 package ptolemy.vergil.toolbox;
 
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.vergil.kernel.VergilUtilities;
+
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
@@ -38,9 +41,6 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.vergil.kernel.VergilUtilities;
 
 
 //////////////////////////////////////////////////////////////////////////

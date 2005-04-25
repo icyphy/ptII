@@ -27,14 +27,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.gui.style;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import javax.swing.BoxLayout;
-
 import ptolemy.actor.gui.Configurer;
 import ptolemy.gui.Query;
 import ptolemy.gui.QueryListener;
@@ -47,6 +39,14 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.moml.MoMLChangeRequest;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import javax.swing.BoxLayout;
 
 
 //////////////////////////////////////////////////////////////////////////

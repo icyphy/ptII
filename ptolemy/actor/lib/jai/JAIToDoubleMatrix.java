@@ -28,11 +28,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.lib.jai;
 
-import java.awt.image.DataBuffer;
-import java.awt.image.Raster;
-
-import javax.media.jai.RenderedOp;
-
 import ptolemy.actor.lib.Transformer;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleMatrixToken;
@@ -42,6 +37,11 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+
+import java.awt.image.DataBuffer;
+import java.awt.image.Raster;
+
+import javax.media.jai.RenderedOp;
 
 
 //////////////////////////////////////////////////////////////////////////

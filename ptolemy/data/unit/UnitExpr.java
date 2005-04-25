@@ -26,10 +26,10 @@ COPYRIGHTENDKEY
 */
 package ptolemy.data.unit;
 
+import ptolemy.actor.IOPort;
+
 import java.util.Iterator;
 import java.util.Vector;
-
-import ptolemy.actor.IOPort;
 
 
 //////////////////////////////////////////////////////////////////////////

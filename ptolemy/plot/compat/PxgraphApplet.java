@@ -31,14 +31,14 @@ COPYRIGHTENDKEY
 */
 package ptolemy.plot.compat;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-
 import ptolemy.plot.CmdLineArgException;
 import ptolemy.plot.Plot;
 import ptolemy.plot.PlotApplet;
 import ptolemy.plot.PlotBox;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 
 
 //////////////////////////////////////////////////////////////////////////

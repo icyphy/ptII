@@ -31,9 +31,9 @@ COPYRIGHTENDKEY
 package ptolemy.apps.cacheAwareScheduler.kernel;
 
 // Ptolemy imports
-import java.util.ArrayList;
-
 import ptolemy.kernel.util.IllegalActionException;
+
+import java.util.ArrayList;
 
 ///////////////////////////////////////////////////////////////////////////
 //// ScratchpadMemory

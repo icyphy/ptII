@@ -25,13 +25,13 @@
 */
 package diva.gui;
 
+import diva.util.ModelParser;
+import diva.util.ModelWriter;
+
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.net.URL;
-
-import diva.util.ModelParser;
-import diva.util.ModelWriter;
 
 
 /**

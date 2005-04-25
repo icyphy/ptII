@@ -25,13 +25,13 @@
 */
 package ptolemy.graph.analysis.strategy;
 
-import java.util.Iterator;
-
 import ptolemy.graph.DirectedGraph;
 import ptolemy.graph.Edge;
 import ptolemy.graph.Graph;
 import ptolemy.graph.Node;
 import ptolemy.graph.analysis.analyzer.TransitiveClosureAnalyzer;
+
+import java.util.Iterator;
 
 
 //////////////////////////////////////////////////////////////////////////

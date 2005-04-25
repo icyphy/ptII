@@ -31,6 +31,17 @@
  */
 package diva.canvas.tutorial;
 
+import diva.canvas.AbstractFigure;
+import diva.canvas.FigureLayer;
+import diva.canvas.GraphicsPane;
+import diva.canvas.JCanvas;
+import diva.canvas.interactor.BoundsManipulator;
+import diva.canvas.interactor.SelectionInteractor;
+import diva.canvas.toolbox.BasicController;
+import diva.canvas.toolbox.ImageFigure;
+import diva.gui.BasicFrame;
+import diva.util.java2d.ShapeUtilities;
+
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -44,17 +55,6 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 
 import javax.swing.SwingUtilities;
-
-import diva.canvas.AbstractFigure;
-import diva.canvas.FigureLayer;
-import diva.canvas.GraphicsPane;
-import diva.canvas.JCanvas;
-import diva.canvas.interactor.BoundsManipulator;
-import diva.canvas.interactor.SelectionInteractor;
-import diva.canvas.toolbox.BasicController;
-import diva.canvas.toolbox.ImageFigure;
-import diva.gui.BasicFrame;
-import diva.util.java2d.ShapeUtilities;
 
 
 /** An example showing how to make custom figures.

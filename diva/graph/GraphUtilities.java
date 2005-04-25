@@ -25,12 +25,12 @@
 */
 package diva.graph;
 
+import diva.util.Filter;
+import diva.util.FilteredIterator;
+
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
-
-import diva.util.Filter;
-import diva.util.FilteredIterator;
 
 
 /**

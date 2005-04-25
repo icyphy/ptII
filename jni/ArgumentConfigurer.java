@@ -27,16 +27,16 @@ COPYRIGHTENDKEY
 */
 package jni;
 
+import ptolemy.gui.Query;
+import ptolemy.gui.QueryListener;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.util.MessageHandler;
+
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
 import javax.swing.BoxLayout;
-
-import ptolemy.gui.Query;
-import ptolemy.gui.QueryListener;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.util.MessageHandler;
 
 
 //////////////////////////////////////////////////////////////////////////

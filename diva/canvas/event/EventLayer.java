@@ -26,13 +26,13 @@
   */
 package diva.canvas.event;
 
+import diva.canvas.CanvasLayer;
+import diva.canvas.interactor.Interactor;
+
 import java.awt.AWTEvent;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Iterator;
-
-import diva.canvas.CanvasLayer;
-import diva.canvas.interactor.Interactor;
 
 
 /** An event layer is a canvas layer that accepts mouse events.

@@ -27,13 +27,14 @@ COPYRIGHTENDKEY
 */
 package ptolemy.vergil.toolbox;
 
-import java.awt.geom.Rectangle2D;
-
 import ptolemy.actor.IOPort;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.StringAttribute;
+
 import diva.canvas.AbstractSite;
 import diva.canvas.Figure;
+
+import java.awt.geom.Rectangle2D;
 
 
 /**

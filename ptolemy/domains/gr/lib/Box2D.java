@@ -27,12 +27,13 @@ COPYRIGHTENDKEY
 */
 package ptolemy.domains.gr.lib;
 
-import java.awt.geom.Rectangle2D;
-
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+
 import diva.canvas.toolbox.BasicFigure;
+
+import java.awt.geom.Rectangle2D;
 
 
 //////////////////////////////////////////////////////////////////////////

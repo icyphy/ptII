@@ -35,6 +35,7 @@ import ptolemy.domains.gr.kernel.Scene2DToken;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+
 import diva.canvas.CompositeFigure;
 import diva.canvas.Figure;
 

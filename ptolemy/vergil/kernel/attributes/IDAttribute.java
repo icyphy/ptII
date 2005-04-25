@@ -27,9 +27,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.vergil.kernel.attributes;
 
-import java.text.DateFormat;
-import java.util.Date;
-
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.SingletonParameter;
 import ptolemy.kernel.Entity;
@@ -45,6 +42,9 @@ import ptolemy.kernel.util.SingletonAttribute;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.util.StringUtilities;
 import ptolemy.vergil.icon.BoxedValuesIcon;
+
+import java.text.DateFormat;
+import java.util.Date;
 
 
 //////////////////////////////////////////////////////////////////////////

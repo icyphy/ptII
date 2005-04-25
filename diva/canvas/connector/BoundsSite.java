@@ -26,12 +26,12 @@
   */
 package diva.canvas.connector;
 
+import diva.canvas.AbstractSite;
+import diva.canvas.Figure;
+
 import java.awt.geom.Rectangle2D;
 
 import javax.swing.SwingConstants;
-
-import diva.canvas.AbstractSite;
-import diva.canvas.Figure;
 
 
 /** A site that locates itself on the bounds of a figure's shape.

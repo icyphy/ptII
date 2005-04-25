@@ -27,11 +27,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.data.type;
 
-import java.io.Serializable;
-import java.lang.reflect.Modifier;
-import java.util.HashMap;
-import java.util.Map;
-
 import ptolemy.data.BooleanToken;
 import ptolemy.data.ComplexToken;
 import ptolemy.data.DoubleToken;
@@ -47,6 +42,11 @@ import ptolemy.data.UnsignedByteToken;
 import ptolemy.data.XMLToken;
 import ptolemy.graph.CPO;
 import ptolemy.kernel.util.IllegalActionException;
+
+import java.io.Serializable;
+import java.lang.reflect.Modifier;
+import java.util.HashMap;
+import java.util.Map;
 
 
 //////////////////////////////////////////////////////////////////////////

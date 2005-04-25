@@ -28,12 +28,12 @@ COPYRIGHTENDKEY
 */
 package ptolemy.data;
 
-import org.w3c.dom.Document;
-
 import ptolemy.data.expr.XMLParser;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
+
+import org.w3c.dom.Document;
 
 
 //////////////////////////////////////////////////////////////////////////

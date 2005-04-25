@@ -26,12 +26,6 @@
   */
 package diva.canvas.connector;
 
-import java.awt.Graphics2D;
-import java.awt.Shape;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
-
 import diva.canvas.AbstractFigure;
 import diva.canvas.CanvasComponent;
 import diva.canvas.CanvasLayer;
@@ -40,6 +34,12 @@ import diva.canvas.Figure;
 import diva.canvas.Site;
 import diva.canvas.TransformContext;
 import diva.canvas.interactor.Interactor;
+
+import java.awt.Graphics2D;
+import java.awt.Shape;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 
 
 /** A TerminalFigure decorates a figure to be a terminal as well.  Using this

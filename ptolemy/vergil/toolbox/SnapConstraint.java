@@ -27,9 +27,9 @@ COPYRIGHTENDKEY
 */
 package ptolemy.vergil.toolbox;
 
-import java.awt.geom.Point2D;
-
 import diva.canvas.interactor.PointConstraint;
+
+import java.awt.geom.Point2D;
 
 
 /**

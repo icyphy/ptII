@@ -26,6 +26,38 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.gui;
 
+import ptolemy.actor.Actor;
+import ptolemy.actor.IOPort;
+import ptolemy.actor.TypeAttribute;
+import ptolemy.actor.TypedActor;
+import ptolemy.actor.TypedIOPort;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.Token;
+import ptolemy.data.expr.ASTPtRootNode;
+import ptolemy.data.expr.Constants;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.ParseTreeEvaluator;
+import ptolemy.data.expr.PtParser;
+import ptolemy.data.unit.ParseException;
+import ptolemy.data.unit.UnitAttribute;
+import ptolemy.data.unit.UnitExpr;
+import ptolemy.data.unit.UnitLibrary;
+import ptolemy.kernel.Entity;
+import ptolemy.kernel.Port;
+import ptolemy.kernel.undo.UndoChangeRequest;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.ChangeListener;
+import ptolemy.kernel.util.ChangeRequest;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.StringAttribute;
+import ptolemy.moml.MoMLChangeRequest;
+import ptolemy.util.MessageHandler;
+import ptolemy.util.StringUtilities;
+import ptolemy.vergil.basic.LocatableNodeController;
+import ptolemy.vergil.kernel.VergilUtilities;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -65,38 +97,6 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
-
-import ptolemy.actor.Actor;
-import ptolemy.actor.IOPort;
-import ptolemy.actor.TypeAttribute;
-import ptolemy.actor.TypedActor;
-import ptolemy.actor.TypedIOPort;
-import ptolemy.data.BooleanToken;
-import ptolemy.data.Token;
-import ptolemy.data.expr.ASTPtRootNode;
-import ptolemy.data.expr.Constants;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.expr.ParseTreeEvaluator;
-import ptolemy.data.expr.PtParser;
-import ptolemy.data.unit.ParseException;
-import ptolemy.data.unit.UnitAttribute;
-import ptolemy.data.unit.UnitExpr;
-import ptolemy.data.unit.UnitLibrary;
-import ptolemy.kernel.Entity;
-import ptolemy.kernel.Port;
-import ptolemy.kernel.undo.UndoChangeRequest;
-import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.ChangeListener;
-import ptolemy.kernel.util.ChangeRequest;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.StringAttribute;
-import ptolemy.moml.MoMLChangeRequest;
-import ptolemy.util.MessageHandler;
-import ptolemy.util.StringUtilities;
-import ptolemy.vergil.basic.LocatableNodeController;
-import ptolemy.vergil.kernel.VergilUtilities;
 
 
 //////////////////////////////////////////////////////////////////////////

@@ -29,8 +29,6 @@ review output port.
 */
 package ptolemy.copernicus.java.test;
 
-import java.util.ArrayList;
-
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.Test;
 import ptolemy.data.ArrayToken;
@@ -40,6 +38,8 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+
+import java.util.ArrayList;
 
 
 //////////////////////////////////////////////////////////////////////////

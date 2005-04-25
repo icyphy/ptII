@@ -27,9 +27,9 @@ COPYRIGHTENDKEY
 */
 package ptolemy.vergil.kernel;
 
-import javax.swing.UIManager;
-
 import ptolemy.util.StringUtilities;
+
+import javax.swing.UIManager;
 
 
 //////////////////////////////////////////////////////////////////////////

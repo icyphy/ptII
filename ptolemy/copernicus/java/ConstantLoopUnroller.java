@@ -26,10 +26,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.copernicus.java;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
 import soot.Body;
 import soot.BodyTransformer;
 import soot.Local;
@@ -52,6 +48,10 @@ import soot.toolkits.graph.CompleteUnitGraph;
 import soot.toolkits.scalar.SimpleLiveLocals;
 import soot.toolkits.scalar.SimpleLocalDefs;
 import soot.util.Chain;
+
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 
 //////////////////////////////////////////////////////////////////////////

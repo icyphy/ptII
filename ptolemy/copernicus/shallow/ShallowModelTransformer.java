@@ -26,12 +26,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.copernicus.shallow;
 
-import java.lang.reflect.Constructor;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
-
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.TypedIORelation;
@@ -54,6 +48,7 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLParser;
 import ptolemy.util.StringUtilities;
+
 import soot.Body;
 import soot.HasPhaseOptions;
 import soot.Hierarchy;
@@ -77,6 +72,12 @@ import soot.jimple.StringConstant;
 import soot.jimple.toolkits.scalar.LocalNameStandardizer;
 import soot.toolkits.scalar.LocalSplitter;
 import soot.util.Chain;
+
+import java.lang.reflect.Constructor;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
 
 
 //////////////////////////////////////////////////////////////////////////

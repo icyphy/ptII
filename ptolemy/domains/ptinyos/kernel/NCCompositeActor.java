@@ -28,7 +28,6 @@ COPYRIGHTENDKEY
 
 package ptolemy.domains.ptinyos.kernel;
 
-import ptolemy.actor.Director;
 import ptolemy.actor.CompositeActor;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;

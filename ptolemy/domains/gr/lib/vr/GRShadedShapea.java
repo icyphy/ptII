@@ -27,19 +27,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.domains.gr.lib.vr;
 
-import java.net.URL;
-
-import javax.media.j3d.Appearance;
-import javax.media.j3d.ColoringAttributes;
-import javax.media.j3d.LineAttributes;
-import javax.media.j3d.Material;
-import javax.media.j3d.PolygonAttributes;
-import javax.media.j3d.Texture;
-import javax.media.j3d.Texture3D;
-import javax.media.j3d.TextureAttributes;
-import javax.media.j3d.TransparencyAttributes;
-import javax.vecmath.Color3f;
-
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.actor.parameters.DoubleRangeParameter;
@@ -58,6 +45,19 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
 import com.sun.j3d.utils.image.TextureLoader;
+
+import java.net.URL;
+
+import javax.media.j3d.Appearance;
+import javax.media.j3d.ColoringAttributes;
+import javax.media.j3d.LineAttributes;
+import javax.media.j3d.Material;
+import javax.media.j3d.PolygonAttributes;
+import javax.media.j3d.Texture;
+import javax.media.j3d.Texture3D;
+import javax.media.j3d.TextureAttributes;
+import javax.media.j3d.TransparencyAttributes;
+import javax.vecmath.Color3f;
 
 
 //////////////////////////////////////////////////////////////////////////

@@ -27,8 +27,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.lib;
 
-import java.util.Random;
-
 import ptolemy.data.LongToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
@@ -36,6 +34,8 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
+
+import java.util.Random;
 
 
 //////////////////////////////////////////////////////////////////////////

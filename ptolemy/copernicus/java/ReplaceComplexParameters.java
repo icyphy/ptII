@@ -26,22 +26,19 @@ COPYRIGHTENDKEY
 */
 package ptolemy.copernicus.java;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Map;
-
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.copernicus.kernel.SootUtilities;
 import ptolemy.data.expr.Parameter;
-import ptolemy.moml.SharedParameter;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringAttribute;
+import ptolemy.moml.SharedParameter;
+
 import soot.Body;
 import soot.FastHierarchy;
 import soot.HasPhaseOptions;
@@ -63,6 +60,10 @@ import soot.jimple.CastExpr;
 import soot.jimple.InstanceFieldRef;
 import soot.jimple.InstanceInvokeExpr;
 import soot.jimple.NewExpr;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Map;
 
 
 //////////////////////////////////////////////////////////////////////////

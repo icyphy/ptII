@@ -25,10 +25,10 @@
 */
 package diva.graph.modular;
 
-import java.util.Iterator;
-
 import diva.util.PropertyContainer;
 import diva.util.SemanticObjectContainer;
+
+import java.util.Iterator;
 
 
 /**

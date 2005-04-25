@@ -26,16 +26,16 @@ COPYRIGHTENDKEY
 */
 package ptolemy.copernicus.kernel;
 
-import java.io.File;
-import java.util.Iterator;
-import java.util.Map;
-
 import soot.HasPhaseOptions;
 import soot.PhaseOptions;
 import soot.Printer;
 import soot.Scene;
 import soot.SceneTransformer;
 import soot.SootClass;
+
+import java.io.File;
+import java.util.Iterator;
+import java.util.Map;
 
 
 //////////////////////////////////////////////////////////////////////////

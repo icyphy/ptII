@@ -25,16 +25,16 @@
 */
 package diva.canvas.interactor;
 
-import java.awt.Graphics2D;
-import java.awt.geom.Rectangle2D;
-import java.util.ArrayList;
-import java.util.Iterator;
-
 import diva.canvas.CanvasUtilities;
 import diva.canvas.DamageRegion;
 import diva.canvas.Figure;
 import diva.canvas.FigureDecorator;
 import diva.canvas.event.MouseFilter;
+
+import java.awt.Graphics2D;
+import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 
 /**

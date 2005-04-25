@@ -26,9 +26,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.domains.fsm.modal;
 
-import java.lang.reflect.Constructor;
-import java.util.Iterator;
-
 import ptolemy.actor.Director;
 import ptolemy.actor.util.FunctionDependency;
 import ptolemy.data.expr.StringParameter;
@@ -46,6 +43,9 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.util.MessageHandler;
+
+import java.lang.reflect.Constructor;
+import java.util.Iterator;
 
 
 //////////////////////////////////////////////////////////////////////////

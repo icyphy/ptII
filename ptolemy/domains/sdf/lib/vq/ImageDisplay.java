@@ -27,12 +27,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.domains.sdf.lib.vq;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Container;
-
-import javax.swing.JFrame;
-
 import ptolemy.actor.gui.Placeable;
 import ptolemy.actor.lib.Sink;
 import ptolemy.data.IntMatrixToken;
@@ -41,6 +35,12 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.media.Picture;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Container;
+
+import javax.swing.JFrame;
 
 
 //////////////////////////////////////////////////////////////////////////

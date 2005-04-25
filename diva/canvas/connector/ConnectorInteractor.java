@@ -26,11 +26,6 @@
   */
 package diva.canvas.connector;
 
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Rectangle2D;
-import java.util.ArrayList;
-import java.util.Iterator;
-
 import diva.canvas.CanvasPane;
 import diva.canvas.Figure;
 import diva.canvas.FigureContainer;
@@ -42,6 +37,11 @@ import diva.canvas.interactor.GrabHandle;
 import diva.canvas.interactor.Manipulator;
 import diva.util.Filter;
 import diva.util.java2d.ShapeUtilities;
+
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 
 /** An interactor for dragging one end of a connector. This is a

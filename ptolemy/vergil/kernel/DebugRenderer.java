@@ -27,10 +27,10 @@ COPYRIGHTENDKEY
 */
 package ptolemy.vergil.kernel;
 
-import java.awt.Color;
-
 import diva.canvas.FigureDecorator;
 import diva.canvas.toolbox.BasicHighlighter;
+
+import java.awt.Color;
 
 
 //////////////////////////////////////////////////////////////////////////

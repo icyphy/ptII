@@ -27,13 +27,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.chic;
 
-import java.awt.Event;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
-import java.net.URL;
-
-import javax.swing.KeyStroke;
-
 import ptolemy.actor.gui.Configuration;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -42,8 +35,16 @@ import ptolemy.util.MessageHandler;
 import ptolemy.vergil.kernel.AttributeController;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
+
 import diva.graph.GraphController;
 import diva.gui.GUIUtilities;
+
+import java.awt.Event;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.net.URL;
+
+import javax.swing.KeyStroke;
 
 
 //////////////////////////////////////////////////////////////////////////

@@ -27,10 +27,10 @@ COPYRIGHTENDKEY
 */
 package ptolemy.domains.ct.kernel;
 
-import java.util.Iterator;
-
 import ptolemy.actor.sched.Schedule;
 import ptolemy.kernel.util.NamedObj;
+
+import java.util.Iterator;
 
 
 //////////////////////////////////////////////////////////////////////////

@@ -10,6 +10,9 @@ package com.microstar.xml.driver;
 
 
 //import org.xml.sax.Parser;
+import com.microstar.xml.XmlHandler;
+import com.microstar.xml.XmlParser;
+
 import java.io.IOException;
 import java.util.Enumeration;
 import java.util.Hashtable;
@@ -28,9 +31,6 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
-
-import com.microstar.xml.XmlHandler;
-import com.microstar.xml.XmlParser;
 
 /**
   * A SAX driver for Microstar's &AElig;lfred XML parser.

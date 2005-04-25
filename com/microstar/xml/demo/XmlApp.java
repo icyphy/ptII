@@ -5,11 +5,11 @@
 
 package com.microstar.xml.demo;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-
 import com.microstar.xml.XmlHandler;
 import com.microstar.xml.XmlParser;
+
+import java.net.MalformedURLException;
+import java.net.URL;
 
 
 /**

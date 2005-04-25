@@ -26,6 +26,10 @@
   */
 package diva.canvas;
 
+import diva.canvas.event.EventAcceptor;
+import diva.canvas.event.LayerEvent;
+import diva.util.java2d.ShapeUtilities;
+
 import java.awt.AWTEvent;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -36,10 +40,6 @@ import java.awt.geom.Rectangle2D;
 import java.util.Iterator;
 
 import javax.swing.DefaultBoundedRangeModel;
-
-import diva.canvas.event.EventAcceptor;
-import diva.canvas.event.LayerEvent;
-import diva.util.java2d.ShapeUtilities;
 
 
 /** A canvas pane groups canvas layers. The layers all share the same

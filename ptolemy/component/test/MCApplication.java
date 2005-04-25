@@ -29,11 +29,6 @@
 
 package ptolemy.component.test;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.PrintStream;
-import java.io.StringWriter;
-
 import ptolemy.component.data.TupleToken;
 import ptolemy.data.IntToken;
 import ptolemy.kernel.CompositeEntity;
@@ -42,6 +37,11 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
+
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.io.StringWriter;
 
 
 //////////////////////////////////////////////////////////////////////////

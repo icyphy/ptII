@@ -27,14 +27,14 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.lib.security;
 
-import java.io.FileOutputStream;
-
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+
+import java.io.FileOutputStream;
 
 
 //////////////////////////////////////////////////////////////////////////

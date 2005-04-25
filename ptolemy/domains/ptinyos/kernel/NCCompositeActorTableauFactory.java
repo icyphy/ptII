@@ -28,7 +28,6 @@ COPYRIGHTENDKEY
 
 package ptolemy.domains.ptinyos.kernel;
 
-import ptolemy.actor.TypeOpaqueCompositeActor;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.Tableau;

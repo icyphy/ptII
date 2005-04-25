@@ -27,17 +27,17 @@ COPYRIGHTENDKEY
 */
 package ptolemy.vergil.kernel;
 
-import java.awt.Color;
-import java.awt.Stroke;
-import java.util.Hashtable;
-
-import javax.swing.SwingUtilities;
-
 import diva.canvas.Figure;
 import diva.canvas.FigureContainer;
 import diva.canvas.FigureDecorator;
 import diva.canvas.interactor.SelectionRenderer;
 import diva.canvas.toolbox.BasicHighlighter;
+
+import java.awt.Color;
+import java.awt.Stroke;
+import java.util.Hashtable;
+
+import javax.swing.SwingUtilities;
 
 
 //////////////////////////////////////////////////////////////////////////

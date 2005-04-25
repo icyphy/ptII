@@ -27,10 +27,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.domains.giotto.kernel;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.ListIterator;
-
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.sched.Firing;
@@ -43,6 +39,10 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
+
+import java.util.Comparator;
+import java.util.List;
+import java.util.ListIterator;
 
 
 //////////////////////////////////////////////////////////////////////////

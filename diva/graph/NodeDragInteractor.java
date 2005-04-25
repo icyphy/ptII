@@ -25,14 +25,14 @@
 */
 package diva.graph;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
-
 import diva.canvas.Figure;
 import diva.canvas.connector.Connector;
 import diva.canvas.event.LayerEvent;
 import diva.canvas.interactor.DragInteractor;
+
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 
 /**

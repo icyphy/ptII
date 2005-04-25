@@ -30,12 +30,12 @@ COPYRIGHTENDKEY
 */
 package ptolemy.copernicus.c;
 
-import java.io.File;
-import java.util.Iterator;
-
 import soot.RefLikeType;
 import soot.SootMethod;
 import soot.Type;
+
+import java.io.File;
+import java.util.Iterator;
 
 
 /** A class that handles generation and management of native methods. It

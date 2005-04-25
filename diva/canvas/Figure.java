@@ -26,13 +26,13 @@
   */
 package diva.canvas;
 
+import diva.canvas.interactor.Interactor;
+import diva.util.UserObjectContainer;
+
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-
-import diva.canvas.interactor.Interactor;
-import diva.util.UserObjectContainer;
 
 
 /** A Figure is a persistent object drawn on the screen.

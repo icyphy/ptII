@@ -27,11 +27,11 @@ COPYRIGHTENDKEY
 */
 package ptolemy.moml;
 
-import java.io.OutputStream;
-import java.io.PrintStream;
-
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NamedObj;
+
+import java.io.OutputStream;
+import java.io.PrintStream;
 
 
 //////////////////////////////////////////////////////////////////////////

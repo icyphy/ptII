@@ -28,9 +28,6 @@
 */
 package ptolemy.copernicus.java;
 
-import java.io.File;
-import java.net.URL;
-
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Manager;
 import ptolemy.data.IntToken;
@@ -41,6 +38,9 @@ import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.filter.BackwardCompatibility;
 import ptolemy.moml.filter.RemoveGraphicalClasses;
+
+import java.io.File;
+import java.net.URL;
 
 
 //////////////////////////////////////////////////////////////////////////

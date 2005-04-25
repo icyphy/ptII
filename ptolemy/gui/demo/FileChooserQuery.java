@@ -26,14 +26,14 @@ COPYRIGHTENDKEY
 */
 package ptolemy.gui.demo;
 
+import ptolemy.gui.Query;
+import ptolemy.gui.QueryListener;
+
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-
-import ptolemy.gui.Query;
-import ptolemy.gui.QueryListener;
 
 
 //////////////////////////////////////////////////////////////////////////

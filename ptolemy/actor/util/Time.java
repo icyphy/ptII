@@ -27,12 +27,12 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.util;
 
-import java.math.BigInteger;
-
 import ptolemy.actor.Director;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.math.ExtendedMath;
+
+import java.math.BigInteger;
 
 
 //////////////////////////////////////////////////////////////////////////

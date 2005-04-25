@@ -28,8 +28,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.lib.hoc;
 
-import java.util.Iterator;
-
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Variable;
@@ -40,6 +38,8 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
+
+import java.util.Iterator;
 
 
 //////////////////////////////////////////////////////////////////////////

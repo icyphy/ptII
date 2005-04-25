@@ -25,10 +25,10 @@
 */
 package diva.util.xml;
 
+import com.microstar.xml.XmlParser;
+
 import java.io.File;
 import java.net.URL;
-
-import com.microstar.xml.XmlParser;
 
 
 /**

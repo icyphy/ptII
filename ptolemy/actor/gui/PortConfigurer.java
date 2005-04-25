@@ -27,13 +27,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.gui;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
-import java.util.StringTokenizer;
-
-import javax.swing.BoxLayout;
-
 import ptolemy.actor.TypedIOPort;
 import ptolemy.gui.Query;
 import ptolemy.gui.QueryListener;
@@ -42,6 +35,13 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.StringUtilities;
+
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+import java.util.StringTokenizer;
+
+import javax.swing.BoxLayout;
 
 
 //////////////////////////////////////////////////////////////////////////

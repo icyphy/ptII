@@ -26,14 +26,10 @@ COPYRIGHTENDKEY
 */
 package ptolemy.copernicus.java;
 
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
 import ptolemy.actor.CompositeActor;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.copernicus.kernel.SootUtilities;
+
 import soot.FastHierarchy;
 import soot.HasPhaseOptions;
 import soot.Hierarchy;
@@ -50,6 +46,11 @@ import soot.jimple.Jimple;
 import soot.jimple.JimpleBody;
 import soot.jimple.ParameterRef;
 import soot.jimple.Stmt;
+
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 
 //////////////////////////////////////////////////////////////////////////

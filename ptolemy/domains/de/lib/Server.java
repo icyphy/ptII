@@ -27,8 +27,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.domains.de.lib;
 
-import java.util.LinkedList;
-
 import ptolemy.actor.util.Time;
 import ptolemy.actor.util.TimedEvent;
 import ptolemy.data.DoubleToken;
@@ -38,6 +36,8 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
+
+import java.util.LinkedList;
 
 
 //////////////////////////////////////////////////////////////////////////

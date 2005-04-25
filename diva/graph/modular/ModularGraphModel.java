@@ -25,10 +25,10 @@
 */
 package diva.graph.modular;
 
+import diva.graph.AbstractGraphModel;
+
 import java.util.Iterator;
 import java.util.LinkedList;
-
-import diva.graph.AbstractGraphModel;
 
 
 /**

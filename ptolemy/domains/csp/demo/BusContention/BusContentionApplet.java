@@ -27,17 +27,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.domains.csp.demo.BusContention;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.util.HashMap;
-
-import javax.swing.JPanel;
-import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
-import javax.swing.border.LineBorder;
-import javax.swing.border.TitledBorder;
-
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.gui.PtolemyApplet;
 import ptolemy.domains.csp.kernel.CSPDirector;
@@ -46,6 +35,7 @@ import ptolemy.kernel.util.DebugEvent;
 import ptolemy.kernel.util.DebugListener;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
+
 import diva.canvas.Figure;
 import diva.canvas.Site;
 import diva.canvas.connector.Arrowhead;
@@ -69,6 +59,17 @@ import diva.graph.basic.BasicGraphModel;
 import diva.graph.basic.BasicLayoutTarget;
 import diva.graph.layout.LayoutTarget;
 import diva.graph.layout.LevelLayout;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.util.HashMap;
+
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.border.LineBorder;
+import javax.swing.border.TitledBorder;
 
 
 //////////////////////////////////////////////////////////////////////////

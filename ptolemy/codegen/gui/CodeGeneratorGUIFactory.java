@@ -29,8 +29,6 @@ COPYRIGHTENDKEY
 package ptolemy.codegen.gui;
 
 // Ptolemy imports.
-import java.awt.Frame;
-
 import ptolemy.actor.gui.EditorFactory;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.Tableau;
@@ -41,6 +39,8 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+
+import java.awt.Frame;
 
 //////////////////////////////////////////////////////////////////////////
 //// CodeGeneratorGUIFactory

@@ -28,9 +28,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.domains.csp.kernel;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TimedDirector;
@@ -43,6 +40,9 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
+
+import java.util.LinkedList;
+import java.util.List;
 
 
 // Java imports.

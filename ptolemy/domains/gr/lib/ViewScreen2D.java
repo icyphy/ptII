@@ -27,17 +27,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.domains.gr.lib;
 
-import java.awt.Container;
-import java.awt.Cursor;
-import java.awt.Dimension;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Point2D;
-import java.util.Iterator;
-
-import javax.swing.JFrame;
-
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.actor.gui.Placeable;
@@ -51,6 +40,7 @@ import ptolemy.domains.gr.kernel.ViewScreenInterface;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+
 import diva.canvas.AbstractFigure;
 import diva.canvas.CanvasUtilities;
 import diva.canvas.Figure;
@@ -63,6 +53,17 @@ import diva.canvas.event.LayerEvent;
 import diva.canvas.event.LayerListener;
 import diva.canvas.event.LayerMotionListener;
 import diva.canvas.toolbox.BasicFigure;
+
+import java.awt.Container;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Point2D;
+import java.util.Iterator;
+
+import javax.swing.JFrame;
 
 
 //////////////////////////////////////////////////////////////////////////

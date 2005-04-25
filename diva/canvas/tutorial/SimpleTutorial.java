@@ -31,11 +31,6 @@
  */
 package diva.canvas.tutorial;
 
-import java.awt.Color;
-import java.awt.geom.GeneralPath;
-
-import javax.swing.SwingUtilities;
-
 import diva.canvas.Figure;
 import diva.canvas.FigureLayer;
 import diva.canvas.GraphicsPane;
@@ -44,6 +39,11 @@ import diva.canvas.toolbox.BasicFigure;
 import diva.canvas.toolbox.BasicRectangle;
 import diva.gui.BasicFrame;
 import diva.util.java2d.Polyline2D;
+
+import java.awt.Color;
+import java.awt.geom.GeneralPath;
+
+import javax.swing.SwingUtilities;
 
 
 /**

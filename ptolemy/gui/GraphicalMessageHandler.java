@@ -26,6 +26,9 @@ COPYRIGHTENDKEY
 */
 package ptolemy.gui;
 
+import ptolemy.util.MessageHandler;
+import ptolemy.util.StringUtilities;
+
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.EventQueue;
@@ -36,9 +39,6 @@ import java.lang.ref.WeakReference;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-
-import ptolemy.util.MessageHandler;
-import ptolemy.util.StringUtilities;
 
 
 //////////////////////////////////////////////////////////////////////////

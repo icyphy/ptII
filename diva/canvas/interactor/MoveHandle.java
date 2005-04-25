@@ -25,11 +25,11 @@
 */
 package diva.canvas.interactor;
 
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
-
 import diva.canvas.Site;
 import diva.canvas.toolbox.BasicRectangle;
+
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 
 
 /**

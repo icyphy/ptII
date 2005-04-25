@@ -28,9 +28,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.domains.dde.demo.LocalZeno;
 
-import ptolemy.actor.TypedAtomicActor;
-import ptolemy.actor.process.TerminateProcessException;
-import ptolemy.actor.process.ProcessDirector;
 import ptolemy.domains.dde.lib.Wire;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;

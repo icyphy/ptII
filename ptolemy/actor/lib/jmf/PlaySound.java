@@ -27,17 +27,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.lib.jmf;
 
-import java.io.IOException;
-
-import javax.media.Controller;
-import javax.media.ControllerEvent;
-import javax.media.ControllerListener;
-import javax.media.GainControl;
-import javax.media.Manager;
-import javax.media.MediaException;
-import javax.media.Player;
-import javax.media.Time;
-
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.parameters.IntRangeParameter;
@@ -50,6 +39,17 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+
+import java.io.IOException;
+
+import javax.media.Controller;
+import javax.media.ControllerEvent;
+import javax.media.ControllerListener;
+import javax.media.GainControl;
+import javax.media.Manager;
+import javax.media.MediaException;
+import javax.media.Player;
+import javax.media.Time;
 
 
 //////////////////////////////////////////////////////////////////////////

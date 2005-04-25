@@ -26,6 +26,18 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.gui;
 
+import ptolemy.data.expr.FileParameter;
+import ptolemy.gui.GraphicalMessageHandler;
+import ptolemy.gui.StatusBar;
+import ptolemy.gui.Top;
+import ptolemy.kernel.Entity;
+import ptolemy.kernel.util.Instantiable;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.Nameable;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.moml.MoMLParser;
+import ptolemy.util.MessageHandler;
+
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -45,18 +57,6 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
-
-import ptolemy.data.expr.FileParameter;
-import ptolemy.gui.GraphicalMessageHandler;
-import ptolemy.gui.StatusBar;
-import ptolemy.gui.Top;
-import ptolemy.kernel.Entity;
-import ptolemy.kernel.util.Instantiable;
-import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.Nameable;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.moml.MoMLParser;
-import ptolemy.util.MessageHandler;
 
 
 //////////////////////////////////////////////////////////////////////////

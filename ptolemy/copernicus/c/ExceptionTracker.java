@@ -29,13 +29,13 @@ ENHANCEMENTS, OR MODIFICATIONS.
 */
 package ptolemy.copernicus.c;
 
-import java.util.Iterator;
-import java.util.LinkedList;
-
 import soot.Body;
 import soot.Trap;
 import soot.Unit;
 import soot.util.Chain;
+
+import java.util.Iterator;
+import java.util.LinkedList;
 
 
 /** A class that keeps track of Exceptions and Traps.

@@ -26,14 +26,14 @@ COPYRIGHTENDKEY
 */
 package ptolemy.domains.ct.demo.Helicopter;
 
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.gui.ModelPane;
+import ptolemy.actor.gui.Placeable;
+
 import java.awt.GridLayout;
 import java.util.Iterator;
 
 import javax.swing.JPanel;
-
-import ptolemy.actor.CompositeActor;
-import ptolemy.actor.gui.ModelPane;
-import ptolemy.actor.gui.Placeable;
 
 
 //////////////////////////////////////////////////////////////////////////

@@ -26,11 +26,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.copernicus.kernel;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-
 import soot.Local;
 import soot.Modifier;
 import soot.RefType;
@@ -41,6 +36,11 @@ import soot.VoidType;
 import soot.jimple.Jimple;
 import soot.jimple.JimpleBody;
 import soot.util.Chain;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 
 //////////////////////////////////////////////////////////////////////////

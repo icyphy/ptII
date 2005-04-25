@@ -28,8 +28,6 @@
 */
 package diva.graph;
 
-import java.awt.geom.Rectangle2D;
-
 import diva.canvas.CanvasComponent;
 import diva.canvas.CompositeFigure;
 import diva.canvas.Figure;
@@ -48,6 +46,8 @@ import diva.canvas.interactor.BasicSelectionRenderer;
 import diva.canvas.interactor.Interactor;
 import diva.canvas.interactor.SelectionDragger;
 import diva.canvas.interactor.SelectionModel;
+
+import java.awt.geom.Rectangle2D;
 
 
 /**

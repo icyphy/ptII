@@ -25,11 +25,6 @@
 */
 package ptolemy.graph.analysis.strategy;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-
 import ptolemy.graph.DirectedGraph;
 import ptolemy.graph.Edge;
 import ptolemy.graph.Graph;
@@ -41,6 +36,11 @@ import ptolemy.graph.analysis.analyzer.MaximumProfitToCostRatioAnalyzer;
 import ptolemy.graph.mapping.ToDoubleMapMapping;
 import ptolemy.graph.mapping.ToDoubleMapping;
 import ptolemy.graph.mapping.ToIntMapping;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 
 
 //////////////////////////////////////////////////////////////////////////

@@ -26,12 +26,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.gui;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URL;
-import java.util.List;
-
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.attributes.URIAttribute;
@@ -47,6 +41,12 @@ import ptolemy.moml.ParserAttribute;
 import ptolemy.util.ClassUtilities;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
+
+import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URL;
+import java.util.List;
 
 
 //////////////////////////////////////////////////////////////////////////

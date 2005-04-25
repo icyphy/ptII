@@ -35,6 +35,7 @@ import ptolemy.copernicus.kernel.KernelMain;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.copernicus.kernel.UnusedFieldRemover;
 import ptolemy.copernicus.kernel.WatchDogTimer;
+
 import soot.Pack;
 import soot.PackManager;
 import soot.Scene;

@@ -26,18 +26,18 @@ COPYRIGHTENDKEY
 */
 package ptolemy.data.type;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
-
 import ptolemy.data.RecordToken;
 import ptolemy.data.Token;
 import ptolemy.graph.CPO;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 
 //////////////////////////////////////////////////////////////////////////

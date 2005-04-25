@@ -25,6 +25,9 @@
 */
 package diva.canvas.toolbox;
 
+import diva.canvas.AbstractFigure;
+import diva.canvas.CanvasUtilities;
+
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Shape;
@@ -32,9 +35,6 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.ImageObserver;
-
-import diva.canvas.AbstractFigure;
-import diva.canvas.CanvasUtilities;
 
 
 /**

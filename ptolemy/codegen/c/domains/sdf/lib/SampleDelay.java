@@ -27,14 +27,14 @@ COPYRIGHTENDKEY
 */
 package ptolemy.codegen.c.domains.sdf.lib;
 
-import java.util.List;
-
 import ptolemy.actor.IOPort;
 import ptolemy.codegen.c.actor.lib.CodeStream;
 import ptolemy.codegen.kernel.CCodeGeneratorHelper;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
+
+import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// SampleDelay

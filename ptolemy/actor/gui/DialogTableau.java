@@ -26,18 +26,18 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.gui;
 
-import java.awt.Frame;
-import java.lang.reflect.Constructor;
-import java.util.Iterator;
-
-import javax.swing.JFrame;
-
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.MessageHandler;
+
+import java.awt.Frame;
+import java.lang.reflect.Constructor;
+import java.util.Iterator;
+
+import javax.swing.JFrame;
 
 
 //////////////////////////////////////////////////////////////////////////

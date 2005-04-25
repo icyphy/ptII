@@ -28,6 +28,16 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.lib.jmf;
 
+import ptolemy.actor.gui.JNLPUtilities;
+import ptolemy.actor.lib.Source;
+import ptolemy.data.expr.FileParameter;
+import ptolemy.data.type.BaseType;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.KernelException;
+import ptolemy.kernel.util.NameDuplicationException;
+
 import java.io.File;
 import java.net.URL;
 
@@ -46,16 +56,6 @@ import javax.media.ResourceUnavailableEvent;
 import javax.media.control.FrameGrabbingControl;
 import javax.media.control.FramePositioningControl;
 import javax.media.protocol.DataSource;
-
-import ptolemy.actor.gui.JNLPUtilities;
-import ptolemy.actor.lib.Source;
-import ptolemy.data.expr.FileParameter;
-import ptolemy.data.type.BaseType;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.KernelException;
-import ptolemy.kernel.util.NameDuplicationException;
 
 
 

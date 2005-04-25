@@ -29,6 +29,9 @@ COPYRIGHTENDKEY
 
 package ptolemy.apps.softwalls;
 
+import ptolemy.data.expr.FileParameter;
+import ptolemy.kernel.util.IllegalActionException;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -37,9 +40,6 @@ import java.io.InputStreamReader;
 import java.io.Serializable;
 import java.net.URL;
 import java.util.StringTokenizer;
-
-import ptolemy.data.expr.FileParameter;
-import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
 //// ThreeDFunction

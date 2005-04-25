@@ -29,9 +29,9 @@
 */
 package ptolemy.caltrop.util;
 
-import java.util.AbstractList;
-
 import caltrop.interpreter.Context;
+
+import java.util.AbstractList;
 
 
 //////////////////////////////////////////////////////////////////////////

@@ -28,10 +28,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor;
 
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-
 import ptolemy.data.type.Type;
 import ptolemy.data.type.TypeLattice;
 import ptolemy.data.type.Typeable;
@@ -48,6 +44,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
+
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 
 //////////////////////////////////////////////////////////////////////////

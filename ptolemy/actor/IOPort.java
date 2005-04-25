@@ -36,15 +36,6 @@ Review sendInside, getInside, getWidthInside, transferInputs/Outputs, etc.
 */
 package ptolemy.actor;
 
-import java.io.IOException;
-import java.io.Writer;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-
 import ptolemy.actor.util.Time;
 import ptolemy.data.Token;
 import ptolemy.kernel.ComponentEntity;
@@ -59,6 +50,15 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
+
+import java.io.IOException;
+import java.io.Writer;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 
 //////////////////////////////////////////////////////////////////////////

@@ -26,6 +26,13 @@
   */
 package diva.canvas.toolbox;
 
+import diva.util.java2d.PaintedObject;
+import diva.util.java2d.PaintedPath;
+import diva.util.java2d.PaintedShape;
+import diva.util.java2d.PaintedString;
+import diva.util.java2d.Polygon2D;
+import diva.util.java2d.Polyline2D;
+
 import java.awt.Color;
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
@@ -37,13 +44,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.StringTokenizer;
-
-import diva.util.java2d.PaintedObject;
-import diva.util.java2d.PaintedPath;
-import diva.util.java2d.PaintedShape;
-import diva.util.java2d.PaintedString;
-import diva.util.java2d.Polygon2D;
-import diva.util.java2d.Polyline2D;
 
 
 /** A collection of utilities to help parsing graphics from strings

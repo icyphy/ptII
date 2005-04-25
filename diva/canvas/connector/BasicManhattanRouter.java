@@ -25,15 +25,15 @@
 */
 package diva.canvas.connector;
 
-import java.awt.Shape;
-import java.awt.geom.Point2D;
-
-import javax.swing.SwingUtilities;
-
 import diva.canvas.CanvasUtilities;
 import diva.canvas.Site;
 import diva.canvas.TransformContext;
 import diva.util.java2d.Polyline2D;
+
+import java.awt.Shape;
+import java.awt.geom.Point2D;
+
+import javax.swing.SwingUtilities;
 
 
 /**

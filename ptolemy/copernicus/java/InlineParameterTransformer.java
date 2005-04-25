@@ -26,11 +26,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.copernicus.java;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.util.ConstVariableModelAnalysis;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
@@ -49,6 +44,7 @@ import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.util.StringUtilities;
+
 import soot.HasPhaseOptions;
 import soot.Local;
 import soot.Modifier;
@@ -95,6 +91,11 @@ import soot.toolkits.scalar.SimpleLocalDefs;
 import soot.toolkits.scalar.SimpleLocalUses;
 import soot.toolkits.scalar.UnitValueBoxPair;
 import soot.toolkits.scalar.UnusedLocalEliminator;
+
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 
 //////////////////////////////////////////////////////////////////////////

@@ -28,12 +28,12 @@
 */
 package ptolemy.copernicus.java;
 
-import java.util.Iterator;
-import java.util.List;
-
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Manager;
 import ptolemy.kernel.util.KernelException;
+
+import java.util.Iterator;
+import java.util.List;
 
 
 /////////////////////////////////////////////////////////////////

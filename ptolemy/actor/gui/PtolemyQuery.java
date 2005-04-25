@@ -28,19 +28,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.gui;
 
-import java.awt.Color;
-import java.awt.Window;
-import java.io.File;
-import java.net.URI;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
-import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
-
 import ptolemy.actor.gui.style.ParameterEditorStyle;
 import ptolemy.actor.parameters.DoubleRangeParameter;
 import ptolemy.actor.parameters.FilePortParameter;
@@ -72,6 +59,19 @@ import ptolemy.moml.ErrorHandler;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLParser;
 import ptolemy.util.StringUtilities;
+
+import java.awt.Color;
+import java.awt.Window;
+import java.io.File;
+import java.net.URI;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 
 //////////////////////////////////////////////////////////////////////////

@@ -26,14 +26,11 @@ COPYRIGHTENDKEY
 */
 package ptolemy.copernicus.java;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
 import ptolemy.actor.CompositeActor;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.copernicus.kernel.SootUtilities;
 import ptolemy.data.Token;
+
 import soot.ArrayType;
 import soot.HasPhaseOptions;
 import soot.Local;
@@ -63,6 +60,10 @@ import soot.jimple.toolkits.scalar.Evaluator;
 import soot.toolkits.graph.CompleteUnitGraph;
 import soot.toolkits.scalar.LocalDefs;
 import soot.toolkits.scalar.SimpleLocalDefs;
+
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 
 //////////////////////////////////////////////////////////////////////////

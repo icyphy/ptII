@@ -27,8 +27,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.lib.colt;
 
-import java.util.Iterator;
-
 import ptolemy.actor.lib.Source;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.LongToken;
@@ -41,12 +39,15 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.SharedParameter;
+
 import cern.jet.random.engine.DRand;
 import cern.jet.random.engine.MersenneTwister;
 import edu.cornell.lassp.houle.RngPack.RandomElement;
 import edu.cornell.lassp.houle.RngPack.Ranecu;
 import edu.cornell.lassp.houle.RngPack.Ranlux;
 import edu.cornell.lassp.houle.RngPack.Ranmar;
+
+import java.util.Iterator;
 
 
 //////////////////////////////////////////////////////////////////////////

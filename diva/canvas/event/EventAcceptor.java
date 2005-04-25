@@ -26,9 +26,9 @@
   */
 package diva.canvas.event;
 
-import java.awt.AWTEvent;
-
 import diva.canvas.CanvasComponent;
+
+import java.awt.AWTEvent;
 
 
 /** An event acceptor is a canvas component object that is prepared to accept

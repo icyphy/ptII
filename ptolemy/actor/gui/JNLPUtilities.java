@@ -27,14 +27,14 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.gui;
 
+import ptolemy.util.ClassUtilities;
+import ptolemy.util.FileUtilities;
+import ptolemy.util.StringUtilities;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
-
-import ptolemy.util.ClassUtilities;
-import ptolemy.util.FileUtilities;
-import ptolemy.util.StringUtilities;
 
 
 //////////////////////////////////////////////////////////////////////////

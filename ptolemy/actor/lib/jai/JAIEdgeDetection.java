@@ -26,10 +26,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.lib.jai;
 
-import javax.media.jai.JAI;
-import javax.media.jai.KernelJAI;
-import javax.media.jai.RenderedOp;
-
 import ptolemy.actor.lib.Transformer;
 import ptolemy.data.DoubleMatrixToken;
 import ptolemy.data.expr.Parameter;
@@ -39,6 +35,10 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
+
+import javax.media.jai.JAI;
+import javax.media.jai.KernelJAI;
+import javax.media.jai.RenderedOp;
 
 
 //////////////////////////////////////////////////////////////////////////

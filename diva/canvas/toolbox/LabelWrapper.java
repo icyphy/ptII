@@ -26,6 +26,10 @@
   */
 package diva.canvas.toolbox;
 
+import diva.canvas.AbstractFigure;
+import diva.canvas.CanvasUtilities;
+import diva.canvas.Figure;
+
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
@@ -33,10 +37,6 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 import javax.swing.SwingConstants;
-
-import diva.canvas.AbstractFigure;
-import diva.canvas.CanvasUtilities;
-import diva.canvas.Figure;
 
 
 /** A LabelWrapper is a figure that attaches a label to some other figure.

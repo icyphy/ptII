@@ -27,10 +27,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.vergil.kernel.attributes;
 
-import java.awt.Color;
-import java.awt.Shape;
-import java.awt.geom.Rectangle2D;
-
 import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
@@ -46,6 +42,10 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.vergil.icon.ShapeIcon;
+
+import java.awt.Color;
+import java.awt.Shape;
+import java.awt.geom.Rectangle2D;
 
 
 //////////////////////////////////////////////////////////////////////////

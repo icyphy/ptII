@@ -31,15 +31,6 @@
  */
 package diva.canvas.tutorial;
 
-import java.awt.AlphaComposite;
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Shape;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Rectangle2D;
-
-import javax.swing.SwingUtilities;
-
 import diva.canvas.AbstractFigure;
 import diva.canvas.Figure;
 import diva.canvas.FigureLayer;
@@ -50,6 +41,15 @@ import diva.canvas.interactor.DragInteractor;
 import diva.canvas.interactor.Interactor;
 import diva.gui.BasicFrame;
 import diva.util.java2d.ShapeUtilities;
+
+import java.awt.AlphaComposite;
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Shape;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
+
+import javax.swing.SwingUtilities;
 
 
 /** This tutorial shows how to make custom figures that contain

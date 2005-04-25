@@ -25,10 +25,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 */
 package ptolemy.data.expr;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.FunctionType;
@@ -40,6 +36,10 @@ import ptolemy.data.type.UnsizedMatrixType;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 
 //////////////////////////////////////////////////////////////////////////

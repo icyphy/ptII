@@ -28,12 +28,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.data.expr;
 
-import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.TreeMap;
-
 import ptolemy.data.BooleanToken;
 import ptolemy.data.ComplexToken;
 import ptolemy.data.DoubleToken;
@@ -49,6 +43,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.math.Complex;
 import ptolemy.util.StringUtilities;
+
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.TreeMap;
 
 
 //////////////////////////////////////////////////////////////////////////

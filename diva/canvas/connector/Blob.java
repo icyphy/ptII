@@ -26,6 +26,8 @@
   */
 package diva.canvas.connector;
 
+import diva.util.java2d.Polygon2D;
+
 import java.awt.BasicStroke;
 import java.awt.Graphics2D;
 import java.awt.Shape;
@@ -34,8 +36,6 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-
-import diva.util.java2d.Polygon2D;
 
 
 /** An object that draws a blob of some kind on the end of

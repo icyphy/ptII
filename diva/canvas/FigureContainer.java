@@ -26,9 +26,9 @@
   */
 package diva.canvas;
 
-import java.awt.geom.Rectangle2D;
-
 import diva.util.Filter;
+
+import java.awt.geom.Rectangle2D;
 
 
 /** The FigureContainer interface is implemented by any

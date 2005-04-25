@@ -29,9 +29,9 @@ COPYRIGHTENDKEY
 */
 package ptolemy.kernel.util.test;
 
-import java.util.List;
-
 import ptolemy.kernel.util.InvalidStateException;
+
+import java.util.List;
 
 
 public class AccessThread extends Thread {

@@ -25,8 +25,6 @@
 */
 package diva.graph.basic;
 
-import java.awt.event.InputEvent;
-
 import diva.canvas.event.LayerEvent;
 import diva.canvas.event.MouseFilter;
 import diva.canvas.interactor.AbstractInteractor;
@@ -38,6 +36,8 @@ import diva.graph.GraphPane;
 import diva.graph.NodeController;
 import diva.graph.NodeInteractor;
 import diva.graph.SimpleGraphController;
+
+import java.awt.event.InputEvent;
 
 
 /**

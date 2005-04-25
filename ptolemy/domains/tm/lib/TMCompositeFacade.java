@@ -27,8 +27,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.domains.tm.lib;
 
-import java.util.Iterator;
-
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedCompositeActor;
@@ -43,6 +41,8 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.PtolemyThread;
+
+import java.util.Iterator;
 
 
 //////////////////////////////////////////////////////////////////////////

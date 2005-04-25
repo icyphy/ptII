@@ -27,13 +27,13 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.util;
 
-import java.util.Iterator;
-import java.util.LinkedList;
-
 import ptolemy.kernel.util.DebugListener;
 import ptolemy.kernel.util.Debuggable;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.InvalidStateException;
+
+import java.util.Iterator;
+import java.util.LinkedList;
 
 
 ///////////////////////////////////////////////////////////////////

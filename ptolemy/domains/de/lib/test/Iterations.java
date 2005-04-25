@@ -27,8 +27,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.domains.de.lib.test;
 
-import java.util.Iterator;
-
 import ptolemy.actor.Manager;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.lib.Recorder;
@@ -37,6 +35,8 @@ import ptolemy.data.Token;
 import ptolemy.domains.de.kernel.DEDirector;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.Workspace;
+
+import java.util.Iterator;
 
 
 //////////////////////////////////////////////////////////////////////////

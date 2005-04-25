@@ -30,6 +30,7 @@ package ptolemy.vergil.basic;
 import ptolemy.vergil.toolbox.ConfigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
 import ptolemy.vergil.toolbox.PtolemyMenuFactory;
+
 import diva.canvas.event.MouseFilter;
 import diva.canvas.interactor.ActionInteractor;
 import diva.canvas.interactor.SelectionModel;

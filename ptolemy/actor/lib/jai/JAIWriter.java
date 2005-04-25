@@ -28,13 +28,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.lib.jai;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-
-import javax.media.jai.RenderedOp;
-
 import ptolemy.actor.lib.Sink;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.FileParameter;
@@ -48,6 +41,13 @@ import ptolemy.util.MessageHandler;
 import com.sun.media.jai.codec.ImageCodec;
 import com.sun.media.jai.codec.ImageEncodeParam;
 import com.sun.media.jai.codec.ImageEncoder;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+import javax.media.jai.RenderedOp;
 
 
 //////////////////////////////////////////////////////////////////////////

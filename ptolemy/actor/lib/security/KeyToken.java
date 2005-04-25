@@ -27,13 +27,13 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.lib.security;
 
-import java.io.Serializable;
-import java.security.Key;
-
 import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
+
+import java.io.Serializable;
+import java.security.Key;
 
 
 //////////////////////////////////////////////////////////////////////////

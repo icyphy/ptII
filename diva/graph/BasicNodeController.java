@@ -28,9 +28,6 @@
 */
 package diva.graph;
 
-import java.awt.geom.Point2D;
-import java.util.Iterator;
-
 import diva.canvas.CanvasComponent;
 import diva.canvas.CanvasUtilities;
 import diva.canvas.CompositeFigure;
@@ -40,6 +37,9 @@ import diva.canvas.FigureDecorator;
 import diva.canvas.FigureLayer;
 import diva.canvas.interactor.Interactor;
 import diva.canvas.interactor.SelectionModel;
+
+import java.awt.geom.Point2D;
+import java.util.Iterator;
 
 
 /**

@@ -25,11 +25,11 @@
 */
 package diva.graph.toolbox;
 
-import java.util.Hashtable;
-
 import diva.canvas.Figure;
 import diva.graph.GraphController;
 import diva.graph.NodeRenderer;
+
+import java.util.Hashtable;
 
 
 /**

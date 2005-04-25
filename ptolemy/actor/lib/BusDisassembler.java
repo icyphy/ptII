@@ -29,14 +29,14 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.lib;
 
-import java.util.Iterator;
-
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.Token;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+
+import java.util.Iterator;
 
 
 //////////////////////////////////////////////////////////////////////////

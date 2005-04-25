@@ -27,14 +27,14 @@ ENHANCEMENTS, OR MODIFICATIONS.
 */
 package ptolemy.data.expr;
 
+import ptolemy.data.StringToken;
+import ptolemy.kernel.util.IllegalActionException;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.StringTokenizer;
-
-import ptolemy.data.StringToken;
-import ptolemy.kernel.util.IllegalActionException;
 
 
 //////////////////////////////////////////////////////////////////////////

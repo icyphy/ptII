@@ -27,14 +27,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.lib.gui;
 
-import java.awt.Container;
-import java.io.IOException;
-import java.io.Writer;
-import java.util.LinkedList;
-import java.util.List;
-
-import javax.swing.SwingUtilities;
-
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.gui.Configuration;
@@ -55,6 +47,14 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.Workspace;
+
+import java.awt.Container;
+import java.io.IOException;
+import java.io.Writer;
+import java.util.LinkedList;
+import java.util.List;
+
+import javax.swing.SwingUtilities;
 
 
 //////////////////////////////////////////////////////////////////////////

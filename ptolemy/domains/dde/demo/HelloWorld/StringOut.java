@@ -28,8 +28,6 @@
 */
 package ptolemy.domains.dde.demo.HelloWorld;
 
-import java.util.LinkedList;
-
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
@@ -37,6 +35,8 @@ import ptolemy.data.StringToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+
+import java.util.LinkedList;
 
 
 //////////////////////////////////////////////////////////////////////////

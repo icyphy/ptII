@@ -27,6 +27,14 @@ COPYRIGHTENDKEY
 */
 package ptolemy.domains.gr.lib;
 
+import ptolemy.data.IntToken;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.vergil.icon.ImageIcon;
+
+import com.sun.j3d.utils.universe.SimpleUniverse;
+
 import java.awt.GraphicsConfiguration;
 import java.awt.image.BufferedImage;
 
@@ -36,14 +44,6 @@ import javax.media.j3d.ImageComponent;
 import javax.media.j3d.ImageComponent2D;
 import javax.media.j3d.Raster;
 import javax.vecmath.Point3f;
-
-import ptolemy.data.IntToken;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.vergil.icon.ImageIcon;
-
-import com.sun.j3d.utils.universe.SimpleUniverse;
 
 
 //////////////////////////////////////////////////////////////////////////

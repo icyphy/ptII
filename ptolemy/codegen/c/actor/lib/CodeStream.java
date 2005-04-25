@@ -32,15 +32,15 @@
  */
 package ptolemy.codegen.c.actor.lib;
 
+import ptolemy.codegen.kernel.CCodeGeneratorHelper;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.util.FileUtilities;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Hashtable;
 import java.util.Iterator;
-
-import ptolemy.codegen.kernel.CCodeGeneratorHelper;
-import ptolemy.util.FileUtilities;
-import ptolemy.kernel.util.IllegalActionException;
 
 /**
  * @author Jackie

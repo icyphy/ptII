@@ -28,6 +28,14 @@ COPYRIGHTENDKEY
 */
 package ptolemy.hsif;
 
+import ptolemy.actor.gui.Effigy;
+import ptolemy.actor.gui.EffigyFactory;
+import ptolemy.actor.gui.JNLPUtilities;
+import ptolemy.actor.gui.MoMLApplication;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -36,14 +44,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
-
-import ptolemy.actor.gui.Effigy;
-import ptolemy.actor.gui.EffigyFactory;
-import ptolemy.actor.gui.JNLPUtilities;
-import ptolemy.actor.gui.MoMLApplication;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
 
 
 //////////////////////////////////////////////////////////////////////////

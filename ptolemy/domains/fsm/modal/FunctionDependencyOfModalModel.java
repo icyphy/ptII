@@ -28,9 +28,6 @@
 */
 package ptolemy.domains.fsm.modal;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.util.FunctionDependencyOfCompositeActor;
@@ -38,6 +35,9 @@ import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.util.MessageHandler;
+
+import java.util.LinkedList;
+import java.util.List;
 
 
 //////////////////////////////////////////////////////////////////////////

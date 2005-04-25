@@ -27,13 +27,13 @@ COPYRIGHTENDKEY
 */
 package ptolemy.plot.demo;
 
+import ptolemy.plot.PlotLive;
+
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
-
-import ptolemy.plot.PlotLive;
 
 
 //////////////////////////////////////////////////////////////////////////

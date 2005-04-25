@@ -27,10 +27,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.domains.tm.kernel;
 
-import java.awt.Frame;
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.gui.Configuration;
@@ -47,6 +43,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.plot.Plot;
+
+import java.awt.Frame;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 
 //////////////////////////////////////////////////////////////////////////

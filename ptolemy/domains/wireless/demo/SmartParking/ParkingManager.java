@@ -28,11 +28,11 @@
 */
 package ptolemy.domains.wireless.demo.SmartParking;
 
-import java.util.HashSet;
-
 import ptolemy.data.IntToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.StringToken;
+
+import java.util.HashSet;
 
 //////////////////////////////////////////////////////////////////////////
 ///ParkingManager

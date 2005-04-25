@@ -27,18 +27,18 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.lib.jai;
 
+import ptolemy.data.ImageToken;
+import ptolemy.data.Token;
+import ptolemy.data.type.BaseType;
+import ptolemy.data.type.Type;
+import ptolemy.kernel.util.IllegalActionException;
+
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.awt.image.renderable.ParameterBlock;
 
 import javax.media.jai.JAI;
 import javax.media.jai.RenderedOp;
-
-import ptolemy.data.ImageToken;
-import ptolemy.data.Token;
-import ptolemy.data.type.BaseType;
-import ptolemy.data.type.Type;
-import ptolemy.kernel.util.IllegalActionException;
 
 
 //////////////////////////////////////////////////////////////////////////

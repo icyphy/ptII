@@ -26,13 +26,13 @@
   */
 package diva.canvas.event;
 
+import diva.canvas.CanvasLayer;
+import diva.canvas.Figure;
+
 import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
-
-import diva.canvas.CanvasLayer;
-import diva.canvas.Figure;
 
 
 /** The class representing mouse events in layers. This class extends

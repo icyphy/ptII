@@ -26,13 +26,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.gui;
 
-import java.awt.Frame;
-import java.net.URL;
-import java.util.Iterator;
-import java.util.List;
-
-import javax.swing.SwingUtilities;
-
 import ptolemy.actor.gui.style.StyleConfigurer;
 import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.Query;
@@ -46,6 +39,13 @@ import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.CancelException;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
+
+import java.awt.Frame;
+import java.net.URL;
+import java.util.Iterator;
+import java.util.List;
+
+import javax.swing.SwingUtilities;
 
 
 //////////////////////////////////////////////////////////////////////////

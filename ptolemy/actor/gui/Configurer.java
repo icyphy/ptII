@@ -27,6 +27,12 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.gui;
 
+import ptolemy.gui.CloseListener;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
+import ptolemy.moml.MoMLChangeRequest;
+import ptolemy.util.StringUtilities;
+
 import java.awt.Component;
 import java.awt.Window;
 import java.util.HashMap;
@@ -37,12 +43,6 @@ import java.util.List;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
-
-import ptolemy.gui.CloseListener;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Settable;
-import ptolemy.moml.MoMLChangeRequest;
-import ptolemy.util.StringUtilities;
 
 
 //////////////////////////////////////////////////////////////////////////

@@ -25,6 +25,10 @@
 */
 package diva.util.xml;
 
+import diva.util.Filter;
+import diva.util.FilteredIterator;
+import diva.util.IteratorUtilities;
+
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -33,10 +37,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-
-import diva.util.Filter;
-import diva.util.FilteredIterator;
-import diva.util.IteratorUtilities;
 
 
 /**

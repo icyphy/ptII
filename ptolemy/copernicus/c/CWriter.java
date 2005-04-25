@@ -27,15 +27,16 @@
 */
 package ptolemy.copernicus.c;
 
+import ptolemy.copernicus.kernel.MakefileWriter;
+
+import soot.Scene;
+import soot.SceneTransformer;
+import soot.SootClass;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
-
-import ptolemy.copernicus.kernel.MakefileWriter;
-import soot.Scene;
-import soot.SceneTransformer;
-import soot.SootClass;
 
 
 /** A transformer that writes C source code.

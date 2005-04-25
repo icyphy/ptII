@@ -29,13 +29,6 @@
 */
 package ptolemy.caltrop.ddi;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
@@ -47,6 +40,7 @@ import ptolemy.domains.csp.kernel.ConditionalBranchController;
 import ptolemy.domains.csp.kernel.ConditionalReceive;
 import ptolemy.domains.csp.kernel.ConditionalSend;
 import ptolemy.kernel.util.IllegalActionException;
+
 import caltrop.interpreter.ChannelID;
 import caltrop.interpreter.Context;
 import caltrop.interpreter.ExprEvaluator;
@@ -61,6 +55,13 @@ import caltrop.interpreter.ast.PortDecl;
 import caltrop.interpreter.ast.Statement;
 import caltrop.interpreter.environment.Environment;
 import caltrop.interpreter.util.PriorityUtil;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 //////////////////////////////////////////////////////////////////////////
 //// CSP

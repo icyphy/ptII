@@ -27,9 +27,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 */
 package ptolemy.data.expr;
 
-import java.util.List;
-import java.util.Set;
-
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BitwiseOperationToken;
 import ptolemy.data.BooleanToken;
@@ -44,6 +41,9 @@ import ptolemy.data.type.Type;
 import ptolemy.data.type.TypeLattice;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
+
+import java.util.List;
+import java.util.Set;
 
 
 //////////////////////////////////////////////////////////////////////////

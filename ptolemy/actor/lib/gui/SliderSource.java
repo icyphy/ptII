@@ -27,6 +27,18 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.lib.gui;
 
+import ptolemy.actor.gui.Placeable;
+import ptolemy.actor.lib.Source;
+import ptolemy.data.IntToken;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.StringAttribute;
+import ptolemy.kernel.util.Workspace;
+
 import java.awt.Color;
 import java.awt.Container;
 
@@ -39,18 +51,6 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-
-import ptolemy.actor.gui.Placeable;
-import ptolemy.actor.lib.Source;
-import ptolemy.data.IntToken;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.BaseType;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.StringAttribute;
-import ptolemy.kernel.util.Workspace;
 
 
 //////////////////////////////////////////////////////////////////////////

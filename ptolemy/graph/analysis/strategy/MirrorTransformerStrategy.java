@@ -24,15 +24,15 @@ ENHANCEMENTS, OR MODIFICATIONS.
 */
 package ptolemy.graph.analysis.strategy;
 
-import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.Iterator;
-
 import ptolemy.graph.Edge;
 import ptolemy.graph.Graph;
 import ptolemy.graph.Node;
 import ptolemy.graph.analysis.AnalysisException;
 import ptolemy.graph.analysis.analyzer.MirrorTransformer;
+
+import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Iterator;
 
 
 //////////////////////////////////////////////////////////////////////////

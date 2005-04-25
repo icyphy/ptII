@@ -27,13 +27,13 @@ COPYRIGHTENDKEY
 */
 package ptolemy.domains.wireless.kernel;
 
-import java.util.List;
-
 import ptolemy.actor.Actor;
 import ptolemy.data.RecordToken;
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Nameable;
+
+import java.util.List;
 
 
 //////////////////////////////////////////////////////////////////////////

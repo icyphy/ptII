@@ -25,11 +25,11 @@
 */
 package diva.gui;
 
+import diva.gui.toolbox.ListDataModel;
+
 import java.util.Iterator;
 
 import javax.swing.event.ListDataListener;
-
-import diva.gui.toolbox.ListDataModel;
 
 
 /**

@@ -27,8 +27,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.sched;
 
-import java.util.Iterator;
-
 import ptolemy.actor.Actor;
 import ptolemy.actor.Director;
 import ptolemy.actor.FiringEvent;
@@ -39,6 +37,8 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
+
+import java.util.Iterator;
 
 
 //////////////////////////////////////////////////////////////////////////

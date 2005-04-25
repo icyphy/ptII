@@ -26,13 +26,13 @@ COPYRIGHTENDKEY
 */
 package ptolemy.data.unit;
 
+import ptolemy.actor.IOPort;
+import ptolemy.kernel.ComponentEntity;
+
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Vector;
-
-import ptolemy.actor.IOPort;
-import ptolemy.kernel.ComponentEntity;
 
 
 //////////////////////////////////////////////////////////////////////////

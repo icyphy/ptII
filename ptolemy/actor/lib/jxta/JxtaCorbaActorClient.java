@@ -1,5 +1,24 @@
 package ptolemy.actor.lib.jxta;
 
+import ptolemy.actor.Director;
+import ptolemy.actor.IOPort;
+import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.corba.util.CorbaActor;
+import ptolemy.actor.corba.util.CorbaActorHelper;
+import ptolemy.actor.corba.util.CorbaIllegalActionException;
+import ptolemy.actor.corba.util.CorbaIllegalValueException;
+import ptolemy.actor.corba.util.CorbaIndexOutofBoundException;
+import ptolemy.actor.corba.util.CorbaUnknownPortException;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.StringToken;
+import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InvalidStateException;
+import ptolemy.kernel.util.NameDuplicationException;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -32,25 +51,6 @@ import org.apache.log4j.PropertyConfigurator;
 import org.omg.CORBA.ORB;
 import org.omg.CORBA.SystemException;
 import org.omg.CORBA.UserException;
-
-import ptolemy.actor.Director;
-import ptolemy.actor.IOPort;
-import ptolemy.actor.TypedAtomicActor;
-import ptolemy.actor.corba.util.CorbaActor;
-import ptolemy.actor.corba.util.CorbaActorHelper;
-import ptolemy.actor.corba.util.CorbaIllegalActionException;
-import ptolemy.actor.corba.util.CorbaIllegalValueException;
-import ptolemy.actor.corba.util.CorbaIndexOutofBoundException;
-import ptolemy.actor.corba.util.CorbaUnknownPortException;
-import ptolemy.data.DoubleToken;
-import ptolemy.data.StringToken;
-import ptolemy.data.Token;
-import ptolemy.data.expr.Parameter;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InvalidStateException;
-import ptolemy.kernel.util.NameDuplicationException;
 
 
 /**

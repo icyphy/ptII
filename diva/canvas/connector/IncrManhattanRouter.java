@@ -25,9 +25,9 @@
 */
 package diva.canvas.connector;
 
-import java.awt.Shape;
-
 import diva.util.java2d.Polyline2D;
+
+import java.awt.Shape;
 
 
 /**

@@ -27,10 +27,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 */
 package ptolemy.domains.fsm.kernel;
 
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Set;
-
 import ptolemy.data.BooleanToken;
 import ptolemy.data.ScalarToken;
 import ptolemy.data.expr.ASTPtLeafNode;
@@ -42,6 +38,10 @@ import ptolemy.data.expr.ParseTreeFreeVariableCollector;
 import ptolemy.data.expr.ParserScope;
 import ptolemy.data.expr.PtParserConstants;
 import ptolemy.kernel.util.IllegalActionException;
+
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Set;
 
 
 //////////////////////////////////////////////////////////////////////////

@@ -25,6 +25,10 @@
 */
 package diva.gui.toolbox;
 
+import diva.canvas.CanvasUtilities;
+import diva.canvas.JCanvas;
+import diva.canvas.TransformContext;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -47,10 +51,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JViewport;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-
-import diva.canvas.CanvasUtilities;
-import diva.canvas.JCanvas;
-import diva.canvas.TransformContext;
 
 
 /**

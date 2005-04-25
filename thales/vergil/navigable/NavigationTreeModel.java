@@ -29,15 +29,15 @@ Created on 01 sept. 2003
  */
 package thales.vergil.navigable;
 
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.vergil.tree.ClassAndEntityTreeModel;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.tree.TreePath;
-
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.vergil.tree.ClassAndEntityTreeModel;
 
 
 /**

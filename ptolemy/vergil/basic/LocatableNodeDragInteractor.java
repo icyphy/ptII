@@ -27,10 +27,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.vergil.basic;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-
 import ptolemy.kernel.undo.UndoStackAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Locatable;
@@ -39,10 +35,15 @@ import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLUndoEntry;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.toolbox.SnapConstraint;
+
 import diva.canvas.Figure;
 import diva.canvas.event.LayerEvent;
 import diva.canvas.interactor.SelectionModel;
 import diva.graph.NodeDragInteractor;
+
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
 
 
 //////////////////////////////////////////////////////////////////////////

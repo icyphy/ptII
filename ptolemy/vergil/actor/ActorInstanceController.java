@@ -27,8 +27,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.vergil.actor;
 
-import java.awt.event.ActionEvent;
-
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Instantiable;
 import ptolemy.kernel.util.Locatable;
@@ -36,12 +34,15 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
+
 import diva.graph.GraphController;
 import diva.graph.GraphModel;
 import diva.graph.layout.GlobalLayout;
 import diva.graph.layout.IncrLayoutAdapter;
 import diva.graph.layout.IncrementalLayoutListener;
 import diva.util.Filter;
+
+import java.awt.event.ActionEvent;
 
 
 //////////////////////////////////////////////////////////////////////////

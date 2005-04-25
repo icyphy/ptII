@@ -32,14 +32,14 @@
 */
 package diva.graph.tutorial;
 
-import javax.swing.SwingUtilities;
-
 import diva.graph.GraphPane;
 import diva.graph.JGraph;
 import diva.graph.basic.BasicGraphController;
 import diva.graph.basic.BasicGraphModel;
 import diva.gui.AppContext;
 import diva.gui.BasicFrame;
+
+import javax.swing.SwingUtilities;
 
 
 /**

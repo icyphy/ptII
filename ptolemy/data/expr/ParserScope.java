@@ -30,9 +30,9 @@ COPYRIGHTENDKEY
 */
 package ptolemy.data.expr;
 
-import java.util.Set;
-
 import ptolemy.kernel.util.IllegalActionException;
+
+import java.util.Set;
 
 
 //////////////////////////////////////////////////////////////////////////

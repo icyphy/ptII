@@ -27,8 +27,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.domains.wireless.lib;
 
-import java.util.Random;
-
 import ptolemy.data.DoubleToken;
 import ptolemy.data.LongToken;
 import ptolemy.data.RecordToken;
@@ -42,6 +40,8 @@ import ptolemy.domains.wireless.kernel.WirelessReceiver;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+
+import java.util.Random;
 
 
 //////////////////////////////////////////////////////////////////////////

@@ -26,13 +26,10 @@ COPYRIGHTENDKEY
 */
 package ptolemy.copernicus.java;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-
 import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.copernicus.kernel.SootUtilities;
 import ptolemy.kernel.util.NamedObj;
+
 import soot.Local;
 import soot.RefType;
 import soot.SootField;
@@ -43,6 +40,10 @@ import soot.jimple.CastExpr;
 import soot.jimple.DefinitionStmt;
 import soot.jimple.FieldRef;
 import soot.jimple.JimpleBody;
+
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 
 //////////////////////////////////////////////////////////////////////////

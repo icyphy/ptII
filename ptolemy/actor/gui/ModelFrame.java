@@ -29,16 +29,16 @@ COPYRIGHTENDKEY
 //  - Handle file changes (warn when discarding modified models).
 package ptolemy.actor.gui;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-
-import javax.swing.JOptionPane;
-
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.ExecutionListener;
 import ptolemy.actor.Manager;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.Documentation;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+
+import javax.swing.JOptionPane;
 
 
 //////////////////////////////////////////////////////////////////////////

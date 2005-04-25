@@ -30,8 +30,6 @@
 */
 package ptolemy.copernicus.c;
 
-import java.util.HashMap;
-
 import soot.ArrayType;
 import soot.BooleanType;
 import soot.ByteType;
@@ -49,6 +47,8 @@ import soot.SootField;
 import soot.SootMethod;
 import soot.Type;
 import soot.VoidType;
+
+import java.util.HashMap;
 
 
 /** A class that determines names of various entities to use for C code

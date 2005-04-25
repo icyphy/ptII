@@ -27,6 +27,24 @@ COPYRIGHTENDKEY
 */
 package ptolemy.vergil.basic;
 
+import ptolemy.kernel.util.Location;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Singleton;
+import ptolemy.moml.MoMLChangeRequest;
+import ptolemy.util.MessageHandler;
+import ptolemy.vergil.kernel.AnimationRenderer;
+import ptolemy.vergil.toolbox.PtolemyTransferable;
+import ptolemy.vergil.toolbox.SnapConstraint;
+
+import diva.canvas.CanvasComponent;
+import diva.canvas.Figure;
+import diva.canvas.FigureLayer;
+import diva.graph.GraphController;
+import diva.graph.GraphModel;
+import diva.graph.GraphPane;
+import diva.graph.JGraph;
+import diva.util.UserObjectContainer;
+
 import java.awt.Color;
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DropTarget;
@@ -37,23 +55,6 @@ import java.awt.dnd.DropTargetListener;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.Iterator;
-
-import ptolemy.kernel.util.Location;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Singleton;
-import ptolemy.moml.MoMLChangeRequest;
-import ptolemy.util.MessageHandler;
-import ptolemy.vergil.kernel.AnimationRenderer;
-import ptolemy.vergil.toolbox.PtolemyTransferable;
-import ptolemy.vergil.toolbox.SnapConstraint;
-import diva.canvas.CanvasComponent;
-import diva.canvas.Figure;
-import diva.canvas.FigureLayer;
-import diva.graph.GraphController;
-import diva.graph.GraphModel;
-import diva.graph.GraphPane;
-import diva.graph.JGraph;
-import diva.util.UserObjectContainer;
 
 
 //////////////////////////////////////////////////////////////////////////

@@ -27,18 +27,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.domains.gr.lib.quicktime;
 
-import java.awt.Dimension;
-import java.awt.Frame;
-import java.awt.Graphics;
-import java.awt.GraphicsConfiguration;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
-
-import javax.media.j3d.Canvas3D;
-import javax.media.j3d.ImageComponent;
-import javax.media.j3d.ImageComponent2D;
-
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
@@ -47,6 +35,7 @@ import ptolemy.domains.gr.lib.ViewScreen3D;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+
 import quicktime.Errors;
 import quicktime.QTSession;
 import quicktime.app.display.QTCanvas;
@@ -70,6 +59,18 @@ import quicktime.util.QTHandle;
 import quicktime.util.RawEncodedImage;
 
 import com.sun.j3d.utils.universe.SimpleUniverse;
+
+import java.awt.Dimension;
+import java.awt.Frame;
+import java.awt.Graphics;
+import java.awt.GraphicsConfiguration;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
+
+import javax.media.j3d.Canvas3D;
+import javax.media.j3d.ImageComponent;
+import javax.media.j3d.ImageComponent2D;
 
 
 //////////////////////////////////////////////////////////////////////////

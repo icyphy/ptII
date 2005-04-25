@@ -27,12 +27,12 @@ ENHANCEMENTS, OR MODIFICATIONS.
 */
 package ptolemy.data.expr;
 
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.List;
-
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
 
 
 //////////////////////////////////////////////////////////////////////////

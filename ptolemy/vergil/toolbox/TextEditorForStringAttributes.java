@@ -27,15 +27,15 @@ COPYRIGHTENDKEY
 */
 package ptolemy.vergil.toolbox;
 
-import java.awt.event.KeyEvent;
-
-import javax.swing.JOptionPane;
-
 import ptolemy.actor.gui.TextEditor;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.StringUtilities;
+
+import java.awt.event.KeyEvent;
+
+import javax.swing.JOptionPane;
 
 
 /**

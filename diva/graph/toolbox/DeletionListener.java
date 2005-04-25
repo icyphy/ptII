@@ -25,15 +25,15 @@
 */
 package diva.graph.toolbox;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 import diva.canvas.Figure;
 import diva.canvas.interactor.SelectionModel;
 import diva.graph.GraphController;
 import diva.graph.GraphModel;
 import diva.graph.GraphPane;
 import diva.graph.JGraph;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 
 /**

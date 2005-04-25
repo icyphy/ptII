@@ -25,11 +25,6 @@
 */
 package ptolemy.copernicus.c;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-
 import soot.ArrayType;
 import soot.Modifier;
 import soot.Scene;
@@ -37,6 +32,11 @@ import soot.SootClass;
 import soot.SootField;
 import soot.SootMethod;
 import soot.Type;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
 
 
 //////////////////////////////////////////////////////////////////////////

@@ -27,9 +27,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.lib.io;
 
-import java.io.File;
-import java.io.PrintWriter;
-
 import ptolemy.actor.lib.Sink;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.StringToken;
@@ -43,6 +40,9 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.util.MessageHandler;
+
+import java.io.File;
+import java.io.PrintWriter;
 
 
 //////////////////////////////////////////////////////////////////////////

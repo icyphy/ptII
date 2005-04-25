@@ -26,12 +26,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.copernicus.kernel;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-
 import ptolemy.copernicus.java.DataUtilities;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
@@ -48,6 +42,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Typeable;
 import ptolemy.math.Complex;
 import ptolemy.math.FixPoint;
+
 import soot.ArrayType;
 import soot.Body;
 import soot.Local;
@@ -78,6 +73,12 @@ import soot.toolkits.scalar.LocalDefs;
 import soot.toolkits.scalar.LocalUses;
 import soot.toolkits.scalar.UnitValueBoxPair;
 import soot.util.Chain;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 
 //////////////////////////////////////////////////////////////////////////

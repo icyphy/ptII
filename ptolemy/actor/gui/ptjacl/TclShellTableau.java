@@ -26,12 +26,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.gui.ptjacl;
 
-import java.awt.BorderLayout;
-import java.net.URL;
-
-import javax.swing.BoxLayout;
-import javax.swing.JPanel;
-
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TableauFactory;
@@ -41,9 +35,16 @@ import ptolemy.gui.ShellTextArea;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+
 import tcl.lang.Interp;
 import tcl.lang.ReflectObject;
 import tcl.lang.TclException;
+
+import java.awt.BorderLayout;
+import java.net.URL;
+
+import javax.swing.BoxLayout;
+import javax.swing.JPanel;
 
 
 //////////////////////////////////////////////////////////////////////////

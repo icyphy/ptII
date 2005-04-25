@@ -27,9 +27,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.kernel.util.test;
 
-import java.util.Collections;
-import java.util.Enumeration;
-
 import ptolemy.actor.Manager;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.lib.Clock;
@@ -40,6 +37,9 @@ import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
+
+import java.util.Collections;
+import java.util.Enumeration;
 
 
 //////////////////////////////////////////////////////////////////////////

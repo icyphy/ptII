@@ -28,8 +28,6 @@ COPYRIGHTENDKEY
 
 package ptolemy.component;
 
-import java.util.Iterator;
-
 import ptolemy.component.data.TupleToken;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentPort;
@@ -37,6 +35,8 @@ import ptolemy.kernel.util.CrossRefList;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
+
+import java.util.Iterator;
 
 
 

@@ -27,14 +27,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.lib.xslt;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-
-import javax.xml.transform.TransformerException;
-
-import org.w3c.dom.Document;
-
 import ptolemy.actor.lib.Transformer;
 import ptolemy.data.StringToken;
 import ptolemy.data.XMLToken;
@@ -44,6 +36,14 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
+
+import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+
+import javax.xml.transform.TransformerException;
+
+import org.w3c.dom.Document;
 
 
 //////////////////////////////////////////////////////////////////////////

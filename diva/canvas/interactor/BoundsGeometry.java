@@ -26,16 +26,16 @@
   */
 package diva.canvas.interactor;
 
+import diva.canvas.AbstractSite;
+import diva.canvas.Figure;
+import diva.canvas.Site;
+
 import java.awt.Shape;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.Iterator;
 
 import javax.swing.SwingConstants;
-
-import diva.canvas.AbstractSite;
-import diva.canvas.Figure;
-import diva.canvas.Site;
 
 
 /** BoundsGeometry is a class that provides support for manipulating

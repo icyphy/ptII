@@ -26,6 +26,11 @@
   */
 package diva.canvas.toolbox;
 
+import diva.canvas.AbstractFigure;
+import diva.canvas.CanvasUtilities;
+import diva.canvas.interactor.ShapedFigure;
+import diva.util.java2d.ShapeUtilities;
+
 import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -37,11 +42,6 @@ import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-
-import diva.canvas.AbstractFigure;
-import diva.canvas.CanvasUtilities;
-import diva.canvas.interactor.ShapedFigure;
-import diva.util.java2d.ShapeUtilities;
 
 
 /** A BasicFigure is one that contains a single instance of Shape. The

@@ -27,9 +27,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.vergil.kernel.attributes;
 
-import java.awt.Color;
-import java.awt.Shape;
-
 import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
@@ -41,6 +38,9 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.vergil.icon.ResizableAttributeControllerFactory;
+
+import java.awt.Color;
+import java.awt.Shape;
 
 
 //////////////////////////////////////////////////////////////////////////

@@ -27,8 +27,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.domains.fsm.modal;
 
-import java.util.Iterator;
-
 import ptolemy.actor.IORelation;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.kernel.ComponentEntity;
@@ -39,6 +37,8 @@ import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
+
+import java.util.Iterator;
 
 
 //////////////////////////////////////////////////////////////////////////

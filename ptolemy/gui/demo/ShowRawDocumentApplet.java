@@ -27,6 +27,8 @@ COPYRIGHTENDKEY
 */
 package ptolemy.gui.demo;
 
+import ptolemy.gui.BasicJApplet;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -38,8 +40,6 @@ import java.net.URL;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-
-import ptolemy.gui.BasicJApplet;
 
 
 //////////////////////////////////////////////////////////////////////////

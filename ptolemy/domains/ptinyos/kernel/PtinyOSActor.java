@@ -28,28 +28,14 @@ COPYRIGHTENDKEY
 
 package ptolemy.domains.ptinyos.kernel;
 
-import java.lang.reflect.Method;
-import java.util.Iterator;
-
-import ptolemy.actor.Actor;
-import ptolemy.actor.IOPort;
-import ptolemy.actor.IORelation;
-import ptolemy.actor.TypedCompositeActor;
-import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.TypeOpaqueCompositeActor;
-import ptolemy.data.BooleanToken;
+import ptolemy.actor.TypedIOPort;
 import ptolemy.data.StringToken;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.ptinyos.kernel.PtinyOSDirector;
-import ptolemy.kernel.ComponentEntity;
-import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////

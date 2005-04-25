@@ -26,9 +26,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.copernicus.java;
 
-import java.util.Iterator;
-import java.util.Map;
-
 import soot.HasPhaseOptions;
 import soot.Modifier;
 import soot.PhaseOptions;
@@ -36,6 +33,9 @@ import soot.Scene;
 import soot.SceneTransformer;
 import soot.SootClass;
 import soot.SootField;
+
+import java.util.Iterator;
+import java.util.Map;
 
 
 //////////////////////////////////////////////////////////////////////////

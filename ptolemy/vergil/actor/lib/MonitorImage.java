@@ -27,8 +27,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.vergil.actor.lib;
 
-import java.awt.Image;
-
 import ptolemy.actor.lib.Sink;
 import ptolemy.data.ImageToken;
 import ptolemy.data.type.BaseType;
@@ -36,6 +34,8 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.vergil.icon.ImageIcon;
+
+import java.awt.Image;
 
 
 //////////////////////////////////////////////////////////////////////////

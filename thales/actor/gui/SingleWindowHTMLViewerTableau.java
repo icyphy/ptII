@@ -25,9 +25,6 @@ Created on 01 sept. 2003
 */
 package thales.actor.gui;
 
-import java.io.IOException;
-import java.net.URL;
-
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.HTMLEffigy;
 import ptolemy.actor.gui.HTMLViewer;
@@ -41,6 +38,9 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.util.ClassUtilities;
+
+import java.io.IOException;
+import java.net.URL;
 
 
 /**

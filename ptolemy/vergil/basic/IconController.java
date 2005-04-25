@@ -26,10 +26,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.vergil.basic;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.InternalErrorException;
@@ -40,11 +36,16 @@ import ptolemy.kernel.util.StringAttribute;
 import ptolemy.vergil.icon.EditorIcon;
 import ptolemy.vergil.icon.XMLIcon;
 import ptolemy.vergil.kernel.AnimationRenderer;
+
 import diva.canvas.Figure;
 import diva.canvas.toolbox.SVGUtilities;
 import diva.graph.GraphController;
 import diva.graph.GraphModel;
 import diva.graph.NodeRenderer;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 //////////////////////////////////////////////////////////////////////////

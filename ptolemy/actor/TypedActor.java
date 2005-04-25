@@ -28,9 +28,9 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor;
 
-import java.util.List;
-
 import ptolemy.kernel.util.IllegalActionException;
+
+import java.util.List;
 
 
 //////////////////////////////////////////////////////////////////////////

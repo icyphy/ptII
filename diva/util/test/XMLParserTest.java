@@ -25,12 +25,6 @@
 */
 package diva.util.test;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.StringWriter;
-import java.io.Writer;
-import java.net.URL;
-
 import diva.util.jester.TestCase;
 import diva.util.jester.TestFailedException;
 import diva.util.jester.TestHarness;
@@ -38,6 +32,12 @@ import diva.util.jester.TestSuite;
 import diva.util.xml.XmlDocument;
 import diva.util.xml.XmlReader;
 import diva.util.xml.XmlWriter;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.StringWriter;
+import java.io.Writer;
+import java.net.URL;
 
 
 /**

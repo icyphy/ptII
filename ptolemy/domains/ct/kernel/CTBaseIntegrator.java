@@ -27,9 +27,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.domains.ct.kernel;
 
-import java.util.Iterator;
-import java.util.LinkedList;
-
 import ptolemy.actor.TimedActor;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
@@ -42,6 +39,9 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NameDuplicationException;
+
+import java.util.Iterator;
+import java.util.LinkedList;
 
 
 //////////////////////////////////////////////////////////////////////////

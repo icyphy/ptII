@@ -25,9 +25,6 @@
 */
 package diva.graph.basic;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-
 import diva.graph.modular.BasicModularGraphModel;
 import diva.graph.modular.CompositeNode;
 import diva.graph.modular.Edge;
@@ -36,6 +33,9 @@ import diva.graph.modular.Node;
 import diva.util.ArrayIterator;
 import diva.util.BasicPropertyContainer;
 import diva.util.SemanticObjectContainer;
+
+import java.util.ArrayList;
+import java.util.Iterator;
 
 
 /**

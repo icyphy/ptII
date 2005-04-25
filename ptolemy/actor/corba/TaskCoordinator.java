@@ -29,17 +29,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.corba;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.StringTokenizer;
-
-import org.omg.CORBA.Any;
-import org.omg.CORBA.ORB;
-import org.omg.CORBA.UserException;
-import org.omg.CosNaming.NameComponent;
-import org.omg.CosNaming.NamingContext;
-import org.omg.CosNaming.NamingContextHelper;
-
 import ptolemy.actor.corba.CoordinatorUtil.Client;
 import ptolemy.actor.corba.CoordinatorUtil.CorbaIllegalActionException;
 import ptolemy.actor.corba.CoordinatorUtil._CoordinatorImplBase;
@@ -50,6 +39,17 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.StringTokenizer;
+
+import org.omg.CORBA.Any;
+import org.omg.CORBA.ORB;
+import org.omg.CORBA.UserException;
+import org.omg.CosNaming.NameComponent;
+import org.omg.CosNaming.NamingContext;
+import org.omg.CosNaming.NamingContextHelper;
 
 
 //////////////////////////////////////////////////////////////////////////

@@ -27,9 +27,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.vergil.fsm;
 
-import javax.swing.JMenu;
-import javax.swing.JToolBar;
-
 import ptolemy.actor.gui.Configuration;
 import ptolemy.domains.fsm.kernel.State;
 import ptolemy.domains.fsm.kernel.StateEvent;
@@ -44,12 +41,16 @@ import ptolemy.vergil.basic.RunnableGraphController;
 import ptolemy.vergil.fsm.modal.ModalTransitionController;
 import ptolemy.vergil.kernel.AnimationRenderer;
 import ptolemy.vergil.kernel.AttributeController;
+
 import diva.canvas.Figure;
 import diva.canvas.interactor.SelectionDragger;
 import diva.graph.EdgeController;
 import diva.graph.GraphPane;
 import diva.graph.NodeController;
 import diva.gui.GUIUtilities;
+
+import javax.swing.JMenu;
+import javax.swing.JToolBar;
 
 
 //////////////////////////////////////////////////////////////////////////

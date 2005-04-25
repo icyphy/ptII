@@ -27,11 +27,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.domains.gr.lib.quicktime;
 
-import java.awt.Dimension;
-import java.awt.Frame;
-import java.awt.Graphics;
-import java.awt.Rectangle;
-
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
@@ -40,6 +35,7 @@ import ptolemy.domains.gr.lib.ViewScreen2D;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+
 import quicktime.Errors;
 import quicktime.QTSession;
 import quicktime.app.display.QTCanvas;
@@ -61,6 +57,11 @@ import quicktime.std.movies.Track;
 import quicktime.std.movies.media.VideoMedia;
 import quicktime.util.QTHandle;
 import quicktime.util.RawEncodedImage;
+
+import java.awt.Dimension;
+import java.awt.Frame;
+import java.awt.Graphics;
+import java.awt.Rectangle;
 
 
 //////////////////////////////////////////////////////////////////////////

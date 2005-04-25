@@ -27,8 +27,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.domains.de.kernel;
 
-import java.util.LinkedList;
-
 import ptolemy.actor.AbstractReceiver;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
@@ -38,6 +36,8 @@ import ptolemy.actor.NoTokenException;
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
+
+import java.util.LinkedList;
 
 
 //////////////////////////////////////////////////////////////////////////

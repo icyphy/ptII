@@ -25,13 +25,13 @@
 */
 package diva.util.test;
 
-import java.util.TreeMap;
-
 import diva.util.jester.TestCase;
 import diva.util.jester.TestFailedException;
 import diva.util.jester.TestHarness;
 import diva.util.jester.TestSuite;
 import diva.util.xml.XmlElement;
+
+import java.util.TreeMap;
 
 
 /**

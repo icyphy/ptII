@@ -28,9 +28,6 @@
 */
 package ptolemy.domains.wireless.demo.SmartParking;
 
-import java.util.HashSet;
-import java.util.Random;
-
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.IntToken;
@@ -39,6 +36,9 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+
+import java.util.HashSet;
+import java.util.Random;
 
 //////////////////////////////////////////////////////////////////////////
 ///ParkingClient

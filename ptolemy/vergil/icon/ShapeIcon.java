@@ -27,20 +27,21 @@ COPYRIGHTENDKEY
 */
 package ptolemy.vergil.icon;
 
+import ptolemy.gui.Top;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Workspace;
+
+import diva.canvas.Figure;
+import diva.canvas.toolbox.BasicFigure;
+
 import java.awt.Color;
 import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
 import java.util.Iterator;
 
 import javax.swing.SwingUtilities;
-
-import ptolemy.gui.Top;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Workspace;
-import diva.canvas.Figure;
-import diva.canvas.toolbox.BasicFigure;
 
 
 //////////////////////////////////////////////////////////////////////////

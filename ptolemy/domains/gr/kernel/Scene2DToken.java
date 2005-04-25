@@ -28,13 +28,14 @@ COPYRIGHTENDKEY
 */
 package ptolemy.domains.gr.kernel;
 
-import java.io.Serializable;
-
 import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
+
 import diva.canvas.Figure;
+
+import java.io.Serializable;
 
 
 //////////////////////////////////////////////////////////////////////////

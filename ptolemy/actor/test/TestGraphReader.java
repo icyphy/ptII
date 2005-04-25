@@ -25,15 +25,15 @@
 */
 package ptolemy.actor.test;
 
-import java.util.Collection;
-import java.util.Iterator;
-
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.GraphReader;
 import ptolemy.graph.DirectedGraph;
 import ptolemy.graph.Node;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLParser;
+
+import java.util.Collection;
+import java.util.Iterator;
 
 
 //////////////////////////////////////////////////////////////////////////

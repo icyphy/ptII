@@ -32,13 +32,6 @@
 */
 package diva.graph.tutorial;
 
-import java.awt.Color;
-import java.awt.geom.Ellipse2D;
-import java.awt.geom.Rectangle2D;
-import java.util.ArrayList;
-
-import javax.swing.SwingUtilities;
-
 import diva.graph.GraphPane;
 import diva.graph.JGraph;
 import diva.graph.MutableGraphModel;
@@ -54,6 +47,13 @@ import diva.graph.modular.Node;
 import diva.graph.toolbox.TypedNodeRenderer;
 import diva.gui.AppContext;
 import diva.gui.BasicFrame;
+
+import java.awt.Color;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
+
+import javax.swing.SwingUtilities;
 
 
 /**

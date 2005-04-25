@@ -26,8 +26,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.lib;
 
-import java.util.ArrayList;
-
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
@@ -38,6 +36,8 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+
+import java.util.ArrayList;
 
 
 //////////////////////////////////////////////////////////////////////////

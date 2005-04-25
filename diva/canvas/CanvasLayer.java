@@ -26,9 +26,9 @@
   */
 package diva.canvas;
 
-import java.awt.geom.Rectangle2D;
-
 import diva.canvas.event.LayerEvent;
+
+import java.awt.geom.Rectangle2D;
 
 
 /** A canvas layer is a single layer that lives within a CanvasPane.

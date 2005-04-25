@@ -24,13 +24,13 @@ ENHANCEMENTS, OR MODIFICATIONS.
 */
 package ptolemy.graph.analysis;
 
-import java.util.Collection;
-
 import ptolemy.graph.Graph;
 import ptolemy.graph.Node;
 import ptolemy.graph.analysis.analyzer.Analyzer;
 import ptolemy.graph.analysis.analyzer.ClusterNodesTransformer;
 import ptolemy.graph.analysis.strategy.ClusterNodesTransformerStrategy;
+
+import java.util.Collection;
 
 
 //////////////////////////////////////////////////////////////////////////

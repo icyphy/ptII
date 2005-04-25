@@ -26,14 +26,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.copernicus.kernel;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.util.Iterator;
-import java.util.Map;
-
 import soot.HasPhaseOptions;
 import soot.PhaseOptions;
 import soot.Printer;
@@ -41,6 +33,14 @@ import soot.Scene;
 import soot.SceneTransformer;
 import soot.SootClass;
 import soot.util.EscapedWriter;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.util.Iterator;
+import java.util.Map;
 
 
 /**

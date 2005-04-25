@@ -30,10 +30,10 @@ COPYRIGHTENDKEY
 */
 package ptolemy.data.unit;
 
+import ptolemy.kernel.util.NamedObj;
+
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import ptolemy.kernel.util.NamedObj;
 
 
 //////////////////////////////////////////////////////////////////////////

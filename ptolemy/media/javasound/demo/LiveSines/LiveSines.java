@@ -28,9 +28,9 @@
 */
 package ptolemy.media.javasound.demo.LiveSines;
 
-import java.io.IOException;
-
 import ptolemy.media.javasound.LiveSound;
+
+import java.io.IOException;
 
 
 ////////////////////////////////////////////////////

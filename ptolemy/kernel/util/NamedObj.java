@@ -27,6 +27,8 @@ COPYRIGHTENDKEY
 */
 package ptolemy.kernel.util;
 
+import ptolemy.util.StringUtilities;
+
 import java.io.IOException;
 import java.io.Serializable;
 import java.io.StringWriter;
@@ -44,8 +46,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Set;
-
-import ptolemy.util.StringUtilities;
 
 
 //////////////////////////////////////////////////////////////////////////

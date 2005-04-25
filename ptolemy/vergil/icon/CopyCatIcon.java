@@ -27,10 +27,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.vergil.icon;
 
-import java.awt.Color;
-import java.awt.geom.Rectangle2D;
-import java.util.Iterator;
-
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -39,9 +35,14 @@ import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.SingletonConfigurableAttribute;
 import ptolemy.kernel.util.Workspace;
+
 import diva.canvas.CompositeFigure;
 import diva.canvas.Figure;
 import diva.canvas.toolbox.BasicRectangle;
+
+import java.awt.Color;
+import java.awt.geom.Rectangle2D;
+import java.util.Iterator;
 
 
 //////////////////////////////////////////////////////////////////////////

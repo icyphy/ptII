@@ -26,13 +26,14 @@ COPYRIGHTENDKEY
 */
 package ptolemy.copernicus.java.test;
 
-import java.util.HashSet;
-import java.util.Iterator;
-
 import ptolemy.copernicus.java.TypeSpecializerAnalysis;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
+
 import soot.Scene;
 import soot.SootClass;
+
+import java.util.HashSet;
+import java.util.Iterator;
 
 
 //////////////////////////////////////////////////////////////////////////

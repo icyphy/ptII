@@ -27,11 +27,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.lib.security;
 
-import java.security.Provider;
-import java.security.Security;
-import java.util.Iterator;
-import java.util.Set;
-
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.ArrayToken;
@@ -45,6 +40,11 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+
+import java.security.Provider;
+import java.security.Security;
+import java.util.Iterator;
+import java.util.Set;
 
 
 //////////////////////////////////////////////////////////////////////////

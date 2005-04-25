@@ -26,14 +26,14 @@
   */
 package diva.canvas.connector;
 
+import diva.canvas.AbstractSite;
+import diva.canvas.Figure;
+import diva.util.java2d.Polygon2D;
+
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-
-import diva.canvas.AbstractSite;
-import diva.canvas.Figure;
-import diva.util.java2d.Polygon2D;
 
 
 /** A site that locates itself on the perimeter of a figure.

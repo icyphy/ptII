@@ -31,13 +31,6 @@
  */
 package diva.canvas.tutorial;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.geom.Point2D;
-
-import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
-
 import diva.canvas.CanvasUtilities;
 import diva.canvas.Figure;
 import diva.canvas.FigureLayer;
@@ -50,6 +43,13 @@ import diva.canvas.toolbox.BasicRectangle;
 import diva.canvas.toolbox.LabelFigure;
 import diva.canvas.toolbox.LabelWrapper;
 import diva.gui.BasicFrame;
+
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.geom.Point2D;
+
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 
 
 /**

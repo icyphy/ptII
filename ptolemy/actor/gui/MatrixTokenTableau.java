@@ -26,14 +26,14 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.gui;
 
-import java.util.Iterator;
-import java.util.List;
-
 import ptolemy.data.MatrixToken;
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+
+import java.util.Iterator;
+import java.util.List;
 
 
 //////////////////////////////////////////////////////////////////////////

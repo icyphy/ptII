@@ -28,8 +28,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.lib.colt;
 
-import java.util.Iterator;
-
 import ptolemy.data.LongToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.IllegalActionException;
@@ -37,6 +35,8 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.SharedParameter;
+
+import java.util.Iterator;
 
 
 //////////////////////////////////////////////////////////////////////////

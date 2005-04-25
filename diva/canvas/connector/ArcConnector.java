@@ -25,15 +25,15 @@
 */
 package diva.canvas.connector;
 
-import java.awt.geom.Arc2D;
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
-
 import diva.canvas.CanvasUtilities;
 import diva.canvas.Figure;
 import diva.canvas.Site;
 import diva.canvas.TransformContext;
 import diva.canvas.toolbox.LabelFigure;
+
+import java.awt.geom.Arc2D;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 
 
 /** A Connector that draws itself in an arc. The connector

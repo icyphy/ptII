@@ -26,6 +26,11 @@
   */
 package diva.canvas.toolbox;
 
+import diva.canvas.AbstractFigure;
+import diva.canvas.Figure;
+import diva.canvas.TransformContext;
+import diva.util.java2d.ShapeUtilities;
+
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Composite;
@@ -37,11 +42,6 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Iterator;
-
-import diva.canvas.AbstractFigure;
-import diva.canvas.Figure;
-import diva.canvas.TransformContext;
-import diva.util.java2d.ShapeUtilities;
 
 
 /** A VectorFigure is a figure containing a list of objects that

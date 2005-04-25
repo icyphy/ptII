@@ -26,11 +26,9 @@ COPYRIGHTENDKEY
 */
 package ptolemy.copernicus.java;
 
-import java.util.Iterator;
-import java.util.Map;
-
 import ptolemy.actor.CompositeActor;
 import ptolemy.kernel.Entity;
+
 import soot.Modifier;
 import soot.PhaseOptions;
 import soot.RefType;
@@ -45,6 +43,9 @@ import soot.jimple.DefinitionStmt;
 import soot.jimple.InstanceFieldRef;
 import soot.jimple.Stmt;
 import soot.util.Chain;
+
+import java.util.Iterator;
+import java.util.Map;
 
 
 //////////////////////////////////////////////////////////////////////////

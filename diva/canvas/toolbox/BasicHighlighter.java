@@ -26,16 +26,16 @@
   */
 package diva.canvas.toolbox;
 
+import diva.canvas.DamageRegion;
+import diva.canvas.Figure;
+import diva.canvas.FigureDecorator;
+
 import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Graphics2D;
 import java.awt.Paint;
 import java.awt.Stroke;
 import java.awt.geom.Rectangle2D;
-
-import diva.canvas.DamageRegion;
-import diva.canvas.Figure;
-import diva.canvas.FigureDecorator;
 
 
 /** A decorator figure that displays a highlight behind the

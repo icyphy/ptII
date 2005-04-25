@@ -30,9 +30,9 @@ Created : May 1998
 */
 package ptolemy.data.expr;
 
-import java.util.Map;
-
 import ptolemy.kernel.util.IllegalActionException;
+
+import java.util.Map;
 
 
 //////////////////////////////////////////////////////////////////////////

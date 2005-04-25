@@ -26,6 +26,10 @@
   */
 package diva.canvas;
 
+import diva.util.Filter;
+import diva.util.FilteredIterator;
+import diva.util.java2d.ShapeUtilities;
+
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.GeneralPath;
@@ -35,10 +39,6 @@ import java.awt.geom.RectangularShape;
 import java.util.Iterator;
 
 import javax.swing.SwingConstants;
-
-import diva.util.Filter;
-import diva.util.FilteredIterator;
-import diva.util.java2d.ShapeUtilities;
 
 
 /** A collection of canvas utilities. These utilities perform

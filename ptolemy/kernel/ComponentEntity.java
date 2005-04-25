@@ -27,10 +27,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.kernel;
 
-import java.lang.ref.WeakReference;
-import java.util.Iterator;
-import java.util.List;
-
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Instantiable;
@@ -38,6 +34,10 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
+
+import java.lang.ref.WeakReference;
+import java.util.Iterator;
+import java.util.List;
 
 
 //////////////////////////////////////////////////////////////////////////

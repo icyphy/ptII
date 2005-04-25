@@ -24,11 +24,11 @@ ENHANCEMENTS, OR MODIFICATIONS.
 */
 package ptolemy.copernicus.c;
 
-import java.util.HashSet;
-import java.util.Iterator;
-
 import soot.Scene;
 import soot.SootClass;
+
+import java.util.HashSet;
+import java.util.Iterator;
 
 
 //////////////////////////////////////////////////////////////////////////

@@ -25,6 +25,8 @@
 */
 package diva.gui.toolbox;
 
+import diva.gui.BasicFrame;
+
 import java.awt.Dimension;
 import java.util.Enumeration;
 
@@ -43,8 +45,6 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
-
-import diva.gui.BasicFrame;
 
 
 /**

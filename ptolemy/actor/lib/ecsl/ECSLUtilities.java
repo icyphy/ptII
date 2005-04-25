@@ -27,11 +27,11 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.lib.ecsl;
 
+import ptolemy.util.XSLTUtilities;
+
 import java.io.FileWriter;
 import java.util.LinkedList;
 import java.util.List;
-
-import ptolemy.util.XSLTUtilities;
 
 
 //////////////////////////////////////////////////////////////////////////

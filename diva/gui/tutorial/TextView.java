@@ -30,13 +30,13 @@
 */
 package diva.gui.tutorial;
 
+import diva.gui.AbstractView;
+
 import javax.swing.JComponent;
 import javax.swing.JEditorPane;
 import javax.swing.JScrollPane;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-
-import diva.gui.AbstractView;
 
 
 /**

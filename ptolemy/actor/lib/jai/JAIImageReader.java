@@ -29,14 +29,6 @@
 */
 package ptolemy.actor.lib.jai;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-
-import javax.media.jai.JAI;
-import javax.media.jai.PlanarImage;
-import javax.media.jai.RenderedOp;
-
 import ptolemy.actor.lib.Source;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.type.BaseType;
@@ -47,6 +39,14 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 import com.sun.media.jai.codec.FileCacheSeekableStream;
 import com.sun.media.jai.codec.SeekableStream;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+
+import javax.media.jai.JAI;
+import javax.media.jai.PlanarImage;
+import javax.media.jai.RenderedOp;
 
 
 //////////////////////////////////////////////////////////////////////////

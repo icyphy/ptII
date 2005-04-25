@@ -24,10 +24,6 @@
 */
 package thales.vergil.navigable;
 
-import java.awt.Color;
-
-import javax.swing.JFrame;
-
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.Tableau;
@@ -38,8 +34,13 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.LibraryAttribute;
+
 import thales.actor.gui.NavigableEffigy;
 import thales.vergil.SingleWindowApplication;
+
+import java.awt.Color;
+
+import javax.swing.JFrame;
 
 
 //////////////////////////////////////////////////////////////////////////

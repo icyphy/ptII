@@ -27,6 +27,12 @@ COPYRIGHTENDKEY
 */
 package ptolemy.plot.plotml;
 
+import ptolemy.plot.PlotBox;
+
+import com.microstar.xml.HandlerBase;
+import com.microstar.xml.XmlException;
+import com.microstar.xml.XmlParser;
+
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -35,12 +41,6 @@ import java.io.StringReader;
 import java.net.URL;
 import java.util.Hashtable;
 import java.util.Stack;
-
-import ptolemy.plot.PlotBox;
-
-import com.microstar.xml.HandlerBase;
-import com.microstar.xml.XmlException;
-import com.microstar.xml.XmlParser;
 
 
 //////////////////////////////////////////////////////////////////////////

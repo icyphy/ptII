@@ -38,6 +38,7 @@ import ptolemy.copernicus.kernel.LibraryUsageReporter;
 import ptolemy.copernicus.kernel.TransformerAdapter;
 import ptolemy.copernicus.kernel.WatchDogTimer;
 import ptolemy.kernel.util.IllegalActionException;
+
 import soot.Pack;
 import soot.PackManager;
 import soot.jimple.toolkits.typing.TypeAssigner;

@@ -28,15 +28,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.lib.jai;
 
-import java.awt.image.renderable.ParameterBlock;
-
-import javax.media.jai.InterpolationBicubic;
-import javax.media.jai.InterpolationBicubic2;
-import javax.media.jai.InterpolationBilinear;
-import javax.media.jai.InterpolationNearest;
-import javax.media.jai.JAI;
-import javax.media.jai.RenderedOp;
-
 import ptolemy.actor.lib.Transformer;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
@@ -48,6 +39,15 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
+
+import java.awt.image.renderable.ParameterBlock;
+
+import javax.media.jai.InterpolationBicubic;
+import javax.media.jai.InterpolationBicubic2;
+import javax.media.jai.InterpolationBilinear;
+import javax.media.jai.InterpolationNearest;
+import javax.media.jai.JAI;
+import javax.media.jai.RenderedOp;
 
 
 //////////////////////////////////////////////////////////////////////////

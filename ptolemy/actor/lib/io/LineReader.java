@@ -27,9 +27,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.lib.io;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.Source;
 import ptolemy.data.BooleanToken;
@@ -43,6 +40,9 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
+
+import java.io.BufferedReader;
+import java.io.IOException;
 
 
 //////////////////////////////////////////////////////////////////////////

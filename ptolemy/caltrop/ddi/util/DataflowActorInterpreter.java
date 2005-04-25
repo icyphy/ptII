@@ -29,10 +29,6 @@
 */
 package ptolemy.caltrop.ddi.util;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 import caltrop.interpreter.Context;
 import caltrop.interpreter.ExprEvaluator;
 import caltrop.interpreter.InputChannel;
@@ -50,6 +46,10 @@ import caltrop.interpreter.ast.InputPattern;
 import caltrop.interpreter.ast.OutputExpression;
 import caltrop.interpreter.ast.Statement;
 import caltrop.interpreter.environment.Environment;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 //////////////////////////////////////////////////////////////////////////
 //// DataFlowActorInterpreter

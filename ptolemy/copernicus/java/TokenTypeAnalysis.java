@@ -26,12 +26,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.copernicus.java;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
-
 import ptolemy.actor.TypedIOPort;
 import ptolemy.copernicus.kernel.FastForwardFlowAnalysis;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
@@ -43,6 +37,7 @@ import ptolemy.data.type.TypeLattice;
 import ptolemy.data.type.UnsizedMatrixType;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.NamedObj;
+
 import soot.Local;
 import soot.NullType;
 import soot.RefType;
@@ -69,6 +64,12 @@ import soot.jimple.Stmt;
 import soot.toolkits.graph.CompleteUnitGraph;
 import soot.toolkits.scalar.LocalDefs;
 import soot.toolkits.scalar.LocalUses;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 
 //////////////////////////////////////////////////////////////////////////

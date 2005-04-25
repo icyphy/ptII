@@ -26,11 +26,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.domains.fsm.kernel;
 
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.StringTokenizer;
-
 import ptolemy.actor.Director;
 import ptolemy.actor.TypedActor;
 import ptolemy.actor.TypedCompositeActor;
@@ -54,6 +49,11 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StreamListener;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
+
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.StringTokenizer;
 
 
 //////////////////////////////////////////////////////////////////////////

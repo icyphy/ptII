@@ -26,6 +26,11 @@
   */
 package diva.canvas.connector;
 
+import diva.canvas.AbstractFigure;
+import diva.canvas.AbstractSite;
+import diva.canvas.Figure;
+import diva.canvas.Site;
+
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -36,11 +41,6 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-
-import diva.canvas.AbstractFigure;
-import diva.canvas.AbstractSite;
-import diva.canvas.Figure;
-import diva.canvas.Site;
 
 
 /** A terminal that consists of a straight line plus an additional

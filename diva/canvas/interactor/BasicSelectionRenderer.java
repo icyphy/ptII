@@ -26,12 +26,12 @@
   */
 package diva.canvas.interactor;
 
-import java.util.Hashtable;
-
 import diva.canvas.Figure;
 import diva.canvas.FigureContainer;
 import diva.canvas.FigureDecorator;
 import diva.canvas.toolbox.BasicHighlighter;
+
+import java.util.Hashtable;
 
 
 /** A basic implementation of a selection renderer. This

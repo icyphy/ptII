@@ -27,18 +27,19 @@ COPYRIGHTENDKEY
 */
 package jni;
 
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.util.MessageHandler;
+import ptolemy.vergil.actor.ActorGraphFrame;
+import ptolemy.vergil.actor.ActorGraphTableau;
+
+import diva.graph.GraphPane;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
-
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.util.MessageHandler;
-import ptolemy.vergil.actor.ActorGraphFrame;
-import ptolemy.vergil.actor.ActorGraphTableau;
-import diva.graph.GraphPane;
 
 
 //////////////////////////////////////////////////////////////////////////

@@ -26,12 +26,12 @@
   */
 package diva.canvas;
 
+import diva.util.Filter;
+
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.util.Iterator;
-
-import diva.util.Filter;
 
 
 /** AbstractFigureContainer is an abstract class that roots the tree

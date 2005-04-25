@@ -26,16 +26,16 @@
   */
 package diva.canvas;
 
+import diva.util.Filter;
+import diva.util.UnitIterator;
+import diva.util.java2d.ShapeUtilities;
+
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.Iterator;
-
-import diva.util.Filter;
-import diva.util.UnitIterator;
-import diva.util.java2d.ShapeUtilities;
 
 
 /** A CompositeFigure is a figure that contains a set of child

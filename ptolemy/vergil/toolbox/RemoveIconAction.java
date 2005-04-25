@@ -27,14 +27,14 @@ COPYRIGHTENDKEY
 */
 package ptolemy.vergil.toolbox;
 
-import java.awt.event.ActionEvent;
-import java.util.Iterator;
-
 import ptolemy.actor.gui.Configuration;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.vergil.icon.EditorIcon;
 import ptolemy.vergil.icon.XMLIcon;
+
+import java.awt.event.ActionEvent;
+import java.util.Iterator;
 
 
 //////////////////////////////////////////////////////////////////////////

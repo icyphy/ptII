@@ -26,10 +26,10 @@
   */
 package diva.canvas.interactor;
 
-import java.awt.geom.Rectangle2D;
-
 import diva.canvas.Figure;
 import diva.canvas.event.LayerEvent;
+
+import java.awt.geom.Rectangle2D;
 
 
 /** An interactor that drags its target only within a given

@@ -27,11 +27,12 @@ COPYRIGHTENDKEY
 */
 package ptolemy.vergil.toolbox;
 
+import ptolemy.kernel.util.NamedObj;
+
+import diva.gui.toolbox.JContextMenu;
+
 import javax.swing.Action;
 import javax.swing.JMenuItem;
-
-import ptolemy.kernel.util.NamedObj;
-import diva.gui.toolbox.JContextMenu;
 
 
 //////////////////////////////////////////////////////////////////////////

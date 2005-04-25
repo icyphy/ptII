@@ -30,14 +30,14 @@ COPYRIGHTENDKEY
 */
 package ptolemy.copernicus.c;
 
-import java.util.HashMap;
-import java.util.Iterator;
-
 import soot.ArrayType;
 import soot.RefType;
 import soot.SootClass;
 import soot.SootMethod;
 import soot.Type;
+
+import java.util.HashMap;
+import java.util.Iterator;
 
 
 /** A base class for C code generators in Ptolemy II.

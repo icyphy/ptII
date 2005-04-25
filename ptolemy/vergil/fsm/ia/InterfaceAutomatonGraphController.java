@@ -27,6 +27,12 @@ COPYRIGHTENDKEY
 */
 package ptolemy.vergil.fsm.ia;
 
+import ptolemy.actor.gui.Configuration;
+import ptolemy.actor.gui.Tableau;
+import ptolemy.domains.fsm.kernel.ia.InterfaceAutomaton;
+import ptolemy.util.StringUtilities;
+import ptolemy.vergil.fsm.FSMGraphController;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
@@ -36,12 +42,6 @@ import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JToolBar;
-
-import ptolemy.actor.gui.Configuration;
-import ptolemy.actor.gui.Tableau;
-import ptolemy.domains.fsm.kernel.ia.InterfaceAutomaton;
-import ptolemy.util.StringUtilities;
-import ptolemy.vergil.fsm.FSMGraphController;
 
 
 //////////////////////////////////////////////////////////////////////////

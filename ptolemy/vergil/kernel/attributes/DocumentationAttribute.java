@@ -26,12 +26,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.vergil.kernel.attributes;
 
-import java.awt.Frame;
-import java.io.File;
-import java.net.URL;
-
-import javax.swing.JFileChooser;
-
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.EditorFactory;
 import ptolemy.actor.gui.MoMLApplication;
@@ -46,6 +40,12 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.util.StringUtilities;
+
+import java.awt.Frame;
+import java.io.File;
+import java.net.URL;
+
+import javax.swing.JFileChooser;
 
 
 /**

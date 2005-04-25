@@ -27,9 +27,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.lib.gui;
 
-import java.io.InputStream;
-import java.net.URL;
-
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
@@ -45,6 +42,9 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.plot.Histogram;
 import ptolemy.plot.PlotBox;
 import ptolemy.plot.plotml.HistogramMLParser;
+
+import java.io.InputStream;
+import java.net.URL;
 
 
 //////////////////////////////////////////////////////////////////////////

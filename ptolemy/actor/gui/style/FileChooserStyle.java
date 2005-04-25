@@ -27,9 +27,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.gui.style;
 
-import java.io.File;
-import java.net.URI;
-
 import ptolemy.actor.gui.PtolemyQuery;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
@@ -41,6 +38,9 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
+
+import java.io.File;
+import java.net.URI;
 
 
 //////////////////////////////////////////////////////////////////////////

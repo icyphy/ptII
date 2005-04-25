@@ -27,16 +27,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.vergil.fsm;
 
-import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
-import java.awt.geom.Point2D;
-
-import javax.swing.Action;
-import javax.swing.JMenu;
-import javax.swing.JToolBar;
-
 import ptolemy.actor.gui.Configuration;
 import ptolemy.domains.fsm.kernel.State;
 import ptolemy.kernel.CompositeEntity;
@@ -56,6 +46,7 @@ import ptolemy.vergil.fsm.modal.ModalTransitionController;
 import ptolemy.vergil.kernel.AttributeController;
 import ptolemy.vergil.kernel.PortDialogFactory;
 import ptolemy.vergil.toolbox.FigureAction;
+
 import diva.canvas.Figure;
 import diva.canvas.FigureLayer;
 import diva.canvas.Site;
@@ -72,6 +63,16 @@ import diva.graph.GraphException;
 import diva.graph.GraphPane;
 import diva.graph.NodeRenderer;
 import diva.gui.toolbox.FigureIcon;
+
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+import java.awt.geom.Point2D;
+
+import javax.swing.Action;
+import javax.swing.JMenu;
+import javax.swing.JToolBar;
 
 
 //////////////////////////////////////////////////////////////////////////

@@ -27,6 +27,9 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.gui;
 
+import ptolemy.gui.Top;
+import ptolemy.util.MessageHandler;
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -45,9 +48,6 @@ import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLFrameHyperlinkEvent;
-
-import ptolemy.gui.Top;
-import ptolemy.util.MessageHandler;
 
 
 //////////////////////////////////////////////////////////////////////////

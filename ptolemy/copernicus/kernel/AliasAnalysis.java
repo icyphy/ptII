@@ -26,11 +26,11 @@ COPYRIGHTENDKEY
 */
 package ptolemy.copernicus.kernel;
 
-import java.util.Set;
-
 import soot.Local;
 import soot.SootField;
 import soot.Unit;
+
+import java.util.Set;
 
 
 /**

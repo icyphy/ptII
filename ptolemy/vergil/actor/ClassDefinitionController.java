@@ -27,16 +27,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.vergil.actor;
 
-import java.awt.Color;
-import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
-import java.lang.ref.WeakReference;
-import java.util.Iterator;
-import java.util.List;
-
-import javax.swing.KeyStroke;
-
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.InstantiableNamedObj;
 import ptolemy.kernel.util.Locatable;
@@ -45,6 +35,7 @@ import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
+
 import diva.canvas.CompositeFigure;
 import diva.canvas.Figure;
 import diva.canvas.toolbox.BasicFigure;
@@ -55,6 +46,16 @@ import diva.graph.layout.IncrLayoutAdapter;
 import diva.graph.layout.IncrementalLayoutListener;
 import diva.gui.GUIUtilities;
 import diva.util.Filter;
+
+import java.awt.Color;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.lang.ref.WeakReference;
+import java.util.Iterator;
+import java.util.List;
+
+import javax.swing.KeyStroke;
 
 
 //////////////////////////////////////////////////////////////////////////

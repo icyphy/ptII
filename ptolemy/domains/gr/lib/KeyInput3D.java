@@ -27,6 +27,14 @@ COPYRIGHTENDKEY
 */
 package ptolemy.domains.gr.lib;
 
+import ptolemy.actor.TypedIOPort;
+import ptolemy.data.IntToken;
+import ptolemy.data.type.BaseType;
+import ptolemy.domains.gr.kernel.GRActor3D;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+
 import java.awt.AWTEvent;
 import java.awt.event.KeyEvent;
 import java.util.Enumeration;
@@ -37,14 +45,6 @@ import javax.media.j3d.BranchGroup;
 import javax.media.j3d.Node;
 import javax.media.j3d.WakeupCriterion;
 import javax.media.j3d.WakeupOnAWTEvent;
-
-import ptolemy.actor.TypedIOPort;
-import ptolemy.data.IntToken;
-import ptolemy.data.type.BaseType;
-import ptolemy.domains.gr.kernel.GRActor3D;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
 
 
 /**

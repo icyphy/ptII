@@ -38,7 +38,6 @@ import java.net.URL;
 
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
 
 
 //////////////////////////////////////////////////////////////////////////

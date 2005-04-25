@@ -27,11 +27,11 @@ COPYRIGHTENDKEY
 */
 package ptolemy.moml.filter;
 
+import ptolemy.moml.MoMLFilter;
+
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-
-import ptolemy.moml.MoMLFilter;
 
 
 //////////////////////////////////////////////////////////////////////////

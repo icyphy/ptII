@@ -30,17 +30,9 @@
 */
 
 package ptolemy.domains.ptinyos.lib;
-import java.util.LinkedList;
-import java.util.List;
-
-import ptolemy.actor.Director;
-import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.TypedAtomicActor;
-import ptolemy.actor.util.Time;
-import ptolemy.data.ArrayToken;
+import ptolemy.actor.TypedIOPort;
 import ptolemy.data.BooleanToken;
-import ptolemy.data.Token;
-import ptolemy.data.expr.UtilityFunctions;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;

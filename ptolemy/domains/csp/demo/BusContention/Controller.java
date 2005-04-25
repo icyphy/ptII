@@ -27,10 +27,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.domains.csp.demo.BusContention;
 
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.BooleanToken;
@@ -43,6 +39,10 @@ import ptolemy.domains.csp.kernel.ConditionalReceive;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 
 //////////////////////////////////////////////////////////////////////////

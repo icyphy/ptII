@@ -28,8 +28,6 @@
 */
 package ptolemy.actor.lib.javasound;
 
-import java.io.IOException;
-
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.BooleanToken;
@@ -44,6 +42,8 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.media.javasound.SoundWriter;
+
+import java.io.IOException;
 
 
 ///////////////////////////////////////////////////////////

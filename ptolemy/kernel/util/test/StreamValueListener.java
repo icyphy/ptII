@@ -26,11 +26,11 @@ COPYRIGHTENDKEY
 */
 package ptolemy.kernel.util.test;
 
-import java.io.OutputStream;
-import java.io.PrintStream;
-
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.ValueListener;
+
+import java.io.OutputStream;
+import java.io.PrintStream;
 
 
 //////////////////////////////////////////////////////////////////////////

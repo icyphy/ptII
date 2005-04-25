@@ -26,16 +26,16 @@ COPYRIGHTENDKEY
 */
 package ptolemy.domains.gr.lib;
 
-import java.awt.Cursor;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-
 import diva.canvas.AbstractFigure;
 import diva.canvas.FigureLayer;
 import diva.canvas.JCanvas;
 import diva.canvas.event.LayerEvent;
 import diva.canvas.interactor.AbstractInteractor;
 import diva.canvas.toolbox.BasicFigure;
+
+import java.awt.Cursor;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 
 //////////////////////////////////////////////////////////////////////////

@@ -28,6 +28,16 @@ Created : May 1998
 */
 package ptolemy.data.expr;
 
+import ptolemy.data.BooleanToken;
+import ptolemy.data.ComplexToken;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.IntToken;
+import ptolemy.data.LongToken;
+import ptolemy.data.StringToken;
+import ptolemy.data.UnsignedByteToken;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.math.Complex;
+
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.ArrayList;
@@ -38,16 +48,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
-
-import ptolemy.data.BooleanToken;
-import ptolemy.data.ComplexToken;
-import ptolemy.data.DoubleToken;
-import ptolemy.data.IntToken;
-import ptolemy.data.LongToken;
-import ptolemy.data.StringToken;
-import ptolemy.data.UnsignedByteToken;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.math.Complex;
 
 
 //////////////////////////////////////////////////////////////////////

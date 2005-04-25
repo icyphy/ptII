@@ -27,10 +27,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.lib.jmf;
 
-import javax.media.Buffer;
-import javax.media.format.VideoFormat;
-import javax.media.format.YUVFormat;
-
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.DoubleToken;
@@ -40,6 +36,10 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+
+import javax.media.Buffer;
+import javax.media.format.VideoFormat;
+import javax.media.format.YUVFormat;
 
 
 //////////////////////////////////////////////////////////////////////////

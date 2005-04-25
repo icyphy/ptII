@@ -28,9 +28,9 @@
 */
 package diva.graph;
 
-import javax.swing.SwingUtilities;
-
 import diva.graph.toolbox.GraphEventMulticaster;
+
+import javax.swing.SwingUtilities;
 
 
 /**

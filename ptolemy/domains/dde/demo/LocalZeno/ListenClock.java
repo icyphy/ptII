@@ -30,7 +30,6 @@ package ptolemy.domains.dde.demo.LocalZeno;
 import ptolemy.actor.lib.Clock;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 

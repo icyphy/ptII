@@ -25,16 +25,6 @@
 */
 package diva.canvas.test;
 
-import java.awt.Canvas;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Image;
-import java.awt.MediaTracker;
-import java.awt.Toolkit;
-import java.awt.geom.Line2D;
-
-import javax.swing.SwingConstants;
-
 import diva.canvas.CanvasPane;
 import diva.canvas.CompositeFigure;
 import diva.canvas.Figure;
@@ -54,6 +44,16 @@ import diva.util.java2d.PaintedShape;
 import diva.util.java2d.Polygon2D;
 import diva.util.jester.TestHarness;
 import diva.util.jester.TestSuite;
+
+import java.awt.Canvas;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Image;
+import java.awt.MediaTracker;
+import java.awt.Toolkit;
+import java.awt.geom.Line2D;
+
+import javax.swing.SwingConstants;
 
 
 /**

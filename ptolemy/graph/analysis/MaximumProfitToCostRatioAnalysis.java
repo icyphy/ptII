@@ -24,14 +24,14 @@ ENHANCEMENTS, OR MODIFICATIONS.
 */
 package ptolemy.graph.analysis;
 
-import java.util.List;
-
 import ptolemy.graph.Graph;
 import ptolemy.graph.analysis.analyzer.Analyzer;
 import ptolemy.graph.analysis.analyzer.MaximumProfitToCostRatioAnalyzer;
 import ptolemy.graph.analysis.strategy.ParhiMaximumProfitToCostRatioStrategy;
 import ptolemy.graph.mapping.ToDoubleMapping;
 import ptolemy.graph.mapping.ToIntMapping;
+
+import java.util.List;
 
 
 //////////////////////////////////////////////////////////////////////////

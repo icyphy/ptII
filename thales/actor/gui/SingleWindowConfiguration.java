@@ -22,11 +22,6 @@
 */
 package thales.actor.gui;
 
-import java.net.URI;
-import java.net.URL;
-import java.util.Iterator;
-import java.util.List;
-
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.EffigyFactory;
@@ -44,7 +39,13 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.util.MessageHandler;
+
 import thales.vergil.SingleWindowApplication;
+
+import java.net.URI;
+import java.net.URL;
+import java.util.Iterator;
+import java.util.List;
 
 
 //////////////////////////////////////////////////////////////////////////

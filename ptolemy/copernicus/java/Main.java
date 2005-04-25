@@ -40,6 +40,7 @@ import ptolemy.copernicus.kernel.SideEffectFreeInvocationRemover;
 import ptolemy.copernicus.kernel.TransformerAdapter;
 import ptolemy.copernicus.kernel.UnusedFieldRemover;
 import ptolemy.copernicus.kernel.WatchDogTimer;
+
 import soot.Pack;
 import soot.PackManager;
 import soot.jimple.toolkits.scalar.CopyPropagator;

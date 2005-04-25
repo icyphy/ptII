@@ -26,10 +26,10 @@
   */
 package diva.canvas.connector;
 
-import java.util.HashMap;
-
 import diva.canvas.Figure;
 import diva.canvas.Site;
+
+import java.util.HashMap;
 
 
 /** An implementation of connector targets that finds center sites.

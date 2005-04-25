@@ -27,14 +27,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.vergil.fsm;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
-
-import javax.swing.KeyStroke;
-
 import ptolemy.actor.TypedActor;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.data.DoubleToken;
@@ -51,6 +43,7 @@ import ptolemy.vergil.toolbox.ConfigureAction;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
 import ptolemy.vergil.toolbox.PtolemyMenuFactory;
+
 import diva.canvas.Figure;
 import diva.canvas.Site;
 import diva.canvas.connector.ArcConnector;
@@ -72,6 +65,14 @@ import diva.graph.EdgeRenderer;
 import diva.graph.GraphController;
 import diva.gui.GUIUtilities;
 import diva.gui.toolbox.MenuCreator;
+
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+
+import javax.swing.KeyStroke;
 
 
 //////////////////////////////////////////////////////////////////////////

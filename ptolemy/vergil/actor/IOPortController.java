@@ -26,14 +26,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.vergil.actor;
 
-import java.awt.Color;
-import java.awt.Shape;
-import java.awt.event.ActionEvent;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Ellipse2D;
-
-import javax.swing.SwingUtilities;
-
 import ptolemy.actor.IOPort;
 import ptolemy.actor.gui.DebugListenerTableau;
 import ptolemy.actor.gui.Effigy;
@@ -52,6 +44,7 @@ import ptolemy.vergil.basic.BasicGraphFrame;
 import ptolemy.vergil.kernel.AttributeController;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
+
 import diva.canvas.CanvasUtilities;
 import diva.canvas.Figure;
 import diva.canvas.Site;
@@ -65,6 +58,14 @@ import diva.graph.GraphController;
 import diva.graph.NodeRenderer;
 import diva.util.java2d.Polygon2D;
 import diva.util.java2d.ShapeUtilities;
+
+import java.awt.Color;
+import java.awt.Shape;
+import java.awt.event.ActionEvent;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Ellipse2D;
+
+import javax.swing.SwingUtilities;
 
 
 //////////////////////////////////////////////////////////////////////////

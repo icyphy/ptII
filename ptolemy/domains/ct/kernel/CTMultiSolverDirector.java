@@ -27,8 +27,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.domains.ct.kernel;
 
-import java.util.Iterator;
-
 import ptolemy.actor.Actor;
 import ptolemy.actor.sched.ScheduleElement;
 import ptolemy.actor.util.Time;
@@ -47,6 +45,8 @@ import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
+
+import java.util.Iterator;
 
 
 //////////////////////////////////////////////////////////////////////////

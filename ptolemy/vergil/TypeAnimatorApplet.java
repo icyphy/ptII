@@ -26,8 +26,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.vergil;
 
-import java.util.Iterator;
-
 import ptolemy.actor.Manager;
 import ptolemy.actor.TypeEvent;
 import ptolemy.actor.TypeListener;
@@ -39,6 +37,8 @@ import ptolemy.kernel.util.Configurable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLChangeRequest;
+
+import java.util.Iterator;
 
 
 //////////////////////////////////////////////////////////////////////////

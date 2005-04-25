@@ -26,10 +26,10 @@
   */
 package diva.canvas;
 
+import diva.util.java2d.ShapeUtilities;
+
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
-
-import diva.util.java2d.ShapeUtilities;
 
 
 /** A damage region represents a region of the canvas that has

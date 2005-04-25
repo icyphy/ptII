@@ -26,15 +26,15 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.gui;
 
+import ptolemy.kernel.attributes.VersionAttribute;
+import ptolemy.kernel.util.StringAttribute;
+
 import java.net.URL;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-
-import ptolemy.kernel.attributes.VersionAttribute;
-import ptolemy.kernel.util.StringAttribute;
 
 
 //////////////////////////////////////////////////////////////////////////

@@ -32,12 +32,12 @@ COPYRIGHTENDKEY
  */
 package ptolemy.codegen.c.actor.lib.conversions;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import ptolemy.codegen.c.actor.lib.CodeStream;
 import ptolemy.codegen.kernel.CCodeGeneratorHelper;
 import ptolemy.kernel.util.IllegalActionException;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Jackie

@@ -26,6 +26,25 @@ COPYRIGHTENDKEY
 */
 package ptolemy.copernicus.kernel;
 
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.gui.JNLPUtilities;
+import ptolemy.actor.gui.MoMLApplication;
+import ptolemy.data.StringToken;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.StringParameter;
+import ptolemy.data.expr.Variable;
+import ptolemy.kernel.attributes.VersionAttribute;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
+import ptolemy.moml.MoMLParser;
+import ptolemy.moml.filter.BackwardCompatibility;
+import ptolemy.moml.filter.RemoveGraphicalClasses;
+import ptolemy.util.MessageHandler;
+import ptolemy.util.StringUtilities;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -45,26 +64,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-
-import ptolemy.actor.CompositeActor;
-import ptolemy.actor.gui.JNLPUtilities;
-import ptolemy.actor.gui.MoMLApplication;
-import ptolemy.data.StringToken;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.expr.StringParameter;
-import ptolemy.data.expr.Variable;
-import ptolemy.kernel.attributes.VersionAttribute;
-import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Settable;
-import ptolemy.moml.MoMLParser;
-import ptolemy.moml.filter.BackwardCompatibility;
-import ptolemy.moml.filter.PropertyClassChanges;
-import ptolemy.moml.filter.RemoveGraphicalClasses;
-import ptolemy.util.MessageHandler;
-import ptolemy.util.StringUtilities;
 
 
 //////////////////////////////////////////////////////////////////////////

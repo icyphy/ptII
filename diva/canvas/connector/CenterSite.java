@@ -26,10 +26,10 @@
   */
 package diva.canvas.connector;
 
-import java.awt.geom.Rectangle2D;
-
 import diva.canvas.AbstractSite;
 import diva.canvas.Figure;
+
+import java.awt.geom.Rectangle2D;
 
 
 /** A concrete implementation of Site that is located in the
