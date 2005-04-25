@@ -94,6 +94,10 @@ test GRColorChanges-7.3 {Expression: ViewScreen backgroundColor} {
     <entity name="ViewScreen" class="ptolemy.domains.gr.lib.ViewScreen3D">
         <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0}">
         </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_viewSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
     </entity>
 </entity>
 }}
