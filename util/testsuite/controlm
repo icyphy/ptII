@@ -1,0 +1,18 @@
+#!/bin/sh
+files=$@
+for file in $files
+do
+	#echo $file
+	echo $file | egrep -s '(ai|au|class|doc|dvi|eps|fm|GIF|gif|jpg|jar|\.m|mat|mpg|pdf|png|ps|psd|ppt|vsd|wav|xls)$'
+	retval=$?
+        if [ $retval = 0 ]; then
+            echo "Skipping $file, it probably is not a text file"
+        else 
+	    line=""
+	    line=`od -c $file | egrep '\\\\\r' | head -1`
+	    if [ "$line" != "" ]; then
+	        echo "$file  has controlms"
+	        #echo "$line"
+            fi
+	fi    
+done
