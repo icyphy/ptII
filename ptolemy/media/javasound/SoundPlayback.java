@@ -226,7 +226,7 @@ public class SoundPlayback {
      *  underflow cannot occur for this case.
      *  <p>
      *  The samples should be in the range (-1, 1). Samples that are
-     *  outside ths range will be hard-clipped so that they fall
+     *  outside this range will be hard-clipped so that they fall
      *  within this range.
      *  @param putSamplesArray A two dimensional array containing
      *  the samples to play or write to a file. The first index
