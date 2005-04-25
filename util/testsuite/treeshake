@@ -11,7 +11,7 @@
 # fully qualified dot separated classnames:
 #   ptolemy.kernel.util.NamedObj
 #   ptolemy.util.StringUtilities
-# Note if the -c argument is present, it _must_ preceed the -main argument
+# Note if the -c argument is present, it _must_ precede the -main argument
 #
 # If the -main argument is present, then the following argument is
 # is the main class in fully qualified dot separated format:
