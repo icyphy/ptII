@@ -143,9 +143,30 @@ c:/Program: not found
 
 <li> Run <a href="../../util/testsuite/jindent"><CODE>$PTII/util/testsuite/jindent</CODE></a> on the java files and indent the files to the Ptolemy II
 coding standard.
+<br>Create a list of java files with:
+<pre>
+# Check out a clean tree
+# Make sure empty directories are removed
+cvs update -P -d
+cd ptII
+adm/bin/ptIItxtfiles > /tmp/f
+egrep '*.java$' /tmp/f | grep -v /vendors/ >& /tmp/j
+# Edit /tmp/j and removed the derived files created by the parser
+#   in data/expr
+# Remove
+# Everything in ct/demo/corba/util
+
+# ./ptolemy/data/unit/UParserConstants.java
+# ./ptolemy/data/unit/UParser.java
+# ./ptolemy/data/unit/UParserTokenManager.java
+
+</pre>
 
 <li> Run <CODE>$PTII/adm/copyright/fixcopyrights</CODE> (not shipped with
 the release) and update the copyrights on the <CODE>.java</CODE>, <CODE>.tcl</CODE> and makefiles
+
+<li> Run <CODE>$PTII/adm/copyright/fixsince</CODE> (not shipped with
+the release) and update the @since tags
 
 <li> Run the nightly build, build a release and run
 <CODE>$PTII/adm/copyright/chkcopyright</CODE> on all the files.
@@ -154,6 +175,9 @@ the release) and update the copyrights on the <CODE>.java</CODE>, <CODE>.tcl</CO
 find . -type f -print &gt; ~/tmp/ff
 sh ~ptII/adm/copyright/chkcopyright `cat ~/tmp/ff | grep -v .class | grep -v codeDoc | grep -v xml | grep -v alljtests.tcl | grep -v .htm | grep -v qcf | grep -v .dtd | grep -v gif`
 </pre>
+
+<li> Concatenate all the javadoc files in to one file and run
+<code>$PTII/util/testsuite/ptspell</code>. 
 
 <li> Use Eclipse to fix the imports of the entire tree.
 
