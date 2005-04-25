@@ -383,7 +383,7 @@ public class NonlinearServant extends _CorbaActorImplBase {
 
     /** Transfer output data. The port name must be "output" and
      *  the index must be 0.  The hasData query will be false after
-     *  transfering output. Implements
+     *  transferring output. Implements
      *  <p>
      *  Operation: <b>::util::CorbaActor::transferOutput</b>.
      *  <pre>

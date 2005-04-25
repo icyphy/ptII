@@ -517,11 +517,11 @@ public class MultirateFSMDirector extends FSMDirector {
         }
     }
 
-    /** Transfer data from the input port of the container to the ports
-     *  connected to the inside of the input port and on the mode controller
-     *  or the refinement of its current state. This method overrides the
-     *  base class method by transfering at most the number of tokens specified
-     *  by the input consumption rate.
+    /** Transfer data from the input port of the container to the
+     *  ports connected to the inside of the input port and on the
+     *  mode controller or the refinement of its current state. This
+     *  method overrides the base class method by transferring at most
+     *  the number of tokens specified by the input consumption rate.
      *  @param port The input port to transfer tokens from.
      *  @return True if data are transferred.
      *  @exception IllegalActionException If the port is not an opaque
