@@ -93,7 +93,7 @@ if (foo == bar)
 then the return is not part of the if statement.
 
 <p>We indent using Jalopy to add braces and then reindent using
-jindent or Eclipse 
+jindent to get the indentation right. 
 <p>
 To set up Jalopy: 
  <ol>
@@ -141,8 +141,6 @@ c:/Program: not found
  </ol>
 
 
-<li> Run <a href="../../util/testsuite/jindent"><CODE>$PTII/util/testsuite/jindent</CODE></a> on the java files and indent the files to the Ptolemy II
-coding standard.
 <br>Create a list of java files with:
 <pre>
 # Check out a clean tree
@@ -153,14 +151,35 @@ adm/bin/ptIItxtfiles > /tmp/f
 egrep '*.java$' /tmp/f | grep -v /vendors/ >& /tmp/j
 # Edit /tmp/j and removed the derived files created by the parser
 #   in data/expr
-# Remove
-# Everything in ct/demo/corba/util
-
-# ./ptolemy/data/unit/UParserConstants.java
-# ./ptolemy/data/unit/UParser.java
-# ./ptolemy/data/unit/UParserTokenManager.java
-
+# Remove:
+#   Everything in ct/demo/corba/util
+#   ./ptolemy/data/unit/UParserConstants.java
+#   ./ptolemy/data/unit/UParser.java
+#   ./ptolemy/data/unit/UParserTokenManager.java
 </pre>
+
+<li> Add trailing newlines to files with
+<code>$PTII/adm/bin/addtrailingnl</code>
+
+<li> On a Unix box, check for files with control-Ms:
+<pre>
+cat /tmp/f | xargs $PTII/util/testsuite/controlm
+</pre>
+Use dos2unix to fix the files.
+<br>Also, check that text files that have control-ms are not
+checked in to cvs with -kb.
+
+<li> Run <a href="../../util/testsuite/jindent"><CODE>$PTII/util/testsuite/jindent</CODE></a> on the java files and indent the files to the Ptolemy II
+coding standard.
+<blockquote>
+When you run jindent, watch out for files that have the entire
+class body indented.  If the class comment contains the word
+"extends" or "implements" then emacs sometimes indents the 
+"public class" and the rest of the body.  Search the output
+for "public class" and carefully examine any files where public class
+has leanding spaces. 
+</blockquote>
+
 
 <li> Run <CODE>$PTII/adm/copyright/fixcopyrights</CODE> (not shipped with
 the release) and update the copyrights on the <CODE>.java</CODE>, <CODE>.tcl</CODE> and makefiles
