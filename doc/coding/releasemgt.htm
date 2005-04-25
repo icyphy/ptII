@@ -122,7 +122,10 @@ c:/Program: not found
    and start <code>bin/preferences.sh</code> over again
  <li> In the "Jalopy Settings" window, under Printer -&gt; Braces
    -&gt Misc, click all the boxes in the Insert braces section
- <li> Disable sorting: under Printer -&gt; Sorting -&gt; Declarations.
+ <li> Change the continuation indent to 8 characters:
+   under Indentation -&gt; Sizes, change the continuation indent to
+   8 characters.
+ <li> Disable sorting: under Printer -&gt; Sorting -&gt; Declarations,
    uncheck "Sort class elements"
    <br>If sorting is not disabled, then the fields will be before the methods
  <li> Change the wrapping so we wrap before operators:
@@ -130,8 +133,13 @@ c:/Program: not found
    "Wrap before operators".  Also, note that the line length should be
    80 characters so that when we print out the software for review,
    the lines print properly.
- <li>Close the Jalopy Settings window, you are now ready to indent
+ <li>Close the Jalopy Settings window, you are now ready to indent.
+ From within Eclipse, to format using Jalopy, go to the Java view,
+ open a file, right click and select "Format with Jalopy".  The
+ keyboard short cut is Ctrl+Alt+F10.
+
  </ol>
+
 
 <li> Run <a href="../../util/testsuite/jindent"><CODE>$PTII/util/testsuite/jindent</CODE></a> on the java files and indent the files to the Ptolemy II
 coding standard.
