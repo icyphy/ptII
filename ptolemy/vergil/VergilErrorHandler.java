@@ -112,9 +112,9 @@ public class VergilErrorHandler implements ErrorHandler {
                 + "\nThis is a top-level element, so cannot continue.";
 
             Object[] options = {
-                    "Display stack trace",
-                    "Cancel"
-                };
+                "Display stack trace",
+                "Cancel"
+            };
 
             // Show the MODAL dialog
             int selected = JOptionPane.showOptionDialog(parentWindow,
@@ -123,18 +123,18 @@ public class VergilErrorHandler implements ErrorHandler {
 
             if (selected == 0) {
                 return _showStackTrace(parentWindow, false, false, exception,
-                    message);
+                        message);
             }
 
             return CANCEL;
         } else {
             if (_skippingEnabled) {
                 Object[] options = {
-                        "Skip element",
-                        "Skip remaining errors",
-                        "Display stack trace",
-                        "Cancel"
-                    };
+                    "Skip element",
+                    "Skip remaining errors",
+                    "Display stack trace",
+                    "Cancel"
+                };
 
                 // Show a MODAL dialog
                 int selected = JOptionPane.showOptionDialog(parentWindow,
@@ -145,7 +145,7 @@ public class VergilErrorHandler implements ErrorHandler {
                     return CANCEL;
                 } else if (selected == 2) {
                     return _showStackTrace(parentWindow, true,
-                        _skippingEnabled, exception, message);
+                            _skippingEnabled, exception, message);
                 } else if (selected == 1) {
                     _skipping = true;
                 }
@@ -154,10 +154,10 @@ public class VergilErrorHandler implements ErrorHandler {
             } else {
                 // Skipping is not enabled.
                 Object[] options = {
-                        "Skip element",
-                        "Display stack trace",
-                        "Cancel"
-                    };
+                    "Skip element",
+                    "Display stack trace",
+                    "Cancel"
+                };
 
                 // Show the MODAL dialog
                 int selected = JOptionPane.showOptionDialog(parentWindow,
@@ -166,7 +166,7 @@ public class VergilErrorHandler implements ErrorHandler {
 
                 if (selected == 1) {
                     return _showStackTrace(parentWindow, false,
-                        _skippingEnabled, exception, message);
+                            _skippingEnabled, exception, message);
                 } else if (selected == 2) {
                     return CANCEL;
                 }
@@ -194,14 +194,14 @@ public class VergilErrorHandler implements ErrorHandler {
      *   of the XML.
      */
     private int _showStackTrace(Component context, boolean skipElement,
-        boolean skippingEnabled, Throwable exception, String info) {
+            boolean skippingEnabled, Throwable exception, String info) {
         // FIXME: Eventually, the dialog should
         // be able to email us a bug report.
         // FIXME: The user should be able to click on the links and
         // jump to the line in the offending text.
         // Show the stack trace in a scrollable text area.
         JTextArea text = new JTextArea(KernelException.stackTraceToString(
-                    exception), 60, 80);
+                                               exception), 60, 80);
         JScrollPane scrollPane = new JScrollPane(text);
         scrollPane.setPreferredSize(new Dimension(600, 300));
         text.setCaretPosition(0);
@@ -226,20 +226,20 @@ public class VergilErrorHandler implements ErrorHandler {
 
         if (skippingEnabled) {
             options = new Object[] {
-                    "Skip element",
-                    "Skip remaining errors",
-                    "Cancel"
-                };
+                "Skip element",
+                "Skip remaining errors",
+                "Cancel"
+            };
         } else {
             if (skipElement) {
                 options = new Object[] {
-                        "Skip element",
-                        "Cancel"
-                    };
+                    "Skip element",
+                    "Cancel"
+                };
             } else {
                 options = new Object[] {
-                        "Cancel"
-                    };
+                    "Cancel"
+                };
             }
         }
 

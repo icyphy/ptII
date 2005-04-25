@@ -156,8 +156,8 @@ public class VisibleTreeModel extends FullTreeModel {
         List iconList = object.attributeList(EditorIcon.class);
 
         if ((iconList.size() > 0)
-                        || (object.getAttribute("_iconDescription") != null)
-                        || (object.getAttribute("_smallIconDescription") != null)) {
+                || (object.getAttribute("_iconDescription") != null)
+                || (object.getAttribute("_smallIconDescription") != null)) {
             return true;
         } else {
             return false;

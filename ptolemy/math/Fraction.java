@@ -71,7 +71,7 @@ public class Fraction extends Object {
     public Fraction(int Numerator, int Denominator) {
         if (Denominator == 0) {
             throw new ArithmeticException("Illegal Fraction: "
-                + "cannot have denominator of zero.");
+                    + "cannot have denominator of zero.");
         }
 
         _num = Numerator;
@@ -128,7 +128,7 @@ public class Fraction extends Object {
         // numerator and denominator
         if (b instanceof Fraction) {
             return ((_num == ((Fraction) b)._num)
-                        && (_den == ((Fraction) b)._den));
+                    && (_den == ((Fraction) b)._den));
         } else {
             return false;
         }

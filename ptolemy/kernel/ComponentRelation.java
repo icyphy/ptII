@@ -108,7 +108,7 @@ public class ComponentRelation extends Relation {
      *   a relation already in the container.
      */
     public ComponentRelation(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container.workspace(), name);
         setContainer(container);
     }
@@ -402,10 +402,10 @@ public class ComponentRelation extends Relation {
      *  @see #getContainer()
      */
     public void setContainer(CompositeEntity container)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         if ((container != null) && (_workspace != container.workspace())) {
             throw new IllegalActionException(this, container,
-                "Cannot set container because workspaces are different.");
+                    "Cannot set container because workspaces are different.");
         }
 
         try {
@@ -472,7 +472,7 @@ public class ComponentRelation extends Relation {
      *   with the same name in the container.
      */
     public void setName(String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         if (name == null) {
             name = "";
         }
@@ -484,7 +484,7 @@ public class ComponentRelation extends Relation {
 
             if ((another != null) && (another != this)) {
                 throw new NameDuplicationException(container,
-                    "Name duplication: " + name);
+                        "Name duplication: " + name);
             }
         }
 
@@ -537,7 +537,7 @@ public class ComponentRelation extends Relation {
      *   an acceptable class.  Not thrown in this base class.
      */
     protected void _checkContainer(CompositeEntity container)
-        throws IllegalActionException {
+            throws IllegalActionException {
     }
 
     /** Throw an exception if the specified port cannot be linked to this
@@ -548,7 +548,7 @@ public class ComponentRelation extends Relation {
     protected void _checkPort(Port port) throws IllegalActionException {
         if (!(port instanceof ComponentPort)) {
             throw new IllegalActionException(this, port,
-                "ComponentRelation can only link to a ComponentPort.");
+                    "ComponentRelation can only link to a ComponentPort.");
         }
     }
 
@@ -562,10 +562,10 @@ public class ComponentRelation extends Relation {
      *   as this one.
      */
     protected NamedObj _propagateExistence(NamedObj container)
-        throws IllegalActionException {
+            throws IllegalActionException {
         try {
             ComponentRelation newObject = (ComponentRelation) super
-                            ._propagateExistence(container);
+                ._propagateExistence(container);
             newObject.setContainer((CompositeEntity) container);
             return newObject;
         } catch (NameDuplicationException e) {

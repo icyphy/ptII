@@ -96,7 +96,7 @@ public class TupleType extends StructuredType {
                 newObj.updateType(this);
             } catch (IllegalActionException ex) {
                 throw new InternalErrorException(null, ex,
-                    "Failed to update new instance.");
+                        "Failed to update new instance.");
             }
 
             return newObj;
@@ -114,8 +114,8 @@ public class TupleType extends StructuredType {
     public Token convert(Token token) throws IllegalActionException {
         if (!(token instanceof TupleToken)) {
             throw new IllegalArgumentException(Token
-                            .notSupportedIncomparableConversionMessage(token,
-                                toString()));
+                    .notSupportedIncomparableConversionMessage(token,
+                            toString()));
         }
 
         TupleToken argumentTupleToken = (TupleToken) token;
@@ -130,7 +130,7 @@ public class TupleType extends StructuredType {
                 }
             } catch (IllegalActionException ex) {
                 throw new IllegalActionException(null, ex,
-                    Token.notSupportedConversionMessage(token, "int"));
+                        Token.notSupportedConversionMessage(token, "int"));
             }
         }
 
@@ -227,8 +227,8 @@ public class TupleType extends StructuredType {
             }
         } catch (IllegalActionException iae) {
             throw new InternalErrorException("TupleType.initialize: Cannot "
-                + "initialize the element type to " + type + " "
-                + iae.getMessage());
+                    + "initialize the element type to " + type + " "
+                    + iae.getMessage());
         }
     }
 
@@ -376,22 +376,22 @@ public class TupleType extends StructuredType {
      *   TupleType or it does not have the same structure as this one.
      */
     public void updateType(StructuredType newType)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (this.isConstant()) {
             if (this.equals(newType)) {
                 return;
             } else {
                 throw new IllegalActionException("TupleType.updateType: "
-                    + "This type is a constant and the argument is not the"
-                    + " same as this type. This type: " + this.toString()
-                    + " argument: " + newType.toString());
+                        + "This type is a constant and the argument is not the"
+                        + " same as this type. This type: " + this.toString()
+                        + " argument: " + newType.toString());
             }
         }
 
         // This type is a variable.
         if (!this.isSubstitutionInstance(newType)) {
             throw new IllegalActionException("TupleType.updateType: "
-                + "Cannot update this type to the new type.");
+                    + "Cannot update this type to the new type.");
         }
 
         // Loop through all of the fields of this type...
@@ -424,7 +424,7 @@ public class TupleType extends StructuredType {
     protected int _compare(StructuredType type) {
         if (!(type instanceof TupleType)) {
             throw new IllegalArgumentException("TupleType.compare: "
-                + "The argument is not a TupleType.");
+                    + "The argument is not a TupleType.");
         }
 
         if (this.equals(type)) {
@@ -460,8 +460,8 @@ public class TupleType extends StructuredType {
     protected StructuredType _greatestLowerBound(StructuredType type) {
         if (!(type instanceof TupleType)) {
             throw new IllegalArgumentException(
-                "TupleType.greatestLowerBound: The argument is not a "
-                + "TupleType.");
+                    "TupleType.greatestLowerBound: The argument is not a "
+                    + "TupleType.");
         }
 
         TupleType TupleType = (TupleType) type;
@@ -471,8 +471,8 @@ public class TupleType extends StructuredType {
 
         if (TupleType.getElementCount() != argCount) {
             throw new IllegalArgumentException(
-                "Types are not comparable because they have"
-                + " different numbers of arguments");
+                    "Types are not comparable because they have"
+                    + " different numbers of arguments");
         }
 
         Type[] types = new Type[argCount];
@@ -505,7 +505,7 @@ public class TupleType extends StructuredType {
     protected StructuredType _leastUpperBound(StructuredType type) {
         if (!(type instanceof TupleType)) {
             throw new IllegalArgumentException("TupleType.leastUpperBound: "
-                + "The argument is not a TupleType.");
+                    + "The argument is not a TupleType.");
         }
 
         TupleType TupleType = (TupleType) type;
@@ -515,8 +515,8 @@ public class TupleType extends StructuredType {
 
         if (TupleType.getElementCount() != argCount) {
             throw new IllegalArgumentException(
-                "Types are not comparable because they have"
-                + " different numbers of arguments");
+                    "Types are not comparable because they have"
+                    + " different numbers of arguments");
         }
 
         Type[] types = new Type[argCount];
@@ -583,7 +583,7 @@ public class TupleType extends StructuredType {
                 _resolvedType = _declaredType;
             } catch (CloneNotSupportedException cnse) {
                 throw new InternalErrorException("TupleType.FieldTypeTerm: "
-                    + "The specified type cannot be cloned.");
+                        + "The specified type cannot be cloned.");
             }
         }
 
@@ -627,12 +627,12 @@ public class TupleType extends StructuredType {
         public void initialize(Object e) throws IllegalActionException {
             if (!isSettable()) {
                 throw new IllegalActionException("TupleType$FieldTypeTerm."
-                    + "initialize: The type is not settable.");
+                        + "initialize: The type is not settable.");
             }
 
             if (!(e instanceof Type)) {
                 throw new IllegalActionException("FieldTypeTerm.initialize: "
-                    + "The argument is not a Type.");
+                        + "The argument is not a Type.");
             }
 
             if (_declaredType == BaseType.UNKNOWN) {
@@ -667,15 +667,15 @@ public class TupleType extends StructuredType {
         public void setValue(Object e) throws IllegalActionException {
             if (!isSettable()) {
                 throw new IllegalActionException(
-                    "TupleType$FieldTypeTerm.setValue: The type is not "
-                    + "settable.");
+                        "TupleType$FieldTypeTerm.setValue: The type is not "
+                        + "settable.");
             }
 
             if (!_declaredType.isSubstitutionInstance((Type) e)) {
                 throw new IllegalActionException("FieldTypeTerm.setValue: "
-                    + "Cannot update the field type of this TupleType "
-                    + "to the new type." + " Field type: "
-                    + _declaredType.toString() + ", New type: " + e.toString());
+                        + "Cannot update the field type of this TupleType "
+                        + "to the new type." + " Field type: "
+                        + _declaredType.toString() + ", New type: " + e.toString());
             }
 
             if (_declaredType == BaseType.UNKNOWN) {
@@ -683,8 +683,8 @@ public class TupleType extends StructuredType {
                     _resolvedType = (Type) ((Type) e).clone();
                 } catch (CloneNotSupportedException cnse) {
                     throw new InternalErrorException(
-                        "TupleType$FieldTypeTerm.setValue: "
-                        + "The specified type cannot be cloned.");
+                            "TupleType$FieldTypeTerm.setValue: "
+                            + "The specified type cannot be cloned.");
                 }
             } else {
                 ((StructuredType) _resolvedType).updateType((StructuredType) e);

@@ -122,43 +122,43 @@ public class Vector extends AbstractList implements List, RandomAccess, Cloneabl
     public Enumeration elements() {
         return new Enumeration() {
 
-            private int i = 0;
+                private int i = 0;
 
-            public boolean hasMoreElements() {
-                return i < elementCount;
-            }
-
-            public Object nextElement() {
-                if (i >= elementCount)
-                    throw new NoSuchElementException();
-                return elementData[$ASSIGN$SPECIAL$i(11, i)];
-            }
-
-            final class _PROXY_ implements Rollbackable {
-
-                public final void $COMMIT(long timestamp) {
-                    $COMMIT_ANONYMOUS(timestamp);
+                public boolean hasMoreElements() {
+                    return i < elementCount;
                 }
 
-                public final void $RESTORE(long timestamp, boolean trim) {
-                    $RESTORE_ANONYMOUS(timestamp, trim);
+                public Object nextElement() {
+                    if (i >= elementCount)
+                        throw new NoSuchElementException();
+                    return elementData[$ASSIGN$SPECIAL$i(11, i)];
                 }
 
-                public final Checkpoint $GET$CHECKPOINT() {
-                    return $GET$CHECKPOINT_ANONYMOUS();
+                final class _PROXY_ implements Rollbackable {
+
+                    public final void $COMMIT(long timestamp) {
+                        $COMMIT_ANONYMOUS(timestamp);
+                    }
+
+                    public final void $RESTORE(long timestamp, boolean trim) {
+                        $RESTORE_ANONYMOUS(timestamp, trim);
+                    }
+
+                    public final Checkpoint $GET$CHECKPOINT() {
+                        return $GET$CHECKPOINT_ANONYMOUS();
+                    }
+
+                    public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
+                        $SET$CHECKPOINT_ANONYMOUS(checkpoint);
+                        return this;
+                    }
                 }
 
-                public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
-                    $SET$CHECKPOINT_ANONYMOUS(checkpoint);
-                    return this;
-                }
-            }
-
-            private final int $ASSIGN$SPECIAL$i(int operator, long newValue) {
-                if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-                    $RECORD$i.add(null, i, $CHECKPOINT.getTimestamp());
-                }
-                switch (operator) {
+                private final int $ASSIGN$SPECIAL$i(int operator, long newValue) {
+                    if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+                        $RECORD$i.add(null, i, $CHECKPOINT.getTimestamp());
+                    }
+                    switch (operator) {
                     case 0:
                         return i += newValue;
                     case 1:
@@ -191,51 +191,51 @@ public class Vector extends AbstractList implements List, RandomAccess, Cloneabl
                         return --i;
                     default:
                         return i;
-                }
-            }
-
-            public void $COMMIT_ANONYMOUS(long timestamp) {
-                FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
-                $RECORD$$CHECKPOINT.commit(timestamp);
-            }
-
-            public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
-                i = $RECORD$i.restore(i, timestamp, trim);
-                if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-                    $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, new _PROXY_(), timestamp, trim);
-                    FieldRecord.popState($RECORDS);
-                    $RESTORE_ANONYMOUS(timestamp, trim);
-                }
-            }
-
-            public final Checkpoint $GET$CHECKPOINT_ANONYMOUS() {
-                return $CHECKPOINT;
-            }
-
-            public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
-                if ($CHECKPOINT != checkpoint) {
-                    Checkpoint oldCheckpoint = $CHECKPOINT;
-                    if (checkpoint != null) {
-                        $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
-                        FieldRecord.pushState($RECORDS);
                     }
-                    $CHECKPOINT = checkpoint;
-                    oldCheckpoint.setCheckpoint(checkpoint);
-                    checkpoint.addObject(new _PROXY_());
                 }
-                return this;
-            }
 
-            private FieldRecord $RECORD$i = new FieldRecord(0);
+                public void $COMMIT_ANONYMOUS(long timestamp) {
+                    FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                    $RECORD$$CHECKPOINT.commit(timestamp);
+                }
 
-            private FieldRecord[] $RECORDS = new FieldRecord[] {
+                public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
+                    i = $RECORD$i.restore(i, timestamp, trim);
+                    if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
+                        $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, new _PROXY_(), timestamp, trim);
+                        FieldRecord.popState($RECORDS);
+                        $RESTORE_ANONYMOUS(timestamp, trim);
+                    }
+                }
+
+                public final Checkpoint $GET$CHECKPOINT_ANONYMOUS() {
+                    return $CHECKPOINT;
+                }
+
+                public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
+                    if ($CHECKPOINT != checkpoint) {
+                        Checkpoint oldCheckpoint = $CHECKPOINT;
+                        if (checkpoint != null) {
+                            $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                            FieldRecord.pushState($RECORDS);
+                        }
+                        $CHECKPOINT = checkpoint;
+                        oldCheckpoint.setCheckpoint(checkpoint);
+                        checkpoint.addObject(new _PROXY_());
+                    }
+                    return this;
+                }
+
+                private FieldRecord $RECORD$i = new FieldRecord(0);
+
+                private FieldRecord[] $RECORDS = new FieldRecord[] {
                     $RECORD$i
                 };
 
-            {
-                $CHECKPOINT.addObject(new _PROXY_());
-            }
-        };
+                {
+                    $CHECKPOINT.addObject(new _PROXY_());
+                }
+            };
     }
 
     public boolean contains(Object elem) {
@@ -534,38 +534,38 @@ public class Vector extends AbstractList implements List, RandomAccess, Cloneabl
             $RECORD$elementCount.add(null, elementCount, $CHECKPOINT.getTimestamp());
         }
         switch (operator) {
-            case 0:
-                return elementCount += newValue;
-            case 1:
-                return elementCount -= newValue;
-            case 2:
-                return elementCount *= newValue;
-            case 3:
-                return elementCount /= newValue;
-            case 4:
-                return elementCount &= newValue;
-            case 5:
-                return elementCount |= newValue;
-            case 6:
-                return elementCount ^= newValue;
-            case 7:
-                return elementCount %= newValue;
-            case 8:
-                return elementCount <<= newValue;
-            case 9:
-                return elementCount >>= newValue;
-            case 10:
-                return elementCount >>>= newValue;
-            case 11:
-                return elementCount++;
-            case 12:
-                return elementCount--;
-            case 13:
-                return ++elementCount;
-            case 14:
-                return --elementCount;
-            default:
-                return elementCount;
+        case 0:
+            return elementCount += newValue;
+        case 1:
+            return elementCount -= newValue;
+        case 2:
+            return elementCount *= newValue;
+        case 3:
+            return elementCount /= newValue;
+        case 4:
+            return elementCount &= newValue;
+        case 5:
+            return elementCount |= newValue;
+        case 6:
+            return elementCount ^= newValue;
+        case 7:
+            return elementCount %= newValue;
+        case 8:
+            return elementCount <<= newValue;
+        case 9:
+            return elementCount >>= newValue;
+        case 10:
+            return elementCount >>>= newValue;
+        case 11:
+            return elementCount++;
+        case 12:
+            return elementCount--;
+        case 13:
+            return ++elementCount;
+        case 14:
+            return --elementCount;
+        default:
+            return elementCount;
         }
     }
 
@@ -595,8 +595,8 @@ public class Vector extends AbstractList implements List, RandomAccess, Cloneabl
     private FieldRecord $RECORD$capacityIncrement = new FieldRecord(0);
 
     private FieldRecord[] $RECORDS = new FieldRecord[] {
-            $RECORD$elementData,
-            $RECORD$elementCount,
-            $RECORD$capacityIncrement
-        };
+        $RECORD$elementData,
+        $RECORD$elementCount,
+        $RECORD$capacityIncrement
+    };
 }

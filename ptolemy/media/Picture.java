@@ -136,8 +136,8 @@ public class Picture extends JPanel {
     public void setImage(int[] pixels) throws IllegalArgumentException {
         if (pixels.length != (_width * _height)) {
             throw new IllegalArgumentException(
-                "setImage: Specified image size does not"
-                + "match that of the component.");
+                    "setImage: Specified image size does not"
+                    + "match that of the component.");
         }
 
         _pixels = pixels;
@@ -171,7 +171,7 @@ public class Picture extends JPanel {
 
         // Alpha, red, green, blue, where alpha controls transparency.
         _pixels[(row * _width) + col] = (255 << 24) | (intensity << 16)
-                        | (intensity << 8) | intensity;
+            | (intensity << 8) | intensity;
     }
 
     /** Set the specified pixel to the given color value, where each color
@@ -212,7 +212,7 @@ public class Picture extends JPanel {
 
         // Alpha, red, green, blue, where alpha controls transparency.
         _pixels[(row * _width) + col] = (255 << 24) | (red << 16)
-                        | (green << 8) | blue;
+            | (green << 8) | blue;
     }
 
     /** Override the base class to prevent blanking, which causes flashing

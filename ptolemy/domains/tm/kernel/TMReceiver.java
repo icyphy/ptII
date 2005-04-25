@@ -113,7 +113,7 @@ public class TMReceiver extends AbstractReceiver {
     public synchronized Token get() throws NoTokenException {
         if (_tokens.isEmpty()) {
             throw new NoTokenException(getContainer(),
-                "No more tokens in the TM receiver.");
+                    "No more tokens in the TM receiver.");
         }
 
         return (Token) _tokens.removeFirst();
@@ -150,7 +150,7 @@ public class TMReceiver extends AbstractReceiver {
                     Director director;
 
                     if ((port.isOutput()) && (actor instanceof CompositeActor)
-                                    && ((CompositeActor) actor).isOpaque()) {
+                            && ((CompositeActor) actor).isOpaque()) {
                         director = actor.getDirector();
                     } else {
                         director = actor.getExecutiveDirector();
@@ -163,7 +163,7 @@ public class TMReceiver extends AbstractReceiver {
                             return _director;
                         } else {
                             throw new IllegalActionException(getContainer(),
-                                "Does not have a TMDirector.");
+                                    "Does not have a TMDirector.");
                         }
                     }
                 }
@@ -173,7 +173,7 @@ public class TMReceiver extends AbstractReceiver {
         }
 
         throw new IllegalActionException(getContainer(),
-            "Does not have a IOPort as the container of the receiver.");
+                "Does not have a IOPort as the container of the receiver.");
     }
 
     /** Return true, indicating that there is always room.
@@ -227,7 +227,7 @@ public class TMReceiver extends AbstractReceiver {
 
             if (port == null) {
                 throw new InternalErrorException(
-                    "put() requires that the port has a container");
+                        "put() requires that the port has a container");
             }
 
             Parameter priority = (Parameter) port.getAttribute("priority");
@@ -235,13 +235,13 @@ public class TMReceiver extends AbstractReceiver {
             if (priority == null) {
                 if (port.getContainer() == null) {
                     throw new InternalErrorException(
-                        "put() requires that the port '" + port
-                        + "' that contains this receiver be itself "
-                        + "contained");
+                            "put() requires that the port '" + port
+                            + "' that contains this receiver be itself "
+                            + "contained");
                 }
 
                 priority = (Parameter) ((NamedObj) port.getContainer())
-                                .getAttribute("priority");
+                    .getAttribute("priority");
             }
 
             int priorityValue = 5;
@@ -251,13 +251,13 @@ public class TMReceiver extends AbstractReceiver {
                     priorityValue = ((IntToken) priority.getToken()).intValue();
                 } catch (ClassCastException ex) {
                     throw new InternalErrorException(null, ex,
-                        "priorityValue '" + priority.getToken()
-                        + "' must be an integer in " + getContainer());
+                            "priorityValue '" + priority.getToken()
+                            + "' must be an integer in " + getContainer());
                 }
             }
 
             getDirector()._enqueueEvent(new TMEvent(this, token, priorityValue,
-                    -1.0));
+                                                -1.0));
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(null, ex, null);
         }

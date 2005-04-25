@@ -63,7 +63,7 @@ public class LocalZenoUtilities {
      *  interrupted and stop() was not called on the director.
      */
     public static void sleepProcess(TypedAtomicActor actor)
-        throws IllegalActionException {
+            throws IllegalActionException {
         try {
             Thread.sleep(100);
         } catch (InterruptedException ex) {
@@ -73,7 +73,7 @@ public class LocalZenoUtilities {
                 // Ignore
             } else {
                 throw new IllegalActionException(actor, ex,
-                    "InterruptedException during a sleeping thread.");
+                        "InterruptedException during a sleeping thread.");
             }
         }
     }

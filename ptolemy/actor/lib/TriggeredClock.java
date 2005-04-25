@@ -67,7 +67,7 @@ public class TriggeredClock extends Clock {
      *   actor with this name.
      */
     public TriggeredClock(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // start port.

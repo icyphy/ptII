@@ -98,7 +98,7 @@ public class NavigableActorGraphFrame extends ActorGraphFrame {
      *   to use if the model does not have a library.
      */
     public NavigableActorGraphFrame(CompositeEntity entity, Tableau tableau,
-        LibraryAttribute defaultLibrary) {
+            LibraryAttribute defaultLibrary) {
         super(entity, tableau, defaultLibrary);
 
         diva.gui.GUIUtilities.addToolBarButton(_toolbar, _upAction);
@@ -179,10 +179,10 @@ public class NavigableActorGraphFrame extends ActorGraphFrame {
 
             putValue("tooltip", "Up");
             putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY,
-                KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS,
-                    java.awt.Event.CTRL_MASK));
+                    KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS,
+                            java.awt.Event.CTRL_MASK));
             putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
-                new Integer(KeyEvent.VK_M));
+                    new Integer(KeyEvent.VK_M));
         }
 
         public void actionPerformed(ActionEvent e) {
@@ -190,7 +190,7 @@ public class NavigableActorGraphFrame extends ActorGraphFrame {
 
             if (toOpen != null) {
                 Configuration configuration = SingleWindowApplication._mainFrame
-                                .getConfiguration();
+                    .getConfiguration();
 
                 try {
                     configuration.openModel(toOpen);

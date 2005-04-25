@@ -73,7 +73,7 @@ public class BooleanMultiplexor extends TypedAtomicActor {
      *   an actor already in the container.
      */
     public BooleanMultiplexor(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         trueInput = new TypedIOPort(this, "trueInput", true, false);

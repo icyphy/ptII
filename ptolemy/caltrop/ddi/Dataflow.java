@@ -69,7 +69,7 @@ import java.util.Set;
 */
 public class Dataflow extends AbstractDDI implements DDI {
     public Dataflow(TypedAtomicActor ptActor, Actor actor, Context context,
-        Environment env) {
+            Environment env) {
         _ptActor = ptActor;
         _actor = actor;
         _actions = PriorityUtil.prioritySortActions(_actor);
@@ -90,10 +90,10 @@ public class Dataflow extends AbstractDDI implements DDI {
 
             if (isInput) {
                 portMap.put(name,
-                    new SingleInputPort(name, new DFInputChannel(port, 0)));
+                        new SingleInputPort(name, new DFInputChannel(port, 0)));
             } else {
                 portMap.put(name,
-                    new SingleOutputPort(name, new DFOutputChannel(port, 0)));
+                        new SingleOutputPort(name, new DFOutputChannel(port, 0)));
             }
         }
 
@@ -153,7 +153,7 @@ public class Dataflow extends AbstractDDI implements DDI {
             }
         } catch (Exception ex) {
             throw new IllegalActionException(null, ex,
-                "Could not fire CAL actor '" + _actor.getName() + "'");
+                    "Could not fire CAL actor '" + _actor.getName() + "'");
         }
     }
 
@@ -219,15 +219,15 @@ public class Dataflow extends AbstractDDI implements DDI {
             _currentStateSet = null;
         } else {
             _currentStateSet = Collections.singleton(_actor.getScheduleFSM()
-                                                                       .getInitialState());
+                    .getInitialState());
         }
 
         try {
             _selectInitializer();
         } catch (Exception ex) {
             throw new IllegalActionException(null, ex,
-                "Error during initializer selection in actor '"
-                + _actor.getName() + "'");
+                    "Error during initializer selection in actor '"
+                    + _actor.getName() + "'");
         }
 
         try {
@@ -238,14 +238,14 @@ public class Dataflow extends AbstractDDI implements DDI {
             }
         } catch (Exception ex) {
             throw new IllegalActionException(null, ex,
-                "Could not fire initializer in CAL actor '" + _actor.getName()
-                + "'");
+                    "Could not fire initializer in CAL actor '" + _actor.getName()
+                    + "'");
         }
     }
 
     private void _commitInputChannels() {
         for (Iterator iterator = _inputPorts.values().iterator();
-                        iterator.hasNext();) {
+             iterator.hasNext();) {
             InputPort inputPort = (InputPort) iterator.next();
 
             for (int i = 0; i < inputPort.width(); i++) {
@@ -257,7 +257,7 @@ public class Dataflow extends AbstractDDI implements DDI {
 
     private void _rollbackInputChannels() {
         for (Iterator iterator = _inputPorts.values().iterator();
-                        iterator.hasNext();) {
+             iterator.hasNext();) {
             InputPort inputPort = (InputPort) iterator.next();
 
             for (int i = 0; i < inputPort.width(); i++) {
@@ -299,8 +299,8 @@ public class Dataflow extends AbstractDDI implements DDI {
             return true;
         } catch (Exception ex) {
             throw new IllegalActionException(null, ex,
-                "Error during action selection in actor '" + _actor.getName()
-                + "'");
+                    "Error during action selection in actor '" + _actor.getName()
+                    + "'");
         }
     }
 
@@ -314,7 +314,7 @@ public class Dataflow extends AbstractDDI implements DDI {
                 Transition t = ts[i];
 
                 if (_currentStateSet.contains(t.getSourceState())
-                                && isPrefixedByTagList(tag, t.getActionTags())) {
+                        && isPrefixedByTagList(tag, t.getActionTags())) {
                     return true;
                 }
             }
@@ -342,7 +342,7 @@ public class Dataflow extends AbstractDDI implements DDI {
             Transition t = ts[i];
 
             if (s.contains(t.getSourceState())
-                            && isPrefixedByTagList(tag, t.getActionTags())) {
+                    && isPrefixedByTagList(tag, t.getActionTags())) {
                 ns.add(t.getDestinationState());
             }
         }

@@ -91,7 +91,7 @@ public class TxCoordination extends MACActorBase {
      *   an actor already in the container.
      */
     public TxCoordination(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // create ports
@@ -201,13 +201,13 @@ public class TxCoordination extends MACActorBase {
                     TXTXRequest.send(0, _rtsdu);
                     _currentState = Wait_Rts_Sent;
                 } else // channel is busy, need to backoff
-                 {
-                    _backoff(_ccw, -1);
+                    {
+                        _backoff(_ccw, -1);
 
-                    // modified standard here
-                    _cont = true;
-                    _currentState = TxC_Backoff;
-                }
+                        // modified standard here
+                        _cont = true;
+                        _currentState = TxC_Backoff;
+                    }
             }
 
             break;
@@ -396,7 +396,7 @@ public class TxCoordination extends MACActorBase {
         } else {
             _mBkIP = null;
             throw new IllegalActionException("the MAC compositor "
-                + "dosen't contain a parameter named mBkIP");
+                    + "dosen't contain a parameter named mBkIP");
         }
 
         // randomize node's time to go to TxC_Idle
@@ -406,56 +406,56 @@ public class TxCoordination extends MACActorBase {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
     private RecordToken _createPacket(int subtype, int duration, int RA, int TA)
-        throws IllegalActionException {
+            throws IllegalActionException {
         Token[] DataPacketValues = {
-                new IntToken(0),
-                new IntToken(ControlType),
-                new IntToken(subtype),
-                new IntToken(0),
-                new IntToken(0),
-                new IntToken(0),
-                new IntToken(0),
-                new IntToken(0),
-                new IntToken(0),
-                new IntToken(0),
-                new IntToken(0),
-                new IntToken(123),
-                new IntToken(duration),
-                new IntToken(RA),
-                new IntToken(TA),
-                new IntToken(160)
-            };
+            new IntToken(0),
+            new IntToken(ControlType),
+            new IntToken(subtype),
+            new IntToken(0),
+            new IntToken(0),
+            new IntToken(0),
+            new IntToken(0),
+            new IntToken(0),
+            new IntToken(0),
+            new IntToken(0),
+            new IntToken(0),
+            new IntToken(123),
+            new IntToken(duration),
+            new IntToken(RA),
+            new IntToken(TA),
+            new IntToken(160)
+        };
         RecordToken pkt = new RecordToken(RtsPacket, DataPacketValues);
         return (pkt);
     }
 
     private RecordToken _createDataPacket(RecordToken msg, int dest_addr)
-        throws IllegalActionException {
+            throws IllegalActionException {
         Token[] DataPacketValues = {
-                new IntToken(0),
-                new IntToken(DataType),
-                new IntToken(Data),
-                new IntToken(0),
-                new IntToken(0),
-                new IntToken(0),
-                new IntToken(0),
-                new IntToken(0),
-                new IntToken(0),
-                new IntToken(0),
-                new IntToken(0),
-                new IntToken(123),
-                new IntToken(_aSifsTime + _aPreambleLength + _aPlcpHeaderLength
+            new IntToken(0),
+            new IntToken(DataType),
+            new IntToken(Data),
+            new IntToken(0),
+            new IntToken(0),
+            new IntToken(0),
+            new IntToken(0),
+            new IntToken(0),
+            new IntToken(0),
+            new IntToken(0),
+            new IntToken(0),
+            new IntToken(123),
+            new IntToken(_aSifsTime + _aPreambleLength + _aPlcpHeaderLength
                     + (_sAckCtsLng / _mBrate)),
-                new IntToken(dest_addr),
-                new IntToken(getID()),
-                new IntToken(0),
-                new IntToken(_seqNum - (_seqNum / 4096 * 4096)),
-                new IntToken(0),
-                new IntToken(0),
-                msg,
-                new IntToken((34 * 8)
+            new IntToken(dest_addr),
+            new IntToken(getID()),
+            new IntToken(0),
+            new IntToken(_seqNum - (_seqNum / 4096 * 4096)),
+            new IntToken(0),
+            new IntToken(0),
+            msg,
+            new IntToken((34 * 8)
                     + ((IntToken) msg.get("Length")).intValue())
-            };
+        };
         _seqNum++;
 
         RecordToken pkt = new RecordToken(DataPacket, DataPacketValues);
@@ -463,60 +463,60 @@ public class TxCoordination extends MACActorBase {
     }
 
     private RecordToken _setRetryField(RecordToken msg, int retryBit)
-        throws IllegalActionException {
+            throws IllegalActionException {
         Token[] DataPacketValues = {
-                new IntToken(0),
-                new IntToken(DataType),
-                new IntToken(Data),
-                new IntToken(0),
-                new IntToken(0),
-                new IntToken(0),
-                new IntToken(retryBit),
-                new IntToken(0),
-                new IntToken(0),
-                new IntToken(0),
-                new IntToken(0),
-                new IntToken(123),
-                msg.get("durId"),
-                msg.get("Addr1"),
-                msg.get("Addr2"),
-                new IntToken(0),
-                msg.get("SeqNum"),
-                new IntToken(0),
-                new IntToken(0),
-                msg.get("payload"),
-                msg.get("Length")
-            };
+            new IntToken(0),
+            new IntToken(DataType),
+            new IntToken(Data),
+            new IntToken(0),
+            new IntToken(0),
+            new IntToken(0),
+            new IntToken(retryBit),
+            new IntToken(0),
+            new IntToken(0),
+            new IntToken(0),
+            new IntToken(0),
+            new IntToken(123),
+            msg.get("durId"),
+            msg.get("Addr1"),
+            msg.get("Addr2"),
+            new IntToken(0),
+            msg.get("SeqNum"),
+            new IntToken(0),
+            new IntToken(0),
+            msg.get("payload"),
+            msg.get("Length")
+        };
 
         RecordToken pkt = new RecordToken(DataPacket, DataPacketValues);
         return (pkt);
     }
 
     private RecordToken _setDurIdField(RecordToken msg, int durId)
-        throws IllegalActionException {
+            throws IllegalActionException {
         Token[] DataPacketValues = {
-                new IntToken(0),
-                new IntToken(DataType),
-                new IntToken(Data),
-                new IntToken(0),
-                new IntToken(0),
-                new IntToken(0),
-                msg.get("retryBit"),
-                new IntToken(0),
-                new IntToken(0),
-                new IntToken(0),
-                new IntToken(0),
-                new IntToken(123),
-                new IntToken(durId),
-                msg.get("Addr1"),
-                msg.get("Addr2"),
-                new IntToken(0),
-                msg.get("SeqNum"),
-                new IntToken(0),
-                new IntToken(0),
-                msg.get("payload"),
-                msg.get("Length")
-            };
+            new IntToken(0),
+            new IntToken(DataType),
+            new IntToken(Data),
+            new IntToken(0),
+            new IntToken(0),
+            new IntToken(0),
+            msg.get("retryBit"),
+            new IntToken(0),
+            new IntToken(0),
+            new IntToken(0),
+            new IntToken(0),
+            new IntToken(123),
+            new IntToken(durId),
+            msg.get("Addr1"),
+            msg.get("Addr2"),
+            new IntToken(0),
+            msg.get("SeqNum"),
+            new IntToken(0),
+            new IntToken(0),
+            msg.get("payload"),
+            msg.get("Length")
+        };
 
         RecordToken pkt = new RecordToken(DataPacket, DataPacketValues);
         return (pkt);
@@ -524,10 +524,10 @@ public class TxCoordination extends MACActorBase {
 
     private void _backoff(int ccw, int cnt) throws IllegalActionException {
         Token[] getBackoffMsgValues = {
-                new IntToken(Backoff),
-                new IntToken(ccw),
-                new IntToken(cnt)
-            };
+            new IntToken(Backoff),
+            new IntToken(ccw),
+            new IntToken(cnt)
+        };
         RecordToken event = new RecordToken(getBackoffMsgFields,
                 getBackoffMsgValues);
         getBackoff.send(0, event);
@@ -535,10 +535,10 @@ public class TxCoordination extends MACActorBase {
 
     private void _sendTxRequest() throws IllegalActionException {
         Token[] TxRequestMsgValues = {
-                new IntToken(TxRequest),
-                _tpdu,
-                new IntToken(_mBrate * (int) 1e6)
-            };
+            new IntToken(TxRequest),
+            _tpdu,
+            new IntToken(_mBrate * (int) 1e6)
+        };
 
         RecordToken copyTpdu = new RecordToken(TxRequestMsgFields,
                 TxRequestMsgValues);
@@ -556,7 +556,7 @@ public class TxCoordination extends MACActorBase {
         int Addr1 = ((IntToken) _tpdu.get("Addr1")).intValue();
 
         if ((length > _dotllRTSThreshold) && (retryBit == 0)
-                        && (Addr1 != mac_broadcast_addr)) {
+                && (Addr1 != mac_broadcast_addr)) {
             _currentState = Wait_Rts_Backoff;
         } else {
             _currentState = Wait_Mpdu_Backoff;
@@ -598,10 +598,10 @@ public class TxCoordination extends MACActorBase {
         } else {
             RecordToken pdu = _createPacket(Rts, durId, dest_addr, getID());
             Token[] TxRequestMsgValues = {
-                    new IntToken(TxRequest),
-                    pdu,
-                    new IntToken(_mBrate * (int) 1e6)
-                };
+                new IntToken(TxRequest),
+                pdu,
+                new IntToken(_mBrate * (int) 1e6)
+            };
             _rtsdu = new RecordToken(TxRequestMsgFields, TxRequestMsgValues);
         }
 

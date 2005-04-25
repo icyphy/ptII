@@ -84,7 +84,7 @@ public class CActorBase extends TypedAtomicActor {
             _init();
         } catch (KernelException e) {
             throw new InternalErrorException(
-                "Error constructing parameters of CActorBase.");
+                    "Error constructing parameters of CActorBase.");
         }
     }
 
@@ -103,7 +103,7 @@ public class CActorBase extends TypedAtomicActor {
      * instantiated from CActor.xml. Therefore I put it back.
      */
     public CActorBase(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         _init();
     }
@@ -166,14 +166,14 @@ public class CActorBase extends TypedAtomicActor {
      *   the name of another port already in the actor.
      */
     protected void _addPort(Port port)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         // In the future, this method can be changed to allow IOPort to be
         // added. In that case, the type system just ignores instances of
         // IOPort during type checking. Since there is no intended application
         // for that change yet, constrain the port to be TypedIOPort for now.
         if (!(port instanceof CPort)) {
             throw new IllegalActionException(this, port,
-                "Incompatible port class for this actor.");
+                    "Incompatible port class for this actor.");
         }
 
         super._addPort(port);
@@ -182,10 +182,10 @@ public class CActorBase extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
     private void _init()
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         source = new FileParameter(this, "source");
         source.setExpression(
-            "$PTII/ptolemy/domains/giotto/cgc/demo/task_code.c");
+                "$PTII/ptolemy/domains/giotto/cgc/demo/task_code.c");
 
         // Should this be visible?
         // source.setVisibility(Settable.EXPERT);
@@ -194,9 +194,9 @@ public class CActorBase extends TypedAtomicActor {
         frequency.setTypeEquals(BaseType.INT);
 
         _attachText("_iconDescription",
-            "<svg>\n" + "<rect x=\"-20\" y=\"-20\" "
-            + "width=\"60\" height=\"40\" " + "style=\"fill:white\"/>\n"
-            + "<text x=\"-16\" y=\"5\" " + "style=\"font-size:18\">\n"
-            + "CActor\n" + "</text>\n" + "</svg>\n");
+                "<svg>\n" + "<rect x=\"-20\" y=\"-20\" "
+                + "width=\"60\" height=\"40\" " + "style=\"fill:white\"/>\n"
+                + "<text x=\"-16\" y=\"5\" " + "style=\"font-size:18\">\n"
+                + "CActor\n" + "</text>\n" + "</svg>\n");
     }
 }

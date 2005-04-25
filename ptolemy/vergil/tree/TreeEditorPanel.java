@@ -71,7 +71,7 @@ public class TreeEditorPanel extends JScrollPane {
      *  @exception Exception If the parser cannot parse the file.
      */
     public TreeEditorPanel(String filename, TreeCellRenderer cellRenderer)
-        throws Exception {
+            throws Exception {
         _parser = new MoMLParser();
 
         // FIXME: This should use the Configuration.
@@ -92,7 +92,7 @@ public class TreeEditorPanel extends JScrollPane {
             setViewportView(tree);
         } else {
             throw new IllegalActionException("Cannot display a tree unless "
-                + "the top level is a CompositeEntity.");
+                    + "the top level is a CompositeEntity.");
         }
     }
 

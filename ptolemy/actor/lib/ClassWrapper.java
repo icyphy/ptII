@@ -102,7 +102,7 @@ public class ClassWrapper extends TypedAtomicActor {
      *   actor with the specified name.
      */
     public ClassWrapper(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         className = new StringAttribute(this, "className");
     }
@@ -150,7 +150,7 @@ public class ClassWrapper extends TypedAtomicActor {
             _class = Class.forName(className.getExpression());
         } catch (ClassNotFoundException ex) {
             throw new IllegalActionException(this, ex,
-                "Cannot find specified " + "class " + className.getExpression());
+                    "Cannot find specified " + "class " + className.getExpression());
         }
 
         _methodTable = new Hashtable();
@@ -173,9 +173,9 @@ public class ClassWrapper extends TypedAtomicActor {
 
             if (m == null) {
                 throw new IllegalActionException(this,
-                    "The specified class "
-                    + "does not have a method of the same name as input "
-                    + "port " + portName);
+                        "The specified class "
+                        + "does not have a method of the same name as input "
+                        + "port " + portName);
             }
 
             Object[] methodInfo = new Object[3];
@@ -206,7 +206,7 @@ public class ClassWrapper extends TypedAtomicActor {
                 _instance = constructor.newInstance(new Object[0]);
             } catch (Exception ex) {
                 throw new IllegalActionException(this, ex,
-                    "Cannot create an " + "instance of the specified class");
+                        "Cannot create an " + "instance of the specified class");
             }
         }
     }
@@ -239,7 +239,7 @@ public class ClassWrapper extends TypedAtomicActor {
                 argRecord = (RecordToken) argv;
             } else if (args > 1) {
                 throw new IllegalActionException(this,
-                    "cannot convert " + "input token to method call arguments.");
+                        "cannot convert " + "input token to method call arguments.");
             }
 
             for (int i = 0; i < args; ++i) {
@@ -265,7 +265,7 @@ public class ClassWrapper extends TypedAtomicActor {
                     argValues[i] = ((StringToken) arg).stringValue();
                 } else if (arg instanceof BooleanToken) {
                     argValues[i] = Boolean.valueOf(((BooleanToken) arg)
-                                        .booleanValue());
+                            .booleanValue());
                 } else if (arg instanceof ComplexToken) {
                     argValues[i] = ((ComplexToken) arg).complexValue();
                 } else if (arg instanceof FixToken) {
@@ -284,10 +284,10 @@ public class ClassWrapper extends TypedAtomicActor {
             // get the exception produced by the invoked function
             ex.getTargetException().printStackTrace();
             throw new IllegalActionException(this, ex.getTargetException(),
-                "Error invoking method " + m.getName());
+                    "Error invoking method " + m.getName());
         } catch (Exception ex) {
             new IllegalActionException(this, ex,
-                "Error invoking method " + m.getName());
+                    "Error invoking method " + m.getName());
         }
 
         Token resultToken = null;
@@ -313,10 +313,10 @@ public class ClassWrapper extends TypedAtomicActor {
             resultToken = new FixToken((FixPoint) result);
         } else {
             throw new IllegalActionException(this,
-                "Result of method call " + port.getName()
-                + " is not a supported type: boolean, "
-                + "complex, fixpoint, double, int, long  and String, "
-                + "or a Token.");
+                    "Result of method call " + port.getName()
+                    + " is not a supported type: boolean, "
+                    + "complex, fixpoint, double, int, long  and String, "
+                    + "or a Token.");
         }
 
         if (outPort != null) {

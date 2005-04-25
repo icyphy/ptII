@@ -80,7 +80,7 @@ public class MatrixToSequence extends SDFTransformer {
      *   actor with this name.
      */
     public MatrixToSequence(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         input.setTypeAtMost(BaseType.MATRIX);
@@ -99,8 +99,8 @@ public class MatrixToSequence extends SDFTransformer {
 
         // Set the icon.
         _attachText("_iconDescription",
-            "<svg>\n" + "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
-            + "style=\"fill:white\"/>\n" + "</svg>\n");
+                "<svg>\n" + "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
+                + "style=\"fill:white\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -130,20 +130,20 @@ public class MatrixToSequence extends SDFTransformer {
      *  @exception IllegalActionException If the parameters are out of range.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == rows) {
             int rowsValue = ((IntToken) rows.getToken()).intValue();
 
             if (rowsValue <= 0) {
                 throw new IllegalActionException(this,
-                    "Invalid number of rows: " + rowsValue);
+                        "Invalid number of rows: " + rowsValue);
             }
         } else if (attribute == columns) {
             int columnsValue = ((IntToken) columns.getToken()).intValue();
 
             if (columnsValue <= 0) {
                 throw new IllegalActionException(this,
-                    "Invalid number of columns: " + columnsValue);
+                        "Invalid number of columns: " + columnsValue);
             }
         }
 
@@ -180,17 +180,17 @@ public class MatrixToSequence extends SDFTransformer {
         int actualRowCount = token.getRowCount();
         int actualColumnCount = token.getColumnCount();
         boolean enforce = ((BooleanToken) enforceMatrixSize.getToken())
-                        .booleanValue();
+            .booleanValue();
 
         if (enforce) {
             int rowsValue = ((IntToken) rows.getToken()).intValue();
             int columnsValue = ((IntToken) columns.getToken()).intValue();
 
             if ((actualRowCount != rowsValue)
-                            || (actualColumnCount != columnsValue)) {
+                    || (actualColumnCount != columnsValue)) {
                 throw new IllegalActionException(this,
-                    "The input matrix size does not"
-                    + " match what the actor requires.");
+                        "The input matrix size does not"
+                        + " match what the actor requires.");
             }
         }
 

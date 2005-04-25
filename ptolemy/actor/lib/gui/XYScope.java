@@ -80,7 +80,7 @@ public class XYScope extends XYPlotter {
      *   actor with this name.
      */
     public XYScope(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // set the parameters
@@ -106,7 +106,7 @@ public class XYScope extends XYPlotter {
      *  attribute cannot be parsed or cannot be evaluated.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if ((attribute == persistence) && (plot != null)) {
             int persValue = ((IntToken) persistence.getToken()).intValue();
 

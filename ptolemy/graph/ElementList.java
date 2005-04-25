@@ -162,9 +162,9 @@ public class ElementList extends LabeledList {
             } else {
                 // FIXME: use an internal error exception here.
                 throw new RuntimeException("Internal error: the specified "
-                    + _descriptor + " is neither unweighted nor associated "
-                    + "with a weight."
-                    + GraphException.elementDump(element, _graph));
+                        + _descriptor + " is neither unweighted nor associated "
+                        + "with a weight."
+                        + GraphException.elementDump(element, _graph));
             }
         }
 
@@ -208,8 +208,8 @@ public class ElementList extends LabeledList {
 
         if (elements.size() == 0) {
             throw new GraphWeightException(weight, null, _graph,
-                "Invalid weight argument, the number of elements for"
-                + " this weight is zero.");
+                    "Invalid weight argument, the number of elements for"
+                    + " this weight is zero.");
         }
 
         return (Element) (elements.iterator().next());
@@ -298,7 +298,7 @@ public class ElementList extends LabeledList {
             if (!_unweightedSet.contains(element)) {
                 // This 'dump' of a null weight will also dump the graph.
                 throw new GraphWeightException(oldWeight, null, _graph,
-                    "Incorrect previous weight specified.");
+                        "Incorrect previous weight specified.");
             }
 
             if (newWeight == null) {
@@ -315,7 +315,7 @@ public class ElementList extends LabeledList {
 
             if ((elementList == null) || !elementList.remove(element)) {
                 throw new GraphWeightException(oldWeight, null, _graph,
-                    "Incorrect previous weight specified.");
+                        "Incorrect previous weight specified.");
             }
 
             changed = !oldWeight.equals(newWeight);
@@ -335,7 +335,7 @@ public class ElementList extends LabeledList {
 
     // An unmodifiable, empty collection.
     private static final Collection _emptyCollection = Collections
-                    .unmodifiableCollection(new ArrayList(0));
+    .unmodifiableCollection(new ArrayList(0));
 
     // The set of elements that do not have weights. Each member is an
     // Element.

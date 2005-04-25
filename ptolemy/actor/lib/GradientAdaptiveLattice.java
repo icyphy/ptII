@@ -71,7 +71,7 @@ public class GradientAdaptiveLattice extends Lattice {
      *   actor with this name.
      */
     public GradientAdaptiveLattice(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // Parameters
@@ -84,7 +84,7 @@ public class GradientAdaptiveLattice extends Lattice {
         adaptedReflectionCoefficients = new TypedIOPort(this,
                 "adaptedReflectionCoefficients", false, true);
         adaptedReflectionCoefficients.setTypeEquals(new ArrayType(
-                BaseType.DOUBLE));
+                                                            BaseType.DOUBLE));
 
         output.setTypeAtLeast(input);
     }
@@ -114,12 +114,12 @@ public class GradientAdaptiveLattice extends Lattice {
      *   with an unrecognized parameter.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == timeConstant) {
             double timeConstantValue = ((DoubleToken) timeConstant.getToken())
-                            .doubleValue();
+                .doubleValue();
             _oneMinusAlpha = ((timeConstantValue - 1.0) / (timeConstantValue
-                            + 1.0));
+                                      + 1.0));
             _alpha = 1.0 - _oneMinusAlpha;
         }
 
@@ -135,7 +135,7 @@ public class GradientAdaptiveLattice extends Lattice {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         GradientAdaptiveLattice newObject = (GradientAdaptiveLattice) super
-                        .clone(workspace);
+            .clone(workspace);
         newObject.output.setTypeAtLeast(newObject.input);
         return newObject;
     }
@@ -156,9 +156,9 @@ public class GradientAdaptiveLattice extends Lattice {
      */
     public boolean postfire() throws IllegalActionException {
         System.arraycopy(_estimatedErrorPowerCache, 0, _estimatedErrorPower, 0,
-            _order + 1);
+                _order + 1);
         System.arraycopy(_reflectionCoefficientsCache, 0,
-            _reflectionCoefficients, 0, _order);
+                _reflectionCoefficients, 0, _order);
         return super.postfire();
     }
 

@@ -120,7 +120,7 @@ public class IORelation extends ComponentRelation {
      *   a relation already in the container.
      */
     public IORelation(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -137,9 +137,9 @@ public class IORelation extends ComponentRelation {
      *   to this container.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute instanceof Parameter
-                        && "width".equals(attribute.getName())) {
+                && "width".equals(attribute.getName())) {
             IntToken t = (IntToken) ((Parameter) attribute).getToken();
 
             if (t != null) {
@@ -487,10 +487,10 @@ public class IORelation extends ComponentRelation {
      *   already on the relations list of the container.
      */
     public void setContainer(CompositeEntity container)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         if (!(container instanceof CompositeActor) && (container != null)) {
             throw new IllegalActionException(this, container,
-                "IORelation can only be contained by CompositeActor.");
+                    "IORelation can only be contained by CompositeActor.");
         }
 
         // Invalidate schedule and type resolution of the old container.
@@ -547,8 +547,8 @@ public class IORelation extends ComponentRelation {
                     _inferWidth();
                 } catch (InvalidStateException ex) {
                     throw new IllegalActionException(this,
-                        "Cannot use unspecified width on this relation "
-                        + "because of its links.");
+                            "Cannot use unspecified width on this relation "
+                            + "because of its links.");
                 }
             }
 
@@ -563,8 +563,8 @@ public class IORelation extends ComponentRelation {
                     // Check for non-multiports
                     if (!p.isMultiport()) {
                         throw new IllegalActionException(this, p,
-                            "Cannot make bus because the "
-                            + "relation is linked to a non-multiport.");
+                                "Cannot make bus because the "
+                                + "relation is linked to a non-multiport.");
                     }
                 }
             }
@@ -619,7 +619,7 @@ public class IORelation extends ComponentRelation {
     protected void _checkPort(Port port) throws IllegalActionException {
         if (!(port instanceof IOPort)) {
             throw new IllegalActionException(this, port,
-                "IORelation can only link to a IOPort.");
+                    "IORelation can only link to a IOPort.");
         }
     }
 
@@ -692,7 +692,7 @@ public class IORelation extends ComponentRelation {
     // first array. This method is solely for deepReceivers.
     // The two input arrays must have the same number of rows.
     private Receiver[][] _cascade(Receiver[][] array1, Receiver[][] array2)
-        throws InvalidStateException {
+            throws InvalidStateException {
         if ((array1 == null) || (array1.length <= 0)) {
             return array2;
         }

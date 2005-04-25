@@ -221,8 +221,8 @@ public class CallGraphPruner {
                 SootMethod method = (SootMethod) node;
 
                 if (method.isConcrete()
-                                && !OverriddenMethodGenerator.isOverridden(
-                                    method)) {
+                        && !OverriddenMethodGenerator.isOverridden(
+                                method)) {
                     entryPoints.add(method);
                 }
             }
@@ -305,7 +305,7 @@ public class CallGraphPruner {
      * implementing a method in <i>methods </i>.
      */
     protected HashSet _getMethodsRequiredByInheritance(Collection classSet,
-        Collection methodSet) {
+            Collection methodSet) {
         HashSet requiredMethodSet = new HashSet();
 
         Iterator classes = classSet.iterator();
@@ -328,8 +328,8 @@ public class CallGraphPruner {
                 String subSignature = method.getSubSignature();
 
                 if (source.declaresMethod(subSignature)
-                                && allParents.contains(
-                                    method.getDeclaringClass())) {
+                        && allParents.contains(
+                                method.getDeclaringClass())) {
                     requiredMethodSet.add(source.getMethod(subSignature));
                 }
             }
@@ -357,7 +357,7 @@ public class CallGraphPruner {
         Scene.v().loadClassAndSupport(method.getDeclaringClass().getName());
 
         if (method.isConcrete()
-                        && !OverriddenMethodGenerator.isOverridden(method)) {
+                && !OverriddenMethodGenerator.isOverridden(method)) {
             boolean leaf = _isLeaf(method);
 
             Iterator units = method.retrieveActiveBody().getUnits().iterator();
@@ -378,7 +378,7 @@ public class CallGraphPruner {
                     // Add directly called methods.
                     if (!leaf && stmt.containsInvokeExpr()) {
                         SootMethod m = ((InvokeExpr) stmt.getInvokeExpr())
-                                        .getMethod();
+                            .getMethod();
                         nodes.add(m);
                         nodes.add(m.getDeclaringClass());
                     }
@@ -442,7 +442,7 @@ public class CallGraphPruner {
                     } else {
                         _gray.removeFirst();
                         System.out.println("CallGraphPruner._growTree: "
-                            + "Removed an undeclared method\n");
+                                + "Removed an undeclared method\n");
                     }
                 } else if (node instanceof SootField) {
                     _processField((SootField) node);
@@ -466,7 +466,7 @@ public class CallGraphPruner {
      */
     protected boolean _isLeaf(SootMethod method) {
         return (method.isNative()
-                    || OverriddenMethodGenerator.isOverridden(method));
+                || OverriddenMethodGenerator.isOverridden(method));
     }
 
     /** Performs the appropriate operations for the discovery of a new
@@ -488,7 +488,7 @@ public class CallGraphPruner {
             SootClass superclass = node;
 
             while (superclass.hasSuperclass()
-                            && !_reachableClasses.contains(superclass)) {
+                    && !_reachableClasses.contains(superclass)) {
                 superclass = superclass.getSuperclass();
                 _add(superclass);
             }
@@ -542,9 +542,9 @@ public class CallGraphPruner {
 
             // Add all exceptions that can be caught by this method.
             if (method.isConcrete()
-                            && !OverriddenMethodGenerator.isOverridden(method)) {
+                    && !OverriddenMethodGenerator.isOverridden(method)) {
                 Iterator traps = method.retrieveActiveBody().getTraps()
-                                                   .iterator();
+                    .iterator();
 
                 while (traps.hasNext()) {
                     Trap trap = (Trap) traps.next();
@@ -646,7 +646,7 @@ public class CallGraphPruner {
     private void _setUnOverriddenClassesAsLibrary() {
         if (_verbose) {
             System.out.println(
-                "Setting all un-overridden classes to library classes ...");
+                    "Setting all un-overridden classes to library classes ...");
         }
 
         Iterator classes = Scene.v().getClasses().iterator();

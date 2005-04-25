@@ -165,6 +165,6 @@ public class GraphEvent extends java.util.EventObject {
      */
     public String toString() {
         return "GraphEvent[" + idToString() + ", " + getTarget() + ", "
-        + getOldValue() + "]";
+            + getOldValue() + "]";
     }
 }

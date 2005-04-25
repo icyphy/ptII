@@ -62,7 +62,7 @@ public class Uniform extends RandomSource {
      *   actor with this name.
      */
     public Uniform(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         output.setTypeEquals(BaseType.DOUBLE);
@@ -111,7 +111,7 @@ public class Uniform extends RandomSource {
 
         if (lowerValue > upperValue) {
             throw new IllegalActionException(this,
-                "Invalid bounds: lowerBound is greater than upperBound.");
+                    "Invalid bounds: lowerBound is greater than upperBound.");
         }
 
         double rawNum = _random.nextDouble();

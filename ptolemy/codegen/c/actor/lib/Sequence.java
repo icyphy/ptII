@@ -59,7 +59,7 @@ public class Sequence extends CCodeGeneratorHelper {
      * @param stream the given buffer to append the code to
      */
     public void generateFireCode(StringBuffer stream)
-        throws IllegalActionException {
+            throws IllegalActionException {
         ptolemy.actor.lib.Sequence actor = (ptolemy.actor.lib.Sequence) getComponent();
 
         CodeStream tmpStream = new CodeStream(this);

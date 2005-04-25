@@ -95,7 +95,7 @@ public class GUIUtilities {
 
         if (key != null) {
             pane.registerKeyboardAction(action, name, key,
-                JComponent.WHEN_IN_FOCUSED_WINDOW);
+                    JComponent.WHEN_IN_FOCUSED_WINDOW);
         }
     }
 
@@ -130,10 +130,10 @@ public class GUIUtilities {
      * The item will be enabled by default.
      */
     public static JMenuItem addMenuItem(JMenu menu, Action action,
-        int mnemonic, String tooltip) {
+            int mnemonic, String tooltip) {
         String label = (String) action.getValue(Action.NAME);
         return addMenuItem(menu, label.toString(), action, mnemonic, tooltip,
-            true);
+                true);
     }
 
     /** Add an action to a menu and return the menu item created.  If
@@ -144,7 +144,7 @@ public class GUIUtilities {
      * and is disabled or enabled according to "isEnabled."
      */
     public static JMenuItem addMenuItem(JMenu menu, String label,
-        Action action, int mnemonic, String tooltip, boolean isEnabled) {
+            Action action, int mnemonic, String tooltip, boolean isEnabled) {
         if (tooltip == null) {
             tooltip = (String) action.getValue("tooltip");
         } else {
@@ -194,7 +194,7 @@ public class GUIUtilities {
      * (no text) and is enabled by default.
      */
     public static JButton addToolBarButton(JToolBar toolbar, Action action,
-        String tooltip, Icon icon) {
+            String tooltip, Icon icon) {
         return addToolBarButton(toolbar, action, tooltip, icon, null, true);
     }
 
@@ -205,7 +205,7 @@ public class GUIUtilities {
      * (no text) and is enabled by default.
      */
     public static JButton addToolBarButton(JToolBar toolbar, Action action,
-        String tooltip, Icon icon, boolean isEnabled) {
+            String tooltip, Icon icon, boolean isEnabled) {
         return addToolBarButton(toolbar, action, tooltip, icon, null, isEnabled);
     }
 
@@ -216,7 +216,7 @@ public class GUIUtilities {
      * (no icon) and is enabled by default.
      */
     public static JButton addToolBarButton(JToolBar toolbar, Action action,
-        String tooltip, String lbl) {
+            String tooltip, String lbl) {
         return addToolBarButton(toolbar, action, tooltip, null, lbl, true);
     }
 
@@ -225,7 +225,7 @@ public class GUIUtilities {
      * default.
      */
     public static JButton addToolBarButton(JToolBar toolbar, Action action,
-        String tooltip, Icon icon, String lbl) {
+            String tooltip, Icon icon, String lbl) {
         return addToolBarButton(toolbar, action, tooltip, icon, lbl, true);
     }
 
@@ -236,7 +236,7 @@ public class GUIUtilities {
      * are specified (non-null), they are added.
      */
     public static JButton addToolBarButton(JToolBar toolbar, Action action,
-        String tooltip, Icon icon, String lbl, boolean isEnabled) {
+            String tooltip, Icon icon, String lbl, boolean isEnabled) {
         if (tooltip == null) {
             tooltip = (String) action.getValue("tooltip");
         } else {
@@ -350,9 +350,9 @@ public class GUIUtilities {
         message[0] = ellipsis(string, 400);
 
         Object[] options = {
-                "Dismiss",
-                "Display Stack Trace"
-            };
+            "Dismiss",
+            "Display Stack Trace"
+        };
 
         // Show the MODAL dialog
         int selected = JOptionPane.showOptionDialog(parent, message,
@@ -403,6 +403,6 @@ public class GUIUtilities {
 
         // Show the MODAL dialog
         JOptionPane.showMessageDialog(parent, message, "Exception Caught",
-            JOptionPane.WARNING_MESSAGE);
+                JOptionPane.WARNING_MESSAGE);
     }
 }

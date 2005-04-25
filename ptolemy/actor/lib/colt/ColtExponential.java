@@ -50,15 +50,15 @@ import ptolemy.kernel.util.NameDuplicationException;
 
    <p> This actor instantiates a
    <a href="http://hoschek.home.cern.ch/hoschek/colt/V1.0.3/doc/cern/jet/random/Exponential.html">cern.jet.random.Exponential</a> object with
-    lambda set to 1.0.  The distribution is defined as
-<pre>
-p(x) = lambda*exp(-x*lambda) for x >= 0, lambda > 0
-</pre>
+   lambda set to 1.0.  The distribution is defined as
+   <pre>
+   p(x) = lambda*exp(-x*lambda) for x >= 0, lambda > 0
+   </pre>
    The above description of Exponential is
    <a href="doc-files/colt-copyright.htm">copyrighted</a>.
 
-    <p>A definition of the Exponential distribution can be found at
-<a href="http://www.cern.ch/RD11/rkb/AN16pp/node78.html#SECTION000780000000000000000"><code>http://www.cern.ch/RD11/rkb/AN16pp/node78.html#SECTION000780000000000000000</code></a>
+   <p>A definition of the Exponential distribution can be found at
+   <a href="http://www.cern.ch/RD11/rkb/AN16pp/node78.html#SECTION000780000000000000000"><code>http://www.cern.ch/RD11/rkb/AN16pp/node78.html#SECTION000780000000000000000</code></a>
 
    @author David Bauer and Kostas Oikonomou (contributor: Edward A. Lee)
    @version $Id$
@@ -76,7 +76,7 @@ public class ColtExponential extends ColtRandomSource {
      *   actor with this name.
      */
     public ColtExponential(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         output.setTypeEquals(BaseType.DOUBLE);

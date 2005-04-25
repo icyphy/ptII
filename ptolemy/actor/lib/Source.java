@@ -1,30 +1,30 @@
 /* Base class for simple source actors.
 
-   Copyright (c) 1998-2005 The Regents of the University of California.
-   All rights reserved.
-   Permission is hereby granted, without written agreement and without
-   license or royalty fees, to use, copy, modify, and distribute this
-   software and its documentation for any purpose, provided that the above
-   copyright notice and the following two paragraphs appear in all copies
-   of this software.
+Copyright (c) 1998-2005 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
-   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-   SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
-   THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-   CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-   ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
-   PT_COPYRIGHT_VERSION_2
-   COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
- */
+*/
 package ptolemy.actor.lib;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -66,7 +66,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @since Ptolemy II 0.3
    @Pt.ProposedRating Green (eal)
    @Pt.AcceptedRating Green (bilung)
- */
+*/
 public abstract class Source extends TypedAtomicActor {
     /** Construct an actor with the given container and name.
      *  The output and trigger ports are also constructed.
@@ -78,7 +78,7 @@ public abstract class Source extends TypedAtomicActor {
      *   actor with this name.
      */
     public Source(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         output = new TypedIOPort(this, "output", false, true);
         trigger = new TypedIOPort(this, "trigger", true, false);
@@ -148,7 +148,7 @@ public abstract class Source extends TypedAtomicActor {
 
             if (_debugging) {
                 _debug("Called prefire(), which returns false because"
-                    + " the trigger port is connected and has no input.");
+                        + " the trigger port is connected and has no input.");
             }
 
             return false;

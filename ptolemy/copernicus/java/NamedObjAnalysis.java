@@ -112,7 +112,7 @@ public class NamedObjAnalysis {
                     } else if (stmt.getLeftOp() instanceof FieldRef) {
                         if (rightValue instanceof Local) {
                             SootField field = ((FieldRef) stmt.getLeftOp())
-                                            .getField();
+                                .getField();
                             _set((Local) rightValue, _getFieldObject(field));
                         }
                     } else {
@@ -128,7 +128,7 @@ public class NamedObjAnalysis {
 
         if ((current != null) && current.equals(_errorObject)) {
             throw new RuntimeException(
-                "Could not determine the static value of " + local);
+                    "Could not determine the static value of " + local);
         } else {
             return (NamedObj) current;
         }
@@ -141,9 +141,9 @@ public class NamedObjAnalysis {
      */
     private NamedObj _getFieldObject(SootField field) {
         if (field.getType() instanceof RefType
-                        && SootUtilities.derivesFrom(
-                            ((RefType) field.getType()).getSootClass(),
-                            PtolemyUtilities.namedObjClass)) {
+                && SootUtilities.derivesFrom(
+                        ((RefType) field.getType()).getSootClass(),
+                        PtolemyUtilities.namedObjClass)) {
             ValueTag tag = (ValueTag) field.getTag("_CGValue");
 
             if (tag == null) {

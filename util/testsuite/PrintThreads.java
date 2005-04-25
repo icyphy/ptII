@@ -127,8 +127,8 @@ public class PrintThreads {
 
         if (indicateEventDispatchThread) {
             results.append("Current Thread (*) "
-                + (SwingUtilities.isEventDispatchThread() ? "_is_" : "_is not_")
-                + " the Swing Event Dispatch Thread\n");
+                    + (SwingUtilities.isEventDispatchThread() ? "_is_" : "_is not_")
+                    + " the Swing Event Dispatch Thread\n");
         }
 
         results.append(_getHeader());
@@ -156,9 +156,9 @@ public class PrintThreads {
         try {
             if (thread == null) {
                 return "PrintThreads.toThreadDescription(): "
-                + "thread argument == null\n   "
-                + "This can happen if the thread was "
-                + "killed while PrintThreads was called";
+                    + "thread argument == null\n   "
+                    + "This can happen if the thread was "
+                    + "killed while PrintThreads was called";
             }
 
             if (thread.getName() != null) {
@@ -166,20 +166,20 @@ public class PrintThreads {
             }
 
             if ((thread.getThreadGroup() != null)
-                            && (thread.getThreadGroup().getName() != null)) {
+                    && (thread.getThreadGroup().getName() != null)) {
                 group = thread.getThreadGroup().getName();
             }
 
             return _stringFormat(name, 35) + " " + _stringFormat(group, 20)
-            + " " + _stringFormat(Integer.toString(thread.getPriority()), 3)
-            + " "
-            + _stringFormat(Boolean.valueOf(thread.isDaemon()).toString(), 6)
-            + " "
-            + _stringFormat(Boolean.valueOf(thread.isAlive()).toString(), 5)
-            + (Thread.currentThread().equals(thread) ? " *" : "  ");
+                + " " + _stringFormat(Integer.toString(thread.getPriority()), 3)
+                + " "
+                + _stringFormat(Boolean.valueOf(thread.isDaemon()).toString(), 6)
+                + " "
+                + _stringFormat(Boolean.valueOf(thread.isAlive()).toString(), 5)
+                + (Thread.currentThread().equals(thread) ? " *" : "  ");
         } catch (Exception e) {
             return _stringFormat(name, 35) + " " + _stringFormat(group, 20)
-            + " " + "PrintThread.toThreadDescription(): Bad State!: " + e;
+                + " " + "PrintThread.toThreadDescription(): Bad State!: " + e;
         }
     }
 
@@ -191,7 +191,7 @@ public class PrintThreads {
      */
     private final static String _getHeader() {
         return _stringFormat("Name", 35) + " " + _stringFormat("Group", 20)
-        + " Pri Daemon Alive Curr\n";
+            + " Pri Daemon Alive Curr\n";
     }
 
     /* Pads inputString out with spaces to width length.

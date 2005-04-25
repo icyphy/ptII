@@ -93,7 +93,7 @@ public class DependedClasses {
 
     private void _addClass(SootClass theClass) {
         if (!_reachableClasses.contains(theClass)
-                        && !theClass.getName().startsWith("java")) {
+                && !theClass.getName().startsWith("java")) {
             // System.out.println("adding class " + theClass);
             _reachableClasses.add(theClass);
 
@@ -119,7 +119,7 @@ public class DependedClasses {
 
         // Grab the types of all fields.
         for (Iterator fields = theClass.getFields().iterator();
-                        fields.hasNext();) {
+             fields.hasNext();) {
             SootField field = (SootField) fields.next();
             Type type = field.getType();
 
@@ -129,13 +129,13 @@ public class DependedClasses {
         }
 
         for (Iterator methods = theClass.getMethods().iterator();
-                        methods.hasNext();) {
+             methods.hasNext();) {
             SootMethod method = (SootMethod) methods.next();
 
             //   System.out.println("processing method = " + method);
             // Grab the classes of all arguments.
             for (Iterator types = method.getParameterTypes().iterator();
-                            types.hasNext();) {
+                 types.hasNext();) {
                 Type type = (Type) types.next();
 
                 if (type instanceof RefType) {
@@ -170,7 +170,7 @@ public class DependedClasses {
                 Unit unit = (Unit) units.next();
 
                 for (Iterator boxes = unit.getUseAndDefBoxes().iterator();
-                                boxes.hasNext();) {
+                     boxes.hasNext();) {
                     ValueBox box = (ValueBox) boxes.next();
                     Value value = box.getValue();
 
@@ -190,7 +190,7 @@ public class DependedClasses {
                         }
                     } else if (value instanceof NewExpr) {
                         SootClass refClass = ((NewExpr) value).getBaseType()
-                                                          .getSootClass();
+                            .getSootClass();
 
                         if (!refClass.equals(theClass)) {
                             _addClass(refClass);

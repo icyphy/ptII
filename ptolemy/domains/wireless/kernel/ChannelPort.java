@@ -73,7 +73,7 @@ public class ChannelPort extends WirelessIOPort {
      *   a port already in the container.
      */
     public ChannelPort(ComponentEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name, true, true);
         setPersistent(false);
 
@@ -110,13 +110,13 @@ public class ChannelPort extends WirelessIOPort {
      *   a port with the name of this port.
      */
     public void setContainer(Entity container)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         if (container instanceof WirelessChannel) {
             super.setContainer(container);
         } else {
             throw new IllegalActionException(this,
-                "ChannelPort can only be contained by an "
-                + "instance of WirelessChannel.");
+                    "ChannelPort can only be contained by an "
+                    + "instance of WirelessChannel.");
         }
     }
 

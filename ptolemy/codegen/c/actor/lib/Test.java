@@ -77,13 +77,13 @@ public class Test extends CCodeGeneratorHelper {
      *  @return The processed <code>initBlock</code>.
      */
     public void generateFireCode(StringBuffer stream)
-        throws IllegalActionException {
+            throws IllegalActionException {
         // FIXME: handle widths greater than 1.
         if (_testActor.input.getWidth() > 1) {
             throw new IllegalActionException(_testActor,
-                "The C version of the Test actor currently only handles "
-                + "inputs of width 1.  The width of input was: "
-                + _testActor.input.getWidth());
+                    "The C version of the Test actor currently only handles "
+                    + "inputs of width 1.  The width of input was: "
+                    + _testActor.input.getWidth());
         }
 
         CodeStream tmpStream = new CodeStream(this);

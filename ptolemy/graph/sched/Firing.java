@@ -166,7 +166,7 @@ public class Firing extends ScheduleElement {
     public void setFiringElement(Object firingElement) {
         if (this.firingElementClass() != null) {
             if (this.firingElementClass().isAssignableFrom(firingElement
-                                .getClass())) {
+                        .getClass())) {
                 _incrementVersion();
                 _firingElement = firingElement;
 
@@ -176,7 +176,7 @@ public class Firing extends ScheduleElement {
                 }
             } else {
                 throw new RuntimeException("Attempt to add a non "
-                    + "authorized firing element");
+                        + "authorized firing element");
             }
         } else {
             _incrementVersion();
@@ -247,7 +247,7 @@ public class Firing extends ScheduleElement {
         public boolean hasNext() {
             if (_startingVersion != _getVersion()) {
                 throw new ConcurrentModificationException(
-                    "Schedule structure changed while iterator is active.");
+                        "Schedule structure changed while iterator is active.");
             } else {
                 return (_currentElement <= getIterationCount());
             }
@@ -265,7 +265,7 @@ public class Firing extends ScheduleElement {
                 throw new NoSuchElementException("No element to return.");
             } else if (_startingVersion != _getVersion()) {
                 throw new ConcurrentModificationException(
-                    "Schedule structure changed while iterator is active.");
+                        "Schedule structure changed while iterator is active.");
             } else {
                 _currentElement++;
                 return getFiringElement();

@@ -101,572 +101,572 @@ public class PtolemyPlatform implements Platform {
         Environment env = new HashEnvironment(parent, context());
 
         env.bind("println",
-            _theContext.createProcedure(new Procedure() {
-                public void call(Object[] args) {
-                    System.out.println(args[0]);
-                }
+                _theContext.createProcedure(new Procedure() {
+                        public void call(Object[] args) {
+                            System.out.println(args[0]);
+                        }
 
-                public int arity() {
-                    return 1;
-                }
-            }));
+                        public int arity() {
+                            return 1;
+                        }
+                    }));
 
         env.bind("SOP",
-            _theContext.createFunction(new Function() {
-                public Object apply(Object[] args) {
-                    try {
-                        System.out.println(args[0]);
-                        return args[0];
-                    } catch (Exception ex) {
-                        throw new FunctionCallException("$not", args[0], ex);
-                    }
-                }
+                _theContext.createFunction(new Function() {
+                        public Object apply(Object[] args) {
+                            try {
+                                System.out.println(args[0]);
+                                return args[0];
+                            } catch (Exception ex) {
+                                throw new FunctionCallException("$not", args[0], ex);
+                            }
+                        }
 
-                public int arity() {
-                    return 1;
-                }
-            }));
+                        public int arity() {
+                            return 1;
+                        }
+                    }));
 
         env.bind("Integers",
-            _theContext.createFunction(new Function() {
-                public Object apply(Object[] args) {
-                    try {
-                        int a = _theContext.intValue(args[0]);
-                        int b = _theContext.intValue(args[1]);
-                        List res = (b < a) ? Collections.EMPTY_LIST
-                                           : new IntegerList(_theContext, a, b);
-                        return _theContext.createList(res);
-                    } catch (Exception ex) {
-                        throw new FunctionCallException("Integers", args[0],
-                                args[1], ex);
-                    }
-                }
+                _theContext.createFunction(new Function() {
+                        public Object apply(Object[] args) {
+                            try {
+                                int a = _theContext.intValue(args[0]);
+                                int b = _theContext.intValue(args[1]);
+                                List res = (b < a) ? Collections.EMPTY_LIST
+                                    : new IntegerList(_theContext, a, b);
+                                return _theContext.createList(res);
+                            } catch (Exception ex) {
+                                throw new FunctionCallException("Integers", args[0],
+                                        args[1], ex);
+                            }
+                        }
 
-                public int arity() {
-                    return 2;
-                }
-            }));
+                        public int arity() {
+                            return 2;
+                        }
+                    }));
 
         env.bind("$not",
-            _theContext.createFunction(new Function() {
-                public Object apply(Object[] args) {
-                    try {
-                        BooleanToken b = (BooleanToken) args[0];
-                        return b.not();
-                    } catch (Exception ex) {
-                        throw new FunctionCallException("$not", args[0], ex);
-                    }
-                }
+                _theContext.createFunction(new Function() {
+                        public Object apply(Object[] args) {
+                            try {
+                                BooleanToken b = (BooleanToken) args[0];
+                                return b.not();
+                            } catch (Exception ex) {
+                                throw new FunctionCallException("$not", args[0], ex);
+                            }
+                        }
 
-                public int arity() {
-                    return 1;
-                }
-            }));
+                        public int arity() {
+                            return 1;
+                        }
+                    }));
 
         env.bind("$and",
-            _theContext.createFunction(new Function() {
-                public Object apply(Object[] args) {
-                    try {
-                        BooleanToken a = (BooleanToken) args[0];
-                        BooleanToken b = (BooleanToken) args[1];
-                        return a.and(b);
-                    } catch (Exception ex) {
-                        throw new FunctionCallException("$and", args[0],
-                                args[1], ex);
-                    }
-                }
+                _theContext.createFunction(new Function() {
+                        public Object apply(Object[] args) {
+                            try {
+                                BooleanToken a = (BooleanToken) args[0];
+                                BooleanToken b = (BooleanToken) args[1];
+                                return a.and(b);
+                            } catch (Exception ex) {
+                                throw new FunctionCallException("$and", args[0],
+                                        args[1], ex);
+                            }
+                        }
 
-                public int arity() {
-                    return 2;
-                }
-            }));
+                        public int arity() {
+                            return 2;
+                        }
+                    }));
 
         env.bind("$or",
-            _theContext.createFunction(new Function() {
-                public Object apply(Object[] args) {
-                    try {
-                        BooleanToken a = (BooleanToken) args[0];
-                        BooleanToken b = (BooleanToken) args[1];
-                        return a.or(b);
-                    } catch (Exception ex) {
-                        throw new FunctionCallException("$or", args[0],
-                                args[1], ex);
-                    }
-                }
+                _theContext.createFunction(new Function() {
+                        public Object apply(Object[] args) {
+                            try {
+                                BooleanToken a = (BooleanToken) args[0];
+                                BooleanToken b = (BooleanToken) args[1];
+                                return a.or(b);
+                            } catch (Exception ex) {
+                                throw new FunctionCallException("$or", args[0],
+                                        args[1], ex);
+                            }
+                        }
 
-                public int arity() {
-                    return 2;
-                }
-            }));
+                        public int arity() {
+                            return 2;
+                        }
+                    }));
 
         env.bind("$eq",
-            _theContext.createFunction(new Function() {
-                public Object apply(Object[] args) {
-                    try {
-                        Token a = (Token) args[0];
-                        Token b = (Token) args[1];
-                        return a.isEqualTo(b);
-                    } catch (Exception ex) {
-                        throw new FunctionCallException("$eq", args[0],
-                                args[1], ex);
-                    }
-                }
+                _theContext.createFunction(new Function() {
+                        public Object apply(Object[] args) {
+                            try {
+                                Token a = (Token) args[0];
+                                Token b = (Token) args[1];
+                                return a.isEqualTo(b);
+                            } catch (Exception ex) {
+                                throw new FunctionCallException("$eq", args[0],
+                                        args[1], ex);
+                            }
+                        }
 
-                public int arity() {
-                    return 2;
-                }
-            }));
+                        public int arity() {
+                            return 2;
+                        }
+                    }));
 
         env.bind("$ne",
-            _theContext.createFunction(new Function() {
-                public Object apply(Object[] args) {
-                    try {
-                        Token a = (Token) args[0];
-                        Token b = (Token) args[1];
-                        return a.isEqualTo(b).not();
-                    } catch (Exception ex) {
-                        throw new FunctionCallException("$ne", args[0],
-                                args[1], ex);
-                    }
-                }
+                _theContext.createFunction(new Function() {
+                        public Object apply(Object[] args) {
+                            try {
+                                Token a = (Token) args[0];
+                                Token b = (Token) args[1];
+                                return a.isEqualTo(b).not();
+                            } catch (Exception ex) {
+                                throw new FunctionCallException("$ne", args[0],
+                                        args[1], ex);
+                            }
+                        }
 
-                public int arity() {
-                    return 2;
-                }
-            }));
+                        public int arity() {
+                            return 2;
+                        }
+                    }));
 
         env.bind("$lt",
-            _theContext.createFunction(new Function() {
-                public Object apply(Object[] args) {
-                    try {
-                        ScalarToken a = (ScalarToken) args[0];
-                        ScalarToken b = (ScalarToken) args[1];
-                        return a.isLessThan(b);
-                    } catch (Exception ex) {
-                        throw new FunctionCallException("$lt", args[0],
-                                args[1], ex);
-                    }
-                }
+                _theContext.createFunction(new Function() {
+                        public Object apply(Object[] args) {
+                            try {
+                                ScalarToken a = (ScalarToken) args[0];
+                                ScalarToken b = (ScalarToken) args[1];
+                                return a.isLessThan(b);
+                            } catch (Exception ex) {
+                                throw new FunctionCallException("$lt", args[0],
+                                        args[1], ex);
+                            }
+                        }
 
-                public int arity() {
-                    return 2;
-                }
-            }));
+                        public int arity() {
+                            return 2;
+                        }
+                    }));
 
         env.bind("$le",
-            _theContext.createFunction(new Function() {
-                public Object apply(Object[] args) {
-                    try {
-                        ScalarToken a = (ScalarToken) args[0];
-                        ScalarToken b = (ScalarToken) args[1];
-                        return a.isGreaterThan(b).not();
-                    } catch (Exception ex) {
-                        throw new FunctionCallException("$le", args[0],
-                                args[1], ex);
-                    }
-                }
+                _theContext.createFunction(new Function() {
+                        public Object apply(Object[] args) {
+                            try {
+                                ScalarToken a = (ScalarToken) args[0];
+                                ScalarToken b = (ScalarToken) args[1];
+                                return a.isGreaterThan(b).not();
+                            } catch (Exception ex) {
+                                throw new FunctionCallException("$le", args[0],
+                                        args[1], ex);
+                            }
+                        }
 
-                public int arity() {
-                    return 2;
-                }
-            }));
+                        public int arity() {
+                            return 2;
+                        }
+                    }));
 
         env.bind("$gt",
-            _theContext.createFunction(new Function() {
-                public Object apply(Object[] args) {
-                    try {
-                        ScalarToken a = (ScalarToken) args[0];
-                        ScalarToken b = (ScalarToken) args[1];
-                        return a.isGreaterThan(b);
-                    } catch (Exception ex) {
-                        throw new FunctionCallException("$gt", args[0],
-                                args[1], ex);
-                    }
-                }
+                _theContext.createFunction(new Function() {
+                        public Object apply(Object[] args) {
+                            try {
+                                ScalarToken a = (ScalarToken) args[0];
+                                ScalarToken b = (ScalarToken) args[1];
+                                return a.isGreaterThan(b);
+                            } catch (Exception ex) {
+                                throw new FunctionCallException("$gt", args[0],
+                                        args[1], ex);
+                            }
+                        }
 
-                public int arity() {
-                    return 2;
-                }
-            }));
+                        public int arity() {
+                            return 2;
+                        }
+                    }));
 
         env.bind("$ge",
-            _theContext.createFunction(new Function() {
-                public Object apply(Object[] args) {
-                    try {
-                        ScalarToken a = (ScalarToken) args[0];
-                        ScalarToken b = (ScalarToken) args[1];
-                        return a.isLessThan(b).not();
-                    } catch (Exception ex) {
-                        throw new FunctionCallException("$ge", args[0],
-                                args[1], ex);
-                    }
-                }
+                _theContext.createFunction(new Function() {
+                        public Object apply(Object[] args) {
+                            try {
+                                ScalarToken a = (ScalarToken) args[0];
+                                ScalarToken b = (ScalarToken) args[1];
+                                return a.isLessThan(b).not();
+                            } catch (Exception ex) {
+                                throw new FunctionCallException("$ge", args[0],
+                                        args[1], ex);
+                            }
+                        }
 
-                public int arity() {
-                    return 2;
-                }
-            }));
+                        public int arity() {
+                            return 2;
+                        }
+                    }));
 
         env.bind("$negate",
-            _theContext.createFunction(new Function() {
-                public Object apply(Object[] args) {
-                    try {
-                        ScalarToken a = (ScalarToken) args[0];
+                _theContext.createFunction(new Function() {
+                        public Object apply(Object[] args) {
+                            try {
+                                ScalarToken a = (ScalarToken) args[0];
 
-                        return a.zero().subtract(a);
-                    } catch (Exception ex) {
-                        throw new FunctionCallException("$negate", args[0], ex);
-                    }
-                }
+                                return a.zero().subtract(a);
+                            } catch (Exception ex) {
+                                throw new FunctionCallException("$negate", args[0], ex);
+                            }
+                        }
 
-                public int arity() {
-                    return 1;
-                }
-            }));
+                        public int arity() {
+                            return 1;
+                        }
+                    }));
 
         env.bind("$add",
-            _theContext.createFunction(new Function() {
-                // Compute the add operation on scalar arguments, the
-                // list concatenation operation on lists, or the set
-                // union on sets.
-                public Object apply(Object[] args) {
-                    try {
-                        Token a = (Token) args[0];
-                        Token b = (Token) args[1];
+                _theContext.createFunction(new Function() {
+                        // Compute the add operation on scalar arguments, the
+                        // list concatenation operation on lists, or the set
+                        // union on sets.
+                        public Object apply(Object[] args) {
+                            try {
+                                Token a = (Token) args[0];
+                                Token b = (Token) args[1];
 
-                        if (a instanceof ObjectToken
-                                            && b instanceof ObjectToken) {
-                            Object oa = ((ObjectToken) a).getValue();
-                            Object ob = ((ObjectToken) b).getValue();
+                                if (a instanceof ObjectToken
+                                        && b instanceof ObjectToken) {
+                                    Object oa = ((ObjectToken) a).getValue();
+                                    Object ob = ((ObjectToken) b).getValue();
 
-                            if (oa instanceof Collection
-                                                && ob instanceof Collection) {
-                                Collection result;
+                                    if (oa instanceof Collection
+                                            && ob instanceof Collection) {
+                                        Collection result;
 
-                                if (oa instanceof Set) {
-                                    result = new HashSet((Set) oa);
-                                } else if (oa instanceof List) {
-                                    result = new ArrayList((List) oa);
+                                        if (oa instanceof Set) {
+                                            result = new HashSet((Set) oa);
+                                        } else if (oa instanceof List) {
+                                            result = new ArrayList((List) oa);
+                                        } else {
+                                            throw new Exception(
+                                                    "Unknown object type: expected Set or List.");
+                                        }
+
+                                        result.addAll((Collection) ob);
+                                        return new ObjectToken(result);
+                                    } else {
+                                        throw new Exception(
+                                                "Unknown object types: expected Collection.");
+                                    }
                                 } else {
-                                    throw new Exception(
-                                            "Unknown object type: expected Set or List.");
+                                    return a.add(b);
                                 }
-
-                                result.addAll((Collection) ob);
-                                return new ObjectToken(result);
-                            } else {
-                                throw new Exception(
-                                        "Unknown object types: expected Collection.");
+                            } catch (Exception ex) {
+                                throw new FunctionCallException("$add", args[0],
+                                        args[1], ex);
                             }
-                        } else {
-                            return a.add(b);
                         }
-                    } catch (Exception ex) {
-                        throw new FunctionCallException("$add", args[0],
-                                args[1], ex);
-                    }
-                }
 
-                public int arity() {
-                    return 2;
-                }
-            }));
+                        public int arity() {
+                            return 2;
+                        }
+                    }));
 
         env.bind("$mul",
-            _theContext.createFunction(new Function() {
-                // Compute the multiply operation on scalar arguments,
-                // or the set intersection operation on sets.
-                public Object apply(Object[] args) {
-                    try {
-                        Token a = (Token) args[0];
-                        Token b = (Token) args[1];
+                _theContext.createFunction(new Function() {
+                        // Compute the multiply operation on scalar arguments,
+                        // or the set intersection operation on sets.
+                        public Object apply(Object[] args) {
+                            try {
+                                Token a = (Token) args[0];
+                                Token b = (Token) args[1];
 
-                        if (a instanceof ObjectToken
-                                            && b instanceof ObjectToken) {
-                            Object oa = ((ObjectToken) a).getValue();
-                            Object ob = ((ObjectToken) b).getValue();
+                                if (a instanceof ObjectToken
+                                        && b instanceof ObjectToken) {
+                                    Object oa = ((ObjectToken) a).getValue();
+                                    Object ob = ((ObjectToken) b).getValue();
 
-                            if (oa instanceof Set && ob instanceof Collection) {
-                                Set result = new HashSet((Set) oa);
-                                result.retainAll((Collection) ob);
-                                return new ObjectToken(result);
-                            } else {
-                                throw new InterpreterException(
-                                        "Unknown object types: expected Set and Collection.");
+                                    if (oa instanceof Set && ob instanceof Collection) {
+                                        Set result = new HashSet((Set) oa);
+                                        result.retainAll((Collection) ob);
+                                        return new ObjectToken(result);
+                                    } else {
+                                        throw new InterpreterException(
+                                                "Unknown object types: expected Set and Collection.");
+                                    }
+                                } else {
+                                    return a.multiply(b);
+                                }
+                            } catch (Exception ex) {
+                                throw new FunctionCallException("$mul", args[0],
+                                        args[1], ex);
                             }
-                        } else {
-                            return a.multiply(b);
                         }
-                    } catch (Exception ex) {
-                        throw new FunctionCallException("$mul", args[0],
-                                args[1], ex);
-                    }
-                }
 
-                public int arity() {
-                    return 2;
-                }
-            }));
+                        public int arity() {
+                            return 2;
+                        }
+                    }));
 
         env.bind("$sub",
-            _theContext.createFunction(new Function() {
-                // Compute the subtraction operation on scalar arguments,
-                // or the set subtraction operation on sets.
-                public Object apply(Object[] args) {
-                    try {
-                        Token a = (Token) args[0];
-                        Token b = (Token) args[1];
+                _theContext.createFunction(new Function() {
+                        // Compute the subtraction operation on scalar arguments,
+                        // or the set subtraction operation on sets.
+                        public Object apply(Object[] args) {
+                            try {
+                                Token a = (Token) args[0];
+                                Token b = (Token) args[1];
 
-                        if (a instanceof ObjectToken
-                                            && b instanceof ObjectToken) {
-                            Object oa = ((ObjectToken) a).getValue();
-                            Object ob = ((ObjectToken) b).getValue();
+                                if (a instanceof ObjectToken
+                                        && b instanceof ObjectToken) {
+                                    Object oa = ((ObjectToken) a).getValue();
+                                    Object ob = ((ObjectToken) b).getValue();
 
-                            if (oa instanceof Collection
-                                                && ob instanceof Collection) {
-                                Collection result;
+                                    if (oa instanceof Collection
+                                            && ob instanceof Collection) {
+                                        Collection result;
 
-                                if (oa instanceof Set) {
-                                    result = new HashSet((Set) oa);
-                                } else if (oa instanceof List) {
-                                    result = new ArrayList((List) oa);
+                                        if (oa instanceof Set) {
+                                            result = new HashSet((Set) oa);
+                                        } else if (oa instanceof List) {
+                                            result = new ArrayList((List) oa);
+                                        } else {
+                                            throw new Exception(
+                                                    "Unknown object type: expected Set or List.");
+                                        }
+
+                                        result.removeAll((Collection) ob);
+                                        return new ObjectToken(result);
+                                    } else {
+                                        throw new InterpreterException(
+                                                "Unknown object types: expected Collection.");
+                                    }
                                 } else {
-                                    throw new Exception(
-                                            "Unknown object type: expected Set or List.");
+                                    return a.subtract(b);
                                 }
-
-                                result.removeAll((Collection) ob);
-                                return new ObjectToken(result);
-                            } else {
-                                throw new InterpreterException(
-                                        "Unknown object types: expected Collection.");
+                            } catch (Exception ex) {
+                                throw new FunctionCallException("$sub", args[0],
+                                        args[1], ex);
                             }
-                        } else {
-                            return a.subtract(b);
                         }
-                    } catch (Exception ex) {
-                        throw new FunctionCallException("$sub", args[0],
-                                args[1], ex);
-                    }
-                }
 
-                public int arity() {
-                    return 2;
-                }
-            }));
+                        public int arity() {
+                            return 2;
+                        }
+                    }));
 
         env.bind("$div",
-            _theContext.createFunction(new Function() {
-                public Object apply(Object[] args) {
-                    try {
-                        Token a = (Token) args[0];
-                        Token b = (Token) args[1];
-                        return a.divide(b);
-                    } catch (Exception ex) {
-                        throw new FunctionCallException("$div", args[0],
-                                args[1], ex);
-                    }
-                }
+                _theContext.createFunction(new Function() {
+                        public Object apply(Object[] args) {
+                            try {
+                                Token a = (Token) args[0];
+                                Token b = (Token) args[1];
+                                return a.divide(b);
+                            } catch (Exception ex) {
+                                throw new FunctionCallException("$div", args[0],
+                                        args[1], ex);
+                            }
+                        }
 
-                public int arity() {
-                    return 2;
-                }
-            }));
+                        public int arity() {
+                            return 2;
+                        }
+                    }));
 
         env.bind("$mod",
-            _theContext.createFunction(new Function() {
-                public Object apply(Object[] args) {
-                    try {
-                        Token a = (Token) args[0];
-                        Token b = (Token) args[1];
-                        return a.modulo(b);
-                    } catch (Exception ex) {
-                        throw new FunctionCallException("$mod", args[0],
-                                args[1], ex);
-                    }
-                }
+                _theContext.createFunction(new Function() {
+                        public Object apply(Object[] args) {
+                            try {
+                                Token a = (Token) args[0];
+                                Token b = (Token) args[1];
+                                return a.modulo(b);
+                            } catch (Exception ex) {
+                                throw new FunctionCallException("$mod", args[0],
+                                        args[1], ex);
+                            }
+                        }
 
-                public int arity() {
-                    return 2;
-                }
-            }));
+                        public int arity() {
+                            return 2;
+                        }
+                    }));
 
         env.bind("$size",
-            _theContext.createFunction(new Function() {
-                // Compute the number of elements in the given set,
-                // list, or array.
-                public Object apply(Object[] args) {
-                    try {
-                        Token a = (Token) args[0];
+                _theContext.createFunction(new Function() {
+                        // Compute the number of elements in the given set,
+                        // list, or array.
+                        public Object apply(Object[] args) {
+                            try {
+                                Token a = (Token) args[0];
 
-                        if (a instanceof ObjectToken) {
-                            Object oa = ((ObjectToken) a).getValue();
+                                if (a instanceof ObjectToken) {
+                                    Object oa = ((ObjectToken) a).getValue();
 
-                            if (oa instanceof Collection) {
-                                return new IntToken(((Collection) oa).size());
-                            } else {
-                                throw new InterpreterException(
-                                        "Unknown object type: expected Collection.");
+                                    if (oa instanceof Collection) {
+                                        return new IntToken(((Collection) oa).size());
+                                    } else {
+                                        throw new InterpreterException(
+                                                "Unknown object type: expected Collection.");
+                                    }
+                                } else if (a instanceof ArrayToken) {
+                                    return _theContext.createInteger(
+                                            ((ArrayToken) a).length());
+                                } else {
+                                    throw new InterpreterException(
+                                            "Unknown type: expected Array, Set, or List");
+                                }
+                            } catch (Exception ex) {
+                                throw new FunctionCallException("$size", args[0], ex);
                             }
-                        } else if (a instanceof ArrayToken) {
-                            return _theContext.createInteger(
-                                    ((ArrayToken) a).length());
-                        } else {
-                            throw new InterpreterException(
-                                    "Unknown type: expected Array, Set, or List");
                         }
-                    } catch (Exception ex) {
-                        throw new FunctionCallException("$size", args[0], ex);
-                    }
-                }
 
-                public int arity() {
-                    return 1;
-                }
-            }));
+                        public int arity() {
+                            return 1;
+                        }
+                    }));
 
         env.bind("$createList",
-            _theContext.createFunction(new Function() {
-                // Create a list that contains the results of applying
-                // the second argument (a one argument function) to
-                // every element in the first argument (a collection).
-                public Object apply(Object[] args) {
-                    try {
-                        Collection c = _theContext.getCollection(args[0]);
-                        FunctionToken f = (FunctionToken) args[1];
-                        Object[] argument = new Object[1];
-                        List res = new ArrayList();
+                _theContext.createFunction(new Function() {
+                        // Create a list that contains the results of applying
+                        // the second argument (a one argument function) to
+                        // every element in the first argument (a collection).
+                        public Object apply(Object[] args) {
+                            try {
+                                Collection c = _theContext.getCollection(args[0]);
+                                FunctionToken f = (FunctionToken) args[1];
+                                Object[] argument = new Object[1];
+                                List res = new ArrayList();
 
-                        for (Iterator i = c.iterator(); i.hasNext();) {
-                            argument[0] = i.next();
+                                for (Iterator i = c.iterator(); i.hasNext();) {
+                                    argument[0] = i.next();
 
-                            Object listFragment = _theContext.applyFunction(f,
-                                        argument);
-                            res.addAll(_theContext.getCollection(listFragment));
+                                    Object listFragment = _theContext.applyFunction(f,
+                                            argument);
+                                    res.addAll(_theContext.getCollection(listFragment));
+                                }
+
+                                return _theContext.createList(res);
+                            } catch (Exception ex) {
+                                throw new FunctionCallException(
+                                        "Failed to create list.", args[0], args[1], ex);
+                            }
                         }
 
-                        return _theContext.createList(res);
-                    } catch (Exception ex) {
-                        throw new FunctionCallException(
-                                "Failed to create list.", args[0], args[1], ex);
-                    }
-                }
-
-                public int arity() {
-                    return 2;
-                }
-            }));
+                        public int arity() {
+                            return 2;
+                        }
+                    }));
 
         env.bind("$createSet",
-            _theContext.createFunction(new Function() {
-                // Create a set that contains the results of applying
-                // the second argument (a one argument function) to
-                // every element in the first argument (a collection).
-                public Object apply(Object[] args) {
-                    try {
-                        Collection c = _theContext.getCollection(args[0]);
-                        FunctionToken f = (FunctionToken) args[1];
-                        Object[] argument = new Object[1];
-                        Set res = new HashSet();
+                _theContext.createFunction(new Function() {
+                        // Create a set that contains the results of applying
+                        // the second argument (a one argument function) to
+                        // every element in the first argument (a collection).
+                        public Object apply(Object[] args) {
+                            try {
+                                Collection c = _theContext.getCollection(args[0]);
+                                FunctionToken f = (FunctionToken) args[1];
+                                Object[] argument = new Object[1];
+                                Set res = new HashSet();
 
-                        for (Iterator i = c.iterator(); i.hasNext();) {
-                            argument[0] = i.next();
+                                for (Iterator i = c.iterator(); i.hasNext();) {
+                                    argument[0] = i.next();
 
-                            Object setFragment = _theContext.applyFunction(f,
-                                        argument);
-                            res.addAll(_theContext.getCollection(setFragment));
+                                    Object setFragment = _theContext.applyFunction(f,
+                                            argument);
+                                    res.addAll(_theContext.getCollection(setFragment));
+                                }
+
+                                return _theContext.createSet(res);
+                            } catch (Exception ex) {
+                                throw new FunctionCallException(
+                                        "Failed to create set.", args[0], args[1], ex);
+                            }
                         }
 
-                        return _theContext.createSet(res);
-                    } catch (Exception ex) {
-                        throw new FunctionCallException(
-                                "Failed to create set.", args[0], args[1], ex);
-                    }
-                }
-
-                public int arity() {
-                    return 2;
-                }
-            }));
+                        public int arity() {
+                            return 2;
+                        }
+                    }));
 
         env.bind("$createMap",
-            _theContext.createFunction(new Function() {
-                // Create a map that contains the results of applying
-                // the second argument (a one argument function) to
-                // every element in the first argument (a collection).
-                public Object apply(Object[] args) {
-                    try {
-                        Collection c = _theContext.getCollection(args[0]);
-                        FunctionToken f = (FunctionToken) args[1];
-                        Object[] argument = new Object[1];
-                        Map res = new HashMap();
+                _theContext.createFunction(new Function() {
+                        // Create a map that contains the results of applying
+                        // the second argument (a one argument function) to
+                        // every element in the first argument (a collection).
+                        public Object apply(Object[] args) {
+                            try {
+                                Collection c = _theContext.getCollection(args[0]);
+                                FunctionToken f = (FunctionToken) args[1];
+                                Object[] argument = new Object[1];
+                                Map res = new HashMap();
 
-                        for (Iterator i = c.iterator(); i.hasNext();) {
-                            argument[0] = i.next();
+                                for (Iterator i = c.iterator(); i.hasNext();) {
+                                    argument[0] = i.next();
 
-                            Object mapFragment = _theContext.applyFunction(f,
-                                        argument);
-                            res.putAll(_theContext.getMap(mapFragment));
+                                    Object mapFragment = _theContext.applyFunction(f,
+                                            argument);
+                                    res.putAll(_theContext.getMap(mapFragment));
+                                }
+
+                                return _theContext.createMap(res);
+                            } catch (Exception ex) {
+                                throw new FunctionCallException(
+                                        "Failed to create map.", args[0], args[1], ex);
+                            }
                         }
 
-                        return _theContext.createMap(res);
-                    } catch (Exception ex) {
-                        throw new FunctionCallException(
-                                "Failed to create map.", args[0], args[1], ex);
-                    }
-                }
-
-                public int arity() {
-                    return 2;
-                }
-            }));
+                        public int arity() {
+                            return 2;
+                        }
+                    }));
 
         env.bind("$iterate",
-            _theContext.createProcedure(new Procedure() {
-                // Invoke the second argument (a one argument
-                // procedure) on every element of the first argument
-                // (a collection).
-                public void call(Object[] args) {
-                    try {
-                        Collection c = _theContext.getCollection(args[0]);
-                        Object proc = args[1];
-                        Object[] argument = new Object[1];
+                _theContext.createProcedure(new Procedure() {
+                        // Invoke the second argument (a one argument
+                        // procedure) on every element of the first argument
+                        // (a collection).
+                        public void call(Object[] args) {
+                            try {
+                                Collection c = _theContext.getCollection(args[0]);
+                                Object proc = args[1];
+                                Object[] argument = new Object[1];
 
-                        for (Iterator i = c.iterator(); i.hasNext();) {
-                            argument[0] = i.next();
-                            _theContext.callProcedure(proc, argument);
+                                for (Iterator i = c.iterator(); i.hasNext();) {
+                                    argument[0] = i.next();
+                                    _theContext.callProcedure(proc, argument);
+                                }
+                            } catch (Exception ex) {
+                                throw new FunctionCallException("Iteration failed.",
+                                        args[0], args[1], ex);
+                            }
                         }
-                    } catch (Exception ex) {
-                        throw new FunctionCallException("Iteration failed.",
-                                args[0], args[1], ex);
-                    }
-                }
 
-                public int arity() {
-                    return 2;
-                }
-            }));
+                        public int arity() {
+                            return 2;
+                        }
+                    }));
 
         env.bind("listToArray",
-            _theContext.createFunction(new Function() {
-                // Convert the given list to an array.
-                public Object apply(Object[] args) {
-                    try {
-                        ObjectToken input = (ObjectToken) args[0];
-                        List inputList = (List) input.getValue();
-                        Token[] tokens = new Token[inputList.size()];
-                        tokens = (Token[]) inputList.toArray(tokens);
-                        return new ArrayToken(tokens);
-                    } catch (Exception ex) {
-                        throw new FunctionCallException("listToArray", args[0],
-                                ex);
-                    }
-                }
+                _theContext.createFunction(new Function() {
+                        // Convert the given list to an array.
+                        public Object apply(Object[] args) {
+                            try {
+                                ObjectToken input = (ObjectToken) args[0];
+                                List inputList = (List) input.getValue();
+                                Token[] tokens = new Token[inputList.size()];
+                                tokens = (Token[]) inputList.toArray(tokens);
+                                return new ArrayToken(tokens);
+                            } catch (Exception ex) {
+                                throw new FunctionCallException("listToArray", args[0],
+                                        ex);
+                            }
+                        }
 
-                public int arity() {
-                    return 1;
-                }
-            }));
+                        public int arity() {
+                            return 1;
+                        }
+                    }));
 
         //
         // Xilinx SystemBuilder
@@ -694,98 +694,98 @@ public class PtolemyPlatform implements Platform {
         env.bind("UVOFFSET", _theContext.createInteger(128));
 
         env.bind("INT19_mul",
-            _theContext.createFunction(new Function() {
-                public Object apply(Object[] args) {
-                    try {
-                        IntToken a = (IntToken) args[0];
-                        IntToken b = (IntToken) args[1];
-                        int res = (a.intValue() * b.intValue()); // & 0x7ffff;
-                        return _theContext.createInteger(res);
-                    } catch (Exception ex) {
-                        throw new InterpreterException(
-                                "Function 'RGBCLIP': Cannot apply.", ex);
-                    }
-                }
+                _theContext.createFunction(new Function() {
+                        public Object apply(Object[] args) {
+                            try {
+                                IntToken a = (IntToken) args[0];
+                                IntToken b = (IntToken) args[1];
+                                int res = (a.intValue() * b.intValue()); // & 0x7ffff;
+                                return _theContext.createInteger(res);
+                            } catch (Exception ex) {
+                                throw new InterpreterException(
+                                        "Function 'RGBCLIP': Cannot apply.", ex);
+                            }
+                        }
 
-                public int arity() {
-                    return 2;
-                }
-            }));
+                        public int arity() {
+                            return 2;
+                        }
+                    }));
 
         env.bind("RGBCLIP",
-            _theContext.createFunction(new Function() {
-                public Object apply(Object[] args) {
-                    try {
-                        Token a = (Token) args[0];
+                _theContext.createFunction(new Function() {
+                        public Object apply(Object[] args) {
+                            try {
+                                Token a = (Token) args[0];
 
-                        if (a instanceof IntToken) {
-                            int n = ((IntToken) a).intValue() / 256;
-                            int res = (n > 255) ? 255 : ((n < 0) ? 0 : n);
-                            return _theContext.createInteger(res);
-                        } else {
-                            throw new InterpreterException(
-                                    "RGBCLIP needs an IntToken.");
+                                if (a instanceof IntToken) {
+                                    int n = ((IntToken) a).intValue() / 256;
+                                    int res = (n > 255) ? 255 : ((n < 0) ? 0 : n);
+                                    return _theContext.createInteger(res);
+                                } else {
+                                    throw new InterpreterException(
+                                            "RGBCLIP needs an IntToken.");
+                                }
+                            } catch (Exception ex) {
+                                throw new InterpreterException(
+                                        "Function 'RGBCLIP': Cannot apply.", ex);
+                            }
                         }
-                    } catch (Exception ex) {
-                        throw new InterpreterException(
-                                "Function 'RGBCLIP': Cannot apply.", ex);
-                    }
-                }
 
-                public int arity() {
-                    return 1;
-                }
-            }));
+                        public int arity() {
+                            return 1;
+                        }
+                    }));
 
         env.bind("readByte",
-            _theContext.createFunction(new Function() {
-                public Object apply(Object[] args) {
-                    try {
-                        Token a = (Token) args[0];
+                _theContext.createFunction(new Function() {
+                        public Object apply(Object[] args) {
+                            try {
+                                Token a = (Token) args[0];
 
-                        if (a instanceof ObjectToken) {
-                            InputStream s = (InputStream) ((ObjectToken) a)
-                                                .getValue();
-                            return _theContext.createInteger(s.read());
-                        } else {
-                            throw new InterpreterException(
-                                    "readByte needs a file.");
+                                if (a instanceof ObjectToken) {
+                                    InputStream s = (InputStream) ((ObjectToken) a)
+                                        .getValue();
+                                    return _theContext.createInteger(s.read());
+                                } else {
+                                    throw new InterpreterException(
+                                            "readByte needs a file.");
+                                }
+                            } catch (Exception ex) {
+                                throw new InterpreterException(
+                                        "Function 'readByte': Cannot apply.", ex);
+                            }
                         }
-                    } catch (Exception ex) {
-                        throw new InterpreterException(
-                                "Function 'readByte': Cannot apply.", ex);
-                    }
-                }
 
-                public int arity() {
-                    return 1;
-                }
-            }));
+                        public int arity() {
+                            return 1;
+                        }
+                    }));
 
         env.bind("openFile",
-            _theContext.createFunction(new Function() {
-                public Object apply(Object[] args) {
-                    try {
-                        Token a = (Token) args[0];
+                _theContext.createFunction(new Function() {
+                        public Object apply(Object[] args) {
+                            try {
+                                Token a = (Token) args[0];
 
-                        if (a instanceof StringToken) {
-                            InputStream s = new FileInputStream(
-                                        ((StringToken) a).stringValue());
-                            return new ObjectToken(s);
-                        } else {
-                            throw new InterpreterException(
-                                    "openFile needs a StringToken.");
+                                if (a instanceof StringToken) {
+                                    InputStream s = new FileInputStream(
+                                            ((StringToken) a).stringValue());
+                                    return new ObjectToken(s);
+                                } else {
+                                    throw new InterpreterException(
+                                            "openFile needs a StringToken.");
+                                }
+                            } catch (Exception ex) {
+                                throw new InterpreterException(
+                                        "Function 'openFile': Cannot apply.", ex);
+                            }
                         }
-                    } catch (Exception ex) {
-                        throw new InterpreterException(
-                                "Function 'openFile': Cannot apply.", ex);
-                    }
-                }
 
-                public int arity() {
-                    return 1;
-                }
-            }));
+                        public int arity() {
+                            return 1;
+                        }
+                    }));
 
         // END SystemBuilder
         return env;
@@ -817,7 +817,7 @@ public class PtolemyPlatform implements Platform {
 
             public boolean isNull(Object o) {
                 return o instanceof ObjectToken
-                            && (((ObjectToken) o).getValue() == null);
+                    && (((ObjectToken) o).getValue() == null);
             }
 
             public Object createBoolean(boolean b) {
@@ -833,7 +833,7 @@ public class PtolemyPlatform implements Platform {
                     return ((BooleanToken) b).booleanValue();
                 } catch (Exception ex) {
                     throw new InterpreterException("Failed to retrieve boolean value.",
-                        ex);
+                            ex);
                 }
             }
 
@@ -842,13 +842,13 @@ public class PtolemyPlatform implements Platform {
                     return new ObjectToken(new Character(c));
                 } catch (IllegalActionException iae) {
                     throw new InterpreterException(
-                        "Failed to create character value.");
+                            "Failed to create character value.");
                 }
             }
 
             public boolean isCharacter(Object o) {
                 return o instanceof ObjectToken
-                            && ((ObjectToken) o).getValue() instanceof Character;
+                    && ((ObjectToken) o).getValue() instanceof Character;
             }
 
             public char charValue(Object o) {
@@ -860,8 +860,8 @@ public class PtolemyPlatform implements Platform {
                     return new IntToken(s);
                 } catch (IllegalActionException ex) {
                     throw new InterpreterException(
-                        "Failed to create integer value from string: '" + s
-                        + "'.", ex);
+                            "Failed to create integer value from string: '" + s
+                            + "'.", ex);
                 }
             }
 
@@ -878,7 +878,7 @@ public class PtolemyPlatform implements Platform {
                     return ((IntToken) o).intValue();
                 } catch (Exception ex) {
                     throw new InterpreterException("Failed to retrieve integer value.",
-                        ex);
+                            ex);
                 }
             }
 
@@ -891,8 +891,8 @@ public class PtolemyPlatform implements Platform {
                     return new DoubleToken(s);
                 } catch (IllegalActionException ex) {
                     throw new InterpreterException(
-                        "Failed to create real value from string: '" + s + "'.",
-                        ex);
+                            "Failed to create real value from string: '" + s + "'.",
+                            ex);
                 }
             }
 
@@ -905,7 +905,7 @@ public class PtolemyPlatform implements Platform {
                     return ((DoubleToken) o).doubleValue();
                 } catch (Exception ex) {
                     throw new InterpreterException("Failed to retrieve real value.",
-                        ex);
+                            ex);
                 }
             }
 
@@ -922,7 +922,7 @@ public class PtolemyPlatform implements Platform {
                     return ((StringToken) o).stringValue();
                 } catch (Exception ex) {
                     throw new InterpreterException("Failed to retrieve string value.",
-                        ex);
+                            ex);
                 }
             }
 
@@ -932,13 +932,13 @@ public class PtolemyPlatform implements Platform {
                     return new ObjectToken(a);
                 } catch (IllegalActionException ex) {
                     throw new InterpreterException("Failed to create list value.",
-                        ex);
+                            ex);
                 }
             }
 
             public boolean isList(Object o) {
                 return (o instanceof PtArrayList)
-                            || (o instanceof ObjectToken
+                    || (o instanceof ObjectToken
                             && ((ObjectToken) o).getValue() instanceof List);
             }
 
@@ -950,7 +950,7 @@ public class PtolemyPlatform implements Platform {
                         return (List) ((ObjectToken) o).getValue();
                     } catch (Exception ex) {
                         throw new InterpreterException("Failed to retrieve list value.",
-                            ex);
+                                ex);
                     }
                 }
             }
@@ -960,13 +960,13 @@ public class PtolemyPlatform implements Platform {
                     return new ObjectToken(s);
                 } catch (IllegalActionException ex) {
                     throw new InterpreterException("Failed to create set value.",
-                        ex);
+                            ex);
                 }
             }
 
             public boolean isSet(Object o) {
                 return o instanceof ObjectToken
-                            && ((ObjectToken) o).getValue() instanceof Set;
+                    && ((ObjectToken) o).getValue() instanceof Set;
             }
 
             public Set getSet(Object o) {
@@ -978,13 +978,13 @@ public class PtolemyPlatform implements Platform {
                     return new ObjectToken(m);
                 } catch (IllegalActionException ex) {
                     throw new InterpreterException("Failed to create map value.",
-                        ex);
+                            ex);
                 }
             }
 
             public boolean isMap(Object o) {
                 return o instanceof ObjectToken
-                            && ((ObjectToken) o).getValue() instanceof Map;
+                    && ((ObjectToken) o).getValue() instanceof Map;
             }
 
             public Map getMap(Object a) {
@@ -992,7 +992,7 @@ public class PtolemyPlatform implements Platform {
                     return (Map) ((ObjectToken) a).getValue();
                 } catch (Exception ex) {
                     throw new InterpreterException("Failed to retrieve map value",
-                        ex);
+                            ex);
                 }
             }
 
@@ -1003,7 +1003,7 @@ public class PtolemyPlatform implements Platform {
 
             public boolean isCollection(Object o) {
                 return o instanceof ObjectToken
-                            && ((ObjectToken) o).getValue() instanceof Collection;
+                    && ((ObjectToken) o).getValue() instanceof Collection;
             }
 
             public Collection getCollection(Object a) {
@@ -1011,7 +1011,7 @@ public class PtolemyPlatform implements Platform {
                     return (Collection) ((ObjectToken) a).getValue();
                 } catch (Exception ex) {
                     throw new InterpreterException("Failed to retrieve collection value.",
-                        ex);
+                            ex);
                 }
             }
 
@@ -1024,12 +1024,12 @@ public class PtolemyPlatform implements Platform {
                 }
 
                 return new FunctionToken(new PtCalFunction(f),
-                    new FunctionType(argTypes, BaseType.UNKNOWN));
+                        new FunctionType(argTypes, BaseType.UNKNOWN));
             }
 
             public boolean isFunction(Object a) {
                 return (a instanceof FunctionToken)
-                            || (a instanceof ObjectToken
+                    || (a instanceof ObjectToken
                             && ((ObjectToken) a).getValue() instanceof Function);
             }
 
@@ -1042,11 +1042,11 @@ public class PtolemyPlatform implements Platform {
                         return ((FunctionToken) function).apply(tokenArgs);
                     } else {
                         return ((Function) ((ObjectToken) function).getValue())
-                                    .apply(args);
+                            .apply(args);
                     }
                 } catch (Exception ex) {
                     throw new InterpreterException("Function application failed.",
-                        ex);
+                            ex);
                 }
             }
 
@@ -1055,13 +1055,13 @@ public class PtolemyPlatform implements Platform {
                     return new ObjectToken(p);
                 } catch (IllegalActionException ex) {
                     throw new InterpreterException("Failed to create procedure.",
-                        ex);
+                            ex);
                 }
             }
 
             public boolean isProcedure(Object a) {
                 return a instanceof ObjectToken
-                            && ((ObjectToken) a).getValue() instanceof Procedure;
+                    && ((ObjectToken) a).getValue() instanceof Procedure;
             }
 
             public void callProcedure(Object procedure, Object[] args) {
@@ -1080,30 +1080,30 @@ public class PtolemyPlatform implements Platform {
                     return new ObjectToken(new ClassObject(c, this));
                 } catch (IllegalActionException ex) {
                     throw new InterpreterException("Cannot create class token.",
-                        ex);
+                            ex);
                 }
             }
 
             public boolean isClass(Object o) {
                 return o instanceof ObjectToken
-                            && ((ObjectToken) o).getValue() instanceof ClassObject;
+                    && ((ObjectToken) o).getValue() instanceof ClassObject;
             }
 
             public Class getJavaClass(Object o) {
                 try {
                     return ((ClassObject) ((ObjectToken) o).getValue())
-                                .getClassObject();
+                        .getClassObject();
                 } catch (ClassCastException e) {
                     if (o instanceof ObjectToken) {
                         throw new RuntimeException(
-                            "Expected ClassObject, got instance of '"
-                            + ((ObjectToken) o).getValue().getClass().getName()
-                            + "'.", e);
+                                "Expected ClassObject, got instance of '"
+                                + ((ObjectToken) o).getValue().getClass().getName()
+                                + "'.", e);
                     } else {
                         throw new RuntimeException(
-                            "Expected ClassObject inside ObjectToken, got instance of '"
-                            + o.getClass().getName()
-                            + "' as a token, with value: " + o + ".", e);
+                                "Expected ClassObject inside ObjectToken, got instance of '"
+                                + o.getClass().getName()
+                                + "' as a token, with value: " + o + ".", e);
                     }
                 }
             }
@@ -1115,7 +1115,7 @@ public class PtolemyPlatform implements Platform {
             }
 
             public void setLocation(Object structure, Object[] location,
-                Object value) {
+                    Object value) {
                 // FIXME
             }
 
@@ -1145,8 +1145,8 @@ public class PtolemyPlatform implements Platform {
                     return o.getClass();
                 } else {
                     throw new InterpreterException(
-                        "Unrecognized Token type in toClass:"
-                        + o.getClass().toString());
+                            "Unrecognized Token type in toClass:"
+                            + o.getClass().toString());
                 }
             }
 
@@ -1171,8 +1171,8 @@ public class PtolemyPlatform implements Platform {
                     return o;
                 } else {
                     throw new InterpreterException(
-                        "Unrecognized Token type in toClass:"
-                        + o.getClass().toString());
+                            "Unrecognized Token type in toClass:"
+                            + o.getClass().toString());
                 }
             }
 
@@ -1195,8 +1195,8 @@ public class PtolemyPlatform implements Platform {
                     }
                 } catch (IllegalActionException ex) {
                     throw new InterpreterException(
-                        "Couldn't create ObjectToken from Java Object "
-                        + o.toString(), ex);
+                            "Couldn't create ObjectToken from Java Object "
+                            + o.toString(), ex);
                 }
             }
 
@@ -1209,7 +1209,7 @@ public class PtolemyPlatform implements Platform {
                     return fromJavaObject(f.get(toJavaObject(composite)));
                 } catch (IllegalAccessException iae) {
                     throw new InterpreterException("Tried to access field "
-                        + fieldName + " in " + composite.toString(), iae);
+                            + fieldName + " in " + composite.toString(), iae);
                 } catch (NoSuchFieldException nsfe1) {
                     // maybe the enclosing object is a Class?
                     if (isClass(composite)) {
@@ -1218,21 +1218,21 @@ public class PtolemyPlatform implements Platform {
                             return fromJavaObject(f.get(null));
                         } catch (NoSuchFieldException nsfe2) {
                             return new MethodObject(toJavaObject(composite),
-                                fieldName, this);
+                                    fieldName, this);
                         } catch (IllegalAccessException iae) {
                             throw new InterpreterException(
-                                "Tried to access field " + fieldName + " in "
-                                + composite.toString(), iae);
+                                    "Tried to access field " + fieldName + " in "
+                                    + composite.toString(), iae);
                         }
                     } else {
                         // assume it is a method
                         try {
                             return new ObjectToken(new MethodObject(
-                                    toJavaObject(composite), fieldName, this));
+                                                           toJavaObject(composite), fieldName, this));
                         } catch (IllegalActionException iae) {
                             throw new InterpreterException(
-                                "Tried to access field " + fieldName + " in "
-                                + composite.toString(), iae);
+                                    "Tried to access field " + fieldName + " in "
+                                    + composite.toString(), iae);
                         }
                     }
                 }

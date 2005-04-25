@@ -81,7 +81,7 @@ public class ModalPort extends TypedIOPort {
      *   a port already in the container.
      */
     public ModalPort(ComponentEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -340,7 +340,7 @@ public class ModalPort extends TypedIOPort {
      *   a port with the name of this port.
      */
     public void setContainer(Entity container)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         try {
             _workspace.getWriteAccess();
 
@@ -370,7 +370,7 @@ public class ModalPort extends TypedIOPort {
 
                 // Remove the relation as well.
                 ComponentRelation relation = (ComponentRelation) model
-                                .getRelation(getName() + "Relation");
+                    .getRelation(getName() + "Relation");
 
                 if (relation != null) {
                     relation.setContainer(null);
@@ -478,7 +478,7 @@ public class ModalPort extends TypedIOPort {
      *   with the same name in the container.
      */
     public void setName(String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         try {
             _workspace.getWriteAccess();
 
@@ -596,11 +596,11 @@ public class ModalPort extends TypedIOPort {
      *   TypedActor, or if the base class throws it.
      */
     protected void _checkContainer(Entity container)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (!(container instanceof ModalModel) && (container != null)) {
             throw new IllegalActionException(container, this,
-                "ModalPort can only be contained by ModalModel objects. "
-                + "The container was: " + container);
+                    "ModalPort can only be contained by ModalModel objects. "
+                    + "The container was: " + container);
         }
     }
 }

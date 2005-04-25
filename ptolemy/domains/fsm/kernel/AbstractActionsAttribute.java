@@ -121,7 +121,7 @@ public abstract class AbstractActionsAttribute extends Action
      *   has an attribute with the name.
      */
     public AbstractActionsAttribute(Transition transition, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(transition, name);
     }
 
@@ -157,7 +157,7 @@ public abstract class AbstractActionsAttribute extends Action
 
         if (integer == null) {
             throw new IllegalActionException("No channel was specified for "
-                + name);
+                    + name);
         }
 
         return integer.intValue();
@@ -198,7 +198,7 @@ public abstract class AbstractActionsAttribute extends Action
     public String getExpression(String name) {
         ParseTreeWriter writer = new ParseTreeWriter();
         return writer.printParseTree((ASTPtRootNode) _parseTrees.get(
-                _destinationNames.indexOf(name)));
+                                             _destinationNames.indexOf(name)));
     }
 
     /** Test if a channel number is associated with the given name.
@@ -255,12 +255,12 @@ public abstract class AbstractActionsAttribute extends Action
 
                 if (closeParen < openParen) {
                     throw new IllegalActionException(this,
-                        "Malformed action: expected destination = "
-                        + "expression. Got: " + completeDestinationSpec);
+                            "Malformed action: expected destination = "
+                            + "expression. Got: " + completeDestinationSpec);
                 }
 
                 _destinationNames.add(completeDestinationSpec.substring(0,
-                        openParen).trim());
+                                              openParen).trim());
 
                 String channelSpec = completeDestinationSpec.substring(openParen
                         + 1, closeParen);
@@ -269,8 +269,8 @@ public abstract class AbstractActionsAttribute extends Action
                     _numbers.add(new Integer(channelSpec));
                 } catch (NumberFormatException ex) {
                     throw new IllegalActionException(this,
-                        "Malformed action: expected destination = "
-                        + "expression. Got: " + completeDestinationSpec);
+                            "Malformed action: expected destination = "
+                            + "expression. Got: " + completeDestinationSpec);
                 }
             } else {
                 // No channel is specified.
@@ -292,7 +292,7 @@ public abstract class AbstractActionsAttribute extends Action
         List list = new LinkedList();
 
         for (Iterator names = getDestinationNameList().iterator();
-                        names.hasNext();) {
+             names.hasNext();) {
             String name = (String) names.next();
 
             try {
@@ -322,7 +322,7 @@ public abstract class AbstractActionsAttribute extends Action
      *   does not have a destination with the specified name.
      */
     protected abstract NamedObj _getDestination(String name)
-        throws IllegalActionException;
+            throws IllegalActionException;
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
@@ -422,7 +422,7 @@ public abstract class AbstractActionsAttribute extends Action
                 }
 
                 ASTPtRootNode parseTree = (ASTPtRootNode) _parseTrees.get(_destinationNames
-                                    .indexOf(_name));
+                        .indexOf(_name));
 
                 if (_scope == null) {
                     FSMActor fsmActor = (FSMActor) getContainer().getContainer();
@@ -433,7 +433,7 @@ public abstract class AbstractActionsAttribute extends Action
                 return type;
             } catch (Exception ex) {
                 throw new IllegalActionException(AbstractActionsAttribute.this,
-                    ex, "An error occurred during expression type inference");
+                        ex, "An error occurred during expression type inference");
             }
         }
 
@@ -449,7 +449,7 @@ public abstract class AbstractActionsAttribute extends Action
             // the expression.
             try {
                 ASTPtRootNode parseTree = (ASTPtRootNode) _parseTrees.get(_destinationNames
-                                    .indexOf(_name));
+                        .indexOf(_name));
 
                 if (_scope == null) {
                     FSMActor fsmActor = (FSMActor) getContainer().getContainer();
@@ -470,7 +470,7 @@ public abstract class AbstractActionsAttribute extends Action
                 }
 
                 return (InequalityTerm[]) termList.toArray(new InequalityTerm[termList
-                                .size()]);
+                                                                   .size()]);
             } catch (IllegalActionException ex) {
                 return new InequalityTerm[0];
             }

@@ -71,7 +71,7 @@ public class RelationController extends ParameterizedNodeController {
 
         // Add to the context menu.
         _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                new GetDocumentationAction()));
+                                                new GetDocumentationAction()));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -98,16 +98,16 @@ public class RelationController extends ParameterizedNodeController {
                 Vertex vertex = (Vertex) n;
                 Relation relation = (Relation) vertex.getContainer();
                 ActorGraphModel model = (ActorGraphModel) getController()
-                                                                          .getGraphModel();
+                    .getGraphModel();
                 figure.setToolTipText(relation.getName(model.getPtolemyModel()));
 
                 StringAttribute _colorAttr = (StringAttribute) (relation
-                                .getAttribute("_color"));
+                        .getAttribute("_color"));
 
                 if (_colorAttr != null) {
                     String _color = _colorAttr.getExpression();
                     ((BasicFigure) figure).setFillPaint(SVGUtilities.getColor(
-                            _color));
+                                                                _color));
                 }
             }
 

@@ -125,8 +125,8 @@ public class Hashtable extends Dictionary implements Map, Cloneable, Serializabl
         private FieldRecord $RECORD$next = new FieldRecord(0);
 
         private FieldRecord[] $RECORDS = new FieldRecord[] {
-                $RECORD$next
-            };
+            $RECORD$next
+        };
     }
 
     private final class HashIterator implements Iterator, Rollbackable {
@@ -313,12 +313,12 @@ public class Hashtable extends Dictionary implements Map, Cloneable, Serializabl
         private FieldRecord $RECORD$next = new FieldRecord(0);
 
         private FieldRecord[] $RECORDS = new FieldRecord[] {
-                $RECORD$knownMod,
-                $RECORD$count,
-                $RECORD$idx,
-                $RECORD$last,
-                $RECORD$next
-            };
+            $RECORD$knownMod,
+            $RECORD$count,
+            $RECORD$idx,
+            $RECORD$last,
+            $RECORD$next
+        };
     }
 
     private final class Enumerator implements Enumeration, Rollbackable {
@@ -443,10 +443,10 @@ public class Hashtable extends Dictionary implements Map, Cloneable, Serializabl
         private FieldRecord $RECORD$next = new FieldRecord(0);
 
         private FieldRecord[] $RECORDS = new FieldRecord[] {
-                $RECORD$count,
-                $RECORD$idx,
-                $RECORD$next
-            };
+            $RECORD$count,
+            $RECORD$idx,
+            $RECORD$next
+        };
     }
 
     public Hashtable() {
@@ -626,82 +626,82 @@ public class Hashtable extends Dictionary implements Map, Cloneable, Serializabl
         if (keys == null) {
             Set r = new AbstractSet() {
 
-                public int size() {
-                    return size;
-                }
-
-                public Iterator iterator() {
-                    return new HashIterator(KEYS);
-                }
-
-                public void clear() {
-                    Hashtable.this.clear();
-                }
-
-                public boolean contains(Object o) {
-                    if (o == null)
-                        return false;
-                    return containsKey(o);
-                }
-
-                public boolean remove(Object o) {
-                    return Hashtable.this.remove(o) != null;
-                }
-
-                final class _PROXY_ implements Rollbackable {
-
-                    public final void $COMMIT(long timestamp) {
-                        $COMMIT_ANONYMOUS(timestamp);
+                    public int size() {
+                        return size;
                     }
 
-                    public final void $RESTORE(long timestamp, boolean trim) {
-                        $RESTORE_ANONYMOUS(timestamp, trim);
+                    public Iterator iterator() {
+                        return new HashIterator(KEYS);
                     }
 
-                    public final Checkpoint $GET$CHECKPOINT() {
-                        return $GET$CHECKPOINT_ANONYMOUS();
+                    public void clear() {
+                        Hashtable.this.clear();
                     }
 
-                    public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
-                        $SET$CHECKPOINT_ANONYMOUS(checkpoint);
+                    public boolean contains(Object o) {
+                        if (o == null)
+                            return false;
+                        return containsKey(o);
+                    }
+
+                    public boolean remove(Object o) {
+                        return Hashtable.this.remove(o) != null;
+                    }
+
+                    final class _PROXY_ implements Rollbackable {
+
+                        public final void $COMMIT(long timestamp) {
+                            $COMMIT_ANONYMOUS(timestamp);
+                        }
+
+                        public final void $RESTORE(long timestamp, boolean trim) {
+                            $RESTORE_ANONYMOUS(timestamp, trim);
+                        }
+
+                        public final Checkpoint $GET$CHECKPOINT() {
+                            return $GET$CHECKPOINT_ANONYMOUS();
+                        }
+
+                        public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
+                            $SET$CHECKPOINT_ANONYMOUS(checkpoint);
+                            return this;
+                        }
+                    }
+
+                    public void $COMMIT_ANONYMOUS(long timestamp) {
+                        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                        super.$COMMIT(timestamp);
+                    }
+
+                    public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
+                        super.$RESTORE(timestamp, trim);
+                    }
+
+                    public final Checkpoint $GET$CHECKPOINT_ANONYMOUS() {
+                        return $CHECKPOINT;
+                    }
+
+                    public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
+                        if ($CHECKPOINT != checkpoint) {
+                            Checkpoint oldCheckpoint = $CHECKPOINT;
+                            if (checkpoint != null) {
+                                $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                                FieldRecord.pushState($RECORDS);
+                            }
+                            $CHECKPOINT = checkpoint;
+                            oldCheckpoint.setCheckpoint(checkpoint);
+                            checkpoint.addObject(new _PROXY_());
+                        }
                         return this;
                     }
-                }
 
-                public void $COMMIT_ANONYMOUS(long timestamp) {
-                    FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
-                    super.$COMMIT(timestamp);
-                }
-
-                public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
-                    super.$RESTORE(timestamp, trim);
-                }
-
-                public final Checkpoint $GET$CHECKPOINT_ANONYMOUS() {
-                    return $CHECKPOINT;
-                }
-
-                public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
-                    if ($CHECKPOINT != checkpoint) {
-                        Checkpoint oldCheckpoint = $CHECKPOINT;
-                        if (checkpoint != null) {
-                            $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
-                            FieldRecord.pushState($RECORDS);
-                        }
-                        $CHECKPOINT = checkpoint;
-                        oldCheckpoint.setCheckpoint(checkpoint);
-                        checkpoint.addObject(new _PROXY_());
-                    }
-                    return this;
-                }
-
-                private FieldRecord[] $RECORDS = new FieldRecord[] {
+                    private FieldRecord[] $RECORDS = new FieldRecord[] {
                     };
 
-                {
-                    $CHECKPOINT.addObject(new _PROXY_());
-                }
-            };
+                    {
+                        $CHECKPOINT.addObject(new _PROXY_());
+                    }
+                };
             $ASSIGN$keys(new Collections.SynchronizedSet(this, r));
         }
         return keys;
@@ -711,72 +711,72 @@ public class Hashtable extends Dictionary implements Map, Cloneable, Serializabl
         if (values == null) {
             Collection r = new AbstractCollection() {
 
-                public int size() {
-                    return size;
-                }
-
-                public Iterator iterator() {
-                    return new HashIterator(VALUES);
-                }
-
-                public void clear() {
-                    Hashtable.this.clear();
-                }
-
-                final class _PROXY_ implements Rollbackable {
-
-                    public final void $COMMIT(long timestamp) {
-                        $COMMIT_ANONYMOUS(timestamp);
+                    public int size() {
+                        return size;
                     }
 
-                    public final void $RESTORE(long timestamp, boolean trim) {
-                        $RESTORE_ANONYMOUS(timestamp, trim);
+                    public Iterator iterator() {
+                        return new HashIterator(VALUES);
                     }
 
-                    public final Checkpoint $GET$CHECKPOINT() {
-                        return $GET$CHECKPOINT_ANONYMOUS();
+                    public void clear() {
+                        Hashtable.this.clear();
                     }
 
-                    public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
-                        $SET$CHECKPOINT_ANONYMOUS(checkpoint);
+                    final class _PROXY_ implements Rollbackable {
+
+                        public final void $COMMIT(long timestamp) {
+                            $COMMIT_ANONYMOUS(timestamp);
+                        }
+
+                        public final void $RESTORE(long timestamp, boolean trim) {
+                            $RESTORE_ANONYMOUS(timestamp, trim);
+                        }
+
+                        public final Checkpoint $GET$CHECKPOINT() {
+                            return $GET$CHECKPOINT_ANONYMOUS();
+                        }
+
+                        public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
+                            $SET$CHECKPOINT_ANONYMOUS(checkpoint);
+                            return this;
+                        }
+                    }
+
+                    public void $COMMIT_ANONYMOUS(long timestamp) {
+                        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                        super.$COMMIT(timestamp);
+                    }
+
+                    public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
+                        super.$RESTORE(timestamp, trim);
+                    }
+
+                    public final Checkpoint $GET$CHECKPOINT_ANONYMOUS() {
+                        return $CHECKPOINT;
+                    }
+
+                    public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
+                        if ($CHECKPOINT != checkpoint) {
+                            Checkpoint oldCheckpoint = $CHECKPOINT;
+                            if (checkpoint != null) {
+                                $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                                FieldRecord.pushState($RECORDS);
+                            }
+                            $CHECKPOINT = checkpoint;
+                            oldCheckpoint.setCheckpoint(checkpoint);
+                            checkpoint.addObject(new _PROXY_());
+                        }
                         return this;
                     }
-                }
 
-                public void $COMMIT_ANONYMOUS(long timestamp) {
-                    FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
-                    super.$COMMIT(timestamp);
-                }
-
-                public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
-                    super.$RESTORE(timestamp, trim);
-                }
-
-                public final Checkpoint $GET$CHECKPOINT_ANONYMOUS() {
-                    return $CHECKPOINT;
-                }
-
-                public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
-                    if ($CHECKPOINT != checkpoint) {
-                        Checkpoint oldCheckpoint = $CHECKPOINT;
-                        if (checkpoint != null) {
-                            $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
-                            FieldRecord.pushState($RECORDS);
-                        }
-                        $CHECKPOINT = checkpoint;
-                        oldCheckpoint.setCheckpoint(checkpoint);
-                        checkpoint.addObject(new _PROXY_());
-                    }
-                    return this;
-                }
-
-                private FieldRecord[] $RECORDS = new FieldRecord[] {
+                    private FieldRecord[] $RECORDS = new FieldRecord[] {
                     };
 
-                {
-                    $CHECKPOINT.addObject(new _PROXY_());
-                }
-            };
+                    {
+                        $CHECKPOINT.addObject(new _PROXY_());
+                    }
+                };
             $ASSIGN$values(new Collections.SynchronizedCollection(this, r));
         }
         return values;
@@ -786,85 +786,85 @@ public class Hashtable extends Dictionary implements Map, Cloneable, Serializabl
         if (entries == null) {
             Set r = new AbstractSet() {
 
-                public int size() {
-                    return size;
-                }
-
-                public Iterator iterator() {
-                    return new HashIterator(ENTRIES);
-                }
-
-                public void clear() {
-                    Hashtable.this.clear();
-                }
-
-                public boolean contains(Object o) {
-                    return getEntry(o) != null;
-                }
-
-                public boolean remove(Object o) {
-                    HashEntry e = getEntry(o);
-                    if (e != null) {
-                        Hashtable.this.remove(e.getKey());
-                        return true;
-                    }
-                    return false;
-                }
-
-                final class _PROXY_ implements Rollbackable {
-
-                    public final void $COMMIT(long timestamp) {
-                        $COMMIT_ANONYMOUS(timestamp);
+                    public int size() {
+                        return size;
                     }
 
-                    public final void $RESTORE(long timestamp, boolean trim) {
-                        $RESTORE_ANONYMOUS(timestamp, trim);
+                    public Iterator iterator() {
+                        return new HashIterator(ENTRIES);
                     }
 
-                    public final Checkpoint $GET$CHECKPOINT() {
-                        return $GET$CHECKPOINT_ANONYMOUS();
+                    public void clear() {
+                        Hashtable.this.clear();
                     }
 
-                    public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
-                        $SET$CHECKPOINT_ANONYMOUS(checkpoint);
+                    public boolean contains(Object o) {
+                        return getEntry(o) != null;
+                    }
+
+                    public boolean remove(Object o) {
+                        HashEntry e = getEntry(o);
+                        if (e != null) {
+                            Hashtable.this.remove(e.getKey());
+                            return true;
+                        }
+                        return false;
+                    }
+
+                    final class _PROXY_ implements Rollbackable {
+
+                        public final void $COMMIT(long timestamp) {
+                            $COMMIT_ANONYMOUS(timestamp);
+                        }
+
+                        public final void $RESTORE(long timestamp, boolean trim) {
+                            $RESTORE_ANONYMOUS(timestamp, trim);
+                        }
+
+                        public final Checkpoint $GET$CHECKPOINT() {
+                            return $GET$CHECKPOINT_ANONYMOUS();
+                        }
+
+                        public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
+                            $SET$CHECKPOINT_ANONYMOUS(checkpoint);
+                            return this;
+                        }
+                    }
+
+                    public void $COMMIT_ANONYMOUS(long timestamp) {
+                        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                        super.$COMMIT(timestamp);
+                    }
+
+                    public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
+                        super.$RESTORE(timestamp, trim);
+                    }
+
+                    public final Checkpoint $GET$CHECKPOINT_ANONYMOUS() {
+                        return $CHECKPOINT;
+                    }
+
+                    public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
+                        if ($CHECKPOINT != checkpoint) {
+                            Checkpoint oldCheckpoint = $CHECKPOINT;
+                            if (checkpoint != null) {
+                                $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                                FieldRecord.pushState($RECORDS);
+                            }
+                            $CHECKPOINT = checkpoint;
+                            oldCheckpoint.setCheckpoint(checkpoint);
+                            checkpoint.addObject(new _PROXY_());
+                        }
                         return this;
                     }
-                }
 
-                public void $COMMIT_ANONYMOUS(long timestamp) {
-                    FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
-                    super.$COMMIT(timestamp);
-                }
-
-                public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
-                    super.$RESTORE(timestamp, trim);
-                }
-
-                public final Checkpoint $GET$CHECKPOINT_ANONYMOUS() {
-                    return $CHECKPOINT;
-                }
-
-                public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
-                    if ($CHECKPOINT != checkpoint) {
-                        Checkpoint oldCheckpoint = $CHECKPOINT;
-                        if (checkpoint != null) {
-                            $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
-                            FieldRecord.pushState($RECORDS);
-                        }
-                        $CHECKPOINT = checkpoint;
-                        oldCheckpoint.setCheckpoint(checkpoint);
-                        checkpoint.addObject(new _PROXY_());
-                    }
-                    return this;
-                }
-
-                private FieldRecord[] $RECORDS = new FieldRecord[] {
+                    private FieldRecord[] $RECORDS = new FieldRecord[] {
                     };
 
-                {
-                    $CHECKPOINT.addObject(new _PROXY_());
-                }
-            };
+                    {
+                        $CHECKPOINT.addObject(new _PROXY_());
+                    }
+                };
             $ASSIGN$entries(new Collections.SynchronizedSet(this, r));
         }
         return entries;
@@ -1006,8 +1006,8 @@ public class Hashtable extends Dictionary implements Map, Cloneable, Serializabl
     private final HashEntry $ASSIGN$buckets(int index0, HashEntry newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
             $RECORD$buckets.add(new int[] {
-                    index0
-                }, buckets[index0], $CHECKPOINT.getTimestamp());
+                index0
+            }, buckets[index0], $CHECKPOINT.getTimestamp());
         }
         if (newValue != null && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
             newValue.$SET$CHECKPOINT($CHECKPOINT);
@@ -1032,38 +1032,38 @@ public class Hashtable extends Dictionary implements Map, Cloneable, Serializabl
             $RECORD$modCount.add(null, modCount, $CHECKPOINT.getTimestamp());
         }
         switch (operator) {
-            case 0:
-                return modCount += newValue;
-            case 1:
-                return modCount -= newValue;
-            case 2:
-                return modCount *= newValue;
-            case 3:
-                return modCount /= newValue;
-            case 4:
-                return modCount &= newValue;
-            case 5:
-                return modCount |= newValue;
-            case 6:
-                return modCount ^= newValue;
-            case 7:
-                return modCount %= newValue;
-            case 8:
-                return modCount <<= newValue;
-            case 9:
-                return modCount >>= newValue;
-            case 10:
-                return modCount >>>= newValue;
-            case 11:
-                return modCount++;
-            case 12:
-                return modCount--;
-            case 13:
-                return ++modCount;
-            case 14:
-                return --modCount;
-            default:
-                return modCount;
+        case 0:
+            return modCount += newValue;
+        case 1:
+            return modCount -= newValue;
+        case 2:
+            return modCount *= newValue;
+        case 3:
+            return modCount /= newValue;
+        case 4:
+            return modCount &= newValue;
+        case 5:
+            return modCount |= newValue;
+        case 6:
+            return modCount ^= newValue;
+        case 7:
+            return modCount %= newValue;
+        case 8:
+            return modCount <<= newValue;
+        case 9:
+            return modCount >>= newValue;
+        case 10:
+            return modCount >>>= newValue;
+        case 11:
+            return modCount++;
+        case 12:
+            return modCount--;
+        case 13:
+            return ++modCount;
+        case 14:
+            return --modCount;
+        default:
+            return modCount;
         }
     }
 
@@ -1161,13 +1161,13 @@ public class Hashtable extends Dictionary implements Map, Cloneable, Serializabl
     private FieldRecord $RECORD$entries = new FieldRecord(0);
 
     private FieldRecord[] $RECORDS = new FieldRecord[] {
-            $RECORD$threshold,
-            $RECORD$loadFactor,
-            $RECORD$buckets,
-            $RECORD$modCount,
-            $RECORD$size,
-            $RECORD$keys,
-            $RECORD$values,
-            $RECORD$entries
-        };
+        $RECORD$threshold,
+        $RECORD$loadFactor,
+        $RECORD$buckets,
+        $RECORD$modCount,
+        $RECORD$size,
+        $RECORD$keys,
+        $RECORD$values,
+        $RECORD$entries
+    };
 }

@@ -69,87 +69,87 @@ public class ConcreteScalarToken extends ScalarToken {
     /** Throw an exception.
      */
     protected ScalarToken _add(ScalarToken rightArgument)
-        throws IllegalActionException {
+            throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("add", this,
-                rightArgument));
+                                                 rightArgument));
     }
 
     /** Throw an exception.
      */
     protected ScalarToken _bitwiseAnd(ScalarToken rightArgument)
-        throws IllegalActionException {
+            throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("bitwiseAnd",
-                this, rightArgument));
+                                                 this, rightArgument));
     }
 
     /** Throw an exception.
      */
     protected ScalarToken _bitwiseNot() throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("bitwiseNot",
-                this, this));
+                                                 this, this));
     }
 
     /** Throw an exception.
      */
     protected ScalarToken _bitwiseOr(ScalarToken rightArgument)
-        throws IllegalActionException {
+            throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("bitwiseOr", this,
-                rightArgument));
+                                                 rightArgument));
     }
 
     /** Throw an exception.
      */
     protected ScalarToken _bitwiseXor(ScalarToken rightArgument)
-        throws IllegalActionException {
+            throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("bitwiseXor",
-                this, rightArgument));
+                                                 this, rightArgument));
     }
 
     /** Throw an exception.
      */
     protected ScalarToken _divide(ScalarToken rightArgument)
-        throws IllegalActionException {
+            throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("divide", this,
-                rightArgument));
+                                                 rightArgument));
     }
 
     /** Throw an exception.
      */
     protected BooleanToken _isCloseTo(ScalarToken rightArgument, double epsilon)
-        throws IllegalActionException {
+            throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("isCloseTo", this,
-                rightArgument));
+                                                 rightArgument));
     }
 
     /** Throw an exception.
      */
     protected BooleanToken _isLessThan(ScalarToken rightArgument)
-        throws IllegalActionException {
+            throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("isLessThan",
-                this, rightArgument));
+                                                 this, rightArgument));
     }
 
     /** Throw an exception.
      */
     protected ScalarToken _modulo(ScalarToken rightArgument)
-        throws IllegalActionException {
+            throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("modulo", this,
-                rightArgument));
+                                                 rightArgument));
     }
 
     /** Throw an exception.
      */
     protected ScalarToken _multiply(ScalarToken rightArgument)
-        throws IllegalActionException {
+            throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("multiply", this,
-                rightArgument));
+                                                 rightArgument));
     }
 
     /** Throw an exception.
      */
     protected ScalarToken _subtract(ScalarToken rightArgument)
-        throws IllegalActionException {
+            throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("subtract", this,
-                rightArgument));
+                                                 rightArgument));
     }
 }

@@ -67,7 +67,7 @@ public class Queue extends DETransformer {
      *   actor with this name.
      */
     public Queue(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         output.setTypeAtLeast(input);
         trigger = new TypedIOPort(this, "trigger", true, false);

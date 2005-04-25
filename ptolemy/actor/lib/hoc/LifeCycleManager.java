@@ -106,7 +106,7 @@ public class LifeCycleManager extends TypedCompositeActor {
      *   an actor already in the container.
      */
     public LifeCycleManager(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -153,8 +153,8 @@ public class LifeCycleManager extends TypedCompositeActor {
 
                         if (_debugging) {
                             _debug("-- Executing change request "
-                                + "with description: "
-                                + change.getDescription());
+                                    + "with description: "
+                                    + change.getDescription());
                         }
 
                         // The change listeners should be those of this
@@ -353,14 +353,14 @@ public class LifeCycleManager extends TypedCompositeActor {
                 if (attribute instanceof Variable) {
                     if (_debugging) {
                         _debug("** Transferring input to parameter: "
-                            + port.getName());
+                                + port.getName());
                     }
 
                     ((Variable) attribute).setToken(token);
                 } else if (attribute instanceof Settable) {
                     if (_debugging) {
                         _debug("** Transferring input as string to parameter: "
-                            + port.getName());
+                                + port.getName());
                     }
 
                     ((Settable) attribute).setExpression(token.toString());
@@ -394,19 +394,19 @@ public class LifeCycleManager extends TypedCompositeActor {
                 if (attribute instanceof Variable) {
                     if (_debugging) {
                         _debug("** Transferring parameter to output: "
-                            + port.getName());
+                                + port.getName());
                     }
 
                     port.send(0, ((Variable) attribute).getToken());
                 } else if (attribute instanceof Settable) {
                     if (_debugging) {
                         _debug(
-                            "** Transferring parameter as string to output: "
-                            + port.getName());
+                                "** Transferring parameter as string to output: "
+                                + port.getName());
                     }
 
                     port.send(0,
-                        new StringToken(((Settable) attribute).getExpression()));
+                            new StringToken(((Settable) attribute).getExpression()));
                 }
             }
         }

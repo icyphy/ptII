@@ -50,33 +50,33 @@ import ptolemy.kernel.util.NameDuplicationException;
 
    <p> This actor instantiates a
    <a href="http://hoschek.home.cern.ch/hoschek/colt/V1.0.3/doc/cern/jet/random/Beta.html">cern.jet.random.Beta</a> object with
-    alpha and beta both set to 2.0.
+   alpha and beta both set to 2.0.
 
-    <p>A definition of NegativeBinomial by Wolfgang Hoschek can be found at
-    <a href="http://hoschek.home.cern.ch/hoschek/colt/V1.0.3/doc/cern/jet/stat/Probability.html#beta(double,%20double,%20double)"<code>http://hoschek.home.cern.ch/hoschek/colt/V1.0.3/doc/cern/jet/stat/Probability.html#beta(double,%20double,%20double)</code></a>:
-<blockquote>
-<h3>
-beta</h3>
-<pre>public static double <b>beta</b>(double&nbsp;a,
-                          double&nbsp;b,
-                          double&nbsp;x)</pre>
-<p>Returns the area from zero to <tt>x</tt> under the beta density
- function.
- <pre>                          x
-            -             -
-           | (a+b)       | |  a-1      b-1
- P(x)  =  ----------     |   t    (1-t)    dt
-           -     -     | |
-          | (a) | (b)   -
-                         0
- </pre>
- This function is identical to the incomplete beta
- integral function <tt>Gamma.incompleteBeta(a, b, x)</tt>.
+   <p>A definition of NegativeBinomial by Wolfgang Hoschek can be found at
+   <a href="http://hoschek.home.cern.ch/hoschek/colt/V1.0.3/doc/cern/jet/stat/Probability.html#beta(double,%20double,%20double)"<code>http://hoschek.home.cern.ch/hoschek/colt/V1.0.3/doc/cern/jet/stat/Probability.html#beta(double,%20double,%20double)</code></a>:
+   <blockquote>
+   <h3>
+   beta</h3>
+   <pre>public static double <b>beta</b>(double&nbsp;a,
+   double&nbsp;b,
+   double&nbsp;x)</pre>
+   <p>Returns the area from zero to <tt>x</tt> under the beta density
+   function.
+   <pre>                          x
+   -             -
+   | (a+b)       | |  a-1      b-1
+   P(x)  =  ----------     |   t    (1-t)    dt
+   -     -     | |
+   | (a) | (b)   -
+   0
+   </pre>
+   This function is identical to the incomplete beta
+   integral function <tt>Gamma.incompleteBeta(a, b, x)</tt>.
 
- The complemented function is
+   The complemented function is
 
- <tt>1 - P(1-x)  =  Gamma.incompleteBeta( b, a, x )</tt>;
-</blockquote>
+   <tt>1 - P(1-x)  =  Gamma.incompleteBeta( b, a, x )</tt>;
+   </blockquote>
    The above description of beta() is
    <a href="doc-files/colt-copyright.htm">copyrighted</a>.
    <br>In this actor, <i>alpha</i> corresponds with <i>a</i>
@@ -99,7 +99,7 @@ public class ColtBeta extends ColtRandomSource {
      *   actor with this name.
      */
     public ColtBeta(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         output.setTypeEquals(BaseType.DOUBLE);

@@ -128,8 +128,8 @@ public class MoMLApplet extends PtolemyApplet {
         }
 
         return "MoML applet for " + version
-        + "\nPtolemy II comes from UC Berkeley, Department of EECS.\n"
-        + "See http://ptolemy.eecs.berkeley.edu/ptolemyII" + build;
+            + "\nPtolemy II comes from UC Berkeley, Department of EECS.\n"
+            + "See http://ptolemy.eecs.berkeley.edu/ptolemyII" + build;
     }
 
     /** Describe the applet parameters.
@@ -137,12 +137,12 @@ public class MoMLApplet extends PtolemyApplet {
      */
     public String[][] getParameterInfo() {
         String[][] newInfo = {
-                {
-                    "modelURL",
-                    "",
-                    "URL for the MoML file"
-                },
-            };
+            {
+                "modelURL",
+                "",
+                "URL for the MoML file"
+            },
+        };
         return _concatStringArrays(super.getParameterInfo(), newInfo);
     }
 
@@ -157,7 +157,7 @@ public class MoMLApplet extends PtolemyApplet {
      *  @exception Exception If something goes wrong.
      */
     protected NamedObj _createModel(Workspace workspace)
-        throws Exception {
+            throws Exception {
         // Filter out graphical classes.
         return _createModel(workspace, true);
     }
@@ -170,7 +170,7 @@ public class MoMLApplet extends PtolemyApplet {
      *  @exception Exception If something goes wrong.
      */
     protected NamedObj _createModel(Workspace workspace,
-        boolean filterGraphicalClasses) throws Exception {
+            boolean filterGraphicalClasses) throws Exception {
         // ptolemy.vergil.MoMLViewerApplet() calls this with
         // filterGraphicalClasses set to false.
         _modelURL = _readModelURLParameter();
@@ -206,7 +206,7 @@ public class MoMLApplet extends PtolemyApplet {
 
             if (inside == null) {
                 throw new IllegalActionException(toplevel,
-                    "No such contained entity: " + _fragment);
+                        "No such contained entity: " + _fragment);
             }
 
             toplevel = inside;

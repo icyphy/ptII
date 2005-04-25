@@ -101,7 +101,7 @@ public class ActorRecursion extends TypedCompositeActor {
      *   an actor already in the container.
      */
     public ActorRecursion(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         new DDFDirector(this, uniqueName("DDFDirector"));
         recursionActor = new StringParameter(this, "recursionActor");
@@ -148,8 +148,8 @@ public class ActorRecursion extends TypedCompositeActor {
                 _cloneRecursionActor();
             } catch (CloneNotSupportedException ex) {
                 throw new IllegalActionException(this, ex,
-                    "The actor " + recursionActor.stringValue()
-                    + " cannot be cloned.");
+                        "The actor " + recursionActor.stringValue()
+                        + " cannot be cloned.");
             }
 
             getDirector().preinitialize();
@@ -207,7 +207,7 @@ public class ActorRecursion extends TypedCompositeActor {
      *  @exception IOException If an I/O error occurs.
      */
     protected void _exportMoMLContents(Writer output, int depth)
-        throws IOException {
+            throws IOException {
         Iterator attributes = attributeList().iterator();
 
         while (attributes.hasNext()) {
@@ -246,16 +246,16 @@ public class ActorRecursion extends TypedCompositeActor {
     private void _checkCompatibility() throws IllegalActionException {
         if (!(getExecutiveDirector() instanceof DDFDirector)) {
             throw new IllegalActionException(this,
-                "The executive Director must be a DDFDirector.");
+                    "The executive Director must be a DDFDirector.");
         }
 
         if ((_recursionActor.inputPortList().size() != inputPortList().size())
-                        || (_recursionActor.outputPortList().size() != outputPortList()
-                                                                                       .size())) {
+                || (_recursionActor.outputPortList().size() != outputPortList()
+                        .size())) {
             throw new IllegalActionException(this,
-                "The recursionActor " + recursionActor.stringValue()
-                + " must have the same number of input ports and "
-                + "same number of output ports as this actor.");
+                    "The recursionActor " + recursionActor.stringValue()
+                    + " must have the same number of input ports and "
+                    + "same number of output ports as this actor.");
         }
 
         Iterator ports = portList().iterator();
@@ -266,27 +266,27 @@ public class ActorRecursion extends TypedCompositeActor {
 
             if (matching == null) {
                 throw new IllegalActionException(this,
-                    "Each port of this actor must have the same name as "
-                    + "the matching port of the recursionActor "
-                    + recursionActor.stringValue() + ". However, the port "
-                    + port.getFullName() + " does not have a matching "
-                    + "port with the same name.");
+                        "Each port of this actor must have the same name as "
+                        + "the matching port of the recursionActor "
+                        + recursionActor.stringValue() + ". However, the port "
+                        + port.getFullName() + " does not have a matching "
+                        + "port with the same name.");
             }
 
             TypedIOPort matchingPort = (TypedIOPort) matching;
 
             if (port.getWidth() != matchingPort.getWidth()) {
                 throw new IllegalActionException(this,
-                    "The matching ports: " + port.getFullName() + " and "
-                    + matchingPort.getFullName() + " must have the same width.");
+                        "The matching ports: " + port.getFullName() + " and "
+                        + matchingPort.getFullName() + " must have the same width.");
             }
 
             if ((port.isInput() && !matchingPort.isInput())
-                            || (port.isOutput() && !matchingPort.isOutput())) {
+                    || (port.isOutput() && !matchingPort.isOutput())) {
                 throw new IllegalActionException(this,
-                    "The matching ports: " + port.getFullName() + " and "
-                    + matchingPort.getFullName()
-                    + " must be both input ports or output ports.");
+                        "The matching ports: " + port.getFullName() + " and "
+                        + matchingPort.getFullName()
+                        + " must be both input ports or output ports.");
             }
 
             Type portType = port.getType();
@@ -294,16 +294,16 @@ public class ActorRecursion extends TypedCompositeActor {
 
             if (port.isInput() && !matchingPortType.isCompatible(portType)) {
                 throw new IllegalActionException(this,
-                    "The type of the port " + port.getName() + " of the actor "
-                    + getName() + " must be equal to or less than "
-                    + "that of the matching port.");
+                        "The type of the port " + port.getName() + " of the actor "
+                        + getName() + " must be equal to or less than "
+                        + "that of the matching port.");
             }
 
             if (port.isOutput() && !portType.isCompatible(matchingPortType)) {
                 throw new IllegalActionException(this,
-                    "The type of the port " + port.getName() + " of the actor "
-                    + getName() + " must be euqal to or greater than "
-                    + "that of the matching port.");
+                        "The type of the port " + port.getName() + " of the actor "
+                        + getName() + " must be euqal to or greater than "
+                        + "that of the matching port.");
             }
         }
 
@@ -321,7 +321,7 @@ public class ActorRecursion extends TypedCompositeActor {
      *   be cloned.
      */
     private void _cloneRecursionActor()
-        throws IllegalActionException, CloneNotSupportedException {
+            throws IllegalActionException, CloneNotSupportedException {
         try {
             // Clone the composite actor.
             CompositeActor clone = (CompositeActor) _recursionActor.clone(workspace());
@@ -383,7 +383,7 @@ public class ActorRecursion extends TypedCompositeActor {
      *   IllegalActionException.
      */
     private int _getTokenConsumptionRate(Receiver receiver)
-        throws IllegalActionException {
+            throws IllegalActionException {
         int tokenConsumptionRate;
 
         IOPort port = receiver.getContainer();
@@ -433,7 +433,7 @@ public class ActorRecursion extends TypedCompositeActor {
             // Scan the contained receivers of the port to find
             // out channel index.
             int channelIndex = 0;
-foundChannelIndex:
+            foundChannelIndex:
             for (int m = 0; m < portReceivers.length; m++) {
                 for (int n = 0; n < portReceivers[m].length; n++) {
                     if (receiver == portReceivers[m][n]) {
@@ -471,7 +471,7 @@ foundChannelIndex:
         }
 
         throw new IllegalActionException(this,
-            "Can not find a container with name " + recursionActorValue);
+                "Can not find a container with name " + recursionActorValue);
     }
 
     /** Read the rate parameters of the input ports of all actors receiving
@@ -523,7 +523,7 @@ foundChannelIndex:
             }
 
             IntToken[] productionRateToken = new IntToken[outputPort
-                            .getWidthInside()];
+                    .getWidthInside()];
 
             for (int i = 0; i < outputPort.getWidthInside(); i++) {
                 productionRateToken[i] = new IntToken(productionRate[i]);

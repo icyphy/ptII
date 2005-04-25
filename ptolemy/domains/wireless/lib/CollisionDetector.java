@@ -179,7 +179,7 @@ public class CollisionDetector extends TypedAtomicActor {
      *   an actor already in the container.
      */
     public CollisionDetector(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // Create and configure the ports.
@@ -268,27 +268,27 @@ public class CollisionDetector extends TypedAtomicActor {
      *   to this container.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == SNRThresholdInDB) {
             double SNRThresholdInDBValue = ((DoubleToken) SNRThresholdInDB
-                            .getToken()).doubleValue();
+                    .getToken()).doubleValue();
 
             if (SNRThresholdInDBValue <= 0.0) {
                 throw new IllegalActionException(this,
-                    "SNRThresholdInDB is required to be positive. "
-                    + "Attempt to set it to: " + SNRThresholdInDBValue);
+                        "SNRThresholdInDB is required to be positive. "
+                        + "Attempt to set it to: " + SNRThresholdInDBValue);
             } else {
                 // Convert to linear scale.
                 _SNRThresholdInDB = Math.pow(10, SNRThresholdInDBValue / 10);
             }
         } else if (attribute == powerThreshold) {
             _powerThreshold = ((DoubleToken) powerThreshold.getToken())
-                            .doubleValue();
+                .doubleValue();
 
             if (_powerThreshold < 0.0) {
                 throw new IllegalActionException(this,
-                    "powerThreshold is required to be nonnegative. "
-                    + "Attempt to set it to: " + _powerThreshold);
+                        "powerThreshold is required to be nonnegative. "
+                        + "Attempt to set it to: " + _powerThreshold);
             }
         } else {
             super.attributeChanged(attribute);
@@ -356,11 +356,11 @@ public class CollisionDetector extends TypedAtomicActor {
                 reception.arrivalTime = currentTime.getDoubleValue();
                 reception.collided = false;
                 reception.duration = ((DoubleToken) duration.get(0))
-                                .doubleValue();
+                    .doubleValue();
 
                 if (_debugging) {
                     _debug("Message is above threshold and has duration: "
-                        + reception.duration);
+                            + reception.duration);
                 }
 
                 // Update the total power density.
@@ -389,7 +389,7 @@ public class CollisionDetector extends TypedAtomicActor {
 
             if (_debugging) {
                 _debug("Checking reception with arrival time: "
-                    + priorReception.arrivalTime);
+                        + priorReception.arrivalTime);
             }
 
             // If the reception is now expiring, send it to one of the two
@@ -397,8 +397,8 @@ public class CollisionDetector extends TypedAtomicActor {
             if (priorReception.expiration == currentTime.getDoubleValue()) {
                 if (_debugging) {
                     _debug("Current time matches expiration "
-                        + "time of a prior message that arrived at: "
-                        + priorReception.arrivalTime);
+                            + "time of a prior message that arrived at: "
+                            + priorReception.arrivalTime);
                 }
 
                 // The time matches a pending reception.
@@ -417,7 +417,7 @@ public class CollisionDetector extends TypedAtomicActor {
 
                     if (_debugging) {
                         _debug("Message has been received: "
-                            + priorReception.data);
+                                + priorReception.data);
                     }
                 } else {
                     collided.send(0, priorReception.data);
@@ -446,7 +446,7 @@ public class CollisionDetector extends TypedAtomicActor {
 
                 if (_debugging) {
                     _debug("Message now has a collision. SNR is: " + snr
-                        + ". Total power is: " + _totalPower);
+                            + ". Total power is: " + _totalPower);
                 }
             }
         }

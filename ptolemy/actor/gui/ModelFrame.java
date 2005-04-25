@@ -265,7 +265,7 @@ public class ModelFrame extends PtolemyFrame implements ExecutionListener {
         }
 
         JOptionPane.showMessageDialog(this, message, "About " + getTitle(),
-            JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.INFORMATION_MESSAGE);
     }
 
     ///////////////////////////////////////////////////////////////////

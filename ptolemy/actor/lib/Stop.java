@@ -98,18 +98,18 @@ public class Stop extends Sink {
      *   an actor already in the container.
      */
     public Stop(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         input.setTypeEquals(BaseType.BOOLEAN);
 
         // Icon is a stop sign.
         _attachText("_iconDescription",
-            "<svg>\n" + "<polygon points=\"-8,-19 8,-19 19,-8 19,8 8,19 "
-            + "-8,19 -19,8 -19,-8\" " + "style=\"fill:red\"/>\n"
-            + "<text x=\"-15\" y=\"4\""
-            + "style=\"font-size:11; fill:white; font-family:SansSerif\">"
-            + "STOP</text>\n" + "</svg>\n");
+                "<svg>\n" + "<polygon points=\"-8,-19 8,-19 19,-8 19,8 8,19 "
+                + "-8,19 -19,8 -19,-8\" " + "style=\"fill:red\"/>\n"
+                + "<text x=\"-15\" y=\"4\""
+                + "style=\"font-size:11; fill:white; font-family:SansSerif\">"
+                + "STOP</text>\n" + "</svg>\n");
 
         // Hide the name because the name is in the icon.
         _hideName = new SingletonParameter(this, "_hideName");
@@ -164,12 +164,12 @@ public class Stop extends Sink {
                     manager.finish();
                 } else {
                     throw new IllegalActionException(this,
-                        "Cannot stop without a Manager.");
+                            "Cannot stop without a Manager.");
                 }
             } else {
                 throw new IllegalActionException(this,
-                    "Cannot stop without a container that is a "
-                    + "CompositeActor.");
+                        "Cannot stop without a container that is a "
+                        + "CompositeActor.");
             }
         }
 

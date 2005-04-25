@@ -45,18 +45,18 @@ import java.util.Random;
 ///ParkingClient
 
 /**
-    This class contact with the ParkingManager to check the available
-    parking spots and randomly choose one to park.
+   This class contact with the ParkingManager to check the available
+   parking spots and randomly choose one to park.
 
-    @author Yang Zhao
-    @version $Id$
-    @since Ptolemy II 3.0
-    @Pt.ProposedRating Yellow (cxh)
-    @Pt.AcceptedRating Yellow (cxh)
+   @author Yang Zhao
+   @version $Id$
+   @since Ptolemy II 3.0
+   @Pt.ProposedRating Yellow (cxh)
+   @Pt.AcceptedRating Yellow (cxh)
 */
 public class ParkingClient extends TypedAtomicActor {
     public ParkingClient(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         carArrival = new TypedIOPort(this, "carArrival", true, false);
         parkingTo = new TypedIOPort(this, "parkingTo", false, true);

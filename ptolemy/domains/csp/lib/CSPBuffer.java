@@ -103,7 +103,7 @@ public class CSPBuffer extends CSPActor {
      *   coincides with an entity already in the container.
      */
     public CSPBuffer(TypedCompositeActor container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         this(container, name, 1);
     }
 
@@ -126,7 +126,7 @@ public class CSPBuffer extends CSPActor {
      *   with an entity already in the container.
      */
     public CSPBuffer(TypedCompositeActor container, String name, int theDepth)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         depth = new Parameter(this, "depth", (new IntToken(theDepth)));
         output = new TypedIOPort(this, "output", false, true);
@@ -197,8 +197,8 @@ public class CSPBuffer extends CSPActor {
                     continueCDO = false;
                 } else {
                     throw new IllegalActionException(getName() + ": "
-                        + "invalid branch id returned during "
-                        + "execution of CDO.");
+                            + "invalid branch id returned during "
+                            + "execution of CDO.");
                 }
 
                 count++;

@@ -56,7 +56,7 @@ public class ParseException extends Exception {
      *     ParseException: <result of getMessage>
      */
     public ParseException(Token currentTokenVal,
-        int[][] expectedTokenSequencesVal, String[] tokenImageVal) {
+            int[][] expectedTokenSequencesVal, String[] tokenImageVal) {
         super("");
         specialConstructor = true;
         currentToken = currentTokenVal;
@@ -163,7 +163,7 @@ public class ParseException extends Exception {
         }
 
         retval += ("\" at line " + currentToken.next.beginLine + ", column "
-                    + currentToken.next.beginColumn);
+                + currentToken.next.beginColumn);
         retval += ("." + eol);
 
         if (expectedTokenSequences.length == 1) {
@@ -232,7 +232,7 @@ public class ParseException extends Exception {
                 if (((ch = str.charAt(i)) < 0x20) || (ch > 0x7e)) {
                     String s = "0000" + Integer.toString(ch, 16);
                     retval.append("\\u"
-                        + s.substring(s.length() - 4, s.length()));
+                            + s.substring(s.length() - 4, s.length()));
                 } else {
                     retval.append(ch);
                 }

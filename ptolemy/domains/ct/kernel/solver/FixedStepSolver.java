@@ -79,7 +79,7 @@ public abstract class FixedStepSolver extends ODESolver {
             // At the first round, advance the time with the current step size.
             CTDirector director = (CTDirector) getContainer();
             director.setModelTime(director.getModelTime().add(director
-                                .getCurrentStepSize()));
+                                          .getCurrentStepSize()));
         }
     }
 

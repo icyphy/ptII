@@ -87,7 +87,7 @@ public class ComputeHistogram extends TypedAtomicActor {
      *   actor with this name.
      */
     public ComputeHistogram(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         input = new TypedIOPort(this, "input", true, false);
@@ -160,9 +160,9 @@ public class ComputeHistogram extends TypedAtomicActor {
      *  @exception IllegalActionException If the bin width is not positive.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if ((attribute == minimumValue) || (attribute == maximumValue)
-                        || (attribute == numberOfBins)) {
+                || (attribute == numberOfBins)) {
             _minimumValue = ((DoubleToken) minimumValue.getToken()).doubleValue();
             _maximumValue = ((DoubleToken) maximumValue.getToken()).doubleValue();
             _numberOfBins = ((IntToken) numberOfBins.getToken()).intValue();
@@ -171,7 +171,7 @@ public class ComputeHistogram extends TypedAtomicActor {
 
             if (width <= 0.0) {
                 throw new IllegalActionException(this,
-                    "Invalid bin width (must be positive): " + width);
+                        "Invalid bin width (must be positive): " + width);
             }
 
             _binWidth = width;
@@ -231,7 +231,7 @@ public class ComputeHistogram extends TypedAtomicActor {
     private void _addPoint(double value) {
         // Calculate the bin number.
         int bin = (int) (Math.round((value
-                - (_minimumValue + (_binWidth * 0.5))) / _binWidth));
+                                            - (_minimumValue + (_binWidth * 0.5))) / _binWidth));
 
         if ((bin >= 0) && (bin < _numberOfBins)) {
             _bins[bin]++;

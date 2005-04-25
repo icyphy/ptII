@@ -229,7 +229,7 @@ public class ConnectorInteractor extends DragInteractor {
      *  point in the transform context of that container.
      */
     public void snapToSite(final FigureContainer container,
-        final Rectangle2D hitRect) {
+            final Rectangle2D hitRect) {
         //debug("SNAPPING TO SITE IN: " + container);
         Figure figure = container.pick(hitRect,
                 new Filter() {
@@ -250,14 +250,14 @@ public class ConnectorInteractor extends DragInteractor {
                         }
 
                         TransformContext figureContext = f.getParent()
-                                                                      .getTransformContext();
+                            .getTransformContext();
                         TransformContext containerContext = container
-                                        .getTransformContext();
+                            .getTransformContext();
                         AffineTransform transform;
 
                         try {
                             transform = figureContext.getTransform(containerContext)
-                                                                 .createInverse();
+                                .createInverse();
                         } catch (Exception ex) {
                             ex.printStackTrace();
                             return false;
@@ -305,9 +305,9 @@ public class ConnectorInteractor extends DragInteractor {
             // all tests { intersects(), findSite() }
             // are done in proper coordinates
             TransformContext manipulatorContext = e.getLayerSource()
-                                                               .getTransformContext();
+                .getTransformContext();
             TransformContext targetContext = _target.getParent()
-                                                                .getTransformContext();
+                .getTransformContext();
             AffineTransform transform = targetContext.getTransform(manipulatorContext);
             Rectangle2D bounds = _target.getBounds();
             bounds = ShapeUtilities.transformBounds(bounds, transform);

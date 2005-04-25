@@ -40,7 +40,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 */
 public class SimpleDelay extends TimedDelay {
     public SimpleDelay(TypedCompositeActor container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
     }
 }

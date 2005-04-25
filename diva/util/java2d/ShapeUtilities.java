@@ -47,7 +47,7 @@ import java.awt.geom.RectangularShape;
 */
 public final class ShapeUtilities {
     private static boolean _jdk12beta4 = System.getProperty("java.version")
-                                                           .equals("1.2beta4");
+            .equals("1.2beta4");
 
     /** A static array of strokes indexed by width
      */
@@ -178,8 +178,8 @@ public final class ShapeUtilities {
             Rectangle2D rect = shape.getBounds2D();
             int width = (int) ((BasicStroke) stroke).getLineWidth() + 2;
             return new Rectangle2D.Double(rect.getX() - width,
-                rect.getY() - width, rect.getWidth() + width + width,
-                rect.getHeight() + width + width);
+                    rect.getY() - width, rect.getWidth() + width + width,
+                    rect.getHeight() + width + width);
         } else {
             // For some reason (antialiasing?) the bounds returned by
             // BasicStroke is off by one.  This code works around it.
@@ -187,7 +187,7 @@ public final class ShapeUtilities {
             // necessary with JDK1.3.
             Rectangle2D rect = stroke.createStrokedShape(shape).getBounds2D();
             return new Rectangle2D.Double(rect.getX() - 1, rect.getY() - 1,
-                rect.getWidth() + 2, rect.getHeight() + 2);
+                    rect.getWidth() + 2, rect.getHeight() + 2);
         }
     }
 
@@ -265,8 +265,8 @@ public final class ShapeUtilities {
     public static boolean isOrthogonal(AffineTransform at) {
         int t = at.getType();
         return (t
-                    & (AffineTransform.TYPE_MASK_ROTATION
-                    | AffineTransform.TYPE_GENERAL_TRANSFORM)) == 0;
+                & (AffineTransform.TYPE_MASK_ROTATION
+                        | AffineTransform.TYPE_GENERAL_TRANSFORM)) == 0;
     }
 
     /** Print a Shape to a String, as a code fragment that creates
@@ -335,7 +335,7 @@ public final class ShapeUtilities {
      * orthogonal.
      */
     public static Rectangle2D transformBounds(Rectangle2D rect,
-        AffineTransform at) {
+            AffineTransform at) {
         if (at.isIdentity()) {
             return rect.getBounds2D();
         }
@@ -353,7 +353,7 @@ public final class ShapeUtilities {
             coords[3] = r.y + r.height;
             at.transform(coords, 0, coords, 0, 2);
             return new Rectangle2D.Double(coords[0], coords[1],
-                coords[2] - coords[0], coords[3] - coords[1]);
+                    coords[2] - coords[0], coords[3] - coords[1]);
         } else if (rect instanceof Rectangle2D.Float) {
             Rectangle2D.Float r = (Rectangle2D.Float) rect;
             float[] coords = new float[4];
@@ -363,7 +363,7 @@ public final class ShapeUtilities {
             coords[3] = r.y + r.height;
             at.transform(coords, 0, coords, 0, 2);
             return new Rectangle2D.Float(coords[0], coords[1],
-                coords[2] - coords[0], coords[3] - coords[1]);
+                    coords[2] - coords[0], coords[3] - coords[1]);
         } else {
             // i.e. it is a java.awt.Rectangle.
             double[] coords = new double[4];
@@ -373,7 +373,7 @@ public final class ShapeUtilities {
             coords[3] = coords[1] + rect.getHeight();
             at.transform(coords, 0, coords, 0, 2);
             return new Rectangle2D.Double(coords[0], coords[1],
-                coords[2] - coords[0], coords[3] - coords[1]);
+                    coords[2] - coords[0], coords[3] - coords[1]);
         }
     }
 
@@ -384,7 +384,7 @@ public final class ShapeUtilities {
      * ShapeUtilities.transformBounds() method.
      */
     public static void transformModifyRect(RectangularShape s,
-        AffineTransform at) {
+            AffineTransform at) {
         if (at.isIdentity()) {
             return;
         }

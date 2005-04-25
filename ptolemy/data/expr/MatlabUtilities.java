@@ -80,7 +80,7 @@ public class MatlabUtilities {
      *  @return The results of the evaluation
      */
     public static ptolemy.data.Token evaluate(String expression,
-        Set variableNames, ParserScope scope) throws IllegalActionException {
+            Set variableNames, ParserScope scope) throws IllegalActionException {
         try {
             if (_engineClass == null) {
                 _initialize();
@@ -97,7 +97,7 @@ public class MatlabUtilities {
                 matlabEngine = _engineClass.newInstance();
             } catch (InstantiationException ex) {
                 throw new IllegalActionException(null, ex,
-                    "Failed to instantiate ptolemy.matlab.Engine");
+                        "Failed to instantiate ptolemy.matlab.Engine");
             }
 
             //long[] engine = matlabEngine.open();
@@ -106,8 +106,8 @@ public class MatlabUtilities {
 
             try {
                 synchronized (
-                //matlabEngine.getSemaphore();
-                _engine) {
+                        //matlabEngine.getSemaphore();
+                        _engine) {
                     // matlabEngine is not very good since it is
                     // "local".
                     // (zk:) I would recommend removing the static,
@@ -123,22 +123,22 @@ public class MatlabUtilities {
                     }
 
                     if ((packageDirectories != null)
-                                    && packageDirectories instanceof StringToken) {
+                            && packageDirectories instanceof StringToken) {
                         StringTokenizer dirs = new StringTokenizer((String) ((StringToken) packageDirectories)
-                                            .stringValue(), ",");
+                                .stringValue(), ",");
                         StringBuffer cellFormat = new StringBuffer(512);
                         cellFormat.append("{");
 
                         if (dirs.hasMoreTokens()) {
                             cellFormat.append("'"
-                                + UtilityFunctions.findFile(dirs.nextToken())
-                                + "'");
+                                    + UtilityFunctions.findFile(dirs.nextToken())
+                                    + "'");
                         }
 
                         while (dirs.hasMoreTokens()) {
                             cellFormat.append(",'"
-                                + UtilityFunctions.findFile(dirs.nextToken())
-                                + "'");
+                                    + UtilityFunctions.findFile(dirs.nextToken())
+                                    + "'");
                         }
 
                         cellFormat.append("}");
@@ -151,37 +151,37 @@ public class MatlabUtilities {
                             //matlabEngine.evalString
                             //    (engine, "previousPath_=path");
                             _engineEvalString.invoke(matlabEngine,
-                                new Object[] {
-                                    _engine,
-                                    "previousPath_=path"
-                                });
+                                    new Object[] {
+                                        _engine,
+                                        "previousPath_=path"
+                                    });
 
                             //previousPath = matlabEngine.get
                             //    (engine, "previousPath_");
                             previousPath = (ptolemy.data.Token) _engineGet
-                                            .invoke(matlabEngine,
-                                                new Object[] {
-                                                    _engine,
-                                                    "previousPath_"
-                                                });
+                                .invoke(matlabEngine,
+                                        new Object[] {
+                                            _engine,
+                                            "previousPath_"
+                                        });
                         }
                     }
 
                     //matlabEngine.evalString
                     //    (engine, "clear variables;clear globals");
                     _engineEvalString.invoke(matlabEngine,
-                        new Object[] {
-                            _engine,
-                            "clear variables;clear globals"
-                        });
+                            new Object[] {
+                                _engine,
+                                "clear variables;clear globals"
+                            });
 
                     if (addPathCommand != null) {
                         // matlabEngine.evalString(engine, addPathCommand);
                         _engineEvalString.invoke(matlabEngine,
-                            new Object[] {
-                                _engine,
-                                addPathCommand
-                            });
+                                new Object[] {
+                                    _engine,
+                                    addPathCommand
+                                });
                     }
 
                     // Set matlab variables required for evaluating the
@@ -197,11 +197,11 @@ public class MatlabUtilities {
                                 //matlabEngine.put
                                 //    (engine, name, token);
                                 _enginePut.invoke(matlabEngine,
-                                    new Object[] {
-                                        _engine,
-                                        name,
-                                        token
-                                    });
+                                        new Object[] {
+                                            _engine,
+                                            name,
+                                            token
+                                        });
                             }
                         }
                     }
@@ -209,10 +209,10 @@ public class MatlabUtilities {
                     //matlabEngine.evalString(engine,
                     //        "result__=" + expression);
                     _engineEvalString.invoke(matlabEngine,
-                        new Object[] {
-                            _engine,
-                            "result__=" + expression
-                        });
+                            new Object[] {
+                                _engine,
+                                "result__=" + expression
+                            });
 
                     //result = matlabEngine.get(engine, "result__");
                     result = (ptolemy.data.Token) _engineGet.invoke(matlabEngine,
@@ -226,34 +226,34 @@ public class MatlabUtilities {
                         //matlabEngine.put
                         //    (engine, name, token);
                         _enginePut.invoke(matlabEngine,
-                            new Object[] {
-                                _engine,
-                                "previousPath_",
-                                previousPath
-                            });
+                                new Object[] {
+                                    _engine,
+                                    "previousPath_",
+                                    previousPath
+                                });
 
                         // matlabEngine.evalString(engine, "path(previousPath_)");
                         _engineEvalString.invoke(matlabEngine,
-                            new Object[] {
-                                _engine,
-                                "path(previousPath_)"
-                            });
+                                new Object[] {
+                                    _engine,
+                                    "path(previousPath_)"
+                                });
                     }
                 }
             } finally {
                 //matlabEngine.close(engine);
                 _engineClose.invoke(matlabEngine, new Object[] {
-                        _engine
-                    });
+                    _engine
+                });
             }
 
             return result;
         } catch (IllegalAccessException ex) {
             throw new IllegalActionException(null, ex,
-                "Problem invoking a method on " + "ptolemy.matlab.Engine");
+                    "Problem invoking a method on " + "ptolemy.matlab.Engine");
         } catch (InvocationTargetException ex) {
             throw new IllegalActionException(null, ex,
-                "Problem invoking a method of " + "ptolemy.matlab.Engine");
+                    "Problem invoking a method of " + "ptolemy.matlab.Engine");
         }
     }
 
@@ -272,7 +272,7 @@ public class MatlabUtilities {
             // UnsatsifiedLinkError is an Error, not an Exception, so
             // we catch Throwable
             throw new IllegalActionException(null, throwable,
-                "Failed to load ptolemy.matlab.Engine class");
+                    "Failed to load ptolemy.matlab.Engine class");
         }
 
         try {
@@ -304,7 +304,7 @@ public class MatlabUtilities {
                     });
         } catch (NoSuchMethodException ex) {
             throw new IllegalActionException(null, ex,
-                "Problem finding a method of " + "ptolemy.matlab.Engine");
+                    "Problem finding a method of " + "ptolemy.matlab.Engine");
         }
     }
 

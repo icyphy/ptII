@@ -80,7 +80,7 @@ public class TrellisDecoder extends ViterbiDecoder {
      *   actor with this name.
      */
     public TrellisDecoder(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         softDecoding.setVisibility(Settable.NONE);

@@ -119,7 +119,7 @@ public class BasicCanvasPane extends CanvasPane {
 
                 public void remove() {
                     throw new UnsupportedOperationException(
-                        "Cannot delete layer from canvas pane");
+                            "Cannot delete layer from canvas pane");
                 }
             };
     }

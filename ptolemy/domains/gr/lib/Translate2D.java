@@ -62,7 +62,7 @@ public class Translate2D extends GRTransform2D {
      *   actor with this name.
      */
     public Translate2D(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         xTranslate = new TypedIOPort(this, "xTranslate", true, false);
@@ -118,11 +118,11 @@ public class Translate2D extends GRTransform2D {
      *  parameters can't be obtained.
      */
     protected void _applyInitialTransform(Figure figure)
-        throws IllegalActionException {
+            throws IllegalActionException {
         double initialX = ((DoubleToken) initialXTranslation.getToken())
-                        .doubleValue();
+            .doubleValue();
         double initialY = ((DoubleToken) initialYTranslation.getToken())
-                        .doubleValue();
+            .doubleValue();
 
         // Translate to?
         figure.translate(initialX, initialY);
@@ -139,9 +139,9 @@ public class Translate2D extends GRTransform2D {
         double xOffset = 0.0;
         double yOffset = 0.0;
         double initialX = ((DoubleToken) initialXTranslation.getToken())
-                        .doubleValue();
+            .doubleValue();
         double initialY = ((DoubleToken) initialYTranslation.getToken())
-                        .doubleValue();
+            .doubleValue();
         boolean isAccumulating = _isAccumulating();
         Point2D origin = figure.getOrigin();
 

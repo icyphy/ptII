@@ -64,7 +64,7 @@ public class LineCoder extends SDFTransformer {
      *   actor with this name.
      */
     public LineCoder(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         input.setTypeEquals(BaseType.BOOLEAN);
@@ -118,7 +118,7 @@ public class LineCoder extends SDFTransformer {
      *   allowed on the specified attribute.
      */
     public void attributeTypeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute != table) {
             // The base class will probably throw an exception.
             super.attributeTypeChanged(attribute);
@@ -179,8 +179,8 @@ public class LineCoder extends SDFTransformer {
 
         if (tableToken.length() < size) {
             throw new IllegalActionException(this,
-                "Table parameter must " + "have at least " + size
-                + " entries, but only has " + tableToken.length());
+                    "Table parameter must " + "have at least " + size
+                    + " entries, but only has " + tableToken.length());
         }
 
         _table = tableToken.arrayValue();

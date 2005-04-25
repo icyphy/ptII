@@ -166,11 +166,11 @@ public class AnimationRenderer implements SelectionRenderer {
                             ((Figure) _decorators.get(figure)).repaint();
                         } else {
                             FigureContainer parent = (FigureContainer) figure
-                                            .getParent();
+                                .getParent();
 
                             if (parent != null) {
                                 FigureDecorator d = _prototypeDecorator
-                                                .newInstance(figure);
+                                    .newInstance(figure);
                                 parent.decorate(figure, d);
                                 _decorators.put(figure, d);
                             }

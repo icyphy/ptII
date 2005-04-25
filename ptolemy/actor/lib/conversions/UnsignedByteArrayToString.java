@@ -61,7 +61,7 @@ public class UnsignedByteArrayToString extends Converter {
      *   actor with this name.
      */
     public UnsignedByteArrayToString(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         input.setTypeEquals(new ArrayType(BaseType.UNSIGNED_BYTE));
@@ -91,7 +91,7 @@ public class UnsignedByteArrayToString extends Converter {
 
         for (int j = 0; j < dataArrayToken.length(); j++) {
             UnsignedByteToken dataToken = (UnsignedByteToken) dataArrayToken
-                            .getElement(j);
+                .getElement(j);
             dataBytes[j] = (byte) dataToken.byteValue();
         }
 

@@ -157,7 +157,7 @@ public class CompositeActorApplication {
      */
     public void report(String message, Exception ex) {
         System.err.println("Exception thrown:\n" + message + "\n"
-            + KernelException.stackTraceToString(ex));
+                + KernelException.stackTraceToString(ex));
     }
 
     /** If the specified model has a manager and is not already running,
@@ -232,7 +232,7 @@ public class CompositeActorApplication {
             }
         } else {
             report("Model " + model.getFullName() + " cannot be executed "
-                + "because it does not have a manager.");
+                    + "because it does not have a manager.");
         }
     }
 
@@ -293,7 +293,7 @@ public class CompositeActorApplication {
             _test = true;
         } else if (arg.equals("-version")) {
             System.out.println("Version " + VersionAttribute.CURRENT_VERSION
-                + ", Build $Id$");
+                    + ", Build $Id$");
 
             // quit the program if the user asked for the version
             // Don't call System.exit(0) here, it will break the test suites
@@ -311,7 +311,7 @@ public class CompositeActorApplication {
                 // Temporary hack because cloning doesn't properly clone
                 // type constraints.
                 CompositeActor modelClass = (CompositeActor) parser
-                                .searchForClass(arg, model.getSource());
+                    .searchForClass(arg, model.getSource());
 
                 if (modelClass != null) {
                     model = modelClass;
@@ -351,7 +351,7 @@ public class CompositeActorApplication {
                 } else {
                     // Unrecognized option.
                     throw new IllegalActionException("Unrecognized option: "
-                        + arg);
+                            + arg);
                 }
             }
         }
@@ -401,7 +401,7 @@ public class CompositeActorApplication {
             if (!match) {
                 // Unrecognized option.
                 throw new IllegalActionException("Unrecognized option: " + "-"
-                    + name);
+                        + name);
             }
         }
     }
@@ -417,7 +417,7 @@ public class CompositeActorApplication {
 
         for (i = 0; i < _commandOptions.length; i++) {
             result += (" " + _commandOptions[i][0] + " "
-                        + _commandOptions[i][1] + "\n");
+                    + _commandOptions[i][1] + "\n");
         }
 
         result += "\nBoolean flags:\n";
@@ -434,22 +434,22 @@ public class CompositeActorApplication {
 
     /** The command-line options that are either present or not. */
     protected String[] _commandFlags = {
-            "-help",
-            "-test",
-            "-version",
-        };
+        "-help",
+        "-test",
+        "-version",
+    };
 
     /** The command-line options that take arguments. */
     protected String[][] _commandOptions = {
-            {
-                "-class",
-                "<classname>"
-            },
-            {
-                "-<parameter name>",
-                "<parameter value>"
-            },
-        };
+        {
+            "-class",
+            "<classname>"
+        },
+        {
+            "-<parameter name>",
+            "<parameter value>"
+        },
+    };
 
     /** The form of the command line. */
     protected String _commandTemplate = "ptolemy [ options ]";

@@ -140,7 +140,7 @@ public class GRTexture2Da extends GRActor3D {
      *   actor with this name.
      */
     public GRTexture2Da(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         voxelFile = new FilePortParameter(this, "voxelFile");
@@ -231,10 +231,10 @@ public class GRTexture2Da extends GRActor3D {
     public ColorAttribute specularColor;
 
     /* /** Texture URL, which if non-empty, specifies an image file
-      *  or URL. The image from the file is mapped onto the shape
-      *  as a texture.
+     *  or URL. The image from the file is mapped onto the shape
+     *  as a texture.
 
-    public FileParameter texture; */
+     public FileParameter texture; */
 
     /** The transparency, where 0.0 means opaque (the default) and 1.0
      *  means fully transparent. The type is double.
@@ -273,15 +273,15 @@ public class GRTexture2Da extends GRActor3D {
      *  an update is supported by the <i>allowRuntimeChanges</i> parameter.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         // If allowRuntimeChanges is null, then we are in the
         // constructor, and don't need to do any of this.
         if (allowRuntimeChanges != null) {
             if (_changesAllowedNow) {
                 if ((attribute == transparency)
-                                && (_transparencyAttributes != null)) {
+                        && (_transparencyAttributes != null)) {
                     float transparent = (float) ((DoubleToken) transparency
-                                    .getToken()).doubleValue();
+                            .getToken()).doubleValue();
 
                     if (transparent > 0.0) {
                         _transparencyAttributes.setTransparencyMode(TransparencyAttributes.NICEST);
@@ -294,7 +294,7 @@ public class GRTexture2Da extends GRActor3D {
 
                 if ((attribute == flat) && (_coloringAttributes != null)) {
                     boolean flatValue = ((BooleanToken) flat.getToken())
-                                    .booleanValue();
+                        .booleanValue();
                     int shadeModel = ColoringAttributes.SHADE_GOURAUD;
 
                     if (flatValue) {
@@ -316,26 +316,26 @@ public class GRTexture2Da extends GRActor3D {
                         _material.setSpecularColor(color);
                     } else if (attribute == shininess) {
                         float shine = (float) ((DoubleToken) shininess.getToken())
-                                        .doubleValue();
+                            .doubleValue();
                         _material.setShininess(shine);
                     }
                 }
 
                 /*    if ((attribute == texture) && (_appearance != null)) {
-                        URL textureURL = texture.asURL();
+                      URL textureURL = texture.asURL();
 
-                        if ((_viewScreen != null) && (textureURL != null)) {
-                            TextureLoader loader;
-                            loader = new TextureLoader(textureURL,
-                                    _viewScreen.getCanvas());
+                      if ((_viewScreen != null) && (textureURL != null)) {
+                      TextureLoader loader;
+                      loader = new TextureLoader(textureURL,
+                      _viewScreen.getCanvas());
 
-                            Texture loadedTexture = loader.getTexture();
+                      Texture loadedTexture = loader.getTexture();
 
-                            if (loadedTexture != null) {
-                                _appearance.setTexture(loadedTexture);
-                            }
-                        }
-                    } */
+                      if (loadedTexture != null) {
+                      _appearance.setTexture(loadedTexture);
+                      }
+                      }
+                      } */
                 if ((attribute == wireFrame) && (_polygonAttributes != null)) {
                     int mode = PolygonAttributes.POLYGON_FILL;
 
@@ -437,7 +437,7 @@ public class GRTexture2Da extends GRActor3D {
         _appearance = new Appearance();
 
         boolean allowChanges = ((BooleanToken) allowRuntimeChanges.getToken())
-                        .booleanValue();
+            .booleanValue();
 
         Color3f color = new Color3f(emissiveColor.asColor());
         _material.setEmissiveColor(color);
@@ -496,10 +496,10 @@ public class GRTexture2Da extends GRActor3D {
         _appearance.setLineAttributes(lineAttributes);
 
         /*if (dbWriteEnable == false) {
-        RenderingAttributes r = new RenderingAttributes();
-        r.setDepthBufferWriteEnable(dbWriteEnable);
-        a.setRenderingAttributes(r);
-        } */
+          RenderingAttributes r = new RenderingAttributes();
+          r.setDepthBufferWriteEnable(dbWriteEnable);
+          a.setRenderingAttributes(r);
+          } */
 
         // If runtime changes are allowed, we need to set the
         // appropriate capabilities.
@@ -553,25 +553,25 @@ public class GRTexture2Da extends GRActor3D {
 
         //Create axis for each dimension (front and back)
         /*_axisSwitch = new Switch();
-        _axisSwitch.setCapability(Switch.ALLOW_SWITCH_READ);
-        _axisSwitch.setCapability(Switch.ALLOW_SWITCH_WRITE);
-        _axisSwitch.setCapability(Group.ALLOW_CHILDREN_READ);
-        _axisSwitch.setCapability(Group.ALLOW_CHILDREN_WRITE);
-        _axisSwitch.addChild(_getOrderedGroup());
-        _axisSwitch.addChild(_getOrderedGroup());
-        _axisSwitch.addChild(_getOrderedGroup());
-        _axisSwitch.addChild(_getOrderedGroup());
-        _axisSwitch.addChild(_getOrderedGroup());
-        _axisSwitch.addChild(_getOrderedGroup());
+          _axisSwitch.setCapability(Switch.ALLOW_SWITCH_READ);
+          _axisSwitch.setCapability(Switch.ALLOW_SWITCH_WRITE);
+          _axisSwitch.setCapability(Group.ALLOW_CHILDREN_READ);
+          _axisSwitch.setCapability(Group.ALLOW_CHILDREN_WRITE);
+          _axisSwitch.addChild(_getOrderedGroup());
+          _axisSwitch.addChild(_getOrderedGroup());
+          _axisSwitch.addChild(_getOrderedGroup());
+          _axisSwitch.addChild(_getOrderedGroup());
+          _axisSwitch.addChild(_getOrderedGroup());
+          _axisSwitch.addChild(_getOrderedGroup());
 
-        //Create branch group to be sent to ViewScreen3D
-        _root = new BranchGroup();
-        //_root.addChild(_axisSwitch);
-        _root.setCapability(BranchGroup.ALLOW_DETACH);
-        _root.setCapability(BranchGroup.ALLOW_LOCAL_TO_VWORLD_READ);
+          //Create branch group to be sent to ViewScreen3D
+          _root = new BranchGroup();
+          //_root.addChild(_axisSwitch);
+          _root.setCapability(BranchGroup.ALLOW_DETACH);
+          _root.setCapability(BranchGroup.ALLOW_LOCAL_TO_VWORLD_READ);
 
-        _frontGroup = (OrderedGroup)_axisSwitch.getChild(axisIndex[Z_AXIS][FRONT]);
-        _backGroup =  (OrderedGroup)_axisSwitch.getChild(axisIndex[Z_AXIS][BACK]); */
+          _frontGroup = (OrderedGroup)_axisSwitch.getChild(axisIndex[Z_AXIS][FRONT]);
+          _backGroup =  (OrderedGroup)_axisSwitch.getChild(axisIndex[Z_AXIS][BACK]); */
         _quadCoords = new double[12];
 
         // lower left
@@ -633,9 +633,9 @@ public class GRTexture2Da extends GRActor3D {
 
             /* Shape3D backShape = new Shape3D(_quadArray, _appearance);
 
-             BranchGroup backShapeGroup = new BranchGroup();
-             backShapeGroup.setCapability(BranchGroup.ALLOW_DETACH);
-             backShapeGroup.addChild(backShape);
+            BranchGroup backShapeGroup = new BranchGroup();
+            backShapeGroup.setCapability(BranchGroup.ALLOW_DETACH);
+            backShapeGroup.addChild(backShape);
             _backGroup.insertChild(backShapeGroup, 0); */
         }
 
@@ -662,15 +662,15 @@ public class GRTexture2Da extends GRActor3D {
         _textures = new Texture2D[rSize];
         _texCoordGeneration = new TexCoordGeneration();
         _texCoordGeneration.setPlaneS(new Vector4f(1 / TexGenScale, 0.0f, 0.0f,
-                0.0f));
+                                              0.0f));
         _texCoordGeneration.setPlaneT(new Vector4f(0.0f, 1 / nSlices, 0.0f, 0.0f));
 
         /**Create ColorModel and WritableRaster for the BufferedImage**/
         _colorSpace = ColorSpace.getInstance(ColorSpace.CS_GRAY);
 
         int[] nBits = {
-                8
-            };
+            8
+        };
 
         //int[] _intData = new int[8];
         _colorModel = new ComponentColorModel(_colorSpace, nBits, false, false,
@@ -706,7 +706,7 @@ public class GRTexture2Da extends GRActor3D {
                 for (int x = 0; x < sSize; x++) {
                     mapFinal[x][y] = t;
                     System.out.println("pixel value (" + x + "," + y + ") = "
-                        + mapFinal[x][y]);
+                            + mapFinal[x][y]);
                 }
 
                 vRow = mapFinal[y];
@@ -744,40 +744,40 @@ public class GRTexture2Da extends GRActor3D {
     }
 
     /* for (int y=0; y < tSize; y++){
-         for (int x=0; x < sSize; x++){
-          //FIXME Grab one row at a time vs. a pixel.  Don't use ImagePlus
-                     map[x][y] = _imagePlus.getPixel(x,y);
-             System.out.println("pixel (" + x + "," + y +") = " + _imagePlus.getPixel(x,y) );
-             mapFinal[x][y] = map[x][y][0];
-         }
-         vRow = mapFinal[y];
-         //System.out.println("vRow = " + vRow);
-         int rowIndex = 0;
-         rowIndex = y * rSize;
-         System.arraycopy(vRow, 0, _intData, rowIndex, sSize);
-         //System.out.println("pixel (" + 0 + "," + y +") = " + _imagePlus.getPixel(0,y) );
+       for (int x=0; x < sSize; x++){
+       //FIXME Grab one row at a time vs. a pixel.  Don't use ImagePlus
+       map[x][y] = _imagePlus.getPixel(x,y);
+       System.out.println("pixel (" + x + "," + y +") = " + _imagePlus.getPixel(x,y) );
+       mapFinal[x][y] = map[x][y][0];
+       }
+       vRow = mapFinal[y];
+       //System.out.println("vRow = " + vRow);
+       int rowIndex = 0;
+       rowIndex = y * rSize;
+       System.arraycopy(vRow, 0, _intData, rowIndex, sSize);
+       //System.out.println("pixel (" + 0 + "," + y +") = " + _imagePlus.getPixel(0,y) );
 
-     */
+    */
 
     /**Create ImageComponent2D to set the image for the textures */
 
     /*
-                _texture2D = new Texture2D(Texture.BASE_LEVEL, Texture.INTENSITY, sSize, tSize);
-                _imageComponent = new ImageComponent2D(ImageComponent.FORMAT_CHANNEL8, sSize, tSize);
-                _imageComponent.set(_bufferedImage); */
+      _texture2D = new Texture2D(Texture.BASE_LEVEL, Texture.INTENSITY, sSize, tSize);
+      _imageComponent = new ImageComponent2D(ImageComponent.FORMAT_CHANNEL8, sSize, tSize);
+      _imageComponent.set(_bufferedImage); */
 
     /**Set texture and TextureAttributes */
 
     /*_texture2D.setImage(0, _imageComponent);
-        _texture2D.setEnable(true);
-        _texture2D.setMinFilter(Texture.BASE_LEVEL_LINEAR);
-        _texture2D.setMagFilter(Texture.BASE_LEVEL_LINEAR);
-        //_texture2D.setMinFilter(Texture.BASE_LEVEL_POINT);
-        //_texture2D.setMagFilter(Texture.BASE_LEVEL_POINT);
-        _texture2D.setBoundaryModeS(Texture.CLAMP);
-        _texture2D.setBoundaryModeT(Texture.CLAMP);
+      _texture2D.setEnable(true);
+      _texture2D.setMinFilter(Texture.BASE_LEVEL_LINEAR);
+      _texture2D.setMagFilter(Texture.BASE_LEVEL_LINEAR);
+      //_texture2D.setMinFilter(Texture.BASE_LEVEL_POINT);
+      //_texture2D.setMagFilter(Texture.BASE_LEVEL_POINT);
+      _texture2D.setBoundaryModeS(Texture.CLAMP);
+      _texture2D.setBoundaryModeT(Texture.CLAMP);
 
-        _textures[z] = _texture2D; */
+      _textures[z] = _texture2D; */
 
     //    }
 
@@ -816,31 +816,31 @@ public class GRTexture2Da extends GRActor3D {
         super._setViewScreen(actor);
 
         /* URL textureURL = texture.asURL();
-         TextureAttributes attributes = null;
+           TextureAttributes attributes = null;
 
-        if (textureURL != null) {
-             TextureLoader loader;
-             loader = new TextureLoader(textureURL, _viewScreen.getCanvas());
+           if (textureURL != null) {
+           TextureLoader loader;
+           loader = new TextureLoader(textureURL, _viewScreen.getCanvas());
 
-             Texture loadedTexture = loader.getTexture();
+           Texture loadedTexture = loader.getTexture();
 
-             if (loadedTexture != null) {
-                 attributes = new TextureAttributes();
-                 attributes.setTextureMode(TextureAttributes.MODULATE);
-                 _appearance.setTextureAttributes(attributes);
+           if (loadedTexture != null) {
+           attributes = new TextureAttributes();
+           attributes.setTextureMode(TextureAttributes.MODULATE);
+           _appearance.setTextureAttributes(attributes);
 
-                 _appearance.setTexture(loadedTexture);
-             }
-         }
+           _appearance.setTexture(loadedTexture);
+           }
+           }
 
-         // If runtime changes are allowed, then we need to set texture
-         // attributes even if not needed now.
-         if ((attributes == null)
-                 && ((BooleanToken) allowRuntimeChanges.getToken()).booleanValue()) {
-             attributes = new TextureAttributes();
-             attributes.setTextureMode(TextureAttributes.MODULATE);
-             _appearance.setTextureAttributes(attributes);
-         } */
+           // If runtime changes are allowed, then we need to set texture
+           // attributes even if not needed now.
+           if ((attributes == null)
+           && ((BooleanToken) allowRuntimeChanges.getToken()).booleanValue()) {
+           attributes = new TextureAttributes();
+           attributes.setTextureMode(TextureAttributes.MODULATE);
+           _appearance.setTextureAttributes(attributes);
+           } */
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -35,21 +35,21 @@ import ptolemy.backtrack.ast.TypeAnalyzer;
 //////////////////////////////////////////////////////////////////////////
 //// TransformRule
 /**
-    Transformation rule to be executed by {@link TypeAnalyzer} while it
-    traverses the program AST.
-    <p>
-    This type of source ransformation is specified with rules, each of
-    which defines the actions to be executed <em>before</em> the traversal
-    and <em>after</em> the traversal. Implementation of a rule may add
-    special handlers ({@link AssignmentHandler}, {@link ClassHandler}, etc.)
-    to the analyzer before the traversal, and finalize its transformation
-    after the traversal.
+   Transformation rule to be executed by {@link TypeAnalyzer} while it
+   traverses the program AST.
+   <p>
+   This type of source ransformation is specified with rules, each of
+   which defines the actions to be executed <em>before</em> the traversal
+   and <em>after</em> the traversal. Implementation of a rule may add
+   special handlers ({@link AssignmentHandler}, {@link ClassHandler}, etc.)
+   to the analyzer before the traversal, and finalize its transformation
+   after the traversal.
 
-    @author Thomas Feng
-    @version $Id$
-    @since Ptolemy II 5.1
-    @Pt.ProposedRating Red (tfeng)
-    @Pt.AcceptedRating Red (tfeng)
+   @author Thomas Feng
+   @version $Id$
+   @since Ptolemy II 5.1
+   @Pt.ProposedRating Red (tfeng)
+   @Pt.AcceptedRating Red (tfeng)
 */
 public abstract class TransformRule {
 

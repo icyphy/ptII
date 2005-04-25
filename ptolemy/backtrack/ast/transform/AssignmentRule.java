@@ -38,15 +38,15 @@ import ptolemy.backtrack.ast.TypeAnalyzer;
 //////////////////////////////////////////////////////////////////////////
 //// AssignmentRule
 /**
-    Assignment transformation rule. This rule specifies the actions to be
-    executed before and after {@link TypeAnalyzer} traverses an AST. Those
-    actions refactor the AST to add in support for backtracking.
+   Assignment transformation rule. This rule specifies the actions to be
+   executed before and after {@link TypeAnalyzer} traverses an AST. Those
+   actions refactor the AST to add in support for backtracking.
 
-    @author Thomas Feng
-    @version $Id$
-    @since Ptolemy II 5.1
-    @Pt.ProposedRating Red (tfeng)
-    @Pt.AcceptedRating Red (tfeng)
+   @author Thomas Feng
+   @version $Id$
+   @since Ptolemy II 5.1
+   @Pt.ProposedRating Red (tfeng)
+   @Pt.AcceptedRating Red (tfeng)
 */
 public class AssignmentRule extends TransformRule {
 

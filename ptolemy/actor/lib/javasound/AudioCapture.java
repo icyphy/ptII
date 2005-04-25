@@ -119,7 +119,7 @@ public class AudioCapture extends LiveSoundActor {
      *   actor with this name.
      */
     public AudioCapture(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         trigger = new TypedIOPort(this, "trigger", true, false);
@@ -166,10 +166,10 @@ public class AudioCapture extends LiveSoundActor {
 
         if (LiveSound.isCaptureActive()) {
             throw new IllegalActionException(this,
-                "This actor cannot start audio capture because "
-                + "another actor currently has access to the audio "
-                + "capture resource. Only one AudioCapture actor may "
-                + "be used at a time.");
+                    "This actor cannot start audio capture because "
+                    + "another actor currently has access to the audio "
+                    + "capture resource. Only one AudioCapture actor may "
+                    + "be used at a time.");
         }
 
         try {
@@ -179,7 +179,7 @@ public class AudioCapture extends LiveSoundActor {
             LiveSound.startCapture(this);
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
-                "Cannot initialize audio capture.");
+                    "Cannot initialize audio capture.");
         }
     }
 
@@ -241,7 +241,7 @@ public class AudioCapture extends LiveSoundActor {
                 LiveSound.stopCapture(this);
             } catch (IOException ex) {
                 throw new IllegalActionException(this, ex,
-                    "Error stopping audio capture.");
+                        "Error stopping audio capture.");
             }
         }
     }

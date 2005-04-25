@@ -97,34 +97,34 @@ public class ConstructorSpecializer extends SceneTransformer
     protected void internalTransform(String phaseName, Map options) {
         int localCount = 0;
         System.out.println("ConstructorSpecializer.internalTransform("
-            + phaseName + ", " + options + ")");
+                + phaseName + ", " + options + ")");
 
         List modifiedConstructorClassList = new LinkedList();
 
         // Loop over all the classes
         for (Iterator i = Scene.v().getApplicationClasses().iterator();
-                        i.hasNext();) {
+             i.hasNext();) {
             SootClass theClass = (SootClass) i.next();
 
             if (SootUtilities.derivesFrom(theClass, PtolemyUtilities.actorClass)
-                            || SootUtilities.derivesFrom(theClass,
-                                PtolemyUtilities.compositeActorClass)
-                            || SootUtilities.derivesFrom(theClass,
-                                PtolemyUtilities.attributeClass)) {
+                    || SootUtilities.derivesFrom(theClass,
+                            PtolemyUtilities.compositeActorClass)
+                    || SootUtilities.derivesFrom(theClass,
+                            PtolemyUtilities.attributeClass)) {
                 if (theClass.declaresFieldByName(
-                                    ModelTransformer.getContainerFieldName())) {
+                            ModelTransformer.getContainerFieldName())) {
                     for (Iterator methods = theClass.getMethods().iterator();
-                                    methods.hasNext();) {
+                         methods.hasNext();) {
                         SootMethod method = (SootMethod) methods.next();
 
                         if (method.getName().equals("<init>")
-                                        && (method.getParameterCount() == 2)) {
+                                && (method.getParameterCount() == 2)) {
                             // Change the constructor so that it takes an
                             // appropriate container type.
                             SootField containerField = theClass.getFieldByName(ModelTransformer
-                                                .getContainerFieldName());
+                                    .getContainerFieldName());
                             RefType containerType = (RefType) containerField
-                                            .getType();
+                                .getType();
                             List typeList = new LinkedList();
                             typeList.add(containerType);
                             typeList.add(RefType.v("java.lang.String"));
@@ -138,11 +138,11 @@ public class ConstructorSpecializer extends SceneTransformer
                             // Replace the parameter refs so THEY have
                             // the right type, too..
                             JimpleBody body = (JimpleBody) method
-                                            .retrieveActiveBody();
+                                .retrieveActiveBody();
 
                             for (Iterator units = body.getUnits()
-                                                                  .snapshotIterator();
-                                            units.hasNext();) {
+                                     .snapshotIterator();
+                                 units.hasNext();) {
                                 Stmt unit = (Stmt) units.next();
 
                                 if (unit instanceof IdentityStmt) {
@@ -154,11 +154,11 @@ public class ConstructorSpecializer extends SceneTransformer
 
                                         if (parameterRef.getIndex() == 0) {
                                             ValueBox box = identityStmt
-                                                            .getRightOpBox();
+                                                .getRightOpBox();
                                             box.setValue(Jimple.v()
-                                                                           .newParameterRef(method
-                                                                .getParameterType(0),
-                                                                0));
+                                                    .newParameterRef(method
+                                                            .getParameterType(0),
+                                                            0));
                                         }
                                     }
                                 }

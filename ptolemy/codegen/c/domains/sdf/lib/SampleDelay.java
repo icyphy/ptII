@@ -41,13 +41,13 @@ import java.util.List;
 //// SampleDelay
 
 /**
-A code generation helper class for ptolemy.domains.sdf.lib.SampleDelay
+   A code generation helper class for ptolemy.domains.sdf.lib.SampleDelay
 
-@author Ye Zhou
-@version $Id$
-@since Ptolemy II 5.0
-@Pt.ProposedRating Red (eal)
-@Pt.AcceptedRating Red (eal)
+   @author Ye Zhou
+   @version $Id$
+   @since Ptolemy II 5.0
+   @Pt.ProposedRating Red (eal)
+   @Pt.AcceptedRating Red (eal)
 */
 public class SampleDelay extends CCodeGeneratorHelper {
     /** Construct a helper with the given
@@ -66,7 +66,7 @@ public class SampleDelay extends CCodeGeneratorHelper {
      *   SampleDelay actor is appended to.
      */
     public void generateFireCode(StringBuffer stream)
-        throws IllegalActionException {
+            throws IllegalActionException {
         CodeStream tmpStream = new CodeStream(this);
         tmpStream.appendCodeBlock("codeBlock1");
         stream.append(processCode(tmpStream.toString()));
@@ -89,7 +89,7 @@ public class SampleDelay extends CCodeGeneratorHelper {
         StringBuffer code = new StringBuffer();
         ptolemy.domains.sdf.lib.SampleDelay actor = (ptolemy.domains.sdf.lib.SampleDelay) getComponent();
         Token[] initialOutputs = ((ArrayToken) actor.initialOutputs.getToken())
-                        .arrayValue();
+            .arrayValue();
         List sinkChannels = getSinkChannels(actor.output, 0);
 
         for (int i = 0; i < initialOutputs.length; i++) {

@@ -71,7 +71,7 @@ public class LevelListener extends Receiver {
      *   actor with this name.
      */
     public LevelListener(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // Create output port.
@@ -147,8 +147,8 @@ public class LevelListener extends Receiver {
             int unitCodeValue = ((IntToken) unitCode.getToken()).intValue();
 
             if (sensedHouseCode.equals(houseCodeValue)
-                            && (sensedUnitCode == unitCodeValue)
-                            && (function == functionOfInterest)) {
+                    && (sensedUnitCode == unitCodeValue)
+                    && (function == functionOfInterest)) {
                 level.send(0, new IntToken(sensedCommand.getLevel()));
             } else {
                 level.send(0, _NO_COMMAND_TOKEN);

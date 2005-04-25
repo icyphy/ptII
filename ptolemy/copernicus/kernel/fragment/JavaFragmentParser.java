@@ -89,7 +89,7 @@ public class JavaFragmentParser implements JavaFragmentParserConstants {
     }
 
     public static void insertBefore(JimpleBody body, Stmt insertPoint,
-        Map nameToLocal, String string) throws ParseException {
+            Map nameToLocal, String string) throws ParseException {
         Reader reader = new StringReader(string);
         JavaFragmentParser parser = new JavaFragmentParser(body, insertPoint,
                 nameToLocal);
@@ -143,7 +143,7 @@ public class JavaFragmentParser implements JavaFragmentParserConstants {
     /**
      */
     private Value _processInstanceMethod(Value baseValue, String name,
-        List argList) {
+            List argList) {
         int lastDotPosition = name.lastIndexOf(".");
 
         if (lastDotPosition == -1) {
@@ -165,7 +165,7 @@ public class JavaFragmentParser implements JavaFragmentParserConstants {
                     refClass = ((RefType) type).getSootClass();
                 } else {
                     throw new RuntimeException(
-                        "Attempt to dereference primitive type " + type);
+                            "Attempt to dereference primitive type " + type);
                 }
             }
 
@@ -176,11 +176,11 @@ public class JavaFragmentParser implements JavaFragmentParserConstants {
             } else {
                 if (baseValue == null) {
                     throw new RuntimeException(
-                        "Attempt to invoke non-static method \"" + name
-                        + "\" from static context!");
+                            "Attempt to invoke non-static method \"" + name
+                            + "\" from static context!");
                 } else {
                     return Jimple.v().newVirtualInvokeExpr((Local) baseValue,
-                        method, argList);
+                            method, argList);
                 }
             }
         } else {
@@ -225,7 +225,7 @@ public class JavaFragmentParser implements JavaFragmentParserConstants {
                     refClass = ((RefType) type).getSootClass();
                 } else {
                     throw new RuntimeException(
-                        "Attempt to dereference primitive type " + type);
+                            "Attempt to dereference primitive type " + type);
                 }
             }
 
@@ -236,8 +236,8 @@ public class JavaFragmentParser implements JavaFragmentParserConstants {
             } else {
                 if (baseValue == null) {
                     throw new RuntimeException(
-                        "Attempt to reference non-static field \"" + name
-                        + "\" from static context!");
+                            "Attempt to reference non-static field \"" + name
+                            + "\" from static context!");
                 } else {
                     return Jimple.v().newInstanceFieldRef(baseValue, field);
                 }
@@ -300,7 +300,7 @@ public class JavaFragmentParser implements JavaFragmentParserConstants {
             ;
         }
 
-label_1:
+        label_1:
         while (true) {
             switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
             case IMPORT:
@@ -315,7 +315,7 @@ label_1:
             ImportDeclaration();
         }
 
-label_2:
+        label_2:
         while (true) {
             switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
             case ABSTRACT:
@@ -389,7 +389,7 @@ label_2:
      * Declaration syntax follows.
      */
     final public void ClassDeclaration() throws ParseException {
-label_3:
+        label_3:
         while (true) {
             switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
             case ABSTRACT:
@@ -457,7 +457,7 @@ label_3:
 
     final public void ClassBody() throws ParseException {
         jj_consume_token(LBRACE);
-label_4:
+        label_4:
         while (true) {
             switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
             case ABSTRACT:
@@ -498,7 +498,7 @@ label_4:
     }
 
     final public void NestedClassDeclaration() throws ParseException {
-label_5:
+        label_5:
         while (true) {
             switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
             case ABSTRACT:
@@ -592,7 +592,7 @@ label_5:
 
     // This production is to determine lookahead only.
     final public void MethodDeclarationLookahead() throws ParseException {
-label_6:
+        label_6:
         while (true) {
             switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
             case ABSTRACT:
@@ -657,7 +657,7 @@ label_6:
     }
 
     final public void InterfaceDeclaration() throws ParseException {
-label_7:
+        label_7:
         while (true) {
             switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
             case ABSTRACT:
@@ -690,7 +690,7 @@ label_7:
     }
 
     final public void NestedInterfaceDeclaration() throws ParseException {
-label_8:
+        label_8:
         while (true) {
             switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
             case ABSTRACT:
@@ -743,7 +743,7 @@ label_8:
     }
 
     final public void UnmodifiedInterfaceDeclaration()
-        throws ParseException {
+            throws ParseException {
         jj_consume_token(INTERFACE);
         jj_consume_token(IDENTIFIER);
 
@@ -759,7 +759,7 @@ label_8:
         }
 
         jj_consume_token(LBRACE);
-label_9:
+                label_9:
         while (true) {
             switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
             case ABSTRACT:
@@ -836,7 +836,7 @@ label_9:
 
     final public void FieldDeclaration() throws ParseException {
         Type type;
-label_10:
+        label_10:
         while (true) {
             switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
             case FINAL:
@@ -892,7 +892,7 @@ label_10:
 
         type = Type();
         FieldDeclarator(type);
-label_11:
+        label_11:
         while (true) {
             switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
             case COMMA:
@@ -930,7 +930,7 @@ label_11:
         String name;
         jj_consume_token(IDENTIFIER);
         name = token.image;
-label_12:
+        label_12:
         while (true) {
             switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
             case LBRACKET:
@@ -951,7 +951,7 @@ label_12:
     }
 
     final public void MethodDeclaration() throws ParseException {
-label_13:
+        label_13:
         while (true) {
             switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
             case ABSTRACT:
@@ -1043,7 +1043,7 @@ label_13:
     final public void MethodDeclarator() throws ParseException {
         jj_consume_token(IDENTIFIER);
         FormalParameters();
-label_14:
+        label_14:
         while (true) {
             switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
             case LBRACKET:
@@ -1075,7 +1075,7 @@ label_14:
         case SHORT:
         case IDENTIFIER:
             FormalParameter();
-label_15:
+            label_15:
             while (true) {
                 switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
                 case COMMA:
@@ -1118,7 +1118,7 @@ label_15:
         type = Type();
         jj_consume_token(IDENTIFIER);
         name = token.image;
-label_16:
+        label_16:
         while (true) {
             switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
             case LBRACKET:
@@ -1196,7 +1196,7 @@ label_16:
             ;
         }
 
-label_17:
+        label_17:
         while (true) {
             switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
             case BOOLEAN:
@@ -1329,7 +1329,7 @@ label_17:
         case LONG:
         case SHORT:
             type = PrimitiveType();
-             {
+            {
                 if (true) {
                     return type;
                 }
@@ -1340,7 +1340,7 @@ label_17:
         case IDENTIFIER:
             name = Name();
             type = _findType(name);
-             {
+            {
                 if (true) {
                     return type;
                 }
@@ -1363,7 +1363,7 @@ label_17:
     final public Type Type() throws ParseException {
         Type type;
         type = NamedType();
-label_18:
+        label_18:
         while (true) {
             switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
             case LBRACKET:
@@ -1391,7 +1391,7 @@ label_18:
         switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
         case BOOLEAN:
             jj_consume_token(BOOLEAN);
-             {
+            {
                 if (true) {
                     return IntType.v();
                 }
@@ -1401,7 +1401,7 @@ label_18:
 
         case CHAR:
             jj_consume_token(CHAR);
-             {
+            {
                 if (true) {
                     return IntType.v();
                 }
@@ -1411,7 +1411,7 @@ label_18:
 
         case BYTE:
             jj_consume_token(BYTE);
-             {
+            {
                 if (true) {
                     return IntType.v();
                 }
@@ -1421,7 +1421,7 @@ label_18:
 
         case SHORT:
             jj_consume_token(SHORT);
-             {
+            {
                 if (true) {
                     return IntType.v();
                 }
@@ -1431,7 +1431,7 @@ label_18:
 
         case INT:
             jj_consume_token(INT);
-             {
+            {
                 if (true) {
                     return IntType.v();
                 }
@@ -1441,7 +1441,7 @@ label_18:
 
         case LONG:
             jj_consume_token(LONG);
-             {
+            {
                 if (true) {
                     return LongType.v();
                 }
@@ -1451,7 +1451,7 @@ label_18:
 
         case FLOAT:
             jj_consume_token(FLOAT);
-             {
+            {
                 if (true) {
                     return FloatType.v();
                 }
@@ -1461,7 +1461,7 @@ label_18:
 
         case DOUBLE:
             jj_consume_token(DOUBLE);
-             {
+            {
                 if (true) {
                     return DoubleType.v();
                 }
@@ -1484,7 +1484,7 @@ label_18:
         switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
         case VOID:
             jj_consume_token(VOID);
-             {
+            {
                 if (true) {
                     return VoidType.v();
                 }
@@ -1502,7 +1502,7 @@ label_18:
         case SHORT:
         case IDENTIFIER:
             type = Type();
-             {
+            {
                 if (true) {
                     return type;
                 }
@@ -1523,7 +1523,7 @@ label_18:
         StringBuffer name;
         jj_consume_token(IDENTIFIER);
         name = new StringBuffer(token.image);
-label_19:
+        label_19:
         while (true) {
             if (jj_2_13(2)) {
                 ;
@@ -1546,7 +1546,7 @@ label_19:
 
     final public void NameList() throws ParseException {
         Name();
-label_20:
+        label_20:
         while (true) {
             switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
             case COMMA:
@@ -1653,7 +1653,7 @@ label_20:
 
             // Negate the condition.
             _insert(Jimple.v().newIfStmt(Jimple.v().newEqExpr(result,
-                        IntConstant.v(0)), falseBranch));
+                                                 IntConstant.v(0)), falseBranch));
             value1 = Expression();
             result = _createLocal("$result", value1);
             _insert(Jimple.v().newGotoStmt(continuation));
@@ -1680,7 +1680,7 @@ label_20:
         Value value1;
         Value value2;
         value1 = ConditionalAndExpression();
-label_21:
+        label_21:
         while (true) {
             switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
             case SC_OR:
@@ -1709,7 +1709,7 @@ label_21:
         Value value1;
         Value value2;
         value1 = InclusiveOrExpression();
-label_22:
+        label_22:
         while (true) {
             switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
             case SC_AND:
@@ -1738,7 +1738,7 @@ label_22:
         Value value1;
         Value value2;
         value1 = ExclusiveOrExpression();
-label_23:
+        label_23:
         while (true) {
             switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
             case BIT_OR:
@@ -1766,7 +1766,7 @@ label_23:
         Value value1;
         Value value2;
         value1 = AndExpression();
-label_24:
+        label_24:
         while (true) {
             switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
             case XOR:
@@ -1794,7 +1794,7 @@ label_24:
         Value value1;
         Value value2;
         value1 = EqualityExpression();
-label_25:
+        label_25:
         while (true) {
             switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
             case BIT_AND:
@@ -1822,7 +1822,7 @@ label_25:
         Value value1;
         Value value2;
         value1 = InstanceOfExpression();
-label_26:
+        label_26:
         while (true) {
             switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
             case EQ:
@@ -1893,7 +1893,7 @@ label_26:
         Value value1;
         Value value2;
         value1 = ShiftExpression();
-label_27:
+        label_27:
         while (true) {
             switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
             case GT:
@@ -1955,7 +1955,7 @@ label_27:
         Value value1;
         Value value2;
         value1 = AdditiveExpression();
-label_28:
+        label_28:
         while (true) {
             switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
             case LSHIFT:
@@ -2009,7 +2009,7 @@ label_28:
         Value value1;
         Value value2;
         value1 = MultiplicativeExpression();
-label_29:
+        label_29:
         while (true) {
             switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
             case PLUS:
@@ -2055,7 +2055,7 @@ label_29:
         Value value1;
         Value value2;
         value1 = UnaryExpression();
-label_30:
+        label_30:
         while (true) {
             switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
             case STAR:
@@ -2112,7 +2112,7 @@ label_30:
         case PLUS:
             jj_consume_token(PLUS);
             value = UnaryExpression();
-             {
+            {
                 if (true) {
                     return value;
                 }
@@ -2123,7 +2123,7 @@ label_30:
         case MINUS:
             jj_consume_token(MINUS);
             value = UnaryExpression();
-             {
+            {
                 if (true) {
                     return value;
                 }
@@ -2133,7 +2133,7 @@ label_30:
 
         case INCR:
             value = PreIncrementExpression();
-             {
+            {
                 if (true) {
                     return value;
                 }
@@ -2143,7 +2143,7 @@ label_30:
 
         case DECR:
             value = PreDecrementExpression();
-             {
+            {
                 if (true) {
                     return value;
                 }
@@ -2175,7 +2175,7 @@ label_30:
         case BANG:
         case TILDE:
             value = UnaryExpressionNotPlusMinus();
-             {
+            {
                 if (true) {
                     return value;
                 }
@@ -2250,10 +2250,10 @@ label_30:
             jj_consume_token(TILDE);
             value = UnaryExpression();
             // FIXME: Not correct?
-             {
+            {
                 if (true) {
                     return _createLocal("$bitwiseNot",
-                        Jimple.v().newNegExpr(value));
+                            Jimple.v().newNegExpr(value));
                 }
             }
 
@@ -2262,10 +2262,10 @@ label_30:
         case BANG:
             jj_consume_token(BANG);
             value = UnaryExpression();
-             {
+            {
                 if (true) {
                     return _createLocal("$booleanNot",
-                        Jimple.v().newNegExpr(value));
+                            Jimple.v().newNegExpr(value));
                 }
             }
 
@@ -2304,7 +2304,7 @@ label_30:
                 case IDENTIFIER:
                 case LPAREN:
                     value = PostfixExpression();
-                     {
+                    {
                         if (true) {
                             return value;
                         }
@@ -2488,7 +2488,7 @@ label_30:
     final public Value PrimaryExpression() throws ParseException {
         Value value;
         value = PrimaryPrefix();
-label_31:
+        label_31:
         while (true) {
             if (jj_2_17(2)) {
                 ;
@@ -2521,7 +2521,7 @@ label_31:
         case CHARACTER_LITERAL:
         case STRING_LITERAL:
             value = Literal();
-             {
+            {
                 if (true) {
                     return value;
                 }
@@ -2531,7 +2531,7 @@ label_31:
 
         case THIS:
             jj_consume_token(THIS);
-             {
+            {
                 if (true) {
                     return _body.getThisLocal();
                 }
@@ -2543,7 +2543,7 @@ label_31:
             jj_consume_token(SUPER);
             jj_consume_token(DOT);
             jj_consume_token(IDENTIFIER);
-             {
+            {
                 if (true) {
                     return null;
                 }
@@ -2555,7 +2555,7 @@ label_31:
             jj_consume_token(LPAREN);
             value = Expression();
             jj_consume_token(RPAREN);
-             {
+            {
                 if (true) {
                     return value;
                 }
@@ -2565,7 +2565,7 @@ label_31:
 
         case NEW:
             value = AllocationExpression();
-             {
+            {
                 if (true) {
                     return value;
                 }
@@ -2638,10 +2638,10 @@ label_31:
                     switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
                     case LPAREN:
                         argList = Arguments();
-                         {
+                        {
                             if (true) {
                                 return _processInstanceMethod(null, name,
-                                    argList);
+                                        argList);
                             }
                         }
 
@@ -2650,7 +2650,7 @@ label_31:
                     default:
                         jj_la1[72] = jj_gen;
                         // FIXME: what about class refs?
-                         {
+                        {
                             if (true) {
                                 return _processInstanceField(null, name);
                             }
@@ -2687,10 +2687,10 @@ label_31:
                 jj_consume_token(LBRACKET);
                 value = Expression();
                 jj_consume_token(RBRACKET);
-                 {
+                {
                     if (true) {
                         return _createLocal("$index",
-                            Jimple.v().newArrayRef(baseValue, value));
+                                Jimple.v().newArrayRef(baseValue, value));
                     }
                 }
 
@@ -2703,10 +2703,10 @@ label_31:
                 switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
                 case LPAREN:
                     argList = Arguments();
-                     {
+                    {
                         if (true) {
                             return _processInstanceMethod(baseValue, name,
-                                argList);
+                                    argList);
                         }
                     }
 
@@ -2714,7 +2714,7 @@ label_31:
 
                 default:
                     jj_la1[75] = jj_gen;
-                     {
+                    {
                         if (true) {
                             return _processInstanceField(baseValue, name);
                         }
@@ -2737,7 +2737,7 @@ label_31:
         switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
         case INTEGER_LITERAL:
             jj_consume_token(INTEGER_LITERAL);
-             {
+            {
                 if (true) {
                     return IntConstant.v(Integer.parseInt(token.image));
                 }
@@ -2747,7 +2747,7 @@ label_31:
 
         case FLOATING_POINT_LITERAL:
             jj_consume_token(FLOATING_POINT_LITERAL);
-             {
+            {
                 if (true) {
                     return FloatConstant.v(Float.parseFloat(token.image));
                 }
@@ -2758,7 +2758,7 @@ label_31:
         case CHARACTER_LITERAL:
             jj_consume_token(CHARACTER_LITERAL);
             // Is this correct?
-             {
+            {
                 if (true) {
                     return IntConstant.v(Integer.parseInt(token.image));
                 }
@@ -2774,7 +2774,7 @@ label_31:
             // Snip off the front and back quote.
             string = string.trim();
             string = string.substring(1, string.length() - 1);
-             {
+            {
                 if (true) {
                     return StringConstant.v(string);
                 }
@@ -2784,7 +2784,7 @@ label_31:
 
         case TRUE:
             jj_consume_token(TRUE);
-             {
+            {
                 if (true) {
                     return IntConstant.v(1);
                 }
@@ -2794,7 +2794,7 @@ label_31:
 
         case FALSE:
             jj_consume_token(FALSE);
-             {
+            {
                 if (true) {
                     return IntConstant.v(0);
                 }
@@ -2804,7 +2804,7 @@ label_31:
 
         case NULL:
             jj_consume_token(NULL);
-             {
+            {
                 if (true) {
                     return NullConstant.v();
                 }
@@ -2855,7 +2855,7 @@ label_31:
         case PLUS:
         case MINUS:
             Argument(list);
-label_32:
+            label_32:
             while (true) {
                 switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
                 case COMMA:
@@ -2904,7 +2904,7 @@ label_32:
         switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
         case LBRACKET:
             value = ArrayDimsAndInits(type);
-             {
+            {
                 if (true) {
                     return value;
                 }
@@ -2920,7 +2920,7 @@ label_32:
             if (!(type instanceof RefType)) {
                 if (true) {
                     throw new RuntimeException(
-                        "Cannot instantiate primitive type");
+                            "Cannot instantiate primitive type");
                 }
             }
 
@@ -2931,8 +2931,8 @@ label_32:
             Local local = _createLocal("$new",
                     Jimple.v().newNewExpr((RefType) type));
             _insert(Jimple.v().newInvokeStmt(Jimple.v().newSpecialInvokeExpr(local,
-                        method, argList)));
-             {
+                                                     method, argList)));
+            {
                 if (true) {
                     return local;
                 }
@@ -2958,7 +2958,7 @@ label_32:
         List sizeValues = new LinkedList();
 
         if (jj_2_23(2)) {
-label_33:
+            label_33:
             while (true) {
                 jj_consume_token(LBRACKET);
                 sizeValue = Expression();
@@ -2972,7 +2972,7 @@ label_33:
                 }
             }
 
-label_34:
+            label_34:
             while (true) {
                 if (jj_2_22(2)) {
                     ;
@@ -2997,13 +2997,13 @@ label_34:
 
                 if (true) {
                     return Jimple.v().newNewMultiArrayExpr((ArrayType) type,
-                        sizeValues);
+                            sizeValues);
                 }
             }
         } else {
             switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
             case LBRACKET:
-label_35:
+                label_35:
                 while (true) {
                     jj_consume_token(LBRACKET);
                     jj_consume_token(RBRACKET);
@@ -3020,10 +3020,10 @@ label_35:
                 }
 
                 ArrayInitializer();
-                 {
+                {
                     if (true) {
                         throw new RuntimeException(
-                            "Array Initializers not supported!");
+                                "Array Initializers not supported!");
                     }
                 }
 
@@ -3143,7 +3143,7 @@ label_35:
 
     final public void Block() throws ParseException {
         jj_consume_token(LBRACE);
-label_36:
+        label_36:
         while (true) {
             switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
             case BOOLEAN:
@@ -3271,7 +3271,7 @@ label_36:
 
         type = Type();
         VariableDeclarator(type);
-label_37:
+        label_37:
         while (true) {
             switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
             case COMMA:
@@ -3292,7 +3292,7 @@ label_37:
         String name;
         jj_consume_token(IDENTIFIER);
         name = token.image;
-label_38:
+        label_38:
         while (true) {
             switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
             case LBRACKET:
@@ -3326,7 +3326,7 @@ label_38:
     }
 
     final public void VariableInitializer(Local local)
-        throws ParseException {
+            throws ParseException {
         Value value;
 
         switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
@@ -3363,7 +3363,7 @@ label_38:
         case MINUS:
             value = Expression();
             _body.getUnits().insertBefore(Jimple.v().newAssignStmt(local, value),
-                _insertPoint);
+                    _insertPoint);
             break;
 
         default:
@@ -3406,7 +3406,7 @@ label_38:
         case PLUS:
         case MINUS:
             VariableInitializer(null);
-label_39:
+            label_39:
             while (true) {
                 if (jj_2_27(2)) {
                     ;
@@ -3499,13 +3499,13 @@ label_39:
                 case INCR:
                     jj_consume_token(INCR);
                     _insert(Jimple.v().newAssignStmt((Local) lvalue,
-                            Jimple.v().newAddExpr(lvalue, IntConstant.v(1))));
+                                    Jimple.v().newAddExpr(lvalue, IntConstant.v(1))));
                     break;
 
                 case DECR:
                     jj_consume_token(DECR);
                     _insert(Jimple.v().newAssignStmt((Local) lvalue,
-                            Jimple.v().newSubExpr(lvalue, IntConstant.v(1))));
+                                    Jimple.v().newSubExpr(lvalue, IntConstant.v(1))));
                     break;
 
                 case ASSIGN:
@@ -3518,77 +3518,77 @@ label_39:
                     jj_consume_token(STARASSIGN);
                     rvalue = Expression();
                     _insert(Jimple.v().newAssignStmt((Local) lvalue,
-                            Jimple.v().newMulExpr(lvalue, rvalue)));
+                                    Jimple.v().newMulExpr(lvalue, rvalue)));
                     break;
 
                 case SLASHASSIGN:
                     jj_consume_token(SLASHASSIGN);
                     rvalue = Expression();
                     _insert(Jimple.v().newAssignStmt((Local) lvalue,
-                            Jimple.v().newDivExpr(lvalue, rvalue)));
+                                    Jimple.v().newDivExpr(lvalue, rvalue)));
                     break;
 
                 case REMASSIGN:
                     jj_consume_token(REMASSIGN);
                     rvalue = Expression();
                     _insert(Jimple.v().newAssignStmt((Local) lvalue,
-                            Jimple.v().newRemExpr(lvalue, rvalue)));
+                                    Jimple.v().newRemExpr(lvalue, rvalue)));
                     break;
 
                 case PLUSASSIGN:
                     jj_consume_token(PLUSASSIGN);
                     rvalue = Expression();
                     _insert(Jimple.v().newAssignStmt((Local) lvalue,
-                            Jimple.v().newAddExpr(lvalue, rvalue)));
+                                    Jimple.v().newAddExpr(lvalue, rvalue)));
                     break;
 
                 case MINUSASSIGN:
                     jj_consume_token(MINUSASSIGN);
                     rvalue = Expression();
                     _insert(Jimple.v().newAssignStmt((Local) lvalue,
-                            Jimple.v().newSubExpr(lvalue, rvalue)));
+                                    Jimple.v().newSubExpr(lvalue, rvalue)));
                     break;
 
                 case LSHIFTASSIGN:
                     jj_consume_token(LSHIFTASSIGN);
                     rvalue = Expression();
                     _insert(Jimple.v().newAssignStmt((Local) lvalue,
-                            Jimple.v().newShlExpr(lvalue, rvalue)));
+                                    Jimple.v().newShlExpr(lvalue, rvalue)));
                     break;
 
                 case RSIGNEDSHIFTASSIGN:
                     jj_consume_token(RSIGNEDSHIFTASSIGN);
                     rvalue = Expression();
                     _insert(Jimple.v().newAssignStmt((Local) lvalue,
-                            Jimple.v().newShrExpr(lvalue, rvalue)));
+                                    Jimple.v().newShrExpr(lvalue, rvalue)));
                     break;
 
                 case RUNSIGNEDSHIFTASSIGN:
                     jj_consume_token(RUNSIGNEDSHIFTASSIGN);
                     rvalue = Expression();
                     _insert(Jimple.v().newAssignStmt((Local) lvalue,
-                            Jimple.v().newUshrExpr(lvalue, rvalue)));
+                                    Jimple.v().newUshrExpr(lvalue, rvalue)));
                     break;
 
                 case ANDASSIGN:
                     jj_consume_token(ANDASSIGN);
                     rvalue = Expression();
                     _insert(Jimple.v().newAssignStmt((Local) lvalue,
-                            Jimple.v().newAndExpr(lvalue, rvalue)));
+                                    Jimple.v().newAndExpr(lvalue, rvalue)));
                     break;
 
                 case XORASSIGN:
                     jj_consume_token(XORASSIGN);
                     rvalue = Expression();
                     _insert(Jimple.v().newAssignStmt((Local) lvalue,
-                            Jimple.v().newXorExpr(lvalue, rvalue)));
+                                    Jimple.v().newXorExpr(lvalue, rvalue)));
                     break;
 
                 case ORASSIGN:
                     jj_consume_token(ORASSIGN);
                     rvalue = Expression();
                     _insert(Jimple.v().newAssignStmt((Local) lvalue,
-                            Jimple.v().newOrExpr(lvalue, rvalue)));
+                                    Jimple.v().newOrExpr(lvalue, rvalue)));
                     break;
 
                 default:
@@ -3638,7 +3638,7 @@ label_39:
         expression = Expression();
         jj_consume_token(RPAREN);
         jj_consume_token(LBRACE);
-label_40:
+        label_40:
         while (true) {
             switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
             case CASE:
@@ -3661,7 +3661,7 @@ label_40:
                 Stmt branchTarget = Jimple.v().newNopStmt();
                 _insert(branchTarget);
                 targetList.add(branchTarget);
-label_41:
+                label_41:
                 while (true) {
                     switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
                     case BOOLEAN:
@@ -3721,7 +3721,7 @@ label_41:
                 jj_consume_token(COLON);
                 defaultBranchTarget = Jimple.v().newNopStmt();
                 _insert(defaultBranchTarget);
-label_42:
+                label_42:
                 while (true) {
                     switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
                     case BOOLEAN:
@@ -3794,7 +3794,7 @@ label_42:
 
         // FIXME: What if TableSwitch is better?
         _insert(Jimple.v().newLookupSwitchStmt(expression, valueList,
-                targetList, defaultBranchTarget));
+                        targetList, defaultBranchTarget));
         _insert(continuation);
     }
 
@@ -3811,7 +3811,7 @@ label_42:
 
         // Negate the condition.
         _insert(Jimple.v().newIfStmt(Jimple.v().newEqExpr(condition,
-                    IntConstant.v(0)), falseBranch));
+                                             IntConstant.v(0)), falseBranch));
         StatementOrBlock();
         _insert(Jimple.v().newGotoStmt(continuation));
         _insert(falseBranch);
@@ -3841,7 +3841,7 @@ label_42:
         condition = Expression();
         jj_consume_token(RPAREN);
         _insert(Jimple.v().newIfStmt(Jimple.v().newEqExpr(condition,
-                    IntConstant.v(0)), continuation));
+                                             IntConstant.v(0)), continuation));
 
         // start is the target for continues:
         _continueStack.addFirst(start);
@@ -3879,7 +3879,7 @@ label_42:
         jj_consume_token(LPAREN);
         condition = Expression();
         _insert(Jimple.v().newIfStmt(Jimple.v().newNeExpr(condition,
-                    IntConstant.v(0)), start));
+                                             IntConstant.v(0)), start));
         jj_consume_token(RPAREN);
         jj_consume_token(SEMICOLON);
     }
@@ -3960,7 +3960,7 @@ label_42:
         case MINUS:
             condition = Expression();
             _insert(Jimple.v().newIfStmt(Jimple.v().newEqExpr(condition,
-                        IntConstant.v(0)), continuation));
+                                                 IntConstant.v(0)), continuation));
             break;
 
         default:
@@ -4063,7 +4063,7 @@ label_42:
 
     final public void StatementExpressionList() throws ParseException {
         StatementExpression();
-label_43:
+        label_43:
         while (true) {
             switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
             case COMMA:
@@ -4200,7 +4200,7 @@ label_43:
 
         Stmt continuation = Jimple.v().newNopStmt();
         _insert(Jimple.v().newGotoStmt(continuation));
-label_44:
+        label_44:
         while (true) {
             switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk) {
             case CATCH:
@@ -4231,7 +4231,7 @@ label_44:
             SootClass exceptionClass = refType.getSootClass();
 
             if (!SootUtilities.derivesFrom(exceptionClass,
-                                Scene.v().loadClassAndSupport("java.lang.Throwable"))) {
+                        Scene.v().loadClassAndSupport("java.lang.Throwable"))) {
                 if (true) {
                     throw new RuntimeException("Cannot catch " + type);
                 }
@@ -4240,7 +4240,7 @@ label_44:
             Stmt trapEnd = Jimple.v().newNopStmt();
             _insert(trapEnd);
             _body.getTraps().add(Jimple.v().newTrap(exceptionClass, blockStart,
-                    blockEnd, trapStart));
+                                         blockEnd, trapStart));
         }
 
         _insert(continuation);
@@ -7436,462 +7436,462 @@ label_44:
 
     private static void jj_la1_0() {
         jj_la1_0 = new int[] {
-                0x0,
-                0x0,
-                0x20102000,
-                0x0,
-                0x2000,
-                0x20002000,
-                0x20002000,
-                0x8000000,
-                0x0,
-                0xa2196000,
-                0x20002000,
-                0x20002000,
-                0xa2094000,
-                0x20002000,
-                0x20002000,
-                0x2000,
-                0x2000,
-                0x20002000,
-                0x20002000,
-                0x8000000,
-                0xa2196000,
-                0xa2094000,
-                0x20000000,
-                0x20000000,
-                0x0,
-                0x0,
-                0x0,
-                0x20002000,
-                0x20002000,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0xa2094000,
-                0x20000000,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0xb359c000,
-                0x92094000,
-                0x0,
-                0x82094000,
-                0x0,
-                0x82094000,
-                0x82094000,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0x92094000,
-                0x0,
-                0x92094000,
-                0x10000000,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0x10000000,
-                0x0,
-                0x0,
-                0x0,
-                0x10000000,
-                0x0,
-                0x92094000,
-                0x0,
-                0x0,
-                0x0,
-                0x9349c000,
-                0xb359c000,
-                0xb359c000,
-                0x20000000,
-                0x0,
-                0x0,
-                0x0,
-                0x92094000,
-                0x92094000,
-                0x0,
-                0x0,
-                0x0,
-                0x92094000,
-                0x820000,
-                0xb359c000,
-                0xb359c000,
-                0x820000,
-                0x4000000,
-                0xb2094000,
-                0x92094000,
-                0x92094000,
-                0x92094000,
-                0x0,
-                0x0,
-                0x0,
-                0x92094000,
-                0x40000,
-            };
+            0x0,
+            0x0,
+            0x20102000,
+            0x0,
+            0x2000,
+            0x20002000,
+            0x20002000,
+            0x8000000,
+            0x0,
+            0xa2196000,
+            0x20002000,
+            0x20002000,
+            0xa2094000,
+            0x20002000,
+            0x20002000,
+            0x2000,
+            0x2000,
+            0x20002000,
+            0x20002000,
+            0x8000000,
+            0xa2196000,
+            0xa2094000,
+            0x20000000,
+            0x20000000,
+            0x0,
+            0x0,
+            0x0,
+            0x20002000,
+            0x20002000,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0xa2094000,
+            0x20000000,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0xb359c000,
+            0x92094000,
+            0x0,
+            0x82094000,
+            0x0,
+            0x82094000,
+            0x82094000,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0x92094000,
+            0x0,
+            0x92094000,
+            0x10000000,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0x10000000,
+            0x0,
+            0x0,
+            0x0,
+            0x10000000,
+            0x0,
+            0x92094000,
+            0x0,
+            0x0,
+            0x0,
+            0x9349c000,
+            0xb359c000,
+            0xb359c000,
+            0x20000000,
+            0x0,
+            0x0,
+            0x0,
+            0x92094000,
+            0x92094000,
+            0x0,
+            0x0,
+            0x0,
+            0x92094000,
+            0x820000,
+            0xb359c000,
+            0xb359c000,
+            0x820000,
+            0x4000000,
+            0xb2094000,
+            0x92094000,
+            0x92094000,
+            0x92094000,
+            0x0,
+            0x0,
+            0x0,
+            0x92094000,
+            0x40000,
+        };
     }
 
     private static void jj_la1_1() {
         jj_la1_1 = new int[] {
-                0x1000,
-                0x10,
-                0x8080,
-                0x0,
-                0x8080,
-                0x8000,
-                0x8000,
-                0x0,
-                0x8,
-                0x3226e3c0,
-                0x4e000,
-                0x4e000,
-                0x2206e140,
-                0x24e200,
-                0x24e200,
-                0x8000,
-                0x8000,
-                0x4e000,
-                0x4e000,
-                0x0,
-                0x3226e3c0,
-                0x2206e140,
-                0x2204e000,
-                0x2204e000,
-                0x0,
-                0x0,
-                0x0,
-                0x24e200,
-                0x24e200,
-                0x1000000,
-                0x0,
-                0x0,
-                0x0,
-                0x20140,
-                0x0,
-                0x0,
-                0xe000,
-                0xe000,
-                0x1000000,
-                0xdcfb0dc5,
-                0x944a0d40,
-                0x40000,
-                0x20140,
-                0x0,
-                0x20140,
-                0x10020140,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0x20,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0x944a0d40,
-                0x0,
-                0x944a0d40,
-                0x84480c00,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0x84480c00,
-                0x0,
-                0x0,
-                0x0,
-                0x84000800,
-                0x0,
-                0x944a0d40,
-                0x0,
-                0x0,
-                0x0,
-                0xdcfb0d45,
-                0xdcfb0dc5,
-                0xdcfb0dc5,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0x944a0d40,
-                0x944a0d40,
-                0x0,
-                0x0,
-                0x0,
-                0x944a0d40,
-                0x0,
-                0xdcfb0dc5,
-                0xdcfb0dc5,
-                0x0,
-                0x0,
-                0x944a0d40,
-                0x944a0d40,
-                0x944a0d40,
-                0x944a0d40,
-                0x0,
-                0x0,
-                0x0,
-                0x944a0d40,
-                0x0,
-            };
+            0x1000,
+            0x10,
+            0x8080,
+            0x0,
+            0x8080,
+            0x8000,
+            0x8000,
+            0x0,
+            0x8,
+            0x3226e3c0,
+            0x4e000,
+            0x4e000,
+            0x2206e140,
+            0x24e200,
+            0x24e200,
+            0x8000,
+            0x8000,
+            0x4e000,
+            0x4e000,
+            0x0,
+            0x3226e3c0,
+            0x2206e140,
+            0x2204e000,
+            0x2204e000,
+            0x0,
+            0x0,
+            0x0,
+            0x24e200,
+            0x24e200,
+            0x1000000,
+            0x0,
+            0x0,
+            0x0,
+            0x20140,
+            0x0,
+            0x0,
+            0xe000,
+            0xe000,
+            0x1000000,
+            0xdcfb0dc5,
+            0x944a0d40,
+            0x40000,
+            0x20140,
+            0x0,
+            0x20140,
+            0x10020140,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0x20,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0x944a0d40,
+            0x0,
+            0x944a0d40,
+            0x84480c00,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0x84480c00,
+            0x0,
+            0x0,
+            0x0,
+            0x84000800,
+            0x0,
+            0x944a0d40,
+            0x0,
+            0x0,
+            0x0,
+            0xdcfb0d45,
+            0xdcfb0dc5,
+            0xdcfb0dc5,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0x944a0d40,
+            0x944a0d40,
+            0x0,
+            0x0,
+            0x0,
+            0x944a0d40,
+            0x0,
+            0xdcfb0dc5,
+            0xdcfb0dc5,
+            0x0,
+            0x0,
+            0x944a0d40,
+            0x944a0d40,
+            0x944a0d40,
+            0x944a0d40,
+            0x0,
+            0x0,
+            0x0,
+            0x944a0d40,
+            0x0,
+        };
     }
 
     private static void jj_la1_2() {
         jj_la1_2 = new int[] {
-                0x0,
-                0x0,
-                0x10000,
-                0x40000,
-                0x10000,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0x1080,
-                0x0,
-                0x0,
-                0x80,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0x80,
-                0x80,
-                0x0,
-                0x0,
-                0x20000,
-                0x80000,
-                0x4000,
-                0x0,
-                0x0,
-                0x0,
-                0x11000,
-                0x4000,
-                0x20000,
-                0x80,
-                0x0,
-                0x4000,
-                0x0,
-                0x0,
-                0x0,
-                0x114e8,
-                0x4e8,
-                0x0,
-                0x80,
-                0x4000,
-                0x0,
-                0x80,
-                0x20000,
-                0x80000,
-                0x1000000,
-                0x40000000,
-                0x80000000,
-                0x0,
-                0x0,
-                0x0,
-                0x24000000,
-                0x24000000,
-                0x0,
-                0x18300000,
-                0x18300000,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0xc004e8,
-                0xc00000,
-                0x4e8,
-                0xc004e8,
-                0x400,
-                0x0,
-                0x0,
-                0x400,
-                0x468,
-                0x80,
-                0x400,
-                0x44000,
-                0x68,
-                0x20000,
-                0xc004e8,
-                0x4400,
-                0x4000,
-                0x4000,
-                0x14e8,
-                0x114e8,
-                0x114e8,
-                0x0,
-                0x20000,
-                0x4000,
-                0x80000,
-                0xc014e8,
-                0xc014e8,
-                0x20000,
-                0x80000,
-                0x80000,
-                0x4e8,
-                0x0,
-                0x114e8,
-                0x114e8,
-                0x0,
-                0x0,
-                0x4e8,
-                0xc004e8,
-                0x4e8,
-                0x4e8,
-                0x20000,
-                0x80,
-                0x80,
-                0xc004e8,
-                0x0,
-            };
+            0x0,
+            0x0,
+            0x10000,
+            0x40000,
+            0x10000,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0x1080,
+            0x0,
+            0x0,
+            0x80,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0x80,
+            0x80,
+            0x0,
+            0x0,
+            0x20000,
+            0x80000,
+            0x4000,
+            0x0,
+            0x0,
+            0x0,
+            0x11000,
+            0x4000,
+            0x20000,
+            0x80,
+            0x0,
+            0x4000,
+            0x0,
+            0x0,
+            0x0,
+            0x114e8,
+            0x4e8,
+            0x0,
+            0x80,
+            0x4000,
+            0x0,
+            0x80,
+            0x20000,
+            0x80000,
+            0x1000000,
+            0x40000000,
+            0x80000000,
+            0x0,
+            0x0,
+            0x0,
+            0x24000000,
+            0x24000000,
+            0x0,
+            0x18300000,
+            0x18300000,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0xc004e8,
+            0xc00000,
+            0x4e8,
+            0xc004e8,
+            0x400,
+            0x0,
+            0x0,
+            0x400,
+            0x468,
+            0x80,
+            0x400,
+            0x44000,
+            0x68,
+            0x20000,
+            0xc004e8,
+            0x4400,
+            0x4000,
+            0x4000,
+            0x14e8,
+            0x114e8,
+            0x114e8,
+            0x0,
+            0x20000,
+            0x4000,
+            0x80000,
+            0xc014e8,
+            0xc014e8,
+            0x20000,
+            0x80000,
+            0x80000,
+            0x4e8,
+            0x0,
+            0x114e8,
+            0x114e8,
+            0x0,
+            0x0,
+            0x4e8,
+            0xc004e8,
+            0x4e8,
+            0x4e8,
+            0x20000,
+            0x80,
+            0x80,
+            0xc004e8,
+            0x0,
+        };
     }
 
     private static void jj_la1_3() {
         jj_la1_3 = new int[] {
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0x3,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0xffe000,
-                0x0,
-                0x0,
-                0x0,
-                0x80,
-                0x100,
-                0x40,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0x1c00,
-                0x1c00,
-                0xc,
-                0xc,
-                0x230,
-                0x230,
-                0xf,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0x3,
-                0x3,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0xf,
-                0x0,
-                0x0,
-                0x0,
-                0x3,
-                0x3,
-                0x3,
-                0x0,
-                0x0,
-                0x0,
-                0x0,
-                0xf,
-                0xf,
-                0x0,
-                0xffe003,
-                0xffe003,
-                0x3,
-                0x0,
-                0x3,
-                0x3,
-                0x0,
-                0x0,
-                0x3,
-                0xf,
-                0x3,
-                0x3,
-                0x0,
-                0x0,
-                0x0,
-                0xf,
-                0x0,
-            };
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0x3,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0xffe000,
+            0x0,
+            0x0,
+            0x0,
+            0x80,
+            0x100,
+            0x40,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0x1c00,
+            0x1c00,
+            0xc,
+            0xc,
+            0x230,
+            0x230,
+            0xf,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0x3,
+            0x3,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0xf,
+            0x0,
+            0x0,
+            0x0,
+            0x3,
+            0x3,
+            0x3,
+            0x0,
+            0x0,
+            0x0,
+            0x0,
+            0xf,
+            0xf,
+            0x0,
+            0xffe003,
+            0xffe003,
+            0x3,
+            0x0,
+            0x3,
+            0x3,
+            0x0,
+            0x0,
+            0x3,
+            0xf,
+            0x3,
+            0x3,
+            0x0,
+            0x0,
+            0x0,
+            0xf,
+            0x0,
+        };
     }
 
     final private JJCalls[] jj_2_rtns = new JJCalls[28];
@@ -8041,7 +8041,7 @@ label_44:
 
             if (jj_scanpos.next == null) {
                 jj_lastpos = jj_scanpos = jj_scanpos.next = token_source
-                                        .getNextToken();
+                    .getNextToken();
             } else {
                 jj_lastpos = jj_scanpos = jj_scanpos.next;
             }
@@ -8131,7 +8131,7 @@ label_44:
             boolean exists = false;
 
             for (java.util.Enumeration e = jj_expentries.elements();
-                            e.hasMoreElements();) {
+                 e.hasMoreElements();) {
                 int[] oldentry = (int[]) (e.nextElement());
 
                 if (oldentry.length == jj_expentry.length) {

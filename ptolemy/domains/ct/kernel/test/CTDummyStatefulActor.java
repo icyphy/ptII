@@ -51,7 +51,7 @@ public class CTDummyStatefulActor extends TypedAtomicActor
     /** Constructor
      */
     public CTDummyStatefulActor(TypedCompositeActor container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         input = new TypedIOPort(this, "input");
         input.setInput(true);

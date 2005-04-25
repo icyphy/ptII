@@ -70,7 +70,7 @@ public class JAIConstant extends Source {
      *   actor with this name.
      */
     public JAIConstant(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         output.setTypeEquals(BaseType.OBJECT);
         width = new Parameter(this, "width", new IntToken(0));
@@ -109,7 +109,7 @@ public class JAIConstant extends Source {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == bandValues) {
             values = ((ArrayToken) bandValues.getToken()).arrayValue();
 
@@ -137,7 +137,7 @@ public class JAIConstant extends Source {
                 _dataFormat = _SHORT;
             } else {
                 throw new IllegalActionException(this,
-                    "Unrecognized data type: " + dataFormatName);
+                        "Unrecognized data type: " + dataFormatName);
             }
         } else {
             super.attributeChanged(attribute);
@@ -157,7 +157,7 @@ public class JAIConstant extends Source {
 
             for (int i = 0; i < values.length; i++) {
                 byteValues[i] = new Byte((byte) (((ScalarToken) values[i])
-                                    .intValue()));
+                                                 .intValue()));
             }
 
             parameters.add(byteValues);
@@ -166,7 +166,7 @@ public class JAIConstant extends Source {
 
             for (int i = 0; i < values.length; i++) {
                 doubleValues[i] = new Double(((ScalarToken) values[i])
-                                    .doubleValue());
+                        .doubleValue());
             }
 
             parameters.add(doubleValues);
@@ -175,7 +175,7 @@ public class JAIConstant extends Source {
 
             for (int i = 0; i < values.length; i++) {
                 floatValues[i] = new Float((float) (((ScalarToken) values[i])
-                                    .doubleValue()));
+                                                   .doubleValue()));
             }
 
             parameters.add(floatValues);
@@ -192,7 +192,7 @@ public class JAIConstant extends Source {
 
             for (int i = 0; i < values.length; i++) {
                 shortValues[i] = new Short((short) (((ScalarToken) values[i])
-                                    .intValue()));
+                                                   .intValue()));
             }
 
             parameters.add(shortValues);
@@ -206,8 +206,8 @@ public class JAIConstant extends Source {
     ////                         private variables                 ////
     private IntToken _zero = new IntToken(0);
     private IntToken[] _defaultValues = {
-            _zero
-        };
+        _zero
+    };
     private Double[] _bandValues;
     private int _height;
     private int _width;

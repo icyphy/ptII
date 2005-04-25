@@ -43,7 +43,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 public class OnePort extends TypedAtomicActor {
     public OnePort(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         input = new TypedIOPort(this, "input");
         input.setInput(true);
@@ -108,10 +108,10 @@ public class OnePort extends TypedAtomicActor {
     private int _inrate;
     private int _outrate;
     private int[][] defaultValues = {
-            {
-                0,
-                0
-            }
-        };
+        {
+            0,
+            0
+        }
+    };
     private Token[] _buffer;
 }

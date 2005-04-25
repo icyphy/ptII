@@ -72,7 +72,7 @@ public class JAIBMPWriter extends JAIWriter {
      *   actor with this name.
      */
     public JAIBMPWriter(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         fileName.setExpression("file.bmp");
@@ -111,7 +111,7 @@ public class JAIBMPWriter extends JAIWriter {
         BMPEncodeParam bmpEncodeParam = new BMPEncodeParam();
         bmpEncodeParam.setVersion(BMPEncodeParam.VERSION_3);
         bmpEncodeParam.setTopDown(((BooleanToken) storeTopDown.getToken())
-                        .booleanValue());
+                .booleanValue());
         _imageEncodeParam = bmpEncodeParam;
         return super.postfire();
     }

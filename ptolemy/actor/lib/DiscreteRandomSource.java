@@ -76,7 +76,7 @@ public class DiscreteRandomSource extends RandomSource {
      *   actor with this name.
      */
     public DiscreteRandomSource(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         pmf = new Parameter(this, "pmf");
         pmf.setExpression("{0.5, 0.5}");
@@ -119,7 +119,7 @@ public class DiscreteRandomSource extends RandomSource {
      *   violated.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == pmf) {
             ArrayToken pmfValue = (ArrayToken) pmf.getToken();
             _pmf = new double[pmfValue.length()];
@@ -134,7 +134,7 @@ public class DiscreteRandomSource extends RandomSource {
             // Allow for roundoff error.
             if (!SignalProcessing.close(sum, 1.0)) {
                 throw new IllegalActionException(this,
-                    "Parameter values are required to sum to one.");
+                        "Parameter values are required to sum to one.");
             }
         } else {
             super.attributeChanged(attribute);
@@ -181,8 +181,8 @@ public class DiscreteRandomSource extends RandomSource {
 
         if (_pmf.length != valuesToken.length()) {
             throw new IllegalActionException(this,
-                "Parameters values and pmf are required to be arrays "
-                + "with the same length.");
+                    "Parameters values and pmf are required to be arrays "
+                    + "with the same length.");
         }
 
         double cdf = 0.0;

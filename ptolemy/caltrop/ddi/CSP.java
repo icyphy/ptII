@@ -79,7 +79,7 @@ import java.util.Map;
 */
 public class CSP extends AbstractDDI implements DDI {
     public CSP(TypedAtomicActor ptActor, Actor actor, Context context,
-        Environment env) {
+            Environment env) {
         _ptActor = ptActor;
         _actor = actor;
         _actions = PriorityUtil.prioritySortActions(_actor);
@@ -138,7 +138,7 @@ public class CSP extends AbstractDDI implements DDI {
         } else if (actions.length == 1) {
             inputProfile = computeRemainingTokens(actions, dataSoFar);
             mergeData(dataSoFar,
-                new CSPTokenReader(inputProfile, _ioPorts, _cbc).getAll());
+                    new CSPTokenReader(inputProfile, _ioPorts, _cbc).getAll());
             fireAction(actions[0], dataSoFar);
         } else {
             inputProfile = computeRemainingTokens(actions, dataSoFar);
@@ -177,7 +177,7 @@ public class CSP extends AbstractDDI implements DDI {
     }
 
     private Environment _bindInputPatternVars(InputPattern[] inputPatterns,
-        Map inputData, Environment env) {
+            Map inputData, Environment env) {
         for (int i = 0; i < inputPatterns.length; i++) {
             InputPattern inputPattern = inputPatterns[i];
             ChannelID chID = new ChannelID(inputPattern.getPortname(), 0);
@@ -200,7 +200,7 @@ public class CSP extends AbstractDDI implements DDI {
                 }
 
                 int repeatVal = _context.intValue(new ExprEvaluator(_context,
-                            env).evaluate(repeatExpr));
+                                                          env).evaluate(repeatExpr));
 
                 for (int j = 0; j < repeatVal; j++) {
                     for (int k = 0; k < vars.length; k++) {
@@ -254,7 +254,7 @@ public class CSP extends AbstractDDI implements DDI {
     }
 
     private Map _computeOutputData(OutputExpression[] outputExprs,
-        Environment env) {
+            Environment env) {
         // FIXME no multi.
         Map data = new HashMap();
         ExprEvaluator eval = new ExprEvaluator(_context, env);
@@ -308,7 +308,7 @@ public class CSP extends AbstractDDI implements DDI {
                 numNeeded = numTokensNeeded(inputPattern);
 
                 List data = (List) dataSoFar.get(new ChannelID(
-                            inputPattern.getPortname(), 0));
+                                                         inputPattern.getPortname(), 0));
 
                 if (data != null) {
                     numNeeded = numNeeded - data.size();
@@ -316,7 +316,7 @@ public class CSP extends AbstractDDI implements DDI {
 
                 if (numNeeded > 0) {
                     inputProfile.put(new ChannelID(inputPattern.getPortname(), 0),
-                        new Integer(numNeeded));
+                            new Integer(numNeeded));
                 }
             }
 
@@ -346,7 +346,7 @@ public class CSP extends AbstractDDI implements DDI {
                     numNeeded = Math.min(numNeeded, numTokensNeeded(ip));
 
                     List data = (List) dataSoFar.get(new ChannelID(
-                                inputPattern.getPortname(), 0));
+                                                             inputPattern.getPortname(), 0));
 
                     if (data != null) {
                         numNeeded = numNeeded - data.size();
@@ -356,7 +356,7 @@ public class CSP extends AbstractDDI implements DDI {
 
             if (numNeeded > 0) {
                 inputProfile.put(new ChannelID(inputPattern.getPortname(), 0),
-                    new Integer(numNeeded));
+                        new Integer(numNeeded));
             }
         }
 
@@ -398,7 +398,7 @@ public class CSP extends AbstractDDI implements DDI {
     // oldData and newData are both Map: ChannelID -> List[Object]
     private void mergeData(Map oldData, Map newData) {
         for (Iterator iterator = newData.keySet().iterator();
-                        iterator.hasNext();) {
+             iterator.hasNext();) {
             ChannelID chID = (ChannelID) iterator.next();
 
             if (oldData.containsKey(chID)) {
@@ -480,8 +480,8 @@ public class CSP extends AbstractDDI implements DDI {
                     profile.put(chID, new Integer(numNeeded - numHave));
                 } else {
                     profile.put(chID,
-                        new Integer(Math.max(numNeeded - numHave,
-                                needSoFar.intValue())));
+                            new Integer(Math.max(numNeeded - numHave,
+                                                needSoFar.intValue())));
                 }
             }
         }
@@ -540,7 +540,7 @@ public class CSP extends AbstractDDI implements DDI {
 
     private boolean moreDataToRead(Map inputProfile) {
         for (Iterator iterator = inputProfile.keySet().iterator();
-                        iterator.hasNext();) {
+             iterator.hasNext();) {
             ChannelID chID = (ChannelID) iterator.next();
 
             if (((Integer) inputProfile.get(chID)).intValue() > 0) {
@@ -577,7 +577,7 @@ public class CSP extends AbstractDDI implements DDI {
         }
 
         throw new DDIException(
-            "selectAction() failed to find a firable action.");
+                "selectAction() failed to find a firable action.");
     }
 
     private boolean isFirable(Action action, Map dataSoFar) {
@@ -587,7 +587,7 @@ public class CSP extends AbstractDDI implements DDI {
             InputPattern inputPattern = inputPatterns[i];
             int numNeeded = numTokensNeeded(inputPattern);
             List data = (List) dataSoFar.get(new ChannelID(
-                        inputPattern.getPortname(), 0));
+                                                     inputPattern.getPortname(), 0));
             int numHave = (data == null) ? 0 : data.size();
 
             if (numNeeded > numHave) {
@@ -618,7 +618,7 @@ class CSPTokenReader {
     private boolean _done;
 
     public CSPTokenReader(Map profile, Map ioPorts,
-        ConditionalBranchController cbc) {
+            ConditionalBranchController cbc) {
         _ioPorts = ioPorts;
         _profile = profile;
         _cbc = cbc;
@@ -636,7 +636,7 @@ class CSPTokenReader {
         int i = 0;
 
         for (Iterator iterator = profile.keySet().iterator();
-                        iterator.hasNext();) {
+             iterator.hasNext();) {
             ChannelID chID = (ChannelID) iterator.next();
             _indexToChannelID[i] = chID;
             _channelIDToIndex.put(chID, new Integer(i));
@@ -658,7 +658,7 @@ class CSPTokenReader {
 
         if (index >= ((Integer) _profile.get(chID)).intValue()) {
             throw new DDIException(
-                "Attempt to read token beyond input channel profile.");
+                    "Attempt to read token beyond input channel profile.");
         }
 
         return _data[((Integer) _channelIDToIndex.get(chID)).intValue()];
@@ -749,7 +749,7 @@ class CSPTokenReader {
     }
 
     private ConditionalReceive[] _createBranches()
-        throws IllegalActionException {
+            throws IllegalActionException {
         ConditionalReceive[] branches = new ConditionalReceive[_count.length];
         CalInterpreter ptActor = (CalInterpreter) _cbc.getParent();
 

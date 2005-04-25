@@ -51,5 +51,5 @@ public interface AtomicActorCreator {
      *  necessary.
      */
     public SootClass createAtomicActor(Entity entity, String newClassName,
-        ConstVariableModelAnalysis constAnalysis, Map options);
+            ConstVariableModelAnalysis constAnalysis, Map options);
 }

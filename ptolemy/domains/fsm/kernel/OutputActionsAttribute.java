@@ -119,7 +119,7 @@ public class OutputActionsAttribute extends AbstractActionsAttribute
      *   has an attribute with the name.
      */
     public OutputActionsAttribute(Transition transition, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(transition, name);
     }
 
@@ -149,8 +149,8 @@ public class OutputActionsAttribute extends AbstractActionsAttribute
 
                 if (!(nextDestination instanceof IOPort)) {
                     throw new IllegalActionException(this,
-                        "Destination is not an IOPort: "
-                        + nextDestination.getFullName());
+                            "Destination is not an IOPort: "
+                            + nextDestination.getFullName());
                 }
 
                 IOPort destination = (IOPort) nextDestination;
@@ -166,7 +166,7 @@ public class OutputActionsAttribute extends AbstractActionsAttribute
                     // Chain exceptions to get the actor that
                     // threw the exception.
                     throw new IllegalActionException(this, ex,
-                        "Expression invalid.");
+                            "Expression invalid.");
                 }
 
                 try {
@@ -188,8 +188,8 @@ public class OutputActionsAttribute extends AbstractActionsAttribute
 
                             if (_debugging) {
                                 _debug(getFullName() + " port: "
-                                    + destination.getName() + " channel: "
-                                    + chanelValue + ", token: " + token);
+                                        + destination.getName() + " channel: "
+                                        + chanelValue + ", token: " + token);
                             }
                         } else {
                             destination.broadcast(token);
@@ -198,21 +198,21 @@ public class OutputActionsAttribute extends AbstractActionsAttribute
                                 // If the destination is both input and output,
                                 // also send the tokens to local receivers.
                                 for (int i = 0; i < localReceivers.length;
-                                                i++) {
+                                     i++) {
                                     localReceivers[i][0].put(token);
                                 }
                             }
 
                             if (_debugging) {
                                 _debug(getFullName() + " port: "
-                                    + destination.getName() + " token: "
-                                    + token);
+                                        + destination.getName() + " token: "
+                                        + token);
                             }
                         }
                     }
                 } catch (NoRoomException ex) {
                     throw new IllegalActionException(this,
-                        "Cannot complete action: " + ex.getMessage());
+                            "Cannot complete action: " + ex.getMessage());
                 } catch (UnknownResultException ex) {
                     // Produce no output.
                 }
@@ -231,31 +231,31 @@ public class OutputActionsAttribute extends AbstractActionsAttribute
      *   does not have a destination with the specified name.
      */
     protected NamedObj _getDestination(String name)
-        throws IllegalActionException {
+            throws IllegalActionException {
         Transition transition = (Transition) getContainer();
 
         if (transition == null) {
             throw new IllegalActionException(this,
-                "Action has no container transition.");
+                    "Action has no container transition.");
         }
 
         Entity fsm = (Entity) transition.getContainer();
 
         if (fsm == null) {
             throw new IllegalActionException(this, transition,
-                "Transition has no container.");
+                    "Transition has no container.");
         }
 
         IOPort port = (IOPort) fsm.getPort(name);
 
         if (port == null) {
             throw new IllegalActionException(fsm, this,
-                "Cannot find port with name: " + name);
+                    "Cannot find port with name: " + name);
         }
 
         if (!port.isOutput()) {
             throw new IllegalActionException(fsm, this,
-                "The port is not an output port: " + name);
+                    "The port is not an output port: " + name);
         }
 
         return port;

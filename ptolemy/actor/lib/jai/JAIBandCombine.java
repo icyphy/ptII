@@ -76,7 +76,7 @@ public class JAIBandCombine extends Transformer {
      *   actor with this name.
      */
     public JAIBandCombine(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         matrix = new Parameter(this, "matrix",
@@ -99,7 +99,7 @@ public class JAIBandCombine extends Transformer {
      *  @exception IllegalActionException If a contained method throws it.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == matrix) {
             _matrixValue = ((DoubleMatrixToken) matrix.getToken()).doubleMatrix();
         } else {
@@ -126,9 +126,9 @@ public class JAIBandCombine extends Transformer {
             newImage = JAI.create("bandCombine", parameters);
         } catch (IllegalArgumentException ex) {
             throw new IllegalActionException(this, ex,
-                "Failed to band combine the image\n" + ex.getMessage()
-                + "\n  Number of bands: " + oldImage.getNumBands()
-                + "\n  Image: " + oldImage.toString());
+                    "Failed to band combine the image\n" + ex.getMessage()
+                    + "\n  Number of bands: " + oldImage.getNumBands()
+                    + "\n  Image: " + oldImage.toString());
         }
 
         output.send(0, new JAIImageToken(newImage));
@@ -139,25 +139,25 @@ public class JAIBandCombine extends Transformer {
 
     /** The initial value of the transformation matrix.  */
     private double[][] _initialMatrix = {
-            {
-                1.0D,
-                0.0D,
-                0.0D,
-                0.0D
-            },
-            {
-                0.0D,
-                1.0D,
-                0.0D,
-                0.0D
-            },
-            {
-                0.0D,
-                0.0D,
-                1.0D,
-                0.0D
-            }
-        };
+        {
+            1.0D,
+            0.0D,
+            0.0D,
+            0.0D
+        },
+        {
+            0.0D,
+            1.0D,
+            0.0D,
+            0.0D
+        },
+        {
+            0.0D,
+            0.0D,
+            1.0D,
+            0.0D
+        }
+    };
 
     /** The value of the transformation matrix */
     private double[][] _matrixValue;

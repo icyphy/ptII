@@ -64,7 +64,7 @@ public class BoxedValueIcon extends AttributeValueIcon {
      *  @param name The name of this attribute.
      */
     public BoxedValueIcon(NamedObj container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
     }
 

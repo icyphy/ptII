@@ -88,7 +88,7 @@ public class LevelCrossingDetector extends TypedAtomicActor
      *   an entity already in the container.
      */
     public LevelCrossingDetector(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         output = new TypedIOPort(this, "output", false, true);
@@ -179,14 +179,14 @@ public class LevelCrossingDetector extends TypedAtomicActor
      *  @exception IllegalActionException If the attribute change failed.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == errorTolerance) {
             double tolerance = ((DoubleToken) errorTolerance.getToken())
-                            .doubleValue();
+                .doubleValue();
 
             if (tolerance <= 0.0) {
                 throw new IllegalActionException(this,
-                    "Error tolerance must be greater than 0.");
+                        "Error tolerance must be greater than 0.");
             }
 
             _errorTolerance = tolerance;
@@ -204,7 +204,7 @@ public class LevelCrossingDetector extends TypedAtomicActor
                 _detectRisingCrossing = true;
             } else {
                 throw new IllegalActionException("Unknown direction: "
-                    + crossingDirections);
+                        + crossingDirections);
             }
         } else if (attribute == level) {
             _level = ((DoubleToken) level.getToken()).doubleValue();
@@ -268,7 +268,7 @@ public class LevelCrossingDetector extends TypedAtomicActor
                 boolean inputIsIncreasing = _thisTrigger > _lastTrigger;
 
                 if ((_detectFallingCrossing && !inputIsIncreasing)
-                                || (_detectRisingCrossing && inputIsIncreasing)) {
+                        || (_detectRisingCrossing && inputIsIncreasing)) {
                     hasEvent = true;
                 }
             }
@@ -276,19 +276,19 @@ public class LevelCrossingDetector extends TypedAtomicActor
             if (hasEvent) {
                 // Emit an event.
                 if (((BooleanToken) useDefaultEventValue.getToken())
-                                .booleanValue()) {
+                        .booleanValue()) {
                     output.send(0, defaultEventValue.getToken());
 
                     if (_debugging) {
                         _debug("Emitting an event with a default value: "
-                            + defaultEventValue.getToken());
+                                + defaultEventValue.getToken());
                     }
                 } else {
                     output.send(0, new DoubleToken(_level));
 
                     if (_debugging) {
                         _debug("Emitting an event with the level value: "
-                            + _level);
+                                + _level);
                     }
                 }
 
@@ -341,12 +341,12 @@ public class LevelCrossingDetector extends TypedAtomicActor
 
             if (Math.abs(_thisTrigger - _level) < _errorTolerance) {
                 if ((_detectFallingCrossing && !inputIsIncreasing)
-                                || (_detectRisingCrossing && inputIsIncreasing)) {
+                        || (_detectRisingCrossing && inputIsIncreasing)) {
                     // The current time is close enough to when the event
                     // happens.
                     if (_debugging) {
                         _debug("Event is detected at "
-                            + getDirector().getModelTime());
+                                + getDirector().getModelTime());
                     }
 
                     _eventNow = true;
@@ -361,7 +361,7 @@ public class LevelCrossingDetector extends TypedAtomicActor
                 // Level crossing happens and the direction is right,
                 // report a missing event.
                 if ((_detectFallingCrossing && !inputIsIncreasing)
-                                || (_detectRisingCrossing && inputIsIncreasing)) {
+                        || (_detectRisingCrossing && inputIsIncreasing)) {
                     _eventNow = false;
                     _eventMissed = true;
                 } else {
@@ -373,11 +373,11 @@ public class LevelCrossingDetector extends TypedAtomicActor
             }
         } else if (_thisTrigger == _level) {
             if ((_detectFallingCrossing && !inputIsIncreasing)
-                            || (_detectRisingCrossing && inputIsIncreasing)) {
+                    || (_detectRisingCrossing && inputIsIncreasing)) {
                 // The current time is exactly when the event happens.
                 if (_debugging) {
                     _debug("Event is detected at "
-                        + getDirector().getModelTime());
+                            + getDirector().getModelTime());
                 }
 
                 _eventNow = true;
@@ -432,7 +432,7 @@ public class LevelCrossingDetector extends TypedAtomicActor
     public void preinitialize() throws IllegalActionException {
         if (!(getDirector() instanceof CTDirector)) {
             throw new IllegalActionException("LevelCrossingDetector can only"
-                + " be used inside CT domain.");
+                    + " be used inside CT domain.");
         }
 
         super.preinitialize();
@@ -452,12 +452,12 @@ public class LevelCrossingDetector extends TypedAtomicActor
             // level crossing happens. The little overshoot chosen here
             // is half of the error toelrance.
             refinedStep = ((Math.abs(_lastTrigger - _level)
-                + (_errorTolerance / 2)) * dir.getCurrentStepSize()) / Math.abs(_thisTrigger
-                                - _lastTrigger);
+                                   + (_errorTolerance / 2)) * dir.getCurrentStepSize()) / Math.abs(_thisTrigger
+                                           - _lastTrigger);
 
             if (_debugging) {
                 _debug(getFullName() + " Event Missed: refined step to "
-                    + refinedStep + " at " + dir.getModelTime());
+                        + refinedStep + " at " + dir.getModelTime());
             }
         }
 

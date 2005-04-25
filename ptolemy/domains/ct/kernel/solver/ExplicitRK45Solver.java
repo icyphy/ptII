@@ -68,8 +68,8 @@ import ptolemy.kernel.util.Workspace;
    and error control:
    <pre>
    LTE = [(37.0/378 - 2825.0/27648)*K0 + (250.0/621 - 18575.0/48384)*K2 +
-        (125.0/594 - 13525.0/55296)*K3 + (0.0 - 277.0/14336)*K4 +
-        (512.0/1771 - 0.25)*K5]*h.
+   (125.0/594 - 13525.0/55296)*K3 + (0.0 - 277.0/14336)*K4 +
+   (512.0/1771 - 0.25)*K5]*h.
    </pre>
    <P>
    If the LTE is less than the error tolerance, then this step h is considered
@@ -133,7 +133,7 @@ public class ExplicitRK45Solver extends ODESolver {
         Time iterationBeginTime = director.getIterationBeginTime();
         double currentStepSize = director.getCurrentStepSize();
         director.setModelTime(iterationBeginTime.add(
-                currentStepSize * _timeInc[_getRoundCount()]));
+                                      currentStepSize * _timeInc[_getRoundCount()]));
     }
 
     /** Fire state transition actors. Increment the round count.
@@ -175,7 +175,7 @@ public class ExplicitRK45Solver extends ODESolver {
      *  read input, or can not send output.
      */
     public void integratorFire(CTBaseIntegrator integrator)
-        throws IllegalActionException {
+            throws IllegalActionException {
         CTDirector director = (CTDirector) getContainer();
         int r = _getRoundCount();
         double xn = integrator.getState();
@@ -213,7 +213,7 @@ public class ExplicitRK45Solver extends ODESolver {
             integrator.setAuxVariables(3, k3);
             outvalue = xn
                 + (h * ((k[0] * _B[3][0]) + (k[1] * _B[3][1])
-                            + (k[2] * _B[3][2]) + (k3 * _B[3][3])));
+                           + (k[2] * _B[3][2]) + (k3 * _B[3][3])));
             break;
 
         case 4:
@@ -222,8 +222,8 @@ public class ExplicitRK45Solver extends ODESolver {
             integrator.setAuxVariables(4, k4);
             outvalue = xn
                 + (h * ((k[0] * _B[4][0]) + (k[1] * _B[4][1])
-                            + (k[2] * _B[4][2]) + (k[3] * _B[4][3])
-                            + (k4 * _B[4][4])));
+                           + (k[2] * _B[4][2]) + (k[3] * _B[4][3])
+                           + (k4 * _B[4][4])));
             break;
 
         case 5:
@@ -232,14 +232,14 @@ public class ExplicitRK45Solver extends ODESolver {
             integrator.setAuxVariables(5, k5);
             outvalue = xn
                 + (h * ((k[0] * _B[5][0]) + (k[1] * _B[5][1])
-                            + (k[2] * _B[5][2]) + (k[3] * _B[5][3])
-                            + (k[4] * _B[5][4]) + (k5 * _B[5][5])));
+                           + (k[2] * _B[5][2]) + (k[3] * _B[5][3])
+                           + (k[4] * _B[5][4]) + (k5 * _B[5][5])));
             integrator.setTentativeState(outvalue);
             break;
 
         default:
             throw new InvalidStateException(this,
-                "execution sequence out of range.");
+                    "execution sequence out of range.");
         }
 
         integrator.output.broadcast(new DoubleToken(outvalue));
@@ -262,27 +262,27 @@ public class ExplicitRK45Solver extends ODESolver {
 
             double[] k = integrator.getAuxVariables();
             double error = h * Math.abs((k[0] * _E[0]) + (k[1] * _E[1])
-                                + (k[2] * _E[2]) + (k[3] * _E[3])
-                                + (k[4] * _E[4]) + (k[5] * _E[5]));
+                    + (k[2] * _E[2]) + (k[3] * _E[3])
+                    + (k[4] * _E[4]) + (k[5] * _E[5]));
 
             //store the Local Truncation Error into k[6]
             integrator.setAuxVariables(6, error);
             _debug("Integrator: " + integrator.getName()
-                + " local truncation error = " + error);
+                    + " local truncation error = " + error);
 
             if (error < tolerance) {
                 _debug("Integrator: " + integrator.getName()
-                    + " report a success.");
+                        + " report a success.");
                 return true;
             } else {
                 _debug("Integrator: " + integrator.getName()
-                    + " reports a failure.");
+                        + " reports a failure.");
                 return false;
             }
         } catch (IllegalActionException e) {
             //should never happen.
             throw new InternalErrorException(integrator.getName()
-                + " can't read input." + e.getMessage());
+                    + " can't read input." + e.getMessage());
         }
     }
 
@@ -306,7 +306,7 @@ public class ExplicitRK45Solver extends ODESolver {
         }
 
         _debug("integrator: " + integrator.getName()
-            + " suggests next step size = " + newh);
+                + " suggests next step size = " + newh);
         return newh;
     }
 
@@ -317,60 +317,60 @@ public class ExplicitRK45Solver extends ODESolver {
 
     // The ratio of time increments within one integration step.
     private static final double[] _timeInc = {
-            0.2,
-            0.3,
-            0.6,
-            1.0,
-            0.875,
-            1.0
-        };
+        0.2,
+        0.3,
+        0.6,
+        1.0,
+        0.875,
+        1.0
+    };
 
     // B coefficients
     private static final double[][] _B = {
-            {
-                0.2
-            },
-            {
-                3.0 / 40,
-                9.0 / 40
-            },
-            {
-                0.3,
-                -0.9,
-                1.2
-            },
-            {
-                -11.0 / 54,
-                5.0 / 2,
-                -70.0 / 27,
-                35.0 / 27
-            },
-            {
-                1631.0 / 55296,
-                175.0 / 512,
-                575.0 / 13824,
-                44275.0 / 110592,
-                253.0 / 4096
-            },
-            {
-                37.0 / 378,
-                0.0,
-                250.0 / 621,
-                125.0 / 594,
-                0.0,
-                512.0 / 1771
-            }
-        };
+        {
+            0.2
+        },
+        {
+            3.0 / 40,
+            9.0 / 40
+        },
+        {
+            0.3,
+            -0.9,
+            1.2
+        },
+        {
+            -11.0 / 54,
+            5.0 / 2,
+            -70.0 / 27,
+            35.0 / 27
+        },
+        {
+            1631.0 / 55296,
+            175.0 / 512,
+            575.0 / 13824,
+            44275.0 / 110592,
+            253.0 / 4096
+        },
+        {
+            37.0 / 378,
+            0.0,
+            250.0 / 621,
+            125.0 / 594,
+            0.0,
+            512.0 / 1771
+        }
+    };
 
     // E coefficients
     private static final double[] _E = {
-            (37.0 / 378) - (2825.0 / 27648),
-            0.0,
-            (250.0 / 621) - (18575.0 / 48384),
-            (125.0 / 594) - (13525.0 / 55296),
-            0.0 - (277.0 / 14336),
-            (512.0 / 1771) - 0.25
-        };
+        (37.0 / 378) - (2825.0 / 27648),
+        0.0,
+        (250.0 / 621) - (18575.0 / 48384),
+        (125.0 / 594) - (13525.0 / 55296),
+        0.0 - (277.0 / 14336),
+        (512.0 / 1771) - 0.25
+    };
 
     // The order of the algorithm.
     private static final int _order = 5;

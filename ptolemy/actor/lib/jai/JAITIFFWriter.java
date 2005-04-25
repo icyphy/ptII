@@ -73,7 +73,7 @@ public class JAITIFFWriter extends JAIWriter {
      *   actor with this name.
      */
     public JAITIFFWriter(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         fileName.setExpression("file.tiff");
@@ -108,7 +108,7 @@ public class JAITIFFWriter extends JAIWriter {
 
         TIFFEncodeParam tiffEncodeParam = new TIFFEncodeParam();
         tiffEncodeParam.setWriteTiled(((BooleanToken) writeTiled.getToken())
-                        .booleanValue());
+                .booleanValue());
 
         _imageEncodeParam = tiffEncodeParam;
         return super.postfire();

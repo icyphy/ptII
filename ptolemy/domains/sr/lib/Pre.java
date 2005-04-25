@@ -57,7 +57,7 @@ import java.util.List;
  * @see NonStrictDelay
  * @author Edward A. Lee
  * @version $Id$
-@since Ptolemy II 4.1
+ @since Ptolemy II 4.1
  * @Pt.ProposedRating Yellow (eal)
  * @Pt.AcceptedRating Red (cxh)
  */
@@ -72,7 +72,7 @@ public class Pre extends Transformer {
      *   an actor already in the container.
      */
     public Pre(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         initialValue = new Parameter(this, "initialValue");
     }

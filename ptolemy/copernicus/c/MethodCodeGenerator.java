@@ -74,7 +74,7 @@ public class MethodCodeGenerator {
         byte indentLevel = 0;
 
         if (method.isConcrete() && !method.isNative()
-                        && !OverriddenMethodGenerator.isOverridden(method)) {
+                && !OverriddenMethodGenerator.isOverridden(method)) {
             StringBuffer code = new StringBuffer();
             JimpleBody body = (JimpleBody) (method.retrieveActiveBody());
             CSwitch visitor = new CSwitch(_context);
@@ -100,7 +100,7 @@ public class MethodCodeGenerator {
 
             // Generate the method head.
             code.append(_generateMethodDeclaration(method,
-                    parameterAndThisLocals, thisLocalName));
+                                parameterAndThisLocals, thisLocalName));
 
             // Generate declarations for variables used for
             // exception-catching.
@@ -110,7 +110,7 @@ public class MethodCodeGenerator {
             code.append(_generateLocal(method, parameterAndThisLocals));
 
             code.append(_generateMethodBody(method, visitor, tracker,
-                    thisLocalName));
+                                thisLocalName));
 
             String description = "Function that implements Method "
                 + method.getSignature();
@@ -155,7 +155,7 @@ public class MethodCodeGenerator {
 
         if (tracker.trapsExist()) {
             code.append(_indent(1)
-                + _comment("Variables used for catching exceptions.") + "\n");
+                    + _comment("Variables used for catching exceptions.") + "\n");
             code.append(_indent(1) + "extern jmp_buf env;\n");
             code.append(_indent(1) + "extern int epc;\n");
             code.append(_indent(1) + "jmp_buf caller_env;\n");
@@ -163,7 +163,7 @@ public class MethodCodeGenerator {
 
             if (tracker.trapsExist()) {
                 code.append(_indent(1)
-                    + "extern _EXCEPTION_INSTANCE exception_id;\n");
+                        + "extern _EXCEPTION_INSTANCE exception_id;\n");
             }
         }
 
@@ -200,7 +200,7 @@ public class MethodCodeGenerator {
      *  @return The code.
      */
     protected String _generateExceptionMap(ExceptionTracker tracker,
-        CSwitch visitor) {
+            CSwitch visitor) {
         StringBuffer code = new StringBuffer();
 
         //Code for mapping an exception type to its handler.
@@ -219,13 +219,13 @@ public class MethodCodeGenerator {
                 while (j.hasNext()) {
                     Trap currentTrap = (Trap) j.next();
                     code.append("if (PCCG_instanceof("
-                        + "(PCCG_CLASS_INSTANCE*)exception_id, "
-                        + CNames.hashNumberOf(currentTrap.getException())
-                        + "))\n");
+                            + "(PCCG_CLASS_INSTANCE*)exception_id, "
+                            + CNames.hashNumberOf(currentTrap.getException())
+                            + "))\n");
                     code.append(_indent(4) + "{\n");
                     code.append(_indent(5) + "goto "
-                        + visitor.getLabel(currentTrap.getHandlerUnit())
-                        + ";\n");
+                            + visitor.getLabel(currentTrap.getHandlerUnit())
+                            + ";\n");
                     code.append(_indent(4) + "}\n");
                     code.append(_indent(4) + "else ");
                 }
@@ -234,20 +234,20 @@ public class MethodCodeGenerator {
                 code.append("\n" + _indent(4) + "{\n");
                 code.append(_indent(5) + "longjmp(caller_env, caller_epc);\n");
                 code.append(_indent(5) + "/* unhandled exception: "
-                    + "return control to caller */\n");
+                        + "return control to caller */\n");
                 code.append(_indent(4) + "}\n");
             } else {
                 code.append(_indent(4)
-                    + "/* No active Traps for this epc. */\n");
+                        + "/* No active Traps for this epc. */\n");
             }
         }
 
         code.append(_indent(3) + "default: longjmp(caller_env, caller_epc);\n");
 
-        code.append(_indent(2) + "}\n");
+                                      code.append(_indent(2) + "}\n");
 
-        code.append(_indent(1) + "}\n");
-        return code.toString();
+                                      code.append(_indent(1) + "}\n");
+                                      return code.toString();
     }
 
     /** Generate code to declare and initialize local variables.
@@ -263,7 +263,7 @@ public class MethodCodeGenerator {
      *  @return The code.
      */
     protected String _generateLocal(SootMethod method,
-        HashSet parameterAndThisLocals) {
+            HashSet parameterAndThisLocals) {
         StringBuffer code = new StringBuffer();
 
         JimpleBody body = (JimpleBody) method.retrieveActiveBody();
@@ -272,7 +272,7 @@ public class MethodCodeGenerator {
             // Declare local variables.
             Iterator locals = body.getLocals().iterator();
             code.append(_indent(1)
-                + _comment("Declarations for local variables."));
+                    + _comment("Declarations for local variables."));
 
             while (locals.hasNext()) {
                 Local nextLocal = (Local) (locals.next());
@@ -291,7 +291,7 @@ public class MethodCodeGenerator {
 
             // Initialize local variables.
             code.append(_indent(1)
-                + _comment("Initializations for local variables."));
+                    + _comment("Initializations for local variables."));
 
             locals = body.getLocals().iterator();
 
@@ -300,7 +300,7 @@ public class MethodCodeGenerator {
 
                 if (!parameterAndThisLocals.contains(nextLocal)) {
                     code.append(_indent(1) + CNames.localNameOf(nextLocal)
-                        + " = ");
+                            + " = ");
 
                     // Set RefTypes to NULL pointers, and all other variables
                     // to 0.
@@ -324,7 +324,7 @@ public class MethodCodeGenerator {
      *  @return The code.
      */
     protected String _generateMethodBody(SootMethod method, CSwitch visitor,
-        ExceptionTracker tracker, String thisLocalName) {
+            ExceptionTracker tracker, String thisLocalName) {
         JimpleBody body = (JimpleBody) method.retrieveActiveBody();
         StringBuffer code = new StringBuffer();
         visitor.indentLevel = 0;
@@ -345,8 +345,8 @@ public class MethodCodeGenerator {
         }
 
         code.append("\n"
-            + _generateMethodUnitCode(tracker, visitor, method,
-                visitor.indentLevel));
+                + _generateMethodUnitCode(tracker, visitor, method,
+                        visitor.indentLevel));
 
         code.append(_generateEpilogue(tracker, visitor));
 
@@ -362,7 +362,7 @@ public class MethodCodeGenerator {
      *  @return The code for the method's declaration(its head).
      */
     protected String _generateMethodDeclaration(SootMethod method,
-        HashSet parameterAndThisLocals, String thisLocalName) {
+            HashSet parameterAndThisLocals, String thisLocalName) {
         JimpleBody body = (JimpleBody) method.retrieveActiveBody();
         StringBuffer code = new StringBuffer();
         String description = "Function that implements Method "
@@ -382,12 +382,12 @@ public class MethodCodeGenerator {
             parameterAndThisLocals.add(body.getThisLocal());
             thisLocalName = CNames.localNameOf(body.getThisLocal());
             code.append(CNames.instanceNameOf(method.getDeclaringClass()) + " "
-                + thisLocalName);
+                    + thisLocalName);
             parameterCount++;
         }
 
         for (parameterIndex = 0; parameterIndex < method.getParameterCount();
-                        parameterIndex++) {
+             parameterIndex++) {
             if (parameterCount++ > 0) {
                 code.append(", ");
             }
@@ -397,7 +397,7 @@ public class MethodCodeGenerator {
 
             Type parameterType = local.getType();
             code.append(CNames.typeNameOf(parameterType) + " "
-                + CNames.localNameOf(local));
+                    + CNames.localNameOf(local));
             _updateRequiredTypes(parameterType);
         }
 
@@ -413,7 +413,7 @@ public class MethodCodeGenerator {
      *  @return The prologue code.
      */
     protected String _generateMethodPrologue(ExceptionTracker tracker,
-        CSwitch visitor) {
+            CSwitch visitor) {
         StringBuffer code = new StringBuffer();
         byte indentLevel = 1;
 
@@ -422,7 +422,7 @@ public class MethodCodeGenerator {
         if (tracker.trapsExist()) {
             code.append(_indent(1) + "caller_epc = epc;\n");
             code.append(_indent(1)
-                + "memcpy(caller_env, env, sizeof(jmp_buf));\n");
+                    + "memcpy(caller_env, env, sizeof(jmp_buf));\n");
 
             code.append("\n");
 
@@ -448,14 +448,14 @@ public class MethodCodeGenerator {
      *  @return The code.
      */
     protected String _generateMethodUnitCode(ExceptionTracker tracker,
-        CSwitch visitor, SootMethod method, byte indentLevel) {
+            CSwitch visitor, SootMethod method, byte indentLevel) {
         JimpleBody body = (JimpleBody) method.retrieveActiveBody();
         StringBuffer code = new StringBuffer();
 
         //Exception-catching in the body.
         Iterator units = body.getUnits().iterator();
         boolean handle_exceptions = tracker.trapsExist()
-                        && (!Context.getSingleClassMode());
+            && (!Context.getSingleClassMode());
 
         while (units.hasNext()) {
             Unit unit = (Unit) (units.next());
@@ -469,7 +469,7 @@ public class MethodCodeGenerator {
                 tracker.beginUnitEncountered(unit);
                 code.append(_indent(2) + "epc = " + tracker.getEpc() + ";\n");
                 code.append(_indent(2) + "/*Trap " + tracker.beginIndexOf(unit)
-                    + " begins. */\n");
+                        + " begins. */\n");
             }
 
             //Actual unit code.
@@ -486,7 +486,7 @@ public class MethodCodeGenerator {
             //Code for end unit in exceptions.
             if (handle_exceptions && tracker.isEndUnit(unit)) {
                 code.append(_indent(2) + "/* That was end unit for trap "
-                    + tracker.endIndexOf(unit) + " */\n");
+                        + tracker.endIndexOf(unit) + " */\n");
                 tracker.endUnitEncountered(unit);
                 code.append(_indent(2) + "epc = " + tracker.getEpc() + ";\n");
             }
@@ -494,7 +494,7 @@ public class MethodCodeGenerator {
             //Code for handler unit in exceptions.
             if (handle_exceptions && tracker.isHandlerUnit(unit)) {
                 code.append(_indent(2) + "/* Handler Unit for Trap "
-                    + tracker.handlerIndexOf(unit) + " */\n");
+                        + tracker.handlerIndexOf(unit) + " */\n");
             }
         }
 
@@ -519,7 +519,7 @@ public class MethodCodeGenerator {
      *  @param method  The method for which labels need to be initialized.
      */
     protected void _initializeLabels(CSwitch visitor, ExceptionTracker tracker,
-        SootMethod method) {
+            SootMethod method) {
         JimpleBody body = (JimpleBody) method.retrieveActiveBody();
         Iterator units = body.getUnits().iterator();
 
@@ -554,7 +554,7 @@ public class MethodCodeGenerator {
             // All targets for switch statements must be added.
             else if (unit instanceof TableSwitchStmt) {
                 Iterator targets = ((TableSwitchStmt) unit).getTargets()
-                                                .iterator();
+                    .iterator();
 
                 while (targets.hasNext()) {
                     visitor.addTarget((Unit) targets.next());
@@ -563,7 +563,7 @@ public class MethodCodeGenerator {
                 visitor.addTarget(((TableSwitchStmt) unit).getDefaultTarget());
             } else if (unit instanceof LookupSwitchStmt) {
                 Iterator targets = ((LookupSwitchStmt) unit).getTargets()
-                                                .iterator();
+                    .iterator();
 
                 while (targets.hasNext()) {
                     visitor.addTarget((Unit) targets.next());
@@ -589,14 +589,14 @@ public class MethodCodeGenerator {
             if (type instanceof RefType) {
                 source = ((RefType) type).getSootClass();
             } else if ((type instanceof ArrayType)
-                            && (((ArrayType) type).baseType instanceof RefType)) {
+                    && (((ArrayType) type).baseType instanceof RefType)) {
                 source = ((RefType) (((ArrayType) type).baseType)).getSootClass();
             }
 
             if (source != null) {
                 if (!_requiredTypeMap.containsKey(source)) {
                     _requiredTypeMap.put(source,
-                        CNames.includeFileNameOf(source));
+                            CNames.includeFileNameOf(source));
                 }
             }
         }

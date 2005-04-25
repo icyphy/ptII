@@ -1569,7 +1569,7 @@ public class ASTFormatter extends ASTVisitor {
             _outputModifiers(node.modifiers());
         }
         _output(node.isInterface() ? "interface " : "class ");
-            //$NON-NLS-2$
+        //$NON-NLS-2$
         node.getName().accept(this);
         if (node.getAST().apiLevel() >= AST.JLS3) {
             if (!node.typeParameters().isEmpty()) {
@@ -1594,7 +1594,7 @@ public class ASTFormatter extends ASTVisitor {
             }
             if (!node.superInterfaces().isEmpty()) {
                 _output(node.isInterface() ? "extends " : "implements ");
-                    //$NON-NLS-2$
+                //$NON-NLS-2$
                 Iterator it;
                 for (it = node.superInterfaces().iterator(); it.hasNext(); ) {
                     Name n = (Name) it.next();
@@ -1614,10 +1614,10 @@ public class ASTFormatter extends ASTVisitor {
             }
             if (!node.superInterfaceTypes().isEmpty()) {
                 _output(node.isInterface() ? "extends " : "implements ");
-                    //$NON-NLS-2$
+                //$NON-NLS-2$
                 Iterator it;
                 for (it = node.superInterfaceTypes().iterator();
-                        it.hasNext(); ) {
+                     it.hasNext(); ) {
                     Type t = (Type) it.next();
                     t.accept(this);
                     if (it.hasNext()) {

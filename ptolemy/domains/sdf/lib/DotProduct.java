@@ -78,7 +78,7 @@ public class DotProduct extends TypedAtomicActor {
      *   an actor already in the container.
      */
     public DotProduct(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         input1 = new TypedIOPort(this, "input1", true, false);
@@ -134,14 +134,14 @@ public class DotProduct extends TypedAtomicActor {
         super.fire();
 
         if ((input1.getType() instanceof ArrayType)
-                        && (input2.getType() instanceof ArrayType)) {
+                && (input2.getType() instanceof ArrayType)) {
             try {
                 _arrayFire();
             } catch (IllegalActionException e) {
                 throw e;
             }
         } else if ((input1.getType() instanceof UnsizedMatrixType)
-                        && (input2.getType() instanceof UnsizedMatrixType)) {
+                && (input2.getType() instanceof UnsizedMatrixType)) {
             try {
                 _matrixFire();
             } catch (IllegalActionException e) {
@@ -186,13 +186,13 @@ public class DotProduct extends TypedAtomicActor {
 
         if (array1.length != array2.length) {
             throw new IllegalActionException("Inputs to DotProduct have "
-                + "unequal lengths: " + array1.length + " and " + array2.length
-                + ".");
+                    + "unequal lengths: " + array1.length + " and " + array2.length
+                    + ".");
         }
 
         if (array1.length < 1) {
             throw new IllegalActionException("Inputs to DotProduct have "
-                + "no elements.");
+                    + "no elements.");
         }
 
         Token dotProd = null;
@@ -245,7 +245,7 @@ public class DotProduct extends TypedAtomicActor {
             String matrix1 = rowCount1 + " by " + columnCount1;
             String matrix2 = rowCount2 + " by " + columnCount2;
             throw new IllegalActionException("Tried to multiply a " + matrix1
-                + " matrix with a " + matrix2 + " matrix");
+                    + " matrix with a " + matrix2 + " matrix");
         }
     }
 
@@ -278,13 +278,13 @@ public class DotProduct extends TypedAtomicActor {
             if ((type1 == BaseType.UNKNOWN) || (type2 == BaseType.UNKNOWN)) {
                 return BaseType.UNKNOWN;
             } else if ((type1 instanceof ArrayType)
-                            && (type2 instanceof ArrayType)) {
+                    && (type2 instanceof ArrayType)) {
                 Type elType1 = ((ArrayType) type1).getElementType();
                 Type elType2 = ((ArrayType) type2).getElementType();
                 CPO lattice = TypeLattice.lattice();
                 return lattice.leastUpperBound(elType1, elType2);
             } else if ((type1 instanceof UnsizedMatrixType)
-                            && (type2 instanceof UnsizedMatrixType)) {
+                    && (type2 instanceof UnsizedMatrixType)) {
                 Type elType1 = ((UnsizedMatrixType) type1).getElementType();
                 Type elType2 = ((UnsizedMatrixType) type2).getElementType();
                 CPO lattice = TypeLattice.lattice();
@@ -309,19 +309,19 @@ public class DotProduct extends TypedAtomicActor {
 
             if ((term1.isSettable()) && (term2.isSettable())) {
                 InequalityTerm[] array = {
-                        term1,
-                        term2
-                    };
+                    term1,
+                    term2
+                };
                 return array;
             } else if (term1.isSettable()) {
                 InequalityTerm[] array = {
-                        term1
-                    };
+                    term1
+                };
                 return array;
             } else if (term2.isSettable()) {
                 InequalityTerm[] array = {
-                        term2
-                    };
+                    term2
+                };
                 return array;
             }
 

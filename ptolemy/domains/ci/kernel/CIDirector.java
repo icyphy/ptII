@@ -128,7 +128,7 @@ public class CIDirector extends Director {
      *   an attribute with the specified name.
      */
     public CIDirector(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -162,20 +162,20 @@ public class CIDirector extends Director {
             if (pulledActor != null) {
                 if (_debugging) {
                     _debug("Process async pulled actor "
-                        + ((Nameable) pulledActor).getName());
+                            + ((Nameable) pulledActor).getName());
                 }
 
                 if (pulledActor.prefire()) {
                     if (_debugging) {
                         _debug("Async pulled actor ready to fire "
-                            + ((Nameable) pulledActor).getName());
+                                + ((Nameable) pulledActor).getName());
                     }
 
                     _actorsToFire.add(pulledActor);
                 } else {
                     if (_debugging) {
                         _debug("Request sync pull for async pulled actor "
-                            + ((Nameable) pulledActor).getName());
+                                + ((Nameable) pulledActor).getName());
                     }
 
                     _requestSyncPull(pulledActor);
@@ -204,7 +204,7 @@ public class CIDirector extends Director {
             } else {
                 synchronized (this) {
                     if ((_asyncPushedActors.size() == 0)
-                                    && (_asyncPulledActors.size() == 0)) {
+                            && (_asyncPulledActors.size() == 0)) {
                         try {
                             if (_debugging) {
                                 _debug("Wait for async request...");
@@ -241,7 +241,7 @@ public class CIDirector extends Director {
 
         if (container instanceof CompositeActor) {
             Iterator actors = ((CompositeActor) container).deepEntityList()
-                                           .iterator();
+                .iterator();
 
             while (actors.hasNext()) {
                 Actor actor = (Actor) actors.next();
@@ -249,7 +249,7 @@ public class CIDirector extends Director {
                 if (_isActive(actor)) {
                     if (_debugging) {
                         _debug("Initialize -- create actor manager for "
-                            + ((Nameable) actor).getName());
+                                + ((Nameable) actor).getName());
                     }
 
                     ActiveActorManager manager = new ActiveActorManager(actor,
@@ -276,8 +276,8 @@ public class CIDirector extends Director {
      */
     public boolean postfire() throws IllegalActionException {
         if ((_actorManagers.size() == 0) && (_asyncPushedActors.size() == 0)
-                        && (_asyncPulledActors.size() == 0)
-                        && (_actorsToFire.size() == 0)) {
+                && (_asyncPulledActors.size() == 0)
+                && (_actorsToFire.size() == 0)) {
             return false;
         } else {
             return true;
@@ -304,7 +304,7 @@ public class CIDirector extends Director {
             return true;
         } else {
             return (_asyncPushedActors.size() > 0)
-                        || (_asyncPulledActors.size() > 0);
+                || (_asyncPulledActors.size() > 0);
         }
     }
 
@@ -424,7 +424,7 @@ public class CIDirector extends Director {
         _stopRequested = true;
 
         Iterator actors = ((CompositeEntity) getContainer()).entityList()
-                                       .iterator();
+            .iterator();
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
@@ -465,7 +465,7 @@ public class CIDirector extends Director {
         // assert actor is pulled
         if (_debugging) {
             _debug("Schedule pulled actor to fire "
-                + ((Nameable) actor).getName());
+                    + ((Nameable) actor).getName());
         }
 
         _pulledActors.remove(actor);
@@ -542,7 +542,7 @@ public class CIDirector extends Director {
         }
 
         return (!hasInput && outputIsPush) || (!hasOutput && !inputIsPush)
-                    || (!inputIsPush && outputIsPush);
+            || (!inputIsPush && outputIsPush);
     }
 
     /** Return true if the given actor has a pending pull request.
@@ -589,7 +589,7 @@ public class CIDirector extends Director {
      *  @param actorManager An active actor manager.
      */
     protected synchronized void _removeActorManager(
-        ActiveActorManager actorManager) {
+            ActiveActorManager actorManager) {
         _actorManagers.remove(actorManager);
         notifyAll();
     }
@@ -614,7 +614,7 @@ public class CIDirector extends Director {
 
                 if (_debugging) {
                     _debug("   Add async pulled actor "
-                        + ((Nameable) a).getName());
+                            + ((Nameable) a).getName());
                 }
             }
         }
@@ -727,7 +727,7 @@ public class CIDirector extends Director {
             } catch (IllegalActionException ex) {
                 // this should not happen
                 throw new InternalErrorException("Error in testing token "
-                    + "presence in the CI domain: " + ex);
+                        + "presence in the CI domain: " + ex);
             }
 
             Iterator sourcePorts = port.sourcePortList().iterator();

@@ -420,7 +420,7 @@ public class PxgraphParser {
      *  @exception IOException If an error occurs reading an input file.
      */
     public int parseArgs(String[] args)
-        throws CmdLineArgException, FileNotFoundException, IOException {
+            throws CmdLineArgException, FileNotFoundException, IOException {
         return parseArgs(args, null);
     }
 
@@ -437,7 +437,7 @@ public class PxgraphParser {
      *  @exception IOException If an error occurs reading an input file.
      */
     public int parseArgs(String[] args, URL base)
-        throws CmdLineArgException, FileNotFoundException, IOException {
+            throws CmdLineArgException, FileNotFoundException, IOException {
         int i = 0;
         int j;
         int argumentsRead = 0;
@@ -453,17 +453,17 @@ public class PxgraphParser {
 
         String arg;
         String[] unsupportedOptions = {
-                "-bd",
-                "-brb",
-                "-bw",
-                "-gw",
-                "-lw",
-                "-zg",
-                "-zw"
-            };
+            "-bd",
+            "-brb",
+            "-bw",
+            "-gw",
+            "-lw",
+            "-zg",
+            "-zw"
+        };
 
         while ((args != null) && (i < args.length)
-                        && (args[i].startsWith("-") || args[i].startsWith("="))) {
+                && (args[i].startsWith("-") || args[i].startsWith("="))) {
             arg = args[i++];
 
             if (arg.startsWith("-")) {
@@ -473,7 +473,7 @@ public class PxgraphParser {
                 for (j = 0; j < unsupportedOptions.length; j++) {
                     if (arg.equals(unsupportedOptions[j])) {
                         System.err.println("Warning: pxgraph: " + arg
-                            + " is not supported");
+                                + " is not supported");
                         i++;
                         badarg = true;
                     }
@@ -512,7 +512,7 @@ public class PxgraphParser {
 
                     if (spec.length == 1) {
                         throw new CmdLineArgException("Failed to parse `" + arg
-                            + "'");
+                                + "'");
                     } else {
                         _plot.setXRange(spec[0], spec[1]);
                     }
@@ -523,7 +523,7 @@ public class PxgraphParser {
 
                     if (spec.length == 1) {
                         throw new CmdLineArgException("Failed to parse `" + arg
-                            + "'");
+                                + "'");
                     } else {
                         _plot.setYRange(spec[0], spec[1]);
                     }
@@ -671,7 +671,7 @@ public class PxgraphParser {
                 if (arg.startsWith("=")) {
                     // Process =WxH+X+Y
                     width = (int) Integer.valueOf(arg.substring(1,
-                                arg.indexOf('x'))).intValue();
+                                                          arg.indexOf('x'))).intValue();
 
                     int plusIndex = arg.indexOf('+');
                     int minusIndex = arg.indexOf('-');
@@ -687,25 +687,25 @@ public class PxgraphParser {
                             }
 
                             height = Integer.valueOf(arg.substring(arg.indexOf(
-                                            'x') + 1, index)).intValue();
+                                                                           'x') + 1, index)).intValue();
                         } else {
                             if (plusIndex != -1) {
                                 // =WxH+X+Y
                                 height = Integer.valueOf(arg.substring(arg
-                                                        .indexOf('x') + 1,
-                                            plusIndex)).intValue();
+                                                                 .indexOf('x') + 1,
+                                                                 plusIndex)).intValue();
                             } else {
                                 // =WxH-X-Y
                                 height = Integer.valueOf(arg.substring(arg
-                                                        .indexOf('x') + 1,
-                                            minusIndex)).intValue();
+                                                                 .indexOf('x') + 1,
+                                                                 minusIndex)).intValue();
                             }
                         }
                     } else {
                         if (arg.length() > arg.indexOf('x')) {
                             // =WxH
                             height = Integer.valueOf(arg.substring(arg.indexOf(
-                                            'x') + 1, arg.length())).intValue();
+                                                                           'x') + 1, arg.length())).intValue();
                         }
                     }
 
@@ -758,7 +758,7 @@ public class PxgraphParser {
      *  @exception IOException If an error occurs reading an input file.
      */
     public int parsePxgraphargs(String pxgraphargs, URL base)
-        throws CmdLineArgException, FileNotFoundException, IOException {
+            throws CmdLineArgException, FileNotFoundException, IOException {
         // We convert the String to a Stream and then use a StreamTokenizer
         // to parse the arguments into a Vector and then copy
         // the vector into an array of Strings.  We use a Vector
@@ -781,7 +781,7 @@ public class PxgraphParser {
 
             int c;
             String partialarg = null;
-out:
+            out:
             while (true) {
                 c = stoken.nextToken();
 
@@ -839,7 +839,7 @@ out:
 
                 default:
                     throw new IOException("Failed to parse: '" + (char) c
-                        + "' in `" + pxgraphargs + "'");
+                            + "' in `" + pxgraphargs + "'");
                 }
             }
         } catch (IOException e) {
@@ -862,7 +862,7 @@ out:
      */
     public void read(InputStream inputStream) throws IOException {
         DataInputStream in = new DataInputStream(new BufferedInputStream(
-                    inputStream));
+                                                         inputStream));
 
         if (_binary) {
             int c;
@@ -898,7 +898,7 @@ out:
 
             default:
                 throw new IOException("Internal Error: Don't know about '"
-                    + _endian + "' style of endian");
+                        + _endian + "' style of endian");
             }
 
             try {
@@ -967,14 +967,14 @@ out:
                             if (byteSwapped) {
                                 in.readFully(input);
                                 x = Float.intBitsToFloat(((input[3] & 0xFF) << 24)
-                                                    | ((input[2] & 0xFF) << 16)
-                                                    | ((input[1] & 0xFF) << 8)
-                                                    | (input[0] & 0xFF));
+                                        | ((input[2] & 0xFF) << 16)
+                                        | ((input[1] & 0xFF) << 8)
+                                        | (input[0] & 0xFF));
                                 in.readFully(input);
                                 y = Float.intBitsToFloat(((input[3] & 0xFF) << 24)
-                                                    | ((input[2] & 0xFF) << 16)
-                                                    | ((input[1] & 0xFF) << 8)
-                                                    | (input[0] & 0xFF));
+                                        | ((input[2] & 0xFF) << 16)
+                                        | ((input[1] & 0xFF) << 8)
+                                        | (input[0] & 0xFF));
                             } else {
                                 x = in.readFloat();
                                 y = in.readFloat();
@@ -1009,7 +1009,7 @@ out:
                             }
 
                             _plot.addLegend(_currentdataset,
-                                datasetname.toString());
+                                    datasetname.toString());
                             _plot.setConnected(true);
                             break;
 
@@ -1021,11 +1021,11 @@ out:
 
                         default:
                             throw new IOException("Don't understand `"
-                                + (char) c + "' character "
-                                + "(decimal value = " + c
-                                + ") in binary file.  Last point was (" + x
-                                + "," + y + ").\nProcessed " + pointCount
-                                + " points successfully");
+                                    + (char) c + "' character "
+                                    + "(decimal value = " + c
+                                    + ") in binary file.  Last point was (" + x
+                                    + "," + y + ").\nProcessed " + pointCount
+                                    + " points successfully");
                         }
 
                         c = in.readByte();

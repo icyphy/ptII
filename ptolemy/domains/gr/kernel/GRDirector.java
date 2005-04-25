@@ -114,7 +114,7 @@ public class GRDirector extends StaticSchedulingDirector {
      *   CompositeActor and the name collides with an entity in the container.
      */
     public GRDirector(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _init();
     }
@@ -176,7 +176,7 @@ public class GRDirector extends StaticSchedulingDirector {
         // synchronizeToRealTime implementations.
         long currentTime = System.currentTimeMillis();
         int frameRate = ((IntToken) iterationTimeLowerBound.getToken())
-                        .intValue();
+            .intValue();
         long timeElapsed = currentTime - _lastIterationTime;
         long timeRemaining = frameRate - timeElapsed;
 
@@ -192,14 +192,14 @@ public class GRDirector extends StaticSchedulingDirector {
 
         if (container == null) {
             throw new InvalidStateException(this,
-                getName() + " fired, but it has no container!");
+                    getName() + " fired, but it has no container!");
         }
 
         Scheduler scheduler = getScheduler();
 
         if (scheduler == null) {
             throw new IllegalActionException(this,
-                "Attempted to fire " + "GR system with no scheduler");
+                    "Attempted to fire " + "GR system with no scheduler");
         }
 
         Schedule schedule = scheduler.getSchedule();
@@ -213,7 +213,7 @@ public class GRDirector extends StaticSchedulingDirector {
             // will be called.
             if (_debugging) {
                 _debug(new FiringEvent(this, actor, FiringEvent.BEFORE_PREFIRE,
-                        1));
+                               1));
             }
 
             if (actor instanceof CompositeActor) {
@@ -233,23 +233,23 @@ public class GRDirector extends StaticSchedulingDirector {
             if (flag) {
                 if (_debugging) {
                     _debug(new FiringEvent(this, actor,
-                            FiringEvent.BEFORE_FIRE, 1));
+                                   FiringEvent.BEFORE_FIRE, 1));
                 }
 
                 actor.fire();
 
                 if (_debugging) {
                     _debug(new FiringEvent(this, actor, FiringEvent.AFTER_FIRE,
-                            1));
+                                   1));
                     _debug(new FiringEvent(this, actor,
-                            FiringEvent.BEFORE_POSTFIRE, 1));
+                                   FiringEvent.BEFORE_POSTFIRE, 1));
                 }
 
                 actor.postfire();
 
                 if (_debugging) {
                     _debug(new FiringEvent(this, actor,
-                            FiringEvent.AFTER_POSTFIRE, 1));
+                                   FiringEvent.AFTER_POSTFIRE, 1));
                 }
             }
 
@@ -352,7 +352,7 @@ public class GRDirector extends StaticSchedulingDirector {
             if (actor instanceof ViewScreenInterface) {
                 if (viewScreen != null) {
                     throw new IllegalActionException(this,
-                        "GR model cannot contain more than one view screen.");
+                            "GR model cannot contain more than one view screen.");
                 }
 
                 viewScreen = (ViewScreenInterface) actor;
@@ -361,7 +361,7 @@ public class GRDirector extends StaticSchedulingDirector {
 
         if (viewScreen == null) {
             throw new IllegalActionException(this,
-                "GR model does not contain a view screen.");
+                    "GR model does not contain a view screen.");
         }
 
         // Set the view screen for all the actors.
@@ -454,7 +454,7 @@ public class GRDirector extends StaticSchedulingDirector {
 
         if (scheduler == null) {
             throw new IllegalActionException("Attempted to initialize "
-                + "GR system with no scheduler");
+                    + "GR system with no scheduler");
         }
 
         // force the schedule to be computed.
@@ -466,7 +466,7 @@ public class GRDirector extends StaticSchedulingDirector {
             scheduler.getSchedule();
         } catch (Exception ex) {
             throw new IllegalActionException(this, ex,
-                "Failed to compute schedule:");
+                    "Failed to compute schedule:");
         }
     }
 
@@ -493,7 +493,7 @@ public class GRDirector extends StaticSchedulingDirector {
 
         if (currentScheduler == null) {
             throw new IllegalActionException(this,
-                "Attempted to fire " + "GR system with no scheduler");
+                    "Attempted to fire " + "GR system with no scheduler");
         }
 
         currentScheduler.getSchedule();
@@ -539,10 +539,10 @@ public class GRDirector extends StaticSchedulingDirector {
             Class.forName("javax.vecmath.Tuple3f");
         } catch (Exception ex) {
             throw new InternalErrorException(this, ex,
-                "The GR domain requires that Java 3D be installed.\n"
-                + "Java 3D can be downloaded from\n"
-                + "http://java.sun.com/products/java-media/3D/\n"
-                + "For details see $PTII/ptolemy/domains/gr/main.htm");
+                    "The GR domain requires that Java 3D be installed.\n"
+                    + "Java 3D can be downloaded from\n"
+                    + "http://java.sun.com/products/java-media/3D/\n"
+                    + "For details see $PTII/ptolemy/domains/gr/main.htm");
         }
 
         try {
@@ -553,7 +553,7 @@ public class GRDirector extends StaticSchedulingDirector {
             // this should never happen because we don't override
             // setScheduler() to do sanity checks.
             throw new InternalErrorException(this, ex,
-                "Could not create Default scheduler.");
+                    "Could not create Default scheduler.");
         }
 
         try {
@@ -564,7 +564,7 @@ public class GRDirector extends StaticSchedulingDirector {
             iterationTimeLowerBound.setTypeEquals(BaseType.INT);
         } catch (Throwable throwable) {
             throw new InternalErrorException(this, throwable,
-                "Cannot create default iterations parameter.");
+                    "Cannot create default iterations parameter.");
         }
 
         _reset();

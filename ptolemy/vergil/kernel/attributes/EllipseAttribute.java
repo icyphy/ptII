@@ -63,7 +63,7 @@ public class EllipseAttribute extends FilledShapeAttribute {
      *   an attribute already in the container.
      */
     public EllipseAttribute(NamedObj container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // NOTE: This used to be calling setExpression(), but the change
@@ -89,7 +89,7 @@ public class EllipseAttribute extends FilledShapeAttribute {
             double halfWidth = _widthValue * 0.5;
             double halfHeight = _heightValue * 0.5;
             return new Ellipse2D.Double(-halfWidth, -halfHeight, _widthValue,
-                _heightValue);
+                    _heightValue);
         } else {
             return new Ellipse2D.Double(0.0, 0.0, _widthValue, _heightValue);
         }

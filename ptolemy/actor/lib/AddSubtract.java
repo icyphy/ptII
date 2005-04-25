@@ -90,7 +90,7 @@ public class AddSubtract extends TypedAtomicActor {
      *   an actor already in the container.
      */
     public AddSubtract(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         plus = new TypedIOPort(this, "plus", true, false);
         plus.setMultiport(true);
@@ -99,11 +99,11 @@ public class AddSubtract extends TypedAtomicActor {
         output = new TypedIOPort(this, "output", false, true);
 
         _attachText("_iconDescription",
-            "<svg>\n" + "<rect x=\"-20\" y=\"-20\" "
-            + "width=\"40\" height=\"40\" " + "style=\"fill:white\"/>\n"
-            + "<text x=\"-13\" y=\"-5\" " + "style=\"font-size:18\">\n"
-            + "+ \n" + "</text>\n" + "<text x=\"-13\" y=\"7\" "
-            + "style=\"font-size:18\">\n" + "_ \n" + "</text>\n" + "</svg>\n");
+                "<svg>\n" + "<rect x=\"-20\" y=\"-20\" "
+                + "width=\"40\" height=\"40\" " + "style=\"fill:white\"/>\n"
+                + "<text x=\"-13\" y=\"-5\" " + "style=\"font-size:18\">\n"
+                + "+ \n" + "</text>\n" + "<text x=\"-13\" y=\"7\" "
+                + "style=\"font-size:18\">\n" + "_ \n" + "</text>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////

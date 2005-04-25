@@ -69,7 +69,7 @@ public class ExpandPortNames extends EquationVisitor {
      * referenced in the equation.
      */
     public void expand(UnitEquation equation, ComponentEntity actor)
-        throws IllegalActionException {
+            throws IllegalActionException {
         _actorPorts = actor.portList();
         equation.visit(this);
     }
@@ -82,7 +82,7 @@ public class ExpandPortNames extends EquationVisitor {
      * @see ptolemy.data.unit.EquationVisitor#_visitUnitTerm(UnitTerm)
      */
     protected Object _visitUnitTerm(UnitTerm uTerm)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (uTerm.isVariable()) {
             String portName = uTerm.getVariable();
 
@@ -97,13 +97,13 @@ public class ExpandPortNames extends EquationVisitor {
 
                 if (actorPort.getName().equals(portName)) {
                     uTerm.setVariable(actorPort.getName(
-                            actorPort.getContainer().getContainer()));
+                                              actorPort.getContainer().getContainer()));
                     return null;
                 }
             }
 
             throw new IllegalActionException("Can't find Model port "
-                + portName);
+                    + portName);
         }
 
         return null;

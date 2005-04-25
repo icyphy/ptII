@@ -62,7 +62,7 @@ public class Gaussian extends RandomSource {
      *   actor with this name.
      */
     public Gaussian(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         output.setTypeEquals(BaseType.DOUBLE);
@@ -110,7 +110,7 @@ public class Gaussian extends RandomSource {
     protected void _generateRandomNumber() throws IllegalActionException {
         double meanValue = ((DoubleToken) (mean.getToken())).doubleValue();
         double standardDeviationValue = ((DoubleToken) (standardDeviation
-                        .getToken())).doubleValue();
+                                                 .getToken())).doubleValue();
         double rawNum = _random.nextGaussian();
         _current = (rawNum * standardDeviationValue) + meanValue;
     }

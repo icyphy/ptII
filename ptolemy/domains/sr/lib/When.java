@@ -50,7 +50,7 @@ import ptolemy.kernel.util.Workspace;
 
    @author Edward A. Lee
    @version $Id$
-@since Ptolemy II 4.1
+   @since Ptolemy II 4.1
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Red (cxh)
 */
@@ -65,7 +65,7 @@ public class When extends Transformer {
      *   an actor already in the container.
      */
     public When(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         control = new TypedIOPort(this, "control", true, false);
@@ -107,8 +107,8 @@ public class When extends Transformer {
      */
     public void fire() throws IllegalActionException {
         if (control.hasToken(0)
-                        && ((BooleanToken) control.get(0)).booleanValue()
-                        && input.hasToken(0)) {
+                && ((BooleanToken) control.get(0)).booleanValue()
+                && input.hasToken(0)) {
             output.send(0, input.get(0));
         } else {
             output.sendClear(0);

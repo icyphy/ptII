@@ -138,7 +138,7 @@ public class SimplePane extends GraphicsPane {
 
         BasicFigure cloud = new BasicFigure(bigarea, Color.blue);
         cloud.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
-                0.5f));
+                                   0.5f));
         figureLayer.add(cloud);
         cloud.setInteractor(selectionInteractor);
     }

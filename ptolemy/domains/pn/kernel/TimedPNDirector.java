@@ -116,7 +116,7 @@ public class TimedPNDirector extends PNDirector implements TimedDirector {
      *   an entity with the specified name.
      */
     public TimedPNDirector()
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super();
         timeResolution.setVisibility(Settable.FULL);
     }
@@ -134,7 +134,7 @@ public class TimedPNDirector extends PNDirector implements TimedDirector {
      *   an entity with the specified name.
      */
     public TimedPNDirector(Workspace workspace)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
         timeResolution.setVisibility(Settable.FULL);
     }
@@ -155,7 +155,7 @@ public class TimedPNDirector extends PNDirector implements TimedDirector {
      *   CompositeActor and the name collides with an entity in the container.
      */
     public TimedPNDirector(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         timeResolution.setVisibility(Settable.FULL);
     }
@@ -180,7 +180,7 @@ public class TimedPNDirector extends PNDirector implements TimedDirector {
 
         try {
             newObject._eventQueue = new CalendarQueue(new TimedEvent.TimeComparator(
-                        this));
+                                                              this));
         } catch (IllegalActionException e) {
             // If the time resolution of the director is invalid,
             // it should have been caught before this.
@@ -203,10 +203,10 @@ public class TimedPNDirector extends PNDirector implements TimedDirector {
      *  permissible (e.g. the given time is in the past).
      */
     public synchronized void fireAt(Actor actor, Time newFiringTime)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (newFiringTime.compareTo(getModelTime()) < 0) {
             throw new IllegalActionException(this,
-                "The process wants to " + " get fired in the past!");
+                    "The process wants to " + " get fired in the past!");
         }
 
         _eventQueue.put(new TimedEvent(newFiringTime, actor));
@@ -230,7 +230,7 @@ public class TimedPNDirector extends PNDirector implements TimedDirector {
     public void setModelTime(Time newTime) throws IllegalActionException {
         if (newTime.compareTo(getModelTime()) < 0) {
             throw new IllegalActionException(this,
-                "Attempt to set the " + "time to past.");
+                    "Attempt to set the " + "time to past.");
         } else {
             super.setModelTime(newTime);
         }
@@ -300,8 +300,8 @@ public class TimedPNDirector extends PNDirector implements TimedDirector {
                     _informOfDelayUnblock();
                 } else {
                     throw new InternalErrorException("Inconsistency"
-                        + " in number of actors blocked on delays count"
-                        + " and the entries in the CalendarQueue");
+                            + " in number of actors blocked on delays count"
+                            + " and the entries in the CalendarQueue");
                 }
 
                 //Remove any other process waiting to be resumed at the new
@@ -351,7 +351,7 @@ public class TimedPNDirector extends PNDirector implements TimedDirector {
      *  at.
      */
     protected CalendarQueue _eventQueue = new CalendarQueue(new TimedEvent.TimeComparator(
-                this));
+                                                                    this));
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

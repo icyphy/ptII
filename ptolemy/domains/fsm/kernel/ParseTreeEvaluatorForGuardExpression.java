@@ -119,7 +119,7 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
      *  @param errorTolerance The errorTolerance.
      */
     public ParseTreeEvaluatorForGuardExpression(RelationList relationList,
-        double errorTolerance) {
+            double errorTolerance) {
         _constructingRelationList = true;
         _relationList = relationList;
         _relationIndex = 0;
@@ -140,7 +140,7 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
      *   evaluation.
      */
     public ptolemy.data.Token evaluateParseTree(ASTPtRootNode node,
-        ParserScope scope) throws IllegalActionException {
+            ParserScope scope) throws IllegalActionException {
         _relationIndex = 0;
         return super.evaluateParseTree(node, scope);
     }
@@ -267,7 +267,7 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
      *  visitLogicalNode throws the IllegalActionException.
      */
     public void visitLogicalNode(ASTPtLogicalNode node)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
             return;
         }
@@ -279,19 +279,19 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
         // of the supr class directly.
         int numChildren = node.jjtGetNumChildren();
         _assert(numChildren > 0, node,
-            "The number of child nodes must be greater than zero");
+                "The number of child nodes must be greater than zero");
 
         ptolemy.data.Token result = _evaluateChild(node, 0);
 
         if (!(result instanceof BooleanToken)) {
             throw new IllegalActionException("Cannot perform logical "
-                + "operation on " + result + " which is a "
-                + result.getClass().getName());
+                    + "operation on " + result + " which is a "
+                    + result.getClass().getName());
         }
 
         // Make sure that exactly one of AND or OR is set.
         _assert(node.isLogicalAnd() ^ node.isLogicalOr(), node,
-            "Invalid operation");
+                "Invalid operation");
 
         boolean flag = node.isLogicalAnd();
 
@@ -301,8 +301,8 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
 
             if (!(nextToken instanceof BooleanToken)) {
                 throw new IllegalActionException("Cannot perform logical "
-                    + "operation on " + nextToken + " which is a "
-                    + result.getClass().getName());
+                        + "operation on " + nextToken + " which is a "
+                        + result.getClass().getName());
             }
 
             if (flag) {
@@ -325,7 +325,7 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
      *  visitRelationNode throws the IllegalActionException.
      */
     public void visitRelationalNode(ASTPtRelationalNode node)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
             return;
         }
@@ -337,7 +337,7 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
         // absent. If x is absent, we do not evaluate the "x < 10.0" part here.
         Set variablesOfNode = _variableCollector.collectFreeVariables(node);
         Iterator absentDiscreteVariables = _absentDiscreteVariables
-                        .listIterator();
+            .listIterator();
 
         while (absentDiscreteVariables.hasNext()) {
             String variableName = (String) absentDiscreteVariables.next();
@@ -368,14 +368,14 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
         _assert(numChildren == 2, node, "The number of child nodes must be two");
 
         ptolemy.data.expr.Token operator = (ptolemy.data.expr.Token) node
-                        .getOperator();
+            .getOperator();
         ptolemy.data.Token leftToken = tokens[0];
         ptolemy.data.Token rightToken = tokens[1];
 
         ptolemy.data.Token result;
 
         if ((operator.kind == PtParserConstants.EQUALS)
-                        || (operator.kind == PtParserConstants.NOTEQUALS)) {
+                || (operator.kind == PtParserConstants.NOTEQUALS)) {
             // If the operator is about equal or not-equal relations,
             if (operator.kind == PtParserConstants.EQUALS) {
                 result = leftToken.isCloseTo(rightToken, _errorTolerance);
@@ -391,7 +391,7 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
             // need an error tolerance. This is the only place ther error
             // tolerance is used.
             if ((leftToken instanceof ScalarToken)
-                            && (rightToken instanceof ScalarToken)) {
+                    && (rightToken instanceof ScalarToken)) {
                 // handle the relations like x == 2.0
                 ScalarToken difference = (ScalarToken) leftToken.subtract(rightToken);
 
@@ -420,9 +420,9 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
             // If the operator is neither about equal nor not-equal relations,
             // both tokens must be scalar tokens.
             if (!((leftToken instanceof ScalarToken)
-                            && (rightToken instanceof ScalarToken))) {
+                        && (rightToken instanceof ScalarToken))) {
                 throw new IllegalActionException("The " + operator.image
-                    + " operator can only be applied between scalars.");
+                        + " operator can only be applied between scalars.");
             }
 
             ScalarToken leftScalar = (ScalarToken) leftToken;
@@ -439,9 +439,9 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
                 result = leftScalar.isLessThan(rightScalar);
             } else {
                 throw new IllegalActionException("Invalid operation "
-                    + operator.image + " between "
-                    + leftToken.getClass().getName() + " and "
-                    + rightToken.getClass().getName());
+                        + operator.image + " between "
+                        + leftToken.getClass().getName() + " and "
+                        + rightToken.getClass().getName());
             }
 
             if (((BooleanToken) result).booleanValue()) {
@@ -451,7 +451,7 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
             }
 
             _difference = ((ScalarToken) leftScalar.subtract(rightScalar))
-                            .doubleValue();
+                .doubleValue();
         }
 
         _evaluatedChildToken = result;

@@ -82,7 +82,7 @@ public class StreamErrorHandler implements ErrorHandler {
      */
     public int handleError(String element, NamedObj context, Throwable exception) {
         _output.println("Error encountered in:\n" + element + "\n"
-            + KernelException.stackTraceToString(exception));
+                + KernelException.stackTraceToString(exception));
         return CONTINUE;
     }
 

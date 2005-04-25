@@ -72,7 +72,7 @@ public class DownSample extends SDFTransformer {
      *   actor with this name.
      */
     public DownSample(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // Set parameters.
@@ -110,20 +110,20 @@ public class DownSample extends SDFTransformer {
      *  @exception IllegalActionException If the parameters are out of range.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == factor) {
             int factorValue = ((IntToken) factor.getToken()).intValue();
 
             if (factorValue <= 0) {
                 throw new IllegalActionException(this,
-                    "Invalid factor: " + factorValue);
+                        "Invalid factor: " + factorValue);
             }
         } else if (attribute == phase) {
             int phaseValue = ((IntToken) phase.getToken()).intValue();
 
             if (phaseValue < 0) {
                 throw new IllegalActionException(this,
-                    "Invalid phase: " + phaseValue);
+                        "Invalid phase: " + phaseValue);
             }
         } else {
             super.attributeChanged(attribute);
@@ -145,7 +145,7 @@ public class DownSample extends SDFTransformer {
 
         if (phaseValue >= factorValue) {
             throw new IllegalActionException(this,
-                "Phase is out of range: " + phaseValue);
+                    "Phase is out of range: " + phaseValue);
         }
 
         // Send the token.

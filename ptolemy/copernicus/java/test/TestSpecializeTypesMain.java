@@ -62,7 +62,7 @@ public class TestSpecializeTypesMain {
                 new HashSet());
 
         for (Iterator variables = analysis.getSolverVariables();
-                        variables.hasNext();) {
+             variables.hasNext();) {
             System.out.println(variables.next().toString());
         }
     }

@@ -99,7 +99,7 @@ public class ParameterNameChanges implements MoMLFilter {
      *  @return the value of the attributeValue argument.
      */
     public String filterAttributeValue(NamedObj container, String element,
-        String attributeName, String attributeValue) {
+            String attributeName, String attributeValue) {
         // This method gets called many times by the MoMLParser,
         // so we try to be smart about the number of comparisons
         // and we try to group comparisons together so that we
@@ -144,7 +144,7 @@ public class ParameterNameChanges implements MoMLFilter {
                     + _lastNameSeen;
                 _propertyMap = (HashMap) _classesWithParameterNameChanges.get(attributeValue);
             } else if (_currentlyProcessingActorWithParameterNameChanges
-                            && (_newName != null)) {
+                    && (_newName != null)) {
                 // We found a property class to change, and now we
                 // found the class itself that needs changing.
                 // Only return the new class once, but we might
@@ -156,9 +156,9 @@ public class ParameterNameChanges implements MoMLFilter {
                 //                 }
                 _newName = null;
             } else if (_currentlyProcessingActorWithParameterNameChanges
-                            && (container != null)
-                            && !container.getFullName().equals(_currentActorFullName)
-                            && !container.getFullName().startsWith(_currentActorFullName)) {
+                    && (container != null)
+                    && !container.getFullName().equals(_currentActorFullName)
+                    && !container.getFullName().startsWith(_currentActorFullName)) {
                 // We found another class in a different container
                 // while handling a class with port name changes
                 _currentlyProcessingActorWithParameterNameChanges = false;
@@ -173,7 +173,7 @@ public class ParameterNameChanges implements MoMLFilter {
      *  @param elementName The element name.
      */
     public void filterEndElement(NamedObj container, String elementName)
-        throws Exception {
+            throws Exception {
     }
 
     /** Return a string that describes what the filter does.
@@ -192,14 +192,14 @@ public class ParameterNameChanges implements MoMLFilter {
             results.append("\t" + actor + "\n");
 
             HashMap propertyMap = (HashMap) _classesWithParameterNameChanges
-                            .get(actor);
+                .get(actor);
             Iterator properties = propertyMap.keySet().iterator();
 
             while (properties.hasNext()) {
                 String oldProperty = (String) properties.next();
                 String newProperty = (String) propertyMap.get(oldProperty);
                 results.append("\t\t" + oldProperty + "\t -> " + newProperty
-                    + "\n");
+                        + "\n");
             }
         }
 
@@ -240,20 +240,20 @@ public class ParameterNameChanges implements MoMLFilter {
         // Key = property name, Value = new class name
         pnDirectorChanges.put("Initial_queue_capacity", "initialQueueCapacity");
         _classesWithParameterNameChanges.put("ptolemy.domains.pn.kernel.PNDirector",
-            pnDirectorChanges);
+                pnDirectorChanges);
 
         // VariableDelay: After 4.0, 'defaultDelay'
         // property is now 'delay'
         HashMap variableDelayChanges = new HashMap();
         variableDelayChanges.put("defaultDelay", "delay");
         _classesWithParameterNameChanges.put("ptolemy.domains.de.lib.VariableDelay",
-            variableDelayChanges);
+                variableDelayChanges);
 
         // ServerDelay: After 4.1, 'serviceTime'
         // property is now 'newServiceTime'
         HashMap serverChanges = new HashMap();
         serverChanges.put("serviceTime", "newServiceTime");
         _classesWithParameterNameChanges.put("ptolemy.domains.de.lib.Server",
-            serverChanges);
+                serverChanges);
     }
 }

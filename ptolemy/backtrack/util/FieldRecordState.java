@@ -35,12 +35,12 @@ import ptolemy.backtrack.util.FieldRecord.RecordList;
 /**
 
 
- @author Thomas Feng
- @version $Id$
- @since Ptolemy II 5.1
- @Pt.ProposedRating Red (tfeng)
- @Pt.AcceptedRating Red (tfeng)
- */
+@author Thomas Feng
+@version $Id$
+@since Ptolemy II 5.1
+@Pt.ProposedRating Red (tfeng)
+@Pt.AcceptedRating Red (tfeng)
+*/
 public class FieldRecordState {
 
     protected FieldRecordState(int dimensions) {

@@ -85,7 +85,7 @@ public class SignatureSigner extends SignatureActor {
      *   actor with this name.
      */
     public SignatureSigner(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         privateKey = new TypedIOPort(this, "privateKey", true, false);
@@ -137,18 +137,18 @@ public class SignatureSigner extends SignatureActor {
             try {
                 // Process the input data to generate a signature.
                 byte[] dataBytes = ArrayToken.arrayTokenToUnsignedByteArray((ArrayToken) input
-                                    .get(0));
+                        .get(0));
 
                 _signature.initSign(_privateKey);
                 _signature.update(dataBytes);
 
                 output.send(0,
-                    ArrayToken.unsignedByteArrayToArrayToken(dataBytes));
+                        ArrayToken.unsignedByteArrayToArrayToken(dataBytes));
                 signature.send(0,
-                    ArrayToken.unsignedByteArrayToArrayToken(_signature.sign()));
+                        ArrayToken.unsignedByteArrayToArrayToken(_signature.sign()));
             } catch (Throwable throwable) {
                 throw new IllegalActionException(this, throwable,
-                    "Problem sending data");
+                        "Problem sending data");
             }
         }
     }

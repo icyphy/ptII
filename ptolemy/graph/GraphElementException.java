@@ -68,7 +68,7 @@ public class GraphElementException extends GraphException {
     static public void checkNode(Node node, Graph graph) {
         if (!graph.containsNode(node)) {
             throw new GraphElementException("Reference to a node that is "
-                + "not in the graph.\n" + elementDump(node, graph));
+                    + "not in the graph.\n" + elementDump(node, graph));
         }
     }
 
@@ -81,7 +81,7 @@ public class GraphElementException extends GraphException {
     static public void checkEdge(Edge edge, Graph graph) {
         if (!graph.containsEdge(edge)) {
             throw new GraphElementException("Reference to an edge that is "
-                + "not in the graph.\n" + elementDump(edge, graph));
+                    + "not in the graph.\n" + elementDump(edge, graph));
         }
     }
 
@@ -95,7 +95,7 @@ public class GraphElementException extends GraphException {
      *  @return The desired exception message.
      */
     static private String _argumentsToString(Element element, Graph graph,
-        String message) {
+            String message) {
         return message + elementDump(element, graph);
     }
 }

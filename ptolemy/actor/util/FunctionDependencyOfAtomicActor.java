@@ -80,7 +80,7 @@ public class FunctionDependencyOfAtomicActor extends FunctionDependency {
      *   an entity with the specified name.
      */
     public FunctionDependencyOfAtomicActor(AtomicActor atomicActor, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(atomicActor, name);
     }
 
@@ -116,7 +116,7 @@ public class FunctionDependencyOfAtomicActor extends FunctionDependency {
             Edge edge = (Edge) edges[i];
 
             if (edge.source().getWeight().equals(inputPort)
-                            && edge.sink().getWeight().equals(outputPort)) {
+                    && edge.sink().getWeight().equals(outputPort)) {
                 dependencyGraph.removeEdge(edge);
             }
         }

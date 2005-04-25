@@ -82,7 +82,7 @@ public class SequenceScope extends SequencePlotter {
      *   actor with this name.
      */
     public SequenceScope(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // set the parameters
@@ -111,9 +111,9 @@ public class SequenceScope extends SequencePlotter {
      *  attribute cannot be parsed or cannot be evaluated.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (((attribute == width) || (attribute == xUnit)
-                        || (attribute == xInit)) && (plot != null)) {
+                    || (attribute == xInit)) && (plot != null)) {
             // Ensure that protected variables are set.
             super.attributeChanged(attribute);
 

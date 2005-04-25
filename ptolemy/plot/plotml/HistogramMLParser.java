@@ -115,7 +115,7 @@ public class HistogramMLParser extends PlotMLParser {
                         histogram.setBinWidth(width);
 
                         double offset = (Double.valueOf(offsetSpec))
-                                        .doubleValue();
+                            .doubleValue();
                         histogram.setBinOffset(offset);
                     }
                 }
@@ -143,7 +143,7 @@ public class HistogramMLParser extends PlotMLParser {
                 String msg = "XML element \"" + elementName
                     + "\" triggers exception:\n  " + ex.toString();
                 throw new XmlException(msg, _currentExternalEntity(),
-                    _parser.getLineNumber(), _parser.getColumnNumber());
+                        _parser.getLineNumber(), _parser.getColumnNumber());
             }
         }
 
@@ -161,7 +161,7 @@ public class HistogramMLParser extends PlotMLParser {
      *  @param element The name of the element.
      */
     protected void _addPoint(boolean connected, String element)
-        throws Exception {
+            throws Exception {
         String ySpec = (String) _attributes.get("y");
         _checkForNull(ySpec, "No y value for element \"" + element + "\"");
 

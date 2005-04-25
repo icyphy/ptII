@@ -453,7 +453,7 @@ public class PlotBox extends JPanel implements Printable {
         } catch (RuntimeException ex) {
             String message = "Export failed: " + ex.getMessage();
             JOptionPane.showMessageDialog(this, message,
-                "Ptolemy Plot Message", JOptionPane.ERROR_MESSAGE);
+                    "Ptolemy Plot Message", JOptionPane.ERROR_MESSAGE);
 
             // Rethrow the exception so that we don't report success,
             // and so the stack trace is displayed on standard out.
@@ -479,8 +479,8 @@ public class PlotBox extends JPanel implements Printable {
     public synchronized BufferedImage exportImage() {
         Rectangle rectangle = new Rectangle(_preferredWidth, _preferredHeight);
         return exportImage(new BufferedImage(rectangle.width, rectangle.height,
-                BufferedImage.TYPE_INT_ARGB), rectangle,
-            _defaultImageRenderingHints(), false);
+                                   BufferedImage.TYPE_INT_ARGB), rectangle,
+                _defaultImageRenderingHints(), false);
     }
 
     /** Create a BufferedImage the size of the given rectangle and draw
@@ -493,8 +493,8 @@ public class PlotBox extends JPanel implements Printable {
      */
     public synchronized BufferedImage exportImage(Rectangle rectangle) {
         return exportImage(new BufferedImage(rectangle.width, rectangle.height,
-                BufferedImage.TYPE_INT_ARGB), rectangle,
-            _defaultImageRenderingHints(), false);
+                                   BufferedImage.TYPE_INT_ARGB), rectangle,
+                _defaultImageRenderingHints(), false);
     }
 
     /** Draw this plot onto the specified image at the position of the
@@ -512,7 +512,7 @@ public class PlotBox extends JPanel implements Printable {
      *  @return The modified bufferedImage.
      */
     public synchronized BufferedImage exportImage(BufferedImage bufferedImage,
-        Rectangle rectangle, RenderingHints hints, boolean transparent) {
+            Rectangle rectangle, RenderingHints hints, boolean transparent) {
         Graphics2D graphics = bufferedImage.createGraphics();
         graphics.addRenderingHints(_defaultImageRenderingHints());
 
@@ -538,8 +538,8 @@ public class PlotBox extends JPanel implements Printable {
      */
     public synchronized BufferedImage exportImage(BufferedImage bufferedImage) {
         return exportImage(bufferedImage,
-            new Rectangle(bufferedImage.getWidth(), bufferedImage.getHeight()),
-            _defaultImageRenderingHints(), true);
+                new Rectangle(bufferedImage.getWidth(), bufferedImage.getHeight()),
+                _defaultImageRenderingHints(), true);
     }
 
     /** Rescale so that the data that is currently plotted just fits.
@@ -599,27 +599,27 @@ public class PlotBox extends JPanel implements Printable {
         // We should use a hash table here.
         // Note that Color decode() wants the values to start with 0x.
         String[][] names = {
-                {
-                    "black",
-                    "00000"
-                },
-                {
-                    "white",
-                    "ffffff"
-                },
-                {
-                    "red",
-                    "ff0000"
-                },
-                {
-                    "green",
-                    "00ff00"
-                },
-                {
-                    "blue",
-                    "0000ff"
-                }
-            };
+            {
+                "black",
+                "00000"
+            },
+            {
+                "white",
+                "ffffff"
+            },
+            {
+                "red",
+                "ff0000"
+            },
+            {
+                "green",
+                "00ff00"
+            },
+            {
+                "blue",
+                "0000ff"
+            }
+        };
 
         for (int i = 0; i < names.length; i++) {
             if (name.equals(names[i][0])) {
@@ -1040,7 +1040,7 @@ public class PlotBox extends JPanel implements Printable {
      *  @exception PrinterException If the print job is terminated.
      */
     public synchronized int print(Graphics graphics, PageFormat format,
-        int index) throws PrinterException {
+            int index) throws PrinterException {
         if (graphics == null) {
             return Printable.NO_SUCH_PAGE;
         }
@@ -1058,7 +1058,7 @@ public class PlotBox extends JPanel implements Printable {
         double scaley = format.getImageableHeight() / (double) getHeight();
         double scale = Math.min(scalex, scaley);
         graphics2D.translate((int) format.getImageableX(),
-            (int) format.getImageableY());
+                (int) format.getImageableY());
         graphics2D.scale(scale, scale);
         _drawPlot(graphics, true);
         return Printable.PAGE_EXISTS;
@@ -1281,7 +1281,7 @@ public class PlotBox extends JPanel implements Printable {
             // Is not likely to fit into a 20x20 button.
             _resetButton.setPreferredSize(new Dimension(20, 20));
             _resetButton.setToolTipText(
-                "Reset X and Y ranges to their original values");
+                    "Reset X and Y ranges to their original values");
             _resetButton.addActionListener(new ButtonListener());
             add(_resetButton);
         }
@@ -1641,9 +1641,9 @@ public class PlotBox extends JPanel implements Printable {
         if (dtd == null) {
             output.println("<?xml version=\"1.0\" standalone=\"yes\"?>");
             output.println(
-                "<!DOCTYPE plot PUBLIC \"-//UC Berkeley//DTD PlotML 1//EN\"");
+                    "<!DOCTYPE plot PUBLIC \"-//UC Berkeley//DTD PlotML 1//EN\"");
             output.println(
-                "    \"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd\">");
+                    "    \"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd\">");
         } else {
             output.println("<?xml version=\"1.0\" standalone=\"no\"?>");
             output.println("<!DOCTYPE plot SYSTEM \"" + dtd + "\">");
@@ -1651,7 +1651,7 @@ public class PlotBox extends JPanel implements Printable {
 
         output.println("<plot>");
         output.println("<!-- Ptolemy plot, version " + PTPLOT_RELEASE
-            + " , PlotML format. -->");
+                + " , PlotML format. -->");
         writeFormat(output);
         writeData(output);
         output.println("</plot>");
@@ -1695,12 +1695,12 @@ public class PlotBox extends JPanel implements Printable {
 
         if (_xRangeGiven) {
             output.println("<xRange min=\"" + _xlowgiven + "\" max=\""
-                + _xhighgiven + "\"/>");
+                    + _xhighgiven + "\"/>");
         }
 
         if (_yRangeGiven) {
             output.println("<yRange min=\"" + _ylowgiven + "\" max=\""
-                + _yhighgiven + "\"/>");
+                    + _yhighgiven + "\"/>");
         }
 
         if ((_xticks != null) && (_xticks.size() > 0)) {
@@ -1710,8 +1710,8 @@ public class PlotBox extends JPanel implements Printable {
 
             for (int i = 0; i <= last; i++) {
                 output.println("  <tick label=\""
-                    + (String) _xticklabels.elementAt(i) + "\" position=\""
-                    + (Double) _xticks.elementAt(i) + "\"/>");
+                        + (String) _xticklabels.elementAt(i) + "\" position=\""
+                        + (Double) _xticks.elementAt(i) + "\"/>");
             }
 
             output.println("</xTicks>");
@@ -1724,8 +1724,8 @@ public class PlotBox extends JPanel implements Printable {
 
             for (int i = 0; i <= last; i++) {
                 output.println("  <tick label=\""
-                    + (String) _yticklabels.elementAt(i) + "\" position=\""
-                    + (Double) _yticks.elementAt(i) + "\"/>");
+                        + (String) _yticklabels.elementAt(i) + "\" position=\""
+                        + (Double) _yticks.elementAt(i) + "\"/>");
             }
 
             output.println("</yTicks>");
@@ -1781,7 +1781,7 @@ public class PlotBox extends JPanel implements Printable {
      *  @param highy The high end of the new Y range.
      */
     public synchronized void zoom(double lowx, double lowy, double highx,
-        double highy) {
+            double highy) {
         setXRange(lowx, highx);
         setYRange(lowy, highy);
         repaint();
@@ -1828,7 +1828,7 @@ public class PlotBox extends JPanel implements Printable {
      *  @param drawRect A specification of the size.
      */
     protected synchronized void _drawPlot(Graphics graphics,
-        boolean clearfirst, Rectangle drawRect) {
+            boolean clearfirst, Rectangle drawRect) {
         // Ignore if there is no graphics object to draw on.
         if (graphics == null) {
             return;
@@ -1888,7 +1888,7 @@ public class PlotBox extends JPanel implements Printable {
 
         if (_specifiedPlotRectangle != null) {
             workingPlotRectangle = new Rectangle(Math.max(0,
-                        _specifiedPlotRectangle.x),
+                                                         _specifiedPlotRectangle.x),
                     Math.max(0, _specifiedPlotRectangle.y),
                     Math.min(drawRect.width, _specifiedPlotRectangle.width),
                     Math.min(drawRect.height, _specifiedPlotRectangle.height));
@@ -2038,7 +2038,7 @@ public class PlotBox extends JPanel implements Printable {
             }
 
             for (double ypos = yTmpStart; ypos <= _ytickMax;
-                            ypos = _gridStep(ygrid, ypos, yStep, _ylog)) {
+                 ypos = _gridStep(ygrid, ypos, yStep, _ylog)) {
                 // Prevent out of bounds exceptions
                 if (ind >= ny) {
                     break;
@@ -2132,7 +2132,7 @@ public class PlotBox extends JPanel implements Printable {
             boolean needExponent = _ylog;
 
             for (double ypos = yTmpStart; ypos <= _ytickMax;
-                            ypos = _gridStep(ygrid, ypos, yStep, _ylog)) {
+                 ypos = _gridStep(ygrid, ypos, yStep, _ylog)) {
                 // Prevent out of bounds exceptions
                 if (ind >= ny) {
                     break;
@@ -2165,7 +2165,7 @@ public class PlotBox extends JPanel implements Printable {
 
                 // NOTE: 4 pixel spacing between axis and labels.
                 graphics.drawString(ylabels[ind], _ulx - ylabwidth[ind++] - 4,
-                    yCoord1 + offset);
+                        yCoord1 + offset);
             }
 
             if (_ylog) {
@@ -2179,16 +2179,16 @@ public class PlotBox extends JPanel implements Printable {
                     double tmpStep = (yStep > 1.0) ? 1.0 : yStep;
 
                     for (double ypos = _gridStep(unlabeledgrid, yStart,
-                                tmpStep, _ylog); ypos <= _ytickMax;
-                                    ypos = _gridStep(unlabeledgrid, ypos,
-                                            tmpStep, _ylog)) {
+                                 tmpStep, _ylog); ypos <= _ytickMax;
+                         ypos = _gridStep(unlabeledgrid, ypos,
+                                 tmpStep, _ylog)) {
                         int yCoord1 = _lry
                             - (int) ((ypos - _ytickMin) * _ytickscale);
 
                         if (_grid && (yCoord1 != _uly) && (yCoord1 != _lry)) {
                             graphics.setColor(Color.lightGray);
                             graphics.drawLine(_ulx + 1, yCoord1, _lrx - 1,
-                                yCoord1);
+                                    yCoord1);
                             graphics.setColor(_foreground);
                         }
                     }
@@ -2207,8 +2207,8 @@ public class PlotBox extends JPanel implements Printable {
                 graphics.drawString("x10", 2, titley);
                 graphics.setFont(_superscriptFont);
                 graphics.drawString(Integer.toString(_yExp),
-                    _labelFontMetrics.stringWidth("x10") + 2,
-                    titley - halflabelheight);
+                        _labelFontMetrics.stringWidth("x10") + 2,
+                        titley - halflabelheight);
                 graphics.setFont(_labelFont);
             }
         } else {
@@ -2242,8 +2242,8 @@ public class PlotBox extends JPanel implements Printable {
 
                 // NOTE: 3 pixel spacing between axis and labels.
                 graphics.drawString(label,
-                    _ulx - _labelFontMetrics.stringWidth(label) - 3,
-                    yCoord1 + offset);
+                        _ulx - _labelFontMetrics.stringWidth(label) - 3,
+                        yCoord1 + offset);
             }
         }
 
@@ -2283,7 +2283,7 @@ public class PlotBox extends JPanel implements Printable {
 
                     // Allow two extra digits (decimal point and sign).
                     int maxlabelwidth = charwidth * (numfracdigits + 2
-                                    + intdigits);
+                            + intdigits);
 
                     // Compute new estimate of number of ticks.
                     int savenx = nx;
@@ -2322,7 +2322,7 @@ public class PlotBox extends JPanel implements Printable {
             // Label the x axis.  The labels are quantized so that
             // they don't have excess resolution.
             for (double xpos = xTmpStart; xpos <= _xtickMax;
-                            xpos = _gridStep(xgrid, xpos, xStep, _xlog)) {
+                 xpos = _gridStep(xgrid, xpos, xStep, _xlog)) {
                 String xticklabel;
 
                 if (_xlog) {
@@ -2367,16 +2367,16 @@ public class PlotBox extends JPanel implements Printable {
 
                 if (unlabeledgrid.size() > 0) {
                     for (double xpos = _gridStep(unlabeledgrid, xTmpStart,
-                                tmpStep, _xlog); xpos <= _xtickMax;
-                                    xpos = _gridStep(unlabeledgrid, xpos,
-                                            tmpStep, _xlog)) {
+                                 tmpStep, _xlog); xpos <= _xtickMax;
+                         xpos = _gridStep(unlabeledgrid, xpos,
+                                 tmpStep, _xlog)) {
                         xCoord1 = _ulx
                             + (int) ((xpos - _xtickMin) * _xtickscale);
 
                         if (_grid && (xCoord1 != _ulx) && (xCoord1 != _lrx)) {
                             graphics.setColor(Color.lightGray);
                             graphics.drawLine(xCoord1, _uly + 1, xCoord1,
-                                _lry - 1);
+                                    _lry - 1);
                             graphics.setColor(_foreground);
                         }
                     }
@@ -2386,7 +2386,7 @@ public class PlotBox extends JPanel implements Printable {
                     _xExp = (int) Math.floor(xTmpStart);
                     graphics.setFont(_superscriptFont);
                     graphics.drawString(Integer.toString(_xExp), xSPos,
-                        ySPos - halflabelheight);
+                            ySPos - halflabelheight);
                     xSPos -= _labelFontMetrics.stringWidth("x10");
                     graphics.setFont(_labelFont);
                     graphics.drawString("x10", xSPos, ySPos);
@@ -2470,7 +2470,7 @@ public class PlotBox extends JPanel implements Printable {
 
             if (graphics instanceof Graphics2D) {
                 int starty = (_uly + ((_lry - _uly) / 2)
-                    + (_labelFontMetrics.stringWidth(_ylabel) / 2)) - charwidth;
+                        + (_labelFontMetrics.stringWidth(_ylabel) / 2)) - charwidth;
                 Graphics2D g2d = (Graphics2D) graphics;
 
                 // NOTE: Fudge factor so label doesn't touch axis labels.
@@ -2517,14 +2517,14 @@ public class PlotBox extends JPanel implements Printable {
      *  @param clip If true, do not draw if out of range.
      */
     protected void _drawPoint(Graphics graphics, int dataset, long xpos,
-        long ypos, boolean clip) {
+            long ypos, boolean clip) {
         // Ignore if there is no graphics object to draw on.
         if (graphics == null) {
             return;
         }
 
         boolean pointinside = (ypos <= _lry) && (ypos >= _uly)
-                        && (xpos <= _lrx) && (xpos >= _ulx);
+            && (xpos <= _lrx) && (xpos >= _ulx);
 
         if (!pointinside && clip) {
             return;
@@ -2548,7 +2548,7 @@ public class PlotBox extends JPanel implements Printable {
             + "   Cntrl-D or Q: quit\n" + "For more information, see\n"
             + "http://ptolemy.eecs.berkeley.edu/java/ptplot\n";
         JOptionPane.showMessageDialog(this, message,
-            "Ptolemy Plot Help Window", JOptionPane.INFORMATION_MESSAGE);
+                "Ptolemy Plot Help Window", JOptionPane.INFORMATION_MESSAGE);
     }
 
     /** Parse a line that gives plotting information.  In this base
@@ -2735,11 +2735,11 @@ public class PlotBox extends JPanel implements Printable {
 
             for (int i = 0; i < last; i++) {
                 output.print("\"" + (String) _xticklabels.elementAt(i) + "\" "
-                    + (Double) _xticks.elementAt(i) + ", ");
+                        + (Double) _xticks.elementAt(i) + ", ");
             }
 
             output.println("\"" + (String) _xticklabels.elementAt(last) + "\" "
-                + (Double) _xticks.elementAt(last));
+                    + (Double) _xticks.elementAt(last));
         }
 
         if ((_yticks != null) && (_yticks.size() > 0)) {
@@ -2749,11 +2749,11 @@ public class PlotBox extends JPanel implements Printable {
 
             for (int i = 0; i < last; i++) {
                 output.print("\"" + (String) _yticklabels.elementAt(i) + "\" "
-                    + (Double) _yticks.elementAt(i) + ", ");
+                        + (Double) _yticks.elementAt(i) + ", ");
             }
 
             output.println("\"" + (String) _yticklabels.elementAt(last) + "\" "
-                + (Double) _yticks.elementAt(last));
+                    + (Double) _yticks.elementAt(last));
         }
 
         if (_xlog) {
@@ -2937,18 +2937,18 @@ public class PlotBox extends JPanel implements Printable {
     // 10 marks of the Plot class, we can distinguish 110
     // distinct data sets.
     static protected Color[] _colors = {
-            new Color(0xff0000), // red
-            new Color(0x0000ff), // blue
-            new Color(0x00aaaa), // cyan-ish
-            new Color(0x000000), // black
-            new Color(0xffa500), // orange
-            new Color(0x53868b), // cadetblue4
-            new Color(0xff7f50), // coral
-            new Color(0x45ab1f), // dark green-ish
-            new Color(0x90422d), // sienna-ish
-            new Color(0xa0a0a0), // grey-ish
-            new Color(0x14ff14), // green-ish
-        };
+        new Color(0xff0000), // red
+        new Color(0x0000ff), // blue
+        new Color(0x00aaaa), // cyan-ish
+        new Color(0x000000), // black
+        new Color(0xffa500), // orange
+        new Color(0x53868b), // cadetblue4
+        new Color(0xff7f50), // coral
+        new Color(0x45ab1f), // dark green-ish
+        new Color(0x90422d), // sienna-ish
+        new Color(0xa0a0a0), // grey-ish
+        new Color(0x14ff14), // green-ish
+    };
 
     /** @serial Width and height of component in pixels. */
     protected int _width = 500;
@@ -3182,7 +3182,7 @@ public class PlotBox extends JPanel implements Printable {
      * Based on initGrid() from xgraph.c by David Harrison.
      */
     private Vector _gridInit(double low, double step, boolean labeled,
-        Vector oldgrid) {
+            Vector oldgrid) {
         // How log axes work:
         // _gridInit() creates a vector with the values to use for the
         // log axes.  For example, the vector might contain
@@ -3253,7 +3253,7 @@ public class PlotBox extends JPanel implements Printable {
                 // that is equal to or greater than the element we are
                 // trying to add.
                 while ((oldgridi < oldgrid.size())
-                                && (((Double) oldgrid.elementAt(oldgridi))
+                        && (((Double) oldgrid.elementAt(oldgridi))
                                 .doubleValue() < logval)) {
                     oldgridi++;
                 }
@@ -3262,7 +3262,7 @@ public class PlotBox extends JPanel implements Printable {
                     // Using == on doubles is bad if the numbers are close,
                     // but not exactly equal.
                     if (Math.abs(((Double) oldgrid.elementAt(oldgridi))
-                                        .doubleValue() - logval) > 0.00001) {
+                                .doubleValue() - logval) > 0.00001) {
                         grid.addElement(new Double(logval));
                     }
                 } else {
@@ -3287,9 +3287,9 @@ public class PlotBox extends JPanel implements Printable {
         // Set gridCurJuke so that the value in grid is greater than
         // or equal to x.  This sets us up to process the first point.
         for (_gridCurJuke = -1;
-                        ((_gridCurJuke + 1) < grid.size())
-                        && (x >= ((Double) grid.elementAt(_gridCurJuke + 1))
-                        .doubleValue()); _gridCurJuke++) {
+             ((_gridCurJuke + 1) < grid.size())
+                 && (x >= ((Double) grid.elementAt(_gridCurJuke + 1))
+                         .doubleValue()); _gridCurJuke++) {
         }
 
         return grid;
@@ -3303,9 +3303,9 @@ public class PlotBox extends JPanel implements Printable {
         int i;
 
         for (i = 0;
-                        (i < grid.size())
-                        && (x >= ((Double) grid.elementAt(i)).doubleValue());
-                        i++) {
+             (i < grid.size())
+                 && (x >= ((Double) grid.elementAt(i)).doubleValue());
+             i++) {
         }
 
         if (i >= grid.size()) {
@@ -3326,7 +3326,7 @@ public class PlotBox extends JPanel implements Printable {
      * Based on stepGrid() from xgraph.c by David Harrison.
      */
     private double _gridStep(Vector grid, double pos, double step,
-        boolean logflag) {
+            boolean logflag) {
         if (logflag) {
             if (++_gridCurJuke >= grid.size()) {
                 _gridCurJuke = 0;
@@ -3338,7 +3338,7 @@ public class PlotBox extends JPanel implements Printable {
             }
 
             return _gridBase
-            + ((Double) grid.elementAt(_gridCurJuke)).doubleValue();
+                + ((Double) grid.elementAt(_gridCurJuke)).doubleValue();
         } else {
             return pos + step;
         }
@@ -3454,7 +3454,7 @@ public class PlotBox extends JPanel implements Printable {
                     }
                 } catch (NumberFormatException e) {
                     System.err.println("Warning from PlotBox: "
-                        + "Unable to parse ticks: " + e.getMessage());
+                            + "Unable to parse ticks: " + e.getMessage());
 
                     // ignore if format is bogus.
                 }
@@ -3471,7 +3471,7 @@ public class PlotBox extends JPanel implements Printable {
     private RenderingHints _defaultImageRenderingHints() {
         RenderingHints hints = new RenderingHints(null);
         hints.put(RenderingHints.KEY_ANTIALIASING,
-            RenderingHints.VALUE_ANTIALIAS_ON);
+                RenderingHints.VALUE_ANTIALIAS_ON);
         return hints;
     }
 
@@ -3697,7 +3697,7 @@ public class PlotBox extends JPanel implements Printable {
             int x_diff = Math.abs(_zoomx - _zoomxn);
             int y_diff = Math.abs(_zoomy - _zoomyn);
             graphics.drawRect(_zoomx - 15 - x_diff, _zoomy - 15 - y_diff,
-                30 + (x_diff * 2), 30 + (y_diff * 2));
+                    30 + (x_diff * 2), 30 + (y_diff * 2));
             graphics.setPaintMode();
 
             // Calculate zoom factor.
@@ -3822,8 +3822,8 @@ public class PlotBox extends JPanel implements Printable {
                     int y_diff = Math.abs(_zoomy - _zoomyn);
                     graphics.setXORMode(_boxColor);
                     graphics.drawRect(_zoomx - 15 - x_diff,
-                        _zoomy - 15 - y_diff, 30 + (x_diff * 2),
-                        30 + (y_diff * 2));
+                            _zoomy - 15 - y_diff, 30 + (x_diff * 2),
+                            30 + (y_diff * 2));
                 }
 
                 if (y < _zoomy) {
@@ -3834,8 +3834,8 @@ public class PlotBox extends JPanel implements Printable {
                     int y_diff = Math.abs(_zoomy - _zoomyn);
                     graphics.setXORMode(_boxColor);
                     graphics.drawRect(_zoomx - 15 - x_diff,
-                        _zoomy - 15 - y_diff, 30 + (x_diff * 2),
-                        30 + (y_diff * 2));
+                            _zoomy - 15 - y_diff, 30 + (x_diff * 2),
+                            30 + (y_diff * 2));
                     _drawn = true;
                     return;
                 } else {
@@ -4119,8 +4119,8 @@ public class PlotBox extends JPanel implements Printable {
                     } catch (Exception ex) {
                         Component ancestor = getTopLevelAncestor();
                         JOptionPane.showMessageDialog(ancestor,
-                            "Printing failed:\n" + ex.toString(),
-                            "Print Error", JOptionPane.WARNING_MESSAGE);
+                                "Printing failed:\n" + ex.toString(),
+                                "Print Error", JOptionPane.WARNING_MESSAGE);
                     }
                 }
             } else if (event.getSource() == _resetButton) {
@@ -4155,14 +4155,14 @@ public class PlotBox extends JPanel implements Printable {
             // This problem affects Netscape 4.61 under Digital Unix and
             // 4.51 under Solaris
             if (((event.getModifiers() & InputEvent.BUTTON1_MASK) != 0)
-                            || (event.getModifiers() == 0)) {
+                    || (event.getModifiers() == 0)) {
                 PlotBox.this._zoomStart(event.getX(), event.getY());
             }
         }
 
         public void mouseReleased(MouseEvent event) {
             if (((event.getModifiers() & InputEvent.BUTTON1_MASK) != 0)
-                            || (event.getModifiers() == 0)) {
+                    || (event.getModifiers() == 0)) {
                 PlotBox.this._zoom(event.getX(), event.getY());
             }
         }
@@ -4206,7 +4206,7 @@ public class PlotBox extends JPanel implements Printable {
                     String message = "Encapsulated PostScript (EPS) "
                         + "exported to clipboard.";
                     JOptionPane.showMessageDialog(PlotBox.this, message,
-                        "Ptolemy Plot Message", JOptionPane.INFORMATION_MESSAGE);
+                            "Ptolemy Plot Message", JOptionPane.INFORMATION_MESSAGE);
                 }
 
                 break;
@@ -4218,7 +4218,7 @@ public class PlotBox extends JPanel implements Printable {
 
                     String message = "Plot data sent to standard out.";
                     JOptionPane.showMessageDialog(PlotBox.this, message,
-                        "Ptolemy Plot Message", JOptionPane.INFORMATION_MESSAGE);
+                            "Ptolemy Plot Message", JOptionPane.INFORMATION_MESSAGE);
                 }
 
                 if (_control) {
@@ -4236,7 +4236,7 @@ public class PlotBox extends JPanel implements Printable {
                     String message = "Encapsulated PostScript (EPS) "
                         + "exported to standard out.";
                     JOptionPane.showMessageDialog(PlotBox.this, message,
-                        "Ptolemy Plot Message", JOptionPane.INFORMATION_MESSAGE);
+                            "Ptolemy Plot Message", JOptionPane.INFORMATION_MESSAGE);
                 }
 
                 break;

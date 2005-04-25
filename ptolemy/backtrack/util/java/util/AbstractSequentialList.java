@@ -97,5 +97,5 @@ public abstract class AbstractSequentialList extends AbstractList implements Rol
     }
 
     private FieldRecord[] $RECORDS = new FieldRecord[] {
-        };
+    };
 }

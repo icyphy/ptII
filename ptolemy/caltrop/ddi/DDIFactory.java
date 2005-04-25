@@ -61,5 +61,5 @@ public interface DDIFactory {
      * @return A <tt>DDI</tt> for this domain.
      */
     DDI create(TypedAtomicActor ptActor, Actor actor, Context context,
-        Environment env);
+            Environment env);
 }

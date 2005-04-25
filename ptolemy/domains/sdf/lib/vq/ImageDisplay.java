@@ -70,7 +70,7 @@ public class ImageDisplay extends Sink implements Placeable {
      *   actor with this name.
      */
     public ImageDisplay(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         input.setTypeEquals(BaseType.INT_MATRIX);
@@ -180,8 +180,8 @@ public class ImageDisplay extends Sink implements Placeable {
         for (j = ySize - 1; j >= 0; j--) {
             for (i = 0; i < xSize; i++, index++) {
                 _RGBbuffer[index] = (255 << 24) | ((frame[j][i] & 255) << 16)
-                                | ((frame[j][i] & 255) << 8)
-                                | (frame[j][i] & 255);
+                    | ((frame[j][i] & 255) << 8)
+                    | (frame[j][i] & 255);
             }
         }
 

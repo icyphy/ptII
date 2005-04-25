@@ -37,14 +37,14 @@ import ptolemy.backtrack.ast.transform.ClassHandler;
 //////////////////////////////////////////////////////////////////////////
 //// HandlerList
 /**
-    List of different handlers to be called back by {@link TypeAnalyzer}
-    during the traversal of the AST.
+   List of different handlers to be called back by {@link TypeAnalyzer}
+   during the traversal of the AST.
 
-    @author Thomas Feng
-    @version $Id$
-    @since Ptolemy II 5.1
-    @Pt.ProposedRating Red (tfeng)
-    @Pt.AcceptedRating Red (tfeng)
+   @author Thomas Feng
+   @version $Id$
+   @since Ptolemy II 5.1
+   @Pt.ProposedRating Red (tfeng)
+   @Pt.AcceptedRating Red (tfeng)
 */
 public class HandlerList {
 

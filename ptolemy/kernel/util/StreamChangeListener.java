@@ -73,7 +73,7 @@ public class StreamChangeListener implements ChangeListener {
         }
 
         _output.println("StreamChangeRequest.changeExecuted(): " + description
-            + " succeeded");
+                + " succeeded");
     }
 
     /** Print the description of the failure to the stream output.
@@ -88,7 +88,7 @@ public class StreamChangeListener implements ChangeListener {
         }
 
         _output.println("StreamChangeRequest.changeFailed(): " + description
-            + " failed: " + exception.toString());
+                + " failed: " + exception.toString());
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -40,18 +40,18 @@ import ptolemy.kernel.util.Workspace;
 
 /**
 
-   // FIXME
-   Composite actor in the PtinyOS domain. This class is derived from
-   CompositeActor.  NCCompositeActor is always a opaque composite
-   actor.
+// FIXME
+Composite actor in the PtinyOS domain. This class is derived from
+CompositeActor.  NCCompositeActor is always a opaque composite
+actor.
 
-   // FIXME is this class needed?
+// FIXME is this class needed?
 
-   @author  Elaine Cheong
-   @version $Id$
-   @since Ptolemy II 0.2
-   @Pt.ProposedRating Red (celaine)
-   @Pt.AcceptedRating Red (celaine)
+@author  Elaine Cheong
+@version $Id$
+@since Ptolemy II 0.2
+@Pt.ProposedRating Red (celaine)
+@Pt.AcceptedRating Red (celaine)
 */
 public class NCCompositeActor extends CompositeActor {
     /** Construct a NCCompositeActor in the default workspace with no container
@@ -88,7 +88,7 @@ public class NCCompositeActor extends CompositeActor {
      *   an actor already in the container.
      */
     public NCCompositeActor(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // When exporting MoML, set the class name to NCCompositeActor
@@ -126,8 +126,8 @@ public class NCCompositeActor extends CompositeActor {
      * @see ptolemy.kernel.ComponentEntity#isOpaque()
      */
     /*
-    public boolean isOpaque() {
-         return true;
-    }
-     */
+      public boolean isOpaque() {
+      return true;
+      }
+    */
 }

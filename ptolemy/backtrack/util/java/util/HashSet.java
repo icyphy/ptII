@@ -148,6 +148,6 @@ public class HashSet extends AbstractSet implements Set, Cloneable, Serializable
     private FieldRecord $RECORD$map = new FieldRecord(0);
 
     private FieldRecord[] $RECORDS = new FieldRecord[] {
-            $RECORD$map
-        };
+        $RECORD$map
+    };
 }

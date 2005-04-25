@@ -57,7 +57,7 @@ public class UnitExpr implements UnitPresentation {
     public UnitExpr(IOPort ioPort) {
         UnitTerm uTerm = new UnitTerm();
         uTerm.setVariable(ioPort.getContainer().getName() + "."
-            + ioPort.getName());
+                + ioPort.getName());
         _uTerms.add(uTerm);
     }
 
@@ -154,7 +154,7 @@ public class UnitExpr implements UnitPresentation {
 
             if (unitTerm.isUnit()) {
                 reductionUnit = reductionUnit.multiplyBy(unitTerm.getUnit().pow(unitTerm
-                                        .getExponent()));
+                                                                 .getExponent()));
             } else {
                 newUTerms.add(unitTerm);
             }

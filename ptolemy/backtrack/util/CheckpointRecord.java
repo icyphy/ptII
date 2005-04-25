@@ -38,12 +38,12 @@ import ptolemy.backtrack.Rollbackable;
 /**
 
 
- @author Thomas Feng
- @version $Id$
- @since Ptolemy II 5.1
- @Pt.ProposedRating Red (tfeng)
- @Pt.AcceptedRating Red (tfeng)
- */
+@author Thomas Feng
+@version $Id$
+@since Ptolemy II 5.1
+@Pt.ProposedRating Red (tfeng)
+@Pt.AcceptedRating Red (tfeng)
+*/
 public class CheckpointRecord {
 
     public void add(Checkpoint checkpoint, long timestamp) {

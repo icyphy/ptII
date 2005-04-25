@@ -83,7 +83,7 @@ public class Attribute extends NamedObj {
      *   an attribute already in the container.
      */
     public Attribute(NamedObj container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container.workspace(), name);
         setContainer(container);
         _elementName = "property";
@@ -322,10 +322,10 @@ public class Attribute extends NamedObj {
      *  @see #getContainer()
      */
     public void setContainer(NamedObj container)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         if ((container != null) && (_workspace != container.workspace())) {
             throw new IllegalActionException(this, container,
-                "Cannot set container because workspaces are different.");
+                    "Cannot set container because workspaces are different.");
         }
 
         try {
@@ -333,8 +333,8 @@ public class Attribute extends NamedObj {
 
             if (deepContains(container)) {
                 throw new IllegalActionException(this, container,
-                    "Attempt to construct recursive containment "
-                    + "of attributes");
+                        "Attempt to construct recursive containment "
+                        + "of attributes");
             }
 
             NamedObj previousContainer = (NamedObj) getContainer();
@@ -392,7 +392,7 @@ public class Attribute extends NamedObj {
      *       attribute with the same name in the container.
      */
     public void setName(String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         if (name == null) {
             name = "";
         }
@@ -404,7 +404,7 @@ public class Attribute extends NamedObj {
 
             if ((another != null) && (another != this)) {
                 throw new NameDuplicationException(container,
-                    "Name duplication: " + name);
+                        "Name duplication: " + name);
             }
         }
 
@@ -434,14 +434,14 @@ public class Attribute extends NamedObj {
      *   and has the wrong class.
      */
     protected NamedObj _getContainedObject(NamedObj container,
-        String relativeName) throws IllegalActionException {
+            String relativeName) throws IllegalActionException {
         Attribute candidate = container.getAttribute(relativeName);
 
         if ((candidate != null) && !getClass().isInstance(candidate)) {
             throw new IllegalActionException(this,
-                "Expected " + candidate.getFullName()
-                + " to be an instance of " + getClass().getName()
-                + ", but it is " + candidate.getClass().getName());
+                    "Expected " + candidate.getFullName()
+                    + " to be an instance of " + getClass().getName()
+                    + ", but it is " + candidate.getClass().getName());
         }
 
         return candidate;
@@ -457,7 +457,7 @@ public class Attribute extends NamedObj {
      *   as this one.
      */
     protected NamedObj _propagateExistence(NamedObj container)
-        throws IllegalActionException {
+            throws IllegalActionException {
         try {
             Attribute newObject = (Attribute) super._propagateExistence(container);
             newObject.setContainer(container);

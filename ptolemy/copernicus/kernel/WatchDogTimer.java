@@ -65,7 +65,7 @@ public class WatchDogTimer extends SceneTransformer implements HasPhaseOptions {
 
         if (_timer == null) {
             System.out.println("WatchDogTimer.cancel(): "
-                + "Warning: cancel called twice?");
+                    + "Warning: cancel called twice?");
         } else {
             _timer.cancel();
             _timer = null;
@@ -99,7 +99,7 @@ public class WatchDogTimer extends SceneTransformer implements HasPhaseOptions {
      */
     protected void internalTransform(String phaseName, Map options) {
         System.out.println("WatchDogTimer.internalTransform(" + phaseName
-            + ", " + options + ")");
+                + ", " + options + ")");
 
         boolean isCancelling = PhaseOptions.getBoolean(options, "cancel");
 
@@ -130,7 +130,7 @@ public class WatchDogTimer extends SceneTransformer implements HasPhaseOptions {
                 public void run() {
                     try {
                         System.err.println("WatchDogTimer went off after "
-                            + timeToDie + "ms.");
+                                + timeToDie + "ms.");
 
                         // Get the root ThreadGroup
                         ThreadGroup parent;
@@ -162,7 +162,7 @@ public class WatchDogTimer extends SceneTransformer implements HasPhaseOptions {
                         System.err.println(e);
                     } finally {
                         System.out.println("WatchDogTime went off, stats: "
-                            + Manager.timeAndMemory(startTime));
+                                + Manager.timeAndMemory(startTime));
 
                         // Do not pass go, do not collect $200
                         System.exit(4);

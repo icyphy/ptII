@@ -73,7 +73,7 @@ public class BooleanSwitch extends TypedAtomicActor {
      *   an actor already in the container.
      */
     public BooleanSwitch(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         input = new TypedIOPort(this, "input", true, false);

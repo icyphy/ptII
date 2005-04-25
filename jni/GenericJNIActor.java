@@ -119,7 +119,7 @@ public class GenericJNIActor extends TypedAtomicActor {
      *  @exception IllegalActionException If the name has a period.
      */
     public GenericJNIActor(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         _argumentsList = new NamedList(this);
 
@@ -132,10 +132,10 @@ public class GenericJNIActor extends TypedAtomicActor {
                 (Token) new StringToken("unknownLibrary"));
 
         _attachText("_iconDescription",
-            "<svg>\n" + "<rect x=\"0\" y=\"0\" "
-            + "width=\"32\" height=\"38\" " + "style=\"fill:white\"/>\n"
-            + "<image x=\"1\" y=\"1\" width=\"32\" height=\"38\""
-            + "xlink:href=\"jni/dll.gif\"/>\n" + "</svg>\n");
+                "<svg>\n" + "<rect x=\"0\" y=\"0\" "
+                + "width=\"32\" height=\"38\" " + "style=\"fill:white\"/>\n"
+                + "<image x=\"1\" y=\"1\" width=\"32\" height=\"38\""
+                + "xlink:href=\"jni/dll.gif\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -164,7 +164,7 @@ public class GenericJNIActor extends TypedAtomicActor {
     /** Add a return argument to this entity
      */
     public void addArgumentReturn()
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         try {
             _workspace.getReadAccess();
 
@@ -196,7 +196,7 @@ public class GenericJNIActor extends TypedAtomicActor {
      *  @exception IllegalActionException If the parameters are out of range.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         Director director = getDirector();
 
         if (director != null) {
@@ -236,7 +236,7 @@ public class GenericJNIActor extends TypedAtomicActor {
             } catch (KernelException ex) {
                 workspace.remove(newEntity);
                 throw new InvalidStateException(this,
-                    "Failed to clone an Entity: " + ex.getMessage());
+                        "Failed to clone an Entity: " + ex.getMessage());
             }
         }
 
@@ -247,11 +247,11 @@ public class GenericJNIActor extends TypedAtomicActor {
             try {
                 if (fields[i].get(newEntity) instanceof Argument) {
                     fields[i].set(newEntity,
-                        newEntity.getArgument(fields[i].getName()));
+                            newEntity.getArgument(fields[i].getName()));
                 }
             } catch (IllegalAccessException e) {
                 throw new CloneNotSupportedException(e.getMessage() + ": "
-                    + fields[i].getName());
+                        + fields[i].getName());
             }
         }
 
@@ -278,8 +278,8 @@ public class GenericJNIActor extends TypedAtomicActor {
                         port.setTypeEquals(BaseType.GENERAL);
                     } catch (Exception ex) {
                         throw new IllegalActionException(this, ex,
-                            "Unable to construct " + "return port '" + port
-                            + "'");
+                                "Unable to construct " + "return port '" + port
+                                + "'");
                     }
                 } else if (argument.isInput() && argument.isOutput()) {
                     try {
@@ -293,8 +293,8 @@ public class GenericJNIActor extends TypedAtomicActor {
                         port.setTypeEquals(BaseType.GENERAL);
                     } catch (Exception ex) {
                         throw new IllegalActionException(this, ex,
-                            "Unable to construct " + "input or output "
-                            + "port '" + port + "'");
+                                "Unable to construct " + "input or output "
+                                + "port '" + port + "'");
                     }
                 } else {
                     try {
@@ -304,7 +304,7 @@ public class GenericJNIActor extends TypedAtomicActor {
                         port.setTypeEquals(BaseType.GENERAL);
                     } catch (Exception ex) {
                         throw new IllegalActionException(this, ex,
-                            "Unable to construct " + "port '" + port + "'");
+                                "Unable to construct " + "port '" + port + "'");
                     }
                 }
             } else {
@@ -337,34 +337,34 @@ public class GenericJNIActor extends TypedAtomicActor {
             TypedIOPort port = (TypedIOPort) ports.next();
 
             if (port.isInput() && port.hasToken(0)
-                            && !(port.isOutput() && !port.isInput())) {
+                    && !(port.isOutput() && !port.isInput())) {
                 Token tok = (Token) port.get(0);
 
                 String typ = (String) _methods[_methodIndex].getParameterTypes()[args
-                                .size()].toString();
+                        .size()].toString();
 
                 if (typ.equals("boolean")) {
                     args.add(Boolean.valueOf(
-                            (boolean) ((BooleanToken) tok).booleanValue()));
+                                     (boolean) ((BooleanToken) tok).booleanValue()));
                 } else if (typ.equals("int")) {
                     args.add(new Integer((int) ((IntToken) tok).intValue()));
                 } else if (typ.equals("double")) {
                     args.add(new Double(
-                            (double) ((DoubleToken) tok).doubleValue()));
+                                     (double) ((DoubleToken) tok).doubleValue()));
                 } else if (typ.equals("class [I")) {
                     int siz = ((ArrayToken) tok).arrayValue().length;
                     int[] tab = new int[siz];
 
                     for (int j = 0; j < siz; j++) {
                         tab[j] = (int) ((IntToken) (((ArrayToken) tok)
-                                        .arrayValue()[j])).intValue();
+                                                .arrayValue()[j])).intValue();
                     }
 
                     //(int[])((ArrayToken)tok).arrayValue();
                     args.add((Object) tab);
                 } else {
                     System.out.println("The intype is not convertible "
-                        + "with Ptolemy II types.");
+                            + "with Ptolemy II types.");
                 }
             }
         }
@@ -387,30 +387,30 @@ public class GenericJNIActor extends TypedAtomicActor {
                         "java.library.path");
 
                 throw new Exception("Class '" + _class
-                    + "' cannot be instantiated.\n"
-                    + "If you are running under Windows, "
-                    + "be sure that the directory containing the library "
-                    + "is in your PATH.\n"
-                    + "If you are running under Solaris, "
-                    + "be sure that the directory containing the library "
-                    + "is in your LD_LIBRARY_PATH and that the library "
-                    + "name begin with 'lib' and end with '.so'.\n"
-                    + "You may need to exit, set your "
-                    + "PATH or LD_LIBRARY_PATH to include the directory "
-                    + "that contains the shared library and " + "restart.\n"
-                    + "For example, under Windows "
-                    + "in a Cygwin bash shell:\n"
-                    + "PATH=/cygdrive/c/ptII/jni/dll:${PATH}\n"
-                    + "export PATH\n" + "vergil -jni foo.xml\n"
-                    + "A common error is that "
-                    + "the class cannot be found in "
-                    + "property 'java.library.path' " + "which is:\n"
-                    + libraryPath + "\nError message was: "
-                    + error.getMessage(), error);
+                        + "' cannot be instantiated.\n"
+                        + "If you are running under Windows, "
+                        + "be sure that the directory containing the library "
+                        + "is in your PATH.\n"
+                        + "If you are running under Solaris, "
+                        + "be sure that the directory containing the library "
+                        + "is in your LD_LIBRARY_PATH and that the library "
+                        + "name begin with 'lib' and end with '.so'.\n"
+                        + "You may need to exit, set your "
+                        + "PATH or LD_LIBRARY_PATH to include the directory "
+                        + "that contains the shared library and " + "restart.\n"
+                        + "For example, under Windows "
+                        + "in a Cygwin bash shell:\n"
+                        + "PATH=/cygdrive/c/ptII/jni/dll:${PATH}\n"
+                        + "export PATH\n" + "vergil -jni foo.xml\n"
+                        + "A common error is that "
+                        + "the class cannot be found in "
+                        + "property 'java.library.path' " + "which is:\n"
+                        + libraryPath + "\nError message was: "
+                        + error.getMessage(), error);
             }
         } catch (Exception ex) {
             throw new IllegalActionException(this, ex,
-                "Class cannot be instantiated");
+                    "Class cannot be instantiated");
         }
 
         try {
@@ -424,7 +424,7 @@ public class GenericJNIActor extends TypedAtomicActor {
 
                     for (int i = 1; i < args.size(); i++) {
                         argumentsDescription.append(", "
-                            + args.elementAt(i).toString());
+                                + args.elementAt(i).toString());
                     }
                 }
             } catch (Throwable throwable) {
@@ -432,9 +432,9 @@ public class GenericJNIActor extends TypedAtomicActor {
             }
 
             throw new IllegalActionException(this, ex,
-                "Native operation call failed." + "Failed to invoke '" + obj
-                + "' with " + args.size() + " arg(s) "
-                + argumentsDescription.toString());
+                    "Native operation call failed." + "Failed to invoke '" + obj
+                    + "' with " + args.size() + " arg(s) "
+                    + argumentsDescription.toString());
         }
 
         ports = portList().iterator();
@@ -445,13 +445,13 @@ public class GenericJNIActor extends TypedAtomicActor {
             //if the argument is return
             if (getArgumentReturn() == null) {
                 System.err.println("Warning: GenericJNIActor.java: "
-                    + "getArgumentReturn() returns null?");
+                        + "getArgumentReturn() returns null?");
             }
 
             if ((port != null) && (port.getName() != null)
-                            && (getArgumentReturn() != null)
-                            && port.getName().equals(this.getArgumentReturn()
-                                                                     .getName())) {
+                    && (getArgumentReturn() != null)
+                    && port.getName().equals(this.getArgumentReturn()
+                            .getName())) {
                 String typ = "";
                 Field field = null;
 
@@ -461,7 +461,7 @@ public class GenericJNIActor extends TypedAtomicActor {
                 } catch (NoSuchFieldException e) {
                     try {
                         throw new IllegalActionException(this, e,
-                            "No return type field '_" + port.getName() + "'");
+                                "No return type field '_" + port.getName() + "'");
                     } catch (Throwable throwable) {
                         getDirector().stop();
                     }
@@ -469,27 +469,27 @@ public class GenericJNIActor extends TypedAtomicActor {
 
                 if (typ.equals("boolean")) {
                     port.send(0,
-                        (Token) new BooleanToken(((Boolean) ret).booleanValue()));
+                            (Token) new BooleanToken(((Boolean) ret).booleanValue()));
                 } else if (typ.equals("double")) {
                     port.send(0,
-                        (Token) new DoubleToken(((Double) ret).doubleValue()));
+                            (Token) new DoubleToken(((Double) ret).doubleValue()));
                 } else if (typ.equals("int")) {
                     port.send(0,
-                        (Token) new IntToken(((Integer) ret).intValue()));
+                            (Token) new IntToken(((Integer) ret).intValue()));
                 } else if (typ.equals("char")) {
                     port.send(0,
-                        (Token) new UnsignedByteToken(((Byte) ret).byteValue()));
+                            (Token) new UnsignedByteToken(((Byte) ret).byteValue()));
                 } else {
                     System.out.println("The return type is not convertible "
-                        + "with Ptolemy II types.");
+                            + "with Ptolemy II types.");
                 }
             }
             //if the argument is output
             else if ((port != null) && port.isOutput()
-                            && (port.getName() != null)
-                            && (getArgumentReturn() != null)
-                            && !(port.getName().equals(this.getArgumentReturn()
-                                                                       .getName()))) {
+                    && (port.getName() != null)
+                    && (getArgumentReturn() != null)
+                    && !(port.getName().equals(this.getArgumentReturn()
+                                 .getName()))) {
                 String typ = "";
                 Field field = null;
 
@@ -500,12 +500,12 @@ public class GenericJNIActor extends TypedAtomicActor {
                     try {
                         field = _class.getDeclaredField("_"
                                 + port.getName().substring(0,
-                                    port.getName().length() - 3));
+                                        port.getName().length() - 3));
                         typ = (String) field.getType().toString();
                     } catch (Throwable throwable) {
                         try {
                             throw new IllegalActionException(this, throwable,
-                                "No '+" + port.getName() + "' field !");
+                                    "No '+" + port.getName() + "' field !");
                         } catch (Throwable throwable2) {
                             getDirector().stop();
                         }
@@ -514,77 +514,77 @@ public class GenericJNIActor extends TypedAtomicActor {
 
                 if (field == null) {
                     throw new InternalErrorException("Field '" + port.getName()
-                        + "' in '" + _class + "' is null?");
+                            + "' in '" + _class + "' is null?");
                 } else {
                     if (typ.equals("boolean")) {
                         try {
                             port.send(0,
-                                (Token) new BooleanToken(field.getBoolean(obj)));
+                                    (Token) new BooleanToken(field.getBoolean(obj)));
                         } catch (IllegalAccessException ex) {
                             throw new IllegalActionException(this, ex,
-                                "Type '" + typ + "' is not castable");
+                                    "Type '" + typ + "' is not castable");
                         }
                     } else if (typ.equals("double")) {
                         try {
                             port.send(0,
-                                (Token) new DoubleToken(field.getDouble(obj)));
+                                    (Token) new DoubleToken(field.getDouble(obj)));
                         } catch (IllegalAccessException ex) {
                             throw new IllegalActionException(this, ex,
-                                "Type '" + typ + "' is not castable");
+                                    "Type '" + typ + "' is not castable");
                         }
                     } else if (typ.equals("int")) {
                         try {
                             port.send(0, (Token) new IntToken(field.getInt(obj)));
                         } catch (IllegalAccessException ex) {
                             throw new IllegalActionException(this, ex,
-                                "Type '" + typ + "' is not castable");
+                                    "Type '" + typ + "' is not castable");
                         }
                     } else if (typ.equals("char")) {
                         try {
                             port.send(0,
-                                (Token) new UnsignedByteToken(
-                                    (char) field.getChar(obj)));
+                                    (Token) new UnsignedByteToken(
+                                            (char) field.getChar(obj)));
                         } catch (IllegalAccessException ex) {
                             throw new IllegalActionException(this, ex,
-                                "Type '" + typ + "' is not castable");
+                                    "Type '" + typ + "' is not castable");
                         }
                     } else if (typ.equals("class [I")) {
                         try {
                             Token[] toks = new Token[((int[]) field.get(obj)).length];
 
                             for (int j = 0;
-                                            j < ((int[]) field.get(obj)).length;
-                                            j++) {
+                                 j < ((int[]) field.get(obj)).length;
+                                 j++) {
                                 toks[j] = new IntToken(((int[]) field.get(obj))[j]);
                             }
 
                             port.send(0, new ArrayToken(toks));
                         } catch (IllegalAccessException ex) {
                             throw new IllegalActionException(this, ex,
-                                "Type '" + typ + "' is not castable");
+                                    "Type '" + typ + "' is not castable");
                         }
                     } else if (typ.equals("class [D")) {
                         try {
                             Token[] toks = new Token[((double[]) field.get(obj)).length];
 
                             for (int j = 0;
-                                            j < ((double[]) field.get(obj)).length;
-                                            j++) {
+                                 j < ((double[]) field.get(obj)).length;
+                                 j++) {
                                 toks[j] = new DoubleToken(((double[]) field.get(
-                                            obj))[j]);
+                                                                   obj))[j]);
                             }
 
                             port.send(0, new ArrayToken(toks));
                         } catch (IllegalAccessException ex) {
                             throw new IllegalActionException(this, ex,
-                                "Type '" + typ + "' is not castable");
+                                    "Type '" + typ + "' is not castable");
                         }
                     } else {
                         // FIXME: for char[] and boolean[], there is
                         // no corresponding Token type.
                         System.out.println("The outtype '" + typ
-                            + "' is not convertible "
-                            + "with Ptolemy II types.");
+                                + "' is not convertible "
+                                + "with Ptolemy II types.");
                     }
                 }
             }
@@ -649,12 +649,12 @@ public class GenericJNIActor extends TypedAtomicActor {
 
         try {
             File userDirAsFile = new File(StringUtilities.getProperty(
-                        "user.dir"));
+                                                  "user.dir"));
             tab[0] = userDirAsFile.toURL();
         } catch (Exception ex) {
             throw new IllegalActionException(this, ex,
-                "Could not create URL " + "from user.dir ("
-                + StringUtilities.getProperty("user.dir") + ")");
+                    "Could not create URL " + "from user.dir ("
+                    + StringUtilities.getProperty("user.dir") + ")");
         }
 
         try {
@@ -662,14 +662,14 @@ public class GenericJNIActor extends TypedAtomicActor {
             _class = cl.loadClass(className);
         } catch (Throwable ex) {
             throw new IllegalActionException(this, ex,
-                "Could not load JNI C class '" + className + "' relative to "
-                + tab[0]);
+                    "Could not load JNI C class '" + className + "' relative to "
+                    + tab[0]);
         }
 
         if (_class == null) {
             throw new IllegalActionException(this,
-                "Could load JNI C class, '" + className + "' relative to "
-                + tab[0]);
+                    "Could load JNI C class, '" + className + "' relative to "
+                    + tab[0]);
         }
 
         // FIXME: This adds to the path every time the actor is initialized
@@ -703,12 +703,12 @@ public class GenericJNIActor extends TypedAtomicActor {
             _methods = _class.getMethods();
         } catch (Exception ex) {
             throw new IllegalActionException(this, ex,
-                "Interface C _methods not found " + "class was: " + _class);
+                    "Interface C _methods not found " + "class was: " + _class);
         }
 
         if (_methods == null) {
             throw new IllegalActionException(this,
-                "getMethods() returned null?, " + "class was: " + _class);
+                    "getMethods() returned null?, " + "class was: " + _class);
         }
 
         //getting the fire _method
@@ -737,9 +737,9 @@ public class GenericJNIActor extends TypedAtomicActor {
             }
 
             throw new IllegalActionException(this,
-                "After looking at " + _methods.length + " method(s),"
-                + "did not find fire method in '" + _class
-                + "', method names were: " + methodNames.toString());
+                    "After looking at " + _methods.length + " method(s),"
+                    + "did not find fire method in '" + _class
+                    + "', method names were: " + methodNames.toString());
         }
     }
 
@@ -749,7 +749,7 @@ public class GenericJNIActor extends TypedAtomicActor {
     /** Add an argument to this entity
      */
     protected void _addArgument(Argument arg)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         _argumentsList.append((Nameable) arg);
     }
 

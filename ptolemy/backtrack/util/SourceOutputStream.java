@@ -38,17 +38,17 @@ import java.io.IOException;
 /**
 
 
- @author Thomas Feng
- @version $Id$
- @since Ptolemy II 5.1
- @Pt.ProposedRating Red (tfeng)
- @Pt.AcceptedRating Red (tfeng)
- */
+@author Thomas Feng
+@version $Id$
+@since Ptolemy II 5.1
+@Pt.ProposedRating Red (tfeng)
+@Pt.AcceptedRating Red (tfeng)
+*/
 public class SourceOutputStream extends FileOutputStream {
 
     public static SourceOutputStream getStream(String fileName,
             boolean overwrite)
-                    throws IOException {
+            throws IOException {
         File file = new File(fileName);
         if (file.getParent() != null) {
             File path = new File(file.getParent());
@@ -63,11 +63,11 @@ public class SourceOutputStream extends FileOutputStream {
 
     public static SourceOutputStream getStream(String root, String packageName,
             String fileName, boolean overwrite)
-                    throws FileNotFoundException, IOException {
+            throws FileNotFoundException, IOException {
         if (packageName != null && packageName.length() > 0)
             root = root +
-                    File.separator +
-                    packageName.replace('.', File.separatorChar);
+                File.separator +
+                packageName.replace('.', File.separatorChar);
 
         File rootFile = new File(root);
         if (!rootFile.exists())

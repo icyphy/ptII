@@ -81,7 +81,7 @@ public class ZeroLengthCycleAnalysis extends Analysis {
      */
     public String toString() {
         return "Zero-length cycle analysis using the following analyzer:\n"
-        + analyzer().toString();
+            + analyzer().toString();
     }
 
     /** Check if a given analyzer is compatible with this analysis.

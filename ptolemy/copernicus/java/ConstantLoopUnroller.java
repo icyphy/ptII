@@ -91,7 +91,7 @@ public class ConstantLoopUnroller extends BodyTransformer {
 
     protected void internalTransform(String phaseName, Map options) {
         System.out.println("ConstantLoopUnroller.internalTransform("
-            + phaseName + ", " + options + ")");
+                + phaseName + ", " + options + ")");
 
         Iterator classes = Scene.v().getApplicationClasses().iterator();
 
@@ -128,7 +128,7 @@ public class ConstantLoopUnroller extends BodyTransformer {
 
             // filter out anything that doesn't look like a loop block.
             if ((block.getPreds().size() != 1)
-                            || (block.getSuccs().size() != 1)) {
+                    || (block.getSuccs().size() != 1)) {
                 continue;
             }
 
@@ -137,8 +137,8 @@ public class ConstantLoopUnroller extends BodyTransformer {
             Block conditional = (Block) block.getSuccs().get(0);
 
             if ((conditional != block.getPreds().get(0))
-                            || (conditional.getPreds().size() != 2)
-                            || (conditional.getSuccs().size() != 2)) {
+                    || (conditional.getPreds().size() != 2)
+                    || (conditional.getSuccs().size() != 2)) {
                 continue;
             }
 
@@ -168,7 +168,7 @@ public class ConstantLoopUnroller extends BodyTransformer {
                             jumpStmt = ifStmt;
                         } else {
                             throw new RuntimeException(
-                                "Two jumps in conditional!");
+                                    "Two jumps in conditional!");
                         }
                     }
                 }
@@ -234,7 +234,7 @@ public class ConstantLoopUnroller extends BodyTransformer {
 
             if (Evaluator.isValueConstantValued(counterStmt.getRightOp())) {
                 initial = ((IntConstant) Evaluator.getConstantValueOf(counterStmt
-                                    .getRightOp())).value;
+                                   .getRightOp())).value;
                 System.out.println("initial = " + initial);
             } else {
                 continue;

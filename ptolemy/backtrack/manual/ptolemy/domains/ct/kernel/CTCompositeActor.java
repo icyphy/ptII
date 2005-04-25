@@ -61,7 +61,7 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating Red (tfeng)
 */
 public class CTCompositeActor extends TypedCompositeActor implements
-        CTStatefulActor {
+                                                              CTStatefulActor {
 
     /** Construct a CTCompositeActor in the default workspace with no
      *  container and an empty string as its name. Add the actor to the

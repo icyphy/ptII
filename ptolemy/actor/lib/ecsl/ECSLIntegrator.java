@@ -56,7 +56,7 @@ public class ECSLIntegrator extends Transformer {
      *   an actor already in the container.
      */
     public ECSLIntegrator(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input.setMultiport(true);
         output.setMultiport(true);

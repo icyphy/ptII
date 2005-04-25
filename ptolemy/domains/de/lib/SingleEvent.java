@@ -68,7 +68,7 @@ public class SingleEvent extends TypedAtomicActor {
      *   actor with this name.
      */
     public SingleEvent(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         output = new TypedIOPort(this, "output", false, true);
         time = new Parameter(this, "time", new DoubleToken(0.0));
@@ -105,7 +105,7 @@ public class SingleEvent extends TypedAtomicActor {
      *  @exception IllegalActionException If the parent class throws it.
      */
     public void attributeTypeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == value) {
             Director director = getDirector();
 

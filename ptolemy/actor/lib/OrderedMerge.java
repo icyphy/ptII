@@ -79,7 +79,7 @@ public class OrderedMerge extends TypedAtomicActor {
      *   actor with this name.
      */
     public OrderedMerge(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         inputA = new TypedIOPort(this, "inputA", true, false);
@@ -99,8 +99,8 @@ public class OrderedMerge extends TypedAtomicActor {
         channelCardinal.setExpression("SOUTH");
 
         _attachText("_iconDescription",
-            "<svg>\n" + "<polygon points=\"-10,20 10,10 10,-10, -10,-20\" "
-            + "style=\"fill:blue\"/>\n" + "</svg>\n");
+                "<svg>\n" + "<polygon points=\"-10,20 10,10 10,-10, -10,-20\" "
+                + "style=\"fill:blue\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////

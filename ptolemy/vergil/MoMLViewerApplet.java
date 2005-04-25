@@ -117,17 +117,17 @@ public class MoMLViewerApplet extends MoMLApplet {
      */
     public String[][] getParameterInfo() {
         String[][] newinfo = {
-                {
-                    "includeRunPanel",
-                    "",
-                    "Indicator to include run panel"
-                },
-                {
-                    "configuration",
-                    "",
-                    "Ptolemy II configuration"
-                },
-            };
+            {
+                "includeRunPanel",
+                "",
+                "Indicator to include run panel"
+            },
+            {
+                "configuration",
+                "",
+                "Ptolemy II configuration"
+            },
+        };
         return _concatStringArrays(super.getParameterInfo(), newinfo);
     }
 
@@ -150,7 +150,7 @@ public class MoMLViewerApplet extends MoMLApplet {
      *  @exception Exception If something goes wrong.
      */
     protected NamedObj _createModel(Workspace workspace)
-        throws Exception {
+            throws Exception {
         // Do not filter out graphical classes.
         // FIXME: if we have a configuration, then we are parsing
         // the model twice!!!
@@ -176,7 +176,7 @@ public class MoMLViewerApplet extends MoMLApplet {
                 report("Opened '" + specificationURL + "': " + _configuration);
             } catch (Exception ex) {
                 throw new RuntimeException("Failed to open '"
-                    + configurationPath + "':", ex);
+                        + configurationPath + "':", ex);
             }
         }
 
@@ -196,7 +196,7 @@ public class MoMLViewerApplet extends MoMLApplet {
                 //        BorderLayout.NORTH);
             } catch (Exception ex) {
                 throw new RuntimeException("Failed to open '" + _modelURL
-                    + "'.", ex);
+                        + "'.", ex);
             }
         }
 
@@ -261,7 +261,7 @@ public class MoMLViewerApplet extends MoMLApplet {
         String panelFlag = getParameter("includeRunPanel");
 
         if ((panelFlag != null)
-                        && panelFlag.trim().toLowerCase().equals("true")) {
+                && panelFlag.trim().toLowerCase().equals("true")) {
             // NOTE: We could create a separator between the schematic
             // and the control panel here.
             super._createView();

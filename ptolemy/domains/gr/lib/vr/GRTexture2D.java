@@ -140,7 +140,7 @@ public class GRTexture2D extends GRActor3D {
      *   actor with this name.
      */
     public GRTexture2D(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         voxelFile = new FilePortParameter(this, "voxelFile");
@@ -231,10 +231,10 @@ public class GRTexture2D extends GRActor3D {
     public ColorAttribute specularColor;
 
     /* /** Texture URL, which if non-empty, specifies an image file
-      *  or URL. The image from the file is mapped onto the shape
-      *  as a texture.
+     *  or URL. The image from the file is mapped onto the shape
+     *  as a texture.
 
-    public FileParameter texture; */
+     public FileParameter texture; */
 
     /** The transparency, where 0.0 means opaque (the default) and 1.0
      *  means fully transparent. The type is double.
@@ -273,15 +273,15 @@ public class GRTexture2D extends GRActor3D {
      *  an update is supported by the <i>allowRuntimeChanges</i> parameter.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         // If allowRuntimeChanges is null, then we are in the
         // constructor, and don't need to do any of this.
         if (allowRuntimeChanges != null) {
             if (_changesAllowedNow) {
                 if ((attribute == transparency)
-                                && (_transparencyAttributes != null)) {
+                        && (_transparencyAttributes != null)) {
                     float transparent = (float) ((DoubleToken) transparency
-                                    .getToken()).doubleValue();
+                            .getToken()).doubleValue();
 
                     if (transparent > 0.0) {
                         _transparencyAttributes.setTransparencyMode(TransparencyAttributes.NICEST);
@@ -294,7 +294,7 @@ public class GRTexture2D extends GRActor3D {
 
                 if ((attribute == flat) && (_coloringAttributes != null)) {
                     boolean flatValue = ((BooleanToken) flat.getToken())
-                                    .booleanValue();
+                        .booleanValue();
                     int shadeModel = ColoringAttributes.SHADE_GOURAUD;
 
                     if (flatValue) {
@@ -316,26 +316,26 @@ public class GRTexture2D extends GRActor3D {
                         _material.setSpecularColor(color);
                     } else if (attribute == shininess) {
                         float shine = (float) ((DoubleToken) shininess.getToken())
-                                        .doubleValue();
+                            .doubleValue();
                         _material.setShininess(shine);
                     }
                 }
 
                 /*    if ((attribute == texture) && (_appearance != null)) {
-                        URL textureURL = texture.asURL();
+                      URL textureURL = texture.asURL();
 
-                        if ((_viewScreen != null) && (textureURL != null)) {
-                            TextureLoader loader;
-                            loader = new TextureLoader(textureURL,
-                                    _viewScreen.getCanvas());
+                      if ((_viewScreen != null) && (textureURL != null)) {
+                      TextureLoader loader;
+                      loader = new TextureLoader(textureURL,
+                      _viewScreen.getCanvas());
 
-                            Texture loadedTexture = loader.getTexture();
+                      Texture loadedTexture = loader.getTexture();
 
-                            if (loadedTexture != null) {
-                                _appearance.setTexture(loadedTexture);
-                            }
-                        }
-                    } */
+                      if (loadedTexture != null) {
+                      _appearance.setTexture(loadedTexture);
+                      }
+                      }
+                      } */
                 if ((attribute == wireFrame) && (_polygonAttributes != null)) {
                     int mode = PolygonAttributes.POLYGON_FILL;
 
@@ -393,7 +393,7 @@ public class GRTexture2D extends GRActor3D {
              * because need to access token for condition
              */
             if ((_parameterPort != null) && (_parameterPort.getWidth() > 0)
-                            && _parameterPort.hasToken(0)) {
+                    && _parameterPort.hasToken(0)) {
                 _stringToken = (StringToken) (_parameterPort.get(0));
                 voxelFile.setCurrentValue(_stringToken);
 
@@ -446,15 +446,15 @@ public class GRTexture2D extends GRActor3D {
         }
 
         /*        voxelFile.update();
-                _fileURL = voxelFile.asURL();
+                  _fileURL = voxelFile.asURL();
 
-                if (_fileURL != null){
-                //    _createModel();
-                    return true;
-                }
-                else {
-                 return false;
-                } */
+                  if (_fileURL != null){
+                  //    _createModel();
+                  return true;
+                  }
+                  else {
+                  return false;
+                  } */
     }
 
     /** Override the base class to ensure that material and
@@ -499,7 +499,7 @@ public class GRTexture2D extends GRActor3D {
         _appearance = new Appearance();
 
         boolean allowChanges = ((BooleanToken) allowRuntimeChanges.getToken())
-                        .booleanValue();
+            .booleanValue();
 
         Color3f color = new Color3f(emissiveColor.asColor());
         _material.setEmissiveColor(color);
@@ -558,10 +558,10 @@ public class GRTexture2D extends GRActor3D {
         _appearance.setLineAttributes(lineAttributes);
 
         /*if (dbWriteEnable == false) {
-        RenderingAttributes r = new RenderingAttributes();
-        r.setDepthBufferWriteEnable(dbWriteEnable);
-        a.setRenderingAttributes(r);
-        } */
+          RenderingAttributes r = new RenderingAttributes();
+          r.setDepthBufferWriteEnable(dbWriteEnable);
+          a.setRenderingAttributes(r);
+          } */
 
         // If runtime changes are allowed, we need to set the
         // appropriate capabilities.
@@ -783,10 +783,10 @@ public class GRTexture2D extends GRActor3D {
         /** Set the texture and its attributes */
 
         /*  _textureAttributes = new TextureAttributes();
-          _textureAttributes.setTextureMode(TextureAttributes.REPLACE);
-          _textureAttributes.setCapability(TextureAttributes.ALLOW_COLOR_TABLE_WRITE);
-          _appearance.setTexture(_texture2D);
-          _appearance.setTextureAttributes(_textureAttributes); */
+            _textureAttributes.setTextureMode(TextureAttributes.REPLACE);
+            _textureAttributes.setCapability(TextureAttributes.ALLOW_COLOR_TABLE_WRITE);
+            _appearance.setTexture(_texture2D);
+            _appearance.setTextureAttributes(_textureAttributes); */
     }
 
     ///////////////////////////////////////////////////////////////////

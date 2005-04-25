@@ -86,7 +86,7 @@ public class Select extends Transformer {
      *   an actor already in the container.
      */
     public Select(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         input.setMultiport(true);
@@ -144,7 +144,7 @@ public class Select extends Transformer {
         }
 
         if ((_control < 0) || (_control > input.getWidth())
-                        || !input.hasToken(_control)) {
+                || !input.hasToken(_control)) {
             return false;
         }
 

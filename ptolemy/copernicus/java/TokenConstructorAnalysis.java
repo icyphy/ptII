@@ -74,19 +74,19 @@ public class TokenConstructorAnalysis {
             Stmt unit = (Stmt) units.next();
 
             if (unit.containsInvokeExpr()
-                            && unit.getInvokeExpr() instanceof InstanceInvokeExpr) {
+                    && unit.getInvokeExpr() instanceof InstanceInvokeExpr) {
                 InstanceInvokeExpr invokeExpr = (InstanceInvokeExpr) unit
-                                .getInvokeExpr();
+                    .getInvokeExpr();
                 SootMethod invokedMethod = invokeExpr.getMethod();
 
                 // If we invoke a Token class initializer
                 if (invokedMethod.getName().equals("<init>")
-                                && SootUtilities.isSubtypeOf(
-                                    invokeExpr.getBase().getType(),
-                                    RefType.v(PtolemyUtilities.tokenClass))) {
+                        && SootUtilities.isSubtypeOf(
+                                invokeExpr.getBase().getType(),
+                                RefType.v(PtolemyUtilities.tokenClass))) {
                     // System.out.println("found token initializer: " + unit);
                     Unit constructor = _findConstructor((Local) invokeExpr
-                                        .getBase(), unit, localDefs);
+                            .getBase(), unit, localDefs);
 
                     //  System.out.println("found token constructor: " + constructor);
                     if (constructor == null) {
@@ -110,7 +110,7 @@ public class TokenConstructorAnalysis {
     }
 
     private Token _evaluateInitializer(InvokeExpr invokeExpr,
-        SootMethod invokedMethod) {
+            SootMethod invokedMethod) {
         Value[] argValues = (Value[]) invokeExpr.getArgs().toArray(new Value[0]);
 
         for (int i = 0; i < argValues.length; i++) {
@@ -123,14 +123,14 @@ public class TokenConstructorAnalysis {
 
         try {
             return (Token) SootUtilities.reflectAndInvokeConstructor(invokedMethod,
-                argValues);
+                    argValues);
         } catch (Exception ex) {
             return null;
         }
     }
 
     private Unit _findConstructor(Local local, Unit location,
-        LocalDefs localDefs) {
+            LocalDefs localDefs) {
         NewExpr newExpr = null;
         List definitionList = localDefs.getDefsOfAt(local, location);
 
@@ -142,7 +142,7 @@ public class TokenConstructorAnalysis {
                 return stmt;
             } else {
                 throw new RuntimeException("Found something other"
-                    + " than a constructor: " + stmt);
+                        + " than a constructor: " + stmt);
             }
         }
 

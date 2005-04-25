@@ -57,7 +57,7 @@ public class Exit extends Sink {
      *   actor with this name.
      */
     public Exit(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
     }
 

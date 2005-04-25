@@ -88,5 +88,5 @@ public class Stack extends Vector implements Rollbackable {
     }
 
     private FieldRecord[] $RECORDS = new FieldRecord[] {
-        };
+    };
 }

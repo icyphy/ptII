@@ -108,7 +108,7 @@ public class CommandLineTransformer extends SceneTransformer
 
     public String getDefaultOptions() {
         return "iterations:" + Integer.MAX_VALUE + " template:"
-        + _commandLineTemplateDefault;
+            + _commandLineTemplateDefault;
     }
 
     public String getDeclaredOptions() {
@@ -117,7 +117,7 @@ public class CommandLineTransformer extends SceneTransformer
 
     protected void internalTransform(String phaseName, Map options) {
         System.out.println("CommandLineTransformer.internalTransform("
-            + phaseName + ", " + options + ")");
+                + phaseName + ", " + options + ")");
 
         /* SootClass actorClass =  Scene.v().loadClassAndSupport(
            "ptolemy.actor.TypedAtomicActor");
@@ -154,11 +154,11 @@ public class CommandLineTransformer extends SceneTransformer
         // Optimizations.
         // We know that we will never parse classes, so throw away that code.
         SootUtilities.assertFinalField(mainClass,
-            mainClass.getFieldByName("_expectingClass"), IntConstant.v(0));
+                mainClass.getFieldByName("_expectingClass"), IntConstant.v(0));
 
         // We know that we will never be testing, so throw away that code.
         SootUtilities.assertFinalField(mainClass,
-            mainClass.getFieldByName("_test"), IntConstant.v(0));
+                mainClass.getFieldByName("_test"), IntConstant.v(0));
 
         // We know that we have exactly one model, so create it.
         // The final field for the model.
@@ -169,7 +169,7 @@ public class CommandLineTransformer extends SceneTransformer
         // initialize the field by creating a model
         // in all the <init> methods.
         for (Iterator methods = mainClass.getMethods().iterator();
-                        methods.hasNext();) {
+             methods.hasNext();) {
             SootMethod method = (SootMethod) methods.next();
 
             // ignore things that aren't initializers.
@@ -186,38 +186,38 @@ public class CommandLineTransformer extends SceneTransformer
 
             body.getLocals().add(modelLocal);
             units.insertBefore(Jimple.v().newAssignStmt(modelLocal,
-                    Jimple.v().newNewExpr(RefType.v(modelClass))), insertPoint);
+                                       Jimple.v().newNewExpr(RefType.v(modelClass))), insertPoint);
 
             // the arguments
             List args = new LinkedList();
             SootMethod constructor = SootUtilities.getMatchingMethod(modelClass,
                     "<init>", args);
             units.insertBefore(Jimple.v().newInvokeStmt(Jimple.v()
-                                                                          .newSpecialInvokeExpr(modelLocal,
-                                    constructor, args)), insertPoint);
+                                       .newSpecialInvokeExpr(modelLocal,
+                                               constructor, args)), insertPoint);
 
             FieldRef fieldRef = Jimple.v().newInstanceFieldRef(body
-                                .getThisLocal(), modelField);
+                    .getThisLocal(), modelField);
             units.insertBefore(Jimple.v().newAssignStmt(fieldRef, modelLocal),
-                insertPoint);
+                    insertPoint);
 
             // Set the name.
             units.insertBefore(Jimple.v().newInvokeStmt(Jimple.v()
-                                                                          .newVirtualInvokeExpr(modelLocal,
-                                    PtolemyUtilities.setNameMethod,
-                                    StringConstant.v(_model.getName()))),
-                insertPoint);
+                                       .newVirtualInvokeExpr(modelLocal,
+                                               PtolemyUtilities.setNameMethod,
+                                               StringConstant.v(_model.getName()))),
+                    insertPoint);
 
             // Set the hardcoded iteration limit, if necessary.
             int iterationLimit = PhaseOptions.getInt(options, "iterations");
 
             if (iterationLimit != Integer.MAX_VALUE) {
                 units.insertBefore(Jimple.v().newAssignStmt(Jimple.v()
-                                                                              .newInstanceFieldRef(body
-                                        .getThisLocal(),
-                                        mainClass.getFieldByName(
-                                            "_iterationLimit")),
-                        IntConstant.v(iterationLimit)), insertPoint);
+                                           .newInstanceFieldRef(body
+                                                   .getThisLocal(),
+                                                   mainClass.getFieldByName(
+                                                           "_iterationLimit")),
+                                           IntConstant.v(iterationLimit)), insertPoint);
             }
         }
 
@@ -232,13 +232,13 @@ public class CommandLineTransformer extends SceneTransformer
 
             if (modelsField != null) {
                 SootUtilities.unrollIteratorInstances(mainClass, modelsField,
-                    modelList);
+                        modelList);
             }
         } catch (RuntimeException ex) {
             System.out.println("Warning: did not find _models field: " + ex);
 
             for (Iterator methods = mainClass.getMethods().iterator();
-                            methods.hasNext();) {
+                 methods.hasNext();) {
                 SootMethod method = (SootMethod) methods.next();
                 JimpleBody body = (JimpleBody) method.retrieveActiveBody();
                 System.out.println("clt: " + method + " " + body);
@@ -266,12 +266,12 @@ public class CommandLineTransformer extends SceneTransformer
         SootMethod mainStartRunMethod = mainClass.getMethodByName("startRun");
 
         for (Iterator methods = mainClass.getMethods().iterator();
-                        methods.hasNext();) {
+             methods.hasNext();) {
             SootMethod method = (SootMethod) methods.next();
             JimpleBody body = (JimpleBody) method.retrieveActiveBody();
 
             for (Iterator units = body.getUnits().snapshotIterator();
-                            units.hasNext();) {
+                 units.hasNext();) {
                 Stmt stmt = (Stmt) units.next();
 
                 if (!stmt.containsInvokeExpr()) {
@@ -295,12 +295,12 @@ public class CommandLineTransformer extends SceneTransformer
 
                         body.getLocals().add(modelLocal);
                         body.getUnits().insertBefore(Jimple.v().newAssignStmt(modelLocal,
-                                Jimple.v().newInstanceFieldRef(body
-                                                .getThisLocal(), modelField)),
-                            stmt);
+                                                             Jimple.v().newInstanceFieldRef(body
+                                                                     .getThisLocal(), modelField)),
+                                stmt);
 
                         _insertIterateCalls(body, stmt, mainClass, modelClass,
-                            modelLocal, options);
+                                modelLocal, options);
                         body.getUnits().remove(stmt);
                     }
                 }
@@ -312,10 +312,10 @@ public class CommandLineTransformer extends SceneTransformer
         SootUtilities.inlineCallsToMethod(startRunMethod, mainClass);
         mainClass.removeMethod(startRunMethod);
         SootUtilities.inlineCallsToMethod(mainClass.getMethodByName("stopRun"),
-            mainClass);
+                mainClass);
 
         for (Iterator methods = mainClass.getMethods().iterator();
-                        methods.hasNext();) {
+             methods.hasNext();) {
             SootMethod method = (SootMethod) methods.next();
             JimpleBody body = (JimpleBody) method.retrieveActiveBody();
             LocalSplitter.v().transform(body, phaseName + ".lns");
@@ -382,7 +382,7 @@ public class CommandLineTransformer extends SceneTransformer
         }
         */
         for (Iterator methods = mainClass.getMethods().iterator();
-                        methods.hasNext();) {
+             methods.hasNext();) {
             SootMethod method = (SootMethod) methods.next();
 
             //  System.out.println("method = " + method.toString());
@@ -418,7 +418,7 @@ public class CommandLineTransformer extends SceneTransformer
      *  class.
      */
     private void _insertIterateCalls(Body body, Unit unit, SootClass mainClass,
-        SootClass modelClass, Local modelLocal, Map options) {
+            SootClass modelClass, Local modelLocal, Map options) {
         //  System.out.println("modelClass = " + modelClass);
         Chain units = body.getUnits();
 
@@ -435,27 +435,27 @@ public class CommandLineTransformer extends SceneTransformer
             iterationLocal = Jimple.v().newLocal("iteration", IntType.v());
             body.getLocals().add(iterationLocal);
             units.insertBefore(Jimple.v().newAssignStmt(iterationLocal,
-                    IntConstant.v(0)), unit);
+                                       IntConstant.v(0)), unit);
 
             iterationLimitLocal = Jimple.v().newLocal("iterationLimit",
                     IntType.v());
             body.getLocals().add(iterationLimitLocal);
             units.insertBefore(Jimple.v().newAssignStmt(iterationLimitLocal,
-                    Jimple.v().newInstanceFieldRef(body.getThisLocal(),
-                        mainClass.getFieldByName("_iterationLimit"))), unit);
+                                       Jimple.v().newInstanceFieldRef(body.getThisLocal(),
+                                               mainClass.getFieldByName("_iterationLimit"))), unit);
         }
 
         // call preinitialize
         units.insertBefore(Jimple.v().newInvokeStmt(Jimple.v()
-                                                                      .newVirtualInvokeExpr(modelLocal,
-                                SootUtilities.searchForMethodByName(
-                                    modelClass, "preinitialize"))), unit);
+                                   .newVirtualInvokeExpr(modelLocal,
+                                           SootUtilities.searchForMethodByName(
+                                                   modelClass, "preinitialize"))), unit);
 
         // call initialize on the model
         units.insertBefore(Jimple.v().newInvokeStmt(Jimple.v()
-                                                                      .newVirtualInvokeExpr(modelLocal,
-                                SootUtilities.searchForMethodByName(
-                                    modelClass, "initialize"))), unit);
+                                   .newVirtualInvokeExpr(modelLocal,
+                                           SootUtilities.searchForMethodByName(
+                                                   modelClass, "initialize"))), unit);
 
         // A jump point for the start of the iteration.
         Stmt iterationStartStmt = Jimple.v().newNopStmt();
@@ -468,32 +468,32 @@ public class CommandLineTransformer extends SceneTransformer
 
         // call fire on the model
         units.insertBefore(Jimple.v().newInvokeStmt(Jimple.v()
-                                                                      .newVirtualInvokeExpr(modelLocal,
-                                SootUtilities.searchForMethodByName(
-                                    modelClass, "fire"))), unit);
+                                   .newVirtualInvokeExpr(modelLocal,
+                                           SootUtilities.searchForMethodByName(
+                                                   modelClass, "fire"))), unit);
 
         // call postfire on the model.
         units.insertBefore(Jimple.v().newAssignStmt(postfireReturnsLocal,
-                Jimple.v().newVirtualInvokeExpr(modelLocal,
-                    SootUtilities.searchForMethodByName(modelClass, "postfire"))),
-            unit);
+                                   Jimple.v().newVirtualInvokeExpr(modelLocal,
+                                           SootUtilities.searchForMethodByName(modelClass, "postfire"))),
+                unit);
 
         // If postfire returned false,
         // then we're done.
         units.insertBefore(Jimple.v().newIfStmt(Jimple.v().newEqExpr(postfireReturnsLocal,
-                    IntConstant.v(0)), iterationEndStmt), unit);
+                                                        IntConstant.v(0)), iterationEndStmt), unit);
 
         // If we need to keep track of the number of iterations, then...
         if (iterationLimit > 1) {
             // Increment the number of iterations.
             units.insertBefore(Jimple.v().newAssignStmt(iterationLocal,
-                    Jimple.v().newAddExpr(iterationLocal, IntConstant.v(1))),
-                unit);
+                                       Jimple.v().newAddExpr(iterationLocal, IntConstant.v(1))),
+                    unit);
 
             // If the number of iterations is greater than, or equal
             // to the limit, then we're done.
             units.insertBefore(Jimple.v().newIfStmt(Jimple.v().newGeExpr(iterationLocal,
-                        iterationLimitLocal), iterationEndStmt), unit);
+                                                            iterationLimitLocal), iterationEndStmt), unit);
         }
 
         if (iterationLimit != 1) {
@@ -505,9 +505,9 @@ public class CommandLineTransformer extends SceneTransformer
 
         // call wrapup on the model
         units.insertBefore(Jimple.v().newInvokeStmt(Jimple.v()
-                                                                      .newVirtualInvokeExpr(modelLocal,
-                                SootUtilities.searchForMethodByName(
-                                    modelClass, "wrapup"))), unit);
+                                   .newVirtualInvokeExpr(modelLocal,
+                                           SootUtilities.searchForMethodByName(
+                                                   modelClass, "wrapup"))), unit);
     }
 
     private CompositeActor _model;

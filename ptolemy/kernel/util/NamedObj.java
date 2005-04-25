@@ -128,8 +128,8 @@ import java.util.Set;
    @see Workspace
 */
 public class NamedObj implements Changeable, Cloneable, Debuggable,
-    DebugListener, Derivable, MoMLExportable, ModelErrorHandler, Moveable,
-    Serializable {
+                                 DebugListener, Derivable, MoMLExportable, ModelErrorHandler, Moveable,
+                                 Serializable {
     // Note that Nameable extends ModelErrorHandler, so this class
     // need not declare that it directly implements ModelErrorHandler.
 
@@ -178,7 +178,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
         } catch (IllegalActionException ex) {
             // This exception should not be thrown.
             throw new InternalErrorException(null, ex,
-                "Internal error in NamedObj constructor!");
+                    "Internal error in NamedObj constructor!");
         }
 
         try {
@@ -186,7 +186,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
         } catch (KernelException ex) {
             // This exception should not be thrown.
             throw new InternalErrorException(null, ex,
-                "Internal error in NamedObj constructor!");
+                    "Internal error in NamedObj constructor!");
         }
     }
 
@@ -200,7 +200,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  @exception IllegalActionException If the name has a period.
      */
     public NamedObj(Workspace workspace, String name)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (workspace == null) {
             workspace = _DEFAULT_WORKSPACE;
         }
@@ -218,7 +218,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
         } catch (IllegalActionException ex) {
             // This exception should not be thrown.
             throw new InternalErrorException(null, ex,
-                "Internal error in NamedObj constructor!");
+                    "Internal error in NamedObj constructor!");
         }
 
         try {
@@ -226,7 +226,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
         } catch (NameDuplicationException ex) {
             // This exception should not be thrown.
             throw new InternalErrorException(null, ex,
-                "Internal error in NamedObj constructor!");
+                    "Internal error in NamedObj constructor!");
         }
     }
 
@@ -309,7 +309,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *   to this container (not thrown in this base class).
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
     }
 
     /** Return a list of the attributes contained by this object.
@@ -371,7 +371,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *   to this container (not thrown in this base class).
      */
     public void attributeTypeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
     }
 
     /** Clone the object into the current workspace by calling the clone()
@@ -463,8 +463,8 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
                         newParameter.setContainer(newObject);
                     } catch (KernelException exception) {
                         throw new CloneNotSupportedException(
-                            "Failed to clone attribute "
-                            + parameter.getFullName() + ": " + exception);
+                                "Failed to clone attribute "
+                                + parameter.getFullName() + ": " + exception);
                     }
                 }
             }
@@ -474,7 +474,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
                     _debug("Cloned", getFullName(), "into default workspace.");
                 } else {
                     _debug("Cloned", getFullName(), "into workspace:",
-                        workspace.getFullName());
+                            workspace.getFullName());
                 }
             }
 
@@ -677,7 +677,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
 
                     if (_debugging) {
                         _debug("-- Executing change request "
-                            + "with description: " + change.getDescription());
+                                + "with description: " + change.getDescription());
                     }
 
                     change.execute();
@@ -781,7 +781,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  @see #getDerivedLevel()
      */
     public final void exportMoML(Writer output, int depth)
-        throws IOException {
+            throws IOException {
         exportMoML(output, depth, getName());
     }
 
@@ -829,7 +829,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  @see #getDerivedLevel()
      */
     public void exportMoML(Writer output, int depth, String name)
-        throws IOException {
+            throws IOException {
         // If the object is not persistent, or the MoML is
         // redundant with what would be propagated, then do
         // not generate any MoML.
@@ -844,15 +844,15 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
             // Generate header information.
             if (_elementName.equals("entity")) {
                 output.write("<?xml version=\"1.0\" standalone=\"no\"?>\n"
-                    + "<!DOCTYPE " + _elementName + " PUBLIC "
-                    + "\"-//UC Berkeley//DTD MoML 1//EN\"\n"
-                    + "    \"http://ptolemy.eecs.berkeley.edu"
-                    + "/xml/dtd/MoML_1.dtd\">\n");
+                        + "<!DOCTYPE " + _elementName + " PUBLIC "
+                        + "\"-//UC Berkeley//DTD MoML 1//EN\"\n"
+                        + "    \"http://ptolemy.eecs.berkeley.edu"
+                        + "/xml/dtd/MoML_1.dtd\">\n");
             }
         }
 
         output.write(_getIndentPrefix(depth) + "<" + _elementName + " name=\""
-            + name + "\" class=\"" + className + "\"");
+                + name + "\" class=\"" + className + "\"");
 
         if (getSource() != null) {
             output.write(" source=\"" + getSource() + "\">\n");
@@ -889,8 +889,8 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
                     // include 'this' so that we know where the problem
                     // is occurring.
                     throw new InternalErrorException(this, null,
-                        "This should not be happening: getAttribute() "
-                        + "was called with a null name");
+                            "This should not be happening: getAttribute() "
+                            + "was called with a null name");
                 }
 
                 String[] subnames = _splitName(name);
@@ -925,15 +925,15 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *   the specified name that is not an instance of the specified class.
      */
     public Attribute getAttribute(String name, Class attributeClass)
-        throws IllegalActionException {
+            throws IllegalActionException {
         Attribute attribute = getAttribute(name);
 
         if (attribute != null) {
             if (!attributeClass.isInstance(attribute)) {
                 throw new IllegalActionException(attribute,
-                    "Expected attribute of class " + attributeClass.getName()
-                    + " but got attribute of class "
-                    + attribute.getClass().getName());
+                        "Expected attribute of class " + attributeClass.getName()
+                        + " but got attribute of class "
+                        + attribute.getClass().getName());
             }
         }
 
@@ -1066,7 +1066,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
                     // exceptions.  InvalidStateException is a runtime
                     // exception, so it need not be declared.
                     throw new InvalidStateException(
-                        "Container contains itself!");
+                            "Container contains itself!");
                 }
 
                 fullName = container.getName() + "." + fullName;
@@ -1151,7 +1151,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
                     // exceptions.  InvalidStateException is a runtime
                     // exception, so it need not be declared.
                     throw new InvalidStateException(
-                        "Container contains itself!");
+                            "Container contains itself!");
                 }
 
                 name.insert(0, ".");
@@ -1251,7 +1251,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  @see #setModelErrorHandler(ModelErrorHandler handler)
      */
     public boolean handleModelError(NamedObj context,
-        IllegalActionException exception) throws IllegalActionException {
+            IllegalActionException exception) throws IllegalActionException {
         // FIXME: This code fails horribly when one forgets to add a
         // BasicModelErrorHandler at the toplevel of the model.  In
         // reality, this code should do what BasicModelErrorHandler
@@ -1511,7 +1511,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
 
                     while (listeners.hasNext()) {
                         WeakReference reference = (WeakReference) listeners
-                                        .next();
+                            .next();
 
                         if (reference.get() == listener) {
                             listeners.remove();
@@ -1708,7 +1708,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  @see #getName(NamedObj)
      */
     public void setName(String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         String oldName = "";
 
         if (_debugging) {
@@ -1728,7 +1728,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
 
         if (period >= 0) {
             throw new IllegalActionException(this,
-                "Cannot set a name with a period: " + name);
+                    "Cannot set a name with a period: " + name);
         }
 
         try {
@@ -1967,7 +1967,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *   an instance of the expect class (in derived classes).
      */
     protected void _addAttribute(Attribute p)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         try {
             _workspace.getWriteAccess();
 
@@ -1980,7 +1980,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
             } catch (IllegalActionException ex) {
                 // This exception should not be thrown.
                 throw new InternalErrorException(null, ex,
-                    "Internal error in NamedObj _addAttribute() method!");
+                        "Internal error in NamedObj _addAttribute() method!");
             }
 
             if (_debugging) {
@@ -2019,8 +2019,8 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
             icon.configure(null, null, text);
         } catch (Exception ex) {
             throw new InternalErrorException(this, ex,
-                "Error creating singleton attribute named " + name + " for "
-                + getFullName());
+                    "Error creating singleton attribute named " + name + " for "
+                    + getFullName());
         }
     }
 
@@ -2033,7 +2033,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *   getting the attribute
      */
     protected void _cloneFixAttributeFields(NamedObj newObject)
-        throws CloneNotSupportedException {
+            throws CloneNotSupportedException {
         // If the new object has any public fields whose name
         // matches that of an attribute, then set the public field
         // equal to the attribute.
@@ -2159,7 +2159,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  @param part4 The fourth part of the message.
      */
     protected final void _debug(String part1, String part2, String part3,
-        String part4) {
+            String part4) {
         if (_debugging) {
             _debug(part1 + " " + part2 + " " + part3 + " " + part4);
         }
@@ -2221,7 +2221,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
                     while (parameters.hasNext()) {
                         Attribute parameter = (Attribute) parameters.next();
                         result += (parameter._description(detail, indent + 1, 2)
-                                    + "\n");
+                                + "\n");
                     }
                 }
 
@@ -2249,7 +2249,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  @see #exportMoML(Writer, int)
      */
     protected void _exportMoMLContents(Writer output, int depth)
-        throws IOException {
+            throws IOException {
         if (_attributes != null) {
             Iterator attributes = _attributes.elementList().iterator();
 
@@ -2272,7 +2272,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *   and has the wrong class. Not thrown in this base class.
      */
     protected NamedObj _getContainedObject(NamedObj container,
-        String relativeName) throws IllegalActionException {
+            String relativeName) throws IllegalActionException {
         return null;
     }
 
@@ -2346,7 +2346,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
 
             // Export MoML if the value has been set directly.
             if ((_override.size() == 1)
-                            && (((Integer) _override.get(0)).intValue() == 0)) {
+                    && (((Integer) _override.get(0)).intValue() == 0)) {
                 return false;
             }
         }
@@ -2398,7 +2398,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
             // set to true), then override that and
             // reset to where persistence is unspecified.
             if ((containedObject._isPersistent != null)
-                            && containedObject._isPersistent.booleanValue()) {
+                    && containedObject._isPersistent.booleanValue()) {
                 containedObject._isPersistent = null;
             }
         }
@@ -2422,12 +2422,12 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *   as this one.
      */
     protected NamedObj _propagateExistence(NamedObj container)
-        throws IllegalActionException {
+            throws IllegalActionException {
         try {
             return (NamedObj) clone(container.workspace());
         } catch (CloneNotSupportedException e) {
             throw new IllegalActionException(this, e,
-                "Failed to propagate instance.");
+                    "Failed to propagate instance.");
         }
     }
 
@@ -2444,7 +2444,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *   be propagated.
      */
     protected void _propagateValue(NamedObj destination)
-        throws IllegalActionException {
+            throws IllegalActionException {
     }
 
     /** Remove the given attribute.
@@ -2460,7 +2460,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
 
             if (_debugging) {
                 _debug("Removed attribute", param.getName(), "from",
-                    getFullName());
+                        getFullName());
             }
         } finally {
             _workspace.doneWriting();
@@ -2505,10 +2505,10 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
             char current = chars[i];
 
             if ((current == '0') || (current == '1') || (current == '2')
-                            || (current == '3') || (current == '4')
-                            || (current == '5') || (current == '6')
-                            || (current == '7') || (current == '8')
-                            || (current == '9') || (current == '_')) {
+                    || (current == '3') || (current == '4')
+                    || (current == '5') || (current == '6')
+                    || (current == '7') || (current == '8')
+                    || (current == '9') || (current == '_')) {
                 length--;
             } else {
                 // Found a non-numeric, so we are done.
@@ -2614,8 +2614,8 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *   and propagation fails.
      */
     private List _getDerivedList(HashSet visited, boolean propagate,
-        boolean force, NamedObj context, int depth, List override,
-        String relativeName) throws IllegalActionException {
+            boolean force, NamedObj context, int depth, List override,
+            String relativeName) throws IllegalActionException {
         try {
             workspace().getReadAccess();
 
@@ -2669,7 +2669,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
                 }
 
                 result.addAll(_getDerivedList(visited, propagate, force,
-                        container, depth + 1, newOverride, newRelativeName));
+                                      container, depth + 1, newOverride, newRelativeName));
             }
 
             if (!(context instanceof Instantiable)) {
@@ -2714,10 +2714,10 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
 
                                 if (lastPeriod > 0) {
                                     String containerName = relativeName
-                                                    .substring(0, lastPeriod);
+                                        .substring(0, lastPeriod);
                                     remoteContainer = getContainer()
-                                                                      ._getContainedObject(other,
-                                                        containerName);
+                                        ._getContainedObject(other,
+                                                containerName);
                                 }
 
                                 candidate = _propagateExistence(remoteContainer);
@@ -2732,10 +2732,10 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
                                 // No candidate and no error.  In theory, we
                                 // should never reach this line.
                                 throw new InternalErrorException("Expected "
-                                    + other.getFullName()
-                                    + " to contain an object named "
-                                    + relativeName + " of type "
-                                    + getClass().toString());
+                                        + other.getFullName()
+                                        + " to contain an object named "
+                                        + relativeName + " of type "
+                                        + getClass().toString());
                             }
                         }
 
@@ -2782,8 +2782,8 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
                         // will be determined by the depth of propagation from
                         // this candidate.
                         result.addAll(candidate._getDerivedList(visited,
-                                propagate, force, candidate, 0, newOverride,
-                                null));
+                                              propagate, force, candidate, 0, newOverride,
+                                              null));
 
                         // Note that the above recursive call will
                         // add the candidate to the HashSet, so we
@@ -2831,7 +2831,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
             int index = candidate.size() - 1;
 
             while ((index >= 0)
-                            && candidate.get(index).equals(changer.get(index))) {
+                    && candidate.get(index).equals(changer.get(index))) {
                 index--;
             }
 
@@ -2840,7 +2840,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
                 return false;
             } else {
                 int candidateBreadth = ((Integer) candidate.get(index))
-                                .intValue();
+                    .intValue();
                 int changerBreadth = ((Integer) changer.get(index)).intValue();
 
                 if (candidateBreadth < changerBreadth) {

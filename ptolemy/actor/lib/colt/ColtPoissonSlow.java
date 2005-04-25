@@ -51,7 +51,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
    <p> This actor instantiates a
    <a href="http://hoschek.home.cern.ch/hoschek/colt/V1.0.3/doc/cern/jet/random/PoissonSlow.html">cern.jet.random.PoissonSlow</a> object with
-    a mean of 1.0.
+   a mean of 1.0.
 
    @author David Bauer and Kostas Oikonomou
    @version $Id$
@@ -69,7 +69,7 @@ public class ColtPoissonSlow extends ColtRandomSource {
      *   actor with this name.
      */
     public ColtPoissonSlow(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         output.setTypeEquals(BaseType.INT);

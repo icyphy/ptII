@@ -153,7 +153,7 @@ import java.util.Properties;
    @Pt.AcceptedRating Red (cxheecs.berkeley.edu)
 */
 public class JXTALibrary extends EntityLibrary implements ChangeListener,
-    QueryHandler, DiscoveryListener, PipeMsgListener {
+                                                          QueryHandler, DiscoveryListener, PipeMsgListener {
     /** Construct a library with the given container and name.
      *  @param container The container.
      *  @param name The name of this library.
@@ -163,7 +163,7 @@ public class JXTALibrary extends EntityLibrary implements ChangeListener,
      *   actor with this name.
      */
     public JXTALibrary(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         System.out.println("enter property configuration");
@@ -190,11 +190,11 @@ public class JXTALibrary extends EntityLibrary implements ChangeListener,
                 _cachedLib = (CompositeEntity) parser.parse(null, file.toURL());
                 _cachedLib.addChangeListener(this);
                 System.out.println("create a compositeActor entity "
-                    + "from discoveredActors.xml");
+                        + "from discoveredActors.xml");
             } else {
                 _cachedLib = null;
                 System.out.println("Warning: can't find discoveredActors.xml, "
-                    + "please create this file first.");
+                        + "please create this file first.");
             }
         } catch (java.net.MalformedURLException e) {
         } catch (java.lang.Exception e) {
@@ -209,10 +209,10 @@ public class JXTALibrary extends EntityLibrary implements ChangeListener,
         _discoveryService.addDiscoveryListener(this);
         _discoveryService.remotePublish(_groupAdv, DiscoveryService.GROUP);
         _discoveryService.getRemoteAdvertisements(null, DiscoveryService.PEER,
-            null, null, 5);
+                null, null, 5);
 
         System.out.println("login to Ptolemy actor exchange group, "
-            + "and wait for remote response......\n");
+                + "and wait for remote response......\n");
 
         _resolverService = _group.getResolverService();
 
@@ -254,19 +254,19 @@ public class JXTALibrary extends EntityLibrary implements ChangeListener,
         try {
             // create a peer advertisement
             InputStream is = new ByteArrayInputStream(responderAdvString
-                                .getBytes());
+                    .getBytes());
             PeerAdvertisement responderAdv = (PeerAdvertisement) AdvertisementFactory
-                            .newAdvertisement(_XML_MIME_TYPE, is);
+                .newAdvertisement(_XML_MIME_TYPE, is);
             System.out.println(" [  Got a Discovery Response ["
-                + response.getResponseCount() + " elements] from peer: "
-                + responderAdv.getName() + " ]");
+                    + response.getResponseCount() + " elements] from peer: "
+                    + responderAdv.getName() + " ]");
 
             String peerID = (responderAdv.getPeerID()).toString();
             _resolverService.sendQuery(peerID, _actorQueryMessage);
         } catch (java.io.IOException e) {
             // bogus peer, skip this message alltogether.
             System.out.println("Warning: cannot parse remote "
-                + "peer's advertisement.\n" + e.getMessage());
+                    + "peer's advertisement.\n" + e.getMessage());
             return;
         }
     }
@@ -279,7 +279,7 @@ public class JXTALibrary extends EntityLibrary implements ChangeListener,
                     new ByteArrayInputStream(str.getBytes()));
         } catch (java.io.IOException ex) {
             System.out.println("failed to constructe Pipe advertisement "
-                + "from a string " + ex.getMessage());
+                    + "from a string " + ex.getMessage());
         }
 
         return pipeAdv;
@@ -325,7 +325,7 @@ public class JXTALibrary extends EntityLibrary implements ChangeListener,
                     Object[] arguments = new Object[2];
                     int l = clsName.lastIndexOf(".");
                     System.out.println("the name of the new class is : "
-                        + clsName.substring(l + 1));
+                            + clsName.substring(l + 1));
 
                     arguments[0] = this;
                     arguments[1] = "p2p_" + clsName.substring(l + 1);
@@ -333,12 +333,12 @@ public class JXTALibrary extends EntityLibrary implements ChangeListener,
                     try {
                         NamedObj newEntity = _createInstance(cls, arguments);
                         System.out.println("create an instance of " + clsName
-                            + ".\n");
+                                + ".\n");
                         ((ComponentEntity) newEntity).setContainer(null);
 
                         String chg = newEntity.exportMoML();
                         System.out.println("the moml description of the "
-                            + "new object is: \n" + chg + "\n");
+                                + "new object is: \n" + chg + "\n");
 
                         ChangeRequest request = new MoMLChangeRequest(this, // originator
                                 this, // context
@@ -353,7 +353,7 @@ public class JXTALibrary extends EntityLibrary implements ChangeListener,
 
                         _cachedLib.requestChange(request2);
                         System.out.println("discoveredActors.xml has been "
-                            + "changed.\n");
+                                + "changed.\n");
 
                         StringWriter buffer = new StringWriter();
                         _cachedLib.exportMoML(buffer);
@@ -368,10 +368,10 @@ public class JXTALibrary extends EntityLibrary implements ChangeListener,
                     }
                 } catch (java.lang.NullPointerException e) {
                     System.out.println("Warning: cannot creat the file.\n"
-                        + e.getMessage());
+                            + e.getMessage());
                 } catch (java.io.IOException e) {
                     System.out.println("Warning: cannot creat/open the file.\n"
-                        + e.getMessage());
+                            + e.getMessage());
                 }
             }
         }
@@ -388,7 +388,7 @@ public class JXTALibrary extends EntityLibrary implements ChangeListener,
      * @see net.jxta.resolver.QueryHandler#processQuery(ResolverQueryMsg)
      */
     public ResolverResponseMsg processQuery(ResolverQueryMsg query)
-        throws NoResponseException, ResendQueryException, DiscardQueryException,
+            throws NoResponseException, ResendQueryException, DiscardQueryException,
             IOException {
         String qry = query.getQuery();
 
@@ -448,7 +448,7 @@ public class JXTALibrary extends EntityLibrary implements ChangeListener,
         } catch (java.io.IOException e) {
             // bogus peer, skip this message alltogether.
             System.out.println("Warning: cannot parse remote peer's "
-                + "advertisement.\n" + e.getMessage());
+                    + "advertisement.\n" + e.getMessage());
             return;
         }
     }
@@ -473,7 +473,7 @@ public class JXTALibrary extends EntityLibrary implements ChangeListener,
 
             try {
                 BufferedReader fileReader = new BufferedReader(new FileReader(
-                            actorListFileName));
+                                                                       actorListFileName));
                 String newline = System.getProperty("line.separator");
                 String peerID = (_group.getPeerID()).toString();
                 actorListText = actorListText.append("<peerID>" + peerID
@@ -495,13 +495,13 @@ public class JXTALibrary extends EntityLibrary implements ChangeListener,
                         null, 0, actorListText.toString());
             } catch (IOException ex) {
                 System.out.println("Warning: error reading actor list file.\n"
-                    + ex.getMessage());
+                        + ex.getMessage());
             }
         }
     }
 
     private NamedObj _createInstance(Class newClass, Object[] arguments)
-        throws Exception {
+            throws Exception {
         Constructor[] constructors = newClass.getConstructors();
         System.out.println("get constructors.");
 
@@ -533,7 +533,7 @@ public class JXTALibrary extends EntityLibrary implements ChangeListener,
 
         System.out.println("can't construct a new actor instance.");
         throw new Exception("Cannot find a suitable constructor for"
-            + newClass.getName());
+                + newClass.getName());
     }
 
     private boolean _createPeerGroup() {
@@ -541,7 +541,7 @@ public class JXTALibrary extends EntityLibrary implements ChangeListener,
 
         if (groupAdvFileName == null) {
             System.out.println("Error: property undefined - "
-                + "GroupAdvFileName.\n");
+                    + "GroupAdvFileName.\n");
             return false;
         }
 
@@ -549,16 +549,16 @@ public class JXTALibrary extends EntityLibrary implements ChangeListener,
 
         try {
             _groupAdv = (PeerGroupAdvertisement) AdvertisementFactory
-                            .newAdvertisement(_XML_MIME_TYPE,
-                                new FileInputStream(_configDir + "/"
-                                    + groupAdvFileName));
+                .newAdvertisement(_XML_MIME_TYPE,
+                        new FileInputStream(_configDir + "/"
+                                + groupAdvFileName));
         } catch (FileNotFoundException ex) {
             System.out.println("Error: cannot find group adv file.\n"
-                + ex.getMessage());
+                    + ex.getMessage());
             return false;
         } catch (IOException ex) {
             System.out.println("Error: reading group adv file.\n"
-                + ex.getMessage());
+                    + ex.getMessage());
             return false;
         }
 
@@ -569,7 +569,7 @@ public class JXTALibrary extends EntityLibrary implements ChangeListener,
             _group = _netPeerGroup.newGroup(_groupAdv);
         } catch (PeerGroupException ex) {
             System.out.println("Error: cannot instantiate peer group.\n"
-                + ex.getMessage());
+                    + ex.getMessage());
             return false;
         }
 
@@ -588,7 +588,7 @@ public class JXTALibrary extends EntityLibrary implements ChangeListener,
 
         try {
             BufferedReader fileReader = new BufferedReader(new FileReader(_configDir
-                        + "/" + pipeAdvFile));
+                                                                   + "/" + pipeAdvFile));
             String newline = System.getProperty("line.separator");
             queryTextBuffer = queryTextBuffer.append("<PtolemyInputPipe>\n");
 
@@ -610,7 +610,7 @@ public class JXTALibrary extends EntityLibrary implements ChangeListener,
             queryTextBuffer = queryTextBuffer.append("</PtolemyInputPipe>\n");
         } catch (IOException ex) {
             System.out.println("Warning: error reading pipeAdv file.\n"
-                + ex.getMessage());
+                    + ex.getMessage());
         }
 
         _pipeAdvMessage = new ResolverQuery(_ACTOR_QUERY_HANDLER_NAME, null,
@@ -642,7 +642,7 @@ public class JXTALibrary extends EntityLibrary implements ChangeListener,
             }
         } catch (Exception ex) {
             System.out.println("Error: failure in authentication.\n"
-                + ex.getMessage());
+                    + ex.getMessage());
             return false;
         }
 
@@ -661,11 +661,11 @@ public class JXTALibrary extends EntityLibrary implements ChangeListener,
             FileInputStream is = new FileInputStream(_configDir + "/"
                     + pipeAdvFile);
             _ptPipeAdv = (PipeAdvertisement) AdvertisementFactory
-                            .newAdvertisement(new MimeMediaType("text/xml"), is);
+                .newAdvertisement(new MimeMediaType("text/xml"), is);
             is.close();
         } catch (java.io.IOException ex) {
             System.out.println("failed to read/parse " + "pipe advertisement"
-                + ex.getMessage());
+                    + ex.getMessage());
         }
 
         return true;
@@ -688,10 +688,10 @@ public class JXTALibrary extends EntityLibrary implements ChangeListener,
             _properties.load(configProperties);
         } catch (FileNotFoundException ex) {
             System.out.println("Warning: cannot find configuration "
-                + "properties file.\n" + ex.getMessage());
+                    + "properties file.\n" + ex.getMessage());
         } catch (IOException ex) {
             System.out.println("Warning: error reading configuration file.\n"
-                + ex.getMessage());
+                    + ex.getMessage());
         }
     }
 
@@ -713,7 +713,7 @@ public class JXTALibrary extends EntityLibrary implements ChangeListener,
             actStream = new FileInputStream(_configDir + "/" + ActorFile);
         } catch (java.io.IOException ex) {
             System.out.println("failed to read/parse pipe " + "advertisement"
-                + ex.getMessage());
+                    + ex.getMessage());
         }
 
         // create the pipe message
@@ -737,7 +737,7 @@ public class JXTALibrary extends EntityLibrary implements ChangeListener,
             System.out.println(ActorName + "file sent out to remote peer.");
         } catch (java.io.IOException ex) {
             System.out.println("failed to send message to remote peer "
-                + ex.getMessage());
+                    + ex.getMessage());
         }
     }
 
@@ -746,7 +746,7 @@ public class JXTALibrary extends EntityLibrary implements ChangeListener,
             _netPeerGroup = PeerGroupFactory.newNetPeerGroup();
         } catch (PeerGroupException ex) {
             System.out.println("Error: cannot locate net peer group.\n"
-                + ex.getMessage());
+                    + ex.getMessage());
             return false;
         }
 
@@ -770,7 +770,7 @@ public class JXTALibrary extends EntityLibrary implements ChangeListener,
 
         File clsFile = new File(destDir,
                 pathName.substring(pathName.lastIndexOf(fileSeparator) + 1,
-                    pathName.length()) + ".class");
+                        pathName.length()) + ".class");
         FileOutputStream output = new FileOutputStream(clsFile);
         output.write(buf);
         output.close();

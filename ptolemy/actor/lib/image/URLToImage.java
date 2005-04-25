@@ -79,7 +79,7 @@ public class URLToImage extends Transformer {
      *   actor with this name.
      */
     public URLToImage(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         output.setTypeEquals(BaseType.OBJECT);
@@ -102,7 +102,7 @@ public class URLToImage extends Transformer {
             output.send(0, new AWTImageToken(image));
         } catch (MalformedURLException ex) {
             throw new IllegalActionException("'" + urlToken.stringValue()
-                + "' is malformed: " + ex);
+                    + "' is malformed: " + ex);
         }
     }
 

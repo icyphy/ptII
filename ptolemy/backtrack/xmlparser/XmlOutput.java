@@ -71,10 +71,10 @@ public class XmlOutput {
     }
 
     public static final String DTD_HEAD1 =
-        "<?xml version=\"1.0\" standalone=\"no\"?>\n" +
-        "<!DOCTYPE ";
+    "<?xml version=\"1.0\" standalone=\"no\"?>\n" +
+    "<!DOCTYPE ";
     public static final String DTD_HEAD2 =
-        " PUBLIC \"-//UC Berkeley//DTD MoML 1//EN\"\n" +
-        "    \"http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd\">\n";
+    " PUBLIC \"-//UC Berkeley//DTD MoML 1//EN\"\n" +
+    "    \"http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd\">\n";
 
 }

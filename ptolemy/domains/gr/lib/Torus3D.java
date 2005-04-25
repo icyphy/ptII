@@ -71,7 +71,7 @@ public class Torus3D extends GRShadedShape {
      *   actor with this name.
      */
     public Torus3D(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         angleSpan = new Parameter(this, "angleSpan",
                 new DoubleToken(2 * Math.PI));
@@ -222,7 +222,7 @@ public class Torus3D extends GRShadedShape {
      */
     private float _getCrossSectionRadius() throws IllegalActionException {
         return (float) ((DoubleToken) crossSectionRadius.getToken())
-                    .doubleValue();
+            .doubleValue();
     }
 
     /** Return the radius of the outer hull

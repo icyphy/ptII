@@ -71,7 +71,7 @@ public class ClassUtilities {
      *  @see java.net.JarURLConnection
      */
     public static URL jarURLEntryResource(String spec)
-        throws IOException {
+            throws IOException {
         // At first glance, it would appear that this method could appear
         // in specToURL(), but the problem is that specToURL() creates
         // a new URL with the spec, so it only does further checks if
@@ -117,7 +117,7 @@ public class ClassUtilities {
                 ".", "/") + ".class";
 
         URL necessaryURL = Thread.currentThread().getContextClassLoader()
-                                             .getResource(necessaryResource);
+            .getResource(necessaryResource);
 
         if (necessaryURL != null) {
             String resourceResults = necessaryURL.getFile();
@@ -151,7 +151,7 @@ public class ClassUtilities {
 
             // Convert backslashes
             String sanitizedResourceName = StringUtilities.substitute(resourceFile
-                                .getPath(), "\\", "/");
+                    .getPath(), "\\", "/");
             return sanitizedResourceName;
         }
 

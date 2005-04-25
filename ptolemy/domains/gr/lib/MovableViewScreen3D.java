@@ -69,7 +69,7 @@ public class MovableViewScreen3D extends ViewScreen3D {
      *   CompositeActor and the name collides with an entity in the container.
      */
     public MovableViewScreen3D(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         viewerPosition = new PortParameter(this, "viewerPosition",
                 new ArrayToken("{0.0, 0.0, 2.4}"));
@@ -130,7 +130,7 @@ public class MovableViewScreen3D extends ViewScreen3D {
 
         if ((positionToken.length() != 3) || (axisToken.length() != 3)) {
             throw new IllegalActionException(
-                "viewerPosition and viewerRotaionAxis arrays must have length 3.");
+                    "viewerPosition and viewerRotaionAxis arrays must have length 3.");
         }
 
         BooleanToken equals = positionToken.isEqualTo(_position);
@@ -159,7 +159,7 @@ public class MovableViewScreen3D extends ViewScreen3D {
             Vector3d vector = new Vector3d(xPosition, yPosition, zPosition);
             Transform3D t = new Transform3D(quaternion, vector, 1.0);
             TransformGroup group = _simpleUniverse.getViewingPlatform()
-                                                              .getViewPlatformTransform();
+                .getViewPlatformTransform();
             group.setTransform(t);
         }
     }
@@ -185,7 +185,7 @@ public class MovableViewScreen3D extends ViewScreen3D {
 
         if ((_position.length() != 3) || (_axis.length() != 3)) {
             throw new IllegalActionException(
-                "viewerPosition and viewerRotaionAxis arrays must have length 3.");
+                    "viewerPosition and viewerRotaionAxis arrays must have length 3.");
         }
 
         xPosition = ((DoubleToken) _position.getElement(0)).doubleValue();
@@ -202,7 +202,7 @@ public class MovableViewScreen3D extends ViewScreen3D {
         Vector3d vector = new Vector3d(xPosition, yPosition, zPosition);
         Transform3D t = new Transform3D(quaternion, vector, 1.0);
         TransformGroup group = _simpleUniverse.getViewingPlatform()
-                                                          .getViewPlatformTransform();
+            .getViewPlatformTransform();
         group.setTransform(t);
         _initialPosition = _position;
         _initialAxis = _axis;

@@ -53,8 +53,8 @@ public class PlotFourierSeries extends PlotApplet {
      */
     public String getAppletInfo() {
         return "PlotFourierSeries 1.1: Demo of PlotApplet.\n"
-        + "By: Edward A. Lee\n "
-        + "($Id$)";
+            + "By: Edward A. Lee\n "
+            + "($Id$)";
     }
 
     /**
@@ -83,7 +83,7 @@ public class PlotFourierSeries extends PlotApplet {
 
             for (int j = 1; j <= 10; j++) {
                 double sig = (4.0 * Math.sin((i * 2.0 * Math.PI * ((2 * j) - 1)) / 400.0)) / (Math.PI * ((2 * j)
-                                - 1));
+                                                                                                      - 1));
                 approximation += sig;
                 plot.addPoint(j, (double) i, approximation, !first);
             }

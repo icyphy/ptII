@@ -63,7 +63,7 @@ public class PortNameChanges implements MoMLFilter {
      *  @return the value of the attributeValue argument.
      */
     public String filterAttributeValue(NamedObj container, String element,
-        String attributeName, String attributeValue) {
+            String attributeName, String attributeValue) {
         // This method gets called many times by the MoMLParser,
         // so we try to be smart about the number of comparisons
         // and we try to group comparisons together so that we
@@ -79,8 +79,8 @@ public class PortNameChanges implements MoMLFilter {
             _lastNameSeen = attributeValue;
 
             if (_currentlyProcessingActorWithPortNameChanges
-                            && (_portMap != null)
-                            && _portMap.containsKey(attributeValue)) {
+                    && (_portMap != null)
+                    && _portMap.containsKey(attributeValue)) {
                 // We will do the above checks only if we found a
                 // class that had port name changes, but have not
                 // yet found the next class.
@@ -92,7 +92,7 @@ public class PortNameChanges implements MoMLFilter {
 
                 // Save the container.newPort name for later use.
                 _containerPortMap.put(containerName + "." + attributeValue,
-                    containerName + "." + newPort);
+                        containerName + "." + newPort);
                 MoMLParser.setModified(true);
                 return newPort;
             }
@@ -110,9 +110,9 @@ public class PortNameChanges implements MoMLFilter {
                     + _lastNameSeen;
                 _portMap = (HashMap) _actorsWithPortNameChanges.get(attributeValue);
             } else if (_currentlyProcessingActorWithPortNameChanges
-                            && (container != null)
-                            && !container.getFullName().equals(_currentActorFullName)
-                            && !container.getFullName().startsWith(_currentActorFullName)) {
+                    && (container != null)
+                    && !container.getFullName().equals(_currentActorFullName)
+                    && !container.getFullName().startsWith(_currentActorFullName)) {
                 // We found another class in a different container
                 // while handling a class with port name changes, so
                 // set _doneProcessingActorWithPortNameChanges so we
@@ -121,13 +121,13 @@ public class PortNameChanges implements MoMLFilter {
                 _doneProcessingActorWithPortNameChanges = true;
             }
         } else if (_doneProcessingActorWithPortNameChanges
-                        && attributeName.equals("port")
-                        && _containerPortMap.containsKey(container.getFullName()
-                            + "." + attributeValue)) {
+                && attributeName.equals("port")
+                && _containerPortMap.containsKey(container.getFullName()
+                        + "." + attributeValue)) {
             // We are processing actors that have port names.
             // Now map the old port to the new port.
             String newPort = (String) _containerPortMap.get(container
-                                .getFullName() + "." + attributeValue);
+                    .getFullName() + "." + attributeValue);
 
             // Extreme chaos here because sometimes
             // container.getFullName() will be ".transform_2.transform" and
@@ -149,7 +149,7 @@ public class PortNameChanges implements MoMLFilter {
      *  @param elementName The element name.
      */
     public void filterEndElement(NamedObj container, String elementName)
-        throws Exception {
+            throws Exception {
     }
 
     /** Return a string that describes what the filter does.
@@ -216,11 +216,11 @@ public class PortNameChanges implements MoMLFilter {
         cartesianPorts.put("real", "x");
         cartesianPorts.put("imag", "y");
         _actorsWithPortNameChanges.put("ptolemy.actor.lib.conversions.ComplexToCartesian",
-            cartesianPorts);
+                cartesianPorts);
 
         // CartesianToComplex has the same ports as ComplexToCartesian.
         _actorsWithPortNameChanges.put("ptolemy.actor.lib.conversions.CartesianToComplex",
-            cartesianPorts);
+                cartesianPorts);
 
         // Sleep
         HashMap sleepPorts = new HashMap();
@@ -232,7 +232,7 @@ public class PortNameChanges implements MoMLFilter {
         HashMap scramblerPorts = new HashMap();
         scramblerPorts.put("initial", "initialState");
         _actorsWithPortNameChanges.put("ptolemy.actor.lib.comm.Scrambler",
-            scramblerPorts);
+                scramblerPorts);
 
         // ConvolutionalCoder changed between 3.0.2 and 4.0
         HashMap convolutionalCoderPorts = new HashMap();
@@ -240,7 +240,7 @@ public class PortNameChanges implements MoMLFilter {
         convolutionalCoderPorts.put("uncodeBlockSize", "uncodedRate");
 
         _actorsWithPortNameChanges.put("ptolemy.actor.lib.comm.ConvolutionalCoder",
-            convolutionalCoderPorts);
+                convolutionalCoderPorts);
 
         // ViterbiDecoder changed between 3.0.2 and 4.0
         HashMap viterbiDecoderPorts = new HashMap();
@@ -250,12 +250,12 @@ public class PortNameChanges implements MoMLFilter {
         viterbiDecoderPorts.put("amplitude", "constellation");
 
         _actorsWithPortNameChanges.put("ptolemy.actor.lib.comm.ViterbiDecoder",
-            viterbiDecoderPorts);
+                viterbiDecoderPorts);
 
         // Server: after 4.1, the newServiceTime is renamed to serviceTime.
         HashMap serverPorts = new HashMap();
         serverPorts.put("serviceTime", "newServiceTime");
         _actorsWithPortNameChanges.put("ptolemy.domains.de.lib.Server",
-            serverPorts);
+                serverPorts);
     }
 }

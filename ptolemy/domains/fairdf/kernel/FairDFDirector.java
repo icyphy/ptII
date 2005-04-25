@@ -79,19 +79,19 @@ and it restores the queues to their original state.
 */
 public class FairDFDirector extends Director {
     public FairDFDirector()
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super();
         init();
     }
 
     public FairDFDirector(Workspace workspace)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
         init();
     }
 
     public FairDFDirector(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         init();
     }
@@ -259,7 +259,7 @@ public class FairDFDirector extends Director {
         public Token get() throws NoTokenException {
             if (next >= queue.size()) {
                 throw new NoTokenException(
-                    "Attempt to read from an empty queue.");
+                        "Attempt to read from an empty queue.");
             }
 
             Token v = (Token) queue.get(next++);

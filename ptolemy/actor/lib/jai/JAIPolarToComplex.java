@@ -70,7 +70,7 @@ public class JAIPolarToComplex extends TypedAtomicActor {
      *   actor with this name.
      */
     public JAIPolarToComplex(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         magnitude = new TypedIOPort(this, "magnitude", true, false);

@@ -133,7 +133,7 @@ public class Chop extends SDFTransformer {
      *   an actor already in the container.
      */
     public Chop(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         numberToRead = new Parameter(this, "numberToRead");
@@ -189,7 +189,7 @@ public class Chop extends SDFTransformer {
      *  @exception IllegalActionException If the parameters are out of range.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         // Note: it is important that none of these sections depend on
         // eachother.
         if (attribute == numberToRead) {
@@ -197,14 +197,14 @@ public class Chop extends SDFTransformer {
 
             if (_numberToRead <= 0) {
                 throw new IllegalActionException(this,
-                    "Invalid numberToRead: " + _numberToRead);
+                        "Invalid numberToRead: " + _numberToRead);
             }
         } else if (attribute == numberToWrite) {
             _numberToWrite = ((IntToken) numberToWrite.getToken()).intValue();
 
             if (_numberToWrite <= 0) {
                 throw new IllegalActionException(this,
-                    "Invalid numberToWrite: " + _numberToRead);
+                        "Invalid numberToWrite: " + _numberToRead);
             }
 
             _buffer = new Token[_numberToWrite];
@@ -222,8 +222,8 @@ public class Chop extends SDFTransformer {
         }
 
         if ((attribute == numberToRead) || (attribute == numberToWrite)
-                        || (attribute == offset)
-                        || (attribute == usePastInputs)) {
+                || (attribute == offset)
+                || (attribute == usePastInputs)) {
             // NOTE: The following computation gets repeated when each of
             // these gets set, but it's a simple calculation, so we live
             // with it.
@@ -297,13 +297,13 @@ public class Chop extends SDFTransformer {
                 // Shift older data.
                 destination = _pastBuffer.length - _numberToRead;
                 System.arraycopy(_pastBuffer, _numberToRead, _pastBuffer, 0,
-                    destination);
+                        destination);
                 startCopy = 0;
                 length = _numberToRead;
             }
 
             System.arraycopy(inBuffer, startCopy, _pastBuffer, destination,
-                length);
+                    length);
         }
 
         output.send(0, _buffer, _numberToWrite);

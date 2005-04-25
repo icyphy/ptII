@@ -55,42 +55,42 @@ import java.util.Iterator;
 //// ColtRandomSource
 
 /** Base class for Colt random sources.
-This base class manages the seed and the choice of
-random number generator class.  When the random number
-generator class is set for any one actor in a model,
-it gets set to match in all other actors within the
-same top-level container (unless this actor is within
-an EntityLibrary).  When the seed gets set
-to 0L in any one actor in a model, it gets set
-to 0L for all other actors within the same top-level
-container. When it gets set to anything other than
-0L, then it will be set for all other actors in
-the model in a pattern that ensures that every
-actor has a different seed.
-<p>
-A seed of zero is interpreted to mean that no seed is specified,
-which means that each execution of the model could result in
-distinct data. For the value 0, the seed is set to
-System.currentTimeMillis() + hashCode(), which means that
-with extremely high probability, two distinct actors will have
-distinct seeds.  The seed is set when the seed parameter value
-is given, typically right after construction of the actor.
-Subsequent runs of the same model, therefore, will continue
-using the same seed.
-<p>
-If the <i>resetOnEachRun</i> parameter is true (it is
-false by default), then each run resets the random number
-generator. If the seed is non-zero, then this makes
-each run identical.  This is useful for constructing
-tests. If the seed is zero, then a new seed is generated
-on each run using the same technique described above
-(combining current time and the hash code).
+    This base class manages the seed and the choice of
+    random number generator class.  When the random number
+    generator class is set for any one actor in a model,
+    it gets set to match in all other actors within the
+    same top-level container (unless this actor is within
+    an EntityLibrary).  When the seed gets set
+    to 0L in any one actor in a model, it gets set
+    to 0L for all other actors within the same top-level
+    container. When it gets set to anything other than
+    0L, then it will be set for all other actors in
+    the model in a pattern that ensures that every
+    actor has a different seed.
+    <p>
+    A seed of zero is interpreted to mean that no seed is specified,
+    which means that each execution of the model could result in
+    distinct data. For the value 0, the seed is set to
+    System.currentTimeMillis() + hashCode(), which means that
+    with extremely high probability, two distinct actors will have
+    distinct seeds.  The seed is set when the seed parameter value
+    is given, typically right after construction of the actor.
+    Subsequent runs of the same model, therefore, will continue
+    using the same seed.
+    <p>
+    If the <i>resetOnEachRun</i> parameter is true (it is
+    false by default), then each run resets the random number
+    generator. If the seed is non-zero, then this makes
+    each run identical.  This is useful for constructing
+    tests. If the seed is zero, then a new seed is generated
+    on each run using the same technique described above
+    (combining current time and the hash code).
 
-@author David Bauer, Kostas Oikonomou, and Edward A. Lee
-@version $Id$
-@since Ptolemy II 4.1
-@Pt.ProposedRating Yellow (eal)
-@Pt.AcceptedRating Red (cxh)
+    @author David Bauer, Kostas Oikonomou, and Edward A. Lee
+    @version $Id$
+    @since Ptolemy II 4.1
+    @Pt.ProposedRating Yellow (eal)
+    @Pt.AcceptedRating Red (cxh)
 */
 public abstract class ColtRandomSource extends Source {
     /** Construct an actor with the given container and name.
@@ -102,7 +102,7 @@ public abstract class ColtRandomSource extends Source {
      *   actor with this name.
      */
     public ColtRandomSource(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         seed = new ColtSeedParameter(this, "seed", ColtRandomSource.class);
@@ -186,13 +186,13 @@ public abstract class ColtRandomSource extends Source {
      *   to this container (not thrown in this base class).
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == generatorClass) {
             String generatorClassValue = ((StringToken) generatorClass.getToken())
-                            .stringValue();
+                .stringValue();
 
             if ((generatorClassValue != null)
-                            && !generatorClassValue.equals(_generatorClassName)) {
+                    && !generatorClassValue.equals(_generatorClassName)) {
                 _createGenerator();
             }
         } else if (attribute == seed) {
@@ -222,7 +222,7 @@ public abstract class ColtRandomSource extends Source {
             newObject._createGenerator();
         } catch (IllegalActionException ex) {
             throw new CloneNotSupportedException("Failed to create generator: "
-                + ex);
+                    + ex);
         }
 
         return newObject;
@@ -277,7 +277,7 @@ public abstract class ColtRandomSource extends Source {
      *   an entity with the name of this entity.
      */
     public void setContainer(CompositeEntity container)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super.setContainer(container);
 
         if (generatorClass != null) {
@@ -304,7 +304,7 @@ public abstract class ColtRandomSource extends Source {
      *  a parameter or if there is some other problem.
      */
     protected abstract void _generateRandomNumber()
-        throws IllegalActionException;
+            throws IllegalActionException;
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
@@ -335,7 +335,7 @@ public abstract class ColtRandomSource extends Source {
         _generatorClassName = generatorClassValue;
 
         if ((generatorClassValue == null)
-                        || generatorClassValue.equals("DRand")) {
+                || generatorClassValue.equals("DRand")) {
             _randomNumberGenerator = new DRand((int) seedValue);
         } else if (generatorClassValue.equals("MersenneTwister (MT19937)")) {
             _randomNumberGenerator = new MersenneTwister((int) seedValue);
@@ -371,11 +371,11 @@ public abstract class ColtRandomSource extends Source {
 
             while (sharedParameters.hasNext()) {
                 ColtSeedParameter candidate = (ColtSeedParameter) sharedParameters
-                                .next();
+                    .next();
 
                 if (candidate != seed) {
                     long candidateValue = ((LongToken) candidate.getToken())
-                                    .longValue();
+                        .longValue();
 
                     if (candidateValue != 0L) {
                         if (candidateValue >= value) {

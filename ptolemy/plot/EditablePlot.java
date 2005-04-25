@@ -325,9 +325,9 @@ public class EditablePlot extends Plot {
         while (step <= x) {
             int index = step - (_lrx - _editSpecX.length);
             double proportion = (step - _currentEditX) / (double) (x
-                            - _currentEditX);
+                    - _currentEditX);
             int newY = (int) (_currentEditY
-                + (proportion * (y - _currentEditY)));
+                    + (proportion * (y - _currentEditY)));
 
             if (!_editSpecSet[index]) {
                 _editSpecX[index] = step;
@@ -400,7 +400,7 @@ public class EditablePlot extends Plot {
 
             while (listeners.hasMoreElements()) {
                 ((EditListener) listeners.nextElement()).editDataModified(this,
-                    dataset);
+                        dataset);
             }
         }
     }

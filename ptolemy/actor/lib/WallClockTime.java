@@ -70,7 +70,7 @@ public class WallClockTime extends Source {
      *   actor with this name.
      */
     public WallClockTime(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         output.setTypeEquals(BaseType.DOUBLE);

@@ -113,7 +113,7 @@ public class AudioPlayer extends LiveSoundActor {
      *   actor with this name.
      */
     public AudioPlayer(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input = new TypedIOPort(this, "input", true, false);
         input.setTypeEquals(BaseType.DOUBLE);
@@ -153,10 +153,10 @@ public class AudioPlayer extends LiveSoundActor {
         // up audio system resources.
         if (LiveSound.isPlaybackActive()) {
             throw new IllegalActionException(this,
-                "This actor cannot start audio playback because "
-                + "another actor currently has access to the audio "
-                + "playback resource. Only one AudioPlayer actor may "
-                + "be used at a time.");
+                    "This actor cannot start audio playback because "
+                    + "another actor currently has access to the audio "
+                    + "playback resource. Only one AudioPlayer actor may "
+                    + "be used at a time.");
         }
 
         try {
@@ -165,7 +165,7 @@ public class AudioPlayer extends LiveSoundActor {
 
             // Reallocate the arrays.
             if ((_audioPutArray == null)
-                            || (_channels != _audioPutArray.length)) {
+                    || (_channels != _audioPutArray.length)) {
                 _audioPutArray = new double[_channels][];
             }
 
@@ -177,7 +177,7 @@ public class AudioPlayer extends LiveSoundActor {
             LiveSound.startPlayback(this);
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
-                "Error initializing audio playback.");
+                    "Error initializing audio playback.");
         }
     }
 
@@ -212,7 +212,7 @@ public class AudioPlayer extends LiveSoundActor {
             // Convert to doubles.
             for (int element = 0; element < count; element++) {
                 _audioPutArray[j][element] = ((DoubleToken) inputArray[element])
-                                .doubleValue();
+                    .doubleValue();
             }
         }
 
@@ -241,7 +241,7 @@ public class AudioPlayer extends LiveSoundActor {
                 LiveSound.stopPlayback(this);
             } catch (IOException ex) {
                 throw new IllegalActionException(this, ex,
-                    "Cannot free audio resources.");
+                        "Cannot free audio resources.");
             }
         }
     }

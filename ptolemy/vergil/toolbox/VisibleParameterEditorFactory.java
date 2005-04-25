@@ -70,7 +70,7 @@ public class VisibleParameterEditorFactory extends EditorFactory {
      *   an attribute already in the container.
      */
     public VisibleParameterEditorFactory(NamedObj container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -122,7 +122,7 @@ public class VisibleParameterEditorFactory extends EditorFactory {
             return query;
         } else {
             return new JLabel(object.getName()
-                + " is not a settable attribute!");
+                    + " is not a settable attribute!");
         }
     }
 

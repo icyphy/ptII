@@ -128,8 +128,8 @@ public class ModelServer implements QueryHandler {
             configProperties.close();
         } catch (IOException e) {
             System.out.println(
-                "Warning: Can't find configuration propertiees file. ' "
-                + e.getMessage() + "'");
+                    "Warning: Can't find configuration propertiees file. ' "
+                    + e.getMessage() + "'");
         }
 
         PeerGroup netPeerGroup = null;
@@ -138,7 +138,7 @@ public class ModelServer implements QueryHandler {
             netPeerGroup = PeerGroupFactory.newNetPeerGroup();
         } catch (PeerGroupException ex) {
             System.out.println("Error: cannot locate net peer group.\n"
-                + ex.getMessage());
+                    + ex.getMessage());
         }
 
         // load the peer group adv for actor exchange
@@ -146,22 +146,22 @@ public class ModelServer implements QueryHandler {
 
         if (groupAdvFileName == null) {
             System.out.println(
-                "Error: property undefined - GroupAdvFileName.\n");
+                    "Error: property undefined - GroupAdvFileName.\n");
         }
 
         PeerGroupAdvertisement groupAdv = null;
 
         try {
             groupAdv = (PeerGroupAdvertisement) AdvertisementFactory
-                            .newAdvertisement(XML_MIME_TYPE,
-                                new FileInputStream(_configDir + "/"
-                                    + groupAdvFileName));
+                .newAdvertisement(XML_MIME_TYPE,
+                        new FileInputStream(_configDir + "/"
+                                + groupAdvFileName));
         } catch (FileNotFoundException ex) {
             System.out.println("Error: cannot find group adv file.\n"
-                + ex.getMessage());
+                    + ex.getMessage());
         } catch (IOException ex) {
             System.out.println("Error: reading group adv file.\n"
-                + ex.getMessage());
+                    + ex.getMessage());
         }
 
         System.out.println("peer groupAdv: " + groupAdvFileName);
@@ -173,7 +173,7 @@ public class ModelServer implements QueryHandler {
             _group = netPeerGroup.newGroup(groupAdv);
         } catch (PeerGroupException ex) {
             System.out.println("Error: cannot instantiate peer group.\n"
-                + ex.getMessage());
+                    + ex.getMessage());
             ex.printStackTrace();
         }
 
@@ -199,7 +199,7 @@ public class ModelServer implements QueryHandler {
             }
         } catch (Exception ex) {
             System.out.println("Error: failure in authentication.\n"
-                + ex.getMessage());
+                    + ex.getMessage());
         }
 
         _resolverService = _group.getResolverService();
@@ -224,7 +224,7 @@ public class ModelServer implements QueryHandler {
      * @see net.jxta.resolver.QueryHandler#processQuery(ResolverQueryMsg)
      */
     public ResolverResponseMsg processQuery(ResolverQueryMsg query)
-        throws NoResponseException, ResendQueryException, DiscardQueryException,
+            throws NoResponseException, ResendQueryException, DiscardQueryException,
             IOException {
         String qry = query.getQuery();
 

@@ -90,14 +90,14 @@ public class TestGraphReader {
         // Determine the source nodes
         Collection sourceCollection = graph.sourceNodes();
         System.out.println("Number of source nodes = "
-            + sourceCollection.size());
+                + sourceCollection.size());
 
         Iterator sources = sourceCollection.iterator();
         int sourceNumber = 1;
 
         while (sources.hasNext()) {
             System.out.println("source #" + sourceNumber++ + ": "
-                + ((Node) (sources.next())).getWeight());
+                    + ((Node) (sources.next())).getWeight());
             System.out.println();
         }
 
@@ -110,7 +110,7 @@ public class TestGraphReader {
 
         while (sinks.hasNext()) {
             System.out.println("sink #" + sinkNumber++ + ": "
-                + ((Node) (sinks.next())).getWeight());
+                    + ((Node) (sinks.next())).getWeight());
             System.out.println();
         }
     }
@@ -123,7 +123,7 @@ public class TestGraphReader {
     protected CompositeActor _readGraph(String[] args) {
         if (args.length != 1) {
             throw new RuntimeException("TestGraphReader expects exactly one "
-                + "argument.");
+                    + "argument.");
         }
 
         // The Ptolemy II model returned by the Java parser.
@@ -134,14 +134,14 @@ public class TestGraphReader {
             toplevel = parser.parseFile(args[0]);
         } catch (Exception ex) {
             throw new RuntimeException(ex.getMessage()
-                + "Exception raised from the MoML parser\n");
+                    + "Exception raised from the MoML parser\n");
         }
 
         if (!(toplevel instanceof CompositeActor)) {
             throw new RuntimeException("Top level must be a CompositeActor "
-                + "(in this case, it is '"
-                + ((toplevel == null) ? "null" : toplevel.getClass().getName())
-                + "')\n");
+                    + "(in this case, it is '"
+                    + ((toplevel == null) ? "null" : toplevel.getClass().getName())
+                    + "')\n");
         }
 
         return (CompositeActor) toplevel;

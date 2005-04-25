@@ -63,7 +63,7 @@ public class RequireVersion extends VersionAttribute {
      *   an attribute already in the container.
      */
     public RequireVersion(NamedObj container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         setExpression(CURRENT_VERSION.getExpression());
     }
@@ -86,9 +86,9 @@ public class RequireVersion extends VersionAttribute {
 
         if (CURRENT_VERSION.isLessThan(this)) {
             throw new IllegalActionException(this,
-                "Current version of Ptolemy II is "
-                + CURRENT_VERSION.getExpression()
-                + ", but required version is " + expression + ".");
+                    "Current version of Ptolemy II is "
+                    + CURRENT_VERSION.getExpression()
+                    + ", but required version is " + expression + ".");
         }
     }
 }

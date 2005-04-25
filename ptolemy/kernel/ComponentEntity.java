@@ -102,7 +102,7 @@ public class ComponentEntity extends Entity {
      *   an entity already in the container.
      */
     public ComponentEntity(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container.workspace(), name);
         setContainer(container);
         _addIcon();
@@ -169,12 +169,12 @@ public class ComponentEntity extends Entity {
      *   an object already in the container.
      */
     public Instantiable instantiate(NamedObj container, String name)
-        throws CloneNotSupportedException, IllegalActionException,
+            throws CloneNotSupportedException, IllegalActionException,
             NameDuplicationException {
         if ((container != null) && !(container instanceof CompositeEntity)) {
             throw new IllegalActionException(this,
-                "Cannot instantiate into a container that is not an "
-                + "instance of CompositeEntity: " + container.getFullName());
+                    "Cannot instantiate into a container that is not an "
+                    + "instance of CompositeEntity: " + container.getFullName());
         }
 
         ComponentEntity clone = (ComponentEntity) super.instantiate(container,
@@ -410,7 +410,7 @@ public class ComponentEntity extends Entity {
      *   port with the specified name.
      */
     public Port newPort(String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         try {
             _workspace.getWriteAccess();
 
@@ -482,10 +482,10 @@ public class ComponentEntity extends Entity {
      *  @see #getContainer()
      */
     public void setContainer(CompositeEntity container)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         if ((container != null) && (_workspace != container.workspace())) {
             throw new IllegalActionException(this, container,
-                "Cannot set container because workspaces are different.");
+                    "Cannot set container because workspaces are different.");
         }
 
         try {
@@ -566,7 +566,7 @@ public class ComponentEntity extends Entity {
      *   in the container with the same name.
      */
     public void setName(String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         if (name == null) {
             name = "";
         }
@@ -578,7 +578,7 @@ public class ComponentEntity extends Entity {
 
             if ((another != null) && (another != this)) {
                 throw new NameDuplicationException(container,
-                    "Name duplication: " + name);
+                        "Name duplication: " + name);
             }
         }
 
@@ -607,10 +607,10 @@ public class ComponentEntity extends Entity {
      *   name already in the entity.
      */
     protected void _addPort(Port port)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         if (!(port instanceof ComponentPort)) {
             throw new IllegalActionException(this, port,
-                "Incompatible port class for this entity.");
+                    "Incompatible port class for this entity.");
         }
 
         super._addPort(port);
@@ -656,7 +656,7 @@ public class ComponentEntity extends Entity {
         // the base class, particularly when pasting
         // an instance or subclass into a new context.
         while ((aboveLevel < levelsToSearch)
-                        && ((candidate == null)
+                && ((candidate == null)
                         || !candidate.isClassDefinition()) && (context != null)) {
             context = (NamedObj) context.getContainer();
 
@@ -687,11 +687,11 @@ public class ComponentEntity extends Entity {
      *   to this one.
      */
     protected void _checkContainer(InstantiableNamedObj container)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if ((container != null) && !(container instanceof CompositeEntity)) {
             throw new IllegalActionException(this, container,
-                "Component entity can only be contained by "
-                + "a CompositeEntity");
+                    "Component entity can only be contained by "
+                    + "a CompositeEntity");
         }
 
         // NOTE: If we don't enforce this, then undo could fail,
@@ -727,9 +727,9 @@ public class ComponentEntity extends Entity {
 
             if (hasDeferrals) {
                 throw new IllegalActionException(this,
-                    "Cannot delete because "
-                    + "there are instances and/or subclasses:\n"
-                    + names.toString());
+                        "Cannot delete because "
+                        + "there are instances and/or subclasses:\n"
+                        + names.toString());
             }
         }
     }
@@ -747,21 +747,21 @@ public class ComponentEntity extends Entity {
      *   an instance of CompositeEntity.
      */
     protected NamedObj _getContainedObject(NamedObj container,
-        String relativeName) throws IllegalActionException {
+            String relativeName) throws IllegalActionException {
         if (!(container instanceof CompositeEntity)) {
             throw new IllegalActionException(this,
-                "Expected " + container.getFullName()
-                + " to be an instance of ptolemy.kernel.CompositeEntity,"
-                + " but it is " + container.getClass().getName());
+                    "Expected " + container.getFullName()
+                    + " to be an instance of ptolemy.kernel.CompositeEntity,"
+                    + " but it is " + container.getClass().getName());
         }
 
         ComponentEntity candidate = ((CompositeEntity) container).getEntity(relativeName);
 
         if ((candidate != null) && !getClass().isInstance(candidate)) {
             throw new IllegalActionException(this,
-                "Expected " + candidate.getFullName()
-                + " to be an instance of " + getClass().getName()
-                + ", but it is " + candidate.getClass().getName());
+                    "Expected " + candidate.getFullName()
+                    + " to be an instance of " + getClass().getName()
+                    + ", but it is " + candidate.getClass().getName());
         }
 
         return candidate;
@@ -777,10 +777,10 @@ public class ComponentEntity extends Entity {
      *   as this one.
      */
     protected NamedObj _propagateExistence(NamedObj container)
-        throws IllegalActionException {
+            throws IllegalActionException {
         try {
             ComponentEntity newObject = (ComponentEntity) super
-                            ._propagateExistence(container);
+                ._propagateExistence(container);
             newObject.setContainer((CompositeEntity) container);
             return newObject;
         } catch (NameDuplicationException e) {
@@ -792,10 +792,10 @@ public class ComponentEntity extends Entity {
     ////                         private methods                   ////
     private void _addIcon() {
         _attachText("_iconDescription",
-            "<svg>\n" + "<rect x=\"-30\" y=\"-20\" width=\"60\" "
-            + "height=\"40\" style=\"fill:white\"/>\n"
-            + "<polygon points=\"-20,-10 20,0 -20,10\" "
-            + "style=\"fill:blue\"/>\n" + "</svg>\n");
+                "<svg>\n" + "<rect x=\"-30\" y=\"-20\" width=\"60\" "
+                + "height=\"40\" style=\"fill:white\"/>\n"
+                + "<polygon points=\"-20,-10 20,0 -20,10\" "
+                + "style=\"fill:blue\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////

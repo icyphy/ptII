@@ -64,7 +64,7 @@ public class AllEdgeSingleSourceLongestPathStrategy extends CachedStrategy
      *  are going to be used to calculated the longest path.
      */
     public AllEdgeSingleSourceLongestPathStrategy(Graph graph, Node startNode,
-        ToDoubleMapping edgeLengths) {
+            ToDoubleMapping edgeLengths) {
         super(graph);
         _startNode = startNode;
         _edgeLengths = edgeLengths;
@@ -154,7 +154,7 @@ public class AllEdgeSingleSourceLongestPathStrategy extends CachedStrategy
      */
     public String toString() {
         return "Single source longest path analyzer"
-        + " which runs in O(E) in which E is the number of edges.";
+            + " which runs in O(E) in which E is the number of edges.";
     }
 
     /** Check for compatibility between the analysis and the given
@@ -211,7 +211,7 @@ public class AllEdgeSingleSourceLongestPathStrategy extends CachedStrategy
 
             if (successors != null) {
                 for (Iterator successorNodes = successors.iterator();
-                                successorNodes.hasNext();) {
+                     successorNodes.hasNext();) {
                     Node v = (Node) successorNodes.next();
                     double predecessorDistance = distance[graph().nodeLabel(u)];
                     double actualDistance = distance[graph().nodeLabel(v)];
@@ -228,7 +228,7 @@ public class AllEdgeSingleSourceLongestPathStrategy extends CachedStrategy
                     }
 
                     if ((actualDistance < (predecessorDistance
-                                    + connectingEdgeCost))) {
+                                 + connectingEdgeCost))) {
                         distance[graph.nodeLabel(v)] = predecessorDistance
                             + connectingEdgeCost;
                         _predecessor[graph.nodeLabel(v)] = graph.nodeLabel(u);

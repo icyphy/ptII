@@ -94,8 +94,8 @@ public class ExtensionFileFilter extends FileFilter {
      */
     public ExtensionFileFilter(String extension, String description) {
         this(new String[] {
-                extension
-            }, description);
+            extension
+        }, description);
     }
 
     /**
@@ -237,7 +237,7 @@ public class ExtensionFileFilter extends FileFilter {
 
                     while (extensions.hasMoreElements()) {
                         fullDescription += (", "
-                                    + (String) extensions.nextElement());
+                                + (String) extensions.nextElement());
                     }
                 }
 

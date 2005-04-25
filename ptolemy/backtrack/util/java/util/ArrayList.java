@@ -288,38 +288,38 @@ public class ArrayList extends AbstractList implements List, RandomAccess, Clone
             $RECORD$size.add(null, size, $CHECKPOINT.getTimestamp());
         }
         switch (operator) {
-            case 0:
-                return size += newValue;
-            case 1:
-                return size -= newValue;
-            case 2:
-                return size *= newValue;
-            case 3:
-                return size /= newValue;
-            case 4:
-                return size &= newValue;
-            case 5:
-                return size |= newValue;
-            case 6:
-                return size ^= newValue;
-            case 7:
-                return size %= newValue;
-            case 8:
-                return size <<= newValue;
-            case 9:
-                return size >>= newValue;
-            case 10:
-                return size >>>= newValue;
-            case 11:
-                return size++;
-            case 12:
-                return size--;
-            case 13:
-                return ++size;
-            case 14:
-                return --size;
-            default:
-                return size;
+        case 0:
+            return size += newValue;
+        case 1:
+            return size -= newValue;
+        case 2:
+            return size *= newValue;
+        case 3:
+            return size /= newValue;
+        case 4:
+            return size &= newValue;
+        case 5:
+            return size |= newValue;
+        case 6:
+            return size ^= newValue;
+        case 7:
+            return size %= newValue;
+        case 8:
+            return size <<= newValue;
+        case 9:
+            return size >>= newValue;
+        case 10:
+            return size >>>= newValue;
+        case 11:
+            return size++;
+        case 12:
+            return size--;
+        case 13:
+            return ++size;
+        case 14:
+            return --size;
+        default:
+            return size;
         }
     }
 
@@ -333,8 +333,8 @@ public class ArrayList extends AbstractList implements List, RandomAccess, Clone
     private final Object $ASSIGN$data(int index0, Object newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
             $RECORD$data.add(new int[] {
-                    index0
-                }, data[index0], $CHECKPOINT.getTimestamp());
+                index0
+            }, data[index0], $CHECKPOINT.getTimestamp());
         }
         return data[index0] = newValue;
     }
@@ -360,7 +360,7 @@ public class ArrayList extends AbstractList implements List, RandomAccess, Clone
     private FieldRecord $RECORD$data = new FieldRecord(1);
 
     private FieldRecord[] $RECORDS = new FieldRecord[] {
-            $RECORD$size,
-            $RECORD$data
-        };
+        $RECORD$size,
+        $RECORD$data
+    };
 }

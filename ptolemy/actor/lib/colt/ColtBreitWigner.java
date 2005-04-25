@@ -50,14 +50,14 @@ import ptolemy.kernel.util.NameDuplicationException;
 
    <p> This actor instantiates a
    <a href="http://hoschek.home.cern.ch/hoschek/colt/V1.0.3/doc/cern/jet/random/BreitWigner.html">cern.jet.random.BreitWigner</a> object with
-    mean, gamma and cut set to 1.0.
+   mean, gamma and cut set to 1.0.
 
-    <p>Breit-Wigner is a also know as the Lorentz distribution.
-    The Breit-Wigner distribution is a more generate form of the
-    Cauchy distribution.
+   <p>Breit-Wigner is a also know as the Lorentz distribution.
+   The Breit-Wigner distribution is a more generate form of the
+   Cauchy distribution.
 
-    <p>A definition of the Breit-Wigner distribution can be found at
-<a href="http://rd11.web.cern.ch/RD11/rkb/AN16pp/node23.html#SECTION000230000000000000000"><code>http://rd11.web.cern.ch/RD11/rkb/AN16pp/node23.html#SECTION000230000000000000000</code></a>
+   <p>A definition of the Breit-Wigner distribution can be found at
+   <a href="http://rd11.web.cern.ch/RD11/rkb/AN16pp/node23.html#SECTION000230000000000000000"><code>http://rd11.web.cern.ch/RD11/rkb/AN16pp/node23.html#SECTION000230000000000000000</code></a>
 
    @author David Bauer and Kostas Oikonomou
    @version $Id$
@@ -75,7 +75,7 @@ public class ColtBreitWigner extends ColtRandomSource {
      *   actor with this name.
      */
     public ColtBreitWigner(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         output.setTypeEquals(BaseType.DOUBLE);

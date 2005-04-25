@@ -159,7 +159,7 @@ public class FixPointFunctions {
      *  @return a double with value that is quantized.
      */
     public static double quantize(double value, int numberOfBits,
-        int integerBits) {
+            int integerBits) {
         FixPoint fixValue = Quantizer.round(value,
                 new Precision(numberOfBits, integerBits));
         return fixValue.doubleValue();

@@ -53,7 +53,7 @@ public class FakePlotter extends TypedAtomicActor {
      *   actor with this name.
      */
     public FakePlotter(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // Create the input port and make it a multiport.

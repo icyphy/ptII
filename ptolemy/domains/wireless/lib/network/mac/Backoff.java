@@ -73,7 +73,7 @@ public class Backoff extends MACActorBase {
      *   an actor already in the container.
      */
     public Backoff(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // Create and configure the ports.
@@ -201,12 +201,12 @@ public class Backoff extends MACActorBase {
         case Channel_Busy:
 
             switch (_messageType) {
-            // modify standard here
+                // modify standard here
             case Idle:
                 _startBackoff();
                 break;
 
-            // end modification
+                // end modification
             case Cancel:
                 _backoffDone(_slotCnt);
                 break;
@@ -228,16 +228,16 @@ public class Backoff extends MACActorBase {
             }
 
             switch (_messageType) {
-            // modify standard here
+                // modify standard here
             case Busy:
                 _slotCnt -= (int) ((_currentTime.subtract(_backoffStartTime)
-                                                            .getDoubleValue() * 1e6) / _aSlotTime);
+                                           .getDoubleValue() * 1e6) / _aSlotTime);
                 cancelTimer(_BackoffTimer);
                 _state = Channel_Busy;
                 _status = Busy;
                 break;
 
-            // end modification
+                // end modification
             case Cancel:
                 _backoffDone(_slotCnt);
                 break;
@@ -279,7 +279,7 @@ public class Backoff extends MACActorBase {
         } else {
             _mBkIP = null;
             throw new IllegalActionException("the MAC compositor "
-                + "dosen't contain a parameter named mBkIP");
+                    + "dosen't contain a parameter named mBkIP");
         }
     }
 
@@ -302,9 +302,9 @@ public class Backoff extends MACActorBase {
 
     private void _backoffDone(int cnt) throws IllegalActionException {
         Token[] value = {
-                new IntToken(BkDone),
-                new IntToken(cnt)
-            };
+            new IntToken(BkDone),
+            new IntToken(cnt)
+        };
         BKDone.send(0, new RecordToken(BackoffDoneMsgFields, value));
         _setAttribute(_mBkIP, new BooleanToken(false));
         _state = No_Backoff;

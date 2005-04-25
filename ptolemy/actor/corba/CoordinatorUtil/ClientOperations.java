@@ -15,7 +15,7 @@ public interface ClientOperations {
      * send data to it.
      */
     void push(org.omg.CORBA.Any data)
-        throws ptolemy.actor.corba.CoordinatorUtil.CorbaIllegalActionException;
+            throws ptolemy.actor.corba.CoordinatorUtil.CorbaIllegalActionException;
 
     /* this method is intended to be called remotely to start the application
      * for the consumer.

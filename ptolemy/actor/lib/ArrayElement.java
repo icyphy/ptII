@@ -76,7 +76,7 @@ public class ArrayElement extends Transformer {
      *   actor with this name.
      */
     public ArrayElement(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // set type constraints.
@@ -140,8 +140,8 @@ public class ArrayElement extends Transformer {
 
             if ((indexValue < 0) || (indexValue >= token.length())) {
                 throw new IllegalActionException(this,
-                    "index " + indexValue + " is out of range for the input "
-                    + "array, which has length " + token.length());
+                        "index " + indexValue + " is out of range for the input "
+                        + "array, which has length " + token.length());
             }
 
             output.send(0, token.getElement(indexValue));
@@ -162,8 +162,8 @@ public class ArrayElement extends Transformer {
             input.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
         } else if (!(inputType instanceof ArrayType)) {
             throw new IllegalStateException("ArrayElement.typeConstraintList: "
-                + "The input type, " + inputType.toString() + " is not an "
-                + "array type.");
+                    + "The input type, " + inputType.toString() + " is not an "
+                    + "array type.");
         }
 
         // NOTE: superclass will put in type constraints for

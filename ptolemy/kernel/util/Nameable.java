@@ -113,5 +113,5 @@ public interface Nameable {
      *  @see #getName(NamedObj)
      */
     public void setName(String name)
-        throws IllegalActionException, NameDuplicationException;
+            throws IllegalActionException, NameDuplicationException;
 }

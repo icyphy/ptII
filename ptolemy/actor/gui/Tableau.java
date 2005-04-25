@@ -74,7 +74,7 @@ public class Tableau extends CompositeEntity {
      *   created an attribute with name "size" (should not occur).
      */
     public Tableau(Workspace workspace)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
 
         size = new SizeAttribute(this, "size");
@@ -89,7 +89,7 @@ public class Tableau extends CompositeEntity {
      *   an entity already in the container.
      */
     public Tableau(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         size = new SizeAttribute(this, "size");
@@ -114,7 +114,7 @@ public class Tableau extends CompositeEntity {
      *   class throws it.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if ((attribute == size) && (_frame != null)) {
             size.setSize(_frame);
         } else {
@@ -151,7 +151,7 @@ public class Tableau extends CompositeEntity {
                 return false;
             }
         } else if ((this instanceof DialogTableau)
-                        && (frame instanceof PortConfigurerDialog)) {
+                && (frame instanceof PortConfigurerDialog)) {
             if (!((PortConfigurerDialog) frame).close()) {
                 return false;
             }
@@ -228,7 +228,7 @@ public class Tableau extends CompositeEntity {
      *   an attribute with the name of this attribute.
      */
     public void setContainer(CompositeEntity container)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         if (container == null) {
             Effigy oldContainer = (Effigy) getContainer();
             super.setContainer(container);
@@ -250,7 +250,7 @@ public class Tableau extends CompositeEntity {
             super.setContainer(container);
         } else {
             throw new IllegalActionException(this, container,
-                "The container can only be set to an " + "instance of Effigy");
+                    "The container can only be set to an " + "instance of Effigy");
         }
     }
 
@@ -294,7 +294,7 @@ public class Tableau extends CompositeEntity {
                     } catch (KernelException ex) {
                         try {
                             MessageHandler.warning("Cannot remove tableau: "
-                                + ex);
+                                    + ex);
                         } catch (CancelException exception) {
                         }
                     }

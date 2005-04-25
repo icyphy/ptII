@@ -82,7 +82,7 @@ public class CSPSink extends AtomicActor {
      *   container.
      */
     public CSPSink(CompositeActor container, String name, int limit)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input = new IOPort(this, "input", true, false);
         tokenLimit = new Parameter(this, "tokenLimit", (new IntToken(limit)));
@@ -116,7 +116,7 @@ public class CSPSink extends AtomicActor {
             while ((count < limit) || (limit < 0)) {
                 Token t = input.get(0);
                 System.out.println(getName() + " received Token: "
-                    + t.toString());
+                        + t.toString());
                 count++;
             }
 

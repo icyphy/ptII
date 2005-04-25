@@ -147,7 +147,7 @@ public class SoundCapture {
      *   are 1/2 to 1/16th of <i>bufferSize</i>.
      */
     public SoundCapture(float sampleRate, int sampleSizeInBits, int channels,
-        int bufferSize, int getSamplesSize) {
+            int bufferSize, int getSamplesSize) {
         _isAudioCaptureActive = false;
 
         // Set mode to real-time.
@@ -215,8 +215,8 @@ public class SoundCapture {
             return _channels;
         } else {
             throw new IllegalStateException("SoundCapture: "
-                + "getChannels() was called while audio capture was"
-                + " inactive (startCapture() was never called).");
+                    + "getChannels() was called while audio capture was"
+                    + " inactive (startCapture() was never called).");
         }
     }
 
@@ -245,8 +245,8 @@ public class SoundCapture {
             return _sampleRate;
         } else {
             throw new IllegalStateException("SoundCapture: "
-                + "getSampleRate() was called while audio capture was"
-                + " inactive (startCapture() was never called).");
+                    + "getSampleRate() was called while audio capture was"
+                    + " inactive (startCapture() was never called).");
         }
     }
 
@@ -325,9 +325,9 @@ public class SoundCapture {
             return null;
         } else {
             throw new IllegalStateException("SoundCapture: "
-                + "getSamples() was called while audio capture was"
-                + " inactive (startCapture() was never called or "
-                + "stopCapture has already been called).");
+                    + "getSamples() was called while audio capture was"
+                    + " inactive (startCapture() was never called or "
+                    + "stopCapture has already been called).");
         }
     }
 
@@ -407,9 +407,9 @@ public class SoundCapture {
             return null;
         } else {
             throw new IllegalStateException("SoundCapture: "
-                + "getSamples() was called while audio capture was"
-                + " inactive (startCapture() was never called or "
-                + "stopCapture has already been called).");
+                    + "getSamples() was called while audio capture was"
+                    + " inactive (startCapture() was never called or "
+                    + "stopCapture has already been called).");
         }
     }
 
@@ -442,9 +442,9 @@ public class SoundCapture {
             _isAudioCaptureActive = true;
         } else {
             throw new IllegalStateException("SoundCapture: "
-                + "startCapture() was called while audio capture was"
-                + " already active (startCapture() was called "
-                + "more than once between invocations of stopCapture()).");
+                    + "startCapture() was called while audio capture was"
+                    + " already active (startCapture() was called "
+                    + "more than once between invocations of stopCapture()).");
         }
     }
 
@@ -512,8 +512,8 @@ public class SoundCapture {
             return _sampleSizeInBits;
         } else {
             throw new IllegalStateException("SoundCapture: "
-                + "getSampleSizeInBits() was called while audio capture was"
-                + " inactive (startCapture() was never called).");
+                    + "getSampleSizeInBits() was called while audio capture was"
+                    + " inactive (startCapture() was never called).");
         }
     }
 
@@ -550,7 +550,7 @@ public class SoundCapture {
             _targetLine.open(format, _bufferSize * _frameSizeInBytes);
         } catch (LineUnavailableException ex) {
             throw new IOException("Unable to open the line for "
-                + "real-time audio capture: " + ex);
+                    + "real-time audio capture: " + ex);
         }
 
         int targetBufferLengthInBytes = _productionRate * _frameSizeInBytes;
@@ -637,12 +637,12 @@ public class SoundCapture {
      * array containing samples for channel m.
      */
     private double[][] _byteArrayToDoubleArray(byte[] byteArray,
-        int bytesPerSample, int channels) {
+            int bytesPerSample, int channels) {
         int lengthInSamples = byteArray.length / (bytesPerSample * channels);
 
         // Check if we need to reallocate.
         if ((channels != _doubleArray.length)
-                        || (lengthInSamples != _doubleArray[0].length)) {
+                || (lengthInSamples != _doubleArray[0].length)) {
             // Reallocate
             _doubleArray = new double[channels][lengthInSamples];
         }
@@ -681,7 +681,7 @@ public class SoundCapture {
                 for (int i = 0; i < bytesPerSample; i += 1) {
                     // Assume we are dealing with big endian.
                     _b[i] = byteArray[(currSamp * bytesPerSample * channels)
-                        + (bytesPerSample * currChannel) + i];
+                            + (bytesPerSample * currChannel) + i];
                 }
 
                 int result = (_b[0] >> 7);
@@ -712,12 +712,12 @@ public class SoundCapture {
      * array containing samples for channel m.
      */
     private int[][] _byteArrayToIntArray(byte[] byteArray, int bytesPerSample,
-        int channels) {
+            int channels) {
         int lengthInSamples = byteArray.length / (bytesPerSample * channels);
 
         // Check if we need to reallocate.
         if ((channels != _doubleArray.length)
-                        || (lengthInSamples != _doubleArray[0].length)) {
+                || (lengthInSamples != _doubleArray[0].length)) {
             // Reallocate
             _intArray = new int[channels][lengthInSamples];
         }
@@ -735,7 +735,7 @@ public class SoundCapture {
                 for (int i = 0; i < bytesPerSample; i += 1) {
                     // Assume we are dealing with big endian.
                     _b[i] = byteArray[(currSamp * bytesPerSample * channels)
-                        + (bytesPerSample * currChannel) + i];
+                            + (bytesPerSample * currChannel) + i];
                 }
 
                 int result = (_b[0] >> 7);

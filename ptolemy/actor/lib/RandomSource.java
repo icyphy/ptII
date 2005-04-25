@@ -62,7 +62,7 @@ public abstract class RandomSource extends Source {
      *   actor with this name.
      */
     public RandomSource(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         seed = new Parameter(this, "seed", new LongToken(0));
         seed.setTypeEquals(BaseType.LONG);
@@ -155,7 +155,7 @@ public abstract class RandomSource extends Source {
      *  values.
      */
     protected abstract void _generateRandomNumber()
-        throws IllegalActionException;
+            throws IllegalActionException;
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////

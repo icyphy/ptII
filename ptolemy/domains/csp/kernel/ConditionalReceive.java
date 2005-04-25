@@ -126,7 +126,7 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
      *   than one receiver or if the receiver is not of type CSPReceiver.
      */
     public ConditionalReceive(boolean guard, IOPort port, int channel,
-        int branch) throws IllegalActionException {
+            int branch) throws IllegalActionException {
         super(guard, port, branch);
         _init(port, channel);
     }
@@ -147,8 +147,8 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
      *   than one receiver or if the receiver is not of type CSPReceiver.
      */
     public ConditionalReceive(boolean guard, IOPort port, int channel,
-        int branch, ConditionalBranchController cbc)
-        throws IllegalActionException {
+            int branch, ConditionalBranchController cbc)
+            throws IllegalActionException {
         super(guard, port, branch, cbc);
         _init(port, channel);
     }
@@ -172,14 +172,14 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
 
             synchronized (receiver) {
                 if (receiver._isConditionalReceiveWaiting()
-                                || receiver._isGetWaiting()) {
+                        || receiver._isGetWaiting()) {
                     // Should never happen that a get or a ConditionalReceive
                     // is already at the receiver.
                     throw new InvalidStateException(((Nameable) controller
-                                    .getParent()).getName()
-                        + ": ConditionalReceive branch trying to "
-                        + " rendezvous with a receiver that already "
-                        + " has a get or a ConditionalReceive waiting.");
+                                                            .getParent()).getName()
+                            + ": ConditionalReceive branch trying to "
+                            + " rendezvous with a receiver that already "
+                            + " has a get or a ConditionalReceive waiting.");
                 }
 
                 // MAIN LOOP
@@ -228,7 +228,7 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
      *  taking place.
      */
     protected boolean _arriveAfterConditionalSend(CSPReceiver receiver,
-        ConditionalBranchController controller) throws InterruptedException {
+            ConditionalBranchController controller) throws InterruptedException {
         if (controller._isBranchFirst(getID())) {
             // receive side ok, need to check that send
             // side also ok
@@ -260,7 +260,7 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
      *  taking place.
      */
     protected void _arriveAfterPut(CSPReceiver receiver,
-        ConditionalBranchController controller) throws InterruptedException {
+            ConditionalBranchController controller) throws InterruptedException {
         while (true) {
             if (controller._isBranchFirst(getID())) {
                 // I am the branch that succeeds
@@ -289,7 +289,7 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
      *  taking place.
      */
     protected void _arriveFirst(CSPReceiver receiver,
-        ConditionalBranchController controller) throws InterruptedException {
+            ConditionalBranchController controller) throws InterruptedException {
         receiver._setConditionalReceive(true, controller, getID());
         getController()._branchBlocked(this.getReceiver());
         getReceiver()._checkFlagsAndWait();
@@ -334,33 +334,33 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
 
             if (!port.isInput()) {
                 throw new IllegalActionException(port,
-                    "ConditionalReceive: "
-                    + "tokens only received from an input port.");
+                        "ConditionalReceive: "
+                        + "tokens only received from an input port.");
             }
 
             if ((channel >= port.getWidth()) || (channel < 0)) {
                 throw new IllegalActionException(port,
-                    "ConditionalReceive: " + "channel index out of range.");
+                        "ConditionalReceive: " + "channel index out of range.");
             }
 
             receivers = port.getReceivers();
 
             if ((receivers == null) || (receivers[channel] == null)) {
                 throw new IllegalActionException(port,
-                    "ConditionalReceive: "
-                    + "Trying to rendezvous with a null receiver");
+                        "ConditionalReceive: "
+                        + "Trying to rendezvous with a null receiver");
             }
 
             if (receivers[channel].length != 1) {
                 throw new IllegalActionException(port,
-                    "ConditionalReceive: " + "channel " + channel
-                    + " does not have exactly " + "one receiver");
+                        "ConditionalReceive: " + "channel " + channel
+                        + " does not have exactly " + "one receiver");
             }
 
             if (!(receivers[channel][0] instanceof CSPReceiver)) {
                 throw new IllegalActionException(port,
-                    "ConditionalReceive: " + "channel " + channel
-                    + " does not have a receiver" + " of type CSPReceiver.");
+                        "ConditionalReceive: " + "channel " + channel
+                        + " does not have a receiver" + " of type CSPReceiver.");
             }
 
             setReceiver((CSPReceiver) receivers[channel][0]);

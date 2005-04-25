@@ -92,7 +92,7 @@ public class HDFFSMDirector extends MultirateFSMDirector {
      *  CompositeActor and the name collides with an entity in the container.
      */
     public HDFFSMDirector(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -122,8 +122,8 @@ public class HDFFSMDirector extends MultirateFSMDirector {
         // NOTE: Paranoid coding.
         if ((actors == null) || (actors.length != 1)) {
             throw new IllegalActionException(this,
-                "Current state is required to have exactly one refinement: "
-                + currentState.getName());
+                    "Current state is required to have exactly one refinement: "
+                    + currentState.getName());
         }
 
         for (int i = 0; i < actors.length; ++i) {
@@ -145,7 +145,7 @@ public class HDFFSMDirector extends MultirateFSMDirector {
             ChangeRequest request = new ChangeRequest(this,
                     "choose a transition") {
                     protected void _execute()
-                        throws KernelException, IllegalActionException {
+                            throws KernelException, IllegalActionException {
                         FSMActor controller = getController();
                         State currentState = controller.currentState();
                         chooseNonTransientTransition(currentState);

@@ -167,10 +167,10 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
         private FieldRecord $RECORD$previous = new FieldRecord(0);
 
         private FieldRecord[] $RECORDS = new FieldRecord[] {
-                $RECORD$data,
-                $RECORD$next,
-                $RECORD$previous
-            };
+            $RECORD$data,
+            $RECORD$next,
+            $RECORD$previous
+        };
     }
 
     private final class LinkedListItr implements ListIterator, Rollbackable {
@@ -289,38 +289,38 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
                 $RECORD$knownMod.add(null, knownMod, $CHECKPOINT.getTimestamp());
             }
             switch (operator) {
-                case 0:
-                    return knownMod += newValue;
-                case 1:
-                    return knownMod -= newValue;
-                case 2:
-                    return knownMod *= newValue;
-                case 3:
-                    return knownMod /= newValue;
-                case 4:
-                    return knownMod &= newValue;
-                case 5:
-                    return knownMod |= newValue;
-                case 6:
-                    return knownMod ^= newValue;
-                case 7:
-                    return knownMod %= newValue;
-                case 8:
-                    return knownMod <<= newValue;
-                case 9:
-                    return knownMod >>= newValue;
-                case 10:
-                    return knownMod >>>= newValue;
-                case 11:
-                    return knownMod++;
-                case 12:
-                    return knownMod--;
-                case 13:
-                    return ++knownMod;
-                case 14:
-                    return --knownMod;
-                default:
-                    return knownMod;
+            case 0:
+                return knownMod += newValue;
+            case 1:
+                return knownMod -= newValue;
+            case 2:
+                return knownMod *= newValue;
+            case 3:
+                return knownMod /= newValue;
+            case 4:
+                return knownMod &= newValue;
+            case 5:
+                return knownMod |= newValue;
+            case 6:
+                return knownMod ^= newValue;
+            case 7:
+                return knownMod %= newValue;
+            case 8:
+                return knownMod <<= newValue;
+            case 9:
+                return knownMod >>= newValue;
+            case 10:
+                return knownMod >>>= newValue;
+            case 11:
+                return knownMod++;
+            case 12:
+                return knownMod--;
+            case 13:
+                return ++knownMod;
+            case 14:
+                return --knownMod;
+            default:
+                return knownMod;
             }
         }
 
@@ -366,38 +366,38 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
                 $RECORD$position.add(null, position, $CHECKPOINT.getTimestamp());
             }
             switch (operator) {
-                case 0:
-                    return position += newValue;
-                case 1:
-                    return position -= newValue;
-                case 2:
-                    return position *= newValue;
-                case 3:
-                    return position /= newValue;
-                case 4:
-                    return position &= newValue;
-                case 5:
-                    return position |= newValue;
-                case 6:
-                    return position ^= newValue;
-                case 7:
-                    return position %= newValue;
-                case 8:
-                    return position <<= newValue;
-                case 9:
-                    return position >>= newValue;
-                case 10:
-                    return position >>>= newValue;
-                case 11:
-                    return position++;
-                case 12:
-                    return position--;
-                case 13:
-                    return ++position;
-                case 14:
-                    return --position;
-                default:
-                    return position;
+            case 0:
+                return position += newValue;
+            case 1:
+                return position -= newValue;
+            case 2:
+                return position *= newValue;
+            case 3:
+                return position /= newValue;
+            case 4:
+                return position &= newValue;
+            case 5:
+                return position |= newValue;
+            case 6:
+                return position ^= newValue;
+            case 7:
+                return position %= newValue;
+            case 8:
+                return position <<= newValue;
+            case 9:
+                return position >>= newValue;
+            case 10:
+                return position >>>= newValue;
+            case 11:
+                return position++;
+            case 12:
+                return position--;
+            case 13:
+                return ++position;
+            case 14:
+                return --position;
+            default:
+                return position;
             }
         }
 
@@ -450,12 +450,12 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
         private FieldRecord $RECORD$position = new FieldRecord(0);
 
         private FieldRecord[] $RECORDS = new FieldRecord[] {
-                $RECORD$knownMod,
-                $RECORD$next,
-                $RECORD$previous,
-                $RECORD$lastReturned,
-                $RECORD$position
-            };
+            $RECORD$knownMod,
+            $RECORD$next,
+            $RECORD$previous,
+            $RECORD$lastReturned,
+            $RECORD$position
+        };
     }
 
     Entry getEntry(int n) {
@@ -816,38 +816,38 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
             $RECORD$size.add(null, size, $CHECKPOINT.getTimestamp());
         }
         switch (operator) {
-            case 0:
-                return size += newValue;
-            case 1:
-                return size -= newValue;
-            case 2:
-                return size *= newValue;
-            case 3:
-                return size /= newValue;
-            case 4:
-                return size &= newValue;
-            case 5:
-                return size |= newValue;
-            case 6:
-                return size ^= newValue;
-            case 7:
-                return size %= newValue;
-            case 8:
-                return size <<= newValue;
-            case 9:
-                return size >>= newValue;
-            case 10:
-                return size >>>= newValue;
-            case 11:
-                return size++;
-            case 12:
-                return size--;
-            case 13:
-                return ++size;
-            case 14:
-                return --size;
-            default:
-                return size;
+        case 0:
+            return size += newValue;
+        case 1:
+            return size -= newValue;
+        case 2:
+            return size *= newValue;
+        case 3:
+            return size /= newValue;
+        case 4:
+            return size &= newValue;
+        case 5:
+            return size |= newValue;
+        case 6:
+            return size ^= newValue;
+        case 7:
+            return size %= newValue;
+        case 8:
+            return size <<= newValue;
+        case 9:
+            return size >>= newValue;
+        case 10:
+            return size >>>= newValue;
+        case 11:
+            return size++;
+        case 12:
+            return size--;
+        case 13:
+            return ++size;
+        case 14:
+            return --size;
+        default:
+            return size;
         }
     }
 
@@ -870,8 +870,8 @@ public class LinkedList extends AbstractSequentialList implements List, Cloneabl
     private FieldRecord $RECORD$size = new FieldRecord(0);
 
     private FieldRecord[] $RECORDS = new FieldRecord[] {
-            $RECORD$first,
-            $RECORD$last,
-            $RECORD$size
-        };
+        $RECORD$first,
+        $RECORD$last,
+        $RECORD$size
+    };
 }

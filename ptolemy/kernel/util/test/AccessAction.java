@@ -37,7 +37,7 @@ import java.util.List;
 
 public class AccessAction {
     public AccessAction(Workspace workspace, long sleepBefore, char action,
-        long sleepAfter, Object lock, List record, String name) {
+            long sleepAfter, Object lock, List record, String name) {
         _workspace = workspace;
         _sleepBefore = sleepBefore;
         _action = action;
@@ -119,7 +119,7 @@ public class AccessAction {
 
                 if (_failed) {
                     _record.add(_name
-                        + " handled failure in getting read access");
+                            + " handled failure in getting read access");
                 } else {
                     _record.add(_name + " released read access");
                 }
@@ -134,7 +134,7 @@ public class AccessAction {
 
                 if (_failed) {
                     _record.add(_name
-                        + " handled failure in getting write access");
+                            + " handled failure in getting write access");
                 } else {
                     _record.add(_name + " released write access");
                 }

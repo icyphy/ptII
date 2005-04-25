@@ -82,7 +82,7 @@ import javax.vecmath.Vector3f;
 @Pt.AcceptedRating Red (chf)
 */
 public class ViewScreen3Da extends GRActor3D implements Placeable,
-    ViewScreenInterface {
+                                                        ViewScreenInterface {
     /** Construct a ViewScreen in the given container with the given name.
      *  If the container argument is null, a NullPointerException will
      *  be thrown. If the name argument is null, then the name is set
@@ -96,7 +96,7 @@ public class ViewScreen3Da extends GRActor3D implements Placeable,
      *   CompositeActor and the name collides with an entity in the container.
      */
     public ViewScreen3Da(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         sceneGraphIn = new TypedIOPort(this, "sceneGraphIn");
@@ -286,11 +286,11 @@ public class ViewScreen3Da extends GRActor3D implements Placeable,
         //To allow multiple shapes to be added
 
         /*        _root = new BranchGroup();
-                _root.setCapability(BranchGroup.ALLOW_DETACH);
-                _root.setCapability(BranchGroup.ALLOW_CHILDREN_WRITE);
-                _root.setCapability(BranchGroup.ALLOW_CHILDREN_READ);
-                _root.setCapability(BranchGroup.ALLOW_CHILDREN_EXTEND);
-                _userTransformation.addChild(_root); */
+                  _root.setCapability(BranchGroup.ALLOW_DETACH);
+                  _root.setCapability(BranchGroup.ALLOW_CHILDREN_WRITE);
+                  _root.setCapability(BranchGroup.ALLOW_CHILDREN_READ);
+                  _root.setCapability(BranchGroup.ALLOW_CHILDREN_EXTEND);
+                  _userTransformation.addChild(_root); */
         _bounds = new BoundingSphere(new Point3d(0.0, 0.0, 0.0), 100.0);
 
         Background backg = _makeBackground();
@@ -359,7 +359,7 @@ public class ViewScreen3Da extends GRActor3D implements Placeable,
         BranchGroup lightRoot = new BranchGroup();
 
         AmbientLight lightAmbient = new AmbientLight(new Color3f(0.8f, 0.8f,
-                    0.8f));
+                                                             0.8f));
         lightAmbient.setInfluencingBounds(_bounds);
         lightRoot.addChild(lightAmbient);
 

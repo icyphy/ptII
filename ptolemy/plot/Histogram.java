@@ -173,7 +173,7 @@ public class Histogram extends PlotBox {
      *  @param connected Ignored
      */
     public synchronized void addPoint(int dataset, double x, double y,
-        boolean connected) {
+            boolean connected) {
         addPoint(dataset, y);
     }
 
@@ -213,9 +213,9 @@ public class Histogram extends PlotBox {
         if (dtd == null) {
             output.println("<?xml version=\"1.0\" standalone=\"yes\"?>");
             output.println(
-                "<!DOCTYPE plot PUBLIC \"-//UC Berkeley//DTD PlotML 1//EN\"");
+                    "<!DOCTYPE plot PUBLIC \"-//UC Berkeley//DTD PlotML 1//EN\"");
             output.println(
-                "    \"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd\">");
+                    "    \"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd\">");
         } else {
             output.println("<?xml version=\"1.0\" standalone=\"no\"?>");
             output.println("<!DOCTYPE plot SYSTEM \"" + dtd + "\">");
@@ -223,11 +223,11 @@ public class Histogram extends PlotBox {
 
         output.println("<plot>");
         output.println("<!-- Ptolemy plot, version " + PTPLOT_RELEASE
-            + " , PlotML format. Exported from Histogram. -->");
+                + " , PlotML format. Exported from Histogram. -->");
 
         super.writeFormat(output);
         output.println("<barGraph width=\"" + (_barwidth * _binWidth)
-            + "\" offset=\"" + (_baroffset * _binWidth) + "\"/>");
+                + "\" offset=\"" + (_baroffset * _binWidth) + "\"/>");
 
         for (int dataset = 0; dataset < _points.size(); dataset++) {
             // Write the dataset directive
@@ -235,7 +235,7 @@ public class Histogram extends PlotBox {
 
             if (legend != null) {
                 output.println("<dataset name=\"" + legend
-                    + "\" connected=\"no\">");
+                        + "\" connected=\"no\">");
             } else {
                 output.println("<dataset connected=\"no\">");
             }
@@ -250,7 +250,7 @@ public class Histogram extends PlotBox {
                 // The X axis value is a bit complex to get.
                 int xValue = (int) ((bin.intValue() * _binWidth) + _binOffset);
                 output.println("<p x=\"" + xValue + "\" y=\""
-                    + count.intValue() + "\"/>");
+                        + count.intValue() + "\"/>");
             }
 
             output.println("</dataset>");
@@ -402,10 +402,10 @@ public class Histogram extends PlotBox {
         // Thus, this is not the same as the corresponding line
         // in exportToPlot().
         output.println("<barGraph width=\"" + _barwidth + "\" offset=\""
-            + _baroffset + "\"/>");
+                + _baroffset + "\"/>");
 
         output.println("<bin width=\"" + _binWidth + "\" offset=\""
-            + _binOffset + "\"/>");
+                + _binOffset + "\"/>");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -422,8 +422,8 @@ public class Histogram extends PlotBox {
     protected void _checkDatasetIndex(int dataset) {
         if (dataset < 0) {
             throw new IllegalArgumentException(
-                "Plot._checkDatasetIndex: Cannot"
-                + " give a negative number for the data set index.");
+                    "Plot._checkDatasetIndex: Cannot"
+                    + " give a negative number for the data set index.");
         }
 
         while (dataset >= _points.size()) {
@@ -445,7 +445,7 @@ public class Histogram extends PlotBox {
      *  @param clip If true, then do not draw outside the range.
      */
     protected void _drawBar(Graphics graphics, int dataset, long xpos,
-        long ypos, boolean clip) {
+            long ypos, boolean clip) {
         if (clip) {
             if (ypos < _uly) {
                 ypos = _uly;
@@ -459,7 +459,7 @@ public class Histogram extends PlotBox {
         if ((ypos <= _lry) && (xpos <= _lrx) && (xpos >= _ulx)) {
             // left x position of bar.
             int barlx = (int) (xpos - ((_barwidth * _binWidth * _xscale) / 2)
-                + (dataset * _baroffset * _binWidth * _xscale));
+                    + (dataset * _baroffset * _binWidth * _xscale));
 
             // right x position of bar
             int barrx = (int) (barlx + (_barwidth * _binWidth * _xscale));
@@ -490,10 +490,10 @@ public class Histogram extends PlotBox {
 
             if ((_yMin >= 0) || (ypos <= zeroypos)) {
                 graphics.fillRect(barlx, (int) ypos, barrx - barlx,
-                    (int) (zeroypos - ypos));
+                        (int) (zeroypos - ypos));
             } else {
                 graphics.fillRect(barlx, (int) zeroypos, barrx - barlx,
-                    (int) (ypos - zeroypos));
+                        (int) (ypos - zeroypos));
             }
         }
     }
@@ -528,7 +528,7 @@ public class Histogram extends PlotBox {
                 Integer bin = (Integer) keys.nextElement();
                 Integer count = (Integer) data.get(bin);
                 _drawPlotPoint(graphics, dataset, bin.intValue(),
-                    count.intValue());
+                        count.intValue());
             }
         }
     }
@@ -562,7 +562,7 @@ public class Histogram extends PlotBox {
 
                 return true;
             } else if (lcLine.startsWith("bars:")
-                            || lcLine.startsWith("bargraph:")) {
+                    || lcLine.startsWith("bargraph:")) {
                 // The PlotML code uses barGraph, but the older style
                 // uses bars
                 int comma = line.indexOf(",", 5);
@@ -797,7 +797,7 @@ public class Histogram extends PlotBox {
      * when being used to write to the screen.
      */
     private void _drawPlotPoint(Graphics graphics, int dataset, int bin,
-        int count) {
+            int count) {
         // Set the color
         if (_usecolor) {
             int color = dataset % _colors.length;
@@ -812,7 +812,7 @@ public class Histogram extends PlotBox {
         if (_xlog) {
             if (x <= 0.0) {
                 System.err.println("Can't plot non-positive X values "
-                    + "when the logarithmic X axis value is specified: " + x);
+                        + "when the logarithmic X axis value is specified: " + x);
                 return;
             }
 
@@ -822,7 +822,7 @@ public class Histogram extends PlotBox {
         if (_ylog) {
             if (y <= 0.0) {
                 System.err.println("Can't plot non-positive Y values "
-                    + "when the logarithmic Y axis value is specified: " + y);
+                        + "when the logarithmic Y axis value is specified: " + y);
                 return;
             }
 

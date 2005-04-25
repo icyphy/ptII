@@ -64,7 +64,7 @@ public class ColorFinder extends TypedAtomicActor {
      *   actor with this name.
      */
     public ColorFinder(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input = new TypedIOPort(this, "input", true, false);
         outputX = new TypedIOPort(this, "outputX", false, true);
@@ -138,21 +138,21 @@ public class ColorFinder extends TypedAtomicActor {
                 yuvFormat = (YUVFormat) videoFormat;
             } catch (ClassCastException ex) {
                 throw new IllegalActionException(this, ex,
-                    "Failed to cast " + videoFormat.getClass() + ":\n"
-                    + videoFormat + "\nto YUVFormat\n" + "in.getFormat() was: "
-                    + in.getFormat().getClass()
-                    + "\nPerhaps the video source is not generating YUV?");
+                        "Failed to cast " + videoFormat.getClass() + ":\n"
+                        + videoFormat + "\nto YUVFormat\n" + "in.getFormat() was: "
+                        + in.getFormat().getClass()
+                        + "\nPerhaps the video source is not generating YUV?");
             }
 
             byte[] data = (byte[]) in.getData();
 
             if (data != null) {
                 System.arraycopy(data, yuvFormat.getOffsetY(), YArray, 0,
-                    YArray.length);
+                        YArray.length);
                 System.arraycopy(data, yuvFormat.getOffsetU(), UArray, 0,
-                    UArray.length);
+                        UArray.length);
                 System.arraycopy(data, yuvFormat.getOffsetV(), VArray, 0,
-                    VArray.length);
+                        VArray.length);
 
                 for (int x = 0; x < _frameWidth; x += 1) {
                     for (int y = 0; y < _frameHeight; y += 1) {
@@ -161,7 +161,7 @@ public class ColorFinder extends TypedAtomicActor {
                         int vComp = _getVComponent(x, y);
 
                         int compInClass = _yClass[yComp] & _uClass[uComp]
-                                        & _vClass[vComp];
+                            & _vClass[vComp];
 
                         if (compInClass == 1) {
                             _sumX += x;
@@ -174,13 +174,13 @@ public class ColorFinder extends TypedAtomicActor {
                 if (_inCount > 0) {
                     double xLocation = (double) _sumX / _inCount;
                     double yLocation = (double) (_frameHeight
-                        - (_sumY / _inCount));
+                            - (_sumY / _inCount));
                     outputX.send(0, new DoubleToken(xLocation));
                     outputY.send(0, new DoubleToken(yLocation));
 
                     if (_debugging) {
                         _debug("just sent " + (int) xLocation + "and "
-                            + (int) yLocation);
+                                + (int) yLocation);
                     }
                 }
 

@@ -63,7 +63,7 @@ public class AbsoluteValue extends CCodeGeneratorHelper {
      * @param stream the given buffer to append the code to
      */
     public void generateFireCode(StringBuffer stream)
-        throws IllegalActionException {
+            throws IllegalActionException {
         CodeStream tmpStream = new CodeStream(this);
         tmpStream.appendCodeBlock("codeBlock1");
         stream.append(processCode(tmpStream.toString()));

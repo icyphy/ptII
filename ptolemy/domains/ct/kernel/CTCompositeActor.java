@@ -75,7 +75,7 @@ import ptolemy.kernel.util.Workspace;
 */
 public class CTCompositeActor extends TypedCompositeActor
     implements CTDynamicActor, CTEventGenerator, CTStatefulActor,
-        CTStepSizeControlActor, CTWaveformGenerator {
+               CTStepSizeControlActor, CTWaveformGenerator {
     /** Construct a CTCompositeActor in the default workspace with
      *  no container and an empty string as its name. Add the actor
      *  to the workspace directory.
@@ -104,7 +104,7 @@ public class CTCompositeActor extends TypedCompositeActor
      *   an actor already in the container.
      */
     public CTCompositeActor(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // When exporting MoML, set the class name to CTCompositeActor

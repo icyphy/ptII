@@ -59,7 +59,7 @@ public class AttributeExpressionAttribute extends AttributeValueAttribute {
      *   an attribute already in the container.
      */
     public AttributeExpressionAttribute(NamedObj container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 

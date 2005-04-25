@@ -170,7 +170,7 @@ public class TupleToken extends Token {
         Token[] result = new Token[firstTokens.length + secondTokens.length];
         System.arraycopy(firstTokens, 0, result, 0, firstTokens.length);
         System.arraycopy(secondTokens, 0, result, firstTokens.length,
-            secondTokens.length);
+                secondTokens.length);
         return new TupleToken(result);
     }
 

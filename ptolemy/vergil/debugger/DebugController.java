@@ -75,7 +75,7 @@ public class DebugController extends SingletonConfigurableAttribute
      *   attribute already in the container.
      */
     public DebugController(NamedObj container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _toDebug = new Hashtable();
         setPersistent(false);
@@ -118,13 +118,13 @@ public class DebugController extends SingletonConfigurableAttribute
                 // that is.
                 DebugProfile debugProfile = getDebugProfile((Executable) objToHighlight);
                 BasicGraphController graphController = debugProfile
-                                .getGraphController();
+                    .getGraphController();
                 AbstractBasicGraphModel graphModel = (AbstractBasicGraphModel) graphController
-                                .getGraphModel();
+                    .getGraphModel();
                 NamedObj toplevel = graphModel.getPtolemyModel();
 
                 while ((objToHighlight != null)
-                                && (objToHighlight.getContainer() != toplevel)) {
+                        && (objToHighlight.getContainer() != toplevel)) {
                     objToHighlight = (NamedObj) objToHighlight.getContainer();
                 }
 
@@ -146,7 +146,7 @@ public class DebugController extends SingletonConfigurableAttribute
                             String message = new String(objToHighlight.getName()
                                     + " " + event.getType().getName());
                             Manager manager = ((Actor) objToHighlight)
-                                            .getManager();
+                                .getManager();
                             render(figure, manager, message);
                         }
                     }

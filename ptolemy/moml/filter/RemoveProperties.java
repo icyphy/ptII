@@ -52,18 +52,18 @@ import java.util.Iterator;
     <p>
     A typical usage looks like the following.
     <pre>
-        // stopTime after Ptolemy II 5.0
-        // The stopTime used to have a default value as the Double.MAX_VALUE.
-        // Now the default value is Infinity.
-        HashMap removePropertyStopTime = new HashMap();
+    // stopTime after Ptolemy II 5.0
+    // The stopTime used to have a default value as the Double.MAX_VALUE.
+    // Now the default value is Infinity.
+    HashMap removePropertyStopTime = new HashMap();
 
-        // Key = attribute name, Value = attribute value
-        removePropertyStopTime.put("1.7976931348623E308", null);
-        removePropertyStopTime.put("1.797693134862316E308", null);
-        removePropertyStopTime.put("MaxDouble", null);
-        removePropertyStopTime.put(""+Double.MAX_VALUE, null);
+    // Key = attribute name, Value = attribute value
+    removePropertyStopTime.put("1.7976931348623E308", null);
+    removePropertyStopTime.put("1.797693134862316E308", null);
+    removePropertyStopTime.put("MaxDouble", null);
+    removePropertyStopTime.put(""+Double.MAX_VALUE, null);
 
-        removePropertyStopTime.put("ptolemy.data.expr.Parameter", null);
+    removePropertyStopTime.put("ptolemy.data.expr.Parameter", null);
     </pre>
     The removePropertyStopTime HashMap stores every bit of details of the
     stopTime parameter to be removed including the class and value. Only when
@@ -71,7 +71,7 @@ import java.util.Iterator;
     configuration of the stopTime parameter to be filtered.
 
     <pre>
-        _propertiesToBeRemoved.put("stopTime", removePropertyStopTime);
+    _propertiesToBeRemoved.put("stopTime", removePropertyStopTime);
     </pre>
     The _propertiesToBeRemoved HashMap contains all the properties
     such as the stopTime parameter that will be removed.
@@ -96,7 +96,7 @@ public class RemoveProperties implements MoMLFilter {
      *  @return The value of the attributeValue argument.
      */
     public String filterAttributeValue(NamedObj container, String element,
-        String attributeName, String attributeValue) {
+            String attributeName, String attributeValue) {
         if (attributeValue == null) {
             // attributeValue == null is fairly common, so we check for
             // that first.
@@ -105,7 +105,7 @@ public class RemoveProperties implements MoMLFilter {
 
         if (attributeName.equals("name")) {
             if (_propertiesToBeRemoved.containsKey(attributeValue)
-                            && (element != null) && element.equals("property")) {
+                    && (element != null) && element.equals("property")) {
                 _foundPropertyToBeRemoved = true;
                 _propertyMap = (HashMap) _propertiesToBeRemoved.get(attributeValue);
             } else {
@@ -147,7 +147,7 @@ public class RemoveProperties implements MoMLFilter {
      *  @param elementName The element name.
      */
     public void filterEndElement(NamedObj container, String elementName)
-        throws Exception {
+            throws Exception {
         _foundPropertyToBeRemoved = false;
         _propertyToBeRemovedConfirmed = false;
     }
@@ -159,7 +159,7 @@ public class RemoveProperties implements MoMLFilter {
         StringBuffer results = new StringBuffer(getClass().getName()
                 + ": Remove the properties listed below:");
         Iterator propertiesToBeRemoved = _propertiesToBeRemoved.keySet()
-                                                                           .iterator();
+            .iterator();
 
         while (propertiesToBeRemoved.hasNext()) {
             String propertyToBeRemoved = (String) propertiesToBeRemoved.next();
@@ -172,7 +172,7 @@ public class RemoveProperties implements MoMLFilter {
                 String oldAttribute = (String) attributes.next();
                 String newAttribute = (String) propertyMap.get(oldAttribute);
                 results.append("\t\t" + oldAttribute + "\t -> " + newAttribute
-                    + "\n");
+                        + "\n");
             }
         }
 
@@ -226,11 +226,11 @@ public class RemoveProperties implements MoMLFilter {
 
         // Key = attribute name, Value = attribute value
         removePropertyDirectorClass.put("ptolemy.domains.fsm.kernel.HSDirector",
-            null);
+                null);
         removePropertyDirectorClass.put("ptolemy.kernel.util.StringAttribute",
-            null);
+                null);
         removePropertyDirectorClass.put("ptolemy.data.expr.StringParameter",
-            null);
+                null);
 
         _propertiesToBeRemoved.put("directorClass", removePropertyDirectorClass);
     }

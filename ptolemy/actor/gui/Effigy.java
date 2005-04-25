@@ -124,7 +124,7 @@ public class Effigy extends CompositeEntity {
      *   an entity already in the container.
      */
     public Effigy(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         identifier = new StringAttribute(this, "identifier");
         identifier.setExpression("Unnamed");
@@ -150,7 +150,7 @@ public class Effigy extends CompositeEntity {
      *  @exception IllegalActionException If the base class throws it.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == identifier) {
             Iterator tableaux = entityList(Tableau.class).iterator();
 
@@ -345,7 +345,7 @@ public class Effigy extends CompositeEntity {
      *   an entity with the specified name.
      */
     public void setContainer(CompositeEntity container)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         if (container == null) {
             // Remove all tableaux.
             Iterator tableaux = entityList(Tableau.class).iterator();
@@ -508,12 +508,12 @@ public class Effigy extends CompositeEntity {
      *   an acceptable class.
      */
     protected void _checkContainer(CompositeEntity container)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if ((container != null) && !(container instanceof ModelDirectory)
-                        && !(container instanceof Effigy)) {
+                && !(container instanceof Effigy)) {
             throw new IllegalActionException(this, container,
-                "The container can only be set to an "
-                + "instance of ModelDirectory or Effigy.");
+                    "The container can only be set to an "
+                    + "instance of ModelDirectory or Effigy.");
         }
     }
 
@@ -531,7 +531,7 @@ public class Effigy extends CompositeEntity {
                 setContainer(null);
             } catch (Exception ex) {
                 throw new InternalErrorException(this, ex,
-                    "Cannot remove effigy!");
+                        "Cannot remove effigy!");
             }
         }
     }

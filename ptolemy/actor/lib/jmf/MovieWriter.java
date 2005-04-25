@@ -104,7 +104,7 @@ import javax.media.protocol.PullBufferStream;
    @Pt.AcceptedRating Red (cxh)
 */
 public class MovieWriter extends Sink implements ControllerListener,
-    DataSinkListener {
+                                                 DataSinkListener {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -114,7 +114,7 @@ public class MovieWriter extends Sink implements ControllerListener,
      *   actor with this name.
      */
     public MovieWriter(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input.setTypeEquals(BaseType.OBJECT);
 
@@ -162,7 +162,7 @@ public class MovieWriter extends Sink implements ControllerListener,
      *  invalid.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == fileOrURL) {
             _file = fileOrURL.asFile();
 
@@ -173,7 +173,7 @@ public class MovieWriter extends Sink implements ControllerListener,
             }
         } else if (attribute == confirmOverwrite) {
             _confirmOverwrite = ((BooleanToken) confirmOverwrite.getToken())
-                            .booleanValue();
+                .booleanValue();
         } else if (attribute == fileType) {
             String typeName = fileType.getExpression();
 
@@ -185,8 +185,8 @@ public class MovieWriter extends Sink implements ControllerListener,
                 _fileType = _QUICKTIME;
             } else {
                 throw new IllegalActionException(this,
-                    "Unrecognized file type: " + typeName + ", must be "
-                    + "on of AVI, MPEG, or QUICKTIME");
+                        "Unrecognized file type: " + typeName + ", must be "
+                        + "on of AVI, MPEG, or QUICKTIME");
             }
         } else {
             super.attributeChanged(attribute);
@@ -199,8 +199,8 @@ public class MovieWriter extends Sink implements ControllerListener,
      */
     public void controllerUpdate(ControllerEvent event) {
         if (event instanceof ConfigureCompleteEvent
-                        || event instanceof RealizeCompleteEvent
-                        || event instanceof PrefetchCompleteEvent) {
+                || event instanceof RealizeCompleteEvent
+                || event instanceof PrefetchCompleteEvent) {
             synchronized (_waitSync) {
                 _stateTransitionOK = true;
                 _waitSync.notifyAll();
@@ -261,8 +261,8 @@ public class MovieWriter extends Sink implements ControllerListener,
                 _jmfImageToken = (JMFImageToken) token;
             } catch (ClassCastException ex) {
                 throw new IllegalActionException(this, ex,
-                    "Failed to cast " + token.getClass()
-                    + " to a JMFImageToken.\nToken was: " + token);
+                        "Failed to cast " + token.getClass()
+                        + " to a JMFImageToken.\nToken was: " + token);
             }
 
             if (_debugging) {
@@ -274,7 +274,7 @@ public class MovieWriter extends Sink implements ControllerListener,
 
             if (!_bufferArrayList.add(buffer)) {
                 throw new IllegalActionException("Could not add buffer "
-                    + "to the array list");
+                        + "to the array list");
             }
 
             _dimensionSet = true;
@@ -296,9 +296,9 @@ public class MovieWriter extends Sink implements ControllerListener,
 
             if (_confirmOverwrite) {
                 if (!MessageHandler.yesNoQuestion("OK to overwrite " + _file
-                                    + "?")) {
+                            + "?")) {
                     throw new IllegalActionException(this,
-                        "Please select another file name.");
+                            "Please select another file name.");
                 }
             }
         }
@@ -307,14 +307,14 @@ public class MovieWriter extends Sink implements ControllerListener,
 
         if (mediaLocator == null) {
             throw new IllegalActionException("Could not create "
-                + "MediaLocator from the given URL: " + _fileRoot);
+                    + "MediaLocator from the given URL: " + _fileRoot);
         }
 
         // Get dimensions
         if (_jmfImageToken == null) {
             throw new IllegalActionException(this,
-                "In MovieWriter.wrapup(), _jmfImageToken is "
-                + "null, perhaps this actor never read any input?");
+                    "In MovieWriter.wrapup(), _jmfImageToken is "
+                    + "null, perhaps this actor never read any input?");
         } else {
             Image image = _jmfImageToken.asAWTImage();
             int width = image.getWidth(null);
@@ -326,7 +326,7 @@ public class MovieWriter extends Sink implements ControllerListener,
                 processor = Manager.createProcessor(imageDataSource);
             } catch (Exception ex) {
                 throw new IllegalActionException(this, ex,
-                    "Can't create processor");
+                        "Can't create processor");
             }
 
             processor.addControllerListener(this);
@@ -335,22 +335,22 @@ public class MovieWriter extends Sink implements ControllerListener,
 
             if (!_waitForState(processor, Processor.Configured)) {
                 throw new IllegalActionException(
-                    "Failed to configure processor.");
+                        "Failed to configure processor.");
             }
 
             if (_fileType == _QUICKTIME) {
                 processor.setContentDescriptor(new ContentDescriptor(
-                        FileTypeDescriptor.QUICKTIME));
+                                                       FileTypeDescriptor.QUICKTIME));
             } else if (_fileType == _AVI) {
                 processor.setContentDescriptor(new ContentDescriptor(
-                        FileTypeDescriptor.MSVIDEO));
+                                                       FileTypeDescriptor.MSVIDEO));
             } else if (_fileType == _MPEG) {
                 processor.setContentDescriptor(new ContentDescriptor(
-                        FileTypeDescriptor.MPEG));
+                                                       FileTypeDescriptor.MPEG));
             } else {
                 throw new InternalErrorException("type = " + _fileType
-                    + ", which is not one of " + _QUICKTIME + "(QUICKTIME), "
-                    + _AVI + "(AVI) or " + _MPEG + "(MPEG).");
+                        + ", which is not one of " + _QUICKTIME + "(QUICKTIME), "
+                        + _AVI + "(AVI) or " + _MPEG + "(MPEG).");
             }
 
             TrackControl[] trackControl = processor.getTrackControls();
@@ -372,7 +372,7 @@ public class MovieWriter extends Sink implements ControllerListener,
 
             if (dataSource == null) {
                 throw new IllegalActionException("Processor does not have "
-                    + "output DataSource");
+                        + "output DataSource");
             }
 
             if (_debugging) {
@@ -386,7 +386,7 @@ public class MovieWriter extends Sink implements ControllerListener,
                 dataSink.open();
             } catch (Exception ex) {
                 throw new IllegalActionException(this, ex,
-                    "Couldn't create the data sink");
+                        "Couldn't create the data sink");
             }
 
             dataSink.addDataSinkListener(this);
@@ -396,7 +396,7 @@ public class MovieWriter extends Sink implements ControllerListener,
                 dataSink.start();
             } catch (IOException ex) {
                 throw new IllegalActionException(this, ex,
-                    "Could not start processor and datasink");
+                        "Could not start processor and datasink");
             }
 
             if (!_waitForFileDone()) {
@@ -407,7 +407,7 @@ public class MovieWriter extends Sink implements ControllerListener,
                 dataSink.close();
             } catch (Exception ex) {
                 throw new IllegalActionException(this, ex,
-                    "can't close data sink");
+                        "can't close data sink");
             }
 
             processor.stop();
@@ -428,8 +428,8 @@ public class MovieWriter extends Sink implements ControllerListener,
                 }
             } catch (Exception e) {
                 throw new IllegalActionException(null, e,
-                    "Failed block the processor until it state"
-                    + " transition completed.");
+                        "Failed block the processor until it state"
+                        + " transition completed.");
             }
         }
 
@@ -440,7 +440,7 @@ public class MovieWriter extends Sink implements ControllerListener,
      *  @return false if the transition failed.
      */
     protected boolean _waitForState(Processor processor, int state)
-        throws IllegalActionException {
+            throws IllegalActionException {
         synchronized (_waitSync) {
             try {
                 while ((processor.getState() < state) && _stateTransitionOK) {
@@ -448,8 +448,8 @@ public class MovieWriter extends Sink implements ControllerListener,
                 }
             } catch (Exception e) {
                 throw new IllegalActionException(null, e,
-                    "Failed block the processor until it state"
-                    + " transition completed.");
+                        "Failed block the processor until it state"
+                        + " transition completed.");
             }
         }
 

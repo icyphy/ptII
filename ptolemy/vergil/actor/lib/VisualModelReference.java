@@ -125,7 +125,7 @@ public class VisualModelReference extends ModelReference
      *   an actor already in the container.
      */
     public VisualModelReference(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // Create the openOnFiring parameter.
@@ -178,7 +178,7 @@ public class VisualModelReference extends ModelReference
      *   to this container (not thrown in this base class).
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == openOnFiring) {
             String openOnFiringValue = openOnFiring.stringValue();
 
@@ -190,8 +190,8 @@ public class VisualModelReference extends ModelReference
                 _openOnFiringValue = _OPEN_IN_VERGIL_FULL_SCREEN;
             } else {
                 throw new IllegalActionException(this,
-                    "Unrecognized option for openOnFiring: "
-                    + openOnFiringValue);
+                        "Unrecognized option for openOnFiring: "
+                        + openOnFiringValue);
             }
         } else if (attribute == closeOnPostfire) {
             String closeOnPostfireValue = closeOnPostfire.stringValue();
@@ -202,8 +202,8 @@ public class VisualModelReference extends ModelReference
                 _closeOnPostfireValue = _CLOSE_VERGIL_GRAPH;
             } else {
                 throw new IllegalActionException(this,
-                    "Unrecognized option for closeOnPostfire: "
-                    + closeOnPostfireValue);
+                        "Unrecognized option for closeOnPostfire: "
+                        + closeOnPostfireValue);
             }
         } else {
             super.attributeChanged(attribute);
@@ -267,7 +267,7 @@ public class VisualModelReference extends ModelReference
                     // Conditionally show the model in Vergil. The openModel()
                     // method also creates the right effigy.
                     if ((_openOnFiringValue == _OPEN_IN_VERGIL)
-                                    || (_openOnFiringValue == _OPEN_IN_VERGIL_FULL_SCREEN)) {
+                            || (_openOnFiringValue == _OPEN_IN_VERGIL_FULL_SCREEN)) {
                         // NOTE: The opening must occur in the event thread.
                         // Regrettably, we cannot continue with the firing until
                         // the open is complete, so we use the very dangerous
@@ -275,11 +275,11 @@ public class VisualModelReference extends ModelReference
                         Runnable doOpen = new Runnable() {
                                 public void run() {
                                     Configuration configuration = (Configuration) myEffigy
-                                                    .toplevel();
+                                        .toplevel();
 
                                     if (_debugging) {
                                         _debug(
-                                            "** Using the configuration to open a tableau.");
+                                                "** Using the configuration to open a tableau.");
                                     }
 
                                     try {
@@ -306,7 +306,7 @@ public class VisualModelReference extends ModelReference
                                         if (_openOnFiringValue == _OPEN_IN_VERGIL_FULL_SCREEN) {
                                             if (frame instanceof ExtendedGraphFrame) {
                                                 ((ExtendedGraphFrame) frame)
-                                                            .fullScreen();
+                                                    .fullScreen();
                                             }
                                         }
 
@@ -319,13 +319,13 @@ public class VisualModelReference extends ModelReference
                             SwingUtilities.invokeAndWait(doOpen);
                         } catch (Exception ex) {
                             throw new IllegalActionException(this, null, ex,
-                                "Open failed.");
+                                    "Open failed.");
                         }
 
                         if (_exception != null) {
                             // An exception occurred while trying to open.
                             throw new IllegalActionException(this, null,
-                                _exception, "Failed to open.");
+                                    _exception, "Failed to open.");
                         }
                     } else {
                         // Need an effigy for the model, or else graphical elements
@@ -342,7 +342,7 @@ public class VisualModelReference extends ModelReference
 
                         if (_debugging) {
                             _debug(
-                                "** Created new effigy for referenced model.");
+                                    "** Created new effigy for referenced model.");
                         }
                     }
                 } catch (NameDuplicationException ex) {
@@ -384,7 +384,7 @@ public class VisualModelReference extends ModelReference
                             public void run() {
                                 if (frame instanceof ExtendedGraphFrame) {
                                     ((ExtendedGraphFrame) frame)
-                                                .cancelFullScreen();
+                                        .cancelFullScreen();
                                 }
 
                                 ((TableauFrame) frame).close();
@@ -398,7 +398,7 @@ public class VisualModelReference extends ModelReference
                             public void run() {
                                 if (frame instanceof ExtendedGraphFrame) {
                                     ((ExtendedGraphFrame) frame)
-                                                .cancelFullScreen();
+                                        .cancelFullScreen();
                                 }
 
                                 frame.hide();

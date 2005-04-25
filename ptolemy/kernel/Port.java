@@ -112,7 +112,7 @@ public class Port extends NamedObj {
      *   a port already in the container.
      */
     public Port(Entity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container.workspace(), name);
         _elementName = "port";
         setContainer(container);
@@ -220,10 +220,10 @@ public class Port extends NamedObj {
      *   by a class definition.
      */
     public void insertLink(int index, Relation relation)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (_workspace != relation.workspace()) {
             throw new IllegalActionException(this, relation,
-                "Cannot link because workspaces are different.");
+                    "Cannot link because workspaces are different.");
         }
 
         try {
@@ -278,7 +278,7 @@ public class Port extends NamedObj {
     public void link(Relation relation) throws IllegalActionException {
         if ((relation != null) && (_workspace != relation.workspace())) {
             throw new IllegalActionException(this, relation,
-                "Cannot link because workspaces are different.");
+                    "Cannot link because workspaces are different.");
         }
 
         try {
@@ -569,10 +569,10 @@ public class Port extends NamedObj {
      *  @see #_checkContainer(Entity)
      */
     public void setContainer(Entity entity)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         if ((entity != null) && (_workspace != entity.workspace())) {
             throw new IllegalActionException(this, entity,
-                "Cannot set container because workspaces are different.");
+                    "Cannot set container because workspaces are different.");
         }
 
         try {
@@ -648,7 +648,7 @@ public class Port extends NamedObj {
      *   with the same name in the container.
      */
     public void setName(String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         if (name == null) {
             name = "";
         }
@@ -660,7 +660,7 @@ public class Port extends NamedObj {
 
             if ((another != null) && (another != this)) {
                 throw new NameDuplicationException(container,
-                    "Name duplication: " + name);
+                        "Name duplication: " + name);
             }
         }
 
@@ -739,7 +739,7 @@ public class Port extends NamedObj {
      *   an acceptable class.  Not thrown in this base class.
      */
     protected void _checkContainer(Entity container)
-        throws IllegalActionException {
+            throws IllegalActionException {
     }
 
     /** Check that this port is compatible with the specified relation,
@@ -763,7 +763,7 @@ public class Port extends NamedObj {
         if (relation != null) {
             if (_container == null) {
                 throw new IllegalActionException(this, relation,
-                    "Port must have a container to establish a link.");
+                        "Port must have a container to establish a link.");
             }
 
             // Throw an exception if this port is not of an acceptable
@@ -816,7 +816,7 @@ public class Port extends NamedObj {
 
                     if (relation != null) {
                         result += (relation._description(detail, indent + 1, 2)
-                                    + "\n");
+                                + "\n");
                     } else {
                         // A null link (supported since indexed links) might
                         // yield a null relation here. EAL 7/19/00.
@@ -850,21 +850,21 @@ public class Port extends NamedObj {
      *   an instance of CompositeEntity.
      */
     protected NamedObj _getContainedObject(NamedObj container,
-        String relativeName) throws IllegalActionException {
+            String relativeName) throws IllegalActionException {
         if (!(container instanceof Entity)) {
             throw new IllegalActionException(this,
-                "Expected " + container.getFullName()
-                + " to be an instance of ptolemy.kernel.Entity,"
-                + " but it is " + container.getClass().getName());
+                    "Expected " + container.getFullName()
+                    + " to be an instance of ptolemy.kernel.Entity,"
+                    + " but it is " + container.getClass().getName());
         }
 
         Port candidate = ((Entity) container).getPort(relativeName);
 
         if ((candidate != null) && !getClass().isInstance(candidate)) {
             throw new IllegalActionException(this,
-                "Expected " + candidate.getFullName()
-                + " to be an instance of " + getClass().getName()
-                + ", but it is " + candidate.getClass().getName());
+                    "Expected " + candidate.getFullName()
+                    + " to be an instance of " + getClass().getName()
+                    + ", but it is " + candidate.getClass().getName());
         }
 
         return candidate;
@@ -880,7 +880,7 @@ public class Port extends NamedObj {
      *   as this one.
      */
     protected NamedObj _propagateExistence(NamedObj container)
-        throws IllegalActionException {
+            throws IllegalActionException {
         try {
             Port newObject = (Port) super._propagateExistence(container);
             newObject.setContainer((Entity) container);

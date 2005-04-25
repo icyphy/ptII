@@ -60,7 +60,7 @@ public class Project {
      *   or are not consistent.
      */
     public Project(String firstMoML, String secondMoML)
-        throws Exception {
+            throws Exception {
         // Construct the first automaton
         URL url = MoMLApplication.specToURL(firstMoML);
 
@@ -100,16 +100,16 @@ public class Project {
     public static void main(String[] args) {
         if (args.length != 2) {
             System.out.println("Usage: java ptolemy.domains.fsm.kernel."
-                + "test.Project <first_automaton.xml> <second_automaton.xml>");
+                    + "test.Project <first_automaton.xml> <second_automaton.xml>");
             System.out.println("This program computes the projection of the "
-                + "first automaton to the second one.");
+                    + "first automaton to the second one.");
             System.exit(1);
         } else {
             try {
                 new Project(args[0], args[1]);
             } catch (Exception exception) {
                 System.out.println(exception.getClass().getName() + ": "
-                    + exception.getMessage());
+                        + exception.getMessage());
                 exception.printStackTrace();
             }
         }

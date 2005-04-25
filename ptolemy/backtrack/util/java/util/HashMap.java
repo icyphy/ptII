@@ -94,7 +94,7 @@ public class HashMap extends AbstractMap implements Map, Cloneable, Serializable
         }
 
         private FieldRecord[] $RECORDS = new FieldRecord[] {
-            };
+        };
     }
 
     private final class HashIterator implements Iterator, Rollbackable {
@@ -156,38 +156,38 @@ public class HashMap extends AbstractMap implements Map, Cloneable, Serializable
                 $RECORD$knownMod.add(null, knownMod, $CHECKPOINT.getTimestamp());
             }
             switch (operator) {
-                case 0:
-                    return knownMod += newValue;
-                case 1:
-                    return knownMod -= newValue;
-                case 2:
-                    return knownMod *= newValue;
-                case 3:
-                    return knownMod /= newValue;
-                case 4:
-                    return knownMod &= newValue;
-                case 5:
-                    return knownMod |= newValue;
-                case 6:
-                    return knownMod ^= newValue;
-                case 7:
-                    return knownMod %= newValue;
-                case 8:
-                    return knownMod <<= newValue;
-                case 9:
-                    return knownMod >>= newValue;
-                case 10:
-                    return knownMod >>>= newValue;
-                case 11:
-                    return knownMod++;
-                case 12:
-                    return knownMod--;
-                case 13:
-                    return ++knownMod;
-                case 14:
-                    return --knownMod;
-                default:
-                    return knownMod;
+            case 0:
+                return knownMod += newValue;
+            case 1:
+                return knownMod -= newValue;
+            case 2:
+                return knownMod *= newValue;
+            case 3:
+                return knownMod /= newValue;
+            case 4:
+                return knownMod &= newValue;
+            case 5:
+                return knownMod |= newValue;
+            case 6:
+                return knownMod ^= newValue;
+            case 7:
+                return knownMod %= newValue;
+            case 8:
+                return knownMod <<= newValue;
+            case 9:
+                return knownMod >>= newValue;
+            case 10:
+                return knownMod >>>= newValue;
+            case 11:
+                return knownMod++;
+            case 12:
+                return knownMod--;
+            case 13:
+                return ++knownMod;
+            case 14:
+                return --knownMod;
+            default:
+                return knownMod;
             }
         }
 
@@ -196,38 +196,38 @@ public class HashMap extends AbstractMap implements Map, Cloneable, Serializable
                 $RECORD$count.add(null, count, $CHECKPOINT.getTimestamp());
             }
             switch (operator) {
-                case 0:
-                    return count += newValue;
-                case 1:
-                    return count -= newValue;
-                case 2:
-                    return count *= newValue;
-                case 3:
-                    return count /= newValue;
-                case 4:
-                    return count &= newValue;
-                case 5:
-                    return count |= newValue;
-                case 6:
-                    return count ^= newValue;
-                case 7:
-                    return count %= newValue;
-                case 8:
-                    return count <<= newValue;
-                case 9:
-                    return count >>= newValue;
-                case 10:
-                    return count >>>= newValue;
-                case 11:
-                    return count++;
-                case 12:
-                    return count--;
-                case 13:
-                    return ++count;
-                case 14:
-                    return --count;
-                default:
-                    return count;
+            case 0:
+                return count += newValue;
+            case 1:
+                return count -= newValue;
+            case 2:
+                return count *= newValue;
+            case 3:
+                return count /= newValue;
+            case 4:
+                return count &= newValue;
+            case 5:
+                return count |= newValue;
+            case 6:
+                return count ^= newValue;
+            case 7:
+                return count %= newValue;
+            case 8:
+                return count <<= newValue;
+            case 9:
+                return count >>= newValue;
+            case 10:
+                return count >>>= newValue;
+            case 11:
+                return count++;
+            case 12:
+                return count--;
+            case 13:
+                return ++count;
+            case 14:
+                return --count;
+            default:
+                return count;
             }
         }
 
@@ -236,38 +236,38 @@ public class HashMap extends AbstractMap implements Map, Cloneable, Serializable
                 $RECORD$idx.add(null, idx, $CHECKPOINT.getTimestamp());
             }
             switch (operator) {
-                case 0:
-                    return idx += newValue;
-                case 1:
-                    return idx -= newValue;
-                case 2:
-                    return idx *= newValue;
-                case 3:
-                    return idx /= newValue;
-                case 4:
-                    return idx &= newValue;
-                case 5:
-                    return idx |= newValue;
-                case 6:
-                    return idx ^= newValue;
-                case 7:
-                    return idx %= newValue;
-                case 8:
-                    return idx <<= newValue;
-                case 9:
-                    return idx >>= newValue;
-                case 10:
-                    return idx >>>= newValue;
-                case 11:
-                    return idx++;
-                case 12:
-                    return idx--;
-                case 13:
-                    return ++idx;
-                case 14:
-                    return --idx;
-                default:
-                    return idx;
+            case 0:
+                return idx += newValue;
+            case 1:
+                return idx -= newValue;
+            case 2:
+                return idx *= newValue;
+            case 3:
+                return idx /= newValue;
+            case 4:
+                return idx &= newValue;
+            case 5:
+                return idx |= newValue;
+            case 6:
+                return idx ^= newValue;
+            case 7:
+                return idx %= newValue;
+            case 8:
+                return idx <<= newValue;
+            case 9:
+                return idx >>= newValue;
+            case 10:
+                return idx >>>= newValue;
+            case 11:
+                return idx++;
+            case 12:
+                return idx--;
+            case 13:
+                return ++idx;
+            case 14:
+                return --idx;
+            default:
+                return idx;
             }
         }
 
@@ -342,13 +342,13 @@ public class HashMap extends AbstractMap implements Map, Cloneable, Serializable
         private FieldRecord $RECORD$next = new FieldRecord(0);
 
         private FieldRecord[] $RECORDS = new FieldRecord[] {
-                $RECORD$type,
-                $RECORD$knownMod,
-                $RECORD$count,
-                $RECORD$idx,
-                $RECORD$last,
-                $RECORD$next
-            };
+            $RECORD$type,
+            $RECORD$knownMod,
+            $RECORD$count,
+            $RECORD$idx,
+            $RECORD$last,
+            $RECORD$next
+        };
     }
 
     protected HashEntry[] getBuckets() {
@@ -519,82 +519,82 @@ public class HashMap extends AbstractMap implements Map, Cloneable, Serializable
         if (getKeys() == null)
             setKeys(new AbstractSet() {
 
-                public int size() {
-                    return size;
-                }
-
-                public Iterator iterator() {
-                    return HashMap.this.iterator(KEYS);
-                }
-
-                public void clear() {
-                    HashMap.this.clear();
-                }
-
-                public boolean contains(Object o) {
-                    return containsKey(o);
-                }
-
-                public boolean remove(Object o) {
-                    int oldsize = size;
-                    HashMap.this.remove(o);
-                    return oldsize != size;
-                }
-
-                final class _PROXY_ implements Rollbackable {
-
-                    public final void $COMMIT(long timestamp) {
-                        $COMMIT_ANONYMOUS(timestamp);
+                    public int size() {
+                        return size;
                     }
 
-                    public final void $RESTORE(long timestamp, boolean trim) {
-                        $RESTORE_ANONYMOUS(timestamp, trim);
+                    public Iterator iterator() {
+                        return HashMap.this.iterator(KEYS);
                     }
 
-                    public final Checkpoint $GET$CHECKPOINT() {
-                        return $GET$CHECKPOINT_ANONYMOUS();
+                    public void clear() {
+                        HashMap.this.clear();
                     }
 
-                    public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
-                        $SET$CHECKPOINT_ANONYMOUS(checkpoint);
+                    public boolean contains(Object o) {
+                        return containsKey(o);
+                    }
+
+                    public boolean remove(Object o) {
+                        int oldsize = size;
+                        HashMap.this.remove(o);
+                        return oldsize != size;
+                    }
+
+                    final class _PROXY_ implements Rollbackable {
+
+                        public final void $COMMIT(long timestamp) {
+                            $COMMIT_ANONYMOUS(timestamp);
+                        }
+
+                        public final void $RESTORE(long timestamp, boolean trim) {
+                            $RESTORE_ANONYMOUS(timestamp, trim);
+                        }
+
+                        public final Checkpoint $GET$CHECKPOINT() {
+                            return $GET$CHECKPOINT_ANONYMOUS();
+                        }
+
+                        public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
+                            $SET$CHECKPOINT_ANONYMOUS(checkpoint);
+                            return this;
+                        }
+                    }
+
+                    public void $COMMIT_ANONYMOUS(long timestamp) {
+                        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                        super.$COMMIT(timestamp);
+                    }
+
+                    public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
+                        super.$RESTORE(timestamp, trim);
+                    }
+
+                    public final Checkpoint $GET$CHECKPOINT_ANONYMOUS() {
+                        return $CHECKPOINT;
+                    }
+
+                    public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
+                        if ($CHECKPOINT != checkpoint) {
+                            Checkpoint oldCheckpoint = $CHECKPOINT;
+                            if (checkpoint != null) {
+                                $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                                FieldRecord.pushState($RECORDS);
+                            }
+                            $CHECKPOINT = checkpoint;
+                            oldCheckpoint.setCheckpoint(checkpoint);
+                            checkpoint.addObject(new _PROXY_());
+                        }
                         return this;
                     }
-                }
 
-                public void $COMMIT_ANONYMOUS(long timestamp) {
-                    FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
-                    super.$COMMIT(timestamp);
-                }
-
-                public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
-                    super.$RESTORE(timestamp, trim);
-                }
-
-                public final Checkpoint $GET$CHECKPOINT_ANONYMOUS() {
-                    return $CHECKPOINT;
-                }
-
-                public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
-                    if ($CHECKPOINT != checkpoint) {
-                        Checkpoint oldCheckpoint = $CHECKPOINT;
-                        if (checkpoint != null) {
-                            $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
-                            FieldRecord.pushState($RECORDS);
-                        }
-                        $CHECKPOINT = checkpoint;
-                        oldCheckpoint.setCheckpoint(checkpoint);
-                        checkpoint.addObject(new _PROXY_());
-                    }
-                    return this;
-                }
-
-                private FieldRecord[] $RECORDS = new FieldRecord[] {
+                    private FieldRecord[] $RECORDS = new FieldRecord[] {
                     };
 
-                {
-                    $CHECKPOINT.addObject(new _PROXY_());
-                }
-            });
+                    {
+                        $CHECKPOINT.addObject(new _PROXY_());
+                    }
+                });
         return getKeys();
     }
 
@@ -602,72 +602,72 @@ public class HashMap extends AbstractMap implements Map, Cloneable, Serializable
         if (getValues() == null)
             setValues(new AbstractCollection() {
 
-                public int size() {
-                    return size;
-                }
-
-                public Iterator iterator() {
-                    return HashMap.this.iterator(VALUES);
-                }
-
-                public void clear() {
-                    HashMap.this.clear();
-                }
-
-                final class _PROXY_ implements Rollbackable {
-
-                    public final void $COMMIT(long timestamp) {
-                        $COMMIT_ANONYMOUS(timestamp);
+                    public int size() {
+                        return size;
                     }
 
-                    public final void $RESTORE(long timestamp, boolean trim) {
-                        $RESTORE_ANONYMOUS(timestamp, trim);
+                    public Iterator iterator() {
+                        return HashMap.this.iterator(VALUES);
                     }
 
-                    public final Checkpoint $GET$CHECKPOINT() {
-                        return $GET$CHECKPOINT_ANONYMOUS();
+                    public void clear() {
+                        HashMap.this.clear();
                     }
 
-                    public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
-                        $SET$CHECKPOINT_ANONYMOUS(checkpoint);
+                    final class _PROXY_ implements Rollbackable {
+
+                        public final void $COMMIT(long timestamp) {
+                            $COMMIT_ANONYMOUS(timestamp);
+                        }
+
+                        public final void $RESTORE(long timestamp, boolean trim) {
+                            $RESTORE_ANONYMOUS(timestamp, trim);
+                        }
+
+                        public final Checkpoint $GET$CHECKPOINT() {
+                            return $GET$CHECKPOINT_ANONYMOUS();
+                        }
+
+                        public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
+                            $SET$CHECKPOINT_ANONYMOUS(checkpoint);
+                            return this;
+                        }
+                    }
+
+                    public void $COMMIT_ANONYMOUS(long timestamp) {
+                        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                        super.$COMMIT(timestamp);
+                    }
+
+                    public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
+                        super.$RESTORE(timestamp, trim);
+                    }
+
+                    public final Checkpoint $GET$CHECKPOINT_ANONYMOUS() {
+                        return $CHECKPOINT;
+                    }
+
+                    public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
+                        if ($CHECKPOINT != checkpoint) {
+                            Checkpoint oldCheckpoint = $CHECKPOINT;
+                            if (checkpoint != null) {
+                                $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                                FieldRecord.pushState($RECORDS);
+                            }
+                            $CHECKPOINT = checkpoint;
+                            oldCheckpoint.setCheckpoint(checkpoint);
+                            checkpoint.addObject(new _PROXY_());
+                        }
                         return this;
                     }
-                }
 
-                public void $COMMIT_ANONYMOUS(long timestamp) {
-                    FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
-                    super.$COMMIT(timestamp);
-                }
-
-                public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
-                    super.$RESTORE(timestamp, trim);
-                }
-
-                public final Checkpoint $GET$CHECKPOINT_ANONYMOUS() {
-                    return $CHECKPOINT;
-                }
-
-                public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
-                    if ($CHECKPOINT != checkpoint) {
-                        Checkpoint oldCheckpoint = $CHECKPOINT;
-                        if (checkpoint != null) {
-                            $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
-                            FieldRecord.pushState($RECORDS);
-                        }
-                        $CHECKPOINT = checkpoint;
-                        oldCheckpoint.setCheckpoint(checkpoint);
-                        checkpoint.addObject(new _PROXY_());
-                    }
-                    return this;
-                }
-
-                private FieldRecord[] $RECORDS = new FieldRecord[] {
+                    private FieldRecord[] $RECORDS = new FieldRecord[] {
                     };
 
-                {
-                    $CHECKPOINT.addObject(new _PROXY_());
-                }
-            });
+                    {
+                        $CHECKPOINT.addObject(new _PROXY_());
+                    }
+                });
         return getValues();
     }
 
@@ -675,85 +675,85 @@ public class HashMap extends AbstractMap implements Map, Cloneable, Serializable
         if (entries == null)
             $ASSIGN$entries(new AbstractSet() {
 
-                public int size() {
-                    return size;
-                }
-
-                public Iterator iterator() {
-                    return HashMap.this.iterator(ENTRIES);
-                }
-
-                public void clear() {
-                    HashMap.this.clear();
-                }
-
-                public boolean contains(Object o) {
-                    return getEntry(o) != null;
-                }
-
-                public boolean remove(Object o) {
-                    HashEntry e = getEntry(o);
-                    if (e != null) {
-                        HashMap.this.remove(e.getKey());
-                        return true;
-                    }
-                    return false;
-                }
-
-                final class _PROXY_ implements Rollbackable {
-
-                    public final void $COMMIT(long timestamp) {
-                        $COMMIT_ANONYMOUS(timestamp);
+                    public int size() {
+                        return size;
                     }
 
-                    public final void $RESTORE(long timestamp, boolean trim) {
-                        $RESTORE_ANONYMOUS(timestamp, trim);
+                    public Iterator iterator() {
+                        return HashMap.this.iterator(ENTRIES);
                     }
 
-                    public final Checkpoint $GET$CHECKPOINT() {
-                        return $GET$CHECKPOINT_ANONYMOUS();
+                    public void clear() {
+                        HashMap.this.clear();
                     }
 
-                    public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
-                        $SET$CHECKPOINT_ANONYMOUS(checkpoint);
+                    public boolean contains(Object o) {
+                        return getEntry(o) != null;
+                    }
+
+                    public boolean remove(Object o) {
+                        HashEntry e = getEntry(o);
+                        if (e != null) {
+                            HashMap.this.remove(e.getKey());
+                            return true;
+                        }
+                        return false;
+                    }
+
+                    final class _PROXY_ implements Rollbackable {
+
+                        public final void $COMMIT(long timestamp) {
+                            $COMMIT_ANONYMOUS(timestamp);
+                        }
+
+                        public final void $RESTORE(long timestamp, boolean trim) {
+                            $RESTORE_ANONYMOUS(timestamp, trim);
+                        }
+
+                        public final Checkpoint $GET$CHECKPOINT() {
+                            return $GET$CHECKPOINT_ANONYMOUS();
+                        }
+
+                        public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
+                            $SET$CHECKPOINT_ANONYMOUS(checkpoint);
+                            return this;
+                        }
+                    }
+
+                    public void $COMMIT_ANONYMOUS(long timestamp) {
+                        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                        super.$COMMIT(timestamp);
+                    }
+
+                    public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
+                        super.$RESTORE(timestamp, trim);
+                    }
+
+                    public final Checkpoint $GET$CHECKPOINT_ANONYMOUS() {
+                        return $CHECKPOINT;
+                    }
+
+                    public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
+                        if ($CHECKPOINT != checkpoint) {
+                            Checkpoint oldCheckpoint = $CHECKPOINT;
+                            if (checkpoint != null) {
+                                $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                                FieldRecord.pushState($RECORDS);
+                            }
+                            $CHECKPOINT = checkpoint;
+                            oldCheckpoint.setCheckpoint(checkpoint);
+                            checkpoint.addObject(new _PROXY_());
+                        }
                         return this;
                     }
-                }
 
-                public void $COMMIT_ANONYMOUS(long timestamp) {
-                    FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
-                    super.$COMMIT(timestamp);
-                }
-
-                public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
-                    super.$RESTORE(timestamp, trim);
-                }
-
-                public final Checkpoint $GET$CHECKPOINT_ANONYMOUS() {
-                    return $CHECKPOINT;
-                }
-
-                public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
-                    if ($CHECKPOINT != checkpoint) {
-                        Checkpoint oldCheckpoint = $CHECKPOINT;
-                        if (checkpoint != null) {
-                            $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
-                            FieldRecord.pushState($RECORDS);
-                        }
-                        $CHECKPOINT = checkpoint;
-                        oldCheckpoint.setCheckpoint(checkpoint);
-                        checkpoint.addObject(new _PROXY_());
-                    }
-                    return this;
-                }
-
-                private FieldRecord[] $RECORDS = new FieldRecord[] {
+                    private FieldRecord[] $RECORDS = new FieldRecord[] {
                     };
 
-                {
-                    $CHECKPOINT.addObject(new _PROXY_());
-                }
-            });
+                    {
+                        $CHECKPOINT.addObject(new _PROXY_());
+                    }
+                });
         return entries;
     }
 
@@ -854,8 +854,8 @@ public class HashMap extends AbstractMap implements Map, Cloneable, Serializable
     private final HashEntry $ASSIGN$buckets(int index0, HashEntry newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
             $RECORD$buckets.add(new int[] {
-                    index0
-                }, buckets[index0], $CHECKPOINT.getTimestamp());
+                index0
+            }, buckets[index0], $CHECKPOINT.getTimestamp());
         }
         if (newValue != null && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
             newValue.$SET$CHECKPOINT($CHECKPOINT);
@@ -887,38 +887,38 @@ public class HashMap extends AbstractMap implements Map, Cloneable, Serializable
             $RECORD$modCount.add(null, modCount, $CHECKPOINT.getTimestamp());
         }
         switch (operator) {
-            case 0:
-                return modCount += newValue;
-            case 1:
-                return modCount -= newValue;
-            case 2:
-                return modCount *= newValue;
-            case 3:
-                return modCount /= newValue;
-            case 4:
-                return modCount &= newValue;
-            case 5:
-                return modCount |= newValue;
-            case 6:
-                return modCount ^= newValue;
-            case 7:
-                return modCount %= newValue;
-            case 8:
-                return modCount <<= newValue;
-            case 9:
-                return modCount >>= newValue;
-            case 10:
-                return modCount >>>= newValue;
-            case 11:
-                return modCount++;
-            case 12:
-                return modCount--;
-            case 13:
-                return ++modCount;
-            case 14:
-                return --modCount;
-            default:
-                return modCount;
+        case 0:
+            return modCount += newValue;
+        case 1:
+            return modCount -= newValue;
+        case 2:
+            return modCount *= newValue;
+        case 3:
+            return modCount /= newValue;
+        case 4:
+            return modCount &= newValue;
+        case 5:
+            return modCount |= newValue;
+        case 6:
+            return modCount ^= newValue;
+        case 7:
+            return modCount %= newValue;
+        case 8:
+            return modCount <<= newValue;
+        case 9:
+            return modCount >>= newValue;
+        case 10:
+            return modCount >>>= newValue;
+        case 11:
+            return modCount++;
+        case 12:
+            return modCount--;
+        case 13:
+            return ++modCount;
+        case 14:
+            return --modCount;
+        default:
+            return modCount;
         }
     }
 
@@ -934,38 +934,38 @@ public class HashMap extends AbstractMap implements Map, Cloneable, Serializable
             $RECORD$size.add(null, size, $CHECKPOINT.getTimestamp());
         }
         switch (operator) {
-            case 0:
-                return size += newValue;
-            case 1:
-                return size -= newValue;
-            case 2:
-                return size *= newValue;
-            case 3:
-                return size /= newValue;
-            case 4:
-                return size &= newValue;
-            case 5:
-                return size |= newValue;
-            case 6:
-                return size ^= newValue;
-            case 7:
-                return size %= newValue;
-            case 8:
-                return size <<= newValue;
-            case 9:
-                return size >>= newValue;
-            case 10:
-                return size >>>= newValue;
-            case 11:
-                return size++;
-            case 12:
-                return size--;
-            case 13:
-                return ++size;
-            case 14:
-                return --size;
-            default:
-                return size;
+        case 0:
+            return size += newValue;
+        case 1:
+            return size -= newValue;
+        case 2:
+            return size *= newValue;
+        case 3:
+            return size /= newValue;
+        case 4:
+            return size &= newValue;
+        case 5:
+            return size |= newValue;
+        case 6:
+            return size ^= newValue;
+        case 7:
+            return size %= newValue;
+        case 8:
+            return size <<= newValue;
+        case 9:
+            return size >>= newValue;
+        case 10:
+            return size >>>= newValue;
+        case 11:
+            return size++;
+        case 12:
+            return size--;
+        case 13:
+            return ++size;
+        case 14:
+            return --size;
+        default:
+            return size;
         }
     }
 
@@ -1004,10 +1004,10 @@ public class HashMap extends AbstractMap implements Map, Cloneable, Serializable
     private FieldRecord $RECORD$entries = new FieldRecord(0);
 
     private FieldRecord[] $RECORDS = new FieldRecord[] {
-            $RECORD$threshold,
-            $RECORD$buckets,
-            $RECORD$modCount,
-            $RECORD$size,
-            $RECORD$entries
-        };
+        $RECORD$threshold,
+        $RECORD$buckets,
+        $RECORD$modCount,
+        $RECORD$size,
+        $RECORD$entries
+    };
 }

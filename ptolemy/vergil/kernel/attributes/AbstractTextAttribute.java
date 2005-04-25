@@ -74,7 +74,7 @@ public class AbstractTextAttribute extends Attribute {
      *   an attribute already in the container.
      */
     public AbstractTextAttribute(NamedObj container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // Hide the name.
@@ -107,7 +107,7 @@ public class AbstractTextAttribute extends Attribute {
         fontFamily.setExpression("SansSerif");
 
         String[] families = GraphicsEnvironment.getLocalGraphicsEnvironment()
-                                                           .getAvailableFontFamilyNames();
+            .getAvailableFontFamilyNames();
 
         for (int i = 0; i < families.length; i++) {
             fontFamily.addChoice(families[i]);
@@ -159,10 +159,10 @@ public class AbstractTextAttribute extends Attribute {
      *   to this container (should not be thrown).
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (((attribute == fontFamily) || (attribute == textSize)
-                        || (attribute == bold) || (attribute == italic))
-                        && !_inAttributeChanged) {
+                    || (attribute == bold) || (attribute == italic))
+                && !_inAttributeChanged) {
             try {
                 // Prevent redundant actions here... When we evaluate the
                 // _other_ atribute here (whichever one did _not_ trigger

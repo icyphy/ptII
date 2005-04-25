@@ -162,7 +162,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
      *   an actor already in the container.
      */
     public CompositeActor(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -212,7 +212,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
             // NOTE: deepInsidePortList() is not the right thing here
             // since it will return the same port if it is opaque.
             Iterator insidePorts = ((ComponentPort) port).insidePortList()
-                                                .iterator();
+                .iterator();
 
             try {
                 _inConnectionsChanged = true;
@@ -223,7 +223,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
 
                     // Avoid an infinite loop where notifications are traded.
                     if (!(portContainer instanceof CompositeActor)
-                                    || !((CompositeActor) portContainer)._inConnectionsChanged) {
+                            || !((CompositeActor) portContainer)._inConnectionsChanged) {
                         portContainer.connectionsChanged(insidePort);
                     }
                 }
@@ -244,7 +244,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
                     } catch (IllegalActionException ex) {
                         // Should never happen.
                         throw new InternalErrorException(this, ex,
-                            "Cannot create receivers");
+                                "Cannot create receivers");
                     }
                 }
 
@@ -254,7 +254,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
                     } catch (IllegalActionException ex) {
                         // Should never happen.
                         throw new InternalErrorException(this, ex,
-                            "Cannot create receivers");
+                                "Cannot create receivers");
                     }
                 }
 
@@ -293,7 +293,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
 
             if (!isOpaque()) {
                 throw new IllegalActionException(this,
-                    "Cannot fire a non-opaque actor.");
+                        "Cannot fire a non-opaque actor.");
             }
 
             // Need to read from port parameters
@@ -301,7 +301,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
             // the behavior of the schedule might depend on rate variables
             // set from ParameterPorts.
             for (Iterator inputPorts = inputPortList().iterator();
-                            inputPorts.hasNext() && !_stopRequested;) {
+                 inputPorts.hasNext() && !_stopRequested;) {
                 IOPort p = (IOPort) inputPorts.next();
 
                 if (p instanceof ParameterPort) {
@@ -314,7 +314,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
             // The director will also update the schedule in
             // the process, if necessary.
             for (Iterator inputPorts = inputPortList().iterator();
-                            inputPorts.hasNext() && !_stopRequested;) {
+                 inputPorts.hasNext() && !_stopRequested;) {
                 IOPort p = (IOPort) inputPorts.next();
 
                 if (!(p instanceof ParameterPort)) {
@@ -409,11 +409,11 @@ public class CompositeActor extends CompositeEntity implements Actor {
             } catch (NameDuplicationException e) {
                 // This should not happen.
                 throw new InternalErrorException("Failed to construct a"
-                    + "function dependency object for " + getName());
+                        + "function dependency object for " + getName());
             } catch (IllegalActionException e) {
                 // This should not happen.
                 throw new InternalErrorException("Failed to construct a"
-                    + "function dependency object for " + getName());
+                        + "function dependency object for " + getName());
             }
         }
 
@@ -470,12 +470,12 @@ public class CompositeActor extends CompositeEntity implements Actor {
 
             if (!isOpaque()) {
                 throw new IllegalActionException(this,
-                    "Cannot initialize a non-opaque actor.");
+                        "Cannot initialize a non-opaque actor.");
             }
 
             // Clear all of the contained actor's input ports.
             for (Iterator actors = entityList(Actor.class).iterator();
-                            actors.hasNext();) {
+                 actors.hasNext();) {
                 Entity actor = (Entity) actors.next();
                 Iterator ports = actor.portList().iterator();
 
@@ -488,9 +488,9 @@ public class CompositeActor extends CompositeEntity implements Actor {
 
                         if (receivers == null) {
                             throw new InternalErrorException(this, null,
-                                "port.getReceivers() returned null! "
-                                + "This should never happen. " + "port was '"
-                                + port + "'");
+                                    "port.getReceivers() returned null! "
+                                    + "This should never happen. " + "port was '"
+                                    + port + "'");
                         }
 
                         for (int i = 0; i < receivers.length; i++) {
@@ -630,7 +630,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
     public Receiver newInsideReceiver() throws IllegalActionException {
         if (_director == null) {
             throw new IllegalActionException(this,
-                "Cannot create a receiver without a director.");
+                    "Cannot create a receiver without a director.");
         }
 
         return _director.newReceiver();
@@ -673,7 +673,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
 
         if (director == null) {
             throw new IllegalActionException(this,
-                "Cannot create a receiver without an executive director.");
+                    "Cannot create a receiver without an executive director.");
         }
 
         return director.newReceiver();
@@ -689,7 +689,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
      *   already on the container's contents list.
      */
     public ComponentRelation newRelation(String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         try {
             _workspace.getWriteAccess();
 
@@ -755,7 +755,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
 
             if (!isOpaque()) {
                 throw new IllegalActionException(this,
-                    "Cannot postfire a non-opaque actor.");
+                        "Cannot postfire a non-opaque actor.");
             }
 
             // Note that this is assured of firing the local director,
@@ -795,7 +795,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
 
             if (!isOpaque()) {
                 throw new IllegalActionException(this,
-                    "Cannot invoke prefire on a non-opaque actor.");
+                        "Cannot invoke prefire on a non-opaque actor.");
             }
 
             boolean result = getDirector().prefire();
@@ -841,13 +841,13 @@ public class CompositeActor extends CompositeEntity implements Actor {
 
             if (!isOpaque()) {
                 throw new IllegalActionException(this,
-                    "Cannot preinitialize a non-opaque actor.");
+                        "Cannot preinitialize a non-opaque actor.");
             }
 
             if (_director == null) {
                 throw new InternalErrorException(
-                    "Actor says it is opaque, but it has no director: "
-                    + getFullName());
+                        "Actor says it is opaque, but it has no director: "
+                        + getFullName());
             }
 
             // Note that this is assured of firing the local director,
@@ -882,7 +882,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
      *   an entity with the name of this entity.
      */
     public void setContainer(CompositeEntity container)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         // Invalidate the schedule and type resolution of the old director.
         Director oldDirector = getDirector();
 
@@ -922,7 +922,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
      *  in this container with the same name as the given director.
      */
     public void setDirector(Director director)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         if (director != null) {
             director.setContainer(this);
         } else {
@@ -944,7 +944,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
     public void setManager(Manager manager) throws IllegalActionException {
         if ((manager != null) && (_workspace != manager.workspace())) {
             throw new IllegalActionException(this, manager,
-                "Cannot set manager because workspaces are different.");
+                    "Cannot set manager because workspaces are different.");
         }
 
         try {
@@ -952,7 +952,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
 
             if ((getContainer() != null) && (manager != null)) {
                 throw new IllegalActionException(this, manager,
-                    "Cannot set the Manager of an actor " + "with a container.");
+                        "Cannot set the Manager of an actor " + "with a container.");
             }
 
             // If there was a previous manager, we need to reset it.
@@ -1105,11 +1105,11 @@ public class CompositeActor extends CompositeEntity implements Actor {
      *   already on the actor contents list.
      */
     protected void _addEntity(ComponentEntity entity)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         if (!(entity instanceof Actor)) {
             throw new IllegalActionException(this, entity,
-                "CompositeActor can only contain entities that "
-                + " implement the Actor interface.");
+                    "CompositeActor can only contain entities that "
+                    + " implement the Actor interface.");
         }
 
         super._addEntity(entity);
@@ -1132,10 +1132,10 @@ public class CompositeActor extends CompositeEntity implements Actor {
      *   name already in the actor.
      */
     protected void _addPort(Port port)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         if (!(port instanceof IOPort)) {
             throw new IllegalActionException(this, port,
-                "CompositeActor can only contain instances of IOPort.");
+                    "CompositeActor can only contain instances of IOPort.");
         }
 
         super._addPort(port);
@@ -1154,10 +1154,10 @@ public class CompositeActor extends CompositeEntity implements Actor {
      *   already on the contained relations list.
      */
     protected void _addRelation(ComponentRelation relation)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         if (!(relation instanceof IORelation)) {
             throw new IllegalActionException(this, relation,
-                "CompositeActor can only contain instances of IORelation.");
+                    "CompositeActor can only contain instances of IORelation.");
         }
 
         super._addRelation(relation);
@@ -1200,7 +1200,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
      *   causes this to be thrown. Should not be thrown.
      */
     protected void _setDirector(Director director)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         Director oldDirector = getDirector();
 
         if (oldDirector != null) {

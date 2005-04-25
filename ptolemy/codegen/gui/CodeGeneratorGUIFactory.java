@@ -70,7 +70,7 @@ public class CodeGeneratorGUIFactory extends EditorFactory {
      *   an attribute already in the container.
      */
     public CodeGeneratorGUIFactory(NamedObj container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -89,7 +89,7 @@ public class CodeGeneratorGUIFactory extends EditorFactory {
 
         if (!(parent instanceof TableauFrame)) {
             throw new InternalErrorException(
-                "Can't create a CodeGeneratorGUI without a tableau!");
+                    "Can't create a CodeGeneratorGUI without a tableau!");
         }
 
         Effigy effigy = ((TableauFrame) parent).getEffigy();

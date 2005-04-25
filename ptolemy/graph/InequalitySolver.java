@@ -123,7 +123,7 @@ public class InequalitySolver {
 
         if (bottom == null) {
             throw new InvalidStateException(
-                "The underlying CPO does not have a bottom element.");
+                    "The underlying CPO does not have a bottom element.");
         }
 
         return _filterVariables(bottom);
@@ -137,7 +137,7 @@ public class InequalitySolver {
         for (int i = 0; i < _Ilist.size(); i++) {
             Info info = (Info) _Ilist.get(i);
             results.append("{_ineq: " + info._ineq + " _inCvar: "
-                + info._inCvar + " _inserted: " + info._inserted + "}\n  ");
+                    + info._inCvar + " _inserted: " + info._inserted + "}\n  ");
         }
 
         results.append("}\n{Clist:\n ");
@@ -145,8 +145,8 @@ public class InequalitySolver {
         for (Enumeration e = _Clist.keys(); e.hasMoreElements();) {
             InequalityTerm variable = (InequalityTerm) e.nextElement();
             results.append("{"
-                + ((variable == null) ? "variable == null" : variable.toString())
-                + "}\n ");
+                    + ((variable == null) ? "variable == null" : variable.toString())
+                    + "}\n ");
         }
 
         results.append("}\n");
@@ -230,7 +230,7 @@ public class InequalitySolver {
 
         if (top == null) {
             throw new InvalidStateException(
-                "The underlying CPO does not have a top element.");
+                    "The underlying CPO does not have a top element.");
         }
 
         return _filterVariables(top);
@@ -305,7 +305,7 @@ public class InequalitySolver {
         for (int i = 0; i < variables.length; i++) {
             if (!variables[i].isSettable()) {
                 throw new InvalidStateException(
-                    "Variable in an InequalityTerm is not settable.");
+                        "Variable in an InequalityTerm is not settable.");
             }
 
             ArrayList entry = (ArrayList) (_Clist.get(variables[i]));
@@ -327,7 +327,7 @@ public class InequalitySolver {
     // This is necessary for interface consistency since other methods
     // in this package return Iterators.
     private Iterator _filterVariables(Object value)
-        throws IllegalActionException {
+            throws IllegalActionException {
         LinkedList result = new LinkedList();
 
         for (Enumeration e = _Clist.keys(); e.hasMoreElements();) {
@@ -350,7 +350,7 @@ public class InequalitySolver {
 
         if (init == null) {
             throw new InvalidStateException(
-                "The underlying CPO is not a lattice.");
+                    "The underlying CPO is not a lattice.");
         }
 
         for (Enumeration e = _Clist.keys(); e.hasMoreElements();) {
@@ -360,7 +360,7 @@ public class InequalitySolver {
                 variable.initialize(init);
             } catch (IllegalActionException ex) {
                 throw new InvalidStateException(null, null, ex,
-                    "Cannot initialize variable.");
+                        "Cannot initialize variable.");
             }
         }
 
@@ -376,7 +376,7 @@ public class InequalitySolver {
         for (int i = 0; i < _Ilist.size(); i++) {
             Info info = (Info) _Ilist.get(i);
             info._inCvar = least ? info._ineq.getGreaterTerm().isSettable()
-                                 : info._ineq.getLesserTerm().isSettable();
+                : info._ineq.getLesserTerm().isSettable();
 
             if (info._inCvar) {
                 if (info._ineq.isSatisfied(_cpo)) {
@@ -410,7 +410,7 @@ public class InequalitySolver {
                 if (least) {
                     updateTerm = info._ineq.getGreaterTerm();
                     value = _cpo.leastUpperBound(info._ineq.getLesserTerm()
-                                                                       .getValue(),
+                            .getValue(),
                             updateTerm.getValue());
                 } else {
                     updateTerm = info._ineq.getLesserTerm();
@@ -420,14 +420,14 @@ public class InequalitySolver {
 
                 if (value == null) {
                     throw new InvalidStateException("The CPO over which "
-                        + "the inequalities are defined is not a lattice.");
+                            + "the inequalities are defined is not a lattice.");
                 }
 
                 try {
                     updateTerm.setValue(value);
                 } catch (IllegalActionException ex) {
                     throw new InvalidStateException(null, null, ex,
-                        "Can't update variable.\n");
+                            "Can't update variable.\n");
                 }
 
                 // insert or drop the inequalities affected

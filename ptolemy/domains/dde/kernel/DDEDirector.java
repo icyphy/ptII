@@ -125,7 +125,7 @@ public class DDEDirector extends CompositeProcessDirector
      *  version number of the workspace.
      */
     public DDEDirector()
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super();
 
         double value = PrioritizedTimedQueue.ETERNITY;
@@ -140,7 +140,7 @@ public class DDEDirector extends CompositeProcessDirector
      * @param workspace The workspace of this object.
      */
     public DDEDirector(Workspace workspace)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
 
         double value = PrioritizedTimedQueue.ETERNITY;
@@ -162,7 +162,7 @@ public class DDEDirector extends CompositeProcessDirector
      *   CompositeActor and the name collides with an entity in the container.
      */
     public DDEDirector(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         double value = PrioritizedTimedQueue.ETERNITY;
@@ -247,7 +247,7 @@ public class DDEDirector extends CompositeProcessDirector
         }
 
         if ((_completionTime.getDoubleValue() != ETERNITY)
-                        && (time.compareTo(_completionTime) > 0)) {
+                && (time.compareTo(_completionTime) > 0)) {
             return;
         }
 
@@ -255,8 +255,8 @@ public class DDEDirector extends CompositeProcessDirector
 
         if (threadActor != actor) {
             throw new IllegalActionException("Actor argument of "
-                + "DDEDirector.fireAt() must be contained "
-                + "by the DDEThread that calls fireAt()");
+                    + "DDEDirector.fireAt() must be contained "
+                    + "by the DDEThread that calls fireAt()");
         }
 
         TimeKeeper timeKeeper = ddeThread.getTimeKeeper();
@@ -270,7 +270,7 @@ public class DDEDirector extends CompositeProcessDirector
             timeKeeper.setCurrentTime(time);
         } catch (IllegalArgumentException e) {
             throw new IllegalActionException(((NamedObj) actor).getName()
-                + " - Attempt to " + "set current time in the past.");
+                    + " - Attempt to " + "set current time in the past.");
         }
     }
 
@@ -429,7 +429,7 @@ public class DDEDirector extends CompositeProcessDirector
      *   instantiating the new ProcessThread.
      */
     protected ProcessThread _getProcessThread(Actor actor,
-        ProcessDirector director) throws IllegalActionException {
+            ProcessDirector director) throws IllegalActionException {
         return new DDEThread(actor, director);
     }
 
@@ -473,9 +473,9 @@ public class DDEDirector extends CompositeProcessDirector
      *   otherwise return false.
      */
     protected synchronized boolean _resolveInternalDeadlock()
-        throws IllegalActionException {
+            throws IllegalActionException {
         System.out.println("_writeBlockedQueues.size() = "
-            + _writeBlockedQueues.size());
+                + _writeBlockedQueues.size());
 
         if (_writeBlockedQueues.size() > 0) {
             _incrementLowestCapacityPort();
@@ -529,14 +529,14 @@ public class DDEDirector extends CompositeProcessDirector
                 first = (DDEReceiver) object1;
             } else {
                 throw new ClassCastException("object1 must be an "
-                    + "instance of DDEReceiver");
+                        + "instance of DDEReceiver");
             }
 
             if (object2 instanceof DDEReceiver) {
                 second = (DDEReceiver) object2;
             } else {
                 throw new ClassCastException("object2 must be an "
-                    + "instance of DDEReceiver");
+                        + "instance of DDEReceiver");
             }
 
             if (first.getCapacity() < second.getCapacity()) {

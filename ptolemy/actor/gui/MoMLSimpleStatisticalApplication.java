@@ -75,7 +75,7 @@ public class MoMLSimpleStatisticalApplication extends MoMLSimpleApplication {
     /** Parse the xml file and run it.
      */
     public MoMLSimpleStatisticalApplication(String[] args)
-        throws Exception {
+            throws Exception {
         _parser = new MoMLParser();
 
         MoMLParser.setErrorHandler(new StreamErrorHandler());
@@ -112,7 +112,7 @@ public class MoMLSimpleStatisticalApplication extends MoMLSimpleApplication {
         String modelName = _toplevel.getName();
 
         System.out.println(modelName + ": Stats before execution:    "
-            + Manager.timeAndMemory(startTime, totalMemory1, freeMemory1));
+                + Manager.timeAndMemory(startTime, totalMemory1, freeMemory1));
 
         // Second, we run and print memory stats.
         manager.execute();
@@ -123,7 +123,7 @@ public class MoMLSimpleStatisticalApplication extends MoMLSimpleApplication {
                 freeMemory2);
 
         System.out.println(modelName + ": Execution stats:           "
-            + standardStats);
+                + standardStats);
 
         // Third, we gc and print memory stats.
         System.gc();
@@ -132,23 +132,23 @@ public class MoMLSimpleStatisticalApplication extends MoMLSimpleApplication {
         long totalMemory3 = runtime.totalMemory() / 1024;
         long freeMemory3 = runtime.freeMemory() / 1024;
         System.out.println(modelName + ": After Garbage Collection:  "
-            + Manager.timeAndMemory(startTime, totalMemory3, freeMemory3));
+                + Manager.timeAndMemory(startTime, totalMemory3, freeMemory3));
         System.out.println(modelName + ": construction size:         "
-            + totalMemory1 + "K - " + freeMemory1 + "K = "
-            + (totalMemory1 - freeMemory1) + "K");
+                + totalMemory1 + "K - " + freeMemory1 + "K = "
+                + (totalMemory1 - freeMemory1) + "K");
         System.out.println(modelName + ": model alloc. while exec. : "
-            + freeMemory1 + "K - " + freeMemory3 + "K = "
-            + (freeMemory1 - freeMemory3) + "K");
+                + freeMemory1 + "K - " + freeMemory3 + "K = "
+                + (freeMemory1 - freeMemory3) + "K");
         System.out.println(modelName + ": model alloc. runtime data: "
-            + freeMemory3 + "K - " + freeMemory2 + "K = "
-            + (freeMemory3 - freeMemory2) + "K");
+                + freeMemory3 + "K - " + freeMemory2 + "K = "
+                + (freeMemory3 - freeMemory2) + "K");
 
         // Print out the standard stats at the end
         // so as not to break too many scripts
         System.out.println(standardStats + " Stat: "
-            + (totalMemory1 - freeMemory1) + "K StatRT: "
-            + (freeMemory1 - freeMemory3) + "K DynRT: "
-            + (freeMemory3 - freeMemory2) + "K");
+                + (totalMemory1 - freeMemory1) + "K StatRT: "
+                + (freeMemory1 - freeMemory3) + "K DynRT: "
+                + (freeMemory3 - freeMemory2) + "K");
     }
 
     /** Parse a command-line argument.
@@ -167,7 +167,7 @@ public class MoMLSimpleStatisticalApplication extends MoMLSimpleApplication {
             _test = true;
         } else if (arg.equals("-version")) {
             System.out.println("Version " + VersionAttribute.CURRENT_VERSION
-                + ", Build $Id$");
+                    + ", Build $Id$");
 
             // NOTE: This means the test suites cannot test -version
             System.exit(0);
@@ -228,8 +228,8 @@ public class MoMLSimpleStatisticalApplication extends MoMLSimpleApplication {
                 if (arg.trim().startsWith("-")) {
                     if (i >= (args.length - 1)) {
                         throw new IllegalActionException("Cannot set "
-                            + "parameter " + arg + " when no value is "
-                            + "given.");
+                                + "parameter " + arg + " when no value is "
+                                + "given.");
                     }
 
                     // Save in case this is a parameter name and value.
@@ -239,7 +239,7 @@ public class MoMLSimpleStatisticalApplication extends MoMLSimpleApplication {
                 } else {
                     // Unrecognized option.
                     throw new IllegalActionException("Unrecognized option: "
-                        + arg);
+                            + arg);
                 }
             }
         }
@@ -295,7 +295,7 @@ public class MoMLSimpleStatisticalApplication extends MoMLSimpleApplication {
             if (!match) {
                 // Unrecognized option.
                 throw new IllegalActionException("Unrecognized option: "
-                    + "No parameter exists with name " + name);
+                        + "No parameter exists with name " + name);
             }
         }
     }
@@ -323,7 +323,7 @@ public class MoMLSimpleStatisticalApplication extends MoMLSimpleApplication {
 
         for (i = 0; i < _commandOptions.length; i++) {
             result += (" " + _commandOptions[i][0] + " "
-                        + _commandOptions[i][1] + "\n");
+                    + _commandOptions[i][1] + "\n");
         }
 
         result += "\nBoolean flags:\n";
@@ -340,22 +340,22 @@ public class MoMLSimpleStatisticalApplication extends MoMLSimpleApplication {
 
     /** The command-line options that are either present or not. */
     protected String[] _commandFlags = {
-            "-help",
-            "-test",
-            "-version",
-        };
+        "-help",
+        "-test",
+        "-version",
+    };
 
     /** The command-line options that take arguments. */
     protected String[][] _commandOptions = {
-            {
-                "-class",
-                "<classname>"
-            },
-            {
-                "-<parameter name>",
-                "<parameter value>"
-            },
-        };
+        {
+            "-class",
+            "<classname>"
+        },
+        {
+            "-<parameter name>",
+            "<parameter value>"
+        },
+    };
 
     /** The form of the command line. */
     protected String _commandTemplate = "java -classpath $PTII ptolemy.actor.gui.MoMLSimpleStatisticalApplication [ options ] [file ...]";

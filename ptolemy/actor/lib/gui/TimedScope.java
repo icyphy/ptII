@@ -73,7 +73,7 @@ public class TimedScope extends TimedPlotter {
      *   actor with this name.
      */
     public TimedScope(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // set the parameters
@@ -104,13 +104,13 @@ public class TimedScope extends TimedPlotter {
      *  attribute cannot be parsed or cannot be evaluated.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if ((attribute == width) && (plot != null)) {
             double widthValue = ((DoubleToken) width.getToken()).doubleValue();
             plot.setXRange(0.0, widthValue);
         } else if ((attribute == persistence) && (plot != null)) {
             double persValue = ((DoubleToken) persistence.getToken())
-                            .doubleValue();
+                .doubleValue();
 
             // NOTE: We assume the superclass ensures this cast is safe.
             ((Plot) plot).setXPersistence(persValue);

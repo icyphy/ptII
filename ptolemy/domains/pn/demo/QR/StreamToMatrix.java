@@ -67,7 +67,7 @@ public class StreamToMatrix extends Transformer {
      *   actor with this name.
      */
     public StreamToMatrix(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         input.setTypeEquals(BaseType.DOUBLE);
@@ -84,7 +84,7 @@ public class StreamToMatrix extends Transformer {
      *        be obtained from the dimension parameter.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == dimension) {
             _rows = ((IntToken) dimension.getToken()).intValue();
             _columns = ((IntToken) dimension.getToken()).intValue();

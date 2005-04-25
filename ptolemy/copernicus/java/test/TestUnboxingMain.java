@@ -83,7 +83,7 @@ public class TestUnboxingMain extends KernelMain {
     public static void addStandardTransforms(CompositeActor model) {
         Pack pack = PackManager.v().getPack("wjtp");
         addTransform(pack, "wjtp.watchDog", WatchDogTimer.v(),
-            "time:" + _watchDogTimeout);
+                "time:" + _watchDogTimeout);
         addTransform(pack, "wjtp.ttn", TokenToNativeTransformer.v(model)); // "debug:true level:1");
 
         addStandardOptimizations(pack, 8);
@@ -100,11 +100,11 @@ public class TestUnboxingMain extends KernelMain {
         addStandardTransforms(_toplevel);
         addTransform(pack, "wjtp.gt", GrimpTransformer.v());
         addTransform(pack, "wjtp.finalSnapshotJimple", JimpleWriter.v(),
-            "outDir:" + _outputDirectory);
+                "outDir:" + _outputDirectory);
         addTransform(pack, "wjtp.finalSnapshot", ClassWriter.v(),
-            "outDir:" + _outputDirectory);
+                "outDir:" + _outputDirectory);
         addTransform(pack, "wjtp.watchDogCancel", WatchDogTimer.v(),
-            "cancel:true");
+                "cancel:true");
     }
 
     /** Set the watchdog timeout.

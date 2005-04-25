@@ -69,7 +69,7 @@ public class LiveSines {
             LiveSound.setSampleRate(sampleRate);
             LiveSound.setChannels(channels);
             System.out.println("Attempting to set playback buffer size: "
-                + outBufferSize + " samples.");
+                    + outBufferSize + " samples.");
             LiveSound.setBufferSize(outBufferSize);
             LiveSound.setBitsPerSample(sampleSizeInBits);
             LiveSound.setTransferSize(putSamplesSize);
@@ -86,7 +86,7 @@ public class LiveSines {
         double[] samples = new double[channels];
 
         System.out.println("                           Actual size: "
-            + LiveSound.getBufferSizePlayback() + " samples.");
+                + LiveSound.getBufferSizePlayback() + " samples.");
 
         try {
             int channelNumber;

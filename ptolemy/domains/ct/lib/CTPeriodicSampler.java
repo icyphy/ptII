@@ -76,7 +76,7 @@ public class CTPeriodicSampler extends Transformer implements CTEventGenerator {
      *   an entity already in the container.
      */
     public CTPeriodicSampler(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input.setMultiport(true);
         new Parameter(input, "signalType", new StringToken("CONTINUOUS"));
@@ -87,10 +87,10 @@ public class CTPeriodicSampler extends Transformer implements CTEventGenerator {
                 new DoubleToken(_samplePeriod));
 
         _attachText("_iconDescription",
-            "<svg>\n" + "<rect x=\"-30\" y=\"-20\" "
-            + "width=\"60\" height=\"40\" " + "style=\"fill:white\"/>\n"
-            + "<polyline points=\"-30,0 -20,0 -10,0 10,-7\"/>\n"
-            + "<polyline points=\"10,0 30,0\"/>\n" + "</svg>\n");
+                "<svg>\n" + "<rect x=\"-30\" y=\"-20\" "
+                + "width=\"60\" height=\"40\" " + "style=\"fill:white\"/>\n"
+                + "<polyline points=\"-30,0 -20,0 -10,0 10,-7\"/>\n"
+                + "<polyline points=\"10,0 30,0\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -109,13 +109,13 @@ public class CTPeriodicSampler extends Transformer implements CTEventGenerator {
      *  less than or equal to 0.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == samplePeriod) {
             double p = ((DoubleToken) samplePeriod.getToken()).doubleValue();
 
             if (p <= 0) {
                 throw new IllegalActionException(this,
-                    " Sample period must be greater than 0.");
+                        " Sample period must be greater than 0.");
             } else {
                 _samplePeriod = p;
             }
@@ -133,17 +133,17 @@ public class CTPeriodicSampler extends Transformer implements CTEventGenerator {
         CTDirector director = (CTDirector) getDirector();
 
         if ((director.getExecutionPhase() == CTExecutionPhase.GENERATING_EVENTS_PHASE)
-                        && hasCurrentEvent()) {
+                && hasCurrentEvent()) {
             for (int i = 0; i < Math.min(input.getWidth(), output.getWidth());
-                            i++) {
+                 i++) {
                 if (input.hasToken(i)) {
                     Token token = input.get(i);
                     output.send(i, token);
 
                     if (_debugging) {
                         _debug(getFullName(),
-                            " sends event: " + token + " to channel " + i
-                            + ", at: " + getDirector().getModelTime());
+                                " sends event: " + token + " to channel " + i
+                                + ", at: " + getDirector().getModelTime());
                     }
                 }
             }
@@ -162,7 +162,7 @@ public class CTPeriodicSampler extends Transformer implements CTEventGenerator {
 
             if (_debugging && _verbose) {
                 _debug(getFullName(),
-                    " has an event at: " + director.getModelTime() + ".");
+                        " has an event at: " + director.getModelTime() + ".");
             }
         } else {
             _hasCurrentEvent = false;
@@ -197,7 +197,7 @@ public class CTPeriodicSampler extends Transformer implements CTEventGenerator {
         CTDirector director = (CTDirector) getDirector();
 
         if ((director.getExecutionPhase() == CTExecutionPhase.GENERATING_EVENTS_PHASE)
-                        && hasCurrentEvent()) {
+                && hasCurrentEvent()) {
             // register for the next event.
             _nextSamplingTime = _nextSamplingTime.add(_samplePeriod);
 

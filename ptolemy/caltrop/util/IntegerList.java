@@ -59,7 +59,7 @@ public class IntegerList extends AbstractList {
     public Object get(int n) {
         if ((_a + n) > _b) {
             throw new IndexOutOfBoundsException(_a + " + " + n
-                + " is greater than " + _b);
+                    + " is greater than " + _b);
         }
 
         return _context.createInteger(_a + n);

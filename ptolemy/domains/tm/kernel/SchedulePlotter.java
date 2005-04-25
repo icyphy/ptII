@@ -76,15 +76,15 @@ public class SchedulePlotter extends Attribute implements ScheduleListener {
      *   an attribute already in the container.
      */
     public SchedulePlotter(NamedObj container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         _attachText("_iconDescription",
-            "<svg>\n"
-            + "<rect x=\"-50\" y=\"-20\" width=\"130\" height=\"40\" "
-            + "style=\"fill:blue\"/>" + "<text x=\"-40\" y=\"-5\" "
-            + "style=\"font-size:12; font-family:SansSerif; fill:white\">"
-            + "Double click to\nplot the schedule.</text></svg>");
+                "<svg>\n"
+                + "<rect x=\"-50\" y=\"-20\" width=\"130\" height=\"40\" "
+                + "style=\"fill:blue\"/>" + "<text x=\"-40\" y=\"-5\" "
+                + "style=\"font-size:12; font-family:SansSerif; fill:white\">"
+                + "Double click to\nplot the schedule.</text></svg>");
 
         new SchedulePlotterEditorFactory(this, "_editorFactory");
 
@@ -101,8 +101,8 @@ public class SchedulePlotter extends Attribute implements ScheduleListener {
 
             if (!(director instanceof TMDirector)) {
                 throw new IllegalActionException("Director '" + director
-                    + "' is not a TMDirector, so adding a SchedulePlotter "
-                    + "makes no sense");
+                        + "' is not a TMDirector, so adding a SchedulePlotter "
+                        + "makes no sense");
             }
 
             ((TMDirector) director).addScheduleListener(this);
@@ -173,7 +173,7 @@ public class SchedulePlotter extends Attribute implements ScheduleListener {
     ////                         inner classes                     ////
     private class SchedulePlotterEditorFactory extends EditorFactory {
         public SchedulePlotterEditorFactory(NamedObj _container, String name)
-            throws IllegalActionException, NameDuplicationException {
+                throws IllegalActionException, NameDuplicationException {
             super(_container, name);
         }
 
@@ -185,7 +185,7 @@ public class SchedulePlotter extends Attribute implements ScheduleListener {
         public void createEditor(NamedObj object, Frame parent) {
             try {
                 Configuration configuration = ((TableauFrame) parent)
-                                .getConfiguration();
+                    .getConfiguration();
 
                 NamedObj container = (NamedObj) object.getContainer();
 
@@ -208,7 +208,7 @@ public class SchedulePlotter extends Attribute implements ScheduleListener {
                 plot.setVisible(true);
             } catch (Throwable throwable) {
                 throw new InternalErrorException(object, throwable,
-                    "Cannot create Schedule Plotter");
+                        "Cannot create Schedule Plotter");
             }
         }
     }

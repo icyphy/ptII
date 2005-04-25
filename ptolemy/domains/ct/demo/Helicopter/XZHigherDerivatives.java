@@ -71,7 +71,7 @@ public class XZHigherDerivatives extends TypedAtomicActor {
      * @exception IllegalActionException If there is an internal error.
      */
     public XZHigherDerivatives(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         inputTm = new TypedIOPort(this, "inputTm");
         inputTm.setInput(true);
@@ -184,8 +184,8 @@ public class XZHigherDerivatives extends TypedAtomicActor {
             + ((DTm * Math.sin(Th)) / _mass);
 
         double D4Px = (((2.0 * DTh * DTm * Math.cos(Th)) / _mass)
-            + ((Tm * Math.cos(Th) * ((A * _Mm) + (_hm * Tm * Math.sin(A)))) / (_Iy * _mass))
-            + ((DDTm * Math.sin(Th)) / _mass))
+                + ((Tm * Math.cos(Th) * ((A * _Mm) + (_hm * Tm * Math.sin(A)))) / (_Iy * _mass))
+                + ((DDTm * Math.sin(Th)) / _mass))
             - ((DTh * DTh * Tm * Math.sin(Th)) / _mass);
 
         double D3Pz = -((DTm * Math.cos(Th)) / _mass)

@@ -65,7 +65,7 @@ public class PtolemyTableauFactory extends TableauFactory {
      *   an entity already in the container.
      */
     public PtolemyTableauFactory(NamedObj container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 

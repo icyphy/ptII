@@ -87,13 +87,13 @@ public class CodeGeneratorGUI extends PtolemyFrame {
      *  @exception NameDuplicationException If a name collision occurs.
      */
     public CodeGeneratorGUI(final CodeGenerator codeGenerator, Tableau tableau)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(codeGenerator, tableau);
 
         setTitle(codeGenerator.getName());
 
         if ((getEffigy() == null) || (getEffigy().uri == null)
-                        || (getEffigy().uri.getURI() == null)) {
+                || (getEffigy().uri.getURI() == null)) {
             throw new InternalErrorException("Cannot get an effigy!");
         }
 
@@ -123,14 +123,14 @@ public class CodeGeneratorGUI extends PtolemyFrame {
                         // Use Thread.currentThread() so that this code will
                         // work under WebStart.
                         URL infoURL = Thread.currentThread()
-                                                        .getContextClassLoader()
-                                                        .getResource("ptolemy/codegen/README.html");
+                            .getContextClassLoader()
+                            .getResource("ptolemy/codegen/README.html");
 
                         configuration.openModel(null, infoURL,
-                            infoURL.toExternalForm());
+                                infoURL.toExternalForm());
                     } catch (Exception ex) {
                         throw new InternalErrorException(codeGenerator, ex,
-                            "Failed to open doc/codegen.htm: ");
+                                "Failed to open doc/codegen.htm: ");
                     }
                 }
             });
@@ -148,7 +148,7 @@ public class CodeGeneratorGUI extends PtolemyFrame {
         // Button panel first.
         JButton parametersButton = new JButton("Parameters");
         parametersButton.setToolTipText("Sanity check the Parameters and then "
-            + "display a summary.");
+                + "display a summary.");
         buttonPanel.add(parametersButton);
 
         JButton goButton = new JButton("Generate");
@@ -220,7 +220,7 @@ public class CodeGeneratorGUI extends PtolemyFrame {
                 public void actionPerformed(ActionEvent evt) {
                     try {
                         exec.updateStatusBar("Starting " + codeGenerator
-                            + " code generation.");
+                                + " code generation.");
 
                         StringBuffer code = new StringBuffer();
                         codeGenerator.generateCode(code);

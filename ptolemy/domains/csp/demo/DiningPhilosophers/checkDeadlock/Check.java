@@ -71,7 +71,7 @@ public class Check {
      *  @exception Exception If the automata cannot be loaded.
      */
     public Check(int numberOfPhilosophers, boolean useSimple)
-        throws Exception {
+            throws Exception {
         _numberOfPhilosophers = numberOfPhilosophers;
         _useSimple = useSimple;
 
@@ -217,7 +217,7 @@ public class Check {
     // send, and the controller. The argument specifies the index of this
     // chopstick.
     private InterfaceAutomaton _composeChoAndReceiver(int index)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         try {
             // general a chopstick with the correct name
             InterfaceAutomaton cho = (InterfaceAutomaton) _chopstick.clone();
@@ -238,7 +238,7 @@ public class Check {
 
             // create left receiver
             InterfaceAutomaton leftReceiver = (InterfaceAutomaton) _receiver
-                            .clone();
+                .clone();
             leftReceiver.setName("c" + index + "lr");
 
             nameMap = new HashMap();
@@ -256,7 +256,7 @@ public class Check {
 
             // create right receiver
             InterfaceAutomaton rightReceiver = (InterfaceAutomaton) _receiver
-                            .clone();
+                .clone();
             rightReceiver.setName("c" + index + "rr");
 
             nameMap = new HashMap();
@@ -288,14 +288,14 @@ public class Check {
             return whole;
         } catch (CloneNotSupportedException cnse) {
             throw new InternalErrorException("Check._composeChoAndReceiver: "
-                + "clone not supported: " + cnse.getMessage());
+                    + "clone not supported: " + cnse.getMessage());
         }
     }
 
     // compose a philosopher and its left and right receivers. The
     // argument specify the index of this philosopher.
     private InterfaceAutomaton _composePhiAndReceiver(int index)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         try {
             // generate a philosopher with the correct name
             InterfaceAutomaton phi = (InterfaceAutomaton) _philosopher.clone();
@@ -324,7 +324,7 @@ public class Check {
 
             // create left receiver
             InterfaceAutomaton leftReceiver = (InterfaceAutomaton) _receiver
-                            .clone();
+                .clone();
             leftReceiver.setName("p" + index + "lr");
 
             nameMap = new HashMap();
@@ -346,7 +346,7 @@ public class Check {
 
             // create right receiver
             InterfaceAutomaton rightReceiver = (InterfaceAutomaton) _receiver
-                            .clone();
+                .clone();
             rightReceiver.setName("p" + index + "rr");
 
             nameMap = new HashMap();
@@ -369,13 +369,13 @@ public class Check {
             return phiWithReceivers;
         } catch (CloneNotSupportedException cnse) {
             throw new InternalErrorException("Check._composePhiAndReceiver: "
-                + "clone not supported: " + cnse.getMessage());
+                    + "clone not supported: " + cnse.getMessage());
         }
     }
 
     // compose the simple or the full version of conditional send.
     private InterfaceAutomaton _composeSend(int index)
-        throws CloneNotSupportedException, IllegalActionException,
+            throws CloneNotSupportedException, IllegalActionException,
             NameDuplicationException {
         InterfaceAutomaton send;
 
@@ -407,7 +407,7 @@ public class Check {
         } else {
             // create conditional branch controller
             InterfaceAutomaton controller = (InterfaceAutomaton) _controller
-                            .clone();
+                .clone();
             controller.setName("c" + index + "c");
 
             HashMap nameMap = new HashMap();
@@ -495,7 +495,7 @@ public class Check {
             send.combineInternalTransitions();
 
             System.out.println("Controller and two send, "
-                + "after combining internals:");
+                    + "after combining internals:");
             System.out.println(send.getInfo());
         }
 

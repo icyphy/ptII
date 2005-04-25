@@ -62,7 +62,7 @@ public class ListenFeedBackDelay extends FeedBackDelay {
      *  name that is an empty string.
      */
     public ListenFeedBackDelay()
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super();
     }
 
@@ -71,7 +71,7 @@ public class ListenFeedBackDelay extends FeedBackDelay {
      * @param workspace The workspace for this ListenFeedBackDelay actor.
      */
     public ListenFeedBackDelay(Workspace workspace)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
     }
 
@@ -85,7 +85,7 @@ public class ListenFeedBackDelay extends FeedBackDelay {
      *  superclass throws a NameDuplicationException .
      */
     public ListenFeedBackDelay(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 

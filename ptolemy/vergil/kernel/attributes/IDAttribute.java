@@ -80,7 +80,7 @@ public class IDAttribute extends SingletonAttribute {
      *   an attribute already in the container.
      */
     public IDAttribute(Entity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // name for the model
@@ -158,8 +158,8 @@ public class IDAttribute extends SingletonAttribute {
             userName = StringUtilities.getProperty("user.name");
         } catch (Exception ex) {
             System.out.println("Warning, in IDAttribute, failed to read "
-                + "'user.name' property (-sandbox or applets always cause "
-                + "this)");
+                    + "'user.name' property (-sandbox or applets always cause "
+                    + "this)");
         }
 
         if (userName != null) {
@@ -221,7 +221,7 @@ public class IDAttribute extends SingletonAttribute {
      *   to this container (not thrown in this base class).
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == name) {
             Nameable container = getContainer();
 
@@ -229,7 +229,7 @@ public class IDAttribute extends SingletonAttribute {
                 container.setName(name.getExpression());
             } catch (NameDuplicationException e) {
                 throw new IllegalActionException(this, e,
-                    "Cannot change the name of the container to match.");
+                        "Cannot change the name of the container to match.");
             }
         } else {
             super.attributeChanged(attribute);

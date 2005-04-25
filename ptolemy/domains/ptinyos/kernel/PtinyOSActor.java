@@ -81,7 +81,7 @@ public abstract class PtinyOSActor extends TypeOpaqueCompositeActor {
      *   an actor already in the container.
      */
     public PtinyOSActor(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         setClassName("ptolemy.domains.ptinyos.kernel.PtinyOSActor");
@@ -120,7 +120,7 @@ public abstract class PtinyOSActor extends TypeOpaqueCompositeActor {
 
                 if (director == null) {
                     throw new IllegalActionException(
-                        "Could not find a local director!");
+                            "Could not find a local director!");
                 }
 
                 director.receivePacket(token.stringValue());

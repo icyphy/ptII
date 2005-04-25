@@ -135,24 +135,24 @@ public class Unit implements UnitPresentation {
                 retv = "1";
             } else {
                 retv = ((UnitTerm) (numerator.elementAt(0))).getUnit()
-                                    .getPrimaryLabel();
+                    .getPrimaryLabel();
 
                 for (int i = 1; i < numerator.size(); i++) {
                     retv += (" "
-                                + ((UnitTerm) (numerator.elementAt(i))).getUnit()
-                                               .getPrimaryLabel());
+                            + ((UnitTerm) (numerator.elementAt(i))).getUnit()
+                            .getPrimaryLabel());
                 }
             }
 
             if (denominator.size() > 0) {
                 retv += ("/"
-                            + ((UnitTerm) (denominator.elementAt(0))).getUnit()
-                                           .getPrimaryLabel());
+                        + ((UnitTerm) (denominator.elementAt(0))).getUnit()
+                        .getPrimaryLabel());
 
                 for (int i = 1; i < denominator.size(); i++) {
                     retv += (" "
-                                + ((UnitTerm) (denominator.elementAt(i))).getUnit()
-                                               .getPrimaryLabel());
+                            + ((UnitTerm) (denominator.elementAt(i))).getUnit()
+                            .getPrimaryLabel());
                 }
             }
 
@@ -171,7 +171,7 @@ public class Unit implements UnitPresentation {
                         desc += (" " + baseUnit.getPrimaryLabel());
                     } else {
                         desc += (" " + baseUnit.getPrimaryLabel() + "^"
-                                    + _type[i]);
+                                + _type[i]);
                     }
                 }
             }

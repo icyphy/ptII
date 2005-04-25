@@ -85,7 +85,7 @@ public class MultiportToSinglePort implements MoMLFilter {
      *  @return the value of the attributeValue argument.
      */
     public String filterAttributeValue(NamedObj container, String element,
-        String attributeName, String attributeValue) {
+            String attributeName, String attributeValue) {
         //System.out.println("filterAttributeValue: " + container + "\t"
         //  +  attributeName + "\t" + attributeValue);
         // This method gets called many times by the MoMLParser,
@@ -109,8 +109,8 @@ public class MultiportToSinglePort implements MoMLFilter {
                     _foundChange = true;
                 } else {
                     if (attributeValue.equals("multiport")
-                                    && (container != null)
-                                    && container.getName().equals(_portName)) {
+                            && (container != null)
+                            && container.getName().equals(_portName)) {
                         // What if the multiport is false?
                         _foundChange = false;
                         MoMLParser.setModified(true);
@@ -132,13 +132,13 @@ public class MultiportToSinglePort implements MoMLFilter {
         // which will open up a large xml file and then close after 2 seconds.
         if (attributeName.equals("class")) {
             if (_actorsWithMultiPortToSinglePortChanges.containsKey(
-                                attributeValue)) {
+                        attributeValue)) {
                 // We found a class with a property class change.
                 _currentlyProcessingActorWithPropertyClassChanges = true;
                 _currentActorFullName = container.getFullName() + "."
                     + _lastNameSeen;
                 _portName = (String) _actorsWithMultiPortToSinglePortChanges
-                                .get(attributeValue);
+                    .get(attributeValue);
 
                 //             } else if (_currentlyProcessingActorWithPropertyClassChanges
                 //                     && _foundChange) {
@@ -153,9 +153,9 @@ public class MultiportToSinglePort implements MoMLFilter {
                 //                 _foundChange = false;
                 //                 return attributeValue;
             } else if (_currentlyProcessingActorWithPropertyClassChanges
-                            && (container != null)
-                            && !container.getFullName().equals(_currentActorFullName)
-                            && !container.getFullName().startsWith(_currentActorFullName)) {
+                    && (container != null)
+                    && !container.getFullName().equals(_currentActorFullName)
+                    && !container.getFullName().startsWith(_currentActorFullName)) {
                 // We found another class in a different container
                 // while handling a class with multiport change
                 _foundChange = false;
@@ -171,7 +171,7 @@ public class MultiportToSinglePort implements MoMLFilter {
      *  @param elementName The element name.
      */
     public void filterEndElement(NamedObj container, String elementName)
-        throws Exception {
+            throws Exception {
     }
 
     /** Return a string that describes what the filter does.
@@ -184,12 +184,12 @@ public class MultiportToSinglePort implements MoMLFilter {
                 + "Below are the actors that are affected, along "
                 + "with the port name:\n");
         Iterator actors = _actorsWithMultiPortToSinglePortChanges.keySet()
-                                                                             .iterator();
+            .iterator();
 
         while (actors.hasNext()) {
             String actor = (String) actors.next();
             results.append("\t" + actor + "\n"
-                + (String) _actorsWithMultiPortToSinglePortChanges.get(actor));
+                    + (String) _actorsWithMultiPortToSinglePortChanges.get(actor));
         }
 
         return results.toString();
@@ -224,16 +224,16 @@ public class MultiportToSinglePort implements MoMLFilter {
 
         // Autocorrelation
         _actorsWithMultiPortToSinglePortChanges.put("ptolemy.domains.sdf.lib.Autocorrelation",
-            "output");
+                "output");
 
         _actorsWithMultiPortToSinglePortChanges.put("ptolemy.actor.lib.NonStrictTest",
-            "input");
+                "input");
 
         // In Ptolemy II 3.0.2, SOC_FSM_SR_HDE.xml has a Const with multiport.
         _actorsWithMultiPortToSinglePortChanges.put("ptolemy.actor.lib.Const",
-            "output");
+                "output");
 
         _actorsWithMultiPortToSinglePortChanges.put("ptolemy.actor.lib.gui.MatrixViewer",
-            "input");
+                "input");
     }
 }

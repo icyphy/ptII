@@ -78,8 +78,8 @@ public class RandomIncrLayout implements IncrementalLayout {
     public void nodeDrawn(Object node) {
         if (getLayoutTarget().isNodeVisible(node)) {
             Rectangle2D vp = getLayoutTarget().getViewport(getLayoutTarget()
-                                                                           .getGraphModel()
-                                                                           .getParent(node));
+                    .getGraphModel()
+                    .getParent(node));
             Rectangle2D bounds = getLayoutTarget().getBounds(node);
 
             for (int i = 0; i < NUM_ITER; i++) {

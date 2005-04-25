@@ -61,13 +61,13 @@ public interface PtinyOSLoader {
     public void tosdbg(String dbgmode, String msg, String nodenum);
 
     public char getCharParameterValue(String param)
-        throws IllegalActionException;
+            throws IllegalActionException;
 
     public boolean getBooleanParameterValue(String param)
-        throws IllegalActionException;
+            throws IllegalActionException;
 
     public int sendToPort(String portname, String expression)
-        throws IllegalActionException;
+            throws IllegalActionException;
 
     // Called from Java.
     public void processEvent(long currentTime);

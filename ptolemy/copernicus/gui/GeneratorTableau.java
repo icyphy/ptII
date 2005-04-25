@@ -90,7 +90,7 @@ public class GeneratorTableau extends Tableau {
      *   an entity with the specified name.
      */
     public GeneratorTableau(PtolemyEffigy container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         NamedObj model = container.getModel();
@@ -102,7 +102,7 @@ public class GeneratorTableau extends Tableau {
             frame.setBackground(BACKGROUND_COLOR);
         } else {
             throw new IllegalActionException(model,
-                "Can only generate code for " + "instances of CompositeEntity.");
+                    "Can only generate code for " + "instances of CompositeEntity.");
         }
     }
 
@@ -130,7 +130,7 @@ public class GeneratorTableau extends Tableau {
          *  @exception NameDuplicationException If a name collision occurs.
          */
         public GeneratorFrame(final CompositeActor model, Tableau tableau)
-            throws IllegalActionException, NameDuplicationException {
+                throws IllegalActionException, NameDuplicationException {
             super(model, tableau);
 
             // If the model has been modified, then save it.  When we
@@ -141,7 +141,7 @@ public class GeneratorTableau extends Tableau {
             }
 
             if ((getEffigy() == null) || (getEffigy().uri == null)
-                            || (getEffigy().uri.getURI() == null)) {
+                    || (getEffigy().uri.getURI() == null)) {
                 // If the user does File -> New -> GraphEditor,
                 // View -> Code Generator, then we might end up
                 // dealing with an Effigy that has a null url.
@@ -149,9 +149,9 @@ public class GeneratorTableau extends Tableau {
                 // calls effigy.setContainer(null), which means
                 // that getEffigy() returns null
                 throw new IllegalActionException(model, (Throwable) null,
-                    "Could not get the Effigy or read the URL of this "
-                    + "model.  Because of a bug, you may need to try "
-                    + "invoking the code generator again.");
+                        "Could not get the Effigy or read the URL of this "
+                        + "model.  Because of a bug, you may need to try "
+                        + "invoking the code generator again.");
             }
 
             // Caveats panel.
@@ -178,10 +178,10 @@ public class GeneratorTableau extends Tableau {
 
                         try {
                             configuration.openModel(null, infoURL,
-                                infoURL.toExternalForm());
+                                    infoURL.toExternalForm());
                         } catch (Exception ex) {
                             throw new InternalErrorException(model, ex,
-                                "Failed to open doc/codegen.htm: ");
+                                    "Failed to open doc/codegen.htm: ");
                         }
                     }
                 });
@@ -199,7 +199,7 @@ public class GeneratorTableau extends Tableau {
             // Button panel first.
             JButton parametersButton = new JButton("Parameters");
             parametersButton.setToolTipText(
-                "Sanity check the Parameters and then " + "display a summary.");
+                    "Sanity check the Parameters and then " + "display a summary.");
             buttonPanel.add(parametersButton);
 
             JButton goButton = new JButton("Generate");
@@ -221,8 +221,8 @@ public class GeneratorTableau extends Tableau {
             // If the model contains an attribute with tableau
             // configuration information, use that.  Otherwise, make one.
             GeneratorAttribute attribute = (GeneratorAttribute) model
-                            .getAttribute(Copernicus.GENERATOR_NAME,
-                                GeneratorAttribute.class);
+                .getAttribute(Copernicus.GENERATOR_NAME,
+                        GeneratorAttribute.class);
 
             if (attribute == null) {
                 attribute = new GeneratorAttribute(model,
@@ -288,7 +288,7 @@ public class GeneratorTableau extends Tableau {
                             // True if we should run jode, jad or javap.
                             boolean decompile = false;
                             boolean compile = options.getParameter("compile")
-                                                                 .equals("true");
+                                .equals("true");
                             boolean show = options.getParameter("show").equals("true");
                             boolean run = options.getParameter("run").equals("true");
 
@@ -310,20 +310,20 @@ public class GeneratorTableau extends Tableau {
 
                             if (!directory.isDirectory()) {
                                 throw new IllegalActionException(model,
-                                    "Not a directory: " + ptIIUserDirectory
-                                    + "/" + targetPath + "\n.Try hitting the "
-                                    + "Parameters button to "
-                                    + "create the directory.");
+                                        "Not a directory: " + ptIIUserDirectory
+                                        + "/" + targetPath + "\n.Try hitting the "
+                                        + "Parameters button to "
+                                        + "create the directory.");
                             }
 
                             if (!directory.canWrite()) {
                                 throw new IllegalActionException(model,
-                                    "Can't write: " + ptIIUserDirectory + "/"
-                                    + targetPath);
+                                        "Can't write: " + ptIIUserDirectory + "/"
+                                        + targetPath);
                             }
 
                             exec.updateStatusBar("Starting " + codeGenerator
-                                + " code generation.");
+                                    + " code generation.");
 
                             // Run the code generator in a separate process
                             try {
@@ -337,7 +337,7 @@ public class GeneratorTableau extends Tableau {
 
                             // FIXME: Above is asynchronous: Do in listener?
                             exec.updateStatusBar("Code generation "
-                                + "complete.");
+                                    + "complete.");
                         } catch (Exception ex) {
                             MessageHandler.error("Code generation failed.", ex);
                         }
@@ -358,7 +358,7 @@ public class GeneratorTableau extends Tableau {
          *   an attribute already in the container.
          */
         public Factory(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+                throws IllegalActionException, NameDuplicationException {
             super(container, name);
         }
 
@@ -408,8 +408,8 @@ public class GeneratorTableau extends Tableau {
     // the generator we are running.  Usually, something like
     // "applet" or "java" or "shallow".
     private List _generateCodeGeneratorCommands(CompositeEntity model,
-        GeneratorAttribute generatorAttribute, String codeGenerator)
-        throws IllegalArgumentException, IllegalActionException,
+            GeneratorAttribute generatorAttribute, String codeGenerator)
+            throws IllegalArgumentException, IllegalActionException,
             InternalErrorException, NameDuplicationException {
         List results = new LinkedList();
 
@@ -424,20 +424,20 @@ public class GeneratorTableau extends Tableau {
 
             // Set the temporary modelPath.
             generatorAttribute.sanityCheckAndUpdateParameters(temporaryFile.toURI()
-                                                                                       .toString());
+                    .toString());
 
             // Generate the command to run copernicus.
             results.add(Copernicus.substitute(
-                    "ptolemy/copernicus/gui/compileCommandTemplate.txt",
-                    generatorAttribute));
+                                "ptolemy/copernicus/gui/compileCommandTemplate.txt",
+                                generatorAttribute));
 
             // Replace the original modelPath.
             generatorAttribute.sanityCheckAndUpdateParameters(((GeneratorFrame) getFrame())
-                                                                                                                       .getEffigy().uri.getURI()
-                                                                                                                       .toString());
+                    .getEffigy().uri.getURI()
+                    .toString());
         } catch (Exception ex) {
             throw new InternalErrorException(model, ex,
-                "Failed to generate " + "command strings");
+                    "Failed to generate " + "command strings");
         }
 
         return results;

@@ -73,7 +73,7 @@ public class StandardOutEffigy extends Effigy {
      *  @param name The name of this effigy.
      */
     public StandardOutEffigy(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // Indicate that we cannot save to URL.
@@ -98,7 +98,7 @@ public class StandardOutEffigy extends Effigy {
      *   is malformed in some way.
      */
     public static StandardOutEffigy newStandardOutEffigy(
-        CompositeEntity container, URL base, URL in) throws Exception {
+            CompositeEntity container, URL base, URL in) throws Exception {
         // Create a new effigy.
         StandardOutEffigy effigy = new StandardOutEffigy(container,
                 container.uniqueName("standardOutEffigy"));
@@ -120,8 +120,8 @@ public class StandardOutEffigy extends Effigy {
                     inputStream = in.openStream();
                 } catch (NullPointerException npe) {
                     throw new IOException("Failed to open '" + in
-                        + "', base: '" + base + "' : openStream() threw a "
-                        + "NullPointerException");
+                            + "', base: '" + base + "' : openStream() threw a "
+                            + "NullPointerException");
                 }
 
                 reader = new BufferedReader(new InputStreamReader(inputStream));
@@ -136,7 +136,7 @@ public class StandardOutEffigy extends Effigy {
                     // so we look for the file as a resource.
                     URL jarURL = JNLPUtilities.jarURLEntryResource(in.toString());
                     reader = new BufferedReader(new InputStreamReader(
-                                jarURL.openStream()));
+                                                        jarURL.openStream()));
 
                     // We were able to open the URL, so update the
                     // original URL so that the title bar accurately
@@ -205,7 +205,7 @@ public class StandardOutEffigy extends Effigy {
          *   an entity already in the container.
          */
         public Factory(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+                throws IllegalActionException, NameDuplicationException {
             super(container, name);
 
             // Record the latest factory for use by HTMLViewer.
@@ -241,7 +241,7 @@ public class StandardOutEffigy extends Effigy {
          *   is malformed in some way.
          */
         public Effigy createEffigy(CompositeEntity container, URL base, URL in)
-            throws Exception {
+                throws Exception {
             if (in == null) {
                 return null;
             }

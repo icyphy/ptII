@@ -74,7 +74,7 @@ public class FractionMatrixMath {
      *  @param matrix2 The second matrix of Fractions.
      *  @return A new matrix of Fractions.  */
     public static final Fraction[][] add(final Fraction[][] matrix1,
-        final Fraction[][] matrix2) {
+            final Fraction[][] matrix2) {
         _checkSameDimension("add", matrix1, matrix2);
 
         Fraction[][] returnValue = new Fraction[_rows(matrix1)][_columns(matrix1)];
@@ -106,13 +106,13 @@ public class FractionMatrixMath {
      *  @param colSpan An int specifying how many columns to copy.
      */
     public static final Fraction[][] crop(final Fraction[][] matrix,
-        final int rowStart, final int colStart, final int rowSpan,
-        final int colSpan) {
+            final int rowStart, final int colStart, final int rowSpan,
+            final int colSpan) {
         Fraction[][] returnValue = new Fraction[rowSpan][colSpan];
 
         for (int i = 0; i < rowSpan; i++) {
             System.arraycopy(matrix[rowStart + i], colStart, returnValue[i], 0,
-                colSpan);
+                    colSpan);
         }
 
         return returnValue;
@@ -168,7 +168,7 @@ public class FractionMatrixMath {
      *  throw an IllegalArgumentException.
      */
     public static final Fraction[][] divideElements(
-        final Fraction[][] matrix1, final Fraction[][] matrix2) {
+            final Fraction[][] matrix1, final Fraction[][] matrix2) {
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
 
@@ -211,7 +211,7 @@ public class FractionMatrixMath {
      *  @return A new array of Fractions.
      */
     public static final Fraction[] fromMatrixToArray(
-        final Fraction[][] matrix, int maxRow, int maxCol) {
+            final Fraction[][] matrix, int maxRow, int maxCol) {
         Fraction[] returnValue = new Fraction[maxRow * maxCol];
 
         for (int i = 0; i < maxRow; i++) {
@@ -249,7 +249,7 @@ public class FractionMatrixMath {
      *  @return The resulting matrix of Fractions.
      */
     public static final Fraction[][] multiply(final Fraction[][] matrix,
-        final Fraction scaleFactor) {
+            final Fraction scaleFactor) {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
@@ -274,15 +274,15 @@ public class FractionMatrixMath {
      *  @return The resulting matrix of Fractions.
      */
     public static final Fraction[] multiply(final Fraction[] array,
-        final Fraction[][] matrix) {
+            final Fraction[][] matrix) {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
         if (rows != array.length) {
             throw new IllegalArgumentException(
-                "preMultiply : array does not have the same number of "
-                + "elements (" + array.length + ") as the number of rows "
-                + "of the matrix (" + rows + ")");
+                    "preMultiply : array does not have the same number of "
+                    + "elements (" + array.length + ") as the number of rows "
+                    + "of the matrix (" + rows + ")");
         }
 
         Fraction[] returnValue = new Fraction[columns];
@@ -310,15 +310,15 @@ public class FractionMatrixMath {
      *  @return The resulting matrix of Fractions.
      */
     public static final Fraction[] multiply(final Fraction[][] matrix,
-        final Fraction[] array) {
+            final Fraction[] array) {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
         if (columns != array.length) {
             throw new IllegalArgumentException(
-                "postMultiply() : array does not have the same number "
-                + "of elements (" + array.length + ") as the number of "
-                + "columns of the matrix (" + columns + ")");
+                    "postMultiply() : array does not have the same number "
+                    + "of elements (" + array.length + ") as the number of "
+                    + "columns of the matrix (" + columns + ")");
         }
 
         Fraction[] returnValue = new Fraction[rows];
@@ -355,12 +355,12 @@ public class FractionMatrixMath {
      *  @exception ArithmeticException If the matrix dimensions don't match up.
      */
     public static final Fraction[][] multiply(Fraction[][] matrix1,
-        Fraction[][] matrix2) throws ArithmeticException {
+            Fraction[][] matrix2) throws ArithmeticException {
         if (_columns(matrix1) != _rows(matrix2)) {
             throw new ArithmeticException("Number of columns ("
-                + _columns(matrix1)
-                + ") of matrix1 does note equal number of rows ("
-                + _rows(matrix2) + ") of matrix2.");
+                    + _columns(matrix1)
+                    + ") of matrix1 does note equal number of rows ("
+                    + _rows(matrix2) + ") of matrix2.");
         }
 
         Fraction[][] returnValue = new Fraction[_rows(matrix1)][_columns(matrix2)];
@@ -390,7 +390,7 @@ public class FractionMatrixMath {
      *  @return A new matrix of ints.
      */
     public static final Fraction[][] multiplyElements(
-        final Fraction[][] matrix1, final Fraction[][] matrix2) {
+            final Fraction[][] matrix1, final Fraction[][] matrix2) {
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
 
@@ -436,7 +436,7 @@ public class FractionMatrixMath {
      *  @return The difference matrix.
      */
     public static final Fraction[][] subtract(final Fraction[][] matrix1,
-        final Fraction[][] matrix2) {
+            final Fraction[][] matrix2) {
         _checkSameDimension("subtract", matrix1, matrix2);
 
         int rows = _rows(matrix1);
@@ -501,7 +501,7 @@ public class FractionMatrixMath {
      *  @return A new matrix of Fractions.
      */
     public static final Fraction[][] toMatrixFromArray(Fraction[] array,
-        int rows, int cols) {
+            int rows, int cols) {
         Fraction[][] returnValue = new Fraction[rows][cols];
 
         for (int i = 0; i < rows; i++) {
@@ -525,8 +525,8 @@ public class FractionMatrixMath {
      *  format argument.
      */
     public static final String toString(final Fraction[][] matrix,
-        String elementDelimiter, String matrixBegin, String matrixEnd,
-        String vectorBegin, String vectorDelimiter, String vectorEnd) {
+            String elementDelimiter, String matrixBegin, String matrixEnd,
+            String vectorBegin, String vectorDelimiter, String vectorEnd) {
         StringBuffer sb = new StringBuffer();
         sb.append(matrixBegin);
 
@@ -599,16 +599,16 @@ public class FractionMatrixMath {
      *  @param matrix2 A matrix of ints.
      */
     protected static final void _checkSameDimension(final String caller,
-        final Fraction[][] matrix1, final Fraction[][] matrix2) {
+            final Fraction[][] matrix1, final Fraction[][] matrix2) {
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
 
         if ((rows != _rows(matrix2)) || (columns != _columns(matrix2))) {
             throw new IllegalArgumentException(
-                "ptolemy.math.FractionMatrixMath." + caller
-                + "() : one matrix " + _dimensionString(matrix1)
-                + " is not the same size as another matrix "
-                + _dimensionString(matrix2) + ".");
+                    "ptolemy.math.FractionMatrixMath." + caller
+                    + "() : one matrix " + _dimensionString(matrix1)
+                    + " is not the same size as another matrix "
+                    + _dimensionString(matrix2) + ".");
         }
     }
 
@@ -619,12 +619,12 @@ public class FractionMatrixMath {
      *  @return The dimension of the square matrix.
      */
     protected static final int _checkSquare(final String caller,
-        final Fraction[][] matrix) {
+            final Fraction[][] matrix) {
         if (_rows(matrix) != _columns(matrix)) {
             throw new IllegalArgumentException(
-                "ptolemy.math.FractionMatrixMath." + caller
-                + "() : matrix argument " + _dimensionString(matrix)
-                + " is not a square matrix.");
+                    "ptolemy.math.FractionMatrixMath." + caller
+                    + "() : matrix argument " + _dimensionString(matrix)
+                    + " is not a square matrix.");
         }
 
         return _rows(matrix);

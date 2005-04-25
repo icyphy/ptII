@@ -89,7 +89,7 @@ public class KeyToken extends Token {
      *  algorithms, formats and encodings are the same.
      */
     public final BooleanToken isEqualTo(Token rightArgument)
-        throws IllegalActionException {
+            throws IllegalActionException {
         java.security.Key rightKey = ((KeyToken) rightArgument).getValue();
         java.security.Key leftKey = getValue();
 
@@ -179,7 +179,7 @@ public class KeyToken extends Token {
                 return token;
             } else {
                 throw new IllegalActionException("Attempt to convert token "
-                    + token + " into a Key token, which is not possible.");
+                        + token + " into a Key token, which is not possible.");
             }
         }
 

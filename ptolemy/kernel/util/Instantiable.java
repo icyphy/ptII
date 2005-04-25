@@ -123,7 +123,7 @@ public interface Instantiable extends Derivable {
      *   an object already in the container.
      */
     public Instantiable instantiate(NamedObj container, String name)
-        throws CloneNotSupportedException, IllegalActionException,
+            throws CloneNotSupportedException, IllegalActionException,
             NameDuplicationException;
 
     /** Return true if this object is a class definition, which means that

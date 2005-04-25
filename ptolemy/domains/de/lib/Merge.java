@@ -78,7 +78,7 @@ public class Merge extends DETransformer {
      *   by the proposed container.
      */
     public Merge(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         input.setMultiport(true);
 
@@ -87,8 +87,8 @@ public class Merge extends DETransformer {
         discardEvents.setTypeEquals(BaseType.BOOLEAN);
 
         _attachText("_iconDescription",
-            "<svg>\n" + "<polygon points=\"-10,20 10,10 10,-10, -10,-20\" "
-            + "style=\"fill:green\"/>\n" + "</svg>\n");
+                "<svg>\n" + "<polygon points=\"-10,20 10,10 10,-10, -10,-20\" "
+                + "style=\"fill:green\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -112,7 +112,7 @@ public class Merge extends DETransformer {
      */
     public void fire() throws IllegalActionException {
         boolean discard = ((BooleanToken) discardEvents.getToken())
-                        .booleanValue();
+            .booleanValue();
         Token firstAvailableToken = null;
 
         // If tokens can be discarded, this actor sends

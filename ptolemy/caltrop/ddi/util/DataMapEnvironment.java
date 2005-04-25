@@ -79,12 +79,12 @@ public class DataMapEnvironment implements Environment {
                 // if we have read the entire list, return it. otherwise,
                 // throw an exception.
                 if (data.size() > ((pvi._repeatVal * pvi.getLength())
-                                - (pvi.getLength()) - pvi.getIndex())) {
+                            - (pvi.getLength()) - pvi.getIndex())) {
                     // we've read enough tokens to construct the entire list.
                     List result = new ArrayList();
 
                     for (int i = pvi.getIndex(); i < data.size();
-                                    i = i + pvi.getLength()) {
+                         i = i + pvi.getLength()) {
                         result.add(data.get(i));
                     }
 
@@ -139,21 +139,21 @@ public class DataMapEnvironment implements Environment {
 
     public Environment newFrame() {
         throw new InterpreterException("Cannot make a new frame in "
-            + "DataMapEnvironment.");
+                + "DataMapEnvironment.");
     }
 
     public Environment newFrame(Environment parent) {
         throw new InterpreterException("Cannot make a new frame in "
-            + "DataMapEnvironment.");
+                + "DataMapEnvironment.");
     }
 
     public void freezeLocal() {
         throw new InterpreterException("Cannot freezeLocal() in "
-            + "DataMapEnvironment.");
+                + "DataMapEnvironment.");
     }
 
     public DataMapEnvironment(InputPattern[] inputPatterns,
-        Map dataFromInputPorts, Environment parentEnv, Context context) {
+            Map dataFromInputPorts, Environment parentEnv, Context context) {
         _inputPatterns = inputPatterns;
         _dataFromInputPorts = dataFromInputPorts;
         _parentEnv = parentEnv;
@@ -187,7 +187,7 @@ public class DataMapEnvironment implements Environment {
 
                 if (repeatVal < 0) {
                     throw new InterpreterException("Repeat expressions "
-                        + "must evaluate to nonnegative values.");
+                            + "must evaluate to nonnegative values.");
                 }
             }
 
@@ -196,8 +196,8 @@ public class DataMapEnvironment implements Environment {
             for (int j = 0; j < variables.length; j++) {
                 String variable = variables[j];
                 result.put(variable,
-                    new PortVarInfo(inputPattern.getPortname(), j,
-                        variables.length, isList, repeatVal));
+                        new PortVarInfo(inputPattern.getPortname(), j,
+                                variables.length, isList, repeatVal));
             }
         }
 
@@ -220,7 +220,7 @@ public class DataMapEnvironment implements Environment {
         private int _repeatVal;
 
         public PortVarInfo(String portName, int index, int length,
-            boolean isList, int repeatVal) {
+                boolean isList, int repeatVal) {
             this._portName = portName;
             this._index = index;
             this._length = length;

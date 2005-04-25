@@ -85,7 +85,7 @@ public class StringUtilities {
         }
 
         return longName.substring(0, 37) + ". . ."
-        + longName.substring(longName.length() - 38);
+            + longName.substring(longName.length() - 38);
     }
 
     /** Return a string with a maximum line length of <i>length</i>
@@ -236,16 +236,16 @@ public class StringUtilities {
 
         if (property != null) {
             if (propertyName.equals("ptolemy.ptII.dir")
-                            && (property.indexOf("cygdrive") != -1)
-                            && !_printedCygwinWarning) {
+                    && (property.indexOf("cygdrive") != -1)
+                    && !_printedCygwinWarning) {
                 // This error only occurs when users build their own,
                 // so it is safe to print to stderr
                 _printedCygwinWarning = true;
                 System.err.println("ptolemy.ptII.dir property = \"" + property
-                    + "\", which contains \"cygdrive\". "
-                    + "This is almost always an error under Cygwin that "
-                    + "is occurs when one does PTII=`pwd`.  Instead, do "
-                    + "PTII=c:/foo/ptII");
+                        + "\", which contains \"cygdrive\". "
+                        + "This is almost always an error under Cygwin that "
+                        + "is occurs when one does PTII=`pwd`.  Instead, do "
+                        + "PTII=c:/foo/ptII");
             }
 
             return property;
@@ -261,8 +261,8 @@ public class StringUtilities {
                 return ptIIAsURL.toString();
             } catch (java.net.MalformedURLException malformed) {
                 throw new RuntimeException("While trying to find '"
-                    + propertyName + "', could not convert '" + ptIIAsFile
-                    + "' to a URL", malformed);
+                        + propertyName + "', could not convert '" + ptIIAsFile
+                        + "' to a URL", malformed);
             }
         }
 
@@ -272,7 +272,7 @@ public class StringUtilities {
 
             // PTII variable was not set
             URL namedObjURL = Thread.currentThread().getContextClassLoader()
-                                                .getResource(namedObjPath);
+                .getResource(namedObjPath);
 
             if (namedObjURL != null) {
                 String namedObjFileName = namedObjURL.getFile();
@@ -280,7 +280,7 @@ public class StringUtilities {
                 // FIXME: How do we get from a URL to a pathname?
                 if (namedObjFileName.startsWith("file:")) {
                     if (namedObjFileName.startsWith("file:/")
-                                    || namedObjFileName.startsWith("file:\\")) {
+                            || namedObjFileName.startsWith("file:\\")) {
                         // We get rid of either file:/ or file:\
                         namedObjFileName = namedObjFileName.substring(6);
                     } else {
@@ -329,10 +329,10 @@ public class StringUtilities {
 
             if (home == null) {
                 throw new RuntimeException("Could not find "
-                    + "'ptolemy.ptII.dir'" + " property.  Also tried loading '"
-                    + namedObjPath + "' as a resource and working from that. "
-                    + "Vergil should be " + "invoked with -Dptolemy.ptII.dir"
-                    + "=\"$PTII\"");
+                        + "'ptolemy.ptII.dir'" + " property.  Also tried loading '"
+                        + namedObjPath + "' as a resource and working from that. "
+                        + "Vergil should be " + "invoked with -Dptolemy.ptII.dir"
+                        + "=\"$PTII\"");
             }
 
             try {
@@ -379,7 +379,7 @@ public class StringUtilities {
         if (!preferencesDirectory.isDirectory()) {
             if (preferencesDirectory.mkdirs() == false) {
                 throw new IOException("Could not create user preferences "
-                    + "directory '" + preferencesDirectoryName + "'");
+                        + "directory '" + preferencesDirectoryName + "'");
             }
         }
 
@@ -501,7 +501,7 @@ public class StringUtilities {
                     i += length;
                 } else {
                     results.append(token.substring(i, i + lastSpaceIndex)
-                        + "\n");
+                            + "\n");
                     i += (lastSpaceIndex + 1);
                 }
             }
@@ -533,7 +533,7 @@ public class StringUtilities {
      *  @deprecated Use FileUtilities.nameToURL instead.
      */
     public static URL stringToURL(String name, URI baseDirectory,
-        ClassLoader classLoader) throws IOException {
+            ClassLoader classLoader) throws IOException {
         return FileUtilities.nameToURL(name, baseDirectory, classLoader);
     }
 
@@ -548,7 +548,7 @@ public class StringUtilities {
      *  @return A new string with the specified replacements.
      */
     public static String substitute(String string, String pattern,
-        String replacement) {
+            String replacement) {
         int start = string.indexOf(pattern);
 
         while (start != -1) {
@@ -586,7 +586,7 @@ public class StringUtilities {
      *  @return The possibly substituted string.
      */
     public static String substituteFilePrefix(String prefix, String string,
-        String replacement) {
+            String replacement) {
         // This method is currently used by $PTII/util/testsuite/auto.tcl
         if (string.startsWith(prefix)) {
             // Hmm, what about file separators?
@@ -594,14 +594,14 @@ public class StringUtilities {
         } else {
             try {
                 String prefixCanonicalPath = (new File(prefix))
-                                .getCanonicalPath();
+                    .getCanonicalPath();
 
                 String stringCanonicalPath = (new File(string))
-                                .getCanonicalPath();
+                    .getCanonicalPath();
 
                 if (stringCanonicalPath.startsWith(prefixCanonicalPath)) {
                     return replacement
-                    + stringCanonicalPath.substring(prefixCanonicalPath.length());
+                        + stringCanonicalPath.substring(prefixCanonicalPath.length());
                 }
             } catch (Throwable throwable) {
                 // ignore.
@@ -623,7 +623,7 @@ public class StringUtilities {
      *  @exception IOException If StreamTokenizer.nextToken() throws it.
      */
     public static String[] tokenizeForExec(String inputString)
-        throws IOException {
+            throws IOException {
         // The java.lang.Runtime.exec(String command) call uses
         // java.util.StringTokenizer() to parse the command string.
         // Unfortunately, this means that double quotes are not handled
@@ -640,7 +640,7 @@ public class StringUtilities {
         List commandList = new LinkedList();
 
         StreamTokenizer streamTokenizer = new StreamTokenizer(new StringReader(
-                    inputString));
+                                                                      inputString));
 
         // We reset the syntax so that we don't convert to numbers,
         // otherwise, if PTII is "d:\\tmp\\ptII\ 2.0", then
@@ -689,10 +689,10 @@ public class StringUtilities {
 
             case StreamTokenizer.TT_NUMBER:
                 throw new RuntimeException("Internal error: Found TT_NUMBER: '"
-                    + streamTokenizer.nval + "'.  We should not be "
-                    + "tokenizing numbers");
+                        + streamTokenizer.nval + "'.  We should not be "
+                        + "tokenizing numbers");
 
-            //break;
+                //break;
             case StreamTokenizer.TT_EOL:
                 break;
 
@@ -760,7 +760,7 @@ public class StringUtilities {
      *  @return A string that descripts the command.
      */
     public static String usageString(String commandTemplate,
-        String[][] commandOptions, String[] commandFlags) {
+            String[][] commandOptions, String[] commandFlags) {
         // This method is static so that we can reuse it in places
         // like copernicus/kernel/Copernicus and actor/gui/MoMLApplication
         String result = "Usage: " + commandTemplate + "\n\n"
@@ -770,7 +770,7 @@ public class StringUtilities {
 
         for (i = 0; i < commandOptions.length; i++) {
             result += (" " + commandOptions[i][0] + " " + commandOptions[i][1]
-                        + "\n");
+                    + "\n");
         }
 
         result += "\nBoolean flags:\n";

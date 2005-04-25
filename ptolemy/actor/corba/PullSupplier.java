@@ -84,7 +84,7 @@ public class PullSupplier extends Sink {
      *   actor with this name.
      */
     public PullSupplier(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         ORBInitProperties = new Parameter(this, "ORBInitProperties");
@@ -116,7 +116,7 @@ public class PullSupplier extends Sink {
 
         // String tokenize the parameter ORBInitProperties
         StringTokenizer st = new StringTokenizer(((StringToken) ORBInitProperties
-                            .getToken()).stringValue());
+                                                         .getToken()).stringValue());
         String[] args = new String[st.countTokens()];
         int i = 0;
 
@@ -173,7 +173,7 @@ public class PullSupplier extends Sink {
                 }
             } catch (InterruptedException e) {
                 throw new IllegalActionException(this,
-                    "blocking interrupted." + e.getMessage());
+                        "blocking interrupted." + e.getMessage());
             }
         }
 
@@ -241,20 +241,20 @@ public class PullSupplier extends Sink {
 
             //registe the consumer with the given name
             NameComponent namecomp = new NameComponent(((StringToken) supplierName
-                                .getToken()).stringValue(), "");
+                                                               .getToken()).stringValue(), "");
             _debug(getName(), " register the consumer with name: ",
-                (supplierName.getToken()).toString());
+                    (supplierName.getToken()).toString());
 
             NameComponent[] path = {
-                    namecomp
-                };
+                namecomp
+            };
             ncRef.rebind(path, _supplier);
         } catch (UserException ex) {
             throw new IllegalActionException(this,
-                " initialize ORB failed. Please make sure the "
-                + "naming server has already started and the "
-                + "ORBInitProperty parameter is configured correctly. "
-                + "the error message is: " + ex.getMessage());
+                    " initialize ORB failed. Please make sure the "
+                    + "naming server has already started and the "
+                    + "ORBInitProperty parameter is configured correctly. "
+                    + "the error message is: " + ex.getMessage());
         }
     }
 
@@ -304,7 +304,7 @@ public class PullSupplier extends Sink {
                 if (_lastReadToken == null) {
                     if (_debugging) {
                         _debug(getName(),
-                            "no token to return, so pull will wait.");
+                                "no token to return, so pull will wait.");
                     }
 
                     synchronized (_pullThread) {
@@ -317,7 +317,7 @@ public class PullSupplier extends Sink {
                         if (_prefireIsWaiting) {
                             if (_debugging) {
                                 _debug(getName(),
-                                    "pull for data and wake up prefire().");
+                                        "pull for data and wake up prefire().");
                             }
 
                             synchronized (_lock) {
@@ -352,7 +352,7 @@ public class PullSupplier extends Sink {
                 return null;
             } catch (InterruptedException e) {
                 throw new InternalErrorException("pull method interrupted."
-                    + e.getMessage());
+                        + e.getMessage());
             }
         }
     }

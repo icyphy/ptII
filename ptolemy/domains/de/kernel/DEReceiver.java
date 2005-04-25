@@ -97,7 +97,7 @@ public class DEReceiver extends AbstractReceiver {
     public Token get() throws NoTokenException {
         if (_tokens.isEmpty()) {
             throw new NoTokenException(getContainer(),
-                "No more tokens in the DE receiver.");
+                    "No more tokens in the DE receiver.");
         }
 
         return (Token) _tokens.removeFirst();
@@ -189,7 +189,7 @@ public class DEReceiver extends AbstractReceiver {
                     Director dir;
 
                     if ((port.isOutput()) && (actor instanceof CompositeActor)
-                                    && ((CompositeActor) actor).isOpaque()) {
+                            && ((CompositeActor) actor).isOpaque()) {
                         dir = actor.getDirector();
                     } else {
                         dir = actor.getExecutiveDirector();
@@ -202,7 +202,7 @@ public class DEReceiver extends AbstractReceiver {
                             return _director;
                         } else {
                             throw new IllegalActionException(getContainer(),
-                                "Does not have a DEDirector.");
+                                    "Does not have a DEDirector.");
                         }
                     }
                 }
@@ -212,7 +212,7 @@ public class DEReceiver extends AbstractReceiver {
         }
 
         throw new IllegalActionException(getContainer(),
-            "Does not have a IOPort as the container of the receiver.");
+                "Does not have a IOPort as the container of the receiver.");
     }
 
     ///////////////////////////////////////////////////////////////////

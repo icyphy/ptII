@@ -90,7 +90,7 @@ public class MatrixViewer extends Sink implements Placeable {
      *   actor with this name.
      */
     public MatrixViewer(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         input.setMultiport(false);
         input.setTypeEquals(BaseType.MATRIX);
@@ -131,7 +131,7 @@ public class MatrixViewer extends Sink implements Placeable {
      *   attribute cannot be parsed or cannot be evaluated.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         // NOTE: Do not react to changes in _windowProperties.
         // Those properties are only used when originally opening a window.
         if (attribute == width) {
@@ -180,8 +180,8 @@ public class MatrixViewer extends Sink implements Placeable {
 
                 if (containerEffigy == null) {
                     throw new IllegalActionException(this,
-                        "Cannot find effigy for top level: "
-                        + toplevel().getFullName());
+                            "Cannot find effigy for top level: "
+                            + toplevel().getFullName());
                 }
 
                 try {
@@ -203,7 +203,7 @@ public class MatrixViewer extends Sink implements Placeable {
                     // set the size of the frame, we have to also set the
                     // size of the internal component.
                     Component[] components = _frame.getContentPane()
-                                                               .getComponents();
+                        .getComponents();
 
                     if (components.length > 0) {
                         _paneSize.setSize(components[0]);
@@ -212,7 +212,7 @@ public class MatrixViewer extends Sink implements Placeable {
                     _tableau.show();
                 } catch (Exception ex) {
                     throw new IllegalActionException(this, null, ex,
-                        "Error creating effigy and tableau");
+                            "Error creating effigy and tableau");
                 }
             } else {
                 // Erase previous text.
@@ -320,7 +320,7 @@ public class MatrixViewer extends Sink implements Placeable {
      *  @exception NameDuplicationException If the base class throws it.
      */
     public void setContainer(CompositeEntity container)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super.setContainer(container);
 
         if (container == null) {
@@ -339,7 +339,7 @@ public class MatrixViewer extends Sink implements Placeable {
      *  @exception IOException If an I/O error occurs.
      */
     protected void _exportMoMLContents(Writer output, int depth)
-        throws IOException {
+            throws IOException {
         // Make sure that the current position of the frame, if any,
         // is up to date.
         if (_frame != null) {

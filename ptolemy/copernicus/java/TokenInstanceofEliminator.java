@@ -103,7 +103,7 @@ public class TokenInstanceofEliminator extends BodyTransformer
     }
 
     public static void eliminateCastsAndInstanceOf(Body body, String phaseName,
-        Set unsafeLocalSet, boolean debug) {
+            Set unsafeLocalSet, boolean debug) {
         // Analyze the types of variables which refer to tokens.
         TokenTypeAnalysis tokenTypes = new TokenTypeAnalysis(body.getMethod(),
                 new CompleteUnitGraph(body));
@@ -112,7 +112,7 @@ public class TokenInstanceofEliminator extends BodyTransformer
             Unit unit = (Unit) units.next();
 
             for (Iterator boxes = unit.getUseBoxes().iterator();
-                            boxes.hasNext();) {
+                 boxes.hasNext();) {
                 ValueBox box = (ValueBox) boxes.next();
                 Value value = box.getValue();
 
@@ -149,7 +149,7 @@ public class TokenInstanceofEliminator extends BodyTransformer
                     // might be more refined later.
                     // General, is unfortuantely, considered instantiable.
                     if (type.equals(BaseType.UNKNOWN) //!type.isInstantiable() ||
-                                    || type.equals(BaseType.GENERAL)) {
+                            || type.equals(BaseType.GENERAL)) {
                         continue;
                     }
 
@@ -171,7 +171,7 @@ public class TokenInstanceofEliminator extends BodyTransformer
                     }
 
                     CastAndInstanceofEliminator.replaceCast(box, hierarchy,
-                        castType, op, opType, debug);
+                            castType, op, opType, debug);
                 } else if (value instanceof InstanceOfExpr) {
                     // If the operand of the expression is
                     // declared to be of a type that implies
@@ -206,7 +206,7 @@ public class TokenInstanceofEliminator extends BodyTransformer
                     // might be more refined later.
                     // General, is unfortuantely, considered instantiable.
                     if (type.equals(BaseType.UNKNOWN) //!type.isInstantiable() ||
-                                    || type.equals(BaseType.GENERAL)) {
+                            || type.equals(BaseType.GENERAL)) {
                         continue;
                     }
 
@@ -217,7 +217,7 @@ public class TokenInstanceofEliminator extends BodyTransformer
                     }
 
                     CastAndInstanceofEliminator.replaceInstanceofCheck(box,
-                        Scene.v().getActiveHierarchy(), checkType, opType, debug);
+                            Scene.v().getActiveHierarchy(), checkType, opType, debug);
                 }
             }
         }

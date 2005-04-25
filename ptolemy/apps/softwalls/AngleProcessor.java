@@ -66,7 +66,7 @@ public class AngleProcessor extends TypedAtomicActor {
      *   an actor already in the container.
      */
     public AngleProcessor(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // Create and configure ports and parameters
@@ -109,7 +109,7 @@ public class AngleProcessor extends TypedAtomicActor {
      *  from reading an attribute.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == minAngle) {
             _minAngle = ((DoubleToken) (minAngle.getToken())).doubleValue();
         } else if (attribute == maxAngle) {
@@ -135,7 +135,7 @@ public class AngleProcessor extends TypedAtomicActor {
 
         if (_minAngle >= _maxAngle) {
             throw new IllegalActionException(getContainer(),
-                "minAngle >= maxAngle");
+                    "minAngle >= maxAngle");
         }
 
         range = _maxAngle - _minAngle;

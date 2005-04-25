@@ -57,7 +57,7 @@ import javax.media.j3d.WakeupOnAWTEvent;
 */
 public class MouseInput3D extends GRActor3D {
     public MouseInput3D(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         x = new TypedIOPort(this, "x");

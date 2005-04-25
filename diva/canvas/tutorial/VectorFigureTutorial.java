@@ -86,7 +86,7 @@ public class VectorFigureTutorial {
         // Create a controller to do the work.
         BasicController controller = new BasicController(graphicsPane);
         SelectionInteractor defaultInteractor = controller
-                        .getSelectionInteractor();
+            .getSelectionInteractor();
         BoundsManipulator manip = new BoundsManipulator();
         defaultInteractor.setPrototypeDecorator(manip);
 

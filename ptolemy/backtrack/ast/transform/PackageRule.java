@@ -53,12 +53,12 @@ import ptolemy.backtrack.ast.TypeAnalyzerState;
 /**
 
 
- @author Thomas Feng
- @version $Id$
- @since Ptolemy II 5.1
- @Pt.ProposedRating Red (tfeng)
- @Pt.AcceptedRating Red (tfeng)
- */
+@author Thomas Feng
+@version $Id$
+@since Ptolemy II 5.1
+@Pt.ProposedRating Red (tfeng)
+@Pt.AcceptedRating Red (tfeng)
+*/
 public class PackageRule extends TransformRule {
 
     public String getPrefix() {
@@ -131,14 +131,14 @@ public class PackageRule extends TransformRule {
         AST ast = name.getAST();
         Name newName = null;
         while (name != null && name instanceof QualifiedName &&
-               ! (((QualifiedName)name).getQualifier() instanceof SimpleName))
-               name = ((QualifiedName)name).getQualifier();
+                ! (((QualifiedName)name).getQualifier() instanceof SimpleName))
+            name = ((QualifiedName)name).getQualifier();
         int lastPosition = prefix.length() - 1;
         while (lastPosition >= 0) {
             int dotPosition = prefix.lastIndexOf('.', lastPosition);
             String part = dotPosition == -1 ?
-                    prefix.substring(0, lastPosition + 1) :
-                    prefix.substring(dotPosition + 1, lastPosition + 1);
+                prefix.substring(0, lastPosition + 1) :
+                prefix.substring(dotPosition + 1, lastPosition + 1);
             lastPosition = dotPosition - 1;
             if (name == null) {
                 name = ast.newSimpleName(part);

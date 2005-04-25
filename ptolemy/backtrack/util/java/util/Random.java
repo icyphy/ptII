@@ -204,8 +204,8 @@ public class Random implements Serializable, Rollbackable {
     private FieldRecord $RECORD$seed = new FieldRecord(0);
 
     private FieldRecord[] $RECORDS = new FieldRecord[] {
-            $RECORD$haveNextNextGaussian,
-            $RECORD$nextNextGaussian,
-            $RECORD$seed
-        };
+        $RECORD$haveNextNextGaussian,
+        $RECORD$nextNextGaussian,
+        $RECORD$seed
+    };
 }

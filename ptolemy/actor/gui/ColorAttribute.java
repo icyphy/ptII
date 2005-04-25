@@ -70,7 +70,7 @@ public class ColorAttribute extends Parameter {
      *   an attribute already in the container.
      */
     public ColorAttribute(NamedObj container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         setTypeEquals(new ArrayType(BaseType.DOUBLE));
     }

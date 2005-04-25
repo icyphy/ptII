@@ -77,8 +77,8 @@ public abstract class AbstractReceiver implements Receiver {
      */
     public void clear() throws IllegalActionException {
         throw new IllegalActionException(getContainer(),
-            "Receiver class " + getClass().getName()
-            + " does not support clear().");
+                "Receiver class " + getClass().getName()
+                + " does not support clear().");
     }
 
     /** Get a token from this receiver.
@@ -248,7 +248,7 @@ public abstract class AbstractReceiver implements Receiver {
      *  @exception NoRoomException If the token array cannot be put.
      */
     public void putArray(Token[] tokenArray, int numberOfTokens)
-        throws NoRoomException {
+            throws NoRoomException {
         for (int i = 0; i < numberOfTokens; i++) {
             put(tokenArray[i]);
         }

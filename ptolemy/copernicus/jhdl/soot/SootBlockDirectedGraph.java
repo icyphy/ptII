@@ -71,6 +71,6 @@ public class SootBlockDirectedGraph extends DirectedGraph {
 
     public static void main(String[] args) {
         SootBlockDirectedGraph[] graphs = ControlSootDFGBuilder
-                        .createDataFlowGraphs(args, true);
+            .createDataFlowGraphs(args, true);
     }
 }

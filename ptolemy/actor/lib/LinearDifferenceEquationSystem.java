@@ -90,7 +90,7 @@ public class LinearDifferenceEquationSystem extends Transformer {
      *   actor with this name.
      */
     public LinearDifferenceEquationSystem(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input.setMultiport(false);
         output.setMultiport(false);
@@ -117,21 +117,21 @@ public class LinearDifferenceEquationSystem extends Transformer {
         initialStates.setTypeEquals(BaseType.DOUBLE_MATRIX);
 
         double[][] zero = {
-                {
-                    0.0
-                }
-            };
+            {
+                0.0
+            }
+        };
         _x = new DoubleMatrixToken(zero);
         _initialStateChanged = true;
 
         // icon
         _attachText("_iconDescription",
-            "<svg>\n" + "<rect x=\"-75\" y=\"-30\" "
-            + "width=\"150\" height=\"60\" " + "style=\"fill:white\"/>\n"
-            + "<text x=\"-70\" y=\"-10\" " + "style=\"font-size:14\">\n"
-            + "x(k+1) = Ax(k) + Bu(k) " + "</text>\n"
-            + "<text x=\"-70\" y=\"10\" " + "style=\"font-size:14\">\n"
-            + "    y(k) = Cx(k) + Du(k)" + "</text>\n" + "</svg>\n");
+                "<svg>\n" + "<rect x=\"-75\" y=\"-30\" "
+                + "width=\"150\" height=\"60\" " + "style=\"fill:white\"/>\n"
+                + "<text x=\"-70\" y=\"-10\" " + "style=\"font-size:14\">\n"
+                + "x(k+1) = Ax(k) + Bu(k) " + "</text>\n"
+                + "<text x=\"-70\" y=\"10\" " + "style=\"font-size:14\">\n"
+                + "    y(k) = Cx(k) + Du(k)" + "</text>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -194,15 +194,15 @@ public class LinearDifferenceEquationSystem extends Transformer {
      *   denominator matrix is not a row vector.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == A) {
             // Check that it is a square matrix.
             DoubleMatrixToken token = (DoubleMatrixToken) A.getToken();
 
             if ((token.getRowCount() == 0) || (token.getColumnCount() == 0)
-                            || (token.getRowCount() != token.getColumnCount())) {
+                    || (token.getRowCount() != token.getColumnCount())) {
                 throw new IllegalActionException(this,
-                    "The A matrix must be a nonempty square matrix.");
+                        "The A matrix must be a nonempty square matrix.");
             }
         } else if (attribute == B) {
             // Check that B is a matrix.
@@ -210,7 +210,7 @@ public class LinearDifferenceEquationSystem extends Transformer {
 
             if ((token.getRowCount() == 0) || (token.getColumnCount() == 0)) {
                 throw new IllegalActionException(this,
-                    "The B matrix must be a nonempty matrix.");
+                        "The B matrix must be a nonempty matrix.");
             }
         } else if (attribute == C) {
             // Check that C is a matrix.
@@ -218,23 +218,23 @@ public class LinearDifferenceEquationSystem extends Transformer {
 
             if ((token.getRowCount() == 0) || (token.getColumnCount() == 0)) {
                 throw new IllegalActionException(this,
-                    "The C matrix must be a nonempty matrix.");
+                        "The C matrix must be a nonempty matrix.");
             }
         } else if (attribute == D) {
             DoubleMatrixToken token = (DoubleMatrixToken) D.getToken();
 
             if ((token.getRowCount() == 0) || (token.getColumnCount() == 0)) {
                 throw new IllegalActionException(this,
-                    "The D matrix must be a nonempty matrix.");
+                        "The D matrix must be a nonempty matrix.");
             }
         } else if (attribute == initialStates) {
             // The initialStates parameter should be a row vector.
             DoubleMatrixToken token = (DoubleMatrixToken) initialStates
-                            .getToken();
+                .getToken();
 
             if ((token.getColumnCount() != 1) || (token.getRowCount() < 1)) {
                 throw new IllegalActionException(this,
-                    "The initialStates must be a column vector.");
+                        "The initialStates must be a column vector.");
             }
 
             _initialStateChanged = true;
@@ -322,8 +322,8 @@ public class LinearDifferenceEquationSystem extends Transformer {
 
         if (b.getRowCount() != n) {
             throw new IllegalActionException(this,
-                "The number of rows of the B matrix should equal to "
-                + "the number of rows of the A matrix.");
+                    "The number of rows of the B matrix should equal to "
+                    + "the number of rows of the A matrix.");
         }
 
         if (n == 1) {
@@ -346,8 +346,8 @@ public class LinearDifferenceEquationSystem extends Transformer {
 
         if (c.getColumnCount() != n) {
             throw new IllegalActionException(this,
-                "The number of columns of the C matrix should equal to "
-                + "the number of rows of the A matrix.");
+                    "The number of columns of the C matrix should equal to "
+                    + "the number of rows of the A matrix.");
         }
 
         int r = c.getRowCount();
@@ -364,16 +364,16 @@ public class LinearDifferenceEquationSystem extends Transformer {
 
         if (c.getRowCount() != d.getRowCount()) {
             throw new IllegalActionException(this,
-                "The number of rows of the D matrix should equal to "
-                + "the number of rows of the C matrix.");
+                    "The number of rows of the D matrix should equal to "
+                    + "the number of rows of the C matrix.");
         }
 
         DoubleMatrixToken x0 = (DoubleMatrixToken) initialStates.getToken();
 
         if (x0.getRowCount() != n) {
             throw new IllegalActionException(this,
-                "The number of initial states should equal to "
-                + "the number of columns of the A matrix.");
+                    "The number of initial states should equal to "
+                    + "the number of columns of the A matrix.");
         }
 
         // reset initial state.

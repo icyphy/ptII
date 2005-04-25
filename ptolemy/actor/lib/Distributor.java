@@ -85,7 +85,7 @@ public class Distributor extends Transformer implements SequenceActor {
      *  by the proposed container.
      */
     public Distributor(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // These parameters are required for SDF
@@ -119,7 +119,7 @@ public class Distributor extends Transformer implements SequenceActor {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Distributor newObject = (Distributor) super.clone(workspace);
         newObject.input_tokenConsumptionRate = (Parameter) (newObject.input
-                        .getAttribute("tokenConsumptionRate"));
+                .getAttribute("tokenConsumptionRate"));
         return newObject;
     }
 
@@ -136,14 +136,14 @@ public class Distributor extends Transformer implements SequenceActor {
         if (port == output) {
             try {
                 input_tokenConsumptionRate.setToken(new IntToken(
-                        output.getWidth()));
+                                                            output.getWidth()));
                 _currentOutputPosition = 0;
 
                 // NOTE: schedule is invalidated automatically already
                 // by the changed connections.
             } catch (IllegalActionException ex) {
                 throw new InternalErrorException(this, ex,
-                    "output width was" + output.getWidth());
+                        "output width was" + output.getWidth());
             }
         }
     }

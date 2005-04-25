@@ -121,7 +121,7 @@ public abstract class Overflow implements Cloneable, Serializable {
         }
 
         throw new IllegalArgumentException("Unknown overflow strategy \""
-            + name + "\".");
+                + name + "\".");
     }
 
     /** Return a hash code value for this object.
@@ -179,7 +179,7 @@ public abstract class Overflow implements Cloneable, Serializable {
      *  @return The bounded integer value.
      */
     abstract public BigInteger quantize(BigInteger integerValue,
-        Quantization quant);
+            Quantization quant);
 
     /** Return the string representation of this overflow.
      *  @return A String.
@@ -233,7 +233,7 @@ public abstract class Overflow implements Cloneable, Serializable {
             BigInteger maxValue = quant.getMaximumUnscaledValue();
 
             if ((0 <= integerValue.compareTo(minValue))
-                            && (integerValue.compareTo(maxValue) <= 0)) {
+                    && (integerValue.compareTo(maxValue) <= 0)) {
                 return integerValue;
             }
 
@@ -335,14 +335,14 @@ public abstract class Overflow implements Cloneable, Serializable {
 
             if (integerValue.compareTo(minValue) < 0) {
                 throw new ArithmeticException(
-                    "Minimum overflow threshold exceeded.");
+                        "Minimum overflow threshold exceeded.");
             }
 
             BigInteger maxValue = quant.getMaximumUnscaledValue();
 
             if (integerValue.compareTo(maxValue) > 0) {
                 throw new ArithmeticException(
-                    "Maximum overflow threshold exceeded.");
+                        "Maximum overflow threshold exceeded.");
             }
 
             return integerValue;

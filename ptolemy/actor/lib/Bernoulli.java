@@ -67,7 +67,7 @@ public class Bernoulli extends RandomSource {
      *   actor with this name.
      */
     public Bernoulli(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         output.setTypeEquals(BaseType.BOOLEAN);
@@ -107,7 +107,7 @@ public class Bernoulli extends RandomSource {
      */
     protected void _generateRandomNumber() throws IllegalActionException {
         if (_random.nextDouble() < ((DoubleToken) (trueProbability.getToken()))
-                        .doubleValue()) {
+                .doubleValue()) {
             _current = true;
         } else {
             _current = false;

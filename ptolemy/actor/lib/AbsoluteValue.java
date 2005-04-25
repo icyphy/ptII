@@ -68,7 +68,7 @@ public class AbsoluteValue extends Transformer {
      *   actor with this name.
      */
     public AbsoluteValue(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         output.setTypeAtLeast(new FunctionTerm(input));

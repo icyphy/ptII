@@ -67,7 +67,7 @@ public class ExperimentalActor extends SDFTransformer {
      *   actor with this name.
      */
     public ExperimentalActor(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         input.setTypeEquals(BaseType.INT);
         output.setTypeEquals(BaseType.INT);
@@ -93,13 +93,13 @@ public class ExperimentalActor extends SDFTransformer {
      *  @exception IllegalActionException If the parameters are out of range.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == codeSize) {
             int codeSizeValue = ((IntToken) codeSize.getToken()).intValue();
 
             if (codeSizeValue <= 0) {
                 throw new IllegalActionException(this,
-                    "Invalid codeSize: " + codeSizeValue);
+                        "Invalid codeSize: " + codeSizeValue);
             }
         } else {
             super.attributeChanged(attribute);

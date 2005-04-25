@@ -62,7 +62,7 @@ public class TokenTableau extends Tableau {
      *   attribute already in the container.
      */
     public TokenTableau(Effigy container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         createFrame(null);
     }
@@ -78,7 +78,7 @@ public class TokenTableau extends Tableau {
      *   attribute already in the container.
      */
     public TokenTableau(Effigy container, String name, TableauFrame frame)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         createFrame(frame);
     }
@@ -180,7 +180,7 @@ public class TokenTableau extends Tableau {
          *   an attribute already in the container.
          */
         public Factory(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+                throws IllegalActionException, NameDuplicationException {
             super(container, name);
         }
 

@@ -111,7 +111,7 @@ public class LongToken extends ScalarToken {
 
         if ((compare == CPO.LOWER) || (compare == CPO.INCOMPARABLE)) {
             throw new IllegalActionException(notSupportedIncomparableConversionMessage(
-                    token, "long"));
+                                                     token, "long"));
         }
 
         compare = TypeLattice.compare(BaseType.INT, token);
@@ -124,7 +124,7 @@ public class LongToken extends ScalarToken {
         }
 
         throw new IllegalActionException(notSupportedConversionMessage(token,
-                "long"));
+                                                 "long"));
     }
 
     /**  Return true if the argument's class is LongToken and it has the
@@ -220,10 +220,10 @@ public class LongToken extends ScalarToken {
      *  range of an unsigned byte.
      */
     public UnsignedByteToken truncatedUnsignedByteValue()
-        throws IllegalActionException {
+            throws IllegalActionException {
         if ((_value < 0) || (_value > 255)) {
             throw new IllegalActionException("Value cannot be represented"
-                + " as an unsigned Byte");
+                    + " as an unsigned Byte");
         } else {
             return new UnsignedByteToken((int) _value);
         }
@@ -351,7 +351,7 @@ public class LongToken extends ScalarToken {
      *  @return A new Token containing the result.
      */
     protected BooleanToken _isLessThan(ScalarToken rightArgument)
-        throws IllegalActionException {
+            throws IllegalActionException {
         LongToken convertedArgument = (LongToken) rightArgument;
         return BooleanToken.getInstance(_value < convertedArgument.longValue());
     }

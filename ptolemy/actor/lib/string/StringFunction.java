@@ -79,7 +79,7 @@ public class StringFunction extends Transformer {
      *   actor with this name.
      */
     public StringFunction(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // Set up ports for string input and string output.
@@ -95,9 +95,9 @@ public class StringFunction extends Transformer {
         _function = _TRIM;
 
         _attachText("_iconDescription",
-            "<svg>\n" + "<rect x=\"-30\" y=\"-15\" "
-            + "width=\"80\" height=\"30\" " + "style=\"fill:white\"/>\n"
-            + "</svg>\n");
+                "<svg>\n" + "<rect x=\"-30\" y=\"-15\" "
+                + "width=\"80\" height=\"30\" " + "style=\"fill:white\"/>\n"
+                + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -118,12 +118,12 @@ public class StringFunction extends Transformer {
      *  @exception IllegalActionException If the function is not recognized.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == function) {
             // Use getToken() rather than getExpression()
             // so substitutions occur.
             String functionName = ((StringToken) function.getToken())
-                            .stringValue();
+                .stringValue();
 
             if (functionName.equals("trim")) {
                 _function = _TRIM;
@@ -133,7 +133,7 @@ public class StringFunction extends Transformer {
                 _function = _TOLOWERCASE;
             } else {
                 throw new IllegalActionException(this,
-                    "Unrecognized function: " + functionName);
+                        "Unrecognized function: " + functionName);
             }
         } else {
             super.attributeChanged(attribute);
@@ -176,7 +176,7 @@ public class StringFunction extends Transformer {
 
         default:
             throw new InternalErrorException(
-                "Invalid value provided as function");
+                    "Invalid value provided as function");
         }
     }
 

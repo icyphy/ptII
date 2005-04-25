@@ -145,7 +145,7 @@ import java.util.StringTokenizer;
    @see FSMDirector
 */
 public class FSMActor extends CompositeEntity implements TypedActor,
-    ExplicitChangeContext {
+                                                         ExplicitChangeContext {
     /** Construct an FSMActor in the default workspace with an empty string
      *  as its name. Add the actor to the workspace directory.
      *  Increment the version number of the workspace.
@@ -179,7 +179,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *   an entity already in the container.
      */
     public FSMActor(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _init();
     }
@@ -213,7 +213,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *   attributeChanged() method.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == initialStateName) {
             _initialStateVersion = -1;
         } else if (attribute == finalStateNames) {
@@ -317,15 +317,15 @@ public class FSMActor extends CompositeEntity implements TypedActor,
 
             if ((name == null) || name.trim().equals("")) {
                 throw new IllegalActionException(this,
-                    "No initial state has been specified.");
+                        "No initial state has been specified.");
             }
 
             State st = (State) getEntity(name);
 
             if (st == null) {
                 throw new IllegalActionException(this,
-                    "Cannot find " + "initial state with name \"" + name
-                    + "\".");
+                        "Cannot find " + "initial state with name \"" + name
+                        + "\".");
             }
 
             _initialState = st;
@@ -357,7 +357,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                     //Throw an exception that in order to use refinements,
                     //a modal model has to be used.
                     MessageHandler.error("FSMActor does not "
-                        + "contain refinements, use ModalModel instead.");
+                            + "contain refinements, use ModalModel instead.");
                 }
             } catch (IllegalActionException e) {
                 // FIXME: how to deal the IllegalActionException possibly
@@ -368,7 +368,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             } catch (NameDuplicationException e) {
                 // This should not happen.
                 throw new InternalErrorException("Failed to construct a"
-                    + "function dependency object for " + getName());
+                        + "function dependency object for " + getName());
             }
         }
 
@@ -416,18 +416,18 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             State state = (State) states.next();
 
             for (Iterator transitions = state.outgoingPort.linkedRelationList()
-                                                                      .iterator();
-                            transitions.hasNext();) {
+                     .iterator();
+                 transitions.hasNext();) {
                 Transition transition = (Transition) transitions.next();
 
                 for (Iterator actions = transition.choiceActionList().iterator();
-                                actions.hasNext();) {
+                     actions.hasNext();) {
                     AbstractActionsAttribute action = (AbstractActionsAttribute) actions
-                                    .next();
+                        .next();
 
                     for (Iterator names = action.getDestinationNameList()
-                                                            .iterator();
-                                    names.hasNext();) {
+                             .iterator();
+                         names.hasNext();) {
                         String name = (String) names.next();
                         NamedObj object = action.getDestination(name);
 
@@ -438,13 +438,13 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                 }
 
                 for (Iterator actions = transition.commitActionList().iterator();
-                                actions.hasNext();) {
+                     actions.hasNext();) {
                     AbstractActionsAttribute action = (AbstractActionsAttribute) actions
-                                    .next();
+                        .next();
 
                     for (Iterator names = action.getDestinationNameList()
-                                                            .iterator();
-                                    names.hasNext();) {
+                             .iterator();
+                         names.hasNext();) {
                         String name = (String) names.next();
                         NamedObj object = action.getDestination(name);
 
@@ -590,7 +590,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         } catch (IllegalActionException ex) {
             // This exception should not occur.
             throw new InternalErrorException(
-                "TypedAtomicActor.newPort: Internal error: " + ex.getMessage());
+                    "TypedAtomicActor.newPort: Internal error: " + ex.getMessage());
         } finally {
             _workspace.doneWriting();
         }
@@ -605,7 +605,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
 
         if (director == null) {
             throw new IllegalActionException(this,
-                "Cannot create a receiver without a director.");
+                    "Cannot create a receiver without a director.");
         }
 
         return director.newReceiver();
@@ -621,7 +621,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *   of a transition already in this actor.
      */
     public ComponentRelation newRelation(String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         try {
             workspace().getWriteAccess();
 
@@ -701,7 +701,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         _identifierToPort.clear();
 
         for (Iterator inputPorts = inputPortList().iterator();
-                        inputPorts.hasNext();) {
+             inputPorts.hasNext();) {
             IOPort inPort = (IOPort) inputPorts.next();
             _setIdentifierToPort(inPort.getName(), inPort);
             _setIdentifierToPort(inPort.getName() + "_isPresent", inPort);
@@ -710,9 +710,9 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             for (int i = 0; i < inPort.getWidth(); i++) {
                 _setIdentifierToPort(inPort.getName() + "_" + i, inPort);
                 _setIdentifierToPort(inPort.getName() + "_" + i + "_isPresent",
-                    inPort);
+                        inPort);
                 _setIdentifierToPort(inPort.getName() + "_" + i + "Array",
-                    inPort);
+                        inPort);
             }
         }
 
@@ -805,11 +805,11 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             // Collect constraints from contained HasTypeConstraints
             // attributes.
             Iterator attributes = attributeList(HasTypeConstraints.class)
-                                                  .iterator();
+                .iterator();
 
             while (attributes.hasNext()) {
                 HasTypeConstraints typeableAttribute = (HasTypeConstraints) attributes
-                                .next();
+                    .next();
                 result.addAll(typeableAttribute.typeConstraintList());
             }
 
@@ -819,11 +819,11 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             while (transitionRelations.hasNext()) {
                 Relation tr = (Relation) transitionRelations.next();
                 attributes = tr.attributeList(HasTypeConstraints.class)
-                                           .iterator();
+                    .iterator();
 
                 while (attributes.hasNext()) {
                     HasTypeConstraints typeableAttribute = (HasTypeConstraints) attributes
-                                    .next();
+                        .next();
                     result.addAll(typeableAttribute.typeConstraintList());
                 }
             }
@@ -860,11 +860,11 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *   already on the state list.
      */
     protected void _addEntity(ComponentEntity entity)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         if (!(entity instanceof State)) {
             throw new IllegalActionException(this, entity,
-                "FSMActor can only contain entities that "
-                + "are instances of State.");
+                    "FSMActor can only contain entities that "
+                    + "are instances of State.");
         }
 
         super._addEntity(entity);
@@ -883,10 +883,10 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *   already on the contained transitions list.
      */
     protected void _addRelation(ComponentRelation relation)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         if (!(relation instanceof Transition)) {
             throw new IllegalActionException(this, relation,
-                "FSMActor can only contain instances of Transition.");
+                    "FSMActor can only contain instances of Transition.");
         }
 
         super._addRelation(relation);
@@ -904,7 +904,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  transition can not be evaluated.
      */
     protected List _checkTransition(List transitionList)
-        throws IllegalActionException {
+            throws IllegalActionException {
         LinkedList enabledTransitions = new LinkedList();
 
         Iterator transitionRelations = transitionList.iterator();
@@ -940,7 +940,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *   transition enabled and not all of them are nondeterministic.
      */
     protected Transition _chooseTransition(List transitionList)
-        throws IllegalActionException {
+            throws IllegalActionException {
         Transition result = null;
 
         List enabledTransitions = _checkTransition(transitionList);
@@ -955,9 +955,9 @@ public class FSMActor extends CompositeEntity implements TypedActor,
 
                 if (!enabledTransition.isNondeterministic()) {
                     throw new MultipleEnabledTransitionsException(currentState(),
-                        "Multiple enabled transitions found but not all"
-                        + " of them are nondeterministic. Transition "
-                        + enabledTransition.getName() + " is deterministic.");
+                            "Multiple enabled transitions found but not all"
+                            + " of them are nondeterministic. Transition "
+                            + enabledTransition.getName() + " is deterministic.");
                 }
             }
         }
@@ -1024,14 +1024,14 @@ public class FSMActor extends CompositeEntity implements TypedActor,
 
         if (_lastChosenTransition.destinationState() == null) {
             throw new IllegalActionException(this, _lastChosenTransition,
-                "The transition is enabled but does not have a "
-                + "destination state.");
+                    "The transition is enabled but does not have a "
+                    + "destination state.");
         }
 
         _currentState = _lastChosenTransition.destinationState();
 
         if ((_finalStateNames != null)
-                        && _finalStateNames.contains(_currentState.getName())) {
+                && _finalStateNames.contains(_currentState.getName())) {
             _reachedFinalState = true;
         }
 
@@ -1040,7 +1040,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         }
 
         BooleanToken resetToken = (BooleanToken) _lastChosenTransition.reset
-                        .getToken();
+            .getToken();
 
         if (resetToken.booleanValue()) {
             Actor[] actors = _currentState.getRefinement();
@@ -1049,7 +1049,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                 for (int i = 0; i < actors.length; ++i) {
                     if (_debugging) {
                         _debug(getFullName() + " initialize refinement: "
-                            + ((NamedObj) actors[i]).getName());
+                                + ((NamedObj) actors[i]).getName());
                     }
 
                     actors[i].initialize();
@@ -1073,7 +1073,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *   one of the states is not valid.
      */
     protected boolean _isRefinementOutput(IOPort port, int channel)
-        throws IllegalActionException {
+            throws IllegalActionException {
         TypedActor[] refinements = _currentState.getRefinement();
 
         if ((refinements == null) || (refinements.length == 0)) {
@@ -1129,14 +1129,14 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *   this actor.
      */
     protected void _readInputs(IOPort port, int channel)
-        throws IllegalActionException {
+            throws IllegalActionException {
         String portName = port.getName();
         String portChannelName = portName + "_" + channel;
 
         if (port.getContainer() != this) {
             throw new IllegalActionException(this, port,
-                "Cannot read inputs from port "
-                + "not contained by this FSMActor.");
+                    "Cannot read inputs from port "
+                    + "not contained by this FSMActor.");
         }
 
         if (!port.isInput()) {
@@ -1169,7 +1169,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
 
                 if (_debugging) {
                     _debug("---", port.getName(), "(" + channel + ") has ",
-                        token.toString());
+                            token.toString());
                 }
 
                 tokenListArray[channel].add(0, token);
@@ -1177,7 +1177,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
 
             if (_debugging) {
                 _debug("Total tokens available at port: " + port.getFullName()
-                    + "  ");
+                        + "  ");
             }
 
             // FIXME: The "portName_isPresent" is true if there
@@ -1189,9 +1189,9 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                 tokenListArray[channel].toArray(tokens);
 
                 _setInputTokenMap(portName + "_isPresent", port,
-                    BooleanToken.TRUE);
+                        BooleanToken.TRUE);
                 _setInputTokenMap(portChannelName + "_isPresent", port,
-                    BooleanToken.TRUE);
+                        BooleanToken.TRUE);
                 _setInputTokenMap(portName, port, tokens[0]);
                 _setInputTokenMap(portChannelName, port, tokens[0]);
 
@@ -1200,13 +1200,13 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                 _setInputTokenMap(portChannelName + "Array", port, arrayToken);
             } else {
                 _setInputTokenMap(portName + "_isPresent", port,
-                    BooleanToken.FALSE);
+                        BooleanToken.FALSE);
                 _setInputTokenMap(portChannelName + "_isPresent", port,
-                    BooleanToken.FALSE);
+                        BooleanToken.FALSE);
 
                 if (_debugging) {
                     _debug("---", port.getName(),
-                        "(" + channel + ") has no token.");
+                            "(" + channel + ") has no token.");
                 }
             }
         } else {
@@ -1305,7 +1305,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
 
                         for (int i = 0; i < actors.length; ++i) {
                             Iterator outports = actors[i].outputPortList()
-                                                                     .iterator();
+                                .iterator();
 
                             while (outports.hasNext()) {
                                 IOPort outport = (IOPort) outports.next();
@@ -1364,15 +1364,15 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     private void _init() {
         // Create a more reasonable default icon.
         _attachText("_iconDescription",
-            "<svg>\n" + "<rect x=\"-30\" y=\"-20\" width=\"60\" "
-            + "height=\"40\" style=\"fill:red\"/>\n"
-            + "<rect x=\"-28\" y=\"-18\" width=\"56\" "
-            + "height=\"36\" style=\"fill:lightgrey\"/>\n"
-            + "<ellipse cx=\"0\" cy=\"0\"" + " rx=\"15\" ry=\"10\"/>\n"
-            + "<circle cx=\"-15\" cy=\"0\""
-            + " r=\"5\" style=\"fill:white\"/>\n"
-            + "<circle cx=\"15\" cy=\"0\""
-            + " r=\"5\" style=\"fill:white\"/>\n" + "</svg>\n");
+                "<svg>\n" + "<rect x=\"-30\" y=\"-20\" width=\"60\" "
+                + "height=\"40\" style=\"fill:red\"/>\n"
+                + "<rect x=\"-28\" y=\"-18\" width=\"56\" "
+                + "height=\"36\" style=\"fill:lightgrey\"/>\n"
+                + "<ellipse cx=\"0\" cy=\"0\"" + " rx=\"15\" ry=\"10\"/>\n"
+                + "<circle cx=\"-15\" cy=\"0\""
+                + " r=\"5\" style=\"fill:white\"/>\n"
+                + "<circle cx=\"15\" cy=\"0\""
+                + " r=\"5\" style=\"fill:white\"/>\n" + "</svg>\n");
 
         try {
             initialStateName = new StringAttribute(this, "initialStateName");
@@ -1383,7 +1383,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         } catch (KernelException ex) {
             // This should never happen.
             throw new InternalErrorException("Constructor error "
-                + ex.getMessage());
+                    + ex.getMessage());
         }
 
         _identifierToPort = new HashMap();
@@ -1403,7 +1403,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     // the given port, and then set it's value in the _inputTokenMap
     // to the given token.
     private void _setInputTokenMap(String name, Port inputPort, Token token)
-        throws IllegalActionException {
+            throws IllegalActionException {
         _setIdentifierToPort(name, inputPort);
         _inputTokenMap.put(name, token);
     }
@@ -1412,14 +1412,14 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     // the given input port.  If the given identifier is already
     // associated with another port, then throw an exception.
     private void _setIdentifierToPort(String name, Port inputPort)
-        throws IllegalActionException {
+            throws IllegalActionException {
         Port previousPort = (Port) _identifierToPort.get(name);
 
         if ((previousPort != null) && (previousPort != inputPort)) {
             throw new IllegalActionException("Name conflict in finite state"
-                + " machine.  The identifier \"" + name
-                + "\" is associated with the port " + previousPort
-                + " and with the port " + inputPort);
+                    + " machine.  The identifier \"" + name
+                    + "\" is associated with the port " + previousPort
+                    + " and with the port " + inputPort);
         }
 
         _identifierToPort.put(name, inputPort);
@@ -1438,7 +1438,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
          *  exists with the given name, but cannot be evaluated.
          */
         public ptolemy.data.Token get(String name)
-            throws IllegalActionException {
+                throws IllegalActionException {
             // Check to see if it is something we refer to.
             Token token = (Token) _inputTokenMap.get(name);
 
@@ -1463,7 +1463,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
          *  exists with the given name, but cannot be evaluated.
          */
         public ptolemy.data.type.Type getType(String name)
-            throws IllegalActionException {
+                throws IllegalActionException {
             // Check to see if this is something we refer to.
             Port port = (Port) _identifierToPort.get(name);
 
@@ -1489,7 +1489,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
          *  exists with the given name, but cannot be evaluated.
          */
         public ptolemy.graph.InequalityTerm getTypeTerm(String name)
-            throws IllegalActionException {
+                throws IllegalActionException {
             // Check to see if this is something we refer to.
             Port port = (Port) _identifierToPort.get(name);
 

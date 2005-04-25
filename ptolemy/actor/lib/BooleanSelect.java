@@ -82,7 +82,7 @@ public class BooleanSelect extends TypedAtomicActor {
      *   an actor already in the container.
      */
     public BooleanSelect(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         trueInput = new TypedIOPort(this, "trueInput", true, false);
@@ -102,13 +102,13 @@ public class BooleanSelect extends TypedAtomicActor {
          *  and control.
          */
         _attachText("_iconDescription",
-            "<svg>\n" + "<rect x=\"-20\" y=\"-20\" "
-            + "width=\"40\" height=\"40\" " + "style=\"fill:white\"/>\n"
-            + "<text x=\"-17\" y=\"-3\" " + "style=\"font-size:14\">\n"
-            + "T \n" + "</text>\n" + "<text x=\"-17\" y=\"15\" "
-            + "style=\"font-size:14\">\n" + "F \n" + "</text>\n"
-            + "<text x=\"-5\" y=\"16\" " + "style=\"font-size:14\">\n" + "C \n"
-            + "</text>\n" + "</svg>\n");
+                "<svg>\n" + "<rect x=\"-20\" y=\"-20\" "
+                + "width=\"40\" height=\"40\" " + "style=\"fill:white\"/>\n"
+                + "<text x=\"-17\" y=\"-3\" " + "style=\"font-size:14\">\n"
+                + "T \n" + "</text>\n" + "<text x=\"-17\" y=\"15\" "
+                + "style=\"font-size:14\">\n" + "F \n" + "</text>\n"
+                + "<text x=\"-5\" y=\"16\" " + "style=\"font-size:14\">\n" + "C \n"
+                + "</text>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////

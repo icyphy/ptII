@@ -48,39 +48,39 @@ import java.util.Iterator;
 //// ApplyFunctionOverSequence
 
 /**
-Apply a function over one or more input sequences.
-This actor will collect tokens from each input port into arrays
-and, when enough input tokens have arrived, pass those arrays
-to the function specified either at the <i>function</i> parameter
-or the port.
-<p>
-To use this actor, create any number of input ports, add
-a parameter named <i>tokenConsumptionRate</i> to each input
-port, and set the value of this parameter to the number
-of tokens that you would like to be collected into an
-array for each function application. Also, create
-and set a parameter named <i>tokenProductionRate</i>
-in the output port.  (If <i>tokenConsumptionRate</i>
-or <i>tokenProductionRate</i> are not defined, then they
-will be assumed to have value one).
-Then define a function that takes as many array-valued
-arguments as there are input ports and returns an
-array-valued result. For example, the following function
-will compute the FFT of the input array using the FFT()
-function in the expression language:
-<pre>
+   Apply a function over one or more input sequences.
+   This actor will collect tokens from each input port into arrays
+   and, when enough input tokens have arrived, pass those arrays
+   to the function specified either at the <i>function</i> parameter
+   or the port.
+   <p>
+   To use this actor, create any number of input ports, add
+   a parameter named <i>tokenConsumptionRate</i> to each input
+   port, and set the value of this parameter to the number
+   of tokens that you would like to be collected into an
+   array for each function application. Also, create
+   and set a parameter named <i>tokenProductionRate</i>
+   in the output port.  (If <i>tokenConsumptionRate</i>
+   or <i>tokenProductionRate</i> are not defined, then they
+   will be assumed to have value one).
+   Then define a function that takes as many array-valued
+   arguments as there are input ports and returns an
+   array-valued result. For example, the following function
+   will compute the FFT of the input array using the FFT()
+   function in the expression language:
+   <pre>
    function(x:{double}) abs(FFT(x, 8))
-</pre>
-Note that if the <i>tokenConsumptionRate</i> of a port is
-changed during the execution of the model, the change is
-ignored until the next execution of the model.
+   </pre>
+   Note that if the <i>tokenConsumptionRate</i> of a port is
+   changed during the execution of the model, the change is
+   ignored until the next execution of the model.
 
-@author Steve Neuendorffer (Contributor: Edward A. Lee)
-@version $Id$
-@since Ptolemy II 4.1
-@Pt.ProposedRating Green (neuendor)
-@Pt.AcceptedRating Yellow (neuendor)
-@see ptolemy.actor.lib.hoc.ApplyFunction
+   @author Steve Neuendorffer (Contributor: Edward A. Lee)
+   @version $Id$
+   @since Ptolemy II 4.1
+   @Pt.ProposedRating Green (neuendor)
+   @Pt.AcceptedRating Yellow (neuendor)
+   @see ptolemy.actor.lib.hoc.ApplyFunction
 */
 public class ApplyFunctionOverSequence extends TypedAtomicActor {
     /** Construct an actor with the given container and name.
@@ -92,7 +92,7 @@ public class ApplyFunctionOverSequence extends TypedAtomicActor {
      *   actor with this name.
      */
     public ApplyFunctionOverSequence(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         output = new TypedIOPort(this, "output", false, true);
         function = new PortParameter(this, "function");
@@ -197,7 +197,7 @@ public class ApplyFunctionOverSequence extends TypedAtomicActor {
 
         if (type.getReturnType() instanceof ArrayType) {
             output.setTypeEquals(((ArrayType) type.getReturnType())
-                            .getElementType());
+                    .getElementType());
             _outputRate = DFUtilities.getTokenProductionRate(output);
         } else {
             output.setTypeEquals(type.getReturnType());

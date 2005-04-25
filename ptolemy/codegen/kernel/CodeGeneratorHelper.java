@@ -133,7 +133,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      *  @exception illegalActionException Subclasses may throw it.
      */
     public void generateFireCode(StringBuffer stream)
-        throws IllegalActionException {
+            throws IllegalActionException {
     }
 
     /** Return an empty string. Subclasses may extend this method to
@@ -154,7 +154,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      *  @exception IllegalActionException Subclasses may throw it.
      */
     public void generateWrapupCode(StringBuffer stream)
-        throws IllegalActionException {
+            throws IllegalActionException {
     }
 
     /** Return the buffer size of a given port, which is the maximum of
@@ -177,7 +177,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
             }
         } else {
             CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper((NamedObj) port
-                                .getContainer());
+                    .getContainer());
             bufferSize = actorHelper.getBufferSize(port);
         }
 
@@ -189,12 +189,12 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      *  @return The buffer size of the given port of this actor.
      */
     public int getBufferSize(IOPort port, int channelNumber)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (port.getContainer() == _component) {
             return ((int[]) _bufferSizes.get(port))[channelNumber];
         } else {
             CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper((NamedObj) port
-                                .getContainer());
+                    .getContainer());
             return actorHelper.getBufferSize(port, channelNumber);
         }
     }
@@ -239,7 +239,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
         if (attribute == null) {
             throw new IllegalActionException(_component,
-                "No attribute named: " + name);
+                    "No attribute named: " + name);
         }
 
         if (attribute instanceof Variable) {
@@ -253,7 +253,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         // FIXME: Are there any other values that a
         // parameter might have?
         throw new IllegalActionException(_component,
-            "Attribute does not have a value: " + name);
+                "Attribute does not have a value: " + name);
     }
 
     /** Return the reference to the specified parameter or port of the
@@ -275,9 +275,9 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         StringTokenizer tokenizer = new StringTokenizer(name, "#,", true);
 
         if ((tokenizer.countTokens() != 1) && (tokenizer.countTokens() != 3)
-                        && (tokenizer.countTokens() != 5)) {
+                && (tokenizer.countTokens() != 5)) {
             throw new IllegalActionException(_component,
-                "Reference not found: " + name);
+                    "Reference not found: " + name);
         }
 
         // Get the referenced name.
@@ -302,12 +302,12 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 }
 
                 if (!channelAndOffset[1].equals("")
-                                && (getBufferSize(port) > 1)) {
+                        && (getBufferSize(port) > 1)) {
                     String temp = "";
 
                     if (getOffset(port, channelNumber) instanceof Integer) {
                         int offset = ((Integer) getOffset(port, channelNumber))
-                                        .intValue();
+                            .intValue();
                         offset = offset
                             + (new Integer(channelAndOffset[1])).intValue();
                         offset = offset % getBufferSize(port, channelNumber);
@@ -335,7 +335,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
                     if (getOffset(port, channelNumber) instanceof Integer) {
                         int offset = ((Integer) getOffset(port, channelNumber))
-                                        .intValue();
+                            .intValue();
                         offset = offset % getBufferSize(port, channelNumber);
                         temp = new Integer(offset).toString();
                     } else {
@@ -396,16 +396,16 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                     int sinkPortBufferSize = getBufferSize(sinkPort);
 
                     if (!channelAndOffset[1].equals("")
-                                    && (getBufferSize(sinkPort) > 1)) {
+                            && (getBufferSize(sinkPort) > 1)) {
                         // Specified offset.
                         String temp = "";
 
                         if (getOffset(port, 0) instanceof Integer) {
                             int offset = ((Integer) (getOffset(port,
-                                    channelNumber))).intValue()
+                                                             channelNumber))).intValue()
                                 + (new Integer(channelAndOffset[1])).intValue();
                             offset = offset % getBufferSize(sinkPort,
-                                                sinkChannelNumber);
+                                    sinkChannelNumber);
                             temp = new Integer(offset).toString();
                         } else {
                             int modulo = getBufferSize(sinkPort,
@@ -424,9 +424,9 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
                         if (getOffset(port, channelNumber) instanceof Integer) {
                             int offset = ((Integer) getOffset(port, 0))
-                                            .intValue();
+                                .intValue();
                             offset = offset % getBufferSize(sinkPort,
-                                                sinkChannelNumber);
+                                    sinkChannelNumber);
                             temp = new Integer(offset).toString();
                         } else {
                             int modulo = getBufferSize(sinkPort,
@@ -457,7 +457,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
             if (!channelAndOffset[0].equals("")) {
                 throw new IllegalActionException(_component,
-                    "a parameter cannot have channel number.");
+                        "a parameter cannot have channel number.");
             }
 
             if (!channelAndOffset[1].equals("")) {
@@ -468,7 +468,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         }
 
         throw new IllegalActionException(_component,
-            "Reference not found: " + name);
+                "Reference not found: " + name);
     }
 
     /** Return a list that contains the parameters referenced in the code.
@@ -543,7 +543,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         }
 
         throw new IllegalActionException(_component,
-            "Attribute not found: " + name);
+                "Attribute not found: " + name);
     }
 
     /** Process the specified code, replacing macros with their values.
@@ -593,8 +593,8 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
             macro = macro.trim();
 
             if ((macro.equals("ref") || macro.equals("val")
-                            || macro.equals("actorSymbol")
-                            || macro.equals("size"))) {
+                        || macro.equals("actorSymbol")
+                        || macro.equals("size"))) {
                 String name = code.substring(openParenIndex + 1, closeParenIndex);
                 name = name.trim();
 
@@ -676,7 +676,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     ///////////////////////////////////////////////////////////////////
     ////                     protected methods.                    ////
     protected ComponentCodeGenerator _getHelper(NamedObj component)
-        throws IllegalActionException {
+            throws IllegalActionException {
         return _codeGenerator._getHelper(component);
     }
 
@@ -694,11 +694,11 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      *   given position of the string is not an open parenthesis.
      */
     private int _findCloseParen(String string, int pos)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (string.charAt(pos) != '(') {
             throw new IllegalActionException(_component,
-                "The character at index " + pos + " of string: " + string
-                + " is not a open parenthesis.");
+                    "The character at index " + pos + " of string: " + string
+                    + " is not a open parenthesis.");
         }
 
         int nextOpenParen = string.indexOf("(", pos + 1);
@@ -757,11 +757,11 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      *  specified in the given string is illegal.
      */
     private String[] _getChannelAndOffset(String name)
-        throws IllegalActionException {
+            throws IllegalActionException {
         String[] result = {
-                "",
-                ""
-            };
+            "",
+            ""
+        };
         StringTokenizer tokenizer = new StringTokenizer(name, "#,", true);
         tokenizer.nextToken();
 

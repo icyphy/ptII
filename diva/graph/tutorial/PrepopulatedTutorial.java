@@ -142,13 +142,13 @@ public class PrepopulatedTutorial {
      * be useful in some cases.
      */
     public void layoutPostDisplay(final MutableGraphModel model,
-        AppContext context) {
+            AppContext context) {
         final BasicGraphController bgc = new BasicGraphController();
         context.getContentPane().add(new JGraph(new GraphPane(bgc, model)));
         SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
                     RandomLayout random = new RandomLayout(new BasicLayoutTarget(
-                                bgc));
+                                                                   bgc));
                     random.layout(model.getRoot());
                 }
             });
@@ -162,8 +162,8 @@ public class PrepopulatedTutorial {
     public void setModelPostDisplay(MutableGraphModel model, AppContext context) {
         BasicGraphController gc = new BasicGraphController();
         gc.addGraphViewListener(new IncrementalLayoutListener(
-                new IncrLayoutAdapter(
-                    new LevelLayout(new BasicLayoutTarget(gc))), null));
+                                        new IncrLayoutAdapter(
+                                                new LevelLayout(new BasicLayoutTarget(gc))), null));
         context.getContentPane().add(new JGraph(new GraphPane(gc, model)));
     }
 }

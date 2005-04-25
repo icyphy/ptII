@@ -74,7 +74,7 @@ public class TextEditorTableauFactory extends TableauFactory
      *   an attribute already in the container.
      */
     public TextEditorTableauFactory(NamedObj container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         attributeName = new StringAttribute(this, "attributeName");
@@ -134,9 +134,9 @@ public class TextEditorTableauFactory extends TableauFactory
 
         if (!(attribute instanceof StringAttribute)) {
             throw new IllegalActionException(object,
-                "Expected " + object.getFullName()
-                + " to contain a StringAttribute named "
-                + attributeName.getExpression() + ", but it does not.");
+                    "Expected " + object.getFullName()
+                    + " to contain a StringAttribute named "
+                    + attributeName.getExpression() + ", but it does not.");
         }
 
         // effigy may already contain a texteffigy.
@@ -154,7 +154,7 @@ public class TextEditorTableauFactory extends TableauFactory
 
         // textEffigy may already have a tableau.
         Iterator tableaux = textEffigy.entityList(TextEditorTableau.class)
-                                                  .iterator();
+            .iterator();
 
         if (tableaux.hasNext()) {
             return (TextEditorTableau) tableaux.next();
@@ -164,7 +164,7 @@ public class TextEditorTableauFactory extends TableauFactory
         if (_editor == null) {
             int numberOfRows = ((IntToken) rowsDisplayed.getToken()).intValue();
             int numberOfColumns = ((IntToken) columnsDisplayed.getToken())
-                            .intValue();
+                .intValue();
             _editor = new TextEditorForStringAttributes(this,
                     (StringAttribute) attribute, numberOfRows, numberOfColumns,
                     "Editor for " + attributeName.getExpression() + " of "

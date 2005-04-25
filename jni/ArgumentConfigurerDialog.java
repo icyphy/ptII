@@ -75,9 +75,9 @@ public class ArgumentConfigurerDialog extends ComponentDialog
      *   help screen (or null if help is not supported).
      */
     public ArgumentConfigurerDialog(Frame owner, Entity target,
-        Configuration configuration) {
+            Configuration configuration) {
         super(owner, "Configure arguments for " + target.getName(),
-            new ArgumentConfigurer((GenericJNIActor) target), _moreButtons);
+                new ArgumentConfigurer((GenericJNIActor) target), _moreButtons);
 
         // Once we get to here, the dialog has already been dismissed.
         _configuration = configuration;
@@ -109,7 +109,7 @@ public class ArgumentConfigurerDialog extends ComponentDialog
 
             Query query = new Query();
             query.addChoice("delete", "Argument to delete", argumentNames,
-                null, false);
+                    null, false);
 
             ComponentDialog dialog = new ComponentDialog(_owner,
                     "Delete a argument for " + _target.getFullName(), query,
@@ -128,7 +128,7 @@ public class ArgumentConfigurerDialog extends ComponentDialog
                             ((GenericJNIActor) _target)._removeArgument(argument);
                         } catch (Exception e) {
                             MessageHandler.error("Unable to remove argument '"
-                                + argument + "'.", e);
+                                    + argument + "'.", e);
                         }
 
                         // The context for the MoML should be the first
@@ -157,7 +157,7 @@ public class ArgumentConfigurerDialog extends ComponentDialog
             if ((toRead != null) && (configuration != null)) {
                 try {
                     configuration.openModel(null, toRead,
-                        toRead.toExternalForm());
+                            toRead.toExternalForm());
                 } catch (Exception ex) {
                     MessageHandler.error("Help screen failure", ex);
                 }
@@ -230,8 +230,8 @@ public class ArgumentConfigurerDialog extends ComponentDialog
      *  @return The dialog that is created.
      */
     private ComponentDialog _openAddDialog(String message, String name,
-        String defValue, String cType)
-        throws IllegalActionException, NameDuplicationException {
+            String defValue, String cType)
+            throws IllegalActionException, NameDuplicationException {
         // Create a new dialog to add an argument, then open a new
         // ArgumentConfigurerDialog.
         //name = "new ";
@@ -245,7 +245,7 @@ public class ArgumentConfigurerDialog extends ComponentDialog
         _query.addLine(name + "Name", name + "Name", name);
         _query.addLine(name + "CType", name + "C or C++ Type", cType);
         _query.addSelectButtons(name + "Kind", name + "Kind", _optionsArray,
-            optionsDefault);
+                optionsDefault);
 
         ComponentDialog dialog = new ComponentDialog(_owner,
                 "Add a new argument to " + _target.getFullName(), _query, null);
@@ -258,7 +258,7 @@ public class ArgumentConfigurerDialog extends ComponentDialog
         String newKind = _query.getStringValue(name + "Kind");
 
         if (dialog.buttonPressed().equals("OK") && !newName.equals("")
-                        && !newCType.equals("") && !newKind.equals("")) {
+                && !newCType.equals("") && !newKind.equals("")) {
             //set name
             Argument argument = _target.getArgument(newName);
 
@@ -293,12 +293,12 @@ public class ArgumentConfigurerDialog extends ComponentDialog
     /** Button labels.
      */
     private static String[] _moreButtons = {
-            "Commit",
-            "Add",
-            "Remove",
-            "Help",
-            "Cancel"
-        };
+        "Commit",
+        "Add",
+        "Remove",
+        "Help",
+        "Cancel"
+    };
 
     /** The owner window.
      */
@@ -315,8 +315,8 @@ public class ArgumentConfigurerDialog extends ComponentDialog
     /** Possible configurations.
      */
     private String[] _optionsArray = {
-            "input",
-            "ouput",
-            "return"
-        };
+        "input",
+        "ouput",
+        "return"
+    };
 }

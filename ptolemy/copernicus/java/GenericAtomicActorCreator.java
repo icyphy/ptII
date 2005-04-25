@@ -75,7 +75,7 @@ public class GenericAtomicActorCreator implements AtomicActorCreator {
      *  necessary.  The given entity is assumed to be an expression actor.
      */
     public SootClass createAtomicActor(Entity actor, String newClassName,
-        ConstVariableModelAnalysis constAnalysis, Map options) {
+            ConstVariableModelAnalysis constAnalysis, Map options) {
         TypedAtomicActor entity = (TypedAtomicActor) actor;
 
         String className = entity.getClass().getName();
@@ -109,8 +109,8 @@ public class GenericAtomicActorCreator implements AtomicActorCreator {
         SootClass superClass = theClass.getSuperclass();
 
         while ((superClass != PtolemyUtilities.objectClass)
-                        && (superClass != PtolemyUtilities.actorClass)
-                        && (superClass != PtolemyUtilities.compositeActorClass)) {
+                && (superClass != PtolemyUtilities.actorClass)
+                && (superClass != PtolemyUtilities.compositeActorClass)) {
             superClass.setLibraryClass();
             SootUtilities.foldClass(theClass);
             superClass = theClass.getSuperclass();
@@ -128,7 +128,7 @@ public class GenericAtomicActorCreator implements AtomicActorCreator {
 
         try {
             classEntity = (Entity) ModelTransformer._findDeferredInstance(entity)
-                                                               .clone(null);
+                .clone(null);
 
             // The cloning process results an object that defers change
             // requests.  By default, we do not want to defer change
@@ -141,12 +141,12 @@ public class GenericAtomicActorCreator implements AtomicActorCreator {
         }
 
         ModelTransformer.updateCreatedSet(entity.getFullName(), classEntity,
-            classEntity, tempCreatedMap);
+                classEntity, tempCreatedMap);
 
         // Create methods that will compute and set the values of the
         // parameters of this actor.
         ModelTransformer.createAttributeComputationFunctions(entity, entity,
-            entityInstanceClass, constAnalysis);
+                entityInstanceClass, constAnalysis);
 
         {
             // replace the previous dummy body
@@ -160,18 +160,18 @@ public class GenericAtomicActorCreator implements AtomicActorCreator {
 
             // create attributes for those in the class
             ModelTransformer.createAttributes(body, entity, thisLocal, entity,
-                thisLocal, entityInstanceClass, tempCreatedMap);
+                    thisLocal, entityInstanceClass, tempCreatedMap);
 
             // Create and initialize ports
             ModelTransformer.createPorts(body, thisLocal, entity, thisLocal,
-                entity, entityInstanceClass, tempCreatedMap);
+                    entity, entityInstanceClass, tempCreatedMap);
 
             // Extra initialization necessary?
             Stmt insertPoint = Jimple.v().newNopStmt();
             body.getUnits().add(insertPoint);
 
             ModelTransformer.initializeAttributesBefore(body, insertPoint,
-                entity, thisLocal, entity, thisLocal, entityInstanceClass);
+                    entity, thisLocal, entity, thisLocal, entityInstanceClass);
 
             // return void
             units.add(Jimple.v().newReturnVoidStmt());
@@ -250,7 +250,7 @@ public class GenericAtomicActorCreator implements AtomicActorCreator {
 
     private static void _removeAttributeInitialization(SootClass theClass) {
         for (Iterator methods = theClass.getMethods().iterator();
-                        methods.hasNext();) {
+             methods.hasNext();) {
             SootMethod method = (SootMethod) methods.next();
 
             // Only do this in the constructor.  FIXME: should also
@@ -262,7 +262,7 @@ public class GenericAtomicActorCreator implements AtomicActorCreator {
             JimpleBody body = (JimpleBody) method.retrieveActiveBody();
 
             for (Iterator units = body.getUnits().snapshotIterator();
-                            units.hasNext();) {
+                 units.hasNext();) {
                 Stmt stmt = (Stmt) units.next();
 
                 if (!stmt.containsInvokeExpr()) {
@@ -279,20 +279,20 @@ public class GenericAtomicActorCreator implements AtomicActorCreator {
                 // This is Christopher gacking on Steve's code
                 // gack Christopher, gack.
                 if (r.getMethod().getName().equals("attributeChanged")
-                                || r.getMethod().getName().equals("setExpression")
-                                || r.getMethod().getName().equals("setToken")
-                                || r.getMethod().getName().equals("setTokenConsumptionRate")
-                                || r.getMethod().getName().equals("setTokenProductionRate")
-                                || r.getMethod().getName().equals("setTokenInitProduction")) {
+                        || r.getMethod().getName().equals("setExpression")
+                        || r.getMethod().getName().equals("setToken")
+                        || r.getMethod().getName().equals("setTokenConsumptionRate")
+                        || r.getMethod().getName().equals("setTokenProductionRate")
+                        || r.getMethod().getName().equals("setTokenInitProduction")) {
                     body.getUnits().remove(stmt);
                 }
 
                 if (r.getMethod().getSubSignature().equals(PtolemyUtilities.variableConstructorWithToken
-                                    .getSubSignature())) {
+                            .getSubSignature())) {
                     SootClass variableClass = r.getMethod().getDeclaringClass();
                     SootMethod constructorWithoutToken = variableClass
-                                    .getMethod(PtolemyUtilities.variableConstructorWithoutToken
-                                        .getSubSignature());
+                        .getMethod(PtolemyUtilities.variableConstructorWithoutToken
+                                .getSubSignature());
 
                     // Replace the three-argument
                     // constructor with a two-argument
@@ -313,9 +313,9 @@ public class GenericAtomicActorCreator implements AtomicActorCreator {
                     // Create a new two-argument constructor.
                     InstanceInvokeExpr expr = (InstanceInvokeExpr) r;
                     stmt.getInvokeExprBox().setValue(Jimple.v()
-                                                                       .newSpecialInvokeExpr((Local) expr
-                                        .getBase(), constructorWithoutToken,
-                                        r.getArg(0), r.getArg(1)));
+                            .newSpecialInvokeExpr((Local) expr
+                                    .getBase(), constructorWithoutToken,
+                                    r.getArg(0), r.getArg(1)));
                 }
             }
         }

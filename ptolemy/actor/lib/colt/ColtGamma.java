@@ -50,7 +50,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
    <p> This actor instantiates a
    <a href="http://hoschek.home.cern.ch/hoschek/colt/V1.0.3/doc/cern/jet/random/Gamma.html">cern.jet.random.Gamma</a> object with
-    double and lambda both set to 1.0.
+   double and lambda both set to 1.0.
 
    @author David Bauer and Kostas Oikonomou
    @version $Id$
@@ -68,7 +68,7 @@ public class ColtGamma extends ColtRandomSource {
      *   actor with this name.
      */
     public ColtGamma(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         output.setTypeEquals(BaseType.DOUBLE);

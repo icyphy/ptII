@@ -75,7 +75,7 @@ public class RemoveGraphicalClasses implements MoMLFilter {
      *  @return the filtered attributeValue.
      */
     public String filterAttributeValue(NamedObj container, String element,
-        String attributeName, String attributeValue) {
+            String attributeName, String attributeValue) {
         // If the nightly build is failing with messages like:
         // " X connection to foo:0 broken (explicit kill or server shutdown)."
         // Try uncommenting the next lines to see what is being
@@ -97,7 +97,7 @@ public class RemoveGraphicalClasses implements MoMLFilter {
      *  @param elementName The element name.
      */
     public void filterEndElement(NamedObj container, String elementName)
-        throws Exception {
+            throws Exception {
     }
 
     /** Remove a class to be filtered
@@ -150,7 +150,7 @@ public class RemoveGraphicalClasses implements MoMLFilter {
                 results.append(oldClassName + " will be removed\n");
             } else {
                 results.append(oldClassName + " will be replaced by "
-                    + newClassName + "\n");
+                        + newClassName + "\n");
             }
         }
 
@@ -178,43 +178,43 @@ public class RemoveGraphicalClasses implements MoMLFilter {
         // fails to run if substitute Attribute for NodeControllerFactory
         // so we set it to null instead.
         _graphicalClasses.put("ptolemy.vergil.toolbox.AnnotationEditorFactory",
-            "ptolemy.kernel.util.Attribute");
+                "ptolemy.kernel.util.Attribute");
         _graphicalClasses.put("ptolemy.vergil.toolbox.VisibleParameterEditorFactory",
-            "ptolemy.kernel.util.Attribute");
+                "ptolemy.kernel.util.Attribute");
         _graphicalClasses.put("ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory",
-            "ptolemy.kernel.util.Attribute");
+                "ptolemy.kernel.util.Attribute");
         _graphicalClasses.put("ptolemy.vergil.fsm.modal.ModalTableauFactory",
-            "ptolemy.kernel.util.Attribute");
+                "ptolemy.kernel.util.Attribute");
 
         // 4/04 BooleanSwitch uses EditorIcon
         _graphicalClasses.put("ptolemy.vergil.icon.EditorIcon", null);
 
         _graphicalClasses.put("ptolemy.vergil.kernel.attributes.EllipseAttribute",
-            null);
+                null);
 
         _graphicalClasses.put("ptolemy.vergil.kernel.attributes.FilledShapeAttribute",
-            null);
+                null);
 
         _graphicalClasses.put("ptolemy.vergil.kernel.attributes.IDAttribute",
-            null);
+                null);
 
         _graphicalClasses.put("ptolemy.vergil.kernel.attributes.ImageAttribute",
-            null);
+                null);
 
         _graphicalClasses.put("ptolemy.vergil.kernel.attributes.LineAttribute",
-            null);
+                null);
 
         _graphicalClasses.put("ptolemy.vergil.kernel.attributes.ShapeAttribute",
-            null);
+                null);
 
         _graphicalClasses.put("ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute",
-            null);
+                null);
 
         _graphicalClasses.put("ptolemy.vergil.kernel.attributes.RectangleAttribute",
-            null);
+                null);
 
         _graphicalClasses.put("ptolemy.vergil.kernel.attributes.TextAttribute",
-            null);
+                null);
 
         _graphicalClasses.put("ptolemy.vergil.basic.NodeControllerFactory", null);
         _graphicalClasses.put("ptolemy.vergil.icon.AttributeValueIcon", null);
@@ -227,7 +227,7 @@ public class RemoveGraphicalClasses implements MoMLFilter {
         // so remove the UpdatedValueIcon.
         _graphicalClasses.put("ptolemy.vergil.icon.UpdatedValueIcon", null);
         _graphicalClasses.put("ptolemy.vergil.icon.ValueIcon",
-            "ptolemy.kernel.util.Attribute");
+                "ptolemy.kernel.util.Attribute");
 
         // Generated applet from moml/demo/modulation.xml
         // fails to run if substitute Attribute for AnnotationEditorFactory
@@ -235,9 +235,9 @@ public class RemoveGraphicalClasses implements MoMLFilter {
         //_graphicalClasses.put("ptolemy.vergil.toolbox.AnnotationEditorFactory",
         //        "ptolemy.kernel.util.Attribute");
         _graphicalClasses.put("ptolemy.vergil.toolbox.AnnotationEditorFactory",
-            null);
+                null);
         _graphicalClasses.put("ptolemy.vergil.toolbox"
-            + ".VisibleParameterEditorFactory", "ptolemy.kernel.util.Attribute");
+                + ".VisibleParameterEditorFactory", "ptolemy.kernel.util.Attribute");
 
         // Shallow CG of actor/lib/test/auto/URLDirectoryReader3.xml fails
         // unless we remove CheckBoxStyle

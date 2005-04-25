@@ -45,7 +45,7 @@ public final class LayoutUtilities {
      * reroute its edges.
      */
     public static final void place(LayoutTarget target, Object node, double x,
-        double y) {
+            double y) {
         GraphModel model = target.getGraphModel();
         placeNoReroute(target, node, x, y);
 
@@ -73,10 +73,10 @@ public final class LayoutUtilities {
      * not reroute its edges.
      */
     public static final void placeNoReroute(LayoutTarget target, Object node,
-        double x, double y) {
+            double x, double y) {
         Rectangle2D bounds = target.getBounds(node);
         target.translate(node, x - (bounds.getWidth() / 2) - bounds.getX(),
-            y - (bounds.getHeight() / 2) - bounds.getY());
+                y - (bounds.getHeight() / 2) - bounds.getY());
     }
 
     /**
@@ -84,7 +84,7 @@ public final class LayoutUtilities {
      * layout.
      */
     public static final boolean checkConsistency(Object composite,
-        GraphModel model) {
+            GraphModel model) {
         if (!GraphUtilities.checkConsistency(composite, model)) {
             return false;
         }
@@ -97,7 +97,7 @@ public final class LayoutUtilities {
      * layout.
      */
     public static final boolean checkContainment(Object composite,
-        GraphModel model) {
+            GraphModel model) {
         if (!GraphUtilities.checkContainment(composite, model)) {
             return false;
         }
@@ -144,9 +144,9 @@ public final class LayoutUtilities {
      * them.
      */
     public static final void routeVisibleEdges(Object composite,
-        LayoutTarget target) {
+            LayoutTarget target) {
         for (Iterator i = GraphUtilities.localEdges(composite,
-                    target.getGraphModel()); i.hasNext();) {
+                     target.getGraphModel()); i.hasNext();) {
             Object edge = i.next();
 
             if (target.isEdgeVisible(edge)) {

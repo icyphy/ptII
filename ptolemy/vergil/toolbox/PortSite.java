@@ -160,7 +160,7 @@ public class PortSite extends AbstractSite {
 
         if (_cardinal == null) {
             if ((_port instanceof IOPort)
-                            && (((IOPort) _port).isInput() != ((IOPort) _port)
+                    && (((IOPort) _port).isInput() != ((IOPort) _port)
                             .isOutput())) {
                 // Port is an input or output only.
                 double offset = (bounds.getHeight() / 2.0)

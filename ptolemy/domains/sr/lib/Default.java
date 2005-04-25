@@ -59,7 +59,7 @@ import ptolemy.kernel.util.StringAttribute;
 
    @author Edward A. Lee
    @version $Id$
-@since Ptolemy II 4.1
+   @since Ptolemy II 4.1
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Red (cxh)
 */
@@ -74,7 +74,7 @@ public class Default extends TypedAtomicActor {
      *   an actor already in the container.
      */
     public Default(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         new Attribute(this, "_nonStrictMarker");
 

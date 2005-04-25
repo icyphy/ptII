@@ -69,7 +69,7 @@ public class NonStrictThreeBitAdder extends TypedAtomicActor {
      *   an actor already in the container.
      */
     public NonStrictThreeBitAdder(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         new Attribute(this, "_nonStrictMarker");
         inputBits = new TypedIOPort(this, "inputBits", true, false);
@@ -116,7 +116,7 @@ public class NonStrictThreeBitAdder extends TypedAtomicActor {
 
         if (width != 3) {
             throw new IllegalActionException(this,
-                "inputBits must have exactly 3 connected channels.");
+                    "inputBits must have exactly 3 connected channels.");
         }
 
         for (int i = 0; i < width; i++) {
@@ -128,7 +128,7 @@ public class NonStrictThreeBitAdder extends TypedAtomicActor {
 
                     if ((value != 0) && (value != 1)) {
                         throw new IllegalActionException(this,
-                            "Inputs can only be 0 or 1.");
+                                "Inputs can only be 0 or 1.");
                     }
 
                     if (value == 1) {

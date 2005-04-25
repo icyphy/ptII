@@ -65,7 +65,7 @@ public interface ParserScope {
      *  exists with the given name, but cannot be evaluated.
      */
     public ptolemy.data.type.Type getType(String name)
-        throws IllegalActionException;
+            throws IllegalActionException;
 
     /** Look up and return the type term for the specified name
      *  in the scope. Return null if the name is not defined in this
@@ -76,7 +76,7 @@ public interface ParserScope {
      *  exists with the given name, but cannot be evaluated.
      */
     public ptolemy.graph.InequalityTerm getTypeTerm(String name)
-        throws IllegalActionException;
+            throws IllegalActionException;
 
     /** Return a list of names corresponding to the identifiers
      *  defined by this scope.  If an identifier is returned in this

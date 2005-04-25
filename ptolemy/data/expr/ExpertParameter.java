@@ -66,7 +66,7 @@ public class ExpertParameter extends Parameter {
      *   a parameter already in the container.
      */
     public ExpertParameter(NamedObj container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         setVisibility(Settable.EXPERT);
     }

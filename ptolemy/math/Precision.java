@@ -110,7 +110,7 @@ public class Precision implements Cloneable, Serializable {
         // throw an exception
         if ((done == false) || (st.countTokens() < 1) || (st.countTokens() > 2)) {
             throw new IllegalArgumentException("The precision string "
-                + precision + " uses an incorrect " + "precision format");
+                    + precision + " uses an incorrect " + "precision format");
         }
 
         int first = 0;
@@ -122,8 +122,8 @@ public class Precision implements Cloneable, Serializable {
             second = (new Integer(st.nextToken())).intValue();
         } catch (Exception e) {
             throw new IllegalArgumentException("A precision string "
-                + " consists of two integers separated "
-                + " by a '/', or '.' token");
+                    + " consists of two integers separated "
+                    + " by a '/', or '.' token");
         }
 
         // Depending on the type, interpret the two values
@@ -141,7 +141,7 @@ public class Precision implements Cloneable, Serializable {
 
         if (_length <= 0) {
             throw new IllegalArgumentException("Incorrect definition of "
-                + "Precision. Do not use negative total length ");
+                    + "Precision. Do not use negative total length ");
         }
     }
 
@@ -153,10 +153,10 @@ public class Precision implements Cloneable, Serializable {
      *   total number of bits.
      */
     public Precision(int length, int integerBits)
-        throws IllegalArgumentException {
+            throws IllegalArgumentException {
         if (length <= 0) {
             throw new IllegalArgumentException("Incorrect definition of "
-                + "Precision. Do not use negative total length ");
+                    + "Precision. Do not use negative total length ");
         }
 
         _length = length;
@@ -183,7 +183,7 @@ public class Precision implements Cloneable, Serializable {
             Precision other = (Precision) object;
 
             if ((other._fraction == _fraction)
-                            && (other._integerBits == _integerBits)) {
+                    && (other._integerBits == _integerBits)) {
                 return true;
             }
         }
@@ -258,7 +258,7 @@ public class Precision implements Cloneable, Serializable {
      *  @return A precision at least as precise as the two arguments.
      */
     public static Precision matchThePoint(Precision precisionA,
-        Precision precisionB) {
+            Precision precisionB) {
         int bitright = Math.max(precisionA.getFractionBitLength(),
                 precisionB.getFractionBitLength());
         int newIntLength = Math.max(precisionA.getIntegerBitLength(),

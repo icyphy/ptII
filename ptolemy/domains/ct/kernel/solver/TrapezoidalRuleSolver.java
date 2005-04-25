@@ -130,7 +130,7 @@ public class TrapezoidalRuleSolver extends ODESolver {
             _recalculatingWithTwoSteps = false;
             _firstStep = true;
             director.setModelTime(director.getModelTime().add(director
-                                .getCurrentStepSize()));
+                                          .getCurrentStepSize()));
         }
 
         if (_isConverged()) {
@@ -187,7 +187,7 @@ public class TrapezoidalRuleSolver extends ODESolver {
      *  read input, or send output.
      */
     public void integratorFire(CTBaseIntegrator integrator)
-        throws IllegalActionException {
+            throws IllegalActionException {
         CTDirector director = (CTDirector) getContainer();
         double h = director.getCurrentStepSize();
         double tentativeState;
@@ -263,25 +263,25 @@ public class TrapezoidalRuleSolver extends ODESolver {
         double tolerance = director.getErrorTolerance();
         double[] k = integrator.getAuxVariables();
         double localError = (1.0 / 3.0) * Math.abs(integrator.getTentativeState()
-                            - k[0]);
+                - k[0]);
         integrator.setAuxVariables(1, localError);
 
         if (_debugging) {
             _debug("Integrator: " + integrator.getName()
-                + " local truncation error = " + localError);
+                    + " local truncation error = " + localError);
         }
 
         if (localError < tolerance) {
             if (_debugging) {
                 _debug("Integrator: " + integrator.getName()
-                    + " report a success.");
+                        + " report a success.");
             }
 
             return true;
         } else {
             if (_debugging) {
                 _debug("Integrator: " + integrator.getName()
-                    + " reports a failure.");
+                        + " reports a failure.");
             }
 
             return false;
@@ -307,12 +307,12 @@ public class TrapezoidalRuleSolver extends ODESolver {
 
         if ((localError / tolerance) < 0.1) {
             newh = h * Math.min(2,
-                                Math.pow(((3.0 * tolerance) / localError),
-                                    1.0 / 3.0));
+                    Math.pow(((3.0 * tolerance) / localError),
+                            1.0 / 3.0));
         }
 
         _debug("integrator: " + integrator.getName()
-            + " suggests next step size = " + newh);
+                + " suggests next step size = " + newh);
         return newh;
     }
 

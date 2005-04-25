@@ -72,7 +72,7 @@ public class LiveSoundActor extends TypedAtomicActor
      *   actor with this name.
      */
     public LiveSoundActor(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         sampleRate = new Parameter(this, "sampleRate", new IntToken(8000));
@@ -134,7 +134,7 @@ public class LiveSoundActor extends TypedAtomicActor
      *   allowed.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         try {
             if (attribute == transferSize) {
                 // The size of the array (in samples per channel) to pass
@@ -142,7 +142,7 @@ public class LiveSoundActor extends TypedAtomicActor
                 _transferSize = ((IntToken) transferSize.getToken()).intValue();
 
                 if (!_isExecuting
-                                && (LiveSound.getTransferSize() != _transferSize)) {
+                        && (LiveSound.getTransferSize() != _transferSize)) {
                     LiveSound.setTransferSize(_transferSize);
                 }
             } else if (attribute == channels) {
@@ -150,9 +150,9 @@ public class LiveSoundActor extends TypedAtomicActor
 
                 if (channelsInt < 1) {
                     throw new IllegalActionException(this,
-                        "Attempt to set channels parameter to an illegal "
-                        + "value of: " + channelsInt
-                        + " . The value must be a " + "positive integer.");
+                            "Attempt to set channels parameter to an illegal "
+                            + "value of: " + channelsInt
+                            + " . The value must be a " + "positive integer.");
                 }
 
                 // Only set the channels if it is different than
@@ -166,17 +166,17 @@ public class LiveSoundActor extends TypedAtomicActor
                 // Only set the sample rate if it is different than
                 // the currently active sample rate.
                 if (!_isExecuting
-                                && (LiveSound.getSampleRate() != sampleRateInt)) {
+                        && (LiveSound.getSampleRate() != sampleRateInt)) {
                     LiveSound.setSampleRate(sampleRateInt);
                 }
             } else if (attribute == bitsPerSample) {
                 int bitsPerSampleInt = ((IntToken) bitsPerSample.getToken())
-                                .intValue();
+                    .intValue();
 
                 // Only set the bitsPerSample if it is different than
                 // the currently active bitsPerSample.
                 if (!_isExecuting
-                                && (LiveSound.getBitsPerSample() != bitsPerSampleInt)) {
+                        && (LiveSound.getBitsPerSample() != bitsPerSampleInt)) {
                     LiveSound.setBitsPerSample(bitsPerSampleInt);
                 }
             }
@@ -185,8 +185,8 @@ public class LiveSoundActor extends TypedAtomicActor
             return;
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
-                "Cannot perform audio playback "
-                + "with the specified parameter values.");
+                    "Cannot perform audio playback "
+                    + "with the specified parameter values.");
         }
     }
 
@@ -216,7 +216,7 @@ public class LiveSoundActor extends TypedAtomicActor
 
                 // Get the current value of this actor's sampleRate parameter.
                 int thisActorSampleRate = ((IntToken) sampleRate.getToken())
-                                .intValue();
+                    .intValue();
 
                 // Only set the sampleRate parameter if it is different from
                 // the new sample rate.
@@ -229,7 +229,7 @@ public class LiveSoundActor extends TypedAtomicActor
 
                 // Get the current value of this actor's sampleRate parameter.
                 int thisActorChannels = ((IntToken) channels.getToken())
-                                .intValue();
+                    .intValue();
 
                 // Only set the channels parameter if it is different from
                 // the new channels.
@@ -243,7 +243,7 @@ public class LiveSoundActor extends TypedAtomicActor
                 // Get the current value of this actor's bitsPerSample
                 // parameter.
                 int thisActorBitsPerSample = ((IntToken) bitsPerSample.getToken())
-                                .intValue();
+                    .intValue();
 
                 // Only set the channels parameter if it is different from
                 // the new channels.
@@ -253,7 +253,7 @@ public class LiveSoundActor extends TypedAtomicActor
             }
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(
-                "Error responding to audio parameter change. " + ex);
+                    "Error responding to audio parameter change. " + ex);
         }
     }
 
@@ -278,7 +278,7 @@ public class LiveSoundActor extends TypedAtomicActor
      *  bits per sample, channels or buffer size.
      */
     protected synchronized void _initializeAudio()
-        throws IllegalActionException, IOException {
+            throws IllegalActionException, IOException {
         // Initialize audio.
         _transferSize = ((IntToken) transferSize.getToken()).intValue();
         _channels = ((IntToken) channels.getToken()).intValue();

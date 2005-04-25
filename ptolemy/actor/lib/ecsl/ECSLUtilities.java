@@ -62,7 +62,7 @@ public class ECSLUtilities {
      *  @exception Exception If there is a problem with the transformation.
      */
     public static void ECSLToMoML(String input, FileWriter fileWriter)
-        throws Exception {
+            throws Exception {
         // This method takes a FileWriter so that the user can
         // ensure that the FileWriter exists and is writable before going
         // through the trouble of doing the conversion.
@@ -84,7 +84,7 @@ public class ECSLUtilities {
      *  @exception Exception If there is a problem with the transformation.
      */
     public static void ECSLToMoML(String input, String output)
-        throws Exception {
+            throws Exception {
         // This method makes it much easier to test the conversion,
         FileWriter fileWriter = null;
 
@@ -110,8 +110,8 @@ public class ECSLUtilities {
     public static void main(String[] args) throws Exception {
         if (args.length != 2) {
             System.err.println("Usage: java -classpath $PTII "
-                + "ptolemy.actor.lib.ecsl.ECSLUtilities ECSLInputFile "
-                + "MoMLOutputFile");
+                    + "ptolemy.actor.lib.ecsl.ECSLUtilities ECSLInputFile "
+                    + "MoMLOutputFile");
             System.exit(2);
         } else {
             ECSLToMoML(args[0], args[1]);

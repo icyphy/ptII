@@ -103,7 +103,7 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
      *   actor with this name.
      */
     public DirectoryListing(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // Tell the file browser to allow only selection of directories.
@@ -182,16 +182,16 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
      *   is <i>URL</i> and the file cannot be opened.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == pattern) {
             try {
                 _pattern = Pattern.compile(pattern.stringValue());
             } catch (PatternSyntaxException ex) {
                 String patternValue = ((StringToken) pattern.getToken())
-                                .stringValue();
+                    .stringValue();
                 throw new IllegalActionException(this, ex,
-                    "Failed to compile regular expression \"" + patternValue
-                    + "\"");
+                        "Failed to compile regular expression \"" + patternValue
+                        + "\"");
             }
         }
 
@@ -215,9 +215,9 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
         }
 
         boolean directoriesOnly = ((BooleanToken) listOnlyDirectories.getToken())
-                        .booleanValue();
+            .booleanValue();
         boolean filesOnly = ((BooleanToken) listOnlyFiles.getToken())
-                        .booleanValue();
+            .booleanValue();
 
         if (sourceURL.getProtocol().equals("file")) {
             File sourceFile = directoryOrURL.asFile();
@@ -252,7 +252,7 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
 
                 if (result.size() == 0) {
                     throw new IllegalActionException(this,
-                        "No files or directories that match the pattern.");
+                            "No files or directories that match the pattern.");
                 }
 
                 StringToken[] resultArray = new StringToken[result.size()];
@@ -268,20 +268,20 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
 
                 if (_debugging) {
                     _debug("Listing just the specified file: "
-                        + result[0].stringValue());
+                            + result[0].stringValue());
                 }
 
                 output.broadcast(new ArrayToken(result));
             } else {
                 throw new IllegalActionException("'" + directoryOrURL
-                    + "' is neither a file " + "nor a directory.");
+                        + "' is neither a file " + "nor a directory.");
             }
         } else {
             try {
                 _readURL(sourceURL);
             } catch (IOException ex) {
                 throw new IllegalActionException(this, ex,
-                    "Error reading the URL \'" + directoryOrURL + "\'.");
+                        "Error reading the URL \'" + directoryOrURL + "\'.");
             }
         }
     }
@@ -293,7 +293,7 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
      *  @param sourceURL The source URL.
      */
     private void _readURL(URL sourceURL)
-        throws IOException, IllegalActionException {
+            throws IOException, IllegalActionException {
         // Handle urls here.
         if (_debugging) {
             _debug("Reading URL: " + sourceURL);
@@ -303,11 +303,11 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
         String contentType = urlConnection.getContentType();
 
         if (!contentType.startsWith("text/html")
-                        && !contentType.startsWith("text/plain")) {
+                && !contentType.startsWith("text/plain")) {
             throw new IllegalActionException(this,
-                "Could not parse '" + directoryOrURL.stringValue()
-                + "'; it is not \"text/html\", " + "or \"text/plain\", it is: "
-                + urlConnection.getContentType());
+                    "Could not parse '" + directoryOrURL.stringValue()
+                    + "'; it is not \"text/html\", " + "or \"text/plain\", it is: "
+                    + urlConnection.getContentType());
         }
 
         List resultsList = new LinkedList();
@@ -315,16 +315,16 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
 
         try {
             in = new BufferedReader(new InputStreamReader(
-                        urlConnection.getInputStream()));
+                                            urlConnection.getInputStream()));
 
             if (!contentType.startsWith("text/plain")
-                            && !urlConnection.getURL().toString().endsWith("/")) {
+                    && !urlConnection.getURL().toString().endsWith("/")) {
                 // text/plain urls need not end with /, but
                 // text/html urls _must_ end with / since the web server
                 // will rewrite them for us.
                 throw new IllegalActionException(this,
-                    "Could not parse '" + directoryOrURL.stringValue()
-                    + "'; it needs to end with '/'");
+                        "Could not parse '" + directoryOrURL.stringValue()
+                        + "'; it needs to end with '/'");
             }
 
             // Parse the contents in a haphazard fashion.
@@ -381,7 +381,7 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
                                             if (accept(null, target)) {
                                                 // Make sure directoryOrURL ends with a slash.
                                                 String base = directoryOrURL
-                                                                .stringValue();
+                                                    .stringValue();
 
                                                 if (!base.endsWith("/")) {
                                                     base = base + "/";
@@ -390,7 +390,7 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
                                                 // FIXME: Is there any way to tell whether
                                                 // the result is a directory or file?
                                                 resultsList.add(new StringToken(base
-                                                        + target));
+                                                                        + target));
                                             }
 
                                             sawHREF = false;
@@ -421,7 +421,7 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
 
         StringToken[] results = new StringToken[resultsList.size()];
         output.broadcast(new ArrayToken(
-                (StringToken[]) (resultsList.toArray(results))));
+                                 (StringToken[]) (resultsList.toArray(results))));
     }
 
     ///////////////////////////////////////////////////////////////////

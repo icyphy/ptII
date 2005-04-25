@@ -38,16 +38,16 @@ import java.io.IOException;
 /**
 
 
- @author Thomas Feng
- @version $Id$
- @since Ptolemy II 5.1
- @Pt.ProposedRating Red (tfeng)
- @Pt.AcceptedRating Red (tfeng)
- */
+@author Thomas Feng
+@version $Id$
+@since Ptolemy II 5.1
+@Pt.ProposedRating Red (tfeng)
+@Pt.AcceptedRating Red (tfeng)
+*/
 public class ClassFileLoader extends ClassLoader {
 
     public Class loadClass(File classFile) throws FileNotFoundException,
-             IOException, LinkageError, ClassNotFoundException {
+            IOException, LinkageError, ClassNotFoundException {
         FileInputStream inputStream = new FileInputStream(classFile);
         byte[] buffer = new byte[inputStream.available()];
         inputStream.read(buffer);

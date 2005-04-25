@@ -82,7 +82,7 @@ public class DECQEventQueue implements DEEventQueue {
      *  @param isAdaptive If the queue changes its number of bins at run time.
      */
     public DECQEventQueue(Director director, int minBinCount,
-        int binCountFactor, boolean isAdaptive) {
+            int binCountFactor, boolean isAdaptive) {
         _director = director;
 
         try {
@@ -233,7 +233,7 @@ public class DECQEventQueue implements DEEventQueue {
             // If it is larger than what can be represented
             // in 64 bits, then the returned result will be wrapped.
             return (((DEEvent) event).timeStamp()
-                                 .subtract(_zeroReference.timeStamp())).divide(_binWidth
+                    .subtract(_zeroReference.timeStamp())).divide(_binWidth
                             .timeStamp());
         }
 
@@ -263,9 +263,9 @@ public class DECQEventQueue implements DEEventQueue {
 
                 Time[] diff = new Time[entryArray.length - 1];
                 Time average = (((DEEvent) entryArray[entryArray.length - 1]).timeStamp()
-                                             .subtract(((DEEvent) entryArray[0])
-                                    .timeStamp())).divide((long) (entryArray.length
-                        - 1));
+                        .subtract(((DEEvent) entryArray[0])
+                                .timeStamp())).divide((long) (entryArray.length
+                                                              - 1));
                 Time zero = new Time(_director, 0.0);
                 Time effectiveAverage = zero;
                 int effectiveSamples = 0;
@@ -276,8 +276,8 @@ public class DECQEventQueue implements DEEventQueue {
 
                 for (int i = 0; i < (entryArray.length - 1); ++i) {
                     diff[i] = ((DEEvent) entryArray[i + 1]).timeStamp()
-                                           .subtract(((DEEvent) entryArray[i])
-                                        .timeStamp());
+                        .subtract(((DEEvent) entryArray[i])
+                                .timeStamp());
 
                     if (diff[i].compareTo(average.add(average)) < 0) {
                         effectiveSamples++;

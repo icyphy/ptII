@@ -85,19 +85,19 @@ public class CastAndInstanceofEliminator extends BodyTransformer {
 
         if (debug) {
             System.out.println("CastAndInstanceofEliminator.internalTransform("
-                + b.getMethod() + phaseName + ")");
+                    + b.getMethod() + phaseName + ")");
         }
 
         eliminateCastsAndInstanceOf(body, phaseName, new HashSet(), debug);
     }
 
     public static void eliminateCastsAndInstanceOf(Body body, String phaseName,
-        Set unsafeLocalSet, boolean debug) {
+            Set unsafeLocalSet, boolean debug) {
         for (Iterator units = body.getUnits().iterator(); units.hasNext();) {
             Unit unit = (Unit) units.next();
 
             for (Iterator boxes = unit.getUseBoxes().iterator();
-                            boxes.hasNext();) {
+                 boxes.hasNext();) {
                 ValueBox box = (ValueBox) boxes.next();
                 Value value = box.getValue();
 
@@ -160,7 +160,7 @@ public class CastAndInstanceofEliminator extends BodyTransformer {
                     }
 
                     replaceInstanceofCheck(box, hierarchy, checkType, opType,
-                        debug);
+                            debug);
                 }
             }
         }
@@ -174,7 +174,7 @@ public class CastAndInstanceofEliminator extends BodyTransformer {
      *  with a false constant.
      */
     public static void replaceInstanceofCheck(ValueBox box,
-        Hierarchy hierarchy, Type checkType, Type opType, boolean debug) {
+            Hierarchy hierarchy, Type checkType, Type opType, boolean debug) {
         RefType checkRef;
         RefType opRef;
 
@@ -182,14 +182,14 @@ public class CastAndInstanceofEliminator extends BodyTransformer {
             checkRef = (RefType) checkType;
             opRef = (RefType) opType;
         } else if (checkType instanceof ArrayType
-                        && opType instanceof ArrayType) {
+                && opType instanceof ArrayType) {
             if (((ArrayType) checkType).numDimensions != ((ArrayType) opType).numDimensions) {
                 // We know the answer is false.
                 box.setValue(IntConstant.v(0));
 
                 if (debug) {
                     System.out.println("Replacing " + box.getValue()
-                        + " with false.");
+                            + " with false.");
                 }
 
                 return;
@@ -224,11 +224,11 @@ public class CastAndInstanceofEliminator extends BodyTransformer {
         if (checkClass.isInterface()) {
             if (opClass.isInterface()) {
                 if (hierarchy.isInterfaceSubinterfaceOf(opClass, checkClass)
-                                || opClass.equals(checkClass)) {
+                        || opClass.equals(checkClass)) {
                     // Then we know the instanceof will be true.
                     if (debug) {
                         System.out.println("Replacing " + box.getValue()
-                            + " with true.");
+                                + " with true.");
                     }
 
                     box.setValue(IntConstant.v(1));
@@ -241,7 +241,7 @@ public class CastAndInstanceofEliminator extends BodyTransformer {
                     // Then we know the instanceof will be true.
                     if (debug) {
                         System.out.println("Replacing " + box.getValue()
-                            + " with true.");
+                                + " with true.");
                     }
 
                     box.setValue(IntConstant.v(1));
@@ -253,7 +253,7 @@ public class CastAndInstanceofEliminator extends BodyTransformer {
                     boolean foundOne = false;
 
                     for (Iterator implementors = implementorList.iterator();
-                                    implementors.hasNext() && !foundOne;) {
+                         implementors.hasNext() && !foundOne;) {
                         SootClass implementor = (SootClass) implementors.next();
 
                         if (hierarchy.getSuperclassesOf(implementor).contains(opClass)) {
@@ -264,7 +264,7 @@ public class CastAndInstanceofEliminator extends BodyTransformer {
                     if (!foundOne) {
                         if (debug) {
                             System.out.println("Replacing " + box.getValue()
-                                + " with false.");
+                                    + " with false.");
                         }
 
                         box.setValue(IntConstant.v(0));
@@ -279,18 +279,18 @@ public class CastAndInstanceofEliminator extends BodyTransformer {
                     // Then we know the instanceof will be true.
                     if (debug) {
                         System.out.println("Replacing " + box.getValue()
-                            + " with true.");
+                                + " with true.");
                     }
 
                     box.setValue(IntConstant.v(1));
                 } else if (!hierarchy.isClassSuperclassOfIncluding(opClass,
-                                    checkClass)) {
+                                   checkClass)) {
                     // Then we know the instanceof will be false,
                     // because no subclass of opClass can suddenly
                     // become a subclass of checkClass.
                     if (debug) {
                         System.out.println("Replacing " + box.getValue()
-                            + " with false.");
+                                + " with false.");
                     }
 
                     box.setValue(IntConstant.v(0));
@@ -305,7 +305,7 @@ public class CastAndInstanceofEliminator extends BodyTransformer {
      *  then replace with an assignment.
      */
     public static void replaceCast(ValueBox box, Hierarchy hierarchy,
-        Type checkType, Value op, Type opType, boolean debug) {
+            Type checkType, Value op, Type opType, boolean debug) {
         RefType checkRef;
         RefType opRef;
 
@@ -313,7 +313,7 @@ public class CastAndInstanceofEliminator extends BodyTransformer {
             checkRef = (RefType) checkType;
             opRef = (RefType) opType;
         } else if (checkType instanceof ArrayType
-                        && opType instanceof ArrayType) {
+                && opType instanceof ArrayType) {
             if (((ArrayType) checkType).numDimensions != ((ArrayType) opType).numDimensions) {
                 // We know the cast is necessary
                 return;
@@ -348,7 +348,7 @@ public class CastAndInstanceofEliminator extends BodyTransformer {
         if (checkClass.isInterface()) {
             if (opClass.isInterface()) {
                 if (hierarchy.isInterfaceSubinterfaceOf(opClass, checkClass)
-                                || opClass.equals(checkClass)) {
+                        || opClass.equals(checkClass)) {
                     // Then we know the instanceof will be true.
                     if (debug) {
                         System.out.println("Replacing " + "with assignment.");
@@ -382,7 +382,7 @@ public class CastAndInstanceofEliminator extends BodyTransformer {
 
                     box.setValue(op);
                 } else if (!hierarchy.isClassSuperclassOfIncluding(opClass,
-                                    checkClass)) {
+                                   checkClass)) {
                     // Then we know the instanceof will be false,
                     // because no subclass of opClass can suddenly
                     // become a subclass of checkClass.

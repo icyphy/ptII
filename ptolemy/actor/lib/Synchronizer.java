@@ -63,7 +63,7 @@ public class Synchronizer extends Transformer {
      *   an actor already in the container.
      */
     public Synchronizer(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input.setMultiport(true);
         output.setMultiport(true);
@@ -84,8 +84,8 @@ public class Synchronizer extends Transformer {
 
         if (inWidth != outWidth) {
             throw new IllegalActionException(this,
-                "Unequal synchronizer channels: " + inWidth + " inputs and "
-                + outWidth + " outputs.");
+                    "Unequal synchronizer channels: " + inWidth + " inputs and "
+                    + outWidth + " outputs.");
         } else {
             for (int i = 0; i < inWidth; i++) {
                 output.send(i, input.get(i));

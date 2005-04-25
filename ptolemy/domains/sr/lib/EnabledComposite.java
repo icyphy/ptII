@@ -59,7 +59,7 @@ import java.util.Iterator;
  *
  * @author Edward A. Lee
  * @version $Id$
-@since Ptolemy II 4.1
+ @since Ptolemy II 4.1
  * @Pt.ProposedRating Yellow (eal)
  * @Pt.AcceptedRating Red (cxh)
  */
@@ -74,7 +74,7 @@ public class EnabledComposite extends TypedCompositeActor {
      *   an actor already in the container.
      */
     public EnabledComposite(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // NOTE: this might be non-strict because it may
@@ -119,16 +119,16 @@ public class EnabledComposite extends TypedCompositeActor {
             // Do nothing, which will leave the outputs unknown.
             if (_debugging) {
                 _debug("enabled port status is not known: "
-                    + "prefire() returns false.");
+                        + "prefire() returns false.");
             }
 
             return false;
         } else if (!enable.hasToken(0)
-                        || !((BooleanToken) enable.get(0)).booleanValue()) {
+                || !((BooleanToken) enable.get(0)).booleanValue()) {
             // Not enabled. Clear outputs.
             if (_debugging) {
                 _debug("Not enabled: prefire() sets all outputs "
-                    + "to absent and returns false.");
+                        + "to absent and returns false.");
             }
 
             Iterator ports = outputPortList().iterator();

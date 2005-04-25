@@ -60,7 +60,7 @@ public class MultiplyDivide extends CCodeGeneratorHelper {
      * @param stream the given buffer to append the code to
      */
     public void generateFireCode(StringBuffer stream)
-        throws IllegalActionException {
+            throws IllegalActionException {
         ptolemy.actor.lib.MultiplyDivide actor = (ptolemy.actor.lib.MultiplyDivide) getComponent();
         StringBuffer tmpStream = new StringBuffer();
         tmpStream.append("$ref(output) = ");

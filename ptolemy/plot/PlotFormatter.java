@@ -77,18 +77,18 @@ public class PlotFormatter extends JPanel {
         _wideQuery.addLine("ylabel", "Y Label", _originalYLabel);
         _originalXRange = plot.getXRange();
         _wideQuery.addLine("xrange", "X Range",
-            "" + _originalXRange[0] + ", " + _originalXRange[1]);
+                "" + _originalXRange[0] + ", " + _originalXRange[1]);
         _originalYRange = plot.getYRange();
         _wideQuery.addLine("yrange", "Y Range",
-            "" + _originalYRange[0] + ", " + _originalYRange[1]);
+                "" + _originalYRange[0] + ", " + _originalYRange[1]);
 
         String[] marks = {
-                "none",
-                "points",
-                "dots",
-                "various",
-                "pixels"
-            };
+            "none",
+            "points",
+            "dots",
+            "various",
+            "pixels"
+        };
         _originalMarks = "none";
 
         if (plot instanceof Plot) {
@@ -152,7 +152,7 @@ public class PlotFormatter extends JPanel {
             _narrowQuery.addCheckBox("stems", "Stems", _originalStems);
             _saveConnected();
             _narrowQuery.addCheckBox("connected", "Connect",
-                ((Plot) plot).getConnected());
+                    ((Plot) plot).getConnected());
         }
 
         _originalColor = plot.getColor();
@@ -187,7 +187,7 @@ public class PlotFormatter extends JPanel {
                         _plot.setYLabel(_wideQuery.getStringValue("ylabel"));
                     } else if (name.equals("xrange")) {
                         _plot.read("XRange: "
-                            + _wideQuery.getStringValue("xrange"));
+                                + _wideQuery.getStringValue("xrange"));
                     } else if (name.equals("xticks")) {
                         String spec = _wideQuery.getStringValue("xticks").trim();
                         _plot.read("XTicks: " + spec);
@@ -214,10 +214,10 @@ public class PlotFormatter extends JPanel {
                         // }
                     } else if (name.equals("yrange")) {
                         _plot.read("YRange: "
-                            + _wideQuery.getStringValue("yrange"));
+                                + _wideQuery.getStringValue("yrange"));
                     } else if (name.equals("marks")) {
                         ((Plot) _plot).setMarksStyle(_wideQuery.getStringValue(
-                                "marks"));
+                                                             "marks"));
                     }
 
                     _plot.repaint();
@@ -230,7 +230,7 @@ public class PlotFormatter extends JPanel {
                         _plot.setGrid(_narrowQuery.getBooleanValue("grid"));
                     } else if (name.equals("stems")) {
                         ((Plot) _plot).setImpulses(_narrowQuery.getBooleanValue(
-                                "stems"));
+                                                           "stems"));
                         _plot.repaint();
                     } else if (name.equals("color")) {
                         _plot.setColor(_narrowQuery.getBooleanValue("color"));
@@ -300,9 +300,9 @@ public class PlotFormatter extends JPanel {
      */
     public void openModal() {
         String[] buttons = {
-                "Apply",
-                "Cancel"
-            };
+            "Apply",
+            "Cancel"
+        };
 
         // NOTE: If the plot is in a top-level container that is a Frame
         // (as opposed to an applet), then tell the dialog that the Frame

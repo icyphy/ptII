@@ -14,7 +14,7 @@ abstract public class pushConsumerHelper {
     private static String _id = "IDL:CorbaIOUtil/pushConsumer:1.0";
 
     public static void insert(org.omg.CORBA.Any a,
-        ptolemy.actor.corba.CorbaIOUtil.pushConsumer that) {
+            ptolemy.actor.corba.CorbaIOUtil.pushConsumer that) {
         org.omg.CORBA.portable.OutputStream out = a.create_output_stream();
         a.type(type());
         write(out, that);
@@ -22,7 +22,7 @@ abstract public class pushConsumerHelper {
     }
 
     public static ptolemy.actor.corba.CorbaIOUtil.pushConsumer extract(
-        org.omg.CORBA.Any a) {
+            org.omg.CORBA.Any a) {
         return read(a.create_input_stream());
     }
 
@@ -31,7 +31,7 @@ abstract public class pushConsumerHelper {
     synchronized public static org.omg.CORBA.TypeCode type() {
         if (__typeCode == null) {
             __typeCode = org.omg.CORBA.ORB.init().create_interface_tc(ptolemy.actor.corba.CorbaIOUtil.pushConsumerHelper
-                                .id(), "pushConsumer");
+                    .id(), "pushConsumer");
         }
 
         return __typeCode;
@@ -42,17 +42,17 @@ abstract public class pushConsumerHelper {
     }
 
     public static ptolemy.actor.corba.CorbaIOUtil.pushConsumer read(
-        org.omg.CORBA.portable.InputStream istream) {
+            org.omg.CORBA.portable.InputStream istream) {
         return narrow(istream.read_Object(_pushConsumerStub.class));
     }
 
     public static void write(org.omg.CORBA.portable.OutputStream ostream,
-        ptolemy.actor.corba.CorbaIOUtil.pushConsumer value) {
+            ptolemy.actor.corba.CorbaIOUtil.pushConsumer value) {
         ostream.write_Object((org.omg.CORBA.Object) value);
     }
 
     public static ptolemy.actor.corba.CorbaIOUtil.pushConsumer narrow(
-        org.omg.CORBA.Object obj) {
+            org.omg.CORBA.Object obj) {
         if (obj == null) {
             return null;
         } else if (obj instanceof ptolemy.actor.corba.CorbaIOUtil.pushConsumer) {
@@ -61,7 +61,7 @@ abstract public class pushConsumerHelper {
             throw new org.omg.CORBA.BAD_PARAM();
         } else {
             org.omg.CORBA.portable.Delegate delegate = ((org.omg.CORBA.portable.ObjectImpl) obj)
-                            ._get_delegate();
+                ._get_delegate();
             ptolemy.actor.corba.CorbaIOUtil._pushConsumerStub stub = new ptolemy.actor.corba.CorbaIOUtil._pushConsumerStub();
             stub._set_delegate(delegate);
             return stub;

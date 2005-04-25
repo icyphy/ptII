@@ -146,8 +146,8 @@ public class Copernicus {
 
         if (_modelPath == null) {
             throw new RuntimeException("No model found in command line "
-                + "arguments.\nRun 'copernicus -help' for information "
-                + "on command line arguments.");
+                    + "arguments.\nRun 'copernicus -help' for information "
+                    + "on command line arguments.");
         }
 
         // Parse the model.
@@ -180,7 +180,7 @@ public class Copernicus {
 
         // See if we are redirecting the output.
         StringParameter output = (StringParameter) _generatorAttribute
-                        .getAttribute("output");
+            .getAttribute("output");
 
         if ((output != null) && (output.getToken() != null)) {
             String fileName = output.stringValue();
@@ -215,7 +215,7 @@ public class Copernicus {
      *  @return The command to run the generated code.
      */
     public static String commandToRun(GeneratorAttribute generatorAttribute)
-        throws Exception {
+            throws Exception {
         String runCommandTemplateFile = generatorAttribute.getParameter(
                 "runCommandTemplateFile");
         return substitute(runCommandTemplateFile, generatorAttribute);
@@ -229,7 +229,7 @@ public class Copernicus {
      *  the generated code.
      */
     public static void compileAndRun(CompositeActor model,
-        GeneratorAttribute generatorAttribute) throws Exception {
+            GeneratorAttribute generatorAttribute) throws Exception {
         // Save the _generatorAttribute in a temporary file and then
         // add an attribute to _generatorAttribute that lists the
         // location of the temporary file.
@@ -251,8 +251,8 @@ public class Copernicus {
         // having backward slashes in attributes causes TokenMgrErrors
         // while reading in a model.
         new Parameter(generatorAttribute, "generatorAttributeFileName",
-            new StringToken(StringUtilities.substitute(
-                    generatorAttributeFileName, "\\", "/")));
+                new StringToken(StringUtilities.substitute(
+                                        generatorAttributeFileName, "\\", "/")));
 
         int exitValue = 1;
         String compile = generatorAttribute.getParameter("compile");
@@ -287,7 +287,7 @@ public class Copernicus {
 
             Class codeGeneratorClass = Class.forName(codeGeneratorClassName);
             KernelMain codeGenerator = (KernelMain) codeGeneratorClass
-                            .newInstance();
+                .newInstance();
 
             // Compile the model.
             codeGenerator.compile(model.getName(), model, generatorAttribute);
@@ -301,8 +301,8 @@ public class Copernicus {
 
             if (exitValue != 0) {
                 throw new Exception("Problem executing command. "
-                    + "Return value was: " + exitValue + ". Command was:\n"
-                    + command);
+                        + "Return value was: " + exitValue + ". Command was:\n"
+                        + command);
             }
         }
     }
@@ -319,7 +319,7 @@ public class Copernicus {
     public static int executeCommand(String command) throws Exception {
         if ((command == null) || (command.length() == 0)) {
             System.out.println("Warning, null or 0 length command string "
-                + "passed to Copernicus.executeCommand()");
+                    + "passed to Copernicus.executeCommand()");
             return 0;
         }
 
@@ -327,9 +327,9 @@ public class Copernicus {
 
         if (commands.length == 0) {
             System.out.println("Warning, command was parsed to 0 tokens, "
-                + "perhaps the command string was empty or "
-                + "consisted only of comments?\n" + "command string was '"
-                + command + "'");
+                    + "perhaps the command string was empty or "
+                    + "consisted only of comments?\n" + "command string was '"
+                    + command + "'");
             return 0;
         }
 
@@ -341,7 +341,7 @@ public class Copernicus {
 
         if (commands.length > 0) {
             System.out.println("        \"" + commands[commands.length - 1]
-                + "\"");
+                    + "\"");
         }
 
         System.out.flush();
@@ -357,11 +357,11 @@ public class Copernicus {
 
             // Set up a Thread to read in any error messages
             _StreamReaderThread errorGobbler = new _StreamReaderThread(process
-                                .getErrorStream(), System.err);
+                    .getErrorStream(), System.err);
 
             // Set up a Thread to read in any output messages
             _StreamReaderThread outputGobbler = new _StreamReaderThread(process
-                                .getInputStream(), System.out);
+                    .getInputStream(), System.out);
 
             // Start up the Threads
             errorGobbler.start();
@@ -397,7 +397,7 @@ public class Copernicus {
      *  @see java.io.File#createTempFile(java.lang.String, java.lang.String, java.io.File)
      */
     public static String exportMoMLToTemporaryFile(NamedObj namedObj)
-        throws Exception {
+            throws Exception {
         File temporaryFile = File.createTempFile("ptCopernicus", ".xml");
         temporaryFile.deleteOnExit();
 
@@ -448,7 +448,7 @@ public class Copernicus {
      *  argument, and each value is the value of the Parameter.
      */
     public static HashMap newMap(NamedObj namedObj)
-        throws IllegalActionException {
+            throws IllegalActionException {
         HashMap substituteMap = new HashMap();
         Iterator attributes = namedObj.attributeList().iterator();
 
@@ -489,7 +489,7 @@ public class Copernicus {
      *  the BufferedReader.
      */
     public static BufferedReader openAsFileOrURL(String inputFileName)
-        throws FileNotFoundException, IOException {
+            throws FileNotFoundException, IOException {
         BufferedReader inputFile;
 
         try {
@@ -497,14 +497,14 @@ public class Copernicus {
         } catch (IOException ex) {
             // Try it as a resource
             URL inputFileURL = Thread.currentThread().getContextClassLoader()
-                                                 .getResource(inputFileName);
+                .getResource(inputFileName);
 
             if (inputFileURL == null) {
                 throw ex;
             }
 
             inputFile = new BufferedReader(new InputStreamReader(
-                        inputFileURL.openStream()));
+                                                   inputFileURL.openStream()));
         }
 
         return inputFile;
@@ -528,7 +528,7 @@ public class Copernicus {
      *  @exception IllegalActionException If the model cannot be parsed.
      */
     public CompositeActor readInModel(String modelPathOrURL)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         URL modelURL = null;
 
         try {
@@ -542,7 +542,7 @@ public class Copernicus {
 
             if (modelURL == null) {
                 throw new IllegalActionException(null, ex,
-                    "Failed to parse '" + modelPathOrURL + "'");
+                        "Failed to parse '" + modelPathOrURL + "'");
             }
         }
 
@@ -568,7 +568,7 @@ public class Copernicus {
 
         // shallow/test/IIRGUI.xml has a GeneratorTableauAttribute in it.
         removeGraphicalClasses.put("ptolemy.copernicus.gui.GeneratorTableauAttribute",
-            null);
+                null);
 
         // FIXME: If this is Deep codegen, then don't use Test, use CGTest
         // because Test has a SharedParameter
@@ -592,8 +592,8 @@ public class Copernicus {
             toplevel = (CompositeActor) _parser.parse(modelURL, modelURL);
         } catch (Exception ex) {
             throw new IllegalActionException(null, ex,
-                "Failed to parse '" + modelPathOrURL
-                + "' as a top level model in \n" + modelURL + "!");
+                    "Failed to parse '" + modelPathOrURL
+                    + "' as a top level model in \n" + modelURL + "!");
         }
 
         // If the name of the toplevel is the empty string, change it to
@@ -654,7 +654,7 @@ public class Copernicus {
      *  @return The contents of inputFileName after doing the substitutions
      */
     public static String substitute(String inputFileName, NamedObj namedObj)
-        throws FileNotFoundException, IOException {
+            throws FileNotFoundException, IOException {
         Map substituteMap;
 
         try {
@@ -669,15 +669,15 @@ public class Copernicus {
         }
 
         URL inputFileURL = Thread.currentThread().getContextClassLoader()
-                                             .getResource(inputFileName);
+            .getResource(inputFileName);
 
         if (inputFileURL == null) {
             throw new FileNotFoundException("Failed to find '" + inputFileName
-                + "' as a resource");
+                    + "' as a resource");
         }
 
         BufferedReader inputReader = new BufferedReader(new InputStreamReader(
-                    inputFileURL.openStream()));
+                                                                inputFileURL.openStream()));
         String inputLine;
         StringBuffer output = new StringBuffer();
         String lineSeparator = System.getProperty("line.separator");
@@ -701,9 +701,9 @@ public class Copernicus {
      *  @see #substitute(String, Map, String)
      */
     public static void substitute(BufferedReader inputFile, Map substituteMap,
-        String outputFileName) throws FileNotFoundException, IOException {
+            String outputFileName) throws FileNotFoundException, IOException {
         PrintWriter outputFile = new PrintWriter(new BufferedWriter(
-                    new FileWriter(outputFileName)));
+                                                         new FileWriter(outputFileName)));
         String inputLine;
 
         while ((inputLine = inputFile.readLine()) != null) {
@@ -725,7 +725,7 @@ public class Copernicus {
      *  @see #substitute(BufferedReader, Map, String)
      */
     public static void substitute(String inputFileName, Map substituteMap,
-        String outputFileName) throws FileNotFoundException, IOException {
+            String outputFileName) throws FileNotFoundException, IOException {
         BufferedReader inputFile = openAsFileOrURL(inputFileName);
         substitute(inputFile, substituteMap, outputFileName);
     }
@@ -756,8 +756,8 @@ public class Copernicus {
             _verbose = true;
         } else if (arg.equals("-version")) {
             System.out.println("Version "
-                + VersionAttribute.CURRENT_VERSION.getExpression()
-                + ", Build $Id$");
+                    + VersionAttribute.CURRENT_VERSION.getExpression()
+                    + ", Build $Id$");
 
             // NOTE: This means the test suites cannot test -version
             System.exit(0);
@@ -786,8 +786,8 @@ public class Copernicus {
                 if (arg.trim().startsWith("-")) {
                     if (i >= (args.length - 1)) {
                         throw new IllegalActionException("Cannot set "
-                            + "parameter " + arg + " when no value is "
-                            + "given.");
+                                + "parameter " + arg + " when no value is "
+                                + "given.");
                     }
 
                     // Save in case this is a parameter name and value.
@@ -797,7 +797,7 @@ public class Copernicus {
                 } else {
                     // Unrecognized option.
                     throw new IllegalActionException("Unrecognized option: "
-                        + arg);
+                            + arg);
                 }
             }
         }
@@ -835,7 +835,7 @@ public class Copernicus {
             if (!match) {
                 // Unrecognized option.
                 throw new IllegalActionException("Unrecognized option: "
-                    + "No parameter exists with name " + name);
+                        + "No parameter exists with name " + name);
             }
         }
     }
@@ -859,14 +859,14 @@ public class Copernicus {
     /** Return a string containing the usage */
     private String _usage() {
         StringBuffer usage = new StringBuffer(StringUtilities.usageString(
-                    _commandTemplate, _commandOptions, _commandFlags));
+                                                      _commandTemplate, _commandOptions, _commandFlags));
 
         try {
             NamedObj namedObj = new NamedObj();
             usage.append(
-                "\n\nThe following attributes of the code generator can\n"
-                + "be set.  For example '-codeGenerator java' means\n"
-                + "to use the java code generator\n\n");
+                    "\n\nThe following attributes of the code generator can\n"
+                    + "be set.  For example '-codeGenerator java' means\n"
+                    + "to use the java code generator\n\n");
 
             _generatorAttribute = new GeneratorAttribute(namedObj,
                     GENERATOR_NAME);
@@ -889,59 +889,59 @@ public class Copernicus {
 
     /** The command-line options that are either present or not. */
     protected String[] _commandFlags = {
-            "-help: Print this help information\n",
-            "-test: Smoke test the code generator by killing after 2 seconds.\n",
-            "-verbose: Show verbose execution information.\n",
-            "-version: Show version information.\n",
-        };
+        "-help: Print this help information\n",
+        "-test: Smoke test the code generator by killing after 2 seconds.\n",
+        "-verbose: Show verbose execution information.\n",
+        "-version: Show version information.\n",
+    };
 
     /** The command-line options that take arguments. */
     protected String[][] _commandOptions = {
-            {
-                "-<parameter name>",
-                "<parameter value>"
-            },
-        };
+        {
+            "-<parameter name>",
+            "<parameter value>"
+        },
+    };
 
     /** The form of the command line. */
     protected String _commandTemplate =
-        "\ncopernicus [options . . .] [relative xml filename]\n"
-        + "This command used to generate code from a model.\n"
-        + "This command is very complex, see $PTII/doc/codegen.htm for details\n\n"
-        + "This command does command line argument substitution by reading\n"
-        + "template files and then executes a subprocess that that does\n"
-        + "the code generation.\n"
-        + "This command parses the given model file (specified as a file name,\n"
-        + " a URL or a resource) and generates code for the model\n"
-        + "based on a large number of configuration parameters.\n"
-        + "If the model contains an instance of the GeneratorAttribute class\n"
-        + "then the configuration parameters are taken from that instance.\n"
-        + "If the model does not contain an instance of the GeneratorAttribute\n"
-        + "class, then default parameters are taken from the moml file in\n"
-        + "$PTII/ptolemy/copernicus/kernel/Generator.xml.\n"
-        + "In any case, those parameters may be overridden by command line\n"
-        + "options of the form: -<option> <value>.\n\n"
-        + "The most significant configuration option is the\n"
-        + "-codeGenerator option which is used to select which code\n"
-        + "generator is used.  The default value is 'java', which means\n"
-        + "that the code generator class at ptolemy.copernicus.java.Main.java\n"
-        + "is used to generate code.\n"
-        + "-codeGenerator can have the following values:\n"
-        + "   applet         Generate a html files containing an applet version.\n"
-        + "   c              Generate C code version.\n"
-        + "   interpreted    Generate interpreted version of the model\n"
-        + "                    Similar to 'Save As, used primary for testing.\n"
-        + "   java           Generate a deep Java version that uses very\n"
-        + "                    few classes from Ptolemy.\n"
-        + "   jhdl           Generate a JDHL version (requires JHDL).\n"
-        + "   shallow        Generate a shallow Java version that uses many\n"
-        + "                   classes from Ptolemy.\n" + "\nExample usage:\n"
-        + "    copernicus ~/ptII/ptolemy/domains/sdf/demo/OrthogonalCom/OrthogonalCom.xml\n"
-        + "(The model is loaded relative to your home directory and the java deep code generator is used.)\n"
-        + "    copernicus -codeGenerator shallow ptolemy/domains/sdf/demo/OrthogonalCom/OrthogonalCom.xml\n"
-        + "(The model is loaded relative to the classpath and the shallow code generator is used.)\n"
-        + "    copernicus -codeGenerator c http://c:/users/neuendor/ptII/ptolemy/domains/sdf/demo/OrthogonalCom/OrthogonalCom.xml\n"
-        + "(The model is loaded from the given URL (which happens to refer to the local file system, and the c code generator is used.)\n";
+    "\ncopernicus [options . . .] [relative xml filename]\n"
+    + "This command used to generate code from a model.\n"
+    + "This command is very complex, see $PTII/doc/codegen.htm for details\n\n"
+    + "This command does command line argument substitution by reading\n"
+    + "template files and then executes a subprocess that that does\n"
+    + "the code generation.\n"
+    + "This command parses the given model file (specified as a file name,\n"
+    + " a URL or a resource) and generates code for the model\n"
+    + "based on a large number of configuration parameters.\n"
+    + "If the model contains an instance of the GeneratorAttribute class\n"
+    + "then the configuration parameters are taken from that instance.\n"
+    + "If the model does not contain an instance of the GeneratorAttribute\n"
+    + "class, then default parameters are taken from the moml file in\n"
+    + "$PTII/ptolemy/copernicus/kernel/Generator.xml.\n"
+    + "In any case, those parameters may be overridden by command line\n"
+    + "options of the form: -<option> <value>.\n\n"
+    + "The most significant configuration option is the\n"
+    + "-codeGenerator option which is used to select which code\n"
+    + "generator is used.  The default value is 'java', which means\n"
+    + "that the code generator class at ptolemy.copernicus.java.Main.java\n"
+    + "is used to generate code.\n"
+    + "-codeGenerator can have the following values:\n"
+    + "   applet         Generate a html files containing an applet version.\n"
+    + "   c              Generate C code version.\n"
+    + "   interpreted    Generate interpreted version of the model\n"
+    + "                    Similar to 'Save As, used primary for testing.\n"
+    + "   java           Generate a deep Java version that uses very\n"
+    + "                    few classes from Ptolemy.\n"
+    + "   jhdl           Generate a JDHL version (requires JHDL).\n"
+    + "   shallow        Generate a shallow Java version that uses many\n"
+    + "                   classes from Ptolemy.\n" + "\nExample usage:\n"
+    + "    copernicus ~/ptII/ptolemy/domains/sdf/demo/OrthogonalCom/OrthogonalCom.xml\n"
+    + "(The model is loaded relative to your home directory and the java deep code generator is used.)\n"
+    + "    copernicus -codeGenerator shallow ptolemy/domains/sdf/demo/OrthogonalCom/OrthogonalCom.xml\n"
+    + "(The model is loaded relative to the classpath and the shallow code generator is used.)\n"
+    + "    copernicus -codeGenerator c http://c:/users/neuendor/ptII/ptolemy/domains/sdf/demo/OrthogonalCom/OrthogonalCom.xml\n"
+    + "(The model is loaded from the given URL (which happens to refer to the local file system, and the c code generator is used.)\n";
 
     /** If true, then auto exit after a few seconds. */
     protected static boolean _test = false;
@@ -977,7 +977,7 @@ public class Copernicus {
 
                 while ((line = bufferedReader.readLine()) != null) {
                     _stream.println( /*prefix + */
-                        line);
+                            line);
                 }
             } catch (IOException ioe) {
                 System.out.flush();

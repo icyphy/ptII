@@ -80,7 +80,7 @@ public class MicaActor extends PtinyOSActor {
      *   an actor already in the container.
      */
     public MicaActor(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // Photo input port.
@@ -150,7 +150,7 @@ public class MicaActor extends PtinyOSActor {
     // TOS_ADC_VOLTAGE_PORT = 7,  defined this in hardware.h
     TOS_ADC_MAG_Y_PORT = 8,
     };
-     */
+    */
 
     /** LED output ports
      */

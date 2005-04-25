@@ -95,7 +95,7 @@ import java.util.List;
    @Pt.AcceptedRating Red (cxh)
 */
 public class SetVariable extends TypedAtomicActor implements ChangeListener,
-    ExplicitChangeContext {
+                                                             ExplicitChangeContext {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -105,7 +105,7 @@ public class SetVariable extends TypedAtomicActor implements ChangeListener,
      *   actor with this name.
      */
     public SetVariable(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         input = new TypedIOPort(this, "input", true, false);
@@ -281,8 +281,8 @@ public class SetVariable extends TypedAtomicActor implements ChangeListener,
             ((Settable) variable).validate();
         } else {
             throw new IllegalActionException(SetVariable.this,
-                "Cannot set the value of the variable " + "named: "
-                + variableName.getExpression());
+                    "Cannot set the value of the variable " + "named: "
+                    + variableName.getExpression());
         }
     }
 }

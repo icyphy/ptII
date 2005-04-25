@@ -60,7 +60,7 @@ public class AddSubtract extends CCodeGeneratorHelper {
      * @param stream the given buffer to append the code to
      */
     public void generateFireCode(StringBuffer stream)
-        throws IllegalActionException {
+            throws IllegalActionException {
         ptolemy.actor.lib.AddSubtract actor = (ptolemy.actor.lib.AddSubtract) getComponent();
         StringBuffer tmpStream = new StringBuffer();
         tmpStream.append("$ref(output) = ");

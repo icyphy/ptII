@@ -50,7 +50,7 @@ import ptolemy.actor.TypedAtomicActor;
 */
 public class CSPFactory implements DDIFactory {
     public DDI create(TypedAtomicActor ptActor, Actor actor, Context context,
-        Environment env) {
+            Environment env) {
         return new CSP(ptActor, actor, context, env);
     }
 

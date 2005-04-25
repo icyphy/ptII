@@ -66,7 +66,7 @@ public class Scale2D extends GRTransform2D {
      *   actor with this name.
      */
     public Scale2D(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         initialScaleFactorX = new Parameter(this, "initialScaleFactorX",
@@ -108,14 +108,14 @@ public class Scale2D extends GRTransform2D {
      *  throws such an exception.
      */
     protected void _applyInitialTransform(Figure figure)
-        throws IllegalActionException {
+            throws IllegalActionException {
         _oldScaleFactorX = ((DoubleToken) initialScaleFactorX.getToken())
-                        .doubleValue();
+            .doubleValue();
         _oldScaleFactorY = ((DoubleToken) initialScaleFactorY.getToken())
-                        .doubleValue();
+            .doubleValue();
 
         figure.transform(AffineTransform.getScaleInstance(_oldScaleFactorX,
-                _oldScaleFactorY));
+                                 _oldScaleFactorY));
     }
 
     /** Apply the current scaling transformation to the figure.

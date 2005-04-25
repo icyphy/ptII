@@ -37,12 +37,12 @@ import ptolemy.backtrack.ast.TypeAnalyzerState;
 /**
 
 
- @author Thomas Feng
- @version $Id$
- @since Ptolemy II 5.1
- @Pt.ProposedRating Red (tfeng)
- @Pt.AcceptedRating Red (tfeng)
- */
+@author Thomas Feng
+@version $Id$
+@since Ptolemy II 5.1
+@Pt.ProposedRating Red (tfeng)
+@Pt.AcceptedRating Red (tfeng)
+*/
 public interface MethodDeclarationHandler {
 
     public void enter(MethodDeclaration node, TypeAnalyzerState state);

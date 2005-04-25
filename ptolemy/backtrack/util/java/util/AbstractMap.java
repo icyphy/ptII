@@ -159,9 +159,9 @@ public abstract class AbstractMap implements Map, Rollbackable {
         private FieldRecord $RECORD$value = new FieldRecord(0);
 
         private FieldRecord[] $RECORDS = new FieldRecord[] {
-                $RECORD$key,
-                $RECORD$value
-            };
+            $RECORD$key,
+            $RECORD$value
+        };
     }
 
     protected Set getKeys() {
@@ -241,149 +241,149 @@ public abstract class AbstractMap implements Map, Rollbackable {
         if (keys == null)
             $ASSIGN$keys(new AbstractSet() {
 
-                public int size() {
-                    return AbstractMap.this.size();
-                }
+                    public int size() {
+                        return AbstractMap.this.size();
+                    }
 
-                public boolean contains(Object key) {
-                    return containsKey(key);
-                }
+                    public boolean contains(Object key) {
+                        return containsKey(key);
+                    }
 
-                public Iterator iterator() {
-                    return new Iterator() {
+                    public Iterator iterator() {
+                        return new Iterator() {
 
-                        private final Iterator map_iterator = entrySet().iterator();
+                                private final Iterator map_iterator = entrySet().iterator();
 
-                        public boolean hasNext() {
-                            return map_iterator.hasNext();
-                        }
-
-                        public Object next() {
-                            return ((Map.Entry)map_iterator.next()).getKey();
-                        }
-
-                        public void remove() {
-                            map_iterator.remove();
-                        }
-
-                        final class _PROXY_ implements Rollbackable {
-
-                            public final void $COMMIT(long timestamp) {
-                                $COMMIT_ANONYMOUS(timestamp);
-                            }
-
-                            public final void $RESTORE(long timestamp, boolean trim) {
-                                $RESTORE_ANONYMOUS(timestamp, trim);
-                            }
-
-                            public final Checkpoint $GET$CHECKPOINT() {
-                                return $GET$CHECKPOINT_ANONYMOUS();
-                            }
-
-                            public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
-                                $SET$CHECKPOINT_ANONYMOUS(checkpoint);
-                                return this;
-                            }
-                        }
-
-                        public void $COMMIT_ANONYMOUS(long timestamp) {
-                            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
-                            $RECORD$$CHECKPOINT.commit(timestamp);
-                        }
-
-                        public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
-                            $RECORD$map_iterator.restore(map_iterator, timestamp, trim);
-                            if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-                                $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, new _PROXY_(), timestamp, trim);
-                                FieldRecord.popState($RECORDS);
-                                $RESTORE_ANONYMOUS(timestamp, trim);
-                            }
-                        }
-
-                        public final Checkpoint $GET$CHECKPOINT_ANONYMOUS() {
-                            return $CHECKPOINT;
-                        }
-
-                        public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
-                            if ($CHECKPOINT != checkpoint) {
-                                Checkpoint oldCheckpoint = $CHECKPOINT;
-                                if (checkpoint != null) {
-                                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
-                                    FieldRecord.pushState($RECORDS);
+                                public boolean hasNext() {
+                                    return map_iterator.hasNext();
                                 }
-                                $CHECKPOINT = checkpoint;
-                                oldCheckpoint.setCheckpoint(checkpoint);
-                                checkpoint.addObject(new _PROXY_());
-                            }
+
+                                public Object next() {
+                                    return ((Map.Entry)map_iterator.next()).getKey();
+                                }
+
+                                public void remove() {
+                                    map_iterator.remove();
+                                }
+
+                                final class _PROXY_ implements Rollbackable {
+
+                                    public final void $COMMIT(long timestamp) {
+                                        $COMMIT_ANONYMOUS(timestamp);
+                                    }
+
+                                    public final void $RESTORE(long timestamp, boolean trim) {
+                                        $RESTORE_ANONYMOUS(timestamp, trim);
+                                    }
+
+                                    public final Checkpoint $GET$CHECKPOINT() {
+                                        return $GET$CHECKPOINT_ANONYMOUS();
+                                    }
+
+                                    public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
+                                        $SET$CHECKPOINT_ANONYMOUS(checkpoint);
+                                        return this;
+                                    }
+                                }
+
+                                public void $COMMIT_ANONYMOUS(long timestamp) {
+                                    FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                                    $RECORD$$CHECKPOINT.commit(timestamp);
+                                }
+
+                                public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
+                                    $RECORD$map_iterator.restore(map_iterator, timestamp, trim);
+                                    if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
+                                        $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, new _PROXY_(), timestamp, trim);
+                                        FieldRecord.popState($RECORDS);
+                                        $RESTORE_ANONYMOUS(timestamp, trim);
+                                    }
+                                }
+
+                                public final Checkpoint $GET$CHECKPOINT_ANONYMOUS() {
+                                    return $CHECKPOINT;
+                                }
+
+                                public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
+                                    if ($CHECKPOINT != checkpoint) {
+                                        Checkpoint oldCheckpoint = $CHECKPOINT;
+                                        if (checkpoint != null) {
+                                            $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                                            FieldRecord.pushState($RECORDS);
+                                        }
+                                        $CHECKPOINT = checkpoint;
+                                        oldCheckpoint.setCheckpoint(checkpoint);
+                                        checkpoint.addObject(new _PROXY_());
+                                    }
+                                    return this;
+                                }
+
+                                private FieldRecord $RECORD$map_iterator = new FieldRecord(0);
+
+                                private FieldRecord[] $RECORDS = new FieldRecord[] {
+                                    $RECORD$map_iterator
+                                };
+
+                                {
+                                    $CHECKPOINT.addObject(new _PROXY_());
+                                }
+                            };
+                    }
+
+                    final class _PROXY_ implements Rollbackable {
+
+                        public final void $COMMIT(long timestamp) {
+                            $COMMIT_ANONYMOUS(timestamp);
+                        }
+
+                        public final void $RESTORE(long timestamp, boolean trim) {
+                            $RESTORE_ANONYMOUS(timestamp, trim);
+                        }
+
+                        public final Checkpoint $GET$CHECKPOINT() {
+                            return $GET$CHECKPOINT_ANONYMOUS();
+                        }
+
+                        public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
+                            $SET$CHECKPOINT_ANONYMOUS(checkpoint);
                             return this;
                         }
+                    }
 
-                        private FieldRecord $RECORD$map_iterator = new FieldRecord(0);
+                    public void $COMMIT_ANONYMOUS(long timestamp) {
+                        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                        super.$COMMIT(timestamp);
+                    }
 
-                        private FieldRecord[] $RECORDS = new FieldRecord[] {
-                                $RECORD$map_iterator
-                            };
+                    public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
+                        super.$RESTORE(timestamp, trim);
+                    }
 
-                        {
-                            $CHECKPOINT.addObject(new _PROXY_());
+                    public final Checkpoint $GET$CHECKPOINT_ANONYMOUS() {
+                        return $CHECKPOINT;
+                    }
+
+                    public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
+                        if ($CHECKPOINT != checkpoint) {
+                            Checkpoint oldCheckpoint = $CHECKPOINT;
+                            if (checkpoint != null) {
+                                $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                                FieldRecord.pushState($RECORDS);
+                            }
+                            $CHECKPOINT = checkpoint;
+                            oldCheckpoint.setCheckpoint(checkpoint);
+                            checkpoint.addObject(new _PROXY_());
                         }
-                    };
-                }
-
-                final class _PROXY_ implements Rollbackable {
-
-                    public final void $COMMIT(long timestamp) {
-                        $COMMIT_ANONYMOUS(timestamp);
-                    }
-
-                    public final void $RESTORE(long timestamp, boolean trim) {
-                        $RESTORE_ANONYMOUS(timestamp, trim);
-                    }
-
-                    public final Checkpoint $GET$CHECKPOINT() {
-                        return $GET$CHECKPOINT_ANONYMOUS();
-                    }
-
-                    public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
-                        $SET$CHECKPOINT_ANONYMOUS(checkpoint);
                         return this;
                     }
-                }
 
-                public void $COMMIT_ANONYMOUS(long timestamp) {
-                    FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
-                    super.$COMMIT(timestamp);
-                }
-
-                public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
-                    super.$RESTORE(timestamp, trim);
-                }
-
-                public final Checkpoint $GET$CHECKPOINT_ANONYMOUS() {
-                    return $CHECKPOINT;
-                }
-
-                public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
-                    if ($CHECKPOINT != checkpoint) {
-                        Checkpoint oldCheckpoint = $CHECKPOINT;
-                        if (checkpoint != null) {
-                            $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
-                            FieldRecord.pushState($RECORDS);
-                        }
-                        $CHECKPOINT = checkpoint;
-                        oldCheckpoint.setCheckpoint(checkpoint);
-                        checkpoint.addObject(new _PROXY_());
-                    }
-                    return this;
-                }
-
-                private FieldRecord[] $RECORDS = new FieldRecord[] {
+                    private FieldRecord[] $RECORDS = new FieldRecord[] {
                     };
 
-                {
-                    $CHECKPOINT.addObject(new _PROXY_());
-                }
-            });
+                    {
+                        $CHECKPOINT.addObject(new _PROXY_());
+                    }
+                });
         return keys;
     }
 
@@ -437,149 +437,149 @@ public abstract class AbstractMap implements Map, Rollbackable {
         if (values == null)
             $ASSIGN$values(new AbstractCollection() {
 
-                public int size() {
-                    return AbstractMap.this.size();
-                }
+                    public int size() {
+                        return AbstractMap.this.size();
+                    }
 
-                public boolean contains(Object value) {
-                    return containsValue(value);
-                }
+                    public boolean contains(Object value) {
+                        return containsValue(value);
+                    }
 
-                public Iterator iterator() {
-                    return new Iterator() {
+                    public Iterator iterator() {
+                        return new Iterator() {
 
-                        private final Iterator map_iterator = entrySet().iterator();
+                                private final Iterator map_iterator = entrySet().iterator();
 
-                        public boolean hasNext() {
-                            return map_iterator.hasNext();
-                        }
-
-                        public Object next() {
-                            return ((Map.Entry)map_iterator.next()).getValue();
-                        }
-
-                        public void remove() {
-                            map_iterator.remove();
-                        }
-
-                        final class _PROXY_ implements Rollbackable {
-
-                            public final void $COMMIT(long timestamp) {
-                                $COMMIT_ANONYMOUS(timestamp);
-                            }
-
-                            public final void $RESTORE(long timestamp, boolean trim) {
-                                $RESTORE_ANONYMOUS(timestamp, trim);
-                            }
-
-                            public final Checkpoint $GET$CHECKPOINT() {
-                                return $GET$CHECKPOINT_ANONYMOUS();
-                            }
-
-                            public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
-                                $SET$CHECKPOINT_ANONYMOUS(checkpoint);
-                                return this;
-                            }
-                        }
-
-                        public void $COMMIT_ANONYMOUS(long timestamp) {
-                            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
-                            $RECORD$$CHECKPOINT.commit(timestamp);
-                        }
-
-                        public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
-                            $RECORD$map_iterator.restore(map_iterator, timestamp, trim);
-                            if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-                                $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, new _PROXY_(), timestamp, trim);
-                                FieldRecord.popState($RECORDS);
-                                $RESTORE_ANONYMOUS(timestamp, trim);
-                            }
-                        }
-
-                        public final Checkpoint $GET$CHECKPOINT_ANONYMOUS() {
-                            return $CHECKPOINT;
-                        }
-
-                        public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
-                            if ($CHECKPOINT != checkpoint) {
-                                Checkpoint oldCheckpoint = $CHECKPOINT;
-                                if (checkpoint != null) {
-                                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
-                                    FieldRecord.pushState($RECORDS);
+                                public boolean hasNext() {
+                                    return map_iterator.hasNext();
                                 }
-                                $CHECKPOINT = checkpoint;
-                                oldCheckpoint.setCheckpoint(checkpoint);
-                                checkpoint.addObject(new _PROXY_());
-                            }
+
+                                public Object next() {
+                                    return ((Map.Entry)map_iterator.next()).getValue();
+                                }
+
+                                public void remove() {
+                                    map_iterator.remove();
+                                }
+
+                                final class _PROXY_ implements Rollbackable {
+
+                                    public final void $COMMIT(long timestamp) {
+                                        $COMMIT_ANONYMOUS(timestamp);
+                                    }
+
+                                    public final void $RESTORE(long timestamp, boolean trim) {
+                                        $RESTORE_ANONYMOUS(timestamp, trim);
+                                    }
+
+                                    public final Checkpoint $GET$CHECKPOINT() {
+                                        return $GET$CHECKPOINT_ANONYMOUS();
+                                    }
+
+                                    public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
+                                        $SET$CHECKPOINT_ANONYMOUS(checkpoint);
+                                        return this;
+                                    }
+                                }
+
+                                public void $COMMIT_ANONYMOUS(long timestamp) {
+                                    FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                                    $RECORD$$CHECKPOINT.commit(timestamp);
+                                }
+
+                                public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
+                                    $RECORD$map_iterator.restore(map_iterator, timestamp, trim);
+                                    if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
+                                        $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, new _PROXY_(), timestamp, trim);
+                                        FieldRecord.popState($RECORDS);
+                                        $RESTORE_ANONYMOUS(timestamp, trim);
+                                    }
+                                }
+
+                                public final Checkpoint $GET$CHECKPOINT_ANONYMOUS() {
+                                    return $CHECKPOINT;
+                                }
+
+                                public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
+                                    if ($CHECKPOINT != checkpoint) {
+                                        Checkpoint oldCheckpoint = $CHECKPOINT;
+                                        if (checkpoint != null) {
+                                            $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                                            FieldRecord.pushState($RECORDS);
+                                        }
+                                        $CHECKPOINT = checkpoint;
+                                        oldCheckpoint.setCheckpoint(checkpoint);
+                                        checkpoint.addObject(new _PROXY_());
+                                    }
+                                    return this;
+                                }
+
+                                private FieldRecord $RECORD$map_iterator = new FieldRecord(0);
+
+                                private FieldRecord[] $RECORDS = new FieldRecord[] {
+                                    $RECORD$map_iterator
+                                };
+
+                                {
+                                    $CHECKPOINT.addObject(new _PROXY_());
+                                }
+                            };
+                    }
+
+                    final class _PROXY_ implements Rollbackable {
+
+                        public final void $COMMIT(long timestamp) {
+                            $COMMIT_ANONYMOUS(timestamp);
+                        }
+
+                        public final void $RESTORE(long timestamp, boolean trim) {
+                            $RESTORE_ANONYMOUS(timestamp, trim);
+                        }
+
+                        public final Checkpoint $GET$CHECKPOINT() {
+                            return $GET$CHECKPOINT_ANONYMOUS();
+                        }
+
+                        public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
+                            $SET$CHECKPOINT_ANONYMOUS(checkpoint);
                             return this;
                         }
+                    }
 
-                        private FieldRecord $RECORD$map_iterator = new FieldRecord(0);
+                    public void $COMMIT_ANONYMOUS(long timestamp) {
+                        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                        super.$COMMIT(timestamp);
+                    }
 
-                        private FieldRecord[] $RECORDS = new FieldRecord[] {
-                                $RECORD$map_iterator
-                            };
+                    public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
+                        super.$RESTORE(timestamp, trim);
+                    }
 
-                        {
-                            $CHECKPOINT.addObject(new _PROXY_());
+                    public final Checkpoint $GET$CHECKPOINT_ANONYMOUS() {
+                        return $CHECKPOINT;
+                    }
+
+                    public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
+                        if ($CHECKPOINT != checkpoint) {
+                            Checkpoint oldCheckpoint = $CHECKPOINT;
+                            if (checkpoint != null) {
+                                $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                                FieldRecord.pushState($RECORDS);
+                            }
+                            $CHECKPOINT = checkpoint;
+                            oldCheckpoint.setCheckpoint(checkpoint);
+                            checkpoint.addObject(new _PROXY_());
                         }
-                    };
-                }
-
-                final class _PROXY_ implements Rollbackable {
-
-                    public final void $COMMIT(long timestamp) {
-                        $COMMIT_ANONYMOUS(timestamp);
-                    }
-
-                    public final void $RESTORE(long timestamp, boolean trim) {
-                        $RESTORE_ANONYMOUS(timestamp, trim);
-                    }
-
-                    public final Checkpoint $GET$CHECKPOINT() {
-                        return $GET$CHECKPOINT_ANONYMOUS();
-                    }
-
-                    public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
-                        $SET$CHECKPOINT_ANONYMOUS(checkpoint);
                         return this;
                     }
-                }
 
-                public void $COMMIT_ANONYMOUS(long timestamp) {
-                    FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
-                    super.$COMMIT(timestamp);
-                }
-
-                public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
-                    super.$RESTORE(timestamp, trim);
-                }
-
-                public final Checkpoint $GET$CHECKPOINT_ANONYMOUS() {
-                    return $CHECKPOINT;
-                }
-
-                public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
-                    if ($CHECKPOINT != checkpoint) {
-                        Checkpoint oldCheckpoint = $CHECKPOINT;
-                        if (checkpoint != null) {
-                            $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
-                            FieldRecord.pushState($RECORDS);
-                        }
-                        $CHECKPOINT = checkpoint;
-                        oldCheckpoint.setCheckpoint(checkpoint);
-                        checkpoint.addObject(new _PROXY_());
-                    }
-                    return this;
-                }
-
-                private FieldRecord[] $RECORDS = new FieldRecord[] {
+                    private FieldRecord[] $RECORDS = new FieldRecord[] {
                     };
 
-                {
-                    $CHECKPOINT.addObject(new _PROXY_());
-                }
-            });
+                    {
+                        $CHECKPOINT.addObject(new _PROXY_());
+                    }
+                });
         return values;
     }
 
@@ -651,7 +651,7 @@ public abstract class AbstractMap implements Map, Rollbackable {
     private FieldRecord $RECORD$values = new FieldRecord(0);
 
     private FieldRecord[] $RECORDS = new FieldRecord[] {
-            $RECORD$keys,
-            $RECORD$values
-        };
+        $RECORD$keys,
+        $RECORD$values
+    };
 }

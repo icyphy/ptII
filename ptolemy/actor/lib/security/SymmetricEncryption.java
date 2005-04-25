@@ -94,7 +94,7 @@ public class SymmetricEncryption extends CipherActor {
      *   actor with this name.
      */
     public SymmetricEncryption(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         algorithm.setVisibility(Settable.NOT_EDITABLE);
@@ -141,7 +141,7 @@ public class SymmetricEncryption extends CipherActor {
 
                 // FIXME: do we really want to initialize the key each time?
                 java.security.Key securityKey = (java.security.Key) keyToken
-                                .getValue();
+                    .getValue();
 
                 if (!_algorithm.equals(securityKey.getAlgorithm())) {
                     // We have the name of the algorithm from the Key,
@@ -155,9 +155,9 @@ public class SymmetricEncryption extends CipherActor {
                 _cipher.init(Cipher.ENCRYPT_MODE, securityKey);
             } catch (Exception ex) {
                 throw new IllegalActionException(this, ex,
-                    "Failed to initialize Cipher with " + "algorithm: '"
-                    + _algorithm + "', padding: '" + _padding
-                    + "', provider: '" + _provider + "'");
+                        "Failed to initialize Cipher with " + "algorithm: '"
+                        + _algorithm + "', padding: '" + _padding
+                        + "', provider: '" + _provider + "'");
             }
         }
 
@@ -181,7 +181,7 @@ public class SymmetricEncryption extends CipherActor {
             byteArrayOutputStream.write(_cipher.doFinal(dataBytes));
         } catch (Exception ex) {
             throw new IllegalActionException(this, ex,
-                "Problem processing " + dataBytes.length + " bytes.");
+                    "Problem processing " + dataBytes.length + " bytes.");
         }
 
         return byteArrayOutputStream.toByteArray();

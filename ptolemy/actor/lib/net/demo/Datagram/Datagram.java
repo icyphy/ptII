@@ -77,7 +77,7 @@ public class Datagram extends TypedAtomicActor implements ClipboardOwner {
      *   actor with this name.
      */
     public Datagram(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // Inputs
@@ -125,29 +125,29 @@ public class Datagram extends TypedAtomicActor implements ClipboardOwner {
             trigger.get(0);
 
             Clipboard clipboard = Toolkit.getDefaultToolkit()
-                                                     .getSystemClipboard();
+                .getSystemClipboard();
             Transferable transferable = clipboard.getContents(this);
 
             try {
                 output.broadcast(new StringToken(
-                        (String) transferable.getTransferData(
-                            DataFlavor.stringFlavor)));
+                                         (String) transferable.getTransferData(
+                                                 DataFlavor.stringFlavor)));
 
                 // NullPointerException also possible //
                 // Ignore this for now, allowing exception to go uncaught.
             } catch (IOException ex) {
                 throw new IllegalActionException(this,
-                    " Failed to paste (IO Exception): " + ex);
+                        " Failed to paste (IO Exception): " + ex);
             } catch (UnsupportedFlavorException ex) {
                 throw new IllegalActionException(this,
-                    " Failed to paste: (Flavor Exception)" + ex);
+                        " Failed to paste: (Flavor Exception)" + ex);
             }
         }
 
         // Copy
         if ((input.getWidth() > 0) && input.hasToken(0)) {
             Clipboard clipboard = Toolkit.getDefaultToolkit()
-                                                     .getSystemClipboard();
+                .getSystemClipboard();
             String myString = ((StringToken) (input.get(0))).stringValue();
             clipboard.setContents(new StringSelection(myString), this);
         }

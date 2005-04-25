@@ -79,7 +79,7 @@ public class FixType extends StructuredType implements Serializable {
         }
 
         throw new IllegalActionException(Token.notSupportedConversionMessage(
-                token, toString()));
+                                                 token, toString()));
     }
 
     /** Determine if the argument represents the same FixType as this
@@ -174,11 +174,11 @@ public class FixType extends StructuredType implements Serializable {
      *   different structure.
      */
     public void updateType(StructuredType newType)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (newType._getRepresentative() != _getRepresentative()) {
             throw new InternalErrorException(
-                "UnsizedMatrixType.updateType: Cannot "
-                + "updateType the element type to " + newType + ".");
+                    "UnsizedMatrixType.updateType: Cannot "
+                    + "updateType the element type to " + newType + ".");
         }
     }
 

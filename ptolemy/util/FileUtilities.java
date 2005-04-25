@@ -76,7 +76,7 @@ public class FileUtilities {
      *  destination file and the destination file does not exist.
      */
     public static boolean binaryCopyURLToFile(URL sourceURL,
-        File destinationFile) throws IOException {
+            File destinationFile) throws IOException {
         URL destinationURL = destinationFile.getCanonicalFile().toURL();
 
         if (sourceURL.sameFile(destinationURL)) {
@@ -117,7 +117,7 @@ public class FileUtilities {
 
             try {
                 output = new BufferedOutputStream(new FileOutputStream(
-                            destinationFile));
+                                                          destinationFile));
 
                 int c;
 
@@ -130,7 +130,7 @@ public class FileUtilities {
                         output.close();
                     } catch (Throwable throwable) {
                         System.out.println("Ignoring failure to close stream "
-                            + "on " + destinationFile);
+                                + "on " + destinationFile);
                         throwable.printStackTrace();
                     }
                 }
@@ -141,7 +141,7 @@ public class FileUtilities {
                     input.close();
                 } catch (Throwable throwable) {
                     System.out.println("Ignoring failure to close stream "
-                        + "on " + sourceURL);
+                            + "on " + sourceURL);
                     throwable.printStackTrace();
                 }
             }
@@ -206,7 +206,7 @@ public class FileUtilities {
      *  @exception MalformedURLException If the
      */
     public static URL nameToURL(String name, URI baseDirectory,
-        ClassLoader classLoader) throws IOException {
+            ClassLoader classLoader) throws IOException {
         if ((name == null) || name.trim().equals("")) {
             return null;
         }
@@ -250,7 +250,7 @@ public class FileUtilities {
 
             if (result == null) {
                 new IOException("Cannot find file '" + trimmedName
-                    + "' in classpath");
+                        + "' in classpath");
             }
 
             return result;
@@ -269,8 +269,8 @@ public class FileUtilities {
 
                 if (!file.canRead()) {
                     throw new IOException("Cannot read file '" + name
-                        + "' or '"
-                        + StringUtilities.substitute(name, "%20", " ") + "'");
+                            + "' or '"
+                            + StringUtilities.substitute(name, "%20", " ") + "'");
                 }
             }
 
@@ -343,7 +343,7 @@ public class FileUtilities {
      *  @exception IOException If the file cannot be opened.
      */
     public static BufferedReader openForReading(String name, URI base,
-        ClassLoader classLoader) throws IOException {
+            ClassLoader classLoader) throws IOException {
         if (name.trim().equals("System.in")) {
             if (STD_IN == null) {
                 STD_IN = new BufferedReader(new InputStreamReader(System.in));
@@ -381,7 +381,7 @@ public class FileUtilities {
      *   or created.
      */
     public static Writer openForWriting(String name, URI base, boolean append)
-        throws IOException {
+            throws IOException {
         if (name == null) {
             return null;
         }

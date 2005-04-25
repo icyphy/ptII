@@ -91,7 +91,7 @@ public class TaskReceiver extends Source {
      *   actor with this name.
      */
     public TaskReceiver(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         ORBInitProperties = new Parameter(this, "ORBInitProperties");
@@ -157,7 +157,7 @@ public class TaskReceiver extends Source {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == blocking) {
             _blocking = ((BooleanToken) blocking.getToken()).booleanValue();
         } else if (attribute == defaultToken) {
@@ -178,7 +178,7 @@ public class TaskReceiver extends Source {
 
         // String tokenize the parameter ORBInitProperties
         StringTokenizer st = new StringTokenizer(((StringToken) ORBInitProperties
-                            .getToken()).stringValue());
+                                                         .getToken()).stringValue());
         String[] args = new String[st.countTokens()];
         int i = 0;
 
@@ -230,7 +230,7 @@ public class TaskReceiver extends Source {
                     }
                 } catch (InterruptedException e) {
                     throw new IllegalActionException(this,
-                        "blocking interrupted." + e.getMessage());
+                            "blocking interrupted." + e.getMessage());
                 }
             }
 
@@ -252,18 +252,18 @@ public class TaskReceiver extends Source {
         if (_coordinator != null) {
             try {
                 _coordinator.unregister(((StringToken) thisClientName.getToken())
-                                .stringValue());
+                        .stringValue());
             } catch (CorbaIllegalActionException ex) {
                 //e.printStackTrace();
                 throw new KernelRuntimeException(this,
-                    " failed to unregister itself from the remote "
-                    + " TaskCoordinator. " + " the error message is: "
-                    + ex.getMessage());
+                        " failed to unregister itself from the remote "
+                        + " TaskCoordinator. " + " the error message is: "
+                        + ex.getMessage());
             } catch (IllegalActionException e) {
                 throw new KernelRuntimeException(this,
-                    " gets an error when it tries to get the string value"
-                    + " from the thisClientName parameter. "
-                    + " the error message is: " + e.getMessage());
+                        " gets an error when it tries to get the string value"
+                        + " from the thisClientName parameter. "
+                        + " the error message is: " + e.getMessage());
             }
         }
 
@@ -299,31 +299,31 @@ public class TaskReceiver extends Source {
 
             //resolve the remote consumer reference in Naming
             NameComponent namecomp = new NameComponent(((StringToken) coordinatorName
-                                .getToken()).stringValue(), "Multi");
+                                                               .getToken()).stringValue(), "Multi");
             _debug(getName(), " looking for name: ",
-                (coordinatorName.getToken()).toString());
+                    (coordinatorName.getToken()).toString());
 
             NameComponent[] path = {
-                    namecomp
-                };
+                namecomp
+            };
             _coordinator = ptolemy.actor.corba.CoordinatorUtil.CoordinatorHelper
-                            .narrow(ncRef.resolve(path));
+                .narrow(ncRef.resolve(path));
             _client = new Client();
             _orb.connect(_client);
 
             if (_coordinator != null) {
                 _coordinator.register(((StringToken) thisClientName.getToken())
-                                .stringValue(), _client);
+                        .stringValue(), _client);
             }
 
             //registe the consumer with the given name
         } catch (UserException ex) {
             throw new IllegalActionException(this,
-                " Initialize ORB failed. Please make sure the "
-                + "naming server has already started and the "
-                + "ORBInitProperty parameter and look up names are"
-                + " configured correctly. " + "the error message is: "
-                + ex.getMessage());
+                    " Initialize ORB failed. Please make sure the "
+                    + "naming server has already started and the "
+                    + "ORBInitProperty parameter and look up names are"
+                    + " configured correctly. " + "the error message is: "
+                    + ex.getMessage());
         }
     }
 
@@ -374,7 +374,7 @@ public class TaskReceiver extends Source {
          * //FIXME: need to deal with overwrite if the old data is not consumed.
          */
         public void push(org.omg.CORBA.Any data)
-            throws CorbaIllegalActionException {
+                throws CorbaIllegalActionException {
             if (_debugging) {
                 _debug("got pushed data");
             }
@@ -393,7 +393,7 @@ public class TaskReceiver extends Source {
 
                 if (_debugging) {
                     _debug(getName(),
-                        " receive data:\n" + _lastReadToken.toString());
+                            " receive data:\n" + _lastReadToken.toString());
                 }
 
                 if (_fireIsWaiting) {
@@ -403,7 +403,7 @@ public class TaskReceiver extends Source {
                         getDirector().fireAtCurrentTime(TaskReceiver.this);
                     } catch (IllegalActionException ex) {
                         throw new CorbaIllegalActionException(
-                            "failed in dealing with director.");
+                                "failed in dealing with director.");
                     }
                 }
             }

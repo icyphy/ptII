@@ -94,7 +94,7 @@ public class TimedDelay extends DETransformer {
      *   actor with this name.
      */
     public TimedDelay(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // NOTE: The _init method is used to allow classes that extend
@@ -126,13 +126,13 @@ public class TimedDelay extends DETransformer {
      *  @exception IllegalActionException If the delay is negative.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == delay) {
             double newDelay = ((DoubleToken) (delay.getToken())).doubleValue();
 
             if (newDelay < 0.0) {
                 throw new IllegalActionException(this,
-                    "Cannot have negative delay: " + newDelay);
+                        "Cannot have negative delay: " + newDelay);
             } else {
                 _delay = newDelay;
             }
@@ -191,7 +191,7 @@ public class TimedDelay extends DETransformer {
         }
 
         if ((_delay == 0) && (_currentInput != null)
-                        && (_currentOutput == null)) {
+                && (_currentOutput == null)) {
             output.send(0, _currentInput);
             _currentInput = null;
         }
@@ -205,7 +205,7 @@ public class TimedDelay extends DETransformer {
         _currentInput = null;
         _currentOutput = null;
         _delayedOutputTokens = new CalendarQueue(new TimedEvent.TimeComparator(
-                    this.getDirector()));
+                                                         this.getDirector()));
     }
 
     /** Process the current input if it has not been processed. Schedule
@@ -261,7 +261,7 @@ public class TimedDelay extends DETransformer {
      *  named "delay".
      */
     protected void _init()
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         delay = new Parameter(this, "delay", new DoubleToken(1.0));
         delay.setTypeEquals(BaseType.DOUBLE);
         _delay = ((DoubleToken) delay.getToken()).doubleValue();

@@ -144,7 +144,7 @@ public interface MoMLExportable extends Nameable {
      *  @see #isPersistent()
      */
     public void exportMoML(Writer output, int depth, String name)
-        throws IOException;
+            throws IOException;
 
     /** Return the class name.  This is either the name of the
      *  class of which this object is an instance, or if this

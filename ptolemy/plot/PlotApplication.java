@@ -133,7 +133,7 @@ public class PlotApplication extends PlotFrame {
      *  @exception Exception If command line arguments have problems.
      */
     public PlotApplication(PlotBox plot, String[] args)
-        throws Exception {
+            throws Exception {
         // invoke the base class constructor and pass in the argument a Plot
         // object. This makes sure that the plot field is an instance of
         // Plot class.
@@ -222,14 +222,14 @@ public class PlotApplication extends PlotFrame {
     ////                         protected methods                 ////
     protected void _about() {
         JOptionPane.showMessageDialog(this,
-            "PlotApplication class\n" + "By: Edward A. Lee "
-            + "and Christopher Hylands\n" + "Version " + PlotBox.PTPLOT_RELEASE
-            + ", Build: $Id$\n\n"
-            + "For more information, see\n"
-            + "http://ptolemy.eecs.berkeley.edu/java/ptplot\n\n"
-            + "Copyright (c) 1997-2005, "
-            + "The Regents of the University of California.",
-            "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
+                "PlotApplication class\n" + "By: Edward A. Lee "
+                + "and Christopher Hylands\n" + "Version " + PlotBox.PTPLOT_RELEASE
+                + ", Build: $Id$\n\n"
+                + "For more information, see\n"
+                + "http://ptolemy.eecs.berkeley.edu/java/ptplot\n\n"
+                + "Copyright (c) 1997-2005, "
+                + "The Regents of the University of California.",
+                "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
     }
 
     /** Exit the application.
@@ -242,10 +242,10 @@ public class PlotApplication extends PlotFrame {
      */
     protected void _help() {
         JOptionPane.showMessageDialog(this,
-            "PlotApplication is a standalone plot " + " application.\n"
-            + "  File formats understood: Ptplot ASCII.\n"
-            + "  Left mouse button: Zooming.\n\n" + _usage(),
-            "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
+                "PlotApplication is a standalone plot " + " application.\n"
+                + "  File formats understood: Ptplot ASCII.\n"
+                + "  Left mouse button: Zooming.\n\n" + _usage(),
+                "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
     }
 
     /** Parse the command-line
@@ -257,7 +257,7 @@ public class PlotApplication extends PlotFrame {
      *  @exception IOException If there is a problem reading an input.
      */
     protected int _parseArgs(String[] args)
-        throws CmdLineArgException, FileNotFoundException, IOException {
+            throws CmdLineArgException, FileNotFoundException, IOException {
         int i = 0;
         int argumentsRead;
         String arg;
@@ -285,13 +285,13 @@ public class PlotApplication extends PlotFrame {
                 continue;
             } else if (arg.equals("-version")) {
                 System.out.println("Version " + PlotBox.PTPLOT_RELEASE
-                    + ", Build $Id$");
+                        + ", Build $Id$");
                 System.exit(0);
                 continue;
             } else if (arg.equals("-width")) {
                 if (i > (args.length - 1)) {
                     throw new CmdLineArgException(
-                        "-width requires an integer argument");
+                            "-width requires an integer argument");
                 }
 
                 width = (int) Integer.valueOf(args[i++]).intValue();
@@ -352,22 +352,22 @@ public class PlotApplication extends PlotFrame {
         // "(Unsupported)" - The string that is printed to indicate if
         //                   a option is unsupported.
         String[][] commandOptions = {
-                {
-                    "-height",
-                    "<pixels>"
-                },
-                {
-                    "-width",
-                    "<pixels>"
-                },
-            };
+            {
+                "-height",
+                "<pixels>"
+            },
+            {
+                "-width",
+                "<pixels>"
+            },
+        };
 
         String[] commandFlags = {
-                "-help",
-                "-test",
-                "-version",
-                "-",
-            };
+            "-help",
+            "-test",
+            "-version",
+            "-",
+        };
         String result = "Usage: ptplot [ options ] [file ...]\n\n"
             + "Options that take values:\n";
 
@@ -375,7 +375,7 @@ public class PlotApplication extends PlotFrame {
 
         for (i = 0; i < commandOptions.length; i++) {
             result += (" " + commandOptions[i][0] + " " + commandOptions[i][1]
-                        + "\n");
+                    + "\n");
         }
 
         result += "\nBoolean flags:\n";

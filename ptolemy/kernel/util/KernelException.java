@@ -100,7 +100,7 @@ public class KernelException extends Exception {
      *  @param detail The message.
      */
     public KernelException(Nameable object1, Nameable object2, Throwable cause,
-        String detail) {
+            String detail) {
         _setMessage(generateMessage(object1, object2, cause, detail));
         _setCause(cause);
     }
@@ -130,7 +130,7 @@ public class KernelException extends Exception {
      *  @return A properly formatted message
      */
     public static String generateMessage(Nameable object1, Nameable object2,
-        Throwable cause, String detail) {
+            Throwable cause, String detail) {
         String object1String = getFullName(object1);
         String object2String = getFullName(object2);
         String whereString = null;
@@ -171,7 +171,7 @@ public class KernelException extends Exception {
      *  @return A properly formatted message
      */
     public static String generateMessage(Collection objects, Throwable cause,
-        String detail) {
+            String detail) {
         StringBuffer prefixBuffer = new StringBuffer("  in ");
         Iterator objectIterator = objects.iterator();
 
@@ -180,10 +180,10 @@ public class KernelException extends Exception {
 
             if (object instanceof Nameable) {
                 prefixBuffer.append(KernelException.getFullName(
-                        (Nameable) object));
+                                            (Nameable) object));
             } else {
                 prefixBuffer.append("<Object of class "
-                    + object.getClass().getName() + ">");
+                        + object.getClass().getName() + ">");
             }
 
             if (objectIterator.hasNext()) {
@@ -214,7 +214,7 @@ public class KernelException extends Exception {
      *  @return A properly formatted message
      */
     public static String generateMessage(String whereString, Throwable cause,
-        String detail) {
+            String detail) {
         // We need this method to support the constructors
         // in InvalidStateException that take Enumerations and Lists.
         // Using 'boolean ? if true : if false' is usually frowned
@@ -222,22 +222,22 @@ public class KernelException extends Exception {
         // and complex if/else tree or else the creation of a bunch
         // of temporary strings with a smaller if/else tree.
         boolean whereNullOrEmpty = ((whereString == null)
-                        || whereString.equals(""));
+                || whereString.equals(""));
         boolean detailNullOrEmpty = ((detail == null) || detail.equals(""));
         return
-        // Do we print the detail?
-        (detailNullOrEmpty ? "" : detail)
-        // Do we add a \n?
-        + ((!whereNullOrEmpty && !detailNullOrEmpty) ? "\n" : "")
-        // Do we print the whereString?
-        + (whereNullOrEmpty ? "" : whereString)
-        // Do we add a \n?
-        + (((!whereNullOrEmpty || !detailNullOrEmpty) && (cause != null))
-        ? "\n" : "")
-        // Do we print the cause?
-        + ((cause == null) ? ""
-                           : ("Because:\n"
-        + ((cause.getMessage() != null) ? cause.getMessage() : cause.toString())));
+            // Do we print the detail?
+            (detailNullOrEmpty ? "" : detail)
+            // Do we add a \n?
+            + ((!whereNullOrEmpty && !detailNullOrEmpty) ? "\n" : "")
+            // Do we print the whereString?
+            + (whereNullOrEmpty ? "" : whereString)
+            // Do we add a \n?
+            + (((!whereNullOrEmpty || !detailNullOrEmpty) && (cause != null))
+                    ? "\n" : "")
+            // Do we print the cause?
+            + ((cause == null) ? ""
+                    : ("Because:\n"
+                            + ((cause.getMessage() != null) ? cause.getMessage() : cause.toString())));
     }
 
     /** Get the cause of this exception.

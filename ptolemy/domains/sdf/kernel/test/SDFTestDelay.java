@@ -64,7 +64,7 @@ public class SDFTestDelay extends TypedAtomicActor {
      * @exception NameDuplicationException If the contained methods throw it
      */
     public SDFTestDelay(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         /* This starts out by calling TypedAtomicActor's constructor.
          * allows us to add some extra code specific to this actor, in
          * addition to the regular initializer in TypedAtomicActor.
@@ -140,12 +140,12 @@ public class SDFTestDelay extends TypedAtomicActor {
          * output.
          */
         int tokens = ((IntToken) input_tokenConsumptionRate.getToken())
-                        .intValue();
+            .intValue();
 
         if (((IntToken) output_tokenProductionRate.getToken()).intValue() != tokens) {
             throw new IllegalActionException(
-                "SDFTestDelay: Rates on input port and output port "
-                + "must match!");
+                    "SDFTestDelay: Rates on input port and output port "
+                    + "must match!");
         }
 
         int i;

@@ -69,7 +69,7 @@ public class IntToBits extends SDFConverter {
      *   actor with this name.
      */
     public IntToBits(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         input.setTypeEquals(BaseType.INT);
@@ -97,13 +97,13 @@ public class IntToBits extends SDFConverter {
      *  @exception IllegalActionException If the parameter is out of range.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == numberOfBits) {
             int rate = ((IntToken) numberOfBits.getToken()).intValue();
 
             if ((rate < 1) || (rate > 32)) {
                 throw new IllegalActionException(this,
-                    "Invalid number of bits: " + rate);
+                        "Invalid number of bits: " + rate);
             }
         } else {
             super.attributeChanged(attribute);
@@ -131,7 +131,7 @@ public class IntToBits extends SDFConverter {
         if (integer < 0) {
             if (integer < -(1 << (rate - 1))) {
                 throw new IllegalActionException(this,
-                    "integer is out of range.");
+                        "integer is out of range.");
             }
 
             bits[0] = new BooleanToken(true);
@@ -141,7 +141,7 @@ public class IntToBits extends SDFConverter {
         } else {
             if (integer > ((1 << (rate - 1)) - 1)) {
                 throw new IllegalActionException(this,
-                    "integer is out of range.");
+                        "integer is out of range.");
             }
 
             bits[0] = new BooleanToken(false);

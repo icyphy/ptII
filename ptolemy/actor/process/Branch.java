@@ -92,29 +92,29 @@ public class Branch implements Runnable {
      *   this branch are null or improperly configured.
      */
     public Branch(ProcessReceiver producerReceiver,
-        ProcessReceiver consumerReceiver, BranchController controller)
-        throws IllegalActionException {
+            ProcessReceiver consumerReceiver, BranchController controller)
+            throws IllegalActionException {
         _controller = controller;
 
         if ((producerReceiver == null) || (consumerReceiver == null)) {
             throw new IllegalActionException("The boundary "
-                + "receivers of this branch are null.");
+                    + "receivers of this branch are null.");
         }
 
         if (!producerReceiver.isProducerReceiver()) {
             String name = ((Nameable) consumerReceiver.getContainer())
-                            .getFullName();
+                .getFullName();
             throw new IllegalActionException("Receiver in the port: " + name
-                + " is not a producer receiver");
+                    + " is not a producer receiver");
         }
 
         _producerReceiver = producerReceiver;
 
         if (!consumerReceiver.isConsumerReceiver()) {
             String name = ((Nameable) consumerReceiver.getContainer())
-                            .getFullName();
+                .getFullName();
             throw new IllegalActionException("Receiver in the port: " + name
-                + " is not a consumer receiver");
+                    + " is not a consumer receiver");
         }
 
         _consumerReceiver = consumerReceiver;

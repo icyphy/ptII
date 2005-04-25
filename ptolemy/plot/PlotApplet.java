@@ -80,8 +80,8 @@ public class PlotApplet extends JApplet {
      */
     public String getAppletInfo() {
         return "PlotApplet " + PlotBox.PTPLOT_RELEASE + ": A data plotter.\n"
-        + "By: Edward A. Lee and\n " + "Christopher Hylands\n"
-        + "($Id$)";
+            + "By: Edward A. Lee and\n " + "Christopher Hylands\n"
+            + "($Id$)";
     }
 
     /** Return information about parameters.
@@ -90,45 +90,45 @@ public class PlotApplet extends JApplet {
      */
     public String[][] getParameterInfo() {
         String[][] pinfo = {
-                {
-                    "background",
-                    "hexcolor value",
-                    "background color"
-                },
-                {
-                    "foreground",
-                    "hexcolor value",
-                    "foreground color"
-                },
-                {
-                    "dataurl",
-                    "url",
-                    "the URL of the data to plot"
-                },
-                {
-                    "height",
-                    "integer",
-                    "100"
-                },
-                {
-                    "width",
-                    "integer",
-                    "100"
-                },
-            };
+            {
+                "background",
+                "hexcolor value",
+                "background color"
+            },
+            {
+                "foreground",
+                "hexcolor value",
+                "foreground color"
+            },
+            {
+                "dataurl",
+                "url",
+                "the URL of the data to plot"
+            },
+            {
+                "height",
+                "integer",
+                "100"
+            },
+            {
+                "width",
+                "integer",
+                "100"
+            },
+        };
         return pinfo;
     }
 
     /** Initialize the applet.  Read the applet parameters.
 
-     *  Subclasses that extend this method and call Swing UI methods
-     *  should do so in the Swing Event thread by calling
-     *  SwingUtilities.invokeAndWait().
-     *  Note that some Plot methods will automatically run in the
-     *  Swing Event thread, some will not.
-     *  For details about SwingUtilities.invokeAndWait(), see
-     *  <a href="http://java.sun.com/docs/books/tutorial/uiswing/components/applet.html#thread">The Sun Applet Tutorial</a>
-     */
+    *  Subclasses that extend this method and call Swing UI methods
+    *  should do so in the Swing Event thread by calling
+    *  SwingUtilities.invokeAndWait().
+    *  Note that some Plot methods will automatically run in the
+    *  Swing Event thread, some will not.
+    *  For details about SwingUtilities.invokeAndWait(), see
+    *  <a href="http://java.sun.com/docs/books/tutorial/uiswing/components/applet.html#thread">The Sun Applet Tutorial</a>
+    */
     public void init() {
         super.init();
 
@@ -205,10 +205,10 @@ public class PlotApplet extends JApplet {
                             System.err.println(e.toString());
                         } catch (FileNotFoundException e) {
                             System.err.println("PlotApplet: file not found: "
-                                + e);
+                                    + e);
                         } catch (IOException e) {
                             System.err.println(
-                                "PlotApplet: error reading input file: " + e);
+                                    "PlotApplet: error reading input file: " + e);
                         }
                     }
                 }

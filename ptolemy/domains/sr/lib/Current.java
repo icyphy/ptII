@@ -44,7 +44,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  *
  * @author Paul Whitaker, Christopher Hylands, Edward A. Lee
  * @version $Id$
-@since Ptolemy II 4.1
+ @since Ptolemy II 4.1
  * @Pt.ProposedRating Yellow (cxh)
  * @Pt.AcceptedRating Red (cxh) Should support multiports
  */
@@ -59,7 +59,7 @@ public class Current extends Transformer {
      *   an actor already in the container.
      */
     public Current(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 

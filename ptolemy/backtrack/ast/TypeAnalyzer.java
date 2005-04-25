@@ -1,29 +1,29 @@
 /* Analyze an Eclipse AST and try to assign a type to each
-(sub-)expression node in it.
+   (sub-)expression node in it.
 
-Copyright (c) 2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+   Copyright (c) 2005 The Regents of the University of California.
+   All rights reserved.
+   Permission is hereby granted, without written agreement and without
+   license or royalty fees, to use, copy, modify, and distribute this
+   software and its documentation for any purpose, provided that the above
+   copyright notice and the following two paragraphs appear in all copies
+   of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+   SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+   THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+   CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+   ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+   PT_COPYRIGHT_VERSION_2
+   COPYRIGHTENDKEY
 
 */
 
@@ -312,29 +312,29 @@ public class TypeAnalyzer extends ASTVisitor {
      *  @param node The node to be visited.
      */
     public void endVisit(ClassInstanceCreation node) {
-       Type.propagateType(node, node.getName());
+        Type.propagateType(node, node.getName());
 
-       Expression expression = node.getExpression();
-       if (expression != null)
+        Expression expression = node.getExpression();
+        if (expression != null)
             Type.setOwner(node, Type.getType(expression));
 
-       if (_handlers.hasConstructorHandler()) {
-           List handlerList = _handlers.getConstructorHandlers();
-           Iterator handlersIter = handlerList.iterator();
-           while (handlersIter.hasNext()) {
-               ConstructorHandler handler =
-                   (ConstructorHandler)handlersIter.next();
-               handler.handle(node, _state);
-           }
-       }
-       if (_handlers.hasAliasHandler()) {
-           List handlerList = _handlers.getAliasHandlers();
-           Iterator handlersIter = handlerList.iterator();
-           while (handlersIter.hasNext()) {
-               AliasHandler handler = (AliasHandler)handlersIter.next();
-               handler.handle(node, _state);
-           }
-       }
+        if (_handlers.hasConstructorHandler()) {
+            List handlerList = _handlers.getConstructorHandlers();
+            Iterator handlersIter = handlerList.iterator();
+            while (handlersIter.hasNext()) {
+                ConstructorHandler handler =
+                    (ConstructorHandler)handlersIter.next();
+                handler.handle(node, _state);
+            }
+        }
+        if (_handlers.hasAliasHandler()) {
+            List handlerList = _handlers.getAliasHandlers();
+            Iterator handlersIter = handlerList.iterator();
+            while (handlersIter.hasNext()) {
+                AliasHandler handler = (AliasHandler)handlersIter.next();
+                handler.handle(node, _state);
+            }
+        }
     }
 
     /** Visit a conditional expression node and set its type to be
@@ -448,16 +448,16 @@ public class TypeAnalyzer extends ASTVisitor {
         Type type = null;
 
         if (operator.equals(InfixExpression.Operator.PLUS) ||
-            operator.equals(InfixExpression.Operator.MINUS) ||
-            operator.equals(InfixExpression.Operator.TIMES) ||
-            operator.equals(InfixExpression.Operator.DIVIDE) ||
-            operator.equals(InfixExpression.Operator.REMAINDER) ||
-            operator.equals(InfixExpression.Operator.LEFT_SHIFT) ||
-            operator.equals(InfixExpression.Operator.RIGHT_SHIFT_SIGNED) ||
-            operator.equals(InfixExpression.Operator.RIGHT_SHIFT_UNSIGNED) ||
-            operator.equals(InfixExpression.Operator.AND) ||
-            operator.equals(InfixExpression.Operator.OR) ||
-            operator.equals(InfixExpression.Operator.XOR)) {
+                operator.equals(InfixExpression.Operator.MINUS) ||
+                operator.equals(InfixExpression.Operator.TIMES) ||
+                operator.equals(InfixExpression.Operator.DIVIDE) ||
+                operator.equals(InfixExpression.Operator.REMAINDER) ||
+                operator.equals(InfixExpression.Operator.LEFT_SHIFT) ||
+                operator.equals(InfixExpression.Operator.RIGHT_SHIFT_SIGNED) ||
+                operator.equals(InfixExpression.Operator.RIGHT_SHIFT_UNSIGNED) ||
+                operator.equals(InfixExpression.Operator.AND) ||
+                operator.equals(InfixExpression.Operator.OR) ||
+                operator.equals(InfixExpression.Operator.XOR)) {
 
             type = Type.getCommonType(Type.getType(leftHand),
                     Type.getType(rightHand));
@@ -578,7 +578,7 @@ public class TypeAnalyzer extends ASTVisitor {
         if (typeAndOwner == null)
             throw new ASTResolutionException(
                     owner == null ? _state.getCurrentClass().getName() :
-                        owner.getName(),
+                    owner.getName(),
                     node.getName().getIdentifier());
         else {
             Type.setOwner(node, typeAndOwner._getOwner());
@@ -624,7 +624,7 @@ public class TypeAnalyzer extends ASTVisitor {
         Type.propagateType(node, node.getOperand());
         PrefixExpression.Operator operator = node.getOperator();
         if ((operator == PrefixExpression.Operator.INCREMENT ||
-                operator == PrefixExpression.Operator.DECREMENT) &&
+                    operator == PrefixExpression.Operator.DECREMENT) &&
                 _handlers.hasClassHandler()) {
             List handlerList = _handlers.getAssignmentHandlers();
             Iterator handlersIter = handlerList.iterator();
@@ -644,7 +644,7 @@ public class TypeAnalyzer extends ASTVisitor {
         Type.propagateType(node, node.getOperand());
         PostfixExpression.Operator operator = node.getOperator();
         if ((operator == PostfixExpression.Operator.INCREMENT ||
-                operator == PostfixExpression.Operator.DECREMENT) &&
+                    operator == PostfixExpression.Operator.DECREMENT) &&
                 _handlers.hasClassHandler()) {
             List handlerList = _handlers.getAssignmentHandlers();
             Iterator handlersIter = handlerList.iterator();
@@ -703,8 +703,8 @@ public class TypeAnalyzer extends ASTVisitor {
                 if (!(node.getParent() instanceof QualifiedName))
                     throw new ASTResolutionException(
                             owner == null ? _state.getCurrentClass().getName() :
-                                owner.getName(),
-                                resolveName);
+                            owner.getName(),
+                            resolveName);
             } else {
                 Type.setOwner(node, nodeTypeAndOwner._getOwner());
                 Type.setOwner(name, nodeTypeAndOwner._getOwner());
@@ -751,7 +751,7 @@ public class TypeAnalyzer extends ASTVisitor {
                         !type.superInterfaces().contains(node))
                     handle = false;
             } else if (parent instanceof BodyDeclaration)
-                    handle = false;
+                handle = false;
             else if (parent instanceof BreakStatement &&
                     ((BreakStatement)parent).getLabel() == node)
                 handle = false;
@@ -857,7 +857,7 @@ public class TypeAnalyzer extends ASTVisitor {
         if (typeAndOwner == null)
             throw new ASTResolutionException(
                     owner == null ? _state.getCurrentClass().getName() :
-                        owner.getName(),
+                    owner.getName(),
                     node.getName().getIdentifier());
         Type.setOwner(node, typeAndOwner._getOwner());
         Type.setType(node, typeAndOwner._getType());
@@ -895,7 +895,7 @@ public class TypeAnalyzer extends ASTVisitor {
         if (typeAndOwner == null)
             throw new ASTResolutionException(
                     owner == null ? _state.getCurrentClass().getName() :
-                        owner.getName(),
+                    owner.getName(),
                     node.getName().getIdentifier());
         else {
             Type.setOwner(node, typeAndOwner._getOwner());
@@ -1529,7 +1529,7 @@ public class TypeAnalyzer extends ASTVisitor {
             Integer hashCode = new Integer(i);
             Class ownerClass = (Class)_classScopeRelation.get(hashCode);
             Type owner = ownerClass == null ?
-                    null : Type.createType(ownerClass.getName());
+                null : Type.createType(ownerClass.getName());
             return new TypeAndOwner(type, owner);
         }
         else
@@ -1718,46 +1718,46 @@ public class TypeAnalyzer extends ASTVisitor {
     }
 
     /** Resolve a method in the given class with an array of arguments.
-    *
-    *  @param owner The class where the method belongs to. If it is null,
-    *   the current class is assumed, and all the enclosing classes are
-    *   searched, if necessary.
-    *  @param methodName The name of the method.
-    *  @param arguments The array of arguments.
-    *  @return The return type and the owner of the method, or <tt>null</tt>
-    *   if the method cannot be found.
-    *  @see #_getMethodType(Class, String, Type[])
-    */
-   private TypeAndOwner _resolveMethod(Class owner, String methodName,
-           Type[] arguments) {
-       Set handledSet = new HashSet();
-       Stack previousClasses = _state.getPreviousClasses();
-       int previousNum = previousClasses.size();
-       Class oldOwner = owner;
-       if (owner == null)
-           owner = _state.getCurrentClass();
+     *
+     *  @param owner The class where the method belongs to. If it is null,
+     *   the current class is assumed, and all the enclosing classes are
+     *   searched, if necessary.
+     *  @param methodName The name of the method.
+     *  @param arguments The array of arguments.
+     *  @return The return type and the owner of the method, or <tt>null</tt>
+     *   if the method cannot be found.
+     *  @see #_getMethodType(Class, String, Type[])
+     */
+    private TypeAndOwner _resolveMethod(Class owner, String methodName,
+            Type[] arguments) {
+        Set handledSet = new HashSet();
+        Stack previousClasses = _state.getPreviousClasses();
+        int previousNum = previousClasses.size();
+        Class oldOwner = owner;
+        if (owner == null)
+            owner = _state.getCurrentClass();
 
-       do {
-           Type type = _getMethodType(owner, methodName, arguments);
-           if (type != null)
-               return new TypeAndOwner(type, Type.createType(owner.getName()));
-           handledSet.add(owner);
-           owner = null;
-           if (oldOwner == null)
-               while (owner == null && previousNum > 0) {
-                   previousNum--;
-                   Object previousObject = previousClasses.get(previousNum);
-                   if (previousObject instanceof Class) {
-                       owner = (Class)previousObject;
-                       if (handledSet.contains(owner))
-                           owner = null;
-                   }
-               }
-       } while (owner != null);
-       return null;
-   }
+        do {
+            Type type = _getMethodType(owner, methodName, arguments);
+            if (type != null)
+                return new TypeAndOwner(type, Type.createType(owner.getName()));
+            handledSet.add(owner);
+            owner = null;
+            if (oldOwner == null)
+                while (owner == null && previousNum > 0) {
+                    previousNum--;
+                    Object previousObject = previousClasses.get(previousNum);
+                    if (previousObject instanceof Class) {
+                        owner = (Class)previousObject;
+                        if (handledSet.contains(owner))
+                            owner = null;
+                    }
+                }
+        } while (owner != null);
+        return null;
+    }
 
-   /** Resolve a simple name within the scope of the given type. The name can
+    /** Resolve a simple name within the scope of the given type. The name can
      *  be a variable name, a field name, or a class relative to that type. If
      *  the name corresponds to a field of a class, its owner is encoded in the
      *  return object.
@@ -1852,24 +1852,24 @@ public class TypeAnalyzer extends ASTVisitor {
     private static void _sortBodyDeclarations(List bodyDeclarations) {
         Object[] bodyArray = bodyDeclarations.toArray();
         Arrays.sort(bodyArray, new Comparator() {
-            public int compare(Object o1, Object o2) {
-                if (o1.getClass().isInstance(o2))
-                    return 0;
+                public int compare(Object o1, Object o2) {
+                    if (o1.getClass().isInstance(o2))
+                        return 0;
 
-                Class[] classes = new Class[] {
+                    Class[] classes = new Class[] {
                         FieldDeclaration.class,
                         TypeDeclaration.class,
                         MethodDeclaration.class,
                         Initializer.class
-                };
-                for (int i = 0; i < classes.length; i++)
-                    if (classes[i].isInstance(o1))
-                        for (int j = i + 1; j < classes.length; j++)
-                            if (classes[j].isInstance(o2))
-                                return -1;
-                return 1;
-            }
-        });
+                    };
+                    for (int i = 0; i < classes.length; i++)
+                        if (classes[i].isInstance(o1))
+                            for (int j = i + 1; j < classes.length; j++)
+                                if (classes[j].isInstance(o2))
+                                    return -1;
+                    return 1;
+                }
+            });
         bodyDeclarations.clear();
         bodyDeclarations.addAll(Arrays.asList(bodyArray));
     }

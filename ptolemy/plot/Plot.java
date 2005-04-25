@@ -232,7 +232,7 @@ public class Plot extends PlotBox {
             String possibleLegend = getLegend(dataset);
 
             if ((possibleLegend == null)
-                            || ((possibleLegend != null)
+                    || ((possibleLegend != null)
                             && !possibleLegend.equals(legend))) {
                 super.addLegend(dataset, legend);
             }
@@ -262,7 +262,7 @@ public class Plot extends PlotBox {
      *   point.
      */
     public synchronized void addPoint(final int dataset, final double x,
-        final double y, final boolean connected) {
+            final double y, final boolean connected) {
         Runnable doAddPoint = new Runnable() {
                 public void run() {
                     _addPoint(dataset, x, y, 0, 0, connected, false);
@@ -301,8 +301,8 @@ public class Plot extends PlotBox {
      *   point.
      */
     public synchronized void addPointWithErrorBars(final int dataset,
-        final double x, final double y, final double yLowEB,
-        final double yHighEB, final boolean connected) {
+            final double x, final double y, final double yLowEB,
+            final double yHighEB, final boolean connected) {
         Runnable doAddPoint = new Runnable() {
                 public void run() {
                     _addPoint(dataset, x, y, yLowEB, yHighEB, connected, true);
@@ -494,7 +494,7 @@ public class Plot extends PlotBox {
      *  @exception IOException If the stream cannot be read.
      */
     public synchronized void read(InputStream inputStream)
-        throws IOException {
+            throws IOException {
         super.read(inputStream);
         _firstInSet = true;
         _sawFirstDataSet = false;
@@ -544,25 +544,25 @@ public class Plot extends PlotBox {
                             // away when this code is executed in the event
                             // dispatch thread.
                             addPoint(0, xvalue,
-                                5 * Math.cos((Math.PI * i) / 20), !first);
+                                    5 * Math.cos((Math.PI * i) / 20), !first);
                             addPoint(1, xvalue,
-                                4.5 * Math.cos((Math.PI * i) / 25), !first);
+                                    4.5 * Math.cos((Math.PI * i) / 25), !first);
                             addPoint(2, xvalue,
-                                4 * Math.cos((Math.PI * i) / 30), !first);
+                                    4 * Math.cos((Math.PI * i) / 30), !first);
                             addPoint(3, xvalue,
-                                3.5 * Math.cos((Math.PI * i) / 35), !first);
+                                    3.5 * Math.cos((Math.PI * i) / 35), !first);
                             addPoint(4, xvalue,
-                                3 * Math.cos((Math.PI * i) / 40), !first);
+                                    3 * Math.cos((Math.PI * i) / 40), !first);
                             addPoint(5, xvalue,
-                                2.5 * Math.cos((Math.PI * i) / 45), !first);
+                                    2.5 * Math.cos((Math.PI * i) / 45), !first);
                             addPoint(6, xvalue,
-                                2 * Math.cos((Math.PI * i) / 50), !first);
+                                    2 * Math.cos((Math.PI * i) / 50), !first);
                             addPoint(7, xvalue,
-                                1.5 * Math.cos((Math.PI * i) / 55), !first);
+                                    1.5 * Math.cos((Math.PI * i) / 55), !first);
                             addPoint(8, xvalue,
-                                1 * Math.cos((Math.PI * i) / 60), !first);
+                                    1 * Math.cos((Math.PI * i) / 60), !first);
                             addPoint(9, xvalue,
-                                0.5 * Math.cos((Math.PI * i) / 65), !first);
+                                    0.5 * Math.cos((Math.PI * i) / 65), !first);
                             first = false;
                         } // for
                     } // synchronized
@@ -728,7 +728,7 @@ public class Plot extends PlotBox {
 
         if (numSets < 1) {
             throw new IllegalArgumentException("Number of data sets ("
-                + numSets + ") must be greater than 0.");
+                    + numSets + ") must be greater than 0.");
         }
 
         _currentdataset = -1;
@@ -881,7 +881,7 @@ public class Plot extends PlotBox {
 
                 if (pt.errorBar) {
                     output.print(" lowErrorBar=\"" + pt.yLowEB
-                        + "\" highErrorBar=\"" + pt.yHighEB + "\"");
+                            + "\" highErrorBar=\"" + pt.yHighEB + "\"");
                 }
 
                 output.println("/>");
@@ -937,7 +937,7 @@ public class Plot extends PlotBox {
 
         if (_bars) {
             output.println("<barGraph width=\"" + barWidth + "\" offset=\""
-                + _barOffset + "\"/>");
+                    + _barOffset + "\"/>");
         }
     }
 
@@ -955,8 +955,8 @@ public class Plot extends PlotBox {
     protected synchronized void _checkDatasetIndex(int dataset) {
         if (dataset < 0) {
             throw new IllegalArgumentException(
-                "Plot._checkDatasetIndex: Cannot"
-                + " give a negative number for the data set index.");
+                    "Plot._checkDatasetIndex: Cannot"
+                    + " give a negative number for the data set index.");
         }
 
         while (dataset >= _points.size()) {
@@ -982,7 +982,7 @@ public class Plot extends PlotBox {
      *  @param clip If true, then do not draw outside the range.
      */
     protected void _drawBar(Graphics graphics, int dataset, long xpos,
-        long ypos, boolean clip) {
+            long ypos, boolean clip) {
         if (clip) {
             if (ypos < _uly) {
                 ypos = _uly;
@@ -996,7 +996,7 @@ public class Plot extends PlotBox {
         if ((ypos <= _lry) && (xpos <= _lrx) && (xpos >= _ulx)) {
             // left x position of bar.
             int barlx = (int) (xpos - ((barWidth * _xscale) / 2)
-                + (dataset * _barOffset * _xscale));
+                    + (dataset * _barOffset * _xscale));
 
             // right x position of bar
             int barrx = (int) (barlx + (barWidth * _xscale));
@@ -1027,10 +1027,10 @@ public class Plot extends PlotBox {
 
             if ((_yMin >= 0) || (ypos <= zeroypos)) {
                 graphics.fillRect(barlx, (int) ypos, barrx - barlx,
-                    (int) (zeroypos - ypos));
+                        (int) (zeroypos - ypos));
             } else {
                 graphics.fillRect(barlx, (int) zeroypos, barrx - barlx,
-                    (int) (ypos - zeroypos));
+                        (int) (ypos - zeroypos));
             }
         }
     }
@@ -1049,12 +1049,12 @@ public class Plot extends PlotBox {
      *  @param clip If true, then do not draw above the range.
      */
     protected void _drawErrorBar(Graphics graphics, int dataset, long xpos,
-        long yLowEBPos, long yHighEBPos, boolean clip) {
+            long yLowEBPos, long yHighEBPos, boolean clip) {
         _drawLine(graphics, dataset, xpos - _ERRORBAR_LEG_LENGTH, yHighEBPos,
-            xpos + _ERRORBAR_LEG_LENGTH, yHighEBPos, clip);
+                xpos + _ERRORBAR_LEG_LENGTH, yHighEBPos, clip);
         _drawLine(graphics, dataset, xpos, yLowEBPos, xpos, yHighEBPos, clip);
         _drawLine(graphics, dataset, xpos - _ERRORBAR_LEG_LENGTH, yLowEBPos,
-            xpos + _ERRORBAR_LEG_LENGTH, yLowEBPos, clip);
+                xpos + _ERRORBAR_LEG_LENGTH, yLowEBPos, clip);
     }
 
     /** Draw a line from the specified point to the y axis.
@@ -1069,7 +1069,7 @@ public class Plot extends PlotBox {
      *  @param clip If true, then do not draw outside the range.
      */
     protected void _drawImpulse(Graphics graphics, long xpos, long ypos,
-        boolean clip) {
+            boolean clip) {
         if (clip) {
             if (ypos < _uly) {
                 ypos = _uly;
@@ -1112,7 +1112,7 @@ public class Plot extends PlotBox {
      *  @param clip If true, then do not draw outside the range.
      */
     protected void _drawLine(Graphics graphics, int dataset, long startx,
-        long starty, long endx, long endy, boolean clip) {
+            long starty, long endx, long endy, boolean clip) {
         _drawLine(graphics, dataset, startx, starty, endx, endy, clip, 1f);
     }
 
@@ -1133,15 +1133,15 @@ public class Plot extends PlotBox {
      *  @param width The thickness of the line.
      */
     protected void _drawLine(Graphics graphics, int dataset, long startx,
-        long starty, long endx, long endy, boolean clip, float width) {
+            long starty, long endx, long endy, boolean clip, float width) {
         _setWidth(graphics, width);
 
         if (clip) {
             // Rule out impossible cases.
             if (!(((endx <= _ulx) && (startx <= _ulx))
-                            || ((endx >= _lrx) && (startx >= _lrx))
-                            || ((endy <= _uly) && (starty <= _uly))
-                            || ((endy >= _lry) && (starty >= _lry)))) {
+                        || ((endx >= _lrx) && (startx >= _lrx))
+                        || ((endy <= _uly) && (starty <= _uly))
+                        || ((endy >= _lry) && (starty >= _lry)))) {
                 // If the end point is out of x range, adjust
                 // end point to boundary.
                 // The integer arithmetic has to be done with longs so as
@@ -1149,13 +1149,13 @@ public class Plot extends PlotBox {
                 if (startx != endx) {
                     if (endx < _ulx) {
                         endy = (int) (endy
-                            + (((long) (starty - endy) * (_ulx - endx)) / (startx
-                                        - endx)));
+                                + (((long) (starty - endy) * (_ulx - endx)) / (startx
+                                           - endx)));
                         endx = _ulx;
                     } else if (endx > _lrx) {
                         endy = (int) (endy
-                            + (((long) (starty - endy) * (_lrx - endx)) / (startx
-                                        - endx)));
+                                + (((long) (starty - endy) * (_lrx - endx)) / (startx
+                                           - endx)));
                         endx = _lrx;
                     }
                 }
@@ -1165,13 +1165,13 @@ public class Plot extends PlotBox {
                 if (starty != endy) {
                     if (endy < _uly) {
                         endx = (int) (endx
-                            + (((long) (startx - endx) * (_uly - endy)) / (starty
-                                        - endy)));
+                                + (((long) (startx - endx) * (_uly - endy)) / (starty
+                                           - endy)));
                         endy = _uly;
                     } else if (endy > _lry) {
                         endx = (int) (endx
-                            + (((long) (startx - endx) * (_lry - endy)) / (starty
-                                        - endy)));
+                                + (((long) (startx - endx) * (_lry - endy)) / (starty
+                                           - endy)));
                         endy = _lry;
                     }
                 }
@@ -1180,13 +1180,13 @@ public class Plot extends PlotBox {
                 if (startx != endx) {
                     if (startx < _ulx) {
                         starty = (int) (starty
-                            + (((long) (endy - starty) * (_ulx - startx)) / (endx
-                                        - startx)));
+                                + (((long) (endy - starty) * (_ulx - startx)) / (endx
+                                           - startx)));
                         startx = _ulx;
                     } else if (startx > _lrx) {
                         starty = (int) (starty
-                            + (((long) (endy - starty) * (_lrx - startx)) / (endx
-                                        - startx)));
+                                + (((long) (endy - starty) * (_lrx - startx)) / (endx
+                                           - startx)));
                         startx = _lrx;
                     }
                 }
@@ -1194,13 +1194,13 @@ public class Plot extends PlotBox {
                 if (starty != endy) {
                     if (starty < _uly) {
                         startx = (int) (startx
-                            + (((long) (endx - startx) * (_uly - starty)) / (endy
-                                        - starty)));
+                                + (((long) (endx - startx) * (_uly - starty)) / (endy
+                                           - starty)));
                         starty = _uly;
                     } else if (starty > _lry) {
                         startx = (int) (startx
-                            + (((long) (endx - startx) * (_lry - starty)) / (endy
-                                        - starty)));
+                                + (((long) (endx - startx) * (_lry - starty)) / (endy
+                                           - starty)));
                         starty = _lry;
                     }
                 }
@@ -1208,11 +1208,11 @@ public class Plot extends PlotBox {
 
             // Are the new points in range?
             if ((endx >= _ulx) && (endx <= _lrx) && (endy >= _uly)
-                            && (endy <= _lry) && (startx >= _ulx)
-                            && (startx <= _lrx) && (starty >= _uly)
-                            && (starty <= _lry)) {
+                    && (endy <= _lry) && (startx >= _ulx)
+                    && (startx <= _lrx) && (starty >= _uly)
+                    && (starty <= _lry)) {
                 graphics.drawLine((int) startx, (int) starty, (int) endx,
-                    (int) endy);
+                        (int) endy);
             }
         } else {
             // draw unconditionally.
@@ -1235,7 +1235,7 @@ public class Plot extends PlotBox {
      *  @param drawRectangle The Rectangle to draw in.
      */
     protected synchronized void _drawPlot(Graphics graphics,
-        boolean clearfirst, Rectangle drawRectangle) {
+            boolean clearfirst, Rectangle drawRectangle) {
         // We must call PlotBox._drawPlot() before calling _drawPlotPoint
         // so that _xscale and _yscale are set.
         super._drawPlot(graphics, clearfirst, drawRectangle);
@@ -1268,10 +1268,10 @@ public class Plot extends PlotBox {
      *  @param clip If true, then do not draw outside the range.
      */
     protected void _drawPoint(Graphics graphics, int dataset, long xpos,
-        long ypos, boolean clip) {
+            long ypos, boolean clip) {
         // If the point is not out of range, draw it.
         boolean pointinside = (ypos <= _lry) && (ypos >= _uly)
-                        && (xpos <= _lrx) && (xpos >= _ulx);
+            && (xpos <= _lrx) && (xpos >= _ulx);
 
         if (!clip || pointinside) {
             int xposi = (int) xpos;
@@ -1294,7 +1294,7 @@ public class Plot extends PlotBox {
             // NOTE: It is unfortunate to have to test the class of graphics,
             // but there is no easy way around this that I can think of.
             if (!pointinside && (marks != 3) && _isConnected(dataset)
-                            && (graphics instanceof EPSGraphics)) {
+                    && (graphics instanceof EPSGraphics)) {
                 graphics.drawLine(xposi - 6, yposi, xposi + 6, yposi);
             } else {
                 // Color display.  Use normal legend.
@@ -1316,7 +1316,7 @@ public class Plot extends PlotBox {
 
                     // dots
                     graphics.fillOval(xposi - _radius, yposi - _radius,
-                        _diameter, _diameter);
+                            _diameter, _diameter);
                     break;
 
                 case 3:
@@ -1335,23 +1335,23 @@ public class Plot extends PlotBox {
 
                         // filled circle
                         graphics.fillOval(xposi - _radius, yposi - _radius,
-                            _diameter, _diameter);
+                                _diameter, _diameter);
                         break;
 
                     case 1:
 
                         // cross
                         graphics.drawLine(xposi - _radius, yposi - _radius,
-                            xposi + _radius, yposi + _radius);
+                                xposi + _radius, yposi + _radius);
                         graphics.drawLine(xposi + _radius, yposi - _radius,
-                            xposi - _radius, yposi + _radius);
+                                xposi - _radius, yposi + _radius);
                         break;
 
                     case 2:
 
                         // square
                         graphics.drawRect(xposi - _radius, yposi - _radius,
-                            _diameter, _diameter);
+                                _diameter, _diameter);
                         break;
 
                     case 3:
@@ -1392,23 +1392,23 @@ public class Plot extends PlotBox {
 
                         // circle
                         graphics.drawOval(xposi - _radius, yposi - _radius,
-                            _diameter, _diameter);
+                                _diameter, _diameter);
                         break;
 
                     case 6:
 
                         // plus sign
                         graphics.drawLine(xposi, yposi - _radius, xposi,
-                            yposi + _radius);
+                                yposi + _radius);
                         graphics.drawLine(xposi - _radius, yposi,
-                            xposi + _radius, yposi);
+                                xposi + _radius, yposi);
                         break;
 
                     case 7:
 
                         // filled square
                         graphics.fillRect(xposi - _radius, yposi - _radius,
-                            _diameter, _diameter);
+                                _diameter, _diameter);
                         break;
 
                     case 8:
@@ -1703,16 +1703,16 @@ public class Plot extends PlotBox {
                             Double yHighEB = new Double(yh);
                             connected = _addLegendIfNecessary(connected);
                             addPointWithErrorBars(_currentdataset,
-                                xpt.doubleValue(), ypt.doubleValue(),
-                                yLowEB.doubleValue(), yHighEB.doubleValue(),
-                                connected);
+                                    xpt.doubleValue(), ypt.doubleValue(),
+                                    yLowEB.doubleValue(), yHighEB.doubleValue(),
+                                    connected);
                             return true;
                         } else {
                             // It is unlikely that we have a fieldsplit2 >0
                             // but not fieldsplit3 >0, but just in case:
                             connected = _addLegendIfNecessary(connected);
                             addPoint(_currentdataset, xpt.doubleValue(),
-                                ypt.doubleValue(), connected);
+                                    ypt.doubleValue(), connected);
                             return true;
                         }
                     } else {
@@ -1720,7 +1720,7 @@ public class Plot extends PlotBox {
                         // a regular pt.
                         connected = _addLegendIfNecessary(connected);
                         addPoint(_currentdataset, xpt.doubleValue(),
-                            ypt.doubleValue(), connected);
+                                ypt.doubleValue(), connected);
                         return true;
                     }
                 } catch (NumberFormatException e) {
@@ -1748,7 +1748,7 @@ public class Plot extends PlotBox {
                 ((Graphics2D) graphics).setStroke(_lineStroke2);
             } else {
                 ((Graphics2D) graphics).setStroke(new BasicStroke(width,
-                        BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND));
+                                                          BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND));
             }
         }
     }
@@ -1858,7 +1858,7 @@ public class Plot extends PlotBox {
 
                 if (pt.errorBar) {
                     output.println(pt.x + ", " + pt.y + ", " + pt.yLowEB + ", "
-                        + pt.yHighEB);
+                            + pt.yHighEB);
                 } else {
                     output.println(pt.x + ", " + pt.y);
                 }
@@ -1928,7 +1928,7 @@ public class Plot extends PlotBox {
      * be called via deferIfNecessary().
      */
     private void _addPoint(int dataset, double x, double y, double yLowEB,
-        double yHighEB, boolean connected, boolean errorBar) {
+            double yHighEB, boolean connected, boolean errorBar) {
         // Ensure replot of offscreen buffer.
         _plotImage = null;
 
@@ -1937,7 +1937,7 @@ public class Plot extends PlotBox {
         if (_xlog) {
             if (x <= 0.0) {
                 System.err.println("Can't plot non-positive X values "
-                    + "when the logarithmic X axis value is specified: " + x);
+                        + "when the logarithmic X axis value is specified: " + x);
                 return;
             }
 
@@ -1947,7 +1947,7 @@ public class Plot extends PlotBox {
         if (_ylog) {
             if (y <= 0.0) {
                 System.err.println("Can't plot non-positive Y values "
-                    + "when the logarithmic Y axis value is specified: " + y);
+                        + "when the logarithmic Y axis value is specified: " + y);
                 return;
             }
 
@@ -1956,8 +1956,8 @@ public class Plot extends PlotBox {
             if (errorBar) {
                 if ((yLowEB <= 0.0) || (yHighEB <= 0.0)) {
                     System.err.println("Can't plot non-positive Y values "
-                        + "when the logarithmic Y axis value is specified: "
-                        + y);
+                            + "when the logarithmic Y axis value is specified: "
+                            + y);
                     return;
                 }
 
@@ -2082,7 +2082,7 @@ public class Plot extends PlotBox {
         // been dismissed.
         if (_showing && (graphics != null)) {
             if (((_pointsPersistence > 0) || (_xPersistence > 0.0))
-                            && isDoubleBuffered()) {
+                    && isDoubleBuffered()) {
                 // NOTE: Double buffering has a bug in Java (in at least
                 // version 1.3) where there is a one pixel alignment problem
                 // that prevents XOR drawing from working correctly.
@@ -2296,8 +2296,8 @@ public class Plot extends PlotBox {
 
         if (pt.errorBar) {
             _drawErrorBar(graphics, dataset, xpos,
-                _lry - (long) ((pt.yLowEB - _yMin) * _yscale),
-                _lry - (long) ((pt.yHighEB - _yMin) * _yscale), true);
+                    _lry - (long) ((pt.yLowEB - _yMin) * _yscale),
+                    _lry - (long) ((pt.yHighEB - _yMin) * _yscale), true);
         }
 
         // Restore the color, in case the box gets redrawn.
@@ -2360,7 +2360,7 @@ public class Plot extends PlotBox {
                 // NOTE: I have no idea why I have to give this point backwards.
                 if (nextp.connected) {
                     _drawLine(graphics, dataset, nextx, nexty, xpos, ypos,
-                        true, 2f);
+                            true, 2f);
                 }
 
                 nextp.connected = false;
@@ -2396,8 +2396,8 @@ public class Plot extends PlotBox {
 
             if (pt.errorBar) {
                 _drawErrorBar(graphics, dataset, xpos,
-                    _lry - (long) ((pt.yLowEB - _yMin) * _yscale),
-                    _lry - (long) ((pt.yHighEB - _yMin) * _yscale), true);
+                        _lry - (long) ((pt.yLowEB - _yMin) * _yscale),
+                        _lry - (long) ((pt.yHighEB - _yMin) * _yscale), true);
             }
 
             // Restore the color, in case the box gets redrawn.
@@ -2421,7 +2421,7 @@ public class Plot extends PlotBox {
 
             if (pt != null) {
                 if ((pt.x == _xBottom) || (pt.x == _xTop) || (pt.y == _yBottom)
-                                || (pt.y == _yTop)) {
+                        || (pt.y == _yTop)) {
                     _xyInvalid = true;
                 }
 

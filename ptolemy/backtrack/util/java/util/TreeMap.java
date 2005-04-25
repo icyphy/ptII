@@ -173,11 +173,11 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
         private FieldRecord $RECORD$parent = new FieldRecord(0);
 
         private FieldRecord[] $RECORDS = new FieldRecord[] {
-                $RECORD$color,
-                $RECORD$left,
-                $RECORD$right,
-                $RECORD$parent
-            };
+            $RECORD$color,
+            $RECORD$left,
+            $RECORD$right,
+            $RECORD$parent
+        };
     }
 
     private final class TreeIterator implements Iterator, Rollbackable {
@@ -241,38 +241,38 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
                 $RECORD$knownMod.add(null, knownMod, $CHECKPOINT.getTimestamp());
             }
             switch (operator) {
-                case 0:
-                    return knownMod += newValue;
-                case 1:
-                    return knownMod -= newValue;
-                case 2:
-                    return knownMod *= newValue;
-                case 3:
-                    return knownMod /= newValue;
-                case 4:
-                    return knownMod &= newValue;
-                case 5:
-                    return knownMod |= newValue;
-                case 6:
-                    return knownMod ^= newValue;
-                case 7:
-                    return knownMod %= newValue;
-                case 8:
-                    return knownMod <<= newValue;
-                case 9:
-                    return knownMod >>= newValue;
-                case 10:
-                    return knownMod >>>= newValue;
-                case 11:
-                    return knownMod++;
-                case 12:
-                    return knownMod--;
-                case 13:
-                    return ++knownMod;
-                case 14:
-                    return --knownMod;
-                default:
-                    return knownMod;
+            case 0:
+                return knownMod += newValue;
+            case 1:
+                return knownMod -= newValue;
+            case 2:
+                return knownMod *= newValue;
+            case 3:
+                return knownMod /= newValue;
+            case 4:
+                return knownMod &= newValue;
+            case 5:
+                return knownMod |= newValue;
+            case 6:
+                return knownMod ^= newValue;
+            case 7:
+                return knownMod %= newValue;
+            case 8:
+                return knownMod <<= newValue;
+            case 9:
+                return knownMod >>= newValue;
+            case 10:
+                return knownMod >>>= newValue;
+            case 11:
+                return knownMod++;
+            case 12:
+                return knownMod--;
+            case 13:
+                return ++knownMod;
+            case 14:
+                return --knownMod;
+            default:
+                return knownMod;
             }
         }
 
@@ -344,12 +344,12 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
         private FieldRecord $RECORD$max = new FieldRecord(0);
 
         private FieldRecord[] $RECORDS = new FieldRecord[] {
-                $RECORD$type,
-                $RECORD$knownMod,
-                $RECORD$last,
-                $RECORD$next,
-                $RECORD$max
-            };
+            $RECORD$type,
+            $RECORD$knownMod,
+            $RECORD$last,
+            $RECORD$next,
+            $RECORD$max
+        };
     }
 
     private final class SubMap extends AbstractMap implements SortedMap, Rollbackable {
@@ -404,100 +404,100 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
             if (entries == null)
                 $ASSIGN$entries(new AbstractSet() {
 
-                    public int size() {
-                        return SubMap.this.size();
-                    }
-
-                    public Iterator iterator() {
-                        Node first = lowestGreaterThan(minKey, true);
-                        Node max = lowestGreaterThan(maxKey, false);
-                        return new TreeIterator(ENTRIES, first, max);
-                    }
-
-                    public void clear() {
-                        SubMap.this.clear();
-                    }
-
-                    public boolean contains(Object o) {
-                        if (!(o instanceof Map.Entry))
-                            return false;
-                        Map.Entry me = (Map.Entry)o;
-                        Object key = me.getKey();
-                        if (!keyInRange(key))
-                            return false;
-                        Node n = getNode(key);
-                        return n != nil && AbstractSet.equals(me.getValue(), n.getValue());
-                    }
-
-                    public boolean remove(Object o) {
-                        if (!(o instanceof Map.Entry))
-                            return false;
-                        Map.Entry me = (Map.Entry)o;
-                        Object key = me.getKey();
-                        if (!keyInRange(key))
-                            return false;
-                        Node n = getNode(key);
-                        if (n != nil && AbstractSet.equals(me.getValue(), n.getValue())) {
-                            removeNode(n);
-                            return true;
-                        }
-                        return false;
-                    }
-
-                    final class _PROXY_ implements Rollbackable {
-
-                        public final void $COMMIT(long timestamp) {
-                            $COMMIT_ANONYMOUS(timestamp);
+                        public int size() {
+                            return SubMap.this.size();
                         }
 
-                        public final void $RESTORE(long timestamp, boolean trim) {
-                            $RESTORE_ANONYMOUS(timestamp, trim);
+                        public Iterator iterator() {
+                            Node first = lowestGreaterThan(minKey, true);
+                            Node max = lowestGreaterThan(maxKey, false);
+                            return new TreeIterator(ENTRIES, first, max);
                         }
 
-                        public final Checkpoint $GET$CHECKPOINT() {
-                            return $GET$CHECKPOINT_ANONYMOUS();
+                        public void clear() {
+                            SubMap.this.clear();
                         }
 
-                        public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
-                            $SET$CHECKPOINT_ANONYMOUS(checkpoint);
+                        public boolean contains(Object o) {
+                            if (!(o instanceof Map.Entry))
+                                return false;
+                            Map.Entry me = (Map.Entry)o;
+                            Object key = me.getKey();
+                            if (!keyInRange(key))
+                                return false;
+                            Node n = getNode(key);
+                            return n != nil && AbstractSet.equals(me.getValue(), n.getValue());
+                        }
+
+                        public boolean remove(Object o) {
+                            if (!(o instanceof Map.Entry))
+                                return false;
+                            Map.Entry me = (Map.Entry)o;
+                            Object key = me.getKey();
+                            if (!keyInRange(key))
+                                return false;
+                            Node n = getNode(key);
+                            if (n != nil && AbstractSet.equals(me.getValue(), n.getValue())) {
+                                removeNode(n);
+                                return true;
+                            }
+                            return false;
+                        }
+
+                        final class _PROXY_ implements Rollbackable {
+
+                            public final void $COMMIT(long timestamp) {
+                                $COMMIT_ANONYMOUS(timestamp);
+                            }
+
+                            public final void $RESTORE(long timestamp, boolean trim) {
+                                $RESTORE_ANONYMOUS(timestamp, trim);
+                            }
+
+                            public final Checkpoint $GET$CHECKPOINT() {
+                                return $GET$CHECKPOINT_ANONYMOUS();
+                            }
+
+                            public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
+                                $SET$CHECKPOINT_ANONYMOUS(checkpoint);
+                                return this;
+                            }
+                        }
+
+                        public void $COMMIT_ANONYMOUS(long timestamp) {
+                            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                            super.$COMMIT(timestamp);
+                        }
+
+                        public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
+                            super.$RESTORE(timestamp, trim);
+                        }
+
+                        public final Checkpoint $GET$CHECKPOINT_ANONYMOUS() {
+                            return $CHECKPOINT;
+                        }
+
+                        public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
+                            if ($CHECKPOINT != checkpoint) {
+                                Checkpoint oldCheckpoint = $CHECKPOINT;
+                                if (checkpoint != null) {
+                                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                                    FieldRecord.pushState($RECORDS);
+                                }
+                                $CHECKPOINT = checkpoint;
+                                oldCheckpoint.setCheckpoint(checkpoint);
+                                checkpoint.addObject(new _PROXY_());
+                            }
                             return this;
                         }
-                    }
 
-                    public void $COMMIT_ANONYMOUS(long timestamp) {
-                        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
-                        super.$COMMIT(timestamp);
-                    }
-
-                    public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
-                        super.$RESTORE(timestamp, trim);
-                    }
-
-                    public final Checkpoint $GET$CHECKPOINT_ANONYMOUS() {
-                        return $CHECKPOINT;
-                    }
-
-                    public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
-                        if ($CHECKPOINT != checkpoint) {
-                            Checkpoint oldCheckpoint = $CHECKPOINT;
-                            if (checkpoint != null) {
-                                $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
-                                FieldRecord.pushState($RECORDS);
-                            }
-                            $CHECKPOINT = checkpoint;
-                            oldCheckpoint.setCheckpoint(checkpoint);
-                            checkpoint.addObject(new _PROXY_());
-                        }
-                        return this;
-                    }
-
-                    private FieldRecord[] $RECORDS = new FieldRecord[] {
+                        private FieldRecord[] $RECORDS = new FieldRecord[] {
                         };
 
-                    {
-                        $CHECKPOINT.addObject(new _PROXY_());
-                    }
-                });
+                        {
+                            $CHECKPOINT.addObject(new _PROXY_());
+                        }
+                    });
             return entries;
         }
 
@@ -524,91 +524,91 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
             if (getKeys() == null)
                 setKeys(new AbstractSet() {
 
-                    public int size() {
-                        return SubMap.this.size();
-                    }
+                        public int size() {
+                            return SubMap.this.size();
+                        }
 
-                    public Iterator iterator() {
-                        Node first = lowestGreaterThan(minKey, true);
-                        Node max = lowestGreaterThan(maxKey, false);
-                        return new TreeIterator(KEYS, first, max);
-                    }
+                        public Iterator iterator() {
+                            Node first = lowestGreaterThan(minKey, true);
+                            Node max = lowestGreaterThan(maxKey, false);
+                            return new TreeIterator(KEYS, first, max);
+                        }
 
-                    public void clear() {
-                        SubMap.this.clear();
-                    }
+                        public void clear() {
+                            SubMap.this.clear();
+                        }
 
-                    public boolean contains(Object o) {
-                        if (!keyInRange(o))
+                        public boolean contains(Object o) {
+                            if (!keyInRange(o))
+                                return false;
+                            return getNode(o) != nil;
+                        }
+
+                        public boolean remove(Object o) {
+                            if (!keyInRange(o))
+                                return false;
+                            Node n = getNode(o);
+                            if (n != nil) {
+                                removeNode(n);
+                                return true;
+                            }
                             return false;
-                        return getNode(o) != nil;
-                    }
-
-                    public boolean remove(Object o) {
-                        if (!keyInRange(o))
-                            return false;
-                        Node n = getNode(o);
-                        if (n != nil) {
-                            removeNode(n);
-                            return true;
-                        }
-                        return false;
-                    }
-
-                    final class _PROXY_ implements Rollbackable {
-
-                        public final void $COMMIT(long timestamp) {
-                            $COMMIT_ANONYMOUS(timestamp);
                         }
 
-                        public final void $RESTORE(long timestamp, boolean trim) {
-                            $RESTORE_ANONYMOUS(timestamp, trim);
+                        final class _PROXY_ implements Rollbackable {
+
+                            public final void $COMMIT(long timestamp) {
+                                $COMMIT_ANONYMOUS(timestamp);
+                            }
+
+                            public final void $RESTORE(long timestamp, boolean trim) {
+                                $RESTORE_ANONYMOUS(timestamp, trim);
+                            }
+
+                            public final Checkpoint $GET$CHECKPOINT() {
+                                return $GET$CHECKPOINT_ANONYMOUS();
+                            }
+
+                            public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
+                                $SET$CHECKPOINT_ANONYMOUS(checkpoint);
+                                return this;
+                            }
                         }
 
-                        public final Checkpoint $GET$CHECKPOINT() {
-                            return $GET$CHECKPOINT_ANONYMOUS();
+                        public void $COMMIT_ANONYMOUS(long timestamp) {
+                            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                            super.$COMMIT(timestamp);
                         }
 
-                        public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
-                            $SET$CHECKPOINT_ANONYMOUS(checkpoint);
+                        public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
+                            super.$RESTORE(timestamp, trim);
+                        }
+
+                        public final Checkpoint $GET$CHECKPOINT_ANONYMOUS() {
+                            return $CHECKPOINT;
+                        }
+
+                        public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
+                            if ($CHECKPOINT != checkpoint) {
+                                Checkpoint oldCheckpoint = $CHECKPOINT;
+                                if (checkpoint != null) {
+                                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                                    FieldRecord.pushState($RECORDS);
+                                }
+                                $CHECKPOINT = checkpoint;
+                                oldCheckpoint.setCheckpoint(checkpoint);
+                                checkpoint.addObject(new _PROXY_());
+                            }
                             return this;
                         }
-                    }
 
-                    public void $COMMIT_ANONYMOUS(long timestamp) {
-                        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
-                        super.$COMMIT(timestamp);
-                    }
-
-                    public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
-                        super.$RESTORE(timestamp, trim);
-                    }
-
-                    public final Checkpoint $GET$CHECKPOINT_ANONYMOUS() {
-                        return $CHECKPOINT;
-                    }
-
-                    public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
-                        if ($CHECKPOINT != checkpoint) {
-                            Checkpoint oldCheckpoint = $CHECKPOINT;
-                            if (checkpoint != null) {
-                                $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
-                                FieldRecord.pushState($RECORDS);
-                            }
-                            $CHECKPOINT = checkpoint;
-                            oldCheckpoint.setCheckpoint(checkpoint);
-                            checkpoint.addObject(new _PROXY_());
-                        }
-                        return this;
-                    }
-
-                    private FieldRecord[] $RECORDS = new FieldRecord[] {
+                        private FieldRecord[] $RECORDS = new FieldRecord[] {
                         };
 
-                    {
-                        $CHECKPOINT.addObject(new _PROXY_());
-                    }
-                });
+                        {
+                            $CHECKPOINT.addObject(new _PROXY_());
+                        }
+                    });
             return getKeys();
         }
 
@@ -658,74 +658,74 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
             if (getValues() == null)
                 setValues(new AbstractCollection() {
 
-                    public int size() {
-                        return SubMap.this.size();
-                    }
-
-                    public Iterator iterator() {
-                        Node first = lowestGreaterThan(minKey, true);
-                        Node max = lowestGreaterThan(maxKey, false);
-                        return new TreeIterator(VALUES, first, max);
-                    }
-
-                    public void clear() {
-                        SubMap.this.clear();
-                    }
-
-                    final class _PROXY_ implements Rollbackable {
-
-                        public final void $COMMIT(long timestamp) {
-                            $COMMIT_ANONYMOUS(timestamp);
+                        public int size() {
+                            return SubMap.this.size();
                         }
 
-                        public final void $RESTORE(long timestamp, boolean trim) {
-                            $RESTORE_ANONYMOUS(timestamp, trim);
+                        public Iterator iterator() {
+                            Node first = lowestGreaterThan(minKey, true);
+                            Node max = lowestGreaterThan(maxKey, false);
+                            return new TreeIterator(VALUES, first, max);
                         }
 
-                        public final Checkpoint $GET$CHECKPOINT() {
-                            return $GET$CHECKPOINT_ANONYMOUS();
+                        public void clear() {
+                            SubMap.this.clear();
                         }
 
-                        public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
-                            $SET$CHECKPOINT_ANONYMOUS(checkpoint);
+                        final class _PROXY_ implements Rollbackable {
+
+                            public final void $COMMIT(long timestamp) {
+                                $COMMIT_ANONYMOUS(timestamp);
+                            }
+
+                            public final void $RESTORE(long timestamp, boolean trim) {
+                                $RESTORE_ANONYMOUS(timestamp, trim);
+                            }
+
+                            public final Checkpoint $GET$CHECKPOINT() {
+                                return $GET$CHECKPOINT_ANONYMOUS();
+                            }
+
+                            public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
+                                $SET$CHECKPOINT_ANONYMOUS(checkpoint);
+                                return this;
+                            }
+                        }
+
+                        public void $COMMIT_ANONYMOUS(long timestamp) {
+                            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                            super.$COMMIT(timestamp);
+                        }
+
+                        public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
+                            super.$RESTORE(timestamp, trim);
+                        }
+
+                        public final Checkpoint $GET$CHECKPOINT_ANONYMOUS() {
+                            return $CHECKPOINT;
+                        }
+
+                        public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
+                            if ($CHECKPOINT != checkpoint) {
+                                Checkpoint oldCheckpoint = $CHECKPOINT;
+                                if (checkpoint != null) {
+                                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                                    FieldRecord.pushState($RECORDS);
+                                }
+                                $CHECKPOINT = checkpoint;
+                                oldCheckpoint.setCheckpoint(checkpoint);
+                                checkpoint.addObject(new _PROXY_());
+                            }
                             return this;
                         }
-                    }
 
-                    public void $COMMIT_ANONYMOUS(long timestamp) {
-                        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
-                        super.$COMMIT(timestamp);
-                    }
-
-                    public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
-                        super.$RESTORE(timestamp, trim);
-                    }
-
-                    public final Checkpoint $GET$CHECKPOINT_ANONYMOUS() {
-                        return $CHECKPOINT;
-                    }
-
-                    public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
-                        if ($CHECKPOINT != checkpoint) {
-                            Checkpoint oldCheckpoint = $CHECKPOINT;
-                            if (checkpoint != null) {
-                                $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
-                                FieldRecord.pushState($RECORDS);
-                            }
-                            $CHECKPOINT = checkpoint;
-                            oldCheckpoint.setCheckpoint(checkpoint);
-                            checkpoint.addObject(new _PROXY_());
-                        }
-                        return this;
-                    }
-
-                    private FieldRecord[] $RECORDS = new FieldRecord[] {
+                        private FieldRecord[] $RECORDS = new FieldRecord[] {
                         };
 
-                    {
-                        $CHECKPOINT.addObject(new _PROXY_());
-                    }
-                });
+                        {
+                            $CHECKPOINT.addObject(new _PROXY_());
+                        }
+                    });
             return getValues();
         }
 
@@ -752,8 +752,8 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
         private FieldRecord $RECORD$entries = new FieldRecord(0);
 
         private FieldRecord[] $RECORDS = new FieldRecord[] {
-                $RECORD$entries
-            };
+            $RECORD$entries
+        };
     }
 
     public TreeMap() {
@@ -832,92 +832,92 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
         if (entries == null)
             $ASSIGN$entries(new AbstractSet() {
 
-                public int size() {
-                    return size;
-                }
+                    public int size() {
+                        return size;
+                    }
 
-                public Iterator iterator() {
-                    return new TreeIterator(ENTRIES);
-                }
+                    public Iterator iterator() {
+                        return new TreeIterator(ENTRIES);
+                    }
 
-                public void clear() {
-                    TreeMap.this.clear();
-                }
+                    public void clear() {
+                        TreeMap.this.clear();
+                    }
 
-                public boolean contains(Object o) {
-                    if (!(o instanceof Map.Entry))
+                    public boolean contains(Object o) {
+                        if (!(o instanceof Map.Entry))
+                            return false;
+                        Map.Entry me = (Map.Entry)o;
+                        Node n = getNode(me.getKey());
+                        return n != nil && AbstractSet.equals(me.getValue(), n.getValue());
+                    }
+
+                    public boolean remove(Object o) {
+                        if (!(o instanceof Map.Entry))
+                            return false;
+                        Map.Entry me = (Map.Entry)o;
+                        Node n = getNode(me.getKey());
+                        if (n != nil && AbstractSet.equals(me.getValue(), n.getValue())) {
+                            removeNode(n);
+                            return true;
+                        }
                         return false;
-                    Map.Entry me = (Map.Entry)o;
-                    Node n = getNode(me.getKey());
-                    return n != nil && AbstractSet.equals(me.getValue(), n.getValue());
-                }
-
-                public boolean remove(Object o) {
-                    if (!(o instanceof Map.Entry))
-                        return false;
-                    Map.Entry me = (Map.Entry)o;
-                    Node n = getNode(me.getKey());
-                    if (n != nil && AbstractSet.equals(me.getValue(), n.getValue())) {
-                        removeNode(n);
-                        return true;
-                    }
-                    return false;
-                }
-
-                final class _PROXY_ implements Rollbackable {
-
-                    public final void $COMMIT(long timestamp) {
-                        $COMMIT_ANONYMOUS(timestamp);
                     }
 
-                    public final void $RESTORE(long timestamp, boolean trim) {
-                        $RESTORE_ANONYMOUS(timestamp, trim);
+                    final class _PROXY_ implements Rollbackable {
+
+                        public final void $COMMIT(long timestamp) {
+                            $COMMIT_ANONYMOUS(timestamp);
+                        }
+
+                        public final void $RESTORE(long timestamp, boolean trim) {
+                            $RESTORE_ANONYMOUS(timestamp, trim);
+                        }
+
+                        public final Checkpoint $GET$CHECKPOINT() {
+                            return $GET$CHECKPOINT_ANONYMOUS();
+                        }
+
+                        public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
+                            $SET$CHECKPOINT_ANONYMOUS(checkpoint);
+                            return this;
+                        }
                     }
 
-                    public final Checkpoint $GET$CHECKPOINT() {
-                        return $GET$CHECKPOINT_ANONYMOUS();
+                    public void $COMMIT_ANONYMOUS(long timestamp) {
+                        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                        super.$COMMIT(timestamp);
                     }
 
-                    public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
-                        $SET$CHECKPOINT_ANONYMOUS(checkpoint);
+                    public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
+                        super.$RESTORE(timestamp, trim);
+                    }
+
+                    public final Checkpoint $GET$CHECKPOINT_ANONYMOUS() {
+                        return $CHECKPOINT;
+                    }
+
+                    public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
+                        if ($CHECKPOINT != checkpoint) {
+                            Checkpoint oldCheckpoint = $CHECKPOINT;
+                            if (checkpoint != null) {
+                                $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                                FieldRecord.pushState($RECORDS);
+                            }
+                            $CHECKPOINT = checkpoint;
+                            oldCheckpoint.setCheckpoint(checkpoint);
+                            checkpoint.addObject(new _PROXY_());
+                        }
                         return this;
                     }
-                }
 
-                public void $COMMIT_ANONYMOUS(long timestamp) {
-                    FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
-                    super.$COMMIT(timestamp);
-                }
-
-                public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
-                    super.$RESTORE(timestamp, trim);
-                }
-
-                public final Checkpoint $GET$CHECKPOINT_ANONYMOUS() {
-                    return $CHECKPOINT;
-                }
-
-                public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
-                    if ($CHECKPOINT != checkpoint) {
-                        Checkpoint oldCheckpoint = $CHECKPOINT;
-                        if (checkpoint != null) {
-                            $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
-                            FieldRecord.pushState($RECORDS);
-                        }
-                        $CHECKPOINT = checkpoint;
-                        oldCheckpoint.setCheckpoint(checkpoint);
-                        checkpoint.addObject(new _PROXY_());
-                    }
-                    return this;
-                }
-
-                private FieldRecord[] $RECORDS = new FieldRecord[] {
+                    private FieldRecord[] $RECORDS = new FieldRecord[] {
                     };
 
-                {
-                    $CHECKPOINT.addObject(new _PROXY_());
-                }
-            });
+                    {
+                        $CHECKPOINT.addObject(new _PROXY_());
+                    }
+                });
         return entries;
     }
 
@@ -939,84 +939,84 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
         if (getKeys() == null)
             setKeys(new AbstractSet() {
 
-                public int size() {
-                    return size;
-                }
-
-                public Iterator iterator() {
-                    return new TreeIterator(KEYS);
-                }
-
-                public void clear() {
-                    TreeMap.this.clear();
-                }
-
-                public boolean contains(Object o) {
-                    return containsKey(o);
-                }
-
-                public boolean remove(Object key) {
-                    Node n = getNode(key);
-                    if (n == nil)
-                        return false;
-                    removeNode(n);
-                    return true;
-                }
-
-                final class _PROXY_ implements Rollbackable {
-
-                    public final void $COMMIT(long timestamp) {
-                        $COMMIT_ANONYMOUS(timestamp);
+                    public int size() {
+                        return size;
                     }
 
-                    public final void $RESTORE(long timestamp, boolean trim) {
-                        $RESTORE_ANONYMOUS(timestamp, trim);
+                    public Iterator iterator() {
+                        return new TreeIterator(KEYS);
                     }
 
-                    public final Checkpoint $GET$CHECKPOINT() {
-                        return $GET$CHECKPOINT_ANONYMOUS();
+                    public void clear() {
+                        TreeMap.this.clear();
                     }
 
-                    public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
-                        $SET$CHECKPOINT_ANONYMOUS(checkpoint);
+                    public boolean contains(Object o) {
+                        return containsKey(o);
+                    }
+
+                    public boolean remove(Object key) {
+                        Node n = getNode(key);
+                        if (n == nil)
+                            return false;
+                        removeNode(n);
+                        return true;
+                    }
+
+                    final class _PROXY_ implements Rollbackable {
+
+                        public final void $COMMIT(long timestamp) {
+                            $COMMIT_ANONYMOUS(timestamp);
+                        }
+
+                        public final void $RESTORE(long timestamp, boolean trim) {
+                            $RESTORE_ANONYMOUS(timestamp, trim);
+                        }
+
+                        public final Checkpoint $GET$CHECKPOINT() {
+                            return $GET$CHECKPOINT_ANONYMOUS();
+                        }
+
+                        public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
+                            $SET$CHECKPOINT_ANONYMOUS(checkpoint);
+                            return this;
+                        }
+                    }
+
+                    public void $COMMIT_ANONYMOUS(long timestamp) {
+                        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                        super.$COMMIT(timestamp);
+                    }
+
+                    public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
+                        super.$RESTORE(timestamp, trim);
+                    }
+
+                    public final Checkpoint $GET$CHECKPOINT_ANONYMOUS() {
+                        return $CHECKPOINT;
+                    }
+
+                    public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
+                        if ($CHECKPOINT != checkpoint) {
+                            Checkpoint oldCheckpoint = $CHECKPOINT;
+                            if (checkpoint != null) {
+                                $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                                FieldRecord.pushState($RECORDS);
+                            }
+                            $CHECKPOINT = checkpoint;
+                            oldCheckpoint.setCheckpoint(checkpoint);
+                            checkpoint.addObject(new _PROXY_());
+                        }
                         return this;
                     }
-                }
 
-                public void $COMMIT_ANONYMOUS(long timestamp) {
-                    FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
-                    super.$COMMIT(timestamp);
-                }
-
-                public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
-                    super.$RESTORE(timestamp, trim);
-                }
-
-                public final Checkpoint $GET$CHECKPOINT_ANONYMOUS() {
-                    return $CHECKPOINT;
-                }
-
-                public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
-                    if ($CHECKPOINT != checkpoint) {
-                        Checkpoint oldCheckpoint = $CHECKPOINT;
-                        if (checkpoint != null) {
-                            $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
-                            FieldRecord.pushState($RECORDS);
-                        }
-                        $CHECKPOINT = checkpoint;
-                        oldCheckpoint.setCheckpoint(checkpoint);
-                        checkpoint.addObject(new _PROXY_());
-                    }
-                    return this;
-                }
-
-                private FieldRecord[] $RECORDS = new FieldRecord[] {
+                    private FieldRecord[] $RECORDS = new FieldRecord[] {
                     };
 
-                {
-                    $CHECKPOINT.addObject(new _PROXY_());
-                }
-            });
+                    {
+                        $CHECKPOINT.addObject(new _PROXY_());
+                    }
+                });
         return getKeys();
     }
 
@@ -1090,72 +1090,72 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
         if (getValues() == null)
             setValues(new AbstractCollection() {
 
-                public int size() {
-                    return size;
-                }
-
-                public Iterator iterator() {
-                    return new TreeIterator(VALUES);
-                }
-
-                public void clear() {
-                    TreeMap.this.clear();
-                }
-
-                final class _PROXY_ implements Rollbackable {
-
-                    public final void $COMMIT(long timestamp) {
-                        $COMMIT_ANONYMOUS(timestamp);
+                    public int size() {
+                        return size;
                     }
 
-                    public final void $RESTORE(long timestamp, boolean trim) {
-                        $RESTORE_ANONYMOUS(timestamp, trim);
+                    public Iterator iterator() {
+                        return new TreeIterator(VALUES);
                     }
 
-                    public final Checkpoint $GET$CHECKPOINT() {
-                        return $GET$CHECKPOINT_ANONYMOUS();
+                    public void clear() {
+                        TreeMap.this.clear();
                     }
 
-                    public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
-                        $SET$CHECKPOINT_ANONYMOUS(checkpoint);
+                    final class _PROXY_ implements Rollbackable {
+
+                        public final void $COMMIT(long timestamp) {
+                            $COMMIT_ANONYMOUS(timestamp);
+                        }
+
+                        public final void $RESTORE(long timestamp, boolean trim) {
+                            $RESTORE_ANONYMOUS(timestamp, trim);
+                        }
+
+                        public final Checkpoint $GET$CHECKPOINT() {
+                            return $GET$CHECKPOINT_ANONYMOUS();
+                        }
+
+                        public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
+                            $SET$CHECKPOINT_ANONYMOUS(checkpoint);
+                            return this;
+                        }
+                    }
+
+                    public void $COMMIT_ANONYMOUS(long timestamp) {
+                        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                        super.$COMMIT(timestamp);
+                    }
+
+                    public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
+                        super.$RESTORE(timestamp, trim);
+                    }
+
+                    public final Checkpoint $GET$CHECKPOINT_ANONYMOUS() {
+                        return $CHECKPOINT;
+                    }
+
+                    public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
+                        if ($CHECKPOINT != checkpoint) {
+                            Checkpoint oldCheckpoint = $CHECKPOINT;
+                            if (checkpoint != null) {
+                                $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                                FieldRecord.pushState($RECORDS);
+                            }
+                            $CHECKPOINT = checkpoint;
+                            oldCheckpoint.setCheckpoint(checkpoint);
+                            checkpoint.addObject(new _PROXY_());
+                        }
                         return this;
                     }
-                }
 
-                public void $COMMIT_ANONYMOUS(long timestamp) {
-                    FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
-                    super.$COMMIT(timestamp);
-                }
-
-                public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
-                    super.$RESTORE(timestamp, trim);
-                }
-
-                public final Checkpoint $GET$CHECKPOINT_ANONYMOUS() {
-                    return $CHECKPOINT;
-                }
-
-                public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
-                    if ($CHECKPOINT != checkpoint) {
-                        Checkpoint oldCheckpoint = $CHECKPOINT;
-                        if (checkpoint != null) {
-                            $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
-                            FieldRecord.pushState($RECORDS);
-                        }
-                        $CHECKPOINT = checkpoint;
-                        oldCheckpoint.setCheckpoint(checkpoint);
-                        checkpoint.addObject(new _PROXY_());
-                    }
-                    return this;
-                }
-
-                private FieldRecord[] $RECORDS = new FieldRecord[] {
+                    private FieldRecord[] $RECORDS = new FieldRecord[] {
                     };
 
-                {
-                    $CHECKPOINT.addObject(new _PROXY_());
-                }
-            });
+                    {
+                        $CHECKPOINT.addObject(new _PROXY_());
+                    }
+                });
         return getValues();
     }
 
@@ -1513,7 +1513,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable, Serial
         }
     }
 
-static     {
+    static     {
         nil.setParent(nil);
         nil.setLeft(nil);
         nil.setRight(nil);
@@ -1541,38 +1541,38 @@ static     {
             $RECORD$size.add(null, size, $CHECKPOINT.getTimestamp());
         }
         switch (operator) {
-            case 0:
-                return size += newValue;
-            case 1:
-                return size -= newValue;
-            case 2:
-                return size *= newValue;
-            case 3:
-                return size /= newValue;
-            case 4:
-                return size &= newValue;
-            case 5:
-                return size |= newValue;
-            case 6:
-                return size ^= newValue;
-            case 7:
-                return size %= newValue;
-            case 8:
-                return size <<= newValue;
-            case 9:
-                return size >>= newValue;
-            case 10:
-                return size >>>= newValue;
-            case 11:
-                return size++;
-            case 12:
-                return size--;
-            case 13:
-                return ++size;
-            case 14:
-                return --size;
-            default:
-                return size;
+        case 0:
+            return size += newValue;
+        case 1:
+            return size -= newValue;
+        case 2:
+            return size *= newValue;
+        case 3:
+            return size /= newValue;
+        case 4:
+            return size &= newValue;
+        case 5:
+            return size |= newValue;
+        case 6:
+            return size ^= newValue;
+        case 7:
+            return size %= newValue;
+        case 8:
+            return size <<= newValue;
+        case 9:
+            return size >>= newValue;
+        case 10:
+            return size >>>= newValue;
+        case 11:
+            return size++;
+        case 12:
+            return size--;
+        case 13:
+            return ++size;
+        case 14:
+            return --size;
+        default:
+            return size;
         }
     }
 
@@ -1591,38 +1591,38 @@ static     {
             $RECORD$modCount.add(null, modCount, $CHECKPOINT.getTimestamp());
         }
         switch (operator) {
-            case 0:
-                return modCount += newValue;
-            case 1:
-                return modCount -= newValue;
-            case 2:
-                return modCount *= newValue;
-            case 3:
-                return modCount /= newValue;
-            case 4:
-                return modCount &= newValue;
-            case 5:
-                return modCount |= newValue;
-            case 6:
-                return modCount ^= newValue;
-            case 7:
-                return modCount %= newValue;
-            case 8:
-                return modCount <<= newValue;
-            case 9:
-                return modCount >>= newValue;
-            case 10:
-                return modCount >>>= newValue;
-            case 11:
-                return modCount++;
-            case 12:
-                return modCount--;
-            case 13:
-                return ++modCount;
-            case 14:
-                return --modCount;
-            default:
-                return modCount;
+        case 0:
+            return modCount += newValue;
+        case 1:
+            return modCount -= newValue;
+        case 2:
+            return modCount *= newValue;
+        case 3:
+            return modCount /= newValue;
+        case 4:
+            return modCount &= newValue;
+        case 5:
+            return modCount |= newValue;
+        case 6:
+            return modCount ^= newValue;
+        case 7:
+            return modCount %= newValue;
+        case 8:
+            return modCount <<= newValue;
+        case 9:
+            return modCount >>= newValue;
+        case 10:
+            return modCount >>>= newValue;
+        case 11:
+            return modCount++;
+        case 12:
+            return modCount--;
+        case 13:
+            return ++modCount;
+        case 14:
+            return --modCount;
+        default:
+            return modCount;
         }
     }
 
@@ -1648,9 +1648,9 @@ static     {
     private FieldRecord $RECORD$modCount = new FieldRecord(0);
 
     private FieldRecord[] $RECORDS = new FieldRecord[] {
-            $RECORD$root,
-            $RECORD$size,
-            $RECORD$entries,
-            $RECORD$modCount
-        };
+        $RECORD$root,
+        $RECORD$size,
+        $RECORD$entries,
+        $RECORD$modCount
+    };
 }

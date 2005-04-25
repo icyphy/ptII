@@ -69,15 +69,15 @@ public class TreeTableau extends Tableau {
      *   attribute already in the container.
      */
     public TreeTableau(PtolemyEffigy container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         NamedObj model = container.getModel();
 
         if (!(model instanceof CompositeEntity)) {
             throw new IllegalActionException(this,
-                "Cannot have a tree view of a model that is "
-                + "not a CompositeEntity.");
+                    "Cannot have a tree view of a model that is "
+                    + "not a CompositeEntity.");
         }
     }
 
@@ -92,8 +92,8 @@ public class TreeTableau extends Tableau {
     public void setFrame(JFrame frame) throws IllegalActionException {
         if (!(frame instanceof TreeFrame)) {
             throw new IllegalActionException(this,
-                "Frame for PlotTableau must be an instance of "
-                + "PlotTableauFrame.");
+                    "Frame for PlotTableau must be an instance of "
+                    + "PlotTableauFrame.");
         }
 
         super.setFrame(frame);
@@ -189,7 +189,7 @@ public class TreeTableau extends Tableau {
          *   an attribute already in the container.
          */
         public Factory(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+                throws IllegalActionException, NameDuplicationException {
             super(container, name);
         }
 

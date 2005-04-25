@@ -52,20 +52,20 @@ import ptolemy.kernel.util.NameDuplicationException;
    <a href="http://hoschek.home.cern.ch/hoschek/colt/V1.0.3/doc/cern/jet/random/ChiSquare.html">cern.jet.random.ChiSquare</a> object with
    freedom argument set to 1.0.
 
-The Chi Square Distribution is
-<blockquote>
-A special case of the Gamma distribution.
- <p>
- <tt>p(x) = (1/g(f/2)) * (x/2)^(f/2-1) * exp(-x/2)</tt> with <tt>g(a)</tt> being the gamma function and <tt>f</tt> being the degrees of freedom.
- </p><p>
- Valid parameter ranges: <tt>freedom &gt; 0</tt>.
-</blockquote>
+   The Chi Square Distribution is
+   <blockquote>
+   A special case of the Gamma distribution.
+   <p>
+   <tt>p(x) = (1/g(f/2)) * (x/2)^(f/2-1) * exp(-x/2)</tt> with <tt>g(a)</tt> being the gamma function and <tt>f</tt> being the degrees of freedom.
+   </p><p>
+   Valid parameter ranges: <tt>freedom &gt; 0</tt>.
+   </blockquote>
 
    The above description of Chi Square is
    <a href="doc-files/colt-copyright.htm">copyrighted</a>.
 
    <p>A definition of the ChiSquare distribution can be found at
-<a href="http://www.cern.ch/RD11/rkb/AN16pp/node31.html#SECTION000310000000000000000"><code>http://www.cern.ch/RD11/rkb/AN16pp/node31.html#SECTION000310000000000000000</code></a>
+   <a href="http://www.cern.ch/RD11/rkb/AN16pp/node31.html#SECTION000310000000000000000"><code>http://www.cern.ch/RD11/rkb/AN16pp/node31.html#SECTION000310000000000000000</code></a>
 
    @author David Bauer and Kostas Oikonomou
    @version $Id$
@@ -83,7 +83,7 @@ public class ColtChiSquare extends ColtRandomSource {
      *   actor with this name.
      */
     public ColtChiSquare(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         output.setTypeEquals(BaseType.DOUBLE);

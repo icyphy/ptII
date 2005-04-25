@@ -66,7 +66,7 @@ public class ShapeIcon extends DynamicEditorIcon {
      *   an attribute already in the container.
      */
     public ShapeIcon(NamedObj container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -81,7 +81,7 @@ public class ShapeIcon extends DynamicEditorIcon {
      *   an attribute already in the container.
      */
     public ShapeIcon(NamedObj container, String name, Shape defaultShape)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _defaultShape = defaultShape;
         setShape(defaultShape);
@@ -134,7 +134,7 @@ public class ShapeIcon extends DynamicEditorIcon {
         } else {
             // Create a white rectangle.
             newFigure = new BasicFigure(new Rectangle2D.Double(0.0, 0.0, 20.0,
-                        20.0));
+                                                20.0));
         }
 
         // By default, the origin should be the upper left.

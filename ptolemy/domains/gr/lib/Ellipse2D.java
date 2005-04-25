@@ -51,7 +51,7 @@ import diva.canvas.toolbox.BasicFigure;
 */
 public class Ellipse2D extends RectangularFigure2D {
     public Ellipse2D(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 

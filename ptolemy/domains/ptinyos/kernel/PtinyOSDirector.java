@@ -96,21 +96,21 @@ public class PtinyOSDirector extends Director {
      *   an attribute already in the container.
      */
     public PtinyOSDirector(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         _attachText("_iconDescription",
-            "<svg>\n" + "<rect x=\"-40\" y=\"-15\" width=\"80\" height=\"30\" "
-            + "style=\"fill:blue\"/>" + "<text x=\"-36\" y=\"8\" "
-            + "style=\"font-size:20; font-family:SansSerif; fill:white\">"
-            + "PtinyOS</text></svg>");
+                "<svg>\n" + "<rect x=\"-40\" y=\"-15\" width=\"80\" height=\"30\" "
+                + "style=\"fill:blue\"/>" + "<text x=\"-36\" y=\"8\" "
+                + "style=\"font-size:20; font-family:SansSerif; fill:white\">"
+                + "PtinyOS</text></svg>");
 
         // Set the code generation output directory to the current
         // working directory.
         destinationDirectory = new FileParameter(this, "destinationDirectory");
         new Parameter(destinationDirectory, "allowFiles", BooleanToken.FALSE);
         new Parameter(destinationDirectory, "allowDirectories",
-            BooleanToken.TRUE);
+                BooleanToken.TRUE);
         destinationDirectory.setExpression("$CWD");
 
         // Set so that user must confirm each file that will be
@@ -264,10 +264,10 @@ public class PtinyOSDirector extends Director {
      *  NOTE: returns 0 if error.
      */
     public char getCharParameterValue(String param)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (_debugging) {
             _debug("Called getCharParameterValue with " + param
-                + " as argument.");
+                    + " as argument.");
         }
 
         // FIXME Delete later
@@ -296,7 +296,7 @@ public class PtinyOSDirector extends Director {
                 } else {
                     // FIXME
                     System.out.println("Couldn't get token from ParameterPort "
-                        + p.getName());
+                            + p.getName());
                 }
             }
         }
@@ -313,10 +313,10 @@ public class PtinyOSDirector extends Director {
      *  NOTE: returns FALSE if error.
      */
     public boolean getBooleanParameterValue(String param)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (_debugging) {
             _debug("Called getBooleanParameterValue with " + param
-                + " as argument.");
+                    + " as argument.");
         }
 
         // FIXME Delete later
@@ -345,7 +345,7 @@ public class PtinyOSDirector extends Director {
                 } else {
                     // FIXME
                     System.out.println("Couldn't get token from ParameterPort "
-                        + p.getName());
+                            + p.getName());
                 }
             }
         }
@@ -383,8 +383,8 @@ public class PtinyOSDirector extends Director {
                 // Convert File to a URL
                 URL url = file.toURL(); // file:/c:/myclasses/
                 URL[] urls = new URL[] {
-                        url
-                    };
+                    url
+                };
 
                 // Create a new class loader with the directory
                 ClassLoader cl = new URLClassLoader(urls);
@@ -401,20 +401,20 @@ public class PtinyOSDirector extends Director {
                     // Call main with the boot up time range and
                     // number of nodes as arguments.
                     String[] argsToMain = {
-                            "-b=" + bootTimeRange.getToken().toString(),
-                            numNodes.getToken().toString()
-                        };
+                        "-b=" + bootTimeRange.getToken().toString(),
+                        numNodes.getToken().toString()
+                    };
 
                     // Load the library with the native methods for TOSSIM.
                     _loader.load(outputDir, this);
 
                     if (_loader.main(argsToMain) < 0) {
                         throw new InternalErrorException(
-                            "Could not initialize TOSSIM.");
+                                "Could not initialize TOSSIM.");
                     }
                 } else {
                     throw new InternalErrorException(
-                        "Loader was not instance of PtinyOSLoader.");
+                            "Loader was not instance of PtinyOSLoader.");
                 }
             } catch (Exception e) {
                 throw new InternalErrorException(e);
@@ -446,8 +446,8 @@ public class PtinyOSDirector extends Director {
 
         if (!(getContainer() instanceof CompositeActor)) {
             throw new IllegalActionException(this,
-                "Requires the container to be an "
-                + "instance of CompositeActor.");
+                    "Requires the container to be an "
+                    + "instance of CompositeActor.");
         }
 
         // Open directory, creating it if necessary.
@@ -455,14 +455,14 @@ public class PtinyOSDirector extends Director {
 
         if (!directory.isDirectory()) {
             if (!MessageHandler.yesNoQuestion("Create directory "
-                                + destinationDirectory.getExpression() + "?")) {
+                        + destinationDirectory.getExpression() + "?")) {
                 throw new IllegalActionException(this,
-                    "No directory named: "
-                    + destinationDirectory.getExpression());
+                        "No directory named: "
+                        + destinationDirectory.getExpression());
             } else {
                 if (!directory.mkdir()) {
                     throw new IllegalActionException(this,
-                        "Could not create directory " + directory);
+                            "Could not create directory " + directory);
                 }
             }
         }
@@ -506,7 +506,7 @@ public class PtinyOSDirector extends Director {
             writer.close();
         } catch (IOException e) {
             throw new IllegalActionException(this, e,
-                "Failed to open file for writing.");
+                    "Failed to open file for writing.");
         }
 
         // Descend recursively into contained composites.
@@ -531,7 +531,7 @@ public class PtinyOSDirector extends Director {
 
     /** FIXME comment
         Called from PtinyOSActor fire().
-     */
+    */
     public void receivePacket(String packet) throws IllegalActionException {
         if (((BooleanToken) simulate.getToken()).booleanValue()) {
             CompositeActor container = (CompositeActor) getContainer();
@@ -560,7 +560,7 @@ public class PtinyOSDirector extends Director {
      *  FIXME comment
      */
     public int sendToPort(String portname, String expression)
-        throws IllegalActionException {
+            throws IllegalActionException {
         CompositeActor model = (CompositeActor) getContainer();
         Iterator outPorts;
 
@@ -582,7 +582,7 @@ public class PtinyOSDirector extends Director {
                         // Port does not have correct type.
                         // FIXME
                         System.out.println(
-                            "error: could not find matching type for sendToPort()");
+                                "error: could not find matching type for sendToPort()");
                         return -1;
                     }
                 } else {
@@ -606,11 +606,11 @@ public class PtinyOSDirector extends Director {
     public void tosdbg(String dbgmode, String msg, String nodenum) {
         if (_debugging) {
             /*
-            _debug("Called tosdbg(): ");
-            _debug("     dbgmode: " + dbgmode);
-            _debug("     msg: " + msg);
-            _debug("     nodenum: " + nodenum);
-             */
+              _debug("Called tosdbg(): ");
+              _debug("     dbgmode: " + dbgmode);
+              _debug("     msg: " + msg);
+              _debug("     nodenum: " + nodenum);
+            */
             String trimmedMsg = msg.trim();
 
             if (nodenum != null) {
@@ -658,15 +658,15 @@ public class PtinyOSDirector extends Director {
         text.addLine("import ptolemy.kernel.util.IllegalActionException;");
 
         text.addLine("public class Loader" + toplevelName
-            + " implements PtinyOSLoader {");
+                + " implements PtinyOSLoader {");
 
         text.addLine(
-            "    public void load(String path, PtinyOSDirector director) {");
+                "    public void load(String path, PtinyOSDirector director) {");
         text.addLine(
-            "        String fileSeparator = System.getProperty(\"file.separator\");");
+                "        String fileSeparator = System.getProperty(\"file.separator\");");
         text.addLine(
-            "        System.load(path + fileSeparator + System.mapLibraryName(\""
-            + toplevelName + "\"));");
+                "        System.load(path + fileSeparator + System.mapLibraryName(\""
+                + toplevelName + "\"));");
         text.addLine("        this.director = director;");
         text.addLine("    }");
 
@@ -679,49 +679,49 @@ public class PtinyOSDirector extends Director {
         text.addLine("    }");
 
         text.addLine(
-            "    public void receivePacket(long currentTime, String packet) {");
+                "    public void receivePacket(long currentTime, String packet) {");
         text.addLine("        receivePacket" + toplevelName
-            + "(currentTime, packet);");
+                + "(currentTime, packet);");
         text.addLine("    }");
 
         text.addLine(
-            "    public void enqueueEvent(String newtime) throws IllegalActionException {");
+                "    public void enqueueEvent(String newtime) throws IllegalActionException {");
         text.addLine("        this.director.enqueueEvent(newtime);");
         text.addLine("    }");
 
         text.addLine("    public char getCharParameterValue(String param)");
         text.addLine("            throws IllegalActionException {");
         text.addLine(
-            "        return this.director.getCharParameterValue(param);");
+                "        return this.director.getCharParameterValue(param);");
         text.addLine("    }");
 
         text.addLine(
-            "    public boolean getBooleanParameterValue(String param)");
+                "    public boolean getBooleanParameterValue(String param)");
         text.addLine("            throws IllegalActionException {");
         text.addLine(
-            "        return this.director.getBooleanParameterValue(param);");
+                "        return this.director.getBooleanParameterValue(param);");
         text.addLine("    }");
 
         text.addLine(
-            "    public int sendToPort(String portname, String expression)");
+                "    public int sendToPort(String portname, String expression)");
         text.addLine("            throws IllegalActionException {");
         text.addLine(
-            "        return this.director.sendToPort(portname, expression);");
+                "        return this.director.sendToPort(portname, expression);");
         text.addLine("    }");
 
         text.addLine(
-            "    public void tosdbg(String dbgmode, String msg, String nodenum) {");
+                "    public void tosdbg(String dbgmode, String msg, String nodenum) {");
         text.addLine("        this.director.tosdbg(dbgmode, msg, nodenum);");
         text.addLine("    }");
 
         text.addLine("    private PtinyOSDirector director;");
 
         text.addLine("    private native int main" + toplevelName
-            + "(String argsToMain[]);");
+                + "(String argsToMain[]);");
         text.addLine("    private native void processEvent" + toplevelName
-            + "(long currentTime);");
+                + "(long currentTime);");
         text.addLine("    private native void receivePacket" + toplevelName
-            + "(long currentTime, String packet);");
+                + "(long currentTime, String packet);");
         text.addLine("}");
 
         String loaderFileName = "Loader" + toplevelName + ".java";
@@ -738,7 +738,7 @@ public class PtinyOSDirector extends Director {
             writer.close();
         } catch (IOException e) {
             throw new IllegalActionException(this, e,
-                "Failed to open file for writing.");
+                    "Failed to open file for writing.");
         }
     }
 
@@ -754,7 +754,7 @@ public class PtinyOSDirector extends Director {
     #include $(MAKERULES)
     include /home/celaine/tinyos/tinyos/tinyos-1.x/tools/make/Makerules
 
-     */
+    */
     private String _generateMakefile() throws IllegalActionException {
         // Use filename relative to toplevel PtinyOSDirector.
         NamedObj toplevel = _toplevelNC();
@@ -771,14 +771,14 @@ public class PtinyOSDirector extends Director {
         // FIXME use pathseparator?
         // FIXME make sure no trailing / before /../
         text.addLine(
-            "TOSMAKE_PATH += $(TOSDIR)/../contrib/ptII/ptinyos/tools/make");
+                "TOSMAKE_PATH += $(TOSDIR)/../contrib/ptII/ptinyos/tools/make");
 
         text.addLine("COMPONENT=" + toplevelName);
 
         text.addLine("PFLAGS += " + pflags.stringValue());
 
         text.addLine("PFLAGS +=" + " -DCOMMAND_PORT=" + commandPort.getToken()
-            + " -DEVENT_PORT=" + eventPort.getToken());
+                + " -DEVENT_PORT=" + eventPort.getToken());
 
         text.addLine("MY_PTCC_FLAGS +=" + " -D_PTII_NODE_NUM=" + toplevelName);
 
@@ -789,14 +789,14 @@ public class PtinyOSDirector extends Director {
                 // FIXME will this work for "all"?
                 //text.addLine("PFLAGS += -I$(TOSDIR)/../contrib/ptII/ptinyos/tos/platform/ptII/packet");
                 text.addLine(
-                    "PFLAGS += -I$(TOSDIR)/../contrib/ptII/ptinyos/beta/TOSSIM-packet");
+                        "PFLAGS += -I$(TOSDIR)/../contrib/ptII/ptinyos/beta/TOSSIM-packet");
                 text.addLine("include $(PTII)/mk/ptII.mk");
                 break;
             }
         }
 
         text.addLine("include " + tosDir.stringValue()
-            + "/../tools/make/Makerules");
+                + "/../tools/make/Makerules");
 
         String makefileName = "makefile-" + toplevelName;
         File directory = destinationDirectory.asFile();
@@ -812,7 +812,7 @@ public class PtinyOSDirector extends Director {
             writer.close();
         } catch (IOException e) {
             throw new IllegalActionException(this, e,
-                "Failed to open file for writing.");
+                    "Failed to open file for writing.");
         }
 
         return makefileName;
@@ -857,7 +857,7 @@ public class PtinyOSDirector extends Director {
             }
         } catch (Exception e) {
             throw new InternalErrorException(
-                "Could not compile generated code. " + e);
+                    "Could not compile generated code. " + e);
         }
     }
 
@@ -865,16 +865,16 @@ public class PtinyOSDirector extends Director {
      */
     private void _confirmOverwrite(File file) throws IllegalActionException {
         boolean confirmOverwriteValue = ((BooleanToken) confirmOverwrite
-                        .getToken()).booleanValue();
+                .getToken()).booleanValue();
 
         if (file.exists() && confirmOverwriteValue) {
             if (!MessageHandler.yesNoQuestion("OK to overwrite " + file + "?")) {
                 throw new IllegalActionException(this,
-                    "Please select another file name.");
+                        "Please select another file name.");
             } else {
                 if (!file.delete()) {
                     throw new IllegalActionException(this,
-                        "Could not delete file " + file);
+                            "Could not delete file " + file);
                 }
             }
         }
@@ -887,7 +887,7 @@ public class PtinyOSDirector extends Director {
      *  @return The NC code.
      */
     private String _generateCode(CompositeActor model)
-        throws IllegalActionException {
+            throws IllegalActionException {
         CompositeActor container = (CompositeActor) getContainer();
 
         //NamedObj toplevel = _toplevelNC();
@@ -925,7 +925,7 @@ public class PtinyOSDirector extends Director {
 
             if (container instanceof CompositeActor) {
                 Director director = ((CompositeActor) container)
-                                .getExecutiveDirector();
+                    .getExecutiveDirector();
 
                 if (director instanceof PtinyOSDirector) {
                     return ((PtinyOSDirector) director)._toplevelNC();
@@ -941,7 +941,7 @@ public class PtinyOSDirector extends Director {
      *  @return The code describing the input ports.
      */
     private static String _interfaceProvides(CompositeActor model)
-        throws IllegalActionException {
+            throws IllegalActionException {
         CodeString codeString = new CodeString();
 
         Iterator inPorts = model.inputPortList().iterator();
@@ -951,8 +951,8 @@ public class PtinyOSDirector extends Director {
 
             if (port.isOutput()) {
                 throw new IllegalActionException(port,
-                    "Ports that are both inputs and outputs "
-                    + "are not allowed.");
+                        "Ports that are both inputs and outputs "
+                        + "are not allowed.");
             }
 
             codeString.addLine("provides interface " + port.getName() + ";");
@@ -965,7 +965,7 @@ public class PtinyOSDirector extends Director {
      *  @return The code.
      */
     private static String _interfaceUses(CompositeActor model)
-        throws IllegalActionException {
+            throws IllegalActionException {
         CodeString codeString = new CodeString();
 
         Iterator outPorts = model.outputPortList().iterator();
@@ -975,8 +975,8 @@ public class PtinyOSDirector extends Director {
 
             if (port.isInput()) {
                 throw new IllegalActionException(port,
-                    "Ports that are both inputs and outputs "
-                    + "are not allowed.");
+                        "Ports that are both inputs and outputs "
+                        + "are not allowed.");
             }
 
             codeString.addLine("uses interface " + port.getName() + ";");
@@ -989,7 +989,7 @@ public class PtinyOSDirector extends Director {
      *  @return The code.
      */
     private static String _includeModule(CompositeActor model)
-        throws IllegalActionException {
+            throws IllegalActionException {
         CodeString codeString = new CodeString();
 
         // Examine each actor in the model.
@@ -1000,7 +1000,7 @@ public class PtinyOSDirector extends Director {
             // Figure out the actor name.
             Actor actor = (Actor) actors.next();
             String actorName = StringUtilities.sanitizeName(((NamedObj) actor)
-                                .getName());
+                    .getName());
 
             // Figure out the class name.
             String className = ((NamedObj) actor).getClassName();
@@ -1036,17 +1036,17 @@ public class PtinyOSDirector extends Director {
      *  @return The connections code.
      */
     private static String _includeConnection(CompositeActor model, Actor actor)
-        throws IllegalActionException {
+            throws IllegalActionException {
         CodeString codeString = new CodeString();
 
         String actorName = StringUtilities.sanitizeName(((NamedObj) actor)
-                            .getName());
+                .getName());
 
         for (Iterator inPorts = actor.inputPortList().iterator();
-                        inPorts.hasNext();) {
+             inPorts.hasNext();) {
             IOPort inPort = (IOPort) inPorts.next();
             String sanitizedInPortName = StringUtilities.sanitizeName(inPort
-                                .getName());
+                    .getName());
             String inPortMultiport = "";
 
             if (inPort.isMultiport()) {
@@ -1058,17 +1058,17 @@ public class PtinyOSDirector extends Director {
             // FIXMe, generate a notice instead
 
             /*
-            if (sourcePortList.size() > 1) {
-                throw new IllegalActionException(inPort,
-                        "Input port (provides) cannot connect to "
-                        + "multiple output ports (requires) in NC.");
+              if (sourcePortList.size() > 1) {
+              throw new IllegalActionException(inPort,
+              "Input port (provides) cannot connect to "
+              + "multiple output ports (requires) in NC.");
               }*/
 
             //            if (sourcePortList.size()== 1) {
             for (int i = 0; i < sourcePortList.size(); i++) {
                 IOPort sourcePort = (IOPort) sourcePortList.get(i);
                 String sanitizedSourcePortName = StringUtilities.sanitizeName(sourcePort
-                                    .getName());
+                        .getName());
                 String sourcePortMultiport = "";
 
                 if (sourcePort.isMultiport()) {
@@ -1077,17 +1077,17 @@ public class PtinyOSDirector extends Director {
                 }
 
                 String sourceActorName = StringUtilities.sanitizeName(sourcePort.getContainer()
-                                                                                            .getName());
+                        .getName());
 
                 if (sourcePort.getContainer() == model) {
                     codeString.addLine(sanitizedSourcePortName
-                        + sourcePortMultiport + " = " + actorName + "."
-                        + sanitizedInPortName + inPortMultiport + ";");
+                            + sourcePortMultiport + " = " + actorName + "."
+                            + sanitizedInPortName + inPortMultiport + ";");
                 } else {
                     codeString.addLine(sourceActorName + "."
-                        + sanitizedSourcePortName + sourcePortMultiport
-                        + " -> " + actorName + "." + sanitizedInPortName
-                        + inPortMultiport + ";");
+                            + sanitizedSourcePortName + sourcePortMultiport
+                            + " -> " + actorName + "." + sanitizedInPortName
+                            + inPortMultiport + ";");
                 }
             }
         }
@@ -1100,7 +1100,7 @@ public class PtinyOSDirector extends Director {
      *  @return The drivers code.
      */
     private String _includeConnection(CompositeActor model)
-        throws IllegalActionException {
+            throws IllegalActionException {
         CodeString codeString = new CodeString();
         Actor actor;
 
@@ -1127,25 +1127,25 @@ public class PtinyOSDirector extends Director {
             //FIXME: can the list be empty?
 
             /*
-            if (sourcePortList.size() > 1) {
-                throw new IllegalActionException(port, "Input port " +
-                        "cannot receive data from multiple sources in NC.");
+              if (sourcePortList.size() > 1) {
+              throw new IllegalActionException(port, "Input port " +
+              "cannot receive data from multiple sources in NC.");
               }*/
             CompositeActor container = (CompositeActor) getContainer();
 
             //NamedObj toplevel = _toplevelNC();
             //            if (sourcePortList != null && (container != toplevel)) {
             if ((sourcePortList != null)
-                            && !(container instanceof PtinyOSActor)) {
+                    && !(container instanceof PtinyOSActor)) {
                 // FIXME: test this code
                 for (int i = 0; i < sourcePortList.size(); i++) {
                     IOPort sourcePort = (IOPort) sourcePortList.get(i);
                     String sanitizedOutPortName = StringUtilities.sanitizeName(sourcePort
-                                        .getName());
+                            .getName());
                     String sourceActorName = StringUtilities.sanitizeName(sourcePort.getContainer()
-                                                                                                .getName());
+                            .getName());
                     codeString.addLine(sourceActorName + "."
-                        + sanitizedOutPortName + " = " + port.getName() + ";");
+                            + sanitizedOutPortName + " = " + port.getName() + ";");
                 }
             }
         }
@@ -1164,7 +1164,7 @@ public class PtinyOSDirector extends Director {
 
         if (container instanceof CompositeActor) {
             Director director = ((CompositeActor) container)
-                            .getExecutiveDirector();
+                .getExecutiveDirector();
 
             if (director instanceof PtinyOSDirector) {
                 return false;
@@ -1173,7 +1173,7 @@ public class PtinyOSDirector extends Director {
             }
         } else {
             throw new InternalErrorException("This director was not "
-                + "inside a CompositeActor.");
+                    + "inside a CompositeActor.");
         }
     }
 

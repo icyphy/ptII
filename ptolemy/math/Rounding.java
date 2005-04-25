@@ -134,7 +134,7 @@ public abstract class Rounding implements Cloneable, Serializable {
         }
 
         throw new IllegalArgumentException("Unknown rounding strategy \""
-            + name + "\".");
+                + name + "\".");
     }
 
     /** Return a hash code value for this object.

@@ -68,7 +68,7 @@ public class FloydWarshallAllPairShortestPathStrategy
      *  @param graph The given graph.
      */
     public FloydWarshallAllPairShortestPathStrategy(Graph graph,
-        ToDoubleMapping edgeLengths) {
+            ToDoubleMapping edgeLengths) {
         super(graph);
         _edgeLengths = edgeLengths;
     }
@@ -120,7 +120,7 @@ public class FloydWarshallAllPairShortestPathStrategy
         int n = graph().nodeCount();
         double[][] shortestPathResults = (double[][]) _result();
         result = shortestPathResults[graph().nodeLabel(startNode)][graph()
-                                                                                   .nodeLabel(endNode)];
+                .nodeLabel(endNode)];
         return result;
     }
 
@@ -148,7 +148,7 @@ public class FloydWarshallAllPairShortestPathStrategy
      */
     public String toString() {
         return "All pair shortest path analyzer"
-        + " based on the Floyd-Warshall algorithm.";
+            + " based on the Floyd-Warshall algorithm.";
     }
 
     /** Check for compatibility between the analysis and the given
@@ -190,16 +190,16 @@ public class FloydWarshallAllPairShortestPathStrategy
 
             Node node = graph().node(i);
             Iterator outputEdges = ((DirectedGraph) graph()).outputEdges(node)
-                                                .iterator();
+                .iterator();
 
             while (outputEdges.hasNext()) {
                 Edge edge = (Edge) outputEdges.next();
                 int sinkLabel = ((DirectedGraph) graph()).nodeLabel(edge.sink());
 
                 if (_allPairShortestPath[0][i][sinkLabel] > _edgeLengths
-                                .toDouble(edge)) {
+                        .toDouble(edge)) {
                     _allPairShortestPath[0][i][sinkLabel] = _edgeLengths
-                                    .toDouble(edge);
+                        .toDouble(edge);
                 }
 
                 _predecessors[0][i][sinkLabel] = i;

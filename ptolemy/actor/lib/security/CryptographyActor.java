@@ -105,7 +105,7 @@ abstract public class CryptographyActor extends TypedAtomicActor {
      *   actor with this name.
      */
     public CryptographyActor(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         input = new TypedIOPort(this, "input", true, false);
@@ -203,7 +203,7 @@ abstract public class CryptographyActor extends TypedAtomicActor {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == algorithm) {
             _algorithm = ((StringToken) algorithm.getToken()).stringValue();
         } else if (attribute == keySize) {
@@ -229,14 +229,14 @@ abstract public class CryptographyActor extends TypedAtomicActor {
         try {
             if (input.hasToken(0)) {
                 byte[] dataBytes = ArrayToken.arrayTokenToUnsignedByteArray((ArrayToken) input
-                                    .get(0));
+                        .get(0));
                 dataBytes = _process(dataBytes);
                 output.send(0,
-                    ArrayToken.unsignedByteArrayToArrayToken(dataBytes));
+                        ArrayToken.unsignedByteArrayToArrayToken(dataBytes));
             }
         } catch (Throwable throwable) {
             throw new IllegalActionException(this, throwable,
-                "Problem sending data");
+                    "Problem sending data");
         }
     }
 
@@ -252,7 +252,7 @@ abstract public class CryptographyActor extends TypedAtomicActor {
      * @exception IllegalActionException Not thrown in this base class
      */
     abstract protected byte[] _process(byte[] dataBytes)
-        throws IllegalActionException;
+            throws IllegalActionException;
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////

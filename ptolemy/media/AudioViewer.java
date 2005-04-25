@@ -81,7 +81,7 @@ public class AudioViewer extends PlotApplication {
 
         JMenuItem play = new JMenuItem("Play", KeyEvent.VK_P);
         play.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P,
-                Event.CTRL_MASK));
+                                    Event.CTRL_MASK));
         play.setActionCommand("Play");
 
         PlayListener playlistener = new PlayListener();
@@ -99,7 +99,7 @@ public class AudioViewer extends PlotApplication {
                 _dataInputStream.close();
             } catch (Throwable throwable) {
                 System.out.println("Ignoring failure to close stream " + "on '"
-                    + _dataInputStream + "'");
+                        + _dataInputStream + "'");
                 throwable.printStackTrace();
             }
         }
@@ -142,19 +142,19 @@ public class AudioViewer extends PlotApplication {
      */
     protected void _about() {
         JOptionPane.showMessageDialog(this,
-            "Ptolemy AudioViewer (ptaudio program)\n" + "By: Edward A. Lee\n"
-            + "Version 2.0, Build: "
-            + "$Id$"
-            + "\n\n" + "For more information, see\n"
-            + "http://ptolemy.eecs.berkeley.edu/java/ptplot",
-            "About Ptolemy AudioViewer", JOptionPane.INFORMATION_MESSAGE);
+                "Ptolemy AudioViewer (ptaudio program)\n" + "By: Edward A. Lee\n"
+                + "Version 2.0, Build: "
+                + "$Id$"
+                + "\n\n" + "For more information, see\n"
+                + "http://ptolemy.eecs.berkeley.edu/java/ptplot",
+                "About Ptolemy AudioViewer", JOptionPane.INFORMATION_MESSAGE);
     }
 
     /** Display some help.
      */
     protected void _help() {
         JOptionPane.showMessageDialog(this, "Use Control-P to play the sound",
-            "Usage of Ptolemy AudioViewer", JOptionPane.INFORMATION_MESSAGE);
+                "Usage of Ptolemy AudioViewer", JOptionPane.INFORMATION_MESSAGE);
     }
 
     /** Read the specified stream.  This method checks to see whether
@@ -211,14 +211,14 @@ public class AudioViewer extends PlotApplication {
                 _sound.writeRaw(dataOutputStream);
             } catch (IOException ex) {
                 throw new RuntimeException(
-                    "Failed to convert audio data to stream.");
+                        "Failed to convert audio data to stream.");
             } finally {
                 if (dataOutputStream != null) {
                     try {
                         dataOutputStream.close();
                     } catch (Throwable throwable) {
                         System.out.println("Ignoring failure to close stream "
-                            + "on '" + dataOutputStream + "'");
+                                + "on '" + dataOutputStream + "'");
                         throwable.printStackTrace();
                     }
                 }
@@ -242,8 +242,8 @@ public class AudioViewer extends PlotApplication {
                 _sound.write(new DataOutputStream(fout));
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(this,
-                    "Error writing file: " + ex, "AudioViewer error",
-                    JOptionPane.ERROR_MESSAGE);
+                        "Error writing file: " + ex, "AudioViewer error",
+                        JOptionPane.ERROR_MESSAGE);
             }
         } else {
             _saveAs();

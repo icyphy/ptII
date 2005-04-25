@@ -15,22 +15,22 @@ public final class CorbaIllegalActionExceptionHolder
     }
 
     public CorbaIllegalActionExceptionHolder(
-        ptolemy.actor.corba.CorbaIOUtil.CorbaIllegalActionException initialValue) {
+            ptolemy.actor.corba.CorbaIOUtil.CorbaIllegalActionException initialValue) {
         value = initialValue;
     }
 
     public void _read(org.omg.CORBA.portable.InputStream i) {
         value = ptolemy.actor.corba.CorbaIOUtil.CorbaIllegalActionExceptionHelper
-                        .read(i);
+            .read(i);
     }
 
     public void _write(org.omg.CORBA.portable.OutputStream o) {
         ptolemy.actor.corba.CorbaIOUtil.CorbaIllegalActionExceptionHelper.write(o,
-            value);
+                value);
     }
 
     public org.omg.CORBA.TypeCode _type() {
         return ptolemy.actor.corba.CorbaIOUtil.CorbaIllegalActionExceptionHelper
-                    .type();
+            .type();
     }
 }

@@ -119,68 +119,68 @@ public abstract class AbstractList extends AbstractCollection implements List, R
     public Iterator iterator() {
         return new Iterator() {
 
-            private int pos = 0;
+                private int pos = 0;
 
-            private int size = size();
+                private int size = size();
 
-            private int last = -1;
+                private int last = -1;
 
-            private int knownMod = getModCount();
+                private int knownMod = getModCount();
 
-            private void checkMod() {
-                if (knownMod != getModCount())
-                    throw new ConcurrentModificationException();
-            }
-
-            public boolean hasNext() {
-                checkMod();
-                return pos < size;
-            }
-
-            public Object next() {
-                checkMod();
-                if (pos == size)
-                    throw new NoSuchElementException();
-                $ASSIGN$last(pos);
-                return get($ASSIGN$SPECIAL$pos(11, pos));
-            }
-
-            public void remove() {
-                checkMod();
-                if (last < 0)
-                    throw new IllegalStateException();
-                AbstractList.this.remove(last);
-                $ASSIGN$SPECIAL$pos(12, pos);
-                $ASSIGN$SPECIAL$size(12, size);
-                $ASSIGN$last(-1);
-                $ASSIGN$knownMod(getModCount());
-            }
-
-            final class _PROXY_ implements Rollbackable {
-
-                public final void $COMMIT(long timestamp) {
-                    $COMMIT_ANONYMOUS(timestamp);
+                private void checkMod() {
+                    if (knownMod != getModCount())
+                        throw new ConcurrentModificationException();
                 }
 
-                public final void $RESTORE(long timestamp, boolean trim) {
-                    $RESTORE_ANONYMOUS(timestamp, trim);
+                public boolean hasNext() {
+                    checkMod();
+                    return pos < size;
                 }
 
-                public final Checkpoint $GET$CHECKPOINT() {
-                    return $GET$CHECKPOINT_ANONYMOUS();
+                public Object next() {
+                    checkMod();
+                    if (pos == size)
+                        throw new NoSuchElementException();
+                    $ASSIGN$last(pos);
+                    return get($ASSIGN$SPECIAL$pos(11, pos));
                 }
 
-                public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
-                    $SET$CHECKPOINT_ANONYMOUS(checkpoint);
-                    return this;
+                public void remove() {
+                    checkMod();
+                    if (last < 0)
+                        throw new IllegalStateException();
+                    AbstractList.this.remove(last);
+                    $ASSIGN$SPECIAL$pos(12, pos);
+                    $ASSIGN$SPECIAL$size(12, size);
+                    $ASSIGN$last(-1);
+                    $ASSIGN$knownMod(getModCount());
                 }
-            }
 
-            private final int $ASSIGN$SPECIAL$pos(int operator, long newValue) {
-                if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-                    $RECORD$pos.add(null, pos, $CHECKPOINT.getTimestamp());
+                final class _PROXY_ implements Rollbackable {
+
+                    public final void $COMMIT(long timestamp) {
+                        $COMMIT_ANONYMOUS(timestamp);
+                    }
+
+                    public final void $RESTORE(long timestamp, boolean trim) {
+                        $RESTORE_ANONYMOUS(timestamp, trim);
+                    }
+
+                    public final Checkpoint $GET$CHECKPOINT() {
+                        return $GET$CHECKPOINT_ANONYMOUS();
+                    }
+
+                    public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
+                        $SET$CHECKPOINT_ANONYMOUS(checkpoint);
+                        return this;
+                    }
                 }
-                switch (operator) {
+
+                private final int $ASSIGN$SPECIAL$pos(int operator, long newValue) {
+                    if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+                        $RECORD$pos.add(null, pos, $CHECKPOINT.getTimestamp());
+                    }
+                    switch (operator) {
                     case 0:
                         return pos += newValue;
                     case 1:
@@ -213,14 +213,14 @@ public abstract class AbstractList extends AbstractCollection implements List, R
                         return --pos;
                     default:
                         return pos;
+                    }
                 }
-            }
 
-            private final int $ASSIGN$SPECIAL$size(int operator, long newValue) {
-                if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-                    $RECORD$size.add(null, size, $CHECKPOINT.getTimestamp());
-                }
-                switch (operator) {
+                private final int $ASSIGN$SPECIAL$size(int operator, long newValue) {
+                    if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+                        $RECORD$size.add(null, size, $CHECKPOINT.getTimestamp());
+                    }
+                    switch (operator) {
                     case 0:
                         return size += newValue;
                     case 1:
@@ -253,77 +253,77 @@ public abstract class AbstractList extends AbstractCollection implements List, R
                         return --size;
                     default:
                         return size;
-                }
-            }
-
-            private final int $ASSIGN$last(int newValue) {
-                if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-                    $RECORD$last.add(null, last, $CHECKPOINT.getTimestamp());
-                }
-                return last = newValue;
-            }
-
-            private final int $ASSIGN$knownMod(int newValue) {
-                if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-                    $RECORD$knownMod.add(null, knownMod, $CHECKPOINT.getTimestamp());
-                }
-                return knownMod = newValue;
-            }
-
-            public void $COMMIT_ANONYMOUS(long timestamp) {
-                FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
-                $RECORD$$CHECKPOINT.commit(timestamp);
-            }
-
-            public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
-                pos = $RECORD$pos.restore(pos, timestamp, trim);
-                size = $RECORD$size.restore(size, timestamp, trim);
-                last = $RECORD$last.restore(last, timestamp, trim);
-                knownMod = $RECORD$knownMod.restore(knownMod, timestamp, trim);
-                if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-                    $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, new _PROXY_(), timestamp, trim);
-                    FieldRecord.popState($RECORDS);
-                    $RESTORE_ANONYMOUS(timestamp, trim);
-                }
-            }
-
-            public final Checkpoint $GET$CHECKPOINT_ANONYMOUS() {
-                return $CHECKPOINT;
-            }
-
-            public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
-                if ($CHECKPOINT != checkpoint) {
-                    Checkpoint oldCheckpoint = $CHECKPOINT;
-                    if (checkpoint != null) {
-                        $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
-                        FieldRecord.pushState($RECORDS);
                     }
-                    $CHECKPOINT = checkpoint;
-                    oldCheckpoint.setCheckpoint(checkpoint);
-                    checkpoint.addObject(new _PROXY_());
                 }
-                return this;
-            }
 
-            private FieldRecord $RECORD$pos = new FieldRecord(0);
+                private final int $ASSIGN$last(int newValue) {
+                    if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+                        $RECORD$last.add(null, last, $CHECKPOINT.getTimestamp());
+                    }
+                    return last = newValue;
+                }
 
-            private FieldRecord $RECORD$size = new FieldRecord(0);
+                private final int $ASSIGN$knownMod(int newValue) {
+                    if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+                        $RECORD$knownMod.add(null, knownMod, $CHECKPOINT.getTimestamp());
+                    }
+                    return knownMod = newValue;
+                }
 
-            private FieldRecord $RECORD$last = new FieldRecord(0);
+                public void $COMMIT_ANONYMOUS(long timestamp) {
+                    FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                    $RECORD$$CHECKPOINT.commit(timestamp);
+                }
 
-            private FieldRecord $RECORD$knownMod = new FieldRecord(0);
+                public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
+                    pos = $RECORD$pos.restore(pos, timestamp, trim);
+                    size = $RECORD$size.restore(size, timestamp, trim);
+                    last = $RECORD$last.restore(last, timestamp, trim);
+                    knownMod = $RECORD$knownMod.restore(knownMod, timestamp, trim);
+                    if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
+                        $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, new _PROXY_(), timestamp, trim);
+                        FieldRecord.popState($RECORDS);
+                        $RESTORE_ANONYMOUS(timestamp, trim);
+                    }
+                }
 
-            private FieldRecord[] $RECORDS = new FieldRecord[] {
+                public final Checkpoint $GET$CHECKPOINT_ANONYMOUS() {
+                    return $CHECKPOINT;
+                }
+
+                public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
+                    if ($CHECKPOINT != checkpoint) {
+                        Checkpoint oldCheckpoint = $CHECKPOINT;
+                        if (checkpoint != null) {
+                            $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                            FieldRecord.pushState($RECORDS);
+                        }
+                        $CHECKPOINT = checkpoint;
+                        oldCheckpoint.setCheckpoint(checkpoint);
+                        checkpoint.addObject(new _PROXY_());
+                    }
+                    return this;
+                }
+
+                private FieldRecord $RECORD$pos = new FieldRecord(0);
+
+                private FieldRecord $RECORD$size = new FieldRecord(0);
+
+                private FieldRecord $RECORD$last = new FieldRecord(0);
+
+                private FieldRecord $RECORD$knownMod = new FieldRecord(0);
+
+                private FieldRecord[] $RECORDS = new FieldRecord[] {
                     $RECORD$pos,
                     $RECORD$size,
                     $RECORD$last,
                     $RECORD$knownMod
                 };
 
-            {
-                $CHECKPOINT.addObject(new _PROXY_());
-            }
-        };
+                {
+                    $CHECKPOINT.addObject(new _PROXY_());
+                }
+            };
     }
 
     public int lastIndexOf(Object o) {
@@ -344,120 +344,120 @@ public abstract class AbstractList extends AbstractCollection implements List, R
             throw new IndexOutOfBoundsException("Index: " + index+", Size:"+size());
         return new ListIterator() {
 
-            private int knownMod = getModCount();
+                private int knownMod = getModCount();
 
-            private int position = index;
+                private int position = index;
 
-            private int lastReturned = -1;
+                private int lastReturned = -1;
 
-            private int size = size();
+                private int size = size();
 
-            private void checkMod() {
-                if (knownMod != getModCount())
-                    throw new ConcurrentModificationException();
-            }
-
-            public boolean hasNext() {
-                checkMod();
-                return position < size;
-            }
-
-            public boolean hasPrevious() {
-                checkMod();
-                return position > 0;
-            }
-
-            public Object next() {
-                checkMod();
-                if (position == size)
-                    throw new NoSuchElementException();
-                $ASSIGN$lastReturned(position);
-                return get($ASSIGN$SPECIAL$position(11, position));
-            }
-
-            public Object previous() {
-                checkMod();
-                if (position == 0)
-                    throw new NoSuchElementException();
-                $ASSIGN$lastReturned($ASSIGN$SPECIAL$position(14, position));
-                return get(lastReturned);
-            }
-
-            public int nextIndex() {
-                checkMod();
-                return position;
-            }
-
-            public int previousIndex() {
-                checkMod();
-                return position - 1;
-            }
-
-            public void remove() {
-                checkMod();
-                if (lastReturned < 0)
-                    throw new IllegalStateException();
-                AbstractList.this.remove(lastReturned);
-                $ASSIGN$SPECIAL$size(12, size);
-                $ASSIGN$position(lastReturned);
-                $ASSIGN$lastReturned(-1);
-                $ASSIGN$knownMod(getModCount());
-            }
-
-            public void set(Object o) {
-                checkMod();
-                if (lastReturned < 0)
-                    throw new IllegalStateException();
-                AbstractList.this.set(lastReturned, o);
-            }
-
-            public void add(Object o) {
-                checkMod();
-                AbstractList.this.add($ASSIGN$SPECIAL$position(11, position), o);
-                $ASSIGN$SPECIAL$size(11, size);
-                $ASSIGN$lastReturned(-1);
-                $ASSIGN$knownMod(getModCount());
-            }
-
-            final class _PROXY_ implements Rollbackable {
-
-                public final void $COMMIT(long timestamp) {
-                    $COMMIT_ANONYMOUS(timestamp);
+                private void checkMod() {
+                    if (knownMod != getModCount())
+                        throw new ConcurrentModificationException();
                 }
 
-                public final void $RESTORE(long timestamp, boolean trim) {
-                    $RESTORE_ANONYMOUS(timestamp, trim);
+                public boolean hasNext() {
+                    checkMod();
+                    return position < size;
                 }
 
-                public final Checkpoint $GET$CHECKPOINT() {
-                    return $GET$CHECKPOINT_ANONYMOUS();
+                public boolean hasPrevious() {
+                    checkMod();
+                    return position > 0;
                 }
 
-                public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
-                    $SET$CHECKPOINT_ANONYMOUS(checkpoint);
-                    return this;
+                public Object next() {
+                    checkMod();
+                    if (position == size)
+                        throw new NoSuchElementException();
+                    $ASSIGN$lastReturned(position);
+                    return get($ASSIGN$SPECIAL$position(11, position));
                 }
-            }
 
-            private final int $ASSIGN$knownMod(int newValue) {
-                if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-                    $RECORD$knownMod.add(null, knownMod, $CHECKPOINT.getTimestamp());
+                public Object previous() {
+                    checkMod();
+                    if (position == 0)
+                        throw new NoSuchElementException();
+                    $ASSIGN$lastReturned($ASSIGN$SPECIAL$position(14, position));
+                    return get(lastReturned);
                 }
-                return knownMod = newValue;
-            }
 
-            private final int $ASSIGN$position(int newValue) {
-                if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-                    $RECORD$position.add(null, position, $CHECKPOINT.getTimestamp());
+                public int nextIndex() {
+                    checkMod();
+                    return position;
                 }
-                return position = newValue;
-            }
 
-            private final int $ASSIGN$SPECIAL$position(int operator, long newValue) {
-                if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-                    $RECORD$position.add(null, position, $CHECKPOINT.getTimestamp());
+                public int previousIndex() {
+                    checkMod();
+                    return position - 1;
                 }
-                switch (operator) {
+
+                public void remove() {
+                    checkMod();
+                    if (lastReturned < 0)
+                        throw new IllegalStateException();
+                    AbstractList.this.remove(lastReturned);
+                    $ASSIGN$SPECIAL$size(12, size);
+                    $ASSIGN$position(lastReturned);
+                    $ASSIGN$lastReturned(-1);
+                    $ASSIGN$knownMod(getModCount());
+                }
+
+                public void set(Object o) {
+                    checkMod();
+                    if (lastReturned < 0)
+                        throw new IllegalStateException();
+                    AbstractList.this.set(lastReturned, o);
+                }
+
+                public void add(Object o) {
+                    checkMod();
+                    AbstractList.this.add($ASSIGN$SPECIAL$position(11, position), o);
+                    $ASSIGN$SPECIAL$size(11, size);
+                    $ASSIGN$lastReturned(-1);
+                    $ASSIGN$knownMod(getModCount());
+                }
+
+                final class _PROXY_ implements Rollbackable {
+
+                    public final void $COMMIT(long timestamp) {
+                        $COMMIT_ANONYMOUS(timestamp);
+                    }
+
+                    public final void $RESTORE(long timestamp, boolean trim) {
+                        $RESTORE_ANONYMOUS(timestamp, trim);
+                    }
+
+                    public final Checkpoint $GET$CHECKPOINT() {
+                        return $GET$CHECKPOINT_ANONYMOUS();
+                    }
+
+                    public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
+                        $SET$CHECKPOINT_ANONYMOUS(checkpoint);
+                        return this;
+                    }
+                }
+
+                private final int $ASSIGN$knownMod(int newValue) {
+                    if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+                        $RECORD$knownMod.add(null, knownMod, $CHECKPOINT.getTimestamp());
+                    }
+                    return knownMod = newValue;
+                }
+
+                private final int $ASSIGN$position(int newValue) {
+                    if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+                        $RECORD$position.add(null, position, $CHECKPOINT.getTimestamp());
+                    }
+                    return position = newValue;
+                }
+
+                private final int $ASSIGN$SPECIAL$position(int operator, long newValue) {
+                    if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+                        $RECORD$position.add(null, position, $CHECKPOINT.getTimestamp());
+                    }
+                    switch (operator) {
                     case 0:
                         return position += newValue;
                     case 1:
@@ -490,21 +490,21 @@ public abstract class AbstractList extends AbstractCollection implements List, R
                         return --position;
                     default:
                         return position;
+                    }
                 }
-            }
 
-            private final int $ASSIGN$lastReturned(int newValue) {
-                if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-                    $RECORD$lastReturned.add(null, lastReturned, $CHECKPOINT.getTimestamp());
+                private final int $ASSIGN$lastReturned(int newValue) {
+                    if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+                        $RECORD$lastReturned.add(null, lastReturned, $CHECKPOINT.getTimestamp());
+                    }
+                    return lastReturned = newValue;
                 }
-                return lastReturned = newValue;
-            }
 
-            private final int $ASSIGN$SPECIAL$size(int operator, long newValue) {
-                if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-                    $RECORD$size.add(null, size, $CHECKPOINT.getTimestamp());
-                }
-                switch (operator) {
+                private final int $ASSIGN$SPECIAL$size(int operator, long newValue) {
+                    if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+                        $RECORD$size.add(null, size, $CHECKPOINT.getTimestamp());
+                    }
+                    switch (operator) {
                     case 0:
                         return size += newValue;
                     case 1:
@@ -537,63 +537,63 @@ public abstract class AbstractList extends AbstractCollection implements List, R
                         return --size;
                     default:
                         return size;
-                }
-            }
-
-            public void $COMMIT_ANONYMOUS(long timestamp) {
-                FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
-                $RECORD$$CHECKPOINT.commit(timestamp);
-            }
-
-            public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
-                knownMod = $RECORD$knownMod.restore(knownMod, timestamp, trim);
-                position = $RECORD$position.restore(position, timestamp, trim);
-                lastReturned = $RECORD$lastReturned.restore(lastReturned, timestamp, trim);
-                size = $RECORD$size.restore(size, timestamp, trim);
-                if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-                    $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, new _PROXY_(), timestamp, trim);
-                    FieldRecord.popState($RECORDS);
-                    $RESTORE_ANONYMOUS(timestamp, trim);
-                }
-            }
-
-            public final Checkpoint $GET$CHECKPOINT_ANONYMOUS() {
-                return $CHECKPOINT;
-            }
-
-            public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
-                if ($CHECKPOINT != checkpoint) {
-                    Checkpoint oldCheckpoint = $CHECKPOINT;
-                    if (checkpoint != null) {
-                        $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
-                        FieldRecord.pushState($RECORDS);
                     }
-                    $CHECKPOINT = checkpoint;
-                    oldCheckpoint.setCheckpoint(checkpoint);
-                    checkpoint.addObject(new _PROXY_());
                 }
-                return this;
-            }
 
-            private FieldRecord $RECORD$knownMod = new FieldRecord(0);
+                public void $COMMIT_ANONYMOUS(long timestamp) {
+                    FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                    $RECORD$$CHECKPOINT.commit(timestamp);
+                }
 
-            private FieldRecord $RECORD$position = new FieldRecord(0);
+                public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
+                    knownMod = $RECORD$knownMod.restore(knownMod, timestamp, trim);
+                    position = $RECORD$position.restore(position, timestamp, trim);
+                    lastReturned = $RECORD$lastReturned.restore(lastReturned, timestamp, trim);
+                    size = $RECORD$size.restore(size, timestamp, trim);
+                    if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
+                        $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, new _PROXY_(), timestamp, trim);
+                        FieldRecord.popState($RECORDS);
+                        $RESTORE_ANONYMOUS(timestamp, trim);
+                    }
+                }
 
-            private FieldRecord $RECORD$lastReturned = new FieldRecord(0);
+                public final Checkpoint $GET$CHECKPOINT_ANONYMOUS() {
+                    return $CHECKPOINT;
+                }
 
-            private FieldRecord $RECORD$size = new FieldRecord(0);
+                public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
+                    if ($CHECKPOINT != checkpoint) {
+                        Checkpoint oldCheckpoint = $CHECKPOINT;
+                        if (checkpoint != null) {
+                            $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                            FieldRecord.pushState($RECORDS);
+                        }
+                        $CHECKPOINT = checkpoint;
+                        oldCheckpoint.setCheckpoint(checkpoint);
+                        checkpoint.addObject(new _PROXY_());
+                    }
+                    return this;
+                }
 
-            private FieldRecord[] $RECORDS = new FieldRecord[] {
+                private FieldRecord $RECORD$knownMod = new FieldRecord(0);
+
+                private FieldRecord $RECORD$position = new FieldRecord(0);
+
+                private FieldRecord $RECORD$lastReturned = new FieldRecord(0);
+
+                private FieldRecord $RECORD$size = new FieldRecord(0);
+
+                private FieldRecord[] $RECORDS = new FieldRecord[] {
                     $RECORD$knownMod,
                     $RECORD$position,
                     $RECORD$lastReturned,
                     $RECORD$size
                 };
 
-            {
-                $CHECKPOINT.addObject(new _PROXY_());
-            }
-        };
+                {
+                    $CHECKPOINT.addObject(new _PROXY_());
+                }
+            };
     }
 
     public Object remove(int index) {
@@ -642,8 +642,8 @@ public abstract class AbstractList extends AbstractCollection implements List, R
     private FieldRecord $RECORD$modCount = new FieldRecord(0);
 
     private FieldRecord[] $RECORDS = new FieldRecord[] {
-            $RECORD$modCount
-        };
+        $RECORD$modCount
+    };
 }
 
 class SubList extends AbstractList implements Rollbackable {
@@ -752,92 +752,92 @@ class SubList extends AbstractList implements Rollbackable {
         checkBoundsInclusive(index);
         return new ListIterator() {
 
-            private final ListIterator i = backingList.listIterator(index + offset);
+                private final ListIterator i = backingList.listIterator(index + offset);
 
-            private int position = index;
+                private int position = index;
 
-            public boolean hasNext() {
-                checkMod();
-                return position < size;
-            }
-
-            public boolean hasPrevious() {
-                checkMod();
-                return position > 0;
-            }
-
-            public Object next() {
-                if (position == size)
-                    throw new NoSuchElementException();
-                $ASSIGN$SPECIAL$position(11, position);
-                return i.next();
-            }
-
-            public Object previous() {
-                if (position == 0)
-                    throw new NoSuchElementException();
-                $ASSIGN$SPECIAL$position(12, position);
-                return i.previous();
-            }
-
-            public int nextIndex() {
-                return i.nextIndex() - offset;
-            }
-
-            public int previousIndex() {
-                return i.previousIndex() - offset;
-            }
-
-            public void remove() {
-                i.remove();
-                $ASSIGN$SPECIAL$size(12, size);
-                $ASSIGN$position(nextIndex());
-                setModCount(backingList.getModCount());
-            }
-
-            public void set(Object o) {
-                i.set(o);
-            }
-
-            public void add(Object o) {
-                i.add(o);
-                $ASSIGN$SPECIAL$size(11, size);
-                $ASSIGN$SPECIAL$position(11, position);
-                setModCount(backingList.getModCount());
-            }
-
-            final class _PROXY_ implements Rollbackable {
-
-                public final void $COMMIT(long timestamp) {
-                    $COMMIT_ANONYMOUS(timestamp);
+                public boolean hasNext() {
+                    checkMod();
+                    return position < size;
                 }
 
-                public final void $RESTORE(long timestamp, boolean trim) {
-                    $RESTORE_ANONYMOUS(timestamp, trim);
+                public boolean hasPrevious() {
+                    checkMod();
+                    return position > 0;
                 }
 
-                public final Checkpoint $GET$CHECKPOINT() {
-                    return $GET$CHECKPOINT_ANONYMOUS();
+                public Object next() {
+                    if (position == size)
+                        throw new NoSuchElementException();
+                    $ASSIGN$SPECIAL$position(11, position);
+                    return i.next();
                 }
 
-                public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
-                    $SET$CHECKPOINT_ANONYMOUS(checkpoint);
-                    return this;
+                public Object previous() {
+                    if (position == 0)
+                        throw new NoSuchElementException();
+                    $ASSIGN$SPECIAL$position(12, position);
+                    return i.previous();
                 }
-            }
 
-            private final int $ASSIGN$position(int newValue) {
-                if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-                    $RECORD$position.add(null, position, $CHECKPOINT.getTimestamp());
+                public int nextIndex() {
+                    return i.nextIndex() - offset;
                 }
-                return position = newValue;
-            }
 
-            private final int $ASSIGN$SPECIAL$position(int operator, long newValue) {
-                if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-                    $RECORD$position.add(null, position, $CHECKPOINT.getTimestamp());
+                public int previousIndex() {
+                    return i.previousIndex() - offset;
                 }
-                switch (operator) {
+
+                public void remove() {
+                    i.remove();
+                    $ASSIGN$SPECIAL$size(12, size);
+                    $ASSIGN$position(nextIndex());
+                    setModCount(backingList.getModCount());
+                }
+
+                public void set(Object o) {
+                    i.set(o);
+                }
+
+                public void add(Object o) {
+                    i.add(o);
+                    $ASSIGN$SPECIAL$size(11, size);
+                    $ASSIGN$SPECIAL$position(11, position);
+                    setModCount(backingList.getModCount());
+                }
+
+                final class _PROXY_ implements Rollbackable {
+
+                    public final void $COMMIT(long timestamp) {
+                        $COMMIT_ANONYMOUS(timestamp);
+                    }
+
+                    public final void $RESTORE(long timestamp, boolean trim) {
+                        $RESTORE_ANONYMOUS(timestamp, trim);
+                    }
+
+                    public final Checkpoint $GET$CHECKPOINT() {
+                        return $GET$CHECKPOINT_ANONYMOUS();
+                    }
+
+                    public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
+                        $SET$CHECKPOINT_ANONYMOUS(checkpoint);
+                        return this;
+                    }
+                }
+
+                private final int $ASSIGN$position(int newValue) {
+                    if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+                        $RECORD$position.add(null, position, $CHECKPOINT.getTimestamp());
+                    }
+                    return position = newValue;
+                }
+
+                private final int $ASSIGN$SPECIAL$position(int operator, long newValue) {
+                    if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+                        $RECORD$position.add(null, position, $CHECKPOINT.getTimestamp());
+                    }
+                    switch (operator) {
                     case 0:
                         return position += newValue;
                     case 1:
@@ -870,55 +870,55 @@ class SubList extends AbstractList implements Rollbackable {
                         return --position;
                     default:
                         return position;
-                }
-            }
-
-            public void $COMMIT_ANONYMOUS(long timestamp) {
-                FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
-                $RECORD$$CHECKPOINT.commit(timestamp);
-            }
-
-            public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
-                $RECORD$i.restore(i, timestamp, trim);
-                position = $RECORD$position.restore(position, timestamp, trim);
-                if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-                    $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, new _PROXY_(), timestamp, trim);
-                    FieldRecord.popState($RECORDS);
-                    $RESTORE_ANONYMOUS(timestamp, trim);
-                }
-            }
-
-            public final Checkpoint $GET$CHECKPOINT_ANONYMOUS() {
-                return $CHECKPOINT;
-            }
-
-            public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
-                if ($CHECKPOINT != checkpoint) {
-                    Checkpoint oldCheckpoint = $CHECKPOINT;
-                    if (checkpoint != null) {
-                        $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
-                        FieldRecord.pushState($RECORDS);
                     }
-                    $CHECKPOINT = checkpoint;
-                    oldCheckpoint.setCheckpoint(checkpoint);
-                    checkpoint.addObject(new _PROXY_());
                 }
-                return this;
-            }
 
-            private FieldRecord $RECORD$i = new FieldRecord(0);
+                public void $COMMIT_ANONYMOUS(long timestamp) {
+                    FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                    $RECORD$$CHECKPOINT.commit(timestamp);
+                }
 
-            private FieldRecord $RECORD$position = new FieldRecord(0);
+                public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
+                    $RECORD$i.restore(i, timestamp, trim);
+                    position = $RECORD$position.restore(position, timestamp, trim);
+                    if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
+                        $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, new _PROXY_(), timestamp, trim);
+                        FieldRecord.popState($RECORDS);
+                        $RESTORE_ANONYMOUS(timestamp, trim);
+                    }
+                }
 
-            private FieldRecord[] $RECORDS = new FieldRecord[] {
+                public final Checkpoint $GET$CHECKPOINT_ANONYMOUS() {
+                    return $CHECKPOINT;
+                }
+
+                public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
+                    if ($CHECKPOINT != checkpoint) {
+                        Checkpoint oldCheckpoint = $CHECKPOINT;
+                        if (checkpoint != null) {
+                            $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                            FieldRecord.pushState($RECORDS);
+                        }
+                        $CHECKPOINT = checkpoint;
+                        oldCheckpoint.setCheckpoint(checkpoint);
+                        checkpoint.addObject(new _PROXY_());
+                    }
+                    return this;
+                }
+
+                private FieldRecord $RECORD$i = new FieldRecord(0);
+
+                private FieldRecord $RECORD$position = new FieldRecord(0);
+
+                private FieldRecord[] $RECORDS = new FieldRecord[] {
                     $RECORD$i,
                     $RECORD$position
                 };
 
-            {
-                $CHECKPOINT.addObject(new _PROXY_());
-            }
-        };
+                {
+                    $CHECKPOINT.addObject(new _PROXY_());
+                }
+            };
     }
 
     private final int $ASSIGN$size(int newValue) {
@@ -933,38 +933,38 @@ class SubList extends AbstractList implements Rollbackable {
             $RECORD$size.add(null, size, $CHECKPOINT.getTimestamp());
         }
         switch (operator) {
-            case 0:
-                return size += newValue;
-            case 1:
-                return size -= newValue;
-            case 2:
-                return size *= newValue;
-            case 3:
-                return size /= newValue;
-            case 4:
-                return size &= newValue;
-            case 5:
-                return size |= newValue;
-            case 6:
-                return size ^= newValue;
-            case 7:
-                return size %= newValue;
-            case 8:
-                return size <<= newValue;
-            case 9:
-                return size >>= newValue;
-            case 10:
-                return size >>>= newValue;
-            case 11:
-                return size++;
-            case 12:
-                return size--;
-            case 13:
-                return ++size;
-            case 14:
-                return --size;
-            default:
-                return size;
+        case 0:
+            return size += newValue;
+        case 1:
+            return size -= newValue;
+        case 2:
+            return size *= newValue;
+        case 3:
+            return size /= newValue;
+        case 4:
+            return size &= newValue;
+        case 5:
+            return size |= newValue;
+        case 6:
+            return size ^= newValue;
+        case 7:
+            return size %= newValue;
+        case 8:
+            return size <<= newValue;
+        case 9:
+            return size >>= newValue;
+        case 10:
+            return size >>>= newValue;
+        case 11:
+            return size++;
+        case 12:
+            return size--;
+        case 13:
+            return ++size;
+        case 14:
+            return --size;
+        default:
+            return size;
         }
     }
 
@@ -984,9 +984,9 @@ class SubList extends AbstractList implements Rollbackable {
     private FieldRecord $RECORD$size = new FieldRecord(0);
 
     private FieldRecord[] $RECORDS = new FieldRecord[] {
-            $RECORD$backingList,
-            $RECORD$size
-        };
+        $RECORD$backingList,
+        $RECORD$size
+    };
 }
 
 final class RandomAccessSubList extends SubList implements RandomAccess, Rollbackable {
@@ -1005,5 +1005,5 @@ final class RandomAccessSubList extends SubList implements RandomAccess, Rollbac
     }
 
     private FieldRecord[] $RECORDS = new FieldRecord[] {
-        };
+    };
 }

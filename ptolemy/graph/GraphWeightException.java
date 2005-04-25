@@ -60,7 +60,7 @@ public class GraphWeightException extends GraphException {
      *  @param message The exception message.
      */
     public GraphWeightException(Object weight, Element element, Graph graph,
-        String message) {
+            String message) {
         super(_argumentsToString(weight, element, graph, message));
     }
 
@@ -75,7 +75,7 @@ public class GraphWeightException extends GraphException {
      *  @return The desired exception message.
      */
     static private String _argumentsToString(Object weight, Element element,
-        Graph graph, String message) {
+            Graph graph, String message) {
         StringBuffer outputMessage = new StringBuffer(message
                 + weightDump(weight));
 

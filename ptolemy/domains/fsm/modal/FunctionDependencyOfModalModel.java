@@ -69,7 +69,7 @@ public class FunctionDependencyOfModalModel
      *  the attribute is not compatible with the specified container.
      */
     public FunctionDependencyOfModalModel(CompositeActor compositeActor,
-        String name) throws IllegalActionException, NameDuplicationException {
+            String name) throws IllegalActionException, NameDuplicationException {
         super(compositeActor, name);
     }
 
@@ -85,7 +85,7 @@ public class FunctionDependencyOfModalModel
 
         try {
             FSMActor controller = (FSMActor) ((ModalModel) getContainer())
-                            .getController();
+                .getController();
             Actor[] actors = controller.currentState().getRefinement();
 
             // If the modal model has no refinements, the modal model is

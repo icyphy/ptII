@@ -87,8 +87,8 @@ public class HTMLAbout {
 
         try {
             StringAttribute applicationNameAttribute = (StringAttribute) configuration
-                            .getAttribute("_applicationName",
-                                StringAttribute.class);
+                .getAttribute("_applicationName",
+                        StringAttribute.class);
 
             if (applicationNameAttribute != null) {
                 applicationName = applicationNameAttribute.getExpression();
@@ -99,47 +99,47 @@ public class HTMLAbout {
 
         StringBuffer htmlBuffer = new StringBuffer();
         htmlBuffer.append("<html><head><title>About " + applicationName
-            + "</title></head>" + "<body><h1>About " + applicationName
-            + "</h1>\n" + "The HTML Viewer in " + applicationName
-            + " handles the <code>about:</code>\n" + "tag specially.\n"
-            + "<br>The following urls are handled:\n" + "<ul>\n"
-            + "<li><a href=\"about:configuration\">"
-            + "<code>about:configuration</code></a> "
-            + "Expand the configuration (good way to test for "
-            + "missing classes).\n" + "<li><a href=\"about:copyright\">"
-            + "<code>about:copyright</code></a> "
-            + " Display information about the copyrights.\n");
+                + "</title></head>" + "<body><h1>About " + applicationName
+                + "</h1>\n" + "The HTML Viewer in " + applicationName
+                + " handles the <code>about:</code>\n" + "tag specially.\n"
+                + "<br>The following urls are handled:\n" + "<ul>\n"
+                + "<li><a href=\"about:configuration\">"
+                + "<code>about:configuration</code></a> "
+                + "Expand the configuration (good way to test for "
+                + "missing classes).\n" + "<li><a href=\"about:copyright\">"
+                + "<code>about:copyright</code></a> "
+                + " Display information about the copyrights.\n");
 
         htmlBuffer.append("</ul>\n<table>\n");
 
         if (_configurationExists("full")) {
             htmlBuffer.append(
-                "<tr rowspan=4><center><b>Full</b></center></tr>\n"
-                + _aboutHTML("ptolemy/configs/doc/completeDemos.htm")
-                + _aboutHTML("ptolemy/configs/doc/demos.htm")
-                + _aboutHTML("ptolemy/configs/doc/whatsNew" + version + ".htm")
-                + _aboutHTML("ptolemy/configs/doc/whatsNew4.0.htm")
-                + _aboutHTML("ptolemy/configs/doc/whatsNew3.0.2.htm"));
+                    "<tr rowspan=4><center><b>Full</b></center></tr>\n"
+                    + _aboutHTML("ptolemy/configs/doc/completeDemos.htm")
+                    + _aboutHTML("ptolemy/configs/doc/demos.htm")
+                    + _aboutHTML("ptolemy/configs/doc/whatsNew" + version + ".htm")
+                    + _aboutHTML("ptolemy/configs/doc/whatsNew4.0.htm")
+                    + _aboutHTML("ptolemy/configs/doc/whatsNew3.0.2.htm"));
         }
 
         // Don't include DSP here, it uses the Ptiny demos anyway.
         if (_configurationExists("hyvisual")) {
             htmlBuffer.append(
-                "<tr rowspan=4><center><b>HyVisual</b></center></tr>\n"
-                + _aboutHTML("ptolemy/configs/hyvisual/intro.htm"));
+                    "<tr rowspan=4><center><b>HyVisual</b></center></tr>\n"
+                    + _aboutHTML("ptolemy/configs/hyvisual/intro.htm"));
         }
 
         if (_configurationExists("ptiny")) {
             htmlBuffer.append(
-                "<tr rowspan=4><center><b>Ptiny</b></center></tr>\n"
-                + _aboutHTML("ptolemy/configs/doc/completeDemosPtiny.htm")
-                + _aboutHTML("ptolemy/configs/doc/demosPtiny.htm"));
+                    "<tr rowspan=4><center><b>Ptiny</b></center></tr>\n"
+                    + _aboutHTML("ptolemy/configs/doc/completeDemosPtiny.htm")
+                    + _aboutHTML("ptolemy/configs/doc/demosPtiny.htm"));
         }
 
         if (_configurationExists("visualsense")) {
             htmlBuffer.append(
-                "<tr rowspan=4><center><b>VisualSense</b></center></tr>\n"
-                + _aboutHTML("ptolemy/configs/visualsense/intro.htm"));
+                    "<tr rowspan=4><center><b>VisualSense</b></center></tr>\n"
+                    + _aboutHTML("ptolemy/configs/visualsense/intro.htm"));
         }
 
         htmlBuffer.append("</table>\n");
@@ -160,7 +160,7 @@ public class HTMLAbout {
      *  @return the URL of the HTML file that was searched.
      */
     public static URL generateLinks(String demosFileName, String regexp,
-        Configuration configuration) throws Exception {
+            Configuration configuration) throws Exception {
         URL demosURL = _getDemoURL(demosFileName);
         List modelList = _getURLs(demosURL, regexp);
         Iterator models = modelList.iterator();
@@ -171,10 +171,10 @@ public class HTMLAbout {
 
             try {
                 configuration.openModel(demosURL, modelURL,
-                    modelURL.toExternalForm());
+                        modelURL.toExternalForm());
             } catch (Throwable throwable) {
                 throw new Exception("Failed to open '" + modelURL + "'",
-                    throwable);
+                        throwable);
             }
         }
 
@@ -192,7 +192,7 @@ public class HTMLAbout {
      *  task.
      */
     public static URL hyperlinkUpdate(HyperlinkEvent event,
-        Configuration configuration) throws Throwable {
+            Configuration configuration) throws Throwable {
         URL newURL = null;
 
         if (event.getDescription().equals("about:copyright")) {
@@ -246,7 +246,7 @@ public class HTMLAbout {
      *  @return the URL of the HTML file that was searched.
      */
     public static URL runAllDemos(String demosFileName,
-        Configuration configuration) throws Exception {
+            Configuration configuration) throws Exception {
         URL demosURL = _getDemoURL(demosFileName);
         List modelList = _getURLs(demosURL, ".*.xml$");
         Iterator models = modelList.iterator();
@@ -285,19 +285,19 @@ public class HTMLAbout {
     // and about:links pages
     private static String _aboutHTML(String fileName) {
         return "  <tr>\n" + "    <code>" + fileName + "</code>\n"
-        + "    <td><a href=\"about:demos#" + fileName
-        + "\">&nbsp;Open the .xml&nbsp;</a></td>\n"
-        + "    <td><a href=\"about:links#" + fileName
-        + "\">&nbsp;Open the .htm, .html, .xml and .pdf&nbsp;</a></td>\n"
-        // RunAllDemos does not work, it runs in the wrong thread?
-        // + "    <td><a href=\"about:runAllDemos#" + fileName
-        // + "\">&nbsp;Run all demos&nbsp;</a></td>\n"
-        + "  </tr>\n";
+            + "    <td><a href=\"about:demos#" + fileName
+            + "\">&nbsp;Open the .xml&nbsp;</a></td>\n"
+            + "    <td><a href=\"about:links#" + fileName
+            + "\">&nbsp;Open the .htm, .html, .xml and .pdf&nbsp;</a></td>\n"
+            // RunAllDemos does not work, it runs in the wrong thread?
+            // + "    <td><a href=\"about:runAllDemos#" + fileName
+            // + "\">&nbsp;Run all demos&nbsp;</a></td>\n"
+            + "  </tr>\n";
     }
 
     // Return the URL of the file that contains links to .xml files
     private static URL _getDemoURL(String demosFileName)
-        throws IOException {
+            throws IOException {
         // Open the completeDemos.htm file and read the contents into
         // a String
         if ((demosFileName == null) || (demosFileName.length() == 0)) {
@@ -308,7 +308,7 @@ public class HTMLAbout {
     }
 
     private static List _getURLs(URL demosURL, String regexp)
-        throws IOException {
+            throws IOException {
         StringBuffer demosBuffer = new StringBuffer();
         BufferedReader in = null;
 
@@ -346,7 +346,7 @@ public class HTMLAbout {
                         modelEndIndex);
 
                 if (!modelLink.startsWith("http://")
-                                && modelLink.matches(regexp)) {
+                        && modelLink.matches(regexp)) {
                     // If the link does not start with http://, but ends
                     // with .xml, then we add it to the list
                     modelList.add(modelLink);
@@ -369,8 +369,8 @@ public class HTMLAbout {
 
         try {
             URL url = Thread.currentThread().getContextClassLoader()
-                                        .getResource("ptolemy/configs/"
-                                + configurationName + "/configuration.xml");
+                .getResource("ptolemy/configs/"
+                        + configurationName + "/configuration.xml");
 
             if (url != null) {
                 configurationExists = true;
@@ -390,7 +390,7 @@ public class HTMLAbout {
     // @param contents  The contents of the temporary file
     // @return A URL pointing to a temporary file.
     private static URL _temporaryHTMLFile(String prefix, String suffix,
-        String contents) throws IOException {
+            String contents) throws IOException {
         // Generate a copyright page in a temporary file
         File temporaryFile = File.createTempFile(prefix, suffix);
         temporaryFile.deleteOnExit();

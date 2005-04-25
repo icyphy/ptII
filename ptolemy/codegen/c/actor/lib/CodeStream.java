@@ -99,7 +99,7 @@ public class CodeStream {
 
         if (codeBlock == null) {
             throw new IllegalActionException("Cannot find code block: "
-                + blockName);
+                    + blockName);
         }
 
         _stream.append(codeBlock);
@@ -120,7 +120,7 @@ public class CodeStream {
      * @throws IllegalActionException Throw if an error occurs during parsing.
      */
     public static void main(String[] arg)
-        throws IOException, IllegalActionException {
+            throws IOException, IllegalActionException {
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         System.out.println("----------Testing--------------------------------");
         System.out.print("please input class name: ");
@@ -176,7 +176,7 @@ public class CodeStream {
 
             // create a string of all code in the file
             for (String line = reader.readLine(); line != null;
-                            line = reader.readLine()) {
+                 line = reader.readLine()) {
                 codeInFile.append(line + "\n");
             }
 
@@ -187,10 +187,10 @@ public class CodeStream {
         } catch (IOException e) {
             if (reader == null) {
                 throw new IllegalActionException(null, e,
-                    "Cannot open file: " + className + ".c");
+                        "Cannot open file: " + className + ".c");
             } else {
                 throw new IllegalActionException(null, e,
-                    "Error reading file: " + className + ".c");
+                        "Error reading file: " + className + ".c");
             }
         }
     }
@@ -205,7 +205,7 @@ public class CodeStream {
      * the code body.
      */
     private StringBuffer _parseBody(StringBuffer codeInFile)
-        throws IllegalActionException {
+            throws IllegalActionException {
         int openBlock = 1;
         int scanIndex = _parseIndex;
 
@@ -230,11 +230,11 @@ public class CodeStream {
         }
 
         StringBuffer body = new StringBuffer(codeInFile.substring(_parseIndex,
-                    endIndex));
+                                                     endIndex));
 
         // Recursively parsing for nested code blocks
         for (String subBlockKey = _parseCodeBlock(codeInFile);
-                        subBlockKey != null;) {
+             subBlockKey != null;) {
             // FIXME: do we include the nested code block into the current block??
             //body.append((StringBuffer) _codeBlockTable.get(subBlockKey));
             // FIXME: take away the nested code block from the current code block
@@ -257,7 +257,7 @@ public class CodeStream {
      * @throws IllegalActionException Thrown if an error occurs during parsing.
      */
     private String _parseCodeBlock(StringBuffer codeInFile)
-        throws IllegalActionException {
+            throws IllegalActionException {
         String name = _parseHeader(codeInFile);
 
         if (name != null) {
@@ -278,7 +278,7 @@ public class CodeStream {
      * the header.
      */
     private String _parseHeader(StringBuffer codeInFile)
-        throws IllegalActionException {
+            throws IllegalActionException {
         _parseIndex = codeInFile.indexOf(_BLOCKSTART, _parseIndex);
 
         // Check to see if there are no more code block start headers.
@@ -295,7 +295,7 @@ public class CodeStream {
         }
 
         String name = _checkCodeHeader(codeInFile.substring(_parseIndex,
-                    endIndex));
+                                               endIndex));
         _parseIndex = _HEADEREND.length() + endIndex;
         return name;
     }
@@ -315,7 +315,7 @@ public class CodeStream {
         }
 
         for (Iterator keys = stream._codeBlockTable.keySet().iterator();
-                        keys.hasNext();) {
+             keys.hasNext();) {
             String key = (String) keys.next();
             buffer.append(key + ": \n");
             buffer.append((StringBuffer) stream._codeBlockTable.get(key));

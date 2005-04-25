@@ -83,7 +83,7 @@ public class RefinementPort extends TypedIOPort {
      *   a port already in the container.
      */
     public RefinementPort(ComponentEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _checkWhetherMirrorIsInput();
     }
@@ -401,7 +401,7 @@ public class RefinementPort extends TypedIOPort {
      *   a port with the name of this port.
      */
     public void setContainer(Entity container)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         NamedObj oldContainer = (NamedObj) getContainer();
 
         if (container == oldContainer) {
@@ -465,7 +465,7 @@ public class RefinementPort extends TypedIOPort {
             _workspace.getWriteAccess();
 
             if (_mirrorDisable || (getContainer() == null)
-                            || _automaticallyInput) {
+                    || _automaticallyInput) {
                 // Do not mirror.
                 super.setInput(isInput);
             } else {
@@ -565,7 +565,7 @@ public class RefinementPort extends TypedIOPort {
      *   with the same name in the container.
      */
     public void setName(String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         boolean disableStatus = _mirrorDisable;
 
         try {
@@ -696,7 +696,7 @@ public class RefinementPort extends TypedIOPort {
 
                 if (port instanceof IOPort) {
                     if (!((IOPort) port).isInput()
-                                    && ((IOPort) port).isOutput()) {
+                            && ((IOPort) port).isOutput()) {
                         _automaticallyInput = true;
                     }
                 }

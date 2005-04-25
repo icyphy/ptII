@@ -106,7 +106,7 @@ public class ControllerActor extends TypedAtomicActor {
      * @exception IllegalActionException If there is an internal error.
      */
     public ControllerActor(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         inputTm = new TypedIOPort(this, "inputTm");
         inputTm.setInput(true);
@@ -205,40 +205,40 @@ public class ControllerActor extends TypedAtomicActor {
 
         // compute inv(K)
         double IK11 = (((_Mm * Tm * Math.sin(Th)) / (_Iy * _mass))
-            + ((_hm * Tm * Tm * Math.cos(A) * Math.sin(Th)) / (_Iy * _mass))) / (((_Mm * Tm * CosTh2) / (_Iy * mass2))
+                + ((_hm * Tm * Tm * Math.cos(A) * Math.sin(Th)) / (_Iy * _mass))) / (((_Mm * Tm * CosTh2) / (_Iy * mass2))
                         + ((_hm * Tm * Tm * Math.cos(A) * CosTh2) / (_Iy * mass2))
                         + ((_Mm * Tm * SinTh2) / (_Iy * mass2))
                         + ((_hm * Tm * Tm * Math.cos(A) * SinTh2) / (_Iy * mass2)));
 
         double IK12 = (-((_Mm * Tm * Math.cos(Th)) / (_Iy * _mass))
-            - ((_hm * Tm * Tm * Math.cos(A) * Math.cos(Th)) / (_Iy * _mass))) / (((_Mm * Tm * CosTh2) / (_Iy * mass2))
+                - ((_hm * Tm * Tm * Math.cos(A) * Math.cos(Th)) / (_Iy * _mass))) / (((_Mm * Tm * CosTh2) / (_Iy * mass2))
                         + ((_hm * Tm * Tm * Math.cos(A) * CosTh2) / (_Iy * mass2))
                         + ((_Mm * Tm * SinTh2) / (_Iy * mass2))
                         + ((_hm * Tm * Tm * Math.cos(A) * SinTh2) / (_Iy * mass2)));
 
         double IK21 = Math.cos(Th) / (_mass * (((_Mm * Tm * CosTh2) / (_Iy * mass2))
-                        + ((_hm * Tm * Tm * Math.cos(A) * CosTh2) / (_Iy * mass2))
-                        + ((_Mm * Tm * SinTh2) / (_Iy * mass2))
-                        + ((_hm * Tm * Tm * Math.cos(A) * SinTh2) / (_Iy * mass2))));
+                                              + ((_hm * Tm * Tm * Math.cos(A) * CosTh2) / (_Iy * mass2))
+                                              + ((_Mm * Tm * SinTh2) / (_Iy * mass2))
+                                              + ((_hm * Tm * Tm * Math.cos(A) * SinTh2) / (_Iy * mass2))));
 
         double IK22 = Math.sin(Th) / (_mass * (((_Mm * Tm * CosTh2) / (_Iy * mass2))
-                        + ((_hm * Tm * Tm * Math.cos(A) * CosTh2) / (_Iy * mass2))
-                        + ((_Mm * Tm * SinTh2) / (_Iy * mass2))
-                        + ((_hm * Tm * Tm * Math.cos(A) * SinTh2) / (_Iy * mass2))));
+                                              + ((_hm * Tm * Tm * Math.cos(A) * CosTh2) / (_Iy * mass2))
+                                              + ((_Mm * Tm * SinTh2) / (_Iy * mass2))
+                                              + ((_hm * Tm * Tm * Math.cos(A) * SinTh2) / (_Iy * mass2))));
 
         double B1 = (((3.0 * DDTm * DTh * Math.cos(Th)) / _mass)
-            - ((DTh * DTh * DTh * Tm * Math.cos(Th)) / _mass)
-            + ((DTm * _hm * Tm * Math.cos(Th) * Math.sin(A)) / (_Iy * _mass))
-            + ((3.0 * DTm * Math.cos(Th) * ((A * _Mm)
-                        + (_hm * Tm * Math.sin(A)))) / (_Iy * _mass)))
+                - ((DTh * DTh * DTh * Tm * Math.cos(Th)) / _mass)
+                + ((DTm * _hm * Tm * Math.cos(Th) * Math.sin(A)) / (_Iy * _mass))
+                + ((3.0 * DTm * Math.cos(Th) * ((A * _Mm)
+                            + (_hm * Tm * Math.sin(A)))) / (_Iy * _mass)))
             - ((3.0 * DTh * DTh * DTm * Math.sin(Th)) / _mass)
             - ((3.0 * DTh * Tm * ((A * _Mm) + (_hm * Tm * Math.sin(A))) * Math
-                        .sin(Th)) / (_Iy * _mass));
+                       .sin(Th)) / (_Iy * _mass));
 
         double B2 = (((3.8 * DTh * DTh * DTm * Math.cos(Th)) / _mass)
-            + ((3.0 * DTh * Tm * Math.cos(Th) * ((A * _Mm)
-                        + (_hm * Tm * Math.sin(A)))) / (_Iy * _mass))
-            + ((3.0 * DDTm * DTh * Math.sin(Th)) / _mass))
+                + ((3.0 * DTh * Tm * Math.cos(Th) * ((A * _Mm)
+                            + (_hm * Tm * Math.sin(A)))) / (_Iy * _mass))
+                + ((3.0 * DDTm * DTh * Math.sin(Th)) / _mass))
             - ((DTh * DTh * DTh * Tm * Math.sin(Th)) / _mass)
             + ((DTm * _hm * Tm * Math.sin(A) * Math.sin(Th)) / (_Iy * _mass))
             + ((3.0 * DTm * ((A * _Mm) + (_hm * Tm * Math.sin(A))) * Math.sin(Th)) / (_Iy * _mass));

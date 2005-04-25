@@ -61,7 +61,7 @@ public class TestProcessActor extends TestActor {
      *   an entity already in the container.
      */
     public TestProcessActor(CompositeActor container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 

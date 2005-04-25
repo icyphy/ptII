@@ -73,7 +73,7 @@ public class ImplicitSurface extends TypedAtomicActor {
      *   an actor already in the container.
      */
     public ImplicitSurface(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         dx = new TypedIOPort(this, "dx", false, true);
@@ -247,7 +247,7 @@ public class ImplicitSurface extends TypedAtomicActor {
         // dyName = dyFile.asFile().getAbsolutePath();
         // dthetaName = dthetaFile.asFile().getAbsolutePath();
         boolean compressed = ((BooleanToken) filesAreCompressed.getToken())
-                        .booleanValue();
+            .booleanValue();
 
         boolean write = ((BooleanToken) writeOutData.getToken()).booleanValue();
 

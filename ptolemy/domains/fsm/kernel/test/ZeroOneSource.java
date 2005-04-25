@@ -59,7 +59,7 @@ public class ZeroOneSource extends SequenceSource {
      *   actor with this name.
      */
     public ZeroOneSource(TypedCompositeActor container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         output.setTypeEquals(BaseType.INT);
     }
@@ -106,21 +106,21 @@ public class ZeroOneSource extends SequenceSource {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private int[] _seq = {
-            0,
-            1,
-            1,
-            1,
-            0,
-            1,
-            0,
-            1,
-            1,
-            0,
-            1,
-            1,
-            0,
-            0
-        };
+        0,
+        1,
+        1,
+        1,
+        0,
+        1,
+        0,
+        1,
+        1,
+        0,
+        1,
+        1,
+        0,
+        0
+    };
     private int _iterationCount = 0;
     private Token _zero = new IntToken(0);
 }

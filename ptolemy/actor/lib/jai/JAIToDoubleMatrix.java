@@ -79,7 +79,7 @@ public class JAIToDoubleMatrix extends Transformer {
      *   actor with this name.
      */
     public JAIToDoubleMatrix(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         normalize = new Parameter(this, "normalize");
@@ -108,7 +108,7 @@ public class JAIToDoubleMatrix extends Transformer {
      *  @exception IllegalActionException If the base class throws it.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == normalize) {
             _normalize = ((BooleanToken) normalize.getToken()).booleanValue();
         } else {
@@ -164,7 +164,7 @@ public class JAIToDoubleMatrix extends Transformer {
 
             default:
                 throw new IllegalActionException("Data type not suitable for "
-                    + "normalizing");
+                        + "normalizing");
             }
 
             if (_debugging) {
@@ -173,7 +173,7 @@ public class JAIToDoubleMatrix extends Transformer {
             }
 
             if ((_type == DataBuffer.TYPE_DOUBLE)
-                            || (_type == DataBuffer.TYPE_FLOAT)) {
+                    || (_type == DataBuffer.TYPE_FLOAT)) {
                 for (int i = 0; i < width; i++) {
                     for (int j = 0; j < height; j++) {
                         // There is some confusion about which order the
@@ -195,7 +195,7 @@ public class JAIToDoubleMatrix extends Transformer {
                         //                                     _minValue)/
                         //                             (_maxValue - _minValue);
                         data[i][j] = (dataBuffer.getElemDouble(i + (j * width))
-                            - _minValue) / (_maxValue - _minValue);
+                                - _minValue) / (_maxValue - _minValue);
                     }
                 }
             }

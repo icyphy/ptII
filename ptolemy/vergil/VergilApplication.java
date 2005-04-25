@@ -118,7 +118,7 @@ public class VergilApplication extends MoMLApplication {
      *  @exception Exception If command line arguments have problems.
      */
     public VergilApplication(String basePath, String[] args)
-        throws Exception {
+            throws Exception {
         super(basePath, args);
 
         // Create register an error handler with the parser so that
@@ -182,16 +182,16 @@ public class VergilApplication extends MoMLApplication {
      *  opening the MoML file, or opening the MoML file as a new library.
      */
     public static void openLibrary(Configuration configuration, File file)
-        throws Exception {
+            throws Exception {
         final CompositeEntity libraryContainer = (CompositeEntity) configuration
-                        .getEntity("actor library");
+            .getEntity("actor library");
 
         if (libraryContainer == null) {
             return;
         }
 
         final ModelDirectory directory = (ModelDirectory) configuration
-                        .getEntity(Configuration._DIRECTORY_NAME);
+            .getEntity(Configuration._DIRECTORY_NAME);
 
         if (directory == null) {
             return;
@@ -217,11 +217,11 @@ public class VergilApplication extends MoMLApplication {
 
             // Now create the effigy with no tableau.
             final PtolemyEffigy finalLibraryEffigy = new PtolemyEffigy(directory
-                                .workspace());
+                    .workspace());
             finalLibraryEffigy.setSystemEffigy(true);
 
             final ComponentEntity userLibrary = (ComponentEntity) parser
-                            .getToplevel();
+                .getToplevel();
 
             // Correct old library name.
             if (userLibrary.getName().equals("user library")) {
@@ -229,7 +229,7 @@ public class VergilApplication extends MoMLApplication {
             }
 
             finalLibraryEffigy.setName(directory.uniqueName(
-                    userLibrary.getName()));
+                                               userLibrary.getName()));
 
             ChangeRequest request = new ChangeRequest(configuration,
                     file.toURL().toString()) {
@@ -275,7 +275,7 @@ public class VergilApplication extends MoMLApplication {
      *  @exception Exception If the configuration cannot be opened.
      */
     protected Configuration _createDefaultConfiguration()
-        throws Exception {
+            throws Exception {
         try {
             if (_configurationURL == null) {
                 _configurationURL = specToURL(_basePath
@@ -303,14 +303,14 @@ public class VergilApplication extends MoMLApplication {
             configuration = _readConfiguration(_configurationURL);
         } catch (Exception ex) {
             throw new Exception("Failed to read configuration '"
-                + _configurationURL + "'", ex);
+                    + _configurationURL + "'", ex);
         }
 
         Parameter hideUserLibraryAttribute = (Parameter) configuration
-                        .getAttribute("_hideUserLibrary", Parameter.class);
+            .getAttribute("_hideUserLibrary", Parameter.class);
 
         if ((hideUserLibraryAttribute == null)
-                        || hideUserLibraryAttribute.getExpression().equals("false")) {
+                || hideUserLibraryAttribute.getExpression().equals("false")) {
             // Read the user's vergilUserLibrary.xml file
             //
             // Use StringUtilities.getProperty() so we get the proper
@@ -329,7 +329,7 @@ public class VergilApplication extends MoMLApplication {
                     + BasicGraphFrame.VERGIL_USER_LIBRARY_NAME + ".xml";
             } catch (Exception ex) {
                 System.out.println("Warning: Failed to get the preferences "
-                    + "directory (-sandbox always causes this): " + ex);
+                        + "directory (-sandbox always causes this): " + ex);
             }
 
             if (libraryName != null) {
@@ -341,7 +341,7 @@ public class VergilApplication extends MoMLApplication {
                     // File might exist under an old name.
                     // Try to read it.
                     String oldLibraryName = StringUtilities
-                                    .preferencesDirectory()
+                        .preferencesDirectory()
                         + "user library.xml";
                     File oldFile = new File(oldLibraryName);
 
@@ -360,12 +360,12 @@ public class VergilApplication extends MoMLApplication {
 
                         writer = new FileWriter(file);
                         writer.write("<entity name=\""
-                            + BasicGraphFrame.VERGIL_USER_LIBRARY_NAME
-                            + "\" class=\"ptolemy.moml.EntityLibrary\"/>");
+                                + BasicGraphFrame.VERGIL_USER_LIBRARY_NAME
+                                + "\" class=\"ptolemy.moml.EntityLibrary\"/>");
                         writer.close();
                     } catch (Exception ex) {
                         MessageHandler.error("Failed to create an empty user "
-                            + "library: " + libraryName, ex);
+                                + "library: " + libraryName, ex);
                     } finally {
                         if (writer != null) {
                             writer.close();
@@ -393,7 +393,7 @@ public class VergilApplication extends MoMLApplication {
      *  @exception Exception If the configuration cannot be opened.
      */
     protected Configuration _createEmptyConfiguration()
-        throws Exception {
+            throws Exception {
         Configuration configuration = _createDefaultConfiguration();
         URL welcomeURL = null;
         URL introURL = null;
@@ -465,7 +465,7 @@ public class VergilApplication extends MoMLApplication {
         }
 
         String[] processedArgs = (String[]) processedArgsList.toArray(new String[processedArgsList
-                            .size()]);
+                                                                              .size()]);
 
         super._parseArgs(processedArgs);
     }
@@ -475,7 +475,7 @@ public class VergilApplication extends MoMLApplication {
      */
     protected String _usage() {
         return _configurationUsage(_commandTemplate, _commandOptions,
-            new String[] {  });
+                new String[] {  });
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -486,11 +486,11 @@ public class VergilApplication extends MoMLApplication {
 
     /** The command-line options that take arguments. */
     protected static String[][] _commandOptions = {
-            {
-                "-configuration",
-                "<configuration URL, defaults to ptolemy/configs/full/configuration.xml>"
-            },
-        };
+        {
+            "-configuration",
+            "<configuration URL, defaults to ptolemy/configs/full/configuration.xml>"
+        },
+    };
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -505,7 +505,7 @@ public class VergilApplication extends MoMLApplication {
      *  @exception Exception If something goes wrong.
      */
     private boolean _configurationParseArg(String arg)
-        throws Exception {
+            throws Exception {
         if (arg.startsWith("-conf")) {
             _expectingConfiguration = true;
         } else if (arg.startsWith("-")) {
@@ -550,7 +550,7 @@ public class VergilApplication extends MoMLApplication {
     // are using JNI, then we might get a java.lang.UnsatistifiedLineError,
     // which is an Error, not and Exception.
     private static void _errorAndExit(String message, String[] args,
-        Throwable throwable) {
+            Throwable throwable) {
         StringBuffer argsBuffer = new StringBuffer("Command failed");
 
         if (args.length > 0) {

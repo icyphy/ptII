@@ -90,7 +90,7 @@ public class GraphicsParser {
      * </ul>
      */
     public static PaintedObject createPaintedObject(String type,
-        String attributes, String content) {
+            String attributes, String content) {
         Map hm = new HashMap();
         hashAttributes(attributes, hm);
         return createPaintedObject(type, hm, content);
@@ -104,17 +104,17 @@ public class GraphicsParser {
      *
      */
     public static PaintedObject createPaintedObject(String type,
-        Map attributes, String content) {
+            Map attributes, String content) {
         double[] coords = parseCoordString((String) attributes.get("coords"));
 
         if (type.equals("rectangle")) {
             PaintedShape ps = new PaintedShape(new Rectangle2D.Double(
-                        coords[0], coords[1], coords[2], coords[3]));
+                                                       coords[0], coords[1], coords[2], coords[3]));
             processPaintedShapeAttributes(ps, attributes);
             return ps;
         } else if (type.equals("ellipse")) {
             PaintedShape ps = new PaintedShape(new Ellipse2D.Double(coords[0],
-                        coords[1], coords[2], coords[3]));
+                                                       coords[1], coords[2], coords[3]));
             processPaintedShapeAttributes(ps, attributes);
             return ps;
         } else if (type.equals("polygon")) {
@@ -170,12 +170,12 @@ public class GraphicsParser {
 
         if (type.equals("rectangle")) {
             PaintedShape ps = new PaintedShape(new Rectangle2D.Double(
-                        coords[0], coords[1], coords[2], coords[3]));
+                                                       coords[0], coords[1], coords[2], coords[3]));
             processPaintedShapeAttributes(ps, attributes);
             return ps;
         } else if (type.equals("ellipse")) {
             PaintedShape ps = new PaintedShape(new Ellipse2D.Double(coords[0],
-                        coords[1], coords[2], coords[3]));
+                                                       coords[1], coords[2], coords[3]));
             processPaintedShapeAttributes(ps, attributes);
             return ps;
         } else if (type.equals("polygon")) {
@@ -350,7 +350,7 @@ public class GraphicsParser {
     /** Set the attributes of a PaintedShape from a hash-table
      */
     private static void processPaintedShapeAttributes(PaintedShape ps,
-        Map attributes) {
+            Map attributes) {
         Iterator i = attributes.keySet().iterator();
 
         while (i.hasNext()) {
@@ -372,7 +372,7 @@ public class GraphicsParser {
     /** Set the attributes of a PaintedPath from a hash-table
      */
     private static void processPaintedPathAttributes(PaintedPath pp,
-        Map attributes) {
+            Map attributes) {
         Iterator i = attributes.keySet().iterator();
 
         while (i.hasNext()) {
@@ -390,7 +390,7 @@ public class GraphicsParser {
     /** Set the attributes of a PaintedString from a hash-table
      */
     private static void processPaintedStringAttributes(PaintedString pp,
-        Map attributes) {
+            Map attributes) {
         Iterator i = attributes.keySet().iterator();
 
         while (i.hasNext()) {

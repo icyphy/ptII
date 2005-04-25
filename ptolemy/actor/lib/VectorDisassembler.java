@@ -71,7 +71,7 @@ public class VectorDisassembler extends Transformer {
      *   actor with this name.
      */
     public VectorDisassembler(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         input.setTypeEquals(BaseType.DOUBLE_MATRIX);
@@ -80,8 +80,8 @@ public class VectorDisassembler extends Transformer {
         output.setMultiport(true);
 
         _attachText("_iconDescription",
-            "<svg>\n" + "<rect x=\"0\" y=\"0\" width=\"6\" "
-            + "height=\"40\" style=\"fill:blue\"/>\n" + "</svg>\n");
+                "<svg>\n" + "<rect x=\"0\" y=\"0\" width=\"6\" "
+                + "height=\"40\" style=\"fill:blue\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -105,8 +105,8 @@ public class VectorDisassembler extends Transformer {
 
             if (vector.getColumnCount() != 1) {
                 throw new IllegalActionException(this,
-                    "The input must "
-                    + "be a DoubleMatrixToken with one column.");
+                        "The input must "
+                        + "be a DoubleMatrixToken with one column.");
             }
 
             int min = Math.min(vector.getRowCount(), output.getWidth());

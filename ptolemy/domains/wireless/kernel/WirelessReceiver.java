@@ -114,9 +114,9 @@ public class WirelessReceiver extends DEReceiver {
         // Bundle the two into one token.
         // Construct the message about the input signal detected.
         String[] labels = {
-                "properties",
-                "value"
-            };
+            "properties",
+            "value"
+        };
 
         if (properties == null) {
             properties = _dummy;
@@ -128,9 +128,9 @@ public class WirelessReceiver extends DEReceiver {
         }
 
         Token[] values = {
-                properties,
-                token
-            };
+            properties,
+            token
+        };
         Token result = null;
 
         try {

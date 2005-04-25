@@ -127,9 +127,9 @@ public class RatingTaglet implements Taglet {
     public static void register(Map tagletMap) {
         try {
             _register(tagletMap,
-                new RatingTaglet("Pt.AcceptedRating", "Accepted Rating"));
+                    new RatingTaglet("Pt.AcceptedRating", "Accepted Rating"));
             _register(tagletMap,
-                new RatingTaglet("Pt.ProposedRating", "Proposed Rating"));
+                    new RatingTaglet("Pt.ProposedRating", "Proposed Rating"));
         } catch (Throwable throwable) {
             // Print the stack trace so the user has a clue.
             throwable.printStackTrace();
@@ -155,9 +155,9 @@ public class RatingTaglet implements Taglet {
         }
 
         return "<DT><B>" + _tagName + ":</B><DD>"
-        + "<table cellpadding=2 cellspacing=0><tr><td bgcolor=\""
-        + color.toLowerCase() + "\">" + tag.text()
-        + "</td></tr></table></DD>\n";
+            + "<table cellpadding=2 cellspacing=0><tr><td bgcolor=\""
+            + color.toLowerCase() + "\">" + tag.text()
+            + "</td></tr></table></DD>\n";
     }
 
     /**
@@ -183,7 +183,7 @@ public class RatingTaglet implements Taglet {
 
         String result = "\n<DT><B>" + _tagName + ":</B><DD>";
         result += ("<table cellpadding=2 cellspacing=0><tr><td bgcolor=\""
-                    + color.toLowerCase() + "\">");
+                + color.toLowerCase() + "\">");
 
         for (int i = 0; i < tags.length; i++) {
             if (i > 0) {
@@ -214,7 +214,7 @@ public class RatingTaglet implements Taglet {
                 "java.specification.version");
 
         if ((javaSpecificationVersion != null)
-                        && javaSpecificationVersion.equals("1.4")) {
+                && javaSpecificationVersion.equals("1.4")) {
             tagletMap.put(taglet.getName(), taglet);
         } else {
             String legacyTagletClassName = "com.sun.tools.doclets.internal.toolkit.taglets.LegacyTaglet";
@@ -223,17 +223,17 @@ public class RatingTaglet implements Taglet {
                 // Use reflection so that this code will compile under jdk1.4.
                 Class legacyTagletClass = Class.forName(legacyTagletClassName);
                 Constructor legacyTagletConstructor = legacyTagletClass
-                                .getConstructor(new Class[] {
-                                        Taglet.class
-                                    });
+                    .getConstructor(new Class[] {
+                        Taglet.class
+                    });
                 Object legacyTagletObject = legacyTagletConstructor.newInstance(new Object[] {
-                            taglet
-                        });
+                    taglet
+                });
                 tagletMap.put(tagName, legacyTagletObject);
             } catch (Throwable throwable) {
                 throwable.printStackTrace();
                 throw new RuntimeException("Problem with the '"
-                    + legacyTagletClassName + "' class: ", throwable);
+                        + legacyTagletClassName + "' class: ", throwable);
             }
         }
     }

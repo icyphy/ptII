@@ -72,28 +72,28 @@ public class Main extends KernelMain {
         // For example, to time out after 5 minutes, or 300000 ms:
         // -p wjtp.watchDog time:30000
         addTransform(pack, "wjtp.watchDog", WatchDogTimer.v(),
-            "time:" + _watchDogTimeout);
+                "time:" + _watchDogTimeout);
 
         // Create a class for the composite actor of the model, and
         // additional classes for all actors (both composite and
         // atomic) used by the model.
         addTransform(pack, "wjtp.mt", ModelTransformer.v(toplevel),
-            "targetPackage:" + _targetPackage);
+                "targetPackage:" + _targetPackage);
 
         // Inline the director into the composite actor.
         addTransform(pack, "wjtp.idt", InlineDirectorTransformer.v(toplevel),
-            "targetPackage:" + _targetPackage + " outDir:" + _outputDirectory);
+                "targetPackage:" + _targetPackage + " outDir:" + _outputDirectory);
 
         addTransform(pack, "wjtp.ta1", new TransformerAdapter(TypeAssigner.v()));
         addStandardOptimizations(pack, 1);
 
         if (_snapshots) {
             addTransform(pack, "wjtp.snapshot1jimple", JimpleWriter.v(),
-                "outDir:" + _outputDirectory + "/jimple1");
+                    "outDir:" + _outputDirectory + "/jimple1");
             addTransform(pack, "wjtp.snapshot1", ClassWriter.v(),
-                "outDir:" + _outputDirectory + "/jimple1");
+                    "outDir:" + _outputDirectory + "/jimple1");
             addTransform(pack, "wjtp.lur1", LibraryUsageReporter.v(),
-                "outFile:" + _outputDirectory + "/jimple1/jarClassList.txt");
+                    "outFile:" + _outputDirectory + "/jimple1/jarClassList.txt");
         }
 
         /*
@@ -384,9 +384,9 @@ public class Main extends KernelMain {
 
         // This snapshot should be last...
         addTransform(pack, "wjtp.finalSnapshotJimple", JimpleWriter.v(),
-            "outDir:" + _outputDirectory);
+                "outDir:" + _outputDirectory);
         addTransform(pack, "wjtp.finalSnapshot", ClassWriter.v(),
-            "outDir:" + _outputDirectory);
+                "outDir:" + _outputDirectory);
     }
 
     /** Add transforms to the Scene.
@@ -400,13 +400,13 @@ public class Main extends KernelMain {
         //      pack.add(
         //                 new Transform("wjtp.finalSnapshot", CWriter.v());
         addTransform(pack, "wjtp.watchDogCancel", WatchDogTimer.v(),
-            "cancel:true");
+                "cancel:true");
     }
 
     /** Parse any Copernicus arguments.
      */
     protected String[] _parseArgs(GeneratorAttribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         _targetPackage = attribute.getParameter("targetPackage");
         _templateDirectory = attribute.getParameter("templateDirectory");
         _watchDogTimeout = attribute.getParameter("watchDogTimeout");

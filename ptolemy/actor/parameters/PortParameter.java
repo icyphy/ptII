@@ -134,7 +134,7 @@ public class PortParameter extends Parameter {
      *   a parameter already in the container.
      */
     public PortParameter(NamedObj container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         if (container instanceof TypedActor) {
@@ -164,8 +164,8 @@ public class PortParameter extends Parameter {
      *   an parameter already in the container.
      */
     public PortParameter(NamedObj container, String name,
-        ptolemy.data.Token token)
-        throws IllegalActionException, NameDuplicationException {
+            ptolemy.data.Token token)
+            throws IllegalActionException, NameDuplicationException {
         this(container, name);
         setToken(token);
     }
@@ -182,7 +182,7 @@ public class PortParameter extends Parameter {
      *   to this container (not thrown in this base class).
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute instanceof Locatable) {
             Locatable location = (Locatable) attribute;
 
@@ -253,7 +253,7 @@ public class PortParameter extends Parameter {
      *  @exception NameDuplicationException If the superclass throws it.
      */
     public void setContainer(Entity entity)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         Entity previousContainer = (Entity) getContainer();
         super.setContainer(entity);
 
@@ -307,7 +307,7 @@ public class PortParameter extends Parameter {
      *   container rejects the change.
      */
     public void setCurrentValue(ptolemy.data.Token token)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (_debugging) {
             _debug("setCurrentValue: " + token);
         }
@@ -327,7 +327,7 @@ public class PortParameter extends Parameter {
      *   contains an attribute with the proposed name.
      */
     public void setName(String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         if (_settingName) {
             return;
         }
@@ -384,10 +384,10 @@ public class PortParameter extends Parameter {
      *   instance of Entity.
      */
     protected void _checkContainer(Entity container)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (!(container instanceof Entity)) {
             throw new IllegalActionException(this,
-                "PortParameter can only be used in an instance of Entity.");
+                    "PortParameter can only be used in an instance of Entity.");
         }
     }
 

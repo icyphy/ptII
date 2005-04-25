@@ -67,7 +67,7 @@ public class DefaultStoragePolicy extends AbstractStoragePolicy {
                 if (d.isDirty()) {
                     // ask if the user wants to save
                     Component parent = d.getApplication().getAppContext()
-                                                    .makeComponent();
+                        .makeComponent();
                     String message = "Do you want to save your changes to "
                         + d.getTitle();
                     String title = "Closing Document";
@@ -135,7 +135,7 @@ public class DefaultStoragePolicy extends AbstractStoragePolicy {
 
         _openFileChooser.setCurrentDirectory(new File(getDirectory()));
         result = _openFileChooser.showOpenDialog(app.getAppContext()
-                                                                .makeComponent());
+                .makeComponent());
 
         if (result == JFileChooser.APPROVE_OPTION) {
             try {
@@ -206,7 +206,7 @@ public class DefaultStoragePolicy extends AbstractStoragePolicy {
                 }
 
                 d.getApplication().getAppContext().showStatus("Saved "
-                    + d.getTitle());
+                        + d.getTitle());
                 d.setDirty(false);
             }
         }
@@ -236,7 +236,7 @@ public class DefaultStoragePolicy extends AbstractStoragePolicy {
                 if (chosenFile.exists()) {
                     // Query on overwrite
                     int opt = JOptionPane.showConfirmDialog(context
-                                        .makeComponent(),
+                            .makeComponent(),
                             "File \"" + chosenFile.getName()
                             + "\" exists. Overwrite?", "Overwrite file?",
                             JOptionPane.YES_NO_OPTION);

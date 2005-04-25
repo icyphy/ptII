@@ -73,7 +73,7 @@ public class JAIDataConvert extends Transformer {
      *   actor with this name.
      */
     public JAIDataConvert(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         dataFormat = new StringAttribute(this, "dataFormat");
@@ -101,7 +101,7 @@ public class JAIDataConvert extends Transformer {
      *  @exception IllegalActionException If the function is not recognized.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == dataFormat) {
             String dataFormatName = dataFormat.getExpression();
 
@@ -119,7 +119,7 @@ public class JAIDataConvert extends Transformer {
                 _dataFormat = _USHORT;
             } else {
                 throw new IllegalActionException(this,
-                    "Unrecognized data type: " + dataFormatName);
+                        "Unrecognized data type: " + dataFormatName);
             }
         } else {
             super.attributeChanged(attribute);
@@ -178,9 +178,9 @@ public class JAIDataConvert extends Transformer {
 
         default:
             throw new InternalErrorException(this, null,
-                "Invalid value for _dataFormat private variable. "
-                + "JAIDataConvert actor (" + getFullName() + ") on data type "
-                + _dataFormat);
+                    "Invalid value for _dataFormat private variable. "
+                    + "JAIDataConvert actor (" + getFullName() + ") on data type "
+                    + _dataFormat);
         }
 
         return result;

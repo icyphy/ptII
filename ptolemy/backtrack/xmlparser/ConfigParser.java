@@ -68,7 +68,7 @@ public class ConfigParser {
     public static void main(String[] args)
             throws Exception {
         String[] classes = new String[]{
-                "ptolemy.actor.lib.Sequence"
+            "ptolemy.actor.lib.Sequence"
         };
         Set classSet = new HashSet();
         classSet.addAll(Arrays.asList(classes));

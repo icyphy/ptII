@@ -59,7 +59,7 @@ public class Minimum extends CCodeGeneratorHelper {
      * @param stream the given buffer to append the code to
      */
     public void generateFireCode(StringBuffer stream)
-        throws IllegalActionException {
+            throws IllegalActionException {
         // FIXME: ???????????
     }
 
@@ -69,7 +69,7 @@ public class Minimum extends CCodeGeneratorHelper {
      *  @return The processed <code>initBlock</code>.
      */
     public String generateInitializeCode(StringBuffer stream)
-        throws IllegalActionException {
+            throws IllegalActionException {
         super.generateInitializeCode();
 
         CodeStream tmpStream = new CodeStream(this);

@@ -39,14 +39,14 @@ import java.util.HashSet;
 ///ParkingManager
 
 /**
-    This class manages the information of which parking lot is taken, and
-    which is still free.
+   This class manages the information of which parking lot is taken, and
+   which is still free.
 
-    @author Yang Zhao
-    @version $Id$
-    @since Ptolemy II 3.0
-    @Pt.ProposedRating Yellow (cxh)
-    @Pt.AcceptedRating Yellow (cxh)
+   @author Yang Zhao
+   @version $Id$
+   @since Ptolemy II 3.0
+   @Pt.ProposedRating Yellow (cxh)
+   @Pt.AcceptedRating Yellow (cxh)
 */
 public class ParkingManager {
     public static HashSet AvailableLots = new HashSet();

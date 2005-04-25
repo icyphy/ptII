@@ -67,7 +67,7 @@ public class AlternatingSimulation {
      *  @exception Exception If the specified automata cannot be constructed.
      */
     public AlternatingSimulation(String superMoML, String subMoML,
-        boolean onlyReacheable) throws Exception {
+            boolean onlyReacheable) throws Exception {
         // Construct the super automaton
         URL url = MoMLApplication.specToURL(superMoML);
 
@@ -97,18 +97,18 @@ public class AlternatingSimulation {
 
         if (onlyReacheable) {
             alternatingSimulation = InterfaceAutomaton
-                            .reacheableAlternatingSimulation(alternatingSimulation,
-                                superAutomaton, subAutomaton);
+                .reacheableAlternatingSimulation(alternatingSimulation,
+                        superAutomaton, subAutomaton);
         }
 
         // Display result
         if (alternatingSimulation.isEmpty()) {
             System.out.println("No alternating simulation between the "
-                + "specified automata.");
+                    + "specified automata.");
         } else {
             System.out.println("Alternating simulation (state_in_"
-                + superAutomaton.getName() + " - state_in_"
-                + subAutomaton.getName() + "):");
+                    + superAutomaton.getName() + " - state_in_"
+                    + subAutomaton.getName() + "):");
 
             Iterator pairs = alternatingSimulation.iterator();
 
@@ -149,7 +149,7 @@ public class AlternatingSimulation {
             new AlternatingSimulation(superMoML, subMoML, onlyReacheable);
         } catch (Exception exception) {
             System.out.println(exception.getClass().getName() + ": "
-                + exception.getMessage());
+                    + exception.getMessage());
             exception.printStackTrace();
         }
     }
@@ -158,14 +158,14 @@ public class AlternatingSimulation {
     ////                         private methods                   ////
     private static void _printUsageAndExit() {
         System.out.println("Usage: java ptolemy.domains.fsm.kernel."
-            + "test.AlternatingSimulation <-reacheable> "
-            + "<super_automaton.xml> <sub_automaton.xml>");
+                + "test.AlternatingSimulation <-reacheable> "
+                + "<super_automaton.xml> <sub_automaton.xml>");
         System.out.println("-reacheable indicates to only print out "
-            + "the reacheable alternating simulation state pairs. "
-            + "This is optional.");
+                + "the reacheable alternating simulation state pairs. "
+                + "This is optional.");
         System.out.println("super_automaton.xml and sub_automaton.xml "
-            + "are the MoML files for the super and sub automata. "
-            + "They must be present.");
+                + "are the MoML files for the super and sub automata. "
+                + "They must be present.");
         System.exit(1);
     }
 }

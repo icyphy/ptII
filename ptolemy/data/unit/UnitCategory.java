@@ -67,10 +67,10 @@ public class UnitCategory extends Attribute {
      *   an attribute already in the container.
      */
     public UnitCategory(NamedObj container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         UnitUtilities.registerUnitCategory(((BaseUnit) this.getContainer())
-                        .getName());
+                .getName());
     }
 
     public BaseUnit getBaseUnit() {

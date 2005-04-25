@@ -63,7 +63,7 @@ public class CartesianToPolar extends TypedAtomicActor {
      *   actor with this name.
      */
     public CartesianToPolar(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         x = new TypedIOPort(this, "x", true, false);
@@ -79,8 +79,8 @@ public class CartesianToPolar extends TypedAtomicActor {
         angle.setTypeEquals(BaseType.DOUBLE);
 
         _attachText("_iconDescription",
-            "<svg>\n" + "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
-            + "style=\"fill:white\"/>\n" + "</svg>\n");
+                "<svg>\n" + "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
+                + "style=\"fill:white\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////

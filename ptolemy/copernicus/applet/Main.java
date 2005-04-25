@@ -58,21 +58,21 @@ public class Main extends KernelMain {
 
         // Generate the makefile files in outDir
         addTransform(pack, "wjtp.makefileWriter", MakefileWriter.v(_toplevel),
-            "_generatorAttributeFileName:" + _generatorAttributeFileName
-            + " targetPackage:" + _targetPackage + " templateDirectory:"
-            + _templateDirectory + " outDir:" + _outputDirectory
-            + " overwrite:false");
+                "_generatorAttributeFileName:" + _generatorAttributeFileName
+                + " targetPackage:" + _targetPackage + " templateDirectory:"
+                + _templateDirectory + " outDir:" + _outputDirectory
+                + " overwrite:false");
 
         // Generate the applet files in outDir
         addTransform(pack, "wjtp.appletWriter", AppletWriter.v(_toplevel),
-            "targetPackage:" + _targetPackage + " modelPath:" + _modelPath
-            + " outDir:" + _outputDirectory);
+                "targetPackage:" + _targetPackage + " modelPath:" + _modelPath
+                + " outDir:" + _outputDirectory);
     }
 
     /** Parse any code generator specific arguments.
      */
     protected String[] _parseArgs(GeneratorAttribute attribute)
-        throws Exception {
+            throws Exception {
         _generatorAttributeFileName = attribute.getParameter(
                 "generatorAttributeFileName");
         _modelPath = attribute.getParameter("modelPath");

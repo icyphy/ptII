@@ -215,5 +215,5 @@ public abstract class AbstractCollection implements Collection, Rollbackable {
     protected CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
 
     private FieldRecord[] $RECORDS = new FieldRecord[] {
-        };
+    };
 }

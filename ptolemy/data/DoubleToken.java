@@ -105,7 +105,7 @@ public class DoubleToken extends ScalarToken {
      *   cannot be carried out.
      */
     public static DoubleToken convert(Token token)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (token instanceof DoubleToken) {
             return (DoubleToken) token;
         }
@@ -114,7 +114,7 @@ public class DoubleToken extends ScalarToken {
 
         if ((compare == CPO.LOWER) || (compare == CPO.INCOMPARABLE)) {
             throw new IllegalActionException(notSupportedIncomparableConversionMessage(
-                    token, "double"));
+                                                     token, "double"));
         }
 
         compare = TypeLattice.compare(BaseType.INT, token);
@@ -126,7 +126,7 @@ public class DoubleToken extends ScalarToken {
             return result;
         } else {
             throw new IllegalActionException(notSupportedConversionMessage(
-                    token, "double"));
+                                                     token, "double"));
         }
     }
 
@@ -209,7 +209,7 @@ public class DoubleToken extends ScalarToken {
                 return TokenUtilities.regularFormat.format(_value) + unitString;
             } else {
                 return TokenUtilities.exponentialFormat.format(_value)
-                + unitString;
+                    + unitString;
             }
         }
     }
@@ -262,9 +262,9 @@ public class DoubleToken extends ScalarToken {
      *  sense for this type.
      */
     protected ScalarToken _bitwiseAnd(ScalarToken rightArgument)
-        throws IllegalActionException {
+            throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("bitwiseAnd",
-                this, rightArgument));
+                                                 this, rightArgument));
     }
 
     /** Returns a token representing the bitwise NOT of this token.
@@ -275,7 +275,7 @@ public class DoubleToken extends ScalarToken {
      */
     protected ScalarToken _bitwiseNot() throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("bitwiseNot",
-                this, this));
+                                                 this, this));
     }
 
     /** Returns a token representing the bitwise OR of this token and
@@ -286,9 +286,9 @@ public class DoubleToken extends ScalarToken {
      *  sense for this type.
      */
     protected ScalarToken _bitwiseOr(ScalarToken rightArgument)
-        throws IllegalActionException {
+            throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("bitwiseOr", this,
-                rightArgument));
+                                                 rightArgument));
     }
 
     /** Returns a token representing the bitwise XOR of this token and
@@ -299,9 +299,9 @@ public class DoubleToken extends ScalarToken {
      *  sense for this type.
      */
     protected ScalarToken _bitwiseXor(ScalarToken rightArgument)
-        throws IllegalActionException {
+            throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("bitwiseXor",
-                this, rightArgument));
+                                                 this, rightArgument));
     }
 
     /** Return a new token whose value is the value of this token
@@ -350,7 +350,7 @@ public class DoubleToken extends ScalarToken {
      *  @return A new Token containing the result.
      */
     protected BooleanToken _isLessThan(ScalarToken rightArgument)
-        throws IllegalActionException {
+            throws IllegalActionException {
         DoubleToken convertedArgument = (DoubleToken) rightArgument;
         return BooleanToken.getInstance(_value < convertedArgument.doubleValue());
     }

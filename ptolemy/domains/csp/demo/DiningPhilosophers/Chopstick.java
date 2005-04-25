@@ -108,7 +108,7 @@ public class Chopstick extends CSPActor {
      *   an entity already in the container.
      */
     public Chopstick(TypedCompositeActor cont, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(cont, name);
         leftOut = new TypedIOPort(this, "leftOut", false, true);
         leftIn = new TypedIOPort(this, "leftIn", true, false);
@@ -186,13 +186,13 @@ public class Chopstick extends CSPActor {
                     continueCDO = false;
                 } else {
                     throw new IllegalActionException(getName() + ": "
-                        + "invalid branch id returned during execution "
-                        + "of CDO.");
+                            + "invalid branch id returned during execution "
+                            + "of CDO.");
                 }
             }
         } catch (NoTokenException ex) {
             throw new IllegalActionException(getName() + ": cannot "
-                + "get token.");
+                    + "get token.");
         }
     }
 }

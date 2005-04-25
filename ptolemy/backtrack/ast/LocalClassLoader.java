@@ -46,13 +46,13 @@ import java.util.Set;
    the behavior of loading a class from the within of another class, as the
    following example:
    <pre>    package pkg;
-    class A {
-        class B {
-            class C {
-            }
-        }
-        B.C field;
-    }</pre>
+   class A {
+   class B {
+   class C {
+   }
+   }
+   B.C field;
+   }</pre>
    The loading of class <tt>B.C</tt> requires some name resolving, which is
    done in the <tt>javac</tt> compiler, so that the type of <tt>field</tt> is
    always known as <tt>pkg.A$B$C</tt> at run-time.
@@ -61,9 +61,9 @@ import java.util.Set;
    importations. In the following example, <tt>Hashtable</tt> is resolved as
    <tt>java.util.Hashtable</tt>:
    <pre>    import java.util.*;
-    class A {
-        Hashtable table;
-    }</pre>
+   class A {
+   Hashtable table;
+   }</pre>
    <p>
    This class loader only loads classes from the specified class paths and
    Java built-in classes. It does not use the <tt>CLASSPATH</tt> environment
@@ -524,12 +524,12 @@ public class LocalClassLoader extends URLClassLoader {
         } else {
             // Try to load the object class.
             Class c = search ?
-                    searchForClass(
-                            new StringBuffer(
-                                    name.substring(nameStart, nameEnd + 1)),
-                                    _currentClass) :
-                    super.loadClass(name.substring(nameStart, nameEnd + 1),
-                            true);
+                searchForClass(
+                        new StringBuffer(
+                                name.substring(nameStart, nameEnd + 1)),
+                        _currentClass) :
+                super.loadClass(name.substring(nameStart, nameEnd + 1),
+                        true);
             name.delete(nameStart, nameEnd + 1);
             name.insert(nameStart, c.getName());
 
@@ -677,15 +677,15 @@ public class LocalClassLoader extends URLClassLoader {
             // function is shifted to TypeAnalyzer, which keeps
             // track of all the classes entered.
             /*try {
-                Class declaring = c.getDeclaringClass();
-                if (declaring != null && !handledSet.contains(declaring))
-                    workList.add(declaring);
-            } catch (ClassCircularityError e) {
-            }*/
+              Class declaring = c.getDeclaringClass();
+              if (declaring != null && !handledSet.contains(declaring))
+              workList.add(declaring);
+              } catch (ClassCircularityError e) {
+              }*/
 
             /*if (_enclosingClasses.containsKey(c.getName()))
-                // An enclosing class is registered for an anonymous class.
-                workList.add(_enclosingClasses.get(c.getName()));*/
+            // An enclosing class is registered for an anonymous class.
+            workList.add(_enclosingClasses.get(c.getName()));*/
 
             Class superClass = c.getSuperclass();
             if (superClass != null && !handledSet.contains(superClass))

@@ -79,7 +79,7 @@ public class AdaptiveMedian extends Transformer {
      *   actor with this name.
      */
     public AdaptiveMedian(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input.setTypeEquals(BaseType.DOUBLE_MATRIX);
         output.setTypeEquals(BaseType.DOUBLE_MATRIX);
@@ -104,13 +104,13 @@ public class AdaptiveMedian extends Transformer {
      *  not an odd integer.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == maxWindowSize) {
             _maxWindowSize = ((IntToken) maxWindowSize.getToken()).intValue();
 
             if ((_maxWindowSize % 2) == 0) {
                 throw new IllegalActionException(this,
-                    "Window Size must be odd!!");
+                        "Window Size must be odd!!");
             }
         } else {
             super.attributeChanged(attribute);
@@ -141,8 +141,8 @@ public class AdaptiveMedian extends Transformer {
                     // not.  If we can't (i.e. we are at or near the
                     // edge of an image) then just keep the data.
                     if (((i - dist) < 0) || ((j - dist) < 0)
-                                    || ((i + dist) >= width)
-                                    || ((j + dist) >= height)) {
+                            || ((i + dist) >= width)
+                            || ((j + dist) >= height)) {
                         outputData[i][j] = data[i][j];
                         windowSize = 3;
                         break;

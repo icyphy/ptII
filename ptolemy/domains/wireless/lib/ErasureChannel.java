@@ -89,7 +89,7 @@ public class ErasureChannel extends AtomicWirelessChannel {
      *   a relation already in the container.
      */
     public ErasureChannel(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         lossProbability = new Parameter(this, "lossProbability");
@@ -176,8 +176,8 @@ public class ErasureChannel extends AtomicWirelessChannel {
      *   does not support clear.
      */
     protected void _transmitTo(Token token, WirelessIOPort sender,
-        WirelessReceiver receiver, RecordToken properties)
-        throws IllegalActionException {
+            WirelessReceiver receiver, RecordToken properties)
+            throws IllegalActionException {
         // Get the distance and set the "distance" variable.
         WirelessIOPort destination = (WirelessIOPort) receiver.getContainer();
         double d = _distanceBetween(sender, destination);
@@ -185,7 +185,7 @@ public class ErasureChannel extends AtomicWirelessChannel {
 
         double experiment = _random.nextDouble();
         double probability = ((DoubleToken) lossProbability.getToken())
-                        .doubleValue();
+            .doubleValue();
 
         if (_debugging) {
             _debug(" **** loss probability is: " + probability);
@@ -197,7 +197,7 @@ public class ErasureChannel extends AtomicWirelessChannel {
         } else {
             if (_debugging) {
                 _debug(" * discarding token to: "
-                    + receiver.getContainer().getFullName());
+                        + receiver.getContainer().getFullName());
             }
         }
     }

@@ -146,7 +146,7 @@ public class CSPDirector extends CompositeProcessDirector
      *   CompositeActor and the name collides with an entity in the container.
      */
     public CSPDirector(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         timeResolution.setVisibility(Settable.FULL);
     }
@@ -268,7 +268,7 @@ public class CSPDirector extends CompositeProcessDirector
      *   negative time.
      */
     protected synchronized void _actorDelayed(double delta, CSPActor actor)
-        throws InvalidStateException {
+            throws InvalidStateException {
         if (_inWrapup) {
             actor._cancelDelay();
             return;
@@ -276,7 +276,7 @@ public class CSPDirector extends CompositeProcessDirector
 
         if (delta < 0.0) {
             throw new InvalidStateException(((Nameable) actor).getName()
-                + ": delayed for negative time.");
+                    + ": delayed for negative time.");
         } else {
             _actorsDelayed++;
 
@@ -299,7 +299,7 @@ public class CSPDirector extends CompositeProcessDirector
      */
     protected synchronized boolean _areActorsDeadlocked() {
         if (_getActiveActorsCount() == (_getBlockedActorsCount()
-                        + _actorsDelayed)) {
+                    + _actorsDelayed)) {
             return true;
         }
 
@@ -333,7 +333,7 @@ public class CSPDirector extends CompositeProcessDirector
      *  @return False if real deadlock occurred, true otherwise.
      */
     protected synchronized boolean _resolveInternalDeadlock()
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (_actorsDelayed > 0) {
             // Time deadlock.
             Time nextTime = _getNextTime();
@@ -361,7 +361,7 @@ public class CSPDirector extends CompositeProcessDirector
         } else if (_getBlockedActorsCount() == _getActiveActorsCount()) {
             // Real deadlock.
             System.out.println("REAL DEADLOCK. Number of active actors: "
-                + _getActiveActorsCount());
+                    + _getActiveActorsCount());
             return false;
         }
 
@@ -407,7 +407,7 @@ public class CSPDirector extends CompositeProcessDirector
             return ((DelayListLink) _delayedActorList.get(0))._resumeTime;
         } else {
             throw new InvalidStateException("CSPDirector.getNextTime(): "
-                + " called in error.");
+                    + " called in error.");
         }
     }
 

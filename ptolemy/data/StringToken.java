@@ -114,7 +114,7 @@ public class StringToken extends AbstractConvertibleToken {
      *   be carried out.
      */
     public static StringToken convert(Token token)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (token instanceof StringToken) {
             return (StringToken) token;
         }
@@ -123,11 +123,11 @@ public class StringToken extends AbstractConvertibleToken {
 
         if ((compare == CPO.LOWER) || (compare == CPO.INCOMPARABLE)) {
             throw new IllegalActionException(notSupportedIncomparableConversionMessage(
-                    token, "string"));
+                                                     token, "string"));
         }
 
         if (token instanceof MatrixToken || token instanceof ScalarToken
-                        || token instanceof BooleanToken) {
+                || token instanceof BooleanToken) {
             String str = token.toString();
             return new StringToken(str);
         }
@@ -135,7 +135,7 @@ public class StringToken extends AbstractConvertibleToken {
         // The argument is below StringToken in the type hierarchy,
         // but I don't recognize it.
         throw new IllegalActionException(notSupportedConversionMessage(token,
-                "string"));
+                                                 "string"));
     }
 
     /** Return true if the argument is an instance of StringToken with the
@@ -228,7 +228,7 @@ public class StringToken extends AbstractConvertibleToken {
      */
     protected Token _divide(Token rightArgument) throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("divide", this,
-                rightArgument));
+                                                 rightArgument));
     }
 
     /** Test for closeness of the values of this Token and the argument
@@ -240,7 +240,7 @@ public class StringToken extends AbstractConvertibleToken {
      *  @return A BooleanToken containing the result.
      */
     protected BooleanToken _isCloseTo(Token rightArgument, double epsilon)
-        throws IllegalActionException {
+            throws IllegalActionException {
         return _isEqualTo(rightArgument);
     }
 
@@ -253,10 +253,10 @@ public class StringToken extends AbstractConvertibleToken {
      *  @return A BooleanToken containing the result.
      */
     protected BooleanToken _isEqualTo(Token rightArgument)
-        throws IllegalActionException {
+            throws IllegalActionException {
         StringToken convertedArgument = (StringToken) rightArgument;
         return BooleanToken.getInstance(toString().compareTo(convertedArgument
-                            .toString()) == 0);
+                                                .toString()) == 0);
     }
 
     /** Return a new token whose value is the value of this token
@@ -270,7 +270,7 @@ public class StringToken extends AbstractConvertibleToken {
      */
     protected Token _modulo(Token rightArgument) throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("modulo", this,
-                rightArgument));
+                                                 rightArgument));
     }
 
     /** Return a new token whose value is the value of this token
@@ -284,9 +284,9 @@ public class StringToken extends AbstractConvertibleToken {
      *  as this token.
      */
     protected Token _multiply(Token rightArgument)
-        throws IllegalActionException {
+            throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("multiply", this,
-                rightArgument));
+                                                 rightArgument));
     }
 
     /** Return a new token whose value is the value of the argument token
@@ -299,9 +299,9 @@ public class StringToken extends AbstractConvertibleToken {
      *  as this token.
      */
     protected Token _subtract(Token rightArgument)
-        throws IllegalActionException {
+            throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("subtract", this,
-                rightArgument));
+                                                 rightArgument));
     }
 
     ///////////////////////////////////////////////////////////////////

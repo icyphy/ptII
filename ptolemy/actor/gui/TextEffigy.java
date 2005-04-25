@@ -72,7 +72,7 @@ public class TextEffigy extends Effigy {
      *  @param name The name of this effigy.
      */
     public TextEffigy(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -97,7 +97,7 @@ public class TextEffigy extends Effigy {
      *   text cannot be inserted into the document.
      */
     public static TextEffigy newTextEffigy(CompositeEntity container,
-        String text) throws Exception {
+            String text) throws Exception {
         // Create a new effigy.
         TextEffigy effigy = new TextEffigy(container,
                 container.uniqueName("effigy"));
@@ -126,7 +126,7 @@ public class TextEffigy extends Effigy {
      *   is malformed in some way.
      */
     public static TextEffigy newTextEffigy(CompositeEntity container, URL base,
-        URL in) throws Exception {
+            URL in) throws Exception {
         // Create a new effigy.
         TextEffigy effigy = new TextEffigy(container,
                 container.uniqueName("effigy"));
@@ -145,12 +145,12 @@ public class TextEffigy extends Effigy {
                         inputStream = in.openStream();
                     } catch (NullPointerException npe) {
                         throw new IOException("Failed to open '" + in
-                            + "', base: '" + base + "' : openStream() threw a "
-                            + "NullPointerException");
+                                + "', base: '" + base + "' : openStream() threw a "
+                                + "NullPointerException");
                     }
 
                     reader = new BufferedReader(new InputStreamReader(
-                                inputStream));
+                                                        inputStream));
 
                     // openStream throws an IOException, not a
                     // FileNotFoundException
@@ -161,9 +161,9 @@ public class TextEffigy extends Effigy {
                         // ptsupport.jar, then we may end up here,
                         // so we look for the file as a resource.
                         URL jarURL = ptolemy.util.ClassUtilities
-                                        .jarURLEntryResource(in.toString());
+                            .jarURLEntryResource(in.toString());
                         reader = new BufferedReader(new InputStreamReader(
-                                    jarURL.openStream()));
+                                                            jarURL.openStream()));
 
                         // We were able to open the URL, so update the
                         // original URL so that the title bar accurately
@@ -238,7 +238,7 @@ public class TextEffigy extends Effigy {
                     fileWriter.write(_doc.getText(0, _doc.getLength()));
                 } catch (BadLocationException ex) {
                     throw new IOException(
-                        "Failed to get text from the document: " + ex);
+                            "Failed to get text from the document: " + ex);
                 }
             } finally {
                 if (fileWriter != null) {
@@ -268,7 +268,7 @@ public class TextEffigy extends Effigy {
          *   an entity already in the container.
          */
         public Factory(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+                throws IllegalActionException, NameDuplicationException {
             super(container, name);
 
             try {
@@ -333,15 +333,15 @@ public class TextEffigy extends Effigy {
          *   is malformed in some way.
          */
         public Effigy createEffigy(CompositeEntity container, URL base, URL in)
-            throws Exception {
+                throws Exception {
             // Create a new effigy.
             try {
                 return (Effigy) _newTextEffigyURL.invoke(null,
-                    new Object[] {
-                        container,
-                        base,
-                        in
-                    });
+                        new Object[] {
+                            container,
+                            base,
+                            in
+                        });
             } catch (java.lang.reflect.InvocationTargetException ex) {
                 if (ex instanceof Exception) {
                     // Rethrow the initial cause

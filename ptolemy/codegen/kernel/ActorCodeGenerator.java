@@ -51,5 +51,5 @@ public interface ActorCodeGenerator extends ComponentCodeGenerator {
      *  @exception IllegalActionException If something goes wrong.
      */
     public void generateFireCode(StringBuffer stream)
-        throws IllegalActionException;
+            throws IllegalActionException;
 }

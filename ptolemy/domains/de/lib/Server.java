@@ -103,7 +103,7 @@ public class Server extends VariableDelay {
      *   actor with this name.
      */
     public Server(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
     }
 
@@ -142,12 +142,12 @@ public class Server extends VariableDelay {
         if (_delayedOutputTokens.size() > 0) {
             if (currentTime.compareTo(_nextTimeFree) == 0) {
                 TimedEvent earliestEvent = (TimedEvent) _delayedOutputTokens
-                                .get();
+                    .get();
                 Time eventTime = earliestEvent.timeStamp;
 
                 if (!eventTime.equals(currentTime)) {
                     throw new InternalErrorException("Service time is "
-                        + "reached, but output is not available.");
+                            + "reached, but output is not available.");
                 }
 
                 _currentOutput = (Token) earliestEvent.contents;
@@ -194,10 +194,10 @@ public class Server extends VariableDelay {
         // and put it into service. Schedule a refiring to wave up
         // after the service finishes.
         if ((_delayedInputTokensList.size() != 0)
-                        && _delayedOutputTokens.isEmpty()) {
+                && _delayedOutputTokens.isEmpty()) {
             _nextTimeFree = currentTime.add(_delay);
             _delayedOutputTokens.put(new TimedEvent(_nextTimeFree,
-                    _delayedInputTokensList.removeFirst()));
+                                             _delayedInputTokensList.removeFirst()));
             getDirector().fireAt(this, _nextTimeFree);
         }
 
@@ -210,7 +210,7 @@ public class Server extends VariableDelay {
     /** Override the method of the super class to initialize parameters.
      */
     protected void _init()
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super._init();
         delay.getPort().setName("newServiceTime");
 

@@ -165,7 +165,7 @@ public class CTScheduler extends Scheduler {
             setName(_STATIC_NAME);
         } catch (KernelException ex) {
             throw new InternalErrorException(
-                "Internal error when setting name to a CTScheduler");
+                    "Internal error when setting name to a CTScheduler");
         }
     }
 
@@ -199,7 +199,7 @@ public class CTScheduler extends Scheduler {
     public boolean isContinuous(Actor actor) throws IllegalActionException {
         if (_signalTypeMap == null) {
             throw new IllegalActionException(this,
-                " isContinuous() can only " + "be called after initialization.");
+                    " isContinuous() can only " + "be called after initialization.");
         }
 
         List continuousActors = _signalTypeMap.getContinuousActors();
@@ -216,7 +216,7 @@ public class CTScheduler extends Scheduler {
     public boolean isDiscrete(Actor actor) throws IllegalActionException {
         if (_signalTypeMap == null) {
             throw new IllegalActionException(this,
-                " isDiscrete() can only " + "be called after initialization.");
+                    " isDiscrete() can only " + "be called after initialization.");
         }
 
         List discreteActors = _signalTypeMap.getDiscreteActors();
@@ -250,7 +250,7 @@ public class CTScheduler extends Scheduler {
                 // executive directors, but its tested this way, so we
                 // leave it alone.
                 if ((actor.getExecutiveDirector() == pre.getExecutiveDirector())
-                                && !predecessors.contains(pre)) {
+                        && !predecessors.contains(pre)) {
                     predecessors.addLast(pre);
                 }
             }
@@ -302,7 +302,7 @@ public class CTScheduler extends Scheduler {
                 // executive directors, but its tested this way, so we
                 // leave it alone.
                 if ((actor.getExecutiveDirector() == post.getExecutiveDirector())
-                                && !successors.contains(post)) {
+                        && !successors.contains(post)) {
                     successors.addLast(post);
                 }
             }
@@ -326,7 +326,7 @@ public class CTScheduler extends Scheduler {
      *  for the validation of the schedule.
      */
     protected Schedule _getSchedule()
-        throws NotSchedulableException, IllegalActionException {
+            throws NotSchedulableException, IllegalActionException {
         // NOTE: This implementation creates new Lists every time,
         // If this hurts performance a lot, consider reusing old lists.
         // This requires the Schedule class to implement clear().
@@ -420,7 +420,7 @@ public class CTScheduler extends Scheduler {
 
                 if (signalType != null) {
                     String type = ((StringToken) signalType.getToken())
-                                    .stringValue();
+                        .stringValue();
                     type = type.trim().toUpperCase();
 
                     if (type.equals("CONTINUOUS")) {
@@ -429,9 +429,9 @@ public class CTScheduler extends Scheduler {
                         _signalTypeMap.setType(inPort, DISCRETE);
                     } else {
                         throw new IllegalActionException(inPort,
-                            "Unrecognized signal type. "
-                            + "It should be a string of "
-                            + "either \"CONTINUOUS\" or \"DISCRETE\".");
+                                "Unrecognized signal type. "
+                                + "It should be a string of "
+                                + "either \"CONTINUOUS\" or \"DISCRETE\".");
                     }
                 } else {
                     // The default signal type of the input ports of a
@@ -462,7 +462,7 @@ public class CTScheduler extends Scheduler {
 
             if (_debugging & _verbose) {
                 _debug("Examine " + ((Nameable) a).getFullName()
-                    + " for signal types.");
+                        + " for signal types.");
             }
 
             // Now classify actors by their implemented interfaces.
@@ -506,8 +506,8 @@ public class CTScheduler extends Scheduler {
                 // Set all ports of a sequence actor with signal type "DISCRETE"
                 if (predecessorList(a).isEmpty()) {
                     throw new NotSchedulableException(((Nameable) a).getName()
-                        + " is a SequenceActor, which cannot be a"
-                        + " source actor in the CT domain.");
+                            + " is a SequenceActor, which cannot be a"
+                            + " source actor in the CT domain.");
                 }
 
                 Iterator ports = ((Entity) a).portList().iterator();
@@ -521,7 +521,7 @@ public class CTScheduler extends Scheduler {
                     }
                 }
             } else if ((a instanceof CompositeActor)
-                            && !(a instanceof CTCompositeActor)) {
+                    && !(a instanceof CTCompositeActor)) {
                 // This actor is an opaque composite actor but not a
                 // CT Composite actor.
                 // NOTE: For its output ports, we can tell the signal type
@@ -563,7 +563,7 @@ public class CTScheduler extends Scheduler {
 
                     if (signalType != null) {
                         String type = ((StringToken) signalType.getToken())
-                                        .stringValue();
+                            .stringValue();
                         type = type.trim().toUpperCase();
 
                         if (type.equals("CONTINUOUS")) {
@@ -580,7 +580,7 @@ public class CTScheduler extends Scheduler {
                             }
                         } else {
                             throw new InvalidStateException(port,
-                                " signalType not understandable.");
+                                    " signalType not understandable.");
                         }
                     } else if (a instanceof CTCompositeActor) {
                         // Assume all the ports of a CTCompositeActor
@@ -631,7 +631,7 @@ public class CTScheduler extends Scheduler {
 
         if (!arithmeticGraph.isAcyclic()) {
             throw new NotSchedulableException(
-                "Arithmetic loops are not allowed in the CT domain.");
+                    "Arithmetic loops are not allowed in the CT domain.");
         }
 
         // We do not allow loops of dynamic actors, either.
@@ -641,9 +641,9 @@ public class CTScheduler extends Scheduler {
         // comment (at the end) also.
         if (!dynamicGraph.isAcyclic()) {
             throw new NotSchedulableException(
-                "Loops of dynamic actors (e.g. integrators) "
-                + "are not allowed in the CT domain. You may insert a "
-                + "Scale actor with factor 1.");
+                    "Loops of dynamic actors (e.g. integrators) "
+                    + "are not allowed in the CT domain. You may insert a "
+                    + "Scale actor with factor 1.");
         }
 
         // Now we propagate the signal types by topological sort.
@@ -676,13 +676,13 @@ public class CTScheduler extends Scheduler {
 
                     if (inputType == UNKNOWN) {
                         throw new NotSchedulableException("Cannot resolve "
-                            + "signal type for port " + inputPort.getFullName()
-                            + ". If you are certain about the signal type"
-                            + ", you can set them manually.\n"
-                            + " To do this, you can add a parameter "
-                            + "called \'signalType\' with value "
-                            + "\'\"CONTINUOUS\"\' or \'\"DISCRETE\"\'"
-                            + " to a port.");
+                                + "signal type for port " + inputPort.getFullName()
+                                + ". If you are certain about the signal type"
+                                + ", you can set them manually.\n"
+                                + " To do this, you can add a parameter "
+                                + "called \'signalType\' with value "
+                                + "\'\"CONTINUOUS\"\' or \'\"DISCRETE\"\'"
+                                + " to a port.");
                     } else if (knownInputType == UNKNOWN) {
                         knownInputType = inputType;
                         needManuallySetType = false;
@@ -704,12 +704,12 @@ public class CTScheduler extends Scheduler {
                     if (outputType == UNKNOWN) {
                         if (needManuallySetType) {
                             throw new NotSchedulableException("Cannot resolve "
-                                + "signal type for port "
-                                + outputPort.getFullName()
-                                + ".\n To set the signal type manually, "
-                                + "add a parameter with name \'signalType\'"
-                                + " and a string value \'\"CONTINUOUS\"\' "
-                                + "or \'\"DISCRETE\"\'.");
+                                    + "signal type for port "
+                                    + outputPort.getFullName()
+                                    + ".\n To set the signal type manually, "
+                                    + "add a parameter with name \'signalType\'"
+                                    + " and a string value \'\"CONTINUOUS\"\' "
+                                    + "or \'\"DISCRETE\"\'.");
                         } else {
                             _signalTypeMap.setType(outputPort, knownInputType);
                         }
@@ -727,7 +727,7 @@ public class CTScheduler extends Scheduler {
         // Output the signal type resolution result to the debugger.
         if (_debugging) {
             _debug("Resolved signal types: {\n" + _signalTypeMap.toString()
-                + "}");
+                    + "}");
         }
 
         // Now the signal types of all ports are resolved and stored in the
@@ -767,7 +767,7 @@ public class CTScheduler extends Scheduler {
             CompositeActor subsystem = (CompositeActor) subsystems.next();
 
             if (discreteActors.contains(subsystem)
-                            && continuousActors.contains(subsystem)) {
+                    && continuousActors.contains(subsystem)) {
                 // NOTE:
                 // For a non-CT composite actor, it can not be a
                 // waveform generator or an event generator.
@@ -812,7 +812,7 @@ public class CTScheduler extends Scheduler {
                     // discrete inputs, because they produce continuous signals.
                     // TESTIT: Clock3, Clock5, and Clock6 in ct/lib/test/auto.
                     if ((actor instanceof CTEventGenerator)
-                                    || (actor instanceof CTWaveformGenerator)) {
+                            || (actor instanceof CTWaveformGenerator)) {
                         continuousActors.remove(actor);
                     }
                 }
@@ -924,7 +924,7 @@ public class CTScheduler extends Scheduler {
                 // FIXME: is this necessary? get a two cascaded integrators
                 // as a test.
                 if ((dynamicActor instanceof CTCompositeActor)
-                                && !stateTransitionActors.contains(dynamicActor)) {
+                        && !stateTransitionActors.contains(dynamicActor)) {
                     stateTransitionActors.add(dynamicActor);
                 }
             }
@@ -957,7 +957,7 @@ public class CTScheduler extends Scheduler {
                 outputSchedule.add(new Firing(a));
 
                 if (!eventGenerators.contains(a)
-                                && a instanceof CTStepSizeControlActor) {
+                        && a instanceof CTStepSizeControlActor) {
                     outputSSCActorSchedule.add(new Firing(a));
                 }
             }
@@ -989,7 +989,7 @@ public class CTScheduler extends Scheduler {
      *   contain the specified value.
      */
     private static void _setOrCreate(NamedObj container, String name,
-        String value) throws IllegalActionException {
+            String value) throws IllegalActionException {
         Variable parameter = (Variable) container.getAttribute(name);
 
         if (parameter == null) {
@@ -1023,7 +1023,7 @@ public class CTScheduler extends Scheduler {
                         Entity entity = (Entity) entities.next();
 
                         for (Iterator ports = entity.portList().iterator();
-                                        ports.hasNext();) {
+                             ports.hasNext();) {
                             IOPort port = (IOPort) ports.next();
                             String typeString = typeMap.getType(port).toString();
                             _setOrCreate(port, "resolvedSignalType", typeString);
@@ -1070,7 +1070,7 @@ public class CTScheduler extends Scheduler {
             // it may be an event generator, or a state transition
             // actor.
             if ((actor instanceof CTCompositeActor)
-                            || (!(actor instanceof CTDynamicActor)
+                    || (!(actor instanceof CTDynamicActor)
                             && !(actor instanceof CTEventGenerator))) {
                 // Find the successors of the actor
                 Iterator successors = successorList(actor).iterator();
@@ -1168,7 +1168,7 @@ public class CTScheduler extends Scheduler {
         // Return the signal type of the specified port.
         // @return CONTINUOUS, DISCRETE, or UNKNOWN
         public CTReceiver.SignalType getType(IOPort port)
-            throws NotSchedulableException {
+                throws NotSchedulableException {
             if (!_map.containsKey(port)) {
                 return UNKNOWN;
             } else {
@@ -1179,7 +1179,7 @@ public class CTScheduler extends Scheduler {
         // Check for consistency and set a port to the specific type.
         // the map.
         public void setType(IOPort port, CTReceiver.SignalType type)
-            throws NotSchedulableException {
+                throws NotSchedulableException {
             //System.out.println("set type: " + port.getFullName() + " " +
             //   signalTypeToString(type));
             if (!_map.containsKey(port)) {
@@ -1188,8 +1188,8 @@ public class CTScheduler extends Scheduler {
                 // If it is an input port,
                 // set the signal type to all the receivers in the port.
                 if (((port.getContainer() != CTScheduler.this.getContainer()
-                                                                         .getContainer())
-                                && port.isInput())) {
+                             .getContainer())
+                            && port.isInput())) {
                     Receiver[][] receivers = port.getReceivers();
 
                     for (int i = 0; i < receivers.length; i++) {
@@ -1200,8 +1200,8 @@ public class CTScheduler extends Scheduler {
                 }
 
                 if ((port.getContainer() == CTScheduler.this.getContainer()
-                                                                        .getContainer())
-                                && port.isOutput()) {
+                            .getContainer())
+                        && port.isOutput()) {
                     Receiver[][] receivers = port.getInsideReceivers();
 
                     for (int i = 0; i < receivers.length; i++) {
@@ -1214,31 +1214,31 @@ public class CTScheduler extends Scheduler {
                 Entity actor = (Entity) port.getContainer();
 
                 if ((type == CONTINUOUS)
-                                && (actor != CTScheduler.this.getContainer()
-                                                                         .getContainer())
-                                && !_continuousActors.contains(actor)) {
+                        && (actor != CTScheduler.this.getContainer()
+                                .getContainer())
+                        && !_continuousActors.contains(actor)) {
                     //System.out.println(actor.getName() + " is CONTINUOUS.");
                     _continuousActors.add(actor);
                 }
 
                 if ((type == DISCRETE)
-                                && (actor != CTScheduler.this.getContainer()
-                                                                         .getContainer())
-                                && !_discreteActors.contains(actor)) {
+                        && (actor != CTScheduler.this.getContainer()
+                                .getContainer())
+                        && !_discreteActors.contains(actor)) {
                     //System.out.println(actor.getName() + " is DISCRETE.");
                     _discreteActors.add(actor);
                 }
             } else {
                 CTReceiver.SignalType previousType = (CTReceiver.SignalType) _map
-                                .get(port);
+                    .get(port);
 
                 if (previousType != type) {
                     throw new NotSchedulableException(port.getFullName()
-                        + " has a signal type conflict: \n"
-                        + "Its signal type was set/resolved to "
-                        + signalTypeToString(previousType)
-                        + ", but is going to be set to "
-                        + signalTypeToString(type) + " now.");
+                            + " has a signal type conflict: \n"
+                            + "Its signal type was set/resolved to "
+                            + signalTypeToString(previousType)
+                            + ", but is going to be set to "
+                            + signalTypeToString(type) + " now.");
                 }
             }
         }
@@ -1253,7 +1253,7 @@ public class CTScheduler extends Scheduler {
         public void propagateType(IOPort port) throws NotSchedulableException {
             if (!_map.containsKey(port)) {
                 throw new InternalErrorException(port.getFullName()
-                    + " type unknown.");
+                        + " type unknown.");
             }
 
             // Iterate over all ports that can receive data from this one.
@@ -1275,40 +1275,40 @@ public class CTScheduler extends Scheduler {
                     if (signalType != null) {
                         try {
                             configuredType = ((StringToken) signalType.getToken())
-                                            .stringValue();
+                                .stringValue();
                             configuredType = configuredType.trim().toUpperCase();
 
                             String propagateType = signalTypeToString(getType(
-                                        port));
+                                                                              port));
 
                             if ((configuredType.compareToIgnoreCase("UNKNOWN") != 0)
-                                            && (propagateType
+                                    && (propagateType
                                             .compareToIgnoreCase(configuredType) != 0)) {
                                 throw new NotSchedulableException(
-                                    "Signal type conflict: "
-                                    + port.getFullName() + " (of type "
-                                    + configuredType + ") and "
-                                    + nextPort.getFullName() + " (of type "
-                                    + propagateType + ")"
-                                    + "). Perhaps the connection has "
-                                    + "sequence semantics?");
+                                        "Signal type conflict: "
+                                        + port.getFullName() + " (of type "
+                                        + configuredType + ") and "
+                                        + nextPort.getFullName() + " (of type "
+                                        + propagateType + ")"
+                                        + "). Perhaps the connection has "
+                                        + "sequence semantics?");
                             }
                         } catch (IllegalActionException e) {
                             throw new NotSchedulableException("The signal"
-                                + " type parameter does not contain a valid"
-                                + " value.");
+                                    + " type parameter does not contain a valid"
+                                    + " value.");
                         }
                     }
 
                     setType(nextPort, getType(port));
                 } else if (getType(port) != getType(nextPort)) {
                     throw new NotSchedulableException("Signal type conflict: "
-                        + port.getFullName() + " (of type "
-                        + signalTypeToString(getType(port)) + ") and "
-                        + nextPort.getFullName() + " (of type "
-                        + signalTypeToString(getType(nextPort)) + ")"
-                        + "). Perhaps the connection has "
-                        + "sequence semantics?");
+                            + port.getFullName() + " (of type "
+                            + signalTypeToString(getType(port)) + ") and "
+                            + nextPort.getFullName() + " (of type "
+                            + signalTypeToString(getType(nextPort)) + ")"
+                            + "). Perhaps the connection has "
+                            + "sequence semantics?");
                 }
             }
         }
@@ -1321,10 +1321,10 @@ public class CTScheduler extends Scheduler {
         // it is not the same as the type to be set, then throw
         // a NonSchedulableException.
         public void propagateTypeInside(IOPort port)
-            throws NotSchedulableException {
+                throws NotSchedulableException {
             if (!_map.containsKey(port)) {
                 throw new InternalErrorException(port.getFullName()
-                    + " type unknown.");
+                        + " type unknown.");
             }
 
             // Iterate over all ports that can receive data from this one.
@@ -1342,15 +1342,15 @@ public class CTScheduler extends Scheduler {
                     setType(nextPort, getType(port));
                 } else if (getType(port) != getType(nextPort)) {
                     throw new NotSchedulableException("Signal type conflict: "
-                        + port.getFullName() + " (of type "
-                        + signalTypeToString(getType(port)) + ") and "
-                        + nextPort.getFullName() + " (of type "
-                        + signalTypeToString(getType(nextPort)) + ")"
-                        + "). Perhaps the connections has "
-                        + "sequence semantics instead of the continuous "
-                        + "signal semantics that CT requires?  This "
-                        + "would happen if one of the actors was an "
-                        + "SDF actor.");
+                            + port.getFullName() + " (of type "
+                            + signalTypeToString(getType(port)) + ") and "
+                            + nextPort.getFullName() + " (of type "
+                            + signalTypeToString(getType(nextPort)) + ")"
+                            + "). Perhaps the connections has "
+                            + "sequence semantics instead of the continuous "
+                            + "signal semantics that CT requires?  This "
+                            + "would happen if one of the actors was an "
+                            + "SDF actor.");
                 }
             }
         }
@@ -1372,12 +1372,12 @@ public class CTScheduler extends Scheduler {
                     IOPort port = (IOPort) ports.next();
                     String type = signalTypeToString(getType(port));
                     buffer.append("  " + port.getFullName() + " :: " + type
-                        + "\n");
+                            + "\n");
 
                     if (type.equals("UNKNOWN")) {
                         throw new InternalErrorException(
-                            "Found unsolved signal type at "
-                            + port.getFullName() + " :: " + type);
+                                "Found unsolved signal type at "
+                                + port.getFullName() + " :: " + type);
                     }
                 }
             }

@@ -62,7 +62,7 @@ public class PSNR extends TypedAtomicActor {
      *   an actor already in the container.
      */
     public PSNR(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         output = new TypedIOPort(this, "output", false, true);
@@ -109,14 +109,14 @@ public class PSNR extends TypedAtomicActor {
 
         IntMatrixToken signalToken = (IntMatrixToken) signal.get(0);
         IntMatrixToken distortedSignalToken = (IntMatrixToken) distortedSignal
-                        .get(0);
+            .get(0);
         int columns = signalToken.getColumnCount();
         int rows = signalToken.getRowCount();
 
         if ((distortedSignalToken.getColumnCount() != columns)
-                        || (distortedSignalToken.getRowCount() != rows)) {
+                || (distortedSignalToken.getRowCount() != rows)) {
             throw new IllegalActionException("Input token dimensions "
-                + "must match!");
+                    + "must match!");
         }
 
         for (j = 0; j < rows; j++) {

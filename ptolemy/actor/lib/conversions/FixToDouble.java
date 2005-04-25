@@ -64,7 +64,7 @@ public class FixToDouble extends Converter {
      *   actor with this name.
      */
     public FixToDouble(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         input.setTypeEquals(BaseType.FIX);
         output.setTypeEquals(BaseType.DOUBLE);

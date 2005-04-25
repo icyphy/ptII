@@ -134,7 +134,7 @@ public class Collections implements Rollbackable {
         }
 
         private FieldRecord[] $RECORDS = new FieldRecord[] {
-            };
+        };
     }
 
     private static final class EmptyList extends AbstractList implements Serializable, RandomAccess, Rollbackable {
@@ -212,7 +212,7 @@ public class Collections implements Rollbackable {
         }
 
         private FieldRecord[] $RECORDS = new FieldRecord[] {
-            };
+        };
     }
 
     private static final class EmptyMap extends AbstractMap implements Serializable, Rollbackable {
@@ -276,7 +276,7 @@ public class Collections implements Rollbackable {
         }
 
         private FieldRecord[] $RECORDS = new FieldRecord[] {
-            };
+        };
     }
 
     private static final class CopiesList extends AbstractList implements Serializable, RandomAccess, Rollbackable {
@@ -351,9 +351,9 @@ public class Collections implements Rollbackable {
         private FieldRecord $RECORD$element = new FieldRecord(0);
 
         private FieldRecord[] $RECORDS = new FieldRecord[] {
-                $RECORD$n,
-                $RECORD$element
-            };
+            $RECORD$n,
+            $RECORD$element
+        };
     }
 
     private static final class ReverseComparator implements Comparator, Serializable, Rollbackable {
@@ -403,7 +403,7 @@ public class Collections implements Rollbackable {
         protected CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
 
         private FieldRecord[] $RECORDS = new FieldRecord[] {
-            };
+        };
     }
 
     private static final class SingletonSet extends AbstractSet implements Serializable, Rollbackable {
@@ -423,93 +423,93 @@ public class Collections implements Rollbackable {
         public Iterator iterator() {
             return new Iterator() {
 
-                private boolean hasNext = true;
+                    private boolean hasNext = true;
 
-                public boolean hasNext() {
-                    return hasNext;
-                }
-
-                public Object next() {
-                    if (hasNext) {
-                        $ASSIGN$hasNext(false);
-                        return element;
-                    } else
-                        throw new NoSuchElementException();
-                }
-
-                public void remove() {
-                    throw new UnsupportedOperationException();
-                }
-
-                final class _PROXY_ implements Rollbackable {
-
-                    public final void $COMMIT(long timestamp) {
-                        $COMMIT_ANONYMOUS(timestamp);
+                    public boolean hasNext() {
+                        return hasNext;
                     }
 
-                    public final void $RESTORE(long timestamp, boolean trim) {
-                        $RESTORE_ANONYMOUS(timestamp, trim);
+                    public Object next() {
+                        if (hasNext) {
+                            $ASSIGN$hasNext(false);
+                            return element;
+                        } else
+                            throw new NoSuchElementException();
                     }
 
-                    public final Checkpoint $GET$CHECKPOINT() {
-                        return $GET$CHECKPOINT_ANONYMOUS();
+                    public void remove() {
+                        throw new UnsupportedOperationException();
                     }
 
-                    public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
-                        $SET$CHECKPOINT_ANONYMOUS(checkpoint);
+                    final class _PROXY_ implements Rollbackable {
+
+                        public final void $COMMIT(long timestamp) {
+                            $COMMIT_ANONYMOUS(timestamp);
+                        }
+
+                        public final void $RESTORE(long timestamp, boolean trim) {
+                            $RESTORE_ANONYMOUS(timestamp, trim);
+                        }
+
+                        public final Checkpoint $GET$CHECKPOINT() {
+                            return $GET$CHECKPOINT_ANONYMOUS();
+                        }
+
+                        public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
+                            $SET$CHECKPOINT_ANONYMOUS(checkpoint);
+                            return this;
+                        }
+                    }
+
+                    private final boolean $ASSIGN$hasNext(boolean newValue) {
+                        if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+                            $RECORD$hasNext.add(null, hasNext, $CHECKPOINT.getTimestamp());
+                        }
+                        return hasNext = newValue;
+                    }
+
+                    public void $COMMIT_ANONYMOUS(long timestamp) {
+                        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                        $RECORD$$CHECKPOINT.commit(timestamp);
+                    }
+
+                    public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
+                        hasNext = $RECORD$hasNext.restore(hasNext, timestamp, trim);
+                        if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
+                            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, new _PROXY_(), timestamp, trim);
+                            FieldRecord.popState($RECORDS);
+                            $RESTORE_ANONYMOUS(timestamp, trim);
+                        }
+                    }
+
+                    public final Checkpoint $GET$CHECKPOINT_ANONYMOUS() {
+                        return $CHECKPOINT;
+                    }
+
+                    public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
+                        if ($CHECKPOINT != checkpoint) {
+                            Checkpoint oldCheckpoint = $CHECKPOINT;
+                            if (checkpoint != null) {
+                                $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                                FieldRecord.pushState($RECORDS);
+                            }
+                            $CHECKPOINT = checkpoint;
+                            oldCheckpoint.setCheckpoint(checkpoint);
+                            checkpoint.addObject(new _PROXY_());
+                        }
                         return this;
                     }
-                }
 
-                private final boolean $ASSIGN$hasNext(boolean newValue) {
-                    if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-                        $RECORD$hasNext.add(null, hasNext, $CHECKPOINT.getTimestamp());
-                    }
-                    return hasNext = newValue;
-                }
+                    private FieldRecord $RECORD$hasNext = new FieldRecord(0);
 
-                public void $COMMIT_ANONYMOUS(long timestamp) {
-                    FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
-                    $RECORD$$CHECKPOINT.commit(timestamp);
-                }
-
-                public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
-                    hasNext = $RECORD$hasNext.restore(hasNext, timestamp, trim);
-                    if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-                        $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, new _PROXY_(), timestamp, trim);
-                        FieldRecord.popState($RECORDS);
-                        $RESTORE_ANONYMOUS(timestamp, trim);
-                    }
-                }
-
-                public final Checkpoint $GET$CHECKPOINT_ANONYMOUS() {
-                    return $CHECKPOINT;
-                }
-
-                public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
-                    if ($CHECKPOINT != checkpoint) {
-                        Checkpoint oldCheckpoint = $CHECKPOINT;
-                        if (checkpoint != null) {
-                            $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
-                            FieldRecord.pushState($RECORDS);
-                        }
-                        $CHECKPOINT = checkpoint;
-                        oldCheckpoint.setCheckpoint(checkpoint);
-                        checkpoint.addObject(new _PROXY_());
-                    }
-                    return this;
-                }
-
-                private FieldRecord $RECORD$hasNext = new FieldRecord(0);
-
-                private FieldRecord[] $RECORDS = new FieldRecord[] {
+                    private FieldRecord[] $RECORDS = new FieldRecord[] {
                         $RECORD$hasNext
                     };
 
-                {
-                    $CHECKPOINT.addObject(new _PROXY_());
-                }
-            };
+                    {
+                        $CHECKPOINT.addObject(new _PROXY_());
+                    }
+                };
         }
 
         public boolean contains(Object o) {
@@ -531,8 +531,8 @@ public class Collections implements Rollbackable {
 
         public Object[] toArray() {
             return new Object[] {
-                    element
-                };
+                element
+            };
         }
 
         public String toString() {
@@ -549,7 +549,7 @@ public class Collections implements Rollbackable {
         }
 
         private FieldRecord[] $RECORDS = new FieldRecord[] {
-            };
+        };
     }
 
     private static final class SingletonList extends AbstractList implements Serializable, RandomAccess, Rollbackable {
@@ -609,8 +609,8 @@ public class Collections implements Rollbackable {
 
         public Object[] toArray() {
             return new Object[] {
-                    element
-                };
+                element
+            };
         }
 
         public String toString() {
@@ -630,8 +630,8 @@ public class Collections implements Rollbackable {
         private FieldRecord $RECORD$element = new FieldRecord(0);
 
         private FieldRecord[] $RECORDS = new FieldRecord[] {
-                $RECORD$element
-            };
+            $RECORD$element
+        };
     }
 
     private static final class SingletonMap extends AbstractMap implements Serializable, Rollbackable {
@@ -653,64 +653,64 @@ public class Collections implements Rollbackable {
             if (entries == null)
                 $ASSIGN$entries(singleton(new AbstractMap.BasicMapEntry(k, v) {
 
-                    public Object setValue(Object o) {
-                        throw new UnsupportedOperationException();
-                    }
-
-                    final class _PROXY_ implements Rollbackable {
-
-                        public final void $COMMIT(long timestamp) {
-                            $COMMIT_ANONYMOUS(timestamp);
+                        public Object setValue(Object o) {
+                            throw new UnsupportedOperationException();
                         }
 
-                        public final void $RESTORE(long timestamp, boolean trim) {
-                            $RESTORE_ANONYMOUS(timestamp, trim);
+                        final class _PROXY_ implements Rollbackable {
+
+                            public final void $COMMIT(long timestamp) {
+                                $COMMIT_ANONYMOUS(timestamp);
+                            }
+
+                            public final void $RESTORE(long timestamp, boolean trim) {
+                                $RESTORE_ANONYMOUS(timestamp, trim);
+                            }
+
+                            public final Checkpoint $GET$CHECKPOINT() {
+                                return $GET$CHECKPOINT_ANONYMOUS();
+                            }
+
+                            public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
+                                $SET$CHECKPOINT_ANONYMOUS(checkpoint);
+                                return this;
+                            }
                         }
 
-                        public final Checkpoint $GET$CHECKPOINT() {
-                            return $GET$CHECKPOINT_ANONYMOUS();
+                        public void $COMMIT_ANONYMOUS(long timestamp) {
+                            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                            super.$COMMIT(timestamp);
                         }
 
-                        public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
-                            $SET$CHECKPOINT_ANONYMOUS(checkpoint);
+                        public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
+                            super.$RESTORE(timestamp, trim);
+                        }
+
+                        public final Checkpoint $GET$CHECKPOINT_ANONYMOUS() {
+                            return $CHECKPOINT;
+                        }
+
+                        public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
+                            if ($CHECKPOINT != checkpoint) {
+                                Checkpoint oldCheckpoint = $CHECKPOINT;
+                                if (checkpoint != null) {
+                                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                                    FieldRecord.pushState($RECORDS);
+                                }
+                                $CHECKPOINT = checkpoint;
+                                oldCheckpoint.setCheckpoint(checkpoint);
+                                checkpoint.addObject(new _PROXY_());
+                            }
                             return this;
                         }
-                    }
 
-                    public void $COMMIT_ANONYMOUS(long timestamp) {
-                        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
-                        super.$COMMIT(timestamp);
-                    }
-
-                    public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
-                        super.$RESTORE(timestamp, trim);
-                    }
-
-                    public final Checkpoint $GET$CHECKPOINT_ANONYMOUS() {
-                        return $CHECKPOINT;
-                    }
-
-                    public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
-                        if ($CHECKPOINT != checkpoint) {
-                            Checkpoint oldCheckpoint = $CHECKPOINT;
-                            if (checkpoint != null) {
-                                $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
-                                FieldRecord.pushState($RECORDS);
-                            }
-                            $CHECKPOINT = checkpoint;
-                            oldCheckpoint.setCheckpoint(checkpoint);
-                            checkpoint.addObject(new _PROXY_());
-                        }
-                        return this;
-                    }
-
-                    private FieldRecord[] $RECORDS = new FieldRecord[] {
+                        private FieldRecord[] $RECORDS = new FieldRecord[] {
                         };
 
-                    {
-                        $CHECKPOINT.addObject(new _PROXY_());
-                    }
-                }));
+                        {
+                            $CHECKPOINT.addObject(new _PROXY_());
+                        }
+                    }));
             return entries;
         }
 
@@ -779,10 +779,10 @@ public class Collections implements Rollbackable {
         private FieldRecord $RECORD$entries = new FieldRecord(0);
 
         private FieldRecord[] $RECORDS = new FieldRecord[] {
-                $RECORD$k,
-                $RECORD$v,
-                $RECORD$entries
-            };
+            $RECORD$k,
+            $RECORD$v,
+            $RECORD$entries
+        };
     }
 
     static class SynchronizedCollection implements Collection, Serializable, Rollbackable {
@@ -925,7 +925,7 @@ public class Collections implements Rollbackable {
         protected CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
 
         private FieldRecord[] $RECORDS = new FieldRecord[] {
-            };
+        };
     }
 
     private static class SynchronizedIterator implements Iterator, Rollbackable {
@@ -996,8 +996,8 @@ public class Collections implements Rollbackable {
         private FieldRecord $RECORD$i = new FieldRecord(0);
 
         private FieldRecord[] $RECORDS = new FieldRecord[] {
-                $RECORD$i
-            };
+            $RECORD$i
+        };
     }
 
     static class SynchronizedList extends SynchronizedCollection implements List, Rollbackable {
@@ -1098,7 +1098,7 @@ public class Collections implements Rollbackable {
         }
 
         private FieldRecord[] $RECORDS = new FieldRecord[] {
-            };
+        };
     }
 
     private static final class SynchronizedRandomAccessList extends SynchronizedList implements RandomAccess, Rollbackable {
@@ -1129,7 +1129,7 @@ public class Collections implements Rollbackable {
         }
 
         private FieldRecord[] $RECORDS = new FieldRecord[] {
-            };
+        };
     }
 
     private static final class SynchronizedListIterator extends SynchronizedIterator implements ListIterator, Rollbackable {
@@ -1190,8 +1190,8 @@ public class Collections implements Rollbackable {
         private FieldRecord $RECORD$li = new FieldRecord(0);
 
         private FieldRecord[] $RECORDS = new FieldRecord[] {
-                $RECORD$li
-            };
+            $RECORD$li
+        };
     }
 
     private static class SynchronizedMap implements Map, Serializable, Rollbackable {
@@ -1322,133 +1322,133 @@ public class Collections implements Rollbackable {
                 protected CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
 
                 private FieldRecord[] $RECORDS = new FieldRecord[] {
-                    };
+                };
             }
             if (entries == null)
                 synchronized (mutex) {
                     $ASSIGN$entries(new SynchronizedSet(mutex, m.entrySet()) {
 
-                        public Iterator iterator() {
-                            synchronized (super.mutex) {
-                                return new SynchronizedIterator(super.mutex, c.iterator()) {
+                            public Iterator iterator() {
+                                synchronized (super.mutex) {
+                                    return new SynchronizedIterator(super.mutex, c.iterator()) {
 
-                                    public Object next() {
-                                        synchronized (super.mutex) {
-                                            return new SynchronizedMapEntry(super.next());
-                                        }
-                                    }
-
-                                    final class _PROXY_ implements Rollbackable {
-
-                                        public final void $COMMIT(long timestamp) {
-                                            $COMMIT_ANONYMOUS(timestamp);
-                                        }
-
-                                        public final void $RESTORE(long timestamp, boolean trim) {
-                                            $RESTORE_ANONYMOUS(timestamp, trim);
-                                        }
-
-                                        public final Checkpoint $GET$CHECKPOINT() {
-                                            return $GET$CHECKPOINT_ANONYMOUS();
-                                        }
-
-                                        public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
-                                            $SET$CHECKPOINT_ANONYMOUS(checkpoint);
-                                            return this;
-                                        }
-                                    }
-
-                                    public void $COMMIT_ANONYMOUS(long timestamp) {
-                                        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
-                                        super.$COMMIT(timestamp);
-                                    }
-
-                                    public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
-                                        super.$RESTORE(timestamp, trim);
-                                    }
-
-                                    public final Checkpoint $GET$CHECKPOINT_ANONYMOUS() {
-                                        return $CHECKPOINT;
-                                    }
-
-                                    public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
-                                        if ($CHECKPOINT != checkpoint) {
-                                            Checkpoint oldCheckpoint = $CHECKPOINT;
-                                            if (checkpoint != null) {
-                                                $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
-                                                FieldRecord.pushState($RECORDS);
+                                            public Object next() {
+                                                synchronized (super.mutex) {
+                                                    return new SynchronizedMapEntry(super.next());
+                                                }
                                             }
-                                            $CHECKPOINT = checkpoint;
-                                            oldCheckpoint.setCheckpoint(checkpoint);
-                                            checkpoint.addObject(new _PROXY_());
-                                        }
-                                        return this;
-                                    }
 
-                                    private FieldRecord[] $RECORDS = new FieldRecord[] {
+                                            final class _PROXY_ implements Rollbackable {
+
+                                                public final void $COMMIT(long timestamp) {
+                                                    $COMMIT_ANONYMOUS(timestamp);
+                                                }
+
+                                                public final void $RESTORE(long timestamp, boolean trim) {
+                                                    $RESTORE_ANONYMOUS(timestamp, trim);
+                                                }
+
+                                                public final Checkpoint $GET$CHECKPOINT() {
+                                                    return $GET$CHECKPOINT_ANONYMOUS();
+                                                }
+
+                                                public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
+                                                    $SET$CHECKPOINT_ANONYMOUS(checkpoint);
+                                                    return this;
+                                                }
+                                            }
+
+                                            public void $COMMIT_ANONYMOUS(long timestamp) {
+                                                FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                                                super.$COMMIT(timestamp);
+                                            }
+
+                                            public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
+                                                super.$RESTORE(timestamp, trim);
+                                            }
+
+                                            public final Checkpoint $GET$CHECKPOINT_ANONYMOUS() {
+                                                return $CHECKPOINT;
+                                            }
+
+                                            public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
+                                                if ($CHECKPOINT != checkpoint) {
+                                                    Checkpoint oldCheckpoint = $CHECKPOINT;
+                                                    if (checkpoint != null) {
+                                                        $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                                                        FieldRecord.pushState($RECORDS);
+                                                    }
+                                                    $CHECKPOINT = checkpoint;
+                                                    oldCheckpoint.setCheckpoint(checkpoint);
+                                                    checkpoint.addObject(new _PROXY_());
+                                                }
+                                                return this;
+                                            }
+
+                                            private FieldRecord[] $RECORDS = new FieldRecord[] {
+                                            };
+
+                                            {
+                                                $CHECKPOINT.addObject(new _PROXY_());
+                                            }
                                         };
+                                }
+                            }
 
-                                    {
-                                        $CHECKPOINT.addObject(new _PROXY_());
+                            final class _PROXY_ implements Rollbackable {
+
+                                public final void $COMMIT(long timestamp) {
+                                    $COMMIT_ANONYMOUS(timestamp);
+                                }
+
+                                public final void $RESTORE(long timestamp, boolean trim) {
+                                    $RESTORE_ANONYMOUS(timestamp, trim);
+                                }
+
+                                public final Checkpoint $GET$CHECKPOINT() {
+                                    return $GET$CHECKPOINT_ANONYMOUS();
+                                }
+
+                                public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
+                                    $SET$CHECKPOINT_ANONYMOUS(checkpoint);
+                                    return this;
+                                }
+                            }
+
+                            public void $COMMIT_ANONYMOUS(long timestamp) {
+                                FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                                super.$COMMIT(timestamp);
+                            }
+
+                            public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
+                                super.$RESTORE(timestamp, trim);
+                            }
+
+                            public final Checkpoint $GET$CHECKPOINT_ANONYMOUS() {
+                                return $CHECKPOINT;
+                            }
+
+                            public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
+                                if ($CHECKPOINT != checkpoint) {
+                                    Checkpoint oldCheckpoint = $CHECKPOINT;
+                                    if (checkpoint != null) {
+                                        $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                                        FieldRecord.pushState($RECORDS);
                                     }
-                                };
-                            }
-                        }
-
-                        final class _PROXY_ implements Rollbackable {
-
-                            public final void $COMMIT(long timestamp) {
-                                $COMMIT_ANONYMOUS(timestamp);
-                            }
-
-                            public final void $RESTORE(long timestamp, boolean trim) {
-                                $RESTORE_ANONYMOUS(timestamp, trim);
-                            }
-
-                            public final Checkpoint $GET$CHECKPOINT() {
-                                return $GET$CHECKPOINT_ANONYMOUS();
-                            }
-
-                            public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
-                                $SET$CHECKPOINT_ANONYMOUS(checkpoint);
+                                    $CHECKPOINT = checkpoint;
+                                    oldCheckpoint.setCheckpoint(checkpoint);
+                                    checkpoint.addObject(new _PROXY_());
+                                }
                                 return this;
                             }
-                        }
 
-                        public void $COMMIT_ANONYMOUS(long timestamp) {
-                            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
-                            super.$COMMIT(timestamp);
-                        }
-
-                        public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
-                            super.$RESTORE(timestamp, trim);
-                        }
-
-                        public final Checkpoint $GET$CHECKPOINT_ANONYMOUS() {
-                            return $CHECKPOINT;
-                        }
-
-                        public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
-                            if ($CHECKPOINT != checkpoint) {
-                                Checkpoint oldCheckpoint = $CHECKPOINT;
-                                if (checkpoint != null) {
-                                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
-                                    FieldRecord.pushState($RECORDS);
-                                }
-                                $CHECKPOINT = checkpoint;
-                                oldCheckpoint.setCheckpoint(checkpoint);
-                                checkpoint.addObject(new _PROXY_());
-                            }
-                            return this;
-                        }
-
-                        private FieldRecord[] $RECORDS = new FieldRecord[] {
+                            private FieldRecord[] $RECORDS = new FieldRecord[] {
                             };
 
-                        {
-                            $CHECKPOINT.addObject(new _PROXY_());
-                        }
-                    });
+                            {
+                                $CHECKPOINT.addObject(new _PROXY_());
+                            }
+                        });
                 }
             return entries;
         }
@@ -1599,11 +1599,11 @@ public class Collections implements Rollbackable {
         private FieldRecord $RECORD$values = new FieldRecord(0);
 
         private FieldRecord[] $RECORDS = new FieldRecord[] {
-                $RECORD$m,
-                $RECORD$entries,
-                $RECORD$keys,
-                $RECORD$values
-            };
+            $RECORD$m,
+            $RECORD$entries,
+            $RECORD$keys,
+            $RECORD$values
+        };
     }
 
     static class SynchronizedSet extends SynchronizedCollection implements Set, Rollbackable {
@@ -1640,7 +1640,7 @@ public class Collections implements Rollbackable {
         }
 
         private FieldRecord[] $RECORDS = new FieldRecord[] {
-            };
+        };
     }
 
     private static final class SynchronizedSortedMap extends SynchronizedMap implements SortedMap, Rollbackable {
@@ -1708,8 +1708,8 @@ public class Collections implements Rollbackable {
         private FieldRecord $RECORD$sm = new FieldRecord(0);
 
         private FieldRecord[] $RECORDS = new FieldRecord[] {
-                $RECORD$sm
-            };
+            $RECORD$sm
+        };
     }
 
     private static final class SynchronizedSortedSet extends SynchronizedSet implements SortedSet, Rollbackable {
@@ -1777,8 +1777,8 @@ public class Collections implements Rollbackable {
         private FieldRecord $RECORD$ss = new FieldRecord(0);
 
         private FieldRecord[] $RECORDS = new FieldRecord[] {
-                $RECORD$ss
-            };
+            $RECORD$ss
+        };
     }
 
     private static class UnmodifiableCollection implements Collection, Serializable, Rollbackable {
@@ -1885,7 +1885,7 @@ public class Collections implements Rollbackable {
         protected CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
 
         private FieldRecord[] $RECORDS = new FieldRecord[] {
-            };
+        };
     }
 
     private static class UnmodifiableIterator implements Iterator, Rollbackable {
@@ -1947,8 +1947,8 @@ public class Collections implements Rollbackable {
         private FieldRecord $RECORD$i = new FieldRecord(0);
 
         private FieldRecord[] $RECORDS = new FieldRecord[] {
-                $RECORD$i
-            };
+            $RECORD$i
+        };
     }
 
     private static class UnmodifiableList extends UnmodifiableCollection implements List, Rollbackable {
@@ -2020,7 +2020,7 @@ public class Collections implements Rollbackable {
         }
 
         private FieldRecord[] $RECORDS = new FieldRecord[] {
-            };
+        };
     }
 
     private static final class UnmodifiableRandomAccessList extends UnmodifiableList implements RandomAccess, Rollbackable {
@@ -2041,7 +2041,7 @@ public class Collections implements Rollbackable {
         }
 
         private FieldRecord[] $RECORDS = new FieldRecord[] {
-            };
+        };
     }
 
     private static final class UnmodifiableListIterator extends UnmodifiableIterator implements ListIterator, Rollbackable {
@@ -2090,8 +2090,8 @@ public class Collections implements Rollbackable {
         private FieldRecord $RECORD$li = new FieldRecord(0);
 
         private FieldRecord[] $RECORDS = new FieldRecord[] {
-                $RECORD$li
-            };
+            $RECORD$li
+        };
     }
 
     private static class UnmodifiableMap implements Map, Serializable, Rollbackable {
@@ -2119,128 +2119,128 @@ public class Collections implements Rollbackable {
             public Iterator iterator() {
                 return new UnmodifiableIterator(c.iterator()) {
 
-                    public Object next() {
-                        final Map.Entry e = (Map.Entry)super.next();
-                        return new Map.Entry() {
+                        public Object next() {
+                            final Map.Entry e = (Map.Entry)super.next();
+                            return new Map.Entry() {
 
-                            protected Checkpoint $CHECKPOINT = new Checkpoint(this);
+                                    protected Checkpoint $CHECKPOINT = new Checkpoint(this);
 
-                            public boolean equals(Object o) {
-                                return e.equals(o);
+                                    public boolean equals(Object o) {
+                                        return e.equals(o);
+                                    }
+
+                                    public Object getKey() {
+                                        return e.getKey();
+                                    }
+
+                                    public Object getValue() {
+                                        return e.getValue();
+                                    }
+
+                                    public int hashCode() {
+                                        return e.hashCode();
+                                    }
+
+                                    public Object setValue(Object value) {
+                                        throw new UnsupportedOperationException();
+                                    }
+
+                                    public String toString() {
+                                        return e.toString();
+                                    }
+
+                                    public void $COMMIT(long timestamp) {
+                                        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                                        $RECORD$$CHECKPOINT.commit(timestamp);
+                                    }
+
+                                    public void $RESTORE(long timestamp, boolean trim) {
+                                        if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
+                                            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
+                                            FieldRecord.popState($RECORDS);
+                                            $RESTORE(timestamp, trim);
+                                        }
+                                    }
+
+                                    public final Checkpoint $GET$CHECKPOINT() {
+                                        return $CHECKPOINT;
+                                    }
+
+                                    public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
+                                        if ($CHECKPOINT != checkpoint) {
+                                            Checkpoint oldCheckpoint = $CHECKPOINT;
+                                            if (checkpoint != null) {
+                                                $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                                                FieldRecord.pushState($RECORDS);
+                                            }
+                                            $CHECKPOINT = checkpoint;
+                                            oldCheckpoint.setCheckpoint(checkpoint);
+                                            checkpoint.addObject(this);
+                                        }
+                                        return this;
+                                    }
+
+                                    protected CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
+
+                                    private FieldRecord[] $RECORDS = new FieldRecord[] {
+                                    };
+                                };
+                        }
+
+                        final class _PROXY_ implements Rollbackable {
+
+                            public final void $COMMIT(long timestamp) {
+                                $COMMIT_ANONYMOUS(timestamp);
                             }
 
-                            public Object getKey() {
-                                return e.getKey();
-                            }
-
-                            public Object getValue() {
-                                return e.getValue();
-                            }
-
-                            public int hashCode() {
-                                return e.hashCode();
-                            }
-
-                            public Object setValue(Object value) {
-                                throw new UnsupportedOperationException();
-                            }
-
-                            public String toString() {
-                                return e.toString();
-                            }
-
-                            public void $COMMIT(long timestamp) {
-                                FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
-                                $RECORD$$CHECKPOINT.commit(timestamp);
-                            }
-
-                            public void $RESTORE(long timestamp, boolean trim) {
-                                if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-                                    $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
-                                    FieldRecord.popState($RECORDS);
-                                    $RESTORE(timestamp, trim);
-                                }
+                            public final void $RESTORE(long timestamp, boolean trim) {
+                                $RESTORE_ANONYMOUS(timestamp, trim);
                             }
 
                             public final Checkpoint $GET$CHECKPOINT() {
-                                return $CHECKPOINT;
+                                return $GET$CHECKPOINT_ANONYMOUS();
                             }
 
                             public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
-                                if ($CHECKPOINT != checkpoint) {
-                                    Checkpoint oldCheckpoint = $CHECKPOINT;
-                                    if (checkpoint != null) {
-                                        $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
-                                        FieldRecord.pushState($RECORDS);
-                                    }
-                                    $CHECKPOINT = checkpoint;
-                                    oldCheckpoint.setCheckpoint(checkpoint);
-                                    checkpoint.addObject(this);
-                                }
+                                $SET$CHECKPOINT_ANONYMOUS(checkpoint);
                                 return this;
                             }
-
-                            protected CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
-
-                            private FieldRecord[] $RECORDS = new FieldRecord[] {
-                                };
-                        };
-                    }
-
-                    final class _PROXY_ implements Rollbackable {
-
-                        public final void $COMMIT(long timestamp) {
-                            $COMMIT_ANONYMOUS(timestamp);
                         }
 
-                        public final void $RESTORE(long timestamp, boolean trim) {
-                            $RESTORE_ANONYMOUS(timestamp, trim);
+                        public void $COMMIT_ANONYMOUS(long timestamp) {
+                            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                            super.$COMMIT(timestamp);
                         }
 
-                        public final Checkpoint $GET$CHECKPOINT() {
-                            return $GET$CHECKPOINT_ANONYMOUS();
+                        public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
+                            super.$RESTORE(timestamp, trim);
                         }
 
-                        public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
-                            $SET$CHECKPOINT_ANONYMOUS(checkpoint);
+                        public final Checkpoint $GET$CHECKPOINT_ANONYMOUS() {
+                            return $CHECKPOINT;
+                        }
+
+                        public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
+                            if ($CHECKPOINT != checkpoint) {
+                                Checkpoint oldCheckpoint = $CHECKPOINT;
+                                if (checkpoint != null) {
+                                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                                    FieldRecord.pushState($RECORDS);
+                                }
+                                $CHECKPOINT = checkpoint;
+                                oldCheckpoint.setCheckpoint(checkpoint);
+                                checkpoint.addObject(new _PROXY_());
+                            }
                             return this;
                         }
-                    }
 
-                    public void $COMMIT_ANONYMOUS(long timestamp) {
-                        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
-                        super.$COMMIT(timestamp);
-                    }
-
-                    public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
-                        super.$RESTORE(timestamp, trim);
-                    }
-
-                    public final Checkpoint $GET$CHECKPOINT_ANONYMOUS() {
-                        return $CHECKPOINT;
-                    }
-
-                    public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
-                        if ($CHECKPOINT != checkpoint) {
-                            Checkpoint oldCheckpoint = $CHECKPOINT;
-                            if (checkpoint != null) {
-                                $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
-                                FieldRecord.pushState($RECORDS);
-                            }
-                            $CHECKPOINT = checkpoint;
-                            oldCheckpoint.setCheckpoint(checkpoint);
-                            checkpoint.addObject(new _PROXY_());
-                        }
-                        return this;
-                    }
-
-                    private FieldRecord[] $RECORDS = new FieldRecord[] {
+                        private FieldRecord[] $RECORDS = new FieldRecord[] {
                         };
 
-                    {
-                        $CHECKPOINT.addObject(new _PROXY_());
-                    }
-                };
+                        {
+                            $CHECKPOINT.addObject(new _PROXY_());
+                        }
+                    };
             }
 
             public void $COMMIT(long timestamp) {
@@ -2253,7 +2253,7 @@ public class Collections implements Rollbackable {
             }
 
             private FieldRecord[] $RECORDS = new FieldRecord[] {
-                };
+            };
         }
 
         UnmodifiableMap(Map m) {
@@ -2404,11 +2404,11 @@ public class Collections implements Rollbackable {
         private FieldRecord $RECORD$values = new FieldRecord(0);
 
         private FieldRecord[] $RECORDS = new FieldRecord[] {
-                $RECORD$m,
-                $RECORD$entries,
-                $RECORD$keys,
-                $RECORD$values
-            };
+            $RECORD$m,
+            $RECORD$entries,
+            $RECORD$keys,
+            $RECORD$values
+        };
     }
 
     private static class UnmodifiableSet extends UnmodifiableCollection implements Set, Rollbackable {
@@ -2437,7 +2437,7 @@ public class Collections implements Rollbackable {
         }
 
         private FieldRecord[] $RECORDS = new FieldRecord[] {
-            };
+        };
     }
 
     private static class UnmodifiableSortedMap extends UnmodifiableMap implements SortedMap, Rollbackable {
@@ -2488,8 +2488,8 @@ public class Collections implements Rollbackable {
         private FieldRecord $RECORD$sm = new FieldRecord(0);
 
         private FieldRecord[] $RECORDS = new FieldRecord[] {
-                $RECORD$sm
-            };
+            $RECORD$sm
+        };
     }
 
     private static class UnmodifiableSortedSet extends UnmodifiableSet implements SortedSet, Rollbackable {
@@ -2550,8 +2550,8 @@ public class Collections implements Rollbackable {
         private FieldRecord $RECORD$ss = new FieldRecord(0);
 
         private FieldRecord[] $RECORDS = new FieldRecord[] {
-                $RECORD$ss
-            };
+            $RECORD$ss
+        };
     }
 
     private static boolean isSequential(List l) {
@@ -2592,17 +2592,17 @@ public class Collections implements Rollbackable {
                 else
                     low = ++pos;
             }        } else {
-            while (low <= hi) {
-                pos = (low + hi) >> 1;
-                final int d = compare(key, l.get(pos), c);
-                if (d == 0)
-                    return pos;
-                else if (d < 0)
-                    hi = pos - 1;
-                else
-                    low = ++pos;
+                while (low <= hi) {
+                    pos = (low + hi) >> 1;
+                    final int d = compare(key, l.get(pos), c);
+                    if (d == 0)
+                        return pos;
+                    else if (d < 0)
+                        hi = pos - 1;
+                    else
+                        low = ++pos;
+                }
             }
-        }
         return -pos - 1;
     }
 
@@ -2622,14 +2622,14 @@ public class Collections implements Rollbackable {
         final Iterator i = c.iterator();
         return new Enumeration() {
 
-            public final boolean hasMoreElements() {
-                return i.hasNext();
-            }
+                public final boolean hasMoreElements() {
+                    return i.hasNext();
+                }
 
-            public final Object nextElement() {
-                return i.next();
-            }
-        };
+                public final Object nextElement() {
+                    return i.next();
+                }
+            };
     }
 
     public static void fill(List l, Object val) {
@@ -2902,5 +2902,5 @@ public class Collections implements Rollbackable {
     protected CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
 
     private FieldRecord[] $RECORDS = new FieldRecord[] {
-        };
+    };
 }

@@ -89,7 +89,7 @@ public class MCApplication {
                         file.close();
                     } catch (Throwable throwable) {
                         System.out.println("Ignoring failure to close stream "
-                            + "on " + fileName);
+                                + "on " + fileName);
                         throwable.printStackTrace();
                     }
                 }

@@ -75,7 +75,7 @@ public class JContextMenu extends JPopupMenu {
      * and is disabled or enabled according to "isEnabled."
      */
     public JMenuItem add(Action action, String tooltip, String label,
-        boolean isEnabled) {
+            boolean isEnabled) {
         if (tooltip == null) {
             tooltip = (String) action.getValue("tooltip");
         }

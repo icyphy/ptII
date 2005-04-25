@@ -84,7 +84,7 @@ public class InvalidStateException extends KernelRuntimeException {
      *  @param detail The message.
      */
     public InvalidStateException(Nameable object1, Nameable object2,
-        String detail) {
+            String detail) {
         this(object1, object2, null, detail);
     }
 
@@ -96,7 +96,7 @@ public class InvalidStateException extends KernelRuntimeException {
      *  @param detail The message.
      */
     public InvalidStateException(Nameable object1, Nameable object2,
-        Throwable cause, String detail) {
+            Throwable cause, String detail) {
         super(object1, object2, cause, detail);
     }
 
@@ -127,7 +127,7 @@ public class InvalidStateException extends KernelRuntimeException {
      *  @param detail The message.
      */
     public InvalidStateException(Collection objects, Throwable cause,
-        String detail) {
+            String detail) {
         super(objects, cause, detail);
     }
 

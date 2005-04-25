@@ -74,7 +74,7 @@ public class Slicer extends Transformer {
      *   actor with this name.
      */
     public Slicer(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         input.setTypeEquals(BaseType.COMPLEX);

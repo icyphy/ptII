@@ -103,7 +103,7 @@ public class PathManipulator extends Manipulator {
             // Check that we can mess with this figure
             if (!(child instanceof ShapedFigure)) {
                 throw new IllegalArgumentException(
-                    "PathManipulator can only decorate a ShapedFigure");
+                        "PathManipulator can only decorate a ShapedFigure");
             }
 
             // Create the geometry defining the sites

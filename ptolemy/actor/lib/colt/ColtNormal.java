@@ -50,7 +50,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
    <p> This actor instantiates a
    <a href="http://hoschek.home.cern.ch/hoschek/colt/V1.0.3/doc/cern/jet/random/Normal.html">cern.jet.random.Normal</a> object with
-    a mean of 1.0 and a standardDeviation of 1.0.
+   a mean of 1.0 and a standardDeviation of 1.0.
 
    @author David Bauer and Kostas Oikonomou
    @version $Id$
@@ -68,7 +68,7 @@ public class ColtNormal extends ColtRandomSource {
      *   actor with this name.
      */
     public ColtNormal(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         output.setTypeEquals(BaseType.DOUBLE);
@@ -124,7 +124,7 @@ public class ColtNormal extends ColtRandomSource {
     protected void _generateRandomNumber() throws IllegalActionException {
         double meanValue = ((DoubleToken) mean.getToken()).doubleValue();
         double standardDeviationValue = ((DoubleToken) standardDeviation
-                        .getToken()).doubleValue();
+                .getToken()).doubleValue();
 
         _generator.setState(meanValue, standardDeviationValue);
         _current = _generator.nextDouble();

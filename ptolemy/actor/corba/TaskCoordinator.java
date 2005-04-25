@@ -87,7 +87,7 @@ public class TaskCoordinator extends Transformer {
      *   actor with this name.
      */
     public TaskCoordinator(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         ORBInitProperties = new Parameter(this, "ORBInitProperties");
@@ -128,7 +128,7 @@ public class TaskCoordinator extends Transformer {
 
         // String tokenize the parameter ORBInitProperties
         StringTokenizer st = new StringTokenizer(((StringToken) ORBInitProperties
-                            .getToken()).stringValue());
+                                                         .getToken()).stringValue());
         String[] args = new String[st.countTokens()];
         int i = 0;
 
@@ -173,14 +173,14 @@ public class TaskCoordinator extends Transformer {
                     if (_availableClients.size() > 0) {
                         synchronized (_lock2) {
                             selectedClient = (Client) _availableClients
-                                            .removeFirst();
+                                .removeFirst();
                         }
 
                         selectedClient.push(event);
 
                         if (_debugging) {
                             _debug(getName(),
-                                "coordinator sends new task: " + data);
+                                    "coordinator sends new task: " + data);
                         }
                     } else { //no worker is availabe, so wait.
 
@@ -201,29 +201,29 @@ public class TaskCoordinator extends Transformer {
                         if (_availableClients.size() > 0) {
                             synchronized (_lock2) {
                                 selectedClient = (Client) _availableClients
-                                                .removeFirst();
+                                    .removeFirst();
                             }
 
                             selectedClient.push(event);
 
                             if (_debugging) {
                                 _debug(getName(),
-                                    "coordinator sends new task: " + data);
+                                        "coordinator sends new task: " + data);
                             }
                         }
                     }
                 } else { // we enter fire due to receiving returned result from some client.
                     _debug(getName(),
-                        "coordinator send out received task result.");
+                            "coordinator send out received task result.");
                     output.send(0, _resultToken);
                 }
             } catch (CorbaIllegalActionException ex) {
                 throw new IllegalActionException(this,
-                    "remote actor throws IllegalActionException"
-                    + ex.getMessage());
+                        "remote actor throws IllegalActionException"
+                        + ex.getMessage());
             } catch (InterruptedException e) {
                 throw new IllegalActionException(this,
-                    "blocking interrupted." + e.getMessage());
+                        "blocking interrupted." + e.getMessage());
             }
         }
     }
@@ -264,23 +264,23 @@ public class TaskCoordinator extends Transformer {
 
             //resolve the remote consumer reference in Naming
             NameComponent namecomp = new NameComponent(((StringToken) coordinatorName
-                                .getToken()).stringValue(), "Multi");
+                                                               .getToken()).stringValue(), "Multi");
             _debug(getName(), " looking for name: ",
-                (coordinatorName.getToken()).toString());
+                    (coordinatorName.getToken()).toString());
 
             NameComponent[] path = {
-                    namecomp
-                };
+                namecomp
+            };
             Coordinator _coordinator = new Coordinator();
             _orb.connect(_coordinator);
             ncRef.rebind(path, _coordinator);
         } catch (UserException ex) {
             //ex.printStackTrace();
             throw new IllegalActionException(this,
-                " initialize ORB failed. Please make sure the "
-                + "naming server has already started and the "
-                + "ORBInitProperty parameter is configured correctly. "
-                + "the error message is: " + ex.getMessage());
+                    " initialize ORB failed. Please make sure the "
+                    + "naming server has already started and the "
+                    + "ORBInitProperty parameter is configured correctly. "
+                    + "the error message is: " + ex.getMessage());
         }
     }
 
@@ -305,7 +305,7 @@ public class TaskCoordinator extends Transformer {
         }
 
         public void register(String clientName, Client clientRef)
-            throws CorbaIllegalActionException {
+                throws CorbaIllegalActionException {
             synchronized (_lock2) {
                 if (!_clientRefs.containsKey(clientName)) {
                     _clientRefs.put(clientName, clientRef);
@@ -321,7 +321,7 @@ public class TaskCoordinator extends Transformer {
         }
 
         public void result(String clientName, Any data)
-            throws CorbaIllegalActionException {
+                throws CorbaIllegalActionException {
             //FIXME: this only works for string result data.
             _resultToken = new StringToken(data.extract_string());
 
@@ -351,12 +351,12 @@ public class TaskCoordinator extends Transformer {
                 getDirector().fireAtCurrentTime(TaskCoordinator.this);
             } catch (IllegalActionException ex) {
                 throw new CorbaIllegalActionException(
-                    "failed in dealing with director.");
+                        "failed in dealing with director.");
             }
         }
 
         public void unregister(String clientName)
-            throws CorbaIllegalActionException {
+                throws CorbaIllegalActionException {
             synchronized (_lock2) {
                 if (_clientRefs.containsKey(clientName)) {
                     Client client = (Client) _clientRefs.get(clientName);

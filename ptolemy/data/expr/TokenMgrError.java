@@ -113,7 +113,7 @@ public class TokenMgrError extends Error {
                 if (((ch = str.charAt(i)) < 0x20) || (ch > 0x7e)) {
                     String s = "0000" + Integer.toString(ch, 16);
                     retval.append("\\u"
-                        + s.substring(s.length() - 4, s.length()));
+                            + s.substring(s.length() - 4, s.length()));
                 } else {
                     retval.append(ch);
                 }
@@ -138,13 +138,13 @@ public class TokenMgrError extends Error {
      * Note: You can customize the lexical error message by modifying this method.
      */
     protected static String LexicalError(boolean EOFSeen, int lexState,
-        int errorLine, int errorColumn, String errorAfter, char curChar) {
+            int errorLine, int errorColumn, String errorAfter, char curChar) {
         return ("Lexical error at line " + errorLine + ", column "
-        + errorColumn + ".  Encountered: "
-        + (EOFSeen ? "<EOF> "
-                   : (("\"" + addEscapes(String.valueOf(curChar)) + "\"")
-        + " (" + (int) curChar + "), ")) + "after : \""
-        + addEscapes(errorAfter) + "\"");
+                + errorColumn + ".  Encountered: "
+                + (EOFSeen ? "<EOF> "
+                        : (("\"" + addEscapes(String.valueOf(curChar)) + "\"")
+                                + " (" + (int) curChar + "), ")) + "after : \""
+                + addEscapes(errorAfter) + "\"");
     }
 
     /**
@@ -172,8 +172,8 @@ public class TokenMgrError extends Error {
     }
 
     public TokenMgrError(boolean EOFSeen, int lexState, int errorLine,
-        int errorColumn, String errorAfter, char curChar, int reason) {
+            int errorColumn, String errorAfter, char curChar, int reason) {
         this(LexicalError(EOFSeen, lexState, errorLine, errorColumn,
-                errorAfter, curChar), reason);
+                     errorAfter, curChar), reason);
     }
 }

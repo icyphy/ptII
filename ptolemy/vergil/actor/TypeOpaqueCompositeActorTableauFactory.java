@@ -44,7 +44,7 @@ import ptolemy.kernel.util.NamedObj;
  *
  * @author Elaine Cheong and Edward A. Lee
  * @version $Id: TypeOpaqueCompositeActor.java,v 1.73 2004/04/13 05:12:39 cxh
-@since Ptolemy II 4.1
+ @since Ptolemy II 4.1
  *          Exp $
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
@@ -62,7 +62,7 @@ public class TypeOpaqueCompositeActorTableauFactory
      *   an attribute already in the container.
      */
     public TypeOpaqueCompositeActorTableauFactory(NamedObj container,
-        String name) throws IllegalActionException, NameDuplicationException {
+            String name) throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 

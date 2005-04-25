@@ -76,7 +76,7 @@ public class CalInterpreter extends AbstractCalInterpreter {
      *   actor with this name.
      */
     public CalInterpreter(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         calCode = new StringAttribute(this, "calCode");
         calCode.setExpression(defaultActorText);
@@ -98,7 +98,7 @@ public class CalInterpreter extends AbstractCalInterpreter {
      * transforming the CAL source code.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == calCode) {
             String s = calCode.getExpression();
             Actor actor;
@@ -109,9 +109,9 @@ public class CalInterpreter extends AbstractCalInterpreter {
                 // FIXME: It would be nice if _stringToActor threw
                 // something other than Throwable here.
                 throw new IllegalActionException(this, ex,
-                    "Failed to read in actor in:\n  " + s + "\n"
-                    + "This sometimes occurs if saxon7.jar is not in "
-                    + "your classpath.");
+                        "Failed to read in actor in:\n  " + s + "\n"
+                        + "This sometimes occurs if saxon7.jar is not in "
+                        + "your classpath.");
             }
 
             try {
@@ -120,7 +120,7 @@ public class CalInterpreter extends AbstractCalInterpreter {
                 }
             } catch (Throwable ex) {
                 throw new IllegalActionException(this, ex,
-                    "Failed to set up actor'" + s + "'");
+                        "Failed to set up actor'" + s + "'");
             }
         } else {
             super.attributeChanged(attribute);

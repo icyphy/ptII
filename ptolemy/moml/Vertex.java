@@ -81,7 +81,7 @@ public class Vertex extends Location {
      *   an attribute already in the container.
      */
     public Vertex(Relation container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _elementName = "vertex";
     }
@@ -119,7 +119,7 @@ public class Vertex extends Location {
      *  @exception IOException If an I/O error occurs.
      */
     public void exportMoML(Writer output, int depth, String name)
-        throws IOException {
+            throws IOException {
         if (_isMoMLSuppressed(depth)) {
             return;
         }
@@ -136,9 +136,9 @@ public class Vertex extends Location {
         }
 
         output.write(_getIndentPrefix(depth) + "<" + _elementName + " name=\""
-            + name // + "\" class=\""
-            // + getMoMLInfo().className
-            + "\"" + valueTerm + ">\n");
+                + name // + "\" class=\""
+                // + getMoMLInfo().className
+                + "\"" + valueTerm + ">\n");
         _exportMoMLContents(output, depth + 1);
         output.write(_getIndentPrefix(depth) + "</" + _elementName + ">\n");
     }
@@ -201,7 +201,7 @@ public class Vertex extends Location {
      *  @see ptolemy.kernel.util.NamedObj#_exportMoMLContents
      */
     protected void _exportMoMLContents(Writer output, int depth)
-        throws IOException {
+            throws IOException {
         super._exportMoMLContents(output, depth);
 
         if (_linked != null) {

@@ -102,7 +102,7 @@ public class NonlinearServant extends _CorbaActorImplBase {
      </p>
     */
     public java.lang.String getParameter(java.lang.String paramName)
-        throws CorbaIllegalActionException, CorbaUnknownParamException {
+            throws CorbaIllegalActionException, CorbaUnknownParamException {
         throw new CorbaUnknownParamException();
     }
 
@@ -143,7 +143,7 @@ public class NonlinearServant extends _CorbaActorImplBase {
         @exception CorbaUnknownPortException If port name is not known.
     */
     public boolean hasData(java.lang.String portName, short portIndex)
-        throws CorbaIllegalActionException, CorbaIndexOutofBoundException,
+            throws CorbaIllegalActionException, CorbaIndexOutofBoundException,
             CorbaUnknownPortException {
         if (portName.equals("input")) {
             throw new CorbaIllegalActionException("port is an input");
@@ -192,11 +192,11 @@ public class NonlinearServant extends _CorbaActorImplBase {
      *  </p>
      */
     public boolean hasPort(java.lang.String portName, boolean isInput,
-        boolean isOutput, boolean isMultiport) {
+            boolean isOutput, boolean isMultiport) {
         if (portName.equals("input") && isInput && !isOutput && !isMultiport) {
             return true;
         } else if (portName.equals("output") && !isInput && isOutput
-                        && !isMultiport) {
+                && !isMultiport) {
             return true;
         } else {
             return false;
@@ -222,10 +222,10 @@ public class NonlinearServant extends _CorbaActorImplBase {
      *  @exception CorbaIllegalActionException Always thrown.
      */
     public void setPortWidth(java.lang.String portName, short width)
-        throws CorbaIllegalActionException, CorbaUnknownPortException {
+            throws CorbaIllegalActionException, CorbaUnknownPortException {
         if (width != 1) {
             throw new CorbaIllegalActionException(
-                " The port width is immutable.");
+                    " The port width is immutable.");
         }
     }
 
@@ -289,8 +289,8 @@ public class NonlinearServant extends _CorbaActorImplBase {
      *  </p>
      */
     public void setParameter(java.lang.String paramName,
-        java.lang.String paramValue)
-        throws CorbaIllegalActionException, CorbaUnknownParamException,
+            java.lang.String paramValue)
+            throws CorbaIllegalActionException, CorbaUnknownParamException,
             CorbaIllegalValueException {
         //throw new CorbaIllegalActionException(
         //        " No parameter is allowed to set.");
@@ -357,12 +357,12 @@ public class NonlinearServant extends _CorbaActorImplBase {
      *    able to convert to double.
      */
     public void transferInput(java.lang.String portName, short portIndex,
-        java.lang.String tokenValue)
-        throws CorbaIllegalActionException, CorbaUnknownPortException,
+            java.lang.String tokenValue)
+            throws CorbaIllegalActionException, CorbaUnknownPortException,
             CorbaIndexOutofBoundException, CorbaIllegalValueException {
         if (portName.equals("output")) {
             throw new CorbaIllegalActionException(
-                " Cannot transfer input to an output port");
+                    " Cannot transfer input to an output port");
         }
 
         if (!portName.equals("input")) {
@@ -406,12 +406,12 @@ public class NonlinearServant extends _CorbaActorImplBase {
      *  @exception CorbaIndexOutofBoundException If the port index is not 0.
      */
     public java.lang.String transferOutput(java.lang.String portName,
-        short portIndex)
-        throws CorbaIllegalActionException, CorbaUnknownPortException,
+            short portIndex)
+            throws CorbaIllegalActionException, CorbaUnknownPortException,
             CorbaIndexOutofBoundException {
         if (portName.equals("input")) {
             throw new CorbaIllegalActionException(
-                " Cannot transfer output from an input port");
+                    " Cannot transfer output from an input port");
         }
 
         if (_output == null) {

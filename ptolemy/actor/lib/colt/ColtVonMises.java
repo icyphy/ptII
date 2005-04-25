@@ -50,7 +50,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
    <p> This actor instantiates a
    <a href="http://hoschek.home.cern.ch/hoschek/colt/V1.0.3/doc/cern/jet/random/VonMises.html">cern.jet.random.VonMises</a> object with
-    freedom set to 1.0.
+   freedom set to 1.0.
 
    @author David Bauer and Kostas Oikonomou
    @version $Id$
@@ -68,7 +68,7 @@ public class ColtVonMises extends ColtRandomSource {
      *   actor with this name.
      */
     public ColtVonMises(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         output.setTypeEquals(BaseType.DOUBLE);

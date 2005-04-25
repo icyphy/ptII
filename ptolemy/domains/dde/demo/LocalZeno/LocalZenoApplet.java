@@ -200,7 +200,7 @@ public class LocalZenoApplet extends PtolemyApplet {
      *  actors and make connections.
      */
     protected NamedObj _createModel(Workspace workspace)
-        throws Exception {
+            throws Exception {
         TypedCompositeActor toplevel = new TypedCompositeActor(workspace);
         _toplevel = toplevel;
 
@@ -264,7 +264,7 @@ public class LocalZenoApplet extends PtolemyApplet {
      */
     protected void _createView() {
         getContentPane().setLayout(new BoxLayout(getContentPane(),
-                BoxLayout.Y_AXIS));
+                                           BoxLayout.Y_AXIS));
 
         // Create control panels.
         super._createView();
@@ -309,7 +309,7 @@ public class LocalZenoApplet extends PtolemyApplet {
         _divaPanel.add(_jgraph);
 
         StateListener listener = new StateListener((GraphPane) _jgraph
-                            .getCanvasPane());
+                .getCanvasPane());
         _join1.addDebugListener(listener);
         _join2.addDebugListener(listener);
         _fork1.addDebugListener(listener);
@@ -469,7 +469,7 @@ public class LocalZenoApplet extends PtolemyApplet {
             // Get the corresponding graph node and its figure
             Object node = (Object) _nodeMap.get(actor);
             LabelWrapper wrapper = (LabelWrapper) _graphPane.getGraphController()
-                                                                        .getFigure(node);
+                .getFigure(node);
             final BasicFigure figure = (BasicFigure) wrapper.getChild();
 
             // Color the graph
@@ -517,13 +517,13 @@ public class LocalZenoApplet extends PtolemyApplet {
          */
         public Figure render(Object n) {
             ComponentEntity actor = (ComponentEntity) _controller.getGraphModel()
-                                                                             .getSemanticObject(n);
+                .getSemanticObject(n);
 
             boolean isEllipse = actor instanceof ListenWire
-                            || actor instanceof ListenFork
-                            || actor instanceof ListenClock
-                            || actor instanceof ListenSink
-                            || actor instanceof ListenFeedBackDelay;
+                || actor instanceof ListenFork
+                || actor instanceof ListenClock
+                || actor instanceof ListenSink
+                || actor instanceof ListenFeedBackDelay;
 
             BasicFigure f;
 

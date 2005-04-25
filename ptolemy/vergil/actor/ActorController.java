@@ -139,15 +139,15 @@ public abstract class ActorController extends AttributeController {
             // NOTE: The following requires that the configuration be
             // non-null, or it will report an error.
             _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                    _lookInsideAction));
+                                                    _lookInsideAction));
 
             if (access == FULL) {
                 _editIconAction.setConfiguration(_configuration);
                 _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                        _editIconAction));
+                                                        _editIconAction));
                 _removeIconAction.setConfiguration(_configuration);
                 _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                        _removeIconAction));
+                                                        _removeIconAction));
             }
         }
 
@@ -166,11 +166,11 @@ public abstract class ActorController extends AttributeController {
             // NOTE: This requires that the configuration be non null, or it
             // will report an error.
             _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                    new SaveInLibraryAction()));
+                                                    new SaveInLibraryAction()));
 
             _listenToActorAction = new ListenToActorAction((BasicGraphController) getController());
             _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                    _listenToActorAction));
+                                                    _listenToActorAction));
             _listenToActorAction.setConfiguration(_configuration);
         }
 
@@ -220,15 +220,15 @@ public abstract class ActorController extends AttributeController {
             // NOTE: The following requires that the configuration be
             // non-null, or it will report an error.
             _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                    _lookInsideAction));
+                                                    _lookInsideAction));
 
             if (_access == FULL) {
                 _editIconAction.setConfiguration(_configuration);
                 _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                        _editIconAction));
+                                                        _editIconAction));
                 _removeIconAction.setConfiguration(_configuration);
                 _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                        _removeIconAction));
+                                                        _removeIconAction));
             }
         }
     }
@@ -251,7 +251,7 @@ public abstract class ActorController extends AttributeController {
     protected RemoveIconAction _removeIconAction = new RemoveIconAction();
 
     private LabelFigure _createPortLabelFigure(String string, Font font,
-        double x, double y, int direction) {
+            double x, double y, int direction) {
         LabelFigure label;
 
         if (direction == SwingConstants.SOUTH) {
@@ -305,9 +305,9 @@ public abstract class ActorController extends AttributeController {
 
     // Error message used when we can't find the inside definition.
     private static String _CANNOT_FIND_MESSAGE = "Cannot find inside definition. "
-        + "Perhaps source code is not installed? "
-        + "You can obtain source code for Berkeley actors at: "
-        + "http://ptolemy.eecs.berkeley.edu/ptolemyII";
+    + "Perhaps source code is not installed? "
+    + "You can obtain source code for Berkeley actors at: "
+    + "http://ptolemy.eecs.berkeley.edu/ptolemyII";
     private ListenToActorAction _listenToActorAction;
     private PortDialogFactory _portDialogFactory;
     private static Font _portLabelFont = new Font("SansSerif", Font.PLAIN, 10);
@@ -387,7 +387,7 @@ public abstract class ActorController extends AttributeController {
             }
 
             CompositeFigure figure = (CompositeFigure) getLayoutTarget()
-                                                                       .getVisualObject(node);
+                .getVisualObject(node);
 
             _reOrderPorts(westPorts);
             _placePortFigures(figure, westPorts, SwingConstants.WEST);
@@ -424,7 +424,7 @@ public abstract class ActorController extends AttributeController {
                             ordinal.setExpression(Integer.toString(size - 1));
                         } catch (Exception e) {
                             MessageHandler.error("Error setting ordinal property",
-                                e);
+                                    e);
                         }
 
                         ports.add(port);
@@ -435,7 +435,7 @@ public abstract class ActorController extends AttributeController {
                             ordinal.setExpression(Integer.toString(0));
                         } catch (Exception e) {
                             MessageHandler.error("Error setting ordinal property",
-                                e);
+                                    e);
                         }
 
                         ports.add(0, port);
@@ -451,7 +451,7 @@ public abstract class ActorController extends AttributeController {
 
         // Place the ports.
         private void _placePortFigures(CompositeFigure figure, List portList,
-            int direction) {
+                int direction) {
             Iterator ports = portList.iterator();
             int number = 0;
             int count = portList.size();
@@ -487,12 +487,12 @@ public abstract class ActorController extends AttributeController {
                 Attribute showRateAttribute = port.getAttribute("_showRate");
 
                 if (port instanceof IOPort
-                                && showRateAttribute instanceof Variable) {
+                        && showRateAttribute instanceof Variable) {
                     boolean showRate = false;
 
                     try {
                         showRate = ((Variable) showRateAttribute).getToken()
-                                                .equals(BooleanToken.TRUE);
+                            .equals(BooleanToken.TRUE);
                     } catch (Exception ex) {
                         // Ignore.
                     }
@@ -558,7 +558,7 @@ public abstract class ActorController extends AttributeController {
 
                     if (show) {
                         LabelFigure labelFigure = _createPortLabelFigure(port
-                                            .getName(), _portLabelFont, x, y,
+                                .getName(), _portLabelFont, x, y,
                                 direction);
                         figure.add(labelFigure);
                     }
@@ -580,7 +580,7 @@ public abstract class ActorController extends AttributeController {
         }
 
         public ListenToActorAction(NamedObj target,
-            BasicGraphController controller) {
+                BasicGraphController controller) {
             super("Listen to Actor");
             _target = target;
             _controller = controller;
@@ -589,7 +589,7 @@ public abstract class ActorController extends AttributeController {
         public void actionPerformed(ActionEvent event) {
             if (_configuration == null) {
                 MessageHandler.error(
-                    "Cannot listen to actor without a configuration.");
+                        "Cannot listen to actor without a configuration.");
                 return;
             }
 
@@ -619,7 +619,7 @@ public abstract class ActorController extends AttributeController {
 
                 DebugListenerTableau debugTableau = new DebugListenerTableau(textEffigy,
                         textEffigy.uniqueName("debugListener"
-                            + object.getName()));
+                                + object.getName()));
                 debugTableau.setDebuggable(object);
             } catch (KernelException ex) {
                 MessageHandler.error("Failed to create debug listener.", ex);
@@ -648,14 +648,14 @@ public abstract class ActorController extends AttributeController {
             // For some inexplicable reason, the I key doesn't work here.
             // Use L, which used to be used for layout.
             putValue(GUIUtilities.ACCELERATOR_KEY,
-                KeyStroke.getKeyStroke(KeyEvent.VK_L,
-                    Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+                    KeyStroke.getKeyStroke(KeyEvent.VK_L,
+                            Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         }
 
         public void actionPerformed(ActionEvent event) {
             if (_configuration == null) {
                 MessageHandler.error(
-                    "Cannot look inside without a configuration.");
+                        "Cannot look inside without a configuration.");
                 return;
             }
 
@@ -725,7 +725,7 @@ public abstract class ActorController extends AttributeController {
         public SaveInLibraryAction() {
             super("Save Actor In Library");
             putValue("tooltip",
-                "Save the actor as a component in the user library");
+                    "Save the actor as a component in the user library");
         }
 
         /** Create a new instance of the current model in the actor library of

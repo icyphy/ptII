@@ -37,16 +37,16 @@ import ptolemy.kernel.util.NameDuplicationException;
 ///CIActor
 
 /**
-    A base class for actors specific to the CI domain. This class extends
-    Transformer and provides two methods: enableActor() and isPulled(), for
-    its subclasses (in a different package) to access the related protected
-    methods in the CIDirector.
+   A base class for actors specific to the CI domain. This class extends
+   Transformer and provides two methods: enableActor() and isPulled(), for
+   its subclasses (in a different package) to access the related protected
+   methods in the CIDirector.
 
-    @author Yang Zhao
-    @version $Id$
-    @since Ptolemy II 3.0
-    @Pt.ProposedRating Yellow (cxh)
-    @Pt.AcceptedRating Yellow (cxh)
+   @author Yang Zhao
+   @version $Id$
+   @since Ptolemy II 3.0
+   @Pt.ProposedRating Yellow (cxh)
+   @Pt.AcceptedRating Yellow (cxh)
 */
 public class CIActor extends Transformer {
     /** Construct an actor with the given container and name.
@@ -58,7 +58,7 @@ public class CIActor extends Transformer {
      *   actor with this name.
      */
     public CIActor(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         input.setMultiport(false);
         output.setMultiport(false);

@@ -70,7 +70,7 @@ public class JAIBandSelect extends Transformer {
      *   actor with this name.
      */
     public JAIBandSelect(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         bandIndices = new Parameter(this, "bandIndices",
@@ -92,7 +92,7 @@ public class JAIBandSelect extends Transformer {
      *  @exception IllegalActionException If a contained method throws it.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == bandIndices) {
             Token[] data = ((ArrayToken) bandIndices.getToken()).arrayValue();
             _indiceArray = new int[data.length];
@@ -131,8 +131,8 @@ public class JAIBandSelect extends Transformer {
 
     /** An initial array that simply copies a three banded image. */
     private IntToken[] _initialArray = {
-            new IntToken(0),
-            new IntToken(1),
-            new IntToken(2)
-        };
+        new IntToken(0),
+        new IntToken(1),
+        new IntToken(2)
+    };
 }

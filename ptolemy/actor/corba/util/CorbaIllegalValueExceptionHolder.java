@@ -15,7 +15,7 @@ public final class CorbaIllegalValueExceptionHolder
     }
 
     public CorbaIllegalValueExceptionHolder(
-        ptolemy.actor.corba.util.CorbaIllegalValueException initialValue) {
+            ptolemy.actor.corba.util.CorbaIllegalValueException initialValue) {
         value = initialValue;
     }
 

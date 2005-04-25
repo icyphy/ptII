@@ -84,12 +84,12 @@ public class SDFDirector extends Director {
      *   fired cannot find its associated helper.
      */
     public void generateFireCode(StringBuffer code)
-        throws IllegalActionException {
+            throws IllegalActionException {
         Attribute iterations = getComponent().getAttribute("iterations");
 
         if (iterations != null) {
             int iterationCount = ((IntToken) ((Variable) iterations).getToken())
-                            .intValue();
+                .intValue();
 
             if (iterationCount <= 0) {
                 code.append("while (true) {\n");
@@ -98,13 +98,13 @@ public class SDFDirector extends Director {
                 // "error: `for' loop initial declaration used outside C99
                 // mode" with gcc-3.3.3
                 code.append("int iteration = 0;\n"
-                    + "for (iteration = 0; iteration < " + iterationCount
-                    + "; iteration ++) {\n");
+                        + "for (iteration = 0; iteration < " + iterationCount
+                        + "; iteration ++) {\n");
             }
 
             // Generate code for one iteration.
             Schedule schedule = ((StaticSchedulingDirector) getComponent()).getScheduler()
-                                             .getSchedule();
+                .getSchedule();
 
             Iterator actorsToFire = schedule.iterator();
 
@@ -125,7 +125,7 @@ public class SDFDirector extends Director {
                     inputAndOutputPortsSet.addAll(actor.outputPortList());
 
                     Iterator inputAndOutputPorts = inputAndOutputPortsSet
-                                    .iterator();
+                        .iterator();
 
                     while (inputAndOutputPorts.hasNext()) {
                         IOPort port = (IOPort) inputAndOutputPorts.next();
@@ -134,11 +134,11 @@ public class SDFDirector extends Director {
                             // Update the offset for each channel.
                             if (helperObject.getOffset(port, j) instanceof Integer) {
                                 int offset = ((Integer) helperObject.getOffset(port,
-                                        j)).intValue();
+                                                      j)).intValue();
                                 offset = (offset + DFUtilities.getRate(port)) % helperObject
-                                                .getBufferSize(port, j);
+                                    .getBufferSize(port, j);
                                 helperObject.setOffset(port, j,
-                                    new Integer(offset));
+                                        new Integer(offset));
                             } else {
                                 // FIXME: didn't write "% portBufferSize" here.
                                 String temp = (String) helperObject.getOffset(port,
@@ -154,7 +154,7 @@ public class SDFDirector extends Director {
             code.append("}\n");
         } else {
             throw new IllegalActionException(getComponent(),
-                "The SDF Director does not have an attribute" + "iterations");
+                    "The SDF Director does not have an attribute" + "iterations");
         }
     }
 
@@ -167,7 +167,7 @@ public class SDFDirector extends Director {
         initializeCode.append(super.generateInitializeCode());
 
         Iterator actors = ((CompositeActor) _codeGenerator.getContainer()).deepEntityList()
-                                       .iterator();
+            .iterator();
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
@@ -192,7 +192,7 @@ public class SDFDirector extends Director {
                         // Increase the buffer size of that channel to the
                         // power of two.
                         int bufferSize = _ceilToPowerOfTwo(getBufferSize(port,
-                                    channel));
+                                                                   channel));
                         actorHelper.setBufferSize(port, channel, bufferSize);
 
                         // Declare the channel offset variables.
@@ -210,12 +210,12 @@ public class SDFDirector extends Director {
                         // At this point, all offsets are 0 or the number of
                         // initial tokens of SampleDelay.
                         initializeCode.append("int " + channelOffsetVariable
-                            + " = " + actorHelper.getOffset(port, channel)
-                            + ";\n");
+                                + " = " + actorHelper.getOffset(port, channel)
+                                + ";\n");
 
                         // Now replace these concrete offsets with the variables.
                         actorHelper.setOffset(port, channel,
-                            channelOffsetVariable);
+                                channelOffsetVariable);
                     }
                 }
             }
@@ -234,14 +234,14 @@ public class SDFDirector extends Director {
      *   does not contain a token.
      */
     public int getBufferSize(IOPort port, int channelNumber)
-        throws IllegalActionException {
+            throws IllegalActionException {
         int bufferSize = 1;
         List connectedRelations = getConnectedRelations(port, channelNumber);
 
         if (connectedRelations.size() > 1) {
             throw new IllegalActionException(getComponent(),
-                "more than one relation is connected to " + port.getFullName()
-                + ", " + channelNumber);
+                    "more than one relation is connected to " + port.getFullName()
+                    + ", " + channelNumber);
         }
 
         if (connectedRelations.size() == 0) {
@@ -297,7 +297,7 @@ public class SDFDirector extends Director {
     private int _ceilToPowerOfTwo(int value) throws IllegalActionException {
         if (value < 1) {
             throw new IllegalActionException(getComponent(),
-                "The given integer must be a positive integer.");
+                    "The given integer must be a positive integer.");
         }
 
         int powerOfTwo = 1;

@@ -59,7 +59,7 @@ public class NCCompositeActorTableauFactory extends ActorGraphTableau.Factory {
      *   an attribute already in the container.
      */
     public NCCompositeActorTableauFactory(NamedObj container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 

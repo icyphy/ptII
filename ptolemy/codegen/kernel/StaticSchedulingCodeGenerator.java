@@ -58,7 +58,7 @@ public class StaticSchedulingCodeGenerator extends CodeGenerator
      *  @exception NameDuplicationException
      */
     public StaticSchedulingCodeGenerator(NamedObj container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -90,7 +90,7 @@ public class StaticSchedulingCodeGenerator extends CodeGenerator
 
         if (manager == null) {
             CompositeActor toplevel = (CompositeActor) ((NamedObj) container)
-                            .toplevel();
+                .toplevel();
             manager = new Manager(toplevel.workspace(), "Manager");
             toplevel.setManager(manager);
         }
@@ -110,7 +110,7 @@ public class StaticSchedulingCodeGenerator extends CodeGenerator
      *  @param code The code stream into which to generate the code.
      */
     public void generateFireCode(StringBuffer code)
-        throws IllegalActionException {
+            throws IllegalActionException {
         CompositeEntity model = (CompositeEntity) getContainer();
 
         // NOTE: The cast is safe because setContainer ensures
@@ -119,13 +119,13 @@ public class StaticSchedulingCodeGenerator extends CodeGenerator
 
         if (director == null) {
             throw new IllegalActionException(this,
-                "The model " + model.getName() + " does not have a director.");
+                    "The model " + model.getName() + " does not have a director.");
         }
 
         if (!(director instanceof StaticSchedulingDirector)) {
             throw new IllegalActionException(this,
-                "The director of the model " + model.getName()
-                + " is not a StaticSchedulingDirector.");
+                    "The director of the model " + model.getName()
+                    + " is not a StaticSchedulingDirector.");
         }
 
         ComponentCodeGenerator directorHelper = _getHelper((NamedObj) director);
@@ -140,11 +140,11 @@ public class StaticSchedulingCodeGenerator extends CodeGenerator
      *   is not null and not an instance of CompositeActor.
      */
     public void setContainer(NamedObj container)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         if ((container != null) && !(container instanceof CompositeActor)) {
             throw new IllegalActionException(this, container,
-                "StaticSchedulingCodeGenerator can only be contained "
-                + " by CompositeActor");
+                    "StaticSchedulingCodeGenerator can only be contained "
+                    + " by CompositeActor");
         }
 
         super.setContainer(container);
@@ -158,14 +158,14 @@ public class StaticSchedulingCodeGenerator extends CodeGenerator
      *  @return The code generator helper.
      */
     protected ComponentCodeGenerator _getHelper(NamedObj actor)
-        throws IllegalActionException {
+            throws IllegalActionException {
         ComponentCodeGenerator helperObject = super._getHelper(actor);
 
         if (!(helperObject instanceof ActorCodeGenerator)) {
             throw new IllegalActionException(this,
-                "Cannot generate code for this actor: " + actor
-                + ". Its helper class does not"
-                + " implement ActorCodeGenerator.");
+                    "Cannot generate code for this actor: " + actor
+                    + ". Its helper class does not"
+                    + " implement ActorCodeGenerator.");
         }
 
         return helperObject;

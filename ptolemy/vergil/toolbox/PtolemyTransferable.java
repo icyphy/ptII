@@ -122,7 +122,7 @@ public class PtolemyTransferable implements Transferable, Serializable {
      * not supported.
      */
     public Object getTransferData(DataFlavor flavor)
-        throws UnsupportedFlavorException, IOException {
+            throws UnsupportedFlavorException, IOException {
         if (flavor.equals(DataFlavor.plainTextFlavor)) {
             // plain text flavor is deprecated, but everybody still
             // implements it.  The problem is that all the implementations
@@ -193,10 +193,10 @@ public class PtolemyTransferable implements Transferable, Serializable {
     ////                         private variables                 ////
     // The flavors that this node can return.
     private final DataFlavor[] _flavors = {
-            DataFlavor.plainTextFlavor,
-            DataFlavor.stringFlavor,
-            namedObjFlavor,
-        };
+        DataFlavor.plainTextFlavor,
+        DataFlavor.stringFlavor,
+        namedObjFlavor,
+    };
 
     //The object contained by this transferable.
     private List _objectList;

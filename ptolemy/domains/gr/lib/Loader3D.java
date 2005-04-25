@@ -50,7 +50,7 @@ import javax.media.j3d.Node;
 */
 public class Loader3D extends GRShadedShape {
     public Loader3D(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         filename = new Parameter(this, "filename",
                 new StringToken("chopper.obj"));
@@ -64,7 +64,7 @@ public class Loader3D extends GRShadedShape {
 
     protected void _createModel() throws IllegalActionException {
         String fileName = (String) ((StringToken) filename.getToken())
-                        .stringValue();
+            .stringValue();
 
         //Appearance ap = new Appearance();
         //ap.setColoringAttributes(new ColoringAttributes(_color.x,

@@ -68,7 +68,7 @@ public class VectorAssembler extends Transformer {
      *   actor with this name.
      */
     public VectorAssembler(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         input.setTypeEquals(BaseType.DOUBLE);
         input.setMultiport(true);
@@ -76,8 +76,8 @@ public class VectorAssembler extends Transformer {
         output.setMultiport(false);
 
         _attachText("_iconDescription",
-            "<svg>\n" + "<rect x=\"0\" y=\"0\" width=\"6\" "
-            + "height=\"40\" style=\"fill:blue\"/>\n" + "</svg>\n");
+                "<svg>\n" + "<rect x=\"0\" y=\"0\" width=\"6\" "
+                + "height=\"40\" style=\"fill:blue\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -84,7 +84,7 @@ public class MethodCallPort extends ComponentPort {
      *   a port already in the container.
      */
     public MethodCallPort(ComponentEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -104,8 +104,8 @@ public class MethodCallPort extends ComponentPort {
      *   a port already in the container.
      */
     public MethodCallPort(ComponentEntity container, String name,
-        boolean isProvidedPort)
-        throws IllegalActionException, NameDuplicationException {
+            boolean isProvidedPort)
+            throws IllegalActionException, NameDuplicationException {
         this(container, name);
         _isProvider = isProvidedPort;
     }

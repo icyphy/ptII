@@ -76,7 +76,7 @@ public class Switch extends Transformer {
      *   an actor already in the container.
      */
     public Switch(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         output.setMultiport(true);

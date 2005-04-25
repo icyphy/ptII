@@ -90,7 +90,7 @@ public abstract class Action extends StringAttribute {
      *   has an attribute with the name.
      */
     public Action(Transition transition, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(transition, name);
     }
 
@@ -117,10 +117,10 @@ public abstract class Action extends StringAttribute {
      *   an attribute with the name of this action.
      */
     public void setContainer(NamedObj container)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         if (!(container instanceof Transition) && (container != null)) {
             throw new IllegalActionException(container, this,
-                "Action can only be contained by instances of " + "Transition.");
+                    "Action can only be contained by instances of " + "Transition.");
         }
 
         super.setContainer(container);

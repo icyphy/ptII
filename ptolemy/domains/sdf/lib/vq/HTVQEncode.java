@@ -129,7 +129,7 @@ public class HTVQEncode extends Transformer {
      *   an actor already in the container.
      */
     public HTVQEncode(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         input.setTypeEquals(BaseType.INT_MATRIX);
@@ -137,7 +137,7 @@ public class HTVQEncode extends Transformer {
 
         codeBook = new Parameter(this, "codeBook",
                 new StringToken("/ptolemy/domains/sdf"
-                    + "/lib/vq/data/usc_hvq_s5.dat"));
+                        + "/lib/vq/data/usc_hvq_s5.dat"));
         codeBook.setTypeEquals(BaseType.STRING);
 
         blockCount = new Parameter(this, "blockCount", new IntToken("1"));
@@ -200,9 +200,9 @@ public class HTVQEncode extends Transformer {
 
         for (j = 0; j < _blockCount; j++) {
             _codewords[j] = new IntToken(_encode(
-                        IntegerMatrixMath.fromMatrixToArray(
-                            ((IntMatrixToken) _blocks[j]).intMatrix()),
-                        _blockWidth * _blockHeight));
+                                                 IntegerMatrixMath.fromMatrixToArray(
+                                                         ((IntMatrixToken) _blocks[j]).intMatrix()),
+                                                 _blockWidth * _blockHeight));
         }
 
         output.send(0, _codewords, _blockCount);
@@ -241,8 +241,8 @@ public class HTVQEncode extends Transformer {
                     System.err.println("HTVQEncode: " + "file not found: " + e);
                 } catch (IOException e) {
                     throw new IllegalActionException(
-                        "HTVQEncode: error reading" + " input file: "
-                        + e.getMessage());
+                            "HTVQEncode: error reading" + " input file: "
+                            + e.getMessage());
                 }
             }
 
@@ -262,7 +262,7 @@ public class HTVQEncode extends Transformer {
 
                     if (_fullRead(source, temp) != size) {
                         throw new IllegalActionException("Error reading "
-                            + "codebook file!");
+                                + "codebook file!");
                     }
 
                     for (x = 0; x < size; x++) {
@@ -275,7 +275,7 @@ public class HTVQEncode extends Transformer {
                 // read in the lookup table.
                 if (_fullRead(source, temp) != 65536) {
                     throw new IllegalActionException("Error reading "
-                        + "codebook file!");
+                            + "codebook file!");
                 }
 
                 for (x = 0; x < 65536; x++) {
@@ -284,7 +284,7 @@ public class HTVQEncode extends Transformer {
             }
         } catch (Throwable throwable) {
             throw new IllegalActionException(this, throwable,
-                "Problem reading codebook");
+                    "Problem reading codebook");
         } finally {
             if (source != null) {
                 try {
@@ -313,7 +313,7 @@ public class HTVQEncode extends Transformer {
 
         if (numberOfStages > 4) {
             throw new RuntimeException("Number of stages = " + numberOfStages
-                + ", which is " + "greater than 4");
+                    + ", which is " + "greater than 4");
         }
 
         p5 = ipbuf_encodep1;
@@ -405,7 +405,7 @@ public class HTVQEncode extends Transformer {
             p4[3][3] = _lookupTable[stage][ip];
             stage++;
 
-        // Fall through to next case
+            // Fall through to next case
         case 3:
 
             //XSIZE = 4, YSIZE = 4
@@ -430,7 +430,7 @@ public class HTVQEncode extends Transformer {
             p3[1][3] = _lookupTable[stage][ip];
             stage++;
 
-        // Fall through to next case
+            // Fall through to next case
         case 2:
 
             //XSIZE = 4, YSIZE = 2
@@ -445,7 +445,7 @@ public class HTVQEncode extends Transformer {
             p2[1][1] = _lookupTable[stage][ip];
             stage++;
 
-        // Fall through to next case
+            // Fall through to next case
         case 1:
 
             //XSIZE = 2, YSIZE = 2
@@ -494,7 +494,7 @@ public class HTVQEncode extends Transformer {
 
         if (length < 2) {
             throw new RuntimeException("Vector length of " + length
-                + "must be greater than 1");
+                    + "must be greater than 1");
         }
 
         while (length > 2) {

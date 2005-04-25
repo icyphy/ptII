@@ -185,6 +185,6 @@ public class TreeSet extends AbstractSet implements SortedSet, Cloneable, Serial
     private FieldRecord $RECORD$map = new FieldRecord(0);
 
     private FieldRecord[] $RECORDS = new FieldRecord[] {
-            $RECORD$map
-        };
+        $RECORD$map
+    };
 }

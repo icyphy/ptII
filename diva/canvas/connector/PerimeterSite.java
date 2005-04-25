@@ -187,9 +187,9 @@ public class PerimeterSite extends AbstractSite {
                         double tx = x0 + ((x1 - x0) * t);
                         double ty = y0 + ((y1 - y0) * t);
                         boolean xGood = ((tx >= xCenter) && (px >= xCenter))
-                                        || ((tx < xCenter) && (px < xCenter));
+                            || ((tx < xCenter) && (px < xCenter));
                         boolean yGood = ((ty >= yCenter) && (py >= yCenter))
-                                        || ((ty < yCenter) && (py < yCenter));
+                            || ((ty < yCenter) && (py < yCenter));
 
                         // Must be on (px,py) side of (xCenter, yCenter)
                         if (xGood && yGood) {

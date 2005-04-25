@@ -68,7 +68,7 @@ abstract public class GRShape2D extends GRActor2D {
      *   actor with this name.
      */
     public GRShape2D(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         sceneGraphOut = new TypedIOPort(this, "sceneGraphOut");
         sceneGraphOut.setOutput(true);
@@ -119,10 +119,10 @@ abstract public class GRShape2D extends GRActor2D {
      * @param attribute The attribute which changed.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (((attribute == rgbFillColor) || (attribute == rgbOutlineColor)
-                        || (attribute == outlineWidth))
-                        && (_viewScreen != null)) {
+                    || (attribute == outlineWidth))
+                && (_viewScreen != null)) {
             _setAppearance(_figure);
         }
 
@@ -166,7 +166,7 @@ abstract public class GRShape2D extends GRActor2D {
      *  @exception IllegalActionException If a parameter is not valid.
      */
     abstract protected BasicFigure _createFigure()
-        throws IllegalActionException;
+            throws IllegalActionException;
 
     /** Setup the scene graph connections of this actor.
      *
@@ -185,11 +185,11 @@ abstract public class GRShape2D extends GRActor2D {
     // Set the appearance of the given figure consistent with the
     // parameters of this class.
     private void _setAppearance(BasicFigure figure)
-        throws IllegalActionException {
+            throws IllegalActionException {
         Paint fillPaint = rgbFillColor.asColor();
         Paint strokePaint = rgbOutlineColor.asColor();
         float lineWidth = (float) ((DoubleToken) outlineWidth.getToken())
-                        .doubleValue();
+            .doubleValue();
 
         figure.setFillPaint(fillPaint);
         figure.setStrokePaint(strokePaint);

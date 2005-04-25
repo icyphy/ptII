@@ -131,7 +131,7 @@ public class Entity extends InstantiableNamedObj {
      *  @exception IllegalActionException If the name has a period.
      */
     public Entity(Workspace workspace, String name)
-        throws IllegalActionException {
+            throws IllegalActionException {
         super(workspace, name);
         _portList = new NamedList(this);
     }
@@ -175,7 +175,7 @@ public class Entity extends InstantiableNamedObj {
                 } catch (KernelException ex) {
                     workspace.remove(newEntity);
                     throw new InvalidStateException(this,
-                        "Failed to clone an Entity: " + ex.getMessage());
+                            "Failed to clone an Entity: " + ex.getMessage());
                 }
             }
 
@@ -196,8 +196,8 @@ public class Entity extends InstantiableNamedObj {
 
                         if (port == null) {
                             throw new IllegalActionException(this,
-                                "Could not find a port named '" + portName
-                                + "';");
+                                    "Could not find a port named '" + portName
+                                    + "';");
                         }
 
                         fields[i].set(newEntity, port);
@@ -408,7 +408,7 @@ public class Entity extends InstantiableNamedObj {
      *   with the specified name.
      */
     public Port newPort(String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         try {
             _workspace.getWriteAccess();
 
@@ -455,7 +455,7 @@ public class Entity extends InstantiableNamedObj {
                 } catch (KernelException ex) {
                     // Should not be thrown.
                     throw new InternalErrorException(
-                        "Internal error in Port constructor!" + ex.getMessage());
+                            "Internal error in Port constructor!" + ex.getMessage());
                 }
             }
         } finally {
@@ -472,7 +472,7 @@ public class Entity extends InstantiableNamedObj {
      *   this entity contains ports with links.
      */
     public final void setClassDefinition(boolean isClass)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (isClass && !isClassDefinition()) {
             // Converting from an instance to a class.
             // Check that there are no links
@@ -484,8 +484,8 @@ public class Entity extends InstantiableNamedObj {
 
                 if (port.numLinks() > 0) {
                     throw new IllegalActionException(this,
-                        "Cannot convert an entity to a class definition "
-                        + "while it contains ports with links.");
+                            "Cannot convert an entity to a class definition "
+                            + "while it contains ports with links.");
                 }
             }
         }
@@ -514,7 +514,7 @@ public class Entity extends InstantiableNamedObj {
         int uniqueNameIndex = 2;
 
         while ((getAttribute(candidate) != null)
-                        || (getPort(candidate) != null)) {
+                || (getPort(candidate) != null)) {
             candidate = prefix + uniqueNameIndex++;
         }
 
@@ -569,7 +569,7 @@ public class Entity extends InstantiableNamedObj {
      *   name already in the entity.
      */
     protected void _addPort(Port port)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         _portList.append(port);
     }
 
@@ -636,7 +636,7 @@ public class Entity extends InstantiableNamedObj {
      *  @exception IOException If an I/O error occurs.
      */
     protected void _exportMoMLContents(Writer output, int depth)
-        throws IOException {
+            throws IOException {
         super._exportMoMLContents(output, depth);
 
         Iterator ports = portList().iterator();

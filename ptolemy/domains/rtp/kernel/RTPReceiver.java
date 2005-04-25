@@ -139,12 +139,12 @@ public class RTPReceiver extends AbstractReceiver implements ProcessReceiver {
 
     public Token get(Branch controllingBranch) {
         throw new InvalidStateException(getContainer(),
-            "hierarchy not supported yet.");
+                "hierarchy not supported yet.");
     }
 
     public void put(Token token, Branch controllingBranch) {
         throw new InvalidStateException(getContainer(),
-            "hierarchy not supported yet.");
+                "hierarchy not supported yet.");
     }
 
     /** Blocking read on the token. This method will not return until

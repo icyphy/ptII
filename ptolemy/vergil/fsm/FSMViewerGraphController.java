@@ -90,7 +90,7 @@ public class FSMViewerGraphController extends RunnableGraphController {
         // to handle both State and Transition.  We can't associate more
         // than one with the hot key, so that one handles both.
         GUIUtilities.addHotKey(getFrame().getJGraph(),
-            _transitionController._lookInsideAction);
+                _transitionController._lookInsideAction);
     }
 
     /** React to an event by highlighting the new state.
@@ -159,7 +159,7 @@ public class FSMViewerGraphController extends RunnableGraphController {
         }
 
         throw new RuntimeException("Node with unknown semantic object: "
-            + object);
+                + object);
     }
 
     /** Return the edge controller appropriate for the given node.

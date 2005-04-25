@@ -104,19 +104,19 @@ public class GeneratorAttribute extends SingletonAttribute
      *   an attribute already in the container.
      */
     public GeneratorAttribute(NamedObj container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         _attachText("_iconDescription",
-            "<svg>\n"
-            + "<rect x=\"-50\" y=\"-20\" width=\"100\" height=\"40\" "
-            + "style=\"fill:blue\"/>" + "<text x=\"-40\" y=\"-5\" "
-            + "style=\"font-size:12; font-family:SansSerif; fill:white\">"
-            + "Double click to\ngenerate code.</text></svg>");
+                "<svg>\n"
+                + "<rect x=\"-50\" y=\"-20\" width=\"100\" height=\"40\" "
+                + "style=\"fill:blue\"/>" + "<text x=\"-40\" y=\"-5\" "
+                + "style=\"font-size:12; font-family:SansSerif; fill:white\">"
+                + "Double click to\ngenerate code.</text></svg>");
 
         initialParametersURL = new StringParameter(this, "initialParametersURL");
         initialParametersURL.setToken(new StringToken(
-                "ptolemy/copernicus/kernel/Generator.xml"));
+                                              "ptolemy/copernicus/kernel/Generator.xml"));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -154,11 +154,11 @@ public class GeneratorAttribute extends SingletonAttribute
                 return ((StringToken) token).stringValue();
             } else {
                 throw new IllegalActionException("Parameter with name " + name
-                    + " is not a String.");
+                        + " is not a String.");
             }
         } else {
             throw new IllegalActionException("Parameter with name " + name
-                + " does not exist!");
+                    + " does not exist!");
         }
     }
 
@@ -176,32 +176,32 @@ public class GeneratorAttribute extends SingletonAttribute
      *  accordingly.
      */
     public void initialize()
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         if (_initialized) {
             return;
         }
 
         if (initialParametersURL == null) {
             throw new IllegalActionException(this,
-                "initialParametersURL " + "parameter was null?");
+                    "initialParametersURL " + "parameter was null?");
         }
 
         // Read in the initialParameters file.
         URL initialParameters = getClass().getClassLoader().getResource(initialParametersURL
-                            .getExpression());
+                .getExpression());
 
         //            .getResource(((StringToken)initialParametersURL.getToken())
         //                    .stringValue());
         if (initialParameters == null) {
             throw new IllegalActionException(this,
-                "Failed to find the " + "value of the "
-                + "initialParametersURL: '"
-                + initialParametersURL.getExpression() + "'");
+                    "Failed to find the " + "value of the "
+                    + "initialParametersURL: '"
+                    + initialParametersURL.getExpression() + "'");
         }
 
         try {
             BufferedReader inputReader = new BufferedReader(new InputStreamReader(
-                        initialParameters.openStream()));
+                                                                    initialParameters.openStream()));
 
             String inputLine;
             StringBuffer buffer = new StringBuffer();
@@ -215,15 +215,15 @@ public class GeneratorAttribute extends SingletonAttribute
 
             try {
                 requestChange(new MoMLChangeRequest(this, this,
-                        buffer.toString()));
+                                      buffer.toString()));
             } catch (Exception ex) {
                 throw new IllegalActionException(this, ex,
-                    "Failed to parse " + buffer.toString());
+                        "Failed to parse " + buffer.toString());
             }
         } catch (Exception ex) {
             throw new IllegalActionException(this, ex,
-                "Failed to parse '" + initialParametersURL.getExpression()
-                + "'");
+                    "Failed to parse '" + initialParametersURL.getExpression()
+                    + "'");
         }
 
         // We sanity check after modelPath has had a chance to be
@@ -258,7 +258,7 @@ public class GeneratorAttribute extends SingletonAttribute
      *  parameter is used.
      */
     public void sanityCheckAndUpdateParameters(String modelPathOrURL)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         if (modelPathOrURL == null) {
             // Get the modelPath and update modelPath and model.
             modelPathOrURL = getParameter("modelPath");
@@ -277,28 +277,28 @@ public class GeneratorAttribute extends SingletonAttribute
         File ptIIUserDirectoryFile = new File(ptIIUserDirectory);
 
         if (!ptIIUserDirectoryFile.isDirectory()
-                        || !ptIIUserDirectoryFile.canWrite()
-                        || ((JNLPUtilities.isRunningUnderWebStart()
-                        || (StringUtilities.getProperty("lax.user.dir").length() > 0))
+                || !ptIIUserDirectoryFile.canWrite()
+                || ((JNLPUtilities.isRunningUnderWebStart()
+                            || (StringUtilities.getProperty("lax.user.dir").length() > 0))
                         && (ptIIUserDirectory == ptII))) {
             if (!ptIIUserDirectoryFile.isDirectory()) {
                 System.out.println(
-                    "AppletWriter: WARNING: ptIIUserDirectory = '"
-                    + ptIIUserDirectory + "', but there is no directory there?");
+                        "AppletWriter: WARNING: ptIIUserDirectory = '"
+                        + ptIIUserDirectory + "', but there is no directory there?");
             } else {
                 if (!ptIIUserDirectoryFile.canWrite()) {
                     System.out.println(
-                        "AppletWriter: WARNING: ptIIUserDirectory = '"
-                        + ptIIUserDirectory + "', but it is not writable");
+                            "AppletWriter: WARNING: ptIIUserDirectory = '"
+                            + ptIIUserDirectory + "', but it is not writable");
                 } else {
                     System.out.println("AppletWriter: ptIIUserDirectory = "
-                        + ptIIUserDirectory + " isDirectory: "
-                        + ptIIUserDirectoryFile.isDirectory() + " canWrite: "
-                        + ptIIUserDirectoryFile.canWrite() + " WebStart: "
-                        + (JNLPUtilities.isRunningUnderWebStart()
+                            + ptIIUserDirectory + " isDirectory: "
+                            + ptIIUserDirectoryFile.isDirectory() + " canWrite: "
+                            + ptIIUserDirectoryFile.canWrite() + " WebStart: "
+                            + (JNLPUtilities.isRunningUnderWebStart()
                                     || (StringUtilities.getProperty(
-                                        "lax.user.dir").length() > 0))
-                        + " ptII: " + ptII);
+                                                "lax.user.dir").length() > 0))
+                            + " ptII: " + ptII);
                 }
             }
 
@@ -318,16 +318,16 @@ public class GeneratorAttribute extends SingletonAttribute
                 }
 
                 if (!ptIIUserDirectoryFile.isDirectory()
-                                || !ptIIUserDirectoryFile.canWrite()) {
+                        || !ptIIUserDirectoryFile.canWrite()) {
                     throw new IllegalActionException("'" + ptIIUserDirectory
-                        + "' was not a " + "writable directory, "
-                        + "so we tried '" + ptIIUserDirectoryFile
-                        + "', but we failed to " + "make a writable"
-                        + "directory?");
+                            + "' was not a " + "writable directory, "
+                            + "so we tried '" + ptIIUserDirectoryFile
+                            + "', but we failed to " + "make a writable"
+                            + "directory?");
                 } else {
                     ptIIUserDirectory = ptIIUserDirectoryFile.getPath();
                     ((StringParameter) getAttribute("ptIIUserDirectory"))
-                                .setExpression(ptIIUserDirectory);
+                        .setExpression(ptIIUserDirectory);
 
                     //.setExpression("property(\"user.dir\") + "
                     //        + "\"/ptII/cg\"");
@@ -340,7 +340,7 @@ public class GeneratorAttribute extends SingletonAttribute
 
         try {
             ptIIUserDirectoryAsURL = (new File(ptIIUserDirectory)).toURL()
-                                                  .toString();
+                .toString();
         } catch (java.net.MalformedURLException ex) {
             ptIIUserDirectoryAsURL = ex.getMessage();
         }
@@ -365,8 +365,8 @@ public class GeneratorAttribute extends SingletonAttribute
             // Make any directories
             if (!targetPathFile.mkdirs()) {
                 throw new IllegalActionException("'" + targetPathFile
-                    + "' was not a " + "writable directory, and "
-                    + "mkdirs() failed");
+                        + "' was not a " + "writable directory, and "
+                        + "mkdirs() failed");
             }
         }
 
@@ -382,7 +382,7 @@ public class GeneratorAttribute extends SingletonAttribute
 
         if (!classPath.equals(newClassPath)) {
             System.out.println("GeneratorAttribute: classPath had "
-                + "double quotes in it, which we removed.");
+                    + "double quotes in it, which we removed.");
         }
 
         setParameter("classPath", newClassPath);
@@ -396,7 +396,7 @@ public class GeneratorAttribute extends SingletonAttribute
      *  the given name exists in this GeneratorAttribute.
      */
     public void setParameter(String name, String value)
-        throws IllegalActionException {
+            throws IllegalActionException {
         Attribute attribute = getAttribute(name);
 
         if (attribute instanceof Settable) {
@@ -404,7 +404,7 @@ public class GeneratorAttribute extends SingletonAttribute
             ((Settable) attribute).validate();
         } else {
             throw new IllegalActionException("Parameter with name " + name
-                + " does not exist!");
+                    + " does not exist!");
         }
     }
 
@@ -434,9 +434,9 @@ public class GeneratorAttribute extends SingletonAttribute
                 }
 
                 results.append(className + ":      " + attribute.getName()
-                    + "\n Expression:    "
-                    + ((Parameter) attribute).getExpression()
-                    + value.toString());
+                        + "\n Expression:    "
+                        + ((Parameter) attribute).getExpression()
+                        + value.toString());
             } else {
                 results.append("Attribute:      " + attribute.getName());
             }
@@ -445,9 +445,9 @@ public class GeneratorAttribute extends SingletonAttribute
                     "tooltip");
 
             if ((tooltipAttribute != null)
-                            && tooltipAttribute instanceof Documentation) {
+                    && tooltipAttribute instanceof Documentation) {
                 results.append("\n Documentation: "
-                    + ((Documentation) tooltipAttribute).getValue());
+                        + ((Documentation) tooltipAttribute).getValue());
             } else {
                 String tip = Documentation.consolidate((NamedObj) attribute);
 
@@ -470,7 +470,7 @@ public class GeneratorAttribute extends SingletonAttribute
      *  @param modelPathOrURL The file pathname or URL to the model.
      */
     public void updateModelAttributes(String modelPathOrURL)
-        throws IllegalActionException {
+            throws IllegalActionException {
         URL modelURL = null;
 
         try {
@@ -484,7 +484,7 @@ public class GeneratorAttribute extends SingletonAttribute
 
             if (modelURL == null) {
                 throw new IllegalActionException(this, ex,
-                    "Failed to parse '" + modelPathOrURL + "'");
+                        "Failed to parse '" + modelPathOrURL + "'");
             }
         }
 
@@ -526,13 +526,13 @@ public class GeneratorAttribute extends SingletonAttribute
                         modelPathOrURL = anotherURL.toExternalForm();
                     } else {
                         throw new Exception("1. Failed to find '"
-                            + modelURL.toExternalForm() + "'\n"
-                            + "2. Failed to find '" + anotherURL + "'");
+                                + modelURL.toExternalForm() + "'\n"
+                                + "2. Failed to find '" + anotherURL + "'");
                     }
                 } catch (Exception ex1) {
                     throw new IllegalActionException(this, ex1,
-                        "Failed to parse '" + modelPathOrURL + "'"
-                        + " Tried loading as a resource, too!");
+                            "Failed to parse '" + modelPathOrURL + "'"
+                            + " Tried loading as a resource, too!");
                 }
             }
 
@@ -542,15 +542,15 @@ public class GeneratorAttribute extends SingletonAttribute
                 modelPath = (StringParameter) getAttribute("modelPath");
             } catch (ClassCastException ex) {
                 throw new InternalErrorException(this, ex,
-                    "Failed to cast '" + getAttribute("modelPath")
-                    + "' to a StringParameter");
+                        "Failed to cast '" + getAttribute("modelPath")
+                        + "' to a StringParameter");
             }
 
             modelPath.setExpression(modelPathOrURL);
 
             // Strip off the leading '.' and then sanitize.
             String modelNameValue = StringUtilities.sanitizeName(toplevel.getFullName()
-                                                                                     .substring(1));
+                    .substring(1));
 
             Parameter modelName = (StringParameter) getAttribute("modelName");
             modelName.setExpression(modelNameValue);
@@ -562,8 +562,8 @@ public class GeneratorAttribute extends SingletonAttribute
                 compositeActor = (CompositeActor) toplevel;
             } catch (ClassCastException ex) {
                 throw new InternalErrorException(this, ex,
-                    "Failed to cast toplevel '" + toplevel
-                    + "' to a CompositeActor");
+                        "Failed to cast toplevel '" + toplevel
+                        + "' to a CompositeActor");
             }
 
             Director director = compositeActor.getDirector();
@@ -579,7 +579,7 @@ public class GeneratorAttribute extends SingletonAttribute
 
                 if (directorIterations != null) {
                     Token iterationsToken = ((Parameter) directorIterations)
-                                    .getToken();
+                        .getToken();
                     iterations.setExpression(iterationsToken.toString());
                 } else {
                     iterations.setExpression("1000");
@@ -587,7 +587,7 @@ public class GeneratorAttribute extends SingletonAttribute
             }
         } catch (Exception ex) {
             throw new IllegalActionException(this, ex,
-                "Failed to parse '" + modelPathOrURL + "'");
+                    "Failed to parse '" + modelPathOrURL + "'");
         } finally {
             parser.setMoMLFilters(oldFilters);
         }
@@ -604,19 +604,19 @@ public class GeneratorAttribute extends SingletonAttribute
         //StringParameter necessaryClassesParameter =
         //    (StringParameter)getAttribute("necessaryClasses");
         ArrayToken necessaryClassesToken = (ArrayToken) ((Parameter) getAttribute(
-                "necessaryClasses")).getToken();
+                                                                 "necessaryClasses")).getToken();
 
         List classPathList = new LinkedList();
 
         for (int i = 0; i < necessaryClassesToken.length(); i++) {
             String necessaryClass = ((StringToken) necessaryClassesToken
-                            .getElement(i)).stringValue();
+                    .getElement(i)).stringValue();
 
             String sanitizedResourceName = ptolemy.util.ClassUtilities
-                            .lookupClassAsResource(necessaryClass);
+                .lookupClassAsResource(necessaryClass);
 
             if ((sanitizedResourceName != null)
-                            && !classPathList.contains(sanitizedResourceName)) {
+                    && !classPathList.contains(sanitizedResourceName)) {
                 classPathList.add(sanitizedResourceName);
             }
         }
@@ -625,7 +625,7 @@ public class GeneratorAttribute extends SingletonAttribute
         // We could use property("path.separator") here, but if the user
         // changes the classPathSeparator parameter, then we better use it.
         String classPathSeparator = ((StringToken) ((Parameter) getAttribute(
-                "classPathSeparator")).getToken()).stringValue();
+                                                            "classPathSeparator")).getToken()).stringValue();
 
         StringBuffer necessaryClassPath = new StringBuffer();
 
@@ -640,7 +640,7 @@ public class GeneratorAttribute extends SingletonAttribute
         }
 
         ((StringParameter) getAttribute("necessaryClassPath")).setExpression(necessaryClassPath
-                        .toString());
+                .toString());
     }
 
     ///////////////////////////////////////////////////////////////////

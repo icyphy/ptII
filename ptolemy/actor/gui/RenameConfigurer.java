@@ -58,7 +58,7 @@ import javax.swing.BoxLayout;
    @Pt.AcceptedRating Red (neuendor)
 */
 public class RenameConfigurer extends Query implements ChangeListener,
-    QueryListener {
+                                                       QueryListener {
     /** Construct a rename configurer for the specified entity.
      *  @param object The entity to configure.
      */
@@ -116,15 +116,15 @@ public class RenameConfigurer extends Query implements ChangeListener,
                 if (showName != previousShowName) {
                     if (showName) {
                         moml.append("<property name=\"_showName\" "
-                            + "class=\"ptolemy.data.expr.SingletonParameter\""
-                            + " value=\"true\"/>");
+                                + "class=\"ptolemy.data.expr.SingletonParameter\""
+                                + " value=\"true\"/>");
                     } else {
                         if (!(_object.getAttribute("_showName") instanceof Parameter)) {
                             moml.append("<deleteProperty name=\"_showName\"/>");
                         } else {
                             moml.append("<property name=\"_showName\" "
-                                + "class=\"ptolemy.data.expr.SingletonParameter\""
-                                + " value=\"false\"/>");
+                                    + "class=\"ptolemy.data.expr.SingletonParameter\""
+                                    + " value=\"false\"/>");
                         }
                     }
                 }
@@ -137,13 +137,13 @@ public class RenameConfigurer extends Query implements ChangeListener,
                             moml.append("<deleteProperty name=\"_hideName\"/>");
                         } else {
                             moml.append("<property name=\"_hideName\" "
-                                + "class=\"ptolemy.data.expr.SingletonParameter\""
-                                + " value=\"false\"/>");
+                                    + "class=\"ptolemy.data.expr.SingletonParameter\""
+                                    + " value=\"false\"/>");
                         }
                     } else {
                         moml.append("<property name=\"_hideName\" "
-                            + "class=\"ptolemy.data.expr.SingletonParameter\""
-                            + " value=\"true\"/>");
+                                + "class=\"ptolemy.data.expr.SingletonParameter\""
+                                + " value=\"true\"/>");
                     }
                 }
             }

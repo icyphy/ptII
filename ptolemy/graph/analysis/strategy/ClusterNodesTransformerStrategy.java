@@ -59,7 +59,7 @@ public class ClusterNodesTransformerStrategy extends CachedStrategy
      *  @param superNode The super node that replaces the clustered nodes.
      */
     public ClusterNodesTransformerStrategy(Graph graph,
-        Collection nodeCollection, Node superNode) {
+            Collection nodeCollection, Node superNode) {
         super(graph);
         _nodeCollection = nodeCollection;
         _superNode = superNode;
@@ -146,7 +146,7 @@ public class ClusterNodesTransformerStrategy extends CachedStrategy
             Edge edge = (Edge) (edges.next());
 
             if (nodesToRemove.contains(edge.source())
-                            && nodesToRemove.contains(edge.sink())) {
+                    && nodesToRemove.contains(edge.sink())) {
                 removeList.add(edge);
             }
         }

@@ -52,7 +52,7 @@ public class PlotDemo extends PlotApplet {
      */
     public String getAppletInfo() {
         return "PlotDemo 2.0: Demo of Plot.\n" + "By: Edward A. Lee\n "
-        + "($Id$)";
+            + "($Id$)";
     }
 
     /**
@@ -81,25 +81,25 @@ public class PlotDemo extends PlotApplet {
 
         for (int i = 0; i <= 100; i++) {
             plot.addPoint(0, (double) i, 5 * Math.cos((Math.PI * i) / 20),
-                !first);
+                    !first);
             plot.addPoint(1, (double) i, 4.5 * Math.cos((Math.PI * i) / 25),
-                !first);
+                    !first);
             plot.addPoint(2, (double) i, 4 * Math.cos((Math.PI * i) / 30),
-                !first);
+                    !first);
             plot.addPoint(3, (double) i, 3.5 * Math.cos((Math.PI * i) / 35),
-                !first);
+                    !first);
             plot.addPoint(4, (double) i, 3 * Math.cos((Math.PI * i) / 40),
-                !first);
+                    !first);
             plot.addPoint(5, (double) i, 2.5 * Math.cos((Math.PI * i) / 45),
-                !first);
+                    !first);
             plot.addPoint(6, (double) i, 2 * Math.cos((Math.PI * i) / 50),
-                !first);
+                    !first);
             plot.addPoint(7, (double) i, 1.5 * Math.cos((Math.PI * i) / 55),
-                !first);
+                    !first);
             plot.addPoint(8, (double) i, 1 * Math.cos((Math.PI * i) / 60),
-                !first);
+                    !first);
             plot.addPoint(9, (double) i, 0.5 * Math.cos((Math.PI * i) / 65),
-                !first);
+                    !first);
             first = false;
         }
     }

@@ -87,7 +87,7 @@ public class DoubleMatrixToJAI extends Transformer {
      *   actor with this name.
      */
     public DoubleMatrixToJAI(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         dataFormat = new StringAttribute(this, "dataFormat");
         dataFormat.setExpression("byte");
@@ -125,7 +125,7 @@ public class DoubleMatrixToJAI extends Transformer {
      *  or if the data type is not recognized.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == dataFormat) {
             String dataFormatName = dataFormat.getExpression();
 
@@ -143,7 +143,7 @@ public class DoubleMatrixToJAI extends Transformer {
                 _dataFormat = _USHORT;
             } else {
                 throw new IllegalActionException(this,
-                    "Unrecognized data type: " + dataFormatName);
+                        "Unrecognized data type: " + dataFormatName);
             }
         } else if (attribute == scale) {
             _scale = ((BooleanToken) scale.getToken()).booleanValue();
@@ -200,9 +200,9 @@ public class DoubleMatrixToJAI extends Transformer {
 
             default:
                 throw new InternalErrorException(this, null,
-                    "Invalid value for _dataFormat private variable. "
-                    + "DoubleMatrixToJAI actor (" + getFullName()
-                    + ") on data type " + _dataFormat);
+                        "Invalid value for _dataFormat private variable. "
+                        + "DoubleMatrixToJAI actor (" + getFullName()
+                        + ") on data type " + _dataFormat);
             }
 
             if ((_dataFormat == _DOUBLE) || (_dataFormat == _FLOAT)) {
@@ -231,7 +231,7 @@ public class DoubleMatrixToJAI extends Transformer {
                         //                         newData[i*height + j] =
                         //                             data[i][j]*(_maxValue - _minValue) + _minValue;
                         newData[i + (j * width)] = (data[i][j] * (_maxValue
-                                        - _minValue)) + _minValue;
+                                                            - _minValue)) + _minValue;
                     }
                 }
             }
@@ -269,7 +269,7 @@ public class DoubleMatrixToJAI extends Transformer {
 
         // Create a grayscale colormodel.
         ComponentColorModel colorModel = new ComponentColorModel(new ICC_ColorSpace(
-                    ICC_ProfileGray.getInstance(ColorSpace.CS_GRAY)), false,
+                                                                         ICC_ProfileGray.getInstance(ColorSpace.CS_GRAY)), false,
                 false, ComponentColorModel.OPAQUE, DataBuffer.TYPE_DOUBLE);
         TiledImage tiledImage = new TiledImage(0, 0, width, height, 0, 0,
                 sampleModel, colorModel);
@@ -305,9 +305,9 @@ public class DoubleMatrixToJAI extends Transformer {
 
         default:
             throw new InternalErrorException(this, null,
-                "Invalid value for _dataFormat private variable. "
-                + "DoubleMatrixToJAI actor (" + getFullName()
-                + ") on data type " + _dataFormat);
+                    "Invalid value for _dataFormat private variable. "
+                    + "DoubleMatrixToJAI actor (" + getFullName()
+                    + ") on data type " + _dataFormat);
         }
 
         RenderedOp newImage = JAI.create("format", parameters);

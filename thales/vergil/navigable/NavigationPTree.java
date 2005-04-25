@@ -89,9 +89,9 @@ public class NavigationPTree extends PTree {
                 if (obj instanceof CompositeEntity) {
                     try {
                         SingleWindowApplication._mainFrame.getConfiguration()
-                                                                      .openModel(obj);
+                            .openModel(obj);
                         ((NavigationTreeModel) _jTree.getModel())
-                                    .setSelectedItem(_jTree.getSelectionPath());
+                            .setSelectedItem(_jTree.getSelectionPath());
                     } catch (IllegalActionException e1) {
                         e1.printStackTrace();
                     } catch (NameDuplicationException e1) {
@@ -135,7 +135,7 @@ public class NavigationPTree extends PTree {
 
             if (aPath != null) {
                 ((NavigationTreeModel) _jTree.getModel()).expandPath(aPath,
-                    false);
+                        false);
             }
         }
     }

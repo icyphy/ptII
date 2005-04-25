@@ -73,7 +73,7 @@ public class Average extends Transformer {
      *   actor with this name.
      */
     public Average(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         reset = new TypedIOPort(this, "reset", true, false);
         reset.setTypeEquals(BaseType.BOOLEAN);

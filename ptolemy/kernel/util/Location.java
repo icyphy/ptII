@@ -84,7 +84,7 @@ public class Location extends SingletonAttribute implements Locatable {
      *   an attribute already in the container.
      */
     public Location(NamedObj container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -150,7 +150,7 @@ public class Location extends SingletonAttribute implements Locatable {
      *  @see #isPersistent()
      */
     public void exportMoML(Writer output, int depth, String name)
-        throws IOException {
+            throws IOException {
         // If the object is not persistent, and we are not
         // at level 0, do nothing.
         if (_isMoMLSuppressed(depth)) {
@@ -167,7 +167,7 @@ public class Location extends SingletonAttribute implements Locatable {
 
         // It might be better to use multiple writes here for performance.
         output.write(_getIndentPrefix(depth) + "<" + _elementName + " name=\""
-            + name + "\" class=\"" + getClassName() + "\"" + valueTerm + ">\n");
+                + name + "\" class=\"" + getClassName() + "\"" + valueTerm + ">\n");
         _exportMoMLContents(output, depth + 1);
         output.write(_getIndentPrefix(depth) + "</" + _elementName + ">\n");
     }
@@ -383,7 +383,7 @@ public class Location extends SingletonAttribute implements Locatable {
      *   be propagated.
      */
     protected void _propagateValue(NamedObj destination)
-        throws IllegalActionException {
+            throws IllegalActionException {
         // NOTE: Cannot use the _location value because the
         // expression may not have yet been evaluated.
         ((Location) destination).setExpression(getExpression());
@@ -399,10 +399,10 @@ public class Location extends SingletonAttribute implements Locatable {
      *  throws it.
      */
     private boolean _setLocation(double[] location)
-        throws IllegalActionException {
+            throws IllegalActionException {
         // If the location is unchanged, return false.
         if ((_location != null) && (location != null)
-                        && (_location.length == location.length)) {
+                && (_location.length == location.length)) {
             boolean match = true;
 
             for (int i = 0; i < location.length; i++) {
@@ -460,9 +460,9 @@ public class Location extends SingletonAttribute implements Locatable {
 
     // The location.
     private double[] _location = {
-            0.0,
-            0.0
-        };
+        0.0,
+        0.0
+    };
 
     // Listeners for changes in value.
     private List _valueListeners;

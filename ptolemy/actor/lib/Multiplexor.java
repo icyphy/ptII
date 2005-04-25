@@ -72,7 +72,7 @@ public class Multiplexor extends Transformer {
      *   an actor already in the container.
      */
     public Multiplexor(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         input.setMultiport(true);
@@ -119,7 +119,7 @@ public class Multiplexor extends Transformer {
 
         if (!inRange) {
             throw new IllegalActionException(this,
-                "Select input is out of range: " + _channel + ".");
+                    "Select input is out of range: " + _channel + ".");
         }
     }
 

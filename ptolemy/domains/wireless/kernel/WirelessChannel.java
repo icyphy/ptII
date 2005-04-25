@@ -119,7 +119,7 @@ public interface WirelessChannel extends Actor, Nameable, PropertyTransformer {
      *   transmissions through this channel.
      */
     public void registerPropertyTransformer(PropertyTransformer transformer,
-        WirelessIOPort port);
+            WirelessIOPort port);
 
     /** Return a list of input ports that can potentially send data
      *  to this channel.  This must include input ports contained by
@@ -156,7 +156,7 @@ public interface WirelessChannel extends Actor, Nameable, PropertyTransformer {
      *   the transmission.
      */
     public void transmit(Token token, WirelessIOPort port,
-        RecordToken properties) throws IllegalActionException;
+            RecordToken properties) throws IllegalActionException;
 
     /** Unregister a property transformer for transmissions from the specified
      *  port (or from null for a generic property transformer). If the transformer
@@ -167,5 +167,5 @@ public interface WirelessChannel extends Actor, Nameable, PropertyTransformer {
      *  @see #registerPropertyTransformer(PropertyTransformer, WirelessIOPort)
      */
     public void unregisterPropertyTransformer(PropertyTransformer transformer,
-        WirelessIOPort port);
+            WirelessIOPort port);
 }

@@ -68,7 +68,7 @@ public class ColtExponentialPower extends ColtRandomSource {
      *   actor with this name.
      */
     public ColtExponentialPower(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         output.setTypeEquals(BaseType.DOUBLE);

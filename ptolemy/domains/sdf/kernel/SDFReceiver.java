@@ -94,7 +94,7 @@ public class SDFReceiver extends AbstractReceiver {
      *   not accept this receiver.
      */
     public SDFReceiver(IOPort container, int size)
-        throws IllegalActionException {
+            throws IllegalActionException {
         super(container);
         _queue = new ArrayFIFOQueue(size);
     }
@@ -118,7 +118,7 @@ public class SDFReceiver extends AbstractReceiver {
         if (_queue.isEmpty()) {
             // The queue is empty.
             throw new NoTokenException(getContainer(),
-                "Attempt to get token from an empty QueueReceiver.");
+                    "Attempt to get token from an empty QueueReceiver.");
         }
 
         return (Token) _queue.take();
@@ -147,9 +147,9 @@ public class SDFReceiver extends AbstractReceiver {
             return (Token) _queue.get(offset);
         } catch (NoSuchElementException ex) {
             throw new NoTokenException(getContainer(),
-                "Offset " + offset + " out of range with " + _queue.size()
-                + " tokens in the receiver and " + _queue.historySize()
-                + " in history.");
+                    "Offset " + offset + " out of range with " + _queue.size()
+                    + " tokens in the receiver and " + _queue.historySize()
+                    + " in history.");
         }
     }
 
@@ -218,7 +218,7 @@ public class SDFReceiver extends AbstractReceiver {
     public boolean hasRoom(int tokens) throws IllegalArgumentException {
         if (tokens < 1) {
             throw new IllegalArgumentException("The argument "
-                + "must not be negative. It was: " + tokens);
+                    + "must not be negative. It was: " + tokens);
         }
 
         if (_queue.getCapacity() == INFINITE_CAPACITY) {
@@ -250,7 +250,7 @@ public class SDFReceiver extends AbstractReceiver {
     public boolean hasToken(int tokens) throws IllegalArgumentException {
         if (tokens < 0) {
             throw new IllegalArgumentException("The argument "
-                + "must not be negative. It was: " + tokens);
+                    + "must not be negative. It was: " + tokens);
         }
 
         return _queue.size() >= tokens;
@@ -293,7 +293,7 @@ public class SDFReceiver extends AbstractReceiver {
     public void put(Token token) {
         if (!_queue.put(token)) {
             throw new NoRoomException(getContainer(),
-                "Queue is at capacity. Cannot put a token.");
+                    "Queue is at capacity. Cannot put a token.");
         }
     }
 
@@ -318,7 +318,7 @@ public class SDFReceiver extends AbstractReceiver {
         // we should implement it.
         if (!_queue.putArray(token, count)) {
             throw new NoRoomException(getContainer(),
-                "Queue is at capacity. Cannot put a token.");
+                    "Queue is at capacity. Cannot put a token.");
         }
     }
 
@@ -335,7 +335,7 @@ public class SDFReceiver extends AbstractReceiver {
             _queue.setCapacity(capacity);
         } catch (IllegalActionException ex) {
             throw new IllegalActionException(getContainer(), ex,
-                "Failed to set capacity to " + capacity);
+                    "Failed to set capacity to " + capacity);
         }
     }
 
@@ -359,7 +359,7 @@ public class SDFReceiver extends AbstractReceiver {
             _queue.setHistoryCapacity(capacity);
         } catch (IllegalActionException ex) {
             throw new IllegalActionException(getContainer(), ex,
-                "Failed to set history capacity to " + capacity);
+                    "Failed to set history capacity to " + capacity);
         }
     }
 

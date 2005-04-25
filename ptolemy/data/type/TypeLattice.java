@@ -72,9 +72,9 @@ public class TypeLattice {
     public static int compare(Token token1, Token token2) {
         if ((token1 == null) || (token2 == null)) {
             throw new IllegalArgumentException(
-                "TypeLattice.compare(Token, Token): "
-                + "one or both of the argument tokens is null: " + " token1 = "
-                + token1 + ", token2 = " + token2);
+                    "TypeLattice.compare(Token, Token): "
+                    + "one or both of the argument tokens is null: " + " token1 = "
+                    + token1 + ", token2 = " + token2);
         }
 
         return compare(token1.getType(), token2.getType());
@@ -94,7 +94,7 @@ public class TypeLattice {
     public static int compare(Token token, Type type) {
         if (token == null) {
             throw new IllegalArgumentException(
-                "TypeLattice.compare(Token, Type): " + "token argument is null");
+                    "TypeLattice.compare(Token, Type): " + "token argument is null");
         }
 
         return compare(token.getType(), type);
@@ -114,7 +114,7 @@ public class TypeLattice {
     public static int compare(Type type, Token token) {
         if (token == null) {
             throw new IllegalArgumentException(
-                "TypeLattice.compare(Type, Token): " + "token argument is null");
+                    "TypeLattice.compare(Type, Token): " + "token argument is null");
         }
 
         return compare(type, token.getType());
@@ -133,9 +133,9 @@ public class TypeLattice {
     public static int compare(Type type1, Type type2) {
         if ((type1 == null) || (type2 == null)) {
             throw new IllegalArgumentException(
-                "TypeLattice.compare(Type, Type): "
-                + "one or both of the argument types is null: " + " type1 = "
-                + type1 + ", type2 = " + type2);
+                    "TypeLattice.compare(Type, Type): "
+                    + "one or both of the argument types is null: " + " type1 = "
+                    + type1 + ", type2 = " + type2);
         }
 
         int i1 = type1.getTypeHash();
@@ -145,10 +145,10 @@ public class TypeLattice {
         // _lattice.compare() on ptolemy.data package performance... Run
         // ptolemy/data/type/test/performance.xml before and after...(zk)
         if ( /*false &&*/
-                    (i1 != Type.HASH_INVALID) && (i2 != Type.HASH_INVALID)) {
+                (i1 != Type.HASH_INVALID) && (i2 != Type.HASH_INVALID)) {
             if (_getCachedTypeComparisonResult(i1, i2) == Type.HASH_INVALID) {
                 _setCachedTypeComparisonResult(i1, i2,
-                    _lattice.compare(type1, type2));
+                        _lattice.compare(type1, type2));
             }
 
             return _getCachedTypeComparisonResult(i1, i2);
@@ -178,7 +178,7 @@ public class TypeLattice {
      * indexes as hashes.
      */
     private static final int _getCachedTypeComparisonResult(int index1,
-        int index2) {
+            int index2) {
         return _compareCache[index1][index2];
     }
 
@@ -186,7 +186,7 @@ public class TypeLattice {
      *  indexes as hashes.
      */
     private static final void _setCachedTypeComparisonResult(int index1,
-        int index2, int value) {
+            int index2, int value) {
         _compareCache[index1][index2] = value;
     }
 
@@ -217,8 +217,8 @@ public class TypeLattice {
         public int compare(Object t1, Object t2) {
             if (!(t1 instanceof Type) || !(t2 instanceof Type)) {
                 throw new IllegalArgumentException("TheTypeLattice.compare: "
-                    + "Arguments are not instances of Type: " + " type1 = "
-                    + t1 + ", type2 = " + t2);
+                        + "Arguments are not instances of Type: " + " type1 = "
+                        + t1 + ", type2 = " + t2);
             }
 
             Type ct1 = (Type) t1;
@@ -230,7 +230,7 @@ public class TypeLattice {
             if (t1Rep.equals(t2Rep) && t1Rep instanceof StructuredType) {
                 return ((StructuredType) t1)._compare((StructuredType) t2);
             } else if (_basicLattice.containsNodeWeight(t1Rep)
-                            && _basicLattice.containsNodeWeight(t2Rep)) {
+                    && _basicLattice.containsNodeWeight(t2Rep)) {
                 // Both are not the same structured type, so their relation is
                 // defined by their relation in the basic lattice.
                 return _basicLattice.compare(t1Rep, t2Rep);
@@ -241,10 +241,10 @@ public class TypeLattice {
                 if (t1Rep.equals(t2Rep)) {
                     return SAME;
                 } else if ((t1Rep == BaseType.UNKNOWN)
-                                || (t2Rep == BaseType.GENERAL)) {
+                        || (t2Rep == BaseType.GENERAL)) {
                     return LOWER;
                 } else if ((t2Rep == BaseType.UNKNOWN)
-                                || (t1Rep == BaseType.GENERAL)) {
+                        || (t1Rep == BaseType.GENERAL)) {
                     return HIGHER;
                 } else {
                     return INCOMPARABLE;
@@ -258,8 +258,8 @@ public class TypeLattice {
          */
         public Object[] downSet(Object e) {
             throw new UnsupportedOperationException(
-                "TheTypeLattice.downSet(): operation not supported for "
-                + "the type lattice.");
+                    "TheTypeLattice.downSet(): operation not supported for "
+                    + "the type lattice.");
         }
 
         /** Return the greatest lower bound of two types.
@@ -272,8 +272,8 @@ public class TypeLattice {
         public Object greatestLowerBound(Object t1, Object t2) {
             if (!(t1 instanceof Type) || !(t2 instanceof Type)) {
                 throw new IllegalArgumentException(
-                    "TheTypeLattice.greatestLowerBound: "
-                    + "Arguments are not instances of Type.");
+                        "TheTypeLattice.greatestLowerBound: "
+                        + "Arguments are not instances of Type.");
             }
 
             Type ct1 = (Type) t1;
@@ -285,7 +285,7 @@ public class TypeLattice {
             if (t1Rep.equals(t2Rep) && t1Rep instanceof StructuredType) {
                 return ((StructuredType) t1)._greatestLowerBound((StructuredType) t2);
             } else if (_basicLattice.containsNodeWeight(t1Rep)
-                            && _basicLattice.containsNodeWeight(t2Rep)) {
+                    && _basicLattice.containsNodeWeight(t2Rep)) {
                 // Both are not the same structured type, so their relation is
                 // defined by their relation in the basic lattice.
                 int relation = _basicLattice.compare(t1Rep, t2Rep);
@@ -306,10 +306,10 @@ public class TypeLattice {
                 if (t1Rep.equals(t2Rep)) {
                     return t1;
                 } else if ((t1Rep == BaseType.UNKNOWN)
-                                || (t2Rep == BaseType.GENERAL)) {
+                        || (t2Rep == BaseType.GENERAL)) {
                     return t1;
                 } else if ((t2Rep == BaseType.UNKNOWN)
-                                || (t1Rep == BaseType.GENERAL)) {
+                        || (t1Rep == BaseType.GENERAL)) {
                     return t2;
                 } else {
                     return bottom();
@@ -412,8 +412,8 @@ public class TypeLattice {
         public Object leastUpperBound(Object t1, Object t2) {
             if (!(t1 instanceof Type) || !(t2 instanceof Type)) {
                 throw new IllegalArgumentException(
-                    "TheTypeLattice.leastUpperBound: "
-                    + "Arguments are not instances of Type.");
+                        "TheTypeLattice.leastUpperBound: "
+                        + "Arguments are not instances of Type.");
             }
 
             Type ct1 = (Type) t1;
@@ -425,7 +425,7 @@ public class TypeLattice {
             if (t1Rep.equals(t2Rep) && t1Rep instanceof StructuredType) {
                 return ((StructuredType) t1)._leastUpperBound((StructuredType) t2);
             } else if (_basicLattice.containsNodeWeight(t1Rep)
-                            && _basicLattice.containsNodeWeight(t2Rep)) {
+                    && _basicLattice.containsNodeWeight(t2Rep)) {
                 // Both are not the same structured type, so their relation is
                 // defined by their relation in the basic lattice.
                 int relation = _basicLattice.compare(t1Rep, t2Rep);
@@ -446,10 +446,10 @@ public class TypeLattice {
                 if (t1Rep.equals(t2Rep)) {
                     return t1;
                 } else if ((t1Rep == BaseType.UNKNOWN)
-                                || (t2Rep == BaseType.GENERAL)) {
+                        || (t2Rep == BaseType.GENERAL)) {
                     return t2;
                 } else if ((t2Rep == BaseType.UNKNOWN)
-                                || (t1Rep == BaseType.GENERAL)) {
+                        || (t1Rep == BaseType.GENERAL)) {
                     return t1;
                 } else {
                     return top();
@@ -491,8 +491,8 @@ public class TypeLattice {
          */
         public Object[] upSet(Object e) {
             throw new UnsupportedOperationException(
-                "TheTypeLattice.upSet(): operation not supported for "
-                + "the type lattice.");
+                    "TheTypeLattice.upSet(): operation not supported for "
+                    + "the type lattice.");
         }
 
         ///////////////////////////////////////////////////////////////
@@ -502,12 +502,12 @@ public class TypeLattice {
             _basicLattice = new DirectedAcyclicGraph();
 
             StructuredType arrayRep = (new ArrayType(BaseType.UNKNOWN))
-                            ._getRepresentative();
+                ._getRepresentative();
 
             String[] labels = new String[0];
             Type[] types = new Type[0];
             StructuredType recordRep = (new RecordType(labels, types))
-                            ._getRepresentative();
+                ._getRepresentative();
 
             StructuredType functionRep = new ptolemy.data.type.FunctionType(new ptolemy.data.type.Type[0],
                     ptolemy.data.type.BaseType.UNKNOWN)._getRepresentative();
@@ -566,7 +566,7 @@ public class TypeLattice {
 
             _basicLattice.addEdge(BaseType.INT_MATRIX, BaseType.DOUBLE_MATRIX);
             _basicLattice.addEdge(BaseType.DOUBLE_MATRIX,
-                BaseType.COMPLEX_MATRIX);
+                    BaseType.COMPLEX_MATRIX);
             _basicLattice.addEdge(BaseType.DOUBLE, BaseType.DOUBLE_MATRIX);
 
             _basicLattice.addEdge(BaseType.COMPLEX, BaseType.SCALAR);
@@ -587,7 +587,7 @@ public class TypeLattice {
 
             if (!_basicLattice.isLattice()) {
                 throw new InternalErrorException("TheTypeLattice: The "
-                    + "type hierarchy is not a lattice.");
+                        + "type hierarchy is not a lattice.");
             }
         }
 

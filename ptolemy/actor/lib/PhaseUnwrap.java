@@ -63,7 +63,7 @@ public class PhaseUnwrap extends Transformer {
      *   actor with this name.
      */
     public PhaseUnwrap(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         input.setTypeEquals(BaseType.DOUBLE);

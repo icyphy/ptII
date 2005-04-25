@@ -72,7 +72,7 @@ public class Cone3D extends GRShadedShape {
      *   actor with this name.
      */
     public Cone3D(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         radius = new Parameter(this, "radius");
@@ -132,19 +132,19 @@ public class Cone3D extends GRShadedShape {
     /** If the dimensions change, then update the cone.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         // Check that a box has been previously created.
         if (_changesAllowedNow
-                        && ((attribute == radius) || (attribute == height))) {
+                && ((attribute == radius) || (attribute == height))) {
             if (_scaleTransform != null) {
                 float radiusValue = (float) (((DoubleToken) radius.getToken())
-                                .doubleValue());
+                        .doubleValue());
 
                 float heightValue = (float) (((DoubleToken) height.getToken())
-                                .doubleValue());
+                        .doubleValue());
 
                 _scaleTransform.setScale(new Vector3d(radiusValue, heightValue,
-                        radiusValue));
+                                                 radiusValue));
 
                 // The following seems to be needed so the new scale
                 // takes effect.
@@ -179,13 +179,13 @@ public class Cone3D extends GRShadedShape {
         }
 
         int circleDivisionsValue = ((IntToken) circleDivisions.getToken())
-                        .intValue();
+            .intValue();
         int sideDivisionsValue = ((IntToken) sideDivisions.getToken()).intValue();
 
         float heightValue = (float) ((DoubleToken) height.getToken())
-                        .doubleValue();
+            .doubleValue();
         float radiusValue = (float) ((DoubleToken) radius.getToken())
-                        .doubleValue();
+            .doubleValue();
 
         if (_changesAllowedNow) {
             Cone cone = new Cone(1.0f, 1.0f, primitiveFlags,
@@ -195,7 +195,7 @@ public class Cone3D extends GRShadedShape {
             scaler.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
             _scaleTransform = new Transform3D();
             _scaleTransform.setScale(new Vector3d(radiusValue, heightValue,
-                    radiusValue));
+                                             radiusValue));
             scaler.setTransform(_scaleTransform);
             scaler.addChild(cone);
             _containedNode = scaler;

@@ -126,7 +126,7 @@ public abstract class Quantization implements Cloneable, Serializable {
             Quantization other = (Quantization) object;
 
             if (_overflow.equals(other._overflow)
-                            && _rounding.equals(other._rounding)) {
+                    && _rounding.equals(other._rounding)) {
                 return true;
             }
         }

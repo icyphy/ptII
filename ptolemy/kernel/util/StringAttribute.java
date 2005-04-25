@@ -106,7 +106,7 @@ public class StringAttribute extends AbstractSettableAttribute {
      *   an attribute already in the container.
      */
     public StringAttribute(NamedObj container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _value = "";
     }
@@ -148,7 +148,7 @@ public class StringAttribute extends AbstractSettableAttribute {
      *  @see #isPersistent()
      */
     public void exportMoML(Writer output, int depth, String name)
-        throws IOException {
+            throws IOException {
         if (_isMoMLSuppressed(depth)) {
             return;
         }
@@ -162,7 +162,7 @@ public class StringAttribute extends AbstractSettableAttribute {
         }
 
         output.write(_getIndentPrefix(depth) + "<" + _elementName + " name=\""
-            + name + "\" class=\"" + getClassName() + "\"" + valueTerm + ">\n");
+                + name + "\" class=\"" + getClassName() + "\"" + valueTerm + ">\n");
         _exportMoMLContents(output, depth + 1);
         output.write(_getIndentPrefix(depth) + "</" + _elementName + ">\n");
     }
@@ -265,7 +265,7 @@ public class StringAttribute extends AbstractSettableAttribute {
      *   be propagated.
      */
     protected void _propagateValue(NamedObj destination)
-        throws IllegalActionException {
+            throws IllegalActionException {
         ((Settable) destination).setExpression(getExpression());
     }
 

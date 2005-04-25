@@ -74,7 +74,7 @@ public class TransitionRefinement extends Refinement {
      *   an actor already in the container.
      */
     public TransitionRefinement(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // The base class identifies the class name as TypedCompositeActor
@@ -141,7 +141,7 @@ public class TransitionRefinement extends Refinement {
             // This exception should not occur, so we throw a runtime
             // exception.
             throw new InternalErrorException(this, ex,
-                "TransitionRefinement.newPort: " + "Internal error");
+                    "TransitionRefinement.newPort: " + "Internal error");
         } finally {
             _mirrorDisable = false;
             _workspace.doneWriting();

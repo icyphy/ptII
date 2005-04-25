@@ -66,7 +66,7 @@ public class NonStrictDisplay extends Display {
      *   actor with this name.
      */
     public NonStrictDisplay(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         new Attribute(this, "_nonStrictMarker");
     }
@@ -99,7 +99,7 @@ public class NonStrictDisplay extends Display {
 
                     // If it is a pure string, strip the quotation marks.
                     if ((value.length() > 1) && value.startsWith("\"")
-                                    && value.endsWith("\"")) {
+                            && value.endsWith("\"")) {
                         value = value.substring(1, value.length() - 1);
                     }
                 } else {
@@ -124,7 +124,7 @@ public class NonStrictDisplay extends Display {
             // is already where want it).
             try {
                 int lineOffset = textArea.getLineStartOffset(textArea
-                                    .getLineCount() - 1);
+                        .getLineCount() - 1);
                 textArea.setCaretPosition(lineOffset);
             } catch (BadLocationException ex) {
                 // Ignore ... worst case is that the scrollbar

@@ -84,7 +84,7 @@ public class ImageDisplay extends Sink implements Placeable {
      *   actor with this name.
      */
     public ImageDisplay(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // FIXME: This is required to be an ImageToken, but
@@ -144,8 +144,8 @@ public class ImageDisplay extends Sink implements Placeable {
     }
 
     /** Set the container that this actor should display data in.  If place
-    * is not called, then the actor will create its own frame for display.
-    */
+     * is not called, then the actor will create its own frame for display.
+     */
     public void place(Container container) {
         // If there was a previous container that doesn't match this one,
         // remove the pane from it.
@@ -203,7 +203,7 @@ public class ImageDisplay extends Sink implements Placeable {
 
             if (!(in instanceof ImageToken)) {
                 throw new IllegalActionException(this,
-                    "Input is not an ImageToken. It is: " + in);
+                        "Input is not an ImageToken. It is: " + in);
             }
 
             // Display probably to be done in the Swing event thread.
@@ -239,8 +239,8 @@ public class ImageDisplay extends Sink implements Placeable {
 
                 if (containerEffigy == null) {
                     throw new InternalErrorException(
-                        "Cannot find effigy for top level: "
-                        + toplevel().getFullName());
+                            "Cannot find effigy for top level: "
+                            + toplevel().getFullName());
                 }
 
                 try {
@@ -264,7 +264,7 @@ public class ImageDisplay extends Sink implements Placeable {
                     // set the size of the frame, we have to also set the
                     // size of the internal component.
                     Component[] components = _frame.getContentPane()
-                                                               .getComponents();
+                        .getComponents();
 
                     if (components.length > 0) {
                         _pictureSize.setSize(components[0]);

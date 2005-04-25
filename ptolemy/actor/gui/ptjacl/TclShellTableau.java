@@ -73,7 +73,7 @@ public class TclShellTableau extends Tableau implements ShellInterpreter {
      *   an entity with the specified name.
      */
     public TclShellTableau(TclShellEffigy container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         TclShellFrame frame = new TclShellFrame(this);
@@ -82,19 +82,19 @@ public class TclShellTableau extends Tableau implements ShellInterpreter {
         try {
             //
             _tclInterp.setVar("panelShell",
-                ReflectObject.newInstance(_tclInterp, ShellTextArea.class,
-                    frame._shellTextArea), 0);
+                    ReflectObject.newInstance(_tclInterp, ShellTextArea.class,
+                            frame._shellTextArea), 0);
             _tclInterp.eval("proc puts {s} {" + "global panelShell; "
-                + "$panelShell appendJTextArea $s\\n}");
+                    + "$panelShell appendJTextArea $s\\n}");
 
             // FIXME: what about user initializations in ~/.tclrc?
             // Source Ptolemy specific initializations.
             _tclInterp.eval(
-                "if [catch {source [java::call ptolemy.data.expr.UtilityFunctions findFile \"ptolemy/actor/gui/ptjacl/init.tcl\"]} errMsg ] { puts $errorInfo};");
+                    "if [catch {source [java::call ptolemy.data.expr.UtilityFunctions findFile \"ptolemy/actor/gui/ptjacl/init.tcl\"]} errMsg ] { puts $errorInfo};");
         } catch (TclException ex) {
             throw new IllegalActionException(this, ex,
-                "Could not initialize the " + "tcl interpreter:\n"
-                + _tclInterp.getResult().toString());
+                    "Could not initialize the " + "tcl interpreter:\n"
+                    + _tclInterp.getResult().toString());
         }
     }
 
@@ -147,7 +147,7 @@ public class TclShellTableau extends Tableau implements ShellInterpreter {
          *  @exception NameDuplicationException If a name collision occurs.
          */
         public TclShellFrame(Tableau tableau)
-            throws IllegalActionException, NameDuplicationException {
+                throws IllegalActionException, NameDuplicationException {
             super(tableau);
 
             JPanel component = new JPanel();
@@ -187,7 +187,7 @@ public class TclShellTableau extends Tableau implements ShellInterpreter {
          *   an attribute already in the container.
          */
         public Factory(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+                throws IllegalActionException, NameDuplicationException {
             super(container, name);
         }
 
@@ -208,7 +208,7 @@ public class TclShellTableau extends Tableau implements ShellInterpreter {
             // effigy.  Is this what we want?
             if (effigy instanceof TclShellEffigy) {
                 return new TclShellTableau((TclShellEffigy) effigy,
-                    "TclShellTableau");
+                        "TclShellTableau");
             } else {
                 return null;
             }

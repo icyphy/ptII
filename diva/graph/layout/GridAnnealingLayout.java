@@ -327,7 +327,7 @@ public class GridAnnealingLayout extends AbstractGlobalLayout {
         double heightCost = HEIGHT_FACTOR * Math.abs(phead[1] - ptail[1]);
         double widthCost = WIDTH_FACTOR * Math.abs(phead[0] - ptail[0]);
         double elbowCost = ((heightCost == 0) || (widthCost == 0)) ? 0
-                                                                   : ELBOW_PENALTY;
+            : ELBOW_PENALTY;
         double overlapCost = numOverlaps(edge, _graph) * EDGE_OVERLAP_PENALTY;
         double crossingCost = numCrossings(edge, _graph) * CROSSING_PENALTY;
         return heightCost + widthCost + elbowCost + overlapCost + crossingCost;
@@ -512,8 +512,8 @@ public class GridAnnealingLayout extends AbstractGlobalLayout {
                 Object head = model.getHead(edge);
 
                 if ((tail == null) || (head == null) || (tail == inTail)
-                                || (tail == inHead) || (head == inTail)
-                                || (head == inHead)) {
+                        || (tail == inHead) || (head == inTail)
+                        || (head == inHead)) {
                     //these cannot cross
                     continue;
                 }
@@ -522,8 +522,8 @@ public class GridAnnealingLayout extends AbstractGlobalLayout {
                 int[] headPt = getXY(head);
 
                 if (Line2D.linesIntersect(inTailPt[0], inTailPt[1],
-                                    inHeadPt[0], inHeadPt[1], tailPt[0],
-                                    tailPt[1], headPt[0], headPt[1])) {
+                            inHeadPt[0], inHeadPt[1], tailPt[0],
+                            tailPt[1], headPt[0], headPt[1])) {
                     num++;
                 }
             }
@@ -579,7 +579,7 @@ public class GridAnnealingLayout extends AbstractGlobalLayout {
                             int[] headPt = getXY(head);
 
                             if ((tailPt[which] == headPt[which])
-                                            && (tailPt[which] == inTailPt[which])) {
+                                    && (tailPt[which] == inTailPt[which])) {
                                 int other = which + (1 % 2);
 
                                 // test to see if the "other" coordinate is

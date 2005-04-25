@@ -77,7 +77,7 @@ public class StringReplace extends TypedAtomicActor {
      *   actor with this name.
      */
     public StringReplace(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // Create new parameters and ports.
@@ -145,18 +145,18 @@ public class StringReplace extends TypedAtomicActor {
      *   compile.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == pattern) {
             try {
                 String patternValue = ((StringToken) pattern.getToken())
-                                .stringValue();
+                    .stringValue();
                 _pattern = Pattern.compile(patternValue);
             } catch (PatternSyntaxException ex) {
                 String patternValue = ((StringToken) pattern.getToken())
-                                .stringValue();
+                    .stringValue();
                 throw new IllegalActionException(this, ex,
-                    "Failed to compile regular expression \"" + patternValue
-                    + "\"");
+                        "Failed to compile regular expression \"" + patternValue
+                        + "\"");
             }
         } else {
             super.attributeChanged(attribute);
@@ -175,11 +175,11 @@ public class StringReplace extends TypedAtomicActor {
         pattern.update();
 
         String replacementValue = ((StringToken) replacement.getToken())
-                        .stringValue();
+            .stringValue();
         String stringToEditValue = ((StringToken) stringToEdit.getToken())
-                        .stringValue();
+            .stringValue();
         boolean replaceAllTokens = ((BooleanToken) replaceAll.getToken())
-                        .booleanValue();
+            .booleanValue();
 
         Matcher match = _pattern.matcher(stringToEditValue);
         String outputString;

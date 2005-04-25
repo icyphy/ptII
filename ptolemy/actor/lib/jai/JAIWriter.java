@@ -88,7 +88,7 @@ public abstract class JAIWriter extends Sink {
      *   actor with this name.
      */
     public JAIWriter(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input.setTypeEquals(BaseType.OBJECT);
 
@@ -140,9 +140,9 @@ public abstract class JAIWriter extends Sink {
             if (file.exists()) {
                 if (((BooleanToken) confirmOverwrite.getToken()).booleanValue()) {
                     if (!MessageHandler.yesNoQuestion("OK to overwrite " + file
-                                        + "?")) {
+                                + "?")) {
                         throw new IllegalActionException(this,
-                            "Please select another file name.");
+                                "Please select another file name.");
                     }
                 }
             }
@@ -154,7 +154,7 @@ public abstract class JAIWriter extends Sink {
                     stream = new FileOutputStream(fileRoot);
                 } catch (FileNotFoundException ex) {
                     throw new IllegalActionException(this, ex,
-                        "Could not create stream '" + fileRoot + "'");
+                            "Could not create stream '" + fileRoot + "'");
                 }
 
                 ImageEncoder encoder = ImageCodec.createImageEncoder(_imageEncoderName,
@@ -162,17 +162,17 @@ public abstract class JAIWriter extends Sink {
 
                 if (encoder == null) {
                     throw new IllegalActionException(this,
-                        "Could not create encoder for \"" + _imageEncoderName
-                        + "\", to \"" + fileRoot
-                        + "\". Perhaps the encoder name is wrong?"
-                        + "encoder was: " + _imageEncodeParam);
+                            "Could not create encoder for \"" + _imageEncoderName
+                            + "\", to \"" + fileRoot
+                            + "\". Perhaps the encoder name is wrong?"
+                            + "encoder was: " + _imageEncodeParam);
                 }
 
                 try {
                     encoder.encode(_image);
                 } catch (IOException ex) {
                     throw new IllegalActionException(this, ex,
-                        "Couldn't encode image");
+                            "Couldn't encode image");
                 }
             } finally {
                 if (stream != null) {
@@ -180,7 +180,7 @@ public abstract class JAIWriter extends Sink {
                         stream.close();
                     } catch (Throwable throwable) {
                         System.out.println("Ignoring failure to close stream "
-                            + "on " + fileRoot);
+                                + "on " + fileRoot);
                         throwable.printStackTrace();
                     }
                 }

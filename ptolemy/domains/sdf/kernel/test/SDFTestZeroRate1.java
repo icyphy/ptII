@@ -63,7 +63,7 @@ public class SDFTestZeroRate1 extends Transformer {
      *   actor with this name.
      */
     public SDFTestZeroRate1(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         value = new Parameter(this, "value", new IntToken(1));
 
@@ -116,12 +116,12 @@ public class SDFTestZeroRate1 extends Transformer {
      */
     public void fire() throws IllegalActionException {
         for (int i = 0; i < ((IntToken) input_rate1.getToken()).intValue();
-                        i++) {
+             i++) {
             input.get(0);
         }
 
         for (int i = 0; i < ((IntToken) output_rate1.getToken()).intValue();
-                        i++) {
+             i++) {
             output.send(0, value.getToken());
         }
     }

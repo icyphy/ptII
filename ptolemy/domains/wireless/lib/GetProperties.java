@@ -84,7 +84,7 @@ public class GetProperties extends TypedAtomicActor {
      *   actor with this name.
      */
     public GetProperties(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         output = new TypedIOPort(this, "output", false, true);
@@ -93,8 +93,8 @@ public class GetProperties extends TypedAtomicActor {
         trigger = new TypedIOPort(this, "trigger", true, false);
 
         _attachText("_iconDescription",
-            "<svg>\n" + "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
-            + "style=\"fill:green\"/>\n" + "</svg>\n");
+                "<svg>\n" + "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
+                + "style=\"fill:green\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -146,7 +146,7 @@ public class GetProperties extends TypedAtomicActor {
         }
 
         throw new IllegalActionException(this,
-            "Could not find a port to get properties from.");
+                "Could not find a port to get properties from.");
     }
 
     /** Create receivers and set up the type constraints on the
@@ -168,13 +168,13 @@ public class GetProperties extends TypedAtomicActor {
                 // Found the port.
                 Entity container = (Entity) (port.getContainer());
                 String channelName = ((WirelessIOPort) port).outsideChannel
-                                .stringValue();
+                    .stringValue();
                 CompositeEntity container2 = (CompositeEntity) container
-                                .getContainer();
+                    .getContainer();
 
                 if (container2 == null) {
                     throw new IllegalActionException(this,
-                        "The container does not have a container.");
+                            "The container does not have a container.");
                 }
 
                 Entity channel = container2.getEntity(channelName);
@@ -189,8 +189,8 @@ public class GetProperties extends TypedAtomicActor {
                     }
                 } else {
                     throw new IllegalActionException(this,
-                        "The connected port does not refer to a "
-                        + "valid channel.");
+                            "The connected port does not refer to a "
+                            + "valid channel.");
                 }
 
                 return;
@@ -198,7 +198,7 @@ public class GetProperties extends TypedAtomicActor {
         }
 
         throw new IllegalActionException(this,
-            "Could not find a port to get the type of the "
-            + "properties from.");
+                "Could not find a port to get the type of the "
+                + "properties from.");
     }
 }

@@ -72,7 +72,7 @@ public class CASDFComposite extends TypedCompositeActor {
      *   an actor already in the container.
      */
     public CASDFComposite(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // Set version to 0.
@@ -100,7 +100,7 @@ public class CASDFComposite extends TypedCompositeActor {
 
         // Randomly generate a vectorization factor for the SDF Director
         sdfDirector.vectorizationFactor.setExpression(
-            "1 + roundToInt(random()*9)");
+                "1 + roundToInt(random()*9)");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -164,14 +164,14 @@ public class CASDFComposite extends TypedCompositeActor {
                     actors[i].input_tokenConsumptionRate.setToken("0");
                 } else {
                     actors[i].input_tokenConsumptionRate.setToken(
-                        "1 + roundToInt(random()*9)");
+                            "1 + roundToInt(random()*9)");
                 }
 
                 if (i == (totalActors - 1)) {
                     actors[i].output_tokenProductionRate.setToken("0");
                 } else {
                     actors[i].output_tokenProductionRate.setToken(
-                        "1 + roundToInt(random()*9)");
+                            "1 + roundToInt(random()*9)");
                 }
 
                 // Connect the input and output ports to the previous and next
@@ -216,7 +216,7 @@ public class CASDFComposite extends TypedCompositeActor {
         System.out.println("The IMP for Cache Aware Schedule is : " + imp);
         System.out.println("The DMP for Cache Aware Schedule is : " + dmp);
         System.out.println("The total CMP for Cache Aware Schedule is : "
-            + (imp + dmp));
+                + (imp + dmp));
         _cacheAwareScheduler.calculateMPMBScheduleCMP();
         _cacheAwareScheduler.calculateSAMAScheduleCMP();
         super.wrapup();

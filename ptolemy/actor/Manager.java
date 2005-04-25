@@ -166,7 +166,7 @@ public class Manager extends NamedObj implements Runnable {
      *  @exception IllegalActionException If the name has a period.
      */
     public Manager(Workspace workspace, String name)
-        throws IllegalActionException {
+            throws IllegalActionException {
         super(workspace, name);
     }
 
@@ -289,7 +289,7 @@ public class Manager extends NamedObj implements Runnable {
         synchronized (this) {
             if (_state != IDLE) {
                 throw new IllegalActionException(this,
-                    "Model is already running.");
+                        "Model is already running.");
             }
         }
 
@@ -381,7 +381,7 @@ public class Manager extends NamedObj implements Runnable {
                         // Ok, it is not a KernelException, so we
                         // rethrow it as the cause of a KernelException
                         throw new IllegalActionException(this,
-                            initialThrowable, null);
+                                initialThrowable, null);
                     }
                 }
             }
@@ -430,8 +430,8 @@ public class Manager extends NamedObj implements Runnable {
 
         if (!(container instanceof CompositeActor)) {
             throw new InternalErrorException(
-                "Attempted to call finish() on an executing manager "
-                + "with no associated CompositeActor model");
+                    "Attempted to call finish() on an executing manager "
+                    + "with no associated CompositeActor model");
         }
 
         // Used to just call stopFire() here, but this does not set
@@ -503,7 +503,7 @@ public class Manager extends NamedObj implements Runnable {
      *   if there is no container.
      */
     public synchronized void initialize()
-        throws KernelException, IllegalActionException {
+            throws KernelException, IllegalActionException {
         try {
             _workspace.getReadAccess();
 
@@ -676,8 +676,8 @@ public class Manager extends NamedObj implements Runnable {
 
         if (!(container instanceof CompositeActor)) {
             throw new InternalErrorException(
-                "Attempted to call pause() on an executing manager "
-                + "with no associated CompositeActor model");
+                    "Attempted to call pause() on an executing manager "
+                    + "with no associated CompositeActor model");
         }
 
         ((CompositeActor) container).stopFire();
@@ -706,8 +706,8 @@ public class Manager extends NamedObj implements Runnable {
                         // Set the new state to show that execution is paused
                         // on a breakpoint.
                         PAUSED_ON_BREAKPOINT.setDescription(
-                            "pausing on breakpoint: " + breakpointMessage
-                            + ".  Click Resume to continue.");
+                                "pausing on breakpoint: " + breakpointMessage
+                                + ".  Click Resume to continue.");
                         _setState(PAUSED_ON_BREAKPOINT);
 
                         _resumeNotifyWaiting = true;
@@ -722,16 +722,16 @@ public class Manager extends NamedObj implements Runnable {
                         _setState(ITERATING);
                     } else { //if (_state == ITERATING) {
                         throw new InternalErrorException("State was changed "
-                            + "while pauseOnBreakpoint was called.");
+                                + "while pauseOnBreakpoint was called.");
                     }
                 } //synchronized(this) {
             } else { //if (_state == ITERATING) {
                 throw new InternalErrorException("pauseOnBreakpoint occurred "
-                    + "while not iterating the model.");
+                        + "while not iterating the model.");
             }
         } catch (InterruptedException error) {
             throw new InternalErrorException("Interrupted while trying to "
-                + "wait for resume() method to be called.");
+                    + "wait for resume() method to be called.");
         }
     }
 
@@ -747,13 +747,13 @@ public class Manager extends NamedObj implements Runnable {
      *   if there is no container.
      */
     public synchronized void preinitializeAndResolveTypes()
-        throws KernelException {
+            throws KernelException {
         try {
             _workspace.getReadAccess();
 
             if (_state != IDLE) {
                 throw new IllegalActionException(this,
-                    "The model is already running.");
+                        "The model is already running.");
             }
 
             if (_container == null) {
@@ -872,7 +872,7 @@ public class Manager extends NamedObj implements Runnable {
                     otherActorContainer = null;
                 } else {
                     otherActorContainer = (NamedObj) otherActorContainer
-                                    .getContainer();
+                        .getContainer();
                 }
             }
         }
@@ -918,8 +918,8 @@ public class Manager extends NamedObj implements Runnable {
                     notifyAll();
                 } else {
                     throw new InternalErrorException("resume() should be the "
-                        + "only method that goes from "
-                        + "PAUSED to not paused");
+                            + "only method that goes from "
+                            + "PAUSED to not paused");
                 }
             }
         } else if (_state == PAUSED_ON_BREAKPOINT) {
@@ -989,7 +989,7 @@ public class Manager extends NamedObj implements Runnable {
     public void startRun() throws IllegalActionException {
         if (_state != IDLE) {
             throw new IllegalActionException(this,
-                "Model is " + _state.getDescription());
+                    "Model is " + _state.getDescription());
         }
 
         // Set this within the calling thread to avoid race conditions
@@ -997,12 +997,12 @@ public class Manager extends NamedObj implements Runnable {
         // actually starts up.
         _finishRequested = false;
         _thread = new PtolemyThread(this) {
-                    public void run() {
-                        // The run() method will set _thread to null
-                        // upon completion of the run.
-                        Manager.this.run();
-                    }
-                };
+                public void run() {
+                    // The run() method will set _thread to null
+                    // upon completion of the run.
+                    Manager.this.run();
+                }
+            };
 
         // Priority set to the minimum to get responsive UI during execution.
         _thread.setPriority(Thread.MIN_PRIORITY);
@@ -1080,11 +1080,11 @@ public class Manager extends NamedObj implements Runnable {
      *  and the amount of memory used.
      */
     public static String timeAndMemory(long startTime, long totalMemory,
-        long freeMemory) {
+            long freeMemory) {
         return System.currentTimeMillis() - startTime + " ms. Memory: "
-        + totalMemory + "K Free: " + freeMemory + "K ("
-        + Math.round((((double) freeMemory) / ((double) totalMemory)) * 100.0)
-        + "%)";
+            + totalMemory + "K Free: " + freeMemory + "K ("
+            + Math.round((((double) freeMemory) / ((double) totalMemory)) * 100.0)
+            + "%)";
     }
 
     /** If there is an active thread created by startRun(), then wait
@@ -1133,8 +1133,8 @@ public class Manager extends NamedObj implements Runnable {
         synchronized (this) {
             if ((_state == IDLE) || (_state == WRAPPING_UP)) {
                 throw new IllegalActionException(this,
-                    "Cannot wrap up. The current state is: "
-                    + _state.getDescription());
+                        "Cannot wrap up. The current state is: "
+                        + _state.getDescription());
             }
 
             if (_container == null) {
@@ -1162,13 +1162,13 @@ public class Manager extends NamedObj implements Runnable {
             // $PTII/util/testsuite/testDefs.tcl sets
             // ptolemy.ptII.exitAfterWrapup
             if (StringUtilities.getProperty("ptolemy.ptII.exitAfterWrapup")
-                                           .length() > 0) {
+                    .length() > 0) {
                 throw new KernelRuntimeException(this,
-                    "Normally, we would "
-                    + "exit here because Manager.exitAfterWrapup() "
-                    + "was called.  However, because the "
-                    + "ptolemy.ptII.exitAfterWrapup property "
-                    + "is set, we throw this exception instead.");
+                        "Normally, we would "
+                        + "exit here because Manager.exitAfterWrapup() "
+                        + "was called.  However, because the "
+                        + "ptolemy.ptII.exitAfterWrapup property "
+                        + "is set, we throw this exception instead.");
             } else {
                 // Non-zero indicates a problem.
                 System.exit(0);
@@ -1204,7 +1204,7 @@ public class Manager extends NamedObj implements Runnable {
     protected synchronized void _notifyListenersOfCompletion() {
         if (_debugging) {
             _debug("-- Manager completed execution with " + _iterationCount
-                + " iterations");
+                    + " iterations");
         }
 
         if (_executionListeners != null) {

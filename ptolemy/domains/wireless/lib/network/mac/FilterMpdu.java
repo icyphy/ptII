@@ -70,7 +70,7 @@ public class FilterMpdu extends MACActorBase {
      *   an actor already in the container.
      */
     public FilterMpdu(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         fromValidateMpdu = new TypedIOPort(this, "fromValidateMpdu", true, false);
@@ -140,9 +140,9 @@ public class FilterMpdu extends MACActorBase {
                         new Token[] {
                             new IntToken(RxIndicate),
 
-                        //TODO: how to implement this?
-                        //msgout->pdu=pdu->copyEncapMsg();
-                        pdu,
+                            //TODO: how to implement this?
+                            //msgout->pdu=pdu->copyEncapMsg();
+                            pdu,
                             msg.get("endRx"),
                             msg.get("rxRate")
                         });
@@ -165,9 +165,9 @@ public class FilterMpdu extends MACActorBase {
                             new Token[] {
                                 new IntToken(RxIndicate),
 
-                            //TODO: how to implement this?
-                            //msgout->pdu=pdu->copyEncapMsg();
-                            pdu,
+                                //TODO: how to implement this?
+                                //msgout->pdu=pdu->copyEncapMsg();
+                                pdu,
                                 msg.get("endRx"),
                                 msg.get("rxRate")
                             });
@@ -204,7 +204,7 @@ public class FilterMpdu extends MACActorBase {
             // if this packet is not for me
             else {
                 if ((intFieldValue(pdu, "Type") == ControlType)
-                                && (intFieldValue(pdu, "Subtype") == Rts)) {
+                        && (intFieldValue(pdu, "Subtype") == Rts)) {
                     src = Rts;
                 }
 
@@ -249,7 +249,7 @@ public class FilterMpdu extends MACActorBase {
             int[] tuple = (int[]) tuples.next();
 
             if ((addr == tuple[0]) && (seqNum == tuple[1])
-                            && (fragNum == tuple[2])) {
+                    && (fragNum == tuple[2])) {
                 return true;
             }
         }
@@ -276,10 +276,10 @@ public class FilterMpdu extends MACActorBase {
 
         // only if no entry is found, will we add a new one
         int[] tuple = new int[] {
-                intFieldValue(pdu, "Addr2"),
-                intFieldValue(pdu, "SeqNum"),
-                intFieldValue(pdu, "FragNum")
-            };
+            intFieldValue(pdu, "Addr2"),
+            intFieldValue(pdu, "SeqNum"),
+            intFieldValue(pdu, "FragNum")
+        };
 
         if (_tupleCache.size() == _TUPLE_CACHE_SIZE) {
             _tupleCache.removeLast();

@@ -44,18 +44,18 @@ public class AnalysisException extends RuntimeException {
     }
 
     /** Constructor with a text description as argument.
-    *
-    *  @param message The text description of the exception.
-    */
+     *
+     *  @param message The text description of the exception.
+     */
     public AnalysisException(String message) {
         super(message);
     }
 
     /** Constructor with a text description and cause as argument.
-    *
-    *  @param message The text description of the exception.
-    *  @param cause The exception that caused this exception.
-    */
+     *
+     *  @param message The text description of the exception.
+     *  @param cause The exception that caused this exception.
+     */
     public AnalysisException(String message, Throwable cause) {
         super(message, cause);
     }

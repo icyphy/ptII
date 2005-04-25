@@ -90,7 +90,7 @@ public class SketchedSource extends SequencePlotter implements EditListener {
      *   actor with this name.
      */
     public SketchedSource(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         output = new TypedIOPort(this, "output", false, true);
@@ -191,13 +191,13 @@ public class SketchedSource extends SequencePlotter implements EditListener {
      *   is <i>length</i> and its value is not positive.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == length) {
             int lengthValue = ((IntToken) length.getToken()).intValue();
 
             if (lengthValue < 0) {
                 throw new IllegalActionException(this,
-                    "length: value is required to be positive.");
+                        "length: value is required to be positive.");
             }
 
             if (lengthValue != _previousLengthValue) {
@@ -243,13 +243,13 @@ public class SketchedSource extends SequencePlotter implements EditListener {
             // Optionally execute the model here if it is idle.
             try {
                 boolean runValue = ((BooleanToken) runOnModification.getToken())
-                                .booleanValue();
+                    .booleanValue();
 
                 if (runValue) {
                     Manager manager = getManager();
 
                     if ((manager != null)
-                                    && (manager.getState() == Manager.IDLE)) {
+                            && (manager.getState() == Manager.IDLE)) {
                         manager.startRun();
                     }
                 }
@@ -271,7 +271,7 @@ public class SketchedSource extends SequencePlotter implements EditListener {
         super.fire();
 
         boolean periodicValue = ((BooleanToken) periodic.getToken())
-                        .booleanValue();
+            .booleanValue();
 
         // If this isn't periodic, then send zero only, since we already
         // sent out the entire waveform in the initialize method.
@@ -400,7 +400,7 @@ public class SketchedSource extends SequencePlotter implements EditListener {
 
                 if ((defaultValues != null) && (i < defaultValues.length())) {
                     value = ((DoubleToken) defaultValues.getElement(i))
-                                    .doubleValue();
+                        .doubleValue();
                 }
 
                 ((Plot) plot).addPoint(0, (double) i, value, connected);
@@ -417,7 +417,7 @@ public class SketchedSource extends SequencePlotter implements EditListener {
     // Update the initial trace parameter if the sketch on screen has
     // been modified by the user.
     private synchronized void _updateInitialTrace()
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (_dataModified) {
             try {
                 // Data has been modified on screen by the user.

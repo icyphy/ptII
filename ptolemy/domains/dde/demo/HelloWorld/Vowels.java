@@ -60,7 +60,7 @@ public class Vowels extends StringOut {
      *  superclass throws a NameDuplicationException .
      */
     public Vowels(TypedCompositeActor container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _vowels = new LinkedList();
     }

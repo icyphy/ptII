@@ -71,7 +71,7 @@ public class PythonShellTableau extends Tableau implements ShellInterpreter {
      *   an entity with the specified name.
      */
     public PythonShellTableau(PythonShellEffigy container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         PythonShellFrame frame = new PythonShellFrame(this);
@@ -131,7 +131,7 @@ public class PythonShellTableau extends Tableau implements ShellInterpreter {
          *  @exception NameDuplicationException If a name collision occurs.
          */
         public PythonShellFrame(Tableau tableau)
-            throws IllegalActionException, NameDuplicationException {
+                throws IllegalActionException, NameDuplicationException {
             super(tableau);
 
             JPanel component = new JPanel();
@@ -168,7 +168,7 @@ public class PythonShellTableau extends Tableau implements ShellInterpreter {
          *   an attribute already in the container.
          */
         public Factory(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+                throws IllegalActionException, NameDuplicationException {
             super(container, name);
         }
 
@@ -189,7 +189,7 @@ public class PythonShellTableau extends Tableau implements ShellInterpreter {
             // effigy.  Is this what we want?
             if (effigy instanceof PythonShellEffigy) {
                 return new PythonShellTableau((PythonShellEffigy) effigy,
-                    "PythonShellTableau");
+                        "PythonShellTableau");
             } else {
                 return null;
             }

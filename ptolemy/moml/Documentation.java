@@ -71,7 +71,7 @@ public class Documentation extends StringAttribute {
      *   an attribute already in the container.
      */
     public Documentation(NamedObj container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         setVisibility(Settable.EXPERT);
     }
@@ -123,7 +123,7 @@ public class Documentation extends StringAttribute {
      *  @see #isPersistent()
      */
     public void exportMoML(Writer output, int depth, String name)
-        throws IOException {
+            throws IOException {
         if (_isMoMLSuppressed(depth)) {
             return;
         }
@@ -131,12 +131,12 @@ public class Documentation extends StringAttribute {
         if (name.equals("_doc")) {
             // Name is the default name.  Omit.
             output.write(_getIndentPrefix(depth) + "<doc>"
-                + StringUtilities.escapeForXML(getExpression()) + "</doc>\n");
+                    + StringUtilities.escapeForXML(getExpression()) + "</doc>\n");
         } else {
             // Name is not the default name.
             output.write(_getIndentPrefix(depth) + "<doc name=\"" + name
-                + "\">" + StringUtilities.escapeForXML(getExpression())
-                + "</doc>\n");
+                    + "\">" + StringUtilities.escapeForXML(getExpression())
+                    + "</doc>\n");
         }
     }
 

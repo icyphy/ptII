@@ -55,15 +55,15 @@ import ptolemy.backtrack.ast.TypeAnalyzerState;
 /**
 
 
- @author Thomas Feng
- @version $Id$
- @since Ptolemy II 5.1
- @Pt.ProposedRating Red (tfeng)
- @Pt.AcceptedRating Red (tfeng)
- */
+@author Thomas Feng
+@version $Id$
+@since Ptolemy II 5.1
+@Pt.ProposedRating Red (tfeng)
+@Pt.AcceptedRating Red (tfeng)
+*/
 public class ConstructorTransformer extends AbstractTransformer
-        implements ConstructorHandler, ClassHandler, CrossAnalysisHandler,
-        MethodDeclarationHandler {
+    implements ConstructorHandler, ClassHandler, CrossAnalysisHandler,
+               MethodDeclarationHandler {
 
     public void enter(FieldDeclaration node, TypeAnalyzerState state) {
         _isStaticField.push(new Boolean(Modifier.isStatic(node.getModifiers())));
@@ -181,7 +181,7 @@ public class ConstructorTransformer extends AbstractTransformer
         if (SPECIAL_TYPE_MAPPING.containsKey(type.getName())) {
             type = Type.createType((String)SPECIAL_TYPE_MAPPING.get(type.getName()));
             newNode.setName(createName(ast,
-                    getClassName(type.getName(), state, root)));
+                                    getClassName(type.getName(), state, root)));
             Type.setType(node, type);
         }
 

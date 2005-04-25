@@ -63,7 +63,7 @@ public class UnitAttribute extends AbstractSettableAttribute {
      *  an attribute already in the container.
      */
     public UnitAttribute()
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super();
     }
 
@@ -76,7 +76,7 @@ public class UnitAttribute extends AbstractSettableAttribute {
      *  an attribute already in the container.
      */
     public UnitAttribute(NamedObj container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -106,7 +106,7 @@ public class UnitAttribute extends AbstractSettableAttribute {
      *  @see ptolemy.kernel.util.NamedObj#exportMoML(Writer, int, String)
      */
     public void exportMoML(Writer output, int depth, String name)
-        throws IOException {
+            throws IOException {
         String value = getExpression();
         String valueTerm = "";
 
@@ -115,8 +115,8 @@ public class UnitAttribute extends AbstractSettableAttribute {
                 + "\"";
 
             output.write(_getIndentPrefix(depth) + "<" + _elementName
-                + " name=\"" + name + "\" class=\"" + getClassName() + "\""
-                + valueTerm + ">\n");
+                    + " name=\"" + name + "\" class=\"" + getClassName() + "\""
+                    + valueTerm + ">\n");
             _exportMoMLContents(output, depth + 1);
             output.write(_getIndentPrefix(depth) + "</" + _elementName + ">\n");
         }
@@ -199,7 +199,7 @@ public class UnitAttribute extends AbstractSettableAttribute {
 
                 for (int i = 0; i < uEquations.size(); i++) {
                     uConstraints.addConstraint((UnitEquation) (uEquations
-                                    .elementAt(i)));
+                                                       .elementAt(i)));
                 }
 
                 setUnitConstraints(uConstraints);
@@ -212,7 +212,7 @@ public class UnitAttribute extends AbstractSettableAttribute {
             }
         } catch (ParseException ex) {
             throw new IllegalActionException(this, ex,
-                "Can't parse the expression " + expression);
+                    "Can't parse the expression " + expression);
         }
     }
 
@@ -261,7 +261,7 @@ public class UnitAttribute extends AbstractSettableAttribute {
      *   be propagated.
      */
     protected void _propagateValue(NamedObj destination)
-        throws IllegalActionException {
+            throws IllegalActionException {
         ((Settable) destination).setExpression(getExpression());
     }
 

@@ -72,5 +72,5 @@ public class LinkedHashSet extends HashSet implements Set, Cloneable, Serializab
     }
 
     private FieldRecord[] $RECORDS = new FieldRecord[] {
-        };
+    };
 }

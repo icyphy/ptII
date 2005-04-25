@@ -124,7 +124,7 @@ public class ManhattanConnector extends AbstractConnector {
         if (count > 1) {
             // pick a location for the label in the middle of the connector.
             _labelLocation = new Point2D.Double((poly.getX(count / 2)
-                    + poly.getX((count / 2) - 1)) / 2,
+                                                        + poly.getX((count / 2) - 1)) / 2,
                     (poly.getY(count / 2) + poly.getY((count / 2) - 1)) / 2);
         } else {
             // attach the label to the only point of the connector.
@@ -178,7 +178,7 @@ public class ManhattanConnector extends AbstractConnector {
                     //curve around the corner
                     path.lineTo((float) intX0, (float) intY0);
                     path.curveTo((float) x1, (float) y1, (float) x1,
-                        (float) y1, (float) intX1, (float) intY1);
+                            (float) y1, (float) intX1, (float) intY1);
                     prevX = x2;
                     prevY = y2;
                 }
@@ -186,7 +186,7 @@ public class ManhattanConnector extends AbstractConnector {
 
             //finally close the last segment with a line.
             path.lineTo((float) poly.getX(poly.getVertexCount() - 1),
-                (float) poly.getY(poly.getVertexCount() - 1));
+                    (float) poly.getY(poly.getVertexCount() - 1));
 
             //now set the shape
             setShape(path);

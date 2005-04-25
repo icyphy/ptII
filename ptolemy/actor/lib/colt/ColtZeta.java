@@ -51,7 +51,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
    <p> This actor instantiates a
    <a href="http://hoschek.home.cern.ch/hoschek/colt/V1.0.3/doc/cern/jet/random/Zeta.html">cern.jet.random.Zeta</a> object with
-    ro and pk set to 1.0.
+   ro and pk set to 1.0.
 
    @author David Bauer and Kostas Oikonomou
    @version $Id$
@@ -69,7 +69,7 @@ public class ColtZeta extends ColtRandomSource {
      *   actor with this name.
      */
     public ColtZeta(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         output.setTypeEquals(BaseType.INT);

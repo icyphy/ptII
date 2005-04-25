@@ -160,7 +160,7 @@ public class TransformContext {
             return new AffineTransform();
         } else {
             TransformContext parentContext = _component.getParent()
-                                                                   .getTransformContext();
+                .getTransformContext();
             AffineTransform transform = _transform;
 
             if (parentContext == context) {
@@ -253,7 +253,7 @@ public class TransformContext {
         } else {
             CanvasComponent p = _component.getParent();
             _screenTransform = new AffineTransform(p.getTransformContext()
-                                                                .getScreenTransform());
+                    .getScreenTransform());
             _screenTransform.concatenate(_transform);
         }
 

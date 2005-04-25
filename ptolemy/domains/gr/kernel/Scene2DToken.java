@@ -87,9 +87,9 @@ public class Scene2DToken extends Token {
             return new BooleanToken(this == token);
         } else {
             throw new IllegalActionException(
-                "Equality test not supported between "
-                + this.getClass().getName() + " and "
-                + token.getClass().getName() + ".");
+                    "Equality test not supported between "
+                    + this.getClass().getName() + " and "
+                    + token.getClass().getName() + ".");
         }
     }
 
@@ -127,8 +127,8 @@ public class Scene2DToken extends Token {
                 return token;
             } else {
                 throw new IllegalActionException("Attempt to convert token "
-                    + token
-                    + " into a scene graph token, which is not possible.");
+                        + token
+                        + " into a scene graph token, which is not possible.");
             }
         }
 

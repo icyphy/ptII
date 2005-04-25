@@ -78,7 +78,7 @@ public class IconViewScreen3D extends ViewScreen3D {
      *   CompositeActor and the name collides with an entity in the container.
      */
     public IconViewScreen3D(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         icon = new ImageIcon(this, "_icon");
@@ -134,8 +134,8 @@ public class IconViewScreen3D extends ViewScreen3D {
             Raster raster = new Raster(new Point3f(-1.0f, -1.0f, -1.0f),
                     Raster.RASTER_COLOR, 0, 0, _frameWidth, _frameHeight,
                     new ImageComponent2D(ImageComponent.FORMAT_RGB,
-                        new BufferedImage(_frameWidth, _frameHeight,
-                            BufferedImage.TYPE_INT_RGB)), null);
+                            new BufferedImage(_frameWidth, _frameHeight,
+                                    BufferedImage.TYPE_INT_RGB)), null);
 
             context.readRaster(raster);
 

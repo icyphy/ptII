@@ -104,7 +104,7 @@ public class TestConstant implements InequalityTerm {
      */
     public void initialize(Object e) throws IllegalActionException {
         throw new IllegalActionException("TestConstant.initialize: This term "
-            + "is a constant.");
+                + "is a constant.");
     }
 
     /** Check whether the current value of this term is acceptable,
@@ -134,7 +134,7 @@ public class TestConstant implements InequalityTerm {
      */
     public void setValue(Object e) throws IllegalActionException {
         throw new IllegalActionException("TestConstant.setValue: This term "
-            + "is a constant.");
+                + "is a constant.");
     }
 
     /** Override the base class to describe the constant.

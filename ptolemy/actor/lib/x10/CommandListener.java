@@ -83,7 +83,7 @@ public class CommandListener extends Receiver {
      *   actor with this name.
      */
     public CommandListener(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // Create output port.
@@ -168,8 +168,8 @@ public class CommandListener extends Receiver {
             int unitCodeValue = ((IntToken) unitCode.getToken()).intValue();
 
             if (sensedHouseCode.equals(houseCodeValue)
-                            && (sensedUnitCode == unitCodeValue)
-                            && (function == functionOfInterest)) {
+                    && (sensedUnitCode == unitCodeValue)
+                    && (function == functionOfInterest)) {
                 detected.send(0, BooleanToken.TRUE);
             } else {
                 detected.send(0, BooleanToken.FALSE);

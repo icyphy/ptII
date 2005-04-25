@@ -79,7 +79,7 @@ public class DDFSelect extends TypedAtomicActor {
      *   an actor already in the container.
      */
     public DDFSelect(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         input = new TypedIOPort(this, "input", true, false);
@@ -208,9 +208,9 @@ public class DDFSelect extends TypedAtomicActor {
                 // If the value of the received control token is out of
                 // range, throw an IllegalActionException.
                 throw new IllegalActionException(this,
-                    "The width of the " + "input port is " + input.getWidth()
-                    + " , but " + "the value of the received control token: "
-                    + _control + " is out of range.");
+                        "The width of the " + "input port is " + input.getWidth()
+                        + " , but " + "the value of the received control token: "
+                        + _control + " is out of range.");
             }
         }
     }

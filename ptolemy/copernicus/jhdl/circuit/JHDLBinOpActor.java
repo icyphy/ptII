@@ -64,7 +64,7 @@ import java.util.*;
 */
 public class JHDLBinOpActor extends JHDLAtomicActor {
     JHDLBinOpActor(CompositeEntity container, int operation)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container);
         input1 = new JHDLIOPort(this, "input1");
         input2 = new JHDLIOPort(this, "input2");
@@ -83,8 +83,8 @@ public class JHDLBinOpActor extends JHDLAtomicActor {
         if (input1.isResolved() && input2.isResolved()) {
             if (input1.getSignalWidth() != input2.getSignalWidth()) {
                 System.out.println("Binop input1/input2 signal mismatch: "
-                    + input1.getSignalWidth() + " vs. "
-                    + input2.getSignalWidth());
+                        + input1.getSignalWidth() + " vs. "
+                        + input2.getSignalWidth());
                 return false;
             }
 
@@ -145,12 +145,12 @@ public class JHDLBinOpActor extends JHDLAtomicActor {
 
             Wire allbits = cell.wire(64);
             new arrayMult(cell, // parent
-                input1Wire, // x
-                input2Wire, // y
-                null, // clk_en
-                allbits, // pout
-                true, // signed
-                0); // pipedepth
+                    input1Wire, // x
+                    input2Wire, // y
+                    null, // clk_en
+                    allbits, // pout
+                    true, // signed
+                    0); // pipedepth
             binOpWire = allbits.range(31, 0);
             break;
         }
@@ -161,7 +161,7 @@ public class JHDLBinOpActor extends JHDLAtomicActor {
 
     protected String _description(int detail, int indent, int bracket) {
         return super._description(detail, indent, bracket) + " { OP="
-        + _operation + "}";
+            + _operation + "}";
     }
 
     public static final int ADD = 1;

@@ -104,7 +104,7 @@ public class PitchDetector {
 
         // Main loop.
         for (int vectorLoopPos = 0; vectorLoopPos < inputArray.length;
-                        vectorLoopPos++) {
+             vectorLoopPos++) {
             //System.out.println("vectorLoopPos " + vectorLoopPos);
             // Want to leave half of the array full of zeros, so that
             // we will have the appropriate amount of zero-padding
@@ -121,9 +121,9 @@ public class PitchDetector {
 
                     // Step 3. Take the Mag^2 of the DFT.
                     for (int ind2 = 0; ind2 < _recentInputArray.length;
-                                    ind2++) {
+                         ind2++) {
                         _magSqDFT[ind2] = _dftInput[ind2].magnitude() * _dftInput[ind2]
-                                        .magnitude();
+                            .magnitude();
                     }
 
                     // Step 4. Take IDFT of _magSqDFT.
@@ -138,7 +138,7 @@ public class PitchDetector {
                         //System.out.println("_autocorEst[" +i+"] = " + _autocorEst[i]);
                         if (_autocorEst[i] > 1.01) {
                             System.out.println("FIXME: _autocorEst[" + i
-                                + "] = " + _autocorEst[i]);
+                                    + "] = " + _autocorEst[i]);
                         }
                     }
 
@@ -162,7 +162,7 @@ public class PitchDetector {
 
                     if (firstZzeroIndex > 0) {
                         for (int m = firstZzeroIndex; m < _maxAutoCorInd;
-                                        m++) {
+                             m++) {
                             if (_autocorEst[m] > maxv) {
                                 maxv = _autocorEst[m];
                                 maxInd = m;

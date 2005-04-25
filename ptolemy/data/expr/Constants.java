@@ -245,11 +245,11 @@ public class Constants {
     private static void _putProperty(String variableName, String property) {
         try {
             _table.put(variableName,
-                new StringToken(StringUtilities.getProperty(property)));
+                    new StringToken(StringUtilities.getProperty(property)));
         } catch (SecurityException ex) {
             System.out.println("Warning: While trying to set '" + variableName
-                + "', failed to read '" + property + "' property "
-                + "(-sandbox always causes this)");
+                    + "', failed to read '" + property + "' property "
+                    + "(-sandbox always causes this)");
         }
     }
 }

@@ -69,7 +69,7 @@ public class ParserAttribute extends SingletonAttribute {
      *   an attribute already in the container.
      */
     public ParserAttribute(NamedObj container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         setPersistent(false);
     }

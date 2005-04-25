@@ -80,5 +80,5 @@ public abstract class AbstractSet extends AbstractCollection implements Set, Rol
     }
 
     private FieldRecord[] $RECORDS = new FieldRecord[] {
-        };
+    };
 }

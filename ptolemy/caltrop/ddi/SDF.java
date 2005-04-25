@@ -85,7 +85,7 @@ public class SDF extends Dataflow {
      * @param env The environment that the plugin will use.
      */
     public SDF(TypedAtomicActor ptActor, Actor actor, Context context,
-        Environment env) {
+            Environment env) {
         super(ptActor, actor, context, env);
         _eval = new ExprEvaluator(_context, _env);
     }
@@ -154,15 +154,15 @@ public class SDF extends Dataflow {
     public void setupActor() {
         // use the 0th element because the rates are all the same.
         _annotatePortsWithRates(_ptActor.inputPortList(),
-            _actionRates[0].getInputRates(), "tokenConsumptionRate");
+                _actionRates[0].getInputRates(), "tokenConsumptionRate");
         _annotatePortsWithRates(_ptActor.outputPortList(),
-            _actionRates[0].getOutputRates(), "tokenProductionRate");
+                _actionRates[0].getOutputRates(), "tokenProductionRate");
 
         int i = _selectInitializer();
 
         if (i != -1) {
             _annotatePortsWithRates(_ptActor.outputPortList(),
-                _initializerRates[i].getOutputRates(), "tokenInitProduction");
+                    _initializerRates[i].getOutputRates(), "tokenInitProduction");
         }
 
         _ptActor.getDirector().invalidateSchedule();
@@ -180,11 +180,11 @@ public class SDF extends Dataflow {
 
             try {
                 DFUtilities.setIfNotDefined(port, varName,
-                    ((Integer) rateMap.get(port.getName())).intValue());
+                        ((Integer) rateMap.get(port.getName())).intValue());
                 DFUtilities.showRate(port, true);
             } catch (Exception e) {
                 throw new DDIException("Failed to set " + varName + " of port "
-                    + port.getFullName());
+                        + port.getFullName());
             }
         }
     }
@@ -224,7 +224,7 @@ public class SDF extends Dataflow {
     // signature.  Throw an Exception if any action has a rate which
     // cannot be statically computed.
     private ActionRateSignature[] _computeActionRates(Action[] actions)
-        throws Exception {
+            throws Exception {
         ActionRateSignature[] signatures = new ActionRateSignature[actions.length];
 
         for (int i = 0; i < actions.length; i++) {
@@ -238,7 +238,7 @@ public class SDF extends Dataflow {
                 Expression repeatExpr = inputPattern.getRepeatExpr();
                 int repeatVal = _computeExpression(repeatExpr, action);
                 ars.addInputRate(inputPattern.getPortname(),
-                    inputPattern.getVariables().length * repeatVal);
+                        inputPattern.getVariables().length * repeatVal);
             }
 
             OutputExpression[] outputexps = action.getOutputExpressions();
@@ -248,7 +248,7 @@ public class SDF extends Dataflow {
                 Expression repeatExpr = outputexp.getRepeatExpr();
                 int repeatVal = _computeExpression(repeatExpr, action);
                 ars.addOutputRate(outputexp.getPortname(),
-                    outputexp.getExpressions().length * repeatVal);
+                        outputexp.getExpressions().length * repeatVal);
             }
 
             signatures[i] = ars;
@@ -265,13 +265,13 @@ public class SDF extends Dataflow {
     // bound by action state variables, port variables, or actor state
     // variables.
     private int _computeExpression(Expression repeatExpr, Action action)
-        throws Exception {
+            throws Exception {
         if (repeatExpr == null) {
             return 1;
         } else {
             if (!_isStaticallyComputable(repeatExpr, action)) {
                 throw new Exception("The expression '" + repeatExpr
-                    + "' cannot be statically computed.");
+                        + "' cannot be statically computed.");
             }
 
             int value = _context.intValue(_eval.evaluate(repeatExpr));
@@ -292,8 +292,8 @@ public class SDF extends Dataflow {
             String name = (String) iterator.next();
 
             if (_isBoundByPortVar(name, action)
-                            || _isIn(name, action.getDecls())
-                            || _isIn(name, _actor.getStateVars())) {
+                    || _isIn(name, action.getDecls())
+                    || _isIn(name, _actor.getStateVars())) {
                 return false;
             }
         }
@@ -362,7 +362,7 @@ public class SDF extends Dataflow {
             } else {
                 if (o instanceof ActionRateSignature) {
                     return inputRates.equals(((ActionRateSignature) o).inputRates)
-                                && outputRates.equals(((ActionRateSignature) o).outputRates);
+                        && outputRates.equals(((ActionRateSignature) o).outputRates);
                 } else {
                     return false;
                 }

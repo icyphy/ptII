@@ -74,8 +74,8 @@ public class FunctionCallException
      * @param cause The cause.
      */
     public FunctionCallException(String name, Object arg1, Object arg2,
-        Throwable cause) {
+            Throwable cause) {
         super("Failed to apply function '" + name + "' to " + arg1 + " and "
-            + arg2, cause);
+                + arg2, cause);
     }
 }

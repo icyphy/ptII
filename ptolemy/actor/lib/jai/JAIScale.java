@@ -72,7 +72,7 @@ public class JAIScale extends Transformer {
      *   actor with this name.
      */
     public JAIScale(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         specifySize = new Parameter(this, "specifySize");
@@ -145,7 +145,7 @@ public class JAIScale extends Transformer {
      *  @exception IllegalActionException If the function is not recognized.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == interpolationType) {
             String typeName = interpolationType.getExpression();
 
@@ -159,7 +159,7 @@ public class JAIScale extends Transformer {
                 _interpolationType = _NEARESTNEIGHBOR;
             } else {
                 throw new IllegalActionException(this,
-                    "Unrecognized interpolation type: " + typeName);
+                        "Unrecognized interpolation type: " + typeName);
             }
         } else if (attribute == xScaleFactor) {
             _xScaleFactor = ((DoubleToken) xScaleFactor.getToken()).doubleValue();
@@ -223,7 +223,7 @@ public class JAIScale extends Transformer {
 
         default:
             throw new IllegalActionException(
-                "Invalid value for interpolationType");
+                    "Invalid value for interpolationType");
         }
 
         RenderedOp newImage = JAI.create("scale", parameters);

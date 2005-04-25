@@ -53,11 +53,11 @@ public class ConfigXmlHandler extends XmlHandler {
 
     public void endElement(String elname) throws Exception {
         boolean keep = includedClasses == null ||   // If null, every element is kept.
-                       !currentTree.isLeaf() ||     // If not leaf, at least a descendant is kept.
-                       (                            // A match in the set.
-                           currentTree.hasAttribute("class") &&
-                           includedClasses.contains(currentTree.getAttribute("class"))
-                       );
+            !currentTree.isLeaf() ||     // If not leaf, at least a descendant is kept.
+            (                            // A match in the set.
+                    currentTree.hasAttribute("class") &&
+                    includedClasses.contains(currentTree.getAttribute("class"))
+                    );
         if (keep) {
             String className = currentTree.getAttribute("class");
             if (REMOVE_ELEMENT_SET.contains(elname) ||

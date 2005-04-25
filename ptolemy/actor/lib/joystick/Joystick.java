@@ -92,7 +92,7 @@ public class Joystick extends TypedAtomicActor implements JoystickListener {
      *   actor with this name.
      */
     public Joystick(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException, IOException {
+            throws NameDuplicationException, IllegalActionException, IOException {
         super(container, name);
 
         deadZone = new Parameter(this, "deadZone", new DoubleToken("0.01"));
@@ -148,7 +148,7 @@ public class Joystick extends TypedAtomicActor implements JoystickListener {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (_debugging) {
             _debug("Joystick.attributeChanged(): " + attribute);
         }
@@ -156,13 +156,13 @@ public class Joystick extends TypedAtomicActor implements JoystickListener {
         // FIXME: not sure about this, but it seems like a good idea.
         if ((attribute == deadZone) && (_joy != null)) {
             double deadZoneValue = ((DoubleToken) deadZone.getToken())
-                            .doubleValue();
+                .doubleValue();
             _joy.setDeadZone(deadZoneValue);
         } else if (attribute == isPolling) {
             boolean oldIsPollingValue = _isPollingValue;
 
             _isPollingValue = ((BooleanToken) isPolling.getToken())
-                            .booleanValue();
+                .booleanValue();
 
             // If necessary, add or remove this as a JoystickListener.
             if ((_joy != null) && (_isPollingValue != oldIsPollingValue)) {
@@ -174,7 +174,7 @@ public class Joystick extends TypedAtomicActor implements JoystickListener {
             }
         } else if ((attribute == pollingInterval) && (_joy != null)) {
             int pollingIntervalValue = ((DoubleToken) pollingInterval.getToken())
-                            .intValue();
+                .intValue();
             _joy.setPollInterval(pollingIntervalValue);
         } else {
             super.attributeChanged(attribute);
@@ -209,7 +209,7 @@ public class Joystick extends TypedAtomicActor implements JoystickListener {
 
         double deadZoneValue = ((DoubleToken) deadZone.getToken()).doubleValue();
         int pollingIntervalValue = ((IntToken) pollingInterval.getToken())
-                        .intValue();
+            .intValue();
 
         try {
             _joy = com.centralnexus.input.Joystick.createInstance();
@@ -219,7 +219,7 @@ public class Joystick extends TypedAtomicActor implements JoystickListener {
             }
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
-                "Failed to create a joystick instance");
+                    "Failed to create a joystick instance");
         }
 
         _joy.setDeadZone(deadZoneValue);

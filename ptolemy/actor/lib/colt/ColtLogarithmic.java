@@ -50,7 +50,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
    <p> This actor instantiates a
    <a href="http://hoschek.home.cern.ch/hoschek/colt/V1.0.3/doc/cern/jet/random/Logarithmic.html">cern.jet.random.Logarithmic</a> object with
-    p set to 0.5
+   p set to 0.5
 
    @author David Bauer and Kostas Oikonomou
    @version $Id$
@@ -68,7 +68,7 @@ public class ColtLogarithmic extends ColtRandomSource {
      *   actor with this name.
      */
     public ColtLogarithmic(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         output.setTypeEquals(BaseType.DOUBLE);

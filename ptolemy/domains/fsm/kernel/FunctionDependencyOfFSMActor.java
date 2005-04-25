@@ -61,7 +61,7 @@ public class FunctionDependencyOfFSMActor extends FunctionDependency {
      *   an entity with the specified name.
      */
     public FunctionDependencyOfFSMActor(FSMActor fsmActor, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(fsmActor, name);
     }
 }

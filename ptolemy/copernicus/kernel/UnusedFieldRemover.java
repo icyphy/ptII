@@ -74,7 +74,7 @@ public class UnusedFieldRemover extends SceneTransformer {
     protected void internalTransform(String phaseName, Map options) {
         int localCount = 0;
         System.out.println("UnusedFieldRemover.internalTransform(" + phaseName
-            + ", " + options + ")");
+                + ", " + options + ")");
 
         SootClass stringClass = Scene.v().loadClassAndSupport("java.lang.String");
         Type stringType = RefType.v(stringClass);
@@ -109,7 +109,7 @@ public class UnusedFieldRemover extends SceneTransformer {
         // Loop over all the actor instance classes and create the set of
         // all fields.
         for (Iterator i = Scene.v().getApplicationClasses().iterator();
-                        i.hasNext();) {
+             i.hasNext();) {
             SootClass entityClass = (SootClass) i.next();
 
             unusedFieldSet.addAll(entityClass.getFields());
@@ -117,20 +117,20 @@ public class UnusedFieldRemover extends SceneTransformer {
 
         // Loop through all the methods and kill all the used fields.
         for (Iterator i = Scene.v().getApplicationClasses().iterator();
-                        i.hasNext();) {
+             i.hasNext();) {
             SootClass entityClass = (SootClass) i.next();
 
             for (Iterator methods = entityClass.getMethods().iterator();
-                            methods.hasNext();) {
+                 methods.hasNext();) {
                 SootMethod method = (SootMethod) methods.next();
                 JimpleBody body = (JimpleBody) method.retrieveActiveBody();
 
                 for (Iterator stmts = body.getUnits().iterator();
-                                stmts.hasNext();) {
+                     stmts.hasNext();) {
                     Stmt stmt = (Stmt) stmts.next();
 
                     for (Iterator boxes = stmt.getUseBoxes().iterator();
-                                    boxes.hasNext();) {
+                         boxes.hasNext();) {
                         ValueBox box = (ValueBox) boxes.next();
                         Value value = box.getValue();
 
@@ -146,20 +146,20 @@ public class UnusedFieldRemover extends SceneTransformer {
         // Loop through the methods again, and kill the statements
         // that write to an unused field.
         for (Iterator i = Scene.v().getApplicationClasses().iterator();
-                        i.hasNext();) {
+             i.hasNext();) {
             SootClass entityClass = (SootClass) i.next();
 
             for (Iterator methods = entityClass.getMethods().iterator();
-                            methods.hasNext();) {
+                 methods.hasNext();) {
                 SootMethod method = (SootMethod) methods.next();
                 JimpleBody body = (JimpleBody) method.retrieveActiveBody();
 
                 for (Iterator stmts = body.getUnits().snapshotIterator();
-                                stmts.hasNext();) {
+                     stmts.hasNext();) {
                     Stmt stmt = (Stmt) stmts.next();
 
                     for (Iterator boxes = stmt.getDefBoxes().iterator();
-                                    boxes.hasNext();) {
+                         boxes.hasNext();) {
                         ValueBox box = (ValueBox) boxes.next();
                         Value value = box.getValue();
 
@@ -175,7 +175,7 @@ public class UnusedFieldRemover extends SceneTransformer {
             }
 
             for (Iterator fields = entityClass.getFields().snapshotIterator();
-                            fields.hasNext();) {
+                 fields.hasNext();) {
                 SootField field = (SootField) fields.next();
 
                 if (unusedFieldSet.contains(field)) {

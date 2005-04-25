@@ -114,7 +114,7 @@ public class TestVariable implements InequalityTerm {
             _value = (String) e;
         } else {
             throw new IllegalActionException("TestVariable.initialize: "
-                + "This term is not settable.");
+                    + "This term is not settable.");
         }
     }
 
@@ -155,7 +155,7 @@ public class TestVariable implements InequalityTerm {
             _value = (String) e;
         } else {
             throw new IllegalActionException("TestVariable.isSettable: "
-                + "value is not settable.");
+                    + "value is not settable.");
         }
     }
 

@@ -99,9 +99,9 @@ public class PathFinder {
      */
     public static String[] getPtClassPaths() {
         String[] subdirs = new String[] {
-                "lib",
-                "vendors/sun/commapi",
-                "vendors/sun/jxta"
+            "lib",
+            "vendors/sun/commapi",
+            "vendors/sun/jxta"
         };
         File[][]files = new File[subdirs.length][];
         int totalNumber = 0;
@@ -109,7 +109,7 @@ public class PathFinder {
             files[i] =
                 new File(PTOLEMY_PATH + subdirs[i]).listFiles(
                         new PostfixFilter(".jar")
-                );
+                        );
             totalNumber += files[i].length;
         }
 

@@ -77,7 +77,7 @@ public class Inhibit extends DETransformer {
      *   actor with this name.
      */
     public Inhibit(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         input.setMultiport(true);
         output.setMultiport(true);

@@ -62,7 +62,7 @@ public interface ComponentCodeGenerator {
      *  @exception IllegalActionException If something goes wrong.
      */
     public void generateWrapupCode(StringBuffer code)
-        throws IllegalActionException;
+            throws IllegalActionException;
 
     /** Return the associated component.
      *  @return The component for which this is a helper to generate code.

@@ -76,7 +76,7 @@ abstract public class GRPickActor extends GRActor {
      *   actor with this name.
      */
     public GRPickActor(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         sceneGraphOut = new TypedIOPort(this, "sceneGraphOut");
         sceneGraphOut.setOutput(true);
@@ -189,7 +189,7 @@ abstract public class GRPickActor extends GRActor {
         GRPickActor callbackActor;
 
         public PickCallback(GRPickActor pickableActor, Canvas3D canvas,
-            BranchGroup root, Bounds bounds) {
+                BranchGroup root, Bounds bounds) {
             super(canvas, root, bounds);
             callbackActor = pickableActor;
             this.setSchedulingBounds(bounds);
@@ -219,7 +219,7 @@ abstract public class GRPickActor extends GRActor {
                 if (mevent.getModifiers() == 4) {
                     shape = (Shape3D) pickResult.getNode(PickResult.SHAPE3D);
                     System.out.println("the result " + shape + " "
-                        + callbackActor);
+                            + callbackActor);
                     callbackActor.processCallback();
                 }
             }

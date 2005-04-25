@@ -47,5 +47,5 @@ import java.util.Map;
 */
 public interface DirectorInliner {
     public void inlineDirector(CompositeActor model, SootClass modelClass,
-        String phaseName, Map options) throws IllegalActionException;
+            String phaseName, Map options) throws IllegalActionException;
 }

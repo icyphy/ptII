@@ -133,7 +133,7 @@ public class ConnectorEvent extends java.util.EventObject {
      * connector is snapped to or unsnapped from.
      */
     public ConnectorEvent(int id, Object source, Figure target,
-        Connector connector, int end) {
+            Connector connector, int end) {
         super(source);
         _target = target;
         _id = id;
@@ -214,6 +214,6 @@ public class ConnectorEvent extends java.util.EventObject {
 
     public String toString() {
         return "ConnectorEvent[" + idToString() + ", " + getConnector() + ", "
-        + endToString() + "]";
+            + endToString() + "]";
     }
 }

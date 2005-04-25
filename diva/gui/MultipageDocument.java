@@ -88,7 +88,7 @@ public abstract class MultipageDocument extends AbstractDocument {
     /** Construct a multipage document that is owned by the given application
      */
     public MultipageDocument(String title, Application a, ModelParser parser,
-        ModelWriter writer) {
+            ModelWriter writer) {
         super(a);
         _title = title;
         _modelWriter = writer;
@@ -127,7 +127,7 @@ public abstract class MultipageDocument extends AbstractDocument {
     public void open() throws Exception {
         if (getFile() == null) {
             throw new IllegalStateException("MultipageDocument " + getTitle()
-                + " has no current file");
+                    + " has no current file");
         }
 
         String filename = getFile().getName();
@@ -142,7 +142,7 @@ public abstract class MultipageDocument extends AbstractDocument {
     public void save() throws Exception {
         if (getFile() == null) {
             throw new IllegalStateException("MultipageDocument " + getTitle()
-                + " has no current file");
+                    + " has no current file");
         }
 
         saveAs(getFile());
@@ -169,6 +169,6 @@ public abstract class MultipageDocument extends AbstractDocument {
      */
     public void saveAs(URL url) {
         throw new UnsupportedOperationException("SketchDocument " + getTitle()
-            + ": save to URL not supported");
+                + ": save to URL not supported");
     }
 }

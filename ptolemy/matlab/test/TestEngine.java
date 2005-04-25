@@ -63,14 +63,14 @@ public class TestEngine {
         eng.evalString(engineHandle, "clear");
 
         DoubleMatrixToken tx = new DoubleMatrixToken(new double[][] {
-                    {
-                        1,
-                        2,
-                        3
-                    }
-                });
+            {
+                1,
+                2,
+                3
+            }
+        });
         System.out.println("\nNote: All data output is via "
-            + "Token.toString() on tokens");
+                + "Token.toString() on tokens");
         System.out.println("that are put/get from the matlab engineHandle.");
         System.out.println("\nCreate 1x3 double matrix x:");
         eng.put(engineHandle, "x", tx);
@@ -83,17 +83,17 @@ public class TestEngine {
 
         System.out.println("\nCreate 2x3 double matrix x:");
         tx = new DoubleMatrixToken(new double[][] {
-                    {
-                        1,
-                        2,
-                        3
-                    },
-                    {
-                        4,
-                        5,
-                        6
-                    }
-                });
+            {
+                1,
+                2,
+                3
+            },
+            {
+                4,
+                5,
+                6
+            }
+        });
         eng.put(engineHandle, "x", tx);
         System.out.println("x = " + tx.toString());
         System.out.println("Eval: y = x.*x;");
@@ -126,9 +126,9 @@ public class TestEngine {
 
         System.out.println("\nCreate 2xn string s:");
         ta = new ArrayToken(new Token[] {
-                    new StringToken("str one"),
-                    new StringToken("str two")
-                });
+            new StringToken("str one"),
+            new StringToken("str two")
+        });
         System.out.println("s = " + ta.toString());
         eng.put(engineHandle, "s", ta);
         System.out.println("\nEval: rr = [s,s];");
@@ -139,17 +139,17 @@ public class TestEngine {
         System.out.println("\nCreate 1x1 struct r (RecordToken):");
 
         RecordToken tr = new RecordToken(new String[] {
-                    "x",
-                    "r",
-                    "s"
-                },
+            "x",
+            "r",
+            "s"
+        },
                 new Token[] {
                     tx,
                     new RecordToken(new String[] {
-                            "a"
-                        }, new Token[] {
-                            new IntToken()
-                        }),
+                        "a"
+                    }, new Token[] {
+                        new IntToken()
+                    }),
                     ts
                 });
         System.out.println("r = " + tr.toString());
@@ -163,50 +163,50 @@ public class TestEngine {
         eng.evalString(engineHandle, "ta = [r,r,r;r,r,r];");
         t = eng.get(engineHandle, "ta");
         System.out.println("\nRead 2x3 struct ta into ArrayToken "
-            + "of ArrayToken of RecordTokens:");
+                + "of ArrayToken of RecordTokens:");
         System.out.println("ta = " + t.toString());
 
         System.out.println("\nCreate 1x3 cell array from ta, "
-            + "an ArrayToken of RecordTokens:");
+                + "an ArrayToken of RecordTokens:");
 
         RecordToken r1 = new RecordToken(new String[] {
-                    "a"
-                },
+            "a"
+        },
                 new Token[] {
                     new ComplexMatrixToken(new Complex[][] {
-                            {
-                                new Complex(1.0, 1.0),
-                                new Complex(2.0, 2.0)
-                            }
-                        })
+                        {
+                            new Complex(1.0, 1.0),
+                            new Complex(2.0, 2.0)
+                        }
+                    })
                 });
         RecordToken r2 = new RecordToken(new String[] {
-                    "a"
-                },
+            "a"
+        },
                 new Token[] {
                     new ComplexMatrixToken(new Complex[][] {
-                            {
-                                new Complex(3.0, 3.0),
-                                new Complex(4.0, 4.0)
-                            }
-                        })
+                        {
+                            new Complex(3.0, 3.0),
+                            new Complex(4.0, 4.0)
+                        }
+                    })
                 });
         RecordToken r3 = new RecordToken(new String[] {
-                    "a"
-                },
+            "a"
+        },
                 new Token[] {
                     new ComplexMatrixToken(new Complex[][] {
-                            {
-                                new Complex(5.0, 5.0),
-                                new Complex(6.0, 6.0)
-                            }
-                        })
+                        {
+                            new Complex(5.0, 5.0),
+                            new Complex(6.0, 6.0)
+                        }
+                    })
                 });
         ta = new ArrayToken(new Token[] {
-                    r1,
-                    r2,
-                    r3
-                });
+            r1,
+            r2,
+            r3
+        });
         System.out.println("ta = " + ta.toString());
         eng.put(engineHandle, "ta", ta);
         eng.evalString(engineHandle, "tb = ta;");

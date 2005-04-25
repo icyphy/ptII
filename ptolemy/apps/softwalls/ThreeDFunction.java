@@ -86,7 +86,7 @@ public class ThreeDFunction implements Serializable {
      *     is generated during file I/O.
      */
     public ThreeDFunction(FileParameter fileParameter)
-        throws IllegalActionException {
+            throws IllegalActionException {
         // Read uncompressed data and do not write out compressed data.
         this(fileParameter, false, false);
 
@@ -143,7 +143,7 @@ public class ThreeDFunction implements Serializable {
      *     is generated during file I/O.
      */
     public ThreeDFunction(FileParameter fileParameter, boolean compressed,
-        boolean writeOutData) throws IllegalActionException {
+            boolean writeOutData) throws IllegalActionException {
         int xPoints;
         int yPoints;
         int thetaPoints;
@@ -166,23 +166,23 @@ public class ThreeDFunction implements Serializable {
             // so we first look as a regular file and then look in the
             // classpath.
             URL url = getClass().getClassLoader().getResource(fileParameter
-                                .stringValue());
+                    .stringValue());
 
             if (url == null) {
                 throw new IllegalActionException(fileParameter, ex,
-                    "Cannot find file '" + fileParameter
-                    + "'. Also looked in classpath for '"
-                    + fileParameter.stringValue() + "'");
+                        "Cannot find file '" + fileParameter
+                        + "'. Also looked in classpath for '"
+                        + fileParameter.stringValue() + "'");
             }
 
             try {
                 reader = new BufferedReader(new InputStreamReader(
-                            url.openStream()));
+                                                    url.openStream()));
                 System.out.println("Opening URL: " + url);
             } catch (IOException ex2) {
                 throw new IllegalActionException(fileParameter, ex2,
-                    "Cannot find file '" + fileParameter
-                    + "', failed to open '" + url + "'");
+                        "Cannot find file '" + fileParameter
+                        + "', failed to open '" + url + "'");
             }
         }
 
@@ -259,10 +259,10 @@ public class ThreeDFunction implements Serializable {
                 // so we get the basename by hand.
                 if (baseName.indexOf("/") != -1) {
                     outputFileName = baseName.substring(baseName.lastIndexOf(
-                                "/") + 1, baseName.length()) + ".out";
+                                                                "/") + 1, baseName.length()) + ".out";
                 } else if (baseName.indexOf("\\") != -1) {
                     outputFileName = baseName.substring(baseName.lastIndexOf(
-                                "\\") + 1, baseName.length()) + ".out";
+                                                                "\\") + 1, baseName.length()) + ".out";
                 } else {
                     outputFileName = baseName + ".out";
                 }
@@ -282,14 +282,14 @@ public class ThreeDFunction implements Serializable {
             }
         } catch (Exception ex) {
             throw new IllegalActionException(null, ex,
-                "Failed to parse '" + reader + "'");
+                    "Failed to parse '" + reader + "'");
         } finally {
             if (reader != null) {
                 try {
                     reader.close();
                 } catch (IOException ex) {
                     throw new IllegalActionException(null, ex,
-                        "Failed to close '" + reader + "'");
+                            "Failed to close '" + reader + "'");
                 }
             }
         }
@@ -426,16 +426,16 @@ public class ThreeDFunction implements Serializable {
      *  @param compressed True if the output should be compressed.
      */
     public void write(BufferedWriter output, boolean compressed)
-        throws IOException {
+            throws IOException {
         output.write("3" + "\n");
         output.write(_xLowerBound + "   " + _xStepSize + "   " + _xUpperBound
-            + "\n");
+                + "\n");
 
         output.write(_yLowerBound + "   " + _yStepSize + "   " + _yUpperBound
-            + "\n");
+                + "\n");
 
         output.write(_thetaLowerBound + "   " + _thetaStepSize + "   "
-            + _thetaUpperBound + "\n");
+                + _thetaUpperBound + "\n");
 
         // FIXME: we assume the array is regular, that is that
         // all the rows have the same length.

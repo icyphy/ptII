@@ -66,7 +66,7 @@ public class ImageToJMF extends Transformer {
      *   actor with this name.
      */
     public ImageToJMF(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         frameRate = new Parameter(this, "frameRate");
         frameRate.setExpression("15");
@@ -95,7 +95,7 @@ public class ImageToJMF extends Transformer {
      *  or if the data type is not recognized.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == frameRate) {
             _frameRate = ((IntToken) frameRate.getToken()).intValue();
         } else {

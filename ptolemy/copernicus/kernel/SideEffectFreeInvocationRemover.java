@@ -82,18 +82,18 @@ public class SideEffectFreeInvocationRemover extends SceneTransformer {
 
     protected void internalTransform(String phaseName, Map options) {
         System.out.println("SideEffectFreeInvocationRemover.internalTransform("
-            + phaseName + ", " + options + ")");
+                + phaseName + ", " + options + ")");
 
         SideEffectAnalysis analysis = new SideEffectAnalysis();
 
         CallGraph callGraph = Scene.v().getCallGraph();
 
         for (Iterator classes = Scene.v().getApplicationClasses().iterator();
-                        classes.hasNext();) {
+             classes.hasNext();) {
             SootClass theClass = (SootClass) classes.next();
 
             for (Iterator methods = theClass.getMethods().iterator();
-                            methods.hasNext();) {
+                 methods.hasNext();) {
                 SootMethod method = (SootMethod) methods.next();
                 _removeSideEffectFreeMethodCalls(method, callGraph, analysis);
             }
@@ -106,7 +106,7 @@ public class SideEffectFreeInvocationRemover extends SceneTransformer {
      *  fields.
      */
     public static void _removeSideEffectFreeMethodCalls(SootMethod method,
-        CallGraph callGraph, SideEffectAnalysis analysis) {
+            CallGraph callGraph, SideEffectAnalysis analysis) {
         Body body = method.retrieveActiveBody();
         CompleteUnitGraph unitGraph = new CompleteUnitGraph(body);
 
@@ -115,7 +115,7 @@ public class SideEffectFreeInvocationRemover extends SceneTransformer {
         SimpleLiveLocals liveLocals = new SimpleLiveLocals(unitGraph);
 
         for (Iterator units = body.getUnits().snapshotIterator();
-                        units.hasNext();) {
+             units.hasNext();) {
             Unit unit = (Unit) units.next();
             Value useValue;
 
@@ -145,7 +145,7 @@ public class SideEffectFreeInvocationRemover extends SceneTransformer {
             // whole business (we have to remove the New as well, for
             // instance)
             if (useValue instanceof VirtualInvokeExpr
-                            || useValue instanceof StaticInvokeExpr) {
+                    || useValue instanceof StaticInvokeExpr) {
                 InvokeExpr invokeExpr = (InvokeExpr) useValue;
 
                 // If any targets of the invocation have side effects,
@@ -153,7 +153,7 @@ public class SideEffectFreeInvocationRemover extends SceneTransformer {
                 boolean removable = true;
 
                 for (Iterator i = new Targets(callGraph.edgesOutOf((Stmt) unit));
-                                i.hasNext() && removable;) {
+                     i.hasNext() && removable;) {
                     SootMethod targetMethod = (SootMethod) i.next();
 
                     // System.out.println("Checking Target = " + targetMethod);

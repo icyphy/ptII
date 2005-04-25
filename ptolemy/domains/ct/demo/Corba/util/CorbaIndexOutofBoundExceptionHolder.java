@@ -10,28 +10,28 @@ package ptolemy.domains.ct.demo.Corba.util;
 public final class CorbaIndexOutofBoundExceptionHolder
     implements org.omg.CORBA.portable.Streamable {
     public ptolemy.domains.ct.demo.Corba.util.CorbaIndexOutofBoundException value =
-        null;
+    null;
 
     public CorbaIndexOutofBoundExceptionHolder() {
     }
 
     public CorbaIndexOutofBoundExceptionHolder(
-        ptolemy.domains.ct.demo.Corba.util.CorbaIndexOutofBoundException initialValue) {
+            ptolemy.domains.ct.demo.Corba.util.CorbaIndexOutofBoundException initialValue) {
         value = initialValue;
     }
 
     public void _read(org.omg.CORBA.portable.InputStream i) {
         value = ptolemy.domains.ct.demo.Corba.util.CorbaIndexOutofBoundExceptionHelper
-                        .read(i);
+            .read(i);
     }
 
     public void _write(org.omg.CORBA.portable.OutputStream o) {
         ptolemy.domains.ct.demo.Corba.util.CorbaIndexOutofBoundExceptionHelper
-                    .write(o, value);
+            .write(o, value);
     }
 
     public org.omg.CORBA.TypeCode _type() {
         return ptolemy.domains.ct.demo.Corba.util.CorbaIndexOutofBoundExceptionHelper
-                    .type();
+            .type();
     }
 }

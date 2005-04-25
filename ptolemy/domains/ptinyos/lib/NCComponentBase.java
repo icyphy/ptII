@@ -73,7 +73,7 @@ public class NCComponentBase extends AtomicActor {
             _init();
         } catch (KernelException e) {
             throw new InternalErrorException(
-                "Error constructing parameters of NCComponentBase.");
+                    "Error constructing parameters of NCComponentBase.");
         }
     }
 
@@ -86,7 +86,7 @@ public class NCComponentBase extends AtomicActor {
      *   actor with this name.
      */
     public NCComponentBase(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         _init();
     }
@@ -100,14 +100,14 @@ public class NCComponentBase extends AtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
     private void _init()
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         source = new FileParameter(this, "source");
         source.setExpression("$PTII/ptolemy/domains/ptinyos/lib/NCComponent.nc");
         source.setVisibility(Settable.EXPERT);
         _attachText("_iconDescription",
-            "<svg>\n" + "<rect x=\"-20\" y=\"-20\" "
-            + "width=\"60\" height=\"40\" " + "style=\"fill:white\"/>\n"
-            + "<text x=\"-12\" y=\"5\" " + "style=\"font-size:18\">\n"
-            + "nesC\n" + "</text>\n" + "</svg>\n");
+                "<svg>\n" + "<rect x=\"-20\" y=\"-20\" "
+                + "width=\"60\" height=\"40\" " + "style=\"fill:white\"/>\n"
+                + "<text x=\"-12\" y=\"5\" " + "style=\"font-size:18\">\n"
+                + "nesC\n" + "</text>\n" + "</svg>\n");
     }
 }

@@ -55,7 +55,7 @@ public class RenameDialog extends ComponentDialog {
      */
     public RenameDialog(Frame owner, NamedObj target) {
         super(owner, "Rename " + target.getName(),
-            new RenameConfigurer(target), _buttons);
+                new RenameConfigurer(target), _buttons);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -75,7 +75,7 @@ public class RenameDialog extends ComponentDialog {
     ////                         private variables                 ////
     // Button labels.
     private static String[] _buttons = {
-            "Commit",
-            "Cancel"
-        };
+        "Commit",
+        "Cancel"
+    };
 }

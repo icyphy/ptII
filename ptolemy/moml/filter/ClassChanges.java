@@ -70,7 +70,7 @@ public class ClassChanges implements MoMLFilter {
      *  @return the value of the attributeValue argument.
      */
     public String filterAttributeValue(NamedObj container, String element,
-        String attributeName, String attributeValue) {
+            String attributeName, String attributeValue) {
         // This method gets called many times by the MoMLParser,
         // so we try to be smart about the number of comparisons
         // and we try to group comparisons together so that we
@@ -105,7 +105,7 @@ public class ClassChanges implements MoMLFilter {
      *  @param elementName The element name.
      */
     public void filterEndElement(NamedObj container, String elementName)
-        throws Exception {
+            throws Exception {
     }
 
     /** Return a string that describes what the filter does.
@@ -122,7 +122,7 @@ public class ClassChanges implements MoMLFilter {
         while (classNames.hasNext()) {
             String className = (String) classNames.next();
             results.append("\t" + className + "\t -> "
-                + _classChanges.get(className) + "\n");
+                    + _classChanges.get(className) + "\n");
         }
 
         results.append("\nBelow are the classes to remove:\n");
@@ -149,82 +149,82 @@ public class ClassChanges implements MoMLFilter {
 
         // Location
         _classChanges.put("ptolemy.moml.Location",
-            "ptolemy.kernel.util.Location");
+                "ptolemy.kernel.util.Location");
 
         // New in 2.1-devel-2
         _classChanges.put("ptolemy.kernel.util.VersionAttribute",
-            "ptolemy.kernel.attributes.VersionAttribute");
+                "ptolemy.kernel.attributes.VersionAttribute");
 
         // New in 2.3-devel
         _classChanges.put("ptolemy.actor.lib.comm.SerialComm",
-            "ptolemy.actor.lib.io.comm.SerialComm");
+                "ptolemy.actor.lib.io.comm.SerialComm");
 
         // New in 3.1-devel
         _classChanges.put("ptolemy.domains.fsm.lib.RelationList",
-            "ptolemy.domains.fsm.kernel.RelationList");
+                "ptolemy.domains.fsm.kernel.RelationList");
 
         // Renamed in 3.1-devel
         _classChanges.put("ptolemy.vergil.icon.ImageEditorIcon",
-            "ptolemy.vergil.icon.ImageIcon");
+                "ptolemy.vergil.icon.ImageIcon");
 
         // Replaced FileAttribute with FileParameter in 3.2-devel
         _classChanges.put("ptolemy.kernel.attributes.FileAttribute",
-            "ptolemy.data.expr.FileParameter");
+                "ptolemy.data.expr.FileParameter");
 
         // SDFIOPort is obsolete as of 3.2-devel
         _classChanges.put("ptolemy.domains.sdf.kernel.SDFIOPort",
-            "ptolemy.actor.TypedIOPort");
+                "ptolemy.actor.TypedIOPort");
 
         // Moved MultiInstanceComposite
         _classChanges.put("ptolemy.actor.hoc.MultiInstanceComposite",
-            "ptolemy.actor.lib.hoc.MultiInstanceComposite");
+                "ptolemy.actor.lib.hoc.MultiInstanceComposite");
 
         // Moved ModalModel
         _classChanges.put("ptolemy.vergil.fsm.modal.ModalModel",
-            "ptolemy.domains.fsm.modal.ModalModel");
+                "ptolemy.domains.fsm.modal.ModalModel");
 
         // Moved InterfaceAutomatonTransition
         _classChanges.put("ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition",
-            "ptolemy.domains.fsm.kernel.ia.InterfaceAutomatonTransition");
+                "ptolemy.domains.fsm.kernel.ia.InterfaceAutomatonTransition");
 
         // Moved ModalTableauFactory
         _classChanges.put("ptolemy.vergil.fsm.modal.ModalModel$ModalTableauFactory",
-            "ptolemy.vergil.fsm.modal.ModalTableauFactory");
+                "ptolemy.vergil.fsm.modal.ModalTableauFactory");
 
         // Moved ModalPort
         _classChanges.put("ptolemy.vergil.fsm.modal.ModalPort",
-            "ptolemy.domains.fsm.modal.ModalPort");
+                "ptolemy.domains.fsm.modal.ModalPort");
 
         // Moved ModalController
         _classChanges.put("ptolemy.vergil.fsm.modal.ModalController",
-            "ptolemy.domains.fsm.modal.ModalController");
+                "ptolemy.domains.fsm.modal.ModalController");
 
         // Moved Refinement
         _classChanges.put("ptolemy.vergil.fsm.modal.Refinement",
-            "ptolemy.domains.fsm.modal.Refinement");
+                "ptolemy.domains.fsm.modal.Refinement");
 
         // Moved RefinementPort
         _classChanges.put("ptolemy.vergil.fsm.modal.RefinementPort",
-            "ptolemy.domains.fsm.modal.RefinementPort");
+                "ptolemy.domains.fsm.modal.RefinementPort");
 
         // Moved TransitionRefinement
         _classChanges.put("ptolemy.vergil.fsm.modal.TransitionRefinement",
-            "ptolemy.domains.fsm.modal.TransitionRefinement");
+                "ptolemy.domains.fsm.modal.TransitionRefinement");
 
         // Moved TransitionRefinementPort
         _classChanges.put("ptolemy.vergil.fsm.modal.TransitionRefinementPort",
-            "ptolemy.domains.fsm.modal.TransitionRefinementPort");
+                "ptolemy.domains.fsm.modal.TransitionRefinementPort");
 
         // Moved IDAttribute from ptolemy.kernel.attributes to
         // ptolemy.vergil.kernel.atttributes
         _classChanges.put("ptolemy.kernel.attributes.IDAttribute",
-            "ptolemy.vergil.kernel.attributes.IDAttribute");
+                "ptolemy.vergil.kernel.attributes.IDAttribute");
 
         _classChanges.put("ptolemy.domains.gr.lib.ViewScreen",
-            "ptolemy.domains.gr.lib.ViewScreen3D");
+                "ptolemy.domains.gr.lib.ViewScreen3D");
 
         _classChanges.put("ptolemy.domains.sr.lib.Latch",
-            "ptolemy.domains.sr.lib.Current");
+                "ptolemy.domains.sr.lib.Current");
     }
 
     // Set of class names that are obsolete and should be simply

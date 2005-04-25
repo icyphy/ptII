@@ -65,7 +65,7 @@ public class ThalesGraphTableau extends ActorGraphTableau {
      * @exception NameDuplicationException If thrown by the super class.
      */
     public ThalesGraphTableau(Workspace workspace)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
     }
 
@@ -79,7 +79,7 @@ public class ThalesGraphTableau extends ActorGraphTableau {
      * @exception NameDuplicationException If thrown by the super class.
      */
     public ThalesGraphTableau(PtolemyEffigy container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         NamedObj model = container.getModel();
@@ -90,8 +90,8 @@ public class ThalesGraphTableau extends ActorGraphTableau {
 
         if (!(model instanceof CompositeEntity)) {
             throw new IllegalActionException(this,
-                "Cannot graphically edit a model "
-                + "that is not a CompositeEntity. Model is a " + model);
+                    "Cannot graphically edit a model "
+                    + "that is not a CompositeEntity. Model is a " + model);
         }
 
         CompositeEntity entity = (CompositeEntity) model;
@@ -119,7 +119,7 @@ public class ThalesGraphTableau extends ActorGraphTableau {
          *   an attribute already in the container.
          */
         public Factory(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+                throws IllegalActionException, NameDuplicationException {
             super(container, name);
         }
 
@@ -141,7 +141,7 @@ public class ThalesGraphTableau extends ActorGraphTableau {
             if (effigy instanceof PtolemyEffigy) {
                 // First see whether the effigy already contains a RunTableau.
                 ThalesGraphTableau tableau = (ThalesGraphTableau) effigy
-                                .getEntity("graphTableau");
+                    .getEntity("graphTableau");
 
                 if (tableau == null) {
                     tableau = new ThalesGraphTableau((PtolemyEffigy) effigy,

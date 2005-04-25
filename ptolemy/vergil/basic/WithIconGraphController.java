@@ -162,7 +162,7 @@ public abstract class WithIconGraphController extends BasicGraphController {
          *   use in the menu.
          */
         public NewPortAction(IOPort prototype, String description,
-            int mnemonicKey) {
+                int mnemonicKey) {
             super(description);
             _prototype = prototype;
 
@@ -194,7 +194,7 @@ public abstract class WithIconGraphController extends BasicGraphController {
             double y;
 
             if ((getSourceType() == TOOLBAR_TYPE)
-                            || (getSourceType() == MENUBAR_TYPE)) {
+                    || (getSourceType() == MENUBAR_TYPE)) {
                 // No location in the action, so put it in the middle.
                 BasicGraphFrame frame = WithIconGraphController.this.getFrame();
 
@@ -234,7 +234,7 @@ public abstract class WithIconGraphController extends BasicGraphController {
             } else {
                 // Transform
                 AffineTransform current = getGraphPane().getTransformContext()
-                                                          .getTransform();
+                    .getTransform();
                 AffineTransform inverse;
 
                 try {
@@ -256,8 +256,8 @@ public abstract class WithIconGraphController extends BasicGraphController {
 
             if (!(toplevel instanceof Entity)) {
                 throw new InternalErrorException(
-                    "Cannot invoke NewPortAction on an object "
-                    + "that is not an instance of Entity.");
+                        "Cannot invoke NewPortAction on an object "
+                        + "that is not an instance of Entity.");
             }
 
             final String portName = toplevel.uniqueName("port");
@@ -267,7 +267,7 @@ public abstract class WithIconGraphController extends BasicGraphController {
             StringBuffer moml = new StringBuffer();
             moml.append("<port name=\"" + portName + "\">\n");
             moml.append("<property name=\"" + locationName
-                + "\" class=\"ptolemy.kernel.util.Location\"/>\n");
+                    + "\" class=\"ptolemy.kernel.util.Location\"/>\n");
 
             if (_prototype != null) {
                 if (_prototype.isInput()) {

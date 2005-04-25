@@ -94,7 +94,7 @@ public class PxgraphApplication extends PlotApplication {
      *  @exception Exception If command line arguments have problems.
      */
     public PxgraphApplication(Plot plot, String[] args)
-        throws Exception {
+            throws Exception {
         super(plot, args);
     }
 
@@ -142,15 +142,15 @@ public class PxgraphApplication extends PlotApplication {
      */
     protected void _about() {
         JOptionPane.showMessageDialog(this,
-            "               pxgraph\n" + "        A Java Plotting Tool\n\n"
-            + "By: Edward A. Lee and\n" + "    Christopher Hylands\n"
-            + "Version " + PlotBox.PTPLOT_RELEASE
-            + ", Build: $Id$\n\n"
-            + "For help, type 'pxgraph -help', or see \n"
-            + "the class documentation in the plot.compat package.\n"
-            + "For more information, see\n"
-            + "http://ptolemy.eecs.berkeley.edu/java/ptplot\n",
-            "About pxgraph", JOptionPane.INFORMATION_MESSAGE);
+                "               pxgraph\n" + "        A Java Plotting Tool\n\n"
+                + "By: Edward A. Lee and\n" + "    Christopher Hylands\n"
+                + "Version " + PlotBox.PTPLOT_RELEASE
+                + ", Build: $Id$\n\n"
+                + "For help, type 'pxgraph -help', or see \n"
+                + "the class documentation in the plot.compat package.\n"
+                + "For more information, see\n"
+                + "http://ptolemy.eecs.berkeley.edu/java/ptplot\n",
+                "About pxgraph", JOptionPane.INFORMATION_MESSAGE);
     }
 
     /** Parse those command-line arguments that are relevant to the
@@ -164,7 +164,7 @@ public class PxgraphApplication extends PlotApplication {
      *  @exception IOException If there is a problem reading an input.
      */
     protected int _parseArgs(String[] args)
-        throws CmdLineArgException, FileNotFoundException, IOException {
+            throws CmdLineArgException, FileNotFoundException, IOException {
         int i = 0;
         int argumentsRead;
         String arg;
@@ -194,7 +194,7 @@ public class PxgraphApplication extends PlotApplication {
             } else if (arg.equals("-v") || arg.equals("-version")) {
                 // -version is not in the original X11 pxgraph.
                 System.out.println("Version " + PlotBox.PTPLOT_RELEASE
-                    + ", Build $Id$");
+                        + ", Build $Id$");
                 System.exit(0);
                 continue;
             } else if (arg.startsWith("=")) {
@@ -205,7 +205,7 @@ public class PxgraphApplication extends PlotApplication {
                 int yscreen = 1;
                 boolean screenlocationgiven = false;
                 StringTokenizer stoken = new StringTokenizer(arg.substring(1,
-                            arg.length()), "=x-+");
+                                                                     arg.length()), "=x-+");
 
                 if (stoken.hasMoreTokens()) {
                     width = (int) Integer.valueOf(stoken.nextToken()).intValue();
@@ -217,13 +217,13 @@ public class PxgraphApplication extends PlotApplication {
 
                 if (stoken.hasMoreTokens()) {
                     xscreen = (int) Integer.valueOf(stoken.nextToken())
-                                                       .intValue();
+                        .intValue();
                     screenlocationgiven = true;
                 }
 
                 if (stoken.hasMoreTokens()) {
                     yscreen = (int) Integer.valueOf(stoken.nextToken())
-                                                       .intValue();
+                        .intValue();
                     screenlocationgiven = true;
                 }
 
@@ -277,235 +277,235 @@ public class PxgraphApplication extends PlotApplication {
         // "(Unsupported)" - The string that is printed to indicate if
         //                   a option is unsupported.
         String[][] commandOptions = {
-                {
-                    "-bd",
-                    "<color>",
-                    "Border",
-                    "White",
-                    "(Unsupported)"
-                },
-                {
-                    "-bg",
-                    "<color>",
-                    "BackGround",
-                    "White",
-                    ""
-                },
-                {
-                    "-brb",
-                    "<base>",
-                    "BarBase",
-                    "0",
-                    "(Unsupported)"
-                },
-                {
-                    "-brw",
-                    "<width>",
-                    "BarWidth",
-                    "1",
-                    ""
-                },
-                {
-                    "-bw",
-                    "<size>",
-                    "BorderSize",
-                    "1",
-                    "(Unsupported)"
-                },
-                {
-                    "-fg",
-                    "<color>",
-                    "Foreground",
-                    "Black",
-                    ""
-                },
-                {
-                    "-gw",
-                    "<pixels>",
-                    "GridStyle",
-                    "1",
-                    "(Unsupported)"
-                },
-                {
-                    "-lf",
-                    "<fontname>",
-                    "LabelFont",
-                    "helvetica-12",
-                    ""
-                },
-                {
-                    "-lw",
-                    "<width>",
-                    "LineWidth",
-                    "0",
-                    "(Unsupported)"
-                },
-                {
-                    "-lx",
-                    "<xl,xh>",
-                    "XLowLimit, XHighLimit",
-                    "0",
-                    ""
-                },
-                {
-                    "-ly",
-                    "<yl,yh>",
-                    "YLowLimit, YHighLimit",
-                    "0",
-                    ""
-                },
-                // -o is not in the original X11 pxgraph.
-                {
-                    "-o",
-                    "<output filename>",
-                    "",
-                    "/tmp/t.ps",
-                    ""
-                },
-                {
-                    "-t",
-                    "<title>",
-                    "TitleText",
-                    "An X Graph",
-                    ""
-                },
-                {
-                    "-tf",
-                    "<fontname>",
-                    "TitleFont",
-                    "helvetica-b-14",
-                    ""
-                },
-                {
-                    "-x",
-                    "<unitName>",
-                    "XUnitText",
-                    "X",
-                    ""
-                },
-                {
-                    "-y",
-                    "<unitName>",
-                    "YUnitText",
-                    "Y",
-                    ""
-                },
-                {
-                    "-zg",
-                    "<color>",
-                    "ZeroColor",
-                    "Black",
-                    "(Unsupported)"
-                },
-                {
-                    "-zw",
-                    "<width>",
-                    "ZeroWidth",
-                    "0",
-                    "(Unsupported)"
-                },
-            };
+            {
+                "-bd",
+                "<color>",
+                "Border",
+                "White",
+                "(Unsupported)"
+            },
+            {
+                "-bg",
+                "<color>",
+                "BackGround",
+                "White",
+                ""
+            },
+            {
+                "-brb",
+                "<base>",
+                "BarBase",
+                "0",
+                "(Unsupported)"
+            },
+            {
+                "-brw",
+                "<width>",
+                "BarWidth",
+                "1",
+                ""
+            },
+            {
+                "-bw",
+                "<size>",
+                "BorderSize",
+                "1",
+                "(Unsupported)"
+            },
+            {
+                "-fg",
+                "<color>",
+                "Foreground",
+                "Black",
+                ""
+            },
+            {
+                "-gw",
+                "<pixels>",
+                "GridStyle",
+                "1",
+                "(Unsupported)"
+            },
+            {
+                "-lf",
+                "<fontname>",
+                "LabelFont",
+                "helvetica-12",
+                ""
+            },
+            {
+                "-lw",
+                "<width>",
+                "LineWidth",
+                "0",
+                "(Unsupported)"
+            },
+            {
+                "-lx",
+                "<xl,xh>",
+                "XLowLimit, XHighLimit",
+                "0",
+                ""
+            },
+            {
+                "-ly",
+                "<yl,yh>",
+                "YLowLimit, YHighLimit",
+                "0",
+                ""
+            },
+            // -o is not in the original X11 pxgraph.
+            {
+                "-o",
+                "<output filename>",
+                "",
+                "/tmp/t.ps",
+                ""
+            },
+            {
+                "-t",
+                "<title>",
+                "TitleText",
+                "An X Graph",
+                ""
+            },
+            {
+                "-tf",
+                "<fontname>",
+                "TitleFont",
+                "helvetica-b-14",
+                ""
+            },
+            {
+                "-x",
+                "<unitName>",
+                "XUnitText",
+                "X",
+                ""
+            },
+            {
+                "-y",
+                "<unitName>",
+                "YUnitText",
+                "Y",
+                ""
+            },
+            {
+                "-zg",
+                "<color>",
+                "ZeroColor",
+                "Black",
+                "(Unsupported)"
+            },
+            {
+                "-zw",
+                "<width>",
+                "ZeroWidth",
+                "0",
+                "(Unsupported)"
+            },
+        };
 
         String[][] commandFlags = {
-                {
-                    "-bar",
-                    "BarGraph",
-                    ""
-                },
-                {
-                    "-bb",
-                    "BoundBox",
-                    "(Ignored)"
-                },
-                {
-                    "-bigendian",
-                    "",
-                    ""
-                },
-                {
-                    "-littleendian",
-                    "",
-                    ""
-                },
-                {
-                    "-binary",
-                    "Binary",
-                    ""
-                },
-                // -impulses is not in the original X11 pxgraph.
-                {
-                    "-impulses",
-                    "Impulses",
-                    ""
-                },
-                {
-                    "-help",
-                    "",
-                    ""
-                },
-                {
-                    "-lnx",
-                    "XLog",
-                    ""
-                },
-                {
-                    "-lny",
-                    "YLog",
-                    ""
-                },
-                {
-                    "-m",
-                    "Markers",
-                    ""
-                },
-                {
-                    "-M",
-                    "StyleMarkers",
-                    ""
-                },
-                {
-                    "-nl",
-                    "NoLines",
-                    ""
-                },
-                {
-                    "-p",
-                    "PixelMarkers",
-                    ""
-                },
-                {
-                    "-P",
-                    "LargePixel",
-                    ""
-                },
-                {
-                    "-rv",
-                    "ReverseVideo",
-                    ""
-                },
-                // -test is not in the original X11 pxgraph.  We use it for testing
-                {
-                    "-test",
-                    "Test",
-                    ""
-                },
-                {
-                    "-tk",
-                    "Ticks",
-                    ""
-                },
-                // -v is not in the original X11 pxgraph.
-                {
-                    "-v",
-                    "Version",
-                    ""
-                },
-                {
-                    "-version",
-                    "Version",
-                    ""
-                },
-            };
+            {
+                "-bar",
+                "BarGraph",
+                ""
+            },
+            {
+                "-bb",
+                "BoundBox",
+                "(Ignored)"
+            },
+            {
+                "-bigendian",
+                "",
+                ""
+            },
+            {
+                "-littleendian",
+                "",
+                ""
+            },
+            {
+                "-binary",
+                "Binary",
+                ""
+            },
+            // -impulses is not in the original X11 pxgraph.
+            {
+                "-impulses",
+                "Impulses",
+                ""
+            },
+            {
+                "-help",
+                "",
+                ""
+            },
+            {
+                "-lnx",
+                "XLog",
+                ""
+            },
+            {
+                "-lny",
+                "YLog",
+                ""
+            },
+            {
+                "-m",
+                "Markers",
+                ""
+            },
+            {
+                "-M",
+                "StyleMarkers",
+                ""
+            },
+            {
+                "-nl",
+                "NoLines",
+                ""
+            },
+            {
+                "-p",
+                "PixelMarkers",
+                ""
+            },
+            {
+                "-P",
+                "LargePixel",
+                ""
+            },
+            {
+                "-rv",
+                "ReverseVideo",
+                ""
+            },
+            // -test is not in the original X11 pxgraph.  We use it for testing
+            {
+                "-test",
+                "Test",
+                ""
+            },
+            {
+                "-tk",
+                "Ticks",
+                ""
+            },
+            // -v is not in the original X11 pxgraph.
+            {
+                "-v",
+                "Version",
+                ""
+            },
+            {
+                "-version",
+                "Version",
+                ""
+            },
+        };
         String result = "Usage: ptplot [ options ] [=WxH+X+Y] [file ...]\n\n"
             + " options that take values as second args:\n";
 
@@ -513,19 +513,19 @@ public class PxgraphApplication extends PlotApplication {
 
         for (i = 0; i < commandOptions.length; i++) {
             result += (" " + commandOptions[i][0] + " " + commandOptions[i][1]
-                        + " " + commandOptions[i][4] + "\n");
+                    + " " + commandOptions[i][4] + "\n");
         }
 
         result += "\nBoolean flags:\n";
 
         for (i = 0; i < commandFlags.length; i++) {
             result += (" " + commandFlags[i][0] + " " + commandFlags[i][2]
-                        + "\n");
+                    + "\n");
         }
 
         result += ("\nThe following pxgraph features are not supported:\n"
-                    + " * Directives in pxgraph input files\n"
-                    + " * Xresources\n");
+                + " * Directives in pxgraph input files\n"
+                + " * Xresources\n");
         return result;
     }
 

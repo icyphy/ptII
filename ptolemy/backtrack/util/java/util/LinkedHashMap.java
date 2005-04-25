@@ -136,9 +136,9 @@ public class LinkedHashMap extends HashMap implements Rollbackable {
         private FieldRecord $RECORD$succ = new FieldRecord(0);
 
         private FieldRecord[] $RECORDS = new FieldRecord[] {
-                $RECORD$pred,
-                $RECORD$succ
-            };
+            $RECORD$pred,
+            $RECORD$succ
+        };
     }
 
     public LinkedHashMap() {
@@ -214,83 +214,83 @@ public class LinkedHashMap extends HashMap implements Rollbackable {
     Iterator iterator(final int type) {
         return new Iterator() {
 
-            private LinkedHashEntry current = root;
+                private LinkedHashEntry current = root;
 
-            private LinkedHashEntry last;
+                private LinkedHashEntry last;
 
-            private int knownMod = getModCount();
+                private int knownMod = getModCount();
 
-            public boolean hasNext() {
-                if (knownMod != getModCount())
-                    throw new ConcurrentModificationException();
-                return current != null;
-            }
-
-            public Object next() {
-                if (knownMod != getModCount())
-                    throw new ConcurrentModificationException();
-                if (current == null)
-                    throw new NoSuchElementException();
-                $ASSIGN$last(current);
-                $ASSIGN$current(current.succ);
-                return type == VALUES?last.getValue():type == KEYS?last.getKey():last;
-            }
-
-            public void remove() {
-                if (knownMod != getModCount())
-                    throw new ConcurrentModificationException();
-                if (last == null)
-                    throw new IllegalStateException();
-                LinkedHashMap.this.remove(last.getKey());
-                $ASSIGN$last(null);
-                $ASSIGN$SPECIAL$knownMod(11, knownMod);
-            }
-
-            final class _PROXY_ implements Rollbackable {
-
-                public final void $COMMIT(long timestamp) {
-                    $COMMIT_ANONYMOUS(timestamp);
+                public boolean hasNext() {
+                    if (knownMod != getModCount())
+                        throw new ConcurrentModificationException();
+                    return current != null;
                 }
 
-                public final void $RESTORE(long timestamp, boolean trim) {
-                    $RESTORE_ANONYMOUS(timestamp, trim);
+                public Object next() {
+                    if (knownMod != getModCount())
+                        throw new ConcurrentModificationException();
+                    if (current == null)
+                        throw new NoSuchElementException();
+                    $ASSIGN$last(current);
+                    $ASSIGN$current(current.succ);
+                    return type == VALUES?last.getValue():type == KEYS?last.getKey():last;
                 }
 
-                public final Checkpoint $GET$CHECKPOINT() {
-                    return $GET$CHECKPOINT_ANONYMOUS();
+                public void remove() {
+                    if (knownMod != getModCount())
+                        throw new ConcurrentModificationException();
+                    if (last == null)
+                        throw new IllegalStateException();
+                    LinkedHashMap.this.remove(last.getKey());
+                    $ASSIGN$last(null);
+                    $ASSIGN$SPECIAL$knownMod(11, knownMod);
                 }
 
-                public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
-                    $SET$CHECKPOINT_ANONYMOUS(checkpoint);
-                    return this;
-                }
-            }
+                final class _PROXY_ implements Rollbackable {
 
-            private final LinkedHashEntry $ASSIGN$current(LinkedHashEntry newValue) {
-                if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-                    $RECORD$current.add(null, current, $CHECKPOINT.getTimestamp());
-                }
-                if (newValue != null && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
-                    newValue.$SET$CHECKPOINT($CHECKPOINT);
-                }
-                return current = newValue;
-            }
+                    public final void $COMMIT(long timestamp) {
+                        $COMMIT_ANONYMOUS(timestamp);
+                    }
 
-            private final LinkedHashEntry $ASSIGN$last(LinkedHashEntry newValue) {
-                if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-                    $RECORD$last.add(null, last, $CHECKPOINT.getTimestamp());
-                }
-                if (newValue != null && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
-                    newValue.$SET$CHECKPOINT($CHECKPOINT);
-                }
-                return last = newValue;
-            }
+                    public final void $RESTORE(long timestamp, boolean trim) {
+                        $RESTORE_ANONYMOUS(timestamp, trim);
+                    }
 
-            private final int $ASSIGN$SPECIAL$knownMod(int operator, long newValue) {
-                if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-                    $RECORD$knownMod.add(null, knownMod, $CHECKPOINT.getTimestamp());
+                    public final Checkpoint $GET$CHECKPOINT() {
+                        return $GET$CHECKPOINT_ANONYMOUS();
+                    }
+
+                    public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
+                        $SET$CHECKPOINT_ANONYMOUS(checkpoint);
+                        return this;
+                    }
                 }
-                switch (operator) {
+
+                private final LinkedHashEntry $ASSIGN$current(LinkedHashEntry newValue) {
+                    if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+                        $RECORD$current.add(null, current, $CHECKPOINT.getTimestamp());
+                    }
+                    if (newValue != null && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
+                        newValue.$SET$CHECKPOINT($CHECKPOINT);
+                    }
+                    return current = newValue;
+                }
+
+                private final LinkedHashEntry $ASSIGN$last(LinkedHashEntry newValue) {
+                    if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+                        $RECORD$last.add(null, last, $CHECKPOINT.getTimestamp());
+                    }
+                    if (newValue != null && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
+                        newValue.$SET$CHECKPOINT($CHECKPOINT);
+                    }
+                    return last = newValue;
+                }
+
+                private final int $ASSIGN$SPECIAL$knownMod(int operator, long newValue) {
+                    if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+                        $RECORD$knownMod.add(null, knownMod, $CHECKPOINT.getTimestamp());
+                    }
+                    switch (operator) {
                     case 0:
                         return knownMod += newValue;
                     case 1:
@@ -323,59 +323,59 @@ public class LinkedHashMap extends HashMap implements Rollbackable {
                         return --knownMod;
                     default:
                         return knownMod;
-                }
-            }
-
-            public void $COMMIT_ANONYMOUS(long timestamp) {
-                FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
-                $RECORD$$CHECKPOINT.commit(timestamp);
-            }
-
-            public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
-                current = (LinkedHashEntry)$RECORD$current.restore(current, timestamp, trim);
-                last = (LinkedHashEntry)$RECORD$last.restore(last, timestamp, trim);
-                knownMod = $RECORD$knownMod.restore(knownMod, timestamp, trim);
-                if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-                    $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, new _PROXY_(), timestamp, trim);
-                    FieldRecord.popState($RECORDS);
-                    $RESTORE_ANONYMOUS(timestamp, trim);
-                }
-            }
-
-            public final Checkpoint $GET$CHECKPOINT_ANONYMOUS() {
-                return $CHECKPOINT;
-            }
-
-            public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
-                if ($CHECKPOINT != checkpoint) {
-                    Checkpoint oldCheckpoint = $CHECKPOINT;
-                    if (checkpoint != null) {
-                        $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
-                        FieldRecord.pushState($RECORDS);
                     }
-                    $CHECKPOINT = checkpoint;
-                    oldCheckpoint.setCheckpoint(checkpoint);
-                    checkpoint.addObject(new _PROXY_());
                 }
-                return this;
-            }
 
-            private FieldRecord $RECORD$current = new FieldRecord(0);
+                public void $COMMIT_ANONYMOUS(long timestamp) {
+                    FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                    $RECORD$$CHECKPOINT.commit(timestamp);
+                }
 
-            private FieldRecord $RECORD$last = new FieldRecord(0);
+                public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
+                    current = (LinkedHashEntry)$RECORD$current.restore(current, timestamp, trim);
+                    last = (LinkedHashEntry)$RECORD$last.restore(last, timestamp, trim);
+                    knownMod = $RECORD$knownMod.restore(knownMod, timestamp, trim);
+                    if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
+                        $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, new _PROXY_(), timestamp, trim);
+                        FieldRecord.popState($RECORDS);
+                        $RESTORE_ANONYMOUS(timestamp, trim);
+                    }
+                }
 
-            private FieldRecord $RECORD$knownMod = new FieldRecord(0);
+                public final Checkpoint $GET$CHECKPOINT_ANONYMOUS() {
+                    return $CHECKPOINT;
+                }
 
-            private FieldRecord[] $RECORDS = new FieldRecord[] {
+                public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
+                    if ($CHECKPOINT != checkpoint) {
+                        Checkpoint oldCheckpoint = $CHECKPOINT;
+                        if (checkpoint != null) {
+                            $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                            FieldRecord.pushState($RECORDS);
+                        }
+                        $CHECKPOINT = checkpoint;
+                        oldCheckpoint.setCheckpoint(checkpoint);
+                        checkpoint.addObject(new _PROXY_());
+                    }
+                    return this;
+                }
+
+                private FieldRecord $RECORD$current = new FieldRecord(0);
+
+                private FieldRecord $RECORD$last = new FieldRecord(0);
+
+                private FieldRecord $RECORD$knownMod = new FieldRecord(0);
+
+                private FieldRecord[] $RECORDS = new FieldRecord[] {
                     $RECORD$current,
                     $RECORD$last,
                     $RECORD$knownMod
                 };
 
-            {
-                $CHECKPOINT.addObject(new _PROXY_());
-            }
-        };
+                {
+                    $CHECKPOINT.addObject(new _PROXY_());
+                }
+            };
     }
 
     private final LinkedHashEntry $ASSIGN$root(LinkedHashEntry newValue) {
@@ -401,6 +401,6 @@ public class LinkedHashMap extends HashMap implements Rollbackable {
     private FieldRecord $RECORD$root = new FieldRecord(0);
 
     private FieldRecord[] $RECORDS = new FieldRecord[] {
-            $RECORD$root
-        };
+        $RECORD$root
+    };
 }

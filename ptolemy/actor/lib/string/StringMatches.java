@@ -73,7 +73,7 @@ public class StringMatches extends TypedAtomicActor {
      *   actor with this name.
      */
     public StringMatches(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // Create one matchString portParameter, one matchString port,
@@ -120,18 +120,18 @@ public class StringMatches extends TypedAtomicActor {
      *  into a regular expression.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == pattern) {
             try {
                 String patternValue = ((StringToken) pattern.getToken())
-                                .stringValue();
+                    .stringValue();
                 _pattern = Pattern.compile(patternValue);
             } catch (PatternSyntaxException ex) {
                 String patternValue = ((StringToken) pattern.getToken())
-                                .stringValue();
+                    .stringValue();
                 throw new IllegalActionException(this, ex,
-                    "Failed to compile regular expression \"" + patternValue
-                    + "\"");
+                        "Failed to compile regular expression \"" + patternValue
+                        + "\"");
             }
         } else {
             super.attributeChanged(attribute);
@@ -149,7 +149,7 @@ public class StringMatches extends TypedAtomicActor {
         matchString.update();
 
         String matchStringValue = ((StringToken) matchString.getToken())
-                        .stringValue();
+            .stringValue();
         Matcher match = _pattern.matcher(matchStringValue);
         output.send(0, new BooleanToken(match.find()));
     }

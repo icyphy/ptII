@@ -135,7 +135,7 @@ public class Expression extends TypedAtomicActor {
      *   actor with this name.
      */
     public Expression(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         output = new TypedIOPort(this, "output", false, true);
@@ -201,11 +201,11 @@ public class Expression extends TypedAtomicActor {
         } catch (Throwable throwable) {
             // LinkageError is and Error, not an exceptoin
             throw new IllegalActionException(this, throwable,
-                "There was a problem invoking the Ptolemy II Matlab interface"
-                + ".\nThe interface has been tested under Windows and Linux,\n"
-                + "requires that Matlab be installed on the local machine."
-                + "Refer to $PTII/ptolemy/matlab/makefile for more"
-                + "information.");
+                    "There was a problem invoking the Ptolemy II Matlab interface"
+                    + ".\nThe interface has been tested under Windows and Linux,\n"
+                    + "requires that Matlab be installed on the local machine."
+                    + "Refer to $PTII/ptolemy/matlab/makefile for more"
+                    + "information.");
         }
 
         // First set default debugging level, then check for more
@@ -245,18 +245,18 @@ public class Expression extends TypedAtomicActor {
 
         if (packageDirectories != null) {
             StringTokenizer dirs = new StringTokenizer((String) ((StringToken) packageDirectories
-                                .getToken()).stringValue(), ",");
+                                                               .getToken()).stringValue(), ",");
             StringBuffer cellFormat = new StringBuffer(512);
             cellFormat.append("{");
 
             if (dirs.hasMoreTokens()) {
                 cellFormat.append("'"
-                    + UtilityFunctions.findFile(dirs.nextToken()) + "'");
+                        + UtilityFunctions.findFile(dirs.nextToken()) + "'");
             }
 
             while (dirs.hasMoreTokens()) {
                 cellFormat.append(",'"
-                    + UtilityFunctions.findFile(dirs.nextToken()) + "'");
+                        + UtilityFunctions.findFile(dirs.nextToken()) + "'");
             }
 
             cellFormat.append("}");
@@ -273,9 +273,9 @@ public class Expression extends TypedAtomicActor {
         }
 
         _dataParameters.getScalarMatrices = ((BooleanToken) get1x1asScalars
-                        .getToken()).booleanValue();
+                .getToken()).booleanValue();
         _dataParameters.getIntMatrices = ((BooleanToken) getIntegerMatrices
-                        .getToken()).booleanValue();
+                .getToken()).booleanValue();
     }
 
     /** Return true if all input ports have at least one token.
@@ -321,7 +321,7 @@ public class Expression extends TypedAtomicActor {
                 }
 
                 matlabEngine.put(engine, "time",
-                    new DoubleToken(director.getModelTime().getDoubleValue()));
+                        new DoubleToken(director.getModelTime().getDoubleValue()));
                 matlabEngine.put(engine, "iteration", _iteration.getToken());
 
                 Iterator inputPorts = inputPortList().iterator();
@@ -341,8 +341,8 @@ public class Expression extends TypedAtomicActor {
                     // FIXME: Handle multiports
                     if (port.getWidth() > 0) {
                         port.send(0,
-                            matlabEngine.get(engine, port.getName(),
-                                _dataParameters));
+                                matlabEngine.get(engine, port.getName(),
+                                        _dataParameters));
                     }
                 }
 

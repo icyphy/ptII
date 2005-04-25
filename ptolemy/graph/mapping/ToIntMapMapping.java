@@ -66,7 +66,7 @@ public class ToIntMapMapping extends MapMapping implements ToIntMapping {
      */
     public boolean inDomain(Object object) {
         return ((_map.containsKey(object))
-                    && (_map.get(object) instanceof Integer));
+                && (_map.get(object) instanceof Integer));
     }
 
     /** Return the int value that is associated with given object under

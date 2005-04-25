@@ -61,7 +61,7 @@ public class SquareWave extends TypedCompositeActor {
     /** Construct the model
      */
     public SquareWave(Workspace workspace)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         // Create the model.
         super(workspace);
         setName("LinearSystem");

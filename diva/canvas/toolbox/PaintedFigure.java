@@ -99,7 +99,7 @@ public class PaintedFigure extends AbstractFigure {
      */
     public Rectangle2D getBounds() {
         Rectangle2D bounds = (Rectangle2D) ShapeUtilities.transformModify(_paintedList
-                            .getBounds(), _transform);
+                .getBounds(), _transform);
         return bounds;
     }
 
@@ -109,7 +109,7 @@ public class PaintedFigure extends AbstractFigure {
      */
     public Point2D getOrigin() {
         return new Point2D.Double(_transform.getTranslateX(),
-            _transform.getTranslateY());
+                _transform.getTranslateY());
     }
 
     /** Get the shape of this figure. This is the same as the

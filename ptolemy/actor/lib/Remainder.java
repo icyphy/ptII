@@ -81,7 +81,7 @@ public class Remainder extends Transformer {
      *   actor with this name.
      */
     public Remainder(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         input.setTypeEquals(BaseType.DOUBLE);
@@ -110,7 +110,7 @@ public class Remainder extends Transformer {
         if (input.hasToken(0)) {
             double in = ((DoubleToken) input.get(0)).doubleValue();
             double divisorValue = ((DoubleToken) divisor.getToken())
-                            .doubleValue();
+                .doubleValue();
             output.send(0, new DoubleToken(Math.IEEEremainder(in, divisorValue)));
         }
     }

@@ -66,7 +66,7 @@ public class BrowserEffigy extends Effigy {
      *  @param name The name of this effigy.
      */
     public BrowserEffigy(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // Indicate that we cannot save to URL.
@@ -91,7 +91,7 @@ public class BrowserEffigy extends Effigy {
      *   is malformed in some way.
      */
     public static BrowserEffigy newBrowserEffigy(CompositeEntity container,
-        URL base, URL in) throws Exception {
+            URL base, URL in) throws Exception {
         // Create a new effigy.
         BrowserEffigy effigy = new BrowserEffigy(container,
                 container.uniqueName("browserEffigy"));
@@ -130,7 +130,7 @@ public class BrowserEffigy extends Effigy {
          *   an entity already in the container.
          */
         public Factory(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+                throws IllegalActionException, NameDuplicationException {
             super(container, name);
 
             // Record the latest factory for use by HTMLViewer.
@@ -166,7 +166,7 @@ public class BrowserEffigy extends Effigy {
          *   is malformed in some way.
          */
         public Effigy createEffigy(CompositeEntity container, URL base, URL in)
-            throws Exception {
+                throws Exception {
             if (in == null) {
                 return null;
             }
@@ -175,7 +175,7 @@ public class BrowserEffigy extends Effigy {
 
             // This could be a list, or a user preference
             if (extension.equals("pdf") || extension.startsWith("htm")
-                            || extension.startsWith("shtm")) {
+                    || extension.startsWith("shtm")) {
                 Effigy effigy = newBrowserEffigy(container, base, in);
                 return effigy;
             }
@@ -194,7 +194,7 @@ public class BrowserEffigy extends Effigy {
             }
 
             if (contentType.startsWith("text/html")
-                            || contentType.startsWith("text/rtf")) {
+                    || contentType.startsWith("text/rtf")) {
                 Effigy effigy = newBrowserEffigy(container, base, in);
                 return effigy;
             }

@@ -78,7 +78,7 @@ public class PolyCylinder3D extends GRShadedShape {
      *   actor with this name.
      */
     public PolyCylinder3D(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         polygon = new Parameter(this, "polygon");
         polygon.setTypeEquals(new ArrayType(BaseType.DOUBLE));
@@ -116,10 +116,10 @@ public class PolyCylinder3D extends GRShadedShape {
      *  @param attribute The attribute that changed.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (allowRuntimeChanges != null) {
             if (((attribute == polygon) || (attribute == thickness))
-                            && _changesAllowedNow && (_containedNode != null)) {
+                    && _changesAllowedNow && (_containedNode != null)) {
                 _containedNode.setGeometry(_getGeometry());
             }
         }
@@ -175,7 +175,7 @@ public class PolyCylinder3D extends GRShadedShape {
         }
 
         float thicknessValue = (float) ((DoubleToken) thickness.getToken())
-                        .doubleValue();
+            .doubleValue();
 
         data[numberOfVertices * 3] = data[0];
         data[(numberOfVertices * 3) + 1] = data[1];
@@ -258,9 +258,9 @@ public class PolyCylinder3D extends GRShadedShape {
 
         for (int i = 0; i < (numberOfElements * 2); i = i + 2) {
             data[j++] = (float) ((DoubleToken) polygonToken.getElement(i))
-                            .doubleValue();
+                .doubleValue();
             data[j++] = (float) ((DoubleToken) polygonToken.getElement(i + 1))
-                            .doubleValue();
+                .doubleValue();
             data[j++] = 0.0f;
         }
 

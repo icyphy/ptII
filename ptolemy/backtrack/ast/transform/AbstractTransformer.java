@@ -51,12 +51,12 @@ import ptolemy.backtrack.ast.LocalClassLoader.ClassImport;
 /**
 
 
- @author Thomas Feng
- @version $Id$
- @since Ptolemy II 5.1
- @Pt.ProposedRating Red (tfeng)
- @Pt.AcceptedRating Red (tfeng)
- */
+@author Thomas Feng
+@version $Id$
+@since Ptolemy II 5.1
+@Pt.ProposedRating Red (tfeng)
+@Pt.AcceptedRating Red (tfeng)
+*/
 public abstract class AbstractTransformer {
 
     /** Given a table of lists, add a value to the list associated with a key.
@@ -300,7 +300,7 @@ public abstract class AbstractTransformer {
      */
     public static String ASSIGN_PREFIX = "$ASSIGN$";
 
-        /** The prefix of backup functions.
+    /** The prefix of backup functions.
      */
     public static String BACKUP_PREFIX = "$BACKUP$";
 
@@ -330,14 +330,14 @@ public abstract class AbstractTransformer {
         return ASSIGN_PREFIX + (special ? "SPECIAL$" : "") + fieldName;
     }
 
-        /** Get the name of the backup method.
-         *
-         *  @param fieldName The field name.
-         *  @return The name of the backup method.
-         */
-        protected String _getBackupMethodName(String fieldName) {
-                return BACKUP_PREFIX + fieldName;
-        }
+    /** Get the name of the backup method.
+     *
+     *  @param fieldName The field name.
+     *  @return The name of the backup method.
+     */
+    protected String _getBackupMethodName(String fieldName) {
+        return BACKUP_PREFIX + fieldName;
+    }
 
     /** Get the shortest possible name of the a class. If there is no conflict,
      *  the class is first imported, and only the simple class is returned;
@@ -392,7 +392,7 @@ public abstract class AbstractTransformer {
                     return name;
                 else if (lastDollar >= 0 &&
                         importedName.substring(lastDollar + 1)
-                            .equals(simpleName))
+                        .equals(simpleName))
                     return name;
             }
         }

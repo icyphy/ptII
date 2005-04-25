@@ -106,7 +106,7 @@ public class DifferentialSystem extends TypedCompositeActor {
      * @exception IllegalActionException If there was an internal problem.
      */
     public DifferentialSystem(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         StringToken[] empty = new StringToken[1];
@@ -120,12 +120,12 @@ public class DifferentialSystem extends TypedCompositeActor {
 
         // icon
         _attachText("_iconDescription",
-            "<svg>\n" + "<rect x=\"-50\" y=\"-30\" "
-            + "width=\"100\" height=\"60\" " + "style=\"fill:white\"/>\n"
-            + "<text x=\"-45\" y=\"-10\" " + "style=\"font-size:14\">\n"
-            + "dx/dt=f(x, u, t)" + "</text>\n" + "<text x=\"-45\" y=\"10\" "
-            + "style=\"font-size:14\">\n" + "     y=g(x, u, t)" + "</text>\n"
-            + "style=\"fill:blue\"/>\n" + "</svg>\n");
+                "<svg>\n" + "<rect x=\"-50\" y=\"-30\" "
+                + "width=\"100\" height=\"60\" " + "style=\"fill:white\"/>\n"
+                + "<text x=\"-45\" y=\"-10\" " + "style=\"font-size:14\">\n"
+                + "dx/dt=f(x, u, t)" + "</text>\n" + "<text x=\"-45\" y=\"10\" "
+                + "style=\"font-size:14\">\n" + "     y=g(x, u, t)" + "</text>\n"
+                + "style=\"fill:blue\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -154,11 +154,11 @@ public class DifferentialSystem extends TypedCompositeActor {
      *   denominator matrix is not a row vector.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == initialStates) {
             // The initialStates parameter should be a row vector.
             DoubleMatrixToken token = (DoubleMatrixToken) initialStates
-                            .getToken();
+                .getToken();
 
             if (token == null) {
                 return;
@@ -166,13 +166,13 @@ public class DifferentialSystem extends TypedCompositeActor {
 
             if ((token.getRowCount() != 1) || (token.getColumnCount() < 1)) {
                 throw new IllegalActionException(this,
-                    "The initialStates must be a row vector.");
+                        "The initialStates must be a row vector.");
             }
 
             // Changes of the initialStates parameter are ignored after
             // the execution.
             if ((getManager() != null)
-                            && (getManager().getState() == Manager.IDLE)) {
+                    && (getManager().getState() == Manager.IDLE)) {
                 _requestInitialization();
             }
         } else if (attribute instanceof Parameter) {
@@ -235,10 +235,10 @@ public class DifferentialSystem extends TypedCompositeActor {
             // Integrators and feedback expressions
             for (int i = 0; i < n; i++) {
                 states[i] = ((StringToken) stateNames.getElement(i)).stringValue()
-                                         .trim();
+                    .trim();
                 integrators[i] = new Integrator(this, states[i]);
                 integrators[i].initialState.setExpression("initialStates(0,"
-                    + i + ")");
+                        + i + ")");
                 stateRelations[i] = new TypedIORelation(this,
                         "relation_" + states[i]);
 
@@ -247,7 +247,7 @@ public class DifferentialSystem extends TypedCompositeActor {
                 // One Expression per integrator.
                 equations[i] = new Expression(this, states[i] + "_dot");
                 equations[i].expression.setExpression(((StringToken) ((Parameter) getAttribute(states[i]
-                        + "_dot")).getToken()).stringValue());
+                                                                              + "_dot")).getToken()).stringValue());
 
                 //FIXME: Why should I set type here?
                 equations[i].output.setTypeEquals(BaseType.DOUBLE);
@@ -280,10 +280,10 @@ public class DifferentialSystem extends TypedCompositeActor {
                         "output_" + outputs[outIndex]);
 
                 maps[outIndex].expression.setExpression(((StringToken) ((Parameter) getAttribute(
-                        outputs[outIndex])).getToken()).stringValue());
+                                                                                outputs[outIndex])).getToken()).stringValue());
                 maps[outIndex].output.setTypeEquals(BaseType.DOUBLE);
                 connect(maps[outIndex].output,
-                    (TypedIOPort) getPort(outputs[outIndex]));
+                        (TypedIOPort) getPort(outputs[outIndex]));
                 outIndex++;
             }
 
@@ -337,7 +337,7 @@ public class DifferentialSystem extends TypedCompositeActor {
         } catch (NameDuplicationException ex) {
             // Should never happen.
             throw new InternalErrorException("Duplicated name when "
-                + "constructing the subsystem" + ex.getMessage());
+                    + "constructing the subsystem" + ex.getMessage());
         } finally {
             _workspace.doneWriting();
         }
@@ -370,18 +370,18 @@ public class DifferentialSystem extends TypedCompositeActor {
 
         if (n < 1) {
             throw new IllegalActionException(this,
-                "There must be at "
-                + "least one state variable for a differential system.");
+                    "There must be at "
+                    + "least one state variable for a differential system.");
         }
 
         // Check if any of the state variable names is an empty string.
         for (int i = 0; i < n; i++) {
             String name = (((StringToken) stateNames.getElement(i)).stringValue())
-                            .trim();
+                .trim();
 
             if (name.equals("")) {
                 throw new IllegalActionException(this,
-                    "A state variable " + "name should not be an empty string.");
+                        "A state variable " + "name should not be an empty string.");
             }
 
             // Check state equations.
@@ -389,8 +389,8 @@ public class DifferentialSystem extends TypedCompositeActor {
 
             if (getAttribute(equation) == null) {
                 throw new IllegalActionException(this,
-                    "Please add a " + "parameter with name \"" + equation
-                    + "\" to specify the state equation.");
+                        "Please add a " + "parameter with name \"" + equation
+                        + "\" to specify the state equation.");
             }
         }
 
@@ -406,15 +406,15 @@ public class DifferentialSystem extends TypedCompositeActor {
 
             if (name.equals("")) {
                 throw new IllegalActionException(this,
-                    "A output variable "
-                    + "name should not be an empty string.");
+                        "A output variable "
+                        + "name should not be an empty string.");
             }
 
             // Check output maps.
             if (getAttribute(name) == null) {
                 throw new IllegalActionException(this,
-                    "Please add a " + "parameter with name \"" + name
-                    + "\" to specify the output map.");
+                        "Please add a " + "parameter with name \"" + name
+                        + "\" to specify the output map.");
             }
         }
     }

@@ -69,7 +69,7 @@ public class FirstOrderHold extends Transformer implements CTWaveformGenerator {
      *   an entity already in the container.
      */
     public FirstOrderHold(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         derivative = new TypedIOPort(this, "derivative", true, false);
         defaultValue = new Parameter(this, "defaultValue");
@@ -117,9 +117,9 @@ public class FirstOrderHold extends Transformer implements CTWaveformGenerator {
 
         if (director.isDiscretePhase()) {
             if ((input.hasToken(0) && (!derivative.hasToken(0)))
-                            || (!input.hasToken(0) && derivative.hasToken(0))) {
+                    || (!input.hasToken(0) && derivative.hasToken(0))) {
                 throw new IllegalActionException(this,
-                    " No synchronized inputs.");
+                        " No synchronized inputs.");
             }
 
             if (input.hasToken(0) && derivative.hasToken(0)) {
@@ -129,13 +129,13 @@ public class FirstOrderHold extends Transformer implements CTWaveformGenerator {
 
                 if (_debugging) {
                     _debug(getFullName(), " get inputs: (" + _value,
-                        ", " + _derivative + ").");
+                            ", " + _derivative + ").");
                 }
             }
         }
 
         double timeInterval = director.getModelTime().subtract(_time)
-                                                  .getDoubleValue();
+            .getDoubleValue();
         output.send(0, new DoubleToken(_value + (timeInterval * _derivative)));
     }
 

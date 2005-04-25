@@ -123,7 +123,7 @@ public class GRVolume extends GRActor3D {
      *   actor with this name.
      */
     public GRVolume(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         volFile = new FilePortParameter(this, "volFile");
@@ -216,10 +216,10 @@ public class GRVolume extends GRActor3D {
     public ColorAttribute specularColor;
 
     /* /** Texture URL, which if non-empty, specifies an image file
-      *  or URL. The image from the file is mapped onto the shape
-      *  as a texture.
+     *  or URL. The image from the file is mapped onto the shape
+     *  as a texture.
 
-    public FileParameter texture; */
+     public FileParameter texture; */
 
     /** The transparency, where 0.0 means opaque (the default) and 1.0
      *  means fully transparent. The type is double.
@@ -253,15 +253,15 @@ public class GRVolume extends GRActor3D {
      *  an update is supported by the <i>allowRuntimeChanges</i> parameter.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         // If allowRuntimeChanges is null, then we are in the
         // constructor, and don't need to do any of this.
         if (allowRuntimeChanges != null) {
             if (_changesAllowedNow) {
                 if ((attribute == transparency)
-                                && (_transparencyAttributes != null)) {
+                        && (_transparencyAttributes != null)) {
                     float transparent = (float) ((DoubleToken) transparency
-                                    .getToken()).doubleValue();
+                            .getToken()).doubleValue();
 
                     if (transparent > 0.0) {
                         _transparencyAttributes.setTransparencyMode(TransparencyAttributes.NICEST);
@@ -274,7 +274,7 @@ public class GRVolume extends GRActor3D {
 
                 if ((attribute == flat) && (_coloringAttributes != null)) {
                     boolean flatValue = ((BooleanToken) flat.getToken())
-                                    .booleanValue();
+                        .booleanValue();
                     int shadeModel = ColoringAttributes.SHADE_GOURAUD;
 
                     if (flatValue) {
@@ -296,26 +296,26 @@ public class GRVolume extends GRActor3D {
                         _material.setSpecularColor(color);
                     } else if (attribute == shininess) {
                         float shine = (float) ((DoubleToken) shininess.getToken())
-                                        .doubleValue();
+                            .doubleValue();
                         _material.setShininess(shine);
                     }
                 }
 
                 /*    if ((attribute == texture) && (_appearance != null)) {
-                        URL textureURL = texture.asURL();
+                      URL textureURL = texture.asURL();
 
-                        if ((_viewScreen != null) && (textureURL != null)) {
-                            TextureLoader loader;
-                            loader = new TextureLoader(textureURL,
-                                    _viewScreen.getCanvas());
+                      if ((_viewScreen != null) && (textureURL != null)) {
+                      TextureLoader loader;
+                      loader = new TextureLoader(textureURL,
+                      _viewScreen.getCanvas());
 
-                            Texture loadedTexture = loader.getTexture();
+                      Texture loadedTexture = loader.getTexture();
 
-                            if (loadedTexture != null) {
-                                _appearance.setTexture(loadedTexture);
-                            }
-                        }
-                    } */
+                      if (loadedTexture != null) {
+                      _appearance.setTexture(loadedTexture);
+                      }
+                      }
+                      } */
                 if ((attribute == wireFrame) && (_polygonAttributes != null)) {
                     int mode = PolygonAttributes.POLYGON_FILL;
 
@@ -363,24 +363,24 @@ public class GRVolume extends GRActor3D {
         }
 
         /* //Read in .vol file
-         //FIXME: Make it so that port is updated when neccessary
-         _fileURL = volFile.asURL();
+        //FIXME: Make it so that port is updated when neccessary
+        _fileURL = volFile.asURL();
 
-         //FIXME: Is this neccessary, bad coding?
-         try {
-                         _imageVol = new VolFile(_fileURL);
-                 } catch (IOException e) {
-                         // TODO Auto-generated catch block
-                         e.printStackTrace();
-                 }
+        //FIXME: Is this neccessary, bad coding?
+        try {
+        _imageVol = new VolFile(_fileURL);
+        } catch (IOException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+        }
 
-         //Create texture space  ???
-         _volume = new Volume(_context);
+        //Create texture space  ???
+        _volume = new Volume(_context);
 
-         //Load Texture
+        //Load Texture
 
-         //Get access to the Shape3D to send to Viewcreen3D
-         _renderedVolume = new Axis2DRenderer(_view, _context, _volume); */
+        //Get access to the Shape3D to send to Viewcreen3D
+        _renderedVolume = new Axis2DRenderer(_view, _context, _volume); */
         if (_isSceneGraphInitialized) {
             return false;
         } else {
@@ -430,7 +430,7 @@ public class GRVolume extends GRActor3D {
         _appearance = new Appearance();
 
         boolean allowChanges = ((BooleanToken) allowRuntimeChanges.getToken())
-                        .booleanValue();
+            .booleanValue();
 
         Color3f color = new Color3f(emissiveColor.asColor());
         _material.setEmissiveColor(color);
@@ -451,7 +451,7 @@ public class GRVolume extends GRActor3D {
 
         // Deal with transparent attributes.
         float transparent = (float) ((DoubleToken) transparency.getToken())
-                        .doubleValue();
+            .doubleValue();
 
         if ((transparent > 0.0) || allowChanges) {
             int mode = TransparencyAttributes.NICEST;
@@ -561,7 +561,7 @@ public class GRVolume extends GRActor3D {
          * _context.addAttr(volRefAttr); */
         /*Used in TextureVolume to decide if a color mapping will be used.
          * ToggleAttr texColorMapAttr = new ToggleAttr("Tex Color Map", true);
-          _context.addAttr(texColorMapAttr); */
+         _context.addAttr(texColorMapAttr); */
         /*
          * ColormapChoiceAttr  colorModeAttr; = new ColormapChoiceAttr("colorModeAttr", );
          * _context.addAttr(texColorMapAttr); */
@@ -607,31 +607,31 @@ public class GRVolume extends GRActor3D {
         super._setViewScreen(actor);
 
         /* URL textureURL = texture.asURL();
-         TextureAttributes attributes = null;
+           TextureAttributes attributes = null;
 
-        if (textureURL != null) {
-             TextureLoader loader;
-             loader = new TextureLoader(textureURL, _viewScreen.getCanvas());
+           if (textureURL != null) {
+           TextureLoader loader;
+           loader = new TextureLoader(textureURL, _viewScreen.getCanvas());
 
-             Texture loadedTexture = loader.getTexture();
+           Texture loadedTexture = loader.getTexture();
 
-             if (loadedTexture != null) {
-                 attributes = new TextureAttributes();
-                 attributes.setTextureMode(TextureAttributes.MODULATE);
-                 _appearance.setTextureAttributes(attributes);
+           if (loadedTexture != null) {
+           attributes = new TextureAttributes();
+           attributes.setTextureMode(TextureAttributes.MODULATE);
+           _appearance.setTextureAttributes(attributes);
 
-                 _appearance.setTexture(loadedTexture);
-             }
-         }
+           _appearance.setTexture(loadedTexture);
+           }
+           }
 
-         // If runtime changes are allowed, then we need to set texture
-         // attributes even if not needed now.
-         if ((attributes == null)
-                 && ((BooleanToken) allowRuntimeChanges.getToken()).booleanValue()) {
-             attributes = new TextureAttributes();
-             attributes.setTextureMode(TextureAttributes.MODULATE);
-             _appearance.setTextureAttributes(attributes);
-         } */
+           // If runtime changes are allowed, then we need to set texture
+           // attributes even if not needed now.
+           if ((attributes == null)
+           && ((BooleanToken) allowRuntimeChanges.getToken()).booleanValue()) {
+           attributes = new TextureAttributes();
+           attributes.setTextureMode(TextureAttributes.MODULATE);
+           _appearance.setTextureAttributes(attributes);
+           } */
     }
 
     ///////////////////////////////////////////////////////////////////

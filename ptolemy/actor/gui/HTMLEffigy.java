@@ -61,7 +61,7 @@ public class HTMLEffigy extends Effigy {
      *  @param name The name of this effigy.
      */
     public HTMLEffigy(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // Indicate that we cannot save to URL.

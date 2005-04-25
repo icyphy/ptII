@@ -168,7 +168,7 @@ public class TextDocument extends AbstractDocument {
      */
     public void saveAs(URL url) throws Exception {
         throw new UnsupportedOperationException("Saving as a URL is not"
-            + " supported for" + " text documents.");
+                + " supported for" + " text documents.");
     }
 
     /**

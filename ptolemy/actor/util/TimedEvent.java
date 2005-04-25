@@ -149,14 +149,14 @@ public class TimedEvent {
             // If it is larger than what can be represented
             // in 64 bits, then the returned result will be wrapped.
             long value = (((TimedEvent) entry).timeStamp.subtract(_zeroReference.timeStamp))
-                            .divide(_binWidth);
+                .divide(_binWidth);
             return value;
 
             // What used to be here:
 
             /*
-                        return (long) (((TimedEvent) entry).timeStamp.subtract(_zeroReference.timeStamp)
-                                .getDoubleValue() / _binWidth);
+              return (long) (((TimedEvent) entry).timeStamp.subtract(_zeroReference.timeStamp)
+              .getDoubleValue() / _binWidth);
             */
         }
 
@@ -197,7 +197,7 @@ public class TimedEvent {
 
                 for (int i = 1; i < entryArray.length; ++i) {
                     diff[i - 1] = ((TimedEvent) entryArray[i]).timeStamp
-                                    .subtract(((TimedEvent) entryArray[i - 1]).timeStamp);
+                        .subtract(((TimedEvent) entryArray[i - 1]).timeStamp);
                     average = average.add(diff[i - 1]);
                 }
 

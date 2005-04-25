@@ -50,7 +50,7 @@ public class CTDummySISOActor extends TypedAtomicActor {
     /** Constructor
      */
     public CTDummySISOActor(TypedCompositeActor container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         input = new TypedIOPort(this, "input");
         input.setInput(true);

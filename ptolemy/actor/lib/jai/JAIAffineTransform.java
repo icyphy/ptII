@@ -86,7 +86,7 @@ public class JAIAffineTransform extends Transformer {
      *   actor with this name.
      */
     public JAIAffineTransform(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         affineMatrix = new Parameter(this, "affineMatrix",
@@ -130,7 +130,7 @@ public class JAIAffineTransform extends Transformer {
      *  @exception IllegalActionException If the function is not recognized.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == interpolationType) {
             String typeName = interpolationType.getExpression();
 
@@ -144,16 +144,16 @@ public class JAIAffineTransform extends Transformer {
                 _interpolationType = _NEARESTNEIGHBOR;
             } else {
                 throw new IllegalActionException(this,
-                    "Unrecognized interpolation type: " + typeName);
+                        "Unrecognized interpolation type: " + typeName);
             }
         } else if (attribute == subSampleBits) {
             _subSampleBits = ((IntToken) subSampleBits.getToken()).intValue();
         } else if (attribute == affineMatrix) {
             DoubleMatrixToken affineMatrixToken = (DoubleMatrixToken) affineMatrix
-                            .getToken();
+                .getToken();
 
             if ((affineMatrixToken.getColumnCount() == 3)
-                            && (affineMatrixToken.getRowCount() == 2)) {
+                    && (affineMatrixToken.getRowCount() == 2)) {
                 _matrixValue = affineMatrixToken.doubleMatrix();
                 _affineTransform = new AffineTransform(_matrixValue[0][0],
                         _matrixValue[1][0], _matrixValue[0][1],
@@ -161,7 +161,7 @@ public class JAIAffineTransform extends Transformer {
                         _matrixValue[1][2]);
             } else {
                 throw new IllegalActionException(this,
-                    "Matrix must have two rows and three " + "columns");
+                        "Matrix must have two rows and three " + "columns");
             }
         } else {
             super.attributeChanged(attribute);
@@ -198,7 +198,7 @@ public class JAIAffineTransform extends Transformer {
 
         default:
             throw new IllegalActionException(
-                "Invalid value for interpolationType");
+                    "Invalid value for interpolationType");
         }
 
         RenderedOp newImage = JAI.create("affine", oldImage, _affineTransform,
@@ -210,17 +210,17 @@ public class JAIAffineTransform extends Transformer {
     ////                         private variables                 ////
     private AffineTransform _affineTransform;
     private double[][] _initialMatrix = {
-            {
-                1.0F,
-                0.0F,
-                0.0F
-            },
-            {
-                0.0F,
-                1.0F,
-                0.0F
-            }
-        };
+        {
+            1.0F,
+            0.0F,
+            0.0F
+        },
+        {
+            0.0F,
+            1.0F,
+            0.0F
+        }
+    };
     private Interpolation _interpolation;
 
     /** An indicator for the type of interpolation to use */

@@ -128,7 +128,7 @@ class DFInputChannel implements InputChannel {
             }
         } catch (IllegalActionException ex) {
             throw new CalIOException("Could not test for presence of tokens.",
-                ex);
+                    ex);
         }
     }
 

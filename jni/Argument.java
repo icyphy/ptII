@@ -57,7 +57,7 @@ public class Argument extends AbstractSettableAttribute {
      * for the given GenericJNIActor
      */
     public Argument(GenericJNIActor container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -84,15 +84,15 @@ public class Argument extends AbstractSettableAttribute {
      *  @exception IOException If an IO error occurs
      */
     public void exportMoML(Writer output, int depth, String name)
-        throws IOException {
+            throws IOException {
         if (_isMoMLSuppressed(depth)) {
             return;
         }
 
         String value = getExpression();
         output.write(_getIndentPrefix(depth) + "<" + _elementName + " name=\""
-            + name.trim() + "\" class=\"" + getClassName().trim()
-            + "\" value=\"" + value.trim() + "\" >\n");
+                + name.trim() + "\" class=\"" + getClassName().trim()
+                + "\" value=\"" + value.trim() + "\" >\n");
         _exportMoMLContents(output, depth + 1);
         output.write(_getIndentPrefix(depth) + "</" + _elementName + ">\n");
     }
@@ -187,7 +187,7 @@ public class Argument extends AbstractSettableAttribute {
             returnJNIType = "void" + returnJNIType;
         } else {
             MessageHandler.error("JNIType unavailable for '" + _cType
-                + "': not convertible JNI type");
+                    + "': not convertible JNI type");
             returnJNIType = "void";
         }
 
@@ -229,7 +229,7 @@ public class Argument extends AbstractSettableAttribute {
             // the MessageHandler and then returning void here?
             try {
                 MessageHandler.warning("Type = " + _cType
-                    + " not convertible in JavaType");
+                        + " not convertible in JavaType");
             } catch (Throwable throwable) {
             }
 
@@ -288,7 +288,7 @@ public class Argument extends AbstractSettableAttribute {
         } else {
             // FIXME: why is this code not like the code above
             MessageHandler.error("Type = " + _cType
-                + " not convertible in JavaClass");
+                    + " not convertible in JavaClass");
             returnCType = "Object";
         }
 
@@ -372,10 +372,10 @@ public class Argument extends AbstractSettableAttribute {
      *   collides with a name already in the container.
      */
     public void setContainer(NamedObj container)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         if ((container != null) && (_workspace != container.workspace())) {
             throw new IllegalActionException(this, container,
-                "Cannot set container because workspaces are different.");
+                    "Cannot set container because workspaces are different.");
         }
 
         try {
@@ -436,7 +436,7 @@ public class Argument extends AbstractSettableAttribute {
             validate();
         } catch (IllegalActionException e) {
             MessageHandler.error("TRT error! Bad expression for Argument "
-                + getName(), e);
+                    + getName(), e);
         }
     }
 
@@ -488,17 +488,17 @@ public class Argument extends AbstractSettableAttribute {
         // directly.
         if (selectedValues.equals("input, return")) {
             MessageHandler.error("An argument can't be input "
-                + "and return at the same time.");
+                    + "and return at the same time.");
         }
 
         if (selectedValues.equals("output, return")) {
             MessageHandler.error("An argument can't be output "
-                + "and return or in at the same time.");
+                    + "and return or in at the same time.");
         }
 
         if (selectedValues.equals("input, output, return")) {
             MessageHandler.error("An argument can't be in-out "
-                + "and return at the same time.");
+                    + "and return at the same time.");
         }
     }
 
@@ -545,12 +545,12 @@ public class Argument extends AbstractSettableAttribute {
      *   an acceptable class.  Not thrown in this base class.
      */
     protected void _checkContainer(GenericJNIActor container)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (!(container instanceof GenericJNIActor)) {
             throw new IllegalActionException(this, container,
-                "Cannot place arguments on entities "
-                + container.getClass().getName()
-                + ", which are not GenericJNIActor.");
+                    "Cannot place arguments on entities "
+                    + container.getClass().getName()
+                    + ", which are not GenericJNIActor.");
         }
     }
 
@@ -561,20 +561,20 @@ public class Argument extends AbstractSettableAttribute {
      */
     protected void _checkType() {
         if (_cType.startsWith("char") || _cType.startsWith("long")
-                        || _cType.startsWith("short")
-                        || _cType.startsWith("double")) {
+                || _cType.startsWith("short")
+                || _cType.startsWith("double")) {
             if (isOutput() && !isInput() && !_cType.endsWith("[]")) {
                 MessageHandler.error("An argument can't be "
-                    + "output with a simple type.");
+                        + "output with a simple type.");
                 setInput(true);
             }
 
             return;
         } else {
             MessageHandler.error("The type : " + _cType
-                + " is not supported. Types supported:"
-                + "\nchar, long (unsigned)" + " , short, double"
-                + "\nThe JNI code generation" + " will not work");
+                    + " is not supported. Types supported:"
+                    + "\nchar, long (unsigned)" + " , short, double"
+                    + "\nThe JNI code generation" + " will not work");
             setCType("");
         }
     }
@@ -589,7 +589,7 @@ public class Argument extends AbstractSettableAttribute {
      *   be propagated.
      */
     protected void _propagateValue(NamedObj destination)
-        throws IllegalActionException {
+            throws IllegalActionException {
         ((Settable) destination).setExpression(getExpression());
     }
 

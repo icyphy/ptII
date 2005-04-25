@@ -145,7 +145,7 @@ public abstract class ODESolver extends NamedObj {
 
         CTSchedule schedule = _getSchedule();
         Iterator actors = schedule.get(CTSchedule.STATE_TRANSITION_ACTORS)
-                                              .actorIterator();
+            .actorIterator();
 
         while (actors.hasNext()) {
             Actor next = (Actor) actors.next();
@@ -195,7 +195,7 @@ public abstract class ODESolver extends NamedObj {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public abstract void integratorFire(CTBaseIntegrator integrator)
-        throws IllegalActionException;
+            throws IllegalActionException;
 
     /** Return true if the current integration step is accurate from the
      *  argument integrator's point of view. The integratorIsAccurate() method
@@ -212,7 +212,7 @@ public abstract class ODESolver extends NamedObj {
      *  @return The suggested next step size by the given integrator.
      */
     public abstract double integratorPredictedStepSize(
-        CTBaseIntegrator integrator);
+            CTBaseIntegrator integrator);
 
     /** Return true if the states of the system have been resolved
      *  successfully.
@@ -251,7 +251,7 @@ public abstract class ODESolver extends NamedObj {
 
         if (scheduler == null) {
             throw new IllegalActionException(director,
-                " does not contain a valid scheduler.");
+                    " does not contain a valid scheduler.");
         }
 
         return (CTSchedule) scheduler.getSchedule();
@@ -293,20 +293,20 @@ public abstract class ODESolver extends NamedObj {
      *  prefire method.
      */
     protected void _prefireIfNecessary(Actor actor)
-        throws IllegalActionException {
+            throws IllegalActionException {
         CTDirector director = (CTDirector) getContainer();
 
         if (!director.isPrefireComplete(actor)) {
             if (_debugging) {
                 _debug(getFullName() + " is prefiring: "
-                    + ((Nameable) actor).getName());
+                        + ((Nameable) actor).getName());
             }
 
             if (!actor.prefire()) {
                 throw new IllegalActionException((Nameable) actor,
-                    "Expected prefire() to return true!\n"
-                    + "Perhaps a continuous input is being driven by a "
-                    + "discrete output?");
+                        "Expected prefire() to return true!\n"
+                        + "Perhaps a continuous input is being driven by a "
+                        + "discrete output?");
             }
 
             director.setPrefireComplete(actor);

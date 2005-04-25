@@ -53,7 +53,7 @@ import java.util.Set;
    @Pt.ProsedRating Red (zhouye)
    @Pt.AcceptedRating Red (zhouye)
 
- */
+*/
 public class Director implements ActorCodeGenerator {
     /** Construct the code generator helper associated with the given director.
      *  @param director The associated director.
@@ -76,11 +76,11 @@ public class Director implements ActorCodeGenerator {
      *   an actor throws it while generating wrapup code for the actor.
      */
     public void generateFireCode(StringBuffer code)
-        throws IllegalActionException {
+            throws IllegalActionException {
         code.append("/* The firing of the director. */\n");
 
         Iterator actors = ((CompositeActor) _codeGenerator.getContainer()).deepEntityList()
-                                       .iterator();
+            .iterator();
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
@@ -102,7 +102,7 @@ public class Director implements ActorCodeGenerator {
         code.append("/* The initialization of the director. */\n");
 
         List actorsList = ((CompositeActor) _codeGenerator.getContainer())
-                        .deepEntityList();
+            .deepEntityList();
         Iterator actors = actorsList.iterator();
 
         while (actors.hasNext()) {
@@ -149,11 +149,11 @@ public class Director implements ActorCodeGenerator {
      *  @exception IllegalActionException
      */
     public void generateWrapupCode(StringBuffer code)
-        throws IllegalActionException {
+            throws IllegalActionException {
         code.append("/* The wrapup of the director. */\n");
 
         Iterator actors = ((CompositeActor) _codeGenerator.getContainer()).deepEntityList()
-                                       .iterator();
+            .iterator();
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
@@ -171,7 +171,7 @@ public class Director implements ActorCodeGenerator {
      *  @exception IllegalActionException Subclasses may throw it.
      */
     public int getBufferSize(IOPort port, int channelNumber)
-        throws IllegalActionException {
+            throws IllegalActionException {
         return 1;
     }
 
@@ -180,8 +180,8 @@ public class Director implements ActorCodeGenerator {
      */
 
     /*public ComponentCodeGenerator getCodeGenerator() {
-        return _codeGenerator;
-    }*/
+      return _codeGenerator;
+      }*/
 
     /** Return the director associated with this class.
      *  @return The director associated with this class.
@@ -207,7 +207,7 @@ public class Director implements ActorCodeGenerator {
      *   it when getting the helper associated with the given component.
      */
     protected ComponentCodeGenerator _getHelper(NamedObj component)
-        throws IllegalActionException {
+            throws IllegalActionException {
         return _codeGenerator._getHelper(component);
     }
 

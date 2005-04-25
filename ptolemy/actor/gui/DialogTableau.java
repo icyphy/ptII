@@ -77,7 +77,7 @@ public class DialogTableau extends Tableau {
      *   attribute already in the container.
      */
     public DialogTableau(Effigy container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container.workspace());
 
         setName(name);
@@ -97,23 +97,23 @@ public class DialogTableau extends Tableau {
      *  @return DialogTableau
      */
     public static DialogTableau createDialog(Frame parent,
-        Configuration configuration, Effigy effigy, Class dialogClass,
-        Entity target) {
+            Configuration configuration, Effigy effigy, Class dialogClass,
+            Entity target) {
         if (PtolemyDialog.class.isAssignableFrom(dialogClass)) {
             // First see whether the effigy already contains a dialog of
             // dialogClas on this entity.
             if (effigy instanceof Effigy) {
                 Iterator dialogs = effigy.entityList(DialogTableau.class)
-                                                     .iterator();
+                    .iterator();
 
                 while (dialogs.hasNext()) {
                     DialogTableau dialogTableau = (DialogTableau) dialogs.next();
                     PtolemyDialog existingDialog = ((PtolemyDialog) (dialogTableau
-                                    .getFrame()));
+                                                            .getFrame()));
 
                     if ((existingDialog != null)
-                                    && (existingDialog.getClass() == dialogClass)
-                                    && (dialogTableau.hasTarget(target))) {
+                            && (existingDialog.getClass() == dialogClass)
+                            && (dialogTableau.hasTarget(target))) {
                         return dialogTableau;
                     }
                 }
@@ -124,15 +124,15 @@ public class DialogTableau extends Tableau {
 
             if ((container != null) && (container instanceof PtolemyEffigy)) {
                 Iterator dialogs = ((PtolemyEffigy) container).entityList(DialogTableau.class)
-                                                .iterator();
+                    .iterator();
 
                 while (dialogs.hasNext()) {
                     DialogTableau dialogTableau = (DialogTableau) dialogs.next();
                     PtolemyDialog existingDialog = ((PtolemyDialog) (dialogTableau
-                                    .getFrame()));
+                                                            .getFrame()));
 
                     if ((existingDialog.getClass() == dialogClass)
-                                    && (dialogTableau.hasTarget(target))) {
+                            && (dialogTableau.hasTarget(target))) {
                         return dialogTableau;
                     }
                 }
@@ -154,9 +154,9 @@ public class DialogTableau extends Tableau {
                 Class[] pType = constructors[i].getParameterTypes();
 
                 if ((pType.length == 4) && (pType[0] == DialogTableau.class)
-                                && (pType[1] == Frame.class)
-                                && (pType[2] == Entity.class)
-                                && (pType[3] == Configuration.class)) {
+                        && (pType[1] == Frame.class)
+                        && (pType[2] == Entity.class)
+                        && (pType[3] == Configuration.class)) {
                     constructor = constructors[i];
                     break;
                 }
@@ -173,14 +173,14 @@ public class DialogTableau extends Tableau {
 
             if (dialog == null) {
                 throw new KernelException(target, null,
-                    "Can't create a " + dialogClass);
+                        "Can't create a " + dialogClass);
             }
 
             newDialogTableau.setFrame(dialog);
             return newDialogTableau;
         } catch (Throwable throwable) {
             MessageHandler.error("Failed to create a DialogTableau for "
-                + target.getFullName(), throwable);
+                    + target.getFullName(), throwable);
         }
 
         return null;

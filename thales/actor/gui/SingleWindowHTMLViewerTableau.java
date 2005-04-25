@@ -66,7 +66,7 @@ public class SingleWindowHTMLViewerTableau extends Tableau {
      *   attribute already in the container.
      */
     public SingleWindowHTMLViewerTableau(Effigy container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         url = new StringAttribute(this, "url");
@@ -92,7 +92,7 @@ public class SingleWindowHTMLViewerTableau extends Tableau {
      *   or if the base class throws it.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == url) {
             String urlSpec = ((Settable) attribute).getExpression();
 
@@ -104,7 +104,7 @@ public class SingleWindowHTMLViewerTableau extends Tableau {
                 ((HTMLViewer) getFrame()).setPage(toRead);
             } catch (IOException ex) {
                 throw new IllegalActionException(this, ex,
-                    "Cannot open URL: " + urlSpec);
+                        "Cannot open URL: " + urlSpec);
             }
         } else {
             super.attributeChanged(attribute);
@@ -126,7 +126,7 @@ public class SingleWindowHTMLViewerTableau extends Tableau {
          *   an attribute already in the container.
          */
         public Factory(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+                throws IllegalActionException, NameDuplicationException {
             super(container, name);
         }
 
@@ -157,7 +157,7 @@ public class SingleWindowHTMLViewerTableau extends Tableau {
                 // First see whether the effigy already contains an
                 // HTMLViewerTableau.
                 SingleWindowHTMLViewerTableau tableau = (SingleWindowHTMLViewerTableau) effigy
-                                .getEntity("SingleWHtmlTableau");
+                    .getEntity("SingleWHtmlTableau");
 
                 if (tableau == null) {
                     tableau = new SingleWindowHTMLViewerTableau((HTMLEffigy) effigy,

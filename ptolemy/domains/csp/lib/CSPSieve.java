@@ -70,7 +70,7 @@ public class CSPSieve extends CSPActor {
      *   by the proposed container.
      */
     public CSPSieve(TypedCompositeActor container, String name, int prime)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         _prime = prime;
         input = new TypedIOPort(this, "input", true, false);

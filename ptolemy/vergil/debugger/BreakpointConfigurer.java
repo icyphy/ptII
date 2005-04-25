@@ -67,7 +67,7 @@ public class BreakpointConfigurer extends Query implements ChangeListener {
      *  @param graphController The associated graph controller for the object.
      */
     public BreakpointConfigurer(Entity object,
-        BasicGraphController graphController) {
+            BasicGraphController graphController) {
         super();
 
         // FIXME: Perhaps this dialog should have a help button?
@@ -97,7 +97,7 @@ public class BreakpointConfigurer extends Query implements ChangeListener {
             // (BreakpointDialogFactory) would not have allowed the
             // breakpoint option for actors without a director.
             throw new InternalErrorException(
-                "No director associated with this actor.");
+                    "No director associated with this actor.");
         } else {
             // FIXME: Currently, it seems that this facility
             // only works in SDF.
@@ -108,22 +108,22 @@ public class BreakpointConfigurer extends Query implements ChangeListener {
                             "ptolemy.domains.sdf.kernel.SDFDirector");
                 } catch (Throwable throwable) {
                     throw new InternalErrorException(object, throwable,
-                        "The breakpoint facility only works with "
-                        + "that are instances of SDFDirector.  The "
-                        + "SDFDirector was not found.");
+                            "The breakpoint facility only works with "
+                            + "that are instances of SDFDirector.  The "
+                            + "SDFDirector was not found.");
                 }
             }
 
             if (!_sdfDirectorClass.isInstance(director)) {
                 throw new InternalErrorException(director, null,
-                    "The breakpoint facility only works with directors "
-                    + "that are instances of SDFDirector.  The director "
-                    + "of this model is a '" + director + "'.");
+                        "The breakpoint facility only works with directors "
+                        + "that are instances of SDFDirector.  The director "
+                        + "of this model is a '" + director + "'.");
             }
 
             // See if the director already has a DebugController.
             DebugController debugController = (DebugController) director
-                            .getAttribute(_DEBUGCONTROLLER);
+                .getAttribute(_DEBUGCONTROLLER);
 
             // See if the DebugController has a DebugProfile for this
             // actor.  Make a new DebugProfile if one does not already
@@ -142,10 +142,10 @@ public class BreakpointConfigurer extends Query implements ChangeListener {
             for (int i = 0; i < _firingEventTypes.length; i++) {
                 if (_actorProfile.isListening(_firingEventTypes[i])) {
                     addCheckBox(_firingEventTypeLabels[i],
-                        _firingEventTypeLabels[i], true);
+                            _firingEventTypeLabels[i], true);
                 } else {
                     addCheckBox(_firingEventTypeLabels[i],
-                        _firingEventTypeLabels[i], false);
+                            _firingEventTypeLabels[i], false);
                 }
             }
         }
@@ -176,7 +176,7 @@ public class BreakpointConfigurer extends Query implements ChangeListener {
         // in the constructor.
         Director director = ((Actor) _actor).getExecutiveDirector();
         DebugController debugController = (DebugController) director
-                        .getAttribute(_DEBUGCONTROLLER);
+            .getAttribute(_DEBUGCONTROLLER);
 
         // If some breakpoints were selected
         if (breakpointsSelected) {
@@ -221,7 +221,7 @@ public class BreakpointConfigurer extends Query implements ChangeListener {
         // request should have added the DebugController to the
         // director.
         DebugController debugController = (DebugController) director
-                        .getAttribute(_DEBUGCONTROLLER);
+            .getAttribute(_DEBUGCONTROLLER);
 
         // Register a new DebugController with the director.
         director.addDebugListener(debugController);
@@ -241,7 +241,7 @@ public class BreakpointConfigurer extends Query implements ChangeListener {
      */
     public void changeFailed(ChangeRequest change, Exception exception) {
         throw new InternalErrorException(
-            "Could not add DebugController to the director");
+                "Could not add DebugController to the director");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -254,30 +254,30 @@ public class BreakpointConfigurer extends Query implements ChangeListener {
      */
     protected static String[] _firingEventTypeLabels = {
 
-            // FIXME: Only BEFORE_ITERATE and AFTER_ITERATE work with SDF
-            //"before prefire",
-            //"after prefire",
-            //"before fire",
-            //"after fire",
-            //"before postfire",
-            //"after postfire",
-            "before iterate",
-            "after iterate"
-        };
+        // FIXME: Only BEFORE_ITERATE and AFTER_ITERATE work with SDF
+        //"before prefire",
+        //"after prefire",
+        //"before fire",
+        //"after fire",
+        //"before postfire",
+        //"after postfire",
+        "before iterate",
+        "after iterate"
+    };
 
     /** FiringEventTypes that the user can set breakpoints on. */
     protected static FiringEventType[] _firingEventTypes = {
 
-            // FIXME: Only BEFORE_ITERATE and AFTER_ITERATE work with SDF
-            //FiringEvent.BEFORE_PREFIRE,
-            //FiringEvent.AFTER_PREFIRE,
-            //FiringEvent.BEFORE_FIRE,
-            //FiringEvent.AFTER_FIRE,
-            //FiringEvent.BEFORE_POSTFIRE,
-            //FiringEvent.AFTER_POSTFIRE,
-            FiringEvent.BEFORE_ITERATE,
-            FiringEvent.AFTER_ITERATE
-        };
+        // FIXME: Only BEFORE_ITERATE and AFTER_ITERATE work with SDF
+        //FiringEvent.BEFORE_PREFIRE,
+        //FiringEvent.AFTER_PREFIRE,
+        //FiringEvent.BEFORE_FIRE,
+        //FiringEvent.AFTER_FIRE,
+        //FiringEvent.BEFORE_POSTFIRE,
+        //FiringEvent.AFTER_POSTFIRE,
+        FiringEvent.BEFORE_ITERATE,
+        FiringEvent.AFTER_ITERATE
+    };
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

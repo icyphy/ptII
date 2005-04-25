@@ -61,7 +61,7 @@ public class Undefined extends Source {
      *   an actor already in the container.
      */
     public Undefined(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         new Attribute(this, "_nonStrictMarker");
         outputType = new StringAttribute(this, "outputType");
@@ -77,14 +77,14 @@ public class Undefined extends Source {
      *  @exception IllegalActionException If the type is not recognized.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == outputType) {
             String typeName = outputType.getExpression().trim().toLowerCase();
             Type newType = BaseType.forName(typeName);
 
             if (newType == null) {
                 throw new IllegalActionException(this,
-                    "Unrecognized type: " + typeName);
+                        "Unrecognized type: " + typeName);
             } else {
                 output.setTypeEquals(newType);
             }

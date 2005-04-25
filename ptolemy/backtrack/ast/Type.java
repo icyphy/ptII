@@ -151,8 +151,8 @@ public class Type {
                         return 2;
                     else if (formalType._primitiveNum == DOUBLE_NUM)
                         return 3;
-                    // We make the type checking less strict then Java to
-                    // allow for declarations like "byte b = 1;".
+        // We make the type checking less strict then Java to
+        // allow for declarations like "byte b = 1;".
                     else if (formalType._primitiveNum == BYTE_NUM)
                         return 4;   // The same as short.
                     else if (formalType._primitiveNum == SHORT_NUM)
@@ -294,7 +294,7 @@ public class Type {
      */
     public boolean equals(Type type) {
         return _primitiveNum == type._primitiveNum &&
-                _fullName.equals(type._fullName);
+            _fullName.equals(type._fullName);
     }
 
     /** Convert the name of the Java run-time representation back to
@@ -350,10 +350,10 @@ public class Type {
                 return type2;
             else if (type1.isPrimitive() && type2.isPrimitive())
                 if (type1.compatibility(type2,
-                        ClassLoader.getSystemClassLoader()) >= 0)
+                            ClassLoader.getSystemClassLoader()) >= 0)
                     return type2;
                 else if (type2.compatibility(type1,
-                        ClassLoader.getSystemClassLoader()) >= 0)
+                                 ClassLoader.getSystemClassLoader()) >= 0)
                     return type1;
         } catch (ClassNotFoundException e) {
         }
@@ -587,7 +587,7 @@ public class Type {
                 buffer.append(';');
             }
             return buffer.toString();
-       }
+        }
     }
 
     /** Convert this type to a {@link Class} object.

@@ -67,7 +67,7 @@ public class JAIEdgeDetection extends Transformer {
      *   actor with this name.
      */
     public JAIEdgeDetection(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input.setTypeEquals(BaseType.OBJECT);
         output.setTypeEquals(BaseType.OBJECT);
@@ -144,7 +144,7 @@ public class JAIEdgeDetection extends Transformer {
      *  or if a contained method throws it.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == firstMask) {
             String firstName = firstMask.getExpression();
             _firstMask = _maskNumberer(firstName);
@@ -290,7 +290,7 @@ public class JAIEdgeDetection extends Transformer {
             return _ZERO_FILTER;
         } else {
             throw new IllegalActionException(this,
-                "Unrecognized Mask type: " + maskName);
+                    "Unrecognized Mask type: " + maskName);
         }
     }
 
@@ -311,156 +311,156 @@ public class JAIEdgeDetection extends Transformer {
     private int _firstMask;
     private int _secondMask;
     private double[][] _initialMatrix = {
-            {
-                0.0F,
-                0.0F,
-                0.0F
-            },
-            {
-                0.0F,
-                0.707F,
-                0.0F
-            },
-            {
-                0.0F,
-                0.0F,
-                0.0F
-            }
-        };
+        {
+            0.0F,
+            0.0F,
+            0.0F
+        },
+        {
+            0.0F,
+            0.707F,
+            0.0F
+        },
+        {
+            0.0F,
+            0.0F,
+            0.0F
+        }
+    };
 
     /** Prespecified masks that the user may use */
     private static final float[] _sobelHorizontalFilter = {
-            1.0F,
-            0.0F,
-            -1.0F,
-            2.0F,
-            0.0F,
-            -2.0F,
-            1.0F,
-            0.0F,
-            -1.0F
-        };
+        1.0F,
+        0.0F,
+        -1.0F,
+        2.0F,
+        0.0F,
+        -2.0F,
+        1.0F,
+        0.0F,
+        -1.0F
+    };
     private static final float[] _sobelVerticalFilter = {
-            -1.0F,
-            -2.0F,
-            -1.0F,
-            0.0F,
-            0.0F,
-            0.0F,
-            1.0F,
-            2.0F,
-            1.0F
-        };
+        -1.0F,
+        -2.0F,
+        -1.0F,
+        0.0F,
+        0.0F,
+        0.0F,
+        1.0F,
+        2.0F,
+        1.0F
+    };
     private static final float[] _robertsHorizontalFilter = {
-            0.0F,
-            0.0F,
-            -1.0F,
-            0.0F,
-            1.0F,
-            0.0F,
-            0.0F,
-            0.0F,
-            0.0F
-        };
+        0.0F,
+        0.0F,
+        -1.0F,
+        0.0F,
+        1.0F,
+        0.0F,
+        0.0F,
+        0.0F,
+        0.0F
+    };
     private static final float[] _robertsVerticalFilter = {
-            -1.0F,
-            0.0F,
-            0.0F,
-            0.0F,
-            1.0F,
-            0.0F,
-            0.0F,
-            0.0F,
-            0.0F
-        };
+        -1.0F,
+        0.0F,
+        0.0F,
+        0.0F,
+        1.0F,
+        0.0F,
+        0.0F,
+        0.0F,
+        0.0F
+    };
     private static final float[] _prewittHorizontalFilter = {
-            1.0F,
-            0.0F,
-            -1.0F,
-            1.0F,
-            0.0F,
-            -1.0F,
-            1.0F,
-            0.0F,
-            -1.0F
-        };
+        1.0F,
+        0.0F,
+        -1.0F,
+        1.0F,
+        0.0F,
+        -1.0F,
+        1.0F,
+        0.0F,
+        -1.0F
+    };
     private static final float[] _prewittVerticalFilter = {
-            -1.0F,
-            -1.0F,
-            -1.0F,
-            0.0F,
-            0.0F,
-            0.0F,
-            1.0F,
-            1.0F,
-            1.0F
-        };
+        -1.0F,
+        -1.0F,
+        -1.0F,
+        0.0F,
+        0.0F,
+        0.0F,
+        1.0F,
+        1.0F,
+        1.0F
+    };
     private static final float[] _freiAndChenHorizontalFilter = {
-            1.0F,
-            0.0F,
-            -1.0F,
-            1.414F,
-            0.0F,
-            -1.414F,
-            1.0F,
-            0.0F,
-            -1.0F
-        };
+        1.0F,
+        0.0F,
+        -1.0F,
+        1.414F,
+        0.0F,
+        -1.414F,
+        1.0F,
+        0.0F,
+        -1.0F
+    };
     private static final float[] _freiAndChenVerticalFilter = {
-            -1.0F,
-            -1.414F,
-            -1.0F,
-            0.0F,
-            0.0F,
-            0.0F,
-            1.0F,
-            1.414F,
-            1.0F
-        };
+        -1.0F,
+        -1.414F,
+        -1.0F,
+        0.0F,
+        0.0F,
+        0.0F,
+        1.0F,
+        1.414F,
+        1.0F
+    };
     private static final float[] _transparentFilter = {
-            0.0F,
-            0.0F,
-            0.0F,
-            0.0F,
-            0.707F,
-            0.0F,
-            0.0F,
-            0.0F,
-            0.0F
-        };
+        0.0F,
+        0.0F,
+        0.0F,
+        0.0F,
+        0.707F,
+        0.0F,
+        0.0F,
+        0.0F,
+        0.0F
+    };
     private static final float[] _zeroFilter = {
-            0.0F,
-            0.0F,
-            0.0F,
-            0.0F,
-            0.0F,
-            0.0F,
-            0.0F,
-            0.0F,
-            0.0F
-        };
+        0.0F,
+        0.0F,
+        0.0F,
+        0.0F,
+        0.0F,
+        0.0F,
+        0.0F,
+        0.0F,
+        0.0F
+    };
     private static final float[] _diagonalFilter = {
-            1.0F,
-            1.0F,
-            0.0F,
-            1.0F,
-            0.0F,
-            -1.0F,
-            0.0F,
-            -1.0F,
-            -1.0F
-        };
+        1.0F,
+        1.0F,
+        0.0F,
+        1.0F,
+        0.0F,
+        -1.0F,
+        0.0F,
+        -1.0F,
+        -1.0F
+    };
     private static final float[] _backDiagonalFilter = {
-            0.0F,
-            1.0F,
-            1.0F,
-            -1.0F,
-            0.0F,
-            1.0F,
-            -1.0F,
-            -1.0F,
-            0.0F
-        };
+        0.0F,
+        1.0F,
+        1.0F,
+        -1.0F,
+        0.0F,
+        1.0F,
+        -1.0F,
+        -1.0F,
+        0.0F
+    };
 
     //Constants used for more efficient execution
     private static final int _BACKDIAGONAL = 0;

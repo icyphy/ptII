@@ -75,12 +75,12 @@ public class InstanceStructureGenerator extends CodeGenerator {
         // Generate the type declaration header for the class instance
         // structure.
         code.append(_comment("Structure that implements instances of Class "
-                + source.getName()));
+                            + source.getName()));
         code.append("struct " + typeName + " {\n");
 
         // Pointer to common, class-specific information.
         code.append("\n" + _indent(1) + CNames.classNameOf(source)
-            + " class;\n");
+                + " class;\n");
 
         // Extract the non-static fields, and insert them into the struct
         // that is declared to implement the class.
@@ -153,9 +153,9 @@ public class InstanceStructureGenerator extends CodeGenerator {
             SootField field = (SootField) (fields.next());
 
             if ((!field.isPrivate())
-                            && (!Modifier.isStatic(field.getModifiers()))
-                            && (RequiredFileGenerator.isRequired(field))
-                            && (!_doneFields.contains(field.getName()))) {
+                    && (!Modifier.isStatic(field.getModifiers()))
+                    && (RequiredFileGenerator.isRequired(field))
+                    && (!_doneFields.contains(field.getName()))) {
                 if (insertedFields == 0) {
                     fieldCode.append(header);
                 }
@@ -173,7 +173,7 @@ public class InstanceStructureGenerator extends CodeGenerator {
             SootField field = (SootField) (fields.next());
 
             if (field.isPrivate() && !(Modifier.isStatic(field.getModifiers()))
-                            && (!_doneFields.contains(field.getName()))) {
+                    && (!_doneFields.contains(field.getName()))) {
                 if (insertedFields == 0) {
                     fieldCode.append(header);
                 }
@@ -195,7 +195,7 @@ public class InstanceStructureGenerator extends CodeGenerator {
      *  "friendly" fields - visible in the same package.
      */
     private String _generateInheritedFields(SootClass source,
-        SootClass superClass) {
+            SootClass superClass) {
         StringBuffer fieldCode = new StringBuffer();
         Iterator fields = superClass.getFields().iterator();
         int insertedFields = 0;
@@ -211,11 +211,11 @@ public class InstanceStructureGenerator extends CodeGenerator {
             boolean prot = field.isProtected();
             boolean friendly = (!priv) && (!pub) && (!prot);
             boolean samePack = (source.getPackageName().compareTo(superClass
-                                .getPackageName()) == 0);
+                                        .getPackageName()) == 0);
 
             // Whether this field should be visible to this class.
             boolean visible = (!stat)
-                            && (pub || prot || (friendly && samePack));
+                && (pub || prot || (friendly && samePack));
 
             // If a field has already been inherited from another class, it
             // need not be declared again.
@@ -241,7 +241,7 @@ public class InstanceStructureGenerator extends CodeGenerator {
         if (classes == null) {
             if (source.hasSuperclass()) {
                 classes = (LinkedList) (_getSuperClasses(source.getSuperclass())
-                                                        .clone());
+                        .clone());
                 classes.add(source.getSuperclass());
                 _superClasses.put(source, classes);
             } else {

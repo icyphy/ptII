@@ -82,7 +82,7 @@ public class ComponentActor extends TypedCompositeActor implements Component {
      *   an entity already in the container.
      */
     public ComponentActor(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         setContainer(container);
         input = new IOMethodPort(this, "input", true, false);
@@ -147,7 +147,7 @@ public class ComponentActor extends TypedCompositeActor implements Component {
             // NOTE: deepInsidePortList() is not the right thing here
             // since it will return the same port if it is opaque.
             Iterator insidePorts = ((ComponentPort) port).insidePortList()
-                                                .iterator();
+                .iterator();
 
             try {
                 _inConnectionsChanged = true;
@@ -158,7 +158,7 @@ public class ComponentActor extends TypedCompositeActor implements Component {
 
                     // Avoid an infinite loop where notifications are traded.
                     if (!(portContainer instanceof ComponentActor)
-                                    || !((ComponentActor) portContainer)._inConnectionsChanged) {
+                            || !((ComponentActor) portContainer)._inConnectionsChanged) {
                         portContainer.connectionsChanged(insidePort);
                     }
                 }
@@ -179,7 +179,7 @@ public class ComponentActor extends TypedCompositeActor implements Component {
                     } catch (IllegalActionException ex) {
                         // Should never happen.
                         throw new InternalErrorException(this, ex,
-                            "Cannot create receivers");
+                                "Cannot create receivers");
                     }
                 }
 
@@ -189,7 +189,7 @@ public class ComponentActor extends TypedCompositeActor implements Component {
                     } catch (IllegalActionException ex) {
                         // Should never happen.
                         throw new InternalErrorException(this, ex,
-                            "Cannot create receivers");
+                                "Cannot create receivers");
                     }
                 }
 
@@ -228,7 +228,7 @@ public class ComponentActor extends TypedCompositeActor implements Component {
 
             if (!isOpaque()) {
                 throw new IllegalActionException(this,
-                    "Cannot fire a non-opaque actor.");
+                        "Cannot fire a non-opaque actor.");
             }
 
             if (_stopRequested) {
@@ -324,7 +324,7 @@ public class ComponentActor extends TypedCompositeActor implements Component {
     }
 
     protected void _addRelation(ComponentRelation relation)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
     }
 
     // Indicator that we are in the connectionsChanged method.
@@ -344,10 +344,10 @@ public class ComponentActor extends TypedCompositeActor implements Component {
     ////                         private methods                   ////
     private void _addIcon() {
         _attachText("_iconDescription",
-            "<svg>\n" + "<rect x=\"-30\" y=\"-20\" width=\"60\" "
-            + "height=\"40\" style=\"fill:white\"/>\n"
-            + "<polygon points=\"-20,-10 20,0 -20,10\" "
-            + "style=\"fill:blue\"/>\n" + "</svg>\n");
+                "<svg>\n" + "<rect x=\"-30\" y=\"-20\" width=\"60\" "
+                + "height=\"40\" style=\"fill:white\"/>\n"
+                + "<polygon points=\"-20,-10 20,0 -20,10\" "
+                + "style=\"fill:blue\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -395,7 +395,7 @@ public class ComponentActor extends TypedCompositeActor implements Component {
          *   a port already in the container.
          */
         public IOMethodPort(ComponentEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+                throws IllegalActionException, NameDuplicationException {
             super(container, name);
         }
 
@@ -415,8 +415,8 @@ public class ComponentActor extends TypedCompositeActor implements Component {
          *   a port already in the container.
          */
         public IOMethodPort(ComponentEntity container, String name,
-            boolean isInput, boolean isOutput)
-            throws IllegalActionException, NameDuplicationException {
+                boolean isInput, boolean isOutput)
+                throws IllegalActionException, NameDuplicationException {
             this(container, name);
             setInput(isInput);
             setOutput(isOutput);
@@ -444,7 +444,7 @@ public class ComponentActor extends TypedCompositeActor implements Component {
                             tokens[0] = t;
 
                             Iterator ports = this.deepConnectedPortList()
-                                                             .iterator();
+                                .iterator();
                             MethodCallPort port = (MethodCallPort) ports.next();
 
                             //System.out.println("get the connected method call port");
@@ -543,7 +543,7 @@ public class ComponentActor extends TypedCompositeActor implements Component {
          *   from the outside.
          */
         public Receiver[][] getReceivers(IORelation relation, int occurrence)
-            throws IllegalActionException {
+                throws IllegalActionException {
             return _insideReceivers;
         }
 
@@ -568,7 +568,7 @@ public class ComponentActor extends TypedCompositeActor implements Component {
          *   in the same workspace as the relation.
          */
         protected void _checkLiberalLink(Relation relation)
-            throws IllegalActionException {
+                throws IllegalActionException {
         }
 
         /** Override parent method to ensure compatibility of the relation
@@ -586,7 +586,7 @@ public class ComponentActor extends TypedCompositeActor implements Component {
          *   not in the same workspace as the relation.
          */
         protected void _checkLink(Relation relation)
-            throws IllegalActionException {
+                throws IllegalActionException {
         }
 
         // Lists of local receivers, indexed by relation.

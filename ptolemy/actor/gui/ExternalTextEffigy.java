@@ -69,7 +69,7 @@ public class ExternalTextEffigy extends TextEffigy {
      *  @param name The name of this effigy.
      */
     public ExternalTextEffigy(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -90,7 +90,7 @@ public class ExternalTextEffigy extends TextEffigy {
      *  @exception IllegalActionException If the base class throws it.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         // Let Effigy handle it first
         super.attributeChanged(attribute);
 
@@ -122,7 +122,7 @@ public class ExternalTextEffigy extends TextEffigy {
      *   text cannot be inserted into the document.
      */
     public static TextEffigy newTextEffigy(CompositeEntity container,
-        String text) throws Exception {
+            String text) throws Exception {
         // Create a new effigy.
         ExternalTextEffigy effigy = new ExternalTextEffigy(container,
                 container.uniqueName("effigy"));
@@ -138,7 +138,7 @@ public class ExternalTextEffigy extends TextEffigy {
 
     /** Create a new ExternalTextEffigy. */
     public static TextEffigy newTextEffigy(CompositeEntity container, URL base,
-        URL in) throws Exception {
+            URL in) throws Exception {
         ExternalTextEffigy effigy = new ExternalTextEffigy(container,
                 container.uniqueName("effigy"));
 
@@ -181,7 +181,7 @@ public class ExternalTextEffigy extends TextEffigy {
                 // the current content from the MoML content of the
                 // container
                 String text = ((PtolemyEffigy) getContainer()).getModel()
-                                           .exportMoML();
+                    .exportMoML();
                 tmpFile = File.createTempFile("effigy", "");
 
                 String tmpFilePathName = tmpFile.getAbsolutePath().replace('\\',

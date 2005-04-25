@@ -64,7 +64,7 @@ public abstract class EdgeCreator extends AbstractInteractor {
         // Add it to the editor
         // FIXME what about an error?
         _controller.addEdge(edge, source.getUserObject(),
-            ConnectorEvent.TAIL_END, e.getLayerX(), e.getLayerY());
+                ConnectorEvent.TAIL_END, e.getLayerX(), e.getLayerY());
 
         // Add it to the selection so it gets a manipulator, and
         // make events go to the grab-handle under the mouse

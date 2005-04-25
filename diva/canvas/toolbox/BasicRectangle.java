@@ -58,7 +58,7 @@ public class BasicRectangle extends BasicFigure {
      * fill paint. It has no outline.
      */
     public BasicRectangle(double x, double y, double width, double height,
-        Paint fill) {
+            Paint fill) {
         super(new Rectangle2D.Double(x, y, width, height), fill);
     }
 
@@ -73,7 +73,7 @@ public class BasicRectangle extends BasicFigure {
      * outline width. It has no fill.
      */
     public BasicRectangle(double x, double y, double width, double height,
-        float lineWidth) {
+            float lineWidth) {
         super(new Rectangle2D.Double(x, y, width, height), lineWidth);
     }
 
@@ -81,7 +81,7 @@ public class BasicRectangle extends BasicFigure {
      * outline width.
      */
     public BasicRectangle(double x, double y, double width, double height,
-        Paint fill, float lineWidth) {
+            Paint fill, float lineWidth) {
         super(new Rectangle2D.Double(x, y, width, height), fill, lineWidth);
     }
 

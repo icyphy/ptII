@@ -60,7 +60,7 @@ public class ParseTreeSpecializer extends AbstractParseTreeVisitor {
      *  destroyed in the process.
      */
     public ASTPtRootNode specialize(ASTPtRootNode node, List excludedNames,
-        ParserScope scope) throws IllegalActionException {
+            ParserScope scope) throws IllegalActionException {
         _excludedNames = excludedNames;
         _scope = scope;
         _evaluator = new ParseTreeEvaluator();
@@ -70,7 +70,7 @@ public class ParseTreeSpecializer extends AbstractParseTreeVisitor {
             _result._parent = null;
         } catch (CloneNotSupportedException ex) {
             throw new IllegalActionException(null, ex,
-                "Failed to clone node for specialization");
+                    "Failed to clone node for specialization");
         }
 
         _result.visit(this);
@@ -84,17 +84,17 @@ public class ParseTreeSpecializer extends AbstractParseTreeVisitor {
     }
 
     public void visitArrayConstructNode(ASTPtArrayConstructNode node)
-        throws IllegalActionException {
+            throws IllegalActionException {
         _defaultVisit(node);
     }
 
     public void visitBitwiseNode(ASTPtBitwiseNode node)
-        throws IllegalActionException {
+            throws IllegalActionException {
         _defaultVisit(node);
     }
 
     public void visitFunctionApplicationNode(ASTPtFunctionApplicationNode node)
-        throws IllegalActionException {
+            throws IllegalActionException {
         // Check to see if we are referencing a function closure in scope.
         ptolemy.data.Token value = null;
         String functionName = node.getFunctionName();
@@ -118,7 +118,7 @@ public class ParseTreeSpecializer extends AbstractParseTreeVisitor {
     }
 
     public void visitFunctionDefinitionNode(ASTPtFunctionDefinitionNode node)
-        throws IllegalActionException {
+            throws IllegalActionException {
         List excludedNames = new LinkedList(_excludedNames);
 
         // Don't substitute any names in the parse tree that are
@@ -135,7 +135,7 @@ public class ParseTreeSpecializer extends AbstractParseTreeVisitor {
     }
 
     public void visitFunctionalIfNode(ASTPtFunctionalIfNode node)
-        throws IllegalActionException {
+            throws IllegalActionException {
         _defaultVisit(node);
     }
 
@@ -165,47 +165,47 @@ public class ParseTreeSpecializer extends AbstractParseTreeVisitor {
             }
 
             throw new IllegalActionException("The ID " + node.getName()
-                + " is undefined.");
+                    + " is undefined.");
         }
     }
 
     public void visitLogicalNode(ASTPtLogicalNode node)
-        throws IllegalActionException {
+            throws IllegalActionException {
         _defaultVisit(node);
     }
 
     public void visitMatrixConstructNode(ASTPtMatrixConstructNode node)
-        throws IllegalActionException {
+            throws IllegalActionException {
         _defaultVisit(node);
     }
 
     public void visitMethodCallNode(ASTPtMethodCallNode node)
-        throws IllegalActionException {
+            throws IllegalActionException {
         _defaultVisit(node);
     }
 
     public void visitPowerNode(ASTPtPowerNode node)
-        throws IllegalActionException {
+            throws IllegalActionException {
         _defaultVisit(node);
     }
 
     public void visitProductNode(ASTPtProductNode node)
-        throws IllegalActionException {
+            throws IllegalActionException {
         _defaultVisit(node);
     }
 
     public void visitRecordConstructNode(ASTPtRecordConstructNode node)
-        throws IllegalActionException {
+            throws IllegalActionException {
         _defaultVisit(node);
     }
 
     public void visitRelationalNode(ASTPtRelationalNode node)
-        throws IllegalActionException {
+            throws IllegalActionException {
         _defaultVisit(node);
     }
 
     public void visitShiftNode(ASTPtShiftNode node)
-        throws IllegalActionException {
+            throws IllegalActionException {
         _defaultVisit(node);
     }
 
@@ -214,7 +214,7 @@ public class ParseTreeSpecializer extends AbstractParseTreeVisitor {
     }
 
     public void visitUnaryNode(ASTPtUnaryNode node)
-        throws IllegalActionException {
+            throws IllegalActionException {
         _defaultVisit(node);
     }
 
@@ -238,7 +238,7 @@ public class ParseTreeSpecializer extends AbstractParseTreeVisitor {
     }
 
     protected void _defaultVisit(ASTPtRootNode node)
-        throws IllegalActionException {
+            throws IllegalActionException {
         _visitAllChildren(node);
 
         boolean isConstant = _childrenAreConstant(node);
@@ -249,7 +249,7 @@ public class ParseTreeSpecializer extends AbstractParseTreeVisitor {
     }
 
     protected void _replaceConstantNode(ASTPtRootNode node)
-        throws IllegalActionException {
+            throws IllegalActionException {
         // Create the replacement
         ASTPtLeafNode newNode = new ASTPtLeafNode(PtParserTreeConstants.JJTPTLEAFNODE);
         ptolemy.data.Token token = _evaluator.evaluateParseTree(node, _scope);

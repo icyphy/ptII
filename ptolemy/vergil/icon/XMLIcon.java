@@ -93,7 +93,7 @@ public class XMLIcon extends DynamicEditorIcon implements ValueListener {
      *   a period.
      */
     public XMLIcon(Workspace workspace, String name)
-        throws IllegalActionException {
+            throws IllegalActionException {
         super(workspace, name);
 
         try {
@@ -109,7 +109,7 @@ public class XMLIcon extends DynamicEditorIcon implements ValueListener {
      *  @param name The name of this attribute.
      */
     public XMLIcon(NamedObj container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         _paintedList = null;
         _description = null;
@@ -142,7 +142,7 @@ public class XMLIcon extends DynamicEditorIcon implements ValueListener {
         // Get the description.
         NamedObj container = (NamedObj) getContainerOrContainerToBe();
         ConfigurableAttribute description = (ConfigurableAttribute) container
-                        .getAttribute("_iconDescription");
+            .getAttribute("_iconDescription");
 
         // If the description has changed...
         if (_description != description) {
@@ -193,7 +193,7 @@ public class XMLIcon extends DynamicEditorIcon implements ValueListener {
         // Get the description.
         NamedObj container = (NamedObj) getContainerOrContainerToBe();
         ConfigurableAttribute description = (ConfigurableAttribute) container
-                        .getAttribute("_smallIconDescription");
+            .getAttribute("_smallIconDescription");
 
         // If there is no separate small icon description, return
         // a scaled version of the background figure, as done by the base
@@ -275,7 +275,7 @@ public class XMLIcon extends DynamicEditorIcon implements ValueListener {
         String name = ((Nameable) settable).getName();
 
         if (name.equals("_iconDescription")
-                        || name.equals("_smallIconDescription")) {
+                || name.equals("_smallIconDescription")) {
             _recreateFigure();
         }
     }

@@ -59,7 +59,7 @@ public class EditIconTableau extends Tableau {
      *  @param workspace The workspace.
      */
     public EditIconTableau(Workspace workspace)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
     }
 
@@ -69,7 +69,7 @@ public class EditIconTableau extends Tableau {
      *  @param name The name.
      */
     public EditIconTableau(PtolemyEffigy container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         this(container, name, null);
     }
 
@@ -80,8 +80,8 @@ public class EditIconTableau extends Tableau {
      *  @param defaultLibrary The default library, or null to not specify one.
      */
     public EditIconTableau(PtolemyEffigy container, String name,
-        LibraryAttribute defaultLibrary)
-        throws IllegalActionException, NameDuplicationException {
+            LibraryAttribute defaultLibrary)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         NamedObj model = container.getModel();
@@ -99,8 +99,8 @@ public class EditIconTableau extends Tableau {
             return;
         } else {
             throw new IllegalActionException(this,
-                "Cannot edit an icon "
-                + "that is not an instance of EditorIcon.");
+                    "Cannot edit an icon "
+                    + "that is not an instance of EditorIcon.");
         }
     }
 
@@ -150,7 +150,7 @@ public class EditIconTableau extends Tableau {
          *   an attribute already in the container.
          */
         public Factory(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+                throws IllegalActionException, NameDuplicationException {
             super(container, name);
         }
 

@@ -18,7 +18,7 @@ public final class CorbaActorHolder implements org.omg.CORBA.portable.Streamable
     }
 
     public CorbaActorHolder(
-        ptolemy.domains.ct.demo.Corba.util.CorbaActor initialValue) {
+            ptolemy.domains.ct.demo.Corba.util.CorbaActor initialValue) {
         value = initialValue;
     }
 

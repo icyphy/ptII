@@ -100,7 +100,7 @@ public class PortConfigurer extends Query implements QueryListener {
                 }
 
                 addSelectButtons(port.getName(), port.getName(), _optionsArray,
-                    optionsDefault);
+                        optionsDefault);
 
                 String typeEntryName = port.getName() + " type";
                 addLine(typeEntryName, typeEntryName, port.getType().toString());
@@ -120,8 +120,8 @@ public class PortConfigurer extends Query implements QueryListener {
                 }
 
                 addChoice(port.getName() + " cardinal",
-                    port.getName() + ": cardinal direction", _cardinals,
-                    cardinalValue);
+                        port.getName() + ": cardinal direction", _cardinals,
+                        cardinalValue);
             }
         }
     }
@@ -160,8 +160,8 @@ public class PortConfigurer extends Query implements QueryListener {
 
                     String cardinalVal = getStringValue(nameCardinal);
                     moml.append("<property name=\"_cardinal\" "
-                        + "class = \"ptolemy.kernel.util.StringAttribute\" "
-                        + "value = \"" + cardinalVal + "\"/>");
+                            + "class = \"ptolemy.kernel.util.StringAttribute\" "
+                            + "value = \"" + cardinalVal + "\"/>");
                     moml.append("</port>");
                 }
 
@@ -196,30 +196,30 @@ public class PortConfigurer extends Query implements QueryListener {
                         moml.append("<property name=\"input\"/>");
                     } else {
                         moml.append(
-                            "<property name=\"input\" value=\"false\"/>");
+                                "<property name=\"input\" value=\"false\"/>");
                     }
 
                     if (selectedValues.contains("output")) {
                         moml.append("<property name=\"output\"/>");
                     } else {
                         moml.append(
-                            "<property name=\"output\" value=\"false\"/>");
+                                "<property name=\"output\" value=\"false\"/>");
                     }
 
                     if (selectedValues.contains("multiport")) {
                         moml.append("<property name=\"multiport\"/>");
                     } else {
                         moml.append(
-                            "<property name=\"multiport\" value=\"false\"/>");
+                                "<property name=\"multiport\" value=\"false\"/>");
                     }
 
                     if (_changed.contains(typeEntryName)) {
                         // Type designation has changed.
                         String type = getStringValue(typeEntryName);
                         moml.append("<property name=\"_type\" "
-                            + "class = \"ptolemy.actor.TypeAttribute\" "
-                            + "value = \"" + StringUtilities.escapeForXML(type)
-                            + "\"/>");
+                                + "class = \"ptolemy.actor.TypeAttribute\" "
+                                + "value = \"" + StringUtilities.escapeForXML(type)
+                                + "\"/>");
                     }
 
                     moml.append("</port>");
@@ -258,11 +258,11 @@ public class PortConfigurer extends Query implements QueryListener {
     ////                         private variables                 ////
     // Possible placements of ports.
     private String[] _cardinals = {
-            "NORTH",
-            "SOUTH",
-            "EAST",
-            "WEST"
-        };
+        "NORTH",
+        "SOUTH",
+        "EAST",
+        "WEST"
+    };
 
     // The set of names of ports that have changed.
     private Set _changed = new HashSet();
@@ -272,8 +272,8 @@ public class PortConfigurer extends Query implements QueryListener {
 
     // The possible configurations for a port.
     private String[] _optionsArray = {
-            "input",
-            "output",
-            "multiport"
-        };
+        "input",
+        "output",
+        "multiport"
+    };
 }

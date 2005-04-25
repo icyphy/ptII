@@ -65,10 +65,10 @@ public class ScratchpadMemory {
     public ScratchpadMemory(int memorySize) throws IllegalActionException {
         if (memorySize < 0) {
             throw new IllegalActionException("Can't define"
-                + " a negative scratchpad memory size.");
+                    + " a negative scratchpad memory size.");
         } else if (memorySize == 0) {
             throw new IllegalActionException("Can't"
-                + " define a scratchpad memory of zero size.");
+                    + " define a scratchpad memory of zero size.");
         }
 
         // Initialize _totalSpace, _usedSpace
@@ -88,13 +88,13 @@ public class ScratchpadMemory {
     public void add(Object address) throws IllegalActionException {
         if (address == null) {
             throw new IllegalArgumentException("Attempt to insert a null"
-                + " element");
+                    + " element");
         } else if ((_totalSpace - _usedSpace) > 0) {
             _scratchpadContents.add(address);
             _usedSpace++;
         } else {
             throw new IllegalActionException("Can't add another memory"
-                + " address, the scratchpad memory is full.");
+                    + " address, the scratchpad memory is full.");
         }
     }
 
@@ -129,7 +129,7 @@ public class ScratchpadMemory {
             _usedSpace--;
         } else {
             throw new IllegalActionException("Attempt made to evict a non"
-                + " existent memory address.");
+                    + " existent memory address.");
         }
     }
 
@@ -161,7 +161,7 @@ public class ScratchpadMemory {
         // there is something wrong with the add/remove code.
         else {
             throw new IllegalActionException("The used space in scratchpad"
-                + " memory has acceded the total available space");
+                    + " memory has acceded the total available space");
         }
     }
 

@@ -73,7 +73,7 @@ public class Sequencer extends Transformer implements SequenceActor {
      *   an actor already in the container.
      */
     public Sequencer(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         sequenceNumber = new TypedIOPort(this, "sequenceNumber", true, false);
@@ -122,7 +122,7 @@ public class Sequencer extends Transformer implements SequenceActor {
     public void initialize() throws IllegalActionException {
         _fireProducedOutput = false;
         _nextSequenceNumber = ((IntToken) startingSequenceNumber.getToken())
-                        .intValue();
+            .intValue();
     }
 
     /** If the fire() method produced the input token then check to

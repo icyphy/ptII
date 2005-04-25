@@ -71,7 +71,7 @@ public class FreeVariableModelAnalysis {
      *  during analysis.
      */
     public FreeVariableModelAnalysis(Entity model)
-        throws IllegalActionException {
+            throws IllegalActionException {
         _entityToFreeVariableNameSet = new HashMap();
         _freeVariables(model);
     }
@@ -88,7 +88,7 @@ public class FreeVariableModelAnalysis {
 
         if (freeVariables == null) {
             throw new RuntimeException("Entity " + entity.getFullName()
-                + " has not been analyzed.");
+                    + " has not been analyzed.");
         }
 
         return Collections.unmodifiableSet(freeVariables);
@@ -104,8 +104,8 @@ public class FreeVariableModelAnalysis {
 
         if (model instanceof CompositeEntity) {
             for (Iterator entities = ((CompositeEntity) model).entityList()
-                                                  .iterator();
-                            entities.hasNext();) {
+                     .iterator();
+                 entities.hasNext();) {
                 Entity entity = (Entity) entities.next();
                 set.addAll(_freeVariables(entity));
             }
@@ -115,7 +115,7 @@ public class FreeVariableModelAnalysis {
         Set variableNames = new HashSet();
 
         for (Iterator variables = model.attributeList(Variable.class).iterator();
-                        variables.hasNext();) {
+             variables.hasNext();) {
             Variable variable = (Variable) variables.next();
             variableNames.add(variable.getName());
         }
@@ -132,7 +132,7 @@ public class FreeVariableModelAnalysis {
         ParseTreeFreeVariableCollector collector = new ParseTreeFreeVariableCollector();
 
         for (Iterator variables = model.attributeList(Variable.class).iterator();
-                        variables.hasNext();) {
+             variables.hasNext();) {
             Variable variable = (Variable) variables.next();
             String expression = variable.getExpression();
             ASTPtRootNode root;
@@ -144,7 +144,7 @@ public class FreeVariableModelAnalysis {
             }
 
             Set freeIdentifiers = new HashSet(collector.collectFreeVariables(
-                        root));
+                                                      root));
 
             // Identifiers that reference other variables in the same container
             // are bound, not free.

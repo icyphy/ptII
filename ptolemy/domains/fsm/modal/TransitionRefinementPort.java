@@ -80,7 +80,7 @@ public class TransitionRefinementPort extends RefinementPort {
      *   a port already in the container.
      */
     public TransitionRefinementPort(ComponentEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -388,7 +388,7 @@ public class TransitionRefinementPort extends RefinementPort {
      *   a port with the name of this port.
      */
     public void setContainer(Entity container)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         NamedObj oldContainer = (NamedObj) getContainer();
 
         if (container == oldContainer) {
@@ -406,7 +406,7 @@ public class TransitionRefinementPort extends RefinementPort {
                 if (_hasSibling && isOutput() && (getContainer() != null)) {
                     TransitionRefinement transContainer = (TransitionRefinement) oldContainer;
                     TransitionRefinementPort sibling = (TransitionRefinementPort) transContainer
-                                    .getPort(getName() + "_in");
+                        .getPort(getName() + "_in");
 
                     sibling._mirrorDisable = true;
                     sibling.setContainer(container);
@@ -528,7 +528,7 @@ public class TransitionRefinementPort extends RefinementPort {
                 if (_hasSibling && isOutput() && (getContainer() != null)) {
                     TransitionRefinement container = (TransitionRefinement) getContainer();
                     TransitionRefinementPort sibling = (TransitionRefinementPort) container
-                                    .getPort(getName() + "_in");
+                        .getPort(getName() + "_in");
 
                     sibling._mirrorDisable = true;
                     sibling.setMultiport(isMultiport);
@@ -574,7 +574,7 @@ public class TransitionRefinementPort extends RefinementPort {
      *   with the same name in the container.
      */
     public void setName(String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         boolean disableStatus = _mirrorDisable;
 
         try {
@@ -585,7 +585,7 @@ public class TransitionRefinementPort extends RefinementPort {
                 if (_hasSibling && isOutput() && (getContainer() != null)) {
                     TransitionRefinement container = (TransitionRefinement) getContainer();
                     TransitionRefinementPort sibling = (TransitionRefinementPort) container
-                                    .getPort(getName() + "_in");
+                        .getPort(getName() + "_in");
                     sibling._mirrorDisable = true;
                     sibling.setName(name + "_in");
                     sibling._mirrorDisable = false;
@@ -647,8 +647,8 @@ public class TransitionRefinementPort extends RefinementPort {
         if (_hasSibling && isInput() && !isOutput()) {
             if (isOutput) {
                 throw new InternalErrorException(
-                    "TransitionRefinementPort.setOutput:"
-                    + " cannot set input sibling port to be an output");
+                        "TransitionRefinementPort.setOutput:"
+                        + " cannot set input sibling port to be an output");
             } else {
                 return;
             }
@@ -692,12 +692,12 @@ public class TransitionRefinementPort extends RefinementPort {
                         _hasSibling = true;
                     } catch (IllegalActionException ex) {
                         throw new InternalErrorException(
-                            "TransitionRefinementPort.setOutput: Internal error: "
-                            + ex.getMessage());
+                                "TransitionRefinementPort.setOutput: Internal error: "
+                                + ex.getMessage());
                     } catch (NameDuplicationException ex) {
                         throw new InternalErrorException(
-                            "TransitionRefinementPort.setOutput: Internal error: "
-                            + ex.getMessage());
+                                "TransitionRefinementPort.setOutput: Internal error: "
+                                + ex.getMessage());
                     }
                 }
             } else {

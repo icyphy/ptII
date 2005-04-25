@@ -64,7 +64,7 @@ public class ArrayAppend extends Transformer {
      *   actor with this name.
      */
     public ArrayAppend(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // The input is a multiport.
@@ -114,7 +114,7 @@ public class ArrayAppend extends Transformer {
                     Token[] newArray = new Token[array.length + token.length()];
                     System.arraycopy(array, 0, newArray, 0, array.length);
                     System.arraycopy(token.arrayValue(), 0, newArray,
-                        array.length, token.length());
+                            array.length, token.length());
                     array = newArray;
                 }
             }

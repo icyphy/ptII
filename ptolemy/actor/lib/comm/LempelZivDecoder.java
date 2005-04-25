@@ -64,7 +64,7 @@ public class LempelZivDecoder extends Transformer {
      *   actor with this name.
      */
     public LempelZivDecoder(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // Declare port types.
@@ -92,7 +92,7 @@ public class LempelZivDecoder extends Transformer {
             current = current + "1";
         } else {
             throw new IllegalActionException(this,
-                "This is not a valid Lempel-Ziv code.");
+                    "This is not a valid Lempel-Ziv code.");
         }
 
         _decodeBook.add(current);

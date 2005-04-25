@@ -81,7 +81,7 @@ public class ContinuousClock extends Clock {
      *   actor with this name.
      */
     public ContinuousClock(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         defaultValue = new Parameter(this, "defaultValue");
         defaultValue.setExpression("0");
@@ -89,11 +89,11 @@ public class ContinuousClock extends Clock {
         // Override the signal type to be CONTINUOUS to indicate
         // that this actor produce outputs with state semantics.
         ((Parameter) output.getAttribute("signalType")).setToken(new StringToken(
-                "CONTINUOUS"));
+                                                                         "CONTINUOUS"));
 
         // Override of the trigger signal type to CONTINUOUS.
         ((Parameter) trigger.getAttribute("signalType")).setToken(new StringToken(
-                "CONTINUOUS"));
+                                                                          "CONTINUOUS"));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -158,7 +158,7 @@ public class ContinuousClock extends Clock {
                 // If we are beyond the number of cycles requested, then
                 // change the output value to zero.
                 int cycleLimit = ((IntToken) numberOfCycles.getToken())
-                                .intValue();
+                    .intValue();
 
                 // FIXME: performance suffers from this. cache the stop time.
                 // NOTE: there are two stop time. One is based on the cycles
@@ -167,7 +167,7 @@ public class ContinuousClock extends Clock {
                 Time stopTime = _tentativeStartTime.add(cycleLimit * periodValue);
 
                 if (((cycleLimit > 0) && (currentTime.compareTo(stopTime) >= 0))
-                                || _tentativeDone) {
+                        || _tentativeDone) {
                     _tentativeCurrentValue = defaultValue.getToken();
                 }
 
@@ -195,10 +195,10 @@ public class ContinuousClock extends Clock {
 
                 if (_offsets[_tentativePhase] >= periodValue) {
                     throw new IllegalActionException(this,
-                        "Offset number " + _tentativePhase + " with value "
-                        + _offsets[_tentativePhase]
-                        + " must be strictly less than the "
-                        + "period, which is " + periodValue);
+                            "Offset number " + _tentativePhase + " with value "
+                            + _offsets[_tentativePhase]
+                            + " must be strictly less than the "
+                            + "period, which is " + periodValue);
                 }
             } else if (currentTime.compareTo(currentPhaseTime) < 0) {
                 _tentativeNextFiringTime = currentPhaseTime;
@@ -211,7 +211,7 @@ public class ContinuousClock extends Clock {
 
         if (_debugging) {
             _debug("Output: " + _currentValue + " at "
-                + getDirector().getModelTime() + ".");
+                    + getDirector().getModelTime() + ".");
         }
     }
 
@@ -233,7 +233,7 @@ public class ContinuousClock extends Clock {
     public void preinitialize() throws IllegalActionException {
         if (!(getDirector() instanceof CTDirector)) {
             throw new IllegalActionException("ContinuousClock can only"
-                + " be used inside CT domain.");
+                    + " be used inside CT domain.");
         }
 
         super.preinitialize();

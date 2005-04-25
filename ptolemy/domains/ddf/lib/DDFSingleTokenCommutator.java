@@ -71,7 +71,7 @@ public class DDFSingleTokenCommutator extends SingleTokenCommutator {
      *   by the proposed container.
      */
     public DDFSingleTokenCommutator(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         input_tokenConsumptionRate = new Parameter(input, "tokenConsumptionRate");
@@ -118,7 +118,7 @@ public class DDFSingleTokenCommutator extends SingleTokenCommutator {
             } catch (IllegalActionException ex) {
                 // shouldn't happen
                 throw new InternalErrorException(this, ex,
-                    "It should not happen.");
+                        "It should not happen.");
             }
         }
     }

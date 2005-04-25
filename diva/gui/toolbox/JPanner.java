@@ -197,8 +197,8 @@ public class JPanner extends JPanel {
 
             // Also invert the current transform on the canvas.
             AffineTransform current = canvas.getCanvasPane()
-                                                        .getTransformContext()
-                                                        .getTransform();
+                .getTransformContext()
+                .getTransform();
             AffineTransform inverse;
 
             try {
@@ -252,7 +252,7 @@ public class JPanner extends JPanel {
         implements MouseMotionListener {
         public void mousePressed(MouseEvent evt) {
             if ((_target != null)
-                            && ((evt.getModifiers() & MouseEvent.BUTTON1_MASK) != 0)) {
+                    && ((evt.getModifiers() & MouseEvent.BUTTON1_MASK) != 0)) {
                 setPosition(evt.getX(), evt.getY());
             }
         }
@@ -262,7 +262,7 @@ public class JPanner extends JPanel {
 
         public void mouseDragged(MouseEvent evt) {
             if ((_target != null)
-                            && ((evt.getModifiers() & MouseEvent.BUTTON1_MASK) != 0)) {
+                    && ((evt.getModifiers() & MouseEvent.BUTTON1_MASK) != 0)) {
                 setPosition(evt.getX(), evt.getY());
             }
         }
@@ -300,8 +300,8 @@ public class JPanner extends JPanel {
             JCanvas canvas = (JCanvas) _target.getView();
 
             AffineTransform current = canvas.getCanvasPane()
-                                                        .getTransformContext()
-                                                        .getTransform();
+                .getTransformContext()
+                .getTransform();
             current.setTransform(transformOrigin);
             current.translate(scaled.getX(), scaled.getY());
             current.scale(scale, scale);
@@ -311,18 +311,18 @@ public class JPanner extends JPanel {
 
         public void mousePressed(MouseEvent evt) {
             if ((_target != null)
-                            && ((evt.getModifiers() & MouseEvent.BUTTON3_MASK) != 0)) {
+                    && ((evt.getModifiers() & MouseEvent.BUTTON3_MASK) != 0)) {
                 setPosition(evt.getX(), evt.getY());
                 origin = evt.getPoint();
 
                 JCanvas canvas = ((JCanvas) _target.getView());
                 TransformContext context = canvas.getCanvasPane()
-                                                             .getTransformContext();
+                    .getTransformContext();
 
                 // clone the transform that is in the context, so we can
                 // avoid a lot of repeated scaling of the same transform.
                 transformOrigin = (AffineTransform) context.getTransform()
-                                                                       .clone();
+                    .clone();
 
                 // Take the event and first transform it from the panner
                 // coordinates into the view coordinates.
@@ -335,9 +335,9 @@ public class JPanner extends JPanel {
                         myRect);
 
                 double xScaled = (origin.getX() - myRect.getX()) / forward
-                                .getScaleX();
+                    .getScaleX();
                 double yScaled = (origin.getY() - myRect.getY()) / forward
-                                .getScaleY();
+                    .getScaleY();
                 scaled = new Point2D.Double(xScaled, yScaled);
 
                 // Now transform from the view coordinates into the
@@ -355,7 +355,7 @@ public class JPanner extends JPanel {
 
         public void mouseDragged(MouseEvent evt) {
             if ((_target != null)
-                            && ((evt.getModifiers() & MouseEvent.BUTTON3_MASK) != 0)) {
+                    && ((evt.getModifiers() & MouseEvent.BUTTON3_MASK) != 0)) {
                 setScale(evt.getX(), evt.getY());
             }
         }
@@ -364,11 +364,11 @@ public class JPanner extends JPanel {
     public static void main(String[] argv) {
         JFrame f = new JFrame();
         String[] data = {
-                "oneeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
-                "twoooooooooooooooooooooooooooooooooooooooo",
-                "threeeeeeeeeeeeeeeee",
-                "fourrrrrrrrrrrrrrrrrrrrrrrrr"
-            };
+            "oneeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+            "twoooooooooooooooooooooooooooooooooooooooo",
+            "threeeeeeeeeeeeeeeee",
+            "fourrrrrrrrrrrrrrrrrrrrrrrrr"
+        };
         JList dataList = new JList(data);
         JScrollPane p = new JScrollPane(dataList);
         p.setSize(200, 200);

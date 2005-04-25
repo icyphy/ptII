@@ -141,7 +141,7 @@ public class Transformer {
                     String fileName = files[j].getPath();
                     if (fileName.endsWith(".java"))
                         fileName = fileName.substring(0, fileName.length() - 5)
-                                + ".class";
+                            + ".class";
                     else {
                         System.err.println("Skipping \"" + files[j] + "\". " +
                                 "Cause: Class file not found.");
@@ -160,7 +160,7 @@ public class Transformer {
                     crossAnalysis.add(c.getName());
                     _addInnerClasses(crossAnalysis, fileName,
                             c.getPackage() == null ?
-                                    null : c.getPackage().getName());
+                            null : c.getPackage().getName());
                 }
             }
 
@@ -476,7 +476,7 @@ public class Transformer {
 
         public boolean accept(File dir, String name) {
             return name.startsWith(_className + "$") &&
-                    name.endsWith(".class");
+                name.endsWith(".class");
         }
 
         private String _className;

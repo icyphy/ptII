@@ -51,7 +51,7 @@ import ptolemy.kernel.util.Workspace;
 */
 public class SDFTestRamp extends TypedAtomicActor {
     public SDFTestRamp(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         output = new TypedIOPort(this, "output", false, true);
         output_tokenProductionRate = new Parameter(output,
@@ -90,7 +90,7 @@ public class SDFTestRamp extends TypedAtomicActor {
         int i;
 
         int tokens = ((IntToken) output_tokenProductionRate.getToken())
-                        .intValue();
+            .intValue();
 
         for (i = 0; i < tokens; i++) {
             Token message = new IntToken(_value);

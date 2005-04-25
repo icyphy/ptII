@@ -94,7 +94,7 @@ public class SmartSender extends TypedAtomicActor {
      *   an entity already in the container.
      */
     public SmartSender(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         output = new TypedIOPort(this, "output");
@@ -130,7 +130,7 @@ public class SmartSender extends TypedAtomicActor {
         super.fire();
 
         double firingPeriodValue = ((DoubleToken) firingPeriod.getToken())
-                        .doubleValue();
+            .doubleValue();
         Director director = getDirector();
         director.fireAt(this, director.getModelTime().add(firingPeriodValue));
 
@@ -151,8 +151,8 @@ public class SmartSender extends TypedAtomicActor {
                                 Port port = (Port) ports.next();
 
                                 if (port instanceof IOPort
-                                                && ((IOPort) port).isInput()
-                                                && (((IOPort) port).getWidth() == 0)) {
+                                        && ((IOPort) port).isInput()
+                                        && (((IOPort) port).getWidth() == 0)) {
                                     container.connect(output, (IOPort) port);
                                     return;
                                 }

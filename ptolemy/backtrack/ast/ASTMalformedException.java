@@ -59,8 +59,8 @@ public class ASTMalformedException extends ASTException {
     public ASTMalformedException(String sourceFileName) {
         super("The AST" +
                 (sourceFileName == null ? "" :
-                    " of Java file \"" + sourceFileName + "\"") +
-                    " is malformed.");
+                        " of Java file \"" + sourceFileName + "\"") +
+                " is malformed.");
     }
 
 }

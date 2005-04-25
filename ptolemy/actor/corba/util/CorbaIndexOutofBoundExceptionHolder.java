@@ -15,22 +15,22 @@ public final class CorbaIndexOutofBoundExceptionHolder
     }
 
     public CorbaIndexOutofBoundExceptionHolder(
-        ptolemy.actor.corba.util.CorbaIndexOutofBoundException initialValue) {
+            ptolemy.actor.corba.util.CorbaIndexOutofBoundException initialValue) {
         value = initialValue;
     }
 
     public void _read(org.omg.CORBA.portable.InputStream i) {
         value = ptolemy.actor.corba.util.CorbaIndexOutofBoundExceptionHelper
-                        .read(i);
+            .read(i);
     }
 
     public void _write(org.omg.CORBA.portable.OutputStream o) {
         ptolemy.actor.corba.util.CorbaIndexOutofBoundExceptionHelper.write(o,
-            value);
+                value);
     }
 
     public org.omg.CORBA.TypeCode _type() {
         return ptolemy.actor.corba.util.CorbaIndexOutofBoundExceptionHelper
-                    .type();
+            .type();
     }
 }

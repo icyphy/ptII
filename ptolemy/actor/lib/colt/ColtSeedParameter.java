@@ -84,7 +84,7 @@ public class ColtSeedParameter extends SharedParameter {
      *   a parameter already in the container.
      */
     public ColtSeedParameter(NamedObj container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         this(container, name, null);
     }
 
@@ -100,8 +100,8 @@ public class ColtSeedParameter extends SharedParameter {
      *   a parameter already in the container.
      */
     public ColtSeedParameter(NamedObj container, String name,
-        Class containerClass)
-        throws IllegalActionException, NameDuplicationException {
+            Class containerClass)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name, containerClass, "0L");
         setTypeEquals(BaseType.LONG);
     }
@@ -145,11 +145,11 @@ public class ColtSeedParameter extends SharedParameter {
                     // Do not do sharing if this is within an EntityLibrary.
                     if (toplevel != null) {
                         Iterator sharedParameters = sharedParameterList(toplevel)
-                                                                    .iterator();
+                            .iterator();
 
                         while (sharedParameters.hasNext()) {
                             ColtSeedParameter sharedParameter = (ColtSeedParameter) sharedParameters
-                                            .next();
+                                .next();
 
                             if (sharedParameter != this) {
                                 try {

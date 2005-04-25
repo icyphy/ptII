@@ -115,7 +115,7 @@ public abstract class CodeGenerator {
 
         if (includeFiles.hasNext()) {
             headerCode.append(_comment("System, runtime and "
-                    + "CSwitch-generated include files"));
+                                      + "CSwitch-generated include files"));
         }
 
         while (includeFiles.hasNext()) {
@@ -243,14 +243,14 @@ public abstract class CodeGenerator {
             if (type instanceof RefType) {
                 source = ((RefType) type).getSootClass();
             } else if ((type instanceof ArrayType)
-                            && (((ArrayType) type).baseType instanceof RefType)) {
+                    && (((ArrayType) type).baseType instanceof RefType)) {
                 source = ((RefType) (((ArrayType) type).baseType)).getSootClass();
             }
 
             if (source != null) {
                 if (!_requiredTypeMap.containsKey(source)) {
                     _requiredTypeMap.put(source,
-                        CNames.includeFileNameOf(source));
+                            CNames.includeFileNameOf(source));
                 }
             }
         }

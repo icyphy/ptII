@@ -71,7 +71,7 @@ public class ImageTableau extends TokenTableau {
      *   attribute already in the container.
      */
     public ImageTableau(Effigy container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -86,7 +86,7 @@ public class ImageTableau extends TokenTableau {
      *   attribute already in the container.
      */
     public ImageTableau(Effigy container, String name, TableauFrame frame)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name, frame);
     }
 
@@ -103,8 +103,8 @@ public class ImageTableau extends TokenTableau {
      *   attribute already in the container.
      */
     public ImageTableau(Effigy container, String name, TableauFrame frame,
-        int width, int height)
-        throws IllegalActionException, NameDuplicationException {
+            int width, int height)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name, frame);
         _oldxsize = width;
         _oldysize = height;
@@ -197,7 +197,7 @@ public class ImageTableau extends TokenTableau {
 
         if (image == null) {
             throw new IllegalActionException(this,
-                "ImageTableau: input image was null!");
+                    "ImageTableau: input image was null!");
         } else {
             int xsize = image.getWidth(null);
             int ysize = image.getHeight(null);
@@ -276,7 +276,7 @@ public class ImageTableau extends TokenTableau {
          *   an attribute already in the container.
          */
         public Factory(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+                throws IllegalActionException, NameDuplicationException {
             super(container, name);
         }
 

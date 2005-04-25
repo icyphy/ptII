@@ -76,7 +76,7 @@ public class DoubleArrayMath {
      *  IllegalArgumentException.
      */
     public static final double[] add(final double[] array1,
-        final double[] array2) {
+            final double[] array2) {
         int length = _commonLength(array1, array2, "DoubleArrayMath.add");
         double[] returnValue = new double[length];
 
@@ -103,7 +103,7 @@ public class DoubleArrayMath {
      *  append(array1, 0, array1.length, array2, 0, array2.length)
      */
     public static final double[] append(final double[] array1,
-        final double[] array2) {
+            final double[] array2) {
         return append(array1, 0, array1.length, array2, 0, array2.length);
     }
 
@@ -124,8 +124,8 @@ public class DoubleArrayMath {
      *  @return A new array of doubles.
      */
     public static final double[] append(final double[] array1, final int idx1,
-        final int length1, final double[] array2, final int idx2,
-        final int length2) {
+            final int length1, final double[] array2, final int idx2,
+            final int length2) {
         double[] returnValue = new double[length1 + length2];
 
         if (length1 > 0) {
@@ -146,7 +146,7 @@ public class DoubleArrayMath {
      *  If the length of the array is 0, return a new array of length 0.
      */
     public static final double[] applyBinaryOperation(
-        DoubleBinaryOperation op, final double[] array, final double z) {
+            DoubleBinaryOperation op, final double[] array, final double z) {
         int length = array.length;
         double[] returnValue = new double[length];
 
@@ -164,7 +164,7 @@ public class DoubleArrayMath {
      *  If the length of the array is 0, return a new array of length 0.
      */
     public static final double[] applyBinaryOperation(
-        DoubleBinaryOperation op, final double z, final double[] array) {
+            DoubleBinaryOperation op, final double z, final double[] array) {
         int length = array.length;
         double[] returnValue = new double[length];
 
@@ -185,7 +185,7 @@ public class DoubleArrayMath {
      *  IllegalArgumentException.
      */
     public static final double[] applyBinaryOperation(
-        DoubleBinaryOperation op, final double[] array1, final double[] array2) {
+            DoubleBinaryOperation op, final double[] array1, final double[] array2) {
         int length = _commonLength(array1, array2,
                 "DoubleArrayMath.applyBinaryOperation");
         double[] returnValue = new double[length];
@@ -203,7 +203,7 @@ public class DoubleArrayMath {
      *  If the length of the array is 0, return a new array of length 0.
      */
     public static final double[] applyUnaryOperation(
-        final DoubleUnaryOperation op, final double[] array) {
+            final DoubleUnaryOperation op, final double[] array) {
         int length = array.length;
         double[] returnValue = new double[length];
 
@@ -227,7 +227,7 @@ public class DoubleArrayMath {
      *  @return A new array of doubles.
      */
     public static final double[] divideElements(final double[] array1,
-        final double[] array2) {
+            final double[] array2) {
         int length = _commonLength(array1, array2,
                 "DoubleArrayMath.divideElements");
         double[] returnValue = new double[length];
@@ -261,7 +261,7 @@ public class DoubleArrayMath {
      *  IllegalArgumentException.
      */
     public static final double dotProduct(final double[] array1,
-        final double[] array2) {
+            final double[] array2) {
         int length = _commonLength(array1, array2, "DoubleArrayMath.dotProduct");
 
         double sum = 0.0;
@@ -294,15 +294,15 @@ public class DoubleArrayMath {
      *  @return A new array with values in the range [bottom, top].
      */
     public static final double[] limit(final double[] array,
-        final double bottom, final double top) {
+            final double bottom, final double top) {
         double[] returnValue = new double[array.length];
 
         for (int i = 0; i < array.length; i++) {
             if ((array[i] > top) || (array[i] == Double.NaN)
-                            || (array[i] == Double.POSITIVE_INFINITY)) {
+                    || (array[i] == Double.POSITIVE_INFINITY)) {
                 returnValue[i] = top;
             } else if ((array[i] < bottom) || (array[i] == -Double.NaN)
-                            || (array[i] == Double.NEGATIVE_INFINITY)) {
+                    || (array[i] == Double.NEGATIVE_INFINITY)) {
                 returnValue[i] = bottom;
             } else {
                 returnValue[i] = array[i];
@@ -333,7 +333,7 @@ public class DoubleArrayMath {
      *  IllegalArgumentException.
      */
     public static final double[] multiply(final double[] array1,
-        final double[] array2) {
+            final double[] array2) {
         int length = _commonLength(array1, array2, "DoubleArrayMath.multiply");
         double[] returnValue = new double[length];
 
@@ -396,15 +396,15 @@ public class DoubleArrayMath {
      *  @return A new array of doubles.
      */
     public static final double[] padMiddle(final double[] array,
-        final int newLength) {
+            final int newLength) {
         int length = array.length;
 
         int entriesNeeded = newLength - length;
 
         if (entriesNeeded < 0) {
             throw new IllegalArgumentException("ptolemy.math."
-                + "DoubleArrayMath.padMiddle() : newLength must be "
-                + ">= length of array.");
+                    + "DoubleArrayMath.padMiddle() : newLength must be "
+                    + ">= length of array.");
         } else if (entriesNeeded == 0) {
             return resize(array, newLength); // allocates a new array
         }
@@ -417,7 +417,7 @@ public class DoubleArrayMath {
         System.arraycopy(array, 0, returnValue, 0, halfLengthCeil);
 
         System.arraycopy(array, halfLengthFloor, returnValue,
-            newLength - halfLengthCeil, halfLengthCeil);
+                newLength - halfLengthCeil, halfLengthCeil);
 
         return returnValue;
     }
@@ -431,7 +431,7 @@ public class DoubleArrayMath {
      *  @return A new array of doubles of length newLength.
      */
     public static final double[] resize(final double[] array,
-        final int newLength) {
+            final int newLength) {
         return resize(array, newLength, 0);
     }
 
@@ -454,15 +454,15 @@ public class DoubleArrayMath {
      *  @return A new array of doubles of length newLength.
      */
     public static final double[] resize(double[] array, final int newLength,
-        final int startIdx) {
+            final int startIdx) {
         double[] returnValue = new double[newLength];
         int copySize = Math.min(newLength, array.length - startIdx);
 
         if ((startIdx >= array.length) && (copySize > 0)) {
             throw new IllegalArgumentException("resize():  the start index '"
-                + startIdx + "' is greather than equal to the array length '"
-                + array.length + "' and the number of items to be copied '"
-                + copySize + "' is greater than zero.");
+                    + startIdx + "' is greather than equal to the array length '"
+                    + array.length + "' and the number of items to be copied '"
+                    + copySize + "' is greater than zero.");
         }
 
         if (copySize > 0) {
@@ -492,7 +492,7 @@ public class DoubleArrayMath {
      *  If the lengths of both arrays are 0, return a new array of length 0.
      */
     public static final double[] subtract(final double[] array1,
-        final double[] array2) {
+            final double[] array2) {
         int length = _commonLength(array1, array2, "DoubleArrayMath.subtract");
         double[] returnValue = new double[length];
 
@@ -615,7 +615,7 @@ public class DoubleArrayMath {
      *  format argument.
      */
     public static final String toString(final double[] array,
-        String elementDelimiter, String vectorBegin, String vectorEnd) {
+            String elementDelimiter, String vectorBegin, String vectorEnd) {
         int length = array.length;
         StringBuffer sb = new StringBuffer();
 
@@ -649,12 +649,12 @@ public class DoubleArrayMath {
      *   length.
      */
     public static final boolean within(final double[] array1,
-        final double[] array2, double maxError) {
+            final double[] array2, double maxError) {
         int length = _commonLength(array1, array2, "DoubleArrayMath.within");
 
         for (int i = 0; i < length; i++) {
             if ((array1[i] > (array2[i] + maxError))
-                            || (array1[i] < (array2[i] - maxError))) {
+                    || (array1[i] < (array2[i] - maxError))) {
                 return false;
             }
         }
@@ -679,12 +679,12 @@ public class DoubleArrayMath {
      *   length.
      */
     public static final boolean within(final double[] array1,
-        final double[] array2, double[] maxError) {
+            final double[] array2, double[] maxError) {
         int length = _commonLength(array1, array2, "DoubleArrayMath.within");
 
         for (int i = 0; i < length; i++) {
             if ((array1[i] > (array2[i] + maxError[i]))
-                            || (array1[i] < (array2[i] - maxError[i]))) {
+                    || (array1[i] < (array2[i] - maxError[i]))) {
                 return false;
             }
         }
@@ -706,22 +706,22 @@ public class DoubleArrayMath {
      *  @return The common length of both arrays.
      */
     protected static final int _commonLength(final double[] array1,
-        final double[] array2, String methodName) {
+            final double[] array2, String methodName) {
         if (array1 == null) {
             throw new IllegalArgumentException("ptolemy.math." + methodName
-                + "() : first input array is null.");
+                    + "() : first input array is null.");
         }
 
         if (array2 == null) {
             throw new IllegalArgumentException("ptolemy.math." + methodName
-                + "() : second input array is null.");
+                    + "() : second input array is null.");
         }
 
         if (array1.length != array2.length) {
             throw new IllegalArgumentException("ptolemy.math." + methodName
-                + "() : input arrays must have the same length, "
-                + "but the first array has length " + array1.length
-                + " and the second array has length " + array2.length + ".");
+                    + "() : input arrays must have the same length, "
+                    + "but the first array has length " + array1.length
+                    + " and the second array has length " + array2.length + ".");
         }
 
         return array1.length;

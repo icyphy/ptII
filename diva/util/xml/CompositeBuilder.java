@@ -105,7 +105,7 @@ public class CompositeBuilder extends AbstractXmlBuilder {
             _builders.put(builder.getAttribute(TAG_TAG), val);
             _builders.put(builder.getAttribute(CLASS_TAG), val);
             debug("Adding: " + builder.getAttribute(TAG_TAG) + "=>"
-                + builder.getAttribute(BUILDER_TAG));
+                    + builder.getAttribute(BUILDER_TAG));
         }
     }
 
@@ -160,7 +160,7 @@ public class CompositeBuilder extends AbstractXmlBuilder {
     public static void main(String[] args) throws Exception {
         if (args.length != 2) {
             System.err.println(
-                "java CompositeBuilder <builderDeclsURI> <fileURI>");
+                    "java CompositeBuilder <builderDeclsURI> <fileURI>");
             System.exit(1);
         } else {
             XmlDocument doc = new XmlDocument();
@@ -169,7 +169,7 @@ public class CompositeBuilder extends AbstractXmlBuilder {
             builder.addBuilderDecls(new FileReader(args[0]));
             reader.parse(doc, new FileReader(args[1]));
             System.out.println("out = "
-                + builder.build(doc.getRoot(), doc.getRoot().getType()));
+                    + builder.build(doc.getRoot(), doc.getRoot().getType()));
         }
     }
 }

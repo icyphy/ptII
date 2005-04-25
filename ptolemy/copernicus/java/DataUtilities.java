@@ -87,8 +87,8 @@ public class DataUtilities {
      *  @param insertPoint The insertion point.
      */
     public static Local generateExpressionCodeBefore(Entity entity,
-        SootClass entityClass, String expression, Map nameToFieldOrLocal,
-        Map nameToType, JimpleBody body, Unit insertPoint) {
+            SootClass entityClass, String expression, Map nameToFieldOrLocal,
+            Map nameToType, JimpleBody body, Unit insertPoint) {
         Local local;
 
         try {
@@ -120,12 +120,12 @@ public class DataUtilities {
      *  @param body The body to add code to.
      */
     public static Local generateExpressionCode(Entity entity,
-        SootClass entityClass, String expression, Map nameToFieldOrLocal,
-        Map nameToType, JimpleBody body) {
+            SootClass entityClass, String expression, Map nameToFieldOrLocal,
+            Map nameToType, JimpleBody body) {
         Stmt insertPoint = Jimple.v().newNopStmt();
         body.getUnits().add(insertPoint);
         return generateExpressionCodeBefore(entity, entityClass, expression,
-            nameToFieldOrLocal, nameToType, body, insertPoint);
+                nameToFieldOrLocal, nameToType, body, insertPoint);
     }
 
     /** An inner class used by the <i>generateExpressionCode()</I>
@@ -136,8 +136,8 @@ public class DataUtilities {
     public static class ActorCodeGenerationScope
         extends ptolemy.data.expr.ModelScope implements CodeGenerationScope {
         public ActorCodeGenerationScope(Entity entity, SootClass entityClass,
-            Map nameToFieldOrLocal, Map nameToType, JimpleBody body,
-            Unit insertPoint) {
+                Map nameToFieldOrLocal, Map nameToType, JimpleBody body,
+                Unit insertPoint) {
             _nameToFieldOrLocal = nameToFieldOrLocal;
             _nameToType = nameToType;
             _body = body;
@@ -147,9 +147,9 @@ public class DataUtilities {
         }
 
         public ptolemy.data.Token get(String name)
-            throws IllegalActionException {
+                throws IllegalActionException {
             throw new IllegalActionException("The ID " + name
-                + " does not have a value");
+                    + " does not have a value");
         }
 
         public Local getLocal(String name) throws IllegalActionException {
@@ -194,12 +194,12 @@ public class DataUtilities {
                 _body.getLocals().add(tokenLocal);
 
                 _units.insertBefore(Jimple.v().newAssignStmt(tokenLocal,
-                        Jimple.v().newInstanceFieldRef(thisLocal, portField)),
-                    _insertPoint);
+                                            Jimple.v().newInstanceFieldRef(thisLocal, portField)),
+                        _insertPoint);
                 _units.insertBefore(Jimple.v().newAssignStmt(portLocal,
-                        Jimple.v().newCastExpr(tokenLocal,
-                            PtolemyUtilities.getSootTypeForTokenType(getType(
-                                    name)))), _insertPoint);
+                                            Jimple.v().newCastExpr(tokenLocal,
+                                                    PtolemyUtilities.getSootTypeForTokenType(getType(
+                                                                                                     name)))), _insertPoint);
 
                 return portLocal;
             }
@@ -227,11 +227,11 @@ public class DataUtilities {
                 _body.getLocals().add(tokenLocal);
 
                 Entity entityContainer = FieldsForEntitiesTransformer
-                                .getEntityContainerOfObject(result);
+                    .getEntityContainerOfObject(result);
                 String deepName = result.getName(entityContainer);
 
                 _units.insertBefore(Jimple.v().newAssignStmt(containerLocal,
-                        thisLocal), _insertPoint);
+                                            thisLocal), _insertPoint);
 
                 NamedObj container = _entity;
 
@@ -240,35 +240,35 @@ public class DataUtilities {
                             RefType.v(PtolemyUtilities.namedObjClass));
                     _body.getLocals().add(containerLocal2);
                     _units.insertBefore(Jimple.v().newAssignStmt(containerLocal2,
-                            Jimple.v().newVirtualInvokeExpr(containerLocal,
-                                PtolemyUtilities.getContainerMethod)),
-                        _insertPoint);
+                                                Jimple.v().newVirtualInvokeExpr(containerLocal,
+                                                        PtolemyUtilities.getContainerMethod)),
+                            _insertPoint);
                     container = (NamedObj) container.getContainer();
                     containerLocal = containerLocal2;
                 }
 
                 _units.insertBefore(Jimple.v().newAssignStmt(attributeLocal,
-                        Jimple.v().newVirtualInvokeExpr(containerLocal,
-                            PtolemyUtilities.getAttributeMethod,
-                            StringConstant.v(deepName))), _insertPoint);
+                                            Jimple.v().newVirtualInvokeExpr(containerLocal,
+                                                    PtolemyUtilities.getAttributeMethod,
+                                                    StringConstant.v(deepName))), _insertPoint);
                 _units.insertBefore(Jimple.v().newAssignStmt(attributeLocal,
-                        Jimple.v().newCastExpr(attributeLocal,
-                            RefType.v(PtolemyUtilities.variableClass))),
-                    _insertPoint);
+                                            Jimple.v().newCastExpr(attributeLocal,
+                                                    RefType.v(PtolemyUtilities.variableClass))),
+                        _insertPoint);
                 _units.insertBefore(Jimple.v().newAssignStmt(tokenLocal,
-                        Jimple.v().newVirtualInvokeExpr(attributeLocal,
-                            PtolemyUtilities.variableGetTokenMethod)),
-                    _insertPoint);
+                                            Jimple.v().newVirtualInvokeExpr(attributeLocal,
+                                                    PtolemyUtilities.variableGetTokenMethod)),
+                        _insertPoint);
 
                 return tokenLocal;
             } else {
                 throw new IllegalActionException("The ID " + name
-                    + " is undefined.");
+                        + " is undefined.");
             }
         }
 
         public ptolemy.data.type.Type getType(String name)
-            throws IllegalActionException {
+                throws IllegalActionException {
             if (name.equals("time")) {
                 return BaseType.DOUBLE;
             } else if (name.equals("iteration")) {
@@ -292,7 +292,7 @@ public class DataUtilities {
         }
 
         public InequalityTerm getTypeTerm(String name)
-            throws IllegalActionException {
+                throws IllegalActionException {
             if (name.equals("time")) {
                 return new TypeConstant(BaseType.DOUBLE);
             } else if (name.equals("iteration")) {
@@ -301,7 +301,7 @@ public class DataUtilities {
 
             if (_nameToType.containsKey(name)) {
                 return new TypeConstant((ptolemy.data.type.Type) _nameToType
-                                .get(name));
+                        .get(name));
             }
 
             Variable result = getScopedVariable(null, _entity, name);

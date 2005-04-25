@@ -66,7 +66,7 @@ abstract public class GRTransform2D extends GRActor2D {
      *   actor with this name.
      */
     public GRTransform2D(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         sceneGraphIn = new TypedIOPort(this, "sceneGraphIn");
         sceneGraphIn.setInput(true);
@@ -160,7 +160,7 @@ abstract public class GRTransform2D extends GRActor2D {
      *  parameters can't be obtained.
      */
     abstract protected void _applyInitialTransform(Figure figure)
-        throws IllegalActionException;
+            throws IllegalActionException;
 
     /** Consume input tokens, and transform the given figure according
      * to the current state of the transform.  This method is invoked
@@ -170,7 +170,7 @@ abstract public class GRTransform2D extends GRActor2D {
      *  parameters can't be obtained.
      */
     abstract protected void _applyTransform(Figure figure)
-        throws IllegalActionException;
+            throws IllegalActionException;
 
     private CompositeFigure _figure;
 }

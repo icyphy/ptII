@@ -96,7 +96,7 @@ public class AudioReader extends Source {
      *   actor with this name.
      */
     public AudioReader(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         fileOrURL = new FileParameter(this, "fileOrURL");
@@ -104,7 +104,7 @@ public class AudioReader extends Source {
         // We use voice.wav so that we can include the voice.wav file
         // in the jar file for use under Web Start.
         fileOrURL.setExpression(
-            "$CLASSPATH/ptolemy/actor/lib/javasound/voice.wav");
+                "$CLASSPATH/ptolemy/actor/lib/javasound/voice.wav");
 
         // Set the type of the output port.
         output.setMultiport(true);
@@ -133,16 +133,16 @@ public class AudioReader extends Source {
      *   opened file cannot be closed.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == fileOrURL) {
             // NOTE: We do not want to close the file if the file
             // has not in fact changed.  We check this by just comparing
             // name, which is not perfect...
             String newFileOrURL = ((StringToken) fileOrURL.getToken())
-                            .stringValue();
+                .stringValue();
 
             if ((_previousFileOrURL != null)
-                            && !newFileOrURL.equals(_previousFileOrURL)) {
+                    && !newFileOrURL.equals(_previousFileOrURL)) {
                 _previousFileOrURL = newFileOrURL;
                 _openReader();
             }
@@ -210,7 +210,7 @@ public class AudioReader extends Source {
                 _audioIn = _soundReader.getSamples();
             } catch (Exception ex) {
                 throw new IllegalActionException(this, ex,
-                    "Unable to get samples from the file.");
+                        "Unable to get samples from the file.");
             }
 
             _sampleIndex = 0;
@@ -288,9 +288,9 @@ public class AudioReader extends Source {
                         getSamplesArraySize);
             } catch (IOException ex) {
                 String newFileOrURL = ((StringToken) fileOrURL.getToken())
-                                .stringValue();
+                    .stringValue();
                 throw new IllegalActionException(this, ex,
-                    "Cannot open fileOrURL '" + newFileOrURL + "'.");
+                        "Cannot open fileOrURL '" + newFileOrURL + "'.");
             }
 
             // Get the number of audio channels.
@@ -306,7 +306,7 @@ public class AudioReader extends Source {
                 _audioIn = _soundReader.getSamples();
             } catch (Exception ex) {
                 throw new IllegalActionException(this, ex,
-                    "Unable to get samples from the file.");
+                        "Unable to get samples from the file.");
             }
 
             _sampleIndex = 0;

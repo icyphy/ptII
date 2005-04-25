@@ -159,17 +159,17 @@ public class ConverterRangeModel implements BoundedRangeModel {
     }
 
     public void setRangeProperties(int newValue, int newExtent, int newMin,
-        int newMax, boolean newAdjusting) {
+            int newMax, boolean newAdjusting) {
         System.out.println("In ConverterRangeModel setRangeProperties");
         setRangeProperties((double) newValue, newExtent, newMin, newMax,
-            newAdjusting);
+                newAdjusting);
     }
 
     public void setRangeProperties(double newValue, int unusedExtent,
-        int unusedMin, int newMax, boolean newAdjusting) {
+            int unusedMin, int newMax, boolean newAdjusting) {
         if (DEBUG) {
             System.out.println("setRangeProperties(): " + "newValue = "
-                + newValue + "; newMax = " + newMax);
+                    + newValue + "; newMax = " + newMax);
         }
 
         if (newMax <= minimum) {

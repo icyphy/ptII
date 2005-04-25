@@ -67,7 +67,7 @@ public class RectangleAttribute extends FilledShapeAttribute {
      *   an attribute already in the container.
      */
     public RectangleAttribute(NamedObj container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         rounding = new Parameter(this, "rounding");
@@ -93,15 +93,15 @@ public class RectangleAttribute extends FilledShapeAttribute {
      *   to this container (should not be thrown).
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == rounding) {
             // Make sure that the new rounding value is valid.
             double roundingValue = ((DoubleToken) rounding.getToken())
-                            .doubleValue();
+                .doubleValue();
 
             if (roundingValue < 0.0) {
                 throw new IllegalActionException(this,
-                    "Invalid rounding value. Required to be non-negative.");
+                        "Invalid rounding value. Required to be non-negative.");
             }
 
             if (roundingValue != _roundingValue) {
@@ -142,7 +142,7 @@ public class RectangleAttribute extends FilledShapeAttribute {
             return new Rectangle2D.Double(x, y, width, height);
         } else {
             return new RoundRectangle2D.Double(x, y, width, height,
-                roundingValue, roundingValue);
+                    roundingValue, roundingValue);
         }
     }
 

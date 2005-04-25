@@ -86,7 +86,7 @@ public class ArrayPlotter extends Plotter implements SequenceActor {
      *   actor with this name.
      */
     public ArrayPlotter(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // Create the input port and make it a multiport.
@@ -136,7 +136,7 @@ public class ArrayPlotter extends Plotter implements SequenceActor {
      *   attribute cannot be parsed or cannot be evaluated.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == xInit) {
             _xInit = ((DoubleToken) xInit.getToken()).doubleValue();
         } else {
@@ -192,9 +192,9 @@ public class ArrayPlotter extends Plotter implements SequenceActor {
 
                     for (int j = 0; j < currentArray.length; j++) {
                         double currentValue = ((DoubleToken) currentArray[j])
-                                        .doubleValue();
+                            .doubleValue();
                         ((Plot) plot).addPoint(i + _offset, xValue,
-                            currentValue, true);
+                                currentValue, true);
                         xValue += _xUnit;
                     }
                 }
@@ -228,9 +228,9 @@ public class ArrayPlotter extends Plotter implements SequenceActor {
 
                     for (int j = 0; j < currentArray.length; j++) {
                         double currentValue = ((DoubleToken) currentArray[j])
-                                        .doubleValue();
+                            .doubleValue();
                         ((Plot) plot).addPoint(i + _offset, xValue,
-                            currentValue, true);
+                                currentValue, true);
                         xValue += _xUnit;
                     }
                 }

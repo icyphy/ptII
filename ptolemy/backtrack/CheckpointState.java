@@ -67,12 +67,12 @@ public class CheckpointState {
     }
 
     /** Get the current timestamp.
-    *
-    *  @return The current timestamp.
-    */
-   public long getTimestamp() {
-       return _currentTimestamp;
-   }
+     *
+     *  @return The current timestamp.
+     */
+    public long getTimestamp() {
+        return _currentTimestamp;
+    }
 
     /** The current timestamp. It is static, so different checkpoint states use
      *  different timestamps, and the timestamps are always increasing in the

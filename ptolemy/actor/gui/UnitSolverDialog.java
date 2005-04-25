@@ -89,7 +89,7 @@ import javax.swing.event.ListSelectionListener;
    @Pt.AcceptedRating Red (rowland)
 */
 public class UnitSolverDialog extends PtolemyDialog implements ActionListener,
-    ListSelectionListener, SelectionListener {
+                                                               ListSelectionListener, SelectionListener {
     /**
      * @param dialogTableau The DialogTableau.
      * @param owner The object that, per the user, appears to be generating the
@@ -98,9 +98,9 @@ public class UnitSolverDialog extends PtolemyDialog implements ActionListener,
      * @param configuration The configuration to use to open the help screen.
      */
     public UnitSolverDialog(DialogTableau dialogTableau, Frame owner,
-        Entity target, Configuration configuration) {
+            Entity target, Configuration configuration) {
         super("Solve units for " + target.getName(), dialogTableau, owner,
-            target, configuration);
+                target, configuration);
 
         SelectionRenderer tempSelectionRenderer = null;
         _tableau = ((TableauFrame) owner).getTableau();
@@ -116,7 +116,7 @@ public class UnitSolverDialog extends PtolemyDialog implements ActionListener,
         _selectionModel = _controller.getSelectionModel();
 
         Interactor interactor = _controller.getEdgeController(new Object())
-                                                       .getEdgeInteractor();
+            .getEdgeInteractor();
         _graphModel = (AbstractBasicGraphModel) _controller.getGraphModel();
         _selectionInteractor = (SelectionInteractor) interactor;
         _defaultSelectionRenderer = _selectionInteractor.getSelectionRenderer();
@@ -143,10 +143,10 @@ public class UnitSolverDialog extends PtolemyDialog implements ActionListener,
 
         JPanel fullSolverPanel = new JPanel();
         fullSolverPanel.setLayout(new BoxLayout(fullSolverPanel,
-                BoxLayout.Y_AXIS));
+                                          BoxLayout.Y_AXIS));
         fullSolverPanel.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createTitledBorder("Full Solution"),
-                BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+                                          BorderFactory.createTitledBorder("Full Solution"),
+                                          BorderFactory.createEmptyBorder(5, 5, 5, 5)));
         _runFullSolverButton.addActionListener(this);
         fullSolverPanel.add(_runFullSolverButton);
         _fullSolutionResult.setOpaque(true);
@@ -155,10 +155,10 @@ public class UnitSolverDialog extends PtolemyDialog implements ActionListener,
 
         JPanel componentsPanel = new JPanel();
         componentsPanel.setLayout(new BoxLayout(componentsPanel,
-                BoxLayout.Y_AXIS));
+                                          BoxLayout.Y_AXIS));
         componentsPanel.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createTitledBorder("Components"),
-                BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+                                          BorderFactory.createTitledBorder("Components"),
+                                          BorderFactory.createEmptyBorder(5, 5, 5, 5)));
         _setToSelectedButton.setEnabled(false);
         componentsPanel.add(_setToSelectedButton);
         _setToSelectedButton.addActionListener(this);
@@ -172,8 +172,8 @@ public class UnitSolverDialog extends PtolemyDialog implements ActionListener,
 
         JPanel minimalSpanPanel = new JPanel(new BorderLayout());
         minimalSpanPanel.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createTitledBorder("Minimal Spanning Solutions"),
-                BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+                                           BorderFactory.createTitledBorder("Minimal Spanning Solutions"),
+                                           BorderFactory.createEmptyBorder(5, 5, 5, 5)));
         minimalSpanPanel.add(_runMinimalSpanSolverButton, BorderLayout.NORTH);
         _runMinimalSpanSolverButton.addActionListener(this);
         _solutionsListModel = new SolutionListModel();
@@ -262,7 +262,7 @@ public class UnitSolverDialog extends PtolemyDialog implements ActionListener,
 
                 if (portDeletes != null) {
                     moml.append("<port name=\"" + port.getName() + "\">"
-                        + portDeletes + "</port>");
+                            + portDeletes + "</port>");
                 }
             }
 
@@ -277,7 +277,7 @@ public class UnitSolverDialog extends PtolemyDialog implements ActionListener,
 
             if (relationDeletes != null) {
                 moml.append("<relation name=\"" + relation.getName() + "\">"
-                    + relationDeletes + "\"/></relation>");
+                        + relationDeletes + "\"/></relation>");
             }
         }
 
@@ -425,7 +425,7 @@ public class UnitSolverDialog extends PtolemyDialog implements ActionListener,
                     NamedObj actual = (NamedObj) _graphModel.getSemanticObject(userObject);
 
                     if ((actual instanceof Relation)
-                                    && (!relations.contains(actual))) {
+                            && (!relations.contains(actual))) {
                         relations.add(actual);
                     }
                 }

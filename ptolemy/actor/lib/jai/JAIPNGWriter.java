@@ -77,7 +77,7 @@ public class JAIPNGWriter extends JAIWriter {
      *   actor with this name.
      */
     public JAIPNGWriter(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         adam7Interlacing = new Parameter(this, "adam7Interlacing");
@@ -149,12 +149,12 @@ public class JAIPNGWriter extends JAIWriter {
      *  @exception IllegalActionException If a contained method throws it.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         // We use attributeChanged here to avoid code duplication
         // in postfire().
         if (attribute == adam7Interlacing) {
             _adam7Interlacing = ((BooleanToken) adam7Interlacing.getToken())
-                            .booleanValue();
+                .booleanValue();
         } else if (attribute == setGamma) {
             _setGamma = ((BooleanToken) setGamma.getToken()).booleanValue();
         } else if (attribute == gamma) {
@@ -163,7 +163,7 @@ public class JAIPNGWriter extends JAIWriter {
             _bitDepth = ((IntToken) bitDepth.getToken()).intValue();
         } else if (attribute == setBackground) {
             _setBackground = ((BooleanToken) setBackground.getToken())
-                            .booleanValue();
+                .booleanValue();
         } else if (attribute == background) {
             Token[] data = ((ArrayToken) background.getToken()).arrayValue();
 
@@ -210,7 +210,7 @@ public class JAIPNGWriter extends JAIWriter {
                 if (_setBackground) {
                     if (_valueArray.length < 1) {
                         throw new IllegalActionException("Need "
-                            + "one value to set Transparency");
+                                + "one value to set Transparency");
                     } else {
                         parametersGray.setBackgroundGray(_valueArray[0]);
                     }
@@ -229,7 +229,7 @@ public class JAIPNGWriter extends JAIWriter {
                 if (_setBackground) {
                     if (_valueArray.length < 3) {
                         throw new IllegalActionException("Need "
-                            + "three values to set transparency");
+                                + "three values to set transparency");
                     } else {
                         int[] RGBvalues = new int[3];
 
@@ -270,9 +270,9 @@ public class JAIPNGWriter extends JAIWriter {
     private double _gamma;
     private boolean _setBackground;
     private IntToken[] _initialArray = {
-            new IntToken(0),
-            new IntToken(0),
-            new IntToken(0)
-        };
+        new IntToken(0),
+        new IntToken(0),
+        new IntToken(0)
+    };
     private int[] _valueArray;
 }

@@ -61,7 +61,7 @@ public class RequiredFileGenerator {
      *  @exception IOException If  file I/O errors occur.
      */
     public static void generateTransitiveClosureOf(String classPath,
-        String className) throws IOException {
+            String className) throws IOException {
         String compileMode = Options.v().get("compileMode");
         boolean verbose = Options.v().getBoolean("verbose");
 
@@ -108,7 +108,7 @@ public class RequiredFileGenerator {
             SootClass nextClass = (SootClass) i.next();
 
             String name = MakeFileGenerator.classNameToMakeFileName(nextClass
-                                .getName());
+                    .getName());
 
             // Go over each name. If it is not a system class, add it to
             // "sources" else add it to libSources.
@@ -148,7 +148,7 @@ public class RequiredFileGenerator {
 
         default:
             throw new RuntimeException("Level " + _pruneLevel
-                + " pruning not supported!");
+                    + " pruning not supported!");
         }
     }
 
@@ -258,7 +258,7 @@ public class RequiredFileGenerator {
             if (verbose) {
                 if (FileHandler.exists(fileName + ".c")) {
                     System.out.println("\texists: overwriting " + fileName
-                        + ".c");
+                            + ".c");
                 } else {
                     System.out.println("\tcreating: " + fileName + ".c");
                 }
@@ -277,7 +277,7 @@ public class RequiredFileGenerator {
      *  @param verbose Whether routine messages should be generated.
      */
     private static void _generateHeaders(String classPath, String className)
-        throws IOException {
+            throws IOException {
         // Initialize code generation.
         Scene.v().setSootClassPath(classPath);
 
@@ -305,13 +305,13 @@ public class RequiredFileGenerator {
             }
 
             File dummyFile = new File(fileName.substring(0,
-                        fileName.lastIndexOf('/')));
+                                              fileName.lastIndexOf('/')));
             dummyFile.mkdirs();
         }
 
         // Generate the stub header file.
         if (FileHandler.exists(fileName
-                            + StubFileGenerator.stubFileNameSuffix())) {
+                    + StubFileGenerator.stubFileNameSuffix())) {
             code = sGenerator.generate(sootClass);
 
             String name = fileName + StubFileGenerator.stubFileNameSuffix();
@@ -320,7 +320,7 @@ public class RequiredFileGenerator {
 
             if (verbose) {
                 System.out.println("\texists: overwriting " + fileName
-                    + StubFileGenerator.stubFileNameSuffix());
+                        + StubFileGenerator.stubFileNameSuffix());
             }
         } else {
             code = sGenerator.generate(sootClass);

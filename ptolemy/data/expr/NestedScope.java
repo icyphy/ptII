@@ -90,7 +90,7 @@ public class NestedScope implements ParserScope {
      *  exists with the given name, but cannot be evaluated.
      */
     public ptolemy.data.type.Type getType(String name)
-        throws IllegalActionException {
+            throws IllegalActionException {
         Iterator scopes = _scopeList.iterator();
 
         while (scopes.hasNext()) {
@@ -114,7 +114,7 @@ public class NestedScope implements ParserScope {
      *  exists with the given name, but cannot be evaluated.
      */
     public ptolemy.graph.InequalityTerm getTypeTerm(String name)
-        throws IllegalActionException {
+            throws IllegalActionException {
         Iterator scopes = _scopeList.iterator();
 
         while (scopes.hasNext()) {

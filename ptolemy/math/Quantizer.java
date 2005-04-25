@@ -128,7 +128,7 @@ public class Quantizer {
      *  @return A new fixed-point representation of the value.
      */
     public static FixPoint round(FixPoint value, Precision newPrecision,
-        Overflow mode) {
+            Overflow mode) {
         Quantization q = new FixPointQuantization(newPrecision, mode,
                 Rounding.NEAREST);
         return value.quantize(q);
@@ -190,7 +190,7 @@ public class Quantizer {
      *  @return A new fixed-point representation of the value.
      */
     public static FixPoint roundDown(FixPoint value, Precision newPrecision,
-        Overflow mode) {
+            Overflow mode) {
         Quantization q = new FixPointQuantization(newPrecision, mode,
                 Rounding.DOWN);
         return value.quantize(q);
@@ -231,7 +231,7 @@ public class Quantizer {
      *  @return A fixed-point representation of the value.
      */
     public static FixPoint roundNearestEven(BigDecimal value,
-        Precision precision) {
+            Precision precision) {
         Quantization q = new FixPointQuantization(precision, Overflow.SATURATE,
                 Rounding.HALF_EVEN);
         return new FixPoint(value, q);
@@ -256,7 +256,7 @@ public class Quantizer {
      *  @return A new fixed-point representation of the value.
      */
     public static FixPoint roundNearestEven(FixPoint value,
-        Precision newPrecision, Overflow mode) {
+            Precision newPrecision, Overflow mode) {
         Quantization q = new FixPointQuantization(newPrecision, mode,
                 Rounding.HALF_EVEN);
         return value.quantize(q);
@@ -321,7 +321,7 @@ public class Quantizer {
      *  @return A new fixed-point representation of the value.
      */
     public static FixPoint roundToZero(FixPoint value, Precision newPrecision,
-        Overflow mode) {
+            Overflow mode) {
         Quantization q = new FixPointQuantization(newPrecision, mode,
                 Rounding.DOWN);
         return value.quantize(q);
@@ -383,7 +383,7 @@ public class Quantizer {
      *  @return A new fixed-point representation of the value.
      */
     public static FixPoint roundUp(FixPoint value, Precision newPrecision,
-        Overflow mode) {
+            Overflow mode) {
         Quantization q = new FixPointQuantization(newPrecision, mode,
                 Rounding.UP);
         return value.quantize(q);
@@ -462,7 +462,7 @@ public class Quantizer {
      *  @deprecated Use roundToZero instead.
      */
     public static FixPoint truncate(FixPoint value, Precision newPrecision,
-        Overflow mode) {
+            Overflow mode) {
         Quantization q = new FixPointQuantization(newPrecision, mode,
                 Rounding.TRUNCATE);
         return value.quantize(q);

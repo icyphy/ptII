@@ -101,8 +101,8 @@ import ptolemy.backtrack.util.FieldRecord;
    @Pt.AcceptedRating Red (tfeng)
 */
 public class AssignmentTransformer extends AbstractTransformer
-        implements AliasHandler, AssignmentHandler, ClassHandler,
-        CrossAnalysisHandler, MethodDeclarationHandler {
+    implements AliasHandler, AssignmentHandler, ClassHandler,
+               CrossAnalysisHandler, MethodDeclarationHandler {
 
     ///////////////////////////////////////////////////////////////////
     ////                       public methods                      ////
@@ -352,7 +352,7 @@ public class AssignmentTransformer extends AbstractTransformer
         // Check if the method is duplicated (possibly because the source
         // program is refactored twice).
         if (_isMethodDuplicated(currentClass, methodName, fieldType,
-                indices, isStatic, loader, true))
+                    indices, isStatic, loader, true))
             throw new ASTDuplicatedMethodException(currentClass.getName(),
                     methodName);
 
@@ -546,8 +546,8 @@ public class AssignmentTransformer extends AbstractTransformer
             throw new ASTClassNotFoundException(fieldType.getName());
         }
         if (hasMethod(c, _getSetCheckpointMethodName(false),
-                        new Class[]{Checkpoint.class}) ||
-                 state.getCrossAnalyzedTypes().contains(c.getName()))
+                    new Class[]{Checkpoint.class}) ||
+                state.getCrossAnalyzedTypes().contains(c.getName()))
             block.statements().add(_createSetCheckpointInvocation(ast));
         else
             addToLists(_fixSetCheckpoint, c.getName(), block);
@@ -604,7 +604,7 @@ public class AssignmentTransformer extends AbstractTransformer
                     Assignment newAssignment =
                         (Assignment)ASTNode.copySubtree(ast, assignment);
                     newAssignment.setOperator(
-                        Assignment.Operator.toOperator(operator));
+                            Assignment.Operator.toOperator(operator));
                     returnStatement.setExpression(newAssignment);
                 }
                 switchStatement.statements().add(returnStatement);
@@ -640,7 +640,7 @@ public class AssignmentTransformer extends AbstractTransformer
         // Check if the method is duplicated (possibly because the source
         // program is refactored twice).
         if (_isMethodDuplicated(currentClass, methodName, fieldType,
-                indices, isStatic, loader, false))
+                    indices, isStatic, loader, false))
             throw new ASTDuplicatedMethodException(currentClass.getName(),
                     methodName);
 
@@ -658,7 +658,7 @@ public class AssignmentTransformer extends AbstractTransformer
         MethodDeclaration method = ast.newMethodDeclaration();
         method.setName(ast.newSimpleName(methodName));
         method.setReturnType(createType(ast,
-                getClassName(fieldTypeName, state, root)));
+                                     getClassName(fieldTypeName, state, root)));
 
         // If the field is static, add a checkpoint object argument.
         if (isStatic) {
@@ -759,7 +759,7 @@ public class AssignmentTransformer extends AbstractTransformer
         Class parent = currentClass.getSuperclass();
         if (parent != null &&
                 (state.getCrossAnalyzedTypes().contains(parent.getName()) ||
-                 isFieldDuplicated(parent, CHECKPOINT_NAME)))
+                        isFieldDuplicated(parent, CHECKPOINT_NAME)))
             return null;
 
         VariableDeclarationFragment fragment =
@@ -798,7 +798,7 @@ public class AssignmentTransformer extends AbstractTransformer
         Class parent = currentClass.getSuperclass();
         if (parent != null &&
                 (state.getCrossAnalyzedTypes().contains(parent.getName()) ||
-                 isFieldDuplicated(parent, CHECKPOINT_RECORD_NAME)))
+                        isFieldDuplicated(parent, CHECKPOINT_RECORD_NAME)))
             return null;
 
         VariableDeclarationFragment fragment =
@@ -842,7 +842,7 @@ public class AssignmentTransformer extends AbstractTransformer
         // Check if the method is duplicated (possibly because the source
         // program is refactored twice).
         if (hasMethod(currentClass, methodName,
-                new Class[]{int.class}, true))
+                    new Class[]{int.class}, true))
             throw new ASTDuplicatedMethodException(currentClass.getName(),
                     methodName);
 
@@ -869,7 +869,7 @@ public class AssignmentTransformer extends AbstractTransformer
             MethodInvocation commitFields = ast.newMethodInvocation();
             commitFields.setExpression(
                     createName(ast, getClassName(
-                            FieldRecord.class.getName(), state, root)));
+                                       FieldRecord.class.getName(), state, root)));
             commitFields.setName(ast.newSimpleName("commit"));
             commitFields.arguments().add(ast.newSimpleName(RECORDS_NAME));
             commitFields.arguments().add(ast.newSimpleName("timestamp"));
@@ -887,8 +887,8 @@ public class AssignmentTransformer extends AbstractTransformer
             superRestore.arguments().add(ast.newSimpleName("timestamp"));
             if (parent != null &&
                     (state.getCrossAnalyzedTypes().contains(parent.getName()) ||
-                     hasMethod(parent, methodName,
-                             new Class[]{int.class, boolean.class})))
+                            hasMethod(parent, methodName,
+                                    new Class[]{int.class, boolean.class})))
                 body.statements().add(ast.newExpressionStatement(superRestore));
             else {
                 // Commit the checkpoint record.
@@ -981,7 +981,7 @@ public class AssignmentTransformer extends AbstractTransformer
         if (!isAnonymous && parent != null &&
                 (state.getCrossAnalyzedTypes().
                         contains(parent.getName()) ||
-                hasMethod(parent, methodName, new Class[]{})))
+                        hasMethod(parent, methodName, new Class[]{})))
             return null;
 
         MethodDeclaration method = ast.newMethodDeclaration();
@@ -1187,7 +1187,7 @@ public class AssignmentTransformer extends AbstractTransformer
         // Check if the method is duplicated (possibly because the source
         // program is refactored twice).
         if (hasMethod(currentClass, methodName,
-                new Class[]{int.class, boolean.class}, true))
+                    new Class[]{int.class, boolean.class}, true))
             throw new ASTDuplicatedMethodException(currentClass.getName(),
                     methodName);
 
@@ -1247,10 +1247,10 @@ public class AssignmentTransformer extends AbstractTransformer
                 if (isFinal) {
                     if (_getAccessedField(currentClass.getName(), fieldName)
                             != null ||
-                        !Type.isPrimitive(
-                                Type.getElementType(fieldType.getName())))
-                    body.statements().add(
-                            ast.newExpressionStatement(restoreMethodCall));
+                            !Type.isPrimitive(
+                                    Type.getElementType(fieldType.getName())))
+                        body.statements().add(
+                                ast.newExpressionStatement(restoreMethodCall));
                 } else {
                     Expression rightHandSide;
                     if (fieldType.isPrimitive())
@@ -1282,8 +1282,8 @@ public class AssignmentTransformer extends AbstractTransformer
                 ast.newExpressionStatement(superRestore);
             if (parent != null &&
                     (state.getCrossAnalyzedTypes().contains(parent.getName()) ||
-                     hasMethod(parent, methodName,
-                             new Class[]{int.class, boolean.class})))
+                            hasMethod(parent, methodName,
+                                    new Class[]{int.class, boolean.class})))
                 body.statements().add(superRestoreStatement);
             else {
                 // Restore the previous checkpoint, if necessary.
@@ -1424,14 +1424,14 @@ public class AssignmentTransformer extends AbstractTransformer
         // Check if the method is duplicated (possibly because the source
         // program is refactored twice).
         if (hasMethod(currentClass, methodName,
-                new Class[]{Checkpoint.class}, true))
+                    new Class[]{Checkpoint.class}, true))
             throw new ASTDuplicatedMethodException(currentClass.getName(),
                     methodName);
 
         if (!isAnonymous && parent != null &&
                 (state.getCrossAnalyzedTypes().
                         contains(parent.getName()) ||
-                hasMethod(parent, methodName, new Class[]{Checkpoint.class})))
+                        hasMethod(parent, methodName, new Class[]{Checkpoint.class})))
             return null;
 
         MethodDeclaration method = ast.newMethodDeclaration();
@@ -1773,7 +1773,7 @@ public class AssignmentTransformer extends AbstractTransformer
         if (node instanceof Assignment)
             isSpecial =
                 ((Assignment)node).getOperator() !=
-                    Assignment.Operator.ASSIGN;
+                Assignment.Operator.ASSIGN;
         else
             isSpecial = true;
 
@@ -1936,9 +1936,9 @@ public class AssignmentTransformer extends AbstractTransformer
         // Record the field access (a corresponding method will be generated
         // later.
         Hashtable table = (node instanceof Assignment &&
-                    ((Assignment)node).getOperator() ==
-                        Assignment.Operator.ASSIGN) ?
-                _accessedFields : _specialAccessedFields;
+                ((Assignment)node).getOperator() ==
+                Assignment.Operator.ASSIGN) ?
+            _accessedFields : _specialAccessedFields;
         _recordField(table, owner.getName(), name.getIdentifier(),
                 indices.size());
     }
@@ -2010,14 +2010,14 @@ public class AssignmentTransformer extends AbstractTransformer
                                 // number of indices.
                                 if (tables[i] == _backupFields)
                                     newMethods.add(_createBackupMethod(ast,
-                                            root, state, fieldName, type,
-                                            indices, isStatic));
+                                                           root, state, fieldName, type,
+                                                           indices, isStatic));
                                 else
                                     newMethods.add(_createAssignMethod(ast,
-                                            root, state,
-                                            fieldName, type, indices,
-                                            tables[i] == _specialAccessedFields,
-                                            isStatic));
+                                                           root, state,
+                                                           fieldName, type, indices,
+                                                           tables[i] == _specialAccessedFields,
+                                                           isStatic));
                             }
                         }
 
@@ -2036,7 +2036,7 @@ public class AssignmentTransformer extends AbstractTransformer
         }
 
         boolean isInterface = node instanceof TypeDeclaration &&
-                ((TypeDeclaration)node).isInterface();
+            ((TypeDeclaration)node).isInterface();
 
         boolean isAnonymous = node instanceof AnonymousClassDeclaration;
 
@@ -2044,8 +2044,8 @@ public class AssignmentTransformer extends AbstractTransformer
             Class[] interfaces = currentClass.getInterfaces();
             for (int i = 0; i < interfaces.length; i++)
                 if (state.getCrossAnalyzedTypes().contains(
-                        interfaces[i].getName()))
-                isAnonymous = false;
+                            interfaces[i].getName()))
+                    isAnonymous = false;
         }
 
         RehandleDeclarationRecord declarationRecord = null;
@@ -2061,8 +2061,8 @@ public class AssignmentTransformer extends AbstractTransformer
 
         // Do not handle anonymous class declarations in a static method.
         boolean ignore = !_isInStaticMethod.isEmpty() &&
-                _isInStaticMethod.peek() == Boolean.TRUE &&
-                isAnonymous;
+            _isInStaticMethod.peek() == Boolean.TRUE &&
+            isAnonymous;
 
         // Add an array of all the records.
         if (!isInterface && !ignore)
@@ -2390,33 +2390,33 @@ public class AssignmentTransformer extends AbstractTransformer
 
     static {
         _assignOperators.put("boolean", new String[]{
-                "&=", "|=", "^="
+            "&=", "|=", "^="
         });
         _assignOperators.put("byte", new String[]{
-                "+=", "-=", "*=", "/=", "&=", "|=", "^=", "%=", "<<=",
-                ">>=", ">>>=", "++", "--", "++", "--"
+            "+=", "-=", "*=", "/=", "&=", "|=", "^=", "%=", "<<=",
+            ">>=", ">>>=", "++", "--", "++", "--"
         });
         _assignOperators.put("char", new String[]{
-                "+=", "-=", "*=", "/=", "&=", "|=", "^=", "%=", "<<=",
-                ">>=", ">>>=", "++", "--", "++", "--"
+            "+=", "-=", "*=", "/=", "&=", "|=", "^=", "%=", "<<=",
+            ">>=", ">>>=", "++", "--", "++", "--"
         });
         _assignOperators.put("double", new String[]{
-                "+=", "-=", "*=", "/=", "%=", "++", "--", "++", "--"
+            "+=", "-=", "*=", "/=", "%=", "++", "--", "++", "--"
         });
         _assignOperators.put("float", new String[]{
-                "+=", "-=", "*=", "/=", "%=", "++", "--", "++", "--"
+            "+=", "-=", "*=", "/=", "%=", "++", "--", "++", "--"
         });
         _assignOperators.put("int", new String[]{
-                "+=", "-=", "*=", "/=", "&=", "|=", "^=", "%=", "<<=",
-                ">>=", ">>>=", "++", "--", "++", "--"
+            "+=", "-=", "*=", "/=", "&=", "|=", "^=", "%=", "<<=",
+            ">>=", ">>>=", "++", "--", "++", "--"
         });
         _assignOperators.put("long", new String[]{
-                "+=", "-=", "*=", "/=", "&=", "|=", "^=", "%=", "<<=",
-                ">>=", ">>>=", "++", "--", "++", "--"
+            "+=", "-=", "*=", "/=", "&=", "|=", "^=", "%=", "<<=",
+            ">>=", ">>>=", "++", "--", "++", "--"
         });
         _assignOperators.put("short", new String[]{
-                "+=", "-=", "*=", "/=", "&=", "|=", "^=", "%=", "<<=",
-                ">>=", ">>>=", "++", "--", "++", "--"
+            "+=", "-=", "*=", "/=", "&=", "|=", "^=", "%=", "<<=",
+            ">>=", ">>>=", "++", "--", "++", "--"
         });
 
         _rightHandTypes.put("boolean", PrimitiveType.BOOLEAN);

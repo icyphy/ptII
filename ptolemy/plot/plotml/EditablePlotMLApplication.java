@@ -95,7 +95,7 @@ public class EditablePlotMLApplication extends PlotMLApplication {
      *  @exception Exception If command line arguments have problems.
      */
     public EditablePlotMLApplication(EditablePlot plot, String[] args)
-        throws Exception {
+            throws Exception {
         super(plot, args);
 
         // The default is that no set is editable.
@@ -122,8 +122,8 @@ public class EditablePlotMLApplication extends PlotMLApplication {
         // http://developer.java.sun.com/developer/bugParade/bugs/4736093.html
         // suggests this, which does not seem to help
         getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke
-                        .getKeyStroke(KeyEvent.VK_ALT, Event.ALT_MASK, false),
-            "repaint");
+                .getKeyStroke(KeyEvent.VK_ALT, Event.ALT_MASK, false),
+                "repaint");
 
         _editMenu.add(select);
 
@@ -150,7 +150,7 @@ public class EditablePlotMLApplication extends PlotMLApplication {
                     public void run() {
                         try {
                             new EditablePlotMLApplication(new EditablePlot(),
-                                args);
+                                    args);
                         } catch (Exception ex) {
                             System.err.println(ex.toString());
                             ex.printStackTrace();
@@ -187,27 +187,27 @@ public class EditablePlotMLApplication extends PlotMLApplication {
      */
     protected void _about() {
         JOptionPane.showMessageDialog(this,
-            "EditablePlotMLApplication class\n" + "By: Edward A. Lee "
-            + "and Christopher Hylands\n" + "Version " + PlotBox.PTPLOT_RELEASE
-            + ", Build: $Id$\n\n"
-            + "For more information, see\n"
-            + "http://ptolemy.eecs.berkeley.edu/java/ptplot\n\n"
-            + "Copyright (c) 1997-2005, "
-            + "The Regents of the University of California.",
-            "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
+                "EditablePlotMLApplication class\n" + "By: Edward A. Lee "
+                + "and Christopher Hylands\n" + "Version " + PlotBox.PTPLOT_RELEASE
+                + ", Build: $Id$\n\n"
+                + "For more information, see\n"
+                + "http://ptolemy.eecs.berkeley.edu/java/ptplot\n\n"
+                + "Copyright (c) 1997-2005, "
+                + "The Regents of the University of California.",
+                "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
     }
 
     /** Display more detailed information than given by _about().
      */
     protected void _help() {
         JOptionPane.showMessageDialog(this,
-            "EditablePlotMLApplication is a standalone plot "
-            + " application.\n"
-            + "  File formats understood: PlotML and Ptplot ASCII.\n"
-            + "  Left mouse button: Zooming.\n"
-            + "  Right mouse button: Editing data (use edit menu to select "
-            + "a dataset).\n\n" + _usage(), "About Ptolemy Plot",
-            JOptionPane.INFORMATION_MESSAGE);
+                "EditablePlotMLApplication is a standalone plot "
+                + " application.\n"
+                + "  File formats understood: PlotML and Ptplot ASCII.\n"
+                + "  Left mouse button: Zooming.\n"
+                + "  Right mouse button: Editing data (use edit menu to select "
+                + "a dataset).\n\n" + _usage(), "About Ptolemy Plot",
+                JOptionPane.INFORMATION_MESSAGE);
     }
 
     /** Open a dialog to select a dataset to edit.
@@ -228,8 +228,8 @@ public class EditablePlotMLApplication extends PlotMLApplication {
         choices[0] = "none";
         query.setTextWidth(20);
         query.addChoice("choice",
-            "Choose a data set, then drag the right mouse button", choices,
-            choices[0]);
+                "Choose a data set, then drag the right mouse button", choices,
+                choices[0]);
 
         ComponentDialog dialog = new ComponentDialog(this, "Select dataset",
                 query);

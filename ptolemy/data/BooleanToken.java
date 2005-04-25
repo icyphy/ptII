@@ -37,20 +37,20 @@ import ptolemy.kernel.util.IllegalActionException;
 //// BooleanToken
 
 /**
-  A token that contains a boolean variable. Arithmetic on booleans is
-  that of a two-element Galois field (modulo two arithmetic). Thus,
-  add() is logical xor, multiply() is logical and, zero() is false,
-  one() is true.
-  <p>
-  In order to reduce the number of instances of this object that are created,
-  it is highly recommended that the getInstance() method be used, instead of
-  the constructor that takes a boolean argument.
+   A token that contains a boolean variable. Arithmetic on booleans is
+   that of a two-element Galois field (modulo two arithmetic). Thus,
+   add() is logical xor, multiply() is logical and, zero() is false,
+   one() is true.
+   <p>
+   In order to reduce the number of instances of this object that are created,
+   it is highly recommended that the getInstance() method be used, instead of
+   the constructor that takes a boolean argument.
 
-  @author Neil Smyth, Yuhong Xiong, Edward A. Lee, Steve Neuendorffer
-  @version $Id$
-  @since Ptolemy II 0.2
-  @Pt.ProposedRating Green (neuendor)
-  @Pt.AcceptedRating Green (wbwu)
+   @author Neil Smyth, Yuhong Xiong, Edward A. Lee, Steve Neuendorffer
+   @version $Id$
+   @since Ptolemy II 0.2
+   @Pt.ProposedRating Green (neuendor)
+   @Pt.AcceptedRating Green (wbwu)
 */
 public class BooleanToken extends AbstractConvertibleToken
     implements BitwiseOperationToken {
@@ -109,10 +109,10 @@ public class BooleanToken extends AbstractConvertibleToken
      *  @return The boolean AND.
      */
     public BitwiseOperationToken bitwiseAnd(Token rightArgument)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (!(rightArgument instanceof BooleanToken)) {
             throw new IllegalActionException(notSupportedIncomparableMessage(
-                    "bitwiseAnd", this, rightArgument));
+                                                     "bitwiseAnd", this, rightArgument));
         }
 
         return (BooleanToken) _multiply(rightArgument);
@@ -131,10 +131,10 @@ public class BooleanToken extends AbstractConvertibleToken
      *  @return The boolean OR.
      */
     public BitwiseOperationToken bitwiseOr(Token rightArgument)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (!(rightArgument instanceof BooleanToken)) {
             throw new IllegalActionException(notSupportedIncomparableMessage(
-                    "bitwiseOr", this, rightArgument));
+                                                     "bitwiseOr", this, rightArgument));
         }
 
         boolean rightValue = ((BooleanToken) rightArgument).booleanValue();
@@ -152,10 +152,10 @@ public class BooleanToken extends AbstractConvertibleToken
      *  @return The boolean XOR.
      */
     public BitwiseOperationToken bitwiseXor(Token rightArgument)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (!(rightArgument instanceof BooleanToken)) {
             throw new IllegalActionException(notSupportedIncomparableMessage(
-                    "bitwiseXor", this, rightArgument));
+                                                     "bitwiseXor", this, rightArgument));
         }
 
         return (BooleanToken) _add(rightArgument);
@@ -178,7 +178,7 @@ public class BooleanToken extends AbstractConvertibleToken
      *   a BooleanToken.
      */
     public static BooleanToken convert(Token token)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (token instanceof BooleanToken) {
             return (BooleanToken) token;
         }
@@ -187,11 +187,11 @@ public class BooleanToken extends AbstractConvertibleToken
 
         if ((compare == CPO.LOWER) || (compare == CPO.INCOMPARABLE)) {
             throw new IllegalActionException(notSupportedIncomparableConversionMessage(
-                    token, "boolean"));
+                                                     token, "boolean"));
         }
 
         throw new IllegalActionException(notSupportedConversionMessage(token,
-                "boolean"));
+                                                 "boolean"));
     }
 
     /** Return true if the argument's class is BooleanToken and it has the
@@ -346,7 +346,7 @@ public class BooleanToken extends AbstractConvertibleToken
             return this;
         } else {
             throw new IllegalActionException("BooleanToken: division "
-                + "by false-valued token (analogous to division by " + "zero).");
+                    + "by false-valued token (analogous to division by " + "zero).");
         }
     }
 
@@ -387,7 +387,7 @@ public class BooleanToken extends AbstractConvertibleToken
      */
     protected Token _modulo(Token rightArgument) throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("modulo", this,
-                rightArgument));
+                                                 rightArgument));
     }
 
     /** Return a new token whose value is the value of this token
@@ -400,16 +400,16 @@ public class BooleanToken extends AbstractConvertibleToken
      *  and the token throws it.
      */
     protected Token _multiply(Token rightArgument)
-        throws IllegalActionException {
+            throws IllegalActionException {
         return this.and((BooleanToken) rightArgument);
     }
 
     /** Subtraction is not supported in Boolean algebras.
      */
     protected Token _subtract(Token rightArgument)
-        throws IllegalActionException {
+            throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("subtract", this,
-                rightArgument));
+                                                 rightArgument));
     }
 
     ///////////////////////////////////////////////////////////////////

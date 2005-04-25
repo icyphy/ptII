@@ -157,7 +157,7 @@ public class ImageFigure extends AbstractFigure implements ImageObserver {
      *   completely loaded; true otherwise.
      */
     public boolean imageUpdate(Image image, int infoflags, int x, int y,
-        int width, int height) {
+            int width, int height) {
         // FIXME: This should probably create some default error
         // image if the infoflags argument contains ERROR or ABORT.
         if ((infoflags & (ImageObserver.HEIGHT | ImageObserver.WIDTH)) != 0) {

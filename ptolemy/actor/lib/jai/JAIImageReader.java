@@ -73,7 +73,7 @@ public class JAIImageReader extends Source {
      *   actor with this name.
      */
     public JAIImageReader(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         output.setTypeEquals(BaseType.OBJECT);
         fileOrURL = new FileParameter(this, "fileOrURL");
@@ -99,13 +99,13 @@ public class JAIImageReader extends Source {
      *  @exception IllegalActionException If the URL is null.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == fileOrURL) {
             _fileURL = fileOrURL.asURL();
 
             if (_fileURL == null) {
                 throw new IllegalActionException("No such file: "
-                    + fileOrURL.getExpression());
+                        + fileOrURL.getExpression());
             }
         } else {
             super.attributeChanged(attribute);
@@ -134,7 +134,7 @@ public class JAIImageReader extends Source {
                 seekableStream = new FileCacheSeekableStream(inputStream);
             } catch (IOException ex) {
                 throw new IllegalActionException(this, ex,
-                    "Unable to load file '" + _fileURL + "'");
+                        "Unable to load file '" + _fileURL + "'");
             }
 
             _outputtedImage = JAI.create("stream", seekableStream);
@@ -146,7 +146,7 @@ public class JAIImageReader extends Source {
                     seekableStream.close();
                 } catch (Throwable throwable2) {
                     throw new IllegalActionException(this, throwable2,
-                        "Unable to close SeekableStream for '" + _fileURL + "'");
+                            "Unable to close SeekableStream for '" + _fileURL + "'");
                 }
             }
 
@@ -155,7 +155,7 @@ public class JAIImageReader extends Source {
                     inputStream.close();
                 } catch (Throwable throwable3) {
                     throw new IllegalActionException(this, throwable3,
-                        "Unable to close InputStream for '" + _fileURL + "'");
+                            "Unable to close InputStream for '" + _fileURL + "'");
                 }
             }
         }

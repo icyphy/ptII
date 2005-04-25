@@ -59,7 +59,7 @@ public class DETimer extends TypedAtomicActor {
      *   actor with this name.
      */
     public DETimer(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         expired = new TypedIOPort(this, "expired", false, true);
         expired.setTypeEquals(BaseType.GENERAL);

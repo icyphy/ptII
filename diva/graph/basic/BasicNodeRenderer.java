@@ -86,8 +86,8 @@ public class BasicNodeRenderer implements NodeRenderer {
      */
     public BasicNodeRenderer(GraphController controller) {
         this(controller, new Rectangle2D.Double(0.0, 0.0, 40.0, 40.0),
-            new Rectangle2D.Double(0.0, 0.0, 600.0, 600.0), Color.orange,
-            Color.red, .3);
+                new Rectangle2D.Double(0.0, 0.0, 600.0, 600.0), Color.orange,
+                Color.red, .3);
     }
 
     /**
@@ -96,8 +96,8 @@ public class BasicNodeRenderer implements NodeRenderer {
      * cloneable.
      */
     public BasicNodeRenderer(GraphController controller, Shape nodeShape,
-        Shape compositeShape, Paint nodeFill, Paint compositeFill,
-        double compositeScale) {
+            Shape compositeShape, Paint nodeFill, Paint compositeFill,
+            double compositeScale) {
         _controller = controller;
         setNodeShape(nodeShape);
         setNodeFill(nodeFill);

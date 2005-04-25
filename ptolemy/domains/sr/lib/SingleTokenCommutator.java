@@ -66,7 +66,7 @@ public class SingleTokenCommutator extends Transformer implements SequenceActor 
      *  by the proposed container.
      */
     public SingleTokenCommutator(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         input.setMultiport(true);
     }

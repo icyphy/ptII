@@ -66,7 +66,7 @@ public class AtomicComponent extends ComponentEntity implements Component {
      *   an entity already in the container.
      */
     public AtomicComponent(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         setContainer(container);
         _addIcon();
@@ -98,7 +98,7 @@ public class AtomicComponent extends ComponentEntity implements Component {
      *   port with the specified name.
      */
     public Port newPort(String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         try {
             _workspace.getWriteAccess();
 
@@ -163,10 +163,10 @@ public class AtomicComponent extends ComponentEntity implements Component {
      *   name already in the entity.
      */
     protected void _addPort(Port port)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         if (!(port instanceof MethodCallPort)) {
             throw new IllegalActionException(this, port,
-                "Incompatible port class for this entity.");
+                    "Incompatible port class for this entity.");
         }
 
         super._addPort(port);
@@ -176,10 +176,10 @@ public class AtomicComponent extends ComponentEntity implements Component {
     ////                         private methods                   ////
     private void _addIcon() {
         _attachText("_iconDescription",
-            "<svg>\n" + "<rect x=\"-30\" y=\"-20\" width=\"60\" "
-            + "height=\"40\" style=\"fill:white\"/>\n"
-            + "<polygon points=\"-20,-10 20,0 -20,10\" "
-            + "style=\"fill:blue\"/>\n" + "</svg>\n");
+                "<svg>\n" + "<rect x=\"-30\" y=\"-20\" width=\"60\" "
+                + "height=\"40\" style=\"fill:white\"/>\n"
+                + "<polygon points=\"-20,-10 20,0 -20,10\" "
+                + "style=\"fill:blue\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////

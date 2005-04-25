@@ -77,7 +77,7 @@ public class TerrainProperty extends TypedAtomicActor
      *   actor with this name.
      */
     public TerrainProperty(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         channelName = new StringParameter(this, "channelName");
         channelName.setExpression("TerrainChannel");
@@ -101,10 +101,10 @@ public class TerrainProperty extends TypedAtomicActor
         //Crate the icon.
         _icon = new EditorIcon(this, "_icon");
         _terrain = new FilledShapeAttribute(_icon, "terrain") {
-                    protected Shape _newShape() {
-                        return new Polygon(_xPoints, _yPoints, _numberOfPoints);
-                    }
-                };
+                protected Shape _newShape() {
+                    return new Polygon(_xPoints, _yPoints, _numberOfPoints);
+                }
+            };
 
         // Set the color to green.
         _terrain.fillColor.setToken("{0.0, 1.0, 0.0, 1.0}");
@@ -138,7 +138,7 @@ public class TerrainProperty extends TypedAtomicActor
      *   to this container (not thrown in this base class).
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == xyPoints) {
             Token xypoints = xyPoints.getToken();
 
@@ -153,11 +153,11 @@ public class TerrainProperty extends TypedAtomicActor
 
                 for (int i = 0; i < xypointsArray.length(); i++) {
                     ArrayToken xypointArray = (ArrayToken) xypointsArray
-                                    .getElement(i);
+                        .getElement(i);
                     _xPoints[i] = ((IntToken) xypointArray.getElement(0))
-                                    .intValue();
+                        .intValue();
                     _yPoints[i] = ((IntToken) xypointArray.getElement(1))
-                                    .intValue();
+                        .intValue();
                 }
 
                 _number++;
@@ -166,7 +166,7 @@ public class TerrainProperty extends TypedAtomicActor
                 _terrain.width.setToken(new IntToken(_number));
             } else {
                 throw new IllegalActionException(this,
-                    "xPoints is required to be an integer array");
+                        "xPoints is required to be an integer array");
             }
         } else {
             super.attributeChanged(attribute);
@@ -186,7 +186,7 @@ public class TerrainProperty extends TypedAtomicActor
 
         if (location == null) {
             throw new IllegalActionException(
-                "Cannot determine location for entity " + getName() + ".");
+                    "Cannot determine location for entity " + getName() + ".");
         }
 
         double[] center = _polygonCenter();
@@ -207,7 +207,7 @@ public class TerrainProperty extends TypedAtomicActor
             ((WirelessChannel) channel).registerPropertyTransformer(this, null);
         } else {
             throw new IllegalActionException(this,
-                "The channel name does not refer to a valid channel.");
+                    "The channel name does not refer to a valid channel.");
         }
     }
 
@@ -225,8 +225,8 @@ public class TerrainProperty extends TypedAtomicActor
      * @exception IllegalActionException If failed to execute the model.
      */
     public RecordToken transformProperties(RecordToken properties,
-        WirelessIOPort sender, WirelessIOPort destination)
-        throws IllegalActionException {
+            WirelessIOPort sender, WirelessIOPort destination)
+            throws IllegalActionException {
         double[] p1 = _locationOf(sender);
         double[] p2 = _locationOf(destination);
         double a;
@@ -277,11 +277,11 @@ public class TerrainProperty extends TypedAtomicActor
 
             // Create a record token with the receive power.
             String[] names = {
-                    "power"
-                };
+                "power"
+            };
             Token[] values = {
-                    new DoubleToken(0.0)
-                };
+                new DoubleToken(0.0)
+            };
             RecordToken newPower = new RecordToken(names, values);
 
             // Merge the receive power into the merged token.
@@ -310,7 +310,7 @@ public class TerrainProperty extends TypedAtomicActor
      *   be found.
      */
     private double[] _locationOf(WirelessIOPort port)
-        throws IllegalActionException {
+            throws IllegalActionException {
         Entity container = (Entity) port.getContainer();
         Locatable location = null;
         location = (Locatable) container.getAttribute(LOCATION_ATTRIBUTE_NAME,
@@ -318,7 +318,7 @@ public class TerrainProperty extends TypedAtomicActor
 
         if (location == null) {
             throw new IllegalActionException(
-                "Cannot determine location for port " + port.getName() + ".");
+                    "Cannot determine location for port " + port.getName() + ".");
         }
 
         return location.getLocation();

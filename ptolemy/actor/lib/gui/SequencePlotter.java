@@ -71,7 +71,7 @@ public class SequencePlotter extends Plotter implements SequenceActor {
      *   actor with this name.
      */
     public SequencePlotter(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // Create the input port and make it a multiport.
@@ -110,7 +110,7 @@ public class SequencePlotter extends Plotter implements SequenceActor {
      *   attribute cannot be parsed or cannot be evaluated.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == xInit) {
             _xInit = ((DoubleToken) xInit.getToken()).doubleValue();
         } else {

@@ -78,7 +78,7 @@ public class IIR extends Transformer {
      *   actor with this name.
      */
     public IIR(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // Parameters
@@ -136,7 +136,7 @@ public class IIR extends Transformer {
      *   with an unrecognized parameter.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == numerator) {
             ArrayToken numeratorValue = (ArrayToken) numerator.getToken();
             _numerator = numeratorValue.arrayValue();
@@ -149,11 +149,11 @@ public class IIR extends Transformer {
             if (!_denominator[0].isEqualTo(_denominator[0].one()).booleanValue()) {
                 try {
                     MessageHandler.warning(
-                        "First denominator value is required to be 1. "
-                        + "Using 1.");
+                            "First denominator value is required to be 1. "
+                            + "Using 1.");
                 } catch (CancelException ex) {
                     throw new IllegalActionException(this,
-                        "Canceled parameter change.");
+                            "Canceled parameter change.");
                 }
 
                 // Override the user and just use 1.
@@ -189,7 +189,7 @@ public class IIR extends Transformer {
             newObject.output.setTypeAtLeast(elementTerm);
 
             ArrayType denominatorType = (ArrayType) newObject.denominator
-                            .getType();
+                .getType();
             InequalityTerm elementTerm2 = denominatorType.getElementTypeTerm();
             newObject.output.setTypeAtLeast(elementTerm2);
 
@@ -264,7 +264,7 @@ public class IIR extends Transformer {
     private Token _computeOutput(Token xCurrent) throws IllegalActionException {
         for (int j = 1; j < _denominator.length; j++) {
             xCurrent = xCurrent.subtract(_denominator[j].multiply(
-                        _stateVector[(_currentTap + j) % _stateVector.length]));
+                                                 _stateVector[(_currentTap + j) % _stateVector.length]));
         }
 
         _stateVector[_currentTap] = xCurrent;
@@ -273,7 +273,7 @@ public class IIR extends Transformer {
 
         for (int k = 0; k < _numerator.length; k++) {
             yCurrent = yCurrent.add(_numerator[k].multiply(
-                        _stateVector[(_currentTap + k) % _stateVector.length]));
+                                            _stateVector[(_currentTap + k) % _stateVector.length]));
         }
 
         return yCurrent;

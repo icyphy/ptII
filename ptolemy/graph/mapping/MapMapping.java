@@ -91,7 +91,7 @@ public abstract class MapMapping implements Mapping {
      */
     public String toString() {
         return getClass().getName() + "based on the following Map\n"
-        + _map.toString() + "\n";
+            + _map.toString() + "\n";
     }
 
     ///////////////////////////////////////////////////////////////////

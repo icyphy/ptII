@@ -78,7 +78,7 @@ public class RecorderErrorHandler implements ErrorHandler {
      */
     public int handleError(String element, NamedObj context, Throwable exception) {
         _buffer.append("RecorderErrorHandler: Error encountered in:\n"
-            + element + "\n" + KernelException.stackTraceToString(exception));
+                + element + "\n" + KernelException.stackTraceToString(exception));
         return CONTINUE;
     }
 

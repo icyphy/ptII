@@ -76,7 +76,7 @@ public class VideoPlayer extends Sink implements ControllerListener {
      *   actor with this name.
      */
     public VideoPlayer(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         input.setTypeEquals(BaseType.OBJECT);
@@ -104,11 +104,11 @@ public class VideoPlayer extends Sink implements ControllerListener {
             objectToken = (ObjectToken) token;
         } catch (ClassCastException ex) {
             throw new IllegalActionException(this, ex,
-                "Failed to cast " + token.getClass() + " to an ObjectToken.\n"
-                + "The VideoPlayer actor expects to be connected to "
-                + "actors like the StreamLoader.\n"
-                + "Try connecting other actors to "
-                + "actor.lib.image.ImageDisplay.");
+                    "Failed to cast " + token.getClass() + " to an ObjectToken.\n"
+                    + "The VideoPlayer actor expects to be connected to "
+                    + "actors like the StreamLoader.\n"
+                    + "Try connecting other actors to "
+                    + "actor.lib.image.ImageDisplay.");
         }
 
         DataSource input = (DataSource) objectToken.getValue();
@@ -123,10 +123,10 @@ public class VideoPlayer extends Sink implements ControllerListener {
             _player.prefetch();
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
-                "Cannot open file: " + input);
+                    "Cannot open file: " + input);
         } catch (MediaException ex) {
             throw new IllegalActionException(this, ex,
-                "Exception thrown by media framework on " + input);
+                    "Exception thrown by media framework on " + input);
         }
 
         _player.setMediaTime(_startTime);

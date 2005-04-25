@@ -62,7 +62,7 @@ public class BrowserTableau extends Tableau {
      *   attribute already in the container.
      */
     public BrowserTableau(BrowserEffigy container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -160,11 +160,11 @@ public class BrowserTableau extends Tableau {
                 setContainer(null);
             } catch (KernelException ex2) {
                 throw new InvalidStateException((Nameable) null, ex2,
-                    "setContainer(null) failed, url was " + url);
+                        "setContainer(null) failed, url was " + url);
             }
         } catch (IOException ex) {
             throw new InvalidStateException((Nameable) null, ex,
-                "Failed to handle '" + url + "': ");
+                    "Failed to handle '" + url + "': ");
         }
     }
 
@@ -183,7 +183,7 @@ public class BrowserTableau extends Tableau {
          *   an attribute already in the container.
          */
         public Factory(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+                throws IllegalActionException, NameDuplicationException {
             super(container, name);
         }
 

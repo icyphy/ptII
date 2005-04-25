@@ -72,7 +72,7 @@ public class VQDecode extends Transformer {
      *   an actor already in the container.
      */
     public VQDecode(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         input.setTypeEquals(BaseType.INT);
@@ -81,7 +81,7 @@ public class VQDecode extends Transformer {
 
         codeBook = new Parameter(this, "codeBook",
                 new StringToken("/ptolemy/domains/sdf"
-                    + "/lib/vq/data/usc_hvq_s5.dat"));
+                        + "/lib/vq/data/usc_hvq_s5.dat"));
         codeBook.setTypeEquals(BaseType.STRING);
 
         blockCount = new Parameter(this, "blockCount", new IntToken("1"));
@@ -151,7 +151,7 @@ public class VQDecode extends Transformer {
 
         for (j = 0; j < _blockCount; j++) {
             _blocks[j] = new IntMatrixToken(_codebook[stage][((IntToken) _codewords[j])
-                                .intValue()]);
+                                                    .intValue()]);
         }
 
         output.send(0, _blocks, _blocks.length);
@@ -190,7 +190,7 @@ public class VQDecode extends Transformer {
                     System.err.println("File not found: " + e);
                 } catch (IOException e) {
                     throw new IllegalActionException("Error reading"
-                        + " input file: " + e.getMessage());
+                            + " input file: " + e.getMessage());
                 }
             }
 
@@ -219,7 +219,7 @@ public class VQDecode extends Transformer {
                 for (j = 0; j < 256; j++) {
                     if (_fullRead(source, temp) != size) {
                         throw new IllegalActionException("Error reading "
-                            + "codebook file!");
+                                + "codebook file!");
                     }
 
                     for (x = 0; x < size; x++) {
@@ -236,7 +236,7 @@ public class VQDecode extends Transformer {
                 // read in the lookup table.
                 if (_fullRead(source, temp) != 65536) {
                     throw new IllegalActionException("Error reading "
-                        + "codebook file!");
+                            + "codebook file!");
                 }
             }
         } catch (Exception e) {
@@ -281,7 +281,7 @@ public class VQDecode extends Transformer {
 
         if (length < 2) {
             throw new RuntimeException("Vector length of " + length
-                + "must be greater than 1");
+                    + "must be greater than 1");
         }
 
         while (length > 2) {

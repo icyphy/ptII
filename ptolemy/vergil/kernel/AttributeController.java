@@ -73,9 +73,9 @@ public class AttributeController extends IconController {
             // Add to the context menu.
             _menuFactory.addMenuItemFactory(new RenameDialogFactory());
             _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                    new GetDocumentationAction()));
+                                                    new GetDocumentationAction()));
             _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                    new MoveAction("Move to first (back)", MoveAction.TO_FIRST)));
+                                                    new MoveAction("Move to first (back)", MoveAction.TO_FIRST)));
 
             /* The following doesn't work, and seems confusing anyway.
                _menuFactory.addMenuItemFactory(
@@ -83,7 +83,7 @@ public class AttributeController extends IconController {
                new MoveAction("Move towards first", MoveAction.UP)));
             */
             _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                    new MoveAction("Move to last (front)", MoveAction.TO_LAST)));
+                                                    new MoveAction("Move to last (front)", MoveAction.TO_LAST)));
 
             /* The following doesn't work, and seems confusing anyway.
                _menuFactory.addMenuItemFactory(

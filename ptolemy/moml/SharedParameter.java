@@ -90,7 +90,7 @@ public class SharedParameter extends Parameter {
      *   a parameter already in the container.
      */
     public SharedParameter(NamedObj container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         this(container, name, null, "");
     }
 
@@ -106,7 +106,7 @@ public class SharedParameter extends Parameter {
      *   a parameter already in the container.
      */
     public SharedParameter(NamedObj container, String name, Class containerClass)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         this(container, name, containerClass, "");
     }
 
@@ -125,8 +125,8 @@ public class SharedParameter extends Parameter {
      *   a parameter already in the container.
      */
     public SharedParameter(NamedObj container, String name,
-        Class containerClass, String defaultValue)
-        throws IllegalActionException, NameDuplicationException {
+            Class containerClass, String defaultValue)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         if (containerClass == null) {
@@ -176,7 +176,7 @@ public class SharedParameter extends Parameter {
 
             while (sharedParameters.hasNext()) {
                 SharedParameter candidate = (SharedParameter) sharedParameters
-                                .next();
+                    .next();
 
                 if (candidate != this) {
                     defaultValue = candidate.getExpression();
@@ -212,11 +212,11 @@ public class SharedParameter extends Parameter {
             // Do not do sharing if this is within an EntityLibrary.
             if (toplevel != null) {
                 Iterator sharedParameters = sharedParameterList(toplevel)
-                                                            .iterator();
+                    .iterator();
 
                 while (sharedParameters.hasNext()) {
                     SharedParameter sharedParameter = (SharedParameter) sharedParameters
-                                    .next();
+                        .next();
 
                     if (sharedParameter != this) {
                         try {
@@ -309,11 +309,11 @@ public class SharedParameter extends Parameter {
             // Do not do sharing if this is within an EntityLibrary.
             if (toplevel != null) {
                 Iterator sharedParameters = sharedParameterList(toplevel)
-                                                            .iterator();
+                    .iterator();
 
                 while (sharedParameters.hasNext()) {
                     SharedParameter sharedParameter = (SharedParameter) sharedParameters
-                                    .next();
+                        .next();
 
                     if (sharedParameter != this) {
                         try {

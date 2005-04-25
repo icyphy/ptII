@@ -44,29 +44,29 @@ import ptolemy.kernel.util.NameDuplicationException;
 ///DataCollector
 
 /**
-    This class collectes sensor update for the state of each parking spot,
-    and provides a parking client information of available parking spots.
+   This class collectes sensor update for the state of each parking spot,
+   and provides a parking client information of available parking spots.
 
-    @author Yang Zhao
-    @version $Id$
-    @since Ptolemy II 3.0
-    @Pt.ProposedRating Yellow (cxh)
-    @Pt.AcceptedRating Yellow (cxh)
+   @author Yang Zhao
+   @version $Id$
+   @since Ptolemy II 3.0
+   @Pt.ProposedRating Yellow (cxh)
+   @Pt.AcceptedRating Yellow (cxh)
 */
 public class DataCollector extends TypedAtomicActor {
     public DataCollector(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         update = new TypedIOPort(this, "update", true, false);
 
         String[] labels = {
-                "lot",
-                "state"
-            };
+            "lot",
+            "state"
+        };
         Type[] types = {
-                BaseType.STRING,
-                BaseType.INT
-            };
+            BaseType.STRING,
+            BaseType.INT
+        };
         RecordType recordType = new RecordType(labels, types);
         update.setTypeEquals(recordType);
 

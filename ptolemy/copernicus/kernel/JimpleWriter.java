@@ -87,12 +87,12 @@ public class JimpleWriter extends SceneTransformer implements HasPhaseOptions {
      */
     protected void internalTransform(String phaseName, Map options) {
         System.out.println("JimpleWriter.internalTransform(" + phaseName + ", "
-            + options + ")");
+                + options + ")");
 
         String outDir = PhaseOptions.getString(options, "outDir");
 
         for (Iterator classes = Scene.v().getApplicationClasses().iterator();
-                        classes.hasNext();) {
+             classes.hasNext();) {
             SootClass theClass = (SootClass) classes.next();
 
             String fileName;
@@ -117,7 +117,7 @@ public class JimpleWriter extends SceneTransformer implements HasPhaseOptions {
             try {
                 streamOut = new FileOutputStream(fileName);
                 writerOut = new PrintWriter(new EscapedWriter(
-                            new OutputStreamWriter(streamOut)));
+                                                    new OutputStreamWriter(streamOut)));
 
                 Printer printer = Printer.v();
                 printer.setOption(Integer.MAX_VALUE);
@@ -126,8 +126,8 @@ public class JimpleWriter extends SceneTransformer implements HasPhaseOptions {
                 //                theClass.printJimpleStyleTo(writerOut, 0);
             } catch (Exception e) {
                 System.out.println("JimpleWriter.internalTransform(): "
-                    + "Failed to output jimple for file '" + fileName + "':"
-                    + e);
+                        + "Failed to output jimple for file '" + fileName + "':"
+                        + e);
             } finally {
                 if (writerOut != null) {
                     writerOut.close();

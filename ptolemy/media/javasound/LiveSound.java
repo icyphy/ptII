@@ -227,18 +227,18 @@ public class LiveSound {
      *  to access the audio capture resources.
      */
     public static void flushCaptureBuffer(Object consumer)
-        throws IOException, IllegalStateException {
+            throws IOException, IllegalStateException {
         if (!isCaptureActive()) {
             throw new IllegalStateException("Object: " + consumer.toString()
-                + " attempted to call LiveSound.flushCaptureBuffer(), but "
-                + "capture is inactive.  Try to startCapture().");
+                    + " attempted to call LiveSound.flushCaptureBuffer(), but "
+                    + "capture is inactive.  Try to startCapture().");
         }
 
         if (!_soundConsumers.contains(consumer)) {
             throw new IOException("Object: " + consumer.toString()
-                + " attempted to call LiveSound.flushCaptureBuffer(), but "
-                + "this object does not have permission to access the "
-                + "audio capture resource.");
+                    + " attempted to call LiveSound.flushCaptureBuffer(), but "
+                    + "this object does not have permission to access the "
+                    + "audio capture resource.");
         }
 
         if (_debug) {
@@ -271,18 +271,18 @@ public class LiveSound {
      *  to access the audio playback resources.
      */
     public static void flushPlaybackBuffer(Object producer)
-        throws IOException, IllegalStateException {
+            throws IOException, IllegalStateException {
         if (!isPlaybackActive()) {
             throw new IllegalStateException("Object: " + producer.toString()
-                + " attempted to call LiveSound.flushPlaybackBuffer(), "
-                + "but playback is inactive.  Try to startPlayback().");
+                    + " attempted to call LiveSound.flushPlaybackBuffer(), "
+                    + "but playback is inactive.  Try to startPlayback().");
         }
 
         if (!_soundProducers.contains(producer)) {
             throw new IOException("Object: " + producer.toString()
-                + " attempted to call LiveSound.flushPlaybackBuffer(), "
-                + "but this object does not have permission to access the "
-                + "audio playback resource.");
+                    + " attempted to call LiveSound.flushPlaybackBuffer(), "
+                    + "but this object does not have permission to access the "
+                    + "audio playback resource.");
         }
 
         if (_debug) {
@@ -331,8 +331,8 @@ public class LiveSound {
             return _targetLine.getBufferSize() / _frameSizeInBytes;
         } else {
             throw new IllegalStateException("LiveSound: "
-                + "getBufferSizeCapture(), capture is probably inactive."
-                + "Try to startCapture().");
+                    + "getBufferSizeCapture(), capture is probably inactive."
+                    + "Try to startCapture().");
         }
     }
 
@@ -349,8 +349,8 @@ public class LiveSound {
             return _sourceLine.getBufferSize() / _frameSizeInBytes;
         } else {
             throw new IllegalStateException("LiveSound: "
-                + "getBufferSizePlayback(), playback is probably inactive."
-                + "Try to startPlayback().");
+                    + "getBufferSizePlayback(), playback is probably inactive."
+                    + "Try to startPlayback().");
         }
     }
 
@@ -417,18 +417,18 @@ public class LiveSound {
      *  to access the audio capture resources.
      */
     public static double[][] getSamples(Object consumer)
-        throws IOException, IllegalStateException {
+            throws IOException, IllegalStateException {
         if (!isCaptureActive()) {
             throw new IllegalStateException("Object: " + consumer.toString()
-                + " attempted to call LiveSound.getSamples(), but "
-                + "capture is inactive.  Try to startCapture().");
+                    + " attempted to call LiveSound.getSamples(), but "
+                    + "capture is inactive.  Try to startCapture().");
         }
 
         if (!_soundConsumers.contains(consumer)) {
             throw new IOException("Object: " + consumer.toString()
-                + " attempted to call LiveSound.getSamples(), but "
-                + "this object does not have permission to access the "
-                + "audio capture resource.");
+                    + " attempted to call LiveSound.getSamples(), but "
+                    + "this object does not have permission to access the "
+                    + "audio capture resource.");
         }
 
         if (_debug) {
@@ -441,7 +441,7 @@ public class LiveSound {
 
         // Check if we need to reallocate.
         if ((_channels != _audioInDoubleArray.length)
-                        || (_transferSize != _audioInDoubleArray[0].length)) {
+                || (_transferSize != _audioInDoubleArray[0].length)) {
             // Reallocate
             _audioInDoubleArray = new double[_channels][_transferSize];
         }
@@ -449,7 +449,7 @@ public class LiveSound {
         if (numBytesRead == _captureData.length) {
             // Convert byte array to double array.
             _byteArrayToDoubleArray(_audioInDoubleArray, _captureData,
-                _bytesPerSample, _channels);
+                    _bytesPerSample, _channels);
             return _audioInDoubleArray;
         } else {
             throw new IOException("Failed to capture correct number of bytes");
@@ -542,18 +542,18 @@ public class LiveSound {
      *  or if stopPlayback() has already been called.
      */
     public static void putSamples(Object producer, double[][] samplesArray)
-        throws IOException, IllegalStateException {
+            throws IOException, IllegalStateException {
         if (!isPlaybackActive()) {
             throw new IllegalStateException("Object: " + producer.toString()
-                + " attempted to call LiveSound.putSamples(), but "
-                + "playback is inactive.  Try to startPlayback().");
+                    + " attempted to call LiveSound.putSamples(), but "
+                    + "playback is inactive.  Try to startPlayback().");
         }
 
         if (!_soundProducers.contains(producer)) {
             throw new IOException("Object: " + producer.toString()
-                + " attempted to call LiveSound.putSamples(), but "
-                + "this object does not have permission to access the "
-                + "audio playback resource.");
+                    + " attempted to call LiveSound.putSamples(), but "
+                    + "this object does not have permission to access the "
+                    + "audio playback resource.");
         }
 
         if (_debug) {
@@ -563,7 +563,7 @@ public class LiveSound {
         // Convert array of double valued samples into
         // the proper byte array format.
         _doubleArrayToByteArray(_playbackData, samplesArray, _bytesPerSample,
-            _channels);
+                _channels);
 
         // Note: _playbackData is a byte array containing data to
         // be written to the output device.
@@ -634,19 +634,19 @@ public class LiveSound {
      *  @see #getBitsPerSample()
      */
     public static void setBitsPerSample(int bitsPerSample)
-        throws IOException {
+            throws IOException {
         _bitsPerSample = bitsPerSample;
 
         if (_debug) {
             System.out.println("LiveSound: setBitsPerSample() invoked "
-                + "with bitsPerSample = " + bitsPerSample);
+                    + "with bitsPerSample = " + bitsPerSample);
         }
 
         if ((_captureIsActive) && (_playbackIsActive)) {
             // Restart capture/playback with new bitsPerSample.
             if (_debug) {
                 System.out.println("LiveSound: setBitsPerSample(): "
-                    + "capture and playback are active..");
+                        + "capture and playback are active..");
             }
 
             _stopCapture();
@@ -657,7 +657,7 @@ public class LiveSound {
             // Restart capture with new bitsPerSample.
             if (_debug) {
                 System.out.println("LiveSound: setBitsPerSample(): "
-                    + "capture is active..");
+                        + "capture is active..");
             }
 
             _stopCapture();
@@ -666,7 +666,7 @@ public class LiveSound {
             // Restart playback with new bitsPerSample.
             if (_debug) {
                 System.out.println("LiveSound: setBitsPerSample(): "
-                    + "playback is active..");
+                        + "playback is active..");
             }
 
             _stopPlayback();
@@ -678,7 +678,7 @@ public class LiveSound {
 
         if (_debug) {
             System.out.println("LiveSound: setBitsPerSample() "
-                + "returning now.");
+                    + "returning now.");
         }
     }
 
@@ -698,14 +698,14 @@ public class LiveSound {
 
         if (_debug) {
             System.out.println("LiveSound: setBufferSize() invoked "
-                + "with bufferSize = " + bufferSize);
+                    + "with bufferSize = " + bufferSize);
         }
 
         if ((_captureIsActive) && (_playbackIsActive)) {
             // Restart capture/playback with new bufferSize.
             if (_debug) {
                 System.out.println("LiveSound: setBufferSize(): "
-                    + "capture and playback are active..");
+                        + "capture and playback are active..");
             }
 
             _stopCapture();
@@ -716,7 +716,7 @@ public class LiveSound {
             // Restart capture with new bufferSize.
             if (_debug) {
                 System.out.println("LiveSound: setBufferSize(): capture "
-                    + "is active..");
+                        + "is active..");
             }
 
             _stopCapture();
@@ -725,7 +725,7 @@ public class LiveSound {
             // Restart playback with new bufferSize.
             if (_debug) {
                 System.out.println("LiveSound: setBufferSize(): "
-                    + "playback is active..");
+                        + "playback is active..");
             }
 
             _stopPlayback();
@@ -760,14 +760,14 @@ public class LiveSound {
 
         if (_debug) {
             System.out.println("LiveSound: setChannels() invoked "
-                + "with channels = " + channels);
+                    + "with channels = " + channels);
         }
 
         if ((_captureIsActive) && (_playbackIsActive)) {
             // Restart capture/playback with new number of channels.
             if (_debug) {
                 System.out.println("LiveSound: setChannels(): "
-                    + "capture and playback are active..");
+                        + "capture and playback are active..");
             }
 
             _stopCapture();
@@ -778,7 +778,7 @@ public class LiveSound {
             // Restart capture with new number of channels.
             if (_debug) {
                 System.out.println("LiveSound: setChannels(): capture "
-                    + "is active..");
+                        + "is active..");
             }
 
             _stopCapture();
@@ -787,7 +787,7 @@ public class LiveSound {
             // Restart playback with new number of channels.
             if (_debug) {
                 System.out.println("LiveSound: setChannels(): playback "
-                    + "is active..");
+                        + "is active..");
             }
 
             _stopPlayback();
@@ -819,14 +819,14 @@ public class LiveSound {
 
         if (_debug) {
             System.out.println("LiveSound: setSampleRate() invoked "
-                + "with sample rate = " + sampleRate);
+                    + "with sample rate = " + sampleRate);
         }
 
         if ((_captureIsActive) && (_playbackIsActive)) {
             // Restart capture/playback with new sample rate.
             if (_debug) {
                 System.out.println("LiveSound: setSampleRate(): capture "
-                    + "and playback are active..");
+                        + "and playback are active..");
             }
 
             _stopCapture();
@@ -837,7 +837,7 @@ public class LiveSound {
             // Restart capture with new sample rate.
             if (_debug) {
                 System.out.println("LiveSound: setSampleRate(): capture "
-                    + "is active..");
+                        + "is active..");
             }
 
             _stopCapture();
@@ -846,7 +846,7 @@ public class LiveSound {
             // Restart playback with new sample rate.
             if (_debug) {
                 System.out.println("LiveSound: setSampleRate(): "
-                    + "playback is active..");
+                        + "playback is active..");
             }
 
             _stopPlayback();
@@ -881,16 +881,16 @@ public class LiveSound {
      *  @see #getTransferSize()
      */
     public static void setTransferSize(int transferSize)
-        throws IllegalStateException {
+            throws IllegalStateException {
         if (_debug) {
             System.out.println("LiveSound: " + "setTransferSize(transferSize) "
-                + "invoked with transferSize = " + transferSize);
+                    + "invoked with transferSize = " + transferSize);
         }
 
         if ((_captureIsActive) || (_playbackIsActive)) {
             throw new IllegalStateException("LiveSound: "
-                + "setTransferSize() was called while audio capture "
-                + "or playback was active.");
+                    + "setTransferSize() was called while audio capture "
+                    + "or playback was active.");
         } else {
             _transferSize = transferSize;
         }
@@ -918,22 +918,22 @@ public class LiveSound {
      *   while audio capture is already active.
      */
     public static void startCapture(Object consumer)
-        throws IOException, IllegalStateException {
+            throws IOException, IllegalStateException {
         // FIXME: consider allowing several object to
         // share the captured audio resources.
         if (_soundConsumers.size() > 0) {
             throw new IOException("Object: " + consumer.toString()
-                + " is not allowed to start audio capture because "
-                + "another object currently has access to the audio "
-                + "capture resources.");
+                    + " is not allowed to start audio capture because "
+                    + "another object currently has access to the audio "
+                    + "capture resources.");
         }
 
         if (!_soundConsumers.contains(consumer)) {
             _soundConsumers.add(consumer);
         } else {
             throw new IllegalStateException("Object: " + consumer.toString()
-                + " attempted to call LiveSound.startCapture() while "
-                + "audio capture was active.");
+                    + " attempted to call LiveSound.startCapture() while "
+                    + "audio capture was active.");
         }
 
         if (_debug) {
@@ -977,21 +977,21 @@ public class LiveSound {
      *   while audio playback is already active.
      */
     public static void startPlayback(Object producer)
-        throws IOException, IllegalStateException {
+            throws IOException, IllegalStateException {
         if (_soundProducers.size() > 0) {
             throw new IOException("Object: " + producer.toString()
-                + " is not allowed to start audio playback because "
-                + "another object currently has access to the audio "
-                + "playback resources.");
+                    + " is not allowed to start audio playback because "
+                    + "another object currently has access to the audio "
+                    + "playback resources.");
         }
 
         if (!_soundProducers.contains(producer)) {
             _soundProducers.add(producer);
         } else {
             throw new IOException("Object: " + producer.toString()
-                + " attempted to call LiveSound.startPlayback() while "
-                + "audio playback was active. Only one object may "
-                + "access the audio playback resources at a time.");
+                    + " attempted to call LiveSound.startPlayback() while "
+                    + "audio playback was active. Only one object may "
+                    + "access the audio playback resources at a time.");
         }
 
         if (_debug) {
@@ -1019,7 +1019,7 @@ public class LiveSound {
      *   captured audio resources when this method was invoked.
      */
     public static void stopCapture(Object consumer)
-        throws IOException, IllegalStateException {
+            throws IOException, IllegalStateException {
         if (_debug) {
             System.out.println("LiveSound: stopCapture(): invoked");
         }
@@ -1028,8 +1028,8 @@ public class LiveSound {
             _soundConsumers.remove(consumer);
         } else {
             throw new IOException("Object: " + consumer.toString()
-                + " attempted to call LiveSound.stopCapture(), but "
-                + "never called LiveSound.startCapture().");
+                    + " attempted to call LiveSound.stopCapture(), but "
+                    + "never called LiveSound.startCapture().");
         }
 
         // Free up audio system resources.
@@ -1055,13 +1055,13 @@ public class LiveSound {
      *
      */
     public static void stopPlayback(Object producer)
-        throws IOException, IllegalStateException {
+            throws IOException, IllegalStateException {
         if (_soundProducers.contains(producer)) {
             _soundProducers.remove(producer);
         } else {
             throw new IOException("Object: " + producer.toString()
-                + " attempted to call LiveSound.stopPlayback(), but "
-                + "never called LiveSound.startPlayback().");
+                    + " attempted to call LiveSound.stopPlayback(), but "
+                    + "never called LiveSound.startPlayback().");
         }
 
         if (_debug) {
@@ -1088,7 +1088,7 @@ public class LiveSound {
      * array containing samples for channel m.
      */
     private static void _byteArrayToDoubleArray(double[][] doubleArray,
-        byte[] byteArray, int bytesPerSample, int channels) {
+            byte[] byteArray, int bytesPerSample, int channels) {
         int lengthInSamples = byteArray.length / (bytesPerSample * channels);
 
         //double maxSampleReciprocal = 1/(Math.pow(2, 8 * bytesPerSample - 1));
@@ -1130,7 +1130,7 @@ public class LiveSound {
                 for (int i = 0; i < bytesPerSample; i++) {
                     // Assume we are dealing with big endian.
                     _captureBytes[i] = byteArray[(currSamp * bytesPerSample * channels)
-                        + (bytesPerSample * currChannel) + i];
+                            + (bytesPerSample * currChannel) + i];
                 }
 
                 // Note: preserve sign of high order bits.
@@ -1174,7 +1174,7 @@ public class LiveSound {
      * the returned array is (doubleArray.length*bytesPerSample*channels).
      */
     private static void _doubleArrayToByteArray(byte[] byteArray,
-        double[][] doubleArray, int bytesPerSample, int channels) {
+            double[][] doubleArray, int bytesPerSample, int channels) {
         // All channels had better have the same number
         // of samples! This is not checked!
         int lengthInSamples = doubleArray[0].length;
@@ -1256,7 +1256,7 @@ public class LiveSound {
                 // the linear signed pcm big endian formatted byte array.
                 for (int i = 0; i < bytesPerSample; i += 1) {
                     byteArray[(currSamp * bytesPerSample * channels)
-                    + (bytesPerSample * currChannel) + i] = _playbackBytes[i];
+                            + (bytesPerSample * currChannel) + i] = _playbackBytes[i];
                 }
             }
         }
@@ -1317,7 +1317,7 @@ public class LiveSound {
             _targetLine.open(format, _bufferSize * _frameSizeInBytes);
         } catch (LineUnavailableException ex) {
             throw new IOException("Unable to open the line for "
-                + "real-time audio capture: " + ex);
+                    + "real-time audio capture: " + ex);
         }
 
         int targetBufferLengthInBytes = _transferSize * _frameSizeInBytes;
@@ -1357,7 +1357,7 @@ public class LiveSound {
             _sourceLine.open(format, _bufferSize * _frameSizeInBytes);
         } catch (LineUnavailableException ex) {
             throw new IOException("Unable to open the line for "
-                + "real-time audio playback: " + ex);
+                    + "real-time audio playback: " + ex);
         }
 
         // Array of audio samples in byte format.

@@ -165,7 +165,7 @@ public class MessageHandler {
      *  @exception CancelException If the user clicks on the "Cancel" button.
      */
     public static void warning(String info, Throwable throwable)
-        throws CancelException {
+            throws CancelException {
         _handler._warning(info + ": " + throwable.getMessage(), throwable);
     }
 
@@ -243,7 +243,7 @@ public class MessageHandler {
      *  @exception CancelException If the user clicks on the "Cancel" button.
      */
     protected void _warning(String info, Throwable throwable)
-        throws CancelException {
+            throws CancelException {
         _error(info, throwable);
     }
 
@@ -258,7 +258,7 @@ public class MessageHandler {
         System.out.print(" (yes or no) ");
 
         BufferedReader stdIn = new BufferedReader(new InputStreamReader(
-                    System.in));
+                                                          System.in));
 
         try {
             String reply = stdIn.readLine();

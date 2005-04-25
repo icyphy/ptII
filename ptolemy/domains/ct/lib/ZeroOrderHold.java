@@ -68,7 +68,7 @@ public class ZeroOrderHold extends Transformer implements CTWaveformGenerator {
      *   an entity already in the container.
      */
     public ZeroOrderHold(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         defaultValue = new Parameter(this, "defaultValue", new IntToken(0));
         output.setTypeAtLeast(input);
@@ -77,11 +77,11 @@ public class ZeroOrderHold extends Transformer implements CTWaveformGenerator {
         new Parameter(output, "signalType", new StringToken("CONTINUOUS"));
 
         _attachText("_iconDescription",
-            "<svg>\n" + "<rect x=\"-30\" y=\"-20\" "
-            + "width=\"60\" height=\"40\" " + "style=\"fill:white\"/>\n"
-            + "<polyline points=\"-25,10 -15,10 -15,-10 5,-10\"/>\n"
-            + "<polyline points=\"5,-10 5,0 15,0 15,10 25,10\"/>\n"
-            + "</svg>\n");
+                "<svg>\n" + "<rect x=\"-30\" y=\"-20\" "
+                + "width=\"60\" height=\"40\" " + "style=\"fill:white\"/>\n"
+                + "<polyline points=\"-25,10 -15,10 -15,-10 5,-10\"/>\n"
+                + "<polyline points=\"5,-10 5,0 15,0 15,10 25,10\"/>\n"
+                + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -122,8 +122,8 @@ public class ZeroOrderHold extends Transformer implements CTWaveformGenerator {
 
                 CTDirector dir = (CTDirector) getDirector();
                 _debug(getFullName() + " receives an event at: "
-                    + dir.getModelTime() + " with token "
-                    + _lastToken.toString());
+                        + dir.getModelTime() + " with token "
+                        + _lastToken.toString());
             }
         }
 

@@ -118,21 +118,21 @@ public class DataflowActorInterpreter {
             if (repExpr == null) {
                 for (int j = 0; j < vars.length; j++) {
                     final InputChannel channel = ((InputPort) (inputPortMap.get(inputPattern
-                                        .getPortname()))).getChannel(0); // FIXME
+                                                                       .getPortname()))).getChannel(0); // FIXME
                     local.bind(vars[j], new SingleTokenReaderThunk(channel, j));
                 }
             } else {
                 SimpleThunk repExprThunk = new SimpleThunk(repExpr, context,
                         local);
                 local.bind(new EnvironmentKey(inputPattern.getPortname()),
-                    repExprThunk);
+                        repExprThunk);
 
                 for (int j = 0; j < vars.length; j++) {
                     final InputChannel channel = ((InputPort) (inputPortMap.get(inputPattern
-                                        .getPortname()))).getChannel(0); // FIXME
+                                                                       .getPortname()))).getChannel(0); // FIXME
                     local.bind(vars[j],
-                        new MultipleTokenReaderThunk(channel, j, vars.length,
-                            repExprThunk, context));
+                            new MultipleTokenReaderThunk(channel, j, vars.length,
+                                    repExprThunk, context));
                 }
             }
         }
@@ -146,7 +146,7 @@ public class DataflowActorInterpreter {
                 local.bind(decls[i].getName(), null);
             } else {
                 local.bind(decls[i].getName(),
-                    new SimpleThunk(v, context, local));
+                        new SimpleThunk(v, context, local));
             }
         }
 
@@ -176,8 +176,8 @@ public class DataflowActorInterpreter {
     public boolean actionEvaluatePrecondition() {
         if (envAction == null) {
             throw new InterpreterException(
-                "DataflowActorInterpreter: Must call actionSetup() "
-                + "before calling actionEvaluatePrecondition().");
+                    "DataflowActorInterpreter: Must call actionSetup() "
+                    + "before calling actionEvaluatePrecondition().");
         }
 
         final Action action = envAction;
@@ -188,7 +188,7 @@ public class DataflowActorInterpreter {
 
             // FIXME: handle multiports
             final InputChannel channel = ((InputPort) (inputPortMap.get(inputPattern
-                                .getPortname()))).getChannel(0);
+                                                               .getPortname()))).getChannel(0);
 
             if (inputPattern.getRepeatExpr() == null) {
                 if (!channel.hasAvailable(inputPattern.getVariables().length)) {
@@ -197,10 +197,10 @@ public class DataflowActorInterpreter {
                 }
             } else {
                 int repeatVal = context.intValue(env.get(
-                            new EnvironmentKey(inputPattern.getPortname())));
+                                                         new EnvironmentKey(inputPattern.getPortname())));
 
                 if (!channel.hasAvailable(
-                                    inputPattern.getVariables().length * repeatVal)) {
+                            inputPattern.getVariables().length * repeatVal)) {
                     // System.out.println("Not enough repeated inputs:" + inputPattern.getVariables().length * repeatVal);
                     return false;
                 }
@@ -232,8 +232,8 @@ public class DataflowActorInterpreter {
     public void actionStep() {
         if (envAction == null) {
             throw new InterpreterException(
-                "DataflowActorInterpreter: Must call actionSetup() "
-                + "before calling actionStep().");
+                    "DataflowActorInterpreter: Must call actionSetup() "
+                    + "before calling actionStep().");
         }
 
         // First evaluate the action-level thunks, so that their value
@@ -259,14 +259,14 @@ public class DataflowActorInterpreter {
     public void actionComputeOutputs() {
         if (envAction == null) {
             throw new InterpreterException(
-                "DataflowActorInterpreter: Must call actionSetup() "
-                + "before calling actionComputeOutputs().");
+                    "DataflowActorInterpreter: Must call actionSetup() "
+                    + "before calling actionComputeOutputs().");
         }
 
         final Action action = envAction;
         final ExprEvaluator eval = new ExprEvaluator(context, env);
         final OutputExpression[] outputExpressions = action
-                        .getOutputExpressions();
+            .getOutputExpressions();
 
         for (int i = 0; i < outputExpressions.length; i++) {
             final OutputExpression outputExpression = outputExpressions[i];
@@ -274,7 +274,7 @@ public class DataflowActorInterpreter {
             final Expression repeatExpr = outputExpression.getRepeatExpr();
 
             final OutputChannel channel = ((OutputPort) (outputPortMap.get(outputExpression
-                                .getPortname()))).getChannel(0);
+                                                                 .getPortname()))).getChannel(0);
 
             // FIXME: handle multiports
             if (repeatExpr != null) {
@@ -380,8 +380,8 @@ public class DataflowActorInterpreter {
      * @see caltrop.interpreter.OutputChannel
      */
     public DataflowActorInterpreter(final Actor actor, final Context context,
-        final Environment actorEnv, final Map inputPortMap,
-        final Map outputPortMap) {
+            final Environment actorEnv, final Map inputPortMap,
+            final Map outputPortMap) {
         this.actor = actor;
         this.context = context;
         this.actorEnv = actorEnv;
@@ -437,7 +437,7 @@ public class DataflowActorInterpreter {
         }
 
         public SingleTokenReaderThunk(final InputChannel channel,
-            final int index) {
+                final int index) {
             this.channel = channel;
             this.index = index;
 
@@ -478,7 +478,7 @@ public class DataflowActorInterpreter {
         }
 
         public MultipleTokenReaderThunk(InputChannel channel, int offset,
-            int period, SimpleThunk repeatExpr, Context context) {
+                int period, SimpleThunk repeatExpr, Context context) {
             this.channel = channel;
             this.offset = offset;
             this.period = period;

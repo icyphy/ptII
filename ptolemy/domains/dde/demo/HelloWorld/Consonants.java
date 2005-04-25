@@ -61,7 +61,7 @@ public class Consonants extends StringOut {
      *  superclass throws a NameDuplicationException .
      */
     public Consonants(TypedCompositeActor container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _consonants = new LinkedList();
     }

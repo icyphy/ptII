@@ -84,7 +84,7 @@ public class Quantizer extends Transformer {
      *   actor with this name.
      */
     public Quantizer(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         levels = new Parameter(this, "levels");
         levels.setExpression("{-1.0, 1.0}");
@@ -117,7 +117,7 @@ public class Quantizer extends Transformer {
      *   increasing.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == levels) {
             ArrayToken levelsValue = (ArrayToken) levels.getToken();
             double[] _levels = new double[levelsValue.length()];
@@ -125,12 +125,12 @@ public class Quantizer extends Transformer {
 
             for (int i = 0; i < levelsValue.length(); i++) {
                 _levels[i] = ((DoubleToken) levelsValue.getElement(i))
-                                .doubleValue();
+                    .doubleValue();
 
                 // Check nondecreasing property.
                 if (_levels[i] < previous) {
                     throw new IllegalActionException(this,
-                        "Value of levels is not nondecreasing.");
+                            "Value of levels is not nondecreasing.");
                 }
 
                 previous = _levels[i];

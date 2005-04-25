@@ -118,7 +118,7 @@ public class SingleWindowHTMLViewer extends HTMLViewer implements ChangeListener
 
                         if (index > 0) {
                             final Component theClickedOne = tabbedPane
-                                            .getComponentAt(index);
+                                .getComponentAt(index);
                             JPopupMenu popUpMenu = new JPopupMenu();
                             JMenuItem close = new JMenuItem("Close");
                             close.addActionListener(new ActionListener() {
@@ -131,7 +131,7 @@ public class SingleWindowHTMLViewer extends HTMLViewer implements ChangeListener
                                 });
                             popUpMenu.add(close);
                             popUpMenu.show((Component) e.getSource(), e.getX(),
-                                e.getY());
+                                    e.getY());
                         }
                     }
                 }
@@ -267,7 +267,7 @@ public class SingleWindowHTMLViewer extends HTMLViewer implements ChangeListener
 
                     if (tableau != null) {
                         fillMainFrame(((Tableau) tableau).getFrame()
-                                                   .getJMenuBar());
+                                .getJMenuBar());
                         _statusBar.setVisible(false);
                     }
                 } else {

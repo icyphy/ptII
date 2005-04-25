@@ -73,23 +73,23 @@ public class TimedSource extends Source implements TimedActor {
      *   actor with this name.
      */
     public TimedSource(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         stopTime = new Parameter(this, "stopTime");
         stopTime.setExpression("Infinity");
         stopTime.setTypeEquals(BaseType.DOUBLE);
 
         _attachText("_iconDescription",
-            "<svg>\n" + "<rect x=\"-20\" y=\"-20\" "
-            + "width=\"40\" height=\"40\" " + "style=\"fill:lightGrey\"/>\n"
-            + "<circle cx=\"0\" cy=\"0\" r=\"17\"" + "style=\"fill:white\"/>\n"
-            + "<line x1=\"0\" y1=\"-15\" x2=\"0\" y2=\"-13\"/>\n"
-            + "<line x1=\"0\" y1=\"14\" x2=\"0\" y2=\"16\"/>\n"
-            + "<line x1=\"-15\" y1=\"0\" x2=\"-13\" y2=\"0\"/>\n"
-            + "<line x1=\"14\" y1=\"0\" x2=\"16\" y2=\"0\"/>\n"
-            + "<line x1=\"0\" y1=\"-8\" x2=\"0\" y2=\"0\"/>\n"
-            + "<line x1=\"0\" y1=\"0\" x2=\"11.26\" y2=\"-6.5\"/>\n"
-            + "</svg>\n");
+                "<svg>\n" + "<rect x=\"-20\" y=\"-20\" "
+                + "width=\"40\" height=\"40\" " + "style=\"fill:lightGrey\"/>\n"
+                + "<circle cx=\"0\" cy=\"0\" r=\"17\"" + "style=\"fill:white\"/>\n"
+                + "<line x1=\"0\" y1=\"-15\" x2=\"0\" y2=\"-13\"/>\n"
+                + "<line x1=\"0\" y1=\"14\" x2=\"0\" y2=\"16\"/>\n"
+                + "<line x1=\"-15\" y1=\"0\" x2=\"-13\" y2=\"0\"/>\n"
+                + "<line x1=\"14\" y1=\"0\" x2=\"16\" y2=\"0\"/>\n"
+                + "<line x1=\"0\" y1=\"-8\" x2=\"0\" y2=\"0\"/>\n"
+                + "<line x1=\"0\" y1=\"0\" x2=\"11.26\" y2=\"-6.5\"/>\n"
+                + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -113,10 +113,10 @@ public class TimedSource extends Source implements TimedActor {
      *  @exception IllegalActionException If the superclass throws it.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == stopTime) {
             double newStopTimeValue = ((DoubleToken) stopTime.getToken())
-                            .doubleValue();
+                .doubleValue();
 
             if (_executing) {
                 Time newStopTime = new Time(getDirector(), newStopTimeValue);
@@ -129,8 +129,8 @@ public class TimedSource extends Source implements TimedActor {
                         director.fireAt(this, newStopTime);
                     } else {
                         throw new IllegalActionException(this,
-                            "The stop time "
-                            + "is earlier than the current time.");
+                                "The stop time "
+                                + "is earlier than the current time.");
                     }
                 }
 

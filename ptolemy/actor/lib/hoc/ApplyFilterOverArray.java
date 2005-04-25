@@ -64,37 +64,37 @@ import java.util.LinkedList;
 
 /**
 
-   This is an atomic actor that filter an array received at its
-   <i>inputArray</i> input port via applying a model specified by a
-   file or URL. The specified model evaluated on each input array
-   element should return a boolean value and the output is an array
-   that only contains elements satisfying the specified model (the
-   evaluated result is true).
+This is an atomic actor that filter an array received at its
+<i>inputArray</i> input port via applying a model specified by a
+file or URL. The specified model evaluated on each input array
+element should return a boolean value and the output is an array
+that only contains elements satisfying the specified model (the
+evaluated result is true).
 
-   <p> Instead of output all the satisfied elements in the input
-   array, the parameter <i>maxOutputLength</i> can be used to specify
-   how many elements this actor should only output. If the specified
-   length is larger than the number of satisfied elements, it will
-   ignore the specified length and only output all the satisfied
-   elements.
+<p> Instead of output all the satisfied elements in the input
+array, the parameter <i>maxOutputLength</i> can be used to specify
+how many elements this actor should only output. If the specified
+length is larger than the number of satisfied elements, it will
+ignore the specified length and only output all the satisfied
+elements.
 
-   <p>
-   FIXME: what should be the correct behavior if no enough elements to output?
-   <p>
-   FIXME: make a convention, say when the maxOutputLength is -1, for output
-   all the satisfied elements?
+<p>
+FIXME: what should be the correct behavior if no enough elements to output?
+<p>
+FIXME: make a convention, say when the maxOutputLength is -1, for output
+all the satisfied elements?
 
-   FIXME: should add a ModelToken and an input port for receiving the filter
-   model. Create a composite actor for providing a ModelToken from its inside
-   model.
-   <P>
+FIXME: should add a ModelToken and an input port for receiving the filter
+model. Create a composite actor for providing a ModelToken from its inside
+model.
+<P>
 
-   @author Yang Zhao, Ilkay Altintas
-   @version $Id$
-   @since Ptolemy II 4.1
-   @see ptolemy.actor.lib.hoc.ModelReference
-   @Pt.ProposedRating Yellow (ellen_zh)
-   @Pt.AcceptedRating Red (ellen_zh)
+@author Yang Zhao, Ilkay Altintas
+@version $Id$
+@since Ptolemy II 4.1
+@see ptolemy.actor.lib.hoc.ModelReference
+@Pt.ProposedRating Yellow (ellen_zh)
+@Pt.AcceptedRating Red (ellen_zh)
 */
 public class ApplyFilterOverArray extends TypedAtomicActor
     implements ExecutionListener {
@@ -110,7 +110,7 @@ public class ApplyFilterOverArray extends TypedAtomicActor
      *   an actor already in the container.
      */
     public ApplyFilterOverArray(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         inputArray = new TypedIOPort(this, "inputArray", true, false);
@@ -156,7 +156,7 @@ public class ApplyFilterOverArray extends TypedAtomicActor
      *   to this container (not thrown in this base class).
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == modelFileOrURL) {
             // Open the file and read the MoML to create a model.
             URL url = modelFileOrURL.asURL();
@@ -177,7 +177,7 @@ public class ApplyFilterOverArray extends TypedAtomicActor
                     _model = parser.parse(null, url);
                 } catch (Exception ex) {
                     throw new IllegalActionException(this, ex,
-                        "Failed to read model.");
+                            "Failed to read model.");
                 }
 
                 // Create a manager, if appropriate.
@@ -202,7 +202,7 @@ public class ApplyFilterOverArray extends TypedAtomicActor
                 _outputLength = length.intValue();
             } else {
                 throw new IllegalActionException(this,
-                    "output array length is less than or equal 0?!");
+                        "output array length is less than or equal 0?!");
             }
         } else {
             super.attributeChanged(attribute);
@@ -322,7 +322,7 @@ public class ApplyFilterOverArray extends TypedAtomicActor
                     _manager.execute();
                 } catch (KernelException ex) {
                     throw new IllegalActionException(this, ex,
-                        "Execution failed.");
+                            "Execution failed.");
                 }
 
                 if (_getResult()) {
@@ -415,7 +415,7 @@ public class ApplyFilterOverArray extends TypedAtomicActor
             Throwable throwable = _throwable;
             _throwable = null;
             throw new IllegalActionException(this, throwable,
-                "Background run threw an exception");
+                    "Background run threw an exception");
         }
     }
 
@@ -448,7 +448,7 @@ public class ApplyFilterOverArray extends TypedAtomicActor
             return ((BooleanToken) t).booleanValue();
         } else if (attribute instanceof Settable) {
             BooleanToken t = new BooleanToken(((Settable) attribute)
-                                .getExpression());
+                    .getExpression());
             return t.booleanValue();
         }
 

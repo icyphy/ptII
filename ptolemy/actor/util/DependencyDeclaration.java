@@ -74,7 +74,7 @@ public class DependencyDeclaration extends Attribute {
      *   an entity with the specified name.
      */
     public DependencyDeclaration(Variable container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         setPersistent(false);
     }

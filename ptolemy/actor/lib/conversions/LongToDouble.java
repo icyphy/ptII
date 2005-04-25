@@ -63,7 +63,7 @@ public class LongToDouble extends Converter {
      *   actor with this name.
      */
     public LongToDouble(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         input.setTypeEquals(BaseType.LONG);
         output.setTypeEquals(BaseType.DOUBLE);

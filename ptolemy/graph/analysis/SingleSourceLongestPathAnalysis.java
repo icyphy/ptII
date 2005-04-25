@@ -61,9 +61,9 @@ public class SingleSourceLongestPathAnalysis extends Analysis {
      *  are going to be used to calculated the longest path.
      */
     public SingleSourceLongestPathAnalysis(Graph graph, Node startNode,
-        ToDoubleMapping edgeLengths) {
+            ToDoubleMapping edgeLengths) {
         super(new AllEdgeSingleSourceLongestPathStrategy(graph, startNode,
-                edgeLengths));
+                      edgeLengths));
     }
 
     /** Construct an instance of this class with a given analyzer.
@@ -71,7 +71,7 @@ public class SingleSourceLongestPathAnalysis extends Analysis {
      *  @param analyzer The given analyzer.
      */
     public SingleSourceLongestPathAnalysis(
-        SingleSourceLongestPathAnalyzer analyzer) {
+            SingleSourceLongestPathAnalyzer analyzer) {
         super(analyzer);
     }
 
@@ -136,7 +136,7 @@ public class SingleSourceLongestPathAnalysis extends Analysis {
      */
     public String toString() {
         return "Single source longest path analysis using "
-        + "the following analyzer:\n" + analyzer().toString();
+            + "the following analyzer:\n" + analyzer().toString();
     }
 
     /** Check if a given analyzer is compatible with this analysis.

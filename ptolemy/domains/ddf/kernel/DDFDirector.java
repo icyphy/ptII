@@ -115,11 +115,11 @@ import java.util.Set;
    One basic(default) iteration consists of:
    <pre>
    if (E\D != empty set) {
-       fire (E\D)
+   fire (E\D)
    } else if (D != empty set) {
-       fire minimax(D)
+   fire minimax(D)
    } else {
-       declare deadlock
+   declare deadlock
    }
    </pre>
    The function "minimax(D)" returns a subset of D with the smallest
@@ -159,7 +159,7 @@ public class DDFDirector extends Director {
      *   an entity with the specified name.
      */
     public DDFDirector()
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super();
         _init();
     }
@@ -174,7 +174,7 @@ public class DDFDirector extends Director {
      *   an entity with the specified name.
      */
     public DDFDirector(Workspace workspace)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -193,7 +193,7 @@ public class DDFDirector extends Director {
      *   an attribute that already exists in the given container.
      */
     public DDFDirector(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _init();
     }
@@ -237,10 +237,10 @@ public class DDFDirector extends Director {
      *   or getToken() throws IllegalActionException.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == runUntilDeadlockInOneIteration) {
             _runUntilDeadlock = ((BooleanToken) runUntilDeadlockInOneIteration
-                            .getToken()).booleanValue();
+                    .getToken()).booleanValue();
 
             if (_runUntilDeadlock && _isTopLevel()) {
                 // The reason we don't allow this is because we cannot
@@ -248,10 +248,10 @@ public class DDFDirector extends Director {
                 // one iteration. And the same effect can be achieved
                 // by setting the parameter iterations to zero anyway.
                 throw new IllegalActionException(this,
-                    "Cannot set runUntilDeadlockInOneIteration to be "
-                    + "true if this DDFDirector is at top level. "
-                    + "Instead you should set the parameter iterations "
-                    + "to be zero to achieve the same effect.");
+                        "Cannot set runUntilDeadlockInOneIteration to be "
+                        + "true if this DDFDirector is at top level. "
+                        + "Instead you should set the parameter iterations "
+                        + "to be zero to achieve the same effect.");
             }
         } else {
             super.attributeChanged(attribute);
@@ -298,7 +298,7 @@ public class DDFDirector extends Director {
             int minimaxSize = Integer.MAX_VALUE;
 
             Iterator actors = ((TypedCompositeActor) getContainer()).deepEntityList()
-                                           .iterator();
+                .iterator();
 
             while (actors.hasNext()) {
                 // Scan all actors to find all enabled and not
@@ -407,14 +407,14 @@ public class DDFDirector extends Director {
     public void initialize() throws IllegalActionException {
         _iterationCount = 0;
         _runUntilDeadlock = ((BooleanToken) runUntilDeadlockInOneIteration
-                        .getToken()).booleanValue();
+                .getToken()).booleanValue();
         _actorsToCheckNumberOfFirings.clear();
         _disabledActors.clear();
 
         super.initialize();
 
         Iterator outputPorts = ((Actor) getContainer()).outputPortList()
-                                            .iterator();
+            .iterator();
 
         while (outputPorts.hasNext()) {
             IOPort outputPort = (IOPort) outputPorts.next();
@@ -425,7 +425,7 @@ public class DDFDirector extends Director {
 
                     if (_debugging) {
                         _debug("transferring initial tokens from "
-                            + outputPort.getFullName());
+                                + outputPort.getFullName());
                     }
 
                     outputPort.send(i, token);
@@ -461,7 +461,7 @@ public class DDFDirector extends Director {
         actorInfo.requiredFiringsPerIteration = 0;
 
         Variable requiredFiringsPerIteration = (Variable) ((Entity) actor)
-                        .getAttribute("requiredFiringsPerIteration");
+            .getAttribute("requiredFiringsPerIteration");
 
         if (requiredFiringsPerIteration != null) {
             Token token = requiredFiringsPerIteration.getToken();
@@ -476,9 +476,9 @@ public class DDFDirector extends Director {
                 _actorsToCheckNumberOfFirings.add(actor);
             } else {
                 throw new IllegalActionException(this, (ComponentEntity) actor,
-                    "The variable "
-                    + "requiredFiringsPerIteration must contain "
-                    + "an IntToken.");
+                        "The variable "
+                        + "requiredFiringsPerIteration must contain "
+                        + "an IntToken.");
             }
         }
     }
@@ -521,7 +521,7 @@ public class DDFDirector extends Director {
 
         try {
             int capacity = ((IntToken) maximumReceiverCapacity.getToken())
-                            .intValue();
+                .intValue();
 
             if (capacity > 0) {
                 receiver.setCapacity(capacity);
@@ -560,12 +560,12 @@ public class DDFDirector extends Director {
 
         if (isDeadlocked && _isEmbedded()) {
             Iterator inputPorts = ((Actor) getContainer()).inputPortList()
-                                               .iterator();
+                .iterator();
 
             while (inputPorts.hasNext()) {
                 IOPort inputPort = (IOPort) inputPorts.next();
                 Receiver[][] deepReceivers = inputPort.deepGetReceivers();
-foundNotSatisfiedReceiver:
+                foundNotSatisfiedReceiver:
                 for (int i = 0; i < deepReceivers.length; i++) {
                     for (int j = 0; j < deepReceivers[i].length; j++) {
                         QueueReceiver deepReceiver = (QueueReceiver) deepReceivers[i][j];
@@ -629,9 +629,9 @@ foundNotSatisfiedReceiver:
                 if ((rate[i] >= 0) && !inputPort.hasToken(i, rate[i])) {
                     if (_debugging) {
                         _debug("Channel " + i + " of port "
-                            + inputPort.getFullName()
-                            + " does not have enough tokens: " + rate[i]
-                            + ". Prefire returns false.");
+                                + inputPort.getFullName()
+                                + " does not have enough tokens: " + rate[i]
+                                + ". Prefire returns false.");
                     }
 
                     return false;
@@ -659,11 +659,11 @@ foundNotSatisfiedReceiver:
      */
     public String[] suggestedModalModelDirectors() {
         String[] defaultSuggestions = {
-                "ptolemy.domains.fsm.kernel.MultirateFSMDirector",
-                "ptolemy.domains.hdf.kernel.HDFFSMDirector",
-                "ptolemy.domains.fsm.kernel.FSMDirector",
-                "ptolemy.domains.fsm.kernel.NonStrictFSMDirector"
-            };
+            "ptolemy.domains.fsm.kernel.MultirateFSMDirector",
+            "ptolemy.domains.hdf.kernel.HDFFSMDirector",
+            "ptolemy.domains.fsm.kernel.FSMDirector",
+            "ptolemy.domains.fsm.kernel.NonStrictFSMDirector"
+        };
         return defaultSuggestions;
     }
 
@@ -685,8 +685,8 @@ foundNotSatisfiedReceiver:
 
         if (!port.isInput() || !port.isOpaque()) {
             throw new IllegalActionException(this, port,
-                "Attempted to transferInputs on a port is not an "
-                + "opaque input port.");
+                    "Attempted to transferInputs on a port is not an "
+                    + "opaque input port.");
         }
 
         boolean wasTransferred = false;
@@ -705,18 +705,18 @@ foundNotSatisfiedReceiver:
 
                             if (_debugging) {
                                 _debug(getName(),
-                                    "transferring input from channel " + i
-                                    + " of input port " + port.getName());
+                                        "transferring input from channel " + i
+                                        + " of input port " + port.getName());
                             }
 
                             port.sendInside(i, t);
                             wasTransferred = true;
                         } else {
                             throw new IllegalActionException(this, port,
-                                "Channel " + i + "should consume " + rate[i]
-                                + " tokens, but there were only " + k
-                                + " tokens available. Maybe the rate"
-                                + " is set wrong?");
+                                    "Channel " + i + "should consume " + rate[i]
+                                    + " tokens, but there were only " + k
+                                    + " tokens available. Maybe the rate"
+                                    + " is set wrong?");
                         }
                     }
 
@@ -729,8 +729,8 @@ foundNotSatisfiedReceiver:
 
                         if (_debugging) {
                             _debug(getName(),
-                                "transferring input from channel " + i
-                                + " of port " + port.getName());
+                                    "transferring input from channel " + i
+                                    + " of port " + port.getName());
                         }
 
                         port.sendInside(i, token);
@@ -781,8 +781,8 @@ foundNotSatisfiedReceiver:
 
         if (!port.isOutput() || !port.isOpaque()) {
             throw new IllegalActionException(this, port,
-                "Attempted to transferOutputs on a port that "
-                + "is not an opaque output port.");
+                    "Attempted to transferOutputs on a port that "
+                    + "is not an opaque output port.");
         }
 
         boolean wasTransferred = false;
@@ -801,18 +801,18 @@ foundNotSatisfiedReceiver:
 
                             if (_debugging) {
                                 _debug(getName(),
-                                    "transferring output from channel " + i
-                                    + " of port " + port.getName());
+                                        "transferring output from channel " + i
+                                        + " of port " + port.getName());
                             }
 
                             port.send(i, token);
                             wasTransferred = true;
                         } else {
                             throw new IllegalActionException(this, port,
-                                "Channel " + i + " should produce " + rate[i]
-                                + " tokens, but there were only " + k
-                                + " tokens available. Maybe the rate"
-                                + " is set wrong?");
+                                    "Channel " + i + " should produce " + rate[i]
+                                    + " tokens, but there were only " + k
+                                    + " tokens available. Maybe the rate"
+                                    + " is set wrong?");
                         }
                     }
 
@@ -825,8 +825,8 @@ foundNotSatisfiedReceiver:
 
                         if (_debugging) {
                             _debug(getName(),
-                                "transferring output from channel " + i
-                                + " of port " + port.getName());
+                                    "transferring output from channel " + i
+                                    + " of port " + port.getName());
                         }
 
                         port.send(i, token);
@@ -870,7 +870,7 @@ foundNotSatisfiedReceiver:
         if (returnValue == STOP_ITERATING) {
             if (_debugging) {
                 _debug("Actor " + ((NamedObj) actor).getFullName()
-                    + " is disabled.");
+                        + " is disabled.");
             }
 
             _disabledActors.add(actor);
@@ -906,11 +906,11 @@ foundNotSatisfiedReceiver:
      *   IllegalActionException.
      */
     protected ActorEnablingStatus _getActorStatus(Actor actor)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (!_isEnabled(actor)) {
             if (_debugging) {
                 _debug(((NamedObj) actor).getName() + ": "
-                    + ActorEnablingStatus.NOT_ENABLED);
+                        + ActorEnablingStatus.NOT_ENABLED);
             }
 
             return ActorEnablingStatus.NOT_ENABLED;
@@ -919,7 +919,7 @@ foundNotSatisfiedReceiver:
         if (_isDeferrable(actor)) {
             if (_debugging) {
                 _debug(((NamedObj) actor).getName() + ": "
-                    + ActorEnablingStatus.ENABLED_DEFERRABLE);
+                        + ActorEnablingStatus.ENABLED_DEFERRABLE);
             }
 
             return ActorEnablingStatus.ENABLED_DEFERRABLE;
@@ -927,7 +927,7 @@ foundNotSatisfiedReceiver:
 
         if (_debugging) {
             _debug(((NamedObj) actor).getName() + ": "
-                + ActorEnablingStatus.ENABLED_NOT_DEFERRABLE);
+                    + ActorEnablingStatus.ENABLED_NOT_DEFERRABLE);
         }
 
         return ActorEnablingStatus.ENABLED_NOT_DEFERRABLE;
@@ -967,7 +967,7 @@ foundNotSatisfiedReceiver:
                     int tokenConsumptionRate = _getTokenConsumptionRate(farReceiver);
 
                     if ((tokenConsumptionRate >= 0)
-                                    && (farReceiver.size() >= tokenConsumptionRate)) {
+                            && (farReceiver.size() >= tokenConsumptionRate)) {
                         deferrable = true;
 
                         // Here we find the maximum of the token numbers for
@@ -1032,7 +1032,7 @@ foundNotSatisfiedReceiver:
      *  IllegalActionException.
      */
     protected void _updateConnectedActorsStatus(Actor actor)
-        throws IllegalActionException {
+            throws IllegalActionException {
         // Update enabling status for each connected actor.
         Iterator ports = ((Entity) actor).portList().iterator();
 
@@ -1092,7 +1092,7 @@ foundNotSatisfiedReceiver:
      *   length of tokenConsumptionRate array is less than port width.
      */
     private int[] _getTokenConsumptionRate(IOPort port)
-        throws IllegalActionException {
+            throws IllegalActionException {
         int[] rate = new int[port.getWidth()];
 
         if (port.getContainer() != getContainer()) {
@@ -1139,7 +1139,7 @@ foundNotSatisfiedReceiver:
      *   IllegalActionException.
      */
     private int _getTokenConsumptionRate(Receiver receiver)
-        throws IllegalActionException {
+            throws IllegalActionException {
         int tokenConsumptionRate;
 
         IOPort port = receiver.getContainer();
@@ -1193,7 +1193,7 @@ foundNotSatisfiedReceiver:
             // Scan the contained receivers of the port to find
             // out channel index.
             int channelIndex = 0;
-foundChannelIndex:
+            foundChannelIndex:
             for (int m = 0; m < portReceivers.length; m++) {
                 for (int n = 0; n < portReceivers[m].length; n++) {
                     if (receiver == portReceivers[m][n]) {
@@ -1226,12 +1226,12 @@ foundChannelIndex:
      *   not an output port of the container of this director.
      */
     private int[] _getTokenProductionRate(IOPort port)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (port.getContainer() != getContainer()) {
             throw new IllegalActionException(this,
-                "The port in the "
-                + "argument is not an output port of the container of "
-                + getName());
+                    "The port in the "
+                    + "argument is not an output port of the container of "
+                    + getName());
         }
 
         int[] rate = new int[port.getWidthInside()];
@@ -1251,9 +1251,9 @@ foundChannelIndex:
 
                     if (tokens.length < port.getWidthInside()) {
                         throw new IllegalActionException(this,
-                            "The length of "
-                            + "tokenProductionRate array is less than "
-                            + "the port inside width.");
+                                "The length of "
+                                + "tokenProductionRate array is less than "
+                                + "the port inside width.");
                     }
 
                     for (int i = 0; i < port.getWidthInside(); i++) {
@@ -1278,7 +1278,7 @@ foundChannelIndex:
      *  value false.
      */
     private void _init()
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         iterations = new Parameter(this, "iterations");
         iterations.setTypeEquals(BaseType.INT);
         iterations.setToken(new IntToken(0));

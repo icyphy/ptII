@@ -39,7 +39,7 @@ import ptolemy.kernel.util.Workspace;
 
 public class TutorialApplet1 extends TypedCompositeActor {
     public TutorialApplet1(Workspace workspace)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
 
         // Create the director.

@@ -131,7 +131,7 @@ public class ConditionalBranchController {
                     if (branches[i].getGuard()) {
                         // Create a thread for this enabled branch
                         Nameable act = (Nameable) branches[i].getController()
-                                                                         .getParent();
+                            .getParent();
                         String name = act.getName() + branches[i].getID();
                         Thread t = new Thread((Runnable) branches[i], name);
                         _threadList.add(0, t);
@@ -211,14 +211,14 @@ public class ConditionalBranchController {
                 // counter indicating # active branches, should be zero
                 if (_branchesActive != 0) {
                     throw new InvalidStateException(((Nameable) getParent())
-                                    .getName()
-                        + ": chooseBranch() is exiting with branches"
-                        + " still active.");
+                            .getName()
+                            + ": chooseBranch() is exiting with branches"
+                            + " still active.");
                 }
             }
         } catch (InterruptedException ex) {
             throw new TerminateProcessException(((Nameable) getParent())
-                            .getName() + ".chooseBranch interrupted.");
+                    .getName() + ".chooseBranch interrupted.");
         }
 
         if (_successfulBranch == -1) {
@@ -228,8 +228,8 @@ public class ConditionalBranchController {
             }
 
             throw new TerminateProcessException(((Nameable) getParent())
-                            .getName() + ": exiting conditional"
-                + " branching due to TerminateProcessException.");
+                    .getName() + ": exiting conditional"
+                    + " branching due to TerminateProcessException.");
         }
 
         _threadList = null;
@@ -339,9 +339,9 @@ public class ConditionalBranchController {
         synchronized (_internalLock) {
             if (_branchTrying != branchID) {
                 throw new InvalidStateException(((Nameable) getParent())
-                                .getName()
-                    + ": branchSucceeded called with a branch id not "
-                    + "equal to the id of the branch registered as trying.");
+                        .getName()
+                        + ": branchSucceeded called with a branch id not "
+                        + "equal to the id of the branch registered as trying.");
             }
 
             _successfulBranch = _branchTrying;
@@ -362,11 +362,11 @@ public class ConditionalBranchController {
             if (_blocked) {
                 if (_branchesBlocked != _branchesStarted) {
                     throw new InternalErrorException(((Nameable) getParent())
-                                    .getName()
-                        + ": blocked when not all enabled branches are "
-                        + "blocked.\nNumber of branches blocked: "
-                        + _branchesBlocked + "\nNumber of branches started: "
-                        + _branchesStarted);
+                            .getName()
+                            + ": blocked when not all enabled branches are "
+                            + "blocked.\nNumber of branches blocked: "
+                            + _branchesBlocked + "\nNumber of branches started: "
+                            + _branchesStarted);
                 }
 
                 // Note: acquiring a second lock, need to be careful.
@@ -397,8 +397,8 @@ public class ConditionalBranchController {
         }
 
         throw new InvalidStateException(((Nameable) getParent()).getName()
-            + ": Error: branch releasing first without possessing it! :"
-            + _branchTrying + " & " + branchNumber);
+                + ": Error: branch releasing first without possessing it! :"
+                + _branchTrying + " & " + branchNumber);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -417,8 +417,8 @@ public class ConditionalBranchController {
             // If a thread has a reference to a receiver with no director it
             // is an error so terminate the process.
             throw new TerminateProcessException("CSPReceiver: trying to "
-                + " rendezvous with a receiver with no "
-                + "director => terminate.");
+                    + " rendezvous with a receiver with no "
+                    + "director => terminate.");
         }
     }
 

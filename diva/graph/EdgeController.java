@@ -123,5 +123,5 @@ public interface EdgeController {
     /** Render the edge on the given layer between the two sites.
      */
     public Connector render(Object edge, FigureLayer layer, Site tailSite,
-        Site headSite);
+            Site headSite);
 }

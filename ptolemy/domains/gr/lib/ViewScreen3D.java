@@ -91,7 +91,7 @@ import javax.vecmath.Vector3f;
 @Pt.AcceptedRating Red (chf)
 */
 public class ViewScreen3D extends GRActor3D implements Placeable,
-    ViewScreenInterface {
+                                                       ViewScreenInterface {
     /** Construct a ViewScreen in the given container with the given name.
      *  If the container argument is null, a NullPointerException will
      *  be thrown. If the name argument is null, then the name is set
@@ -105,7 +105,7 @@ public class ViewScreen3D extends GRActor3D implements Placeable,
      *   CompositeActor and the name collides with an entity in the container.
      */
     public ViewScreen3D(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         sceneGraphIn = new TypedIOPort(this, "sceneGraphIn");
@@ -346,7 +346,7 @@ public class ViewScreen3D extends GRActor3D implements Placeable,
         BranchGroup lightRoot = new BranchGroup();
 
         AmbientLight lightAmbient = new AmbientLight(new Color3f(0.8f, 0.8f,
-                    0.8f));
+                                                             0.8f));
         lightAmbient.setInfluencingBounds(_bounds);
         lightRoot.addChild(lightAmbient);
 
@@ -435,9 +435,9 @@ public class ViewScreen3D extends GRActor3D implements Placeable,
 
         try {
             horizontalDimension = ((IntToken) horizontalResolution.getToken())
-                            .intValue();
+                .intValue();
             verticalDimension = ((IntToken) verticalResolution.getToken())
-                            .intValue();
+                .intValue();
         } catch (Exception ex) {
             // Should have been caught before this.
             throw new InternalErrorException(ex);
@@ -452,8 +452,8 @@ public class ViewScreen3D extends GRActor3D implements Placeable,
 
                 if (containerEffigy == null) {
                     throw new InternalErrorException(
-                        "Cannot find effigy for top level: "
-                        + toplevel().getFullName());
+                            "Cannot find effigy for top level: "
+                            + toplevel().getFullName());
                 }
 
                 try {
@@ -477,7 +477,7 @@ public class ViewScreen3D extends GRActor3D implements Placeable,
                     // set the size of the frame, we have to also set the
                     // size of the internal component.
                     Component[] components = _frame.getContentPane()
-                                                               .getComponents();
+                        .getComponents();
 
                     if (components.length > 0) {
                         _viewSize.setSize(components[0]);

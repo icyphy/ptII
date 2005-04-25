@@ -56,10 +56,10 @@ public class Converter extends Transformer {
      *   actor with this name.
      */
     public Converter(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         _attachText("_iconDescription",
-            "<svg>\n" + "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
-            + "style=\"fill:white\"/>\n" + "</svg>\n");
+                "<svg>\n" + "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
+                + "style=\"fill:white\"/>\n" + "</svg>\n");
     }
 }

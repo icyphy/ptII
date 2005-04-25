@@ -163,10 +163,10 @@ public class PtolemyApplet extends BasicJApplet implements ExecutionListener {
      */
     public String getAppletInfo() {
         return "Ptolemy applet for Ptolemy II "
-        + VersionAttribute.CURRENT_VERSION
-        + "\nPtolemy II comes from UC Berkeley, Department of EECS.\n"
-        + "See http://ptolemy.eecs.berkeley.edu/ptolemyII"
-        + "\n(Build: $Id$)";
+            + VersionAttribute.CURRENT_VERSION
+            + "\nPtolemy II comes from UC Berkeley, Department of EECS.\n"
+            + "See http://ptolemy.eecs.berkeley.edu/ptolemyII"
+            + "\n(Build: $Id$)";
     }
 
     /** Describe the applet parameters.
@@ -174,27 +174,27 @@ public class PtolemyApplet extends BasicJApplet implements ExecutionListener {
      */
     public String[][] getParameterInfo() {
         String[][] newInfo = {
-                {
-                    "modelClass",
-                    "",
-                    "Class name for an instance of NamedObj"
-                },
-                {
-                    "orientation",
-                    "",
-                    "Orientation: vertical, horizontal, or controls_only"
-                },
-                {
-                    "controls",
-                    "",
-                    "List of on-screen controls"
-                },
-                {
-                    "autoRun",
-                    "boolean",
-                    "Determines if the model is run automatically"
-                }
-            };
+            {
+                "modelClass",
+                "",
+                "Class name for an instance of NamedObj"
+            },
+            {
+                "orientation",
+                "",
+                "Orientation: vertical, horizontal, or controls_only"
+            },
+            {
+                "controls",
+                "",
+                "List of on-screen controls"
+            },
+            {
+                "autoRun",
+                "boolean",
+                "Determines if the model is run automatically"
+            }
+        };
         return _concatStringArrays(super.getParameterInfo(), newInfo);
     }
 
@@ -220,7 +220,7 @@ public class PtolemyApplet extends BasicJApplet implements ExecutionListener {
             // This might not actually be a top level, because we might
             // be looking inside.  So we check before creating a manager.
             if ((_toplevel.getContainer() == null)
-                            && _toplevel instanceof CompositeActor) {
+                    && _toplevel instanceof CompositeActor) {
                 if (((CompositeActor) _toplevel).getManager() == null) {
                     _manager = new Manager(_workspace, "manager");
                     _manager.addExecutionListener(this);
@@ -316,7 +316,7 @@ public class PtolemyApplet extends BasicJApplet implements ExecutionListener {
      *   exception to throw.
      */
     protected NamedObj _createModel(Workspace workspace)
-        throws Exception {
+            throws Exception {
         NamedObj result = null;
 
         // Look for modelClass applet parameter.
@@ -355,8 +355,8 @@ public class PtolemyApplet extends BasicJApplet implements ExecutionListener {
 
             if (!foundConstructor) {
                 throw new IllegalActionException(
-                    "Cannot find a suitable constructor for "
-                    + modelSpecification);
+                        "Cannot find a suitable constructor for "
+                        + modelSpecification);
             }
         }
 
