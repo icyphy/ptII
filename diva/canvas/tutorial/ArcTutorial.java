@@ -115,7 +115,7 @@ import javax.swing.SwingUtilities;
  *
  * <p> To make this example a little more interesting, selected
  * figures have resize handles attached to them. As the figure
- * is resived, attached connectors change accordingly. This
+ * is resized, attached connectors change accordingly. This
  * tutorial also illustrates the use of the TypedDecorator
  * class to attach different kinds of manipulators to different
  * kinds of figures (in this case, different kinds of connectors).
