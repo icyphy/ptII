@@ -62,8 +62,7 @@ false}
 
     # Turn newlines into spaces.
     regsub -all "\n" $template " " template
-    regsub -all "
-" $template "" template
+    regsub -all "" $template "" template
     
     # Test output
     string first $template $output

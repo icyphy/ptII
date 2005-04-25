@@ -159,8 +159,7 @@ proc generateC {className {commandLineArgs {}}} {
 
         # Turn newlines into spaces.
         regsub -all "\n" $output " " output
-        regsub -all "
-" $output "" output
+        regsub -all "" $output "" output
     
         return $output 
     }

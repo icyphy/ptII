@@ -160,8 +160,7 @@ test CaffeineApp-1.1 {Generate all required files for CaffeineApp.java} {
     
     # Turn newlines into spaces.
     regsub -all "\n" $output " " output
-    regsub -all "
-" $output "" output
+    regsub -all "" $output "" output
     
     # Move all generated files to the output directory.
     foreach i $otherFiles {

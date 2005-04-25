@@ -59,8 +59,7 @@ test Cases-1.1 {Generate all required files for Cases.java} {
     
     # Turn newlines into spaces.
     regsub -all "\n" $template " " template
-    regsub -all "
-" $template "" template
+    regsub -all "" $template "" template
 
     string first $template $output
     

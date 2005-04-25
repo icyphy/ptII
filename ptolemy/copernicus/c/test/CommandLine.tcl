@@ -61,8 +61,7 @@ test CommandLine-1.1 {Generate all required files for CommandLine.java} {
     # Check if the output is correct.    
     # Turn newlines into spaces.
     regsub -all "\n" $template " " template
-    regsub -all "
-" $template "" template
+    regsub -all "" $template "" template
 
     string first $template $output
     

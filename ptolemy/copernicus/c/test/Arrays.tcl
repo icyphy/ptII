@@ -66,8 +66,7 @@ test Arrays-1.1 {Generate all required files for Arrays.java} {
 
     # Turn newlines into spaces.
     regsub -all "\n" $template " " template
-    regsub -all "
-" $template "" template
+    regsub -all "" $template "" template
     
     #set template "0 10 20 30 40 50 60 70 80 90 0 1 10 11 0 1 2 I, said the sparrow. With my bow and arrow."
     

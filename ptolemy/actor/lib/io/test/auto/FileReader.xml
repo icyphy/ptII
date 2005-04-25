@@ -38,35 +38,7 @@
         </port>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{&quot;This
-&#10;is
-&#10;a
-&#10;test
-&#10;text
-&#10;data
-&#10;file.
-&#10;&quot;, &quot;This
-&#10;is
-&#10;a
-&#10;test
-&#10;text
-&#10;data
-&#10;file.
-&#10;&quot;, &quot;This
-&#10;is
-&#10;a
-&#10;test
-&#10;text
-&#10;data
-&#10;file.
-&#10;&quot;, &quot;This
-&#10;is
-&#10;a
-&#10;test
-&#10;text
-&#10;data
-&#10;file.
-&#10;&quot;}}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{&quot;This&#10;is&#10;a&#10;test&#10;text&#10;data&#10;file.&#10;&quot;, &quot;This&#10;is&#10;a&#10;test&#10;text&#10;data&#10;file.&#10;&quot;, &quot;This&#10;is&#10;a&#10;test&#10;text&#10;data&#10;file.&#10;&quot;, &quot;This&#10;is&#10;a&#10;test&#10;text&#10;data&#10;file.&#10;&quot;}}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>

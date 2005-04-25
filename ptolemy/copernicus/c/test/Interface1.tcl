@@ -61,8 +61,7 @@ test Interface1-1.1 {Generate all required files for Interface1_Main.java} {
     set output [generateC $className]
     # Turn newlines into spaces.
     regsub -all "\n" $template " " template
-    regsub -all "
-" $template "" template
+    regsub -all "" $template "" template
     
     cd ../..
     foreach i "[glob {Interface1*.[cho]}] [glob {Interface1_C*.class}]" {
