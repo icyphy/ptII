@@ -126,7 +126,7 @@ public class TextString3D extends GRShadedShape {
     ///////////////////////////////////////////////////////////////////
     ////                         ports and parameters              ////
 
-    /** The aligment of the text. This is a string that defaults to
+    /** The alignment of the text. This is a string that defaults to
      *  "center". The recognized values are "center", "first", and
      *  "last". A value of "first" means that the first character
      *  is put on the position of the object, whereas "last" means

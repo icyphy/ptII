@@ -1322,13 +1322,13 @@ public class CTMultiSolverDirector extends CTDirector {
 
     /** Return true if the current time is the first element in the breakpoint
      *  table, and remove that element from the breakpoint table. Otherwise,
-     *  the breakpont table is unchanged.
+     *  the breakpoint table is unchanged.
      *  @return true if the current time is a breakpoint.
      *  @exception IllegalActionException If a breakpoint is missed.
      */
     protected boolean _removeCurrentTimeFromBreakpointTable()
             throws IllegalActionException {
-        // NOTE: We only remove elements from breakpont table in this method
+        // NOTE: We only remove elements from breakpoint table in this method
         // and the postfire() method of the CT director.
         boolean currentTimeIsABreakpoint = false;
         TotallyOrderedSet breakPoints = getBreakPoints();

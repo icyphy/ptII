@@ -357,7 +357,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
      *  @param actor The actor that requests the firing.
      *  @param time The requested firing time.
      *  @exception IllegalActionException If the time is earlier than
-     *  the current time, or the breakpont table is null.
+     *  the current time, or the breakpoint table is null.
      */
     public void fireAt(Actor actor, Time time) throws IllegalActionException {
         // Check if the request time is earlier than the current time.

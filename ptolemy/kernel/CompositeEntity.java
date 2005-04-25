@@ -100,7 +100,7 @@ import java.util.List;
    {@link #deepEntityList()}, and {@link #allAtomicEntityList()}.
    Correspondingly, if it is not a class definition, then it is not
    included in the list returned by {@link #classDefinitionList()}.
-   Contained class defintions are nonetheless required to have names
+   Contained class definitions are nonetheless required to have names
    distinct from contained entities that are not class definitions,
    and the method {@link #getEntity(String)} will return either
    a class definition or an entity that is not a class definition,

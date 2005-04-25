@@ -121,7 +121,7 @@ public class GiottoCodeGenerator extends Attribute {
      *  overridden by subclasses
      *  @exception IllegalActionException If the editor factory can not be
      *  created.
-     *  @exception NameDuplicationException If there is already anothter editor
+     *  @exception NameDuplicationException If there is already another editor
      *  factory with the same name.
      */
     protected void _instantiateEditorFactoryClass()

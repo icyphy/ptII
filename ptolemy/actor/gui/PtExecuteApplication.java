@@ -74,7 +74,7 @@ import java.util.List;
    If there are no command-line arguments at all, then this class
    does nothing.
 
-   @author Edward A. Lee, Steve Neuendorffer Christopher Hyland
+   @author Edward A. Lee, Steve Neuendorffer Christopher Hylands
    @version $Id$
    @since Ptolemy II 1.0
    @Pt.ProposedRating Yellow (eal)

@@ -66,7 +66,7 @@ import java.util.Iterator;
    schedule.get(CTSchedule.DYNAMIC_ACTOR_SCHEDULE).actorIterator();
    </pre>
 
-   @author  Jie Liu, Haiayng Zheng
+   @author  Jie Liu, Haiyang Zheng
    @version $Id$
    @since Ptolemy II 2.0
    @Pt.ProposedRating Yellow (hyzheng)

@@ -257,7 +257,7 @@ public class RunCompositeActor extends LifeCycleManager {
      *  output ports and parameters of this actor whose name matches
      *  the output port. If there is no such parameter, then create
      *  an instance of Variable with a matching name and set up the
-     *  type constriants to that instance.  The type of the output
+     *  type constraints to that instance.  The type of the output
      *  port is constrained to be at least that of the parameter
      *  or variable.
      *  @exception IllegalActionException If there is no director, or if

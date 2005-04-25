@@ -47,7 +47,7 @@ import java.awt.geom.Rectangle2D;
    was planned for BasicHighlighter but there doesn't seem to be an easy way to
    determine that an edge is being painted. This class is a stripped down
    version of BasicHighlighter with the paint method modified so that it
-   assumnes that an edge is being highlighted.
+   assumes that an edge is being highlighted.
    @version        $Id$
    @author         Rowland R Johnson
    @since Ptolemy II 4.0

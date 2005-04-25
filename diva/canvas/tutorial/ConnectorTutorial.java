@@ -217,7 +217,7 @@ public class ConnectorTutorial {
     /**
      * Create the connectors between the two figures. We will firstly
      * create one StraightConnector with a circle and an arrowhead
-     * on it, and then a ManhattanConnector with a diamon on one end.
+     * on it, and then a ManhattanConnector with a diamond on one end.
      */
     public void createConnectors() {
         FigureLayer layer = graphicsPane.getForegroundLayer();

@@ -65,7 +65,7 @@ import javax.swing.SwingUtilities;
  * <img src="doc-files/ArcTutorial.gif" align="right">
  *
  * In this example,
- * the connectors are atached to "perimeter sites" -- that is,
+ * the connectors are attached to "perimeter sites" -- that is,
  * sites that can relocated themselves to maintain themselves
  * on the perimeter of an object. Unlike the first connector
  * example, this one does not need to create a special kind of
