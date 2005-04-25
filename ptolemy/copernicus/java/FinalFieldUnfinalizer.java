@@ -83,19 +83,19 @@ public class FinalFieldUnfinalizer extends SceneTransformer
 
     protected void internalTransform(String phaseName, Map options) {
         System.out.println("FinalFieldUnfinalizer.internalTransform("
-                + phaseName + ", " + options + ")");
+            + phaseName + ", " + options + ")");
 
         boolean debug = PhaseOptions.getBoolean(options, "debug");
 
         // Loop over all the classes...
         for (Iterator i = Scene.v().getApplicationClasses().iterator();
-             i.hasNext();) {
+                        i.hasNext();) {
             SootClass theClass = (SootClass) i.next();
 
             // Assume that any method that is part of an interface that this
             // object implements, is reachable.
             for (Iterator fields = theClass.getFields().iterator();
-                 fields.hasNext();) {
+                            fields.hasNext();) {
                 SootField field = (SootField) fields.next();
                 field.setModifiers(field.getModifiers() & ~Modifier.FINAL);
             }

@@ -106,7 +106,7 @@ public class FixPoint implements Cloneable, Serializable {
             _value = _integerValue(bigDecimal, quant);
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("NumberFormatException "
-                    + "while converting \"" + doubleValue + "\" to a FixPoint.");
+                + "while converting \"" + doubleValue + "\" to a FixPoint.");
         }
     }
 
@@ -140,7 +140,7 @@ public class FixPoint implements Cloneable, Serializable {
             _value = _integerValue(bigDecimal, quant);
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("NumberFormatException "
-                    + "while converting \"" + string + "\" to a FixPoint.");
+                + "while converting \"" + string + "\" to a FixPoint.");
         }
     }
 
@@ -194,7 +194,7 @@ public class FixPoint implements Cloneable, Serializable {
             // of ten in BigDecimal as we use powers of two in FixPoint.
             BigDecimal bigDecimal = new BigDecimal(_value);
             return bigDecimal.divide(_getTwoRaisedTo(_frac_bits), _frac_bits,
-                    BigDecimal.ROUND_UNNECESSARY);
+                BigDecimal.ROUND_UNNECESSARY);
         } else if (_frac_bits == 0) {
             return new BigDecimal(_value);
         } else {
@@ -254,21 +254,21 @@ public class FixPoint implements Cloneable, Serializable {
      *  @exception IllegalArgumentException If division by zero.
      */
     public FixPoint divide(FixPoint arg, Quantization quant)
-            throws IllegalArgumentException {
+        throws IllegalArgumentException {
         // Determine the extra results bits with respect to integer divide
         int fracBits = quant.getFractionBitLength();
         int intBits = quant.getIntegerBitLength();
         int extraBits = _frac_bits - arg._frac_bits + fracBits;
         BigInteger num = (extraBits > 0) ? _value.shiftLeft(extraBits) : _value;
         BigInteger denom = (extraBits < 0) ? arg._value.shiftLeft(-extraBits)
-            : arg._value;
+                                           : arg._value;
 
         try {
             BigInteger[] result = num.divideAndRemainder(denom);
             double rem = result[1].doubleValue() / denom.doubleValue();
             Rounding aRounding = quant.getRounding();
             return new FixPoint(aRounding.quantize(result[0], rem), intBits,
-                    fracBits);
+                fracBits);
         } catch (ArithmeticException e) {
             Overflow anOverflow = quant.getOverflow();
             BigInteger infinity = (_value.signum() >= 0)
@@ -279,7 +279,7 @@ public class FixPoint implements Cloneable, Serializable {
             }
 
             throw new IllegalArgumentException("ArithmeticException while "
-                    + "dividing " + toString() + " by " + arg.toString() + '.');
+                + "dividing " + toString() + " by " + arg.toString() + '.');
         }
     }
 
@@ -360,7 +360,7 @@ public class FixPoint implements Cloneable, Serializable {
         System.out.println(" unscale Value  (2) " + _value.toString(2));
         System.out.println(" unscaled Value (10) " + _value.toString(10));
         System.out.println(" scale Value (10) " + doubleValue()
-                + " Precision: " + getPrecision().toString());
+            + " Precision: " + getPrecision().toString());
         System.out.println(" BitCount:   " + _value.bitCount());
         System.out.println(" BitLength   " + _value.bitLength());
 
@@ -369,9 +369,9 @@ public class FixPoint implements Cloneable, Serializable {
         System.out.println(" ABS bit count:  " + j.bitCount());
         System.out.println(" ABD bitLength:  " + j.bitLength());
         System.out.println(" Max value:  "
-                + getPrecision().findMaximum().doubleValue());
+            + getPrecision().findMaximum().doubleValue());
         System.out.println(" Min value:  "
-                + getPrecision().findMinimum().doubleValue());
+            + getPrecision().findMinimum().doubleValue());
     }
 
     /** Return the value after conversion to comply with a quantization
@@ -400,7 +400,7 @@ public class FixPoint implements Cloneable, Serializable {
             double doubleWeight = fracWeight.doubleValue();
             double fracValue = doubleFrac / doubleWeight;
             return new FixPoint(quant.quantize(bigInt, fracValue), intBits,
-                    fracBits);
+                fracBits);
         }
     }
 

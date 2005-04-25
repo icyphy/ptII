@@ -37,6 +37,7 @@ package ptolemy.codegen.c.actor.lib;
 import ptolemy.codegen.kernel.CCodeGeneratorHelper;
 import ptolemy.kernel.util.IllegalActionException;
 
+
 /**
  * @author Man-Kit Leung
  *
@@ -44,7 +45,6 @@ import ptolemy.kernel.util.IllegalActionException;
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public class Average extends CCodeGeneratorHelper {
-
     /**
      * Constructor method for the Average helper
      * @param actor the associated actor
@@ -55,14 +55,13 @@ public class Average extends CCodeGeneratorHelper {
 
     /**
      * Generate fire code
-     * The method generate code that loops through each 
-     * INPUT [multi-ports] and combine (add or substract) them. 
+     * The method generate code that loops through each
+     * INPUT [multi-ports] and combine (add or substract) them.
      * The result code is put into the given stream buffer
      * @param stream the given buffer to append the code to
      */
-    public void  generateFireCode(StringBuffer stream)
-            throws IllegalActionException {
-
+    public void generateFireCode(StringBuffer stream)
+        throws IllegalActionException {
         CodeStream tmpStream = new CodeStream(this);
         tmpStream.appendCodeBlock("codeBlock1");
         stream.append(processCode(tmpStream.toString()));
@@ -73,9 +72,9 @@ public class Average extends CCodeGeneratorHelper {
      *  replaces macros with their values and returns the results.
      *  @return The processed <code>initBlock</code>.
      */
-    public String generateInitializeCode()
-            throws IllegalActionException {
+    public String generateInitializeCode() throws IllegalActionException {
         super.generateInitializeCode();
+
         CodeStream tmpStream = new CodeStream(this);
         tmpStream.appendCodeBlock("initBlock");
         return processCode(tmpStream.toString());

@@ -1,7 +1,6 @@
 // XmlException.java: Simple base class for AElfred processors.
 // NO WARRANTY! See README, and copyright below.
 // $Id$
-
 /* Portions of this file are
  Copyright (c) 2002-2003 The Regents of the University of California.
  All rights reserved.
@@ -29,12 +28,12 @@
 @ProposedRating Red (cxh)
 @AcceptedRating Red (cxh)
 */
-
 package com.microstar.xml;
 
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+
 
 /**
 Convenience exception class for reporting XML parsing errors.
@@ -68,8 +67,7 @@ method, but not the public initCause() method that JDK1.4 has
 @see XmlHandler#error
 @see HandlerBase
 */
-public class XmlException extends Exception
-{
+public class XmlException extends Exception {
     /** Construct a new XML parsing exception.
      * @param message The error message from the parser.
      * @param systemId The URI of the entity containing the error.
@@ -84,11 +82,9 @@ public class XmlException extends Exception
      * @param line The line number where the error appeared.
      * @param column The column number where the error appeared.
      */
-    public XmlException(String message, String systemId,
-            int line, int column) {
+    public XmlException(String message, String systemId, int line, int column) {
         this(message, systemId, line, column, null);
     }
-
 
     /** Construct a new XML parsing exception.
     * @param message The error message from the parser.
@@ -97,8 +93,8 @@ public class XmlException extends Exception
     * @param column The column number where the error appeared.
     * @param cause The cause of this exception, if any
     */
-    public XmlException(String message, String systemId,
-            int line, int column, Throwable cause) {
+    public XmlException(String message, String systemId, int line, int column,
+        Throwable cause) {
         _message = message;
         _systemId = systemId;
         _line = line;
@@ -107,9 +103,9 @@ public class XmlException extends Exception
     }
 
     /** Get the cause of this exception.
-   *  @return The cause that was passed in as an argument to the
-   *  constructor, or null of no cause was specified.
-   */
+    *  @return The cause that was passed in as an argument to the
+    *  constructor, or null of no cause was specified.
+    */
     public Throwable getCause() {
         return _cause;
     }
@@ -121,15 +117,11 @@ public class XmlException extends Exception
     public String getMessage() {
         // Modified by Steve Neuendorffer because the message didn't tell what
         // the location was.
-        return _message
-            + " in " + _systemId
-            + ((_line == -1) ? "unknown line " : (" at line " + _line))
-            + ((_column == -1) ? " and unknown column "
-                    : (" and column " + _column))
-            + (( _cause == null) ?
-                    "" : ("\nCaused by:\n " + _cause));
+        return _message + " in " + _systemId
+        + ((_line == -1) ? "unknown line " : (" at line " + _line))
+        + ((_column == -1) ? " and unknown column " : (" and column " + _column))
+        + ((_cause == null) ? "" : ("\nCaused by:\n " + _cause));
     }
-
 
     /** Get the URI of the entity containing the error.
     * @return The URI as a string.
@@ -137,7 +129,6 @@ public class XmlException extends Exception
     public String getSystemId() {
         return _systemId;
     }
-
 
     /** Get the line number containing the error.
     * @return The line number as an integer.
@@ -184,10 +175,12 @@ public class XmlException extends Exception
      */
     public void printStackTrace(PrintWriter printWriter) {
         super.printStackTrace(printWriter);
+
         if (_cause != null) {
             printWriter.print("Caused by: ");
             _cause.printStackTrace(printWriter);
         }
+
         printWriter.flush();
     }
 
@@ -212,8 +205,8 @@ public class XmlException extends Exception
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private String _message;
+
     // The cause of this exception.
     private Throwable _cause;
     private String _systemId;

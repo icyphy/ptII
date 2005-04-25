@@ -126,7 +126,7 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
      *   than one receiver or if the receiver is not of type CSPReceiver.
      */
     public ConditionalSend(boolean guard, IOPort port, int channel,
-            int branchID, Token token) throws IllegalActionException {
+        int branchID, Token token) throws IllegalActionException {
         super(guard, port, branchID);
 
         Receiver[][] receivers;
@@ -136,33 +136,33 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
 
             if (!port.isOutput()) {
                 throw new IllegalActionException(port,
-                        "ConditionalSend: "
-                        + "tokens only sent from an output port.");
+                    "ConditionalSend: "
+                    + "tokens only sent from an output port.");
             }
 
             if ((channel >= port.getWidth()) || (channel < 0)) {
                 throw new IllegalActionException(port,
-                        "ConditionalSend: " + "channel index out of range.");
+                    "ConditionalSend: " + "channel index out of range.");
             }
 
             receivers = port.getRemoteReceivers();
 
             if ((receivers == null) || (receivers[channel] == null)) {
                 throw new IllegalActionException(port,
-                        "ConditionalSend: "
-                        + "Trying to rendezvous with null receiver");
+                    "ConditionalSend: "
+                    + "Trying to rendezvous with null receiver");
             }
 
             if (receivers[channel].length != 1) {
                 throw new IllegalActionException(port,
-                        "ConditionalSend: " + "channel " + channel
-                        + " does not have exactly" + " one receiver");
+                    "ConditionalSend: " + "channel " + channel
+                    + " does not have exactly" + " one receiver");
             }
 
             if (!(receivers[channel][0] instanceof CSPReceiver)) {
                 throw new IllegalActionException(port,
-                        "ConditionalSend: " + "channel " + channel
-                        + " does not have a receiver " + "of type CSPReceiver.");
+                    "ConditionalSend: " + "channel " + channel
+                    + " does not have a receiver " + "of type CSPReceiver.");
             }
 
             setReceiver((CSPReceiver) receivers[channel][0]);
@@ -190,8 +190,8 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
      *   than one receiver or if the receiver is not of type CSPReceiver.
      */
     public ConditionalSend(boolean guard, IOPort port, int channel,
-            int branchID, Token token, ConditionalBranchController cbc)
-            throws IllegalActionException {
+        int branchID, Token token, ConditionalBranchController cbc)
+        throws IllegalActionException {
         super(guard, port, branchID, cbc);
 
         Receiver[][] receivers;
@@ -201,33 +201,33 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
 
             if (!port.isOutput()) {
                 throw new IllegalActionException(port,
-                        "ConditionalSend: "
-                        + "tokens only sent from an output port.");
+                    "ConditionalSend: "
+                    + "tokens only sent from an output port.");
             }
 
             if ((channel >= port.getWidth()) || (channel < 0)) {
                 throw new IllegalActionException(port,
-                        "ConditionalSend: " + "channel index out of range.");
+                    "ConditionalSend: " + "channel index out of range.");
             }
 
             receivers = port.getRemoteReceivers();
 
             if ((receivers == null) || (receivers[channel] == null)) {
                 throw new IllegalActionException(port,
-                        "ConditionalSend: "
-                        + "Trying to rendezvous with null receiver");
+                    "ConditionalSend: "
+                    + "Trying to rendezvous with null receiver");
             }
 
             if (receivers[channel].length != 1) {
                 throw new IllegalActionException(port,
-                        "ConditionalSend: " + "channel " + channel
-                        + " does not have exactly" + " one receiver");
+                    "ConditionalSend: " + "channel " + channel
+                    + " does not have exactly" + " one receiver");
             }
 
             if (!(receivers[channel][0] instanceof CSPReceiver)) {
                 throw new IllegalActionException(port,
-                        "ConditionalSend: " + "channel " + channel
-                        + " does not have a receiver " + "of type CSPReceiver.");
+                    "ConditionalSend: " + "channel " + channel
+                    + " does not have a receiver " + "of type CSPReceiver.");
             }
 
             setReceiver((CSPReceiver) receivers[channel][0]);
@@ -257,14 +257,14 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
 
             synchronized (receiver) {
                 if (receiver._isConditionalSendWaiting()
-                        || receiver._isPutWaiting()) {
+                                || receiver._isPutWaiting()) {
                     // Should never happen that a put or a ConditionalSend
                     // is already at the receiver.
                     throw new InvalidStateException(((Nameable) controller
-                                                            .getParent()).getName()
-                            + ": ConditionalSend branch trying to rendezvous "
-                            + "with a receiver that already has a put or a "
-                            + "ConditionalSend waiting.");
+                                    .getParent()).getName()
+                        + ": ConditionalSend branch trying to rendezvous "
+                        + "with a receiver that already has a put or a "
+                        + "ConditionalSend waiting.");
                 }
 
                 // MAIN LOOP
@@ -307,7 +307,7 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
      *  taking place.
      */
     protected boolean _arriveAfterCondRec(CSPReceiver receiver,
-            ConditionalBranchController controller) throws InterruptedException {
+        ConditionalBranchController controller) throws InterruptedException {
         // CASE 2: a conditionalReceive is already waiting.
         // As this conditionalSend arrived second, it has
         // to check if both branches are "first" and if
@@ -345,7 +345,7 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
      *  taking place.
      */
     protected void _arriveAfterGet(CSPReceiver receiver,
-            ConditionalBranchController controller) throws InterruptedException {
+        ConditionalBranchController controller) throws InterruptedException {
         // CASE 1: a get is already waiting
         // A get cannot disappear, so once enter this
         // part of the loop stay here until branch
@@ -376,7 +376,7 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
      *  taking place.
      */
     protected void _arriveFirst(CSPReceiver receiver,
-            ConditionalBranchController controller) throws InterruptedException {
+        ConditionalBranchController controller) throws InterruptedException {
         // CASE 3: ConditionalSend got here before a get or a
         // ConditionalReceive. Once enter this part of main
         // loop, do not leave.

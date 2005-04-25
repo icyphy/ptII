@@ -34,8 +34,10 @@ import ptolemy.data.ArrayToken;
 import java.util.AbstractList;
 import java.util.List;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// PtArrayList
+
 /**
    FIXME: What does this class do?
    @author J&#246;rn W. Janneck
@@ -45,7 +47,6 @@ import java.util.List;
    @Pt.AcceptedRating Red (cxh)
 */
 public class PtArrayList extends AbstractList implements List {
-
     /** Construct a PtArrayList from an ArrayToken */
     public PtArrayList(ArrayToken arrayToken) {
         _arrayToken = arrayToken;
@@ -69,7 +70,5 @@ public class PtArrayList extends AbstractList implements List {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private ArrayToken _arrayToken;
 }
-

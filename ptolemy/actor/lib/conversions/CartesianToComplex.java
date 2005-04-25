@@ -64,7 +64,7 @@ public class CartesianToComplex extends TypedAtomicActor {
      *   actor with this name.
      */
     public CartesianToComplex(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         x = new TypedIOPort(this, "x", true, false);
@@ -77,8 +77,8 @@ public class CartesianToComplex extends TypedAtomicActor {
         output.setTypeEquals(BaseType.COMPLEX);
 
         _attachText("_iconDescription",
-                "<svg>\n" + "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
-                + "style=\"fill:white\"/>\n" + "</svg>\n");
+            "<svg>\n" + "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
+            + "style=\"fill:white\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////

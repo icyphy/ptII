@@ -235,7 +235,7 @@ public class DefaultActions {
         return new AbstractAction(SAVE) {
                 public void actionPerformed(ActionEvent e) {
                     app.getStoragePolicy().save(app.getCurrentView()
-                            .getDocument()); //FIXME???
+                                                               .getDocument()); //FIXME???
                 }
             };
     }
@@ -248,7 +248,7 @@ public class DefaultActions {
         return new AbstractAction(SAVE_AS) {
                 public void actionPerformed(ActionEvent e) {
                     app.getStoragePolicy().saveAs(app.getCurrentView()
-                            .getDocument());
+                                                                 .getDocument());
                 }
             };
     }

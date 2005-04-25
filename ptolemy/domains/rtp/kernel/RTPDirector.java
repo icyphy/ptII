@@ -64,7 +64,7 @@ public class RTPDirector extends ProcessDirector implements TimedDirector {
      *  the workspace. Increment the version number of the workspace.
      */
     public RTPDirector()
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super();
         _init();
     }
@@ -75,7 +75,7 @@ public class RTPDirector extends ProcessDirector implements TimedDirector {
      *  @param workspace The workspace for this object.
      */
     public RTPDirector(Workspace workspace)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -94,7 +94,7 @@ public class RTPDirector extends ProcessDirector implements TimedDirector {
      *   "iterations" parameter (which it should not).
      */
     public RTPDirector(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _init();
     }
@@ -130,14 +130,15 @@ public class RTPDirector extends ProcessDirector implements TimedDirector {
      */
     public Time getModelTime() {
         double currentTime = (double) (System.currentTimeMillis()
-                - _realStartTime);
+            - _realStartTime);
+
         try {
-			return new Time(this, currentTime);
-		} catch (IllegalActionException e) {
+            return new Time(this, currentTime);
+        } catch (IllegalActionException e) {
             // If the time resolution of the director is invalid,
             // it should have been caught before this.
             throw new InternalErrorException(e);
-		}
+        }
     }
 
     /** Calculate the current schedule, if necessary, and iterate
@@ -243,7 +244,7 @@ public class RTPDirector extends ProcessDirector implements TimedDirector {
      *  parameter.
      */
     private void _init()
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         executionDuration = new Parameter(this, "executionDuration",
                 new LongToken(10000));
         executionDuration.setTypeEquals(BaseType.LONG);

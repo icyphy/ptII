@@ -67,7 +67,7 @@ public class TriggeredContinuousClock extends ContinuousClock {
      *   actor with this name.
      */
     public TriggeredContinuousClock(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // start port.

@@ -67,7 +67,7 @@ public class ApplianceController extends Sender {
      *   actor with this name.
      */
     public ApplianceController(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // Create input ports, each one is a multiport.

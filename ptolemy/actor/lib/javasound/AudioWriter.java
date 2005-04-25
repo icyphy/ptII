@@ -116,7 +116,7 @@ public class AudioWriter extends Sink {
      *   actor with this name.
      */
     public AudioWriter(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input.setTypeEquals(BaseType.DOUBLE);
 
@@ -182,15 +182,15 @@ public class AudioWriter extends Sink {
      *   allowed.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == channels) {
             _channels = ((IntToken) channels.getToken()).intValue();
 
             if (_channels < 1) {
                 throw new IllegalActionException(this,
-                        "Attempt to set channels parameter to an illegal "
-                        + "value of: " + _channels + " . The value must be a "
-                        + "positive integer.");
+                    "Attempt to set channels parameter to an illegal "
+                    + "value of: " + _channels + " . The value must be a "
+                    + "positive integer.");
             }
 
             // Check if we need to reallocate.
@@ -199,7 +199,7 @@ public class AudioWriter extends Sink {
             }
 
             if ((_audioPutArray == null)
-                    || (_channels != _audioPutArray.length)) {
+                            || (_channels != _audioPutArray.length)) {
                 _audioPutArray = new double[_channels][];
             }
 
@@ -271,7 +271,7 @@ public class AudioWriter extends Sink {
                 // Array argument to putSamples() is not full yet,
                 // so write another sample for each channel.
                 _audioPutArray[m][_curElement] = ((DoubleToken) _inArray[m][k])
-                    .doubleValue();
+                                .doubleValue();
             }
 
             // Increment pointer.
@@ -283,7 +283,7 @@ public class AudioWriter extends Sink {
                     _soundWriter.putSamples(_audioPutArray);
                 } catch (Exception ex) {
                     throw new IllegalActionException(this,
-                            "Cannot write audio: \n" + ex.getMessage());
+                        "Cannot write audio: \n" + ex.getMessage());
                 }
 
                 // Reset pointer to beginning of array.
@@ -310,7 +310,7 @@ public class AudioWriter extends Sink {
         } else if (returnVal == NOT_READY) {
             // This should never happen.
             throw new IllegalActionException(this,
-                    "Actor " + "is not ready to fire.");
+                "Actor " + "is not ready to fire.");
         } else if (returnVal == STOP_ITERATING) {
             return false;
         }
@@ -340,7 +340,7 @@ public class AudioWriter extends Sink {
                 _soundWriter.closeFile();
             } catch (IOException ex) {
                 throw new IllegalActionException(this,
-                        "Error closing file:\n" + ex.getMessage());
+                    "Error closing file:\n" + ex.getMessage());
             }
         }
 
@@ -367,7 +367,7 @@ public class AudioWriter extends Sink {
                 _soundWriter.closeFile();
             } catch (IOException ex) {
                 throw new IllegalActionException(this,
-                        "Cannot write audio: \n" + ex.getMessage());
+                    "Cannot write audio: \n" + ex.getMessage());
             }
         }
 

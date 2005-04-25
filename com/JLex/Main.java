@@ -81,7 +81,7 @@
   Version 1.1, August 15, 1996  [Andrew Appel]
     Made yychar, yyline, yytext global to the lexer so that
      auxiliary functions can access them.
-
+*/
 /***************************************************************
   Package Declaration
 **************************************************************/

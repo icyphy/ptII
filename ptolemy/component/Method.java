@@ -25,15 +25,14 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.component;
 
 import ptolemy.component.data.TupleToken;
 
 
-
 //////////////////////////////////////////////////////////////////////////
 //// Method
+
 /**
    Interface for the port representing a method call.
 
@@ -43,9 +42,7 @@ import ptolemy.component.data.TupleToken;
    @Pt.ProposedRating yellow(cxh)
    @Pt.AcceptedRating red(cxh)
 */
-
 public interface Method {
-
     /** Call the method associated with this port with the specified
      *  arguments.
      */

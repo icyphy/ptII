@@ -95,7 +95,7 @@ public class ForwardEulerSolver extends FixedStepSolver {
      *  read input, or can not send output.
      */
     public void integratorFire(CTBaseIntegrator integrator)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (_getRoundCount() == 0) {
             // During the first round, use the current derivative to predict
             // the states at currentModelTime + currentStepSize. The predicted

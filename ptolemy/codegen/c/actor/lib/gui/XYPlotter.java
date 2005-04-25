@@ -39,6 +39,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import java.util.HashSet;
 import java.util.Set;
 
+
 /**
  * @author Jackie
  *
@@ -46,7 +47,6 @@ import java.util.Set;
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public class XYPlotter extends CCodeGeneratorHelper {
-
     /**
      * Constructor method for the XYPlotter helper
      * @param actor the associated actor
@@ -54,20 +54,18 @@ public class XYPlotter extends CCodeGeneratorHelper {
     public XYPlotter(ptolemy.actor.lib.gui.XYPlotter actor) {
         super(actor);
     }
-  
+
     /**
      * Generate fire code
-     * The method reads in <code>writeFile</code> and 
+     * The method reads in <code>writeFile</code> and
      * puts into the given stream buffer
      * @param stream the given buffer to append the code to
      */
-    public void  generateFireCode(StringBuffer stream)
+    public void generateFireCode(StringBuffer stream)
         throws IllegalActionException {
+        ptolemy.actor.lib.gui.XYPlotter actor = (ptolemy.actor.lib.gui.XYPlotter) getComponent();
 
-        ptolemy.actor.lib.gui.XYPlotter actor = 
-            (ptolemy.actor.lib.gui.XYPlotter) getComponent();
         // FIXME: how do we add legend to the file??
-        
         CodeStream tmpStream = new CodeStream(this);
         tmpStream.appendCodeBlock("writeFile");
         stream.append(processCode(tmpStream.toString()));
@@ -78,36 +76,34 @@ public class XYPlotter extends CCodeGeneratorHelper {
      *  replaces macros with their values and returns the results.
      *  @return The processed <code>initBlock</code>.
      */
-    public String generateInitializeCode()
-        throws IllegalActionException {
+    public String generateInitializeCode() throws IllegalActionException {
         super.generateInitializeCode();
-        
+
         CodeStream tmpStream = new CodeStream(this);
         tmpStream.appendCodeBlock("initBlock");
         return processCode(tmpStream.toString());
     }
-    
+
     /** Generate wrap up code.
-     *  This method reads the <code>closeFile</code> and 
+     *  This method reads the <code>closeFile</code> and
      *  <code>graphPlot</code>from XYPlotter.c,
      *  replaces macros with their values and returns the results.
      *  @return The processed <code>wrapUpBlock</code>.
      */
     public void generateWrapupCode(StringBuffer stream)
         throws IllegalActionException {
-
-        ptolemy.actor.lib.gui.Plotter actor = 
-            (ptolemy.actor.lib.gui.Plotter) getComponent();
+        ptolemy.actor.lib.gui.Plotter actor = (ptolemy.actor.lib.gui.Plotter) getComponent();
 
         CodeStream tmpStream = new CodeStream(this);
         tmpStream.appendCodeBlock("closeFile");
 
         if (actor.fillOnWrapup.getExpression().equals("true")) {
-        	tmpStream.appendCodeBlock("graphPlot");
+            tmpStream.appendCodeBlock("graphPlot");
         }
+
         stream.append(processCode(tmpStream.toString()));
     }
-    
+
     /** Get the files needed by the code generated for the
      *  XYPlotter actor.
      *  @return A set of strings that are names of the files

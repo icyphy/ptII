@@ -25,8 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
-
 package doc.doclets;
 
 import com.sun.javadoc.Tag;
@@ -35,8 +33,10 @@ import com.sun.tools.doclets.Taglet;
 import java.lang.reflect.Constructor;
 import java.util.Map;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// RatingTaglet
+
 /**
    A taglet that deals with Ptolemy code rating tags.
 
@@ -48,9 +48,7 @@ import java.util.Map;
    @Pt.ProposedRating Red (neuendor)
    @Pt.AcceptedRating Red (neuendor)
 */
-
 public class RatingTaglet implements Taglet {
-
     /** Create a new RatingTaglet that deals with tags of the given name that
      *  has the given tagName as a string.
      */
@@ -118,7 +116,6 @@ public class RatingTaglet implements Taglet {
      * Return true if the tag is an inline tag.
      * @return false.
      */
-
     public boolean isInlineTag() {
         return false;
     }
@@ -130,9 +127,9 @@ public class RatingTaglet implements Taglet {
     public static void register(Map tagletMap) {
         try {
             _register(tagletMap,
-                    new RatingTaglet("Pt.AcceptedRating", "Accepted Rating"));
+                new RatingTaglet("Pt.AcceptedRating", "Accepted Rating"));
             _register(tagletMap,
-                    new RatingTaglet("Pt.ProposedRating", "Proposed Rating"));
+                new RatingTaglet("Pt.ProposedRating", "Proposed Rating"));
         } catch (Throwable throwable) {
             // Print the stack trace so the user has a clue.
             throwable.printStackTrace();
@@ -147,17 +144,20 @@ public class RatingTaglet implements Taglet {
      */
     public String toString(Tag tag) {
         String color = tag.text();
+
         // Assume the first thing on the line is the color.
         int spaceIndex = color.indexOf(' ');
+
         if (spaceIndex != -1) {
             // Deal with the fact that somebody might just have put a
             // color.
             color = color.substring(0, spaceIndex);
         }
+
         return "<DT><B>" + _tagName + ":</B><DD>"
-            + "<table cellpadding=2 cellspacing=0><tr><td bgcolor=\""
-            + color.toLowerCase() + "\">" + tag.text()
-            + "</td></tr></table></DD>\n";
+        + "<table cellpadding=2 cellspacing=0><tr><td bgcolor=\""
+        + color.toLowerCase() + "\">" + tag.text()
+        + "</td></tr></table></DD>\n";
     }
 
     /**
@@ -169,23 +169,30 @@ public class RatingTaglet implements Taglet {
         if (tags.length == 0) {
             return null;
         }
+
         String color = tags[0].text();
+
         // Assume the first thing on the line is the color.
         int spaceIndex = color.indexOf(' ');
+
         if (spaceIndex != -1) {
             // Deal with the fact that somebody might just have put a
             // color.
             color = color.substring(0, spaceIndex);
         }
+
         String result = "\n<DT><B>" + _tagName + ":</B><DD>";
-        result += "<table cellpadding=2 cellspacing=0><tr><td bgcolor=\""
-            + color.toLowerCase() + "\">";
+        result += ("<table cellpadding=2 cellspacing=0><tr><td bgcolor=\""
+                    + color.toLowerCase() + "\">");
+
         for (int i = 0; i < tags.length; i++) {
             if (i > 0) {
                 result += ", ";
             }
+
             result += tags[i].text();
         }
+
         return result + "</td></tr></table></DD>\n";
     }
 
@@ -196,46 +203,44 @@ public class RatingTaglet implements Taglet {
     // http://forum.java.sun.com/thread.jspa?threadID=586411&tstart=15
     // Test test this under Java 1.4.0, try:
     // make JAVAC=c:/j2sdk1.4.2_06/bin/javac TOOLS_JAR=c:/j2sdk1.4.2_06/lib/tools.jar 
-    private static void _register( Map tagletMap, Taglet taglet) {
+    private static void _register(Map tagletMap, Taglet taglet) {
         final String tagName = taglet.getName();
+
         if (tagletMap.containsKey(tagName)) {
             tagletMap.remove(tagName);
         }
-        String javaSpecificationVersion
-            = System.getProperty("java.specification.version");
-        if (javaSpecificationVersion != null 
-                && javaSpecificationVersion.equals("1.4")) {
+
+        String javaSpecificationVersion = System.getProperty(
+                "java.specification.version");
+
+        if ((javaSpecificationVersion != null)
+                        && javaSpecificationVersion.equals("1.4")) {
             tagletMap.put(taglet.getName(), taglet);
         } else {
-            String legacyTagletClassName =
-                "com.sun.tools.doclets.internal.toolkit.taglets.LegacyTaglet";
+            String legacyTagletClassName = "com.sun.tools.doclets.internal.toolkit.taglets.LegacyTaglet";
+
             try {
                 // Use reflection so that this code will compile under jdk1.4.
                 Class legacyTagletClass = Class.forName(legacyTagletClassName);
-                Constructor legacyTagletConstructor =
-                    legacyTagletClass.getConstructor(
-                            new Class [] {
-                                Taglet.class
-                            });
-                Object legacyTagletObject =
-                    legacyTagletConstructor.newInstance(
-                            new Object [] {
-                                taglet
-                            });
+                Constructor legacyTagletConstructor = legacyTagletClass
+                                .getConstructor(new Class[] {
+                                        Taglet.class
+                                    });
+                Object legacyTagletObject = legacyTagletConstructor.newInstance(new Object[] {
+                            taglet
+                        });
                 tagletMap.put(tagName, legacyTagletObject);
             } catch (Throwable throwable) {
                 throwable.printStackTrace();
                 throw new RuntimeException("Problem with the '"
-                        + legacyTagletClassName + "' class: ", throwable);
-
+                    + legacyTagletClassName + "' class: ", throwable);
             }
         }
     }
 
-
     // The name of this taglet.
     private String _name;
+
     // The tag used for this taglet.
     private String _tagName;
 }
-

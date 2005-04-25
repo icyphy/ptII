@@ -67,7 +67,7 @@ public class ValueIcon extends XMLIcon {
      *  @param name The name of this attribute.
      */
     public ValueIcon(NamedObj container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
     }
 
@@ -89,7 +89,7 @@ public class ValueIcon extends XMLIcon {
      */
     public Figure createFigure() {
         CompositeFigure background = new CompositeFigure(super
-                .createBackgroundFigure());
+                            .createBackgroundFigure());
         Nameable container = getContainer();
 
         if (container instanceof Settable) {
@@ -120,7 +120,7 @@ public class ValueIcon extends XMLIcon {
 
         if (colorAttributes.size() > 0) {
             ColorAttribute colorAttribute = (ColorAttribute) colorAttributes
-                .get(0);
+                            .get(0);
             color = colorAttribute.asColor();
         }
 

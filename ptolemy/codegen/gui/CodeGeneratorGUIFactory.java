@@ -25,8 +25,8 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.codegen.gui;
+
 
 // Ptolemy imports.
 import ptolemy.actor.gui.EditorFactory;
@@ -42,8 +42,10 @@ import ptolemy.kernel.util.NamedObj;
 
 import java.awt.Frame;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// CodeGeneratorGUIFactory
+
 /**
    This is an attribute that creates an editor for configuring and
    running a code generator.  This is designed to be contained by
@@ -58,9 +60,7 @@ import java.awt.Frame;
    @Pt.ProposedRating Red (eal)
    @Pt.AcceptedRating Red (eal)
 */
-
 public class CodeGeneratorGUIFactory extends EditorFactory {
-
     /** Construct a factory with the specified container and name.
      *  @param container The container.
      *  @param name The name of the factory.
@@ -70,7 +70,7 @@ public class CodeGeneratorGUIFactory extends EditorFactory {
      *   an attribute already in the container.
      */
     public CodeGeneratorGUIFactory(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -85,15 +85,18 @@ public class CodeGeneratorGUIFactory extends EditorFactory {
     public void createEditor(NamedObj object, Frame parent) {
         // This is always used to configure the container, so
         // we just use that.
-        CodeGenerator codeGenerator = (CodeGenerator)getContainer();
+        CodeGenerator codeGenerator = (CodeGenerator) getContainer();
 
         if (!(parent instanceof TableauFrame)) {
             throw new InternalErrorException(
-                    "Can't create a CodeGeneratorGUI without a tableau!");
+                "Can't create a CodeGeneratorGUI without a tableau!");
         }
-        Effigy effigy = ((TableauFrame)parent).getEffigy();
+
+        Effigy effigy = ((TableauFrame) parent).getEffigy();
+
         // FIXME: Is the cast safe?
-        Tableau tableau = (Tableau)effigy.getEntity("codeGeneratorGUI");
+        Tableau tableau = (Tableau) effigy.getEntity("codeGeneratorGUI");
+
         if (tableau == null) {
             try {
                 tableau = new Tableau(effigy, "codeGeneratorGUI");
@@ -103,6 +106,7 @@ public class CodeGeneratorGUIFactory extends EditorFactory {
         }
 
         Frame frame = tableau.getFrame();
+
         if (frame == null) {
             try {
                 frame = new CodeGeneratorGUI(codeGenerator, tableau);
@@ -110,6 +114,7 @@ public class CodeGeneratorGUIFactory extends EditorFactory {
                 throw new InternalErrorException(e);
             }
         }
+
         // Show the result.
         frame.pack();
         frame.setVisible(true);

@@ -64,7 +64,7 @@ public class ExpressionReader extends LineReader {
      *   actor with this name.
      */
     public ExpressionReader(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         _expressionEvaluator = new Variable(this, "_expressionEvaluator");

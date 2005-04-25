@@ -488,7 +488,7 @@ public class Complex implements Cloneable, Serializable {
         // This algorithm results from writing a/b as (ab*)/magSquared(b).
         double denominator = divisor.magnitudeSquared();
         return new Complex(((real * divisor.real) + (imag * divisor.imag)) / denominator,
-                ((imag * divisor.real) - (real * divisor.imag)) / denominator);
+            ((imag * divisor.real) - (real * divisor.imag)) / denominator);
     }
 
     /** Return true if the real and imaginary parts of this complex number
@@ -709,7 +709,7 @@ public class Complex implements Cloneable, Serializable {
      */
     public Complex multiply(Complex w) {
         return new Complex((w.real * real) - (w.imag * imag),
-                (w.real * imag) + (w.imag * real));
+            (w.real * imag) + (w.imag * real));
     }
 
     /** Negate this complex number.
@@ -751,7 +751,7 @@ public class Complex implements Cloneable, Serializable {
         }
 
         return new Complex(magnitude * Math.cos(angle),
-                magnitude * Math.sin(angle));
+            magnitude * Math.sin(angle));
     }
 
     /** Return a new complex number with value <em>z <sup>y</sup></em>
@@ -872,7 +872,7 @@ public class Complex implements Cloneable, Serializable {
     public final Complex[] roots(int n) {
         if (n < 1) {
             throw new IllegalArgumentException("Complex.roots(): "
-                    + "n must be greater than or equal to one.");
+                + "n must be greater than or equal to one.");
         }
 
         Complex[] returnValue = new Complex[n];
@@ -1131,10 +1131,10 @@ public class Complex implements Cloneable, Serializable {
     public static String toString(Complex value) {
         if (value.imag >= 0) {
             return Double.toString(value.real) + " + "
-                + Double.toString(value.imag) + "i";
+            + Double.toString(value.imag) + "i";
         } else {
             return Double.toString(value.real) + " - "
-                + Double.toString(-value.imag) + "i";
+            + Double.toString(-value.imag) + "i";
         }
     }
 

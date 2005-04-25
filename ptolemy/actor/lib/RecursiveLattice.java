@@ -118,7 +118,7 @@ public class RecursiveLattice extends Transformer {
      *   actor with this name.
      */
     public RecursiveLattice(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         input.setTypeEquals(BaseType.DOUBLE);
@@ -128,7 +128,7 @@ public class RecursiveLattice extends Transformer {
 
         // Note that setExpression() will call attributeChanged().
         reflectionCoefficients.setExpression(
-                "{0.804534, -0.820577, 0.521934, -0.205}");
+            "{0.804534, -0.820577, 0.521934, -0.205}");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -150,7 +150,7 @@ public class RecursiveLattice extends Transformer {
      *  @exception IllegalActionException If the base class throws it.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == reflectionCoefficients) {
             ArrayToken value = (ArrayToken) reflectionCoefficients.getToken();
             int valueLength = value.length();
@@ -166,7 +166,7 @@ public class RecursiveLattice extends Transformer {
 
             for (int i = 0; i < valueLength; i++) {
                 _reflectionCoefs[i] = ((DoubleToken) value.getElement(i))
-                    .doubleValue();
+                                .doubleValue();
             }
         } else {
             super.attributeChanged(attribute);

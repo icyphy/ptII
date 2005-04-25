@@ -65,7 +65,7 @@ public class NetworkActorBase extends TypedAtomicActor {
      *   an actor already in the container.
      */
     public NetworkActorBase(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -79,22 +79,48 @@ public class NetworkActorBase extends TypedAtomicActor {
 
     // messages between the layers
     protected static final String[] PCRequestMsgFields = {
-        "kind", "fromMACAddr", "toMACAddr", "range", "angle", "num_nb",
-        "xpos", "ypos", "Length"
-    };
+            "kind",
+            "fromMACAddr",
+            "toMACAddr",
+            "range",
+            "angle",
+            "num_nb",
+            "xpos",
+            "ypos",
+            "Length"
+        };
     protected static final String[] PCResponseMsgFields = {
-        "kind", "fromMACAddr", "toMACAddr", "xpos", "ypos", "range",
-        "Length"
-    };
-    protected static final String[] StartRspMsgFields = { "kind", "range" };
+            "kind",
+            "fromMACAddr",
+            "toMACAddr",
+            "xpos",
+            "ypos",
+            "range",
+            "Length"
+        };
+    protected static final String[] StartRspMsgFields = {
+            "kind",
+            "range"
+        };
     protected static final String[] cNetwInterestMessageFields = {
-        "kind", "cost", "hop_distance", "fromMACAddr", "toMACAddr",
-        "hopcount", "arrivalTime", "Length"
-    };
+            "kind",
+            "cost",
+            "hop_distance",
+            "fromMACAddr",
+            "toMACAddr",
+            "hopcount",
+            "arrivalTime",
+            "Length"
+        };
     protected static final String[] cNetwDataMessageFields = {
-        "kind", "fromMACAddr", "toMACAddr", "hopcount", "arrivalTime",
-        "payload", "Length"
-    };
+            "kind",
+            "fromMACAddr",
+            "toMACAddr",
+            "hopcount",
+            "arrivalTime",
+            "payload",
+            "Length"
+        };
 
     // message types
     protected static final int RxStart = 30;
@@ -129,7 +155,7 @@ public class NetworkActorBase extends TypedAtomicActor {
      *  getDirector().fireAt().
      */
     protected Timer setTimer(int kind, Time expirationTime)
-            throws IllegalActionException {
+        throws IllegalActionException {
         Timer timer = new Timer();
         timer.kind = kind;
         timer.expirationTime = expirationTime;
@@ -144,7 +170,7 @@ public class NetworkActorBase extends TypedAtomicActor {
      *  from the timers set. If no match is found, do nothing.
      */
     protected void cancelTimer(Timer timerToCancel)
-            throws IllegalActionException {
+        throws IllegalActionException {
         Iterator timers = _timersSet.iterator();
 
         // iterate through the queue to find the timer to be canceled

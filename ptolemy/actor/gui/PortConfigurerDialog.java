@@ -147,9 +147,9 @@ public class PortConfigurerDialog extends PtolemyDialog
      * (or null if help is not supported).
      */
     public PortConfigurerDialog(DialogTableau tableau, Frame owner,
-            Entity target, Configuration configuration) {
+        Entity target, Configuration configuration) {
         super("Configure ports for " + target.getName(), tableau, owner,
-                target, configuration);
+            target, configuration);
 
         // Listen for changes that may need to be reflected in the table.
         getTarget().addChangeListener(this);
@@ -168,11 +168,11 @@ public class PortConfigurerDialog extends PtolemyDialog
         _portTable.addMouseListener(new MouseAdapter() {
                 public void mouseClicked(MouseEvent mouseEvent) {
                     if ((VergilUtilities.macOSLookAndFeel()
-                                && (mouseEvent.isPopupTrigger()
-                                        || ((mouseEvent.getButton() == MouseEvent.BUTTON1)
-                                                && ((mouseEvent.getModifiersEx()
-                                                            | java.awt.event.InputEvent.CTRL_MASK) == java.awt.event.InputEvent.CTRL_MASK))))
-                            || (!VergilUtilities.macOSLookAndFeel()
+                                    && (mouseEvent.isPopupTrigger()
+                                    || ((mouseEvent.getButton() == MouseEvent.BUTTON1)
+                                    && ((mouseEvent.getModifiersEx()
+                                    | java.awt.event.InputEvent.CTRL_MASK) == java.awt.event.InputEvent.CTRL_MASK))))
+                                    || (!VergilUtilities.macOSLookAndFeel()
                                     && (mouseEvent.getButton() == MouseEvent.BUTTON3))) {
                         Point point = mouseEvent.getPoint();
                         int row = _portTable.rowAtPoint(point);
@@ -210,7 +210,7 @@ public class PortConfigurerDialog extends PtolemyDialog
         _jth = _portTable.getTableHeader();
 
         if (_columnNames.contains(ColumnNames.COL_SHOW_NAME)
-                || _columnNames.contains(ColumnNames.COL_HIDE)) {
+                        || _columnNames.contains(ColumnNames.COL_HIDE)) {
             _jth.addMouseListener(new MouseAdapter() {
                     public void mouseClicked(MouseEvent me) {
                         // indexOf() returns -1 if element is not in ArrayList
@@ -257,7 +257,7 @@ public class PortConfigurerDialog extends PtolemyDialog
         // ChangeRequest types so that an undo would be explicitly
         // represented.
         if ((change == null) || (change.getSource() == this)
-                || !(change instanceof UndoChangeRequest)) {
+                        || !(change instanceof UndoChangeRequest)) {
             return;
         }
 
@@ -298,9 +298,11 @@ public class PortConfigurerDialog extends PtolemyDialog
                 return true;
             }
 
-            case (JOptionPane.NO_OPTION):return true;
+            case (JOptionPane.NO_OPTION):
+                return true;
 
-            case (JOptionPane.CANCEL_OPTION):return false;
+            case (JOptionPane.CANCEL_OPTION):
+                return false;
             }
         }
 
@@ -315,7 +317,8 @@ public class PortConfigurerDialog extends PtolemyDialog
                     JOptionPane.YES_NO_OPTION);
 
             switch (option) {
-            case (JOptionPane.YES_OPTION):_apply();
+            case (JOptionPane.YES_OPTION):
+                _apply();
             }
         }
     }
@@ -332,7 +335,7 @@ public class PortConfigurerDialog extends PtolemyDialog
 
         for (int i = 0; i < _portTableModel.getRowCount(); i++) {
             portNameInTable[i] = (String) (_portTableModel.getValueAt(i,
-                                                   _columnNames.indexOf(ColumnNames.COL_NAME)));
+                    _columnNames.indexOf(ColumnNames.COL_NAME)));
         }
 
         // Do some basic checks on table for things that are obviously
@@ -341,7 +344,7 @@ public class PortConfigurerDialog extends PtolemyDialog
         for (int i = 0; i < _portTableModel.getRowCount(); i++) {
             if (portNameInTable[i].equals("")) {
                 JOptionPane.showMessageDialog(this,
-                        "All Ports need to have a name.");
+                    "All Ports need to have a name.");
                 return;
             }
         }
@@ -351,8 +354,8 @@ public class PortConfigurerDialog extends PtolemyDialog
             for (int j = i + 1; j < _portTableModel.getRowCount(); j++) {
                 if (portNameInTable[i].equals(portNameInTable[j])) {
                     JOptionPane.showMessageDialog(this,
-                            portNameInTable[i] + " is a duplicate port name.\n"
-                            + "Please remove all but one");
+                        portNameInTable[i] + " is a duplicate port name.\n"
+                        + "Please remove all but one");
                     return;
                 }
             }
@@ -374,14 +377,14 @@ public class PortConfigurerDialog extends PtolemyDialog
 
                 if (actualPort == null) {
                     throw new InternalErrorException(
-                            "The target contains a null Port.");
+                        "The target contains a null Port.");
                 }
 
                 for (int i = 0; i < _ports.size(); i++) {
                     Hashtable portInfo = (Hashtable) (_ports.elementAt(i));
 
                     if (actualPort == ((Port) portInfo.get(
-                                               ColumnNames.COL_ACTUAL_PORT))) {
+                                        ColumnNames.COL_ACTUAL_PORT))) {
                         foundPort = true;
                         break;
                     }
@@ -392,7 +395,7 @@ public class PortConfigurerDialog extends PtolemyDialog
                 }
             } else {
                 throw new InternalErrorException("The target portList contains"
-                        + " an object that is not of type Port.");
+                    + " an object that is not of type Port.");
             }
         }
 
@@ -410,10 +413,10 @@ public class PortConfigurerDialog extends PtolemyDialog
 
             if (composite != null) {
                 moml.append("<deletePort name=\"" + actualPort.getName()
-                        + "\" entity=\"" + container.getName() + "\" />");
+                    + "\" entity=\"" + container.getName() + "\" />");
             } else {
                 moml.append("<deletePort name=\""
-                        + actualPort.getName(container) + "\" />");
+                    + actualPort.getName(container) + "\" />");
             }
 
             // NOTE: the context is the composite entity containing
@@ -431,7 +434,7 @@ public class PortConfigurerDialog extends PtolemyDialog
 
             if (_debug) {
                 System.out.println("RequestChange on " + container.toString()
-                        + " " + moml);
+                    + " " + moml);
             }
 
             container.requestChange(request);
@@ -529,7 +532,7 @@ public class PortConfigurerDialog extends PtolemyDialog
                     if (_columnNames.contains(ColumnNames.COL_TYPE)) {
                         String _type = null;
                         TypeAttribute _typeAttribute = (TypeAttribute) tiop
-                            .getAttribute("_type");
+                                        .getAttribute("_type");
 
                         if (_typeAttribute != null) {
                             _type = _typeAttribute.getExpression();
@@ -538,7 +541,7 @@ public class PortConfigurerDialog extends PtolemyDialog
                         String tableValue = (String) portInfo.get(ColumnNames.COL_TYPE);
 
                         if (((_type == null) && (!tableValue.equals("")))
-                                || ((_type != null)
+                                        || ((_type != null)
                                         && (!tableValue.equals(_type)))) {
                             havePortUpdate = true;
                             updates.put(ColumnNames.COL_TYPE, Boolean.TRUE);
@@ -551,14 +554,14 @@ public class PortConfigurerDialog extends PtolemyDialog
                     String _direction = null;
                     String direction = (String) portInfo.get(ColumnNames.COL_DIRECTION);
                     StringAttribute _cardinal = (StringAttribute) actualPort
-                        .getAttribute("_cardinal");
+                                    .getAttribute("_cardinal");
 
                     if (_cardinal != null) {
                         _direction = _cardinal.getExpression().toUpperCase();
                     }
 
                     if (((_direction == null) && !direction.equals("DEFAULT"))
-                            || ((_direction != null)
+                                    || ((_direction != null)
                                     && (!direction.equals(_direction)))) {
                         havePortUpdate = true;
                         updates.put(ColumnNames.COL_DIRECTION, Boolean.TRUE);
@@ -568,7 +571,7 @@ public class PortConfigurerDialog extends PtolemyDialog
                 if (_columnNames.contains(ColumnNames.COL_UNITS)) {
                     String units = null;
                     UnitAttribute _unitsAttribute = (UnitAttribute) actualPort
-                        .getAttribute("_units");
+                                    .getAttribute("_units");
 
                     if (_unitsAttribute != null) {
                         units = _unitsAttribute.getExpression();
@@ -580,7 +583,7 @@ public class PortConfigurerDialog extends PtolemyDialog
                     // into portInfo in the constructor of
                     // PortTableModel.
                     if (((units == null) && (!tableValue.equals("")))
-                            || ((units != null)
+                                    || ((units != null)
                                     && (!tableValue.equals(units)))) {
                         havePortUpdate = true;
                         updates.put(ColumnNames.COL_UNITS, Boolean.TRUE);
@@ -595,7 +598,7 @@ public class PortConfigurerDialog extends PtolemyDialog
                     NamedObj parent = (NamedObj) actualPort.getContainer();
 
                     String currentPortName = ((Port) portInfo.get(ColumnNames.COL_ACTUAL_PORT))
-                        .getName();
+                                    .getName();
                     String newPortName = (String) portInfo.get(ColumnNames.COL_NAME);
 
                     String momlString = _createMoMLUpdate(updates, portInfo,
@@ -627,14 +630,14 @@ public class PortConfigurerDialog extends PtolemyDialog
                 // not the default of false.
                 if (_columnNames.contains(ColumnNames.COL_SHOW_NAME)) {
                     updates.put(ColumnNames.COL_SHOW_NAME,
-                            (Boolean) portInfo.get(ColumnNames.COL_SHOW_NAME));
+                        (Boolean) portInfo.get(ColumnNames.COL_SHOW_NAME));
                 }
 
                 // Put this in the MoMLChangeRequest if the value is
                 // not the default of false.
                 if (_columnNames.contains(ColumnNames.COL_HIDE)) {
                     updates.put(ColumnNames.COL_HIDE,
-                            (Boolean) portInfo.get(ColumnNames.COL_HIDE));
+                        (Boolean) portInfo.get(ColumnNames.COL_HIDE));
                 }
 
                 // FIXME: should we compare against "unknown" instead of ""?
@@ -680,7 +683,7 @@ public class PortConfigurerDialog extends PtolemyDialog
                 }
 
                 moml.append(_createMoMLUpdate(updates, portInfo,
-                                    (String) portInfo.get(ColumnNames.COL_NAME), null));
+                        (String) portInfo.get(ColumnNames.COL_NAME), null));
 
                 haveSomeUpdate = true;
             }
@@ -691,7 +694,7 @@ public class PortConfigurerDialog extends PtolemyDialog
 
             if (_debug) {
                 System.out.println("RequestChange on " + getTarget().toString()
-                        + " " + moml);
+                    + " " + moml);
             }
 
             MoMLChangeRequest request = new MoMLChangeRequest(this,
@@ -729,7 +732,7 @@ public class PortConfigurerDialog extends PtolemyDialog
 
     /** Return a URL that points to the help page.
      *  @return A URL that points to the help page
-     */   
+     */
     protected URL _getHelpURL() {
         URL helpURL = getClass().getClassLoader().getResource("ptolemy/actor/gui/doc/portConfigurerDialog.htm");
         return helpURL;
@@ -749,8 +752,9 @@ public class PortConfigurerDialog extends PtolemyDialog
         } else if (button.equals("Add")) {
             _portTableModel.addNewPort();
         } else if (
-                // FIXME this depends on button name string length.
-                (button.length() > 5) && (button.substring(0, 6).equals("Remove"))) {
+                    // FIXME this depends on button name string length.
+                    (button.length() > 5)
+                        && (button.substring(0, 6).equals("Remove"))) {
             _portTableModel.removePort();
             _setSelectedRow(-1);
         } else {
@@ -785,7 +789,7 @@ public class PortConfigurerDialog extends PtolemyDialog
                 if (_columnNames.contains(ColumnNames.COL_DIRECTION)) {
                     String _direction;
                     StringAttribute _cardinal = (StringAttribute) (p
-                            .getAttribute("_cardinal"));
+                                    .getAttribute("_cardinal"));
 
                     if (_cardinal != null) {
                         _direction = _cardinal.getExpression().toUpperCase();
@@ -821,17 +825,17 @@ public class PortConfigurerDialog extends PtolemyDialog
 
                     if (_columnNames.contains(ColumnNames.COL_INPUT)) {
                         portInfo.put(ColumnNames.COL_INPUT,
-                                Boolean.valueOf(iop.isInput()));
+                            Boolean.valueOf(iop.isInput()));
                     }
 
                     if (_columnNames.contains(ColumnNames.COL_OUTPUT)) {
                         portInfo.put(ColumnNames.COL_OUTPUT,
-                                Boolean.valueOf(iop.isOutput()));
+                            Boolean.valueOf(iop.isOutput()));
                     }
 
                     if (_columnNames.contains(ColumnNames.COL_MULTIPORT)) {
                         portInfo.put(ColumnNames.COL_MULTIPORT,
-                                Boolean.valueOf(iop.isMultiport()));
+                            Boolean.valueOf(iop.isMultiport()));
                     }
                 }
 
@@ -840,11 +844,11 @@ public class PortConfigurerDialog extends PtolemyDialog
 
                     if (_columnNames.contains(ColumnNames.COL_TYPE)) {
                         TypeAttribute _type = (TypeAttribute) (tiop
-                                .getAttribute("_type"));
+                                        .getAttribute("_type"));
 
                         if (_type != null) {
                             portInfo.put(ColumnNames.COL_TYPE,
-                                    _type.getExpression());
+                                _type.getExpression());
                         } else {
                             portInfo.put(ColumnNames.COL_TYPE, "");
                         }
@@ -854,7 +858,7 @@ public class PortConfigurerDialog extends PtolemyDialog
                 if (_columnNames.contains(ColumnNames.COL_UNITS)) {
                     String units = "";
                     UnitAttribute _unitsAttribute = (UnitAttribute) p
-                        .getAttribute("_units");
+                                    .getAttribute("_units");
 
                     if (_unitsAttribute != null) {
                         units = _unitsAttribute.getExpression();
@@ -1009,11 +1013,11 @@ public class PortConfigurerDialog extends PtolemyDialog
             if (port != null) {
                 if (port.getDerivedLevel() < Integer.MAX_VALUE) {
                     if ((col == _columnNames.indexOf(ColumnNames.COL_NAME))
-                            || (col == _columnNames.indexOf(
+                                    || (col == _columnNames.indexOf(
                                         ColumnNames.COL_INPUT))
-                            || (col == _columnNames.indexOf(
+                                    || (col == _columnNames.indexOf(
                                         ColumnNames.COL_OUTPUT))
-                            || (col == _columnNames.indexOf(
+                                    || (col == _columnNames.indexOf(
                                         ColumnNames.COL_MULTIPORT))) {
                         return false;
                     }
@@ -1034,7 +1038,7 @@ public class PortConfigurerDialog extends PtolemyDialog
 
             for (int i = 0; i < getRowCount(); i++) {
                 setValueAt(show, i,
-                        _columnNames.indexOf(ColumnNames.COL_SHOW_NAME));
+                    _columnNames.indexOf(ColumnNames.COL_SHOW_NAME));
             }
         }
 
@@ -1053,7 +1057,6 @@ public class PortConfigurerDialog extends PtolemyDialog
         }
     }
 
-
     /** Render a boolean cell. */
     class PortBooleanCellRenderer extends JCheckBox implements TableCellRenderer {
         public PortBooleanCellRenderer() {
@@ -1061,7 +1064,7 @@ public class PortConfigurerDialog extends PtolemyDialog
         }
 
         public Component getTableCellRendererComponent(JTable table,
-                Object value, boolean isSelected, boolean hasFocus, int row, int col) {
+            Object value, boolean isSelected, boolean hasFocus, int row, int col) {
             if (value == Boolean.TRUE) {
                 setSelected(true);
             } else {
@@ -1091,7 +1094,7 @@ public class PortConfigurerDialog extends PtolemyDialog
         }
 
         public Component getTableCellRendererComponent(JTable table,
-                Object value, boolean isSelected, boolean hasFocus, int row, int col) {
+            Object value, boolean isSelected, boolean hasFocus, int row, int col) {
             setOpaque(true);
             setText((String) value);
 
@@ -1107,7 +1110,6 @@ public class PortConfigurerDialog extends PtolemyDialog
 
     /** Validate a cell. */
     abstract class CellValidator {
-
         /** Return true if the value is valid.
          *  @param value The value to validate.
          *  @return True if the value is valid.
@@ -1121,7 +1123,7 @@ public class PortConfigurerDialog extends PtolemyDialog
         public void setMessage(String message) {
             _message = message;
         }
-        
+
         /** Get the message.
          *  @return The message
          *  @see #setMessage(String)
@@ -1136,9 +1138,9 @@ public class PortConfigurerDialog extends PtolemyDialog
 
     /**
        A validating JTextField table cell editor for use with JTable.
-       To determine if a selection is valid, this class uses the 
+       To determine if a selection is valid, this class uses the
        CellValidator class.
- 
+
        <p>Based on IntegerEditor from
        http://java.sun.com/docs/books/tutorial/uiswing/components/example-1dot4/IntegerEditor.java
 
@@ -1149,37 +1151,37 @@ public class PortConfigurerDialog extends PtolemyDialog
        @Pt.AcceptedRating Red (eal)
     */
     public class ValidatingJTextFieldCellEditor extends DefaultCellEditor {
-
         /** Construct a validating JTextField JTable Cell editor.
-          */   
+          */
         public ValidatingJTextFieldCellEditor() {
             super(new JTextField());
         }
 
         /** Construct a validating JTextField JTable Cell editor.
          *  @param jTextField The JTextField that provides choices.
-         */   
+         */
         public ValidatingJTextFieldCellEditor(final JTextField jTextField) {
             super(jTextField);
-            
-            _jTextField = (JTextField)getComponent();
+
+            _jTextField = (JTextField) getComponent();
 
             // React when the user presses Enter while the editor is
             // active.  (Tab is handled as specified by
             // JFormattedTextField's focusLostBehavior property.)
             jTextField.getInputMap().put(KeyStroke.getKeyStroke(
-                                               KeyEvent.VK_ENTER, 0),
-                    "check");
-            jTextField.getActionMap().put("check", new AbstractAction() {
+                    KeyEvent.VK_ENTER, 0), "check");
+            jTextField.getActionMap().put("check",
+                new AbstractAction() {
                     public void actionPerformed(ActionEvent e) {
                         boolean valid = true;
+
                         if (_validator != null) {
-                            valid = _validator.isValid(
-                                    (String)(jTextField.getText()));
+                            valid = _validator.isValid((String) (jTextField
+                                                .getText()));
                         }
+
                         if (!valid) {
-                            userSaysRevert(
-                                    (String)(jTextField.getText()));
+                            userSaysRevert((String) (jTextField.getText()));
                         } else {
                             jTextField.postActionEvent(); //stop editing
                         }
@@ -1193,13 +1195,12 @@ public class PortConfigurerDialog extends PtolemyDialog
         /**
          */
         public Component getTableCellEditorComponent(JTable table,
-                Object value, boolean isSelected,
-                int row, int column) {
-            JTextField jTextField =
-                (JTextField)super.getTableCellEditorComponent(
-                        table, value, isSelected, row, column);
+            Object value, boolean isSelected, int row, int column) {
+            JTextField jTextField = (JTextField) super
+                            .getTableCellEditorComponent(table, value,
+                                isSelected, row, column);
             _oldValue = jTextField.getText();
-            jTextField.setText((String)value);
+            jTextField.setText((String) value);
             return jTextField;
         }
 
@@ -1208,7 +1209,7 @@ public class PortConfigurerDialog extends PtolemyDialog
          */
         public Object getCellEditorValue() {
             // FIXME: do we need to get jTextField like this each time?
-            JTextField jTextField = (JTextField)getComponent();
+            JTextField jTextField = (JTextField) getComponent();
             Object o = jTextField.getText();
             return o.toString();
         }
@@ -1229,28 +1230,32 @@ public class PortConfigurerDialog extends PtolemyDialog
          */
         public boolean stopCellEditing() {
             // FIXME: do we need to get jTextField like this each time?
-            JTextField jTextField = (JTextField)getComponent();
+            JTextField jTextField = (JTextField) getComponent();
+
             if (jTextField.getText() == null) {
                 // FIXME: why does the selected item get set to null sometimes?
                 jTextField.setText("");
             }
+
             boolean valid = true;
+
             if (_validator != null) {
-                valid = _validator.isValid(
-                        (String)(jTextField.getText()));
+                valid = _validator.isValid((String) (jTextField.getText()));
             }
+
             if (!valid) {
                 if (_userWantsToEdit) {
                     // User already selected edit, don't ask twice.
                     _userWantsToEdit = false;
                     return false;
                 } else {
-                    if (!userSaysRevert((String)(jTextField.getText()))) {
+                    if (!userSaysRevert((String) (jTextField.getText()))) {
                         _userWantsToEdit = true;
                         return false; //don't let the editor go away
-                    } 
+                    }
                 }
             }
+
             return super.stopCellEditing();
         }
 
@@ -1268,25 +1273,25 @@ public class PortConfigurerDialog extends PtolemyDialog
         protected boolean userSaysRevert(String selectedItem) {
             Toolkit.getDefaultToolkit().beep();
             _jTextField.selectAll();
-            Object[] options = {"Edit",
-                                "Revert"};
-            int answer = JOptionPane.showOptionDialog(
-                    SwingUtilities.getWindowAncestor(_jTextField),
+
+            Object[] options = {
+                    "Edit",
+                    "Revert"
+                };
+            int answer = JOptionPane.showOptionDialog(SwingUtilities
+                                .getWindowAncestor(_jTextField),
                     "The value \"" + selectedItem + "\" is not valid:\n"
                     + _validator.getMessage()
                     + "\nYou can either continue editing "
-                    + "or revert to the last valid value \"" + _oldValue + "\".",
-                    "Invalid Text Entered",
-                    JOptionPane.YES_NO_OPTION,
-                    JOptionPane.ERROR_MESSAGE,
-                    null,
-                    options,
-                    options[1]);
-	    
+                    + "or revert to the last valid value \"" + _oldValue
+                    + "\".", "Invalid Text Entered", JOptionPane.YES_NO_OPTION,
+                    JOptionPane.ERROR_MESSAGE, null, options, options[1]);
+
             if (answer == 1) { //Revert!
-                _jTextField.setText((String)_oldValue);
+                _jTextField.setText((String) _oldValue);
                 return true;
             }
+
             return false;
         }
 
@@ -1308,9 +1313,9 @@ public class PortConfigurerDialog extends PtolemyDialog
 
     /**
        A validating CombBox table cell editor for use with JTable.
-       To determine if a selection is valid, this class uses the 
+       To determine if a selection is valid, this class uses the
        CellValidator class.
- 
+
        <p>Based on IntegerEditor from
        http://java.sun.com/docs/books/tutorial/uiswing/components/example-1dot4/IntegerEditor.java
 
@@ -1321,30 +1326,30 @@ public class PortConfigurerDialog extends PtolemyDialog
        @Pt.AcceptedRating Red (eal)
     */
     public class ValidatingComboBoxCellEditor extends DefaultCellEditor {
-
         /** Construct a validating combo box JTable Cell editor.
          *  @param comboBox The combo box that provides choices.
-         */   
+         */
         public ValidatingComboBoxCellEditor(final JComboBox comboBox) {
             super(comboBox);
-            _comboBox = (JComboBox)getComponent();
+            _comboBox = (JComboBox) getComponent();
 
             // React when the user presses Enter while the editor is
             // active.  (Tab is handled as specified by
             // JFormattedTextField's focusLostBehavior property.)
             comboBox.getInputMap().put(KeyStroke.getKeyStroke(
-                                               KeyEvent.VK_ENTER, 0),
-                    "check");
-            comboBox.getActionMap().put("check", new AbstractAction() {
+                    KeyEvent.VK_ENTER, 0), "check");
+            comboBox.getActionMap().put("check",
+                new AbstractAction() {
                     public void actionPerformed(ActionEvent e) {
                         boolean valid = true;
+
                         if (_validator != null) {
-                            valid = _validator.isValid(
-                                    (String)(comboBox.getSelectedItem()));
+                            valid = _validator.isValid((String) (comboBox
+                                                .getSelectedItem()));
                         }
+
                         if (!valid) {
-                            userSaysRevert(
-                                    (String)(comboBox.getSelectedItem()));
+                            userSaysRevert((String) (comboBox.getSelectedItem()));
                         }
                     }
                 });
@@ -1356,11 +1361,9 @@ public class PortConfigurerDialog extends PtolemyDialog
         /**
          */
         public Component getTableCellEditorComponent(JTable table,
-                Object value, boolean isSelected,
-                int row, int column) {
-            JComboBox comboBox =
-                (JComboBox)super.getTableCellEditorComponent(
-                        table, value, isSelected, row, column);
+            Object value, boolean isSelected, int row, int column) {
+            JComboBox comboBox = (JComboBox) super.getTableCellEditorComponent(table,
+                    value, isSelected, row, column);
             _oldValue = comboBox.getSelectedItem();
             comboBox.setSelectedItem(value);
             return comboBox;
@@ -1371,7 +1374,7 @@ public class PortConfigurerDialog extends PtolemyDialog
          */
         public Object getCellEditorValue() {
             // FIXME: do we need to get comboBox like this each time?
-            JComboBox comboBox = (JComboBox)getComponent();
+            JComboBox comboBox = (JComboBox) getComponent();
             Object o = comboBox.getSelectedItem();
             return o.toString();
         }
@@ -1392,28 +1395,32 @@ public class PortConfigurerDialog extends PtolemyDialog
          */
         public boolean stopCellEditing() {
             // FIXME: do we need to get comboBox like this each time?
-            JComboBox comboBox = (JComboBox)getComponent();
+            JComboBox comboBox = (JComboBox) getComponent();
+
             if (comboBox.getSelectedItem() == null) {
                 // FIXME: why does the selected item get set to null sometimes?
                 comboBox.setSelectedItem("");
             }
+
             boolean valid = true;
+
             if (_validator != null) {
-                valid = _validator.isValid(
-                        (String)(comboBox.getSelectedItem()));
+                valid = _validator.isValid((String) (comboBox.getSelectedItem()));
             }
+
             if (!valid) {
                 if (_userWantsToEdit) {
                     // User already selected edit, don't ask twice.
                     _userWantsToEdit = false;
                     return false;
                 } else {
-                    if (!userSaysRevert((String)(comboBox.getSelectedItem()))) {
+                    if (!userSaysRevert((String) (comboBox.getSelectedItem()))) {
                         _userWantsToEdit = true;
                         return false; //don't let the editor go away
-                    } 
+                    }
                 }
             }
+
             return super.stopCellEditing();
         }
 
@@ -1430,26 +1437,26 @@ public class PortConfigurerDialog extends PtolemyDialog
          */
         protected boolean userSaysRevert(String selectedItem) {
             Toolkit.getDefaultToolkit().beep();
+
             //_comboBox.selectAll();
-            Object[] options = {"Edit",
-                                "Revert"};
-            int answer = JOptionPane.showOptionDialog(
-                    SwingUtilities.getWindowAncestor(_comboBox),
+            Object[] options = {
+                    "Edit",
+                    "Revert"
+                };
+            int answer = JOptionPane.showOptionDialog(SwingUtilities
+                                .getWindowAncestor(_comboBox),
                     "The value \"" + selectedItem + "\" is not valid:\n"
                     + _validator.getMessage()
                     + "\nYou can either continue editing "
-                    + "or revert to the last valid value \"" + _oldValue + "\".",
-                    "Invalid Text Entered",
-                    JOptionPane.YES_NO_OPTION,
-                    JOptionPane.ERROR_MESSAGE,
-                    null,
-                    options,
-                    options[1]);
-	    
+                    + "or revert to the last valid value \"" + _oldValue
+                    + "\".", "Invalid Text Entered", JOptionPane.YES_NO_OPTION,
+                    JOptionPane.ERROR_MESSAGE, null, options, options[1]);
+
             if (answer == 1) { //Revert!
                 _comboBox.setSelectedItem(_oldValue);
                 return true;
             }
+
             return false;
         }
 
@@ -1474,7 +1481,7 @@ public class PortConfigurerDialog extends PtolemyDialog
 
     /** Create the MoML expression that represents the update. */
     private String _createMoMLUpdate(Hashtable updates, Hashtable portInfo,
-            String currentPortName, String newPortName) {
+        String currentPortName, String newPortName) {
         StringBuffer momlUpdate = new StringBuffer("<port name=\""
                 + currentPortName + "\">");
 
@@ -1494,7 +1501,7 @@ public class PortConfigurerDialog extends PtolemyDialog
 
             if (updateValue.booleanValue()) {
                 if (((Boolean) (portInfo.get(ColumnNames.COL_INPUT)))
-                        .booleanValue()) {
+                                .booleanValue()) {
                     momlUpdate.append(_momlProperty("input"));
                 } else {
                     momlUpdate.append(_momlProperty("input", null, "false"));
@@ -1507,7 +1514,7 @@ public class PortConfigurerDialog extends PtolemyDialog
 
             if (updateValue.booleanValue()) {
                 if (((Boolean) (portInfo.get(ColumnNames.COL_OUTPUT)))
-                        .booleanValue()) {
+                                .booleanValue()) {
                     momlUpdate.append(_momlProperty("output"));
                 } else {
                     momlUpdate.append(_momlProperty("output", null, "false"));
@@ -1520,7 +1527,7 @@ public class PortConfigurerDialog extends PtolemyDialog
 
             if (updateValue.booleanValue()) {
                 if (((Boolean) (portInfo.get(ColumnNames.COL_MULTIPORT)))
-                        .booleanValue()) {
+                                .booleanValue()) {
                     momlUpdate.append(_momlProperty("multiport"));
                 } else {
                     momlUpdate.append(_momlProperty("multiport", null, "false"));
@@ -1538,8 +1545,8 @@ public class PortConfigurerDialog extends PtolemyDialog
                     momlUpdate.append(_momlDeleteProperty("_type"));
                 } else {
                     momlUpdate.append(_momlProperty("_type",
-                                              "ptolemy.actor.TypeAttribute",
-                                              StringUtilities.escapeForXML(type)));
+                            "ptolemy.actor.TypeAttribute",
+                            StringUtilities.escapeForXML(type)));
                 }
             }
         }
@@ -1554,7 +1561,7 @@ public class PortConfigurerDialog extends PtolemyDialog
                     momlUpdate.append(_momlDeleteProperty("_cardinal"));
                 } else {
                     momlUpdate.append(_momlProperty("_cardinal",
-                                              _STRING_ATTRIBUTE, direction));
+                            _STRING_ATTRIBUTE, direction));
                 }
             }
         }
@@ -1564,9 +1571,9 @@ public class PortConfigurerDialog extends PtolemyDialog
 
             if (updateValue.booleanValue()) {
                 if (((Boolean) portInfo.get(ColumnNames.COL_SHOW_NAME))
-                        .booleanValue()) {
+                                .booleanValue()) {
                     momlUpdate.append(_momlProperty("_showName",
-                                              _SINGLETON_PARAMETER, "true"));
+                            _SINGLETON_PARAMETER, "true"));
                 } else {
                     // NOTE: If there is already a property that is not
                     // a boolean-valued parameter, then remove it rather
@@ -1586,7 +1593,7 @@ public class PortConfigurerDialog extends PtolemyDialog
 
                     if (!removed) {
                         momlUpdate.append(_momlProperty("_showName",
-                                                  _SINGLETON_PARAMETER, "false"));
+                                _SINGLETON_PARAMETER, "false"));
                     }
                 }
             }
@@ -1598,7 +1605,7 @@ public class PortConfigurerDialog extends PtolemyDialog
             if (updateValue.booleanValue()) {
                 if (((Boolean) portInfo.get(ColumnNames.COL_HIDE)).booleanValue()) {
                     momlUpdate.append(_momlProperty("_hide",
-                                              _SINGLETON_PARAMETER, "true"));
+                            _SINGLETON_PARAMETER, "true"));
                 } else {
                     // NOTE: If there is already a property that is not
                     // a boolean-valued parameter, then remove it rather
@@ -1618,7 +1625,7 @@ public class PortConfigurerDialog extends PtolemyDialog
 
                     if (!removed) {
                         momlUpdate.append(_momlProperty("_hide",
-                                                  _SINGLETON_PARAMETER, "false"));
+                                _SINGLETON_PARAMETER, "false"));
                     }
                 }
             }
@@ -1629,7 +1636,7 @@ public class PortConfigurerDialog extends PtolemyDialog
 
             if (updateValue.booleanValue()) {
                 momlUpdate.append(_momlProperty("_units", _UNIT_ATTRIBUTE,
-                                          ((String) portInfo.get(ColumnNames.COL_UNITS))));
+                        ((String) portInfo.get(ColumnNames.COL_UNITS))));
             }
         }
 
@@ -1638,9 +1645,9 @@ public class PortConfigurerDialog extends PtolemyDialog
     }
 
     /** Generate a combo box based on the type names. */
-    private JComboBox _createPortTypeComboBox () {
+    private JComboBox _createPortTypeComboBox() {
         JComboBox jComboBox = new JComboBox();
-        jComboBox.setEditable(true); 
+        jComboBox.setEditable(true);
 
         // Add this item first so it is first on the list.
         jComboBox.addItem("");
@@ -1648,6 +1655,7 @@ public class PortConfigurerDialog extends PtolemyDialog
         // Add the types from data.expr.Constants
         TreeMap typeMap = Constants.types();
         Iterator types = typeMap.keySet().iterator();
+
         while (types.hasNext()) {
             String type = (String) (types.next());
             jComboBox.addItem(type);
@@ -1661,17 +1669,18 @@ public class PortConfigurerDialog extends PtolemyDialog
     }
 
     /** Generate a combo box based on the unit names. */
-    private JComboBox _createPortUnitComboBox () {
+    private JComboBox _createPortUnitComboBox() {
         JComboBox jComboBox = new JComboBox();
-        jComboBox.setEditable(true); 
+        jComboBox.setEditable(true);
 
         // Add this item first so it is first on the list.
         jComboBox.addItem("");
 
-        ArrayList unitsArrayList = 
-            ptolemy.data.unit.UnitUtilities.categoryList();
+        ArrayList unitsArrayList = ptolemy.data.unit.UnitUtilities.categoryList();
         Collections.sort(unitsArrayList);
+
         Iterator units = unitsArrayList.iterator();
+
         while (units.hasNext()) {
             String unit = (String) (units.next());
             jComboBox.addItem(unit);
@@ -1696,26 +1705,35 @@ public class PortConfigurerDialog extends PtolemyDialog
 
         if (target instanceof TypedActor) {
             String[] temp = {
-                ColumnNames.COL_NAME, ColumnNames.COL_INPUT,
-                ColumnNames.COL_OUTPUT, ColumnNames.COL_MULTIPORT,
-                ColumnNames.COL_TYPE, ColumnNames.COL_DIRECTION,
-                ColumnNames.COL_SHOW_NAME, ColumnNames.COL_HIDE,
-                ColumnNames.COL_UNITS,
-            };
+                    ColumnNames.COL_NAME,
+                    ColumnNames.COL_INPUT,
+                    ColumnNames.COL_OUTPUT,
+                    ColumnNames.COL_MULTIPORT,
+                    ColumnNames.COL_TYPE,
+                    ColumnNames.COL_DIRECTION,
+                    ColumnNames.COL_SHOW_NAME,
+                    ColumnNames.COL_HIDE,
+                    ColumnNames.COL_UNITS,
+                };
             tempColumnNames = temp;
         } else if (target instanceof Actor) {
             String[] temp = {
-                ColumnNames.COL_NAME, ColumnNames.COL_INPUT,
-                ColumnNames.COL_OUTPUT, ColumnNames.COL_MULTIPORT,
-                ColumnNames.COL_DIRECTION, ColumnNames.COL_SHOW_NAME,
-                ColumnNames.COL_HIDE,
-            };
+                    ColumnNames.COL_NAME,
+                    ColumnNames.COL_INPUT,
+                    ColumnNames.COL_OUTPUT,
+                    ColumnNames.COL_MULTIPORT,
+                    ColumnNames.COL_DIRECTION,
+                    ColumnNames.COL_SHOW_NAME,
+                    ColumnNames.COL_HIDE,
+                };
             tempColumnNames = temp;
         } else {
             String[] temp = {
-                ColumnNames.COL_NAME, ColumnNames.COL_DIRECTION,
-                ColumnNames.COL_SHOW_NAME, ColumnNames.COL_HIDE,
-            };
+                    ColumnNames.COL_NAME,
+                    ColumnNames.COL_DIRECTION,
+                    ColumnNames.COL_SHOW_NAME,
+                    ColumnNames.COL_HIDE,
+                };
             tempColumnNames = temp;
         }
 
@@ -1815,11 +1833,11 @@ public class PortConfigurerDialog extends PtolemyDialog
     private String _momlProperty(String name, String clz, String value) {
         if (clz != null) {
             return "<property name=\"" + name + "\" " + "class = \"" + clz
-                + "\" " + "value = \"" + value + "\"/>";
+            + "\" " + "value = \"" + value + "\"/>";
         }
 
         return "<property name=\"" + name + "\" " + "value = \"" + value
-            + "\"/>";
+        + "\"/>";
     }
 
     private void _populateActualPorts() {
@@ -1847,7 +1865,7 @@ public class PortConfigurerDialog extends PtolemyDialog
 
             if (!foundActualPort) {
                 throw new InternalErrorException("Port stored in _ports "
-                        + "not found in actual target.");
+                    + "not found in actual target.");
             }
         }
     }
@@ -1884,19 +1902,17 @@ public class PortConfigurerDialog extends PtolemyDialog
         _portTableModel = new PortTableModel(getTarget().portList());
         _portTable.setModel(_portTableModel);
         _portTable.setDefaultRenderer(Boolean.class,
-                new PortBooleanCellRenderer());
+            new PortBooleanCellRenderer());
         _portTable.setDefaultRenderer(String.class, new StringCellRenderer());
         _portTable.setDefaultEditor(String.class,
-                new ValidatingJTextFieldCellEditor());
+            new ValidatingJTextFieldCellEditor());
         _enableApplyButton(false);
 
         if (_columnNames.contains(ColumnNames.COL_NAME)) {
             int col = _columnNames.indexOf(ColumnNames.COL_NAME);
-            TableColumn _portNameColumn = ((TableColumn)
-                    (_portTable.getColumnModel()
-                            .getColumn(col)));
-            final ValidatingJTextFieldCellEditor portNameEditor =
-                new ValidatingJTextFieldCellEditor(new JTextField());
+            TableColumn _portNameColumn = ((TableColumn) (_portTable.getColumnModel()
+                                                                                .getColumn(col)));
+            final ValidatingJTextFieldCellEditor portNameEditor = new ValidatingJTextFieldCellEditor(new JTextField());
             _portNameColumn.setCellEditor(portNameEditor);
             portNameEditor.setValidator(new CellValidator() {
                     /////////////////////////////////////////
@@ -1906,12 +1922,13 @@ public class PortConfigurerDialog extends PtolemyDialog
 
                         if (index >= 0) {
                             setMessage(cellValue + " contains a period in col "
-                                    + (index + 1));
+                                + (index + 1));
                             return false;
                         }
+
                         if (cellValue.equals("")) {
                             setMessage("Ports cannot have the empty string "
-                                    + "as a name.");
+                                + "as a name.");
                             return false;
                         }
 
@@ -1922,22 +1939,18 @@ public class PortConfigurerDialog extends PtolemyDialog
 
         if (_columnNames.contains(ColumnNames.COL_DIRECTION)) {
             int col = _columnNames.indexOf(ColumnNames.COL_DIRECTION);
-            TableColumn _portLocationColumn =
-                ((TableColumn) (_portTable.getColumnModel()
-                        .getColumn(col)));
+            TableColumn _portLocationColumn = ((TableColumn) (_portTable.getColumnModel()
+                                                                                    .getColumn(col)));
             _portLocationColumn.setCellEditor(new DefaultCellEditor(
-                                                      _portLocationComboBox));
+                    _portLocationComboBox));
         }
 
         if (_columnNames.contains(ColumnNames.COL_TYPE)) {
             int col = _columnNames.indexOf(ColumnNames.COL_TYPE);
-            TableColumn _portTypeColumn =
-                ((TableColumn) (_portTable.getColumnModel()
-                        .getColumn(col)));
+            TableColumn _portTypeColumn = ((TableColumn) (_portTable.getColumnModel()
+                                                                                .getColumn(col)));
 
-            final ValidatingComboBoxCellEditor portTypeEditor =
-                new ValidatingComboBoxCellEditor(
-                        _createPortTypeComboBox());
+            final ValidatingComboBoxCellEditor portTypeEditor = new ValidatingComboBoxCellEditor(_createPortTypeComboBox());
 
             _portTypeColumn.setCellEditor(portTypeEditor);
             portTypeEditor.setValidator(new CellValidator() {
@@ -1949,10 +1962,9 @@ public class PortConfigurerDialog extends PtolemyDialog
                                 return true;
                             }
 
-                            ASTPtRootNode tree = _typeParser
-                                .generateParseTree(cellValue);
+                            ASTPtRootNode tree = _typeParser.generateParseTree(cellValue);
                             Token result = _parseTreeEvaluator
-                                .evaluateParseTree(tree, null);
+                                            .evaluateParseTree(tree, null);
                         } catch (IllegalActionException e) {
                             setMessage(e.getMessage());
                             return false;
@@ -1965,11 +1977,9 @@ public class PortConfigurerDialog extends PtolemyDialog
 
         if (_columnNames.contains(ColumnNames.COL_UNITS)) {
             int col = _columnNames.indexOf(ColumnNames.COL_UNITS);
-            TableColumn _portUnitColumn =
-                ((TableColumn) (_portTable.getColumnModel()
-                        .getColumn(col)));
-            final ValidatingComboBoxCellEditor portUnitEditor =
-                new ValidatingComboBoxCellEditor(_createPortUnitComboBox());
+            TableColumn _portUnitColumn = ((TableColumn) (_portTable.getColumnModel()
+                                                                                .getColumn(col)));
+            final ValidatingComboBoxCellEditor portUnitEditor = new ValidatingComboBoxCellEditor(_createPortUnitComboBox());
             _portUnitColumn.setCellEditor(portUnitEditor);
 
             portUnitEditor.setValidator(new CellValidator() {
@@ -1979,8 +1989,7 @@ public class PortConfigurerDialog extends PtolemyDialog
                         UnitExpr uExpr;
 
                         try {
-                            uExpr = UnitLibrary.getParser()
-                                .parseUnitExpr(cellValue);
+                            uExpr = UnitLibrary.getParser().parseUnitExpr(cellValue);
                         } catch (ParseException e) {
                             setMessage(e.getMessage());
                             return false;
@@ -2005,7 +2014,6 @@ public class PortConfigurerDialog extends PtolemyDialog
 
     /** The combination box used to select the location of a port. */
     private JComboBox _portLocationComboBox;
-
     JTable _portTable;
     PortTableModel _portTableModel = null;
 
@@ -2023,7 +2031,6 @@ public class PortConfigurerDialog extends PtolemyDialog
     private boolean _showAllNames = false;
     private static String _STRING_ATTRIBUTE = "ptolemy.kernel.util.StringAttribute";
     static PtParser _typeParser = new PtParser();
-
     private static String _UNIT_ATTRIBUTE = "ptolemy.data.unit.UnitAttribute";
 
     /** The various buttons. */

@@ -82,7 +82,7 @@ public class EPSGraphics extends Graphics {
         _buffer.append("%!PS-Adobe-3.0 EPSF-3.0\n");
         _buffer.append("%%Creator: UC Berkeley Plot Package\n");
         _buffer.append("%%BoundingBox: 50 50 " + (50 + width) + " "
-                + (50 + height) + "\n");
+            + (50 + height) + "\n");
         _buffer.append("%%Pages: 1\n");
         _buffer.append("%%Page: 1 1\n");
         _buffer.append("%%LanguageLevel: 2\n");
@@ -107,7 +107,7 @@ public class EPSGraphics extends Graphics {
     }
 
     public void drawArc(int x, int y, int width, int height, int startAngle,
-            int arcAngle) {
+        int arcAngle) {
     }
 
     public boolean drawImage(Image img, int x, int y, ImageObserver observer) {
@@ -115,28 +115,28 @@ public class EPSGraphics extends Graphics {
     }
 
     public boolean drawImage(Image img, int x, int y, int width, int height,
-            ImageObserver observer) {
+        ImageObserver observer) {
         return true;
     }
 
     public boolean drawImage(Image img, int x, int y, Color bgcolor,
-            ImageObserver observer) {
+        ImageObserver observer) {
         return true;
     }
 
     public boolean drawImage(Image img, int x, int y, int width, int height,
-            Color bgcolor, ImageObserver observer) {
+        Color bgcolor, ImageObserver observer) {
         return true;
     }
 
     public boolean drawImage(Image img, int dx1, int dy1, int dx2, int dy2,
-            int sx1, int sy1, int sx2, int sy2, ImageObserver observer) {
+        int sx1, int sy1, int sx2, int sy2, ImageObserver observer) {
         return true;
     }
 
     public boolean drawImage(Image img, int dx1, int dy1, int dx2, int dy2,
-            int sx1, int sy1, int sx2, int sy2, Color bgcolor,
-            ImageObserver observer) {
+        int sx1, int sy1, int sx2, int sy2, Color bgcolor,
+        ImageObserver observer) {
         return true;
     }
 
@@ -188,7 +188,7 @@ public class EPSGraphics extends Graphics {
         int radius = width / 2;
         Point center = _convert(x + radius, y + radius);
         _buffer.append("newpath " + center.x + " " + center.y + " " + radius
-                + " 0 360 arc closepath stroke\n");
+            + " 0 360 arc closepath stroke\n");
     }
 
     public void drawRect(int x, int y, int width, int height) {
@@ -202,16 +202,16 @@ public class EPSGraphics extends Graphics {
     }
 
     public void drawRoundRect(int x, int y, int width, int height,
-            int arcWidth, int arcHeight) {
+        int arcWidth, int arcHeight) {
     }
 
     public void drawString(java.text.AttributedCharacterIterator iterator,
-            int x, int y) {
+        int x, int y) {
         // FIXME: This method is present in the graphics class in JDK1.2,
         // but not in JDK1.1.
         throw new RuntimeException(
-                "Sorry, drawString(java.text.AttributedCharacterIterator, "
-                + "int , int) is not implemented in EPSGraphics");
+            "Sorry, drawString(java.text.AttributedCharacterIterator, "
+            + "int , int) is not implemented in EPSGraphics");
     }
 
     /** Draw a string.  "(" is converted to "\(" and
@@ -236,7 +236,7 @@ public class EPSGraphics extends Graphics {
     }
 
     public void fillArc(int x, int y, int width, int height, int startAngle,
-            int arcAngle) {
+        int arcAngle) {
     }
 
     /** Draw a filled polygon defined by arrays of x and y coordinates.
@@ -269,7 +269,7 @@ public class EPSGraphics extends Graphics {
         int radius = width / 2;
         Point center = _convert(x + radius, y + radius);
         _buffer.append("newpath " + center.x + " " + center.y + " " + radius
-                + " 0 360 arc closepath fill\n");
+            + " 0 360 arc closepath fill\n");
     }
 
     /** Fill the specified rectangle and draw a thin outline around it.
@@ -299,7 +299,7 @@ public class EPSGraphics extends Graphics {
     }
 
     public void fillRoundRect(int x, int y, int width, int height,
-            int arcWidth, int arcHeight) {
+        int arcWidth, int arcHeight) {
     }
 
     public Shape getClip() {
@@ -429,7 +429,7 @@ public class EPSGraphics extends Graphics {
     // Return false if arguments are misformed.
     private boolean _polygon(int[] xPoints, int[] yPoints, int nPoints) {
         if ((nPoints < 3) || (xPoints.length < nPoints)
-                || (yPoints.length < nPoints)) {
+                        || (yPoints.length < nPoints)) {
             return false;
         }
 
@@ -459,10 +459,10 @@ public class EPSGraphics extends Graphics {
         double redscale = 0.8;
         double greenscale = 1.0; // lightest
         double fullscale = Math.sqrt(255.0 * 255.0 * ((bluescale * bluescale)
-                                             + (redscale * redscale) + (greenscale * greenscale)));
+                            + (redscale * redscale) + (greenscale * greenscale)));
         double graylevel = Math.sqrt((double) ((red * red * redscale * redscale)
-                                             + (blue * blue * bluescale * bluescale)
-                                             + (green * green * greenscale * greenscale))) / fullscale;
+                + (blue * blue * bluescale * bluescale)
+                + (green * green * greenscale * greenscale))) / fullscale;
         _buffer.append("" + graylevel + " setgray\n");
 
         // NOTE -- for debugging, output color spec in comments
@@ -483,9 +483,17 @@ public class EPSGraphics extends Graphics {
     // Default line patterns.
     // FIXME: Need at least 11 of these.
     static private String[] _patterns = {
-        "[]", "[1 1]", "[4 4]", "[4 4 1 4]", "[2 2]", "[4 2 1 2 1 2]",
-        "[5 3 2 3]", "[3 3]", "[4 2 1 2 2 2]", "[1 2 5 2 1 2 1 2]",
-        "[4 1 2 1]",
-    };
+            "[]",
+            "[1 1]",
+            "[4 4]",
+            "[4 4 1 4]",
+            "[2 2]",
+            "[4 2 1 2 1 2]",
+            "[5 3 2 3]",
+            "[3 3]",
+            "[4 2 1 2 2 2]",
+            "[1 2 5 2 1 2 1 2]",
+            "[4 1 2 1]",
+        };
     private int _patternIndex = 0;
 }

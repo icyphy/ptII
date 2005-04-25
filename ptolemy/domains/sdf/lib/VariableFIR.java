@@ -88,7 +88,7 @@ public class VariableFIR extends FIR {
      *   actor with this name.
      */
     public VariableFIR(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         blockSize = new Parameter(this, "blockSize");
@@ -132,11 +132,11 @@ public class VariableFIR extends FIR {
      *  an invalid value or if the super method throws it.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         super.attributeChanged(attribute);
 
         if ((attribute == interpolation) || (attribute == decimation)
-                || (attribute == blockSize)) {
+                        || (attribute == blockSize)) {
             _reinitializeNeeded = true;
         }
     }

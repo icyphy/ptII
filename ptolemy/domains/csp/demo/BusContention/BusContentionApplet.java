@@ -130,7 +130,7 @@ public class BusContentionApplet extends PtolemyApplet {
      *   exception to throw.
      */
     protected NamedObj _createModel(Workspace workspace)
-            throws Exception {
+        throws Exception {
         TypedCompositeActor toplevel = new TypedCompositeActor(workspace);
         _toplevel = toplevel;
         toplevel.setName("BusContention");
@@ -146,19 +146,19 @@ public class BusContentionApplet extends PtolemyApplet {
 
         // Set up connections
         toplevel.connect(_contentionActor.requestInput,
-                _processActor1.requestOutput);
+            _processActor1.requestOutput);
         toplevel.connect(_contentionActor.requestInput,
-                _processActor2.requestOutput);
+            _processActor2.requestOutput);
         toplevel.connect(_contentionActor.requestInput,
-                _processActor3.requestOutput);
+            _processActor3.requestOutput);
         toplevel.connect(_contentionActor.contendOutput, _alarmActor.input);
         toplevel.connect(_contentionActor.contendInput, _alarmActor.output);
         toplevel.connect(_contentionActor.requestOutput,
-                _processActor1.requestInput);
+            _processActor1.requestInput);
         toplevel.connect(_contentionActor.requestOutput,
-                _processActor2.requestInput);
+            _processActor2.requestInput);
         toplevel.connect(_contentionActor.requestOutput,
-                _processActor3.requestInput);
+            _processActor3.requestInput);
         toplevel.connect(_memoryActor.output, _processActor1.memoryInput);
         toplevel.connect(_memoryActor.output, _processActor2.memoryInput);
         toplevel.connect(_memoryActor.output, _processActor3.memoryInput);
@@ -175,7 +175,7 @@ public class BusContentionApplet extends PtolemyApplet {
 
         _divaPanel = new JPanel(new BorderLayout());
         _divaPanel.setBorder(new TitledBorder(new LineBorder(Color.black),
-                                     "Animation"));
+                "Animation"));
         _divaPanel.setBackground(getBackground());
         _divaPanel.setPreferredSize(new Dimension(500, 450));
         _divaPanel.setBackground(getBackground());
@@ -196,7 +196,7 @@ public class BusContentionApplet extends PtolemyApplet {
         _jgraph.setBackground(getBackground());
 
         StateListener listener = new StateListener((GraphPane) _jgraph
-                .getCanvasPane());
+                            .getCanvasPane());
         _processActor1.addDebugListener(listener);
         _processActor2.addDebugListener(listener);
         _processActor3.addDebugListener(listener);
@@ -435,7 +435,7 @@ public class BusContentionApplet extends PtolemyApplet {
             // Get the corresponding graph node and its figure
             Object node = (Object) _nodeMap.get(actor);
             LabelWrapper wrapper = (LabelWrapper) _graphPane.getGraphController()
-                .getFigure(node);
+                                                                        .getFigure(node);
             final BasicFigure figure = (BasicFigure) wrapper.getChild();
 
             // Color the graph
@@ -483,10 +483,11 @@ public class BusContentionApplet extends PtolemyApplet {
          */
         public Figure render(Object n) {
             ComponentEntity actor = (ComponentEntity) _controller.getGraphModel()
-                .getSemanticObject(n);
+                                                                             .getSemanticObject(n);
 
             boolean isEllipse = actor instanceof Controller
-                || actor instanceof Memory || actor instanceof ContentionAlarm;
+                            || actor instanceof Memory
+                            || actor instanceof ContentionAlarm;
 
             BasicFigure f;
 

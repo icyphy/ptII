@@ -81,7 +81,7 @@ public class FixMatrixToken extends MatrixToken {
     public FixMatrixToken(FixPoint[][] value) throws IllegalActionException {
         if (value == null) {
             throw new IllegalActionException("FixMatrixToken: The specified "
-                    + "matrix is null.");
+                + "matrix is null.");
         }
 
         _initialize(value);
@@ -102,7 +102,7 @@ public class FixMatrixToken extends MatrixToken {
             _initialize(value);
         } else {
             throw new IllegalActionException("A FixMatrixToken cannot be"
-                    + " created from the expression '" + init + "'");
+                + " created from the expression '" + init + "'");
         }
     }
 
@@ -120,15 +120,15 @@ public class FixMatrixToken extends MatrixToken {
      *  of the array cannot be losslessly converted to a fixed point.
      */
     public FixMatrixToken(Token[] tokens, int rows, int columns)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (tokens == null) {
             throw new IllegalActionException("FixMatrixToken: The specified"
-                    + " array is null.");
+                + " array is null.");
         }
 
         if (tokens.length != (rows * columns)) {
             throw new IllegalActionException("FixMatrixToken: The specified"
-                    + " array is not of the correct length");
+                + " array is not of the correct length");
         }
 
         _rowCount = rows;
@@ -140,11 +140,11 @@ public class FixMatrixToken extends MatrixToken {
 
             if (token instanceof ScalarToken) {
                 _value[i / columns][i % columns] = ((ScalarToken) token)
-                    .fixValue();
+                                .fixValue();
             } else {
                 throw new IllegalActionException("FixMatrixToken: Element " + i
-                        + " in the array with value " + token
-                        + " is not a ScalarToken");
+                    + " in the array with value " + token
+                    + " is not a ScalarToken");
             }
         }
     }
@@ -166,7 +166,7 @@ public class FixMatrixToken extends MatrixToken {
      *   be carried out.
      */
     public static FixMatrixToken convert(Token token)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (token instanceof FixMatrixToken) {
             return (FixMatrixToken) token;
         }
@@ -175,7 +175,7 @@ public class FixMatrixToken extends MatrixToken {
 
         if ((compare == CPO.LOWER) || (compare == CPO.INCOMPARABLE)) {
             throw new IllegalActionException(notSupportedIncomparableConversionMessage(
-                                                     token, "[fix]"));
+                    token, "[fix]"));
         }
 
         // try Fix
@@ -189,7 +189,7 @@ public class FixMatrixToken extends MatrixToken {
         // The argument is below FixMatrixToken in the type hierarchy,
         // but I don't recognize it.
         throw new IllegalActionException(notSupportedConversionMessage(token,
-                                                 "[fix]"));
+                "[fix]"));
     }
 
     /** Return true if the argument is an instance of FixMatrixToken
@@ -261,7 +261,7 @@ public class FixMatrixToken extends MatrixToken {
      *   row or column number is outside the range of the matrix.
      */
     public Token getElementAsToken(int row, int column)
-            throws ArrayIndexOutOfBoundsException {
+        throws ArrayIndexOutOfBoundsException {
         return new FixToken(_value[row][column]);
     }
 
@@ -407,7 +407,7 @@ public class FixMatrixToken extends MatrixToken {
      *  @return A new FixMatrixToken containing the result.
      */
     protected MatrixToken _add(MatrixToken rightArgument)
-            throws IllegalActionException {
+        throws IllegalActionException {
         FixMatrixToken convertedArgument = (FixMatrixToken) rightArgument;
         FixPoint[][] result = convertedArgument.fixMatrix();
 
@@ -430,7 +430,7 @@ public class FixMatrixToken extends MatrixToken {
      *  @return A new Token containing the result.
      */
     protected MatrixToken _addElement(Token rightArgument)
-            throws IllegalActionException {
+        throws IllegalActionException {
         FixPoint scalar = ((FixToken) rightArgument).fixValue();
         FixPoint[][] result = fixMatrix();
 
@@ -452,12 +452,12 @@ public class FixMatrixToken extends MatrixToken {
      *   compatible, or if the matrix dimensions are incompatible.
      */
     protected MatrixToken _multiply(MatrixToken rightArgument)
-            throws IllegalActionException {
+        throws IllegalActionException {
         FixMatrixToken convertedArgument = (FixMatrixToken) rightArgument;
 
         if (_columnCount != convertedArgument._rowCount) {
             throw new IllegalActionException(
-                    "Matrix dimensions are not compatible. Cannot multiply.");
+                "Matrix dimensions are not compatible. Cannot multiply.");
         }
 
         FixPoint[][] result = new FixPoint[_rowCount][convertedArgument._columnCount];
@@ -468,7 +468,7 @@ public class FixMatrixToken extends MatrixToken {
 
                 for (int k = 1; k < _columnCount; k++) {
                     sum = sum.add(_value[i][k].multiply(
-                                          convertedArgument._value[k][j]));
+                                convertedArgument._value[k][j]));
                 }
 
                 result[i][j] = sum;
@@ -488,7 +488,7 @@ public class FixMatrixToken extends MatrixToken {
      *  @return A new Token containing the result.
      */
     protected MatrixToken _multiplyElement(Token rightArgument)
-            throws IllegalActionException {
+        throws IllegalActionException {
         FixPoint scalar = ((FixToken) rightArgument).fixValue();
         FixPoint[][] result = fixMatrix();
 
@@ -518,7 +518,7 @@ public class FixMatrixToken extends MatrixToken {
      *  @return A new FixMatrixToken containing the result.
      */
     protected MatrixToken _subtract(MatrixToken rightArgument)
-            throws IllegalActionException {
+        throws IllegalActionException {
         FixMatrixToken convertedArgument = (FixMatrixToken) rightArgument;
         FixPoint[][] result = convertedArgument.fixMatrix();
 
@@ -541,7 +541,7 @@ public class FixMatrixToken extends MatrixToken {
      *  @return A new Token containing the result.
      */
     protected MatrixToken _subtractElement(Token rightArgument)
-            throws IllegalActionException {
+        throws IllegalActionException {
         FixPoint scalar = ((FixToken) rightArgument).fixValue();
         FixPoint[][] result = fixMatrix();
 
@@ -564,7 +564,7 @@ public class FixMatrixToken extends MatrixToken {
      *  @return A new Token containing the result.
      */
     protected MatrixToken _subtractElementReverse(Token rightArgument)
-            throws IllegalActionException {
+        throws IllegalActionException {
         FixPoint scalar = ((FixToken) rightArgument).fixValue();
         FixPoint[][] result = fixMatrix();
 
@@ -594,8 +594,8 @@ public class FixMatrixToken extends MatrixToken {
 
                 if ((_precision != null) && !_precision.equals(precision)) {
                     throw new IllegalActionException(
-                            "Attempt to create a FixMatrixToken"
-                            + " with unequal precisions.");
+                        "Attempt to create a FixMatrixToken"
+                        + " with unequal precisions.");
                 }
 
                 _precision = precision;

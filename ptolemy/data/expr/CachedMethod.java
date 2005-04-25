@@ -178,8 +178,8 @@ public class CachedMethod {
      *  cached method cannot be determined.
      */
     protected CachedMethod(String methodName, Type[] argumentTypes,
-            Method method, ArgumentConversion[] conversions, int type)
-            throws IllegalActionException {
+        Method method, ArgumentConversion[] conversions, int type)
+        throws IllegalActionException {
         // Note clones for safety...
         _methodName = methodName;
         _argumentTypes = (Type[]) argumentTypes.clone();
@@ -226,7 +226,7 @@ public class CachedMethod {
                 try {
                     // Cast to (Object []) so as to avoid varargs warning.
                     _returnType = (Type) typeFunction.invoke(null,
-                            (Object []) _argumentTypes);
+                            (Object[]) _argumentTypes);
                 } catch (IllegalAccessException ex) {
                     throw new RuntimeException(ex); // TODO
                 } catch (InvocationTargetException ex) {
@@ -272,7 +272,7 @@ public class CachedMethod {
         }
 
         if ((_type & (FUNCTION + METHOD)) != (cachedMethod._type
-                    & (FUNCTION + METHOD))) {
+                        & (FUNCTION + METHOD))) {
             return false;
         }
 
@@ -315,7 +315,7 @@ public class CachedMethod {
      *  @return A cached method that is valid if a matching method was found.
      */
     public static CachedMethod findMethod(String methodName,
-            Type[] argumentTypes, int type) throws IllegalActionException {
+        Type[] argumentTypes, int type) throws IllegalActionException {
         // Check to see if there is a cache already.
         CachedMethod cachedMethod = _getCachedMethod(methodName, argumentTypes,
                 type);
@@ -333,7 +333,7 @@ public class CachedMethod {
             cachedMethod = _findFUNCTION(methodName, argumentTypes);
         } else {
             throw new IllegalActionException("Attempted to find a method "
-                    + "with an invalid type = " + type);
+                + "with an invalid type = " + type);
         }
 
         // We didn't find in the normal place, so try unrolling
@@ -352,7 +352,7 @@ public class CachedMethod {
                 if (argumentTypes[i] instanceof ArrayType) {
                     hasArray = true;
                     newArgTypes[i] = ((ArrayType) argumentTypes[i])
-                        .getElementType();
+                                    .getElementType();
                     isArrayArg[i] = true;
                 } else {
                     newArgTypes[i] = argumentTypes[i];
@@ -385,7 +385,7 @@ public class CachedMethod {
                 if (argumentTypes[i] instanceof UnsizedMatrixType) {
                     hasArray = true;
                     newArgTypes[i] = ((UnsizedMatrixType) argumentTypes[i])
-                        .getElementType();
+                                    .getElementType();
                     isArrayArg[i] = true;
                 } else {
                     newArgTypes[i] = argumentTypes[i];
@@ -454,7 +454,7 @@ public class CachedMethod {
             return _method;
         } else {
             throw new IllegalActionException("No method " + toString()
-                    + " was found!");
+                + " was found!");
         }
     }
 
@@ -470,8 +470,8 @@ public class CachedMethod {
     public Type getReturnType() throws IllegalActionException {
         if (_returnType == null) {
             throw new IllegalActionException("The return type of the method "
-                    + toString() + " cannot be determined because "
-                    + "no matching method was found.");
+                + toString() + " cannot be determined because "
+                + "no matching method was found.");
         }
 
         return _returnType;
@@ -497,7 +497,7 @@ public class CachedMethod {
      *   not valid, or the invoked method throws it.
      */
     public ptolemy.data.Token invoke(Object[] argValues)
-            throws IllegalActionException {
+        throws IllegalActionException {
         //     System.out.println("invoking " + getMethod().toString() + " on:");
         //         for (int i = 0; i < argValues.length; i++) {
         //             System.out.println("arg " + i + " = " + argValues[i]);
@@ -531,12 +531,12 @@ public class CachedMethod {
                 throw ex;
             } catch (InvocationTargetException ex) {
                 throw new IllegalActionException(null, ex.getCause(),
-                        "Error invoking method " + method + " on object "
-                        + argValues[0] + "\n");
+                    "Error invoking method " + method + " on object "
+                    + argValues[0] + "\n");
             } catch (Exception ex) {
                 throw new IllegalActionException(null, ex,
-                        "Error invoking method " + method + " on object "
-                        + argValues[0] + "\n");
+                    "Error invoking method " + method + " on object "
+                    + argValues[0] + "\n");
             }
 
             return ConversionUtilities.convertJavaTypeToToken(result);
@@ -567,17 +567,17 @@ public class CachedMethod {
                 throw ex;
             } catch (InvocationTargetException ex) {
                 throw new IllegalActionException(null, ex.getCause(),
-                        "Error invoking function " + method + "\n");
+                    "Error invoking function " + method + "\n");
             } catch (Exception ex) {
                 throw new IllegalActionException(null, ex,
-                        "Error invoking function " + method + "\n");
+                    "Error invoking function " + method + "\n");
             }
 
             return ConversionUtilities.convertJavaTypeToToken(result);
         }
 
         throw new IllegalActionException("Cannot invoke function " + method
-                + " that is not simple function or method");
+            + " that is not simple function or method");
     }
 
     /** Return true if this instance represents a function (vs. a method).
@@ -659,7 +659,7 @@ public class CachedMethod {
     /** Conversion from an ArrayToken to a Token array (Token[]). */
     public static final ArgumentConversion ARRAYTOKEN_CONVERSION = new ArgumentConversion(1) {
             public Object convert(ptolemy.data.Token input)
-                    throws IllegalActionException {
+                throws IllegalActionException {
                 // Convert ArrayToken to Token[]
                 return ((ArrayToken) input).arrayValue();
             }
@@ -669,7 +669,7 @@ public class CachedMethod {
     /** Conversion from tokens to Java native types. */
     public static final ArgumentConversion NATIVE_CONVERSION = new ArgumentConversion(3) {
             public Object convert(ptolemy.data.Token input)
-                    throws IllegalActionException {
+                throws IllegalActionException {
                 // Convert tokens to native types.
                 return ConversionUtilities.convertTokenToJavaType(input);
             }
@@ -678,7 +678,7 @@ public class CachedMethod {
     /** Identity conversion.  Does nothing. */
     public static final ArgumentConversion IDENTITY_CONVERSION = new ArgumentConversion(4) {
             public Object convert(ptolemy.data.Token input)
-                    throws IllegalActionException {
+                throws IllegalActionException {
                 // The do nothing conversion.
                 return input;
             }
@@ -702,11 +702,11 @@ public class CachedMethod {
      *   to the second.
      */
     protected static boolean _areConversionsPreferable(
-            ArgumentConversion[] conversions1, Class[] arguments1,
-            ArgumentConversion[] conversions2, Class[] arguments2) {
+        ArgumentConversion[] conversions1, Class[] arguments1,
+        ArgumentConversion[] conversions2, Class[] arguments2) {
         if (conversions1.length != conversions2.length) {
             throw new InternalErrorException(
-                    "Conversion arrays have to have the same length.");
+                "Conversion arrays have to have the same length.");
         }
 
         for (int j = 0; j < conversions1.length; j++) {
@@ -761,14 +761,15 @@ public class CachedMethod {
 
         // ArrayTokens can be converted to Token[]
         if (actual instanceof ArrayType && formal.isArray()
-                && formal.getComponentType().isAssignableFrom(ptolemy.data.Token.class)) {
+                        && formal.getComponentType().isAssignableFrom(ptolemy.data.Token.class)) {
             return ARRAYTOKEN_CONVERSION;
         }
 
         try {
             // Tokens can be converted to native types.
             if (formal.isAssignableFrom(
-                        ConversionUtilities.convertTokenTypeToJavaType(actual))) {
+                                ConversionUtilities.convertTokenTypeToJavaType(
+                                    actual))) {
                 return NATIVE_CONVERSION;
             }
         } catch (IllegalActionException ex) {
@@ -811,8 +812,8 @@ public class CachedMethod {
      *   use for the arguments.
      */
     protected static Method _polymorphicGetMethod(Class library,
-            String methodName, Type[] argumentTypes,
-            ArgumentConversion[] conversions) {
+        String methodName, Type[] argumentTypes,
+        ArgumentConversion[] conversions) {
         // This method might appear to duplicate the operation of the
         // getMethod() method in java.lang.Class.  However, that class
         // does not support polymorphism, or traversal through
@@ -889,7 +890,7 @@ public class CachedMethod {
                     // so it can be checked against any other match found.
                     matchedMethod = methods[i];
                     System.arraycopy(conversions, 0, matchedConversions, 0,
-                            actualArgCount);
+                        actualArgCount);
                 }
             }
 
@@ -897,7 +898,7 @@ public class CachedMethod {
         }
 
         System.arraycopy(matchedConversions, 0, conversions, 0,
-                conversions.length);
+            conversions.length);
         return matchedMethod;
     }
 
@@ -915,7 +916,7 @@ public class CachedMethod {
     // that accepts arguments argumentTypes[0..length].  Return null if no
     // method can be found.
     private static CachedMethod _findFUNCTION(String methodName,
-            Type[] argumentTypes) throws IllegalActionException {
+        Type[] argumentTypes) throws IllegalActionException {
         CachedMethod cachedMethod = null;
         ArgumentConversion[] conversions = new ArgumentConversion[argumentTypes.length];
 
@@ -941,16 +942,16 @@ public class CachedMethod {
                     // Compare to previous match, if there has
                     // been one.
                     if ((preferredMethod == null)
-                            || _areConversionsPreferable(conversions,
-                                    method.getParameterTypes(),
-                                    preferredConversions,
-                                    preferredMethod.getParameterTypes())) {
+                                    || _areConversionsPreferable(conversions,
+                                        method.getParameterTypes(),
+                                        preferredConversions,
+                                        preferredMethod.getParameterTypes())) {
                         // Either there is no previous match,
                         // or the current match is preferable
                         // or equivalent to the previous match.
                         preferredMethod = method;
                         preferredConversions = (ArgumentConversion[]) conversions
-                            .clone();
+                                        .clone();
                     }
                 }
             } catch (SecurityException security) {
@@ -977,7 +978,7 @@ public class CachedMethod {
     // from the type indicated by argumentTypes[0], that accepts arguments
     // argumentTypes[1..length].  Return null if no method can be found.
     private static CachedMethod _findMETHOD(String methodName,
-            Type[] argumentTypes) throws IllegalActionException {
+        Type[] argumentTypes) throws IllegalActionException {
         CachedMethod cachedMethod = null;
 
         // Try to reflect the method.
@@ -1033,7 +1034,7 @@ public class CachedMethod {
      *  argumentTypes if it had been cached previously.
      */
     private static CachedMethod _getCachedMethod(String methodName,
-            Type[] argumentTypes, int type) throws IllegalActionException {
+        Type[] argumentTypes, int type) throws IllegalActionException {
         CachedMethod key = new CachedMethod(methodName, argumentTypes, null,
                 null, type);
 
@@ -1107,9 +1108,9 @@ public class CachedMethod {
          *  types of argument conversions.
          */
         public Object convert(ptolemy.data.Token input)
-                throws IllegalActionException {
+            throws IllegalActionException {
             throw new IllegalActionException("Cannot convert argument token "
-                    + input);
+                + input);
         }
 
         /** Return true if this conversion is preferable to the given
@@ -1148,7 +1149,7 @@ public class CachedMethod {
          *  types of argument conversions.
          */
         public Object convert(ptolemy.data.Token input)
-                throws IllegalActionException {
+            throws IllegalActionException {
             ptolemy.data.Token token = _conversionType.convert(input);
             return _conversion.convert(token);
         }
@@ -1165,7 +1166,7 @@ public class CachedMethod {
 
                 // FIXME: compare types.
                 if (TypeLattice.compare(_conversionType,
-                            argumentConversion._conversionType) == ptolemy.graph.CPO.LOWER) {
+                                    argumentConversion._conversionType) == ptolemy.graph.CPO.LOWER) {
                     return true;
                 }
 
@@ -1179,7 +1180,7 @@ public class CachedMethod {
          */
         public String toString() {
             return "TypeConversion(" + _conversionType + ", " + _conversion
-                + ") " + _preference;
+            + ") " + _preference;
         }
 
         private ptolemy.data.type.Type _conversionType;
@@ -1197,9 +1198,9 @@ public class CachedMethod {
      */
     public static class BaseConvertCachedMethod extends CachedMethod {
         private BaseConvertCachedMethod(String methodName,
-                Type[] argumentTypes, Method method,
-                ArgumentConversion baseConversion, ArgumentConversion[] conversions)
-                throws IllegalActionException {
+            Type[] argumentTypes, Method method,
+            ArgumentConversion baseConversion, ArgumentConversion[] conversions)
+            throws IllegalActionException {
             super(methodName, argumentTypes, method, conversions, METHOD);
             _baseConversion = baseConversion;
         }
@@ -1212,7 +1213,7 @@ public class CachedMethod {
         }
 
         public ptolemy.data.Token invoke(Object[] argValues)
-                throws IllegalActionException {
+            throws IllegalActionException {
             argValues[0] = _baseConversion.convert((ptolemy.data.Token) argValues[0]);
             return super.invoke(argValues);
         }
@@ -1228,8 +1229,8 @@ public class CachedMethod {
      */
     public static class ArrayMapCachedMethod extends CachedMethod {
         public ArrayMapCachedMethod(String methodName, Type[] argumentTypes,
-                int type, CachedMethod cachedMethod, boolean[] reducedArgs)
-                throws IllegalActionException {
+            int type, CachedMethod cachedMethod, boolean[] reducedArgs)
+            throws IllegalActionException {
             super(methodName, argumentTypes, null, null, type);
             _cachedMethod = cachedMethod;
             _reducedArgs = reducedArgs;
@@ -1246,7 +1247,7 @@ public class CachedMethod {
          *   throws it.
          */
         public ptolemy.data.Token invoke(Object[] argValues)
-                throws IllegalActionException {
+            throws IllegalActionException {
             int dim = 0;
 
             // Check the argument lengths.
@@ -1257,14 +1258,14 @@ public class CachedMethod {
 
                         if ((dim != 0) && (arrayToken.length() != dim)) {
                             throw new IllegalActionException("Argument " + i
-                                    + " is a reducible arrayToken that "
-                                    + "does not have compatible length!");
+                                + " is a reducible arrayToken that "
+                                + "does not have compatible length!");
                         } else {
                             dim = arrayToken.length();
                         }
                     } else {
                         throw new IllegalActionException("Argument " + i
-                                + " is not an instance of " + "ArrayToken!");
+                            + " is not an instance of " + "ArrayToken!");
                     }
                 }
             }
@@ -1301,9 +1302,9 @@ public class CachedMethod {
         public Type getReturnType() throws IllegalActionException {
             if (!isValid()) {
                 throw new IllegalActionException(
-                        "The return type of the method " + toString()
-                        + " cannot be determined because "
-                        + "no matching method was found.");
+                    "The return type of the method " + toString()
+                    + " cannot be determined because "
+                    + "no matching method was found.");
             }
 
             Type elementType = _cachedMethod.getReturnType();
@@ -1328,8 +1329,8 @@ public class CachedMethod {
      */
     public static class MatrixMapCachedMethod extends CachedMethod {
         public MatrixMapCachedMethod(String methodName, Type[] argumentTypes,
-                int type, CachedMethod cachedMethod, boolean[] reducedArgs)
-                throws IllegalActionException {
+            int type, CachedMethod cachedMethod, boolean[] reducedArgs)
+            throws IllegalActionException {
             super(methodName, argumentTypes, null, null, type);
             _cachedMethod = cachedMethod;
             _reducedArgs = reducedArgs;
@@ -1346,7 +1347,7 @@ public class CachedMethod {
          *  throws it.
          */
         public ptolemy.data.Token invoke(Object[] argValues)
-                throws IllegalActionException {
+            throws IllegalActionException {
             int xdim = 0;
             int ydim = 0;
 
@@ -1357,18 +1358,18 @@ public class CachedMethod {
                         MatrixToken matrixToken = (MatrixToken) argValues[i];
 
                         if ((xdim != 0) && (ydim != 0)
-                                && ((matrixToken.getRowCount() != ydim)
+                                        && ((matrixToken.getRowCount() != ydim)
                                         || (matrixToken.getColumnCount() != xdim))) {
                             throw new IllegalActionException("Argument " + i
-                                    + " is a reducible matrixToken that "
-                                    + "does not have compatible size!");
+                                + " is a reducible matrixToken that "
+                                + "does not have compatible size!");
                         } else {
                             ydim = matrixToken.getRowCount();
                             xdim = matrixToken.getColumnCount();
                         }
                     } else {
                         throw new IllegalActionException("Argument " + i
-                                + " is not an instance of " + "MatrixToken!");
+                            + " is not an instance of " + "MatrixToken!");
                     }
                 }
             }
@@ -1384,7 +1385,7 @@ public class CachedMethod {
                     for (int i = 0; i < argValues.length; i++) {
                         if (_reducedArgs[i]) {
                             subArgs[i] = ((MatrixToken) argValues[i])
-                                .getElementAsToken(j, k);
+                                            .getElementAsToken(j, k);
                         }
                     }
 
@@ -1405,9 +1406,9 @@ public class CachedMethod {
         public Type getReturnType() throws IllegalActionException {
             if (!isValid()) {
                 throw new IllegalActionException(
-                        "The return type of the method " + toString()
-                        + " cannot be determined because "
-                        + "no matching method was found.");
+                    "The return type of the method " + toString()
+                    + " cannot be determined because "
+                    + "no matching method was found.");
             }
 
             Type elementType = _cachedMethod.getReturnType();

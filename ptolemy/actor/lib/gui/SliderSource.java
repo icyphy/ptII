@@ -77,7 +77,7 @@ public class SliderSource extends Source implements ChangeListener, Placeable {
      *   entity with this name.
      */
     public SliderSource(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // Set the type of the output port.
@@ -122,16 +122,16 @@ public class SliderSource extends Source implements ChangeListener, Placeable {
      *   slider is invalid.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if ((attribute == minimum) || (attribute == maximum)) {
             int min = ((IntToken) minimum.getToken()).intValue();
             int max = ((IntToken) maximum.getToken()).intValue();
 
             if ((min > max) && (slider != null)) {
                 throw new IllegalActionException(this,
-                        "The minimum value "
-                        + "of the slider cannot be larger than the maximum "
-                        + "value.");
+                    "The minimum value "
+                    + "of the slider cannot be larger than the maximum "
+                    + "value.");
             }
 
             if (slider != null) {
@@ -277,7 +277,7 @@ public class SliderSource extends Source implements ChangeListener, Placeable {
      *  @exception NameDuplicationException If the base class throws it.
      */
     public void setContainer(CompositeEntity container)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super.setContainer(container);
 
         if (container == null) {

@@ -25,13 +25,13 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.ddf.kernel;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// ActorEnablingStatus
 
-/** 
+/**
    A type-safe enumeration of actor enabling status.
 
    @author Gang Zhou
@@ -41,48 +41,47 @@ package ptolemy.domains.ddf.kernel;
    @Pt.AcceptedRating red (zgang)
 */
 public final class ActorEnablingStatus {
-        
-        /** A private constructor.
-         *  @param status The string representation of this object.
-         */
-        private ActorEnablingStatus(String status) { 
-            _status = status;
-        }
-        
-        ///////////////////////////////////////////////////////////////////
-        ////                         public methods                    ////
+    /** A private constructor.
+     *  @param status The string representation of this object.
+     */
+    private ActorEnablingStatus(String status) {
+        _status = status;
+    }
 
-        /** Return the string representation of this object.
-         *  @return the string representation of this object.
-         */
-        public String toString() {
-            return _status;
-        }
-        
-        ///////////////////////////////////////////////////////////////////
-        ////                         public variables                  ////
- 
-        /** This final static member indicates an actor is enabled but
-         *  deferrable.
-         */
-        public static final ActorEnablingStatus ENABLED_DEFERRABLE
-                = new ActorEnablingStatus("ENABLED_DEFERRABLE");
-        
-        /** This final static member indicates an actor is enabled and 
-         *  not deferrable.
-         */
-        public static final ActorEnablingStatus ENABLED_NOT_DEFERRABLE
-                = new ActorEnablingStatus("ENABLED_NOT_DEFERRABLE");
-        
-        /** This final static member indicates an actor is not enabled.
-         */
-        public static final ActorEnablingStatus NOT_ENABLED 
-                = new ActorEnablingStatus("NOT_ENABLED");
-                        
-        ///////////////////////////////////////////////////////////////////
-        ////                         private variables                 ////
-                
-        /** String representation of this object.
-         */
-        private String _status;
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Return the string representation of this object.
+     *  @return the string representation of this object.
+     */
+    public String toString() {
+        return _status;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
+    /** This final static member indicates an actor is enabled but
+     *  deferrable.
+     */
+    public static final ActorEnablingStatus ENABLED_DEFERRABLE = new ActorEnablingStatus(
+            "ENABLED_DEFERRABLE");
+
+    /** This final static member indicates an actor is enabled and
+     *  not deferrable.
+     */
+    public static final ActorEnablingStatus ENABLED_NOT_DEFERRABLE = new ActorEnablingStatus(
+            "ENABLED_NOT_DEFERRABLE");
+
+    /** This final static member indicates an actor is not enabled.
+     */
+    public static final ActorEnablingStatus NOT_ENABLED = new ActorEnablingStatus(
+            "NOT_ENABLED");
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    /** String representation of this object.
+     */
+    private String _status;
 }

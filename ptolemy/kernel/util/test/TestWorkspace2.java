@@ -143,11 +143,11 @@ public class TestWorkspace2 extends Thread {
                         try {
                             TestWorkspace2.this._workspace.getWriteAccess();
                             TestWorkspace2.this.profile += (_name
-                                    + ".getWriteAccess()\n");
+                                        + ".getWriteAccess()\n");
                         } finally {
                             _workspace.doneWriting();
                             TestWorkspace2.this.profile += (_name
-                                    + ".doneWriting()\n");
+                                        + ".doneWriting()\n");
                         }
 
                         getWriteAccess = false;

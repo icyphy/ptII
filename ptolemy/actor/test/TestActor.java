@@ -61,7 +61,7 @@ public class TestActor extends AtomicActor {
      *   an entity already in the container.
      */
     public TestActor(CompositeActor container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 

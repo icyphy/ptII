@@ -24,13 +24,14 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.component;
 
 import ptolemy.kernel.util.IllegalActionException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Component
+
 /**
    This interface defines the basic methods for initializing and
    executing components. The intended usage is that preintialize()
@@ -50,7 +51,6 @@ import ptolemy.kernel.util.IllegalActionException;
    @Pt.AcceptedRating red (davisj)
 */
 public interface Component {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

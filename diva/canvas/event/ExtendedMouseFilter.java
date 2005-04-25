@@ -95,9 +95,10 @@ public class ExtendedMouseFilter extends MouseFilter {
      */
     public ExtendedMouseFilter(int button, int extendedModifiers) {
         this(button, extendedModifiers,
-                InputEvent.SHIFT_DOWN_MASK | InputEvent.CTRL_DOWN_MASK
-                | InputEvent.ALT_DOWN_MASK | InputEvent.ALT_GRAPH_DOWN_MASK
-                | InputEvent.META_DOWN_MASK);
+            InputEvent.SHIFT_DOWN_MASK | InputEvent.CTRL_DOWN_MASK
+                        | InputEvent.ALT_DOWN_MASK
+                        | InputEvent.ALT_GRAPH_DOWN_MASK
+                        | InputEvent.META_DOWN_MASK);
     }
 
     /**
@@ -128,7 +129,7 @@ public class ExtendedMouseFilter extends MouseFilter {
      * have a press number of zero.
      */
     public ExtendedMouseFilter(int button, int extendedModifiers, int mask,
-            int pressNumber) {
+        int pressNumber) {
         // bogus super constructor...  It would have been better if the
         // base class was an interface, but oh well.
         super(0);
@@ -148,7 +149,7 @@ public class ExtendedMouseFilter extends MouseFilter {
 
         int m = event.getModifiersEx();
         boolean val = (event.getButton() == _button)
-            && (_modifierFlags == (m & _modifierMask));
+                        && (_modifierFlags == (m & _modifierMask));
 
         //         System.out.println("event = " + event);
         //         System.out.println("FILTER = " + this);
@@ -161,9 +162,9 @@ public class ExtendedMouseFilter extends MouseFilter {
     public String toString() {
         StringBuffer result = new StringBuffer();
         result.append(getClass().toString() + "; Button " + _button
-                + "; Modifiers " + InputEvent.getModifiersExText(_modifierFlags)
-                + "; Modifier mask " + InputEvent.getModifiersExText(_modifierMask)
-                + "; Press Number " + _pressNumber);
+            + "; Modifiers " + InputEvent.getModifiersExText(_modifierFlags)
+            + "; Modifier mask " + InputEvent.getModifiersExText(_modifierMask)
+            + "; Press Number " + _pressNumber);
         return result.toString();
     }
 }

@@ -86,11 +86,11 @@ public class ModelTopology {
      *   cannot be determined.
      */
     public static double distanceBetween(WirelessIOPort port1,
-            WirelessIOPort port2) throws IllegalActionException {
+        WirelessIOPort port2) throws IllegalActionException {
         double[] p1 = locationOf(port1);
         double[] p2 = locationOf(port2);
         return Math.sqrt(((p1[0] - p2[0]) * (p1[0] - p2[0]))
-                + ((p1[1] - p2[1]) * (p1[1] - p2[1])));
+            + ((p1[1] - p2[1]) * (p1[1] - p2[1])));
     }
 
     /** Return a list of input ports that can potentially receive data
@@ -109,7 +109,7 @@ public class ModelTopology {
      *   whose <i>outsideChannel</i> parameter cannot be evaluated.
      */
     public static List listeningInputPorts(CompositeEntity container,
-            String theChannelName) throws IllegalActionException {
+        String theChannelName) throws IllegalActionException {
         List result = new LinkedList();
         Iterator entities = container.entityList().iterator();
 
@@ -125,7 +125,7 @@ public class ModelTopology {
 
                     if (castPort.isInput()) {
                         String channelName = castPort.outsideChannel
-                            .stringValue();
+                                        .stringValue();
 
                         if (channelName.equals(theChannelName)) {
                             result.add(port);
@@ -152,7 +152,7 @@ public class ModelTopology {
      *   whose <i>insideChannel</i> parameter cannot be evaluated.
      */
     public static List listeningOutputPorts(CompositeEntity container,
-            String theChannelName) throws IllegalActionException {
+        String theChannelName) throws IllegalActionException {
         List result = new LinkedList();
         Iterator ports = container.portList().iterator();
 
@@ -187,7 +187,7 @@ public class ModelTopology {
      *   be found.
      */
     public static double[] locationOf(IOPort port)
-            throws IllegalActionException {
+        throws IllegalActionException {
         Entity portContainer = (Entity) port.getContainer();
         Locatable location = null;
 
@@ -202,7 +202,7 @@ public class ModelTopology {
         //}
         if (location == null) {
             throw new IllegalActionException(
-                    "Cannot determine location for port " + port.getName() + ".");
+                "Cannot determine location for port " + port.getName() + ".");
         }
 
         return location.getLocation();
@@ -222,7 +222,7 @@ public class ModelTopology {
      *   whose <i>insideChannel</i> parameter cannot be evaluated.
      */
     public static List sendingInputPorts(CompositeEntity container,
-            String theChannelName) throws IllegalActionException {
+        String theChannelName) throws IllegalActionException {
         List result = new LinkedList();
         Iterator ports = container.portList().iterator();
 
@@ -259,7 +259,7 @@ public class ModelTopology {
      *   whose <i>outsideChannel</i> parameter cannot be evaluated.
      */
     public static List sendingOutputPorts(CompositeEntity container,
-            String theChannelName) throws IllegalActionException {
+        String theChannelName) throws IllegalActionException {
         List result = new LinkedList();
         Iterator entities = container.entityList().iterator();
 
@@ -275,7 +275,7 @@ public class ModelTopology {
 
                     if (castPort.isOutput()) {
                         String channelName = castPort.outsideChannel
-                            .stringValue();
+                                        .stringValue();
 
                         if (channelName.equals(theChannelName)) {
                             result.add(port);

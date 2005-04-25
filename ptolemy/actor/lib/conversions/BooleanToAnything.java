@@ -65,7 +65,7 @@ public class BooleanToAnything extends Converter {
      *   actor with this name.
      */
     public BooleanToAnything(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         falseValue = new Parameter(this, "falseValue", new IntToken(0));

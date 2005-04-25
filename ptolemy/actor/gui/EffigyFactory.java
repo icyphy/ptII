@@ -74,7 +74,7 @@ public class EffigyFactory extends CompositeEntity {
      *   an entity already in the container.
      */
     public EffigyFactory(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -114,7 +114,7 @@ public class EffigyFactory extends CompositeEntity {
      *   duplication occurs.
      */
     public Effigy createEffigy(CompositeEntity container)
-            throws Exception {
+        throws Exception {
         return createEffigy(container, null, null);
     }
 
@@ -135,7 +135,7 @@ public class EffigyFactory extends CompositeEntity {
      *   is malformed in some way.
      */
     public Effigy createEffigy(CompositeEntity container, URL base, URL in)
-            throws Exception {
+        throws Exception {
         Effigy effigy = null;
         Iterator factories = entityList(EffigyFactory.class).iterator();
 

@@ -81,14 +81,14 @@ public class RecordDisassembler extends TypedAtomicActor {
      *   actor with this name.
      */
     public RecordDisassembler(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         input = new TypedIOPort(this, "input", true, false);
 
         _attachText("_iconDescription",
-                "<svg>\n" + "<rect x=\"0\" y=\"0\" width=\"6\" "
-                + "height=\"40\" style=\"fill:red\"/>\n" + "</svg>\n");
+            "<svg>\n" + "<rect x=\"0\" y=\"0\" width=\"6\" "
+            + "height=\"40\" style=\"fill:red\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -205,7 +205,7 @@ public class RecordDisassembler extends TypedAtomicActor {
                 }
             } else {
                 throw new IllegalActionException(RecordDisassembler.this,
-                        "Invalid type for input port");
+                    "Invalid type for input port");
             }
         }
 

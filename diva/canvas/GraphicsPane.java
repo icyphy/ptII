@@ -188,7 +188,7 @@ public class GraphicsPane extends CanvasPane {
 
                 public void remove() {
                     throw new UnsupportedOperationException(
-                            "Cannot delete layer from graphics pane");
+                        "Cannot delete layer from graphics pane");
                 }
             };
     }
@@ -210,7 +210,7 @@ public class GraphicsPane extends CanvasPane {
 
                 public void remove() {
                     throw new UnsupportedOperationException(
-                            "Cannot delete layer from graphics pane");
+                        "Cannot delete layer from graphics pane");
                 }
             };
     }

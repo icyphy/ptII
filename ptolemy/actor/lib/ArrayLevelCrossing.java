@@ -82,7 +82,7 @@ public class ArrayLevelCrossing extends TypedAtomicActor {
      *   actor with this name.
      */
     public ArrayLevelCrossing(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         start = new PortParameter(this, "start");
@@ -186,7 +186,7 @@ public class ArrayLevelCrossing extends TypedAtomicActor {
 
             if ((startValue >= inputSize) || (startValue < 0)) {
                 throw new IllegalActionException(this,
-                        "start is out of range: " + startValue);
+                    "start is out of range: " + startValue);
             }
 
             int increment = -1;
@@ -196,10 +196,10 @@ public class ArrayLevelCrossing extends TypedAtomicActor {
             }
 
             double reference = ((DoubleToken) inputArray.getElement(startValue))
-                .doubleValue();
+                            .doubleValue();
 
             double thresholdValue = ((DoubleToken) threshold.getToken())
-                .doubleValue();
+                            .doubleValue();
 
             String scaleValue = scale.stringValue();
 
@@ -208,18 +208,18 @@ public class ArrayLevelCrossing extends TypedAtomicActor {
             if (scaleValue.equals("relative amplitude decibels")) {
                 if (aboveValue) {
                     thresholdValue = reference * Math.pow(10.0,
-                            (thresholdValue / 20));
+                                        (thresholdValue / 20));
                 } else {
                     thresholdValue = reference * Math.pow(10.0,
-                            (-thresholdValue / 20));
+                                        (-thresholdValue / 20));
                 }
             } else if (scaleValue.equals("relative power decibels")) {
                 if (aboveValue) {
                     thresholdValue = reference * Math.pow(10.0,
-                            (thresholdValue / 10));
+                                        (thresholdValue / 10));
                 } else {
                     thresholdValue = reference * Math.pow(10.0,
-                            (-thresholdValue / 10));
+                                        (-thresholdValue / 10));
                 }
             } else if (scaleValue.equals("relative linear")) {
                 if (aboveValue) {
@@ -233,9 +233,9 @@ public class ArrayLevelCrossing extends TypedAtomicActor {
             int bin = -1;
 
             for (int i = startValue; (i < inputSize) && (i >= 0);
-                 i += increment) {
+                            i += increment) {
                 double currentValue = ((DoubleToken) inputArray.getElement(i))
-                    .doubleValue();
+                                .doubleValue();
 
                 if (aboveValue) {
                     // Searching for values above the threshold.

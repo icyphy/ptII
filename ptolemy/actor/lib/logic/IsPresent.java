@@ -65,7 +65,7 @@ public class IsPresent extends Transformer {
      *   an actor already in the container.
      */
     public IsPresent(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input.setTypeEquals(BaseType.GENERAL);
         input.setMultiport(true);
@@ -73,10 +73,10 @@ public class IsPresent extends Transformer {
         output.setMultiport(true);
 
         _attachText("_iconDescription",
-                "<svg>\n" + "<rect x=\"-15\" y=\"-15\" "
-                + "width=\"30\" height=\"30\" " + "style=\"fill:white\"/>\n"
-                + "<text x=\"-4\" y=\"8\"" + "style=\"font-size:24\">?</text>\n"
-                + "</svg>\n");
+            "<svg>\n" + "<rect x=\"-15\" y=\"-15\" "
+            + "width=\"30\" height=\"30\" " + "style=\"fill:white\"/>\n"
+            + "<text x=\"-4\" y=\"8\"" + "style=\"font-size:24\">?</text>\n"
+            + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -92,7 +92,7 @@ public class RecordType extends StructuredType {
     public RecordType(String[] labels, Type[] types) {
         if (labels.length != types.length) {
             throw new IllegalArgumentException("RecordType: the labels "
-                    + "and types arrays do not have the same size.");
+                + "and types arrays do not have the same size.");
         }
 
         for (int i = 0; i < labels.length; i++) {
@@ -131,7 +131,7 @@ public class RecordType extends StructuredType {
                 newObj.updateType(this);
             } catch (IllegalActionException ex) {
                 throw new InternalErrorException("RecordType.clone: Cannot "
-                        + "update new instance. " + ex.getMessage());
+                    + "update new instance. " + ex.getMessage());
             }
 
             return newObj;
@@ -152,7 +152,8 @@ public class RecordType extends StructuredType {
     public Token convert(Token token) throws IllegalActionException {
         if (!isCompatible(token.getType())) {
             throw new IllegalArgumentException(Token
-                    .notSupportedConversionMessage(token, this.toString()));
+                            .notSupportedConversionMessage(token,
+                                this.toString()));
         }
 
         RecordToken recordToken = (RecordToken) token;
@@ -271,8 +272,8 @@ public class RecordType extends StructuredType {
             }
         } catch (IllegalActionException iae) {
             throw new InternalErrorException("RecordType.initialize: Cannot "
-                    + "initialize the element type to " + type + " "
-                    + iae.getMessage());
+                + "initialize the element type to " + type + " "
+                + iae.getMessage());
         }
     }
 
@@ -465,22 +466,22 @@ public class RecordType extends StructuredType {
      *   RecordType or it does not have the same structure as this one.
      */
     public void updateType(StructuredType newType)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (this.isConstant()) {
             if (this.equals(newType)) {
                 return;
             } else {
                 throw new IllegalActionException("RecordType.updateType: "
-                        + "This type is a constant and the argument is not the"
-                        + " same as this type. This type: " + this.toString()
-                        + " argument: " + newType.toString());
+                    + "This type is a constant and the argument is not the"
+                    + " same as this type. This type: " + this.toString()
+                    + " argument: " + newType.toString());
             }
         }
 
         // This type is a variable.
         if (!this.isSubstitutionInstance(newType)) {
             throw new IllegalActionException("RecordType.updateType: "
-                    + "Cannot update this type to the new type.");
+                + "Cannot update this type to the new type.");
         }
 
         Iterator fieldNames = _fields.keySet().iterator();
@@ -515,7 +516,7 @@ public class RecordType extends StructuredType {
     protected int _compare(StructuredType type) {
         if (!(type instanceof RecordType)) {
             throw new IllegalArgumentException("RecordType.compare: "
-                    + "The argument is not a RecordType.");
+                + "The argument is not a RecordType.");
         }
 
         if (this.equals(type)) {
@@ -551,8 +552,8 @@ public class RecordType extends StructuredType {
     protected StructuredType _greatestLowerBound(StructuredType type) {
         if (!(type instanceof RecordType)) {
             throw new IllegalArgumentException(
-                    "RecordType.greatestLowerBound: The argument is not a "
-                    + "RecordType.");
+                "RecordType.greatestLowerBound: The argument is not a "
+                + "RecordType.");
         }
 
         RecordType recordType = (RecordType) type;
@@ -601,7 +602,7 @@ public class RecordType extends StructuredType {
     protected StructuredType _leastUpperBound(StructuredType type) {
         if (!(type instanceof RecordType)) {
             throw new IllegalArgumentException("RecordType.leastUpperBound: "
-                    + "The argument is not a RecordType.");
+                + "The argument is not a RecordType.");
         }
 
         RecordType recordType = (RecordType) type;
@@ -680,7 +681,7 @@ public class RecordType extends StructuredType {
                 _resolvedType = _declaredType;
             } catch (CloneNotSupportedException cnse) {
                 throw new InternalErrorException("RecordType.FieldType: "
-                        + "The specified type cannot be cloned.");
+                    + "The specified type cannot be cloned.");
             }
         }
 
@@ -724,12 +725,12 @@ public class RecordType extends StructuredType {
         public void initialize(Object e) throws IllegalActionException {
             if (!isSettable()) {
                 throw new IllegalActionException("RecordType$FieldType."
-                        + "initialize: The type is not settable.");
+                    + "initialize: The type is not settable.");
             }
 
             if (!(e instanceof Type)) {
                 throw new IllegalActionException("FieldType.initialize: "
-                        + "The argument is not a Type.");
+                    + "The argument is not a Type.");
             }
 
             if (_declaredType == BaseType.UNKNOWN) {
@@ -764,15 +765,15 @@ public class RecordType extends StructuredType {
         public void setValue(Object e) throws IllegalActionException {
             if (!isSettable()) {
                 throw new IllegalActionException(
-                        "RecordType$FieldType.setValue: The type is not "
-                        + "settable.");
+                    "RecordType$FieldType.setValue: The type is not "
+                    + "settable.");
             }
 
             if (!_declaredType.isSubstitutionInstance((Type) e)) {
                 throw new IllegalActionException("FieldType.setValue: "
-                        + "Cannot update the field type of this RecordType "
-                        + "to the new type." + " Field type: "
-                        + _declaredType.toString() + ", New type: " + e.toString());
+                    + "Cannot update the field type of this RecordType "
+                    + "to the new type." + " Field type: "
+                    + _declaredType.toString() + ", New type: " + e.toString());
             }
 
             if (_declaredType == BaseType.UNKNOWN) {
@@ -780,8 +781,8 @@ public class RecordType extends StructuredType {
                     _resolvedType = (Type) ((Type) e).clone();
                 } catch (CloneNotSupportedException cnse) {
                     throw new InternalErrorException(
-                            "RecordType$FieldType.setValue: "
-                            + "The specified type cannot be cloned.");
+                        "RecordType$FieldType.setValue: "
+                        + "The specified type cannot be cloned.");
                 }
             } else {
                 ((StructuredType) _resolvedType).updateType((StructuredType) e);

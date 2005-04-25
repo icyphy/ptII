@@ -40,6 +40,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import java.util.HashSet;
 import java.util.Set;
 
+
 /**
 * @author Man-Kit Leung
 *
@@ -47,47 +48,45 @@ import java.util.Set;
 * Window - Preferences - Java - Code Style - Code Templates
 */
 public class UnaryMathFunction extends CCodeGeneratorHelper {
+    /**
+     * Constructor method for the UnaryMathFunction helper
+     * @param actor the associated actor
+     */
+    public UnaryMathFunction(ptolemy.actor.lib.UnaryMathFunction actor) {
+        super(actor);
+    }
 
-  /**
-   * Constructor method for the UnaryMathFunction helper
-   * @param actor the associated actor
-   */
-  public UnaryMathFunction(ptolemy.actor.lib.UnaryMathFunction actor) {
-      super(actor);
-  }
+    /**
+     * Generate fire code
+     * The method reads in codeBlock1 and puts into the
+     * given stream buffer
+     * @param stream the given buffer to append the code to
+     */
+    public void generateFireCode(StringBuffer stream)
+        throws IllegalActionException {
+        ptolemy.actor.lib.UnaryMathFunction actor = (ptolemy.actor.lib.UnaryMathFunction) getComponent();
 
-  /**
-   * Generate fire code
-   * The method reads in codeBlock1 and puts into the 
-   * given stream buffer
-   * @param stream the given buffer to append the code to
-   */
-  public void  generateFireCode(StringBuffer stream)
-          throws IllegalActionException {
+        String function = actor.function.getExpression();
+        String code = (function.equals("exp")) ? "expBlock"
+                                               : ((function.equals("log"))
+            ? "logBlock"
+            : ((function.equals("sign")) ? "signBlock"
+                                         : ((function.equals("square"))
+            ? "squareBlock" : "sqrtBlock")));
 
-      ptolemy.actor.lib.UnaryMathFunction actor =
-          (ptolemy.actor.lib.UnaryMathFunction)getComponent();
-      
-      String function = actor.function.getExpression();
-      String code =   (function.equals("exp")) ? "expBlock" :
-                      (function.equals("log")) ? "logBlock" :
-                      (function.equals("sign")) ? "signBlock" :
-                      (function.equals("square")) ? "squareBlock" : "sqrtBlock";
-      
-      CodeStream tmpStream = new CodeStream(this);
-      tmpStream.appendCodeBlock(code);            
-      stream.append(processCode(tmpStream.toString()));
-  }
-  
-  /** Get the files needed by the code generated for the
-   *  UnaryMathFunction actor.
-   *  @return A set of strings that are names of the files
-   *   needed by the code generated for the UnaryMathFunction actor.
-   */
-  public Set getIncludingFiles() {
-      Set files = new HashSet();
-      files.add("\"math.h\"");
-      return files;
-  }
+        CodeStream tmpStream = new CodeStream(this);
+        tmpStream.appendCodeBlock(code);
+        stream.append(processCode(tmpStream.toString()));
+    }
+
+    /** Get the files needed by the code generated for the
+     *  UnaryMathFunction actor.
+     *  @return A set of strings that are names of the files
+     *   needed by the code generated for the UnaryMathFunction actor.
+     */
+    public Set getIncludingFiles() {
+        Set files = new HashSet();
+        files.add("\"math.h\"");
+        return files;
+    }
 }
-

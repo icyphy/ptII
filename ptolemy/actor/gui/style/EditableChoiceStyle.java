@@ -80,7 +80,7 @@ public class EditableChoiceStyle extends ChoiceStyle {
      *   an attribute already in the container.
      */
     public EditableChoiceStyle(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _isEditable = true;
     }

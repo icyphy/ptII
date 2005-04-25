@@ -272,7 +272,12 @@ label_2:
     }
 
     private static void jj_la1_0() {
-        jj_la1_0 = new int[] { 0x820, 0x4000, 0x10000, 0x800, };
+        jj_la1_0 = new int[] {
+                0x820,
+                0x4000,
+                0x10000,
+                0x800,
+            };
     }
 
     public MatrixParser(java.io.InputStream stream) {

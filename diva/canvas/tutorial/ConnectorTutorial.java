@@ -353,7 +353,7 @@ public class ConnectorTutorial {
         /** Create a new instance of this figure.
          */
         public SitedRectangle(double x, double y, double width, double height,
-                Color color) {
+            Color color) {
             super(x, y, width, height, color);
             _geometry = new BoundsGeometry(this, getBounds());
         }

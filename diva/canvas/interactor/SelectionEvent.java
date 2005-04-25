@@ -64,7 +64,7 @@ public class SelectionEvent extends java.util.EventObject {
      * additions, removals, and primary selection.
      */
     public SelectionEvent(Object source, Object[] added, Object[] removed,
-            Object primary) {
+        Object primary) {
         this(source);
         set(added, removed, primary);
     }

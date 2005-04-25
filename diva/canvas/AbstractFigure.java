@@ -223,7 +223,7 @@ public abstract class AbstractFigure implements Figure {
     public void repaint() {
         if (_parent != null) {
             repaint(DamageRegion.createDamageRegion(
-                            _parent.getTransformContext(), getBounds()));
+                    _parent.getTransformContext(), getBounds()));
         }
     }
 

@@ -88,7 +88,7 @@ public class CNames {
     public static String classNameToFileName(String className) {
         if (isSystemClass(className)) {
             return (Options.v().get("lib") + "/"
-                    + _sanitize(className).replace('.', '/'));
+            + _sanitize(className).replace('.', '/'));
         } else {
             return (_sanitize(className).replace('.', '/'));
         }
@@ -246,9 +246,9 @@ public class CNames {
      */
     public static boolean isSystemClass(String className) {
         if ((className.startsWith("java.")) || (className.startsWith("sun."))
-                || (className.startsWith("org."))
-                || (className.startsWith("com."))
-                || (className.startsWith("javax."))) {
+                        || (className.startsWith("org."))
+                        || (className.startsWith("com."))
+                        || (className.startsWith("javax."))) {
             return (true);
         } else {
             return (false);
@@ -369,7 +369,7 @@ public class CNames {
             name = "void";
         } else {
             new RuntimeException("Unsupported Soot type '"
-                    + type.getClass().getName() + "'");
+                + type.getClass().getName() + "'");
         }
 
         return name;
@@ -423,8 +423,8 @@ public class CNames {
 
             // The choice of 'i' as the first letter stands for "instance."
             String className = (name.indexOf(".") < 0) ? name
-                : name.substring(name
-                        .lastIndexOf(".") + 1);
+                                                       : name.substring(name
+                                .lastIndexOf(".") + 1);
             Integer prefixCode = new Integer(name.hashCode());
             CClassName = _sanitize("i" + prefixCode.toString() + "_"
                     + className);
@@ -437,7 +437,7 @@ public class CNames {
     // Sanitize a name to be valid a C identifier.
     private static String _sanitize(String name) {
         return name.replace('-', '0').replace('<', '_').replace('>', '_')
-            .replace('$', '_');
+                               .replace('$', '_');
     }
 
     ///////////////////////////////////////////////////////////////////

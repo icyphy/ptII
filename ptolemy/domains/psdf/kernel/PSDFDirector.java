@@ -91,7 +91,7 @@ public class PSDFDirector extends SDFDirector {
      *   an entity with the specified name.
      */
     public PSDFDirector()
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super();
         _init();
     }
@@ -108,7 +108,7 @@ public class PSDFDirector extends SDFDirector {
      *   an entity with the specified name.
      */
     public PSDFDirector(Workspace workspace)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -128,7 +128,7 @@ public class PSDFDirector extends SDFDirector {
      *   CompositeActor and the name collides with an entity in the container.
      */
     public PSDFDirector(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _init();
     }
@@ -150,7 +150,7 @@ public class PSDFDirector extends SDFDirector {
 
         if (container != null) {
             for (Iterator entities = container.deepEntityList().iterator();
-                 entities.hasNext();) {
+                            entities.hasNext();) {
                 Entity actor = (Entity) entities.next();
                 Variable parameter = (Variable) actor.getAttribute(
                         "firingCount");
@@ -169,7 +169,7 @@ public class PSDFDirector extends SDFDirector {
      *  default scheduler of the class PSDFScheduler.
      */
     private void _init()
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         PSDFScheduler scheduler = new PSDFScheduler(this,
                 uniqueName("Scheduler"));
     }

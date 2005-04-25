@@ -68,7 +68,7 @@ public class Counter extends TypedAtomicActor {
      *   actor with this name.
      */
     public Counter(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         increment = new TypedIOPort(this, "increment", true, false);
         increment.setTypeEquals(BaseType.GENERAL);

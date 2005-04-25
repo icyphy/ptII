@@ -57,7 +57,7 @@ public class ExtendedMath {
         // FIXME: Is the range of the argument correct?
         if (x < 1) {
             throw new IllegalArgumentException("ExtendedMath.acosh: Argument "
-                    + "is required to be greater than 1.  Got " + x);
+                + "is required to be greater than 1.  Got " + x);
         }
 
         return Math.log(x + Math.sqrt((x * x) - 1));
@@ -206,36 +206,34 @@ public class ExtendedMath {
 
     /** PI / 4 */
     public static final double PI_OVER_4 = Math.PI * 0.25;
-    
+
     /** The smallest, normalized, positive double value with a single precision.
      */
-    public static final double 
-        SINGLE_PRECISION_SMALLEST_NORMALIZED_POSITIVE_DOUBLE 
-        = Math.pow(2.0, -126);
+    public static final double SINGLE_PRECISION_SMALLEST_NORMALIZED_POSITIVE_DOUBLE =
+        Math.pow(2.0, -126);
 
     /** The smallest, normalized, positive double value with a double precision.
      */
-    public static final double 
-        DOUBLE_PRECISION_SMALLEST_NORMALIZED_POSITIVE_DOUBLE 
-        = Math.pow(2.0, -1022);
+    public static final double DOUBLE_PRECISION_SMALLEST_NORMALIZED_POSITIVE_DOUBLE =
+        Math.pow(2.0, -1022);
 
-    /** The constant value of a double representation that has all bits as 
+    /** The constant value of a double representation that has all bits as
      *  1 except the sign bit, where only the significand contributes to the
-     *  value. This value is equal to 1 + 1/2 + 1/2^2 + 1/2^3 + ... + 1/2^m, 
-     *  where m is the number of bits for the significand. M is 52 for 
+     *  value. This value is equal to 1 + 1/2 + 1/2^2 + 1/2^3 + ... + 1/2^m,
+     *  where m is the number of bits for the significand. M is 52 for
      *  a double precision floating point number.
      */
-    public static final double DOUBLE_PRECISION_SIGNIFICAND_ONLY = 
-        2.0 - Math.pow(2.0, -52);
+    public static final double DOUBLE_PRECISION_SIGNIFICAND_ONLY = 2.0
+        - Math.pow(2.0, -52);
 
-    /** The constant value of a double representation that has all bits as 
+    /** The constant value of a double representation that has all bits as
      *  1 except the sign bit, where only the significand contributes to the
-     *  value. This value is equal to 1 + 1/2 + 1/2^2 + 1/2^3 + ... + 1/2^m, 
-     *  where m is the number of bits for the significand. M is 23 for 
+     *  value. This value is equal to 1 + 1/2 + 1/2^2 + 1/2^3 + ... + 1/2^m,
+     *  where m is the number of bits for the significand. M is 23 for
      *  a single precision floating point number.
      */
-    public static final double SINGLE_PRECISION_SIGNIFICAND_ONLY = 
-        2.0 - Math.pow(2.0, -23);
+    public static final double SINGLE_PRECISION_SIGNIFICAND_ONLY = 2.0
+        - Math.pow(2.0, -23);
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

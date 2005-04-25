@@ -26,10 +26,10 @@ COPYRIGHTENDKEY
 */
 package ptolemy.copernicus.java;
 
+import soot.SootClass;
+
 import ptolemy.actor.util.ConstVariableModelAnalysis;
 import ptolemy.kernel.Entity;
-
-import soot.SootClass;
 
 import java.util.Map;
 
@@ -51,5 +51,5 @@ public interface AtomicActorCreator {
      *  necessary.
      */
     public SootClass createAtomicActor(Entity entity, String newClassName,
-            ConstVariableModelAnalysis constAnalysis, Map options);
+        ConstVariableModelAnalysis constAnalysis, Map options);
 }

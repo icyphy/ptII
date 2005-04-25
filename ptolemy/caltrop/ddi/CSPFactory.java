@@ -29,14 +29,18 @@
 */
 package ptolemy.caltrop.ddi;
 
+import caltrop.interpreter.Context;
+
+import caltrop.interpreter.ast.Actor;
+
+import caltrop.interpreter.environment.Environment;
+
 import ptolemy.actor.TypedAtomicActor;
 
-import caltrop.interpreter.Context;
-import caltrop.interpreter.ast.Actor;
-import caltrop.interpreter.environment.Environment;
 
 //////////////////////////////////////////////////////////////////////////
 //// CSPFactory
+
 /**
    @author Christopher Chang
    @version $Id$
@@ -45,7 +49,8 @@ import caltrop.interpreter.environment.Environment;
    @Pt.AcceptedRating Red (cxh)
 */
 public class CSPFactory implements DDIFactory {
-    public DDI create(TypedAtomicActor ptActor, Actor actor, Context context, Environment env) {
+    public DDI create(TypedAtomicActor ptActor, Actor actor, Context context,
+        Environment env) {
         return new CSP(ptActor, actor, context, env);
     }
 

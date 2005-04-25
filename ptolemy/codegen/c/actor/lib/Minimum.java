@@ -30,8 +30,10 @@ package ptolemy.codegen.c.actor.lib;
 import ptolemy.codegen.kernel.CCodeGeneratorHelper;
 import ptolemy.kernel.util.IllegalActionException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Sequence
+
 /**
    A helper class for ptolemy.actor.lib.Sequence
 
@@ -42,24 +44,23 @@ import ptolemy.kernel.util.IllegalActionException;
    @Pt.AcceptedRating Red (eal)
 */
 public class Minimum extends CCodeGeneratorHelper {
-
     /**
      * Constructor method for the Minimum helper
      * @param actor the associated actor
      */
-    public Minimum (ptolemy.actor.lib.Minimum actor) {
+    public Minimum(ptolemy.actor.lib.Minimum actor) {
         super(actor);
     }
 
     /**
      * Generate fire code
-     * The method reads in codeBlock1 and puts into the 
+     * The method reads in codeBlock1 and puts into the
      * given stream buffer
      * @param stream the given buffer to append the code to
      */
-    public void  generateFireCode(StringBuffer stream)
-            throws IllegalActionException {
-    	// FIXME: ???????????
+    public void generateFireCode(StringBuffer stream)
+        throws IllegalActionException {
+        // FIXME: ???????????
     }
 
     /** Generate initialization code.
@@ -68,8 +69,9 @@ public class Minimum extends CCodeGeneratorHelper {
      *  @return The processed <code>initBlock</code>.
      */
     public String generateInitializeCode(StringBuffer stream)
-            throws IllegalActionException {
+        throws IllegalActionException {
         super.generateInitializeCode();
+
         CodeStream tmpStream = new CodeStream(this);
         tmpStream.appendCodeBlock("initBlock");
         return processCode(tmpStream.toString());

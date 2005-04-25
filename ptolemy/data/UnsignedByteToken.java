@@ -110,7 +110,7 @@ public class UnsignedByteToken extends ScalarToken {
 
             if ((value > 255) || (value < 0)) {
                 throw new IllegalActionException("Value '" + init
-                        + "' is out of the range of Unsigned Byte");
+                    + "' is out of the range of Unsigned Byte");
             }
 
             _value = (byte) value;
@@ -162,7 +162,7 @@ public class UnsignedByteToken extends ScalarToken {
      *   cannot be carried out.
      */
     public static UnsignedByteToken convert(Token token)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (token instanceof UnsignedByteToken) {
             return (UnsignedByteToken) token;
         }
@@ -171,11 +171,11 @@ public class UnsignedByteToken extends ScalarToken {
 
         if ((compare == CPO.LOWER) || (compare == CPO.INCOMPARABLE)) {
             throw new IllegalActionException(notSupportedIncomparableConversionMessage(
-                                                     token, "byte"));
+                    token, "byte"));
         }
 
         throw new IllegalActionException(notSupportedConversionMessage(token,
-                                                 "byte"));
+                "byte"));
     }
 
     /** Return the value in the token as a double.
@@ -345,7 +345,7 @@ public class UnsignedByteToken extends ScalarToken {
      */
     protected ScalarToken _add(ScalarToken rightArgument) {
         byte sum = (byte) (_value
-                + ((UnsignedByteToken) rightArgument).byteValue());
+            + ((UnsignedByteToken) rightArgument).byteValue());
         return new UnsignedByteToken(sum);
     }
 
@@ -356,7 +356,7 @@ public class UnsignedByteToken extends ScalarToken {
      */
     protected ScalarToken _bitwiseAnd(ScalarToken rightArgument) {
         byte sum = (byte) (_value
-                & ((UnsignedByteToken) rightArgument).byteValue());
+                        & ((UnsignedByteToken) rightArgument).byteValue());
         return new UnsignedByteToken(sum);
     }
 
@@ -375,7 +375,7 @@ public class UnsignedByteToken extends ScalarToken {
      */
     protected ScalarToken _bitwiseOr(ScalarToken rightArgument) {
         byte sum = (byte) (_value
-                | ((UnsignedByteToken) rightArgument).byteValue());
+                        | ((UnsignedByteToken) rightArgument).byteValue());
         return new UnsignedByteToken(sum);
     }
 
@@ -386,7 +386,7 @@ public class UnsignedByteToken extends ScalarToken {
      */
     protected ScalarToken _bitwiseXor(ScalarToken rightArgument) {
         byte sum = (byte) (_value
-                ^ ((UnsignedByteToken) rightArgument).byteValue());
+                        ^ ((UnsignedByteToken) rightArgument).byteValue());
         return new UnsignedByteToken(sum);
     }
 
@@ -401,7 +401,7 @@ public class UnsignedByteToken extends ScalarToken {
      */
     protected ScalarToken _divide(ScalarToken rightArgument) {
         byte quotient = (byte) (unsignedConvert(_value) / unsignedConvert(((UnsignedByteToken) rightArgument)
-                                        .byteValue()));
+                            .byteValue()));
         return new UnsignedByteToken(quotient);
     }
 
@@ -435,7 +435,7 @@ public class UnsignedByteToken extends ScalarToken {
     protected BooleanToken _isLessThan(ScalarToken rightArgument) {
         UnsignedByteToken convertedArgument = (UnsignedByteToken) rightArgument;
         return BooleanToken.getInstance(unsignedConvert(_value) < unsignedConvert(
-                                                convertedArgument.byteValue()));
+                            convertedArgument.byteValue()));
     }
 
     /** Return a new token whose value is the value of this token
@@ -447,7 +447,7 @@ public class UnsignedByteToken extends ScalarToken {
      */
     protected ScalarToken _modulo(ScalarToken rightArgument) {
         byte remainder = (byte) (unsignedConvert(_value) % unsignedConvert(((UnsignedByteToken) rightArgument)
-                                         .byteValue()));
+                            .byteValue()));
         return new UnsignedByteToken(remainder);
     }
 
@@ -462,7 +462,7 @@ public class UnsignedByteToken extends ScalarToken {
      */
     protected ScalarToken _multiply(ScalarToken rightArgument) {
         byte product = (byte) (unsignedConvert(_value) * unsignedConvert(((UnsignedByteToken) rightArgument)
-                                       .byteValue()));
+                            .byteValue()));
         return new UnsignedByteToken(product);
     }
 
@@ -476,7 +476,7 @@ public class UnsignedByteToken extends ScalarToken {
      */
     protected ScalarToken _subtract(ScalarToken rightArgument) {
         byte difference = (byte) (unsignedConvert(_value)
-                - unsignedConvert(((UnsignedByteToken) rightArgument).byteValue()));
+            - unsignedConvert(((UnsignedByteToken) rightArgument).byteValue()));
         return new UnsignedByteToken(difference);
     }
 

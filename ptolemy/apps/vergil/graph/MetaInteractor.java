@@ -7,19 +7,20 @@
  */
 package ptolemy.apps.vergil.graph;
 
-import diva.graph.*;
-import diva.canvas.interactor.*;
+import ptolemy.kernel.*;
+import ptolemy.kernel.util.*;
+
 import diva.canvas.event.LayerEvent;
 import diva.canvas.event.LayerEventMulticaster;
 import diva.canvas.event.LayerListener;
 import diva.canvas.event.LayerMotionListener;
 import diva.canvas.event.MouseFilter;
+import diva.canvas.interactor.*;
+import diva.graph.*;
 
 import java.awt.event.MouseEvent;
 import java.util.Hashtable;
 
-import ptolemy.kernel.util.*;
-import ptolemy.kernel.*;
 
 /**
  * An abstract class that implements Interactor. This class provides
@@ -31,7 +32,6 @@ import ptolemy.kernel.*;
  * @author John Reekie
  */
 public class MetaInteractor extends CompositeEntity implements Interactor {
-
     /** The consuming flag.
      */
     private boolean _consuming = true;
@@ -49,7 +49,7 @@ public class MetaInteractor extends CompositeEntity implements Interactor {
     private MouseFilter _mouseFilter = MouseFilter.defaultFilter;
 
     public MetaInteractor(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -57,7 +57,7 @@ public class MetaInteractor extends CompositeEntity implements Interactor {
      * implementation returns true if the interactor is enabled
      * and the mouse filter accepts the event.
      */
-    public boolean accept (LayerEvent event) {
+    public boolean accept(LayerEvent event) {
         return isEnabled() && getMouseFilter().accept(event);
     }
 
@@ -65,7 +65,7 @@ public class MetaInteractor extends CompositeEntity implements Interactor {
      * decide whether to accept an event. The result may
      * be null.
      */
-    public MouseFilter getMouseFilter () {
+    public MouseFilter getMouseFilter() {
         return _mouseFilter;
     }
 
@@ -73,63 +73,63 @@ public class MetaInteractor extends CompositeEntity implements Interactor {
      * set, the interactor consumes all input events that get past its
      * mouse filter.
      */
-    public boolean isConsuming () {
+    public boolean isConsuming() {
         return _consuming;
     }
 
     /** Test the enabled flag of this role. If true, the role
      * is prepared to handle layer events.
      */
-    public boolean isEnabled () {
+    public boolean isEnabled() {
         return _enabled;
     }
 
     /** Test the motion enabled flag of this role. If true, the role
      * is prepared to handle layer motion events.
      */
-    public boolean isMotionEnabled () {
+    public boolean isMotionEnabled() {
         return _motionEnabled;
     }
 
     /** Do nothing.
      */
-    public void mouseDragged (LayerEvent layerEvent) {
+    public void mouseDragged(LayerEvent layerEvent) {
         // empty
     }
 
     /** Do nothing.
      */
-    public void mouseEntered (LayerEvent layerEvent) {
+    public void mouseEntered(LayerEvent layerEvent) {
         // empty
     }
 
     /** Do nothing.
      */
-    public void mouseExited (LayerEvent layerEvent) {
+    public void mouseExited(LayerEvent layerEvent) {
         // empty
     }
 
     /** Do nothing.
      */
-    public void mouseMoved (LayerEvent layerEvent) {
+    public void mouseMoved(LayerEvent layerEvent) {
         // empty
     }
 
     /** Do nothing.
      */
-    public void mousePressed (LayerEvent layerEvent) {
+    public void mousePressed(LayerEvent layerEvent) {
         // empty
     }
 
     /** Do nothing.
      */
-    public void mouseReleased (LayerEvent layerEvent) {
+    public void mouseReleased(LayerEvent layerEvent) {
         // empty
     }
 
     /** Do nothing.
      */
-    public void mouseClicked (LayerEvent layerEvent) {
+    public void mouseClicked(LayerEvent layerEvent) {
         //empty
     }
 
@@ -137,7 +137,7 @@ public class MetaInteractor extends CompositeEntity implements Interactor {
      * set, the interactor consumes all events that get past its mouse
      * filter. By default, the flag is true.
      */
-    public void setConsuming (boolean flag) {
+    public void setConsuming(boolean flag) {
         _consuming = flag;
     }
 
@@ -145,7 +145,7 @@ public class MetaInteractor extends CompositeEntity implements Interactor {
      * is prepared to handle layer events. The default setting
      * of this flag is <b>true</b>.
      */
-    public void setEnabled (boolean flag) {
+    public void setEnabled(boolean flag) {
         _enabled = flag;
     }
 
@@ -153,14 +153,13 @@ public class MetaInteractor extends CompositeEntity implements Interactor {
      * is prepared to handle layer motion events. The default setting
      * of this flag is <b>false</b>.
      */
-    protected void setMotionEnabled (boolean flag) {
+    protected void setMotionEnabled(boolean flag) {
         _motionEnabled = flag;
     }
 
     /** Set the mouse filter of this interactor.
      */
-    public void setMouseFilter (MouseFilter filter) {
+    public void setMouseFilter(MouseFilter filter) {
         _mouseFilter = filter;
     }
 }
-

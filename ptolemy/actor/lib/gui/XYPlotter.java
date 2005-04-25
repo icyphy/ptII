@@ -71,7 +71,7 @@ public class XYPlotter extends Plotter {
      *   actor with this name.
      */
     public XYPlotter(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // Create the input ports and make them single ports.
@@ -84,17 +84,17 @@ public class XYPlotter extends Plotter {
         inputY.setTypeEquals(BaseType.DOUBLE);
 
         _attachText("_iconDescription",
-                "<svg>\n" + "<rect x=\"-20\" y=\"-20\" "
-                + "width=\"40\" height=\"40\" " + "style=\"fill:lightGrey\"/>\n"
-                + "<rect x=\"-12\" y=\"-12\" " + "width=\"24\" height=\"24\" "
-                + "style=\"fill:white\"/>\n" + "<rect x=\"2\" y=\"-18\" "
-                + "width=\"4\" height=\"4\" " + "style=\"fill:grey\"/>\n"
-                + "<rect x=\"8\" y=\"-18\" " + "width=\"4\" height=\"4\" "
-                + "style=\"fill:grey\"/>\n" + "<rect x=\"14\" y=\"-18\" "
-                + "width=\"4\" height=\"4\" " + "style=\"fill:grey\"/>\n"
-                + "<ellipse cx=\"-4\" cy=\"0\" " + "rx=\"4\" ry=\"8\" "
-                + "style=\"stroke:red\"/>\n" + "<ellipse cx=\"4\" cy=\"0\" "
-                + "rx=\"4\" ry=\"8\" " + "style=\"stroke:red\"/>\n" + "</svg>\n");
+            "<svg>\n" + "<rect x=\"-20\" y=\"-20\" "
+            + "width=\"40\" height=\"40\" " + "style=\"fill:lightGrey\"/>\n"
+            + "<rect x=\"-12\" y=\"-12\" " + "width=\"24\" height=\"24\" "
+            + "style=\"fill:white\"/>\n" + "<rect x=\"2\" y=\"-18\" "
+            + "width=\"4\" height=\"4\" " + "style=\"fill:grey\"/>\n"
+            + "<rect x=\"8\" y=\"-18\" " + "width=\"4\" height=\"4\" "
+            + "style=\"fill:grey\"/>\n" + "<rect x=\"14\" y=\"-18\" "
+            + "width=\"4\" height=\"4\" " + "style=\"fill:grey\"/>\n"
+            + "<ellipse cx=\"-4\" cy=\"0\" " + "rx=\"4\" ry=\"8\" "
+            + "style=\"stroke:red\"/>\n" + "<ellipse cx=\"4\" cy=\"0\" "
+            + "rx=\"4\" ry=\"8\" " + "style=\"stroke:red\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -130,7 +130,7 @@ public class XYPlotter extends Plotter {
 
         if (widthX != widthY) {
             throw new IllegalActionException(this,
-                    " The number of input channels mismatch.");
+                " The number of input channels mismatch.");
         }
 
         int offset = ((IntToken) startingDataset.getToken()).intValue();

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.codegen.kernel;
 
 import ptolemy.actor.Actor;
@@ -72,7 +71,6 @@ import java.util.StringTokenizer;
  *  @Pt.AcceptedRating Red (eal)
  */
 public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
-
     /** Create a new instance of the C code generator.
      *  @param container The container.
      *  @param name The name.
@@ -80,7 +78,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  @exception NameDuplicationException
      */
     public CodeGenerator(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         codeDirectory = new FileParameter(this, "codeDirectory");
@@ -95,12 +93,12 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         overwriteFiles.setTypeEquals(BaseType.BOOLEAN);
         overwriteFiles.setExpression("true");
 
-        _attachText("_iconDescription", "<svg>\n" +
-                "<rect x=\"-50\" y=\"-20\" width=\"100\" height=\"40\" "
-                + "style=\"fill:blue\"/>"
-                + "<text x=\"-40\" y=\"-5\" "
-                + "style=\"font-size:12; font-family:SansSerif; fill:white\">"
-                + "Double click to\ngenerate code.</text></svg>");
+        _attachText("_iconDescription",
+            "<svg>\n"
+            + "<rect x=\"-50\" y=\"-20\" width=\"100\" height=\"40\" "
+            + "style=\"fill:blue\"/>" + "<text x=\"-40\" y=\"-5\" "
+            + "style=\"font-size:12; font-family:SansSerif; fill:white\">"
+            + "Double click to\ngenerate code.</text></svg>");
 
         // FIXME: We may not want this GUI dependency here...
         // This attibute could be put in the MoML in the library instead
@@ -160,7 +158,6 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         generateCode(new StringBuffer());
     }
 
-
     /** Generate code and append it to the given string buffer.
      *  Write the code to the file specified by the codeDirectory parameter.
      *  This is the main entry point.
@@ -171,23 +168,24 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     public void generateCode(StringBuffer code) throws KernelException {
         // Get the code generator helper associated with the director of
         // the container first.
-        ptolemy.actor.Director director
-            = ((CompositeActor)getContainer()).getDirector();
-        ComponentCodeGenerator directorHelper = _getHelper((NamedObj)director);
-        ((Director)directorHelper).setCodeGenerator(this);
+        ptolemy.actor.Director director = ((CompositeActor) getContainer())
+                        .getDirector();
+        ComponentCodeGenerator directorHelper = _getHelper((NamedObj) director);
+        ((Director) directorHelper).setCodeGenerator(this);
 
         Set includingFiles = new HashSet();
-        Iterator actors = ((CompositeActor) getContainer())
-            .deepEntityList().iterator();
+        Iterator actors = ((CompositeActor) getContainer()).deepEntityList()
+                                       .iterator();
+
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            CodeGeneratorHelper actorHelper
-                = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+            CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
             actorHelper.setCodeGenerator(this);
             includingFiles.addAll(actorHelper.getIncludingFiles());
         }
 
         Iterator files = includingFiles.iterator();
+
         while (files.hasNext()) {
             String file = (String) files.next();
             code.append("#include " + file + "\n");
@@ -206,40 +204,39 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         try {
             // Check if needs to overwrite.
             if (!((BooleanToken) overwriteFiles.getToken()).booleanValue()
-                    && codeDirectory.asFile().exists()) {
+                            && codeDirectory.asFile().exists()) {
                 // FIXME: It is totally bogus to ask a yes/no question
                 // like this, since it makes it impossible to call
                 // this method from a script.  If the question is
                 // asked, the build will hang.
                 if (!MessageHandler.yesNoQuestion(codeDirectory.asFile()
-                            + " exists. OK to overwrite?")) {
+                                    + " exists. OK to overwrite?")) {
                     throw new IllegalActionException(this,
-                            "Please select another file name.");
+                        "Please select another file name.");
                 }
             }
+
             Writer writer = codeDirectory.openForWriting();
             writer.write(code.toString());
             codeDirectory.close();
         } catch (Exception ex) {
             throw new IllegalActionException(this, ex,
-                    "Failed to write \"" + codeDirectory.asFile() + "\"");
+                "Failed to write \"" + codeDirectory.asFile() + "\"");
         }
     }
-
 
     /** Return the code associated with initialization of the containing
      *  composite actor. This method calls the generatreInitializeCode()
      *  method of the code generator helper associated with the model director.
      *  @return The initialize code of the containing composite actor.
      */
-    public String generateInitializeCode()
-            throws IllegalActionException {
+    public String generateInitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        code.append(comment(
-                            "Initialize " + getContainer().getFullName()));
-        ptolemy.actor.Director director 
-            = ((CompositeActor)getContainer()).getDirector();
-        ComponentCodeGenerator directorHelper = _getHelper((NamedObj)director);
+        code.append(comment("Initialize " + getContainer().getFullName()));
+
+        ptolemy.actor.Director director = ((CompositeActor) getContainer())
+                        .getDirector();
+        ComponentCodeGenerator directorHelper = _getHelper((NamedObj) director);
         code.append(directorHelper.generateInitializeCode());
         return code.toString();
     }
@@ -249,28 +246,34 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  @param code The given string buffer.
      */
     public void generateVariableDeclarations(StringBuffer code)
-            throws IllegalActionException {
+        throws IllegalActionException {
         code.append(comment("Variable Declarations "
-                            + getContainer().getFullName()));
-        ptolemy.actor.Director director
-            = ((CompositeActor)getContainer()).getDirector();
+                + getContainer().getFullName()));
+
+        ptolemy.actor.Director director = ((CompositeActor) getContainer())
+                        .getDirector();
         Director directorHelper = (Director) _getHelper((NamedObj) director);
-        Iterator actors = ((CompositeActor)getContainer())
-            .deepEntityList().iterator();
+        Iterator actors = ((CompositeActor) getContainer()).deepEntityList()
+                                       .iterator();
+
         while (actors.hasNext()) {
-            Actor actor = (Actor)actors.next();
+            Actor actor = (Actor) actors.next();
+
             // Generate variable declarations for referenced parameters.
-            CodeGeneratorHelper actorHelper
-                = (CodeGeneratorHelper)_getHelper((NamedObj)actor);
+            CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
             HashSet parameterSet = actorHelper.getReferencedParameter();
+
             if (parameterSet != null) {
                 Iterator parameters = parameterSet.iterator();
+
                 while (parameters.hasNext()) {
-                    Parameter parameter= (Parameter)parameters.next();
+                    Parameter parameter = (Parameter) parameters.next();
                     boolean isArrayType = _generateType(parameter, code);
+
                     if (isArrayType) {
                         code.append("[ ]");
                     }
+
                     code.append(" = ");
                     code.append(parameter.getToken().toString());
                     code.append(";\n");
@@ -279,28 +282,37 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
             // Generate variable declarations for input ports.
             Iterator inputPorts = actor.inputPortList().iterator();
+
             while (inputPorts.hasNext()) {
-                TypedIOPort inputPort = (TypedIOPort)inputPorts.next();
+                TypedIOPort inputPort = (TypedIOPort) inputPorts.next();
+
                 if (inputPort.getWidth() == 0) {
                     break;
                 }
+
                 // FIXME: What if port is ArrayType.
                 _generateType(inputPort, code);
+
                 if (inputPort.isMultiport()) {
                     code.append("[" + inputPort.getWidth() + "]");
                 }
+
                 int bufferSize = actorHelper.getBufferSize(inputPort);
+
                 //int bufferSize = directorHelper.getBufferSize(inputPort);
                 if (bufferSize > 1) {
                     code.append("[" + bufferSize + "]");
                 }
+
                 code.append(";\n");
             }
 
             // Generate variable declarations for output ports.
             Iterator outputPorts = actor.outputPortList().iterator();
+
             while (outputPorts.hasNext()) {
-                TypedIOPort outputPort = (TypedIOPort)outputPorts.next();
+                TypedIOPort outputPort = (TypedIOPort) outputPorts.next();
+
                 // Only generate declarations for those output ports with
                 // port width zero.
                 if (outputPort.getWidth() == 0) {
@@ -318,12 +330,12 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  @param code The code stream into which to generate the code.
      */
     public void generateWrapupCode(StringBuffer code)
-            throws IllegalActionException {
-        code.append(comment(
-                            "Wrapup " + getContainer().getFullName()));
-        ptolemy.actor.Director director 
-            = ((CompositeActor)getContainer()).getDirector();
-        ComponentCodeGenerator directorHelper = _getHelper((NamedObj)director);
+        throws IllegalActionException {
+        code.append(comment("Wrapup " + getContainer().getFullName()));
+
+        ptolemy.actor.Director director = ((CompositeActor) getContainer())
+                        .getDirector();
+        ComponentCodeGenerator directorHelper = _getHelper((NamedObj) director);
         directorHelper.generateWrapupCode(code);
     }
 
@@ -339,20 +351,21 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  <pre>
      *  java -classpath $PTII ptolemy.codegen.kernel.CodeGenerator $PTII/ptolemy/codegen/c/actor/lib/test/auto/Ramp.xml
      *  </pre>
-     *  or   
-     *  <pre>   
+     *  or
+     *  <pre>
      *  $PTII/bin/ptinvoke ptolemy.codegen.kernel.CodeGenerator $PTII/ptolemy/codegen/c/actor/lib/test/auto/Ramp.xml
      *  </pre>
      *  @param args An array of Strings, each element names a MoML file
      *  containing a model.
      */
-    public static void main(String [] args) throws Exception {
+    public static void main(String[] args) throws Exception {
         if (args.length == 0) {
             System.err.println("Usage: java -classpath $PTII "
-                    + "ptolemy.codegen.kernel.CodeGenerator model.xml "
-                    + "[model.xml . . .]\n"
-                    + "  The arguments name MoML files containing models");
+                + "ptolemy.codegen.kernel.CodeGenerator model.xml "
+                + "[model.xml . . .]\n"
+                + "  The arguments name MoML files containing models");
         }
+
         // See MoMLSimpleApplication for similar code
         MoMLParser parser = new MoMLParser();
         parser.setMoMLFilters(BackwardCompatibility.allFilters());
@@ -365,26 +378,28 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             // entire body in one try/catch block and say 
             // "Code generation failed for foo", which is not clear. 
             URL modelURL;
+
             try {
                 modelURL = new File(args[i]).toURL();
             } catch (Exception ex) {
                 throw new Exception("Could not open \"" + args[i] + "\"", ex);
             }
+
             CompositeActor toplevel = null;
+
             try {
                 try {
-                    toplevel = (CompositeActor) parser.parse(null,
-                            modelURL);
+                    toplevel = (CompositeActor) parser.parse(null, modelURL);
                 } catch (Exception ex) {
                     throw new Exception("Failed to parse \"" + args[i] + "\"",
-                            ex);                
+                        ex);
                 }
 
                 // Get all instances of this class contained in the model
-                List codeGenerators =
-                    toplevel.attributeList(CodeGenerator.class);
+                List codeGenerators = toplevel.attributeList(CodeGenerator.class);
 
                 CodeGenerator codeGenerator;
+
                 if (codeGenerators.size() == 0) {
                     // Add a codeGenerator 
                     codeGenerator = new CodeGenerator(toplevel,
@@ -392,17 +407,17 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                 } else {
                     // Get the last CodeGenerator in the list, maybe
                     // it was added last?
-                    codeGenerator =
-                        (CodeGenerator) codeGenerators.get(
-                                codeGenerators.size()-1);
+                    codeGenerator = (CodeGenerator) codeGenerators.get(codeGenerators
+                                        .size() - 1);
                 }
 
                 System.out.println("CodeGenerator: " + codeGenerator);
+
                 try {
                     codeGenerator.generateCode();
                 } catch (KernelException ex) {
                     throw new Exception("Failed to generate code for \""
-                            + args[i] + "\"", ex);
+                        + args[i] + "\"", ex);
                 }
             } finally {
                 // Destroy the top level so that we avoid
@@ -420,12 +435,12 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *   is not null and not an instance of CompositeEntity.
      */
     public void setContainer(NamedObj container)
-            throws IllegalActionException, NameDuplicationException {
-        if (container != null && !(container instanceof CompositeEntity)) {
+        throws IllegalActionException, NameDuplicationException {
+        if ((container != null) && !(container instanceof CompositeEntity)) {
             throw new IllegalActionException(this, container,
-                    "CodeGenerator can only be contained"
-                    + " by CompositeEntity");
+                "CodeGenerator can only be contained" + " by CompositeEntity");
         }
+
         super.setContainer(container);
     }
 
@@ -437,56 +452,58 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  @return The code generator helper.
      */
     protected ComponentCodeGenerator _getHelper(NamedObj component)
-            throws IllegalActionException {
-
-        if (_helperStore.containsKey(component))
-            return (ComponentCodeGenerator)_helperStore.get(component);
+        throws IllegalActionException {
+        if (_helperStore.containsKey(component)) {
+            return (ComponentCodeGenerator) _helperStore.get(component);
+        }
 
         String packageName = generatorPackage.stringValue();
 
         String componentClassName = component.getClass().getName();
-        String helperClassName = componentClassName
-            .replaceFirst("ptolemy", packageName);
+        String helperClassName = componentClassName.replaceFirst("ptolemy",
+                packageName);
 
         Class helperClass = null;
+
         try {
             helperClass = Class.forName(helperClassName);
         } catch (ClassNotFoundException e) {
             throw new IllegalActionException(this, e,
-                    "Cannot find helper class "
-                    + helperClassName);
+                "Cannot find helper class " + helperClassName);
         }
 
         Constructor constructor = null;
+
         try {
-            constructor = helperClass
-                .getConstructor(new Class[]{component.getClass()});
+            constructor = helperClass.getConstructor(new Class[] {
+                        component.getClass()
+                    });
         } catch (NoSuchMethodException e) {
             throw new IllegalActionException(this, e,
-                    "There is no constructor in "
-                    + helperClassName
-                    + " which accepts an instance of "
-                    + componentClassName
-                    + " as the argument.");
+                "There is no constructor in " + helperClassName
+                + " which accepts an instance of " + componentClassName
+                + " as the argument.");
         }
 
         Object helperObject = null;
+
         try {
-            helperObject = constructor.newInstance(new Object[]{component});
+            helperObject = constructor.newInstance(new Object[] {
+                        component
+                    });
         } catch (Exception e) {
-            throw new IllegalActionException((NamedObj)component, e,
-                    "Failed to create helper class code generator.");
+            throw new IllegalActionException((NamedObj) component, e,
+                "Failed to create helper class code generator.");
         }
 
         if (!(helperObject instanceof ComponentCodeGenerator)) {
             throw new IllegalActionException(this,
-                    "Cannot generate code for this component: "
-                    + component
-                    + ". Its helper class does not"
-                    + " implement componentCodeGenerator.");
+                "Cannot generate code for this component: " + component
+                + ". Its helper class does not"
+                + " implement componentCodeGenerator.");
         }
-        ComponentCodeGenerator castHelperObject
-            = (ComponentCodeGenerator)helperObject;
+
+        ComponentCodeGenerator castHelperObject = (ComponentCodeGenerator) helperObject;
 
         _helperStore.put(component, helperObject);
 
@@ -505,21 +522,26 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      */
     private boolean _generateType(NamedObj object, StringBuffer code) {
         String type = "";
+
         if (object instanceof Parameter) {
-            type = ((Parameter)object).getType().toString();
+            type = ((Parameter) object).getType().toString();
         } else if (object instanceof TypedIOPort) {
-            type = ((TypedIOPort)object).getType().toString();
+            type = ((TypedIOPort) object).getType().toString();
         }
+
         boolean isArrayType = false;
+
         if (type.charAt(0) == '{') {
             // This is an ArrayType.
             StringTokenizer tokenizer = new StringTokenizer(type, "{}");
             type = tokenizer.nextToken();
             isArrayType = true;
         }
+
         if (type.equals("boolean")) {
             type = "unsigned char";
         }
+
         code.append("static ");
         code.append(type);
         code.append(" ");
@@ -529,9 +551,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // A hash map that stores the code generator helpers associated
     // with the actors.
     private HashMap _helperStore = new HashMap();
-
 }

@@ -81,7 +81,7 @@ public class ExplicitScope implements ParserScope {
      *  exists with the given name, but cannot be evaluated.
      */
     public ptolemy.data.type.Type getType(String name)
-            throws IllegalActionException {
+        throws IllegalActionException {
         Variable variable = (Variable) _list.get(name);
 
         if (variable == null) {
@@ -100,7 +100,7 @@ public class ExplicitScope implements ParserScope {
      *  exists with the given name, but cannot be evaluated.
      */
     public ptolemy.graph.InequalityTerm getTypeTerm(String name)
-            throws IllegalActionException {
+        throws IllegalActionException {
         Variable variable = (Variable) _list.get(name);
 
         if (variable == null) {
@@ -117,7 +117,7 @@ public class ExplicitScope implements ParserScope {
         Set set = new HashSet();
 
         for (Iterator variables = _list.elementList().iterator();
-             variables.hasNext();) {
+                        variables.hasNext();) {
             Variable variable = (Variable) variables.next();
             set.add(variable.getName());
         }

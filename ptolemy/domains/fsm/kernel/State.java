@@ -89,16 +89,16 @@ public class State extends ComponentEntity {
      *   that of an entity already in the container.
      */
     public State(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         incomingPort = new ComponentPort(this, "incomingPort");
         outgoingPort = new ComponentPort(this, "outgoingPort");
         refinementName = new StringAttribute(this, "refinementName");
 
         _attachText("_iconDescription",
-                "<svg>\n"
-                + "<circle cx=\"0\" cy=\"0\" r=\"20\" style=\"fill:white\"/>\n"
-                + "</svg>\n");
+            "<svg>\n"
+            + "<circle cx=\"0\" cy=\"0\" r=\"20\" style=\"fill:white\"/>\n"
+            + "</svg>\n");
 
         // Specify that the name should be centered in graphical displays.
         SingletonParameter center = new SingletonParameter(this, "_centerName");
@@ -142,7 +142,7 @@ public class State extends ComponentEntity {
      *   attributeChanged() method.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         super.attributeChanged(attribute);
 
         if (attribute == refinementName) {
@@ -212,7 +212,7 @@ public class State extends ComponentEntity {
 
             Nameable container = getContainer();
             TypedCompositeActor containerContainer = (TypedCompositeActor) container
-                .getContainer();
+                            .getContainer();
             int index = 0;
 
             while (tokenizer.hasMoreTokens()) {
@@ -220,15 +220,15 @@ public class State extends ComponentEntity {
 
                 if (name.equals("")) {
                     throw new IllegalActionException(this,
-                            "Malformed list of refinements: " + names);
+                        "Malformed list of refinements: " + names);
                 }
 
                 TypedActor element = (TypedActor) containerContainer.getEntity(name);
 
                 if (element == null) {
                     throw new IllegalActionException(this,
-                            "Cannot find " + "refinement with name \"" + name
-                            + "\" in " + containerContainer.getFullName());
+                        "Cannot find " + "refinement with name \"" + name
+                        + "\" in " + containerContainer.getFullName());
                 }
 
                 _refinement[index++] = element;
@@ -313,10 +313,9 @@ public class State extends ComponentEntity {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
     // Flag indicating whether this state has been visited.
     private boolean _visited = false;
-    
+
     // Cached list of non-preemptive outgoing transitions from this state.
     private List _nonpreemptiveTransitionList = new LinkedList();
 

@@ -64,13 +64,17 @@ public class BluetoothChannel extends LimitedRangeChannel {
      *   actor with this name.
      */
     public BluetoothChannel(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // Force the type of the defaultProperties to at least include
         // the range field.
-        String[] labels = { "range" };
-        Type[] types = { BaseType.DOUBLE };
+        String[] labels = {
+                "range"
+            };
+        Type[] types = {
+                BaseType.DOUBLE
+            };
         RecordType type = new RecordType(labels, types);
 
         // Setting an upper bound allows the addition of fields.
@@ -119,8 +123,8 @@ public class BluetoothChannel extends LimitedRangeChannel {
      *   class).
      */
     protected boolean _isInRange(WirelessIOPort source,
-            WirelessIOPort destination, RecordToken properties)
-            throws IllegalActionException {
+        WirelessIOPort destination, RecordToken properties)
+        throws IllegalActionException {
         double range = Double.POSITIVE_INFINITY;
         boolean rangeIsSet = false;
 
@@ -138,7 +142,7 @@ public class BluetoothChannel extends LimitedRangeChannel {
         if (!rangeIsSet) {
             // Type constraints in the constructor make the casts safe.
             RecordToken defaultPropertiesValue = (RecordToken) defaultProperties
-                .getToken();
+                            .getToken();
 
             // Type of the field must be convertible to double, but
             // need not actually be a double.

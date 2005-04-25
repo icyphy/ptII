@@ -71,7 +71,7 @@ public class Pre extends Transformer {
      *   an actor already in the container.
      */
     public Pre(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         initialValue = new Parameter(this, "initialValue");
     }

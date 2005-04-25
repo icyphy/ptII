@@ -64,7 +64,7 @@ public abstract class AbstractCase extends TypedCompositeActor {
      *   actor with this name.
      */
     public AbstractCase(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         _director = new CaseDirector(this, "CaseDirector");
 
@@ -91,7 +91,7 @@ public abstract class AbstractCase extends TypedCompositeActor {
      *  @exception IOException If an I/O error occurs.
      */
     protected void _exportMoMLContents(Writer output, int depth)
-            throws IOException {
+        throws IOException {
         Iterator attributes = attributeList().iterator();
 
         while (attributes.hasNext()) {
@@ -138,7 +138,7 @@ public abstract class AbstractCase extends TypedCompositeActor {
          *   contains an entity with the specified name.
          */
         public CaseDirector(CompositeEntity container, String name)
-                throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
             super(container, name);
         }
 

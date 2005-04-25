@@ -29,8 +29,10 @@
 */
 package ptolemy.caltrop.ddi;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// DDIException
+
 /**
    A general-purpose exception used in the <tt>ddi</tt> package, used to
    indicate an error during domain dependent interpretation.
@@ -42,11 +44,11 @@ package ptolemy.caltrop.ddi;
    @Pt.AcceptedRating Red (cxh)
 */
 public class DDIException extends RuntimeException {
-
     /**
      * Create a <tt>DDIException</tt>.
      */
-    public DDIException() {}
+    public DDIException() {
+    }
 
     /**
      * Create a <tt>DDIException</tt> with an error message.

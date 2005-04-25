@@ -121,12 +121,14 @@ public class GraphicalMessageHandler extends MessageHandler {
                     message[0] = StringUtilities.ellipsis(string,
                             StringUtilities.ELLIPSIS_LENGTH_SHORT);
 
-                    Object[] options = { "Dismiss" };
+                    Object[] options = {
+                            "Dismiss"
+                        };
 
                     // Show the MODAL dialog
                     JOptionPane.showOptionDialog(getContext(), message,
-                            "Error", JOptionPane.YES_NO_OPTION,
-                            JOptionPane.ERROR_MESSAGE, null, options, options[0]);
+                        "Error", JOptionPane.YES_NO_OPTION,
+                        JOptionPane.ERROR_MESSAGE, null, options, options[0]);
                 }
             };
 
@@ -168,7 +170,10 @@ public class GraphicalMessageHandler extends MessageHandler {
                     message[0] = StringUtilities.ellipsis(string,
                             StringUtilities.ELLIPSIS_LENGTH_SHORT);
 
-                    Object[] options = { "Dismiss", "Display Stack Trace" };
+                    Object[] options = {
+                            "Dismiss",
+                            "Display Stack Trace"
+                        };
 
                     // Show the MODAL dialog
                     int selected = JOptionPane.showOptionDialog(getContext(),
@@ -198,13 +203,15 @@ public class GraphicalMessageHandler extends MessageHandler {
                     message[0] = StringUtilities.ellipsis(info,
                             StringUtilities.ELLIPSIS_LENGTH_LONG);
 
-                    Object[] options = { "OK" };
+                    Object[] options = {
+                            "OK"
+                        };
 
                     // Show the MODAL dialog
                     JOptionPane.showOptionDialog(getContext(), message,
-                            "Message", JOptionPane.YES_NO_OPTION,
-                            JOptionPane.INFORMATION_MESSAGE, null, options,
-                            options[0]);
+                        "Message", JOptionPane.YES_NO_OPTION,
+                        JOptionPane.INFORMATION_MESSAGE, null, options,
+                        options[0]);
                 }
             };
 
@@ -226,12 +233,15 @@ public class GraphicalMessageHandler extends MessageHandler {
      * "Cancel" button.
      */
     protected void _warning(final String info)
-            throws ptolemy.util.CancelException {
+        throws ptolemy.util.CancelException {
         // In swing, updates to showing graphics must be done in the
         // event thread.  If we are in the event thread, then proceed.
         // Otherwise, defer.
         if (EventQueue.isDispatchThread()) {
-            Object[] options = { "OK", "Cancel" };
+            Object[] options = {
+                    "OK",
+                    "Cancel"
+                };
             Object[] message = new Object[1];
 
             // If the message lines are longer than 80 characters, we split it
@@ -252,7 +262,9 @@ public class GraphicalMessageHandler extends MessageHandler {
         } else {
             Runnable doWarning = new Runnable() {
                     public void run() {
-                        Object[] options = { "OK" };
+                        Object[] options = {
+                                "OK"
+                            };
                         Object[] message = new Object[1];
 
                         // If the message lines are longer than 80 characters, we split it
@@ -294,7 +306,7 @@ public class GraphicalMessageHandler extends MessageHandler {
      *  "Cancel" button.
      */
     protected void _warning(final String info, final Throwable throwable)
-            throws ptolemy.util.CancelException {
+        throws ptolemy.util.CancelException {
         // In swing, updates to showing graphics must be done in the
         // event thread.  If we are in the event thread, then proceed.
         // Otherwise, defer.
@@ -303,7 +315,11 @@ public class GraphicalMessageHandler extends MessageHandler {
             message[0] = StringUtilities.ellipsis(info,
                     StringUtilities.ELLIPSIS_LENGTH_LONG);
 
-            Object[] options = { "OK", "Display Stack Trace", "Cancel" };
+            Object[] options = {
+                    "OK",
+                    "Display Stack Trace",
+                    "Cancel"
+                };
 
             // Show the MODAL dialog
             int selected = JOptionPane.showOptionDialog(getContext(), message,
@@ -322,7 +338,10 @@ public class GraphicalMessageHandler extends MessageHandler {
                         message[0] = StringUtilities.ellipsis(info,
                                 StringUtilities.ELLIPSIS_LENGTH_LONG);
 
-                        Object[] options = { "OK", "Display Stack Trace" };
+                        Object[] options = {
+                                "OK",
+                                "Display Stack Trace"
+                            };
 
                         // Show the MODAL dialog
                         int selected = JOptionPane.showOptionDialog(getContext(),
@@ -352,7 +371,10 @@ public class GraphicalMessageHandler extends MessageHandler {
         message[0] = StringUtilities.ellipsis(question,
                 StringUtilities.ELLIPSIS_LENGTH_LONG);
 
-        Object[] options = { "Yes", "No" };
+        Object[] options = {
+                "Yes",
+                "No"
+            };
 
         // Show the MODAL dialog
         int selected = JOptionPane.showOptionDialog(getContext(), message,
@@ -410,6 +432,6 @@ public class GraphicalMessageHandler extends MessageHandler {
 
         // Show the MODAL dialog
         JOptionPane.showMessageDialog(getContext(), message, "Stack trace",
-                JOptionPane.ERROR_MESSAGE);
+            JOptionPane.ERROR_MESSAGE);
     }
 }

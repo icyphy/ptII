@@ -70,7 +70,7 @@ public class InsideEntityEditorPaneFactory extends EditorPaneFactory {
      *   an attribute already in the container.
      */
     public InsideEntityEditorPaneFactory(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -86,7 +86,7 @@ public class InsideEntityEditorPaneFactory extends EditorPaneFactory {
 
         if (object instanceof CompositeEntity) {
             Iterator entities = ((CompositeEntity) object).entityList()
-                .iterator();
+                                             .iterator();
 
             if (entities.hasNext()) {
                 object = (NamedObj) entities.next();

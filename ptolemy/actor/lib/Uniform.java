@@ -53,7 +53,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Yellow (cxh)
 */
 public class Uniform extends RandomSource {
-    
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -63,7 +62,7 @@ public class Uniform extends RandomSource {
      *   actor with this name.
      */
     public Uniform(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         output.setTypeEquals(BaseType.DOUBLE);
@@ -112,7 +111,7 @@ public class Uniform extends RandomSource {
 
         if (lowerValue > upperValue) {
             throw new IllegalActionException(this,
-                    "Invalid bounds: lowerBound is greater than upperBound.");
+                "Invalid bounds: lowerBound is greater than upperBound.");
         }
 
         double rawNum = _random.nextDouble();

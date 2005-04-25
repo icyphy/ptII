@@ -57,7 +57,7 @@ public class AddEditorFactory implements MoMLFilter {
      *  @return the value of the attributeValue argument.
      */
     public String filterAttributeValue(NamedObj container, String element,
-            String attributeName, String attributeValue) {
+        String attributeName, String attributeValue) {
         // This method gets called many times by the MoMLParser,
         // so we try to be smart about the number of comparisons
         // and we try to group comparisons together so that we
@@ -102,9 +102,9 @@ public class AddEditorFactory implements MoMLFilter {
                     _currentActorFullName = "." + _lastNameSeen;
                 }
             } else if (_currentlyProcessingActorThatMayNeedAnEditorFactory
-                    && (container != null)
-                    && !container.getFullName().equals(_currentActorFullName)
-                    && !container.getFullName().startsWith(_currentActorFullName)) {
+                            && (container != null)
+                            && !container.getFullName().equals(_currentActorFullName)
+                            && !container.getFullName().startsWith(_currentActorFullName)) {
                 // We found another class in a different container
                 // while handling a class with port name changes, so
                 _currentlyProcessingActorThatMayNeedAnEditorFactory = false;
@@ -121,12 +121,13 @@ public class AddEditorFactory implements MoMLFilter {
      *  @param elementName The element name.
      */
     public void filterEndElement(NamedObj container, String elementName)
-            throws Exception {
+        throws Exception {
         if (!_currentlyProcessingActorThatMayNeedAnEditorFactory) {
             return;
         } else if (_currentAttributeHasLocation && (elementName != null)
-                && elementName.equals("property") && (container != null)
-                && container.getFullName().equals(_currentActorFullName)) {
+                        && elementName.equals("property")
+                        && (container != null)
+                        && container.getFullName().equals(_currentActorFullName)) {
             _currentlyProcessingActorThatMayNeedAnEditorFactory = false;
             _currentAttributeHasLocation = false;
 
@@ -155,7 +156,7 @@ public class AddEditorFactory implements MoMLFilter {
                 MoMLParser.setModified(true);
             } catch (Exception ex) {
                 throw new IllegalActionException(null, ex,
-                        "Failed to parse\n" + moml);
+                    "Failed to parse\n" + moml);
             }
         }
     }
@@ -165,8 +166,8 @@ public class AddEditorFactory implements MoMLFilter {
      */
     public String toString() {
         return getClass().getName()
-            + ": If a parameter has a _location, then\n"
-            + "add a VisibleParameterEditorFactory named _editorFactory.\n";
+        + ": If a parameter has a _location, then\n"
+        + "add a VisibleParameterEditorFactory named _editorFactory.\n";
     }
 
     ///////////////////////////////////////////////////////////////////

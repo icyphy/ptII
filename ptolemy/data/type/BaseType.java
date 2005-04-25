@@ -359,7 +359,7 @@ public abstract class BaseType implements Type, Serializable {
 
         public Token convert(Token t) throws IllegalActionException {
             throw new IllegalActionException("Cannot convert token " + t
-                    + " to type numerical, because numerical is not a concrete type.");
+                + " to type numerical, because numerical is not a concrete type.");
         }
 
         public int getTypeHash() {
@@ -411,7 +411,7 @@ public abstract class BaseType implements Type, Serializable {
 
         public Token convert(Token t) throws IllegalActionException {
             throw new IllegalActionException("Cannot convert token " + t
-                    + " to type scalar, because scalar is not a concrete type.");
+                + " to type scalar, because scalar is not a concrete type.");
         }
 
         public int getTypeHash() {

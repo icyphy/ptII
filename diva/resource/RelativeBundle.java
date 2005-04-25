@@ -100,7 +100,7 @@ public class RelativeBundle extends ResourceBundle {
      * so the properties files doesn't need the "resources/" strings.
      */
     public RelativeBundle(String baseName, Class loader,
-            ResourceBundle overrides) {
+        ResourceBundle overrides) {
         try {
             _delegate = ResourceBundle.getBundle(baseName, Locale.getDefault());
         } catch (MissingResourceException e) {
@@ -171,7 +171,7 @@ public class RelativeBundle extends ResourceBundle {
     /** Get an object from a ResourceBundle.
      */
     protected Object handleGetObject(String key)
-            throws MissingResourceException {
+        throws MissingResourceException {
         try {
             return _delegate.getObject(key);
         } catch (MissingResourceException ex) {

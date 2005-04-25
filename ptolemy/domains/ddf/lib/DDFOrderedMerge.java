@@ -76,7 +76,7 @@ public class DDFOrderedMerge extends OrderedMerge {
      *   actor with this name.
      */
     public DDFOrderedMerge(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         inputA_tokenConsumptionRate = new Parameter(inputA,
@@ -135,15 +135,14 @@ public class DDFOrderedMerge extends OrderedMerge {
 
         return postfireReturn;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////   
-    
-    
+
     /** A final static IntToken with value 0.
      */
     private final static IntToken _zero = new IntToken(0);
-    
+
     /** A final static IntToken with value 1.
      */
     private final static IntToken _one = new IntToken(1);

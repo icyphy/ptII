@@ -40,6 +40,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import java.util.HashSet;
 import java.util.Set;
 
+
 /**
  * @author Man-Kit Leung
  *
@@ -47,7 +48,6 @@ import java.util.Set;
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public class TrigFunction extends CCodeGeneratorHelper {
-
     /**
      * Constructor method for the TrigFunction helper
      * @param actor the associated actor
@@ -58,28 +58,27 @@ public class TrigFunction extends CCodeGeneratorHelper {
 
     /**
      * Generate fire code
-     * The method reads in codeBlock1 and puts into the 
+     * The method reads in codeBlock1 and puts into the
      * given stream buffer
      * @param stream the given buffer to append the code to
      */
-    public void  generateFireCode(StringBuffer stream)
-            throws IllegalActionException {
+    public void generateFireCode(StringBuffer stream)
+        throws IllegalActionException {
+        ptolemy.actor.lib.TrigFunction actor = (ptolemy.actor.lib.TrigFunction) getComponent();
 
-        ptolemy.actor.lib.TrigFunction actor =
-            (ptolemy.actor.lib.TrigFunction)getComponent();
-        
         String function = actor.function.getExpression();
-        String code =   (function.equals("sin")) ? "sinBlock" :
-                        (function.equals("cos")) ? "cosBlock" :
-                        (function.equals("tan")) ? "tanBlock" :
-                        (function.equals("asin")) ? "asinBlock" :
-                        (function.equals("acos")) ? "acosBlock" : "atanBlock";
-        
+        String code = (function.equals("sin")) ? "sinBlock"
+                                               : ((function.equals("cos"))
+            ? "cosBlock"
+            : ((function.equals("tan")) ? "tanBlock"
+                                        : ((function.equals("asin"))
+            ? "asinBlock" : ((function.equals("acos")) ? "acosBlock" : "atanBlock"))));
+
         CodeStream tmpStream = new CodeStream(this);
-        tmpStream.appendCodeBlock(code);            
+        tmpStream.appendCodeBlock(code);
         stream.append(processCode(tmpStream.toString()));
     }
-    
+
     /** Get the files needed by the code generated for the
      *  TrigFunction actor.
      *  @return A set of strings that are names of the files
@@ -91,4 +90,3 @@ public class TrigFunction extends CCodeGeneratorHelper {
         return files;
     }
 }
-

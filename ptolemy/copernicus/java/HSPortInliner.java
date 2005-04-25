@@ -26,11 +26,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.copernicus.java;
 
-import ptolemy.actor.CompositeActor;
-import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.TypedIORelation;
-import ptolemy.copernicus.kernel.PtolemyUtilities;
-
 import soot.Body;
 import soot.Local;
 import soot.Modifier;
@@ -41,6 +36,7 @@ import soot.SootMethod;
 import soot.Value;
 import soot.ValueBox;
 import soot.VoidType;
+
 import soot.jimple.DefinitionStmt;
 import soot.jimple.IntConstant;
 import soot.jimple.InvokeExpr;
@@ -48,8 +44,15 @@ import soot.jimple.Jimple;
 import soot.jimple.JimpleBody;
 import soot.jimple.NullConstant;
 import soot.jimple.Stmt;
+
 import soot.jimple.toolkits.scalar.Evaluator;
+
 import soot.util.Chain;
+
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.TypedIORelation;
+import ptolemy.copernicus.kernel.PtolemyUtilities;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -123,7 +126,7 @@ public class HSPortInliner implements PortInliner {
      *  given body with a circular array reference.
      */
     public void inlineBroadcast(JimpleBody body, Stmt stmt, InvokeExpr expr,
-            TypedIOPort port) {
+        TypedIOPort port) {
         if (expr.getArgCount() != 1) {
             throw new RuntimeException("multirate not supported.");
         }
@@ -138,17 +141,18 @@ public class HSPortInliner implements PortInliner {
         int channel = 0;
 
         for (Iterator relations = port.linkedRelationList().iterator();
-             relations.hasNext();) {
+                        relations.hasNext();) {
             TypedIORelation relation = (TypedIORelation) relations.next();
 
             for (int i = 0; i < relation.getWidth(); i++, channel++) {
                 SootField arrayField = _modelClass.getFieldByName(InlinePortTransformer
-                        .getBufferFieldName(relation, i, port.getType()));
+                                    .getBufferFieldName(relation, i,
+                                        port.getType()));
 
                 // assign the value.
                 body.getUnits().insertBefore(Jimple.v().newAssignStmt(Jimple.v()
-                                                     .newStaticFieldRef(arrayField),
-                                                     expr.getArg(0)), stmt);
+                                                                                        .newStaticFieldRef(arrayField),
+                        expr.getArg(0)), stmt);
             }
         }
 
@@ -161,7 +165,7 @@ public class HSPortInliner implements PortInliner {
      *  given body with a circular array reference.
      */
     public void inlineGet(JimpleBody body, Stmt stmt, ValueBox box,
-            InvokeExpr expr, TypedIOPort port) {
+        InvokeExpr expr, TypedIOPort port) {
         if (expr.getArgCount() != 1) {
             throw new RuntimeException("multirate not supported.");
         }
@@ -177,7 +181,7 @@ public class HSPortInliner implements PortInliner {
 
         // assign the value.
         body.getUnits().insertBefore(Jimple.v().newAssignStmt(returnLocal,
-                                             Jimple.v().newStaticFieldRef(field)), stmt);
+                Jimple.v().newStaticFieldRef(field)), stmt);
 
         // We may be calling get without setting the return value
         // to anything.
@@ -194,7 +198,7 @@ public class HSPortInliner implements PortInliner {
      *  given body with a circular array reference.
      */
     public void inlineGetInside(JimpleBody body, Stmt stmt, ValueBox box,
-            InvokeExpr expr, TypedIOPort port) {
+        InvokeExpr expr, TypedIOPort port) {
         if (expr.getArgCount() != 1) {
             throw new RuntimeException("multirate not supported.");
         }
@@ -210,7 +214,7 @@ public class HSPortInliner implements PortInliner {
 
         // assign the value.
         body.getUnits().insertBefore(Jimple.v().newAssignStmt(returnLocal,
-                                             Jimple.v().newStaticFieldRef(field)), stmt);
+                Jimple.v().newStaticFieldRef(field)), stmt);
 
         // We may be calling get without setting the return value
         // to anything.
@@ -226,7 +230,7 @@ public class HSPortInliner implements PortInliner {
      *  given body with a circular array reference.
      */
     public void inlineSend(JimpleBody body, Stmt stmt, InvokeExpr expr,
-            TypedIOPort port) {
+        TypedIOPort port) {
         if (expr.getArgCount() != 2) {
             throw new RuntimeException("multirate send not supported.");
         }
@@ -238,8 +242,8 @@ public class HSPortInliner implements PortInliner {
 
         // assign the value.
         body.getUnits().insertBefore(Jimple.v().newAssignStmt(Jimple.v()
-                                             .newStaticFieldRef(field),
-                                             expr.getArg(1)), stmt);
+                                                                                .newStaticFieldRef(field),
+                expr.getArg(1)), stmt);
         body.getUnits().remove(stmt);
     }
 
@@ -247,11 +251,11 @@ public class HSPortInliner implements PortInliner {
      *  given body with a circular array reference.
      */
     public void inlineSendInside(JimpleBody body, Stmt stmt, InvokeExpr expr,
-            TypedIOPort port) {
+        TypedIOPort port) {
         if (expr.getArgCount() != 2) {
             throw new RuntimeException(
-                    "multirate sendInside not supported on port "
-                    + port.getFullName() + ".");
+                "multirate sendInside not supported on port "
+                + port.getFullName() + ".");
         }
 
         Value channelValue = expr.getArg(0);
@@ -261,8 +265,8 @@ public class HSPortInliner implements PortInliner {
 
         // assign the value.
         body.getUnits().insertBefore(Jimple.v().newAssignStmt(Jimple.v()
-                                             .newStaticFieldRef(field),
-                                             expr.getArg(1)), stmt);
+                                                                                .newStaticFieldRef(field),
+                expr.getArg(1)), stmt);
         body.getUnits().remove(stmt);
     }
 
@@ -289,7 +293,7 @@ public class HSPortInliner implements PortInliner {
 
         // Loop over all the relations, creating buffers for each channel.
         for (Iterator relations = _model.relationList().iterator();
-             relations.hasNext();) {
+                        relations.hasNext();) {
             TypedIORelation relation = (TypedIORelation) relations.next();
 
             // Determine the types that the relation is connected to.
@@ -297,7 +301,7 @@ public class HSPortInliner implements PortInliner {
             List destinationPortList = relation.linkedDestinationPortList();
 
             for (Iterator destinationPorts = destinationPortList.iterator();
-                 destinationPorts.hasNext();) {
+                            destinationPorts.hasNext();) {
                 TypedIOPort port = (TypedIOPort) destinationPorts.next();
                 ptolemy.data.type.Type type = port.getType();
                 typeMap.put(type.toString(), type);
@@ -305,7 +309,7 @@ public class HSPortInliner implements PortInliner {
 
             for (Iterator types = typeMap.keySet().iterator(); types.hasNext();) {
                 ptolemy.data.type.Type type = (ptolemy.data.type.Type) typeMap
-                    .get(types.next());
+                                .get(types.next());
                 RefType tokenType = PtolemyUtilities.getSootTypeForTokenType(type);
 
                 String fieldName = relation.getName() + "_bufferLocal";
@@ -314,8 +318,8 @@ public class HSPortInliner implements PortInliner {
 
                 for (int i = 0; i < relation.getWidth(); i++) {
                     SootField field = new SootField(InlinePortTransformer
-                            .getBufferFieldName(relation, i, type), tokenType,
-                            Modifier.PUBLIC | Modifier.STATIC);
+                                        .getBufferFieldName(relation, i, type),
+                            tokenType, Modifier.PUBLIC | Modifier.STATIC);
                     _modelClass.addField(field);
 
                     // Tag the field with the type.
@@ -323,8 +327,8 @@ public class HSPortInliner implements PortInliner {
 
                     // Note: reverse order!
                     clinitUnits.addFirst(Jimple.v().newAssignStmt(Jimple.v()
-                                                 .newStaticFieldRef(field),
-                                                 NullConstant.v()));
+                                                                                    .newStaticFieldRef(field),
+                            NullConstant.v()));
                 }
             }
         }
@@ -335,26 +339,26 @@ public class HSPortInliner implements PortInliner {
     // then convert the given input token to the given type using the given
     // temporary variables.
     private static List _createBufferStoreInstructions(Local bufferLocal,
-            Local indexLocal, Local inputTokenLocal, Local typeLocal,
-            Local tokenLocal, Local outputTokenLocal) {
+        Local indexLocal, Local inputTokenLocal, Local typeLocal,
+        Local tokenLocal, Local outputTokenLocal) {
         List list = new LinkedList();
 
         // Convert the type, if we need to.
         if (typeLocal != null) {
             list.add(Jimple.v().newAssignStmt(tokenLocal,
-                             Jimple.v().newInterfaceInvokeExpr(typeLocal,
-                                     PtolemyUtilities.typeConvertMethod, inputTokenLocal)));
+                    Jimple.v().newInterfaceInvokeExpr(typeLocal,
+                        PtolemyUtilities.typeConvertMethod, inputTokenLocal)));
 
             list.add(Jimple.v().newAssignStmt(outputTokenLocal,
-                             Jimple.v().newCastExpr(tokenLocal,
-                                     outputTokenLocal.getType())));
+                    Jimple.v().newCastExpr(tokenLocal,
+                        outputTokenLocal.getType())));
 
             // store the converted token.
             list.add(Jimple.v().newAssignStmt(Jimple.v().newArrayRef(bufferLocal,
-                                                      indexLocal), outputTokenLocal));
+                        indexLocal), outputTokenLocal));
         } else {
             list.add(Jimple.v().newAssignStmt(Jimple.v().newArrayRef(bufferLocal,
-                                                      indexLocal), inputTokenLocal));
+                        indexLocal), inputTokenLocal));
         }
 
         return list;
@@ -362,7 +366,7 @@ public class HSPortInliner implements PortInliner {
 
     // Create instructions to update the given index.
     private static List _createIndexUpdateInstructions(Local indexLocal,
-            Local indexArrayLocal, Value channelValue, Value bufferSizeValue) {
+        Local indexArrayLocal, Value channelValue, Value bufferSizeValue) {
         // Now update the index into the buffer.
         List list = new LinkedList();
 
@@ -373,15 +377,15 @@ public class HSPortInliner implements PortInliner {
 
         // increment the position.
         list.add(Jimple.v().newAssignStmt(indexLocal,
-                         Jimple.v().newAddExpr(indexLocal, IntConstant.v(1))));
+                Jimple.v().newAddExpr(indexLocal, IntConstant.v(1))));
 
         // wrap around.
         list.add(Jimple.v().newAssignStmt(indexLocal,
-                         Jimple.v().newRemExpr(indexLocal, bufferSizeValue)));
+                Jimple.v().newRemExpr(indexLocal, bufferSizeValue)));
 
         // store back.
         list.add(Jimple.v().newAssignStmt(Jimple.v().newArrayRef(indexArrayLocal,
-                                                  channelValue), indexLocal));
+                    channelValue), indexLocal));
         return list;
     }
 
@@ -393,8 +397,8 @@ public class HSPortInliner implements PortInliner {
      *  returned.
      */
     private static SootField _getBufferField(SootClass modelClass,
-            TypedIOPort port, ptolemy.data.type.Type type, Value channelValue,
-            boolean inside) {
+        TypedIOPort port, ptolemy.data.type.Type type, Value channelValue,
+        boolean inside) {
         // Now get the appropriate buffer
         if (Evaluator.isValueConstantValued(channelValue)) {
             // If we know the channel, then refer directly to the buffer in the
@@ -410,13 +414,14 @@ public class HSPortInliner implements PortInliner {
             }
 
             for (Iterator relations = relationList.iterator();
-                 relations.hasNext();) {
+                            relations.hasNext();) {
                 TypedIORelation relation = (TypedIORelation) relations.next();
 
                 for (int i = 0; i < relation.getWidth(); i++, channel++) {
                     if (channel == argChannel) {
                         SootField arrayField = modelClass.getFieldByName(InlinePortTransformer
-                                .getBufferFieldName(relation, i, type));
+                                            .getBufferFieldName(relation, i,
+                                                type));
 
                         return arrayField;
                     }
@@ -426,7 +431,7 @@ public class HSPortInliner implements PortInliner {
             throw new RuntimeException("Constant channel not found!");
         } else {
             throw new RuntimeException(
-                    "Cannot handle channel that is not constant");
+                "Cannot handle channel that is not constant");
         }
     }
 
@@ -435,7 +440,7 @@ public class HSPortInliner implements PortInliner {
     private Set _getConnectedTypeList(TypedIOPort port) {
         if (!port.isOutput()) {
             throw new RuntimeException("Can only get the connected types for"
-                    + " an output port!");
+                + " an output port!");
         }
 
         // Loop through all of the sink ports...
@@ -467,7 +472,7 @@ public class HSPortInliner implements PortInliner {
     private Set _getConnectedTypeListInside(TypedIOPort port) {
         if (!port.isInput()) {
             throw new RuntimeException("Can only get the inside connected"
-                    + " types for an input port!");
+                + " types for an input port!");
         }
 
         // Loop through all of the connected ports...

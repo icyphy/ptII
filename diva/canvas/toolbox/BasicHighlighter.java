@@ -93,7 +93,7 @@ public class BasicHighlighter extends FigureDecorator {
      *  draws an outline only and does not fill it.
      */
     public BasicHighlighter(Paint paint, float halo, Composite composite,
-            Stroke stroke) {
+        Stroke stroke) {
         this._paint = paint;
         this._halo = halo;
         this._composite = composite;
@@ -203,6 +203,6 @@ public class BasicHighlighter extends FigureDecorator {
         double h = bounds.getHeight() + (2 * _halo);
 
         getParent().repaint(DamageRegion.createDamageRegion(
-                                    getTransformContext(), x, y, w, h));
+                getTransformContext(), x, y, w, h));
     }
 }

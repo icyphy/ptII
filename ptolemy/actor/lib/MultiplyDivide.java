@@ -87,7 +87,7 @@ public class MultiplyDivide extends TypedAtomicActor {
      *   an actor already in the container.
      */
     public MultiplyDivide(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         multiply = new TypedIOPort(this, "multiply", true, false);
         multiply.setMultiport(true);
@@ -95,15 +95,15 @@ public class MultiplyDivide extends TypedAtomicActor {
         divide.setMultiport(true);
         output = new TypedIOPort(this, "output", false, true);
         _attachText("_iconDescription",
-                "<svg>\n" + "<rect x=\"-20\" y=\"-20\" "
-                + "width=\"40\" height=\"40\" " + "style=\"fill:white\"/>\n"
-                + "<line x1=\"-15\" y1=\"-15\" x2=\"-5\" y2=\"-5\"/>"
-                + "<line x1=\"-15\" y1=\"-5\" x2=\"-5\" y2=\"-15\"/>"
-                + "<line x1=\"-15\" y1=\"10\" x2=\"-5\" y2=\"10\"/>"
-                + "<circle cx=\"-10\" cy=\"6\" r=\"1\""
-                + "style=\"fill:black\"/>\n"
-                + "<circle cx=\"-10\" cy=\"14\" r=\"1\""
-                + "style=\"fill:black\"/>\n" + "</svg>\n");
+            "<svg>\n" + "<rect x=\"-20\" y=\"-20\" "
+            + "width=\"40\" height=\"40\" " + "style=\"fill:white\"/>\n"
+            + "<line x1=\"-15\" y1=\"-15\" x2=\"-5\" y2=\"-5\"/>"
+            + "<line x1=\"-15\" y1=\"-5\" x2=\"-5\" y2=\"-15\"/>"
+            + "<line x1=\"-15\" y1=\"10\" x2=\"-5\" y2=\"10\"/>"
+            + "<circle cx=\"-10\" cy=\"6\" r=\"1\""
+            + "style=\"fill:black\"/>\n"
+            + "<circle cx=\"-10\" cy=\"14\" r=\"1\""
+            + "style=\"fill:black\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////

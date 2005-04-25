@@ -29,6 +29,8 @@
 */
 package ptolemy.caltrop.actors;
 
+import caltrop.interpreter.ast.Actor;
+
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -36,10 +38,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
 
-import caltrop.interpreter.ast.Actor;
 
 //////////////////////////////////////////////////////////////////////////
 //// CalInterpreter
+
 /**
    This actor interprets CAL source as an actor inside the Ptolemy II
    framework. It has a <tt>calCode</tt> string attribute that contains
@@ -65,7 +67,6 @@ import caltrop.interpreter.ast.Actor;
    @see ptolemy.caltrop.ddi.util.DataflowActorInterpreter
 */
 public class CalInterpreter extends AbstractCalInterpreter {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -75,7 +76,7 @@ public class CalInterpreter extends AbstractCalInterpreter {
      *   actor with this name.
      */
     public CalInterpreter(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         calCode = new StringAttribute(this, "calCode");
         calCode.setExpression(defaultActorText);
@@ -97,19 +98,20 @@ public class CalInterpreter extends AbstractCalInterpreter {
      * transforming the CAL source code.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == calCode) {
             String s = calCode.getExpression();
             Actor actor;
+
             try {
                 actor = caltrop.interpreter.util.SourceReader.readActor(s);
             } catch (Throwable ex) {
                 // FIXME: It would be nice if _stringToActor threw
                 // something other than Throwable here.
                 throw new IllegalActionException(this, ex,
-                        "Failed to read in actor in:\n  " + s + "\n"
-                        + "This sometimes occurs if saxon7.jar is not in "
-                        + "your classpath.");
+                    "Failed to read in actor in:\n  " + s + "\n"
+                    + "This sometimes occurs if saxon7.jar is not in "
+                    + "your classpath.");
             }
 
             try {
@@ -117,8 +119,8 @@ public class CalInterpreter extends AbstractCalInterpreter {
                     _setupActor(actor);
                 }
             } catch (Throwable ex) {
-                throw  new IllegalActionException(this, ex,
-                        "Failed to set up actor'" + s + "'");
+                throw new IllegalActionException(this, ex,
+                    "Failed to set up actor'" + s + "'");
             }
         } else {
             super.attributeChanged(attribute);
@@ -131,8 +133,5 @@ public class CalInterpreter extends AbstractCalInterpreter {
     public StringAttribute calCode;
 
     // Default CAL code.
-    protected final static String defaultActorText =
-    "actor CalActor () Input ==> Output : end";
+    protected final static String defaultActorText = "actor CalActor () Input ==> Output : end";
 }
-
-

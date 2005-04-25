@@ -82,9 +82,9 @@ public class Utilities {
             int i;
 
             for (i = 0;
-                 (i < result.size())
-                     && (((String) result.get(i)).compareTo(elementString) < 0);
-                 i++) {
+                            (i < result.size())
+                            && (((String) result.get(i)).compareTo(
+                                elementString) < 0); i++) {
                 ;
             }
 

@@ -39,8 +39,22 @@ public interface MatrixParserConstants {
     int COMMENT = 12;
     int DEFAULT = 0;
     String[] tokenImage = {
-            "<EOF>", "\" \"", "\"\\t\"", "\"\\n\"", "\"\\r\"", "<CONSTANT>",
-            "<FLOAT>", "<INTEGER>", "<DIGIT>", "<NAME>", "<NATURAL>", "<SIGN>",
-            "<COMMENT>", "\"[\"", "\";\"", "\"]\"", "\",\"",
+            "<EOF>",
+            "\" \"",
+            "\"\\t\"",
+            "\"\\n\"",
+            "\"\\r\"",
+            "<CONSTANT>",
+            "<FLOAT>",
+            "<INTEGER>",
+            "<DIGIT>",
+            "<NAME>",
+            "<NATURAL>",
+            "<SIGN>",
+            "<COMMENT>",
+            "\"[\"",
+            "\";\"",
+            "\"]\"",
+            "\",\"",
         };
 }

@@ -40,27 +40,27 @@ import ptolemy.util.FileUtilities;
 import java.util.HashSet;
 import java.util.Set;
 
+
 /**
  * @author Jackie
  *
  */
 public class LineWriter extends CCodeGeneratorHelper {
-
     /**
      * Constructor method for the LineWriter helper
      * @param actor the associated actor
      */
-	public LineWriter(ptolemy.actor.lib.io.LineWriter actor) {
-		super(actor);
-	}
-    
+    public LineWriter(ptolemy.actor.lib.io.LineWriter actor) {
+        super(actor);
+    }
+
     /**
      * Generate fire code
-     * The method reads in codeBlock1 and puts into the 
+     * The method reads in codeBlock1 and puts into the
      * given stream buffer
      * @param stream the given buffer to append the code to
      */
-    public void  generateFireCode(StringBuffer stream)
+    public void generateFireCode(StringBuffer stream)
         throws IllegalActionException {
         CodeStream tmpStream = new CodeStream(this);
         tmpStream.appendCodeBlock("writeLine");
@@ -72,17 +72,17 @@ public class LineWriter extends CCodeGeneratorHelper {
      *  replaces macros with their values and returns the results.
      *  @return The processed <code>initBlock</code>.
      */
-    public String generateInitializeCode()
-        throws IllegalActionException {
+    public String generateInitializeCode() throws IllegalActionException {
         super.generateInitializeCode();
-        ptolemy.actor.lib.io.LineWriter actor =
-            (ptolemy.actor.lib.io.LineWriter)getComponent();
+
+        ptolemy.actor.lib.io.LineWriter actor = (ptolemy.actor.lib.io.LineWriter) getComponent();
         CodeStream tmpStream = new CodeStream(this);
 
         tmpStream.appendCodeBlock("initBlock");
+
         if (actor.fileName.getExpression().equals("System.out")) {
             _fileOpen = false;
-            tmpStream.appendCodeBlock("openForStdout");                   	
+            tmpStream.appendCodeBlock("openForStdout");
         } else {
             _fileOpen = true;
 
@@ -91,21 +91,22 @@ public class LineWriter extends CCodeGeneratorHelper {
             fileNameString = fileNameString.replaceFirst("file:/", "");
             fileNameString = fileNameString.replaceAll("%20", " ");
 
-            boolean fileExist = 
-                FileUtilities.nameToFile(fileNameString, null).exists();
-            boolean askForOverwrite = 
-                actor.confirmOverwrite.getExpression().equals("true");
+            boolean fileExist = FileUtilities.nameToFile(fileNameString, null)
+                                                         .exists();
+            boolean askForOverwrite = actor.confirmOverwrite.getExpression()
+                                                                        .equals("true");
 
             if (fileExist && askForOverwrite) {
-                tmpStream.appendCodeBlock("confirmOverwrite");            
+                tmpStream.appendCodeBlock("confirmOverwrite");
             }
-            
+
             if (actor.append.getExpression().equals("true")) {
                 tmpStream.appendCodeBlock("openForAppend");
             } else {
                 tmpStream.appendCodeBlock("openForWrite");
             }
         }
+
         return processCode(tmpStream.toString());
     }
 
@@ -116,14 +117,13 @@ public class LineWriter extends CCodeGeneratorHelper {
      */
     public void generateWrapupCode(StringBuffer stream)
         throws IllegalActionException {
-        
         if (_fileOpen) {
             CodeStream tmpStream = new CodeStream(this);
             tmpStream.appendCodeBlock("wrapUpBlock");
             stream.append(processCode(tmpStream.toString()));
         }
     }
-    
+
     /** Get the files needed by the code generated for the
      *  LineWriter actor.
      *  @return A set of strings that are names of the files
@@ -135,11 +135,10 @@ public class LineWriter extends CCodeGeneratorHelper {
         return files;
     }
 
-    /** 
+    /**
      * indicate whether or not the user requests to open a file
      * e.g. false - write to standard (console) output
-     *      true - some file name is specified 
+     *      true - some file name is specified
      */
     private boolean _fileOpen = false;
-    
 }

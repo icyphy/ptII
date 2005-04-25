@@ -90,7 +90,7 @@ public class DTReceiver extends SDFReceiver {
         _init();
 
         Time localTime = new Time(((Actor) container.getContainer())
-                .getDirector());
+                            .getDirector());
         initializeLocalTime(localTime);
     }
 
@@ -106,7 +106,7 @@ public class DTReceiver extends SDFReceiver {
         _init();
 
         Time localTime = new Time(((Actor) container.getContainer())
-                .getDirector());
+                            .getDirector());
         initializeLocalTime(localTime);
     }
 
@@ -157,9 +157,9 @@ public class DTReceiver extends SDFReceiver {
             DTDirector localDirector;
 
             if ((containerActor instanceof TypedCompositeActor)
-                    && (!containerPort.isOutput())) {
+                            && (!containerPort.isOutput())) {
                 localDirector = (DTDirector) containerActor
-                    .getExecutiveDirector();
+                                .getExecutiveDirector();
             } else {
                 localDirector = (DTDirector) containerActor.getDirector();
             }

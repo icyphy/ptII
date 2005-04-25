@@ -85,7 +85,7 @@ public class LineWriter extends Sink {
      *   actor with this name.
      */
     public LineWriter(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         input.setTypeEquals(BaseType.STRING);
@@ -103,11 +103,11 @@ public class LineWriter extends Sink {
         confirmOverwrite.setToken(BooleanToken.TRUE);
 
         _attachText("_iconDescription",
-                "<svg>\n" + "<rect x=\"-25\" y=\"-20\" "
-                + "width=\"50\" height=\"40\" " + "style=\"fill:white\"/>\n"
-                + "<polygon points=\"-15,-10 -12,-10 -8,-14 -1,-14 3,-10"
-                + " 15,-10 15,10, -15,10\" " + "style=\"fill:red\"/>\n"
-                + "</svg>\n");
+            "<svg>\n" + "<rect x=\"-25\" y=\"-20\" "
+            + "width=\"50\" height=\"40\" " + "style=\"fill:white\"/>\n"
+            + "<polygon points=\"-15,-10 -12,-10 -8,-14 -1,-14 3,-10"
+            + " 15,-10 15,10, -15,10\" " + "style=\"fill:red\"/>\n"
+            + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -144,14 +144,14 @@ public class LineWriter extends Sink {
      *   opened file cannot be closed.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == fileName) {
             // Do not close the file if it is the same file.
             String newFileName = ((StringToken) fileName.getToken())
-                .stringValue();
+                            .stringValue();
 
             if ((_previousFileName != null)
-                    && !newFileName.equals(_previousFileName)) {
+                            && !newFileName.equals(_previousFileName)) {
                 _previousFileName = newFileName;
                 fileName.close();
                 _writer = null;
@@ -188,7 +188,7 @@ public class LineWriter extends Sink {
 
             if (_writer == null) {
                 boolean appendValue = ((BooleanToken) append.getToken())
-                    .booleanValue();
+                                .booleanValue();
 
                 if (!fileName.stringValue().equals("System.out")) {
                     // Only check for append and overwrite if the
@@ -196,7 +196,7 @@ public class LineWriter extends Sink {
                     // Open the file.
                     File file = fileName.asFile();
                     boolean confirmOverwriteValue = ((BooleanToken) confirmOverwrite
-                            .getToken()).booleanValue();
+                                    .getToken()).booleanValue();
 
                     // Don't ask for confirmation in append mode, since there
                     // will be no loss of data.
@@ -205,9 +205,9 @@ public class LineWriter extends Sink {
                         // FIXME: This should be called in the event thread!
                         // There is a chance of deadlock since it is not.
                         if (!MessageHandler.yesNoQuestion("OK to overwrite "
-                                    + file + "?")) {
+                                            + file + "?")) {
                             throw new IllegalActionException(this,
-                                    "Please select another file name.");
+                                "Please select another file name.");
                         }
                     }
                 }

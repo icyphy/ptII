@@ -98,15 +98,15 @@ public class DocumentationAttribute extends Attribute {
      *   an attribute already in the container.
      */
     public DocumentationAttribute(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         _attachText("_iconDescription",
-                "<svg>\n"
-                + "<rect x=\"-50\" y=\"-20\" width=\"130\" height=\"40\" "
-                + "style=\"fill:yellow\"/>" + "<text x=\"-40\" y=\"-5\" "
-                + "style=\"font-size:12; font-family:SansSerif; fill:black\">"
-                + "Double click to see\ndocumentation.</text></svg>");
+            "<svg>\n"
+            + "<rect x=\"-50\" y=\"-20\" width=\"130\" height=\"40\" "
+            + "style=\"fill:yellow\"/>" + "<text x=\"-40\" y=\"-5\" "
+            + "style=\"font-size:12; font-family:SansSerif; fill:black\">"
+            + "Double click to see\ndocumentation.</text></svg>");
         new DocumentationAttributeFactory(this, "_editorFactory");
 
         SingletonParameter hide = new SingletonParameter(this, "_hideName");
@@ -118,7 +118,7 @@ public class DocumentationAttribute extends Attribute {
     ////                         inner classes                     ////
     private class DocumentationAttributeFactory extends EditorFactory {
         public DocumentationAttributeFactory(NamedObj _container, String name)
-                throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
             super(_container, name);
         }
 
@@ -131,12 +131,13 @@ public class DocumentationAttribute extends Attribute {
             try {
                 FileParameter docAttribute = null;
                 Configuration configuration = ((TableauFrame) parent)
-                    .getConfiguration();
+                                .getConfiguration();
                 NamedObj documentedObject = object;
 
                 while (documentedObject != null) {
                     docAttribute = (FileParameter) documentedObject
-                        .getAttribute("_documentation", FileParameter.class);
+                                    .getAttribute("_documentation",
+                                        FileParameter.class);
 
                     if (docAttribute != null) {
                         break;
@@ -147,7 +148,7 @@ public class DocumentationAttribute extends Attribute {
 
                 if (docAttribute != null) {
                     URL doc = MoMLApplication.specToURL(docAttribute
-                            .getExpression());
+                                        .getExpression());
                     configuration.openModel(doc, doc, doc.toExternalForm());
                 } else {
                     NamedObj container = object.getContainer();
@@ -160,19 +161,18 @@ public class DocumentationAttribute extends Attribute {
                     fileDialog.setDialogTitle("Select a documentation file.");
 
                     File _directory = null;
-                    
+
                     String cwd = StringUtilities.getProperty("user.dir");
-                    
+
                     if (cwd != null) {
-                    	fileDialog.setCurrentDirectory(new File(cwd));
+                        fileDialog.setCurrentDirectory(new File(cwd));
                     }
-                    
-                    
+
                     if (fileDialog.showOpenDialog(parent) == JFileChooser.APPROVE_OPTION) {
-                    	_directory = fileDialog.getCurrentDirectory();
+                        _directory = fileDialog.getCurrentDirectory();
 
                         String fileName = fileDialog.getSelectedFile()
-                            .getAbsolutePath();
+                                                                .getAbsolutePath();
 
                         docAttribute = new FileParameter(container,
                                 "_documentation");
@@ -181,7 +181,7 @@ public class DocumentationAttribute extends Attribute {
                 }
             } catch (Throwable throwable) {
                 throw new InternalErrorException(object, throwable,
-                        "Cannot access Documentation");
+                    "Cannot access Documentation");
             }
         }
     }

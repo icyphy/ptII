@@ -68,7 +68,7 @@ public class LocationParameter extends Parameter implements Locatable {
      *   a parameter already in the container.
      */
     public LocationParameter(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         setTypeEquals(BaseType.DOUBLE_MATRIX);
         setExpression("[0.0, 0.0]");

@@ -26,11 +26,11 @@ COPYRIGHTENDKEY
 */
 package ptolemy.copernicus.java.test;
 
-import ptolemy.copernicus.java.TypeSpecializerAnalysis;
-import ptolemy.copernicus.kernel.PtolemyUtilities;
-
 import soot.Scene;
 import soot.SootClass;
+
+import ptolemy.copernicus.java.TypeSpecializerAnalysis;
+import ptolemy.copernicus.kernel.PtolemyUtilities;
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -62,7 +62,7 @@ public class TestSpecializeTypesMain {
                 new HashSet());
 
         for (Iterator variables = analysis.getSolverVariables();
-             variables.hasNext();) {
+                        variables.hasNext();) {
             System.out.println(variables.next().toString());
         }
     }

@@ -83,7 +83,7 @@ public class Commutator extends Transformer implements SequenceActor {
      *  by the proposed container.
      */
     public Commutator(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         input.setMultiport(true);
         output_tokenProductionRate = new Parameter(output, "tokenProductionRate");
@@ -111,7 +111,7 @@ public class Commutator extends Transformer implements SequenceActor {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Commutator newObject = (Commutator) super.clone(workspace);
         newObject.output_tokenProductionRate = (Parameter) (newObject.output
-                .getAttribute("tokenProductionRate"));
+                        .getAttribute("tokenProductionRate"));
         return newObject;
     }
 
@@ -126,13 +126,13 @@ public class Commutator extends Transformer implements SequenceActor {
         if (port == input) {
             try {
                 output_tokenProductionRate.setToken(new IntToken(
-                                                            input.getWidth()));
+                        input.getWidth()));
 
                 // NOTE: schedule is invalidated automatically already
                 // by the changed connections.
             } catch (IllegalActionException ex) {
                 throw new InternalErrorException(this, ex,
-                        "input width was" + input.getWidth());
+                    "input width was" + input.getWidth());
             }
         }
     }

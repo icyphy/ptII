@@ -55,7 +55,7 @@ public class MakeFileGenerator {
      */
     public static String classNameToMakeFileName(String className) {
         StringBuffer name = new StringBuffer(CNames.classNameToFileName(
-                                                     className));
+                    className));
         return name.toString();
     }
 
@@ -88,11 +88,11 @@ public class MakeFileGenerator {
         code.append("THIS = " + className + ".make\n");
         code.append("RUNTIME = " + Options.v().get("runtimeDir") + "\n");
         code.append("NATIVE_BODIES ="
-                + NativeMethodGenerator.getNativeBodyLib() + "\n");
+            + NativeMethodGenerator.getNativeBodyLib() + "\n");
 
         // Overridden bodies.
         code.append("OVER_BODIES = "
-                + OverriddenMethodGenerator.getOverriddenBodyLib() + "\n");
+            + OverriddenMethodGenerator.getOverriddenBodyLib() + "\n");
 
         // Java-to-C library.
         code.append("LIB = " + Options.v().get("lib") + "\n");
@@ -112,7 +112,7 @@ public class MakeFileGenerator {
             // path in the ld path under Solaris which will cause problems
             // when we move the executable around
             code.append("GC_LIB = -Wl,-R`cd $(PTII);"
-                    + " pwd`/lib -L$(PTII)/lib -lgc\n");
+                + " pwd`/lib -L$(PTII)/lib -lgc\n");
             code.append("GC_DIR = " + gcDir + "\n\n");
         }
 
@@ -137,7 +137,7 @@ public class MakeFileGenerator {
         code.append("\n");
 
         code.append("DEPEND = gcc -MM -I $(RUNTIME) -I $(LIB) "
-                + "-I $(NATIVE_BODIES) -I $(OVER_BODIES) -I .");
+            + "-I $(NATIVE_BODIES) -I $(OVER_BODIES) -I .");
 
         if (gc) {
             code.append(" -I $(GC_DIR)");
@@ -147,8 +147,8 @@ public class MakeFileGenerator {
 
         // Get names of all .c files in the transitive closure.
         code.append("SOURCES = $(RUNTIME)/pccg_runtime.c "
-                + "$(RUNTIME)/pccg_array.c $(RUNTIME)/strings.c\\\n" + "\t"
-                + CNames.classNameToFileName(className) + "_main.c\\\n");
+            + "$(RUNTIME)/pccg_array.c $(RUNTIME)/strings.c\\\n" + "\t"
+            + CNames.classNameToFileName(className) + "_main.c\\\n");
 
         HashSet libSources = RequiredFileGenerator.generateUserClasses(code);
 
@@ -167,12 +167,12 @@ public class MakeFileGenerator {
         code.append("\nOBJECTS = $(SOURCES:.c=.o)\n");
         code.append("HEADERS = $(SOURCES:.c=.h)\n");
         code.append("IHEADERS = $(SOURCES:.c="
-                + StubFileGenerator.stubFileNameSuffix() + ")\n");
+            + StubFileGenerator.stubFileNameSuffix() + ")\n");
 
         code.append("\nLIB_OBJECTS = $(LIB_SOURCES:.c=.o)\n");
         code.append("LIB_HEADERS = $(LIB_SOURCES:.c=.h)\n");
         code.append("LIB_IHEADERS = $(LIB_SOURCES:.c="
-                + StubFileGenerator.stubFileNameSuffix() + ")\n");
+            + StubFileGenerator.stubFileNameSuffix() + ")\n");
 
         // Main Target.
         code.append("\n" + className + ".exe : depend $(OBJECTS) $(LIB_FILE)\n");
@@ -188,7 +188,7 @@ public class MakeFileGenerator {
         // Conversion from .c to .o
         code.append(".c.o:\n");
         code.append("\tgcc $(CFLAGS) -c  -I $(RUNTIME) -I $(LIB) "
-                + "-I $(NATIVE_BODIES)");
+            + "-I $(NATIVE_BODIES)");
 
         if (gc) {
             code.append(" -I $(GC_DIR)");
@@ -212,11 +212,11 @@ public class MakeFileGenerator {
 
         code.append("clean:\n");
         code.append("\trm -f $(OBJECTS)\n" + "\trm -f $(LIB_OBJECTS)\n"
-                + "\trm -f $(LIB_FILE)\n");
+            + "\trm -f $(LIB_FILE)\n");
         code.append("\n");
 
         code.append("# DO NOT DELETE THIS LINE "
-                + " -- make depend depends on it.\n\n");
+            + " -- make depend depends on it.\n\n");
 
         FileHandler.write(className + ".make", code.toString());
     }

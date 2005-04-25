@@ -66,7 +66,7 @@ public class DoubleFork extends TypedAtomicActor {
      *  instantiating and specifying the type of this actor's ports.
      */
     public DoubleFork(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         output1 = new TypedIOPort(this, "output1", false, true);

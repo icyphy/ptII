@@ -28,10 +28,10 @@ COPYRIGHTENDKEY
 */
 package ptolemy.copernicus.java;
 
+import soot.SootClass;
+
 import ptolemy.actor.CompositeActor;
 import ptolemy.kernel.util.IllegalActionException;
-
-import soot.SootClass;
 
 import java.util.Map;
 
@@ -47,5 +47,5 @@ import java.util.Map;
 */
 public interface DirectorInliner {
     public void inlineDirector(CompositeActor model, SootClass modelClass,
-            String phaseName, Map options) throws IllegalActionException;
+        String phaseName, Map options) throws IllegalActionException;
 }

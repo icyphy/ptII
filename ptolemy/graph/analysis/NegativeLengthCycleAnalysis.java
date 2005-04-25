@@ -76,7 +76,7 @@ public class NegativeLengthCycleAnalysis extends Analysis {
      */
     public boolean hasNegativeLengthCycle() {
         return ((NegativeLengthCycleAnalyzer) analyzer())
-            .hasNegativeLengthCycle();
+                    .hasNegativeLengthCycle();
     }
 
     /** Return a description of the analysis and the associated analyzer.
@@ -85,7 +85,7 @@ public class NegativeLengthCycleAnalysis extends Analysis {
      */
     public String toString() {
         return "Negative-length cycle analysis using the following analyzer:\n"
-            + analyzer().toString();
+        + analyzer().toString();
     }
 
     /** Check if a given analyzer is compatible with this analysis.

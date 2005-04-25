@@ -92,7 +92,7 @@ public class HammingCoder extends Transformer {
      *   actor with this name.
      */
     public HammingCoder(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         uncodedRate = new Parameter(this, "uncodedRate");
@@ -136,13 +136,13 @@ public class HammingCoder extends Transformer {
      *  or <i>uncodedRate</i> is not positive.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == codedRate) {
             _codeSizeValue = ((IntToken) codedRate.getToken()).intValue();
 
             if (_codeSizeValue <= 0) {
                 throw new IllegalActionException(this,
-                        "codedRate must be positive.");
+                    "codedRate must be positive.");
             }
 
             // set the output production rate.
@@ -152,7 +152,7 @@ public class HammingCoder extends Transformer {
 
             if (_uncodeSizeValue < 1) {
                 throw new IllegalActionException(this,
-                        "uncodedRate must be non-negative.");
+                    "uncodedRate must be non-negative.");
             }
 
             // Set a flag indicating the private variables
@@ -178,14 +178,14 @@ public class HammingCoder extends Transformer {
         if (_parameterInvalid) {
             if (_uncodeSizeValue >= _codeSizeValue) {
                 throw new IllegalActionException(this,
-                        "codedRate must be greater than uncodedRate.");
+                    "codedRate must be greater than uncodedRate.");
             }
 
             _order = _codeSizeValue - _uncodeSizeValue;
 
             if (_codeSizeValue != ((1 << _order) - 1)) {
                 throw new IllegalActionException(this,
-                        "Invalid pair of uncodedRate and codedRate.");
+                    "Invalid pair of uncodedRate and codedRate.");
             }
 
             // Generate P.
@@ -228,7 +228,8 @@ public class HammingCoder extends Transformer {
         for (int i = 0; i < _uncodeSizeValue; i++) {
             for (int j = 0; j < _order; j++) {
                 parity[j] = parity[j]
-                    ^ ((result[i].booleanValue() ? 1 : 0) & _parityMatrix[i][j]);
+                                ^ ((result[i].booleanValue() ? 1 : 0)
+                                & _parityMatrix[i][j]);
             }
         }
 

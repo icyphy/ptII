@@ -70,7 +70,7 @@ public class ExpressionToToken extends Converter {
      *   actor with this name.
      */
     public ExpressionToToken(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input.setTypeEquals(BaseType.STRING);
         output.setTypeEquals(BaseType.GENERAL);
@@ -111,7 +111,7 @@ public class ExpressionToToken extends Converter {
 
         if (result == null) {
             throw new IllegalActionException(this,
-                    "Expression yields a null result: " + string);
+                "Expression yields a null result: " + string);
         }
 
         output.broadcast(result);
@@ -179,7 +179,7 @@ public class ExpressionToToken extends Converter {
          *  exists with the given name, but cannot be evaluated.
          */
         public ptolemy.graph.InequalityTerm getTypeTerm(String name)
-                throws IllegalActionException {
+            throws IllegalActionException {
             Variable result = getScopedVariable(null, ExpressionToToken.this,
                     name);
 

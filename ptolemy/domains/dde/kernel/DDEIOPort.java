@@ -93,12 +93,12 @@ public class DDEIOPort extends TypedIOPort {
      *  with a port already in the container.
      */
     public DDEIOPort(ComponentEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         if (!container.isAtomic()) {
             throw new IllegalActionException(container, this,
-                    "A DDEIOPort can not be contained by a " + "composite actor.");
+                "A DDEIOPort can not be contained by a " + "composite actor.");
         }
     }
 
@@ -119,13 +119,13 @@ public class DDEIOPort extends TypedIOPort {
      *  a port already in the container.
      */
     public DDEIOPort(ComponentEntity container, String name, boolean isInput,
-            boolean isOutput)
-            throws IllegalActionException, NameDuplicationException {
+        boolean isOutput)
+        throws IllegalActionException, NameDuplicationException {
         super(container, name, isInput, isOutput);
 
         if (!container.isAtomic()) {
             throw new IllegalActionException(container, this,
-                    "A DDEIOPort can not be contained by a " + "composite actor.");
+                "A DDEIOPort can not be contained by a " + "composite actor.");
         }
     }
 
@@ -147,7 +147,7 @@ public class DDEIOPort extends TypedIOPort {
      *  throws it.
      */
     public void broadcast(Token token, Time sendTime)
-            throws IllegalActionException, NoRoomException {
+        throws IllegalActionException, NoRoomException {
         // FIXME: Now that TypedIOPort has
         // broadcast(Token[] tokenArray, int vectorLength)
         // we should add a similar method to DDEIOPort.
@@ -185,7 +185,7 @@ public class DDEIOPort extends TypedIOPort {
      *  if the index is out of range.
      */
     public void send(int chIndex, Token token, Time sendTime)
-            throws IllegalActionException, NoRoomException {
+        throws IllegalActionException, NoRoomException {
         double currentTimeValue = 0.0;
         double sentTimeValue = sendTime.getDoubleValue();
         Thread thread = Thread.currentThread();
@@ -197,10 +197,10 @@ public class DDEIOPort extends TypedIOPort {
         }
 
         if ((sentTimeValue < currentTimeValue)
-                && (sentTimeValue != PrioritizedTimedQueue.IGNORE)
-                && (sentTimeValue != PrioritizedTimedQueue.INACTIVE)) {
+                        && (sentTimeValue != PrioritizedTimedQueue.IGNORE)
+                        && (sentTimeValue != PrioritizedTimedQueue.INACTIVE)) {
             throw new IllegalActionException(this,
-                    "Time values in " + "the past are not allowed.");
+                "Time values in " + "the past are not allowed.");
         }
 
         if (thread instanceof DDEThread) {
@@ -222,10 +222,10 @@ public class DDEIOPort extends TypedIOPort {
      *  contained by this port's container.
      */
     public void setContainer(ComponentEntity container)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         if (!container.isAtomic()) {
             throw new IllegalActionException(container, this,
-                    "A DDEIOPort can not be contained by a " + "composite actor.");
+                "A DDEIOPort can not be contained by a " + "composite actor.");
         }
 
         super.setContainer(container);

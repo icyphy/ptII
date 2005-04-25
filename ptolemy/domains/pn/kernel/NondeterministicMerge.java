@@ -81,7 +81,7 @@ public class NondeterministicMerge extends TypedCompositeActor {
      *   by the proposed container.
      */
     public NondeterministicMerge(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         input = new TypedIOPort(this, "input", true, false);
@@ -100,8 +100,8 @@ public class NondeterministicMerge extends TypedCompositeActor {
         channelCardinal.setExpression("SOUTH");
 
         _attachText("_iconDescription",
-                "<svg>\n" + "<polygon points=\"-10,20 10,10 10,-10, -10,-20\" "
-                + "style=\"fill:red\"/>\n" + "</svg>\n");
+            "<svg>\n" + "<polygon points=\"-10,20 10,10 10,-10, -10,-20\" "
+            + "style=\"fill:red\"/>\n" + "</svg>\n");
 
         PNDirector director = new MergeDirector(this, "director");
     }
@@ -171,7 +171,7 @@ public class NondeterministicMerge extends TypedCompositeActor {
                         Manager manager = getManager();
 
                         if ((manager != null)
-                                && (manager.getState() != Manager.IDLE)) {
+                                        && (manager.getState() != Manager.IDLE)) {
                             manager.requestInitialization(localActor);
                         }
 
@@ -193,7 +193,7 @@ public class NondeterministicMerge extends TypedCompositeActor {
      */
     private class ChannelActor extends TypedAtomicActor {
         public ChannelActor(int index, NondeterministicMerge container)
-                throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
             super(container, "ChannelActor" + index);
             _channelIndex = index;
             _channelValue = new IntToken(_channelIndex);
@@ -208,10 +208,10 @@ public class NondeterministicMerge extends TypedCompositeActor {
             if (input.getWidth() > _channelIndex) {
                 // NOTE: Reading from the input port of the host actor.
                 if (!NondeterministicMerge.this._stopRequested
-                        && input.hasToken(_channelIndex)) {
+                                && input.hasToken(_channelIndex)) {
                     if (_debugging) {
                         NondeterministicMerge.this._debug(
-                                "Waiting for input from channel " + _channelIndex);
+                            "Waiting for input from channel " + _channelIndex);
                     }
 
                     // NOTE: Writing to the port of the host actor.
@@ -230,8 +230,8 @@ public class NondeterministicMerge extends TypedCompositeActor {
 
                     if (_debugging) {
                         NondeterministicMerge.this._debug("Sent " + result
-                                + " from channel " + _channelIndex
-                                + " to the output.");
+                            + " from channel " + _channelIndex
+                            + " to the output.");
                     }
                 }
             } else {
@@ -261,7 +261,7 @@ public class NondeterministicMerge extends TypedCompositeActor {
      */
     private class MergeDirector extends PNDirector {
         public MergeDirector(CompositeEntity container, String name)
-                throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
             super(container, name);
         }
 
@@ -345,7 +345,7 @@ public class NondeterministicMerge extends TypedCompositeActor {
         protected boolean _resolveDeadlock() {
             if (_debugging) {
                 _debug("Deadlock is not real as "
-                        + "NondeterministicMerge can't deadlock.");
+                    + "NondeterministicMerge can't deadlock.");
             }
 
             return true;

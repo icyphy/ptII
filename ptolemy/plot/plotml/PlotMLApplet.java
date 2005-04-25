@@ -62,8 +62,8 @@ public class PlotMLApplet extends PlotApplet {
      */
     public String getAppletInfo() {
         return "PlotMLApplet 2.0: A data plotter.\n"
-            + "By: Edward A. Lee and\n " + "Christopher Hylands\n"
-            + "($Id$)";
+        + "By: Edward A. Lee and\n " + "Christopher Hylands\n"
+        + "($Id$)";
     }
 
     ///////////////////////////////////////////////////////////////////

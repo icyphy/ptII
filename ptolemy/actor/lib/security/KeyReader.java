@@ -76,7 +76,7 @@ public class KeyReader extends KeyStoreActor {
      *   actor with this name.
      */
     public KeyReader(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         getPublicKey = new Parameter(this, "getPublicKey",
@@ -154,15 +154,15 @@ public class KeyReader extends KeyStoreActor {
      *   is <i>URL</i> and the file cannot be opened.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == getPublicKey) {
             _updateKeyNeeded = true;
             _getPublicKey = ((BooleanToken) getPublicKey.getToken())
-                .booleanValue();
+                            .booleanValue();
         } else if (attribute == verifyCertificate) {
             _updateKeyNeeded = true;
             _verifyCertificate = ((BooleanToken) verifyCertificate.getToken())
-                .booleanValue();
+                            .booleanValue();
         } else {
             super.attributeChanged(attribute);
         }
@@ -212,18 +212,18 @@ public class KeyReader extends KeyStoreActor {
                 if (!_verifyCertificate) {
                     if (_getPublicKey) {
                         throw new IllegalActionException(this,
-                                "To get the public key, one must use "
-                                + "certificates, so the verifyCertificate "
-                                + "parameter must be set to true if the "
-                                + "getPublicKey parameter is true.");
+                            "To get the public key, one must use "
+                            + "certificates, so the verifyCertificate "
+                            + "parameter must be set to true if the "
+                            + "getPublicKey parameter is true.");
                     }
                 } else {
                     Certificate certificate = _keyStore.getCertificate(_alias);
 
                     if (certificate == null) {
                         throw new KeyStoreException("Failed to get certificate"
-                                + " for alias '" + _alias + "' from  "
-                                + fileOrURLDescription());
+                            + " for alias '" + _alias + "' from  "
+                            + fileOrURLDescription());
                     }
 
                     PublicKey publicKey = certificate.getPublicKey();
@@ -234,10 +234,10 @@ public class KeyReader extends KeyStoreActor {
 
                     if (certificate instanceof X509Certificate) {
                         signatureAlgorithm.setExpression(((X509Certificate) certificate)
-                                .getSigAlgName());
+                                        .getSigAlgName());
                     } else {
                         signatureAlgorithm.setExpression(
-                                "Unknown, certificate was not a X509 cert.");
+                            "Unknown, certificate was not a X509 cert.");
                     }
 
                     _key = publicKey;
@@ -248,8 +248,8 @@ public class KeyReader extends KeyStoreActor {
                 }
             } catch (Throwable throwable) {
                 throw new IllegalActionException(this, throwable,
-                        "Failed to get key store alias '" + _alias
-                        + "' or certificate from " + fileOrURLDescription());
+                    "Failed to get key store alias '" + _alias
+                    + "' or certificate from " + fileOrURLDescription());
             }
         }
     }

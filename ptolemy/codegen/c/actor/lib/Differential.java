@@ -37,6 +37,7 @@ package ptolemy.codegen.c.actor.lib;
 import ptolemy.codegen.kernel.CCodeGeneratorHelper;
 import ptolemy.kernel.util.IllegalActionException;
 
+
 /**
  * @author Man-Kit Leung
  *
@@ -44,24 +45,22 @@ import ptolemy.kernel.util.IllegalActionException;
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public class Differential extends CCodeGeneratorHelper {
-
     /**
      * Constructor method for the Differential helper
      * @param actor the associated actor
      */
-   public Differential(ptolemy.actor.lib.Differential actor) {
+    public Differential(ptolemy.actor.lib.Differential actor) {
         super(actor);
     }
 
     /**
      * Generate fire code
-     * The method reads in codeBlock1 and puts into the 
+     * The method reads in codeBlock1 and puts into the
      * given stream buffer
      * @param stream the given buffer to append the code to
      */
-    public void  generateFireCode(StringBuffer stream)
-            throws IllegalActionException {
-
+    public void generateFireCode(StringBuffer stream)
+        throws IllegalActionException {
         CodeStream tmpStream = new CodeStream(this);
         tmpStream.appendCodeBlock("codeBlock1");
 
@@ -73,9 +72,9 @@ public class Differential extends CCodeGeneratorHelper {
      *  replaces macros with their values and returns the results.
      *  @return The processed <code>initBlock</code>.
      */
-    public String generateInitializeCode()
-            throws IllegalActionException {
+    public String generateInitializeCode() throws IllegalActionException {
         super.generateInitializeCode();
+
         CodeStream tmpStream = new CodeStream(this);
         tmpStream.appendCodeBlock("initBlock");
 

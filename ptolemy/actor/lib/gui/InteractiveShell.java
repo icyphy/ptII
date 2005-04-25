@@ -85,7 +85,7 @@ import javax.swing.SwingUtilities;
    @Pt.AcceptedRating Red (cxh)
 */
 public class InteractiveShell extends TypedAtomicActor implements Placeable,
-                                                                  ShellInterpreter {
+    ShellInterpreter {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -95,7 +95,7 @@ public class InteractiveShell extends TypedAtomicActor implements Placeable,
      *   actor with this name.
      */
     public InteractiveShell(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         input = new TypedIOPort(this, "input", true, false);
@@ -114,14 +114,14 @@ public class InteractiveShell extends TypedAtomicActor implements Placeable,
                 "_windowProperties");
 
         _attachText("_iconDescription",
-                "<svg>\n" + "<rect x=\"-20\" y=\"-20\" "
-                + "width=\"40\" height=\"40\" " + "style=\"fill:lightGrey\"/>\n"
-                + "<rect x=\"-14\" y=\"-14\" " + "width=\"28\" height=\"28\" "
-                + "style=\"fill:white\"/>\n"
-                + "<polyline points=\"-10,-10, -5,-5, -10,0\" "
-                + "style=\"stroke:black\"/>\n"
-                + "<polyline points=\"-7,-10, -2,-5, -7,0\" "
-                + "style=\"stroke:black\"/>\n" + "</svg>\n");
+            "<svg>\n" + "<rect x=\"-20\" y=\"-20\" "
+            + "width=\"40\" height=\"40\" " + "style=\"fill:lightGrey\"/>\n"
+            + "<rect x=\"-14\" y=\"-14\" " + "width=\"28\" height=\"28\" "
+            + "style=\"fill:white\"/>\n"
+            + "<polyline points=\"-10,-10, -5,-5, -10,0\" "
+            + "style=\"stroke:black\"/>\n"
+            + "<polyline points=\"-7,-10, -2,-5, -7,0\" "
+            + "style=\"stroke:black\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -210,7 +210,7 @@ public class InteractiveShell extends TypedAtomicActor implements Placeable,
         String userCommand = getOutput();
 
         if (userCommand.trim().equalsIgnoreCase("quit")
-                || userCommand.trim().equalsIgnoreCase("exit")) {
+                        || userCommand.trim().equalsIgnoreCase("exit")) {
             _returnFalseInPostfire = true;
         }
 
@@ -257,8 +257,8 @@ public class InteractiveShell extends TypedAtomicActor implements Placeable,
 
             if (containerEffigy == null) {
                 throw new IllegalActionException(this,
-                        "Cannot find effigy for top level: "
-                        + toplevel().getFullName());
+                    "Cannot find effigy for top level: "
+                    + toplevel().getFullName());
             }
 
             try {
@@ -279,7 +279,7 @@ public class InteractiveShell extends TypedAtomicActor implements Placeable,
                 shell.setEditable(false);
             } catch (Exception ex) {
                 throw new IllegalActionException(this, null, ex,
-                        "Error creating effigy and tableau");
+                    "Error creating effigy and tableau");
             }
 
             _windowProperties.setProperties(_frame);
@@ -364,7 +364,7 @@ public class InteractiveShell extends TypedAtomicActor implements Placeable,
      *  @exception NameDuplicationException If the base class throws it.
      */
     public void setContainer(CompositeEntity container)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         Nameable previousContainer = getContainer();
         super.setContainer(container);
 
@@ -421,7 +421,7 @@ public class InteractiveShell extends TypedAtomicActor implements Placeable,
      *  @exception IOException If an I/O error occurs.
      */
     protected void _exportMoMLContents(Writer output, int depth)
-            throws IOException {
+        throws IOException {
         // Make sure that the current position of the frame, if any,
         // is up to date.
         if (_frame != null) {
@@ -490,7 +490,7 @@ public class InteractiveShell extends TypedAtomicActor implements Placeable,
          *   attribute already in the container.
          */
         public ShellTableau(ExpressionShellEffigy container, String name)
-                throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
             super(container, name);
             frame = new ShellFrame(this);
             setFrame(frame);
@@ -513,7 +513,7 @@ public class InteractiveShell extends TypedAtomicActor implements Placeable,
          *  @exception NameDuplicationException If a name collision occurs.
          */
         public ShellFrame(ExpressionShellTableau tableau)
-                throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
             super(tableau);
         }
 

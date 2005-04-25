@@ -27,16 +27,18 @@ COPYRIGHTENDKEY
 @ProposedRating Red (sanjeev)
 @AcceptedRating Red (sanjeev)
 */
-
 package ptolemy.apps.cacheAwareScheduler.kernel;
+
 
 // Ptolemy imports
 import ptolemy.kernel.util.IllegalActionException;
 
 import java.util.ArrayList;
 
+
 ///////////////////////////////////////////////////////////////////////////
 //// ScratchpadMemory
+
 /**
    This class simulates a scratchpad memory of a given size.
 
@@ -45,9 +47,7 @@ import java.util.ArrayList;
    @since Ptolemy II 2.0
 
 */
-
 public class ScratchpadMemory {
-
     /* Default constructor. Construct a scratchpad memory with zero size.
      */
     public ScratchpadMemory() {
@@ -62,11 +62,15 @@ public class ScratchpadMemory {
      *  @exception IllegalActionException If the passed parameter is negative
      *   or zero.
      */
-    public ScratchpadMemory(int memorySize) throws IllegalActionException{
-        if (memorySize < 0) throw new IllegalActionException("Can't define"
+    public ScratchpadMemory(int memorySize) throws IllegalActionException {
+        if (memorySize < 0) {
+            throw new IllegalActionException("Can't define"
                 + " a negative scratchpad memory size.");
-        else if (memorySize == 0) throw new IllegalActionException("Can't"
+        } else if (memorySize == 0) {
+            throw new IllegalActionException("Can't"
                 + " define a scratchpad memory of zero size.");
+        }
+
         // Initialize _totalSpace, _usedSpace
         _totalSpace = memorySize;
         _usedSpace = 0;
@@ -81,17 +85,17 @@ public class ScratchpadMemory {
      *  @param address The address to be cached in the scratchpad memory.
      *  @exception IllegalActionException If the scratchpad memory is full.
      */
-    public void add(Object address) throws IllegalActionException{
+    public void add(Object address) throws IllegalActionException {
         if (address == null) {
             throw new IllegalArgumentException("Attempt to insert a null"
-                    + " element");
-        }
-        else if ((_totalSpace - _usedSpace) > 0 ) {
+                + " element");
+        } else if ((_totalSpace - _usedSpace) > 0) {
             _scratchpadContents.add(address);
             _usedSpace++;
-        }
-        else throw new IllegalActionException("Can't add another memory"
+        } else {
+            throw new IllegalActionException("Can't add another memory"
                 + " address, the scratchpad memory is full.");
+        }
     }
 
     /** Clear all of the contents of the scratchpad memory.
@@ -118,14 +122,15 @@ public class ScratchpadMemory {
      *  @exception IllegalActionException If the specified memory address isn't
      *   present in the scratchpad memory.
      */
-    public void evict(Object address) throws IllegalActionException{
+    public void evict(Object address) throws IllegalActionException {
         if (_scratchpadContents.contains(address)) {
             int tempVar = _scratchpadContents.indexOf(address);
             _scratchpadContents.remove(tempVar);
             _usedSpace--;
-        }
-        else throw new IllegalActionException("Attempt made to evict a non"
+        } else {
+            throw new IllegalActionException("Attempt made to evict a non"
                 + " existent memory address.");
+        }
     }
 
     /** Evicts all memory locations from the scratchpad memory. Clears it.
@@ -147,12 +152,17 @@ public class ScratchpadMemory {
      *  @return True if the scratchpad memory is full else False.
      */
     public boolean isFull() throws IllegalActionException {
-        if (_usedSpace < _totalSpace) return false;
-        else if (_usedSpace == _totalSpace) return true;
+        if (_usedSpace < _totalSpace) {
+            return false;
+        } else if (_usedSpace == _totalSpace) {
+            return true;
+        }
         // The control should never go to this else loop. If it does, it means
         // there is something wrong with the add/remove code.
-        else throw new IllegalActionException("The used space in scratchpad"
+        else {
+            throw new IllegalActionException("The used space in scratchpad"
                 + " memory has acceded the total available space");
+        }
     }
 
     /** Removes a memory location from the scratchpad memory.
@@ -161,10 +171,9 @@ public class ScratchpadMemory {
      *  @exception IllegalActionException If the specified memory address isn't
      *   present in the scratchpad memory.
      */
-    public void remove(Object address) throws IllegalActionException{
+    public void remove(Object address) throws IllegalActionException {
         evict(address);
     }
-
 
     /** Removes all memory locations from the scratchpad memory. Clears it.
      */
@@ -190,12 +199,13 @@ public class ScratchpadMemory {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The scratchpad memory space. The addresses present in scratchpad
     // are stored in this array.
     private ArrayList _scratchpadContents;
+
     // Total space (or size) in the scratchpad memory.
     private int _totalSpace;
+
     // The Occupied size of scratchpad memory.
     private int _usedSpace;
 }

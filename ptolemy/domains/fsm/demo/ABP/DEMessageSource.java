@@ -64,7 +64,7 @@ public class DEMessageSource extends TypedAtomicActor {
      *   actor with this name.
      */
     public DEMessageSource(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.INT);
@@ -95,8 +95,8 @@ public class DEMessageSource extends TypedAtomicActor {
         DEDirector dir = (DEDirector) getDirector();
         Time now = dir.getModelTime();
         dir.fireAt(this,
-                now.add(
-                        ((DoubleToken) maxDelay.getToken()).doubleValue() * Math.random()));
+            now.add(
+                ((DoubleToken) maxDelay.getToken()).doubleValue() * Math.random()));
     }
 
     /** If this is the first fire, output the request

@@ -94,7 +94,7 @@ public class Philosopher extends CSPActor {
      *   an entity already in the container.
      */
     public Philosopher(TypedCompositeActor cont, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(cont, name);
         leftIn = new TypedIOPort(this, "leftIn", true, false);
         leftOut = new TypedIOPort(this, "leftOut", false, true);
@@ -220,7 +220,7 @@ public class Philosopher extends CSPActor {
             }
         } catch (NoTokenException ex) {
             throw new IllegalActionException(getName() + ": cannot "
-                    + "get token.");
+                + "get token.");
         } catch (InterruptedException ex) {
             // Terminating the fire().
         }

@@ -1,5 +1,5 @@
 /*
- *	@(#)JPanelChoice.java 1.2 99/09/15 13:44:14
+ *        @(#)JPanelChoice.java 1.2 99/09/15 13:44:14
  *
  * Copyright (c) 1996-1999 Sun Microsystems, Inc. All Rights Reserved.
  *
@@ -27,32 +27,36 @@
  * facility. Licensee represents and warrants that it will not use or
  * redistribute the Software for such purposes.
  */
-
 package vendors.vr;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
+import javax.swing.*;
+
+
 public class JPanelChoice extends AttrComponent {
-    ButtonGroup	      	bg = new ButtonGroup();
-    JRadioButton[] 	items;
+    ButtonGroup bg = new ButtonGroup();
+    JRadioButton[] items;
 
     JPanelChoice(ActionListener al, JPanel panel, ChoiceAttr attr) {
-	super(attr);
-	panel.add(new JLabel(attr.getLabel()));
-	items = new JRadioButton[attr.valueNames.length];
-	for (int i = 0; i < attr.valueNames.length; i++) {
-	    items[i] = new JRadioButton(attr.valueLabels[i]);
-	    items[i].setActionCommand(attr.valueNames[i]);
-	    items[i].setName(attr.getName());
-	    items[i].addActionListener(al);
-	    panel.add(items[i]);
-	    bg.add(items[i]);
-	}
-	update();
+        super(attr);
+        panel.add(new JLabel(attr.getLabel()));
+        items = new JRadioButton[attr.valueNames.length];
+
+        for (int i = 0; i < attr.valueNames.length; i++) {
+            items[i] = new JRadioButton(attr.valueLabels[i]);
+            items[i].setActionCommand(attr.valueNames[i]);
+            items[i].setName(attr.getName());
+            items[i].addActionListener(al);
+            panel.add(items[i]);
+            bg.add(items[i]);
+        }
+
+        update();
     }
+
     public void update() {
-	items[((ChoiceAttr)attr).getValue()].setSelected(true);
+        items[((ChoiceAttr) attr).getValue()].setSelected(true);
     }
 }

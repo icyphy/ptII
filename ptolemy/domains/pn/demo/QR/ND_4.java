@@ -69,7 +69,7 @@ public class ND_4 extends TypedAtomicActor {
      *   actor with this name.
      */
     public ND_4(CompositeEntity aContainer, String aName)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(aContainer, aName);
 
         RP_5 = new TypedIOPort(this, "RP_5", true, false);
@@ -147,37 +147,37 @@ public class ND_4 extends TypedAtomicActor {
                 for (int i = (1 * j) + 1; i <= (1 * N); i += 1) {
                     if ((k - 2) >= 0) {
                         r_3.add(new Double(
-                                        ((DoubleToken) RP_5.get(0)).doubleValue()));
+                                ((DoubleToken) RP_5.get(0)).doubleValue()));
                         in_0 = ((Double) r_3.elementAt(w_r_3++)).doubleValue();
                     }
 
                     if ((k - 1) == 0) {
                         r_1.add(new Double(
-                                        ((DoubleToken) RP_6.get(0)).doubleValue()));
+                                ((DoubleToken) RP_6.get(0)).doubleValue()));
                         in_0 = ((Double) r_1.elementAt(w_r_1++)).doubleValue();
                     }
 
                     if ((j - 2) >= 0) {
                         x_3.add(new Double(
-                                        ((DoubleToken) RP_7.get(0)).doubleValue()));
+                                ((DoubleToken) RP_7.get(0)).doubleValue()));
                         in_1 = ((Double) x_3.elementAt(w_x_3++)).doubleValue();
                     }
 
                     if ((j - 1) == 0) {
                         x_1.add(new Double(
-                                        ((DoubleToken) RP_8.get(0)).doubleValue()));
+                                ((DoubleToken) RP_8.get(0)).doubleValue()));
                         in_1 = ((Double) x_1.elementAt(w_x_1++)).doubleValue();
                     }
 
                     if ((i - j - 2) >= 0) {
                         t_2.add(new Double(
-                                        ((DoubleToken) RP_9.get(0)).doubleValue()));
+                                ((DoubleToken) RP_9.get(0)).doubleValue()));
                         in_2 = ((Double) t_2.elementAt(w_t_2++)).doubleValue();
                     }
 
                     if ((-i + j + 1) == 0) {
                         t_1.add(new Double(
-                                        ((DoubleToken) RP_10.get(0)).doubleValue()));
+                                ((DoubleToken) RP_10.get(0)).doubleValue()));
                         in_2 = ((Double) t_1.elementAt(w_t_1++)).doubleValue();
                     }
 

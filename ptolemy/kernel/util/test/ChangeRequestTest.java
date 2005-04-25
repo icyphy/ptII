@@ -64,7 +64,7 @@ public class ChangeRequestTest implements ChangeListener {
     /** Constructor.
      */
     public ChangeRequestTest()
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         _top = new TypedCompositeActor();
         _top.setName("top");
         _manager = new Manager();
@@ -165,20 +165,20 @@ public class ChangeRequestTest implements ChangeListener {
 
     public void waitForCompletionTask() {
         Thread waitForCompletionThread = new Thread(new Runnable() {
-                public void run() {
-                    System.out.println(Thread.currentThread().getName()
+                    public void run() {
+                        System.out.println(Thread.currentThread().getName()
                             + " About to wait for completion");
 
-                    try {
-                        _changeRequest.waitForCompletion();
-                    } catch (Exception ex) {
-                        System.out.println(ex);
-                    }
+                        try {
+                            _changeRequest.waitForCompletion();
+                        } catch (Exception ex) {
+                            System.out.println(ex);
+                        }
 
-                    System.out.println(Thread.currentThread().getName()
+                        System.out.println(Thread.currentThread().getName()
                             + " Done waiting for completion");
-                }
-            });
+                    }
+                });
 
         waitForCompletionThread.setName("waitForCompletionThread");
         waitForCompletionThread.start();
@@ -189,12 +189,12 @@ public class ChangeRequestTest implements ChangeListener {
         // Create an anonymous inner class
         _changeRequest = new ChangeRequest(this,
                 "Change request that always throws an Exception") {
-                protected void _execute() throws Exception {
-                    if (1 == 1) {
-                        throw new Exception("Always Thrown Exception");
+                    protected void _execute() throws Exception {
+                        if (1 == 1) {
+                            throw new Exception("Always Thrown Exception");
+                        }
                     }
-                }
-            };
+                };
         return _changeRequest;
     }
 
@@ -202,10 +202,10 @@ public class ChangeRequestTest implements ChangeListener {
     public ChangeRequest mutateConst2ChangeRequest() {
         // Create an anonymous inner class
         _changeRequest = new ChangeRequest(this, "Changing Const to 2.0") {
-                protected void _execute() throws Exception {
-                    _const.value.setToken(new DoubleToken(2.0));
-                }
-            };
+                    protected void _execute() throws Exception {
+                        _const.value.setToken(new DoubleToken(2.0));
+                    }
+                };
         return _changeRequest;
     }
 

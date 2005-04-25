@@ -101,7 +101,7 @@ public class Rerun extends MoMLSimpleApplication {
                     runs = Integer.parseInt(args[0]) - 1;
                 } catch (Exception ex) {
                     System.err.println("Failed to parse '" + args[0]
-                            + "', using " + runs + " instead.");
+                        + "', using " + runs + " instead.");
                     ex.printStackTrace();
                 }
 
@@ -111,9 +111,9 @@ public class Rerun extends MoMLSimpleApplication {
                     xmlFileName = args[0];
                 } else {
                     throw new IllegalArgumentException(
-                            "Usage: java -classpath $PTII ptolemy.actor.gui.test.Rerun [reRuns] model.xml\n"
-                            + "    Where reRuns is an integer, "
-                            + "defaults to 100");
+                        "Usage: java -classpath $PTII ptolemy.actor.gui.test.Rerun [reRuns] model.xml\n"
+                        + "    Where reRuns is an integer, "
+                        + "defaults to 100");
                 }
             }
 

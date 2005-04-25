@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.component.test;
 
 import ptolemy.component.AtomicComponent;
@@ -36,8 +35,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Counter
+
 /**
    This component implements an up-down counter.
 
@@ -47,9 +48,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Yellow (ellen_zh)
    @Pt.AcceptedRating Red (neuendor)
 */
-
 public class Counter extends AtomicComponent {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -59,22 +58,27 @@ public class Counter extends AtomicComponent {
      *   actor with this name.
      */
     public Counter(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         increment = new MethodCallPort(this, "increment", true) {
-                public synchronized TupleToken call(TupleToken args) {
-                    System.out.println("---call method Counter.increment");
-                    IntToken arg = (IntToken)args.getElement(0);
-                    _count+= arg.intValue();
-                    IntToken[] t = new IntToken[1];
-                    t[0] = new IntToken(_count);
-                    return output.call(new TupleToken(t));
-                }
-            };
+                    public synchronized TupleToken call(TupleToken args) {
+                        System.out.println("---call method Counter.increment");
+
+                        IntToken arg = (IntToken) args.getElement(0);
+                        _count += arg.intValue();
+
+                        IntToken[] t = new IntToken[1];
+                        t[0] = new IntToken(_count);
+                        return output.call(new TupleToken(t));
+                    }
+                };
+
         //increment.setTypeEquals(BaseType.GENERAL);
         decrement = new MethodCallPort(this, "decrement", true);
+
         //decrement.setTypeEquals(BaseType.GENERAL);
         output = new MethodCallPort(this, "output", false);
+
         //output.setTypeEquals(BaseType.INT);
     }
 
@@ -107,10 +111,8 @@ public class Counter extends AtomicComponent {
         _count = 0;
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-
     private int _count = 0;
     private int _latestCount = 0;
     private boolean _consumed;

@@ -62,68 +62,68 @@ public final class CTExecutionPhase {
     /** This final static member indicates the director is firing dynamic
      *  actors.
      */
-    public final static CTExecutionPhase FIRING_DYNAMIC_ACTORS_PHASE = 
-        new CTExecutionPhase("FIRING_DYNAMIC_ACTORS_PHASE");
+    public final static CTExecutionPhase FIRING_DYNAMIC_ACTORS_PHASE = new CTExecutionPhase(
+            "FIRING_DYNAMIC_ACTORS_PHASE");
 
     /** This final static member indicates the director is firing event
      *  generators.
      */
-    public final static CTExecutionPhase FIRING_EVENT_GENERATORS_PHASE = 
-        new CTExecutionPhase("FIRING_EVENT_GENERATORS_PHASE");
+    public final static CTExecutionPhase FIRING_EVENT_GENERATORS_PHASE = new CTExecutionPhase(
+            "FIRING_EVENT_GENERATORS_PHASE");
 
     /** This final static member indicates the director is firing state
      *  transition actors.
      */
-    public final static CTExecutionPhase FIRING_STATE_TRANSITION_ACTORS_PHASE = 
-        new CTExecutionPhase("FIRING_STATE_TRANSITION_ACTORS_PHASE");
+    public final static CTExecutionPhase FIRING_STATE_TRANSITION_ACTORS_PHASE = new CTExecutionPhase(
+            "FIRING_STATE_TRANSITION_ACTORS_PHASE");
 
     /** This final static member indicates the director is generating
      *  discrete events by iterating event generators.
      */
-    public final static CTExecutionPhase GENERATING_EVENTS_PHASE = 
-        new CTExecutionPhase("GENERATING_EVENTS_PHASE");
+    public final static CTExecutionPhase GENERATING_EVENTS_PHASE = new CTExecutionPhase(
+            "GENERATING_EVENTS_PHASE");
 
     /** This final static member indicates the director is generating
      *  continuous waveforms by iterating waveform generators.
      */
-    public final static CTExecutionPhase GENERATING_WAVEFORMS_PHASE = 
-        new CTExecutionPhase("GENERATING_WAVEFORMS_PHASE");
+    public final static CTExecutionPhase GENERATING_WAVEFORMS_PHASE = new CTExecutionPhase(
+            "GENERATING_WAVEFORMS_PHASE");
 
-    /** This final static member indicates the director is iterating 
+    /** This final static member indicates the director is iterating
      *  purely discrete actors.
      */
-    public static final CTExecutionPhase ITERATING_PURELY_DISCRETE_ACTORS_PHASE 
-        = new CTExecutionPhase("ITERATING_PURELY_DISCRETE_ACTORS_PHASE");
+    public static final CTExecutionPhase ITERATING_PURELY_DISCRETE_ACTORS_PHASE = new CTExecutionPhase(
+            "ITERATING_PURELY_DISCRETE_ACTORS_PHASE");
 
     /** This final static member indicates the director is postfiring event
      *  generators.
      */
-    public final static CTExecutionPhase POSTFIRING_EVENT_GENERATORS_PHASE = 
-        new CTExecutionPhase("POSTFIRING_EVENT_GENERATORS_PHASE");
+    public final static CTExecutionPhase POSTFIRING_EVENT_GENERATORS_PHASE = new CTExecutionPhase(
+            "POSTFIRING_EVENT_GENERATORS_PHASE");
 
     /** This final static member indicates the director is prefiring
      *  dynamic actors.
      */
-    public final static CTExecutionPhase PREFIRING_DYNAMIC_ACTORS_PHASE = 
-        new CTExecutionPhase("PREFIRING_DYNAMIC_ACTORS_PHASE");
+    public final static CTExecutionPhase PREFIRING_DYNAMIC_ACTORS_PHASE = new CTExecutionPhase(
+            "PREFIRING_DYNAMIC_ACTORS_PHASE");
 
     /** This final static member indicates the director is producing
      *  outputs via firing purely continuous actors.
      */
-    public final static CTExecutionPhase PRODUCING_OUTPUTS_PHASE = 
-        new CTExecutionPhase("PRODUCING_OUTPUTS_PHASE");
+    public final static CTExecutionPhase PRODUCING_OUTPUTS_PHASE = new CTExecutionPhase(
+            "PRODUCING_OUTPUTS_PHASE");
 
     /** This final static member indicates the director is not in any
      *  of the well-defined phases.
      */
-    public final static CTExecutionPhase UNKNOWN_PHASE = 
-        new CTExecutionPhase("UNKNOWN_PHASE");
+    public final static CTExecutionPhase UNKNOWN_PHASE = new CTExecutionPhase(
+            "UNKNOWN_PHASE");
 
     /** This final static member indicates the director is updating
      *  (postfiring) all the continuous actors.
      */
-    public final static CTExecutionPhase UPDATING_CONTINUOUS_STATES_PHASE = 
-        new CTExecutionPhase("UPDATING_CONTINUOUS_STATES_PHASE");
+    public final static CTExecutionPhase UPDATING_CONTINUOUS_STATES_PHASE = new CTExecutionPhase(
+            "UPDATING_CONTINUOUS_STATES_PHASE");
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

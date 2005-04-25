@@ -64,7 +64,7 @@ public class ListenClock extends Clock {
      *   already has an actor with this name.
      */
     public ListenClock(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
     }
 

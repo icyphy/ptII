@@ -116,7 +116,7 @@ abstract public class GRShadedShape extends GRActor3D {
      *   actor with this name.
      */
     public GRShadedShape(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         sceneGraphOut = new TypedIOPort(this, "sceneGraphOut");
         sceneGraphOut.setOutput(true);
@@ -231,15 +231,15 @@ abstract public class GRShadedShape extends GRActor3D {
      *  an update is supported by the <i>allowRuntimeChanges</i> parameter.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         // If allowRuntimeChanges is null, then we are in the
         // constructor, and don't need to do any of this.
         if (allowRuntimeChanges != null) {
             if (_changesAllowedNow) {
                 if ((attribute == transparency)
-                        && (_transparencyAttributes != null)) {
+                                && (_transparencyAttributes != null)) {
                     float transparent = (float) ((DoubleToken) transparency
-                            .getToken()).doubleValue();
+                                    .getToken()).doubleValue();
 
                     if (transparent > 0.0) {
                         _transparencyAttributes.setTransparencyMode(TransparencyAttributes.NICEST);
@@ -252,7 +252,7 @@ abstract public class GRShadedShape extends GRActor3D {
 
                 if ((attribute == flat) && (_coloringAttributes != null)) {
                     boolean flatValue = ((BooleanToken) flat.getToken())
-                        .booleanValue();
+                                    .booleanValue();
                     int shadeModel = ColoringAttributes.SHADE_GOURAUD;
 
                     if (flatValue) {
@@ -274,7 +274,7 @@ abstract public class GRShadedShape extends GRActor3D {
                         _material.setSpecularColor(color);
                     } else if (attribute == shininess) {
                         float shine = (float) ((DoubleToken) shininess.getToken())
-                            .doubleValue();
+                                        .doubleValue();
                         _material.setShininess(shine);
                     }
                 }
@@ -385,7 +385,7 @@ abstract public class GRShadedShape extends GRActor3D {
         _appearance = new Appearance();
 
         boolean allowChanges = ((BooleanToken) allowRuntimeChanges.getToken())
-            .booleanValue();
+                        .booleanValue();
 
         Color3f color = new Color3f(emissiveColor.asColor());
         _material.setEmissiveColor(color);
@@ -406,7 +406,7 @@ abstract public class GRShadedShape extends GRActor3D {
 
         // Deal with transparent attributes.
         float transparent = (float) ((DoubleToken) transparency.getToken())
-            .doubleValue();
+                        .doubleValue();
 
         if ((transparent > 0.0) || allowChanges) {
             int mode = TransparencyAttributes.NICEST;
@@ -507,7 +507,8 @@ abstract public class GRShadedShape extends GRActor3D {
         // If runtime changes are allowed, then we need to set texture
         // attributes even if not needed now.
         if ((attributes == null)
-                && ((BooleanToken) allowRuntimeChanges.getToken()).booleanValue()) {
+                        && ((BooleanToken) allowRuntimeChanges.getToken())
+                        .booleanValue()) {
             attributes = new TextureAttributes();
             attributes.setTextureMode(TextureAttributes.MODULATE);
             _appearance.setTextureAttributes(attributes);

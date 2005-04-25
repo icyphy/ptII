@@ -74,7 +74,7 @@ public class FloydWarshallTransitiveClosureStrategy
      */
     public boolean pathExistence(Node startNode, Node endNode) {
         return _transitiveClosure[graph().nodeLabel(startNode)][graph()
-                .nodeLabel(endNode)];
+                                                                                .nodeLabel(endNode)];
     }
 
     /** Return a description of the analyzer.
@@ -83,7 +83,7 @@ public class FloydWarshallTransitiveClosureStrategy
      */
     public String toString() {
         return "Transitive closure analyzer"
-            + " based on the Floyd-Warshall algorithm.";
+        + " based on the Floyd-Warshall algorithm.";
     }
 
     /** Compute the transitive closure of the graph under analysis in the
@@ -130,11 +130,11 @@ public class FloydWarshallTransitiveClosureStrategy
 
             Node node = graph().node(i);
             Iterator outputEdges = ((DirectedGraph) graph()).outputEdges(node)
-                .iterator();
+                                                .iterator();
 
             while (outputEdges.hasNext()) {
                 int sinkLabel = ((DirectedGraph) graph()).nodeLabel(((Edge) outputEdges
-                                                                            .next()).sink());
+                                    .next()).sink());
                 _transitiveClosure[i][sinkLabel] = true;
             }
         }
@@ -149,7 +149,7 @@ public class FloydWarshallTransitiveClosureStrategy
      */
     protected void _floydWarshallComputation(int k, int i, int j) {
         _transitiveClosure[i][j] |= (_transitiveClosure[i][k]
-                & _transitiveClosure[k][j]);
+                    & _transitiveClosure[k][j]);
     }
 
     ///////////////////////////////////////////////////////////////////

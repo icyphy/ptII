@@ -61,14 +61,14 @@ import java.util.*;
  @Pt.AcceptedRating Red (cxh)
 */
 public abstract class JHDLAtomicActor extends AtomicActor implements Resolve,
-                                                                     ConstructJHDL {
+    ConstructJHDL {
     JHDLAtomicActor(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
     JHDLAtomicActor(CompositeEntity container)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, container.uniqueName("C"));
     }
 

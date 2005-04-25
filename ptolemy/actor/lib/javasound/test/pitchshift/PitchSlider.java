@@ -166,7 +166,7 @@ public class PitchSlider extends JFrame {
         pitchSlider.setVisible(true);
         System.out.println("");
         System.out.println(
-                "PitchSlider v1.0 by Brian K. Vogel, vogel@eecs.berkeley.edu");
+            "PitchSlider v1.0 by Brian K. Vogel, vogel@eecs.berkeley.edu");
         System.out.println("");
         System.out.println("Usage: java PitchSlider <sample rate>");
         System.out.println("<sample rate> is optional.");

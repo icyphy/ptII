@@ -86,7 +86,7 @@ public class ChicAttribute extends StringAttribute {
      *   an attribute of different class already in the container.
      */
     public ChicAttribute(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         new TextStyle(this, "style");
@@ -126,7 +126,7 @@ public class ChicAttribute extends StringAttribute {
      *   ChicAttribute.
      */
     public void setContainer(NamedObj container)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         ChicAttribute previous = null;
 
         if (container != null) {

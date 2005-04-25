@@ -28,6 +28,42 @@
 */
 package ptolemy.actor.lib.jxta;
 
+import net.jxta.credential.AuthenticationCredential;
+import net.jxta.credential.Credential;
+
+import net.jxta.discovery.DiscoveryEvent;
+import net.jxta.discovery.DiscoveryListener;
+import net.jxta.discovery.DiscoveryService;
+
+import net.jxta.document.AdvertisementFactory;
+import net.jxta.document.MimeMediaType;
+import net.jxta.document.StructuredDocument;
+
+import net.jxta.exception.DiscardQueryException;
+import net.jxta.exception.NoResponseException;
+import net.jxta.exception.PeerGroupException;
+import net.jxta.exception.ResendQueryException;
+
+import net.jxta.impl.protocol.ResolverQuery;
+import net.jxta.impl.protocol.ResolverResponse;
+
+import net.jxta.membership.Authenticator;
+import net.jxta.membership.MembershipService;
+
+import net.jxta.peergroup.PeerGroup;
+import net.jxta.peergroup.PeerGroupFactory;
+
+import net.jxta.protocol.DiscoveryResponseMsg;
+import net.jxta.protocol.PeerAdvertisement;
+import net.jxta.protocol.PeerGroupAdvertisement;
+import net.jxta.protocol.ResolverQueryMsg;
+import net.jxta.protocol.ResolverResponseMsg;
+
+import net.jxta.resolver.QueryHandler;
+import net.jxta.resolver.ResolverService;
+
+import org.apache.log4j.PropertyConfigurator;
+
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.StringToken;
@@ -49,34 +85,6 @@ import java.util.Enumeration;
 import java.util.Properties;
 import java.util.Timer;
 
-import net.jxta.credential.AuthenticationCredential;
-import net.jxta.credential.Credential;
-import net.jxta.discovery.DiscoveryEvent;
-import net.jxta.discovery.DiscoveryListener;
-import net.jxta.discovery.DiscoveryService;
-import net.jxta.document.AdvertisementFactory;
-import net.jxta.document.MimeMediaType;
-import net.jxta.document.StructuredDocument;
-import net.jxta.exception.DiscardQueryException;
-import net.jxta.exception.NoResponseException;
-import net.jxta.exception.PeerGroupException;
-import net.jxta.exception.ResendQueryException;
-import net.jxta.impl.protocol.ResolverQuery;
-import net.jxta.impl.protocol.ResolverResponse;
-import net.jxta.membership.Authenticator;
-import net.jxta.membership.MembershipService;
-import net.jxta.peergroup.PeerGroup;
-import net.jxta.peergroup.PeerGroupFactory;
-import net.jxta.protocol.DiscoveryResponseMsg;
-import net.jxta.protocol.PeerAdvertisement;
-import net.jxta.protocol.PeerGroupAdvertisement;
-import net.jxta.protocol.ResolverQueryMsg;
-import net.jxta.protocol.ResolverResponseMsg;
-import net.jxta.resolver.QueryHandler;
-import net.jxta.resolver.ResolverService;
-
-import org.apache.log4j.PropertyConfigurator;
-
 
 /**
  * @author liuxj, Yang
@@ -89,9 +97,9 @@ import org.apache.log4j.PropertyConfigurator;
  * Use a timer task for peer discovery, and actor query.
  */
 public class Peer extends TypedAtomicActor implements QueryHandler,
-                                                      DiscoveryListener {
+    DiscoveryListener {
     public Peer(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         trigQuery = new TypedIOPort(this, "trigQuery", true, false);
         trigQuery.setTypeEquals(BaseType.GENERAL);
@@ -152,15 +160,15 @@ public class Peer extends TypedAtomicActor implements QueryHandler,
             _properties.load(configProperties);
         } catch (IOException e) {
             System.out.println(
-                    "Warning: Can't find configuration propertiees file. ' "
-                    + e.getMessage() + "'");
+                "Warning: Can't find configuration propertiees file. ' "
+                + e.getMessage() + "'");
         } finally {
             if (configProperties != null) {
                 try {
                     configProperties.close();
                 } catch (Throwable throwable) {
                     System.out.println("Ignoring failure to close stream "
-                            + "on '" + _CONFIG_FILE + "'");
+                        + "on '" + _CONFIG_FILE + "'");
                     throwable.printStackTrace();
                 }
             }
@@ -172,7 +180,7 @@ public class Peer extends TypedAtomicActor implements QueryHandler,
             netPeerGroup = PeerGroupFactory.newNetPeerGroup();
         } catch (PeerGroupException ex) {
             System.out.println("Error: cannot locate net peer group.\n"
-                    + ex.getMessage());
+                + ex.getMessage());
         }
 
         // load the peer group adv for actor exchange
@@ -180,21 +188,22 @@ public class Peer extends TypedAtomicActor implements QueryHandler,
 
         if (groupAdvFileName == null) {
             System.out.println(
-                    "Error: property undefined - GroupAdvFileName.\n");
+                "Error: property undefined - GroupAdvFileName.\n");
         }
 
         PeerGroupAdvertisement groupAdv = null;
 
         try {
             groupAdv = (PeerGroupAdvertisement) AdvertisementFactory
-                .newAdvertisement(XML_MIME_TYPE,
-                        new FileInputStream(Dir + "/" + groupAdvFileName));
+                            .newAdvertisement(XML_MIME_TYPE,
+                                new FileInputStream(Dir + "/"
+                                    + groupAdvFileName));
         } catch (FileNotFoundException ex) {
             System.out.println("Error: cannot find group adv file.\n"
-                    + ex.getMessage());
+                + ex.getMessage());
         } catch (IOException ex) {
             System.out.println("Error: reading group adv file.\n"
-                    + ex.getMessage());
+                + ex.getMessage());
         }
 
         System.out.println("peer groupAdv: " + groupAdvFileName);
@@ -205,7 +214,7 @@ public class Peer extends TypedAtomicActor implements QueryHandler,
             _group = netPeerGroup.newGroup(groupAdv);
         } catch (PeerGroupException ex) {
             System.out.println("Error: cannot instantiate peer group.\n"
-                    + ex.getMessage());
+                + ex.getMessage());
         }
 
         // join the peer group for actor exchange
@@ -228,7 +237,7 @@ public class Peer extends TypedAtomicActor implements QueryHandler,
             }
         } catch (Exception ex) {
             System.out.println("Error: failure in authentication.\n"
-                    + ex.getMessage());
+                + ex.getMessage());
         }
 
         _discoveryService = _group.getDiscoveryService();
@@ -255,7 +264,7 @@ public class Peer extends TypedAtomicActor implements QueryHandler,
 
             try {
                 BufferedReader fileReader = new BufferedReader(new FileReader(
-                                                                       _actorListFileName));
+                            _actorListFileName));
                 String newline = System.getProperty("line.separator");
 
                 while (true) {
@@ -273,7 +282,7 @@ public class Peer extends TypedAtomicActor implements QueryHandler,
                         null, 0, actorListText.toString());
             } catch (IOException ex) {
                 System.out.println("Warning: error reading actor list file.\n"
-                        + ex.getMessage());
+                    + ex.getMessage());
             }
         }
     }
@@ -293,11 +302,11 @@ public class Peer extends TypedAtomicActor implements QueryHandler,
                 // - no attribute/value matching
                 // - each response contains at most 5 peers
                 _discoveryService.getRemoteAdvertisements(null,
-                        DiscoveryService.PEER, null, null, 5);
+                    DiscoveryService.PEER, null, null, 5);
 
                 System.out.println("Send actor query message...");
                 _actorQueryMessage.setQueryId(_actorQueryMessage.getQueryId()
-                        + 1);
+                    + 1);
                 _resolverService.sendQuery(null, _actorQueryMessage);
             }
 
@@ -324,10 +333,10 @@ public class Peer extends TypedAtomicActor implements QueryHandler,
      * @see net.jxta.resolver.QueryHandler#processQuery(ResolverQueryMsg)
      */
     public ResolverResponseMsg processQuery(ResolverQueryMsg query)
-            throws NoResponseException, ResendQueryException, DiscardQueryException, 
+        throws NoResponseException, ResendQueryException, DiscardQueryException, 
             IOException {
         System.out.println("Got query from " + query.getSrc() + " "
-                + query.getQueryId());
+            + query.getQueryId());
         System.out.println("Query is:\n" + query.getQuery());
 
         if (_actorQueryResponse == null) {
@@ -367,15 +376,15 @@ public class Peer extends TypedAtomicActor implements QueryHandler,
             is = new ByteArrayInputStream(responderAdvString.getBytes());
 
             PeerAdvertisement responderAdv = (PeerAdvertisement) AdvertisementFactory
-                .newAdvertisement(XML_MIME_TYPE, is);
+                            .newAdvertisement(XML_MIME_TYPE, is);
             System.out.println(" [  Got a Discovery Response ["
-                    + response.getResponseCount() + " elements] from peer: "
-                    + responderAdv.getName() + " ]");
+                + response.getResponseCount() + " elements] from peer: "
+                + responderAdv.getName() + " ]");
         } catch (java.io.IOException e) {
             // bogus peer, skip this message alltogether.
             System.out.println(
-                    "Warning: cannot parse remote peer's advertisement.\n"
-                    + e.getMessage());
+                "Warning: cannot parse remote peer's advertisement.\n"
+                + e.getMessage());
             return;
         } finally {
             if (is != null) {
@@ -383,7 +392,7 @@ public class Peer extends TypedAtomicActor implements QueryHandler,
                     is.close();
                 } catch (Throwable throwable) {
                     System.out.println("Ignoring failure to close stream "
-                            + "on remote peer's advertisement");
+                        + "on remote peer's advertisement");
                     throwable.printStackTrace();
                 }
             }
@@ -400,13 +409,14 @@ public class Peer extends TypedAtomicActor implements QueryHandler,
 
                 // create an advertisement object from each element
                 newAdv = (PeerAdvertisement) AdvertisementFactory
-                    .newAdvertisement(XML_MIME_TYPE,
-                            new ByteArrayInputStream(responseString.getBytes()));
+                                .newAdvertisement(XML_MIME_TYPE,
+                                    new ByteArrayInputStream(
+                                        responseString.getBytes()));
                 System.out.println(" Peer name = " + newAdv.getName());
             } catch (java.io.IOException e) {
                 // got a bad response. continue to the next response
                 System.out.println("Warning: cannot parse response element.\n"
-                        + e.getMessage());
+                    + e.getMessage());
                 continue;
             }
         } // end while

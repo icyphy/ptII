@@ -124,7 +124,7 @@ public class SoundWriter {
      *   this parameter, but typical values are 64-2024.
      */
     public SoundWriter(String fileName, float sampleRate, int bitsPerSample,
-            int channels, int putSamplesArraySize) {
+        int channels, int putSamplesArraySize) {
         _isAudioWriterActive = false;
         this._fileName = fileName;
         this._bitsPerSample = bitsPerSample;
@@ -136,16 +136,16 @@ public class SoundWriter {
 
         if (_debug) {
             System.out.println("SoundWriter: constructor : fileName = "
-                    + fileName);
+                + fileName);
             System.out.println("SoundWriter: constructor : bitsPerSample = "
-                    + bitsPerSample);
+                + bitsPerSample);
             System.out.println("SoundWriter: constructor : sampleRate = "
-                    + sampleRate);
+                + sampleRate);
             System.out.println("SoundWriter: constructor : channels = "
-                    + channels);
+                + channels);
             System.out.println(
-                    "SoundWriter: constructor : putSamplesArraySize = "
-                    + putSamplesArraySize);
+                "SoundWriter: constructor : putSamplesArraySize = "
+                + putSamplesArraySize);
         }
     }
 
@@ -176,7 +176,7 @@ public class SoundWriter {
      *   been called.
      */
     public void putSamples(double[][] putSamplesArray)
-            throws IllegalStateException {
+        throws IllegalStateException {
         if (_isAudioWriterActive == true) {
             // Convert array of double valued samples into
             // the proper byte array format.
@@ -189,9 +189,9 @@ public class SoundWriter {
             }
         } else {
             throw new IllegalStateException("SoundWriter: "
-                    + "putSamples() was called while audio playback was"
-                    + " inactive (startPlayback() was never called or "
-                    + "stopPlayback has already been called).");
+                + "putSamples() was called while audio playback was"
+                + " inactive (startPlayback() was never called or "
+                + "stopPlayback has already been called).");
         }
     }
 
@@ -282,7 +282,7 @@ public class SoundWriter {
             // Do error checking:
             if (st.countTokens() != 2) {
                 throw new IOException("Error: Incorrect "
-                        + "file name format. " + "Format: filename.extension");
+                    + "file name format. " + "Format: filename.extension");
             }
 
             st.nextToken(); // Advance to the file extension.
@@ -292,26 +292,26 @@ public class SoundWriter {
             if (fileExtension.equalsIgnoreCase("au")) {
                 // Save the file.
                 AudioSystem.write(audioInputStream, AudioFileFormat.Type.AU,
-                        outFile);
+                    outFile);
             } else if (fileExtension.equalsIgnoreCase("aiff")) {
                 // Save the file.
                 AudioSystem.write(audioInputStream, AudioFileFormat.Type.AIFF,
-                        outFile);
+                    outFile);
             } else if (fileExtension.equalsIgnoreCase("wave")) {
                 // Save the file.
                 AudioSystem.write(audioInputStream, AudioFileFormat.Type.WAVE,
-                        outFile);
+                    outFile);
             } else if (fileExtension.equalsIgnoreCase("wav")) {
                 // Save the file.
                 AudioSystem.write(audioInputStream, AudioFileFormat.Type.WAVE,
-                        outFile);
+                    outFile);
             } else if (fileExtension.equalsIgnoreCase("aifc")) {
                 // Save the file.
                 AudioSystem.write(audioInputStream, AudioFileFormat.Type.AIFC,
-                        outFile);
+                    outFile);
             } else {
                 throw new IOException("Error saving "
-                        + "file: Unknown file format: " + fileExtension);
+                    + "file: Unknown file format: " + fileExtension);
             }
         } catch (IOException e) {
             throw new IOException("SoundWriter: error saving" + " file: " + e);
@@ -334,7 +334,7 @@ public class SoundWriter {
      * the returned array is (doubleArray.length*bytesPerSample*channels).
      */
     private byte[] _doubleArrayToByteArray(double[][] doubleArray,
-            int bytesPerSample, int channels) {
+        int bytesPerSample, int channels) {
         // All channels had better have the same number
         // of samples! This is not checked!
         int lengthInSamples = doubleArray[0].length;
@@ -388,7 +388,7 @@ public class SoundWriter {
                 // the linear signed pcm big endian formatted byte array.
                 for (int i = 0; i < bytesPerSample; i += 1) {
                     byteArray[(currSamp * bytesPerSample * channels)
-                            + (bytesPerSample * currChannel) + i] = b[i];
+                    + (bytesPerSample * currChannel) + i] = b[i];
                 }
             }
         }

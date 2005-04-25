@@ -15,5 +15,5 @@ public interface pullSupplierOperations {
      * to request data from its supplier.
      */
     org.omg.CORBA.Any pull()
-            throws ptolemy.actor.corba.CorbaIOUtil.CorbaIllegalActionException;
+        throws ptolemy.actor.corba.CorbaIOUtil.CorbaIllegalActionException;
 } // interface pullSupplierOperations

@@ -81,9 +81,9 @@ public class UnitConstraintsDialog extends PtolemyDialog
      *            help is not supported).
      */
     public UnitConstraintsDialog(DialogTableau tableau, Frame owner,
-            Entity target, Configuration configuration) {
+        Entity target, Configuration configuration) {
         super("Configure units for " + target.getName(), tableau, owner,
-                target, configuration);
+            target, configuration);
 
         Vector _constraintExpression = new Vector();
         UnitAttribute _unitConstraints = (UnitAttribute) target.getAttribute(
@@ -91,7 +91,7 @@ public class UnitConstraintsDialog extends PtolemyDialog
 
         if (_unitConstraints != null) {
             Vector _constraintExpressions = _unitConstraints.getUnitConstraints()
-                .getConstraints();
+                                                                        .getConstraints();
 
             for (int i = 0; i < _constraintExpressions.size(); i++) {
                 UnitEquation uEq = (UnitEquation) (_constraintExpressions.get(i));
@@ -255,7 +255,7 @@ public class UnitConstraintsDialog extends PtolemyDialog
         _unitsTable.setModel(_unitsTableModel);
 
         TableColumn _constraintColumn = ((TableColumn) (_unitsTable.getColumnModel()
-                                                 .getColumn(0)));
+                                                                               .getColumn(0)));
         JTextField textField = new JTextField();
         final DefaultCellEditor constraintEditor = new DefaultCellEditor(textField);
         constraintEditor.setClickCountToStart(1);

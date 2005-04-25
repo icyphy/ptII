@@ -24,6 +24,10 @@
 */
 package thales.vergil.navigable;
 
+import thales.actor.gui.NavigableEffigy;
+
+import thales.vergil.SingleWindowApplication;
+
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.Tableau;
@@ -34,9 +38,6 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.LibraryAttribute;
-
-import thales.actor.gui.NavigableEffigy;
-import thales.vergil.SingleWindowApplication;
 
 import java.awt.Color;
 
@@ -61,7 +62,7 @@ public class NavigableActorGraphTableau extends Tableau {
      *  @param workspace The workspace.
      */
     public NavigableActorGraphTableau(Workspace workspace)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(workspace);
     }
 
@@ -71,7 +72,7 @@ public class NavigableActorGraphTableau extends Tableau {
      *  @param name The name.
      */
     public NavigableActorGraphTableau(PtolemyEffigy container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         this(container, name, null);
     }
 
@@ -82,47 +83,45 @@ public class NavigableActorGraphTableau extends Tableau {
      *  @param defaultLibrary The default library, or null to not specify one.
      */
     public NavigableActorGraphTableau(PtolemyEffigy container, String name,
-            LibraryAttribute defaultLibrary)
-            throws IllegalActionException, NameDuplicationException {
+        LibraryAttribute defaultLibrary)
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
-        
+
         NamedObj model = container.getModel();
-        
+
         if (model == null) {
-        	return;
+            return;
         }
-        
+
         if (!(model instanceof CompositeEntity)) {
-        	throw new IllegalActionException(this,
-        			"Cannot graphically edit a model "
-        			+ "that is not a CompositeEntity. Model is a " + model);
+            throw new IllegalActionException(this,
+                "Cannot graphically edit a model "
+                + "that is not a CompositeEntity. Model is a " + model);
         }
-        
+
         CompositeEntity entity = (CompositeEntity) model;
-        
+
         NavigableActorGraphFrame frame = new NavigableActorGraphFrame(entity,
-        		this, defaultLibrary);
+                this, defaultLibrary);
         setFrame(frame);
         frame.setBackground(BACKGROUND_COLOR);
-        
     }
-    
+
     /* (non-Javadoc)
      * @see ptolemy.actor.gui.Tableau#show()
      */
     public void show() {
-    	JFrame frame = getFrame();
-    	
-    	if (frame != null) {
-    		if (!frame.isVisible()) {
-    			frame.pack();
-    		}
-    	}
-    	
-    	SingleWindowApplication._mainFrame.selectTab(frame.getName());
+        JFrame frame = getFrame();
+
+        if (frame != null) {
+            if (!frame.isVisible()) {
+                frame.pack();
+            }
+        }
+
+        SingleWindowApplication._mainFrame.selectTab(frame.getName());
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
     // The background color.
@@ -143,7 +142,7 @@ public class NavigableActorGraphTableau extends Tableau {
          *   an attribute already in the container.
          */
         public Factory(NamedObj container, String name)
-                throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
             super(container, name);
         }
 
@@ -165,7 +164,7 @@ public class NavigableActorGraphTableau extends Tableau {
             if (effigy instanceof NavigableEffigy) {
                 // First see whether the effigy already contains a RunTableau.
                 NavigableActorGraphTableau tableau = (NavigableActorGraphTableau) effigy
-                    .getEntity("navigableGraphTableau");
+                                .getEntity("navigableGraphTableau");
 
                 if (tableau == null) {
                     // Check to see whether this factory contains a

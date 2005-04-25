@@ -49,7 +49,6 @@ import ptolemy.kernel.util.InternalErrorException;
    @see Time
 */
 public class TimedEvent {
-    
     /** Construct an event with the specified time stamp and contents.
      *  @param time The time stamp.
      *  @param obj The contents.
@@ -73,11 +72,11 @@ public class TimedEvent {
 
     /** Display timeStamp and contents. */
     public String toString() {
-    	return "timeStamp: " + timeStamp + ", contents: " + contents;
+        return "timeStamp: " + timeStamp + ", contents: " + contents;
     }
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-    
     ///////////////////////////////////////////////////////////////////
     //// TimeComparator
 
@@ -88,7 +87,6 @@ public class TimedEvent {
      * If this is violated, ClassCastException will be thrown.
      */
     public static class TimeComparator implements CQComparator {
-        
         /** Construct a TimeComparator object for the given director.
          *  @param director The director this comparator is associated with.
          *  @exception IllegalActionException If the specified director has
@@ -150,14 +148,15 @@ public class TimedEvent {
             // returns the low-order 64 bits of the result.
             // If it is larger than what can be represented
             // in 64 bits, then the returned result will be wrapped.
-            long value = (((TimedEvent) entry).timeStamp
-                    .subtract(_zeroReference.timeStamp))
-                    .divide(_binWidth);            
+            long value = (((TimedEvent) entry).timeStamp.subtract(_zeroReference.timeStamp))
+                            .divide(_binWidth);
             return value;
+
             // What used to be here:
+
             /*
-			return (long) (((TimedEvent) entry).timeStamp.subtract(_zeroReference.timeStamp)
-			        .getDoubleValue() / _binWidth);
+                        return (long) (((TimedEvent) entry).timeStamp.subtract(_zeroReference.timeStamp)
+                                .getDoubleValue() / _binWidth);
             */
         }
 
@@ -179,52 +178,53 @@ public class TimedEvent {
          *   an invalid time precision.
          */
         public void setBinWidth(Object[] entryArray) {
-			try {
-				if (entryArray == null) {
-				    // Reset to default.
-				 	_binWidth = new Time(_director, 1.0);
-				    return;
-				}
+            try {
+                if (entryArray == null) {
+                    // Reset to default.
+                    _binWidth = new Time(_director, 1.0);
+                    return;
+                }
 
-				if (entryArray.length == 1) {
-				    _binWidth = ((TimedEvent) entryArray[0]).timeStamp;
-				    return;
-				}
+                if (entryArray.length == 1) {
+                    _binWidth = ((TimedEvent) entryArray[0]).timeStamp;
+                    return;
+                }
 
-				Time[] diff = new Time[entryArray.length - 1];
+                Time[] diff = new Time[entryArray.length - 1];
 
-				Time zero = new Time(_director, 0.0);
-				Time average = zero;
+                Time zero = new Time(_director, 0.0);
+                Time average = zero;
 
-				for (int i = 1; i < entryArray.length; ++i) {
-				    diff[i - 1] = ((TimedEvent) entryArray[i]).timeStamp.subtract(
-				            ((TimedEvent) entryArray[i - 1]).timeStamp);
-				    average = average.add(diff[i - 1]);
-				}
+                for (int i = 1; i < entryArray.length; ++i) {
+                    diff[i - 1] = ((TimedEvent) entryArray[i]).timeStamp
+                                    .subtract(((TimedEvent) entryArray[i - 1]).timeStamp);
+                    average = average.add(diff[i - 1]);
+                }
 
-				average = average.divide((long)diff.length);
-				Time effAverage = zero;
-				int nEffSamples = 0;
+                average = average.divide((long) diff.length);
 
-				for (int i = 1; i < entryArray.length; ++i) {
-				    if (diff[i - 1].compareTo(average.add(average)) < 0) {
-				        nEffSamples++;
-				        effAverage = effAverage.add(diff[i - 1]);
-				    }
-				}
+                Time effAverage = zero;
+                int nEffSamples = 0;
 
-				// To avoid returning NaN or 0.0 for the width, if this is
-				// the result, leave the bin width unchanged.
-				if ((effAverage.equals(zero)) || (nEffSamples == 0)) {
-				    return;
-				}
+                for (int i = 1; i < entryArray.length; ++i) {
+                    if (diff[i - 1].compareTo(average.add(average)) < 0) {
+                        nEffSamples++;
+                        effAverage = effAverage.add(diff[i - 1]);
+                    }
+                }
 
-				effAverage = effAverage.divide((long)nEffSamples);
-				_binWidth = effAverage.multiply(3L);
-			} catch (IllegalActionException e) {
-				// Malformed time resolution would have been caught by now.
+                // To avoid returning NaN or 0.0 for the width, if this is
+                // the result, leave the bin width unchanged.
+                if ((effAverage.equals(zero)) || (nEffSamples == 0)) {
+                    return;
+                }
+
+                effAverage = effAverage.divide((long) nEffSamples);
+                _binWidth = effAverage.multiply(3L);
+            } catch (IllegalActionException e) {
+                // Malformed time resolution would have been caught by now.
                 throw new InternalErrorException(e);
-			}
+            }
         }
 
         /** Set the zero reference, to be used in calculating the virtual
@@ -238,7 +238,6 @@ public class TimedEvent {
 
         ///////////////////////////////////////////////////////////////////
         ////                         private members                   ////
-        
         // The director that contains this comparator.
         private Director _director;
 

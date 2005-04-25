@@ -70,14 +70,13 @@ public class ChannelState extends MACActorBase {
      *   an actor already in the container.
      */
     public ChannelState(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // Create and configure the ports.
         channelStatus = new TypedIOPort(this, "channelStatus", true, false);
 
         //set the port to be a south port if it hasn't been configured.
-
         /**StringAttribute cardinal = (StringAttribute)
            channelStatus.getAttribute("_cardinal");
            if (cardinal == null) {
@@ -178,7 +177,7 @@ public class ChannelState extends MACActorBase {
 
                     if (_debugging) {
                         _debug("the msg token received is : "
-                                + _inputMessage.toString());
+                            + _inputMessage.toString());
                     }
 
                     DoubleToken t = (DoubleToken) _inputMessage.get("tRxEnd");
@@ -350,7 +349,7 @@ public class ChannelState extends MACActorBase {
         } else {
             _tNavEnd = null;
             throw new IllegalActionException("the MAC compositor "
-                    + "dosen't contain a parameter named tNavEnd");
+                + "dosen't contain a parameter named tNavEnd");
         }
 
         // First assume channel is busy until PHY sends an idle event
@@ -388,7 +387,7 @@ public class ChannelState extends MACActorBase {
             // force the state transition to the corresponding noNav states
             _NavTimer.expirationTime = _currentTime;
             _setAttribute(_tNavEnd,
-                    new DoubleToken(_currentTime.getDoubleValue()));
+                new DoubleToken(_currentTime.getDoubleValue()));
             _curSrc = nosrc;
             break;
         }
@@ -414,7 +413,9 @@ public class ChannelState extends MACActorBase {
 
     private void _changeStatus(int kind) throws IllegalActionException {
         // send idle/busy event to the Transmission block
-        Token[] value = { new IntToken(kind) };
+        Token[] value = {
+                new IntToken(kind)
+            };
         RecordToken t = new RecordToken(CSMsgFields, value);
         toTransmission.send(0, t);
     }

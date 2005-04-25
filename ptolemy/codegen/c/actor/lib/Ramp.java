@@ -24,11 +24,11 @@
    COPYRIGHTENDKEY
 
 */
-
 package ptolemy.codegen.c.actor.lib;
 
 import ptolemy.codegen.kernel.CCodeGeneratorHelper;
 import ptolemy.kernel.util.IllegalActionException;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// Ramp
@@ -43,7 +43,6 @@ import ptolemy.kernel.util.IllegalActionException;
    @Pt.AcceptedRating Red (eal)
 */
 public class Ramp extends CCodeGeneratorHelper {
-
     /**
      * Constructor method for the Ramp helper
      * @param actor the associated actor
@@ -54,25 +53,25 @@ public class Ramp extends CCodeGeneratorHelper {
 
     /**
      * Generate fire code
-     * The method reads in codeBlock1 and puts into the 
+     * The method reads in codeBlock1 and puts into the
      * given stream buffer
      * @param stream the given buffer to append the code to
      */
     public void generateFireCode(StringBuffer stream)
-            throws IllegalActionException {
+        throws IllegalActionException {
         CodeStream tmpStream = new CodeStream(this);
         tmpStream.appendCodeBlock("codeBlock1");
         stream.append(processCode(tmpStream.toString()));
     }
-    
+
     /** Generate initialization code.
      *  This method reads the <code>initBlock</code> from Ramp.c,
      *  replaces macros with their values and returns the results.
      *  @return The processed <code>initBlock</code>.
      */
-    public String generateInitializeCode()
-            throws IllegalActionException {
+    public String generateInitializeCode() throws IllegalActionException {
         super.generateInitializeCode();
+
         CodeStream tmpStream = new CodeStream(this);
         tmpStream.appendCodeBlock("initBlock");
         return processCode(tmpStream.toString());

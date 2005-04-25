@@ -91,7 +91,7 @@ public class MailboxBoundaryReceiver extends Mailbox implements ProcessReceiver 
      *   this receiver.
      */
     public MailboxBoundaryReceiver(IOPort container)
-            throws IllegalActionException {
+        throws IllegalActionException {
         super(container);
         _boundaryDetector = new BoundaryDetector(this);
     }
@@ -285,8 +285,8 @@ public class MailboxBoundaryReceiver extends Mailbox implements ProcessReceiver 
             _otherBranch = branch;
         } else {
             ProcessDirector director = ((ProcessDirector) ((Actor) (getContainer()
-                                                                   .getContainer()))
-                    .getDirector());
+                                                                                    .getContainer()))
+                            .getDirector());
             director._actorBlocked(this);
             _otherBranch = branch;
         }
@@ -377,8 +377,8 @@ public class MailboxBoundaryReceiver extends Mailbox implements ProcessReceiver 
             _otherBranch.registerReceiverUnBlocked(this);
         } else {
             ProcessDirector director = ((ProcessDirector) ((Actor) (getContainer()
-                                                                   .getContainer()))
-                    .getDirector());
+                                                                                    .getContainer()))
+                            .getDirector());
             director._actorUnBlocked(this);
         }
 

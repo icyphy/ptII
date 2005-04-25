@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.ptinyos.kernel;
 
 import ptolemy.actor.TypeOpaqueCompositeActor;
@@ -38,21 +37,21 @@ import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// PtinyOSActor
+
 /**
  * This composite actor is designed for use in the PtinyOS domain.
  *
  * FIXME comment
- * 
+ *
  * @author Elaine Cheong
  * @version $Id$
  * @Pt.ProposedRating Red (celaine)
  * @Pt.AcceptedRating Red (celaine)
  */
-
 public abstract class PtinyOSActor extends TypeOpaqueCompositeActor {
-
     /** Construct an actor in the default workspace with an empty string
      *  as its name.  The object is added to the workspace directory.
      *  Increment the version number of the workspace.
@@ -71,7 +70,7 @@ public abstract class PtinyOSActor extends TypeOpaqueCompositeActor {
     public PtinyOSActor(Workspace workspace) {
         super(workspace);
     }
-    
+
     /** Construct an actor in the specified container with the specified
      *  name.
      *  @param container The container.
@@ -82,11 +81,11 @@ public abstract class PtinyOSActor extends TypeOpaqueCompositeActor {
      *   an actor already in the container.
      */
     public PtinyOSActor(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         setClassName("ptolemy.domains.ptinyos.kernel.PtinyOSActor");
-        
+
         // Create an inside director.
         PtinyOSDirector director = new PtinyOSDirector(this, "PtinyOSDirector");
         Location location = new Location(director, "_location");
@@ -95,19 +94,16 @@ public abstract class PtinyOSActor extends TypeOpaqueCompositeActor {
         // packetOut and packetIn must be RecordToken
         packetOut = new TypedIOPort(this, "packetOut", false, true);
         packetOut.setTypeEquals(BaseType.STRING);
-        
+
         packetIn = new TypedIOPort(this, "packetIn", true, false);
         packetOut.setTypeEquals(BaseType.STRING);
     }
 
-    
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-
     public TypedIOPort packetIn;
     public TypedIOPort packetOut;
 
-    
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -116,24 +112,24 @@ public abstract class PtinyOSActor extends TypeOpaqueCompositeActor {
     public void fire() throws IllegalActionException {
         // Grab the packet before it gets thrown away, since it is not
         // connected to any actors on the inside.
-
         if (packetIn.getWidth() > 0) {
             if (packetIn.hasToken(0)) {
                 StringToken token = (StringToken) packetIn.get(0);
 
                 PtinyOSDirector director = (PtinyOSDirector) getDirector();
+
                 if (director == null) {
-                    throw new IllegalActionException("Could not find a local director!");
+                    throw new IllegalActionException(
+                        "Could not find a local director!");
                 }
+
                 director.receivePacket(token.stringValue());
             }
         }
-        
+
         super.fire();
     }
 
-    
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-
 }

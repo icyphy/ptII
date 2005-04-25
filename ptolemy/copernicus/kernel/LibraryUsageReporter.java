@@ -38,8 +38,10 @@ import soot.Type;
 import soot.Unit;
 import soot.Value;
 import soot.ValueBox;
+
 import soot.jimple.CastExpr;
 import soot.jimple.InstanceOfExpr;
+
 import soot.jimple.toolkits.callgraph.CallGraph;
 import soot.jimple.toolkits.callgraph.Edge;
 import soot.jimple.toolkits.callgraph.EdgePredicate;
@@ -99,7 +101,7 @@ public class LibraryUsageReporter extends SceneTransformer
         boolean analyzeAllReachables = PhaseOptions.getBoolean(options,
                 "analyzeAllReachables");
         System.out.println("LibraryUsageReporter.internalTransform("
-                + phaseName + ", " + options + ")");
+            + phaseName + ", " + options + ")");
         Scene.v().releaseCallGraph();
 
         CallGraph callGraph = Scene.v().getCallGraph();
@@ -113,14 +115,14 @@ public class LibraryUsageReporter extends SceneTransformer
         final Set createableClasses = new HashSet();
 
         for (Iterator reachables = reachableMethods.listener();
-             reachables.hasNext();) {
+                        reachables.hasNext();) {
             SootMethod method = (SootMethod) reachables.next();
             String methodName = method.getSignature();
 
             if (method.getName().equals("<init>")
-                    && !method.getDeclaringClass().getName().startsWith("java")) {
+                            && !method.getDeclaringClass().getName().startsWith("java")) {
                 createableClasses.addAll(hierarchy.getSuperclassesOfIncluding(
-                                                 method.getDeclaringClass()));
+                        method.getDeclaringClass()));
                 _addAllInterfaces(createableClasses, method.getDeclaringClass());
             }
         }
@@ -131,13 +133,14 @@ public class LibraryUsageReporter extends SceneTransformer
         // includes methods that are static or are declared in classes
         // that can are created.
         Filter filter = new Filter(new EdgePredicate() {
-                public boolean want(Edge e) {
-                    SootMethod target = e.tgt();
-                    return e.isExplicit()
-                        && (target.isStatic()
-                                || createableClasses.contains(target.getDeclaringClass()));
-                }
-            });
+                    public boolean want(Edge e) {
+                        SootMethod target = e.tgt();
+                        return e.isExplicit()
+                                    && (target.isStatic()
+                                    || createableClasses.contains(target
+                                        .getDeclaringClass()));
+                    }
+                });
         Set necessaryClasses = new HashSet();
         ReachableMethods RTAReachableMethods = new ReachableMethods(callGraph,
                 EntryPoints.v().application().iterator(), filter);
@@ -146,7 +149,7 @@ public class LibraryUsageReporter extends SceneTransformer
         List list = new LinkedList();
 
         for (Iterator reachables = RTAReachableMethods.listener();
-             reachables.hasNext();) {
+                        reachables.hasNext();) {
             SootMethod method = (SootMethod) reachables.next();
             String methodName = method.getSignature();
             list.add(methodName);
@@ -159,11 +162,12 @@ public class LibraryUsageReporter extends SceneTransformer
 
             if (method.isConcrete()) {
                 for (Iterator units = method.retrieveActiveBody().getUnits()
-                         .iterator(); units.hasNext();) {
+                                                        .iterator();
+                                units.hasNext();) {
                     Unit unit = (Unit) units.next();
 
                     for (Iterator boxes = unit.getUseBoxes().iterator();
-                         boxes.hasNext();) {
+                                    boxes.hasNext();) {
                         ValueBox box = (ValueBox) boxes.next();
                         Value value = box.getValue();
 
@@ -173,13 +177,14 @@ public class LibraryUsageReporter extends SceneTransformer
 
                             if (castType instanceof RefType) {
                                 SootClass castClass = ((RefType) castType)
-                                    .getSootClass();
+                                                .getSootClass();
 
                                 if (castClass.isInterface()) {
                                     necessaryClasses.add(castClass);
                                 } else {
                                     necessaryClasses.addAll(hierarchy
-                                            .getSuperclassesOfIncluding(castClass));
+                                                    .getSuperclassesOfIncluding(
+                                                        castClass));
                                 }
 
                                 _addAllInterfaces(necessaryClasses, castClass);
@@ -190,11 +195,12 @@ public class LibraryUsageReporter extends SceneTransformer
 
                             if (checkType instanceof RefType) {
                                 SootClass checkClass = ((RefType) checkType)
-                                    .getSootClass();
+                                                .getSootClass();
 
                                 if (!checkClass.isInterface()) {
                                     necessaryClasses.addAll(hierarchy
-                                            .getSuperclassesOfIncluding(checkClass));
+                                                    .getSuperclassesOfIncluding(
+                                                        checkClass));
                                 }
 
                                 _addAllInterfaces(necessaryClasses, checkClass);
@@ -218,7 +224,7 @@ public class LibraryUsageReporter extends SceneTransformer
             FileWriter writer = new FileWriter(outFile);
 
             for (Iterator classes = dependedClasses.list().iterator();
-                 classes.hasNext();) {
+                            classes.hasNext();) {
                 SootClass theClass = (SootClass) classes.next();
 
                 if (analyzeAllReachables) {

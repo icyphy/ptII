@@ -27,13 +27,15 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.lib.colt;
 
+import cern.jet.random.ChiSquare;
+
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import cern.jet.random.ChiSquare;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// ChiSquare
@@ -46,11 +48,11 @@ import cern.jet.random.ChiSquare;
    deviation given by parameters.  In addition, the seed can be
    specified as a parameter to control the sequence that is generated.
 
-   <p> This actor instantiates a 
+   <p> This actor instantiates a
    <a href="http://hoschek.home.cern.ch/hoschek/colt/V1.0.3/doc/cern/jet/random/ChiSquare.html">cern.jet.random.ChiSquare</a> object with
    freedom argument set to 1.0.
 
-The Chi Square Distribution is 
+The Chi Square Distribution is
 <blockquote>
 A special case of the Gamma distribution.
  <p>
@@ -60,7 +62,7 @@ A special case of the Gamma distribution.
 </blockquote>
 
    The above description of Chi Square is
-   <a href="doc-files/colt-copyright.htm">copyrighted</a>. 
+   <a href="doc-files/colt-copyright.htm">copyrighted</a>.
 
    <p>A definition of the ChiSquare distribution can be found at
 <a href="http://www.cern.ch/RD11/rkb/AN16pp/node31.html#SECTION000310000000000000000"><code>http://www.cern.ch/RD11/rkb/AN16pp/node31.html#SECTION000310000000000000000</code></a>
@@ -72,7 +74,6 @@ A special case of the Gamma distribution.
    @Pt.AcceptedRating Red (cxh)
 */
 public class ColtChiSquare extends ColtRandomSource {
-    
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -82,14 +83,14 @@ public class ColtChiSquare extends ColtRandomSource {
      *   actor with this name.
      */
     public ColtChiSquare(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         output.setTypeEquals(BaseType.DOUBLE);
 
         freedom = new Parameter(this, "freedom", new DoubleToken(1.0));
         freedom.setTypeEquals(BaseType.DOUBLE);
-        
+
         freedom.moveToFirst();
     }
 
@@ -134,11 +135,10 @@ public class ColtChiSquare extends ColtRandomSource {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The random number for the current iteration. */
     private double _current;
-    
+
     /** The random number generator. */
     private ChiSquare _generator;
-
 }

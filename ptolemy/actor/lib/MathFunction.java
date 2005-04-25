@@ -98,7 +98,7 @@ public class MathFunction extends TypedAtomicActor {
      *   actor with this name.
      */
     public MathFunction(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // Parameters
@@ -123,9 +123,9 @@ public class MathFunction extends TypedAtomicActor {
         output.setTypeEquals(BaseType.DOUBLE);
 
         _attachText("_iconDescription",
-                "<svg>\n" + "<rect x=\"-30\" y=\"-15\" "
-                + "width=\"60\" height=\"30\" " + "style=\"fill:white\"/>\n"
-                + "</svg>\n");
+            "<svg>\n" + "<rect x=\"-30\" y=\"-15\" "
+            + "width=\"60\" height=\"30\" " + "style=\"fill:white\"/>\n"
+            + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -160,7 +160,7 @@ public class MathFunction extends TypedAtomicActor {
      *  @exception IllegalActionException If the function is not recognized.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         try {
             if (attribute == function) {
                 String functionName = function.stringValue();
@@ -200,14 +200,14 @@ public class MathFunction extends TypedAtomicActor {
                     }
                 } else {
                     throw new IllegalActionException(this,
-                            "Unrecognized math function: " + functionName);
+                        "Unrecognized math function: " + functionName);
                 }
             } else {
                 super.attributeChanged(attribute);
             }
         } catch (NameDuplicationException nameDuplication) {
             throw new InternalErrorException(this, nameDuplication,
-                    "Unexpected name duplication");
+                "Unexpected name duplication");
         }
     }
 
@@ -264,11 +264,11 @@ public class MathFunction extends TypedAtomicActor {
 
                     for (int i = 0; i < count; i++) {
                         double input1 = ((DoubleToken) (inArray1[i]))
-                            .doubleValue();
+                                        .doubleValue();
                         double input2 = ((DoubleToken) (inArray2[i]))
-                            .doubleValue();
+                                        .doubleValue();
                         _resultArray[i] = new DoubleToken(_doFunction(input1,
-                                                                  input2));
+                                    input2));
                     }
 
                     output.send(0, _resultArray, count);
@@ -301,7 +301,7 @@ public class MathFunction extends TypedAtomicActor {
     /** Create the second port needed by modulo function
      */
     private void _createSecondPort()
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         // Go looking for the port in case somebody else created the port
         // already.  For example, this might
         // happen in shallow code generation.
@@ -359,9 +359,9 @@ public class MathFunction extends TypedAtomicActor {
 
         default:
             throw new InternalErrorException(
-                    "Invalid value for _function private variable. "
-                    + "MathFunction actor (" + getFullName() + ")"
-                    + " on function type " + _function);
+                "Invalid value for _function private variable. "
+                + "MathFunction actor (" + getFullName() + ")"
+                + " on function type " + _function);
         }
 
         return result;

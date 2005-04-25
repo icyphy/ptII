@@ -87,7 +87,7 @@ public class SelfLoopAnalysis extends Analysis {
      */
     public String toString() {
         return "Self loop analysis using the following analyzer:\n"
-            + analyzer().toString();
+        + analyzer().toString();
     }
 
     /** Check if a given analyzer is compatible with this analysis.

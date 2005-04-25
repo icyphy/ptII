@@ -207,11 +207,10 @@ public class JShadePane extends JPanel {
      * be null, but not both.
      */
     public void insertShade(String title, Icon icon, Component component,
-            String tip, int index) {
-
+        String tip, int index) {
         if ((icon != null) && icon instanceof ImageIcon) {
             new ImageIcon(GrayFilter.createDisabledImage(
-                                                 ((ImageIcon) icon).getImage()));
+                    ((ImageIcon) icon).getImage()));
         }
 
         JButton button = new JButton(title, icon);
@@ -378,7 +377,7 @@ public class JShadePane extends JPanel {
      * Borrowed from JTabbedPane.  Holds all the info about each shade.
      */
     private class Shade extends AccessibleContext implements Serializable,
-                                                             Accessible, AccessibleComponent {
+        Accessible, AccessibleComponent {
         JShadePane _parent;
         JButton _button;
         Component _component;
@@ -442,7 +441,7 @@ public class JShadePane extends JPanel {
 
         public Accessible getAccessibleChild(int i) {
             return (_component instanceof Accessible) ? (Accessible) _component
-                : null;
+                                                      : null;
         }
 
         public Locale getLocale() {
@@ -553,7 +552,7 @@ public class JShadePane extends JPanel {
 
         public Accessible getAccessibleAt(Point p) {
             return (_component instanceof Accessible) ? (Accessible) _component
-                : null;
+                                                      : null;
         }
 
         public boolean isFocusTraversable() {

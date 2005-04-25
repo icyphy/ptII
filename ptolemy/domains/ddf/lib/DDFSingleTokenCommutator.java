@@ -50,9 +50,9 @@ import ptolemy.kernel.util.Settable;
    port.  The types of the ports are undeclared and will be resolved by
    the type resolution mechanism, with the constraint that the output
    type must be greater than or equal to the input type. On each call to
-   the fire() method, the actor reads one token from the current input 
+   the fire() method, the actor reads one token from the current input
    channel, and writes the token to the output port. Then in the postfire()
-   method, it will update token consumption rate of the input port so that 
+   method, it will update token consumption rate of the input port so that
    it will read token from the next channel in the next iteration.
 
    @author Gang Zhou
@@ -71,11 +71,10 @@ public class DDFSingleTokenCommutator extends SingleTokenCommutator {
      *   by the proposed container.
      */
     public DDFSingleTokenCommutator(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
-        input_tokenConsumptionRate 
-                = new Parameter(input, "tokenConsumptionRate");
+        input_tokenConsumptionRate = new Parameter(input, "tokenConsumptionRate");
         input_tokenConsumptionRate.setVisibility(Settable.NOT_EDITABLE);
         input_tokenConsumptionRate.setTypeEquals(new ArrayType(BaseType.INT));
     }
@@ -91,10 +90,10 @@ public class DDFSingleTokenCommutator extends SingleTokenCommutator {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Pre-calculate the rates to be set in the rate parameter of the 
+    /** Pre-calculate the rates to be set in the rate parameter of the
      *  <i>input</i> port. Initialize the private variable _rateArray,
      *  each element of which indicates the <i>input</i> port needs to
-     *  consume one token from a corresponding channel and no token from 
+     *  consume one token from a corresponding channel and no token from
      *  the rest of the channels.
      *  @param port The port that has connection changes.
      */
@@ -103,24 +102,27 @@ public class DDFSingleTokenCommutator extends SingleTokenCommutator {
 
         if (port == input) {
             _rateArray = new ArrayToken[input.getWidth()];
+
             Token[] rate = new IntToken[input.getWidth()];
+
             for (int i = 0; i < input.getWidth(); i++) {
-                rate[i] = _zero;                   
+                rate[i] = _zero;
             }
+
             try {
                 for (int i = 0; i < input.getWidth(); i++) {
                     rate[i] = _one;
                     _rateArray[i] = new ArrayToken(rate);
                     rate[i] = _zero;
-                }    
+                }
             } catch (IllegalActionException ex) {
                 // shouldn't happen
                 throw new InternalErrorException(this, ex,
-                        "It should not happen.");
-            }        
-        }    
+                    "It should not happen.");
+            }
+        }
     }
-    
+
     /** Begin execution by setting rate parameter indicating it will
      *  read the zeroth input channel.
      *  @exception IllegalActionException If there is no director.
@@ -140,26 +142,25 @@ public class DDFSingleTokenCommutator extends SingleTokenCommutator {
         // Call postfire first so that current input position is updated.
         boolean postfireReturn = super.postfire();
 
-        input_tokenConsumptionRate
-                .setToken(_rateArray[_getCurrentInputPosition()]);
+        input_tokenConsumptionRate.setToken(_rateArray[_getCurrentInputPosition()]);
 
         return postfireReturn;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** A final static IntToken with value 1.
      */
     private final static IntToken _one = new IntToken(1);
-    
+
     /** A final static IntToken with value 0.
      */
     private final static IntToken _zero = new IntToken(0);
-    
-    /** An array of ArrayTokens to be used to set tokenConsumptionRate 
-     *  of the input port. Each ArrayToken indicates the <i>input</i> 
-     *  port needs to consume one token from a corresponding channel and 
+
+    /** An array of ArrayTokens to be used to set tokenConsumptionRate
+     *  of the input port. Each ArrayToken indicates the <i>input</i>
+     *  port needs to consume one token from a corresponding channel and
      *  no token from the rest of the channels. The array is initialized
      *  in the method connectionsChanged().
      */

@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.codegen.kernel;
 
 import ptolemy.kernel.util.IllegalActionException;
@@ -43,7 +42,6 @@ import ptolemy.kernel.util.IllegalActionException;
  *  @Pt.AcceptedRating Red (eal)
  */
 public interface ActorCodeGenerator extends ComponentCodeGenerator {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -53,5 +51,5 @@ public interface ActorCodeGenerator extends ComponentCodeGenerator {
      *  @exception IllegalActionException If something goes wrong.
      */
     public void generateFireCode(StringBuffer stream)
-            throws IllegalActionException;
+        throws IllegalActionException;
 }

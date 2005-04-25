@@ -91,7 +91,7 @@ import javax.vecmath.Vector3f;
 @Pt.AcceptedRating Red (chf)
 */
 public class ViewScreen3D extends GRActor3D implements Placeable,
-                                                       ViewScreenInterface {
+    ViewScreenInterface {
     /** Construct a ViewScreen in the given container with the given name.
      *  If the container argument is null, a NullPointerException will
      *  be thrown. If the name argument is null, then the name is set
@@ -105,7 +105,7 @@ public class ViewScreen3D extends GRActor3D implements Placeable,
      *   CompositeActor and the name collides with an entity in the container.
      */
     public ViewScreen3D(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         sceneGraphIn = new TypedIOPort(this, "sceneGraphIn");
@@ -142,7 +142,7 @@ public class ViewScreen3D extends GRActor3D implements Placeable,
         backgroundColor.setExpression("{1.0, 1.0, 1.0, 1.0}");
 
         _lastTransform = new Transform3D();
-        
+
         _windowProperties = new WindowPropertiesAttribute(this,
                 "_windowProperties");
         _viewSize = new SizeAttribute(this, "_viewSize");
@@ -346,7 +346,7 @@ public class ViewScreen3D extends GRActor3D implements Placeable,
         BranchGroup lightRoot = new BranchGroup();
 
         AmbientLight lightAmbient = new AmbientLight(new Color3f(0.8f, 0.8f,
-                                                             0.8f));
+                    0.8f));
         lightAmbient.setInfluencingBounds(_bounds);
         lightRoot.addChild(lightAmbient);
 
@@ -432,11 +432,14 @@ public class ViewScreen3D extends GRActor3D implements Placeable,
     protected void _createViewScreen() {
         int horizontalDimension = 400;
         int verticalDimension = 400;
+
         try {
-        	horizontalDimension = ((IntToken) horizontalResolution.getToken()).intValue();
-        	verticalDimension = ((IntToken) verticalResolution.getToken()).intValue();
+            horizontalDimension = ((IntToken) horizontalResolution.getToken())
+                            .intValue();
+            verticalDimension = ((IntToken) verticalResolution.getToken())
+                            .intValue();
         } catch (Exception ex) {
-        	// Should have been caught before this.
+            // Should have been caught before this.
             throw new InternalErrorException(ex);
         }
 
@@ -446,14 +449,17 @@ public class ViewScreen3D extends GRActor3D implements Placeable,
             // Need an effigy and a tableau so that menu ops work properly.
             if (_tableau == null) {
                 Effigy containerEffigy = Configuration.findEffigy(toplevel());
+
                 if (containerEffigy == null) {
                     throw new InternalErrorException(
-                            "Cannot find effigy for top level: "
-                            + toplevel().getFullName());
+                        "Cannot find effigy for top level: "
+                        + toplevel().getFullName());
                 }
+
                 try {
                     _effigy = new Effigy(containerEffigy,
                             containerEffigy.uniqueName("imageEffigy"));
+
                     // The default identifier is "Unnamed", which is
                     // no good for two reasons: Wrong title bar label,
                     // and it causes a save-as to destroy the original window.
@@ -470,16 +476,18 @@ public class ViewScreen3D extends GRActor3D implements Placeable,
                     // Regrettably, since setSize() in swing doesn't actually
                     // set the size of the frame, we have to also set the
                     // size of the internal component.
-                    Component[] components = _frame.getContentPane().getComponents();
+                    Component[] components = _frame.getContentPane()
+                                                               .getComponents();
 
                     if (components.length > 0) {
                         _viewSize.setSize(components[0]);
                     }
+
                     _frame.validate();
                     _frame.setSize(horizontalDimension + 50, verticalDimension);
                     _container = _frame.getContentPane();
                 } catch (KernelException ex) {
-                	throw new InternalErrorException(ex);
+                    throw new InternalErrorException(ex);
                 }
             }
         }
@@ -500,15 +508,16 @@ public class ViewScreen3D extends GRActor3D implements Placeable,
         // from initialize AND from place.  (This caused some
         // artifacts if the run window was used)
         _container.validate();
-        
+
         if (_tableau != null) {
             // Set the frame to be visible.
             if (_frame != null) {
                 _frame.pack();
             }
-            _tableau.show();   
+
+            _tableau.show();
         }
-        
+
         /* FIXME: experimental code for changing views.
            TransformGroup VPTG = new TransformGroup();
            VPTG = _simpleUniverse.getViewingPlatform()
@@ -559,7 +568,7 @@ public class ViewScreen3D extends GRActor3D implements Placeable,
         _branchRoot.compile();
         _simpleUniverse.addBranchGraph(_branchRoot);
     }
-    
+
     /** Return a new canvas. This is protected so that subclasses
      *  can return a different kind of canvas (using the "strategy
      *  pattern").
@@ -567,7 +576,7 @@ public class ViewScreen3D extends GRActor3D implements Placeable,
      */
     protected Canvas3D _newCanvas() {
         GraphicsConfiguration config = SimpleUniverse.getPreferredConfiguration();
-    	return new Canvas3D(config);
+        return new Canvas3D(config);
     }
 
     /** Start the internal Java3D renderer
@@ -588,7 +597,6 @@ public class ViewScreen3D extends GRActor3D implements Placeable,
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-
     protected BoundingSphere _bounds;
 
     // The main connection branch that connects to the universe
@@ -616,7 +624,6 @@ public class ViewScreen3D extends GRActor3D implements Placeable,
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
     private boolean _isIterationSynchronized() throws IllegalActionException {
         return ((BooleanToken) iterationSynchronized.getToken()).booleanValue();
     }
@@ -642,7 +649,7 @@ public class ViewScreen3D extends GRActor3D implements Placeable,
 
     /** The effigy for the image data. */
     private Effigy _effigy;
-    
+
     /** The tableau with the display, if any. */
     private Tableau _tableau;
 
@@ -654,7 +661,6 @@ public class ViewScreen3D extends GRActor3D implements Placeable,
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-
     private class MouseRotateView extends MouseRotate {
         public MouseRotateView(ViewScreen3D viewContainer) {
             super();
@@ -701,7 +707,7 @@ public class ViewScreen3D extends GRActor3D implements Placeable,
         boolean stopped = false;
         ViewScreen3D _viewContainer;
     }
-    
+
     /** Version of TableauFrame.
      */
     private class ViewWindow extends TableauFrame {
@@ -713,7 +719,7 @@ public class ViewScreen3D extends GRActor3D implements Placeable,
         public ViewWindow() {
             // The null second argument prevents a status bar.
             super(null, null);
-            
+
             // Unfortunately, the Java 3D canvas is not a swing
             // component, so it is incompatible with menu bars.
             // If we don't do this, we get a menu bar, but the
@@ -748,5 +754,4 @@ public class ViewScreen3D extends GRActor3D implements Placeable,
             return true;
         }
     }
-
 }

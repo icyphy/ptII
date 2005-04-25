@@ -59,7 +59,7 @@ public class ConfigurationEffigy extends PtolemyEffigy {
      *  @param name The name of this effigy.
      */
     public ConfigurationEffigy(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -92,7 +92,7 @@ public class ConfigurationEffigy extends PtolemyEffigy {
      *   collides with a name already in the container.
      */
     public void setContainer(CompositeEntity container)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super.setContainer(container);
 
         if (container != null) {

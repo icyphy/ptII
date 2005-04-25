@@ -74,7 +74,7 @@ public class QueueWithNextOut extends Queue {
      *   actor with this name.
      */
     public QueueWithNextOut(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         nextOut = new TypedIOPort(this, "nextOut");
         nextOut.setTypeAtLeast(input);

@@ -98,7 +98,7 @@ public class Token implements Serializable {
      */
     public Token add(Token rightArgument) throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("add", this,
-                                                 rightArgument));
+                rightArgument));
     }
 
     /** Return a new token whose value is the sum of this token
@@ -111,7 +111,7 @@ public class Token implements Serializable {
      */
     public Token addReverse(Token leftArgument) throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("addReverse",
-                                                 this, leftArgument));
+                this, leftArgument));
     }
 
     /** Return a new token whose value is the value of this token
@@ -124,7 +124,7 @@ public class Token implements Serializable {
      */
     public Token divide(Token rightArgument) throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("divide", this,
-                                                 rightArgument));
+                rightArgument));
     }
 
     /** Return a new token whose value is the value of the argument
@@ -137,9 +137,9 @@ public class Token implements Serializable {
      *  not make sense for the given types.
      */
     public Token divideReverse(Token leftArgument)
-            throws IllegalActionException {
+        throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("divideReverse",
-                                                 this, leftArgument));
+                this, leftArgument));
     }
 
     /** Return the type of this token.
@@ -164,7 +164,7 @@ public class Token implements Serializable {
      *  of a type that can be compared with this token.
      */
     public final BooleanToken isCloseTo(Token token)
-            throws IllegalActionException {
+        throws IllegalActionException {
         return isCloseTo(token, ptolemy.math.Complex.EPSILON);
     }
 
@@ -183,9 +183,9 @@ public class Token implements Serializable {
      *   of a type that can be compared with this token.
      */
     public BooleanToken isCloseTo(Token token, double epsilon)
-            throws IllegalActionException {
+        throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("isCloseTo", this,
-                                                 token));
+                token));
     }
 
     /** Test for equality of the values of this Token and the argument
@@ -197,9 +197,9 @@ public class Token implements Serializable {
      *  of a type that can be compared with this token.
      */
     public BooleanToken isEqualTo(Token rightArgument)
-            throws IllegalActionException {
+        throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("isEqualTo", this,
-                                                 rightArgument));
+                rightArgument));
     }
 
     /** Return a new token whose value is the value of this token
@@ -212,7 +212,7 @@ public class Token implements Serializable {
      */
     public Token modulo(Token rightArgument) throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("modulo", this,
-                                                 rightArgument));
+                rightArgument));
     }
 
     /** Return a new token whose value is the value of the argument token
@@ -225,9 +225,9 @@ public class Token implements Serializable {
      *  not make sense for the given types.
      */
     public Token moduloReverse(Token leftArgument)
-            throws IllegalActionException {
+        throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("moduloReverse",
-                                                 this, leftArgument));
+                this, leftArgument));
     }
 
     /** Return a new token whose value is the value of this token
@@ -240,7 +240,7 @@ public class Token implements Serializable {
      */
     public Token multiply(Token rightArgument) throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("multiply", this,
-                                                 rightArgument));
+                rightArgument));
     }
 
     /** Return a new token whose value is the value of the argument
@@ -253,9 +253,9 @@ public class Token implements Serializable {
      *  not make sense for the given types.
      */
     public Token multiplyReverse(Token leftArgument)
-            throws IllegalActionException {
+        throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage(
-                                                 "multiplyReverse", this, leftArgument));
+                "multiplyReverse", this, leftArgument));
     }
 
     /** Return a string with an error message that states that
@@ -266,11 +266,11 @@ public class Token implements Serializable {
      *  @return A string error message.
      */
     public static String notSupportedConversionMessage(Token token,
-            String typeString) {
+        String typeString) {
         // We use this method to factor out a very common message
         return ("Conversion is not supported from "
-                + token.getClass().getName() + " '" + token.toString()
-                + "' to the type " + typeString + ".");
+        + token.getClass().getName() + " '" + token.toString()
+        + "' to the type " + typeString + ".");
     }
 
     /** Return a string with an error message that states that
@@ -281,13 +281,13 @@ public class Token implements Serializable {
      *  @return A string error message.
      */
     public static String notSupportedIncomparableConversionMessage(
-            Token token, String typeString) {
+        Token token, String typeString) {
         // We use this method to factor out a very common message
         return ("Conversion is not supported from "
-                + token.getClass().getName() + " '" + token.toString()
-                + "' to the type " + typeString
-                + " because the type of the token is higher "
-                + "or incomparable with the given type.");
+        + token.getClass().getName() + " '" + token.toString()
+        + "' to the type " + typeString
+        + " because the type of the token is higher "
+        + "or incomparable with the given type.");
     }
 
     /** Return a string with an error message that states that the
@@ -301,12 +301,12 @@ public class Token implements Serializable {
      *  @return A string error message.
      */
     public static String notSupportedIncomparableMessage(String operation,
-            Token firstToken, Token secondToken) {
+        Token firstToken, Token secondToken) {
         // We use this method to factor out a very common message
         return (operation + " method not supported between "
-                + firstToken.getClass().getName() + " '" + firstToken.toString()
-                + "' and " + secondToken.getClass().getName() + " '"
-                + secondToken.toString() + "' because the types are incomparable.");
+        + firstToken.getClass().getName() + " '" + firstToken.toString()
+        + "' and " + secondToken.getClass().getName() + " '"
+        + secondToken.toString() + "' because the types are incomparable.");
     }
 
     /** Return a string with an error message that states that the
@@ -318,12 +318,12 @@ public class Token implements Serializable {
      *  @return A string error message.
      */
     public static String notSupportedMessage(String operation,
-            Token firstToken, Token secondToken) {
+        Token firstToken, Token secondToken) {
         // We use this method to factor out a very common message
         return (operation + " operation not supported between "
-                + firstToken.getClass().getName() + " '" + firstToken.toString()
-                + "' and " + secondToken.getClass().getName() + " '"
-                + secondToken.toString() + "'");
+        + firstToken.getClass().getName() + " '" + firstToken.toString()
+        + "' and " + secondToken.getClass().getName() + " '"
+        + secondToken.toString() + "'");
     }
 
     /** Returns a new Token representing the multiplicative identity.
@@ -334,8 +334,8 @@ public class Token implements Serializable {
      */
     public Token one() throws IllegalActionException {
         throw new IllegalActionException(
-                "Multiplicative identity not supported on "
-                + this.getClass().getName() + ".");
+            "Multiplicative identity not supported on "
+            + this.getClass().getName() + ".");
     }
 
     /** Return a new token computed as follows:
@@ -396,7 +396,7 @@ public class Token implements Serializable {
      */
     public Token subtract(Token rightArgument) throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("subtract", this,
-                                                 rightArgument));
+                rightArgument));
     }
 
     /** Return a new token whose value is the value of this token
@@ -408,9 +408,9 @@ public class Token implements Serializable {
      *  not make sense for the given types.
      */
     public Token subtractReverse(Token leftArgument)
-            throws IllegalActionException {
+        throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage(
-                                                 "subtractReverse", this, leftArgument));
+                "subtractReverse", this, leftArgument));
     }
 
     /** Return the value of this token as a string that can be parsed
@@ -432,7 +432,7 @@ public class Token implements Serializable {
      */
     public Token zero() throws IllegalActionException {
         throw new IllegalActionException("Additive identity not supported on "
-                + this.getClass().getName() + ".");
+            + this.getClass().getName() + ".");
     }
 
     /** Return the (exact) return type of the zero function above.

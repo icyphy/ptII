@@ -58,7 +58,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Green (bilung)
 */
 public class Bernoulli extends RandomSource {
-    
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -68,7 +67,7 @@ public class Bernoulli extends RandomSource {
      *   actor with this name.
      */
     public Bernoulli(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         output.setTypeEquals(BaseType.BOOLEAN);
@@ -108,7 +107,7 @@ public class Bernoulli extends RandomSource {
      */
     protected void _generateRandomNumber() throws IllegalActionException {
         if (_random.nextDouble() < ((DoubleToken) (trueProbability.getToken()))
-                .doubleValue()) {
+                        .doubleValue()) {
             _current = true;
         } else {
             _current = false;
@@ -117,7 +116,7 @@ public class Bernoulli extends RandomSource {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The random boolean for the current iteration. */
     private boolean _current;
 }

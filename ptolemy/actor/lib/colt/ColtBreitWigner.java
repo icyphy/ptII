@@ -27,13 +27,15 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.lib.colt;
 
+import cern.jet.random.BreitWigner;
+
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import cern.jet.random.BreitWigner;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// BreitWigner
@@ -46,12 +48,12 @@ import cern.jet.random.BreitWigner;
    deviation given by parameters.  In addition, the seed can be
    specified as a parameter to control the sequence that is generated.
 
-   <p> This actor instantiates a 
+   <p> This actor instantiates a
    <a href="http://hoschek.home.cern.ch/hoschek/colt/V1.0.3/doc/cern/jet/random/BreitWigner.html">cern.jet.random.BreitWigner</a> object with
     mean, gamma and cut set to 1.0.
 
     <p>Breit-Wigner is a also know as the Lorentz distribution.
-    The Breit-Wigner distribution is a more generate form of the 
+    The Breit-Wigner distribution is a more generate form of the
     Cauchy distribution.
 
     <p>A definition of the Breit-Wigner distribution can be found at
@@ -73,7 +75,7 @@ public class ColtBreitWigner extends ColtRandomSource {
      *   actor with this name.
      */
     public ColtBreitWigner(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         output.setTypeEquals(BaseType.DOUBLE);
@@ -86,7 +88,7 @@ public class ColtBreitWigner extends ColtRandomSource {
 
         cut = new Parameter(this, "cut", new DoubleToken(1.0));
         cut.setTypeEquals(BaseType.DOUBLE);
-        
+
         cut.moveToFirst();
         gamma.moveToFirst();
         mean.moveToFirst();
@@ -140,8 +142,7 @@ public class ColtBreitWigner extends ColtRandomSource {
         double gammaValue = ((DoubleToken) gamma.getToken()).doubleValue();
         double cutValue = ((DoubleToken) cut.getToken()).doubleValue();
 
-        _current = _generator.nextDouble(meanValue, gammaValue,
-                cutValue);
+        _current = _generator.nextDouble(meanValue, gammaValue, cutValue);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -149,7 +150,7 @@ public class ColtBreitWigner extends ColtRandomSource {
 
     /** The random number for the current iteration. */
     private double _current;
-    
+
     /** The random number generator. */
     private BreitWigner _generator;
 }

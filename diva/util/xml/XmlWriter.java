@@ -29,9 +29,9 @@
 // $Id$
 package diva.util.xml;
 
-import com.microstar.xml.XmlParser;
-
 import diva.util.LoggableOp;
+
+import com.microstar.xml.XmlParser;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -95,7 +95,7 @@ public class XmlWriter extends LoggableOp {
      * occurs while writing, then an IOException will be thrown.
      */
     public void write(XmlDocument document, Writer out)
-            throws IOException {
+        throws IOException {
         out.write("<?xml version=\"" + _xmlVersion + "\" standalone=\"no\"?>");
         out.write("\n");
         out.write("<!DOCTYPE " + document.getRoot().getType());
@@ -128,7 +128,7 @@ public class XmlWriter extends LoggableOp {
      * @deprecated Use XmlElement.writeXML instead.
      */
     public void write(XmlElement e, Writer out, String prefix)
-            throws IOException {
+        throws IOException {
         e.writeXML(out, prefix);
     }
 
@@ -136,7 +136,7 @@ public class XmlWriter extends LoggableOp {
      * occurs while writing, then an IOException will be thrown.
      */
     public void writeDTD(XmlDocument document, Writer out)
-            throws IOException {
+        throws IOException {
         String dtd = document.getDTD();
 
         if (dtd != null) {
@@ -193,19 +193,19 @@ public class XmlWriter extends LoggableOp {
             value = null;
 
             switch (_parser.getEntityType(ename)) {
-                // Internal text entity
+            // Internal text entity
             case XmlParser.ENTITY_INTERNAL:
                 value = makeLiteral(_parser.getEntityValue(ename));
                 break;
 
-                // External binary entity
+            // External binary entity
             case XmlParser.ENTITY_NDATA:
                 value = makeExternalIdentifiers(_parser.getEntityPublicId(ename),
                         _parser.getEntitySystemId(ename).toString()) + "NDATA "
                     + _parser.getEntityNotationName(ename);
                 break;
 
-                // External text entity
+            // External text entity
             case XmlParser.ENTITY_TEXT:
                 value = makeExternalIdentifiers(_parser.getEntityPublicId(ename),
                         _parser.getEntitySystemId(ename).toString());
@@ -265,7 +265,7 @@ public class XmlWriter extends LoggableOp {
      * @see #makeAttributeValue(String, String)
      */
     void writeDTDAttributes(String elname, Writer out)
-            throws IOException {
+        throws IOException {
         Enumeration attributeNames = _parser.declaredAttributes(elname);
         String aname;
         String type;
@@ -354,7 +354,7 @@ public class XmlWriter extends LoggableOp {
 
         case XmlParser.ATTRIBUTE_DEFAULT_FIXED:
             return "#FIXED "
-                + makeLiteral(_parser.getAttributeDefaultValue(elname, aname));
+            + makeLiteral(_parser.getAttributeDefaultValue(elname, aname));
         }
 
         return null;

@@ -41,9 +41,9 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 
+
 // Avoid importing any packages from ptolemy.* here so that we
 // can ship Ptplot.
-
 //////////////////////////////////////////////////////////////////////////
 //// FileUtilities
 
@@ -76,7 +76,7 @@ public class FileUtilities {
      *  destination file and the destination file does not exist.
      */
     public static boolean binaryCopyURLToFile(URL sourceURL,
-            File destinationFile) throws IOException {
+        File destinationFile) throws IOException {
         URL destinationURL = destinationFile.getCanonicalFile().toURL();
 
         if (sourceURL.sameFile(destinationURL)) {
@@ -90,62 +90,63 @@ public class FileUtilities {
         // have the same file.
         if (sourceFile.getPath().indexOf("!/") != -1) {
             File canonicalFile = null;
+
             try {
                 canonicalFile = sourceFile.getCanonicalFile();
-                if (sourceFile.getCanonicalFile().
-                        toURL().sameFile(destinationURL)) {
+
+                if (sourceFile.getCanonicalFile().toURL().sameFile(destinationURL)) {
                     return false;
                 }
             } catch (IOException ex) {
                 // JNLP Jar urls sometimes throw an exception here.
                 // IOException constructor does not take a cause
                 IOException ioException = new IOException(
-                        "Cannot find canonical file name of '"
-                        + sourceFile + "'");
+                        "Cannot find canonical file name of '" + sourceFile
+                        + "'");
                 ioException.initCause(ex);
                 throw ioException;
             }
         }
 
-
         BufferedInputStream input = null;
+
         try {
-        	input = new BufferedInputStream(sourceURL.openStream());
-        	BufferedOutputStream output = null;
-        	try {
-        		output = new BufferedOutputStream(
-        				new FileOutputStream(destinationFile));
-        		
-        		int c;
-        		
-        		while ((c = input.read()) != -1) {
-        			output.write(c);
-        		}
-        	} finally {
-        		if (output != null) {
-        			try {
-        				output.close();
-        			} catch (Throwable throwable) {
-        				System.out.println("Ignoring failure to close stream "
-        						+ "on " + destinationFile);
-        				throwable.printStackTrace();
-        			}
-        		}   
-        	}   
+            input = new BufferedInputStream(sourceURL.openStream());
+
+            BufferedOutputStream output = null;
+
+            try {
+                output = new BufferedOutputStream(new FileOutputStream(
+                            destinationFile));
+
+                int c;
+
+                while ((c = input.read()) != -1) {
+                    output.write(c);
+                }
+            } finally {
+                if (output != null) {
+                    try {
+                        output.close();
+                    } catch (Throwable throwable) {
+                        System.out.println("Ignoring failure to close stream "
+                            + "on " + destinationFile);
+                        throwable.printStackTrace();
+                    }
+                }
+            }
         } finally {
-        	if (input != null) {
-        		try {
-        			input.close();
-        		} catch (Throwable throwable) {
-        			System.out.println("Ignoring failure to close stream "
-        					+ "on " + sourceURL);
-        			throwable.printStackTrace();
-        		}
-        	}
-        	
-        	
+            if (input != null) {
+                try {
+                    input.close();
+                } catch (Throwable throwable) {
+                    System.out.println("Ignoring failure to close stream "
+                        + "on " + sourceURL);
+                    throwable.printStackTrace();
+                }
+            }
         }
-        
+
         return true;
     }
 
@@ -205,7 +206,7 @@ public class FileUtilities {
      *  @exception MalformedURLException If the
      */
     public static URL nameToURL(String name, URI baseDirectory,
-            ClassLoader classLoader) throws IOException {
+        ClassLoader classLoader) throws IOException {
         if ((name == null) || name.trim().equals("")) {
             return null;
         }
@@ -213,18 +214,17 @@ public class FileUtilities {
         // If the name begins with "$CLASSPATH", then attempt to
         // open the file relative to the classpath.
         // NOTE: Use the dummy variable constant set up in the constructor.
-        if (name.startsWith(_CLASSPATH_VALUE)
-                || name.startsWith("$CLASSPATH") ) {
+        if (name.startsWith(_CLASSPATH_VALUE) || name.startsWith("$CLASSPATH")) {
             // Try relative to classpath.
-
             String classpathKey;
+
             if (name.startsWith(_CLASSPATH_VALUE)) {
                 classpathKey = _CLASSPATH_VALUE;
-            } else { 
+            } else {
                 classpathKey = "$CLASSPATH";
             }
 
-            String trimmedName= name.substring(classpathKey.length() + 1);
+            String trimmedName = name.substring(classpathKey.length() + 1);
 
             if (classLoader == null) {
                 try {
@@ -250,7 +250,7 @@ public class FileUtilities {
 
             if (result == null) {
                 new IOException("Cannot find file '" + trimmedName
-                        + "' in classpath");
+                    + "' in classpath");
             }
 
             return result;
@@ -269,9 +269,8 @@ public class FileUtilities {
 
                 if (!file.canRead()) {
                     throw new IOException("Cannot read file '" + name
-                            + "' or '"
-                            + StringUtilities.substitute(name, "%20", " ")
-                            + "'");
+                        + "' or '"
+                        + StringUtilities.substitute(name, "%20", " ") + "'");
                 }
             }
 
@@ -290,8 +289,7 @@ public class FileUtilities {
                     // demos that have actors that have defaults FileParameters
                     // like "$PTII/doc/img/PtolemyII.jpg", then resolve()
                     // bombs.
-                    String name2 = StringUtilities.substitute(name,
-                            "%20", " ");
+                    String name2 = StringUtilities.substitute(name, "%20", " ");
 
                     try {
                         newURI = baseDirectory.resolve(name2);
@@ -345,7 +343,7 @@ public class FileUtilities {
      *  @exception IOException If the file cannot be opened.
      */
     public static BufferedReader openForReading(String name, URI base,
-            ClassLoader classLoader) throws IOException {
+        ClassLoader classLoader) throws IOException {
         if (name.trim().equals("System.in")) {
             if (STD_IN == null) {
                 STD_IN = new BufferedReader(new InputStreamReader(System.in));
@@ -383,10 +381,11 @@ public class FileUtilities {
      *   or created.
      */
     public static Writer openForWriting(String name, URI base, boolean append)
-            throws IOException {
+        throws IOException {
         if (name == null) {
-            return null;   
+            return null;
         }
+
         if (name.trim().equals("System.out")) {
             if (STD_OUT == null) {
                 STD_OUT = new PrintWriter(System.out);

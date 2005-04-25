@@ -95,7 +95,7 @@ public abstract class ExtendedGraphFrame extends BasicGraphFrame {
      *   to use if the model does not have a library.
      */
     public ExtendedGraphFrame(CompositeEntity entity, Tableau tableau,
-            LibraryAttribute defaultLibrary) {
+        LibraryAttribute defaultLibrary) {
         super(entity, tableau, defaultLibrary);
         GUIUtilities.addToolBarButton(_toolbar, _fullScreenAction);
     }

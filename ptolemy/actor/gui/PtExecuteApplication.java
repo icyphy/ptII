@@ -138,7 +138,7 @@ public class PtExecuteApplication extends MoMLApplication {
      *  @exception Exception If the configuration cannot be opened.
      */
     protected Configuration _createDefaultConfiguration()
-            throws Exception {
+        throws Exception {
         if (_configurationURL == null) {
             _configurationURL = specToURL(
                     "ptolemy/configs/runConfiguration.xml");
@@ -155,7 +155,7 @@ public class PtExecuteApplication extends MoMLApplication {
      *  @exception Exception Always thrown.
      */
     protected Configuration _createEmptyConfiguration()
-            throws Exception {
+        throws Exception {
         throw new Exception("No model specified.");
     }
 
@@ -178,7 +178,7 @@ public class PtExecuteApplication extends MoMLApplication {
      *   an error.
      */
     protected synchronized void _parseArgs(String[] args)
-            throws Exception {
+        throws Exception {
         _commandTemplate = "ptexecute [ options ] file ...";
 
         // PtExecuteApplication.super._parseArgs(args)
@@ -203,7 +203,7 @@ public class PtExecuteApplication extends MoMLApplication {
         }
 
         String[] processedArgs = (String[]) processedArgsList.toArray(new String[processedArgsList
-                                                                              .size()]);
+                            .size()]);
 
         super._parseArgs(processedArgs);
     }
@@ -213,7 +213,7 @@ public class PtExecuteApplication extends MoMLApplication {
      */
     protected String _usage() {
         return _configurationUsage(_commandTemplate, _localCommandOptions,
-                _localCommandFlags);
+            _localCommandFlags);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -223,15 +223,17 @@ public class PtExecuteApplication extends MoMLApplication {
     //  in which case non-static variables are null?
 
     /** The command-line options that are either present or not. */
-    protected static String[] _localCommandFlags = { "-exit" };
+    protected static String[] _localCommandFlags = {
+            "-exit"
+        };
 
     /** The command-line options that take arguments. */
     protected static String[][] _localCommandOptions = {
-        {
-            "-config",
-            "<configuration URL, defaults to ptolemy/configs/runConfiguration.xml>"
-        },
-    };
+            {
+                "-config",
+                "<configuration URL, defaults to ptolemy/configs/runConfiguration.xml>"
+            },
+        };
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -246,7 +248,7 @@ public class PtExecuteApplication extends MoMLApplication {
      *  @exception Exception If something goes wrong.
      */
     private boolean _configurationParseArg(String arg)
-            throws Exception {
+        throws Exception {
         if (arg.startsWith("-conf")) {
             _expectingConfiguration = true;
         } else if (arg.startsWith("-")) {

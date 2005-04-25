@@ -90,7 +90,7 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
             processLayerEvent((LayerEvent) event);
         } else {
             throw new IllegalArgumentException("Event type not recognized by "
-                    + "CanvasPane.dispatchEvent: " + event);
+                + "CanvasPane.dispatchEvent: " + event);
         }
     }
 
@@ -204,7 +204,7 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
 
         if (isAntialiasing()) {
             g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                    RenderingHints.VALUE_ANTIALIAS_ON);
+                RenderingHints.VALUE_ANTIALIAS_ON);
         }
 
         CanvasLayer layer;
@@ -233,7 +233,7 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
 
         if (isAntialiasing()) {
             g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                    RenderingHints.VALUE_ANTIALIAS_ON);
+                RenderingHints.VALUE_ANTIALIAS_ON);
         }
 
         // Transform the region to paint as well
@@ -331,8 +331,8 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
     public final void setCanvas(JCanvas canvas) {
         if ((canvas != null) && (_parent != null)) {
             throw new IllegalArgumentException("CanvasPane " + this
-                    + " is already contained in another CanvasComponent. \n"
-                    + "Cannot set the parent canvas to " + canvas);
+                + " is already contained in another CanvasComponent. \n"
+                + "Cannot set the parent canvas to " + canvas);
         }
 
         this._canvas = canvas;
@@ -351,8 +351,8 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
     public final void setParent(CanvasComponent parent) {
         if ((parent != null) && (_canvas != null)) {
             throw new IllegalArgumentException("CanvasPane " + this
-                    + " is already contained in a JCanvas. \n"
-                    + "Cannot set the parent component to " + parent);
+                + " is already contained in a JCanvas. \n"
+                + "Cannot set the parent component to " + parent);
         }
 
         if (_transformContext != null) {
@@ -409,7 +409,7 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
      * horizontal and vertical scale factors.
      */
     public void scale(double xcenter, double ycenter, double xscale,
-            double yscale) {
+        double yscale) {
         // Construct the translation transform
         AffineTransform at = new AffineTransform();
 
@@ -433,7 +433,7 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
     protected void _initNewLayer(CanvasLayer l) {
         if (l._containingPane != null) {
             throw new IllegalArgumentException("The layer " + l
-                    + " does not have its _containingPane set to null");
+                + " does not have its _containingPane set to null");
         }
 
         l._containingPane = this;
@@ -446,7 +446,7 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
     protected void _nullifyLayer(CanvasLayer l) {
         if (l._containingPane != this) {
             throw new IllegalArgumentException("The layer " + l
-                    + " does not have its _containingPane set to " + this);
+                + " does not have its _containingPane set to " + this);
         }
 
         l._containingPane = null;
@@ -463,9 +463,9 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
         if (_canvas.getCanvasPane() == this) { //make sure this pane is the top one.
 
             DefaultBoundedRangeModel _horizontalRangeModel = (DefaultBoundedRangeModel) _canvas
-                .getHorizontalRangeModel();
+                            .getHorizontalRangeModel();
             DefaultBoundedRangeModel _verticalRangeModel = (DefaultBoundedRangeModel) _canvas
-                .getVerticalRangeModel();
+                            .getVerticalRangeModel();
             Rectangle2D viewsize = _canvas.getViewSize();
             Rectangle2D vissize = _canvas.getVisibleSize();
 

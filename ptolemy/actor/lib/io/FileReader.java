@@ -67,7 +67,7 @@ public class FileReader extends Source {
      *   an actor already in the container.
      */
     public FileReader(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         output.setTypeEquals(BaseType.STRING);
@@ -78,11 +78,11 @@ public class FileReader extends Source {
         fileOrURLPort.setTypeEquals(BaseType.STRING);
 
         _attachText("_iconDescription",
-                "<svg>\n" + "<rect x=\"-25\" y=\"-20\" "
-                + "width=\"50\" height=\"40\" " + "style=\"fill:white\"/>\n"
-                + "<polygon points=\"-15,-10 -12,-10 -8,-14 -1,-14 3,-10"
-                + " 15,-10 15,10, -15,10\" " + "style=\"fill:red\"/>\n"
-                + "</svg>\n");
+            "<svg>\n" + "<rect x=\"-25\" y=\"-20\" "
+            + "width=\"50\" height=\"40\" " + "style=\"fill:white\"/>\n"
+            + "<polygon points=\"-15,-10 -12,-10 -8,-14 -1,-14 3,-10"
+            + " 15,-10 15,10, -15,10\" " + "style=\"fill:red\"/>\n"
+            + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -123,8 +123,10 @@ public class FileReader extends Source {
         }
 
         BufferedReader reader = null;
+
         try {
             reader = fileOrURL.openForReading();
+
             StringBuffer lineBuffer = new StringBuffer();
             String newline = System.getProperty("line.separator");
 
@@ -138,13 +140,14 @@ public class FileReader extends Source {
                 lineBuffer = lineBuffer.append(line);
                 lineBuffer = lineBuffer.append(newline);
             }
+
             output.broadcast(new StringToken(lineBuffer.toString()));
         } catch (Throwable throwable) {
             throw new IllegalActionException(this, throwable,
-                    "Failed to write '" + fileOrURL + "'");
+                "Failed to write '" + fileOrURL + "'");
         } finally {
             if (fileOrURL != null) {
-               fileOrURL.close();   
+                fileOrURL.close();
             }
         }
     }

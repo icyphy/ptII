@@ -24,13 +24,13 @@
 */
 package thales.vergil.navigable;
 
+import thales.vergil.SingleWindowApplication;
+
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.vergil.tree.PTree;
-
-import thales.vergil.SingleWindowApplication;
 
 import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeExpansionListener;
@@ -89,9 +89,9 @@ public class NavigationPTree extends PTree {
                 if (obj instanceof CompositeEntity) {
                     try {
                         SingleWindowApplication._mainFrame.getConfiguration()
-                            .openModel(obj);
+                                                                      .openModel(obj);
                         ((NavigationTreeModel) _jTree.getModel())
-                            .setSelectedItem(_jTree.getSelectionPath());
+                                    .setSelectedItem(_jTree.getSelectionPath());
                     } catch (IllegalActionException e1) {
                         e1.printStackTrace();
                     } catch (NameDuplicationException e1) {
@@ -135,7 +135,7 @@ public class NavigationPTree extends PTree {
 
             if (aPath != null) {
                 ((NavigationTreeModel) _jTree.getModel()).expandPath(aPath,
-                        false);
+                    false);
             }
         }
     }

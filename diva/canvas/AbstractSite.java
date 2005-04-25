@@ -86,7 +86,7 @@ public abstract class AbstractSite implements Site {
      */
     public Point2D getPoint(TransformContext tc) {
         return CanvasUtilities.transformInto(getPoint(), getTransformContext(),
-                tc);
+            tc);
     }
 
     /** Get the point location of the site, in the enclosing

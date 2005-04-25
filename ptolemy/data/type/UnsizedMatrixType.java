@@ -120,12 +120,12 @@ public abstract class UnsizedMatrixType extends StructuredType
      *  type that has a corresponding matrix type.
      */
     public static UnsizedMatrixType getMatrixTypeForElementType(
-            Type elementType) throws IllegalActionException {
+        Type elementType) throws IllegalActionException {
         UnsizedMatrixType matrixType;
 
         if (elementType.equals(BaseType.UNKNOWN)) {
             throw new IllegalActionException("Cannot resolve type for "
-                    + "matrix construction.");
+                + "matrix construction.");
         } else if (elementType.equals(BaseType.BOOLEAN)) {
             matrixType = BaseType.BOOLEAN_MATRIX;
         } else if (elementType.equals(BaseType.INT)) {
@@ -140,7 +140,7 @@ public abstract class UnsizedMatrixType extends StructuredType
             matrixType = BaseType.FIX_MATRIX;
         } else {
             throw new IllegalActionException("Type " + elementType
-                    + " does have a corresponding matrix type.");
+                + " does have a corresponding matrix type.");
         }
 
         return matrixType;
@@ -225,11 +225,11 @@ public abstract class UnsizedMatrixType extends StructuredType
      *   different structure.
      */
     public void updateType(StructuredType newType)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (newType._getRepresentative() != _getRepresentative()) {
             throw new InternalErrorException(
-                    "UnsizedMatrixType.updateType: Cannot "
-                    + "updateType the element type to " + newType + ".");
+                "UnsizedMatrixType.updateType: Cannot "
+                + "updateType the element type to " + newType + ".");
         }
     }
 
@@ -244,7 +244,7 @@ public abstract class UnsizedMatrixType extends StructuredType
                 return BooleanMatrixToken.convert((MatrixToken) token);
             } else {
                 throw new IllegalActionException(Token
-                        .notSupportedConversionMessage(token, toString()));
+                                .notSupportedConversionMessage(token, toString()));
             }
         }
     }
@@ -260,7 +260,7 @@ public abstract class UnsizedMatrixType extends StructuredType
                 return ComplexMatrixToken.convert((MatrixToken) token);
             } else {
                 throw new IllegalActionException(Token
-                        .notSupportedConversionMessage(token, toString()));
+                                .notSupportedConversionMessage(token, toString()));
             }
         }
     }
@@ -276,7 +276,7 @@ public abstract class UnsizedMatrixType extends StructuredType
                 return DoubleMatrixToken.convert((MatrixToken) token);
             } else {
                 throw new IllegalActionException(Token
-                        .notSupportedConversionMessage(token, toString()));
+                                .notSupportedConversionMessage(token, toString()));
             }
         }
     }
@@ -292,7 +292,7 @@ public abstract class UnsizedMatrixType extends StructuredType
                 return IntMatrixToken.convert((MatrixToken) token);
             } else {
                 throw new IllegalActionException(Token
-                        .notSupportedConversionMessage(token, toString()));
+                                .notSupportedConversionMessage(token, toString()));
             }
         }
     }
@@ -308,7 +308,7 @@ public abstract class UnsizedMatrixType extends StructuredType
                 return FixMatrixToken.convert((MatrixToken) token);
             } else {
                 throw new IllegalActionException(Token
-                        .notSupportedConversionMessage(token, toString()));
+                                .notSupportedConversionMessage(token, toString()));
             }
         }
     }
@@ -324,7 +324,7 @@ public abstract class UnsizedMatrixType extends StructuredType
                 return LongMatrixToken.convert((MatrixToken) token);
             } else {
                 throw new IllegalActionException(Token
-                        .notSupportedConversionMessage(token, toString()));
+                                .notSupportedConversionMessage(token, toString()));
             }
         }
     }

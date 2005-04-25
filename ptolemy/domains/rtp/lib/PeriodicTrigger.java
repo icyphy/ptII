@@ -55,7 +55,7 @@ import ptolemy.kernel.util.Workspace;
 */
 public class PeriodicTrigger extends TypedAtomicActor {
     public PeriodicTrigger(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.GENERAL);
@@ -101,13 +101,13 @@ public class PeriodicTrigger extends TypedAtomicActor {
     /** Once the frequency is updated, calculate the execution period.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == frequency) {
             double f = ((DoubleToken) (frequency.getToken())).doubleValue();
 
             if (f > 1000) {
                 throw new IllegalActionException(this,
-                        "does not support frequency higher than 1000.");
+                    "does not support frequency higher than 1000.");
             }
 
             _period = 1000.0 / f;

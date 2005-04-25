@@ -26,7 +26,6 @@ COPYRIGHTENDKEY
 @ProposedRating Red (acataldo)
 @AcceptedRating Red (reviewmoderator)
 */
-
 package ptolemy.apps.softwalls;
 
 import ptolemy.data.expr.FileParameter;
@@ -41,8 +40,10 @@ import java.io.Serializable;
 import java.net.URL;
 import java.util.StringTokenizer;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ThreeDFunction
+
 /**
    This creates a function of three variables, defined over some subset
    of R^3.  The function is read from a file which stores the value of the
@@ -62,6 +63,7 @@ public class ThreeDFunction implements Serializable {
      *  @exception IllegalActionException If any exception is
      *     is generated during file I/O.
      */
+
     //     public ThreeDFunction(String fileName) throws IllegalActionException {
     //         BufferedReader bufferedReader = null;
     //         try {
@@ -70,14 +72,11 @@ public class ThreeDFunction implements Serializable {
     //             throw new IllegalActionException(null, ex,
     //                     "Failed to open '" + fileName + "'");
     //         }
-
     //         // Read uncompressed data and do not write out compressed data.
     //         this(bufferedReader, false, null);
-
     //         // Read compressed data and do not write out uncompressed data.
     //         //this(bufferedReader, true, null);
     //     }
-
 
     /** Construct the functional representation of the 3D dataset by
      *  reading a compressed file.
@@ -87,7 +86,7 @@ public class ThreeDFunction implements Serializable {
      *     is generated during file I/O.
      */
     public ThreeDFunction(FileParameter fileParameter)
-            throws IllegalActionException {
+        throws IllegalActionException {
         // Read uncompressed data and do not write out compressed data.
         this(fileParameter, false, false);
 
@@ -144,12 +143,17 @@ public class ThreeDFunction implements Serializable {
      *     is generated during file I/O.
      */
     public ThreeDFunction(FileParameter fileParameter, boolean compressed,
-            boolean writeOutData) throws IllegalActionException {
-        int xPoints, yPoints, thetaPoints;
-        double xSpan, ySpan, thetaSpan;
+        boolean writeOutData) throws IllegalActionException {
+        int xPoints;
+        int yPoints;
+        int thetaPoints;
+        double xSpan;
+        double ySpan;
+        double thetaSpan;
         double dimension;
 
         BufferedReader reader = null;
+
         try {
             reader = fileParameter.openForReading();
             System.out.println("Opening file: " + fileParameter.stringValue());
@@ -161,23 +165,24 @@ public class ThreeDFunction implements Serializable {
             // in a separate directory that might not be in the classpath,
             // so we first look as a regular file and then look in the
             // classpath.
-            URL url = getClass().getClassLoader()
-                .getResource(fileParameter.stringValue());
+            URL url = getClass().getClassLoader().getResource(fileParameter
+                                .stringValue());
+
             if (url == null) {
                 throw new IllegalActionException(fileParameter, ex,
-                        "Cannot find file '" + fileParameter +
-                        "'. Also looked in classpath for '"
-                        + fileParameter.stringValue() + "'");
-
+                    "Cannot find file '" + fileParameter
+                    + "'. Also looked in classpath for '"
+                    + fileParameter.stringValue() + "'");
             }
+
             try {
-                reader = new BufferedReader(
-                        new InputStreamReader(url.openStream()));
+                reader = new BufferedReader(new InputStreamReader(
+                            url.openStream()));
                 System.out.println("Opening URL: " + url);
             } catch (IOException ex2) {
                 throw new IllegalActionException(fileParameter, ex2,
-                        "Cannot find file '" + fileParameter +
-                        "', failed to open '" + url + "'");
+                    "Cannot find file '" + fileParameter
+                    + "', failed to open '" + url + "'");
             }
         }
 
@@ -205,14 +210,13 @@ public class ThreeDFunction implements Serializable {
             //             if ((_thetaLowerBound != 0.0) || (_thetaUpperBound >= Math.PI)) {
             //                 throw new IllegalActionException("Bad bounds on theta");
             //             }
-
             // Initialize the values array;
             xSpan = _xUpperBound - _xLowerBound;
             ySpan = _yUpperBound - _yLowerBound;
             thetaSpan = _thetaUpperBound - _thetaLowerBound;
-            xPoints = (int)Math.round(xSpan / _xStepSize) + 1;
-            yPoints = (int)Math.round(ySpan / _yStepSize) + 1;
-            thetaPoints = (int)Math.round(thetaSpan / _thetaStepSize) + 1;
+            xPoints = (int) Math.round(xSpan / _xStepSize) + 1;
+            yPoints = (int) Math.round(ySpan / _yStepSize) + 1;
+            thetaPoints = (int) Math.round(thetaSpan / _thetaStepSize) + 1;
             _values = new double[xPoints][yPoints][thetaPoints];
 
             int last = Integer.MIN_VALUE;
@@ -229,10 +233,10 @@ public class ThreeDFunction implements Serializable {
                             if (last == Integer.MIN_VALUE) {
                                 // First data point
                                 last = _readInteger(reader);
-                                _values[x][y][t] = last/1000.0;
+                                _values[x][y][t] = last / 1000.0;
                             } else {
                                 last = last - _readInteger(reader);
-                                _values[x][y][t] = last/1000.0;
+                                _values[x][y][t] = last / 1000.0;
                             }
                         } else {
                             _values[x][y][t] = _readDouble(reader);
@@ -245,33 +249,30 @@ public class ThreeDFunction implements Serializable {
                 // Write out the other form of data.
                 // If we read in compressed data, we write out uncompressed.
                 // If we read in uncompressed data, we write out compressed.
-
                 String outputFileName = null;
                 String baseName = fileParameter.stringValue();
 
                 // Write into the current directory.
                 // We could try to be more crafty here, but writing data
                 // is really only for experts
-
                 // The fileParameter might point to something in a jar file
                 // so we get the basename by hand.
-                if (baseName.indexOf("/") != -1 ) {
-                    outputFileName = baseName.substring(
-                            baseName.lastIndexOf("/") + 1,
-                            baseName.length()) + ".out";
+                if (baseName.indexOf("/") != -1) {
+                    outputFileName = baseName.substring(baseName.lastIndexOf(
+                                "/") + 1, baseName.length()) + ".out";
                 } else if (baseName.indexOf("\\") != -1) {
-                    outputFileName = baseName.substring(
-                            baseName.lastIndexOf("\\") + 1,
-                            baseName.length()) + ".out";
+                    outputFileName = baseName.substring(baseName.lastIndexOf(
+                                "\\") + 1, baseName.length()) + ".out";
                 } else {
                     outputFileName = baseName + ".out";
                 }
 
-                System.out.println("Writing " + outputFileName );
+                System.out.println("Writing " + outputFileName);
+
                 BufferedWriter output = null;
+
                 try {
-                    output =
-                        new BufferedWriter(new FileWriter(outputFileName));
+                    output = new BufferedWriter(new FileWriter(outputFileName));
                     write(output, !compressed);
                 } finally {
                     if (output != null) {
@@ -279,17 +280,16 @@ public class ThreeDFunction implements Serializable {
                     }
                 }
             }
-
         } catch (Exception ex) {
             throw new IllegalActionException(null, ex,
-                    "Failed to parse '" + reader + "'");
+                "Failed to parse '" + reader + "'");
         } finally {
             if (reader != null) {
                 try {
                     reader.close();
                 } catch (IOException ex) {
                     throw new IllegalActionException(null, ex,
-                            "Failed to close '" + reader + "'");
+                        "Failed to close '" + reader + "'");
                 }
             }
         }
@@ -309,13 +309,22 @@ public class ThreeDFunction implements Serializable {
      *  @return double represention of f(x, y, theta)
      */
     public double getValue(double x, double y, double theta) {
-        int x0Index, x1Index;
-        int y0Index, y1Index;
-        int theta0Index, theta1Index;
-        double xDis, yDis, thetaDis;
+        int x0Index;
+        int x1Index;
+        int y0Index;
+        int y1Index;
+        int theta0Index;
+        int theta1Index;
+        double xDis;
+        double yDis;
+        double thetaDis;
         double value;
-        double xWeight, yWeight, thetaWeight;
-        int xIndex, yIndex, thetaIndex;
+        double xWeight;
+        double yWeight;
+        double thetaWeight;
+        int xIndex;
+        int yIndex;
+        int thetaIndex;
         double point;
         double weight;
 
@@ -323,17 +332,15 @@ public class ThreeDFunction implements Serializable {
         theta = _angleWrap(theta);
 
         if (_inRange(x, y)) {
-
             // Get the indices for the neighboring points.  x0Index
             // is the x index of the nearest gridpoint less than x,
             // and x1Index is the x index of the nearest gridpoint
             // greater than x.
-            x0Index = (int)((x - _xLowerBound) / _xStepSize);
+            x0Index = (int) ((x - _xLowerBound) / _xStepSize);
             x1Index = x0Index + 1;
-            y0Index = (int)((y - _yLowerBound) / _yStepSize);
+            y0Index = (int) ((y - _yLowerBound) / _yStepSize);
             y1Index = y0Index + 1;
-            theta0Index =
-                (int)((theta - _thetaLowerBound) / _thetaStepSize);
+            theta0Index = (int) ((theta - _thetaLowerBound) / _thetaStepSize);
 
             // theta1Index will be 0 if the nearest gridpoint greater
             // than theta is 2*pi
@@ -342,11 +349,9 @@ public class ThreeDFunction implements Serializable {
             //             if (theta0Index == maxThetaIndex) {
             //                 theta1Index = 0;
             //             }
-
             //  When the proper dataset is loaded, use the previous
             //  method.  This will be more error prone.
-
-            if ((2 * Math.PI - theta) < _thetaStepSize) {
+            if (((2 * Math.PI) - theta) < _thetaStepSize) {
                 theta1Index = 0;
             } else {
                 theta1Index = theta0Index + 1;
@@ -357,15 +362,16 @@ public class ThreeDFunction implements Serializable {
             //  theta0Index.  The distance is scaled by the step size
             //  in each dimension, so these numbers will be between 0
             //  and 1.
-            xDis = (x - _xLowerBound) / _xStepSize - x0Index;
-            yDis = (y - _yLowerBound) / _yStepSize - y0Index;
-            thetaDis =
-                (theta - _thetaLowerBound) / _thetaStepSize - theta0Index;
+            xDis = ((x - _xLowerBound) / _xStepSize) - x0Index;
+            yDis = ((y - _yLowerBound) / _yStepSize) - y0Index;
+            thetaDis = ((theta - _thetaLowerBound) / _thetaStepSize)
+                - theta0Index;
 
             // Through a for loop, compute the value.  At each step
             // of the for loop, add the contribution from one of the
             // gridpoints.
             value = 0;
+
             for (int i = 0; i <= 1; i = i + 1) {
                 for (int j = 0; j <= 1; j = j + 1) {
                     for (int k = 0; k <= 1; k = k + 1) {
@@ -375,22 +381,27 @@ public class ThreeDFunction implements Serializable {
                         } else {
                             xWeight = xDis;
                             xIndex = x1Index;
-                        } if (j == 0) {
+                        }
+
+                        if (j == 0) {
                             yWeight = 1 - yDis;
                             yIndex = y0Index;
                         } else {
                             yWeight = yDis;
                             yIndex = y1Index;
-                        } if (k == 0) {
+                        }
+
+                        if (k == 0) {
                             thetaWeight = 1 - thetaDis;
                             thetaIndex = theta0Index;
                         } else {
                             thetaWeight = thetaDis;
                             thetaIndex = theta1Index;
                         }
+
                         point = _values[xIndex][yIndex][thetaIndex];
-                        value =
-                            value + point * xWeight * yWeight * thetaWeight;
+                        value = value
+                            + (point * xWeight * yWeight * thetaWeight);
                     }
                 }
             }
@@ -415,24 +426,20 @@ public class ThreeDFunction implements Serializable {
      *  @param compressed True if the output should be compressed.
      */
     public void write(BufferedWriter output, boolean compressed)
-            throws IOException {
+        throws IOException {
         output.write("3" + "\n");
-        output.write(_xLowerBound
-                + "   " + _xStepSize
-                + "   " + _xUpperBound + "\n");
+        output.write(_xLowerBound + "   " + _xStepSize + "   " + _xUpperBound
+            + "\n");
 
-        output.write(_yLowerBound
-                + "   " + _yStepSize
-                + "   " + _yUpperBound + "\n");
+        output.write(_yLowerBound + "   " + _yStepSize + "   " + _yUpperBound
+            + "\n");
 
-        output.write(_thetaLowerBound
-                + "   " + _thetaStepSize
-                + "   " + _thetaUpperBound + "\n");
+        output.write(_thetaLowerBound + "   " + _thetaStepSize + "   "
+            + _thetaUpperBound + "\n");
 
         // FIXME: we assume the array is regular, that is that
         // all the rows have the same length.
-
-        long last = Math.round(_values[0][0][0] * 1000.0) ;
+        long last = Math.round(_values[0][0][0] * 1000.0);
         boolean sawFirst = false;
 
         for (int t = 0; t < _values[0][0].length; t = t + 1) {
@@ -441,15 +448,14 @@ public class ThreeDFunction implements Serializable {
                     if (compressed) {
                         if (!sawFirst) {
                             sawFirst = true;
-                            output.write( last + "\n");
+                            output.write(last + "\n");
                         } else {
-                            long current =
-                                Math.round(_values[x][y][t] * 1000.0);
-                            output.write( last - current + "\n");
+                            long current = Math.round(_values[x][y][t] * 1000.0);
+                            output.write(last - current + "\n");
                             last = current;
                         }
                     } else {
-                        output.write( _values[x][y][t] + "\n");
+                        output.write(_values[x][y][t] + "\n");
                     }
                 }
             }
@@ -458,15 +464,36 @@ public class ThreeDFunction implements Serializable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // Lower bound for each dimension.
-    private double _xLowerBound,  _yLowerBound, _thetaLowerBound;
+    private double _xLowerBound;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+    // Lower bound for each dimension.
+    private double _yLowerBound;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+    // Lower bound for each dimension.
+    private double _thetaLowerBound;
 
     // Step size for each dimension.
-    private double _xStepSize, _yStepSize, _thetaStepSize;
+    private double _xStepSize;
+
+    // Step size for each dimension.
+    private double _yStepSize;
+
+    // Step size for each dimension.
+    private double _thetaStepSize;
 
     // Upper bound for each dimension.
-    private double _xUpperBound, _yUpperBound, _thetaUpperBound;
+    private double _xUpperBound;
+
+    // Upper bound for each dimension.
+    private double _yUpperBound;
+
+    // Upper bound for each dimension.
+    private double _thetaUpperBound;
 
     // The matrix of values on the gridpoint.
     private double[][][] _values;
@@ -486,12 +513,15 @@ public class ThreeDFunction implements Serializable {
      */
     private double _angleWrap(double angle) {
         double pi = Math.PI;
+
         while (angle < 0) {
-            angle = angle + 2 * pi;
+            angle = angle + (2 * pi);
         }
-        while (angle >= 2 * pi) {
-            angle = angle - 2 * pi;
+
+        while (angle >= (2 * pi)) {
+            angle = angle - (2 * pi);
         }
+
         return angle;
     }
 
@@ -508,7 +538,8 @@ public class ThreeDFunction implements Serializable {
      *  @return boolean
      */
     private boolean _inRange(double x, double y) {
-        boolean xOK, yOK;
+        boolean xOK;
+        boolean yOK;
 
         /* xOK is true if x is in the allowable range. */
         xOK = ((x >= _xLowerBound) && (x < _xUpperBound));
@@ -528,6 +559,7 @@ public class ThreeDFunction implements Serializable {
     private double _readDouble(BufferedReader reader) throws IOException {
         String line;
         String token;
+
         if (_tokenizer.hasMoreTokens()) {
             return (new Double(_tokenizer.nextToken())).doubleValue();
         } else {
@@ -547,6 +579,7 @@ public class ThreeDFunction implements Serializable {
     private int _readInteger(BufferedReader reader) throws IOException {
         String line;
         String token;
+
         if (_tokenizer.hasMoreTokens()) {
             return (new Integer(_tokenizer.nextToken())).intValue();
         } else {

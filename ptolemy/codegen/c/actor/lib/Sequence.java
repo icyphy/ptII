@@ -30,8 +30,10 @@ package ptolemy.codegen.c.actor.lib;
 import ptolemy.codegen.kernel.CCodeGeneratorHelper;
 import ptolemy.kernel.util.IllegalActionException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Sequence
+
 /**
    A helper class for ptolemy.actor.lib.Sequence
 
@@ -42,7 +44,6 @@ import ptolemy.kernel.util.IllegalActionException;
    @Pt.AcceptedRating Red (eal)
 */
 public class Sequence extends CCodeGeneratorHelper {
-
     /**
      * Constructor method for the Sequence helper
      * @param actor the associated actor
@@ -53,15 +54,13 @@ public class Sequence extends CCodeGeneratorHelper {
 
     /**
      * Generate fire code
-     * The method reads in codeBlock1 and puts into the 
+     * The method reads in codeBlock1 and puts into the
      * given stream buffer
      * @param stream the given buffer to append the code to
      */
-    public void  generateFireCode(StringBuffer stream)
-            throws IllegalActionException {
-
-        ptolemy.actor.lib.Sequence actor =
-            (ptolemy.actor.lib.Sequence)getComponent();
+    public void generateFireCode(StringBuffer stream)
+        throws IllegalActionException {
+        ptolemy.actor.lib.Sequence actor = (ptolemy.actor.lib.Sequence) getComponent();
 
         CodeStream tmpStream = new CodeStream(this);
 
@@ -70,10 +69,10 @@ public class Sequence extends CCodeGeneratorHelper {
         } else {
             tmpStream.appendCodeBlock("codeBlock2");
         }
+
         tmpStream.appendCodeBlock("codeBlock3");
 
         stream.append(processCode(tmpStream.toString()));
-
     }
 
     /** Generate initialization code.
@@ -81,9 +80,9 @@ public class Sequence extends CCodeGeneratorHelper {
      *  replaces macros with their values and returns the results.
      *  @return The processed <code>initBlock</code>.
      */
-    public String generateInitializeCode()
-            throws IllegalActionException {
+    public String generateInitializeCode() throws IllegalActionException {
         super.generateInitializeCode();
+
         CodeStream tmpStream = new CodeStream(this);
         tmpStream.appendCodeBlock("initBlock");
 

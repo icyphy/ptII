@@ -133,7 +133,7 @@ public class Solution {
      * a constraint to canonical form.
      */
     public Solution(TypedCompositeActor model, String[] vLabels,
-            Vector constraints) throws IllegalActionException {
+        Vector constraints) throws IllegalActionException {
         _constraints = constraints;
         _numConstraints = constraints.size();
         _variables = vLabels;
@@ -150,21 +150,21 @@ public class Solution {
         }
 
         for (int constraintNum = 0; constraintNum < _numConstraints;
-             constraintNum++) {
+                        constraintNum++) {
             UnitEquation constraint = (UnitEquation) (constraints.elementAt(constraintNum));
             UnitEquation canonicalEquation = constraint.canonicalize();
             Vector rightUTerms = canonicalEquation.getRhs().getUTerms();
 
             if (rightUTerms.size() != 1) {
                 throw new IllegalActionException("canonicalEquation "
-                        + canonicalEquation + " has nonsingular RHS");
+                    + canonicalEquation + " has nonsingular RHS");
             }
 
             UnitTerm rhsUterm = (UnitTerm) (rightUTerms.elementAt(0));
 
             if (!rhsUterm.isUnit()) {
                 throw new IllegalActionException("canonicalEquation "
-                        + canonicalEquation + " has nonUnit RHS");
+                    + canonicalEquation + " has nonUnit RHS");
             }
 
             _vectorA[constraintNum] = rhsUterm.getUnit();
@@ -177,7 +177,7 @@ public class Solution {
 
                 if (leftUTerm == null) {
                     throw new IllegalActionException("canonicalEquation "
-                            + canonicalEquation + " has nonVar LHS");
+                        + canonicalEquation + " has nonVar LHS");
                 }
 
                 String variableLabel = leftUTerm.getVariable();
@@ -222,16 +222,16 @@ public class Solution {
             }
 
             moml.append("<port name=\"" + _variables[j] + "\">"
-                    + " <property name=\"_color\" "
-                    + "class = \"ptolemy.kernel.util.StringAttribute\" "
-                    + "value = \"" + color + "\"/>"
-                    + "<property name=\"_explanation\" "
-                    + "class = \"ptolemy.kernel.util.StringAttribute\" "
-                    + "value = \"" + explanation + "\"/>" + "</port>");
+                + " <property name=\"_color\" "
+                + "class = \"ptolemy.kernel.util.StringAttribute\" "
+                + "value = \"" + color + "\"/>"
+                + "<property name=\"_explanation\" "
+                + "class = \"ptolemy.kernel.util.StringAttribute\" "
+                + "value = \"" + explanation + "\"/>" + "</port>");
         }
 
         for (int constraintNum = 0; constraintNum < _numConstraints;
-             constraintNum++) {
+                        constraintNum++) {
             NamedObj source = _source[constraintNum];
             String expression = _constraintExplanations[constraintNum];
 
@@ -247,7 +247,7 @@ public class Solution {
                 IOPort port = (IOPort) source;
                 ComponentEntity actor = (ComponentEntity) (port.getContainer());
                 moml.append("<entity name=\"" + actor.getName() + "\">"
-                        + _momlAnnotate(port, color, expression) + "</entity>");
+                    + _momlAnnotate(port, color, expression) + "</entity>");
             } else if (source instanceof IORelation) {
                 IORelation relation = (IORelation) source;
                 moml.append(_momlAnnotate(relation, color, expression));
@@ -330,13 +330,17 @@ public class Solution {
      */
     public String getShortStateDesc() {
         switch (_solveState) {
-        case _UNKNOWN:return "UnKnown";
+        case _UNKNOWN:
+            return "UnKnown";
 
-        case _NONUNIQUE:return "No Unique Solution";
+        case _NONUNIQUE:
+            return "No Unique Solution";
 
-        case _INCONSISTENT:return "Inconsistent";
+        case _INCONSISTENT:
+            return "Inconsistent";
 
-        case _CONSISTENT:return "Consistent";
+        case _CONSISTENT:
+            return "Consistent";
         }
 
         return "Unknown";
@@ -363,7 +367,7 @@ public class Solution {
 
         for (int j = 0; j < _numVariables; j++) {
             retv.append("   " + _vNumFormat.format(j) + " " + _variables[j]
-                    + "\n");
+                + "\n");
         }
 
         retv.append("\n");
@@ -372,9 +376,9 @@ public class Solution {
         for (int i = 0; i < _numConstraints; i++) {
             NamedObj source = _source[i];
             retv.append("" + _vNumFormat.format(i) + "         "
-                    + source.toString() + " "
-                    + ((UnitEquation) _constraints.elementAt(i)).descriptiveForm()
-                    + "\n");
+                + source.toString() + " "
+                + ((UnitEquation) _constraints.elementAt(i)).descriptiveForm()
+                + "\n");
         }
 
         retv.append("\\Header\n");
@@ -389,7 +393,7 @@ public class Solution {
     public Vector minimalSpanSolutions() {
         Vector solutions = new Vector();
         _debug("Solver.minimalSpanSolutions " + headerInfo() + " initial\n"
-                + stateInfo());
+            + stateInfo());
 
         Solution root = copy();
 
@@ -472,7 +476,7 @@ public class Solution {
 
             retv.append("" + _vectorA[i] + " " + _vectorA[i].descriptiveForm());
             retv.append(" "
-                    + ((UnitEquation) _constraints.elementAt(i)).descriptiveForm());
+                + ((UnitEquation) _constraints.elementAt(i)).descriptiveForm());
             retv.append("\n");
         }
 
@@ -524,13 +528,13 @@ public class Solution {
                 }
 
                 if ((numNonZeroP == 0)
-                        && !_vectorA[i].equals(UnitLibrary.Identity)) {
+                                && !_vectorA[i].equals(UnitLibrary.Identity)) {
                     Unit factor = _vectorA[i].invert();
                     String uString = factor.descriptiveForm();
                     _constraintState[i] = _INCONSISTENT;
                     _constraintExplanations[i] = uString;
                 } else if ((numNonZeroP > 1)
-                        && _vectorA[i].equals(UnitLibrary.Identity)) {
+                                && _vectorA[i].equals(UnitLibrary.Identity)) {
                     _constraintState[i] = _NONUNIQUE;
                 } else {
                     String uString = _vectorA[i].descriptiveForm();
@@ -589,11 +593,11 @@ public class Solution {
                     sourceName = ((ComponentEntity) source).getName();
                 } else if (source instanceof TypedIOPort) {
                     sourceName = source.getName(source.getContainer()
-                            .getContainer());
+                                                                  .getContainer());
                 }
 
                 inconsistencyDesc += (" " + sourceName + " "
-                        + _constraintExplanations[i]);
+                            + _constraintExplanations[i]);
                 break;
             }
 
@@ -612,7 +616,7 @@ public class Solution {
             if (_varState[j] == _INCONSISTENT) {
                 stateInconsistent = true;
                 inconsistencyDesc += (" " + _variables[j] + "="
-                        + _varBindings[j]);
+                            + _varBindings[j]);
             }
         }
 
@@ -829,10 +833,10 @@ public class Solution {
     }
 
     private String _momlAnnotate(NamedObj entity, String color,
-            String expression) {
+        String expression) {
         String colorProperty = null;
         StringAttribute currentColor = (StringAttribute) (entity.getAttribute(
-                                                                  "_color"));
+                "_color"));
 
         if ((currentColor != null) && (color == null)) {
             colorProperty = "<deleteProperty _name=_color/>";
@@ -843,16 +847,16 @@ public class Solution {
         }
 
         return "<" + entity.getElementName() + " name=\"" + entity.getName()
-            + "\" class=\"" + entity.getClassName() + "\">" + colorProperty
-            + "<property name=\"_explanation\" "
-            + "class = \"ptolemy.kernel.util.StringAttribute\" " + "value = \""
-            + expression + "\"/></" + entity.getElementName() + ">";
+        + "\" class=\"" + entity.getClassName() + "\">" + colorProperty
+        + "<property name=\"_explanation\" "
+        + "class = \"ptolemy.kernel.util.StringAttribute\" " + "value = \""
+        + expression + "\"/></" + entity.getElementName() + ">";
     }
 
     private Vector _partialSolveRecursively(int level, Index g) {
         Vector retv = new Vector();
         _debug("\nSolver._eliminateRecursively level " + level + " BrancPoint "
-                + g + "\n" + stateInfo());
+            + g + "\n" + stateInfo());
 
         int[] rows = _branchesFrom(g);
         _eliminate(g);

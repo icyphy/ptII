@@ -27,13 +27,15 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.lib.colt;
 
+import cern.jet.random.ExponentialPower;
+
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import cern.jet.random.ExponentialPower;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// ExponentialPower
@@ -46,7 +48,7 @@ import cern.jet.random.ExponentialPower;
    deviation given by parameters.  In addition, the seed can be
    specified as a parameter to control the sequence that is generated.
 
-   <p> This actor instantiates a 
+   <p> This actor instantiates a
    <a href="http://hoschek.home.cern.ch/hoschek/colt/V1.0.3/doc/cern/jet/random/ExponentialPower.html">cern.jet.random.ExponentialPower</a> object with
    tau set to 1.0
 
@@ -66,14 +68,14 @@ public class ColtExponentialPower extends ColtRandomSource {
      *   actor with this name.
      */
     public ColtExponentialPower(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         output.setTypeEquals(BaseType.DOUBLE);
 
         tau = new Parameter(this, "tau", new DoubleToken(1.0));
         tau.setTypeEquals(BaseType.DOUBLE);
-        
+
         tau.moveToFirst();
     }
 
@@ -121,7 +123,7 @@ public class ColtExponentialPower extends ColtRandomSource {
 
     /** The random number for the current iteration. */
     private double _current;
-    
+
     /** The random number generator. */
     private ExponentialPower _generator;
 }

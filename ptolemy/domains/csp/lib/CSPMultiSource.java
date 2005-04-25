@@ -74,7 +74,7 @@ public class CSPMultiSource extends CSPActor {
      *   name coincides with a port already in this actor.
      */
     public CSPMultiSource()
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super();
         tokenLimit = new Parameter(this, "tokenLimit", (new IntToken(-1)));
     }
@@ -98,7 +98,7 @@ public class CSPMultiSource extends CSPActor {
      *   in this actor.
      */
     public CSPMultiSource(TypedCompositeActor container, String name, int limit)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         output = new TypedIOPort(this, "output", false, true);
         output.setMultiport(true);
@@ -165,7 +165,7 @@ public class CSPMultiSource extends CSPActor {
                 for (i = 0; i < size; i++) {
                     if (successfulBranch == i) {
                         System.out.println(getName() + ": sent Token: "
-                                + t.toString() + " to receiver " + i);
+                            + t.toString() + " to receiver " + i);
                         flag = true;
                     }
                 }
@@ -175,15 +175,15 @@ public class CSPMultiSource extends CSPActor {
                     continueCDO = false;
                 } else if (!flag) {
                     throw new TerminateProcessException(getName() + ": "
-                            + "invalid branch id returned during execution "
-                            + "of CDO.");
+                        + "invalid branch id returned during execution "
+                        + "of CDO.");
                 }
 
                 count++;
             }
         } catch (IllegalActionException ex) {
             throw new TerminateProcessException(getName() + ": could not "
-                    + "create all branches for CDO.");
+                + "create all branches for CDO.");
         }
 
         return;
@@ -205,7 +205,7 @@ public class CSPMultiSource extends CSPActor {
 
         for (int i = 0; i < output.getWidth(); i++) {
             System.out.println("MultiSource: Branch " + i
-                    + " successfully  rendezvoused " + _branchCount[i] + " times.");
+                + " successfully  rendezvoused " + _branchCount[i] + " times.");
         }
     }
 

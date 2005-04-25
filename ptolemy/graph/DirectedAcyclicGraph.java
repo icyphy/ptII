@@ -308,8 +308,8 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
             // no cyclic graphs can reach to this point.
             if (finished && active) {
                 throw new GraphStateException(
-                        "DirectedAcyclicGraph.topologicalSort: Graph is "
-                        + "cyclic.");
+                    "DirectedAcyclicGraph.topologicalSort: Graph is "
+                    + "cyclic.");
             }
         }
 
@@ -396,11 +396,11 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
      *  the specified weight is null.
      */
     protected Edge _addEdge(Node node1, Node node2, boolean weighted,
-            Object weight) {
+        Object weight) {
         if (node1 == node2) {
             throw new GraphConstructionException("Cannot add a self loop in "
-                    + "an acyclic graph.\nA self loop was attempted on the "
-                    + "following node.\n" + node1.toString());
+                + "an acyclic graph.\nA self loop was attempted on the "
+                + "following node.\n" + node1.toString());
         } else {
             return super._addEdge(node1, node2, weighted, weight);
         }
@@ -482,7 +482,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
 
                 default:
                     throw new GraphStateException(
-                            "Bugs in code! Inconsistent data structure!");
+                        "Bugs in code! Inconsistent data structure!");
                 }
             }
 
@@ -497,7 +497,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
             return null;
         } else if (incomparables.size() != 0) {
             for (ListIterator iterator = incomparables.listIterator(0);
-                 iterator.hasNext();) {
+                            iterator.hasNext();) {
                 int result = _compareNodeId(ids[0],
                         ((Integer) iterator.next()).intValue());
 
@@ -678,14 +678,14 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
         boolean[][] transitiveClosure = transitiveClosure();
 
         if (!((CachedStrategy) _transitiveClosureAnalysis.analyzer()).obsolete()
-                && isAcyclic()) {
+                        && isAcyclic()) {
             _closure = transitiveClosure;
             return;
         }
 
         if (!isAcyclic()) {
             throw new GraphStateException(
-                    "DirectedAcyclicGraph._validate: Graph is cyclic.");
+                "DirectedAcyclicGraph._validate: Graph is cyclic.");
         }
 
         // find bottom

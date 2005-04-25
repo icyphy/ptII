@@ -46,7 +46,7 @@ public abstract class AbstractXmlBuilder implements XmlBuilder {
      * </pre>
      */
     public abstract Object build(XmlElement elt, String type)
-            throws Exception;
+        throws Exception;
 
     /** Delegate builders can be used to build/generate for objects
      * that are unknown by the current builder, as might be the

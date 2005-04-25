@@ -530,7 +530,7 @@ label_1:
                 assignment();
 
                 ASTPtAssignmentNode node2 = (ASTPtAssignmentNode) jjtree
-                    .popNode();
+                                .popNode();
                 map.put(node2.getIdentifier(), node2);
             }
 
@@ -2020,7 +2020,7 @@ label_11:
                         // If the size was specified as unsignedbyte, 
                         // then create an unsigned byte, truncating if necessary.
                         jjtn003._ptToken = new UnsignedByteToken(Integer
-                                .parseInt(x, radix));
+                                            .parseInt(x, radix));
                     } else {
                         // Try to infer the size.  Inferred sizes are at least
                         // integer.
@@ -2140,9 +2140,9 @@ label_11:
                                 char c = tok.charAt(i);
 
                                 if (!((c == '0') || (c == '1') || (c == '2')
-                                        || (c == '3') || (c == '4')
-                                        || (c == '5') || (c == '6')
-                                        || (c == '7'))) {
+                                                || (c == '3') || (c == '4')
+                                                || (c == '5') || (c == '6')
+                                                || (c == '7'))) {
                                     break;
                                 }
                             }
@@ -3015,32 +3015,148 @@ label_20:
 
     private static void jj_la1_0() {
         jj_la1_0 = new int[] {
-                0x150800, 0x0, 0x0, 0x0, 0x150800, 0x2000000, 0x0, 0x0, 0x0, 0x0,
-                0x0, 0xc0000000, 0xc0000000, 0x8000, 0x3c000000, 0x3c000000, 0x0,
-                0x0, 0xc00, 0xc00, 0x7000, 0x7000, 0x150800, 0x800000, 0x400000,
-                0x150800, 0x10000, 0x0, 0x0, 0x400000, 0x0, 0x1000000, 0x400000,
-                0x150800, 0x800000, 0x10000, 0x0, 0x400000, 0x0, 0x400000, 0x0,
-                0x1600000, 0x400000, 0x400000,
+                0x150800,
+                0x0,
+                0x0,
+                0x0,
+                0x150800,
+                0x2000000,
+                0x0,
+                0x0,
+                0x0,
+                0x0,
+                0x0,
+                0xc0000000,
+                0xc0000000,
+                0x8000,
+                0x3c000000,
+                0x3c000000,
+                0x0,
+                0x0,
+                0xc00,
+                0xc00,
+                0x7000,
+                0x7000,
+                0x150800,
+                0x800000,
+                0x400000,
+                0x150800,
+                0x10000,
+                0x0,
+                0x0,
+                0x400000,
+                0x0,
+                0x1000000,
+                0x400000,
+                0x150800,
+                0x800000,
+                0x10000,
+                0x0,
+                0x400000,
+                0x0,
+                0x400000,
+                0x0,
+                0x1600000,
+                0x400000,
+                0x400000,
             };
     }
 
     private static void jj_la1_1() {
         jj_la1_1 = new int[] {
-                0xa05f040c, 0x1000000, 0x1e000000, 0x1e000000, 0xa057040c, 0x0,
-                0x2, 0x1, 0x20, 0x40, 0x10, 0x0, 0x0, 0x0, 0x0, 0x0, 0x380,
-                0x380, 0x0, 0x0, 0x0, 0x0, 0xa057040c, 0x0, 0x0, 0xa05f040c, 0x0,
-                0x470400, 0xa0100000, 0x0, 0x100000, 0x0, 0x0, 0xa05f040c, 0x0,
-                0x0, 0xa0100000, 0x0, 0x1000000, 0x0, 0x1000000, 0x1000000, 0x0,
+                0xa05f040c,
+                0x1000000,
+                0x1e000000,
+                0x1e000000,
+                0xa057040c,
+                0x0,
+                0x2,
+                0x1,
+                0x20,
+                0x40,
+                0x10,
+                0x0,
+                0x0,
+                0x0,
+                0x0,
+                0x0,
+                0x380,
+                0x380,
+                0x0,
+                0x0,
+                0x0,
+                0x0,
+                0xa057040c,
+                0x0,
+                0x0,
+                0xa05f040c,
+                0x0,
+                0x470400,
+                0xa0100000,
+                0x0,
+                0x100000,
+                0x0,
+                0x0,
+                0xa05f040c,
+                0x0,
+                0x0,
+                0xa0100000,
+                0x0,
+                0x1000000,
+                0x0,
+                0x1000000,
+                0x1000000,
+                0x0,
                 0x0,
             };
     }
 
     private static void jj_la1_2() {
         jj_la1_2 = new int[] {
-                0x2, 0x0, 0x0, 0x0, 0x2, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0,
-                0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x2, 0x0, 0x0, 0x2,
-                0x0, 0x0, 0x2, 0x0, 0x0, 0x0, 0x0, 0x2, 0x0, 0x0, 0x2, 0x0, 0x0,
-                0x0, 0x0, 0x0, 0x0, 0x0,
+                0x2,
+                0x0,
+                0x0,
+                0x0,
+                0x2,
+                0x0,
+                0x0,
+                0x0,
+                0x0,
+                0x0,
+                0x0,
+                0x0,
+                0x0,
+                0x0,
+                0x0,
+                0x0,
+                0x0,
+                0x0,
+                0x0,
+                0x0,
+                0x0,
+                0x0,
+                0x2,
+                0x0,
+                0x0,
+                0x2,
+                0x0,
+                0x0,
+                0x2,
+                0x0,
+                0x0,
+                0x0,
+                0x0,
+                0x2,
+                0x0,
+                0x0,
+                0x2,
+                0x0,
+                0x0,
+                0x0,
+                0x0,
+                0x0,
+                0x0,
+                0x0,
             };
     }
 
@@ -3194,7 +3310,7 @@ label_20:
 
             if (jj_scanpos.next == null) {
                 jj_lastpos = jj_scanpos = jj_scanpos.next = token_source
-                            .getNextToken();
+                                        .getNextToken();
             } else {
                 jj_lastpos = jj_scanpos = jj_scanpos.next;
             }
@@ -3284,7 +3400,7 @@ label_20:
             boolean exists = false;
 
             for (java.util.Enumeration e = jj_expentries.elements();
-                    e.hasMoreElements();) {
+                            e.hasMoreElements();) {
                 int[] oldentry = (int[]) (e.nextElement());
 
                 if (oldentry.length == jj_expentry.length) {

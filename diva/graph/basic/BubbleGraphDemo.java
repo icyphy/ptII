@@ -62,8 +62,8 @@ public class BubbleGraphDemo {
 
         ActionListener deletionListener = new DeletionListener();
         jg.registerKeyboardAction(deletionListener, "Delete",
-                KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0),
-                JComponent.WHEN_IN_FOCUSED_WINDOW);
+            KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0),
+            JComponent.WHEN_IN_FOCUSED_WINDOW);
         jg.setRequestFocusEnabled(true);
 
         context.setSize(600, 400);

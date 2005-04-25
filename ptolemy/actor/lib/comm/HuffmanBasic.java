@@ -72,7 +72,7 @@ public class HuffmanBasic extends Transformer {
      *   actor with this name.
      */
     public HuffmanBasic(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         pmf = new Parameter(this, "pmf");
@@ -173,7 +173,7 @@ public class HuffmanBasic extends Transformer {
      *  is non-positive or the sum is not 1.0.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         _parametersInvalid = true;
 
         if (attribute == pmf) {
@@ -187,7 +187,7 @@ public class HuffmanBasic extends Transformer {
 
                 if (_pmf[i] <= 0.0) {
                     throw new IllegalActionException(this,
-                            "Probabilities must be positive!");
+                        "Probabilities must be positive!");
                 }
 
                 sum = sum + _pmf[i];
@@ -209,8 +209,8 @@ public class HuffmanBasic extends Transformer {
 
         if (_pmf.length != alphabetArrayToken.length()) {
             throw new IllegalActionException(this,
-                    "uncoded alphabet and pmf are required to be arrays"
-                    + "with same length.");
+                "uncoded alphabet and pmf are required to be arrays"
+                + "with same length.");
         }
 
         Token[] alphabetTokens = new Token[_pmf.length];
@@ -284,6 +284,7 @@ public class HuffmanBasic extends Transformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
+
     /** The huffman code book.
      */
     protected String[] _codeBook;

@@ -68,7 +68,7 @@ public class FFT extends SDFTransformer {
      *   actor with this name.
      */
     public FFT(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         input.setTypeEquals(BaseType.COMPLEX);
@@ -99,15 +99,15 @@ public class FFT extends SDFTransformer {
      *  @exception IllegalActionException If the parameters are out of range.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == order) {
             // Get the size of the FFT transform
             _orderValue = ((IntToken) order.getToken()).intValue();
 
             if (_orderValue <= 0) {
                 throw new IllegalActionException(this,
-                        "Order was " + _orderValue
-                        + " but must be greater than zero.");
+                    "Order was " + _orderValue
+                    + " but must be greater than zero.");
             }
 
             _transformSize = (int) Math.pow(2, _orderValue);

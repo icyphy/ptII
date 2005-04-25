@@ -67,7 +67,7 @@ public class SaltAndPepper extends Transformer {
      *   actor with this name.
      */
     public SaltAndPepper(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input.setTypeEquals(BaseType.DOUBLE_MATRIX);
         output.setTypeEquals(BaseType.DOUBLE_MATRIX);
@@ -95,7 +95,7 @@ public class SaltAndPepper extends Transformer {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == probability) {
             _probability = ((DoubleToken) probability.getToken()).doubleValue();
         } else {

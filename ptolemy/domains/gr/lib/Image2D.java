@@ -65,7 +65,7 @@ public class Image2D extends GRActor2D {
      *   actor with this name.
      */
     public Image2D(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         fileOrURL = new FileParameter(this, "fileOrURL");

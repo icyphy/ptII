@@ -75,7 +75,7 @@ public class AudioPlayer extends Sink implements ControllerListener {
      *   actor with this name.
      */
     public AudioPlayer(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         input.setTypeEquals(BaseType.OBJECT);
@@ -112,10 +112,10 @@ public class AudioPlayer extends Sink implements ControllerListener {
             _player.prefetch();
         } catch (IOException ex) {
             throw new IllegalActionException(this,
-                    "Cannot open file: " + ex.toString());
+                "Cannot open file: " + ex.toString());
         } catch (MediaException ex) {
             throw new IllegalActionException(this,
-                    "Exception thrown by media framework: " + ex.toString());
+                "Exception thrown by media framework: " + ex.toString());
         }
 
         _player.setMediaTime(_startTime);

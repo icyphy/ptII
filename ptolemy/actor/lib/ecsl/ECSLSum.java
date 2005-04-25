@@ -60,7 +60,7 @@ public class ECSLSum extends AddSubtract {
      *   an actor already in the container.
      */
     public ECSLSum(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input = new TypedIOPort(this, "input", true, false);
         input.setMultiport(true);
@@ -110,12 +110,12 @@ public class ECSLSum extends AddSubtract {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == Inputs) {
             if (!Inputs.getExpression().equals("|+-")) {
                 throw new IllegalActionException("Sorry, Inputs parameter must"
-                        + " be set to \"|+-\", instead it was set to \""
-                        + Inputs.getExpression() + "\".");
+                    + " be set to \"|+-\", instead it was set to \""
+                    + Inputs.getExpression() + "\".");
             }
         } else if (attribute == IconShape) {
             // Ignored
@@ -132,7 +132,7 @@ public class ECSLSum extends AddSubtract {
     public void fire() throws IllegalActionException {
         if (output.getWidth() > 1) {
             throw new IllegalActionException("Output widths greater than "
-                    + "1 not yet supported");
+                + "1 not yet supported");
         }
 
         super.fire();

@@ -85,7 +85,6 @@ import java.util.Set;
    @Pt.AcceptedRating Red (cxh)
 */
 public class NonStrictFSMDirector extends FSMDirector {
-
     /** Construct a director in the given container with the given name.
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown.
@@ -99,7 +98,7 @@ public class NonStrictFSMDirector extends FSMDirector {
      *   CompositeActor and the name collides with an entity in the container.
      */
     public NonStrictFSMDirector(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -129,48 +128,53 @@ public class NonStrictFSMDirector extends FSMDirector {
     public void fire() throws IllegalActionException {
         FSMActor controller = getController();
         controller._readInputs();
+
         CompositeActor container = (CompositeActor) getContainer();
         List inputPortList = container.inputPortList();
         State currentState = controller.currentState();
 
         // Choose a nonpreemptive transition.
         List enabledTransitions = controller._checkTransition(currentState
-                .preemptiveTransitionList());
-        
+                            .preemptiveTransitionList());
+
         // Ensure that if there are multiple enabled transitions, all of them
         // must be nondeterministic.
         if (enabledTransitions.size() > 1) {
             Iterator transitions = enabledTransitions.iterator();
+
             while (transitions.hasNext()) {
-                Transition enabledTransition = (Transition)transitions.next();
+                Transition enabledTransition = (Transition) transitions.next();
+
                 if (!enabledTransition.isNondeterministic()) {
-                    throw new MultipleEnabledTransitionsException(
-                            controller.currentState(),
-                            "Multiple enabled transitions found but " 
-                            + enabledTransition.getName()
-                            + " is deterministic.");
+                    throw new MultipleEnabledTransitionsException(controller
+                                    .currentState(),
+                        "Multiple enabled transitions found but "
+                        + enabledTransition.getName() + " is deterministic.");
                 }
             }
         }
 
         Transition enabledTransition = null;
-        
+
         // Randomly choose one transition from the list of the 
         // enabled trnasitions.
         int length = enabledTransitions.size();
+
         if (length != 0) {
             // Since the size of the list of enabled transitions usually (almost 
             // always) is less than the maximum value of integer. We can safely 
             // do the cast from long to int in the following statement.
-            int randomChoice = (int)Math.floor(Math.random()*length);
+            int randomChoice = (int) Math.floor(Math.random() * length);
+
             // There is tiny chance that randomChoice equals length. 
             // When this happens, we deduct 1 from the randomChoice. 
             if (randomChoice == length) {
                 randomChoice--;
             }
-            enabledTransition = 
-                (Transition)enabledTransitions.get(randomChoice);
+
+            enabledTransition = (Transition) enabledTransitions.get(randomChoice);
         }
+
         _enabledTransition = enabledTransition;
 
         if (enabledTransition == null) {
@@ -179,10 +183,11 @@ public class NonStrictFSMDirector extends FSMDirector {
             getRefinementReferredInputPorts(currentState);
 
             // Transfer additional inputs needed by the refinement.
-            for (int i = 0; i < inputPortList.size(); i ++) {
+            for (int i = 0; i < inputPortList.size(); i++) {
                 IOPort port = (IOPort) inputPortList.get(i);
+
                 if (_refinementReferredInputPorts.contains(port)
-                        && !_referredInputPorts.contains(port)) {
+                                && !_referredInputPorts.contains(port)) {
                     super.transferInputs(port);
                     controller._readInputs();
                     _referredInputPorts.add(port);
@@ -195,42 +200,48 @@ public class NonStrictFSMDirector extends FSMDirector {
                     if (_stopRequested) {
                         break;
                     }
+
                     if (actors[i].prefire()) {
                         actors[i].fire();
                         actors[i].postfire();
                     }
                 }
             }
+
             controller._readOutputsFromRefinement();
 
             // Get inputs needed by the nonpreemptive transitions.
             getNonpreemptiveTransitionsReferredInputPorts(currentState);
+
             // Transfer additional inputs needed by the refinement.
-            for (int i = 0; i < inputPortList.size(); i ++) {
+            for (int i = 0; i < inputPortList.size(); i++) {
                 IOPort port = (IOPort) inputPortList.get(i);
+
                 if (_nonpreemptiveTransitionsInputs.contains(port)
-                        && !_referredInputPorts.contains(port)) {
+                                && !_referredInputPorts.contains(port)) {
                     super.transferInputs(port);
                     controller._readInputs();
                     _referredInputPorts.add(port);
                 }
             }
+
             // Choose a nonpreemptive transition.
             enabledTransitions = controller._checkTransition(currentState
-                    .nonpreemptiveTransitionList());
+                                .nonpreemptiveTransitionList());
 
             // Ensure that if there are multiple enabled transitions, all of them
             // must be nondeterministic.
             if (enabledTransitions.size() > 1) {
                 Iterator transitions = enabledTransitions.iterator();
+
                 while (transitions.hasNext()) {
-                    Transition transition = (Transition)transitions.next();
+                    Transition transition = (Transition) transitions.next();
+
                     if (!enabledTransition.isNondeterministic()) {
-                        throw new MultipleEnabledTransitionsException(
-                                controller.currentState(),
-                                "Multiple enabled transitions found but " 
-                                + transition.getName()
-                                + " is deterministic.");
+                        throw new MultipleEnabledTransitionsException(controller
+                                        .currentState(),
+                            "Multiple enabled transitions found but "
+                            + transition.getName() + " is deterministic.");
                     }
                 }
             }
@@ -238,18 +249,22 @@ public class NonStrictFSMDirector extends FSMDirector {
             // Randomly choose one transition from the list of the 
             // enabled trnasitions.
             length = enabledTransitions.size();
+
             if (length != 0) {
                 // Since the size of the list of enabled transitions usually (almost 
                 // always) is less than the maximum value of integer. We can safely 
                 // do the cast from long to int in the following statement.
-                int randomChoice = (int)Math.floor(Math.random()*length);
+                int randomChoice = (int) Math.floor(Math.random() * length);
+
                 // There is tiny chance that randomChoice equals length. 
                 // When this happens, we deduct 1 from the randomChoice. 
                 if (randomChoice == length) {
                     randomChoice--;
                 }
-                enabledTransition = (Transition)enabledTransitions.get(randomChoice);
-            }            
+
+                enabledTransition = (Transition) enabledTransitions.get(randomChoice);
+            }
+
             _enabledTransition = enabledTransition;
         }
 
@@ -258,17 +273,20 @@ public class NonStrictFSMDirector extends FSMDirector {
             // of the enabled transition.
             getOutputActionsReferredInputPorts(enabledTransition);
             getSetActionsReferredInputPorts(enabledTransition);
+
             for (int i = 0; i < inputPortList.size(); i++) {
                 IOPort port = (IOPort) inputPortList.get(i);
 
                 if (_outputActionReferredInputPorts.contains(port)
-                        && ! _referredInputPorts.contains(port)) {
+                                && !_referredInputPorts.contains(port)) {
                     super.transferInputs(port);
                     controller._readInputs();
                     _referredInputPorts.add(port);
                 }
             }
+
             controller._readInputs();
+
             // execute output actions.
             Iterator actions = enabledTransition.choiceActionList().iterator();
 
@@ -279,17 +297,20 @@ public class NonStrictFSMDirector extends FSMDirector {
 
             // Get additional input ports needed by set actions of
             // the enabeld transition.
-            for (int i = 0; i < inputPortList.size(); i ++) {
+            for (int i = 0; i < inputPortList.size(); i++) {
                 IOPort port = (IOPort) inputPortList.get(i);
+
                 if (_setActionReferredInputPorts.contains(port)
-                        && !_referredInputPorts.contains(port)) {
+                                && !_referredInputPorts.contains(port)) {
                     super.transferInputs(port);
                     controller._readInputs();
                     _referredInputPorts.add(port);
                 }
             }
+
             controller._readInputs();
         }
+
         controller._lastChosenTransition = enabledTransition;
     }
 
@@ -300,10 +321,10 @@ public class NonStrictFSMDirector extends FSMDirector {
      *   if any guard expression is illegal.
      */
     public void getNonpreemptiveTransitionsReferredInputPorts(State state)
-    throws IllegalActionException {
+        throws IllegalActionException {
         List nonpreemptiveTransitionList = state.nonpreemptiveTransitionList();
-        _nonpreemptiveTransitionsInputs
-            = getTransitionReferredInputPorts(nonpreemptiveTransitionList);
+
+        _nonpreemptiveTransitionsInputs = getTransitionReferredInputPorts(nonpreemptiveTransitionList);
     }
 
     /** Given a transition, get a set of input ports referred in the
@@ -313,7 +334,7 @@ public class NonStrictFSMDirector extends FSMDirector {
      *  the outputActions is illegal.
      */
     public void getOutputActionsReferredInputPorts(Transition transition)
-            throws IllegalActionException {
+        throws IllegalActionException {
         _outputActionReferredInputPorts.clear();
 
         String string = transition.outputActions.getExpression();
@@ -326,6 +347,7 @@ public class NonStrictFSMDirector extends FSMDirector {
         if (!string.equals("")) {
             Map map = parser.generateAssignmentMap(string);
             Set set = new HashSet();
+
             for (Iterator names = map.keySet().iterator(); names.hasNext();) {
                 String name = (String) names.next();
 
@@ -344,10 +366,10 @@ public class NonStrictFSMDirector extends FSMDirector {
      *   if any guard expression is illegal.
      */
     public void getPreemptiveTransitionsReferredInputPorts(State state)
-            throws IllegalActionException {
+        throws IllegalActionException {
         List preemptiveTransitionList = state.preemptiveTransitionList();
-        _preemptiveTransitionsInputs
-            = getTransitionReferredInputPorts(preemptiveTransitionList); 
+
+        _preemptiveTransitionsInputs = getTransitionReferredInputPorts(preemptiveTransitionList);
     }
 
     /** Given a set of ports, get those are input ports and put them
@@ -375,25 +397,31 @@ public class NonStrictFSMDirector extends FSMDirector {
      *  found, or if the port rate does not contain a valid expression.
      */
     public void getRefinementReferredInputPorts(State state)
-            throws IllegalActionException {
+        throws IllegalActionException {
         _refinementReferredInputPorts.clear();
+
         TypedActor[] refinements = state.getRefinement();
         CompositeActor container = (CompositeActor) getContainer();
+
         if (refinements != null) {
-            for (int i = 0; i < refinements.length; i ++) {
+            for (int i = 0; i < refinements.length; i++) {
                 Iterator inputPorts = refinements[i].inputPortList().iterator();
+
                 while (inputPorts.hasNext()) {
                     IOPort inputPort = (IOPort) inputPorts.next();
-                    if (inputPort.getWidth() != 0
-                            && DFUtilities.getRate(inputPort) > 0) {
-                        Iterator inputPortsOutside
-                                = inputPort.deepConnectedInPortList().iterator();
+
+                    if ((inputPort.getWidth() != 0)
+                                    && (DFUtilities.getRate(inputPort) > 0)) {
+                        Iterator inputPortsOutside = inputPort.deepConnectedInPortList()
+                                                                          .iterator();
+
                         while (inputPortsOutside.hasNext()) {
-                            IOPort inputPortOutside
-                                    = (IOPort) inputPortsOutside.next();
-                            if (inputPortOutside.getContainer() == container
-                                    && !_refinementReferredInputPorts
-                                        .contains(inputPortOutside)) {
+                            IOPort inputPortOutside = (IOPort) inputPortsOutside
+                                            .next();
+
+                            if ((inputPortOutside.getContainer() == container)
+                                            && !_refinementReferredInputPorts
+                                            .contains(inputPortOutside)) {
                                 _refinementReferredInputPorts.add(inputPortOutside);
                             }
                         }
@@ -407,17 +435,16 @@ public class NonStrictFSMDirector extends FSMDirector {
      *  actions of that transition.
      *  @param transition The given transition.
      *  @throws IllegalActionException If there is no controller or
-     *   if any set action expression is illegal.     
+     *   if any set action expression is illegal.
      */
     public void getSetActionsReferredInputPorts(Transition transition)
-            throws IllegalActionException {
+        throws IllegalActionException {
         _setActionReferredInputPorts.clear();
 
         String string = transition.setActions.getExpression();
         PtParser parser = new PtParser();
         ASTPtRootNode parseTree;
-        ParseTreeFreeVariableCollector variableCollector
-                = new ParseTreeFreeVariableCollector();
+        ParseTreeFreeVariableCollector variableCollector = new ParseTreeFreeVariableCollector();
         FSMActor controller = getController();
         ParserScope scope = controller.getPortScope();
 
@@ -445,7 +472,7 @@ public class NonStrictFSMDirector extends FSMDirector {
      *   the guard expression is illegal.
      */
     public Set getTransitionReferredInputPorts(List transitionList)
-            throws IllegalActionException {
+        throws IllegalActionException {
         Set transitionsReferredInputPorts = new HashSet();
 
         Iterator transitions = transitionList.iterator();
@@ -456,7 +483,7 @@ public class NonStrictFSMDirector extends FSMDirector {
 
             if (string.equals("")) {
                 throw new IllegalActionException(this,
-                        "guard expression on " + transition.getName() + "is null!");
+                    "guard expression on " + transition.getName() + "is null!");
             }
 
             PtParser parser = new PtParser();
@@ -467,6 +494,7 @@ public class NonStrictFSMDirector extends FSMDirector {
             Set set = variableCollector.collectFreeVariables(parseTree, scope);
             getReferredInputPorts(set, transitionsReferredInputPorts);
         }
+
         return transitionsReferredInputPorts;
     }
 
@@ -476,6 +504,7 @@ public class NonStrictFSMDirector extends FSMDirector {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
+
         FSMActor controller = getController();
         getPreemptiveTransitionsReferredInputPorts(controller.getInitialState());
         _referredInputPorts.clear();
@@ -510,7 +539,6 @@ public class NonStrictFSMDirector extends FSMDirector {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // A set of input ports that are referred by the guard expressions
     // of the nonpreemptive transitions leaving the current state.
     private Set _nonpreemptiveTransitionsInputs = new HashSet();

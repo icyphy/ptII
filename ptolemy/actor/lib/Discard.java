@@ -60,7 +60,7 @@ public class Discard extends Sink {
      *   actor with this name.
      */
     public Discard(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
     }
 

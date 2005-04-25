@@ -102,7 +102,7 @@ public class EditIconAction extends FigureAction {
                         // an instance of XMLIcon.  We have to remove that
                         // first.
                         Iterator derivedObjects = object.getDerivedList()
-                            .iterator();
+                                                                    .iterator();
 
                         while (derivedObjects.hasNext()) {
                             NamedObj derived = (NamedObj) derivedObjects.next();
@@ -114,7 +114,7 @@ public class EditIconAction extends FigureAction {
                             if (derivedIconList.size() > 0) {
                                 // Get the last icon.
                                 derivedIcon = (EditorIcon) derivedIconList.get(derivedIconList
-                                        .size() - 1);
+                                                    .size() - 1);
                             }
 
                             if (derivedIcon instanceof XMLIcon) {

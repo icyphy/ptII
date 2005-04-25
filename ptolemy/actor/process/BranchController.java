@@ -128,28 +128,28 @@ public class BranchController implements Runnable {
     public void addBranches(IOPort port) throws IllegalActionException {
         if (port.getContainer() != getParent()) {
             throw new IllegalActionException("Can not contain "
-                    + "a port that is not contained by this "
-                    + "BranchController's container.");
+                + "a port that is not contained by this "
+                + "BranchController's container.");
         }
 
         if (_ports.contains(port)) {
             throw new IllegalActionException(port,
-                    "This port " + "is already controlled by this "
-                    + "BranchController");
+                "This port " + "is already controlled by this "
+                + "BranchController");
         }
 
         // Careful; maintain order of following test in case
         // Java is like C
         if (_hasInputPorts() && !port.isInput()) {
             throw new IllegalActionException("BranchControllers "
-                    + "must contain only input ports or only output "
-                    + "ports; not both");
+                + "must contain only input ports or only output "
+                + "ports; not both");
         }
 
         if (_hasOutputPorts() && !port.isOutput()) {
             throw new IllegalActionException("BranchControllers "
-                    + "must contain only input ports or only output "
-                    + "ports; not both");
+                + "must contain only input ports or only output "
+                + "ports; not both");
         }
 
         _ports.add(port);
@@ -174,16 +174,16 @@ public class BranchController implements Runnable {
             // If the port lacks either producer or consumer
             // receivers, then there is no point in creating a branch.
             if ((producerReceivers.length > i)
-                    && (consumerReceivers.length > i)) {
+                            && (consumerReceivers.length > i)) {
                 try {
                     producerReceiver = (ProcessReceiver) producerReceivers[i][0];
                     consumerReceiver = (ProcessReceiver) consumerReceivers[i][0];
                 } catch (ClassCastException ex) {
                     // See [Bug 5] and pn/test/PNInsideDE.xml
                     throw new IllegalActionException(port, ex,
-                            "At the current time, process-oriented domains "
-                            + "(PN and CSP) cannot be nested inside "
-                            + "firing-based domains (SDF, DE, CT, etc.).");
+                        "At the current time, process-oriented domains "
+                        + "(PN and CSP) cannot be nested inside "
+                        + "firing-based domains (SDF, DE, CT, etc.).");
                 }
 
                 branch = new Branch(producerReceiver, consumerReceiver, this);
@@ -350,7 +350,7 @@ public class BranchController implements Runnable {
      *  this branch controller with the director as no longer being
      *  blocked.
      *  @param receiver  The receiver to be removed from the list of
-     *  blocked receivers.   
+     *  blocked receivers.
      */
     protected void _branchUnBlocked(ProcessReceiver receiver) {
         synchronized (this) {
@@ -379,8 +379,8 @@ public class BranchController implements Runnable {
             // is an error so terminate the process.
             String name = ((Nameable) getParent()).getName();
             throw new TerminateProcessException("Error: " + name
-                    + " contains a branch controller that has a "
-                    + "receiver that does not have a director");
+                + " contains a branch controller that has a "
+                + "receiver that does not have a director");
         }
     }
 

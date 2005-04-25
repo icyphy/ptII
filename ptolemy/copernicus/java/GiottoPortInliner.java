@@ -26,16 +26,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.copernicus.java;
 
-import ptolemy.actor.CompositeActor;
-import ptolemy.actor.IOPort;
-import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.TypedIORelation;
-import ptolemy.copernicus.kernel.PtolemyUtilities;
-import ptolemy.copernicus.kernel.SootUtilities;
-import ptolemy.kernel.ComponentEntity;
-import ptolemy.kernel.Entity;
-import ptolemy.util.StringUtilities;
-
 import soot.ArrayType;
 import soot.Body;
 import soot.IntType;
@@ -51,6 +41,7 @@ import soot.Unit;
 import soot.Value;
 import soot.ValueBox;
 import soot.VoidType;
+
 import soot.jimple.DefinitionStmt;
 import soot.jimple.Expr;
 import soot.jimple.IntConstant;
@@ -58,8 +49,20 @@ import soot.jimple.InvokeExpr;
 import soot.jimple.Jimple;
 import soot.jimple.JimpleBody;
 import soot.jimple.Stmt;
+
 import soot.jimple.toolkits.scalar.Evaluator;
+
 import soot.util.Chain;
+
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.IOPort;
+import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.TypedIORelation;
+import ptolemy.copernicus.kernel.PtolemyUtilities;
+import ptolemy.copernicus.kernel.SootUtilities;
+import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.Entity;
+import ptolemy.util.StringUtilities;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -89,7 +92,7 @@ public class GiottoPortInliner implements PortInliner {
     /** Construct a new transformer
      */
     public GiottoPortInliner(SootClass modelClass, CompositeActor model,
-            Map options) {
+        Map options) {
         _modelClass = modelClass;
         _model = model;
         _options = options;
@@ -99,22 +102,22 @@ public class GiottoPortInliner implements PortInliner {
     public SootField getBufferField(IOPort port, ptolemy.data.type.Type type) {
         Map typeNameToBufferField = (Map) _portToTypeNameToBufferField.get(port);
         SootField arrayField = (SootField) typeNameToBufferField.get(type
-                .toString());
+                            .toString());
 
         if (arrayField == null) {
             throw new RuntimeException("arrayField for " + port + " and type "
-                    + type + " is null!");
+                + type + " is null!");
         }
 
         return arrayField;
     }
 
     public SootField getInsideBufferField(IOPort port,
-            ptolemy.data.type.Type type) {
+        ptolemy.data.type.Type type) {
         Map typeNameToBufferField = (Map) _portToTypeNameToInsideBufferField
-            .get(port);
+                        .get(port);
         SootField arrayField = (SootField) typeNameToBufferField.get(type
-                .toString());
+                            .toString());
 
         if (arrayField == null) {
             throw new RuntimeException("arrayField null!");
@@ -149,7 +152,7 @@ public class GiottoPortInliner implements PortInliner {
      *  given body with a circular array reference.
      */
     public void inlineBroadcast(JimpleBody body, Stmt stmt, InvokeExpr expr,
-            TypedIOPort port) {
+        TypedIOPort port) {
         Local bufferLocal = Jimple.v().newLocal("buffer",
                 ArrayType.v(PtolemyUtilities.tokenType, 1));
         body.getLocals().add(bufferLocal);
@@ -168,42 +171,43 @@ public class GiottoPortInliner implements PortInliner {
         int channel = 0;
 
         for (Iterator relations = port.linkedRelationList().iterator();
-             relations.hasNext();) {
+                        relations.hasNext();) {
             TypedIORelation relation = (TypedIORelation) relations.next();
 
             for (int i = 0; i < relation.getWidth(); i++, channel++) {
                 Value channelValue = IntConstant.v(channel);
 
                 SootField arrayField = _modelClass.getFieldByName(InlinePortTransformer
-                        .getBufferFieldName(relation, i, port.getType()));
+                                    .getBufferFieldName(relation, i,
+                                        port.getType()));
 
                 // load the buffer array.
                 body.getUnits().insertBefore(Jimple.v().newAssignStmt(bufferLocal,
-                                                     Jimple.v().newStaticFieldRef(arrayField)), stmt);
+                        Jimple.v().newStaticFieldRef(arrayField)), stmt);
 
                 // If we are calling with just a token, then send the token.
                 if (expr.getArgCount() == 1) {
                     // Write to the buffer.
                     body.getUnits().insertBefore(Jimple.v().newAssignStmt(Jimple.v()
-                                                         .newArrayRef(bufferLocal,
-                                                                 channelValue), expr.getArg(0)), stmt);
+                                                                                            .newArrayRef(bufferLocal,
+                                            channelValue), expr.getArg(0)), stmt);
                 } else {
                     // We must send an array of tokens.
                     // Ignore all but the last value.
                     body.getUnits().insertBefore(Jimple.v().newAssignStmt(returnArrayLocal,
-                                                         expr.getArg(0)), stmt);
+                            expr.getArg(0)), stmt);
 
                     Value argCount = expr.getArg(1);
 
                     // Get the value.
                     body.getUnits().insertBefore(Jimple.v().newAssignStmt(returnLocal,
-                                                         Jimple.v().newArrayRef(returnArrayLocal, argCount)),
-                            stmt);
+                            Jimple.v().newArrayRef(returnArrayLocal, argCount)),
+                        stmt);
 
                     // Store in the buffer array.
                     body.getUnits().insertBefore(Jimple.v().newAssignStmt(Jimple.v()
-                                                         .newArrayRef(bufferLocal,
-                                                                 channelValue), returnLocal), stmt);
+                                                                                            .newArrayRef(bufferLocal,
+                                            channelValue), returnLocal), stmt);
                 }
             }
         }
@@ -217,7 +221,7 @@ public class GiottoPortInliner implements PortInliner {
      *  given body with an array reference.
      */
     public void inlineGet(JimpleBody body, Stmt stmt, ValueBox box,
-            InvokeExpr expr, TypedIOPort port) {
+        InvokeExpr expr, TypedIOPort port) {
         Local bufferLocal = Jimple.v().newLocal("buffer",
                 ArrayType.v(PtolemyUtilities.tokenType, 1));
         body.getLocals().add(bufferLocal);
@@ -233,7 +237,7 @@ public class GiottoPortInliner implements PortInliner {
         Value channelValue = expr.getArg(0);
 
         _getBuffer(_modelClass, body, stmt, port, port.getType(), bufferLocal,
-                _portToTypeNameToBufferField);
+            _portToTypeNameToBufferField);
 
         // If we are calling with just a channel, then read the value.
         if (expr.getArgCount() == 1) {
@@ -249,8 +253,8 @@ public class GiottoPortInliner implements PortInliner {
             // We must return an array of tokens.
             // Create an array of the appropriate length.
             body.getUnits().insertBefore(Jimple.v().newAssignStmt(returnArrayLocal,
-                                                 Jimple.v().newNewArrayExpr(PtolemyUtilities.tokenType,
-                                                         expr.getArg(1))), stmt);
+                    Jimple.v().newNewArrayExpr(PtolemyUtilities.tokenType,
+                        expr.getArg(1))), stmt);
 
             Value countValue = expr.getArg(1);
 
@@ -262,13 +266,14 @@ public class GiottoPortInliner implements PortInliner {
                 for (int k = 0; k < argCount; k++) {
                     // Get the value.
                     body.getUnits().insertBefore(Jimple.v().newAssignStmt(returnLocal,
-                                                         Jimple.v().newArrayRef(bufferLocal, channelValue)),
-                            stmt);
+                            Jimple.v().newArrayRef(bufferLocal, channelValue)),
+                        stmt);
 
                     // Store in the return array.
                     body.getUnits().insertBefore(Jimple.v().newAssignStmt(Jimple.v()
-                                                         .newArrayRef(returnArrayLocal,
-                                                                 IntConstant.v(k)), returnLocal), stmt);
+                                                                                            .newArrayRef(returnArrayLocal,
+                                            IntConstant.v(k)), returnLocal),
+                        stmt);
                 }
 
                 // Replace the get() call.
@@ -283,22 +288,22 @@ public class GiottoPortInliner implements PortInliner {
                 // The list of initializer instructions.
                 List initializerList = new LinkedList();
                 initializerList.add(Jimple.v().newAssignStmt(counterLocal,
-                                            IntConstant.v(0)));
+                        IntConstant.v(0)));
 
                 // The list of body instructions.
                 List bodyList = new LinkedList();
 
                 // Get the value.
                 bodyList.add(Jimple.v().newAssignStmt(returnLocal,
-                                     Jimple.v().newArrayRef(bufferLocal, channelValue)));
+                        Jimple.v().newArrayRef(bufferLocal, channelValue)));
 
                 // Store in the return array.
                 bodyList.add(Jimple.v().newAssignStmt(Jimple.v().newArrayRef(returnArrayLocal,
-                                                              counterLocal), returnLocal));
+                            counterLocal), returnLocal));
 
                 // Increment the counter.
                 bodyList.add(Jimple.v().newAssignStmt(counterLocal,
-                                     Jimple.v().newAddExpr(counterLocal, IntConstant.v(1))));
+                        Jimple.v().newAddExpr(counterLocal, IntConstant.v(1))));
 
                 Expr conditionalExpr = Jimple.v().newLtExpr(counterLocal,
                         expr.getArg(1));
@@ -317,7 +322,7 @@ public class GiottoPortInliner implements PortInliner {
      *  given body with a circular array reference.
      */
     public void inlineGetInside(JimpleBody body, Stmt stmt, ValueBox box,
-            InvokeExpr expr, TypedIOPort port) {
+        InvokeExpr expr, TypedIOPort port) {
         Local bufferLocal = Jimple.v().newLocal("buffer",
                 ArrayType.v(PtolemyUtilities.tokenType, 1));
         body.getLocals().add(bufferLocal);
@@ -333,7 +338,7 @@ public class GiottoPortInliner implements PortInliner {
         Value channelValue = expr.getArg(0);
 
         _getBuffer(_modelClass, body, stmt, port, port.getType(), bufferLocal,
-                _portToTypeNameToInsideBufferField);
+            _portToTypeNameToInsideBufferField);
 
         // If we are calling with just a channel, then read the value.
         if (expr.getArgCount() == 1) {
@@ -349,8 +354,8 @@ public class GiottoPortInliner implements PortInliner {
             // We must return an array of tokens.
             // Create an array of the appropriate length.
             body.getUnits().insertBefore(Jimple.v().newAssignStmt(returnArrayLocal,
-                                                 Jimple.v().newNewArrayExpr(PtolemyUtilities.tokenType,
-                                                         expr.getArg(1))), stmt);
+                    Jimple.v().newNewArrayExpr(PtolemyUtilities.tokenType,
+                        expr.getArg(1))), stmt);
 
             Value countValue = expr.getArg(1);
 
@@ -362,13 +367,14 @@ public class GiottoPortInliner implements PortInliner {
                 for (int k = 0; k < argCount; k++) {
                     // Get the value.
                     body.getUnits().insertBefore(Jimple.v().newAssignStmt(returnLocal,
-                                                         Jimple.v().newArrayRef(bufferLocal, channelValue)),
-                            stmt);
+                            Jimple.v().newArrayRef(bufferLocal, channelValue)),
+                        stmt);
 
                     // Store in the return array.
                     body.getUnits().insertBefore(Jimple.v().newAssignStmt(Jimple.v()
-                                                         .newArrayRef(returnArrayLocal,
-                                                                 IntConstant.v(k)), returnLocal), stmt);
+                                                                                            .newArrayRef(returnArrayLocal,
+                                            IntConstant.v(k)), returnLocal),
+                        stmt);
                 }
 
                 // Replace the get() call.
@@ -383,22 +389,22 @@ public class GiottoPortInliner implements PortInliner {
                 // The list of initializer instructions.
                 List initializerList = new LinkedList();
                 initializerList.add(Jimple.v().newAssignStmt(counterLocal,
-                                            IntConstant.v(0)));
+                        IntConstant.v(0)));
 
                 // The list of body instructions.
                 List bodyList = new LinkedList();
 
                 // Get the value.
                 bodyList.add(Jimple.v().newAssignStmt(returnLocal,
-                                     Jimple.v().newArrayRef(bufferLocal, channelValue)));
+                        Jimple.v().newArrayRef(bufferLocal, channelValue)));
 
                 // Store in the return array.
                 bodyList.add(Jimple.v().newAssignStmt(Jimple.v().newArrayRef(returnArrayLocal,
-                                                              counterLocal), returnLocal));
+                            counterLocal), returnLocal));
 
                 // Increment the counter.
                 bodyList.add(Jimple.v().newAssignStmt(counterLocal,
-                                     Jimple.v().newAddExpr(counterLocal, IntConstant.v(1))));
+                        Jimple.v().newAddExpr(counterLocal, IntConstant.v(1))));
 
                 Expr conditionalExpr = Jimple.v().newLtExpr(counterLocal,
                         expr.getArg(1));
@@ -416,7 +422,7 @@ public class GiottoPortInliner implements PortInliner {
      *  given body with a circular array reference.
      */
     public void inlineSend(JimpleBody body, Stmt stmt, InvokeExpr expr,
-            TypedIOPort port) {
+        TypedIOPort port) {
         Local bufferLocal = Jimple.v().newLocal("buffer",
                 ArrayType.v(PtolemyUtilities.tokenType, 1));
         body.getLocals().add(bufferLocal);
@@ -436,7 +442,7 @@ public class GiottoPortInliner implements PortInliner {
 
             // }
             _getBuffer(_modelClass, body, stmt, port, port.getType(),
-                    bufferLocal, _portToTypeNameToBufferField);
+                bufferLocal, _portToTypeNameToBufferField);
 
             // A local of type token
             Local tokenLocal = Jimple.v().newLocal("tokenLocal",
@@ -455,8 +461,8 @@ public class GiottoPortInliner implements PortInliner {
 
                 // Replace the put() with an array write.
                 body.getUnits().insertBefore(_createBufferStoreInstructions(
-                                                     bufferLocal, channelValue, sendTokenLocal, typeLocal,
-                                                     tokenLocal, outputTokenLocal), stmt);
+                        bufferLocal, channelValue, sendTokenLocal, typeLocal,
+                        tokenLocal, outputTokenLocal), stmt);
             } else {
                 Local sendArrayLocal = (Local) expr.getArg(1);
 
@@ -478,13 +484,13 @@ public class GiottoPortInliner implements PortInliner {
 
                 // Get the value.
                 body.getUnits().insertBefore(Jimple.v().newAssignStmt(sendTokenLocal,
-                                                     Jimple.v().newArrayRef(sendArrayLocal, countValue)),
-                        stmt);
+                        Jimple.v().newArrayRef(sendArrayLocal, countValue)),
+                    stmt);
 
                 // Store in the buffer array.
                 body.getUnits().insertBefore(_createBufferStoreInstructions(
-                                                     bufferLocal, channelValue, sendTokenLocal, typeLocal,
-                                                     tokenLocal, outputTokenLocal), stmt);
+                        bufferLocal, channelValue, sendTokenLocal, typeLocal,
+                        tokenLocal, outputTokenLocal), stmt);
             }
         }
 
@@ -496,7 +502,7 @@ public class GiottoPortInliner implements PortInliner {
      *  given body with a circular array reference.
      */
     public void inlineSendInside(JimpleBody body, Stmt stmt, InvokeExpr expr,
-            TypedIOPort port) {
+        TypedIOPort port) {
         Local bufferLocal = Jimple.v().newLocal("buffer",
                 ArrayType.v(PtolemyUtilities.tokenType, 1));
         body.getLocals().add(bufferLocal);
@@ -516,7 +522,7 @@ public class GiottoPortInliner implements PortInliner {
 
             // }
             _getBuffer(_modelClass, body, stmt, port, port.getType(),
-                    bufferLocal, _portToTypeNameToInsideBufferField);
+                bufferLocal, _portToTypeNameToInsideBufferField);
 
             // A local of type token
             Local tokenLocal = Jimple.v().newLocal("tokenLocal",
@@ -535,8 +541,8 @@ public class GiottoPortInliner implements PortInliner {
 
                 // Replace the put() with an array write.
                 body.getUnits().insertBefore(_createBufferStoreInstructions(
-                                                     bufferLocal, channelValue, sendTokenLocal, typeLocal,
-                                                     tokenLocal, outputTokenLocal), stmt);
+                        bufferLocal, channelValue, sendTokenLocal, typeLocal,
+                        tokenLocal, outputTokenLocal), stmt);
             } else {
                 Local sendArrayLocal = (Local) expr.getArg(1);
 
@@ -558,13 +564,13 @@ public class GiottoPortInliner implements PortInliner {
 
                 // Get the value.
                 body.getUnits().insertBefore(Jimple.v().newAssignStmt(sendTokenLocal,
-                                                     Jimple.v().newArrayRef(sendArrayLocal, countValue)),
-                        stmt);
+                        Jimple.v().newArrayRef(sendArrayLocal, countValue)),
+                    stmt);
 
                 // Store in the buffer array.
                 body.getUnits().insertBefore(_createBufferStoreInstructions(
-                                                     bufferLocal, channelValue, sendTokenLocal, typeLocal,
-                                                     tokenLocal, outputTokenLocal), stmt);
+                        bufferLocal, channelValue, sendTokenLocal, typeLocal,
+                        tokenLocal, outputTokenLocal), stmt);
             }
         }
 
@@ -595,7 +601,7 @@ public class GiottoPortInliner implements PortInliner {
 
         // Loop over all the relations, creating buffers for each channel.
         for (Iterator relations = _model.relationList().iterator();
-             relations.hasNext();) {
+                        relations.hasNext();) {
             TypedIORelation relation = (TypedIORelation) relations.next();
 
             // Determine the types that the relation is connected to.
@@ -603,7 +609,7 @@ public class GiottoPortInliner implements PortInliner {
             List destinationPortList = relation.linkedDestinationPortList();
 
             for (Iterator destinationPorts = destinationPortList.iterator();
-                 destinationPorts.hasNext();) {
+                            destinationPorts.hasNext();) {
                 TypedIOPort port = (TypedIOPort) destinationPorts.next();
                 ptolemy.data.type.Type type = port.getType();
                 typeMap.put(type.toString(), type);
@@ -615,7 +621,7 @@ public class GiottoPortInliner implements PortInliner {
 
         // Loop over all the _model instance classes.
         for (Iterator entities = _model.deepEntityList().iterator();
-             entities.hasNext();) {
+                        entities.hasNext();) {
             ComponentEntity entity = (ComponentEntity) entities.next();
             String className = ModelTransformer.getInstanceClassName(entity,
                     _options);
@@ -647,20 +653,20 @@ public class GiottoPortInliner implements PortInliner {
                 // port for each type that the port may reference.
                 if (port.isInput()) {
                     ptolemy.data.type.Type type = (ptolemy.data.type.Type) port
-                        .getType();
+                                    .getType();
 
                     _createPortBufferReference(entityClass, port, type,
-                            typeNameToBufferField);
+                        typeNameToBufferField);
                 } else if (port.isOutput()) {
                     Set typeSet = _getConnectedTypeList(port);
                     typeSet.add(port.getType());
 
                     for (Iterator types = typeSet.iterator(); types.hasNext();) {
                         ptolemy.data.type.Type type = (ptolemy.data.type.Type) types
-                            .next();
+                                        .next();
 
                         _createPortBufferReference(entityClass, port, type,
-                                typeNameToBufferField);
+                            typeNameToBufferField);
                     }
                 }
             }
@@ -670,10 +676,10 @@ public class GiottoPortInliner implements PortInliner {
     // Create a reference to the correct buffer in the given
     // class for the given port and the given type.
     private void _createPortBufferReference(SootClass entityClass,
-            TypedIOPort port, ptolemy.data.type.Type type, Map typeNameToBufferField) {
+        TypedIOPort port, ptolemy.data.type.Type type, Map typeNameToBufferField) {
         if (_debug) {
             System.out.println("creating  buffer reference for " + port
-                    + " type = " + type);
+                + " type = " + type);
         }
 
         RefType tokenType = PtolemyUtilities.getSootTypeForTokenType(type);
@@ -693,7 +699,7 @@ public class GiottoPortInliner implements PortInliner {
 
         // Create references to the buffer for each port channel
         for (Iterator methods = entityClass.getMethods().iterator();
-             methods.hasNext();) {
+                        methods.hasNext();) {
             SootMethod method = (SootMethod) methods.next();
             JimpleBody body = (JimpleBody) method.retrieveActiveBody();
             Object insertPoint = body.getUnits().getLast();
@@ -709,14 +715,14 @@ public class GiottoPortInliner implements PortInliner {
 
             // Create the array of port channels.
             body.getUnits().insertBefore(Jimple.v().newAssignStmt(channelLocal,
-                                                 Jimple.v().newNewArrayExpr(tokenType,
-                                                         IntConstant.v(port.getWidth()))), insertPoint);
+                    Jimple.v().newNewArrayExpr(tokenType,
+                        IntConstant.v(port.getWidth()))), insertPoint);
 
             // Set the field to point to the new array.
             body.getUnits().insertBefore(Jimple.v().newAssignStmt(Jimple.v()
-                                                 .newInstanceFieldRef(body
-                                                         .getThisLocal(), bufferField), channelLocal),
-                    insertPoint);
+                                                                                    .newInstanceFieldRef(body
+                                    .getThisLocal(), bufferField), channelLocal),
+                insertPoint);
         }
     }
 
@@ -726,7 +732,7 @@ public class GiottoPortInliner implements PortInliner {
     private void _createInsideBufferReferences() {
         if (_debug) {
             System.out.println("creating inside buffer references for "
-                    + _model.getFullName());
+                + _model.getFullName());
         }
 
         // Loop over all the ports of the _model
@@ -735,11 +741,11 @@ public class GiottoPortInliner implements PortInliner {
 
             Map typeNameToInsideBufferField = new HashMap();
             _portToTypeNameToInsideBufferField.put(port,
-                    typeNameToInsideBufferField);
+                typeNameToInsideBufferField);
 
             if (_debug) {
                 System.out.println("port = " + port.getFullName() + " type = "
-                        + port.getType());
+                    + port.getType());
             }
 
             // If the port is an input, then it might have to
@@ -752,17 +758,17 @@ public class GiottoPortInliner implements PortInliner {
 
                 for (Iterator types = typeSet.iterator(); types.hasNext();) {
                     ptolemy.data.type.Type type = (ptolemy.data.type.Type) types
-                        .next();
+                                    .next();
 
                     _createPortInsideBufferReference(_modelClass, port, type,
-                            typeNameToInsideBufferField);
+                        typeNameToInsideBufferField);
                 }
             } else if (port.isOutput()) {
                 ptolemy.data.type.Type type = (ptolemy.data.type.Type) port
-                    .getType();
+                                .getType();
 
                 _createPortInsideBufferReference(_modelClass, port, type,
-                        typeNameToInsideBufferField);
+                    typeNameToInsideBufferField);
             }
         }
     }
@@ -770,7 +776,7 @@ public class GiottoPortInliner implements PortInliner {
     // Create a reference to the correct inside buffer in the given
     // class for the given port and the given type.
     private void _createPortInsideBufferReference(SootClass _modelClass,
-            TypedIOPort port, ptolemy.data.type.Type type, Map typeNameToBufferField) {
+        TypedIOPort port, ptolemy.data.type.Type type, Map typeNameToBufferField) {
         //  System.out.println("creating inside buffer reference for " + port + " type = " + type);
         RefType tokenType = PtolemyUtilities.getSootTypeForTokenType(type);
 
@@ -789,7 +795,7 @@ public class GiottoPortInliner implements PortInliner {
 
         // Create references to the buffer for each port channel
         for (Iterator methods = _modelClass.getMethods().iterator();
-             methods.hasNext();) {
+                        methods.hasNext();) {
             SootMethod method = (SootMethod) methods.next();
             JimpleBody body = (JimpleBody) method.retrieveActiveBody();
             Object insertPoint = body.getUnits().getLast();
@@ -805,14 +811,14 @@ public class GiottoPortInliner implements PortInliner {
 
             // Create the array of port channels.
             body.getUnits().insertBefore(Jimple.v().newAssignStmt(channelLocal,
-                                                 Jimple.v().newNewArrayExpr(ArrayType.v(tokenType, 1),
-                                                         IntConstant.v(port.getWidth()))), insertPoint);
+                    Jimple.v().newNewArrayExpr(ArrayType.v(tokenType, 1),
+                        IntConstant.v(port.getWidth()))), insertPoint);
 
             // Set the field to point to the new array.
             body.getUnits().insertBefore(Jimple.v().newAssignStmt(Jimple.v()
-                                                 .newInstanceFieldRef(body
-                                                         .getThisLocal(), bufferField), channelLocal),
-                    insertPoint);
+                                                                                    .newInstanceFieldRef(body
+                                    .getThisLocal(), bufferField), channelLocal),
+                insertPoint);
         }
     }
 
@@ -822,12 +828,12 @@ public class GiottoPortInliner implements PortInliner {
      *  buffer.
      */
     private static void _getBuffer(SootClass modelClass, JimpleBody body,
-            Unit unit, TypedIOPort port, ptolemy.data.type.Type type,
-            Local bufferLocal, Map portToTypeNameToBufferField) {
+        Unit unit, TypedIOPort port, ptolemy.data.type.Type type,
+        Local bufferLocal, Map portToTypeNameToBufferField) {
         // If we don't know the channel, then use the port indexes.
         Map typeNameToBufferField = (Map) portToTypeNameToBufferField.get(port);
         SootField arrayField = (SootField) typeNameToBufferField.get(type
-                .toString());
+                            .toString());
 
         if (arrayField == null) {
             throw new RuntimeException("arrayField null!");
@@ -835,8 +841,8 @@ public class GiottoPortInliner implements PortInliner {
 
         // Load the array of port channels.
         body.getUnits().insertBefore(Jimple.v().newAssignStmt(bufferLocal,
-                                             Jimple.v().newInstanceFieldRef(body.getThisLocal(), arrayField)),
-                unit);
+                Jimple.v().newInstanceFieldRef(body.getThisLocal(), arrayField)),
+            unit);
     }
 
     // Create instructions to store the given inputToken into the given
@@ -844,26 +850,26 @@ public class GiottoPortInliner implements PortInliner {
     // then convert the given input token to the given type using the given
     // temporary variables.
     private static List _createBufferStoreInstructions(Local bufferLocal,
-            Value indexLocal, Local inputTokenLocal, Local typeLocal,
-            Local tokenLocal, Local outputTokenLocal) {
+        Value indexLocal, Local inputTokenLocal, Local typeLocal,
+        Local tokenLocal, Local outputTokenLocal) {
         List list = new LinkedList();
 
         // Convert the type, if we need to.
         if (typeLocal != null) {
             list.add(Jimple.v().newAssignStmt(tokenLocal,
-                             Jimple.v().newInterfaceInvokeExpr(typeLocal,
-                                     PtolemyUtilities.typeConvertMethod, inputTokenLocal)));
+                    Jimple.v().newInterfaceInvokeExpr(typeLocal,
+                        PtolemyUtilities.typeConvertMethod, inputTokenLocal)));
 
             list.add(Jimple.v().newAssignStmt(outputTokenLocal,
-                             Jimple.v().newCastExpr(tokenLocal,
-                                     outputTokenLocal.getType())));
+                    Jimple.v().newCastExpr(tokenLocal,
+                        outputTokenLocal.getType())));
 
             // store the converted token.
             list.add(Jimple.v().newAssignStmt(Jimple.v().newArrayRef(bufferLocal,
-                                                      indexLocal), outputTokenLocal));
+                        indexLocal), outputTokenLocal));
         } else {
             list.add(Jimple.v().newAssignStmt(Jimple.v().newArrayRef(bufferLocal,
-                                                      indexLocal), inputTokenLocal));
+                        indexLocal), inputTokenLocal));
         }
 
         return list;
@@ -874,7 +880,7 @@ public class GiottoPortInliner implements PortInliner {
     private Set _getConnectedTypeList(TypedIOPort port) {
         if (!port.isOutput()) {
             throw new RuntimeException("Can only get the connected types for"
-                    + " an output port!");
+                + " an output port!");
         }
 
         // Loop through all of the sink ports...
@@ -906,7 +912,7 @@ public class GiottoPortInliner implements PortInliner {
     private Set _getConnectedTypeListInside(TypedIOPort port) {
         if (!port.isInput()) {
             throw new RuntimeException("Can only get the inside connected"
-                    + " types for an input port!");
+                + " types for an input port!");
         }
 
         // Loop through all of the connected ports...

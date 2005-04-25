@@ -66,7 +66,7 @@ public class GraphException extends RuntimeException {
      */
     static public String graphDump(Graph graph) {
         return "\nA Dump of the offending graph follows.\n" + graph.toString()
-            + "\n";
+        + "\n";
     }
 
     /** Return a dump of a graph element and the container graph suitable to
@@ -114,10 +114,10 @@ public class GraphException extends RuntimeException {
      *  @return A text string dump of the element and graph.
      */
     static protected String _elementDump(Object element, Graph graph,
-            String elementDescriptor) {
+        String elementDescriptor) {
         String elementString = (element == null) ? "<null>" : element.toString();
         return "\nDumps of the offending " + elementDescriptor
-            + " and graph follow.\n" + "The offending " + elementDescriptor + ":\n"
-            + elementString + "\nThe offending graph:\n" + graph.toString() + "\n";
+        + " and graph follow.\n" + "The offending " + elementDescriptor + ":\n"
+        + elementString + "\nThe offending graph:\n" + graph.toString() + "\n";
     }
 }

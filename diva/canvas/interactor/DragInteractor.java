@@ -171,7 +171,8 @@ public class DragInteractor extends AbstractInteractor {
      */
     public void mouseDragged(LayerEvent e) {
         if (!isEnabled()
-                || (_selectiveEnabled && !SelectionInteractor.isSelected(e))) {
+                        || (_selectiveEnabled
+                        && !SelectionInteractor.isSelected(e))) {
             return;
         }
 
@@ -210,7 +211,8 @@ public class DragInteractor extends AbstractInteractor {
      */
     public void mousePressed(LayerEvent e) {
         if (!isEnabled()
-                || (_selectiveEnabled && !SelectionInteractor.isSelected(e))) {
+                        || (_selectiveEnabled
+                        && !SelectionInteractor.isSelected(e))) {
             return;
         }
 
@@ -248,7 +250,8 @@ public class DragInteractor extends AbstractInteractor {
      */
     public void mouseReleased(LayerEvent e) {
         if (!isEnabled()
-                || (_selectiveEnabled && !SelectionInteractor.isSelected(e))) {
+                        || (_selectiveEnabled
+                        && !SelectionInteractor.isSelected(e))) {
             return;
         }
 

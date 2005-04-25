@@ -2,9 +2,7 @@
 // NO WARRANTY! See README, and copyright below.
 // $Id$
 // Modified 11/8/98 to add package statement.
-
 package com.microstar.xml.demo;
-
 
 
 /**
@@ -21,30 +19,25 @@ package com.microstar.xml.demo;
   * @see XmlApp
   */
 public class TimerDemo extends XmlApp {
+    /**
+      * Entry point for an application.
+      */
+    public static void main(String[] args) throws java.lang.Exception {
+        long start;
+        long end;
+        TimerDemo demo = new TimerDemo();
 
+        if (args.length != 1) {
+            System.err.println("Usage: java TimerDemo <uri>");
+            System.exit(1);
+        }
 
-  /**
-    * Entry point for an application.
-    */
-  public static void main (String args[]) 
-    throws java.lang.Exception
-  {
-    long start, end;
-    TimerDemo demo = new TimerDemo();
-
-    if (args.length != 1) {
-      System.err.println("Usage: java TimerDemo <uri>");
-      System.exit(1);
+        System.out.println("Starting parse...");
+        start = System.currentTimeMillis();
+        demo.doParse(args[0]);
+        end = System.currentTimeMillis();
+        System.out.println("Elapsed time: " + (end - start) + " ms");
     }
-
-    System.out.println("Starting parse...");
-    start = System.currentTimeMillis();
-    demo.doParse(args[0]);
-    end = System.currentTimeMillis();
-    System.out.println("Elapsed time: " + (end - start) + " ms");
-  }
-
-
 }
 
 // End of TimerDemo.java

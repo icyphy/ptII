@@ -79,7 +79,6 @@ import java.util.List;
    @Pt.AcceptedRating Red (cxh)
 */
 public class SharedParameter extends Parameter {
-
     /** Construct a parameter with the given container and name.
      *  The container class will be used to determine which other
      *  instances of SharedParameter are shared with this one.
@@ -91,7 +90,7 @@ public class SharedParameter extends Parameter {
      *   a parameter already in the container.
      */
     public SharedParameter(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         this(container, name, null, "");
     }
 
@@ -106,9 +105,8 @@ public class SharedParameter extends Parameter {
      *  @exception NameDuplicationException If the name coincides with
      *   a parameter already in the container.
      */
-    public SharedParameter(NamedObj container, String name,
-            Class containerClass)
-            throws IllegalActionException, NameDuplicationException {
+    public SharedParameter(NamedObj container, String name, Class containerClass)
+        throws IllegalActionException, NameDuplicationException {
         this(container, name, containerClass, "");
     }
 
@@ -127,13 +125,14 @@ public class SharedParameter extends Parameter {
      *   a parameter already in the container.
      */
     public SharedParameter(NamedObj container, String name,
-            Class containerClass, String defaultValue)
-            throws IllegalActionException, NameDuplicationException {
+        Class containerClass, String defaultValue)
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         if (containerClass == null) {
             containerClass = container.getClass();
         }
+
         _containerClass = containerClass;
         inferValueFromContext(defaultValue);
     }
@@ -151,6 +150,7 @@ public class SharedParameter extends Parameter {
 
         while (result.getContainer() != null) {
             result = (NamedObj) result.getContainer();
+
             if (result instanceof EntityLibrary) {
                 return null;
             }
@@ -170,22 +170,25 @@ public class SharedParameter extends Parameter {
      */
     public void inferValueFromContext(String defaultValue) {
         NamedObj root = getRoot();
+
         if (root != null) {
             Iterator sharedParameters = sharedParameterList(root).iterator();
+
             while (sharedParameters.hasNext()) {
-                SharedParameter candidate =
-                    (SharedParameter)sharedParameters.next();
+                SharedParameter candidate = (SharedParameter) sharedParameters
+                                .next();
+
                 if (candidate != this) {
                     defaultValue = candidate.getExpression();
                 }
             }
         }
+
         boolean previousSuppressing = _suppressingPropagation;
         _suppressingPropagation = true;
         setExpression(defaultValue);
         _suppressingPropagation = previousSuppressing;
     }
-
 
     /** Return true if this instance is suppressing propagation.
      *  Unless setSuppressingPropagation has been called, this
@@ -205,18 +208,21 @@ public class SharedParameter extends Parameter {
 
         if (!_suppressingPropagation) {
             NamedObj toplevel = getRoot();
+
             // Do not do sharing if this is within an EntityLibrary.
             if (toplevel != null) {
-                Iterator sharedParameters =
-                    sharedParameterList(toplevel).iterator();
+                Iterator sharedParameters = sharedParameterList(toplevel)
+                                                            .iterator();
+
                 while (sharedParameters.hasNext()) {
-                    SharedParameter sharedParameter =
-                        (SharedParameter)sharedParameters.next();
+                    SharedParameter sharedParameter = (SharedParameter) sharedParameters
+                                    .next();
+
                     if (sharedParameter != this) {
                         try {
                             sharedParameter._suppressingPropagation = true;
-                            if (!sharedParameter.getExpression()
-                                    .equals(expression)) {
+
+                            if (!sharedParameter.getExpression().equals(expression)) {
                                 sharedParameter.setExpression(expression);
                             }
                         } finally {
@@ -252,23 +258,28 @@ public class SharedParameter extends Parameter {
      */
     public List sharedParameterList(NamedObj container) {
         LinkedList result = new LinkedList();
+
         if (_containerClass.isInstance(container)) {
             // If the attribute is not of the right class, get an exception.
             try {
-                    Attribute candidate = container.getAttribute(getName(),
-                            SharedParameter.class);
+                Attribute candidate = container.getAttribute(getName(),
+                        SharedParameter.class);
+
                 if (candidate != null) {
-                        result.add(candidate);
+                    result.add(candidate);
                 }
             } catch (IllegalActionException ex) {
-                    // Ignore. Candidate doesn't match.
+                // Ignore. Candidate doesn't match.
             }
         }
+
         Iterator containedObjects = container.containedObjectsIterator();
+
         while (containedObjects.hasNext()) {
-            NamedObj candidateContainer = (NamedObj)containedObjects.next();
+            NamedObj candidateContainer = (NamedObj) containedObjects.next();
             result.addAll(sharedParameterList(candidateContainer));
         }
+
         return result;
     }
 
@@ -279,7 +290,7 @@ public class SharedParameter extends Parameter {
      *   Also thrown if the change is not acceptable to the container.
      */
     public void validate() throws IllegalActionException {
-            super.validate();
+        super.validate();
 
         // NOTE: This is called by setContainer(), which is called from
         // within a base class constructor. That call occurs before this
@@ -289,18 +300,21 @@ public class SharedParameter extends Parameter {
         // from those instances if there are any. So in that case, we
         // just return.
         if (_containerClass == null) {
-                return;
+            return;
         }
 
         if (!_suppressingPropagation) {
             NamedObj toplevel = getRoot();
+
             // Do not do sharing if this is within an EntityLibrary.
             if (toplevel != null) {
-                Iterator sharedParameters =
-                    sharedParameterList(toplevel).iterator();
+                Iterator sharedParameters = sharedParameterList(toplevel)
+                                                            .iterator();
+
                 while (sharedParameters.hasNext()) {
-                    SharedParameter sharedParameter =
-                        (SharedParameter)sharedParameters.next();
+                    SharedParameter sharedParameter = (SharedParameter) sharedParameters
+                                    .next();
+
                     if (sharedParameter != this) {
                         try {
                             sharedParameter._suppressingPropagation = true;

@@ -194,16 +194,16 @@ public class MethodListGenerator {
                     // Static initializer for the class.
                     // Assume that there is at most one such initializer.
                     SootMethod previousEntry = (SootMethod) (_classInitializerMap
-                            .get(source));
+                                    .get(source));
 
                     if (previousEntry == null) {
                         _classInitializerMap.put(source, method);
                     } else if (previousEntry != method) {
                         throw new RuntimeException(
-                                "More than one class initializer "
-                                + "method found for " + source.getName() + ":\n"
-                                + previousEntry.getSubSignature() + ", and "
-                                + method.getSubSignature() + ".\n");
+                            "More than one class initializer "
+                            + "method found for " + source.getName() + ":\n"
+                            + previousEntry.getSubSignature() + ", and "
+                            + method.getSubSignature() + ".\n");
                     }
                 } else if (name.indexOf("init") != -1) {
                     // (Non-static) class constructor.
@@ -211,9 +211,9 @@ public class MethodListGenerator {
                 } else {
                     // Unrecognized method with name that contains '<'
                     throw new RuntimeException(
-                            "Unknown type of special method: "
-                            + method.getSubSignature() + " in class "
-                            + source.getName());
+                        "Unknown type of special method: "
+                        + method.getSubSignature() + " in class "
+                        + source.getName());
                 }
             } else {
                 if (method.isPrivate()) {
@@ -225,10 +225,10 @@ public class MethodListGenerator {
 
                     while (inheritedMethods.hasNext() && !found) {
                         SootMethod inheritedMethod = (SootMethod) (inheritedMethods
-                                .next());
+                                        .next());
 
                         if (method.getSubSignature().equals(inheritedMethod
-                                    .getSubSignature())) {
+                                            .getSubSignature())) {
                             found = true;
                         } else {
                             inheritedMethodIndex++;

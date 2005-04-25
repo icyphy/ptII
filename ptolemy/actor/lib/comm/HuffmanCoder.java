@@ -67,7 +67,7 @@ public class HuffmanCoder extends HuffmanBasic {
      *   actor with this name.
      */
     public HuffmanCoder(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // Declare port types.
@@ -90,7 +90,7 @@ public class HuffmanCoder extends HuffmanBasic {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         HuffmanCoder newObject = (HuffmanCoder) super.clone(workspace);
         InequalityTerm elementTerm = ((ArrayType) newObject.alphabet.getType())
-            .getElementTypeTerm();
+                        .getElementTypeTerm();
         newObject.input.setTypeAtLeast(elementTerm);
         return newObject;
     }

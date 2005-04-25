@@ -79,7 +79,7 @@ public class WindowPropertiesAttribute extends Parameter
      *   an attribute already in the container.
      */
     public WindowPropertiesAttribute(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         setVisibility(Settable.NONE);
 
@@ -131,12 +131,12 @@ public class WindowPropertiesAttribute extends Parameter
 
             // Determine whether the window is maximized.
             boolean maximized = (frame.getExtendedState()
-                    & Frame.MAXIMIZED_BOTH) == Frame.MAXIMIZED_BOTH;
+                            & Frame.MAXIMIZED_BOTH) == Frame.MAXIMIZED_BOTH;
 
             // Construct values for the record token.
             setToken("{bounds={" + bounds.x + ", " + bounds.y + ", "
-                    + bounds.width + ", " + bounds.height + "}, maximized="
-                    + maximized + "}");
+                + bounds.width + ", " + bounds.height + "}, maximized="
+                + maximized + "}");
         } catch (IllegalActionException ex) {
             throw new InternalErrorException("Can't set propertes value! " + ex);
         }
@@ -184,7 +184,7 @@ public class WindowPropertiesAttribute extends Parameter
                     // FIXME: Regrettably, this doesn't make the window
                     // actually maximized under Windows, at least.
                     frame.setExtendedState(frame.getExtendedState()
-                            | Frame.MAXIMIZED_BOTH);
+                                    | Frame.MAXIMIZED_BOTH);
                 }
             }
 

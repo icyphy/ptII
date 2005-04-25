@@ -50,7 +50,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  */
 public class SDFTestJoin extends TypedAtomicActor {
     public SDFTestJoin(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input1 = new TypedIOPort(this, "input1", true, false);
         input1_tokenConsumptionRate = new Parameter(input1,

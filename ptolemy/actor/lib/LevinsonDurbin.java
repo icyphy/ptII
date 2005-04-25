@@ -133,7 +133,7 @@ public class LevinsonDurbin extends TypedAtomicActor {
      *   an actor already in the container.
      */
     public LevinsonDurbin(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         autocorrelation = new TypedIOPort(this, "autocorrelation", true, false);
@@ -201,7 +201,7 @@ public class LevinsonDurbin extends TypedAtomicActor {
         // For convenience, read the autocorrelation lags into a vector.
         for (int i = 0; i <= order; i++) {
             r[i] = ((DoubleToken) autocorrelationValue.getElement((autocorrelationValueLength
-                                                                          - order + i) - 1)).doubleValue();
+                    - order + i) - 1)).doubleValue();
         }
 
         // Output the zeroth order prediction error power, which is

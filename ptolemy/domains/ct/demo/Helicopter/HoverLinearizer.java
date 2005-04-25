@@ -58,7 +58,7 @@ public class HoverLinearizer extends TypedAtomicActor {
     /** Constructor
      */
     public HoverLinearizer(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         inputPx = new TypedIOPort(this, "inputPx");
         inputPx.setInput(true);
@@ -181,9 +181,11 @@ public class HoverLinearizer extends TypedAtomicActor {
         double D4Pz = ((DoubleToken) inputD4Pz.get(0)).doubleValue();
 
         double Vx = -1.0 * ((_alphaP[0] * (Px - _cPx)) + (_alphaP[1] * DPx)
-                + (_alphaP[2] * DDPx) + (_alphaP[3] * D3Px) + (_alphaP[4] * D4Px));
+                        + (_alphaP[2] * DDPx) + (_alphaP[3] * D3Px)
+                        + (_alphaP[4] * D4Px));
         double Vz = -1.0 * ((_alphaP[0] * (Pz - _cPz)) + (_alphaP[1] * DPz)
-                + (_alphaP[2] * DDPz) + (_alphaP[3] * D3Pz) + (_alphaP[4] * D4Pz));
+                        + (_alphaP[2] * DDPz) + (_alphaP[3] * D3Pz)
+                        + (_alphaP[4] * D4Pz));
 
         double V = Math.sqrt((DPx * DPx) + (DPz * DPz));
         double R = Math.PI / 2.0;
@@ -293,7 +295,13 @@ public class HoverLinearizer extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    private double[] _alphaP = { 500.0, 650.0, 395.0, 121.0, 17.8 };
+    private double[] _alphaP = {
+            500.0,
+            650.0,
+            395.0,
+            121.0,
+            17.8
+        };
     private double _cPx;
     private double _cPz;
 }

@@ -67,7 +67,7 @@ public class BinarySwitch extends TypedAtomicActor {
      *   actor with this name.
      */
     public BinarySwitch(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         q1_len = new TypedIOPort(this, "q1_len", true, false);
         q1_len.setTypeEquals(BaseType.INT);

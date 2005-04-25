@@ -246,7 +246,7 @@ public class PetriNetDirector extends Director {
      *   an entity with the specified name.
      */
     public PetriNetDirector(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -341,7 +341,7 @@ public class PetriNetDirector extends Director {
      *  if the arcs are not assigned to some other value other than integers.
      */
     public boolean isTransitionReady(TypedCompositeActor transition)
-            throws IllegalActionException {
+        throws IllegalActionException {
         boolean readyToFire = true;
         LinkedList placeList = _findBackwardConnectedPlaces(transition);
         Iterator placeLists = placeList.iterator();
@@ -374,15 +374,15 @@ public class PetriNetDirector extends Director {
                         temporarySourcePortList.add(weightPort);
 
                         Nameable weightPlace = (Nameable) weightPort
-                            .getContainer();
+                                        .getContainer();
 
                         if (weightPlace instanceof PetriNetActor) {
                             if (weightPort.isOutput()) {
                                 newRelationList.addAll(weightPort
-                                        .insideRelationList());
+                                                .insideRelationList());
                             } else if (weightPort.isInput()) {
                                 newRelationList.addAll(weightPort
-                                        .linkedRelationList());
+                                                .linkedRelationList());
                             }
                         }
                     }
@@ -423,7 +423,7 @@ public class PetriNetDirector extends Director {
      *   _getWeightNumber() throws an exception.
      */
     public void fireTransition(TypedCompositeActor transition)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (_debugging) {
             _debug(transition.getFullName() + " is firing");
         }
@@ -447,7 +447,7 @@ public class PetriNetDirector extends Director {
 
             if (weights != null) {
                 Iterator weightPorts = weights.linkedDestinationPortList()
-                    .iterator();
+                                                          .iterator();
 
                 while (weightPorts.hasNext()) {
                     IOPort weightPort = (IOPort) weightPorts.next();
@@ -456,20 +456,20 @@ public class PetriNetDirector extends Director {
                         temporaryDestinationPortList.add(weightPort);
 
                         Nameable weightPlace = (Nameable) weightPort
-                            .getContainer();
+                                        .getContainer();
 
                         if (weightPlace instanceof PetriNetActor) {
                             if (weightPort.isOutput()) {
                                 newRelationList.addAll(weightPort
-                                        .linkedRelationList());
+                                                .linkedRelationList());
                             } else if (weightPort.isInput()) {
                                 newRelationList.addAll(weightPort
-                                        .insideRelationList());
+                                                .insideRelationList());
                             }
                         } else if (weightPlace instanceof Place) {
                         } else {
                             _debug("something wrong "
-                                    + weightPlace.getFullName());
+                                + weightPlace.getFullName());
                         }
                     }
                 }
@@ -477,7 +477,7 @@ public class PetriNetDirector extends Director {
                 int weightNumber = _getWeightNumber(weights);
                 LinkedList forwardConnectedPlaces = _findForwardConnectedPlaces(weights);
                 Iterator forwardConnectedPlace = forwardConnectedPlaces
-                    .iterator();
+                                .iterator();
                 int itemCount = 0;
 
                 while (forwardConnectedPlace.hasNext()) {
@@ -489,8 +489,8 @@ public class PetriNetDirector extends Director {
 
                     if (_debugging) {
                         _debug("              the " + itemCount + " place is "
-                                + forwardPlace.getFullName() + " old  " + oldToken
-                                + " new " + forwardPlace.getMarking());
+                            + forwardPlace.getFullName() + " old  " + oldToken
+                            + " new " + forwardPlace.getMarking());
                     }
                 }
             }
@@ -521,15 +521,15 @@ public class PetriNetDirector extends Director {
                         temporarySourcePortList.add(weightPort);
 
                         Nameable weightPlace = (Nameable) weightPort
-                            .getContainer();
+                                        .getContainer();
 
                         if (weightPlace instanceof PetriNetActor) {
                             if (weightPort.isOutput()) {
                                 backRelationList.addAll(weightPort
-                                        .insideRelationList());
+                                                .insideRelationList());
                             } else if (weightPort.isInput()) {
                                 backRelationList.addAll(weightPort
-                                        .linkedRelationList());
+                                                .linkedRelationList());
                             }
                         }
                     }
@@ -549,8 +549,8 @@ public class PetriNetDirector extends Director {
 
                     if (_debugging) {
                         _debug("                        the " + backPlaceCount
-                                + " place  is " + item.getFullName() + " old "
-                                + oldMarking + " new  " + item.getMarking());
+                            + " place  is " + item.getFullName() + " old "
+                            + oldMarking + " new  " + item.getMarking());
                     }
 
                     if (item.getMarking() < 0) {
@@ -593,7 +593,7 @@ public class PetriNetDirector extends Director {
      *  or PetriNetActor.prefire() throws exception.
      */
     private List _readyComponentList(TypedCompositeActor container)
-            throws IllegalActionException {
+        throws IllegalActionException {
         Iterator actors = container.entityList().iterator();
         LinkedList readyComponentList = new LinkedList();
 
@@ -634,7 +634,7 @@ public class PetriNetDirector extends Director {
      *  fireTransition() throws an exception.
      */
     private boolean _fireHierarchicalPetriNetOnce(TypedCompositeActor container)
-            throws IllegalActionException {
+        throws IllegalActionException {
         java.util.Random generator = new java.util.Random();
         List components = _readyComponentList(container);
         int componentCount = components.size();
@@ -697,16 +697,16 @@ public class PetriNetDirector extends Director {
                     if (weightPlace instanceof PetriNetActor) {
                         if (weightPort.isOutput()) {
                             newRelationList.addAll(weightPort
-                                    .linkedRelationList());
+                                            .linkedRelationList());
                         } else if (weightPort.isInput()) {
                             newRelationList.addAll(weightPort
-                                    .insideRelationList());
+                                            .insideRelationList());
                         }
                     } else if (weightPlace instanceof Place) {
                         temporaryPlaceList.add(weightPlace);
                     } else {
                         _debug("------found no place/PetriNetActor"
-                                + weightPort.getFullName());
+                            + weightPort.getFullName());
                     }
                 }
             }
@@ -749,16 +749,16 @@ public class PetriNetDirector extends Director {
                     if (weightPlace instanceof PetriNetActor) {
                         if (weightPort.isOutput()) {
                             newRelationList.addAll(weightPort
-                                    .insideRelationList());
+                                            .insideRelationList());
                         } else if (weightPort.isInput()) {
                             newRelationList.addAll(weightPort
-                                    .linkedRelationList());
+                                            .linkedRelationList());
                         }
                     } else if (weightPlace instanceof Place) {
                         temporaryPlaceList.add(weightPlace);
                     } else {
                         _debug("-------found no place/PetriNetActor  "
-                                + weightPort.getFullName());
+                            + weightPort.getFullName());
                     }
                 }
             }
@@ -780,7 +780,7 @@ public class PetriNetDirector extends Director {
      *   transition.
      */
     private LinkedList _findBackwardConnectedPlaces(
-            TypedCompositeActor transition) {
+        TypedCompositeActor transition) {
         LinkedList newRelationList = new LinkedList();
 
         Iterator inputPorts = transition.inputPortList().iterator();
@@ -814,7 +814,7 @@ public class PetriNetDirector extends Director {
      *  weight assigned to the relation is not an integer.
      */
     private int _getWeightNumber(IORelation weights)
-            throws IllegalActionException {
+        throws IllegalActionException {
         Attribute temporaryAttribute = (Attribute) weights.getAttribute(
                 "Weight");
 

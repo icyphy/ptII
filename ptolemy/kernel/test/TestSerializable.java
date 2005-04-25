@@ -60,7 +60,7 @@ public class TestSerializable {
      * be built.
      */
     public static void main(String[] args)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         ExampleSystem exampleSystem = new ExampleSystem();
         String filename = "TestSerializable.data";
 
@@ -82,7 +82,7 @@ public class TestSerializable {
                         f.close();
                     } catch (Throwable throwable) {
                         System.out.println("Ignoring failure to close stream "
-                                + "on '" + filename + "'");
+                            + "on '" + filename + "'");
                         throwable.printStackTrace();
                     }
                 }
@@ -92,7 +92,7 @@ public class TestSerializable {
                         s.close();
                     } catch (Throwable throwable) {
                         System.out.println("Ignoring failure to close stream "
-                                + "on '" + filename + "'");
+                            + "on '" + filename + "'");
                         throwable.printStackTrace();
                     }
                 }
@@ -114,11 +114,11 @@ public class TestSerializable {
 
                 if (oldDescription.equals(newDescription)) {
                     System.out.println("OK: Description read in from "
-                            + filename + " is the same as the original\n");
+                        + filename + " is the same as the original\n");
                 } else {
                     System.out.println("ERROR\nDescription read in from "
-                            + filename + "\n" + newDescription + "\n"
-                            + "is NOT the same as the original:\n" + oldDescription);
+                        + filename + "\n" + newDescription + "\n"
+                        + "is NOT the same as the original:\n" + oldDescription);
                     System.exit(1);
                 }
             } catch (IOException e) {
@@ -132,7 +132,7 @@ public class TestSerializable {
                         f.close();
                     } catch (Throwable throwable) {
                         System.out.println("Ignoring failure to close stream "
-                                + "on '" + filename + "'");
+                            + "on '" + filename + "'");
                         throwable.printStackTrace();
                     }
                 }
@@ -142,7 +142,7 @@ public class TestSerializable {
                         s.close();
                     } catch (Throwable throwable) {
                         System.out.println("Ignoring failure to close stream "
-                                + "on '" + filename + "'");
+                            + "on '" + filename + "'");
                         throwable.printStackTrace();
                     }
                 }

@@ -148,7 +148,7 @@ public class Options {
             return false;
         } else {
             throw new RuntimeException(
-                    "Stored value cannot be converted to boolean.");
+                "Stored value cannot be converted to boolean.");
         }
     }
 
@@ -166,11 +166,14 @@ public class Options {
      */
     public static boolean isValidOption(String string) {
         if (string.equals("lib") || string.equals("verbose")
-                || string.equals("compileMode") || string.equals("pruneLevel")
-                || string.equals("gcDir") || string.equals("target")
-                || string.equals("runtimeDir") || string.equals("vta")
-                || string.equals("ptII") || string.equals("compulsoryMethods")
-                || string.equals("cFlags") || string.equals("reportEntities")) {
+                        || string.equals("compileMode")
+                        || string.equals("pruneLevel")
+                        || string.equals("gcDir") || string.equals("target")
+                        || string.equals("runtimeDir") || string.equals("vta")
+                        || string.equals("ptII")
+                        || string.equals("compulsoryMethods")
+                        || string.equals("cFlags")
+                        || string.equals("reportEntities")) {
             return true;
         } else {
             return false;

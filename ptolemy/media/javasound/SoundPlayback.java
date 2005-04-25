@@ -137,7 +137,7 @@ public class SoundPlayback {
      *   are 1/2 to 1/16 th of <i>bufferSize</i>.
      */
     public SoundPlayback(float sampleRate, int sampleSizeInBits, int channels,
-            int bufferSize, int putSamplesSize) {
+        int bufferSize, int putSamplesSize) {
         _isAudioPlaybackActive = false;
 
         // Set mode to real-time.
@@ -189,7 +189,7 @@ public class SoundPlayback {
      *   this parameter, but typical values are 64-2024.
      */
     public SoundPlayback(String fileName, float sampleRate,
-            int sampleSizeInBits, int channels, int bufferSize, int putSamplesSize) {
+        int sampleSizeInBits, int channels, int bufferSize, int putSamplesSize) {
         _isAudioPlaybackActive = false;
         this._playbackMode = "file";
         this._fileName = fileName;
@@ -246,7 +246,7 @@ public class SoundPlayback {
      *  or if stopPlayback() has already been called.
      */
     public void putSamples(double[][] putSamplesArray)
-            throws IOException, IllegalStateException {
+        throws IOException, IllegalStateException {
         if (_isAudioPlaybackActive == true) {
             if (_playbackMode.equals("speaker")) {
                 // Convert array of double valued samples into
@@ -274,9 +274,9 @@ public class SoundPlayback {
             }
         } else {
             throw new IllegalStateException("SoundPlayback: "
-                    + "putSamples() was called while audio playback was"
-                    + " inactive (startPlayback() was never called or "
-                    + "stopPlayback has already been called).");
+                + "putSamples() was called while audio playback was"
+                + " inactive (startPlayback() was never called or "
+                + "stopPlayback has already been called).");
         }
     }
 
@@ -320,7 +320,7 @@ public class SoundPlayback {
      *  or if stopPlayback() has already been called.
      */
     public void putSamplesInt(int[][] putSamplesArray)
-            throws IOException, IllegalStateException {
+        throws IOException, IllegalStateException {
         if (_isAudioPlaybackActive == true) {
             if (_playbackMode.equals("speaker")) {
                 // Convert array of double valued samples into
@@ -348,9 +348,9 @@ public class SoundPlayback {
             }
         } else {
             throw new IllegalStateException("SoundPlayback: "
-                    + "putSamples() was called while audio playback was"
-                    + " inactive (startPlayback() was never called or "
-                    + "stopPlayback has already been called).");
+                + "putSamples() was called while audio playback was"
+                + " inactive (startPlayback() was never called or "
+                + "stopPlayback has already been called).");
         }
     }
 
@@ -377,17 +377,17 @@ public class SoundPlayback {
                 _startPlaybackToFile();
             } else {
                 throw new IOException("SoundPlayback: "
-                        + "startPlayback(): unknown playback mode: "
-                        + _playbackMode);
+                    + "startPlayback(): unknown playback mode: "
+                    + _playbackMode);
             }
 
             _bytesPerSample = _sampleSizeInBits / 8;
             _isAudioPlaybackActive = true;
         } else {
             throw new IllegalStateException("SoundPlayback: "
-                    + "startPlayback() was called while audio playback was"
-                    + " already active (startPlayback() was called "
-                    + "more than once between invocations of stopPlayback()).");
+                + "startPlayback() was called while audio playback was"
+                + " already active (startPlayback() was called "
+                + "more than once between invocations of stopPlayback()).");
         }
     }
 
@@ -452,7 +452,7 @@ public class SoundPlayback {
             _sourceLine.open(format, _bufferSize * _frameSizeInBytes);
         } catch (LineUnavailableException ex) {
             throw new IOException("Unable to open the line for "
-                    + "real-time audio playback: " + ex);
+                + "real-time audio playback: " + ex);
         }
 
         // Array of audio samples in byte format.
@@ -506,7 +506,7 @@ public class SoundPlayback {
             // Do error checking:
             if (st.countTokens() != 2) {
                 throw new IOException("Error: Incorrect "
-                        + "file name format. " + "Format: filename.extension");
+                    + "file name format. " + "Format: filename.extension");
             }
 
             st.nextToken(); // Advance to the file extension.
@@ -516,26 +516,26 @@ public class SoundPlayback {
             if (fileExtension.equalsIgnoreCase("au")) {
                 // Save the file.
                 AudioSystem.write(audioInputStream, AudioFileFormat.Type.AU,
-                        outFile);
+                    outFile);
             } else if (fileExtension.equalsIgnoreCase("aiff")) {
                 // Save the file.
                 AudioSystem.write(audioInputStream, AudioFileFormat.Type.AIFF,
-                        outFile);
+                    outFile);
             } else if (fileExtension.equalsIgnoreCase("wave")) {
                 // Save the file.
                 AudioSystem.write(audioInputStream, AudioFileFormat.Type.WAVE,
-                        outFile);
+                    outFile);
             } else if (fileExtension.equalsIgnoreCase("wav")) {
                 // Save the file.
                 AudioSystem.write(audioInputStream, AudioFileFormat.Type.WAVE,
-                        outFile);
+                    outFile);
             } else if (fileExtension.equalsIgnoreCase("aifc")) {
                 // Save the file.
                 AudioSystem.write(audioInputStream, AudioFileFormat.Type.AIFC,
-                        outFile);
+                    outFile);
             } else {
                 throw new IOException("Error saving "
-                        + "file: Unknown file format: " + fileExtension);
+                    + "file: Unknown file format: " + fileExtension);
             }
         } catch (IOException e) {
             throw new IOException("SoundPlayback: error saving" + " file: " + e);
@@ -545,7 +545,7 @@ public class SoundPlayback {
                     byteInputArrayStream.close();
                 } catch (Throwable throwable) {
                     System.out.println("Ignoring failure to close stream "
-                            + "on " + audioBytes.length + " bytes of data.");
+                        + "on " + audioBytes.length + " bytes of data.");
                     throwable.printStackTrace();
                 }
             }
@@ -555,7 +555,7 @@ public class SoundPlayback {
                     audioInputStream.close();
                 } catch (Throwable throwable) {
                     System.out.println("Ignoring failure to close stream "
-                            + "on " + audioBytes.length + " bytes of data.");
+                        + "on " + audioBytes.length + " bytes of data.");
                     throwable.printStackTrace();
                 }
             }
@@ -578,7 +578,7 @@ public class SoundPlayback {
      * the returned array is (doubleArray.length*bytesPerSample*channels).
      */
     private byte[] _doubleArrayToByteArray(double[][] doubleArray,
-            int bytesPerSample, int channels) {
+        int bytesPerSample, int channels) {
         // All channels had better have the same number
         // of samples! This is not checked!
         int lengthInSamples = doubleArray[0].length;
@@ -632,7 +632,7 @@ public class SoundPlayback {
                 // the linear signed pcm big endian formatted byte array.
                 for (int i = 0; i < bytesPerSample; i += 1) {
                     byteArray[(currSamp * bytesPerSample * channels)
-                            + (bytesPerSample * currChannel) + i] = b[i];
+                    + (bytesPerSample * currChannel) + i] = b[i];
                 }
             }
         }
@@ -657,7 +657,7 @@ public class SoundPlayback {
      * the returned array is (doubleArray.length*bytesPerSample*channels).
      */
     private byte[] _intArrayToByteArray(int[][] intArray, int bytesPerSample,
-            int channels) {
+        int channels) {
         // All channels had better have the same number
         // of samples! This is not checked!
         int lengthInSamples = intArray[0].length;
@@ -703,7 +703,7 @@ public class SoundPlayback {
                 // the linear signed pcm big endian formatted byte array.
                 for (int i = 0; i < bytesPerSample; i += 1) {
                     byteArray[(currSamp * bytesPerSample * channels)
-                            + (bytesPerSample * currChannel) + i] = b[i];
+                    + (bytesPerSample * currChannel) + i] = b[i];
                 }
             }
         }

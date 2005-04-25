@@ -126,10 +126,10 @@ public class DerivativeResolver extends ODESolver implements BreakpointODESolver
      *  @exception IllegalActionException If can not read input.
      */
     public void integratorFire(CTBaseIntegrator integrator)
-            throws IllegalActionException {
+        throws IllegalActionException {
         integrator.setTentativeState(integrator.getState());
         integrator.setTentativeDerivative(((DoubleToken) integrator.input.get(0))
-                .doubleValue());
+                        .doubleValue());
     }
 
     /** Return true, since there is no step size control.

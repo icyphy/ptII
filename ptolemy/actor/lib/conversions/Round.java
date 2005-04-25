@@ -76,7 +76,7 @@ public class Round extends Transformer {
      *   by the proposed container.
      */
     public Round(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // Parameters
@@ -89,8 +89,8 @@ public class Round extends Transformer {
         output.setTypeEquals(BaseType.INT);
 
         _attachText("_iconDescription",
-                "<svg>\n" + "<circle cx=\"0\" cy=\"0\" r=\"17\""
-                + "style=\"fill:white\"/>\n" + "</svg>\n");
+            "<svg>\n" + "<circle cx=\"0\" cy=\"0\" r=\"17\""
+            + "style=\"fill:white\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -110,7 +110,7 @@ public class Round extends Transformer {
      *  @exception IllegalActionException If the function is not recognized.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == function) {
             String functionName = function.getExpression();
 
@@ -124,7 +124,7 @@ public class Round extends Transformer {
                 _function = _TRUNCATE;
             } else {
                 throw new IllegalActionException(this,
-                        "Unrecognized rounding function: " + functionName);
+                    "Unrecognized rounding function: " + functionName);
             }
         } else {
             super.attributeChanged(attribute);
@@ -227,9 +227,9 @@ public class Round extends Transformer {
 
         default:
             throw new InvalidStateException(
-                    "Invalid value for _function private variable. "
-                    + "Round actor (" + getFullName() + ")" + " on function type "
-                    + _function);
+                "Invalid value for _function private variable. "
+                + "Round actor (" + getFullName() + ")" + " on function type "
+                + _function);
         }
 
         return result;

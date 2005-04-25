@@ -252,7 +252,7 @@ public class BasicSelectionModel implements SelectionModel {
 
             if (ir instanceof SelectionInteractor) {
                 SelectionRenderer sr = ((SelectionInteractor) ir)
-                    .getSelectionRenderer();
+                                .getSelectionRenderer();
 
                 if (sr != null) {
                     sr.renderDeselected((Figure) o);
@@ -271,7 +271,7 @@ public class BasicSelectionModel implements SelectionModel {
 
             if (ir instanceof SelectionInteractor) {
                 SelectionRenderer sr = ((SelectionInteractor) ir)
-                    .getSelectionRenderer();
+                                .getSelectionRenderer();
 
                 if (sr != null) {
                     sr.renderSelected((Figure) o);

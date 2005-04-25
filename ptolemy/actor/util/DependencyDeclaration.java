@@ -74,7 +74,7 @@ public class DependencyDeclaration extends Attribute {
      *   an entity with the specified name.
      */
     public DependencyDeclaration(Variable container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         setPersistent(false);
     }
@@ -86,7 +86,7 @@ public class DependencyDeclaration extends Attribute {
      *  this attribute.  This attribute declares that the container
      *  depends on at least the given set of parameters.
      *  @return A list of variables.
-     *  @see #setDependents 
+     *  @see #setDependents
      */
     public List getDependents() {
         return _dependents;

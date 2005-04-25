@@ -69,7 +69,7 @@ public class BitsToInt extends SDFConverter {
      *   actor with this name.
      */
     public BitsToInt(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         numberOfBits = new Parameter(this, "numberOfBits");
@@ -99,13 +99,13 @@ public class BitsToInt extends SDFConverter {
      *  @exception IllegalActionException If the parameter is out of range.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == numberOfBits) {
             int rate = ((IntToken) numberOfBits.getToken()).intValue();
 
             if ((rate < 1) || (rate > 32)) {
                 throw new IllegalActionException(this,
-                        "Invalid number of bits: " + rate);
+                    "Invalid number of bits: " + rate);
             }
         } else {
             super.attributeChanged(attribute);

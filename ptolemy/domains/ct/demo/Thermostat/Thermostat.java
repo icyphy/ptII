@@ -85,7 +85,7 @@ import ptolemy.plot.Plot;
 */
 public class Thermostat extends TypedCompositeActor {
     public Thermostat(Workspace workspace)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(workspace);
         setName("Thermostat");
 
@@ -143,7 +143,7 @@ public class Thermostat extends TypedCompositeActor {
         ctrlDec.incomingPort.link(ctrlTr1);
         ctrlTr1.setGuardExpression("output_isPresent");
         ctrlTr1.setActions.setExpression(
-                "Decreasing.Integrator.initialState = state");
+            "Decreasing.Integrator.initialState = state");
         ctrlTr1.reset.setExpression("true");
 
         Transition ctrlTr2 = new Transition(ctrl, "ctrlTr2");
@@ -151,7 +151,7 @@ public class Thermostat extends TypedCompositeActor {
         ctrlInc.incomingPort.link(ctrlTr2);
         ctrlTr2.setGuardExpression("output_isPresent");
         ctrlTr2.setActions.setExpression(
-                "Increasing.Integrator.initialState = state");
+            "Increasing.Integrator.initialState = state");
         ctrlTr2.reset.setExpression("true");
 
         IOPort ctrlIn = new TypedIOPort(ctrl, "output");

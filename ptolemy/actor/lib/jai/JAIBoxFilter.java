@@ -66,7 +66,7 @@ public class JAIBoxFilter extends Transformer {
      *   actor with this name.
      */
     public JAIBoxFilter(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         width = new Parameter(this, "width", new IntToken(3));
@@ -93,7 +93,7 @@ public class JAIBoxFilter extends Transformer {
      *  @exception IllegalActionException If a contained method throws it.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == width) {
             _width = ((IntToken) width.getToken()).intValue();
         } else if (attribute == height) {

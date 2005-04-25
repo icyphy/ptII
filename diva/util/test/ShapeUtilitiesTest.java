@@ -106,13 +106,13 @@ public class ShapeUtilitiesTest extends TestSuite {
 
                 public void check() throws TestFailedException {
                     assertExpr(TestUtilities.shapeEquals(ds1, dr1, 0.01),
-                            "Bounds not transformed: " + ds1 + " != " + dr1);
+                        "Bounds not transformed: " + ds1 + " != " + dr1);
                     assertExpr(TestUtilities.shapeEquals(ds2, dr2, 0.01),
-                            "Bounds not transformed: " + ds2 + " != " + dr2);
+                        "Bounds not transformed: " + ds2 + " != " + dr2);
                     assertExpr(TestUtilities.shapeEquals(fs1, fr1, 0.01),
-                            "Bounds not transformed: " + fs1 + " != " + fr1);
+                        "Bounds not transformed: " + fs1 + " != " + fr1);
                     assertExpr(TestUtilities.shapeEquals(fs2, fr2, 0.01),
-                            "Bounds not transformed: " + fs2 + " != " + fr2);
+                        "Bounds not transformed: " + fs2 + " != " + fr2);
                 }
             });
     }
@@ -144,7 +144,7 @@ public class ShapeUtilitiesTest extends TestSuite {
                     shapes[3] = polyline;
                     shapes[4] = polygon;
                     shapes[5] = new GeneralPath(ShapeUtilities
-                            .createSwatchShape());
+                                        .createSwatchShape());
 
                     at = new AffineTransform();
                     at.translate(40, -20);
@@ -163,18 +163,18 @@ public class ShapeUtilitiesTest extends TestSuite {
                 public void check() throws TestFailedException {
                     for (int i = 0; i < n; i++) {
                         assertExpr(TestUtilities.shapeEquals(modified[i],
-                                           xforms[i], 0.01),
-                                "Shape not transformed: " + modified[i] + " != "
-                                + xforms[i]);
+                                xforms[i], 0.01),
+                            "Shape not transformed: " + modified[i] + " != "
+                            + xforms[i]);
 
                         if (i < 3) {
                             assertExpr(shapes[i] != modified[i],
-                                    "Shapes must not be identical: " + shapes[i]
-                                    + " != " + modified[i]);
+                                "Shapes must not be identical: " + shapes[i]
+                                + " != " + modified[i]);
                         } else {
                             assertExpr(shapes[i] == modified[i],
-                                    "Shapes must be identical: " + shapes[i]
-                                    + " != " + modified[i]);
+                                "Shapes must be identical: " + shapes[i]
+                                + " != " + modified[i]);
                         }
                     }
                 }
@@ -210,11 +210,11 @@ public class ShapeUtilitiesTest extends TestSuite {
 
                 public void check() throws TestFailedException {
                     assertExpr(TestUtilities.shapeEquals(ds, dr, 0.01),
-                            "Rectangle not transformed: " + dr + " != " + ds);
+                        "Rectangle not transformed: " + dr + " != " + ds);
                     assertExpr(TestUtilities.shapeEquals(fs, fr, 0.01),
-                            "Rectangle not transformed: " + fr + " != " + fs);
+                        "Rectangle not transformed: " + fr + " != " + fs);
                     assertExpr(TestUtilities.shapeEquals(es, er, 0.01),
-                            "Ellipse not transformed: " + er + " != " + es);
+                        "Ellipse not transformed: " + er + " != " + es);
                 }
             });
     }
@@ -248,7 +248,7 @@ public class ShapeUtilitiesTest extends TestSuite {
                     shapes[3] = polyline;
                     shapes[4] = polygon;
                     shapes[5] = new GeneralPath(ShapeUtilities
-                            .createSwatchShape());
+                                        .createSwatchShape());
                 }
 
                 public void run() throws Exception {
@@ -262,18 +262,18 @@ public class ShapeUtilitiesTest extends TestSuite {
                 public void check() throws TestFailedException {
                     for (int i = 0; i < n; i++) {
                         assertExpr(TestUtilities.shapeEquals(modified[i],
-                                           xforms[i], 0.01),
-                                "Shape not translated: " + modified[i] + " != "
-                                + xforms[i]);
+                                xforms[i], 0.01),
+                            "Shape not translated: " + modified[i] + " != "
+                            + xforms[i]);
 
                         if (i < 1) {
                             assertExpr(shapes[i] != modified[i],
-                                    "Shapes must not be identical: " + shapes[i]
-                                    + " != " + modified[i]);
+                                "Shapes must not be identical: " + shapes[i]
+                                + " != " + modified[i]);
                         } else {
                             assertExpr(shapes[i] == modified[i],
-                                    "Shapes must be identical: " + shapes[i]
-                                    + " != " + modified[i]);
+                                "Shapes must be identical: " + shapes[i]
+                                + " != " + modified[i]);
                         }
                     }
                 }

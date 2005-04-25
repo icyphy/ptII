@@ -27,6 +27,8 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.lib.colt;
 
+import cern.jet.random.PoissonSlow;
+
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
@@ -34,7 +36,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import cern.jet.random.PoissonSlow;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// PoissonSlow
@@ -47,7 +49,7 @@ import cern.jet.random.PoissonSlow;
    deviation given by parameters.  In addition, the seed can be
    specified as a parameter to control the sequence that is generated.
 
-   <p> This actor instantiates a 
+   <p> This actor instantiates a
    <a href="http://hoschek.home.cern.ch/hoschek/colt/V1.0.3/doc/cern/jet/random/PoissonSlow.html">cern.jet.random.PoissonSlow</a> object with
     a mean of 1.0.
 
@@ -67,14 +69,14 @@ public class ColtPoissonSlow extends ColtRandomSource {
      *   actor with this name.
      */
     public ColtPoissonSlow(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         output.setTypeEquals(BaseType.INT);
 
         mean = new Parameter(this, "mean", new DoubleToken(1.0));
         mean.setTypeEquals(BaseType.DOUBLE);
-        
+
         mean.moveToFirst();
     }
 
@@ -123,7 +125,7 @@ public class ColtPoissonSlow extends ColtRandomSource {
 
     /** The random number for the current iteration. */
     private int _current;
-    
+
     /** The random number generator. */
     private PoissonSlow _generator;
 }

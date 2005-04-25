@@ -76,7 +76,7 @@ public class VariableRecursiveLattice extends RecursiveLattice
      *   actor with this name.
      */
     public VariableRecursiveLattice(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         blockSize = new Parameter(this, "blockSize");
@@ -131,14 +131,14 @@ public class VariableRecursiveLattice extends RecursiveLattice
      *   or if the base class throws it.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == blockSize) {
             IntToken blockSizeToken = (IntToken) (blockSize.getToken());
             _blockSizeValue = blockSizeToken.intValue();
 
             if (_blockSizeValue < 1) {
                 throw new IllegalActionException(this,
-                        "Invalid blockSize: " + _blockSizeValue);
+                    "Invalid blockSize: " + _blockSizeValue);
             }
         }
 
@@ -154,7 +154,7 @@ public class VariableRecursiveLattice extends RecursiveLattice
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         VariableRecursiveLattice newObject = (VariableRecursiveLattice) (super
-                .clone(workspace));
+                        .clone(workspace));
 
         newObject.newCoefficients.setTypeSameAs(newObject.reflectionCoefficients);
 

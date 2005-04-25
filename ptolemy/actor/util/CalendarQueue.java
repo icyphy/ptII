@@ -152,11 +152,11 @@ public class CalendarQueue implements Debuggable {
      *  @param binCountFactor The bin count factor.
      */
     public CalendarQueue(CQComparator comparator, int minNumBuckets,
-            int binCountFactor) {
+        int binCountFactor) {
         this(comparator);
         _logMinNumBuckets = log(minNumBuckets);
         _logQueueBinCountFactor = log(binCountFactor);
-        
+
         // For debugging.
         // addDebugListener(new StreamListener());
     }
@@ -229,7 +229,7 @@ public class CalendarQueue implements Debuggable {
     public final boolean isEmpty() {
         return (_queueSize == 0);
     }
-    
+
     /** Return the power of two belonging to the least integer
      *  power of two larger than or equal to the specified integer.
      *  The return value is always between 0 and 31, inclusive.
@@ -241,17 +241,21 @@ public class CalendarQueue implements Debuggable {
      */
     public static int log(int value) {
         if (value <= 0) {
-        	throw new ArithmeticException(
-                    "CalendarQueue: Cannot take the log of a non-positive number: "
-                    + value);
+            throw new ArithmeticException(
+                "CalendarQueue: Cannot take the log of a non-positive number: "
+                + value);
         }
+
         if (value == 1) {
-        	return 0;
+            return 0;
         }
-    	int result = 1;
+
+        int result = 1;
+
         while (((1 << result) < value) && (result < 32)) {
-        	result = result << 1;
+            result = result << 1;
         }
+
         return result;
     }
 
@@ -302,7 +306,7 @@ public class CalendarQueue implements Debuggable {
         // or if the new entry is less than the current
         // smallest entry) then update the minimum entry of the queue.
         if ((_minimumEntry == null) || (_queueSize == 0)
-                || (_cqComparator.compare(entry, _minimumEntry) < 0)) {
+                        || (_cqComparator.compare(entry, _minimumEntry) < 0)) {
             _minimumEntry = entry;
             _minVirtualBucket = _cqComparator.getVirtualBinNumber(entry);
             _minBucket = _getBinIndex(entry);
@@ -430,7 +434,7 @@ public class CalendarQueue implements Debuggable {
                 Object minimumInBucket = _bucket[i].head.contents;
 
                 if (_cqComparator.getVirtualBinNumber(minimumInBucket) == (_minVirtualBucket
-                            + j)) {
+                                + j)) {
                     // The entry is in the current year. Return it.
                     result = _takeFromBucket(i);
                     break;
@@ -460,7 +464,7 @@ public class CalendarQueue implements Debuggable {
             if (i == _minBucket) {
                 if (minSoFar == null) {
                     throw new InternalErrorException(
-                            "Queue is empty, but size() is not zero!");
+                        "Queue is empty, but size() is not zero!");
                 }
 
                 result = _takeFromBucket(indexOfMinimum);
@@ -568,8 +572,8 @@ public class CalendarQueue implements Debuggable {
                 // this will cause problems if the getVirtualBinNumber()
                 // returns something other than Long.MAX_VALUE that
                 // is the same as minimumNextVirtualBucket.
-                if (nextVirtualBucket < minimumNextVirtualBucket 
-                        || nextVirtualBucket == Long.MAX_VALUE) {
+                if ((nextVirtualBucket < minimumNextVirtualBucket)
+                                || (nextVirtualBucket == Long.MAX_VALUE)) {
                     foundValue = true;
                     minimumNextVirtualBucket = nextVirtualBucket;
                     nextStartBucket = currentBucket;
@@ -589,8 +593,8 @@ public class CalendarQueue implements Debuggable {
             if (currentBucket == nextStartBucket) {
                 if (!foundValue) {
                     throw new InternalErrorException(
-                            "Queue is empty, but size() is not zero! It is: "
-                            + _queueSize);
+                        "Queue is empty, but size() is not zero! It is: "
+                        + _queueSize);
                 }
 
                 virtualBucket = minimumNextVirtualBucket;
@@ -602,13 +606,12 @@ public class CalendarQueue implements Debuggable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
     // Collect an entry for later use to recalculate bin widths.
     // The entry is collected only if it is strictly greater than the
     // previously collected entry.
     private void _collect(Object entry) {
         if ((_previousTakenEntry == null)
-                || (_cqComparator.compare(entry, _previousTakenEntry) > 0)) {
+                        || (_cqComparator.compare(entry, _previousTakenEntry) > 0)) {
             _sampleEntries[_sampleEntryIndex++] = entry;
 
             if (_sampleEntryIndex == _SAMPLE_SIZE) {
@@ -654,7 +657,7 @@ public class CalendarQueue implements Debuggable {
         _logNumberOfBuckets = logNumberOfBuckets;
         _numberOfBuckets = 1 << logNumberOfBuckets;
         _numberOfBucketsMask = _numberOfBuckets - 1;
-        
+
         int numberOfBuckets = 1 << _logNumberOfBuckets;
         _bucket = new CQLinkedList[numberOfBuckets];
 
@@ -705,7 +708,8 @@ public class CalendarQueue implements Debuggable {
                 logNewSize = _logNumberOfBuckets + _logQueueBinCountFactor;
 
                 if (_debugging) {
-                    _debug(">>>>>> increasing number of buckets to: " + (1 << logNewSize));
+                    _debug(">>>>>> increasing number of buckets to: "
+                        + (1 << logNewSize));
                 }
             }
         } else {
@@ -719,13 +723,15 @@ public class CalendarQueue implements Debuggable {
                 _queueSizeUnderThreshold = 0;
 
                 // If it is already minimum or close, do nothing.
-                int tempLogNewSize = _logNumberOfBuckets - _logQueueBinCountFactor;
+                int tempLogNewSize = _logNumberOfBuckets
+                    - _logQueueBinCountFactor;
+
                 if (tempLogNewSize > _logMinNumBuckets) {
                     logNewSize = tempLogNewSize;
 
                     if (_debugging) {
                         _debug(">>>>>> decreasing number of buckets to: "
-                                + (1 << logNewSize));
+                            + (1 << logNewSize));
                     }
                 }
             }
@@ -1036,7 +1042,7 @@ public class CalendarQueue implements Debuggable {
 
     // The positive modulo of _minimumEntry (the physical bin number).
     private int _minBucket;
-    
+
     // The number of buckets currently in the queue (see _logNumberOfBuckets).
     private int _numberOfBuckets;
 

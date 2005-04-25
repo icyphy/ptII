@@ -45,7 +45,7 @@ import ptolemy.kernel.util.Workspace;
  */
 public class PortHasNoContainer extends Entity {
     public PortHasNoContainer(Workspace workspace, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(workspace, name);
 
         // This port should be oke

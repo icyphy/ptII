@@ -63,7 +63,7 @@ public class JAIConvolve extends Transformer {
      *   actor with this name.
      */
     public JAIConvolve(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input.setTypeEquals(BaseType.OBJECT);
         output.setTypeEquals(BaseType.OBJECT);
@@ -88,7 +88,7 @@ public class JAIConvolve extends Transformer {
      *  @exception IllegalActionException If a contained method throws it.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == filter) {
             DoubleMatrixToken matrix = (DoubleMatrixToken) filter.getToken();
             double[][] matrixValue = matrix.doubleMatrix();
@@ -132,8 +132,20 @@ public class JAIConvolve extends Transformer {
 
     /** A filter that does nothing to an image when convolved with it. */
     private double[][] _initialMatrix = {
-        { 0.0F, 0.0F, 0.0F },
-        { 0.0F, 1.0F, 0.0F },
-        { 0.0F, 0.0F, 0.0F }
-    };
+            {
+                0.0F,
+                0.0F,
+                0.0F
+            },
+            {
+                0.0F,
+                1.0F,
+                0.0F
+            },
+            {
+                0.0F,
+                0.0F,
+                0.0F
+            }
+        };
 }

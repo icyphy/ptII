@@ -165,7 +165,7 @@ public class FigureAction extends AbstractAction {
                 // NOTE: _target may end up null here!
                 if (_target == null) {
                     throw new InternalErrorException(
-                            "Internal error: Figure has no associated Ptolemy II object!");
+                        "Internal error: Figure has no associated Ptolemy II object!");
                 }
             } else {
                 _target = (NamedObj) model.getRoot();
@@ -270,7 +270,8 @@ public class FigureAction extends AbstractAction {
 
     /** When the action was fired from a context menu.
      */
-    public static final SourceType CONTEXTMENU_TYPE = new SourceType("contextmenu");
+    public static final SourceType CONTEXTMENU_TYPE = new SourceType(
+            "contextmenu");
 
     /** When the action was fired from a toolbar icon.
      */

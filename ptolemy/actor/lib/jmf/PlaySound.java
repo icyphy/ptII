@@ -79,7 +79,7 @@ public class PlaySound extends TypedAtomicActor implements ControllerListener {
      *   actor with this name.
      */
     public PlaySound(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         fileNameOrURL = new FileParameter(this, "fileNameOrURL");
@@ -129,7 +129,7 @@ public class PlaySound extends TypedAtomicActor implements ControllerListener {
      *   or if the base class throws it.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == fileNameOrURL) {
             try {
                 if ((fileNameOrURL != null) && (fileNameOrURL.asURL() != null)) {
@@ -147,15 +147,15 @@ public class PlaySound extends TypedAtomicActor implements ControllerListener {
 
                     if (percentGain != null) {
                         _gainControl.setLevel(0.01f * percentGain
-                                .getCurrentValue());
+                                        .getCurrentValue());
                     }
                 }
             } catch (IOException ex) {
                 throw new IllegalActionException(this,
-                        "Cannot open file: " + ex.toString());
+                    "Cannot open file: " + ex.toString());
             } catch (MediaException ex) {
                 throw new IllegalActionException(this, ex,
-                        "Exception thrown by media framework");
+                    "Exception thrown by media framework");
             }
         } else if ((attribute == percentGain) && (_gainControl != null)) {
             _gainControl.setLevel(0.01f * percentGain.getCurrentValue());
@@ -203,12 +203,12 @@ public class PlaySound extends TypedAtomicActor implements ControllerListener {
 
             // If synchronizedPlay is true, then wait for the play to complete.
             boolean synch = ((BooleanToken) synchronizedPlay.getToken())
-                .booleanValue();
+                            .booleanValue();
 
             if (synch) {
                 synchronized (this) {
                     while ((_player.getState() == Controller.Started)
-                            && !_stopRequested) {
+                                    && !_stopRequested) {
                         try {
                             wait();
                         } catch (InterruptedException ex) {

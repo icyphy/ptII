@@ -166,7 +166,7 @@ public class IOPort extends ComponentPort {
      *   a port already in the container.
      */
     public IOPort(ComponentEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -186,8 +186,8 @@ public class IOPort extends ComponentPort {
      *   a port already in the container.
      */
     public IOPort(ComponentEntity container, String name, boolean isInput,
-            boolean isOutput)
-            throws IllegalActionException, NameDuplicationException {
+        boolean isOutput)
+        throws IllegalActionException, NameDuplicationException {
         this(container, name);
         setInput(isInput);
         setOutput(isOutput);
@@ -218,7 +218,7 @@ public class IOPort extends ComponentPort {
      *     it.
      */
     public void broadcast(Token token)
-            throws IllegalActionException, NoRoomException {
+        throws IllegalActionException, NoRoomException {
         Receiver[][] farReceivers;
 
         if (_debugging) {
@@ -278,7 +278,7 @@ public class IOPort extends ComponentPort {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public void broadcast(Token[] tokenArray, int vectorLength)
-            throws IllegalActionException, NoRoomException {
+        throws IllegalActionException, NoRoomException {
         Receiver[][] farReceivers;
 
         if (_debugging) {
@@ -404,9 +404,9 @@ public class IOPort extends ComponentPort {
     public void createReceivers() throws IllegalActionException {
         if (!isOpaque()) {
             throw new IllegalActionException(this,
-                    "createReceivers: Can only create "
-                    + "receivers on opaque ports. Perhaps there is no "
-                    + "top level director?");
+                "createReceivers: Can only create "
+                + "receivers on opaque ports. Perhaps there is no "
+                + "top level director?");
         }
 
         if (_debugging) {
@@ -664,7 +664,7 @@ public class IOPort extends ComponentPort {
      *   if the channel index is out of range.
      */
     public Token get(int channelIndex)
-            throws NoTokenException, IllegalActionException {
+        throws NoTokenException, IllegalActionException {
         Receiver[][] localReceivers;
 
         try {
@@ -677,18 +677,18 @@ public class IOPort extends ComponentPort {
             if (channelIndex >= localReceivers.length) {
                 if (!isInput()) {
                     throw new IllegalActionException(this,
-                            "Port is not an input port!");
+                        "Port is not an input port!");
                 } else {
                     throw new IllegalActionException(this,
-                            "Channel index " + channelIndex
-                            + " is out of range, because width is only "
-                            + getWidth() + ".");
+                        "Channel index " + channelIndex
+                        + " is out of range, because width is only "
+                        + getWidth() + ".");
                 }
             }
 
             if (localReceivers[channelIndex] == null) {
                 throw new NoTokenException(this,
-                        "No receiver at index: " + channelIndex + ".");
+                    "No receiver at index: " + channelIndex + ".");
             }
         } finally {
             _workspace.doneReading();
@@ -746,7 +746,7 @@ public class IOPort extends ComponentPort {
      *   if the channel index is out of range.
      */
     public Token[] get(int channelIndex, int vectorLength)
-            throws NoTokenException, IllegalActionException {
+        throws NoTokenException, IllegalActionException {
         Receiver[][] localReceivers;
 
         try {
@@ -762,19 +762,19 @@ public class IOPort extends ComponentPort {
         if (channelIndex >= localReceivers.length) {
             // NOTE: This may be thrown if the port is not an input port.
             throw new IllegalActionException(this,
-                    "get: channel index is out of range.");
+                "get: channel index is out of range.");
         }
 
         if (localReceivers[channelIndex] == null) {
             throw new NoTokenException(this,
-                    "get: no receiver at index: " + channelIndex + ".");
+                "get: no receiver at index: " + channelIndex + ".");
         }
 
         Token[] retArray = localReceivers[channelIndex][0].getArray(vectorLength);
 
         if (retArray == null) {
             throw new NoTokenException(this,
-                    "get: No token array " + "to return.");
+                "get: No token array " + "to return.");
         }
 
         int index = 1;
@@ -787,7 +787,7 @@ public class IOPort extends ComponentPort {
 
         if (_debugging) {
             _debug("get vector from channel " + channelIndex + " of length "
-                    + vectorLength);
+                + vectorLength);
         }
 
         return retArray;
@@ -801,7 +801,7 @@ public class IOPort extends ComponentPort {
      *  replaced by {@link #getModelTime}.
      */
     public double getCurrentTime(int channelIndex)
-            throws IllegalActionException {
+        throws IllegalActionException {
         return getModelTime(channelIndex).getDoubleValue();
     }
 
@@ -842,7 +842,7 @@ public class IOPort extends ComponentPort {
 
                 if (localReceivers[channelIndex] == null) {
                     throw new IllegalActionException(this,
-                            "no receiver at index: " + channelIndex + ".");
+                        "no receiver at index: " + channelIndex + ".");
                 }
             } finally {
                 _workspace.doneReading();
@@ -853,7 +853,7 @@ public class IOPort extends ComponentPort {
         } catch (ArrayIndexOutOfBoundsException ex) {
             // NOTE: This may be thrown if the port is not an input port.
             throw new IllegalActionException(this,
-                    "getCurrentTime: channel index is out of range.");
+                "getCurrentTime: channel index is out of range.");
         }
     }
 
@@ -885,7 +885,7 @@ public class IOPort extends ComponentPort {
      *   if the channel index is out of range.
      */
     public Token getInside(int channelIndex)
-            throws NoTokenException, IllegalActionException {
+        throws NoTokenException, IllegalActionException {
         Receiver[][] localReceivers;
 
         try {
@@ -898,18 +898,18 @@ public class IOPort extends ComponentPort {
             if (channelIndex >= localReceivers.length) {
                 if (!isOutput()) {
                     throw new IllegalActionException(this,
-                            "Port is not an output port!");
+                        "Port is not an output port!");
                 } else {
                     throw new IllegalActionException(this,
-                            "Channel index " + channelIndex
-                            + " is out of range, because inside width is only "
-                            + getWidthInside() + ".");
+                        "Channel index " + channelIndex
+                        + " is out of range, because inside width is only "
+                        + getWidthInside() + ".");
                 }
             }
 
             if (localReceivers[channelIndex] == null) {
                 throw new IllegalActionException(this,
-                        "No receiver at inside index: " + channelIndex + ".");
+                    "No receiver at inside index: " + channelIndex + ".");
             }
         } finally {
             _workspace.doneReading();
@@ -1013,7 +1013,7 @@ public class IOPort extends ComponentPort {
             // getReceivers(IORelation, int) throws. This should not
             // occur because we are sure the IORelation is connected.
             throw new InternalErrorException(this, ex,
-                    "Expected relation to be connected!");
+                "Expected relation to be connected!");
         } finally {
             _workspace.doneReading();
         }
@@ -1098,7 +1098,7 @@ public class IOPort extends ComponentPort {
                             // Have seen this relation before.  Increment
                             // the occurrence number.
                             occurrence = ((Integer) (seen.get(relation)))
-                                .intValue();
+                                            .intValue();
                             occurrence++;
                         }
 
@@ -1126,7 +1126,7 @@ public class IOPort extends ComponentPort {
             // getReceivers(IORelation, int) throws. This should not
             // occur because we are sure the IORelation is connected.
             throw new InternalErrorException(this, ex,
-                    "Expected relation to be connected!");
+                "Expected relation to be connected!");
         } finally {
             _workspace.doneReading();
         }
@@ -1152,7 +1152,7 @@ public class IOPort extends ComponentPort {
      *   from the outside, or if there is no director.
      */
     public Receiver[][] getReceivers(IORelation relation)
-            throws IllegalActionException {
+        throws IllegalActionException {
         return getReceivers(relation, 0);
     }
 
@@ -1178,7 +1178,7 @@ public class IOPort extends ComponentPort {
      *   from the outside.
      */
     public Receiver[][] getReceivers(IORelation relation, int occurrence)
-            throws IllegalActionException {
+        throws IllegalActionException {
         try {
             _workspace.getReadAccess();
 
@@ -1188,7 +1188,7 @@ public class IOPort extends ComponentPort {
 
             if (!isLinked(relation) && !insideLink) {
                 throw new IllegalActionException(this, relation,
-                        "getReceivers: Relation argument is not " + "linked to me.");
+                    "getReceivers: Relation argument is not " + "linked to me.");
             }
 
             boolean opaque = isOpaque();
@@ -1226,9 +1226,9 @@ public class IOPort extends ComponentPort {
 
                     if (result.length != width) {
                         throw new InvalidStateException(this,
-                                "getReceivers(IORelation, int): "
-                                + "Invalid receivers. "
-                                + "Need to call createReceivers().");
+                            "getReceivers(IORelation, int): "
+                            + "Invalid receivers. "
+                            + "Need to call createReceivers().");
                     }
                 }
 
@@ -1252,7 +1252,7 @@ public class IOPort extends ComponentPort {
 
                 while (outsideRelations.hasNext()) {
                     IORelation outsideRelation = (IORelation) outsideRelations
-                        .next();
+                                    .next();
 
                     // A null link (supported since indexed links) might
                     // yield a null relation here. EAL 7/19/00.
@@ -1390,13 +1390,13 @@ public class IOPort extends ComponentPort {
      *   to the port from the inside.
      */
     public Receiver[][] getRemoteReceivers(IORelation relation)
-            throws IllegalActionException {
+        throws IllegalActionException {
         try {
             _workspace.getReadAccess();
 
             if (!isInsideLinked(relation)) {
                 throw new IllegalActionException(this, relation,
-                        "not linked from the inside.");
+                    "not linked from the inside.");
             }
 
             if (!isOutput()) {
@@ -1555,7 +1555,7 @@ public class IOPort extends ComponentPort {
         } catch (ArrayIndexOutOfBoundsException ex) {
             // NOTE: This might be thrown if the port is not an output port.
             throw new IllegalActionException(this,
-                    "hasRoom: channel index is out of range.");
+                "hasRoom: channel index is out of range.");
         }
 
         if (_debugging) {
@@ -1579,7 +1579,7 @@ public class IOPort extends ComponentPort {
      *  channel index is out of range.
      */
     public boolean hasRoomInside(int channelIndex)
-            throws IllegalActionException {
+        throws IllegalActionException {
         boolean result = true;
 
         try {
@@ -1598,12 +1598,12 @@ public class IOPort extends ComponentPort {
         } catch (ArrayIndexOutOfBoundsException ex) {
             // NOTE: This might be thrown if the port is not an output port.
             throw new IllegalActionException(this,
-                    "hasRoom: channel index is out of range.");
+                "hasRoom: channel index is out of range.");
         }
 
         if (_debugging) {
             _debug("hasRoomInside on channel " + channelIndex + " returns "
-                    + result);
+                + result);
         }
 
         return result;
@@ -1632,12 +1632,12 @@ public class IOPort extends ComponentPort {
         if ((receivers != null) && (channelIndex >= receivers.length)) {
             if (!isInput()) {
                 throw new IllegalActionException(this,
-                        "Port is not an input port!");
+                    "Port is not an input port!");
             } else {
                 throw new IllegalActionException(this,
-                        "Channel index " + channelIndex
-                        + " is out of range, because width is only " + getWidth()
-                        + ".");
+                    "Channel index " + channelIndex
+                    + " is out of range, because width is only " + getWidth()
+                    + ".");
             }
         }
 
@@ -1674,7 +1674,7 @@ public class IOPort extends ComponentPort {
      *   of range.
      */
     public boolean hasToken(int channelIndex, int tokens)
-            throws IllegalActionException {
+        throws IllegalActionException {
         boolean result = false;
 
         try {
@@ -1693,12 +1693,12 @@ public class IOPort extends ComponentPort {
         } catch (ArrayIndexOutOfBoundsException ex) {
             // NOTE: This might be thrown if the port is not an output port.
             throw new IllegalActionException(this,
-                    "hasToken: channel index is out of range.");
+                "hasToken: channel index is out of range.");
         }
 
         if (_debugging) {
             _debug("hasToken on channel " + channelIndex + " returns " + result
-                    + ", with " + tokens + " tokens requested");
+                + ", with " + tokens + " tokens requested");
         }
 
         return result;
@@ -1718,7 +1718,7 @@ public class IOPort extends ComponentPort {
      *   of range.
      */
     public boolean hasTokenInside(int channelIndex)
-            throws IllegalActionException {
+        throws IllegalActionException {
         // The getInsideReceivers() method throws an
         // IllegalActionException if there's no director.
         Receiver[][] receivers = getInsideReceivers();
@@ -1727,12 +1727,12 @@ public class IOPort extends ComponentPort {
         if (channelIndex >= receivers.length) {
             if (!isOutput()) {
                 throw new IllegalActionException(this,
-                        "Port is not an output port!");
+                    "Port is not an output port!");
             } else {
                 throw new IllegalActionException(this,
-                        "Channel index " + channelIndex
-                        + " is out of range, because inside width is only "
-                        + getWidthInside() + ".");
+                    "Channel index " + channelIndex
+                    + " is out of range, because inside width is only "
+                    + getWidthInside() + ".");
             }
         }
 
@@ -1747,7 +1747,7 @@ public class IOPort extends ComponentPort {
 
         if (_debugging) {
             _debug("hasTokenInside on channel " + channelIndex + " returns "
-                    + result);
+                + result);
         }
 
         return result;
@@ -1765,22 +1765,22 @@ public class IOPort extends ComponentPort {
      *   and the index is greater than zero or if another link already exists.
      */
     public void insertLink(int index, Relation relation)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (!isMultiport()) {
             if (index > 0) {
                 throw new IllegalActionException(this,
-                        "Cannot insert link at an index greater than "
-                        + "zero in a port that is not a multiport.");
+                    "Cannot insert link at an index greater than "
+                    + "zero in a port that is not a multiport.");
             } else if (_isInsideLinkable(relation)) {
                 if (numInsideLinks() > 0) {
                     throw new IllegalActionException(this,
-                            "Cannot insert a second inside link in a "
-                            + "port that is not a multiport.");
+                        "Cannot insert a second inside link in a "
+                        + "port that is not a multiport.");
                 }
             } else if (numLinks() > 0) {
                 throw new IllegalActionException(this,
-                        "Cannot insert a second link in a port that is not a "
-                        + "multiport.");
+                    "Cannot insert a second link in a port that is not a "
+                    + "multiport.");
             }
         }
 
@@ -1812,7 +1812,7 @@ public class IOPort extends ComponentPort {
             Nameable container = getContainer();
 
             if (!(container instanceof CompositeActor && isInput()
-                        && isOpaque())) {
+                            && isOpaque())) {
                 // Return an empty list, since this port cannot send data
                 // to the inside.
                 return new LinkedList();
@@ -1859,7 +1859,7 @@ public class IOPort extends ComponentPort {
             Nameable container = getContainer();
 
             if (!(container instanceof CompositeActor && isOutput()
-                        && isOpaque())) {
+                            && isOpaque())) {
                 // Return an empty list, since this port cannot receive data
                 // from the inside.
                 return new LinkedList();
@@ -1995,7 +1995,7 @@ public class IOPort extends ComponentPort {
 
                 if (receivers.length <= channelIndex) {
                     throw new IllegalActionException(this,
-                            "Channel index is out of range: " + channelIndex);
+                        "Channel index is out of range: " + channelIndex);
                 }
 
                 if ((receivers != null) && (receivers[channelIndex] != null)) {
@@ -2013,7 +2013,7 @@ public class IOPort extends ComponentPort {
 
                 if (receivers.length <= channelIndex) {
                     throw new IllegalActionException(this,
-                            "Channel index is out of range: " + channelIndex);
+                        "Channel index is out of range: " + channelIndex);
                 }
 
                 if ((receivers != null) && (receivers[channelIndex] != null)) {
@@ -2027,7 +2027,7 @@ public class IOPort extends ComponentPort {
             }
         } catch (ArrayIndexOutOfBoundsException ex) {
             throw new IllegalActionException(this,
-                    "isKnown: channel index is out of range.");
+                "isKnown: channel index is out of range.");
         }
 
         if (_debugging) {
@@ -2058,7 +2058,7 @@ public class IOPort extends ComponentPort {
      *   receivers, or if the inside channel index is out of range.
      */
     public boolean isKnownInside(int channelIndex)
-            throws IllegalActionException {
+        throws IllegalActionException {
         boolean result = true;
 
         try {
@@ -2089,12 +2089,12 @@ public class IOPort extends ComponentPort {
             }
         } catch (ArrayIndexOutOfBoundsException ex) {
             throw new IllegalActionException(this,
-                    "isKnownInside: channel index is out of range.");
+                "isKnownInside: channel index is out of range.");
         }
 
         if (_debugging) {
             _debug("isKnownInside on channel " + channelIndex + " returns "
-                    + result);
+                + result);
         }
 
         return result;
@@ -2164,7 +2164,7 @@ public class IOPort extends ComponentPort {
      *   the same workspace, or the port has no container.
      */
     public void liberalLink(ComponentRelation relation)
-            throws IllegalActionException {
+        throws IllegalActionException {
         super.liberalLink(relation);
         _invalidate();
     }
@@ -2261,7 +2261,7 @@ public class IOPort extends ComponentPort {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public void send(int channelIndex, Token token)
-            throws IllegalActionException, NoRoomException {
+        throws IllegalActionException, NoRoomException {
         Receiver[][] farReceivers;
 
         if (_debugging) {
@@ -2277,7 +2277,7 @@ public class IOPort extends ComponentPort {
                 farReceivers = getRemoteReceivers();
 
                 if ((farReceivers == null)
-                        || (farReceivers[channelIndex] == null)) {
+                                || (farReceivers[channelIndex] == null)) {
                     return;
                 }
             } finally {
@@ -2323,12 +2323,12 @@ public class IOPort extends ComponentPort {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public void send(int channelIndex, Token[] tokenArray, int vectorLength)
-            throws IllegalActionException, NoRoomException {
+        throws IllegalActionException, NoRoomException {
         Receiver[][] farReceivers;
 
         if (_debugging) {
             _debug("send to channel " + channelIndex
-                    + " token array of length " + vectorLength);
+                + " token array of length " + vectorLength);
         }
 
         try {
@@ -2340,7 +2340,7 @@ public class IOPort extends ComponentPort {
                 farReceivers = getRemoteReceivers();
 
                 if ((farReceivers == null)
-                        || (farReceivers[channelIndex] == null)) {
+                                || (farReceivers[channelIndex] == null)) {
                     return;
                 }
             } finally {
@@ -2385,7 +2385,7 @@ public class IOPort extends ComponentPort {
                 farReceivers = getRemoteReceivers();
 
                 if ((farReceivers == null)
-                        || (farReceivers[channelIndex] == null)) {
+                                || (farReceivers[channelIndex] == null)) {
                     return;
                 }
             } finally {
@@ -2428,7 +2428,7 @@ public class IOPort extends ComponentPort {
                 farReceivers = deepGetReceivers();
 
                 if ((farReceivers == null)
-                        || (farReceivers[channelIndex] == null)) {
+                                || (farReceivers[channelIndex] == null)) {
                     return;
                 }
             } finally {
@@ -2473,7 +2473,7 @@ public class IOPort extends ComponentPort {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public void sendInside(int channelIndex, Token token)
-            throws IllegalActionException, NoRoomException {
+        throws IllegalActionException, NoRoomException {
         Receiver[][] farReceivers;
 
         if (_debugging) {
@@ -2489,7 +2489,7 @@ public class IOPort extends ComponentPort {
                 farReceivers = deepGetReceivers();
 
                 if ((farReceivers == null)
-                        || (farReceivers[channelIndex] == null)) {
+                                || (farReceivers[channelIndex] == null)) {
                     return;
                 }
             } finally {
@@ -2521,7 +2521,7 @@ public class IOPort extends ComponentPort {
      *   a port with the name of this port.
      */
     public void setContainer(Entity container)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         // Invalidate schedule and type resolution of the old container.
         Actor oldContainer = (Actor) getContainer();
 
@@ -2776,7 +2776,7 @@ public class IOPort extends ComponentPort {
     public boolean transferInputs() throws IllegalActionException {
         if (!isInput() || !isOpaque()) {
             throw new IllegalActionException(this,
-                    "transferInputs: this port is not an opaque" + "input port.");
+                "transferInputs: this port is not an opaque" + "input port.");
         }
 
         boolean wasTransferred = false;
@@ -2792,7 +2792,7 @@ public class IOPort extends ComponentPort {
 
                         if (_debugging) {
                             _debug(getName(),
-                                    "transferring input from " + getName());
+                                "transferring input from " + getName());
                         }
 
                         sendInside(i, t);
@@ -2834,7 +2834,7 @@ public class IOPort extends ComponentPort {
 
         if (!this.isOutput() || !this.isOpaque()) {
             throw new IllegalActionException(this,
-                    "transferOutputs: this port is not " + "an opaque output port.");
+                "transferOutputs: this port is not " + "an opaque output port.");
         }
 
         boolean wasTransferred = false;
@@ -3063,11 +3063,11 @@ public class IOPort extends ComponentPort {
      *   an acceptable class.
      */
     protected void _checkContainer(Entity container)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (!(container instanceof Actor) && (container != null)) {
             throw new IllegalActionException(container, this,
-                    "IOPort can only be contained by objects implementing "
-                    + "the Actor interface.");
+                "IOPort can only be contained by objects implementing "
+                + "the Actor interface.");
         }
     }
 
@@ -3088,11 +3088,11 @@ public class IOPort extends ComponentPort {
      *   in the same workspace as the relation.
      */
     protected void _checkLiberalLink(Relation relation)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (!(relation instanceof IORelation)) {
             throw new IllegalActionException(this, relation,
-                    "Attempt to link to an incompatible relation."
-                    + " IOPort requires IORelation.");
+                "Attempt to link to an incompatible relation."
+                + " IOPort requires IORelation.");
         }
 
         _checkMultiportLink((IORelation) relation);
@@ -3116,8 +3116,8 @@ public class IOPort extends ComponentPort {
     protected void _checkLink(Relation relation) throws IllegalActionException {
         if (!(relation instanceof IORelation)) {
             throw new IllegalActionException(this, relation,
-                    "Attempt to link to an incompatible relation."
-                    + " IOPort requires IORelation.");
+                "Attempt to link to an incompatible relation."
+                + " IOPort requires IORelation.");
         }
 
         _checkMultiportLink((IORelation) relation);
@@ -3271,10 +3271,10 @@ public class IOPort extends ComponentPort {
 
                                 if (receivers[i][j] != null) {
                                     result += receivers[i][j].getClass()
-                                        .getName();
+                                                                         .getName();
                                     result += " in ";
                                     result += receivers[i][j].getContainer()
-                                        .getFullName();
+                                                                         .getFullName();
                                 }
 
                                 result += "}\n";
@@ -3309,20 +3309,20 @@ public class IOPort extends ComponentPort {
      *  @exception IOException If an I/O error occurs.
      */
     protected void _exportMoMLContents(Writer output, int depth)
-            throws IOException {
+        throws IOException {
         if (_isInput) {
             output.write(_getIndentPrefix(depth)
-                    + "<property name=\"input\"/>\n");
+                + "<property name=\"input\"/>\n");
         }
 
         if (_isOutput) {
             output.write(_getIndentPrefix(depth)
-                    + "<property name=\"output\"/>\n");
+                + "<property name=\"output\"/>\n");
         }
 
         if (_isMultiport) {
             output.write(_getIndentPrefix(depth)
-                    + "<property name=\"multiport\"/>\n");
+                + "<property name=\"multiport\"/>\n");
         }
 
         super._exportMoMLContents(output, depth);
@@ -3351,7 +3351,7 @@ public class IOPort extends ComponentPort {
             if (relation != except) {
                 if (!relation.isWidthFixed()) {
                     throw new InvalidStateException(this,
-                            "Width of inside relations cannot " + "be determined.");
+                        "Width of inside relations cannot " + "be determined.");
                 }
 
                 result += relation.getWidth();
@@ -3390,8 +3390,8 @@ public class IOPort extends ComponentPort {
         }
 
         throw new IllegalActionException(this,
-                "Can only create inside receivers for a port of a non-atomic, "
-                + "opaque entity.");
+            "Can only create inside receivers for a port of a non-atomic, "
+            + "opaque entity.");
     }
 
     /** Create a new receiver compatible with the executive director.
@@ -3414,7 +3414,7 @@ public class IOPort extends ComponentPort {
 
         if (container == null) {
             throw new IllegalActionException(this,
-                    "Cannot create a receiver without a container.");
+                "Cannot create a receiver without a container.");
         }
 
         Receiver receiver = container.newReceiver();
@@ -3431,21 +3431,21 @@ public class IOPort extends ComponentPort {
      *  links.
      */
     private void _checkMultiportLink(IORelation relation)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (_isInsideLinkable(relation.getContainer())) {
             // An inside link
             // Check for existing inside links
             if (!isMultiport() && (numInsideLinks() >= 1)) {
                 throw new IllegalActionException(this, relation,
-                        "Attempt to link more than one relation "
-                        + "to a single port.");
+                    "Attempt to link more than one relation "
+                    + "to a single port.");
             }
 
             if ((relation.getWidth() != 1) || !relation.isWidthFixed()) {
                 // Relation is a bus.
                 if (!isMultiport()) {
                     throw new IllegalActionException(this, relation,
-                            "Attempt to link a bus relation " + "to a single port.");
+                        "Attempt to link a bus relation " + "to a single port.");
                 }
 
                 if (!relation.isWidthFixed()) {
@@ -3455,9 +3455,9 @@ public class IOPort extends ComponentPort {
                         _getInsideWidth(null);
                     } catch (InvalidStateException ex) {
                         throw new IllegalActionException(this, relation,
-                                "Attempt to link a second bus relation "
-                                + "with unspecified width to the inside "
-                                + "of a port.");
+                            "Attempt to link a second bus relation "
+                            + "with unspecified width to the inside "
+                            + "of a port.");
                     }
                 }
             }
@@ -3466,15 +3466,15 @@ public class IOPort extends ComponentPort {
             // Check for existing outside links
             if (!isMultiport() && (numLinks() >= 1)) {
                 throw new IllegalActionException(this, relation,
-                        "Attempt to link more than one relation "
-                        + "to a single port.");
+                    "Attempt to link more than one relation "
+                    + "to a single port.");
             }
 
             if ((relation.getWidth() != 1) || !relation.isWidthFixed()) {
                 // Relation is a bus.
                 if (!isMultiport()) {
                     throw new IllegalActionException(this, relation,
-                            "Attempt to link a bus relation " + "to a single port.");
+                        "Attempt to link a bus relation " + "to a single port.");
                 }
 
                 Iterator relations = linkedRelationList().iterator();
@@ -3486,9 +3486,9 @@ public class IOPort extends ComponentPort {
                     // yield a null relation here. EAL 7/19/00.
                     if ((theRelation != null) && !theRelation.isWidthFixed()) {
                         throw new IllegalActionException(this, relation,
-                                "Attempt to link a second bus relation "
-                                + "with unspecified width to the outside "
-                                + "of a port.");
+                            "Attempt to link a second bus relation "
+                            + "with unspecified width to the outside "
+                            + "of a port.");
                     }
                 }
             }

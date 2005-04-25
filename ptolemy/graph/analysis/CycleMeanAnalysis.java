@@ -129,7 +129,7 @@ public class CycleMeanAnalysis extends Analysis {
      */
     public String toString() {
         return "Cycle mean analysis using the following analyzer:\n"
-            + analyzer().toString();
+        + analyzer().toString();
     }
 
     /** Check if a given analyzer is compatible with this analysis.

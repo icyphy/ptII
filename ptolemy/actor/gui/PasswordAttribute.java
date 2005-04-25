@@ -60,7 +60,7 @@ public class PasswordAttribute extends StringParameter {
      *   attribute with this name.
      */
     public PasswordAttribute(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
     }
 

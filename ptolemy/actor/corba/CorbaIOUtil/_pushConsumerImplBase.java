@@ -13,7 +13,7 @@ package ptolemy.actor.corba.CorbaIOUtil;
 public abstract class _pushConsumerImplBase
     extends org.omg.CORBA.portable.ObjectImpl
     implements ptolemy.actor.corba.CorbaIOUtil.pushConsumer,
-               org.omg.CORBA.portable.InvokeHandler {
+        org.omg.CORBA.portable.InvokeHandler {
     // Constructors
     public _pushConsumerImplBase() {
     }
@@ -25,45 +25,47 @@ public abstract class _pushConsumerImplBase
     }
 
     public org.omg.CORBA.portable.OutputStream _invoke(String $method,
-            org.omg.CORBA.portable.InputStream in,
-            org.omg.CORBA.portable.ResponseHandler $rh) {
+        org.omg.CORBA.portable.InputStream in,
+        org.omg.CORBA.portable.ResponseHandler $rh) {
         org.omg.CORBA.portable.OutputStream out = null;
         java.lang.Integer __method = (java.lang.Integer) _methods.get($method);
 
         if (__method == null) {
             throw new org.omg.CORBA.BAD_OPERATION(0,
-                    org.omg.CORBA.CompletionStatus.COMPLETED_MAYBE);
+                org.omg.CORBA.CompletionStatus.COMPLETED_MAYBE);
         }
 
         switch (__method.intValue()) {
-            /* this method is intended to be called remotely by a push publisher,
-             * so that data can be delived over the network to a push consumer.
-             */
+        /* this method is intended to be called remotely by a push publisher,
+         * so that data can be delived over the network to a push consumer.
+         */
         case 0: // CorbaIOUtil/pushConsumer/push
-            {
-                try {
-                    org.omg.CORBA.Any data = in.read_any();
-                    this.push(data);
-                    out = $rh.createReply();
-                } catch (ptolemy.actor.corba.CorbaIOUtil.CorbaIllegalActionException $ex) {
-                    out = $rh.createExceptionReply();
-                    ptolemy.actor.corba.CorbaIOUtil.CorbaIllegalActionExceptionHelper
-                        .write(out, $ex);
-                }
-
-                break;
+         {
+            try {
+                org.omg.CORBA.Any data = in.read_any();
+                this.push(data);
+                out = $rh.createReply();
+            } catch (ptolemy.actor.corba.CorbaIOUtil.CorbaIllegalActionException $ex) {
+                out = $rh.createExceptionReply();
+                ptolemy.actor.corba.CorbaIOUtil.CorbaIllegalActionExceptionHelper
+                            .write(out, $ex);
             }
+
+            break;
+        }
 
         default:
             throw new org.omg.CORBA.BAD_OPERATION(0,
-                    org.omg.CORBA.CompletionStatus.COMPLETED_MAYBE);
+                org.omg.CORBA.CompletionStatus.COMPLETED_MAYBE);
         }
 
         return out;
     } // _invoke
 
     // Type-specific CORBA::Object operations
-    private static String[] __ids = { "IDL:CorbaIOUtil/pushConsumer:1.0" };
+    private static String[] __ids = {
+            "IDL:CorbaIOUtil/pushConsumer:1.0"
+        };
 
     public String[] _ids() {
         return (String[]) __ids.clone();

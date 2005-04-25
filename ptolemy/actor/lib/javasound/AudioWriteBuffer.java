@@ -124,7 +124,7 @@ public class AudioWriteBuffer extends TypedAtomicActor {
      *   actor with this name.
      */
     public AudioWriteBuffer(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         address = new TypedIOPort(this, "address", true, false);
         address.setMultiport(true);
@@ -217,15 +217,15 @@ public class AudioWriteBuffer extends TypedAtomicActor {
      *   allowed.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == channels) {
             _channels = ((IntToken) channels.getToken()).intValue();
 
             if (_channels < 1) {
                 throw new IllegalActionException(this,
-                        "Attempt to set channels parameter to an illegal "
-                        + "value of: " + _channels + " . The value must be a "
-                        + "positive integer.");
+                    "Attempt to set channels parameter to an illegal "
+                    + "value of: " + _channels + " . The value must be a "
+                    + "positive integer.");
             }
 
             // Check if we need to reallocate.
@@ -234,7 +234,7 @@ public class AudioWriteBuffer extends TypedAtomicActor {
             }
 
             if ((_audioPutArray == null)
-                    || (_channels != _audioPutArray.length)) {
+                            || (_channels != _audioPutArray.length)) {
                 _audioPutArray = new double[_channels][];
             }
 
@@ -302,7 +302,7 @@ public class AudioWriteBuffer extends TypedAtomicActor {
                 // token to the specified address in the buffer.
                 double sampleValue = ((DoubleToken) data.get(0)).doubleValue();
                 boolean overwriteMode = ((BooleanToken) overwrite.getToken())
-                    .booleanValue();
+                                .booleanValue();
 
                 if (overwriteMode == true) {
                     // Overwrite the element at the specified
@@ -316,13 +316,13 @@ public class AudioWriteBuffer extends TypedAtomicActor {
             }
         } else if (address.hasToken(0)) {
             System.out.println(getName()
-                    + "WARNING: address port does not have a token!");
+                + "WARNING: address port does not have a token!");
         } else if (data.hasToken(0)) {
             System.out.println(getName()
-                    + "WARNING: data port does not have a token!");
+                + "WARNING: data port does not have a token!");
         } else {
             System.out.println(getName()
-                    + "WARNING: neither data port has a token!");
+                + "WARNING: neither data port has a token!");
         }
     }
 
@@ -360,7 +360,7 @@ public class AudioWriteBuffer extends TypedAtomicActor {
                 _soundWriter.closeFile();
             } catch (IOException ex) {
                 throw new IllegalActionException(this,
-                        "Error closing file:\n" + ex.getMessage());
+                    "Error closing file:\n" + ex.getMessage());
             }
         }
 
@@ -387,7 +387,7 @@ public class AudioWriteBuffer extends TypedAtomicActor {
                 _soundWriter.closeFile();
             } catch (IOException ex) {
                 throw new IllegalActionException(this,
-                        "Cannot write audio: \n" + ex.getMessage());
+                    "Cannot write audio: \n" + ex.getMessage());
             }
         }
 

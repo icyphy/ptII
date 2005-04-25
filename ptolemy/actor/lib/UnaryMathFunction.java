@@ -82,7 +82,7 @@ public class UnaryMathFunction extends Transformer {
      *   actor with this name.
      */
     public UnaryMathFunction(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // Parameters
@@ -117,7 +117,7 @@ public class UnaryMathFunction extends Transformer {
      *  @exception IllegalActionException If the function is not recognized.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == function) {
             String functionName = function.stringValue();
 
@@ -133,7 +133,7 @@ public class UnaryMathFunction extends Transformer {
                 _function = _SQRT;
             } else {
                 throw new IllegalActionException(this,
-                        "Unrecognized math function: " + functionName);
+                    "Unrecognized math function: " + functionName);
             }
         } else {
             super.attributeChanged(attribute);
@@ -193,9 +193,9 @@ public class UnaryMathFunction extends Transformer {
 
         default:
             throw new InternalErrorException(
-                    "Invalid value for _function private variable. "
-                    + "MathFunction actor (" + getFullName() + ")"
-                    + " on function type " + _function);
+                "Invalid value for _function private variable. "
+                + "MathFunction actor (" + getFullName() + ")"
+                + " on function type " + _function);
         }
 
         return result;

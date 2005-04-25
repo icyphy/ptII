@@ -64,7 +64,7 @@ public class SDFTestZeroRate2 extends Transformer {
      *   actor with this name.
      */
     public SDFTestZeroRate2(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         input2 = new TypedIOPort(this, "input2", true, false);
         output2 = new TypedIOPort(this, "output2", false, true);
@@ -138,22 +138,22 @@ public class SDFTestZeroRate2 extends Transformer {
      */
     public void fire() throws IllegalActionException {
         for (int i = 0; i < ((IntToken) input_rate.getToken()).intValue();
-             i++) {
+                        i++) {
             input.get(0);
         }
 
         for (int i = 0; i < ((IntToken) input2_rate.getToken()).intValue();
-             i++) {
+                        i++) {
             input2.get(0);
         }
 
         for (int i = 0; i < ((IntToken) output_rate.getToken()).intValue();
-             i++) {
+                        i++) {
             output.send(0, value.getToken());
         }
 
         for (int i = 0; i < ((IntToken) output2_rate.getToken()).intValue();
-             i++) {
+                        i++) {
             output2.send(0, value.getToken());
         }
     }

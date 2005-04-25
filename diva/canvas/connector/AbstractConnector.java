@@ -351,7 +351,7 @@ public abstract class AbstractConnector extends AbstractFigure
                     ((BasicStroke) _stroke).getDashArray(), 0.0f);
         } else {
             new BasicStroke(lineWidth, BasicStroke.CAP_SQUARE,
-                    BasicStroke.JOIN_MITER, 10.0f, null, 0.0f);
+                BasicStroke.JOIN_MITER, 10.0f, null, 0.0f);
         }
 
         repaint();

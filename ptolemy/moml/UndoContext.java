@@ -113,9 +113,9 @@ public class UndoContext {
         if (_undoMoML.length() == 0) {
             // this should not happen
             throw new IllegalActionException("Failed to create undo entry:\n"
-                    + "Cannot rename an element whose parent "
-                    + "undo context does not have any undo MoML. Requested "
-                    + "new name: " + newName);
+                + "Cannot rename an element whose parent "
+                + "undo context does not have any undo MoML. Requested "
+                + "new name: " + newName);
         }
 
         String undo = _undoMoML.toString();
@@ -125,9 +125,9 @@ public class UndoContext {
         if (startIndex == -1) {
             // this should not happen
             throw new IllegalActionException("Failed to create undo entry:\n"
-                    + "Cannot rename an element whose parent "
-                    + "undo context does not have a name attribute in its "
-                    + "undo MoML. Requested new name: " + newName);
+                + "Cannot rename an element whose parent "
+                + "undo context does not have a name attribute in its "
+                + "undo MoML. Requested new name: " + newName);
         }
 
         // Move the startIndex to after the marker
@@ -140,9 +140,9 @@ public class UndoContext {
             // Also should not happen
             // this should not happen
             throw new IllegalActionException("Failed to create undo entry:\n"
-                    + "Cannot rename an element whose parent "
-                    + "undo context does not have a valid name attribute "
-                    + "in its undo MoML. Requested new name: " + newName);
+                + "Cannot rename an element whose parent "
+                + "undo context does not have a valid name attribute "
+                + "in its undo MoML. Requested new name: " + newName);
         }
 
         // Finally update the string buffer
@@ -302,9 +302,9 @@ public class UndoContext {
     /** Return a string representation of this object */
     public String toString() {
         return "UndoContext: " + (isUndoable() ? "are" : "are not")
-            + " undoable and " + (hasUndoableChildren() ? "has" : "does not have")
-            + " undoable children\n" + "undoMoML: " + getUndoMoML() + "\n"
-            + "closingUndoMoML: " + _closingUndoMoML.toString() + "\n";
+        + " undoable and " + (hasUndoableChildren() ? "has" : "does not have")
+        + " undoable children\n" + "undoMoML: " + getUndoMoML() + "\n"
+        + "closingUndoMoML: " + _closingUndoMoML.toString() + "\n";
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -43,7 +43,7 @@ import java.math.BigInteger;
  * "wall-clock time," which is time in the physical world. An instance of Time
  * has a value that is immutable. It has no limit on the magnitude. There are
  * two time constants: NEGATIVE_INFINITY and POSITIVE_INFINITY.
- * 
+ *
  * <p>
  * The time value is quantized to the time resolution specified by the
  * <i>timeResolution </i> parameter of the associated director. The reason for
@@ -54,7 +54,7 @@ import java.math.BigInteger;
  * measuring instrument, which always has a smallest unit for measurement. This
  * smallest unit measurement gives the physical meaning of the time resolution
  * used for quantization.
- * 
+ *
  * <p>
  * The time value can be retrieved in three ways, the {@link #toString()}method
  * and the {@link #getDoubleValue()}method and the {@link #getLongValue()}
@@ -66,13 +66,13 @@ import java.math.BigInteger;
  * digits for double representation. We recommend to operate on time objects
  * directly instead of the time values of time objects. getLongValue() returns
  * an integer multiple of the director resolution.
- * 
+ *
  * <p>
  * Two operations, add and subtract, can be performed on a time object, where
  * the argument can be a double or a time object. If the argument is not a time
  * object, the argument is quantized before the operations are performed. These
  * operations return a new time object with a quantized result.
- * 
+ *
  * <p>
  * The time value of a time object can be infinite. The add and subtract
  * operations on infinite time values follow rules similar to the IEEE Standard
@@ -80,7 +80,7 @@ import java.math.BigInteger;
  * infinities yield a positive/negative infinity; adding a positive infinity and
  * a negative infinity, however, triggers an ArithmeticException; the negation
  * of a positive/negative infinity is a negative/positive infinity.
- * 
+ *
  * <p>
  * This class implements the Comparable interface, where two time objects can be
  * compared in the following way. If any of the two time objects contains an
@@ -92,7 +92,7 @@ import java.math.BigInteger;
  * equal, or they represent the same model time. Otherwise, the time object
  * containing a bigger time value is regared to happen after the time object
  * with a smaller time value.
- * 
+ *
  * <p>
  * All time objects share the same time resolution, which is provided by the
  * top-level director. In some domains, such as CT and DE, users can change the
@@ -100,7 +100,7 @@ import java.math.BigInteger;
  * default value for this parameter "1E-10", which has value 10 <sup>-10 </sup>.
  * To preserve the consistency of time values, timeResolution can not be changed
  * when a model is running (attempting to do so will trigger an exception).
- * 
+ *
  * @author Haiyang Zheng, Edward A. Lee, Elaine Cheong
  * @version $Id$
  * @since Ptolemy II 4.1
@@ -108,10 +108,9 @@ import java.math.BigInteger;
  * @Pt.AcceptedRating Red (hyzheng)
  */
 public class Time implements Comparable {
-    
     /** Construct a Time object with zero as the time value. This object
      *  is associated with the given director, which provides the necessary
-     *  information for quantization. 
+     *  information for quantization.
      *  @param director The director with which this time object is associated.
      *   This must not be null, or subsequent uses of the class will fail.
      *  @exception IllegalActionException If the director has an invalid
@@ -129,10 +128,11 @@ public class Time implements Comparable {
      *  @param director The director with which this time object is associated.
      *  @param timeValue A double value as the specified time value.
      *  @exception ArithmeticException If the argument is NaN.
-     *  @exception IllegalActionException If the given double time value does 
-     *  not match the time resolution. 
+     *  @exception IllegalActionException If the given double time value does
+     *  not match the time resolution.
      */
-    public Time(Director director, double timeValue) throws IllegalActionException {
+    public Time(Director director, double timeValue)
+        throws IllegalActionException {
         _director = director;
 
         if (Double.isNaN(timeValue)) {
@@ -141,6 +141,7 @@ public class Time implements Comparable {
 
         if (Double.isInfinite(timeValue)) {
             _timeValue = null;
+
             if (timeValue < 0) {
                 _isNegativeInfinite = true;
             } else {
@@ -174,7 +175,7 @@ public class Time implements Comparable {
      */
     private Time(Director director, BigInteger timeValue) {
         _director = director;
-        
+
         _timeValue = timeValue;
     }
 
@@ -194,16 +195,14 @@ public class Time implements Comparable {
 
     ///////////////////////////////////////////////////////////////////
     ////                          static  fields                   ////
-
     // Indicator to create negative infinite value.
     private static int _NEGATIVE_INFINITY = 0;
-    
+
     // Indicator to create positve infinite value.
     private static int _POSITIVE_INFINITY = 1;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
-
     // NOTE: For the following constants, the director argument is null
     // because these constants are invariant to any time resolution.
 
@@ -228,7 +227,6 @@ public class Time implements Comparable {
      *  value does not match the time resolution.
      */
     public Time add(double timeValue) {
-        
         // NOTE: a double time value can be either positive infinite,
         // negative infinite, or a NaN.
         if (Double.isNaN(timeValue)) {
@@ -240,8 +238,8 @@ public class Time implements Comparable {
                 // time value is a negative infinity
                 if (_isPositiveInfinite) {
                     throw new ArithmeticException(
-                            "Time: Adding a positive infinity to a negative "
-                            + "infinity results in an invalid time.");
+                        "Time: Adding a positive infinity to a negative "
+                        + "infinity results in an invalid time.");
                 } else {
                     return NEGATIVE_INFINITY;
                 }
@@ -249,8 +247,8 @@ public class Time implements Comparable {
                 // time value is a positive infinity
                 if (_isNegativeInfinite) {
                     throw new ArithmeticException(
-                            "Time: Adding a negative infinity to a positive "
-                            + "infinity results in an invalid time.");
+                        "Time: Adding a negative infinity to a positive "
+                        + "infinity results in an invalid time.");
                 } else {
                     return POSITIVE_INFINITY;
                 }
@@ -259,18 +257,20 @@ public class Time implements Comparable {
             return this;
         } else {
             BigInteger quantizedValue;
+
             try {
                 quantizedValue = _doubleToMultiple(timeValue);
             } catch (IllegalActionException e) {
-                throw new ArithmeticException("Cannot guarantee the specified " 
-                        + "time resolution " + _director.getTimeResolution() 
-                        + " for the time value " + timeValue + ".\nTry " 
-                        + "choosing a greater time resolution "
-                        + "by configuring the timeResolution parameter of the " 
-                        + "director.\n" 
-                        + "Check the stack trace to see which actor or "
-                        + "parameter caused this exception.");
+                throw new ArithmeticException("Cannot guarantee the specified "
+                    + "time resolution " + _director.getTimeResolution()
+                    + " for the time value " + timeValue + ".\nTry "
+                    + "choosing a greater time resolution "
+                    + "by configuring the timeResolution parameter of the "
+                    + "director.\n"
+                    + "Check the stack trace to see which actor or "
+                    + "parameter caused this exception.");
             }
+
             return new Time(_director, _timeValue.add(quantizedValue));
         }
     }
@@ -293,8 +293,8 @@ public class Time implements Comparable {
             // the time object has a negative infinity time value
             if (_isPositiveInfinite) {
                 throw new ArithmeticException(
-                        "Time: Adding a positive infinity to a negative "
-                        + "infinity yields an invalid time.");
+                    "Time: Adding a positive infinity to a negative "
+                    + "infinity yields an invalid time.");
             } else {
                 return NEGATIVE_INFINITY;
             }
@@ -302,17 +302,19 @@ public class Time implements Comparable {
             // the time object has a positive infinity time value
             if (_isNegativeInfinite) {
                 throw new ArithmeticException(
-                        "Adding a negative infinity to a positive "
-                        + "infinity yields an invalid time.");
+                    "Adding a negative infinity to a positive "
+                    + "infinity yields an invalid time.");
             } else {
                 return POSITIVE_INFINITY;
             }
         } else if (isInfinite()) {
             return this;
         }
+
         // Ensure the resolutions are the same.
         try {
             double resolution = _director.getTimeResolution();
+
             if (resolution != time._director.getTimeResolution()) {
                 double thisValue = getDoubleValue();
                 double thatValue = time.getDoubleValue();
@@ -323,6 +325,7 @@ public class Time implements Comparable {
             // should have been caught before this.
             throw new InternalErrorException(e);
         }
+
         return new Time(_director, _timeValue.add(time._timeValue));
     }
 
@@ -367,12 +370,15 @@ public class Time implements Comparable {
                 }
             }
         }
+
         double resolution = _director.getTimeResolution();
+
         if (resolution == castTime._director.getTimeResolution()) {
             return _timeValue.compareTo(castTime._timeValue);
         } else {
             double thisValue = getDoubleValue();
             double thatValue = castTime.getDoubleValue();
+
             if (thisValue < thatValue) {
                 return -1;
             } else if (thisValue > thatValue) {
@@ -382,7 +388,7 @@ public class Time implements Comparable {
             }
         }
     }
-    
+
     /** Return the result of dividing this time by the
      *  specified time interval. That is, the returned value represents
      *  how many times the specified time interval fits within this
@@ -409,22 +415,26 @@ public class Time implements Comparable {
         if (_isPositiveInfinite || _isNegativeInfinite) {
             if (!interval.isInfinite()) {
                 if ((_isPositiveInfinite && interval._isPositiveInfinite)
-                        || (_isNegativeInfinite && interval._isNegativeInfinite)) {
-                	return  Long.MAX_VALUE;
+                                || (_isNegativeInfinite
+                                && interval._isNegativeInfinite)) {
+                    return Long.MAX_VALUE;
                 } else {
-                    return  Long.MIN_VALUE;                    
+                    return Long.MIN_VALUE;
                 }
             } else {
-            	throw new ArithmeticException("Time: Cannot divide infinity by infinity");
+                throw new ArithmeticException(
+                    "Time: Cannot divide infinity by infinity");
             }
         }
+
         double resolution = _director.getTimeResolution();
+
         if (resolution == interval._director.getTimeResolution()) {
             return _timeValue.divide(interval._timeValue).longValue();
         } else {
             throw new ArithmeticException(
-                    "Cannot divide instances of Time that do not have the same time resolution.");
-        }        
+                "Cannot divide instances of Time that do not have the same time resolution.");
+        }
     }
 
     /** Return the result of dividing this time by the
@@ -466,7 +476,7 @@ public class Time implements Comparable {
             // NOTE: Using doubleValue() here hugely increases the
             // execution time... Could instead use longValue(), but the
             // result would not necessarily be accurate.
-			return _timeValue.doubleValue() * _director.getTimeResolution();
+            return _timeValue.doubleValue() * _director.getTimeResolution();
         }
     }
 
@@ -536,25 +546,21 @@ public class Time implements Comparable {
         // NOTE: when the time value is too big a multiple of the 
         // resolution, the double representation
         // fails to deliver adequate precision. 
-
         // Here is an example: if time resolution is 1E-12,
         // any double that is bigger than 8191.999999999999 cannot 
         // distinguish itself from other bigger values (even 
         // slightly bigger with the difference as small as the time 
         // resolution). Therefore, 8191.999999999999 is the LUB of the 
         // set of double values have the specified time resolution.
-
         // NOTE: The strategy to find the LUB for a given time 
         // resolution r: find the smallest N such that time resolution 
         // r >=  2^(-1*N); get M = 52 - N, which is the multiplication 
         // we can apply on the significand without loss of time 
         // resolution; the LUB is (1 + 1 - 1.0/2^(-52)) * 2^M.
-        
         // For example: with the above example time resolution 1e-12, 
         // we get N = 40, M = 12. Then we get the LUB as 
         // 8191.999999999999. For time resolution as 1e-10, the lub is
         // 524287.99999999994.
-        
         // NOTE: according to the IEEE754 floating point standard, 
         // the formula to calculate a decimal value from a binary
         // representation is 
@@ -562,13 +568,12 @@ public class Time implements Comparable {
         // signal precision and 
         // (-1)^(sign)x(1+significand)x2^(exponent-1023) 
         // for double presision.
-        
-        int minimumNumberOfBits = 
-            (int)Math.floor(-1*ExtendedMath.log2(_director.getTimeResolution())) + 1;
+        int minimumNumberOfBits = (int) Math.floor(-1 * ExtendedMath.log2(
+                                _director.getTimeResolution())) + 1;
         int maximumGain = 52 - minimumNumberOfBits;
 
-        return ExtendedMath.DOUBLE_PRECISION_SIGNIFICAND_ONLY 
-                * Math.pow(2.0, maximumGain);
+        return ExtendedMath.DOUBLE_PRECISION_SIGNIFICAND_ONLY * Math.pow(2.0,
+                        maximumGain);
     }
 
     /** Return the result of multiplying this time by the
@@ -619,12 +624,14 @@ public class Time implements Comparable {
             return "-Infinity";
         } else {
             return "" + getDoubleValue();
-			// NOTE: Could use BigDecimal to get full resolution, as follows,
+
+            // NOTE: Could use BigDecimal to get full resolution, as follows,
             // but the resulution is absurd.
+
             /*
             BigDecimal resolution = new BigDecimal(_director.getTimeResolution());
             BigDecimal scale = new BigDecimal(_timeValue);
-			return resolution.multiply(scale).toString();
+                        return resolution.multiply(scale).toString();
             */
         }
     }
@@ -638,57 +645,53 @@ public class Time implements Comparable {
      *  @param value The value as a double.
      *  @return A BigInteger that specifies this double value as a multiple
      *  of the resolution given by the associated director.
-     *  @exception IllegalActionException If the given double time value does 
-     *  not match the time resolution. 
+     *  @exception IllegalActionException If the given double time value does
+     *  not match the time resolution.
      */
-    private BigInteger _doubleToMultiple(double value) 
+    private BigInteger _doubleToMultiple(double value)
         throws IllegalActionException {
         // NOTE: when the value is too big a multiple of the resolution,
         // the division fails to deliver adequate precision. If this happens,
         // an illegal action exception will be thrown indicating the double
         // value does not match the specified time resolution.
-
         // Here is an example: if time resolution is 1E-12,
         // any double that is bigger than 8191.999999999999 cannot distinguish 
         // itself from any other bigger values (even slightly bigger with the 
         // difference as small as the time resolution). Therefore, 
         // 8191.999999999999 is the LUB of the set of double values have the 
         // specified time resolution.
-
         // NOTE: The strategy to find the LUB for a given time resolution r:
         // find the smallest N such that time resolution r >=  2^(-1*N);
         // get M = 52 - N, which is the multiplication we can apply on the
         // significand without loss of time resolution;
         // the LUB is (1 + 1 - 1.0/2^(-52)) * 2^M.
-        
         // For example: with the above example time resolution 1e-12, we get 
         // N = 40, M = 12. Then we get the LUB as 8191.999999999999. 
-        
         // NOTE: according to the IEEE754 floating point standard, 
         // the formula to calculate a decimal value from a binary
         // representation is (-1)^(sign)x(1+significand)x2^(exponent-127) for 
         // signal precision and (-1)^(sign)x(1+significand)x2^(exponent-1023)
         // for double precision.
-        
-        double precision = _director.getTimeResolution();       
-        long multiple = Math.round(value/precision);
-        if (Math.abs(multiple * precision - value) > precision) {
-        	throw new IllegalActionException("The given time value "
-                    + value
-                    + " is too large to be converted precisely to an "
-                    + "instance of Time with the specified time resolution of "
-                    + precision
-                    + ". The maximum value that can always be precisely converted is "
-                    + maximumAccurateValueAsDouble()
-                    + ". A number close to your value that can be converted is "
-                    + multiple*precision);
+        double precision = _director.getTimeResolution();
+        long multiple = Math.round(value / precision);
+
+        if (Math.abs((multiple * precision) - value) > precision) {
+            throw new IllegalActionException("The given time value " + value
+                + " is too large to be converted precisely to an "
+                + "instance of Time with the specified time resolution of "
+                + precision
+                + ". The maximum value that can always be precisely converted is "
+                + maximumAccurateValueAsDouble()
+                + ". A number close to your value that can be converted is "
+                + (multiple * precision));
         }
+
         return BigInteger.valueOf(multiple);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The director that this time object is associated with. */
     private Director _director;
 
@@ -701,7 +704,7 @@ public class Time implements Comparable {
      *  By default, it is false.
      */
     private boolean _isNegativeInfinite = false;
-    
+
     /** The time value, as a multiple of the resolution. */
     private BigInteger _timeValue = null;
 }

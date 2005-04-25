@@ -71,7 +71,7 @@ public class ModelDirectory extends CompositeEntity {
      *   an entity already in the container.
      */
     public ModelDirectory(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -142,7 +142,7 @@ public class ModelDirectory extends CompositeEntity {
                             setContainer(null);
                         } catch (KernelException ex) {
                             throw new InternalErrorException(
-                                    "Cannot remove directory!");
+                                "Cannot remove directory!");
                         }
                     }
                 }
@@ -156,7 +156,7 @@ public class ModelDirectory extends CompositeEntity {
 
             // Check to see if the remaining effigies have any tableaux.
             for (Iterator effigies = remainingEntities.iterator();
-                 effigies.hasNext() && !anyTableau;) {
+                            effigies.hasNext() && !anyTableau;) {
                 Effigy effigy = (Effigy) effigies.next();
 
                 if (effigy.numberOfOpenTableaux() > 0) {
@@ -169,7 +169,7 @@ public class ModelDirectory extends CompositeEntity {
                 try {
                     // This gets reentrant...  Ugh..
                     for (Iterator effigies = remainingEntities.iterator();
-                         effigies.hasNext();) {
+                                    effigies.hasNext();) {
                         Effigy effigy = (Effigy) effigies.next();
                         effigy.setContainer(null);
                     }

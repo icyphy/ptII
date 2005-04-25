@@ -26,9 +26,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.copernicus.java;
 
-import ptolemy.actor.CompositeActor;
-import ptolemy.kernel.Entity;
-
 import soot.Modifier;
 import soot.PhaseOptions;
 import soot.RefType;
@@ -39,10 +36,15 @@ import soot.SootField;
 import soot.SootMethod;
 import soot.Type;
 import soot.Value;
+
 import soot.jimple.DefinitionStmt;
 import soot.jimple.InstanceFieldRef;
 import soot.jimple.Stmt;
+
 import soot.util.Chain;
+
+import ptolemy.actor.CompositeActor;
+import ptolemy.kernel.Entity;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -82,7 +84,7 @@ public class FieldOptimizationTransformer extends SceneTransformer {
     protected void internalTransform(String phaseName, Map options) {
         int localCount = 0;
         System.out.println("FieldOptimizationTransformer.internalTransform("
-                + phaseName + ", " + options + ")");
+            + phaseName + ", " + options + ")");
 
         SootClass stringClass = Scene.v().loadClassAndSupport("java.lang.String");
         Type stringType = RefType.v(stringClass);
@@ -120,7 +122,7 @@ public class FieldOptimizationTransformer extends SceneTransformer {
             SootClass entityClass = Scene.v().loadClassAndSupport(className);
 
             for (Iterator fields = entityClass.getFields().iterator();
-                 fields.hasNext();) {
+                            fields.hasNext();) {
                 SootField field = (SootField) fields.next();
 
                 // FIXME: static fields too.
@@ -132,7 +134,7 @@ public class FieldOptimizationTransformer extends SceneTransformer {
                 Value fieldValue = null;
 
                 for (Iterator methods = entityClass.getMethods().iterator();
-                     (methods.hasNext() && finalize);) {
+                                (methods.hasNext() && finalize);) {
                     SootMethod method = (SootMethod) methods.next();
 
                     if (method.getName().equals("<init>")) {
@@ -141,14 +143,15 @@ public class FieldOptimizationTransformer extends SceneTransformer {
 
                         while (!stmt.equals(units.getFirst())) {
                             if (stmt instanceof DefinitionStmt
-                                    && ((DefinitionStmt) stmt).getLeftOp() instanceof InstanceFieldRef) {
+                                            && ((DefinitionStmt) stmt)
+                                            .getLeftOp() instanceof InstanceFieldRef) {
                                 InstanceFieldRef ref = (InstanceFieldRef) ((DefinitionStmt) stmt)
-                                    .getLeftOp();
+                                                .getLeftOp();
 
                                 if ((ref.getField() == field)
-                                        && (fieldValue == null)) {
+                                                && (fieldValue == null)) {
                                     fieldValue = ((DefinitionStmt) stmt)
-                                        .getRightOp();
+                                                    .getRightOp();
                                     break;
                                 } else if (fieldValue != null) {
                                     finalize = false;
@@ -162,7 +165,7 @@ public class FieldOptimizationTransformer extends SceneTransformer {
 
                 if (finalize && (fieldValue != null)) {
                     System.out.println("field " + field + " has final value = "
-                            + fieldValue);
+                        + fieldValue);
                 }
             }
         }

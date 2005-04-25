@@ -94,7 +94,7 @@ public class FixPointQuantization extends Quantization {
         int strLen = string.length();
 
         if ((strLen >= 2) && (string.charAt(0) == '(')
-                && (string.charAt(strLen - 1) == ')')) {
+                        && (string.charAt(strLen - 1) == ')')) {
             string = string.substring(1, strLen - 1);
         }
 
@@ -102,8 +102,8 @@ public class FixPointQuantization extends Quantization {
 
         if (!st.hasMoreTokens()) {
             throw new IllegalArgumentException("A precision string"
-                    + " consisting of two integers separated "
-                    + " by a '/', or '.' token is required");
+                + " consisting of two integers separated "
+                + " by a '/', or '.' token is required");
         }
 
         _precision = new Precision(st.nextToken());
@@ -118,7 +118,7 @@ public class FixPointQuantization extends Quantization {
 
         if (st.hasMoreTokens()) {
             throw new IllegalArgumentException("FixPointQuantization "
-                    + "requires at most a precision overflow and rounding,");
+                + "requires at most a precision overflow and rounding,");
         }
     }
 
@@ -130,7 +130,7 @@ public class FixPointQuantization extends Quantization {
      *  @param rounding The rounding.
      */
     public FixPointQuantization(Precision precision, Overflow overflow,
-            Rounding rounding) {
+        Rounding rounding) {
         super(overflow, rounding);
         _precision = precision;
     }

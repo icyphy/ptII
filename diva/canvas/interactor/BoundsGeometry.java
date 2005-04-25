@@ -220,7 +220,7 @@ public class BoundsGeometry implements Geometry {
 
                 public void remove() {
                     throw new UnsupportedOperationException(
-                            "Sites cannot be removed");
+                        "Sites cannot be removed");
                 }
             };
     }
@@ -229,7 +229,7 @@ public class BoundsGeometry implements Geometry {
      */
     public void translate(double x, double y) {
         _rect.setFrame(_rect.getX() + x, _rect.getY() + y, _rect.getWidth(),
-                _rect.getHeight());
+            _rect.getHeight());
     }
 
     ///////////////////////////////////////////////////////////////////

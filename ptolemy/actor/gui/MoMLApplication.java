@@ -27,19 +27,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.gui;
 
-import java.io.File;
-import java.io.FilenameFilter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.lang.reflect.Constructor;
-import java.net.URI;
-import java.net.URL;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-
-import javax.swing.UIManager;
-
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.ExecutionListener;
@@ -60,6 +47,19 @@ import ptolemy.moml.filter.BackwardCompatibility;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 
+import java.io.File;
+import java.io.FilenameFilter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.Constructor;
+import java.net.URI;
+import java.net.URL;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+
+import javax.swing.UIManager;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// MoMLApplication
@@ -73,7 +73,7 @@ import ptolemy.util.StringUtilities;
    all subsequent files will be read by delegating to the Configuration,
    invoking its openModel() method.  A command-line file is assumed to be
    a MoML file or a file that can be opened by the specified configuration.
-   <p>For example, this command uses the HyVisual configuration to 
+   <p>For example, this command uses the HyVisual configuration to
    open a model:
    <pre>
 $PTII/bin/moml $PTII/ptolemy/configs/hyvisual/configuration.xml $PTII/ptolemy/domains/ct/demo/StickyMasses/StickyMasses.xml
@@ -107,12 +107,12 @@ $PTII/bin/moml $PTII/ptolemy/configs/hyvisual/configuration.xml $PTII/ptolemy/do
 
    The -class option can be used to specify a Java class to be loaded.
    The named class must have a constructor that takes a Workspace
-   as an argument.  
+   as an argument.
    In the example below, $PTII/ptolemy/domains/sdf/demo/Butterfly/Butterfly.java
    is a class that has a constructor Butterfly(Workspace).
    <pre>
    $PTII/bin/ptolemy -class ptolemy.domains.sdf.demo.Butterfly.Butterfly
-   </pre> 
+   </pre>
    Note that -class is very well tested now that we have use MoML
    for almost all models.
 
@@ -157,7 +157,7 @@ public class MoMLApplication implements ExecutionListener {
      *  @exception Exception If command line arguments have problems.
      */
     public MoMLApplication(String basePath, String[] args)
-            throws Exception {
+        throws Exception {
         _basePath = basePath;
 
         // The Java look & feel is pretty lame, so we use the native
@@ -224,6 +224,7 @@ public class MoMLApplication implements ExecutionListener {
                                 System.exit(0);
                             }
                         };
+
                     // Note that we start the thread here, which could
                     // be risky when we subclass, since the thread will be
                     // started before the subclass constructor finishes (FindBugs)
@@ -322,9 +323,11 @@ public class MoMLApplication implements ExecutionListener {
      */
     public List models() {
         LinkedList result = new LinkedList();
+
         if (_configuration == null) {
             return result;
         }
+
         ModelDirectory directory = (ModelDirectory) _configuration.getEntity(Configuration._DIRECTORY_NAME);
         Iterator effigies = directory.entityList().iterator();
 
@@ -339,7 +342,7 @@ public class MoMLApplication implements ExecutionListener {
 
         return result;
     }
-    
+
     /** Read a Configuration from the URL given by the specified string.
      *  The URL may absolute, or relative to the Ptolemy II tree root,
      *  or in the classpath.  To convert a String to a URL suitable for
@@ -350,7 +353,7 @@ public class MoMLApplication implements ExecutionListener {
      *   if the contents of the URL is not a configuration.
      */
     public static Configuration readConfiguration(URL specificationURL)
-            throws Exception {
+        throws Exception {
         MoMLParser parser = new MoMLParser();
         parser.reset();
 
@@ -452,7 +455,7 @@ public class MoMLApplication implements ExecutionListener {
                 try {
                     if (!absoluteFile.exists()) {
                         throw new IOException("File '" + absoluteFile
-                                + "' does not exist.");
+                            + "' does not exist.");
                     }
                 } catch (java.security.AccessControlException accessControl) {
                     IOException exception = new IOException(
@@ -484,11 +487,11 @@ public class MoMLApplication implements ExecutionListener {
                     // This works in Web Start, see
                     // http://java.sun.com/products/javawebstart/faq.html#54
                     specURL = Thread.currentThread().getContextClassLoader()
-                        .getResource(spec);
+                                                .getResource(spec);
 
                     if (specURL == null) {
                         throw new Exception("getResource(\"" + spec
-                                + "\") returned null.");
+                            + "\") returned null.");
                     } else {
                         // If we have a jar URL, convert spaces to %20
                         // so as to avoid multiple windows with the
@@ -549,7 +552,7 @@ public class MoMLApplication implements ExecutionListener {
      *  @see ptolemy.util.StringUtilities#usageString(String, String [][], String [])
      */
     protected String _configurationUsage(String commandTemplate,
-            String[][] commandOptions, String[] commandFlags) {
+        String[][] commandOptions, String[] commandFlags) {
         StringBuffer result = new StringBuffer("Usage: " + commandTemplate
                 + "\n\n" + "Options that take values:\n");
         int i;
@@ -557,12 +560,12 @@ public class MoMLApplication implements ExecutionListener {
         // Print any command options from this class first
         for (i = 0; i < _commandOptions.length; i++) {
             result.append(" " + _commandOptions[i][0] + " "
-                    + _commandOptions[i][1] + "\n");
+                + _commandOptions[i][1] + "\n");
         }
 
         for (i = 0; i < commandOptions.length; i++) {
             result.append(" " + commandOptions[i][0] + " "
-                    + commandOptions[i][1] + "\n");
+                + commandOptions[i][1] + "\n");
         }
 
         result.append("\nFlags (do not take values):\n");
@@ -587,14 +590,13 @@ public class MoMLApplication implements ExecutionListener {
 
             System.out.println("MoMLApplication: " + configurationURI);
 
-
             if (configurationDirectories != null) {
                 result.append("\nThe following (mutually exclusive) flags "
-                        + "specify alternative configurations:\n");
+                    + "specify alternative configurations:\n");
 
                 for (i = 0; i < configurationDirectories.length; i++) {
                     String configurationName = configurationDirectories[i]
-                        .getName();
+                                    .getName();
                     result.append(" -" + configurationName);
 
                     // Pad out to a fixed number of spaces to get good alignment.
@@ -617,10 +619,12 @@ public class MoMLApplication implements ExecutionListener {
                             Configuration configuration = _readConfiguration(specificationURL);
 
                             if ((configuration != null)
-                                    && (configuration.getAttribute("_doc") != null)
-                                    && configuration.getAttribute("_doc") instanceof Documentation) {
+                                            && (configuration.getAttribute(
+                                                "_doc") != null)
+                                            && configuration.getAttribute(
+                                                "_doc") instanceof Documentation) {
                                 Documentation doc = (Documentation) configuration
-                                    .getAttribute("_doc");
+                                                .getAttribute("_doc");
                                 result.append("\t\t" + doc.getValue() + "\n");
                                 printDefaultConfigurationMessage = false;
                             }
@@ -633,13 +637,13 @@ public class MoMLApplication implements ExecutionListener {
 
                     if (printDefaultConfigurationMessage) {
                         result.append("\t\tuses " + configurationFileName
-                                + "\n");
+                            + "\n");
                     }
                 }
             }
         } catch (Exception ex) {
             result.append("Warning: Failed to find configuration(s) in '"
-                    + _basePath + "'" + ex);
+                + _basePath + "'" + ex);
         }
 
         return result.toString();
@@ -655,7 +659,7 @@ public class MoMLApplication implements ExecutionListener {
      *   configuration cannot be opened.
      */
     protected Configuration _createDefaultConfiguration()
-            throws Exception {
+        throws Exception {
         return null;
     }
 
@@ -667,7 +671,7 @@ public class MoMLApplication implements ExecutionListener {
      *   configuration cannot be opened.
      */
     protected Configuration _createEmptyConfiguration()
-            throws Exception {
+        throws Exception {
         return _createDefaultConfiguration();
     }
 
@@ -692,8 +696,8 @@ public class MoMLApplication implements ExecutionListener {
             _test = true;
         } else if (arg.equals("-version")) {
             System.out.println("Version "
-                    + VersionAttribute.CURRENT_VERSION.getExpression()
-                    + ", Build $Id$");
+                + VersionAttribute.CURRENT_VERSION.getExpression()
+                + ", Build $Id$");
 
             // NOTE: This means the test suites cannot test -version
             System.exit(0);
@@ -702,7 +706,6 @@ public class MoMLApplication implements ExecutionListener {
         } else {
             if (_expectingClass) {
                 // $PTII/bin/ptolemy -class ptolemy.domains.sdf.demo.Butterfly.Butterfly
-
                 // Previous argument was -class
                 _expectingClass = false;
 
@@ -711,8 +714,8 @@ public class MoMLApplication implements ExecutionListener {
 
                 // Instantiate the specified class in a new workspace.
                 Workspace workspace = new Workspace();
-                //Workspace workspace = _configuration.workspace();
 
+                //Workspace workspace = _configuration.workspace();
                 // Get the constructor that takes a Workspace argument.
                 Class[] argTypes = new Class[1];
                 argTypes[0] = workspace.getClass();
@@ -727,46 +730,39 @@ public class MoMLApplication implements ExecutionListener {
                 // If there is a configuration, then create an effigy
                 // for the class, and enter it in the directory.
                 System.out.println("-class: _configuration: " + _configuration);
+
                 if (_configuration != null) {
                     _configuration.openModel(newModel);
 
-// FIXME: we can probably delete this code.                    
-//                     // Create an effigy for the model.
-//                     PtolemyEffigy effigy = new PtolemyEffigy(_configuration
-//                             .workspace());
-//                     effigy.setModel(newModel);
-//                     System.out.println("-class: effigy: " + effigy);
-
-//                     ModelDirectory directory = (ModelDirectory) _configuration
-//                         .getEntity("directory");
-
-                    
-//                     // Can't use names with dots, so we subsitute.
-//                     String safeName =
-//                         StringUtilities.substitute(arg, ".","_" );
-//                     effigy.setName(safeName);
-
-//                     if (directory != null) {
-//                         if (directory.getEntity(safeName) != null) {
-//                             // Name is already taken.
-//                             int count = 2;
-//                             String newName = safeName + " " + count;
-
-//                             while (directory.getEntity(newName) != null) {
-//                                 count++;
-//                             }
-
-//                             effigy.setName(newName);
-//                         }
-//                     }
-
-//                     effigy.setContainer(directory);
+                    // FIXME: we can probably delete this code.                    
+                    //                     // Create an effigy for the model.
+                    //                     PtolemyEffigy effigy = new PtolemyEffigy(_configuration
+                    //                             .workspace());
+                    //                     effigy.setModel(newModel);
+                    //                     System.out.println("-class: effigy: " + effigy);
+                    //                     ModelDirectory directory = (ModelDirectory) _configuration
+                    //                         .getEntity("directory");
+                    //                     // Can't use names with dots, so we subsitute.
+                    //                     String safeName =
+                    //                         StringUtilities.substitute(arg, ".","_" );
+                    //                     effigy.setName(safeName);
+                    //                     if (directory != null) {
+                    //                         if (directory.getEntity(safeName) != null) {
+                    //                             // Name is already taken.
+                    //                             int count = 2;
+                    //                             String newName = safeName + " " + count;
+                    //                             while (directory.getEntity(newName) != null) {
+                    //                                 count++;
+                    //                             }
+                    //                             effigy.setName(newName);
+                    //                         }
+                    //                     }
+                    //                     effigy.setContainer(directory);
                 } else {
                     System.err.println("No configuration found.");
                     throw new IllegalActionException(newModel,
-                            "No configuration found.");
+                        "No configuration found.");
                 }
-
             } else {
                 if (!arg.startsWith("-")) {
                     // Assume the argument is a file name or URL.
@@ -783,11 +779,11 @@ public class MoMLApplication implements ExecutionListener {
                     // assume the file is an XML file.
                     if (_configuration != null) {
                         ModelDirectory directory = (ModelDirectory) _configuration
-                            .getEntity("directory");
+                                        .getEntity("directory");
 
                         if (directory == null) {
                             throw new InternalErrorException(
-                                    "No model directory!");
+                                "No model directory!");
                         }
 
                         String key = inURL.toExternalForm();
@@ -820,7 +816,7 @@ public class MoMLApplication implements ExecutionListener {
 
                             try {
                                 if ((inURL.toString().indexOf("!/") != -1)
-                                        && (inURL.toString().indexOf("%20") != -1)) {
+                                                && (inURL.toString().indexOf("%20") != -1)) {
                                     detailMessage = " The URL contains "
                                         + "'!/', so it may be a jar "
                                         + "URL, and jar URLs cannot contain "
@@ -833,7 +829,7 @@ public class MoMLApplication implements ExecutionListener {
                             }
 
                             throw new Exception("Failed to parse '" + inURL
-                                    + "'" + detailMessage, ex);
+                                + "'" + detailMessage, ex);
                         }
                     }
                 } else {
@@ -864,8 +860,8 @@ public class MoMLApplication implements ExecutionListener {
                 if (arg.trim().startsWith("-")) {
                     if (i >= (args.length - 1)) {
                         throw new IllegalActionException("Cannot set "
-                                + "parameter " + arg + " when no value is "
-                                + "given.");
+                            + "parameter " + arg + " when no value is "
+                            + "given.");
                     }
 
                     // Save in case this is a parameter name and value.
@@ -875,7 +871,7 @@ public class MoMLApplication implements ExecutionListener {
                 } else {
                     // Unrecognized option.
                     throw new IllegalActionException("Unrecognized option: "
-                            + arg);
+                        + arg);
                 }
             }
         }
@@ -894,7 +890,7 @@ public class MoMLApplication implements ExecutionListener {
 
             boolean match = false;
             ModelDirectory directory = (ModelDirectory) _configuration
-                .getEntity("directory");
+                            .getEntity("directory");
 
             if (directory == null) {
                 throw new InternalErrorException("No model directory!");
@@ -933,7 +929,7 @@ public class MoMLApplication implements ExecutionListener {
 
                     if (model instanceof CompositeActor) {
                         Director director = ((CompositeActor) model)
-                            .getDirector();
+                                        .getDirector();
 
                         if (director != null) {
                             attribute = director.getAttribute(name);
@@ -966,7 +962,7 @@ public class MoMLApplication implements ExecutionListener {
             if (!match) {
                 // Unrecognized option.
                 throw new IllegalActionException("Unrecognized option: "
-                        + "No parameter exists with name " + name);
+                    + "No parameter exists with name " + name);
             }
         }
 
@@ -980,8 +976,7 @@ public class MoMLApplication implements ExecutionListener {
 
         _configuration.showAll();
     }
-    
-   
+
     /** Read a Configuration from the URL given by the specified string.
      *  The URL may absolute, or relative to the Ptolemy II tree root,
      *  or in the classpath.  To convert a String to a URL suitable for
@@ -993,19 +988,19 @@ public class MoMLApplication implements ExecutionListener {
      *  @deprecated Use readConfiguration() instead.
      */
     protected Configuration _readConfiguration(URL specificationURL)
-            throws Exception {
+        throws Exception {
         return readConfiguration(specificationURL);
     }
-    
+
     /** Return a string summarizing the command-line arguments.
      *  @return A usage string.
      */
     protected String _usage() {
         // Call the static method that generates the usage strings.
         return StringUtilities.usageString(_commandTemplate, _commandOptions,
-                _commandFlags);
-    }   
-    
+            _commandFlags);
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
@@ -1017,14 +1012,24 @@ public class MoMLApplication implements ExecutionListener {
 
     /** The command-line options that are either present or not. */
     protected String[] _commandFlags = {
-        "-help", "-run", "-runThenExit", "-test", "-version",
-    };
+            "-help",
+            "-run",
+            "-runThenExit",
+            "-test",
+            "-version",
+        };
 
     /** The command-line options that take arguments. */
     protected static String[][] _commandOptions = {
-        { "-class", "<classname>" },
-        { "-<parameter name>", "<parameter value>" },
-    };
+            {
+                "-class",
+                "<classname>"
+            },
+            {
+                "-<parameter name>",
+                "<parameter value>"
+            },
+        };
 
     /** The form of the command line. */
     protected String _commandTemplate = "moml [ options ] [file ...]";

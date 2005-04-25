@@ -67,7 +67,7 @@ public class SimpleTutorial {
 
     public SimpleTutorial(AppContext context) {
         JGraph jg = new JGraph(new GraphPane(new BasicGraphController(),
-                                       new BasicGraphModel()));
+                    new BasicGraphModel()));
         context.getContentPane().add("Center", jg);
     }
 }

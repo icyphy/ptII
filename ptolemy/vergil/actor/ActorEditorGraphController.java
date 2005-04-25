@@ -124,7 +124,7 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
         diva.gui.GUIUtilities.addToolBarButton(toolbar, _newInputMultiportAction);
         diva.gui.GUIUtilities.addMenuItem(menu, _newOutputMultiportAction);
         diva.gui.GUIUtilities.addToolBarButton(toolbar,
-                _newOutputMultiportAction);
+            _newOutputMultiportAction);
         diva.gui.GUIUtilities.addMenuItem(menu, _newInoutMultiportAction);
         diva.gui.GUIUtilities.addToolBarButton(toolbar, _newInoutMultiportAction);
 
@@ -136,11 +136,11 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
 
         // Add hot key for create instance action.
         diva.gui.GUIUtilities.addHotKey(getFrame().getJGraph(),
-                ((ClassDefinitionController) _classDefinitionController)._createInstanceAction);
+            ((ClassDefinitionController) _classDefinitionController)._createInstanceAction);
 
         // Add hot key for create subclass action.
         diva.gui.GUIUtilities.addHotKey(getFrame().getJGraph(),
-                ((ClassDefinitionController) _classDefinitionController)._createSubclassAction);
+            ((ClassDefinitionController) _classDefinitionController)._createSubclassAction);
     }
 
     /** Set the configuration.  The configuration is used when
@@ -221,16 +221,16 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
         // still in the constructor, and that method is overloaded in
         // derived classes.
         ((CompositeInteractor) _portController.getNodeInteractor())
-            .addInteractor(_linkCreator);
+                    .addInteractor(_linkCreator);
         ((CompositeInteractor) _entityPortController.getNodeInteractor())
-            .addInteractor(_linkCreator);
+                    .addInteractor(_linkCreator);
         ((CompositeInteractor) _relationController.getNodeInteractor())
-            .addInteractor(_linkCreator);
+                    .addInteractor(_linkCreator);
 
         LinkCreator linkCreator2 = new LinkCreator();
         linkCreator2.setMouseFilter(new MouseFilter(InputEvent.BUTTON1_MASK, 0));
         ((CompositeInteractor) _entityPortController.getNodeInteractor())
-            .addInteractor(linkCreator2);
+                    .addInteractor(linkCreator2);
     }
 
     /** Initialize interactions for the specified controller.  This
@@ -244,8 +244,8 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
         super._initializeInteraction(controller);
 
         if (controller instanceof ExternalIOPortController
-                || controller instanceof IOPortController
-                || controller instanceof RelationController) {
+                        || controller instanceof IOPortController
+                        || controller instanceof RelationController) {
             Interactor interactor = controller.getNodeInteractor();
 
             if (interactor instanceof CompositeInteractor) {
@@ -350,12 +350,12 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
 
                 // get the actual attach site.
                 tailSite = getEdgeController(link).getConnectorTarget()
-                    .getTailSite(c, source, event.getLayerX(),
-                            event.getLayerY());
+                                           .getTailSite(c, source,
+                                    event.getLayerX(), event.getLayerY());
 
                 if (tailSite == null) {
                     throw new RuntimeException("Invalid connector target: "
-                            + "no valid site found for tail of new connector.");
+                        + "no valid site found for tail of new connector.");
                 }
 
                 // And reattach the connector.
@@ -430,7 +430,7 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
             putValue(diva.gui.GUIUtilities.LARGE_ICON, icon);
             putValue("tooltip", "Control-click to create a new relation");
             putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
-                    new Integer(KeyEvent.VK_R));
+                new Integer(KeyEvent.VK_R));
         }
 
         public void actionPerformed(ActionEvent e) {
@@ -440,10 +440,10 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
             double y;
 
             if ((getSourceType() == TOOLBAR_TYPE)
-                    || (getSourceType() == MENUBAR_TYPE)) {
+                            || (getSourceType() == MENUBAR_TYPE)) {
                 // No location in the action, so put it in the middle.
                 BasicGraphFrame frame = ActorEditorGraphController.this
-                    .getFrame();
+                                .getFrame();
                 Point2D center;
 
                 if (frame != null) {
@@ -461,7 +461,7 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
             } else {
                 // Transform
                 AffineTransform current = getGraphPane().getTransformContext()
-                    .getTransform();
+                                                          .getTransform();
                 AffineTransform inverse;
 
                 try {
@@ -483,8 +483,8 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
 
             if (!(toplevel instanceof CompositeEntity)) {
                 throw new InternalErrorException(
-                        "Cannot invoke NewRelationAction on an object "
-                        + "that is not a CompositeEntity.");
+                    "Cannot invoke NewRelationAction on an object "
+                    + "that is not a CompositeEntity.");
             }
 
             final String relationName = toplevel.uniqueName("relation");

@@ -124,7 +124,7 @@ public class MirrorTransformerStrategy extends CachedStrategy
      */
     public Graph mirror(Graph graph, boolean cloneWeights) {
         if ((graph.getClass() != graph().getClass())
-                || (cloneWeights != _cloneWeights)) {
+                        || (cloneWeights != _cloneWeights)) {
             reset();
         }
 
@@ -179,7 +179,7 @@ public class MirrorTransformerStrategy extends CachedStrategy
             mirrorGraph = (Graph) (_graph.getClass().newInstance());
         } catch (Exception exception) {
             throw new RuntimeException("Could not create an empty graph from "
-                    + "this one.\n" + exception + "\n");
+                + "this one.\n" + exception + "\n");
         }
 
         // create new nodes for the mirror
@@ -204,12 +204,12 @@ public class MirrorTransformerStrategy extends CachedStrategy
                                be called publicly. The class Method is used
                                here to call public clone(). */
                             Class[] argumentTypes = {  };
-                            Method method =
-                                oldWeight.getClass().getMethod(nameClone,
+                            Method method = oldWeight.getClass().getMethod(nameClone,
                                     argumentTypes);
+
                             // Cast to (Object []) so as to avoid varargs call.
                             mirrorWeight = method.invoke(oldWeight,
-                                    (Object [])null);
+                                    (Object[]) null);
                         } else {
                             throw new RuntimeException();
                         }
@@ -219,9 +219,8 @@ public class MirrorTransformerStrategy extends CachedStrategy
                 } catch (Throwable throwable) {
                     /* Exception due to non-Cloneable weights or
                        weights without public clone(). */
-                    throw new AnalysisException(
-                            "Can not clone the node weight.\n",
-                            throwable);
+                    throw new AnalysisException("Can not clone the node weight.\n",
+                        throwable);
                 }
 
                 mirrorNode = new Node(mirrorWeight);
@@ -256,12 +255,12 @@ public class MirrorTransformerStrategy extends CachedStrategy
                                be called publicly. The class Method is used
                                here to call public clone(). */
                             Class[] argumentTypes = {  };
-                            Method method =
-                                oldWeight.getClass().getMethod(nameClone,
-                                        argumentTypes);
+                            Method method = oldWeight.getClass().getMethod(nameClone,
+                                    argumentTypes);
+
                             // Cast to (Object []) so as to avoid varargs call.
                             mirrorWeight = method.invoke(oldWeight,
-                                    (Object []) null);
+                                    (Object[]) null);
                         } else {
                             throw new RuntimeException();
                         }
@@ -271,9 +270,8 @@ public class MirrorTransformerStrategy extends CachedStrategy
                 } catch (Throwable throwable) {
                     /* Exception due to non-Cloneable weights or
                        weights without public clone(). */
-                    throw new RuntimeException(
-                            "Can not clone the edge weight.\n",
-                            throwable);
+                    throw new RuntimeException("Can not clone the edge weight.\n",
+                        throwable);
                 }
 
                 mirrorEdge = new Edge(mirrorSource, mirrorSink, mirrorWeight);

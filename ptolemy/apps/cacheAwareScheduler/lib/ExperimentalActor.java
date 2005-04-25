@@ -27,7 +27,6 @@ COPYRIGHTENDKEY
 @ProposedRating Red (sanjeev)
 @AcceptedRating Red (sanjeev)
 */
-
 package ptolemy.apps.cacheAwareScheduler.lib;
 
 import ptolemy.data.IntToken;
@@ -39,8 +38,10 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ExperimenalActor
+
 /**
    This actor consumes the tokens available at the input ports according to
    their respective consumption rates and produces token at the output ports
@@ -56,9 +57,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @version $Id$
    @since Ptolemy II 1.0
 */
-
 public class ExperimentalActor extends SDFTransformer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -68,10 +67,11 @@ public class ExperimentalActor extends SDFTransformer {
      *   actor with this name.
      */
     public ExperimentalActor(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         input.setTypeEquals(BaseType.INT);
         output.setTypeEquals(BaseType.INT);
+
         // Set parameter codeSize.
         codeSize = new Parameter(this, "codeSize");
         codeSize.setExpression("1 + roundToInt(random()*(iSPMSize-1))");
@@ -93,15 +93,15 @@ public class ExperimentalActor extends SDFTransformer {
      *  @exception IllegalActionException If the parameters are out of range.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == codeSize) {
-            int codeSizeValue = ((IntToken)codeSize.getToken()).intValue();
+            int codeSizeValue = ((IntToken) codeSize.getToken()).intValue();
+
             if (codeSizeValue <= 0) {
                 throw new IllegalActionException(this,
-                        "Invalid codeSize: " + codeSizeValue);
+                    "Invalid codeSize: " + codeSizeValue);
             }
-        }
-        else {
+        } else {
             super.attributeChanged(attribute);
         }
     }

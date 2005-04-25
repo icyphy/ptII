@@ -25,15 +25,16 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.codegen.c.domains.sdf.lib;
 
 import ptolemy.codegen.kernel.CCodeGeneratorHelper;
 import ptolemy.data.IntToken;
 import ptolemy.kernel.util.IllegalActionException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Repeat
+
 /**
    A code generation helper class for ptolemy.domains.sdf.lib.Repeat
 
@@ -44,7 +45,6 @@ import ptolemy.kernel.util.IllegalActionException;
    @Pt.AcceptedRating Red (eal)
 */
 public class Repeat extends CCodeGeneratorHelper {
-
     /** Construct a helper with the given ptolemy.actor.lib.Scale actor.
      *  @param actor The given ptolemy.actor.lib.Scale actor.
      */
@@ -60,17 +60,18 @@ public class Repeat extends CCodeGeneratorHelper {
      *   the Repeat actor is appended to.
      */
     public void generateFireCode(StringBuffer stream)
-            throws IllegalActionException {
-
-        ptolemy.domains.sdf.lib.Repeat actor =
-            (ptolemy.domains.sdf.lib.Repeat)getComponent();
+        throws IllegalActionException {
+        ptolemy.domains.sdf.lib.Repeat actor = (ptolemy.domains.sdf.lib.Repeat) getComponent();
         StringBuffer code = new StringBuffer();
+
         // FIXME: haven't dealt with <i>blockSize</i>. Assumed input
         // consume rate to be 1.
-        for (int i = 0; i <
-                 ((IntToken)actor.numberOfTimes.getToken()).intValue(); i++) {
+        for (int i = 0;
+                        i < ((IntToken) actor.numberOfTimes.getToken())
+                        .intValue(); i++) {
             code.append("$ref(output," + i + ") = ");
         }
+
         code.append("$ref(input);\n");
         _codeBlock = code.toString();
         stream.append(processCode(_codeBlock));
@@ -78,6 +79,5 @@ public class Repeat extends CCodeGeneratorHelper {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variable                ////
-
     protected String _codeBlock;
 }

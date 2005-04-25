@@ -26,18 +26,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.copernicus.java;
 
-import ptolemy.actor.CompositeActor;
-import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.TypedIORelation;
-import ptolemy.copernicus.kernel.PtolemyUtilities;
-import ptolemy.copernicus.kernel.SootUtilities;
-import ptolemy.data.IntToken;
-import ptolemy.data.expr.Variable;
-import ptolemy.kernel.ComponentEntity;
-import ptolemy.kernel.Entity;
-import ptolemy.kernel.Relation;
-import ptolemy.util.StringUtilities;
-
 import soot.ArrayType;
 import soot.IntType;
 import soot.Local;
@@ -51,6 +39,7 @@ import soot.SootMethod;
 import soot.Type;
 import soot.Value;
 import soot.ValueBox;
+
 import soot.jimple.DefinitionStmt;
 import soot.jimple.Expr;
 import soot.jimple.IntConstant;
@@ -58,8 +47,22 @@ import soot.jimple.InvokeExpr;
 import soot.jimple.Jimple;
 import soot.jimple.JimpleBody;
 import soot.jimple.Stmt;
+
 import soot.jimple.toolkits.scalar.Evaluator;
+
 import soot.util.Chain;
+
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.TypedIORelation;
+import ptolemy.copernicus.kernel.PtolemyUtilities;
+import ptolemy.copernicus.kernel.SootUtilities;
+import ptolemy.data.IntToken;
+import ptolemy.data.expr.Variable;
+import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.Entity;
+import ptolemy.kernel.Relation;
+import ptolemy.util.StringUtilities;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -111,7 +114,7 @@ public class SDFPortInliner implements PortInliner {
     /** Construct a new transformer
      */
     public SDFPortInliner(SootClass modelClass, CompositeActor model,
-            Map options) {
+        Map options) {
         _modelClass = modelClass;
         _model = model;
         _options = options;
@@ -136,7 +139,7 @@ public class SDFPortInliner implements PortInliner {
      *  given body with a circular array reference.
      */
     public void inlineBroadcast(JimpleBody body, Stmt stmt, InvokeExpr expr,
-            TypedIOPort port) {
+        TypedIOPort port) {
         SootClass theClass = body.getMethod().getDeclaringClass();
 
         Local bufferLocal = Jimple.v().newLocal("buffer",
@@ -166,8 +169,8 @@ public class SDFPortInliner implements PortInliner {
 
         // Load the array of indexes.
         body.getUnits().insertBefore(Jimple.v().newAssignStmt(indexArrayLocal,
-                                             Jimple.v().newInstanceFieldRef(body.getThisLocal(),
-                                                     indexArrayField)), stmt);
+                Jimple.v().newInstanceFieldRef(body.getThisLocal(),
+                    indexArrayField)), stmt);
 
         Value bufferSizeValue = null;
 
@@ -175,7 +178,7 @@ public class SDFPortInliner implements PortInliner {
         int channel = 0;
 
         for (Iterator relations = port.linkedRelationList().iterator();
-             relations.hasNext();) {
+                        relations.hasNext();) {
             TypedIORelation relation = (TypedIORelation) relations.next();
 
             int bufferSize = _getBufferSize(relation);
@@ -188,58 +191,60 @@ public class SDFPortInliner implements PortInliner {
 
                 // Load the correct index into indexLocal
                 body.getUnits().insertBefore(Jimple.v().newAssignStmt(indexLocal,
-                                                     Jimple.v().newArrayRef(indexArrayLocal, channelValue)),
-                        stmt);
+                        Jimple.v().newArrayRef(indexArrayLocal, channelValue)),
+                    stmt);
 
                 SootField arrayField = _modelClass.getFieldByName(InlinePortTransformer
-                        .getBufferFieldName(relation, i, port.getType()));
+                                    .getBufferFieldName(relation, i,
+                                        port.getType()));
                 Local containerLocal = FieldsForEntitiesTransformer
-                    .getLocalReferenceForEntity(_model, theClass,
-                            body.getThisLocal(), body, stmt, _options);
+                                .getLocalReferenceForEntity(_model, theClass,
+                                    body.getThisLocal(), body, stmt, _options);
 
                 // load the buffer array.
                 body.getUnits().insertBefore(Jimple.v().newAssignStmt(bufferLocal,
-                                                     Jimple.v().newInstanceFieldRef(containerLocal,
-                                                             arrayField)), stmt);
+                        Jimple.v().newInstanceFieldRef(containerLocal,
+                            arrayField)), stmt);
 
                 // If we are calling with just a token, then send the token.
                 if (expr.getArgCount() == 1) {
                     // Write to the buffer.
                     body.getUnits().insertBefore(Jimple.v().newAssignStmt(Jimple.v()
-                                                         .newArrayRef(bufferLocal,
-                                                                 indexLocal), expr.getArg(0)), stmt);
+                                                                                            .newArrayRef(bufferLocal,
+                                            indexLocal), expr.getArg(0)), stmt);
 
                     // increment the position in the buffer.
                     body.getUnits().insertBefore(_createIndexUpdateInstructions(
-                                                         indexLocal, indexArrayLocal, channelValue,
-                                                         bufferSizeValue), stmt);
+                            indexLocal, indexArrayLocal, channelValue,
+                            bufferSizeValue), stmt);
                 } else {
                     // We must send an array of tokens.
                     body.getUnits().insertBefore(Jimple.v().newAssignStmt(returnArrayLocal,
-                                                         expr.getArg(0)), stmt);
+                            expr.getArg(0)), stmt);
 
                     // If the count is specified statically
                     if (Evaluator.isValueConstantValued(expr.getArg(1))) {
                         int argCount = ((IntConstant) Evaluator
-                                .getConstantValueOf(expr.getArg(1))).value;
+                                        .getConstantValueOf(expr.getArg(1))).value;
 
                         for (int k = 0; k < argCount; k++) {
                             // Get the value.
                             body.getUnits().insertBefore(Jimple.v()
-                                    .newAssignStmt(returnLocal,
-                                            Jimple.v().newArrayRef(returnArrayLocal,
+                                                                           .newAssignStmt(returnLocal,
+                                                Jimple.v().newArrayRef(returnArrayLocal,
                                                     IntConstant.v(k))), stmt);
 
                             // Store in the buffer array.
                             body.getUnits().insertBefore(Jimple.v()
-                                    .newAssignStmt(Jimple.v()
-                                            .newArrayRef(bufferLocal,
-                                                    indexLocal), returnLocal), stmt);
+                                                                           .newAssignStmt(Jimple.v()
+                                                                                                            .newArrayRef(bufferLocal,
+                                                    indexLocal), returnLocal),
+                                stmt);
 
                             // increment the position in the buffer.
                             body.getUnits().insertBefore(_createIndexUpdateInstructions(
-                                                                 indexLocal, indexArrayLocal, channelValue,
-                                                                 bufferSizeValue), stmt);
+                                    indexLocal, indexArrayLocal, channelValue,
+                                    bufferSizeValue), stmt);
                         }
                     } else {
                         // we don't know the size beforehand,
@@ -252,35 +257,35 @@ public class SDFPortInliner implements PortInliner {
                         // The list of initializer instructions.
                         List initializerList = new LinkedList();
                         initializerList.add(Jimple.v().newAssignStmt(counterLocal,
-                                                    IntConstant.v(0)));
+                                IntConstant.v(0)));
 
                         // The list of body instructions.
                         List bodyList = new LinkedList();
 
                         // Get the value.
                         body.getUnits().insertBefore(Jimple.v().newAssignStmt(returnLocal,
-                                                             Jimple.v().newArrayRef(returnArrayLocal,
-                                                                     counterLocal)), stmt);
+                                Jimple.v().newArrayRef(returnArrayLocal,
+                                    counterLocal)), stmt);
 
                         // Store in the buffer array.
                         body.getUnits().insertBefore(Jimple.v().newAssignStmt(Jimple.v()
-                                                             .newArrayRef(bufferLocal,
-                                                                     indexLocal), returnLocal), stmt);
+                                                                                                .newArrayRef(bufferLocal,
+                                                indexLocal), returnLocal), stmt);
 
                         // increment the position.
                         bodyList.add(Jimple.v().newAssignStmt(indexLocal,
-                                             Jimple.v().newAddExpr(indexLocal,
-                                                     IntConstant.v(1))));
+                                Jimple.v().newAddExpr(indexLocal,
+                                    IntConstant.v(1))));
 
                         // wrap around.
                         bodyList.add(Jimple.v().newAssignStmt(indexLocal,
-                                             Jimple.v().newRemExpr(indexLocal,
-                                                     bufferSizeValue)));
+                                Jimple.v().newRemExpr(indexLocal,
+                                    bufferSizeValue)));
 
                         // Increment the counter.
                         bodyList.add(Jimple.v().newAssignStmt(counterLocal,
-                                             Jimple.v().newAddExpr(counterLocal,
-                                                     IntConstant.v(1))));
+                                Jimple.v().newAddExpr(counterLocal,
+                                    IntConstant.v(1))));
 
                         Expr conditionalExpr = Jimple.v().newLtExpr(counterLocal,
                                 expr.getArg(1));
@@ -290,8 +295,8 @@ public class SDFPortInliner implements PortInliner {
 
                         // store back.
                         body.getUnits().insertBefore(Jimple.v().newAssignStmt(Jimple.v()
-                                                             .newArrayRef(indexArrayLocal,
-                                                                     channelValue), indexLocal), stmt);
+                                                                                                .newArrayRef(indexArrayLocal,
+                                                channelValue), indexLocal), stmt);
                     }
                 }
             }
@@ -306,7 +311,7 @@ public class SDFPortInliner implements PortInliner {
      *  given body with a circular array reference.
      */
     public void inlineGet(JimpleBody body, Stmt stmt, ValueBox box,
-            InvokeExpr expr, TypedIOPort port) {
+        InvokeExpr expr, TypedIOPort port) {
         SootClass theClass = body.getMethod().getDeclaringClass();
 
         Local bufferLocal = Jimple.v().newLocal("buffer",
@@ -335,13 +340,13 @@ public class SDFPortInliner implements PortInliner {
                 _portToTypeNameToBufferField, false);
 
         _getCorrectIndex(body, stmt, port, indexLocal, indexArrayLocal,
-                channelValue, bufferSizeValue, _portToIndexArrayField);
+            channelValue, bufferSizeValue, _portToIndexArrayField);
 
         // If we are calling with just a channel, then read the value.
         if (expr.getArgCount() == 1) {
             body.getUnits().insertAfter(_createIndexUpdateInstructions(
-                                                indexLocal, indexArrayLocal, channelValue, bufferSizeValue),
-                    stmt);
+                    indexLocal, indexArrayLocal, channelValue, bufferSizeValue),
+                stmt);
 
             // We may be calling get without setting the return value
             // to anything.
@@ -355,8 +360,8 @@ public class SDFPortInliner implements PortInliner {
             // We must return an array of tokens.
             // Create an array of the appropriate length.
             body.getUnits().insertBefore(Jimple.v().newAssignStmt(returnArrayLocal,
-                                                 Jimple.v().newNewArrayExpr(PtolemyUtilities.tokenType,
-                                                         expr.getArg(1))), stmt);
+                    Jimple.v().newNewArrayExpr(PtolemyUtilities.tokenType,
+                        expr.getArg(1))), stmt);
 
             Value countValue = expr.getArg(1);
 
@@ -368,18 +373,19 @@ public class SDFPortInliner implements PortInliner {
                 for (int k = 0; k < argCount; k++) {
                     // Get the value.
                     body.getUnits().insertBefore(Jimple.v().newAssignStmt(returnLocal,
-                                                         Jimple.v().newArrayRef(bufferLocal, indexLocal)),
-                            stmt);
+                            Jimple.v().newArrayRef(bufferLocal, indexLocal)),
+                        stmt);
 
                     // Store in the return array.
                     body.getUnits().insertBefore(Jimple.v().newAssignStmt(Jimple.v()
-                                                         .newArrayRef(returnArrayLocal,
-                                                                 IntConstant.v(k)), returnLocal), stmt);
+                                                                                            .newArrayRef(returnArrayLocal,
+                                            IntConstant.v(k)), returnLocal),
+                        stmt);
 
                     // increment the position in the buffer.
                     body.getUnits().insertBefore(_createIndexUpdateInstructions(
-                                                         indexLocal, indexArrayLocal, channelValue,
-                                                         bufferSizeValue), stmt);
+                            indexLocal, indexArrayLocal, channelValue,
+                            bufferSizeValue), stmt);
                 }
 
                 // Replace the get() call.
@@ -394,32 +400,32 @@ public class SDFPortInliner implements PortInliner {
                 // The list of initializer instructions.
                 List initializerList = new LinkedList();
                 initializerList.add(Jimple.v().newAssignStmt(counterLocal,
-                                            IntConstant.v(0)));
+                        IntConstant.v(0)));
 
                 // The list of body instructions.
                 List bodyList = new LinkedList();
 
                 // Get the value.
                 bodyList.add(Jimple.v().newAssignStmt(returnLocal,
-                                     Jimple.v().newArrayRef(bufferLocal, indexLocal)));
+                        Jimple.v().newArrayRef(bufferLocal, indexLocal)));
 
                 // Store in the return array.
                 bodyList.add(Jimple.v().newAssignStmt(Jimple.v().newArrayRef(returnArrayLocal,
-                                                              counterLocal), returnLocal));
+                            counterLocal), returnLocal));
 
                 if (!bufferSizeValue.equals(IntConstant.v(1))) {
                     // increment the position.
                     bodyList.add(Jimple.v().newAssignStmt(indexLocal,
-                                         Jimple.v().newAddExpr(indexLocal, IntConstant.v(1))));
+                            Jimple.v().newAddExpr(indexLocal, IntConstant.v(1))));
 
                     // wrap around.
                     bodyList.add(Jimple.v().newAssignStmt(indexLocal,
-                                         Jimple.v().newRemExpr(indexLocal, bufferSizeValue)));
+                            Jimple.v().newRemExpr(indexLocal, bufferSizeValue)));
                 }
 
                 // Increment the counter.
                 bodyList.add(Jimple.v().newAssignStmt(counterLocal,
-                                     Jimple.v().newAddExpr(counterLocal, IntConstant.v(1))));
+                        Jimple.v().newAddExpr(counterLocal, IntConstant.v(1))));
 
                 Expr conditionalExpr = Jimple.v().newLtExpr(counterLocal,
                         expr.getArg(1));
@@ -430,8 +436,8 @@ public class SDFPortInliner implements PortInliner {
                 if (!bufferSizeValue.equals(IntConstant.v(1))) {
                     // store back.
                     body.getUnits().insertBefore(Jimple.v().newAssignStmt(Jimple.v()
-                                                         .newArrayRef(indexArrayLocal,
-                                                                 channelValue), indexLocal), stmt);
+                                                                                            .newArrayRef(indexArrayLocal,
+                                            channelValue), indexLocal), stmt);
                 }
 
                 // Replace the get() call.
@@ -445,7 +451,7 @@ public class SDFPortInliner implements PortInliner {
      *  given body with a circular array reference.
      */
     public void inlineGetInside(JimpleBody body, Stmt stmt, ValueBox box,
-            InvokeExpr expr, TypedIOPort port) {
+        InvokeExpr expr, TypedIOPort port) {
         SootClass theClass = body.getMethod().getDeclaringClass();
         Local bufferLocal = Jimple.v().newLocal("buffer",
                 ArrayType.v(PtolemyUtilities.tokenType, 1));
@@ -473,13 +479,13 @@ public class SDFPortInliner implements PortInliner {
                 _portToTypeNameToInsideBufferField, true);
 
         _getCorrectIndex(body, stmt, port, indexLocal, indexArrayLocal,
-                channelValue, bufferSizeValue, _portToInsideIndexArrayField);
+            channelValue, bufferSizeValue, _portToInsideIndexArrayField);
 
         // If we are calling with just a channel, then read the value.
         if (expr.getArgCount() == 1) {
             body.getUnits().insertAfter(_createIndexUpdateInstructions(
-                                                indexLocal, indexArrayLocal, channelValue, bufferSizeValue),
-                    stmt);
+                    indexLocal, indexArrayLocal, channelValue, bufferSizeValue),
+                stmt);
 
             // We may be calling get without setting the return value
             // to anything.
@@ -493,8 +499,8 @@ public class SDFPortInliner implements PortInliner {
             // We must return an array of tokens.
             // Create an array of the appropriate length.
             body.getUnits().insertBefore(Jimple.v().newAssignStmt(returnArrayLocal,
-                                                 Jimple.v().newNewArrayExpr(PtolemyUtilities.tokenType,
-                                                         expr.getArg(1))), stmt);
+                    Jimple.v().newNewArrayExpr(PtolemyUtilities.tokenType,
+                        expr.getArg(1))), stmt);
 
             Value countValue = expr.getArg(1);
 
@@ -506,18 +512,19 @@ public class SDFPortInliner implements PortInliner {
                 for (int k = 0; k < argCount; k++) {
                     // Get the value.
                     body.getUnits().insertBefore(Jimple.v().newAssignStmt(returnLocal,
-                                                         Jimple.v().newArrayRef(bufferLocal, indexLocal)),
-                            stmt);
+                            Jimple.v().newArrayRef(bufferLocal, indexLocal)),
+                        stmt);
 
                     // Store in the return array.
                     body.getUnits().insertBefore(Jimple.v().newAssignStmt(Jimple.v()
-                                                         .newArrayRef(returnArrayLocal,
-                                                                 IntConstant.v(k)), returnLocal), stmt);
+                                                                                            .newArrayRef(returnArrayLocal,
+                                            IntConstant.v(k)), returnLocal),
+                        stmt);
 
                     // increment the position in the buffer.
                     body.getUnits().insertBefore(_createIndexUpdateInstructions(
-                                                         indexLocal, indexArrayLocal, channelValue,
-                                                         bufferSizeValue), stmt);
+                            indexLocal, indexArrayLocal, channelValue,
+                            bufferSizeValue), stmt);
                 }
 
                 // Replace the get() call.
@@ -532,32 +539,32 @@ public class SDFPortInliner implements PortInliner {
                 // The list of initializer instructions.
                 List initializerList = new LinkedList();
                 initializerList.add(Jimple.v().newAssignStmt(counterLocal,
-                                            IntConstant.v(0)));
+                        IntConstant.v(0)));
 
                 // The list of body instructions.
                 List bodyList = new LinkedList();
 
                 // Get the value.
                 bodyList.add(Jimple.v().newAssignStmt(returnLocal,
-                                     Jimple.v().newArrayRef(bufferLocal, indexLocal)));
+                        Jimple.v().newArrayRef(bufferLocal, indexLocal)));
 
                 // Store in the return array.
                 bodyList.add(Jimple.v().newAssignStmt(Jimple.v().newArrayRef(returnArrayLocal,
-                                                              counterLocal), returnLocal));
+                            counterLocal), returnLocal));
 
                 if (!bufferSizeValue.equals(IntConstant.v(1))) {
                     // increment the position.
                     bodyList.add(Jimple.v().newAssignStmt(indexLocal,
-                                         Jimple.v().newAddExpr(indexLocal, IntConstant.v(1))));
+                            Jimple.v().newAddExpr(indexLocal, IntConstant.v(1))));
 
                     // wrap around.
                     bodyList.add(Jimple.v().newAssignStmt(indexLocal,
-                                         Jimple.v().newRemExpr(indexLocal, bufferSizeValue)));
+                            Jimple.v().newRemExpr(indexLocal, bufferSizeValue)));
                 }
 
                 // Increment the counter.
                 bodyList.add(Jimple.v().newAssignStmt(counterLocal,
-                                     Jimple.v().newAddExpr(counterLocal, IntConstant.v(1))));
+                        Jimple.v().newAddExpr(counterLocal, IntConstant.v(1))));
 
                 Expr conditionalExpr = Jimple.v().newLtExpr(counterLocal,
                         expr.getArg(1));
@@ -568,8 +575,8 @@ public class SDFPortInliner implements PortInliner {
                 if (!bufferSizeValue.equals(IntConstant.v(1))) {
                     // store back.
                     body.getUnits().insertBefore(Jimple.v().newAssignStmt(Jimple.v()
-                                                         .newArrayRef(indexArrayLocal,
-                                                                 channelValue), indexLocal), stmt);
+                                                                                            .newArrayRef(indexArrayLocal,
+                                            channelValue), indexLocal), stmt);
                 }
 
                 // Replace the get() call.
@@ -582,7 +589,7 @@ public class SDFPortInliner implements PortInliner {
      *  given body with a circular array reference.
      */
     public void inlineSend(JimpleBody body, Stmt stmt, InvokeExpr expr,
-            TypedIOPort port) {
+        TypedIOPort port) {
         SootClass theClass = body.getMethod().getDeclaringClass();
 
         Local bufferLocal = Jimple.v().newLocal("buffer",
@@ -607,16 +614,16 @@ public class SDFPortInliner implements PortInliner {
             Local typeLocal = null;
 
             if (_forceConversions || !port.getType().equals(type)) {
-                typeLocal = PtolemyUtilities.buildConstantTypeLocal(body,
-                        stmt, type);
+                typeLocal = PtolemyUtilities.buildConstantTypeLocal(body, stmt,
+                        type);
             }
 
-            Value bufferSizeValue = _getBufferAndSize(body,
-                    stmt, port, type, channelValue, bufferLocal,
-                    _portToTypeNameToBufferField, false);
+            Value bufferSizeValue = _getBufferAndSize(body, stmt, port, type,
+                    channelValue, bufferLocal, _portToTypeNameToBufferField,
+                    false);
 
             _getCorrectIndex(body, stmt, port, indexLocal, indexArrayLocal,
-                    channelValue, bufferSizeValue, _portToIndexArrayField);
+                channelValue, bufferSizeValue, _portToIndexArrayField);
 
             // A local of type token
             Local tokenLocal = Jimple.v().newLocal("tokenLocal",
@@ -635,13 +642,13 @@ public class SDFPortInliner implements PortInliner {
 
                 // Replace the put() with an array write.
                 body.getUnits().insertBefore(_createBufferStoreInstructions(
-                                                     bufferLocal, indexLocal, sendTokenLocal, typeLocal,
-                                                     tokenLocal, outputTokenLocal), stmt);
+                        bufferLocal, indexLocal, sendTokenLocal, typeLocal,
+                        tokenLocal, outputTokenLocal), stmt);
 
                 // increment the position in the buffer.
                 body.getUnits().insertBefore(_createIndexUpdateInstructions(
-                                                     indexLocal, indexArrayLocal, channelValue,
-                                                     bufferSizeValue), stmt);
+                        indexLocal, indexArrayLocal, channelValue,
+                        bufferSizeValue), stmt);
             } else {
                 Local sendArrayLocal = (Local) expr.getArg(1);
 
@@ -668,18 +675,18 @@ public class SDFPortInliner implements PortInliner {
                     for (int k = 0; k < argCount; k++) {
                         // Get the value.
                         body.getUnits().insertBefore(Jimple.v().newAssignStmt(sendTokenLocal,
-                                                             Jimple.v().newArrayRef(sendArrayLocal,
-                                                                     IntConstant.v(k))), stmt);
+                                Jimple.v().newArrayRef(sendArrayLocal,
+                                    IntConstant.v(k))), stmt);
 
                         // Store in the buffer array.
                         body.getUnits().insertBefore(_createBufferStoreInstructions(
-                                                             bufferLocal, indexLocal, sendTokenLocal,
-                                                             typeLocal, tokenLocal, outputTokenLocal), stmt);
+                                bufferLocal, indexLocal, sendTokenLocal,
+                                typeLocal, tokenLocal, outputTokenLocal), stmt);
 
                         // increment the position in the buffer.
                         body.getUnits().insertBefore(_createIndexUpdateInstructions(
-                                                             indexLocal, indexArrayLocal, channelValue,
-                                                             bufferSizeValue), stmt);
+                                indexLocal, indexArrayLocal, channelValue,
+                                bufferSizeValue), stmt);
                     }
                 } else {
                     // we don't know the size beforehand,
@@ -692,37 +699,37 @@ public class SDFPortInliner implements PortInliner {
                     // The list of initializer instructions.
                     List initializerList = new LinkedList();
                     initializerList.add(Jimple.v().newAssignStmt(counterLocal,
-                                                IntConstant.v(0)));
+                            IntConstant.v(0)));
 
                     // The list of body instructions.
                     List bodyList = new LinkedList();
 
                     // Get the value.
                     bodyList.add(Jimple.v().newAssignStmt(sendTokenLocal,
-                                         Jimple.v().newArrayRef(sendArrayLocal, counterLocal)));
+                            Jimple.v().newArrayRef(sendArrayLocal, counterLocal)));
 
                     // Store in the buffer array.
                     bodyList.addAll(_createBufferStoreInstructions(
-                                            bufferLocal, indexLocal, sendTokenLocal, typeLocal,
-                                            tokenLocal, outputTokenLocal));
+                            bufferLocal, indexLocal, sendTokenLocal, typeLocal,
+                            tokenLocal, outputTokenLocal));
 
                     // Note that we don't use createIndexUpdateInstructions
                     // because we would generate too many field stores.
                     if (!bufferSizeValue.equals(IntConstant.v(1))) {
                         // increment the position.
                         bodyList.add(Jimple.v().newAssignStmt(indexLocal,
-                                             Jimple.v().newAddExpr(indexLocal,
-                                                     IntConstant.v(1))));
+                                Jimple.v().newAddExpr(indexLocal,
+                                    IntConstant.v(1))));
 
                         // wrap around.
                         bodyList.add(Jimple.v().newAssignStmt(indexLocal,
-                                             Jimple.v().newRemExpr(indexLocal,
-                                                     bufferSizeValue)));
+                                Jimple.v().newRemExpr(indexLocal,
+                                    bufferSizeValue)));
                     }
 
                     // Increment the counter.
                     bodyList.add(Jimple.v().newAssignStmt(counterLocal,
-                                         Jimple.v().newAddExpr(counterLocal, IntConstant.v(1))));
+                            Jimple.v().newAddExpr(counterLocal, IntConstant.v(1))));
 
                     Expr conditionalExpr = Jimple.v().newLtExpr(counterLocal,
                             countValue);
@@ -733,8 +740,8 @@ public class SDFPortInliner implements PortInliner {
                     if (!bufferSizeValue.equals(IntConstant.v(1))) {
                         // store back.
                         body.getUnits().insertBefore(Jimple.v().newAssignStmt(Jimple.v()
-                                                             .newArrayRef(indexArrayLocal,
-                                                                     channelValue), indexLocal), stmt);
+                                                                                                .newArrayRef(indexArrayLocal,
+                                                channelValue), indexLocal), stmt);
                     }
                 }
             }
@@ -748,7 +755,7 @@ public class SDFPortInliner implements PortInliner {
      *  given body with a circular array reference.
      */
     public void inlineSendInside(JimpleBody body, Stmt stmt, InvokeExpr expr,
-            TypedIOPort port) {
+        TypedIOPort port) {
         SootClass theClass = body.getMethod().getDeclaringClass();
 
         Local bufferLocal = Jimple.v().newLocal("buffer",
@@ -773,16 +780,16 @@ public class SDFPortInliner implements PortInliner {
             Local typeLocal = null;
 
             if (_forceConversions || !port.getType().equals(type)) {
-                typeLocal = PtolemyUtilities.buildConstantTypeLocal(body,
-                        stmt, type);
+                typeLocal = PtolemyUtilities.buildConstantTypeLocal(body, stmt,
+                        type);
             }
 
-            Value bufferSizeValue = _getBufferAndSize(body,
-                    stmt, port, type, channelValue, bufferLocal,
+            Value bufferSizeValue = _getBufferAndSize(body, stmt, port, type,
+                    channelValue, bufferLocal,
                     _portToTypeNameToInsideBufferField, true);
 
             _getCorrectIndex(body, stmt, port, indexLocal, indexArrayLocal,
-                    channelValue, bufferSizeValue, _portToInsideIndexArrayField);
+                channelValue, bufferSizeValue, _portToInsideIndexArrayField);
 
             // A local of type token
             Local tokenLocal = Jimple.v().newLocal("tokenLocal",
@@ -801,13 +808,13 @@ public class SDFPortInliner implements PortInliner {
 
                 // Replace the put() with an array write.
                 body.getUnits().insertBefore(_createBufferStoreInstructions(
-                                                     bufferLocal, indexLocal, sendTokenLocal, typeLocal,
-                                                     tokenLocal, outputTokenLocal), stmt);
+                        bufferLocal, indexLocal, sendTokenLocal, typeLocal,
+                        tokenLocal, outputTokenLocal), stmt);
 
                 // increment the position in the buffer.
                 body.getUnits().insertBefore(_createIndexUpdateInstructions(
-                                                     indexLocal, indexArrayLocal, channelValue,
-                                                     bufferSizeValue), stmt);
+                        indexLocal, indexArrayLocal, channelValue,
+                        bufferSizeValue), stmt);
             } else {
                 Local sendArrayLocal = (Local) expr.getArg(1);
 
@@ -834,18 +841,18 @@ public class SDFPortInliner implements PortInliner {
                     for (int k = 0; k < argCount; k++) {
                         // Get the value.
                         body.getUnits().insertBefore(Jimple.v().newAssignStmt(sendTokenLocal,
-                                                             Jimple.v().newArrayRef(sendArrayLocal,
-                                                                     IntConstant.v(k))), stmt);
+                                Jimple.v().newArrayRef(sendArrayLocal,
+                                    IntConstant.v(k))), stmt);
 
                         // Store in the buffer array.
                         body.getUnits().insertBefore(_createBufferStoreInstructions(
-                                                             bufferLocal, indexLocal, sendTokenLocal,
-                                                             typeLocal, tokenLocal, outputTokenLocal), stmt);
+                                bufferLocal, indexLocal, sendTokenLocal,
+                                typeLocal, tokenLocal, outputTokenLocal), stmt);
 
                         // increment the position in the buffer.
                         body.getUnits().insertBefore(_createIndexUpdateInstructions(
-                                                             indexLocal, indexArrayLocal, channelValue,
-                                                             bufferSizeValue), stmt);
+                                indexLocal, indexArrayLocal, channelValue,
+                                bufferSizeValue), stmt);
                     }
                 } else {
                     // we don't know the size beforehand,
@@ -858,37 +865,37 @@ public class SDFPortInliner implements PortInliner {
                     // The list of initializer instructions.
                     List initializerList = new LinkedList();
                     initializerList.add(Jimple.v().newAssignStmt(counterLocal,
-                                                IntConstant.v(0)));
+                            IntConstant.v(0)));
 
                     // The list of body instructions.
                     List bodyList = new LinkedList();
 
                     // Get the value.
                     bodyList.add(Jimple.v().newAssignStmt(sendTokenLocal,
-                                         Jimple.v().newArrayRef(sendArrayLocal, counterLocal)));
+                            Jimple.v().newArrayRef(sendArrayLocal, counterLocal)));
 
                     // Store in the buffer array.
                     bodyList.addAll(_createBufferStoreInstructions(
-                                            bufferLocal, indexLocal, sendTokenLocal, typeLocal,
-                                            tokenLocal, outputTokenLocal));
+                            bufferLocal, indexLocal, sendTokenLocal, typeLocal,
+                            tokenLocal, outputTokenLocal));
 
                     // Note that we don't use createIndexUpdateInstructions
                     // because we would generate too many field stores.
                     if (!bufferSizeValue.equals(IntConstant.v(1))) {
                         // increment the position.
                         bodyList.add(Jimple.v().newAssignStmt(indexLocal,
-                                             Jimple.v().newAddExpr(indexLocal,
-                                                     IntConstant.v(1))));
+                                Jimple.v().newAddExpr(indexLocal,
+                                    IntConstant.v(1))));
 
                         // wrap around.
                         bodyList.add(Jimple.v().newAssignStmt(indexLocal,
-                                             Jimple.v().newRemExpr(indexLocal,
-                                                     bufferSizeValue)));
+                                Jimple.v().newRemExpr(indexLocal,
+                                    bufferSizeValue)));
                     }
 
                     // Increment the counter.
                     bodyList.add(Jimple.v().newAssignStmt(counterLocal,
-                                         Jimple.v().newAddExpr(counterLocal, IntConstant.v(1))));
+                            Jimple.v().newAddExpr(counterLocal, IntConstant.v(1))));
 
                     Expr conditionalExpr = Jimple.v().newLtExpr(counterLocal,
                             countValue);
@@ -899,8 +906,8 @@ public class SDFPortInliner implements PortInliner {
                     if (!bufferSizeValue.equals(IntConstant.v(1))) {
                         // store back.
                         body.getUnits().insertBefore(Jimple.v().newAssignStmt(Jimple.v()
-                                                             .newArrayRef(indexArrayLocal,
-                                                                     channelValue), indexLocal), stmt);
+                                                                                                .newArrayRef(indexArrayLocal,
+                                                channelValue), indexLocal), stmt);
                     }
                 }
             }
@@ -916,7 +923,7 @@ public class SDFPortInliner implements PortInliner {
         // First create the circular buffers for communication.
         // Loop over all the relations, creating buffers for each channel.
         for (Iterator relations = _model.relationList().iterator();
-             relations.hasNext();) {
+                        relations.hasNext();) {
             TypedIORelation relation = (TypedIORelation) relations.next();
 
             int bufferSize = _getBufferSize(relation);
@@ -926,7 +933,7 @@ public class SDFPortInliner implements PortInliner {
             List destinationPortList = relation.linkedDestinationPortList();
 
             for (Iterator destinationPorts = destinationPortList.iterator();
-                 destinationPorts.hasNext();) {
+                            destinationPorts.hasNext();) {
                 TypedIOPort port = (TypedIOPort) destinationPorts.next();
                 ptolemy.data.type.Type type = port.getType();
                 typeMap.put(type.toString(), type);
@@ -934,20 +941,20 @@ public class SDFPortInliner implements PortInliner {
 
             for (Iterator types = typeMap.keySet().iterator(); types.hasNext();) {
                 ptolemy.data.type.Type type = (ptolemy.data.type.Type) typeMap
-                    .get(types.next());
+                                .get(types.next());
                 RefType tokenType = PtolemyUtilities.getSootTypeForTokenType(type);
                 Type arrayType = ArrayType.v(tokenType, 1);
                 String fieldName = relation.getName() + "_bufferLocal";
 
                 for (int i = 0; i < relation.getWidth(); i++) {
                     SootField field = new SootField(InlinePortTransformer
-                            .getBufferFieldName(relation, i, type), arrayType,
-                            Modifier.PUBLIC);
+                                        .getBufferFieldName(relation, i, type),
+                            arrayType, Modifier.PUBLIC);
                     _modelClass.addField(field);
 
                     if (_debug) {
                         System.out.println("creating field = " + field
-                                + " of size " + bufferSize);
+                            + " of size " + bufferSize);
                     }
 
                     // Tag the field with the type.
@@ -955,7 +962,7 @@ public class SDFPortInliner implements PortInliner {
 
                     // Add initialization code to each constructor
                     for (Iterator methods = _modelClass.getMethods().iterator();
-                         methods.hasNext();) {
+                                    methods.hasNext();) {
                         SootMethod initMethod = (SootMethod) methods.next();
 
                         // Only look at constructors.
@@ -964,7 +971,7 @@ public class SDFPortInliner implements PortInliner {
                         }
 
                         JimpleBody initBody = (JimpleBody) initMethod
-                            .getActiveBody();
+                                        .getActiveBody();
                         Chain initUnits = initBody.getUnits();
                         Local arrayLocal = Jimple.v().newLocal(fieldName,
                                 arrayType);
@@ -972,22 +979,23 @@ public class SDFPortInliner implements PortInliner {
 
                         // Create the new buffer
                         Stmt insertPoint = (Stmt) initBody
-                            .getFirstNonIdentityStmt();
+                                        .getFirstNonIdentityStmt();
 
                         // This *should* be the statment after the constructor.
                         insertPoint = (Stmt) initUnits.getSuccOf(insertPoint);
 
                         Local containerLocal = FieldsForEntitiesTransformer
-                            .getLocalReferenceForEntity(_model, _modelClass,
-                                    initBody.getThisLocal(), initBody, insertPoint,
-                                    _options);
+                                        .getLocalReferenceForEntity(_model,
+                                            _modelClass,
+                                            initBody.getThisLocal(), initBody,
+                                            insertPoint, _options);
 
                         initUnits.insertBefore(Jimple.v().newAssignStmt(arrayLocal,
-                                                       Jimple.v().newNewArrayExpr(tokenType,
-                                                               IntConstant.v(bufferSize))), insertPoint);
+                                Jimple.v().newNewArrayExpr(tokenType,
+                                    IntConstant.v(bufferSize))), insertPoint);
                         initUnits.insertBefore(Jimple.v().newAssignStmt(Jimple.v()
-                                                       .newInstanceFieldRef(containerLocal,
-                                                               field), arrayLocal), insertPoint);
+                                                                                          .newInstanceFieldRef(containerLocal,
+                                                field), arrayLocal), insertPoint);
                     }
                 }
             }
@@ -998,7 +1006,7 @@ public class SDFPortInliner implements PortInliner {
 
         // Loop over all the _model instance classes.
         for (Iterator entities = _model.deepEntityList().iterator();
-             entities.hasNext();) {
+                        entities.hasNext();) {
             ComponentEntity entity = (ComponentEntity) entities.next();
             String className = ModelTransformer.getInstanceClassName(entity,
                     _options);
@@ -1033,7 +1041,7 @@ public class SDFPortInliner implements PortInliner {
 
                 // Initialize the index fields.
                 for (Iterator methods = entityClass.getMethods().iterator();
-                     methods.hasNext();) {
+                                methods.hasNext();) {
                     SootMethod method = (SootMethod) methods.next();
                     JimpleBody body = (JimpleBody) method.retrieveActiveBody();
                     Object insertPoint = body.getUnits().getLast();
@@ -1050,14 +1058,14 @@ public class SDFPortInliner implements PortInliner {
                     // Initialize the index array field to contain
                     // an array initialized to zero.
                     body.getUnits().insertBefore(Jimple.v().newAssignStmt(indexesLocal,
-                                                         Jimple.v().newNewArrayExpr(IntType.v(),
-                                                                 IntConstant.v(port.getWidth()))), insertPoint);
+                            Jimple.v().newNewArrayExpr(IntType.v(),
+                                IntConstant.v(port.getWidth()))), insertPoint);
 
                     // Set the index field to point to the new array
                     body.getUnits().insertBefore(Jimple.v().newAssignStmt(Jimple.v()
-                                                         .newInstanceFieldRef(body
-                                                                 .getThisLocal(), indexArrayField), indexesLocal),
-                            insertPoint);
+                                                                                            .newInstanceFieldRef(body
+                                            .getThisLocal(), indexArrayField),
+                            indexesLocal), insertPoint);
                 }
 
                 // If the port is an input, then it references
@@ -1067,19 +1075,19 @@ public class SDFPortInliner implements PortInliner {
                 // port for each type that the port may reference.
                 if (port.isInput()) {
                     ptolemy.data.type.Type type = (ptolemy.data.type.Type) port
-                        .getType();
+                                    .getType();
 
                     _createPortBufferReference(entityClass, port, type,
-                            typeNameToBufferField);
+                        typeNameToBufferField);
                 } else if (port.isOutput()) {
                     Set typeSet = _getConnectedTypeList(port);
 
                     for (Iterator types = typeSet.iterator(); types.hasNext();) {
                         ptolemy.data.type.Type type = (ptolemy.data.type.Type) types
-                            .next();
+                                        .next();
 
                         _createPortBufferReference(entityClass, port, type,
-                                typeNameToBufferField);
+                            typeNameToBufferField);
                     }
                 }
             }
@@ -1089,7 +1097,7 @@ public class SDFPortInliner implements PortInliner {
     // Create a reference to the correct buffer in the given
     // class for the given port and the given type.
     private void _createPortBufferReference(SootClass entityClass,
-            TypedIOPort port, ptolemy.data.type.Type type, Map typeNameToBufferField) {
+        TypedIOPort port, ptolemy.data.type.Type type, Map typeNameToBufferField) {
         //  System.out.println("creating  buffer reference for " + port + " type = " + type);
         RefType tokenType = PtolemyUtilities.getSootTypeForTokenType(type);
 
@@ -1108,7 +1116,7 @@ public class SDFPortInliner implements PortInliner {
 
         // Create references to the buffer for each port channel
         for (Iterator methods = entityClass.getMethods().iterator();
-             methods.hasNext();) {
+                        methods.hasNext();) {
             SootMethod method = (SootMethod) methods.next();
             JimpleBody body = (JimpleBody) method.retrieveActiveBody();
             Stmt insertPoint = (Stmt) body.getUnits().getLast();
@@ -1180,21 +1188,21 @@ public class SDFPortInliner implements PortInliner {
 
             // Create the array of port channels.
             body.getUnits().insertBefore(Jimple.v().newAssignStmt(channelLocal,
-                                                 Jimple.v().newNewArrayExpr(ArrayType.v(tokenType, 1),
-                                                         IntConstant.v(port.getWidth()))), insertPoint);
+                    Jimple.v().newNewArrayExpr(ArrayType.v(tokenType, 1),
+                        IntConstant.v(port.getWidth()))), insertPoint);
 
             // Set the field to point to the new array.
             body.getUnits().insertBefore(Jimple.v().newAssignStmt(Jimple.v()
-                                                 .newInstanceFieldRef(body
-                                                         .getThisLocal(), bufferField), channelLocal),
-                    insertPoint);
+                                                                                    .newInstanceFieldRef(body
+                                    .getThisLocal(), bufferField), channelLocal),
+                insertPoint);
 
             // For each channel of the port, make the buffer for that
             // channel point to the appropriate buffer of the relation.
             int channel = 0;
 
             for (Iterator relations = port.linkedRelationList().iterator();
-                 relations.hasNext();) {
+                            relations.hasNext();) {
                 TypedIORelation relation = (TypedIORelation) relations.next();
 
                 for (int i = 0; i < relation.getWidth(); i++, channel++) {
@@ -1203,22 +1211,23 @@ public class SDFPortInliner implements PortInliner {
                     //  } else {
                     // Get the buffer associated with the channel.
                     SootField arrayField = _modelClass.getFieldByName(InlinePortTransformer
-                            .getBufferFieldName(relation, i, type));
+                                        .getBufferFieldName(relation, i, type));
 
                     Local containerLocal = FieldsForEntitiesTransformer
-                        .getLocalReferenceForEntity(_model, entityClass,
-                                body.getThisLocal(), body, insertPoint, _options);
+                                    .getLocalReferenceForEntity(_model,
+                                        entityClass, body.getThisLocal(), body,
+                                        insertPoint, _options);
 
                     // Load the buffer array.
                     body.getUnits().insertBefore(Jimple.v().newAssignStmt(bufferLocal,
-                                                         Jimple.v().newInstanceFieldRef(containerLocal,
-                                                                 arrayField)), insertPoint);
+                            Jimple.v().newInstanceFieldRef(containerLocal,
+                                arrayField)), insertPoint);
 
                     // Store to the port array.
                     body.getUnits().insertBefore(Jimple.v().newAssignStmt(Jimple.v()
-                                                         .newArrayRef(channelLocal,
-                                                                 IntConstant.v(channel)), bufferLocal),
-                            insertPoint);
+                                                                                            .newArrayRef(channelLocal,
+                                            IntConstant.v(channel)), bufferLocal),
+                        insertPoint);
                 }
             }
         }
@@ -1230,7 +1239,7 @@ public class SDFPortInliner implements PortInliner {
     private void _createInsideBufferReferences() {
         if (_debug) {
             System.out.println("creating inside buffer references for "
-                    + _model.getFullName());
+                + _model.getFullName());
         }
 
         // Loop over all the ports of the _model
@@ -1239,11 +1248,11 @@ public class SDFPortInliner implements PortInliner {
 
             Map typeNameToInsideBufferField = new HashMap();
             _portToTypeNameToInsideBufferField.put(port,
-                    typeNameToInsideBufferField);
+                typeNameToInsideBufferField);
 
             if (_debug) {
                 System.out.println("port = " + port.getFullName() + " type = "
-                        + port.getType());
+                    + port.getType());
             }
 
             // If the port is connected.
@@ -1259,7 +1268,7 @@ public class SDFPortInliner implements PortInliner {
 
                 // Initialize the index fields.
                 for (Iterator methods = _modelClass.getMethods().iterator();
-                     methods.hasNext();) {
+                                methods.hasNext();) {
                     SootMethod method = (SootMethod) methods.next();
                     JimpleBody body = (JimpleBody) method.retrieveActiveBody();
                     Object insertPoint = body.getUnits().getLast();
@@ -1276,14 +1285,14 @@ public class SDFPortInliner implements PortInliner {
                     // Initialize the index array field to contain
                     // an array initialized to zero.
                     body.getUnits().insertBefore(Jimple.v().newAssignStmt(indexesLocal,
-                                                         Jimple.v().newNewArrayExpr(IntType.v(),
-                                                                 IntConstant.v(port.getWidth()))), insertPoint);
+                            Jimple.v().newNewArrayExpr(IntType.v(),
+                                IntConstant.v(port.getWidth()))), insertPoint);
 
                     // Set the index field to point to the new array
                     body.getUnits().insertBefore(Jimple.v().newAssignStmt(Jimple.v()
-                                                         .newInstanceFieldRef(body
-                                                                 .getThisLocal(), indexArrayField), indexesLocal),
-                            insertPoint);
+                                                                                            .newInstanceFieldRef(body
+                                            .getThisLocal(), indexArrayField),
+                            indexesLocal), insertPoint);
                 }
 
                 // If the port is an input, then it might have to
@@ -1296,17 +1305,17 @@ public class SDFPortInliner implements PortInliner {
 
                     for (Iterator types = typeSet.iterator(); types.hasNext();) {
                         ptolemy.data.type.Type type = (ptolemy.data.type.Type) types
-                            .next();
+                                        .next();
 
                         _createPortInsideBufferReference(_modelClass, port,
-                                type, typeNameToInsideBufferField);
+                            type, typeNameToInsideBufferField);
                     }
                 } else if (port.isOutput()) {
                     ptolemy.data.type.Type type = (ptolemy.data.type.Type) port
-                        .getType();
+                                    .getType();
 
                     _createPortInsideBufferReference(_modelClass, port, type,
-                            typeNameToInsideBufferField);
+                        typeNameToInsideBufferField);
                 }
             }
         }
@@ -1315,7 +1324,7 @@ public class SDFPortInliner implements PortInliner {
     // Create a reference to the correct inside buffer in the given
     // class for the given port and the given type.
     private void _createPortInsideBufferReference(SootClass modelClass,
-            TypedIOPort port, ptolemy.data.type.Type type, Map typeNameToBufferField) {
+        TypedIOPort port, ptolemy.data.type.Type type, Map typeNameToBufferField) {
         //  System.out.println("creating inside buffer reference for " + port + " type = " + type);
         RefType tokenType = PtolemyUtilities.getSootTypeForTokenType(type);
 
@@ -1334,7 +1343,7 @@ public class SDFPortInliner implements PortInliner {
 
         // Create references to the buffer for each port channel
         for (Iterator methods = modelClass.getMethods().iterator();
-             methods.hasNext();) {
+                        methods.hasNext();) {
             SootMethod method = (SootMethod) methods.next();
             JimpleBody body = (JimpleBody) method.retrieveActiveBody();
             Stmt insertPoint = (Stmt) body.getUnits().getLast();
@@ -1354,21 +1363,21 @@ public class SDFPortInliner implements PortInliner {
 
             // Create the array of port channels.
             body.getUnits().insertBefore(Jimple.v().newAssignStmt(channelLocal,
-                                                 Jimple.v().newNewArrayExpr(ArrayType.v(tokenType, 1),
-                                                         IntConstant.v(port.getWidthInside()))), insertPoint);
+                    Jimple.v().newNewArrayExpr(ArrayType.v(tokenType, 1),
+                        IntConstant.v(port.getWidthInside()))), insertPoint);
 
             // Set the field to point to the new array.
             body.getUnits().insertBefore(Jimple.v().newAssignStmt(Jimple.v()
-                                                 .newInstanceFieldRef(body
-                                                         .getThisLocal(), bufferField), channelLocal),
-                    insertPoint);
+                                                                                    .newInstanceFieldRef(body
+                                    .getThisLocal(), bufferField), channelLocal),
+                insertPoint);
 
             // For each channel of the port, make the buffer for that
             // channel point to the appropriate buffer of the relation.
             int channel = 0;
 
             for (Iterator relations = port.insideRelationList().iterator();
-                 relations.hasNext();) {
+                            relations.hasNext();) {
                 TypedIORelation relation = (TypedIORelation) relations.next();
 
                 for (int i = 0; i < relation.getWidth(); i++, channel++) {
@@ -1377,22 +1386,23 @@ public class SDFPortInliner implements PortInliner {
                     //  } else {
                     // Get the buffer associated with the channel.
                     SootField arrayField = modelClass.getFieldByName(InlinePortTransformer
-                            .getBufferFieldName(relation, i, type));
+                                        .getBufferFieldName(relation, i, type));
 
                     Local containerLocal = FieldsForEntitiesTransformer
-                        .getLocalReferenceForEntity(_model, modelClass,
-                                body.getThisLocal(), body, insertPoint, _options);
+                                    .getLocalReferenceForEntity(_model,
+                                        modelClass, body.getThisLocal(), body,
+                                        insertPoint, _options);
 
                     // Load the buffer array.
                     body.getUnits().insertBefore(Jimple.v().newAssignStmt(bufferLocal,
-                                                         Jimple.v().newInstanceFieldRef(containerLocal,
-                                                                 arrayField)), insertPoint);
+                            Jimple.v().newInstanceFieldRef(containerLocal,
+                                arrayField)), insertPoint);
 
                     // Store to the port array.
                     body.getUnits().insertBefore(Jimple.v().newAssignStmt(Jimple.v()
-                                                         .newArrayRef(channelLocal,
-                                                                 IntConstant.v(channel)), bufferLocal),
-                            insertPoint);
+                                                                                            .newArrayRef(channelLocal,
+                                            IntConstant.v(channel)), bufferLocal),
+                        insertPoint);
                 }
             }
         }
@@ -1403,26 +1413,26 @@ public class SDFPortInliner implements PortInliner {
     // then convert the given input token to the given type using the given
     // temporary variables.
     private static List _createBufferStoreInstructions(Local bufferLocal,
-            Local indexLocal, Local inputTokenLocal, Local typeLocal,
-            Local tokenLocal, Local outputTokenLocal) {
+        Local indexLocal, Local inputTokenLocal, Local typeLocal,
+        Local tokenLocal, Local outputTokenLocal) {
         List list = new LinkedList();
 
         // Convert the type, if we need to.
         if (typeLocal != null) {
             list.add(Jimple.v().newAssignStmt(tokenLocal,
-                             Jimple.v().newInterfaceInvokeExpr(typeLocal,
-                                     PtolemyUtilities.typeConvertMethod, inputTokenLocal)));
+                    Jimple.v().newInterfaceInvokeExpr(typeLocal,
+                        PtolemyUtilities.typeConvertMethod, inputTokenLocal)));
 
             list.add(Jimple.v().newAssignStmt(outputTokenLocal,
-                             Jimple.v().newCastExpr(tokenLocal,
-                                     outputTokenLocal.getType())));
+                    Jimple.v().newCastExpr(tokenLocal,
+                        outputTokenLocal.getType())));
 
             // store the converted token.
             list.add(Jimple.v().newAssignStmt(Jimple.v().newArrayRef(bufferLocal,
-                                                      indexLocal), outputTokenLocal));
+                        indexLocal), outputTokenLocal));
         } else {
             list.add(Jimple.v().newAssignStmt(Jimple.v().newArrayRef(bufferLocal,
-                                                      indexLocal), inputTokenLocal));
+                        indexLocal), inputTokenLocal));
         }
 
         return list;
@@ -1430,7 +1440,7 @@ public class SDFPortInliner implements PortInliner {
 
     // Create instructions to update the given index.
     private static List _createIndexUpdateInstructions(Local indexLocal,
-            Local indexArrayLocal, Value channelValue, Value bufferSizeValue) {
+        Local indexArrayLocal, Value channelValue, Value bufferSizeValue) {
         // Now update the index into the buffer.
         List list = new LinkedList();
 
@@ -1441,15 +1451,15 @@ public class SDFPortInliner implements PortInliner {
 
         // increment the position.
         list.add(Jimple.v().newAssignStmt(indexLocal,
-                         Jimple.v().newAddExpr(indexLocal, IntConstant.v(1))));
+                Jimple.v().newAddExpr(indexLocal, IntConstant.v(1))));
 
         // wrap around.
         list.add(Jimple.v().newAssignStmt(indexLocal,
-                         Jimple.v().newRemExpr(indexLocal, bufferSizeValue)));
+                Jimple.v().newRemExpr(indexLocal, bufferSizeValue)));
 
         // store back.
         list.add(Jimple.v().newAssignStmt(Jimple.v().newArrayRef(indexArrayLocal,
-                                                  channelValue), indexLocal));
+                    channelValue), indexLocal));
         return list;
     }
 
@@ -1461,8 +1471,8 @@ public class SDFPortInliner implements PortInliner {
      *  returned.
      */
     private Value _getBufferAndSize(JimpleBody body, Stmt stmt,
-            TypedIOPort port, ptolemy.data.type.Type type, Value channelValue,
-            Local bufferLocal, Map portToTypeNameToBufferField, boolean inside) {
+        TypedIOPort port, ptolemy.data.type.Type type, Value channelValue,
+        Local bufferLocal, Map portToTypeNameToBufferField, boolean inside) {
         SootClass theClass = body.getMethod().getDeclaringClass();
 
         Value bufferSizeValue = null;
@@ -1483,25 +1493,27 @@ public class SDFPortInliner implements PortInliner {
             }
 
             for (Iterator relations = relationList.iterator();
-                 !found && relations.hasNext();) {
+                            !found && relations.hasNext();) {
                 TypedIORelation relation = (TypedIORelation) relations.next();
 
                 for (int i = 0; !found && (i < relation.getWidth());
-                     i++, channel++) {
+                                i++, channel++) {
                     if (channel == argChannel) {
                         found = true;
 
                         SootField arrayField = _modelClass.getFieldByName(InlinePortTransformer
-                                .getBufferFieldName(relation, i, type));
+                                            .getBufferFieldName(relation, i,
+                                                type));
 
                         Local containerLocal = FieldsForEntitiesTransformer
-                            .getLocalReferenceForEntity(_model, theClass,
-                                    body.getThisLocal(), body, stmt, _options);
+                                        .getLocalReferenceForEntity(_model,
+                                            theClass, body.getThisLocal(),
+                                            body, stmt, _options);
 
                         // load the buffer array.
                         body.getUnits().insertBefore(Jimple.v().newAssignStmt(bufferLocal,
-                                                             Jimple.v().newInstanceFieldRef(containerLocal,
-                                                                     arrayField)), stmt);
+                                Jimple.v().newInstanceFieldRef(containerLocal,
+                                    arrayField)), stmt);
 
                         int bufferSize = _getBufferSize(relation);
 
@@ -1518,7 +1530,7 @@ public class SDFPortInliner implements PortInliner {
             // If we don't know the channel, then use the port indexes.
             Map typeNameToBufferField = (Map) portToTypeNameToBufferField.get(port);
             SootField arrayField = (SootField) typeNameToBufferField.get(type
-                    .toString());
+                                .toString());
 
             if (arrayField == null) {
                 throw new RuntimeException("arrayField null!");
@@ -1534,17 +1546,17 @@ public class SDFPortInliner implements PortInliner {
 
             // Load the array of port channels.
             body.getUnits().insertBefore(Jimple.v().newAssignStmt(bufferArrayLocal,
-                                                 Jimple.v().newInstanceFieldRef(body.getThisLocal(),
-                                                         arrayField)), stmt);
+                    Jimple.v().newInstanceFieldRef(body.getThisLocal(),
+                        arrayField)), stmt);
 
             // Load the buffer array.
             body.getUnits().insertBefore(Jimple.v().newAssignStmt(bufferLocal,
-                                                 Jimple.v().newArrayRef(bufferArrayLocal, channelValue)),
-                    stmt);
+                    Jimple.v().newArrayRef(bufferArrayLocal, channelValue)),
+                stmt);
 
             // get the length of the buffer
             body.getUnits().insertBefore(Jimple.v().newAssignStmt(bufferSizeLocal,
-                                                 Jimple.v().newLengthExpr(bufferLocal)), stmt);
+                    Jimple.v().newLengthExpr(bufferLocal)), stmt);
             bufferSizeValue = bufferSizeLocal;
         }
 
@@ -1555,29 +1567,29 @@ public class SDFPortInliner implements PortInliner {
      *  port into the given local variable.
      */
     private static void _getCorrectIndex(JimpleBody body, Stmt stmt,
-            TypedIOPort port, Local indexLocal, Local indexArrayLocal,
-            Value channelValue, Value bufferSizeValue, Map portToIndexArrayField) {
+        TypedIOPort port, Local indexLocal, Local indexArrayLocal,
+        Value channelValue, Value bufferSizeValue, Map portToIndexArrayField) {
         if (bufferSizeValue.equals(IntConstant.v(1))) {
             // Load the correct index into indexLocal
             body.getUnits().insertBefore(Jimple.v().newAssignStmt(indexLocal,
-                                                 IntConstant.v(0)), stmt);
+                    IntConstant.v(0)), stmt);
         } else {
             SootField indexArrayField = (SootField) portToIndexArrayField.get(port);
 
             if (indexArrayField == null) {
                 System.out.println(portToIndexArrayField.toString());
                 throw new RuntimeException("indexArrayField is null for port "
-                        + port + "!");
+                    + port + "!");
             }
 
             // Load the array of indexes.
             body.getUnits().insertBefore(Jimple.v().newAssignStmt(indexArrayLocal,
-                                                 Jimple.v().newInstanceFieldRef(body.getThisLocal(),
-                                                         indexArrayField)), stmt);
+                    Jimple.v().newInstanceFieldRef(body.getThisLocal(),
+                        indexArrayField)), stmt);
 
             // Load the correct index into indexLocal
             body.getUnits().insertBefore(Jimple.v().newAssignStmt(indexLocal,
-                                                 Jimple.v().newArrayRef(indexArrayLocal, channelValue)), stmt);
+                    Jimple.v().newArrayRef(indexArrayLocal, channelValue)), stmt);
         }
     }
 
@@ -1586,7 +1598,7 @@ public class SDFPortInliner implements PortInliner {
     private Set _getConnectedTypeList(TypedIOPort port) {
         if (!port.isOutput()) {
             throw new RuntimeException("Can only get the connected types for"
-                    + " an output port!");
+                + " an output port!");
         }
 
         // Loop through all of the sink ports...
@@ -1618,7 +1630,7 @@ public class SDFPortInliner implements PortInliner {
     private Set _getConnectedTypeListInside(TypedIOPort port) {
         if (!port.isInput()) {
             throw new RuntimeException("Can only get the inside connected"
-                    + " types for an input port!");
+                + " types for an input port!");
         }
 
         // Loop through all of the connected ports...
@@ -1657,7 +1669,7 @@ public class SDFPortInliner implements PortInliner {
         } catch (Exception ex) {
             // hack for HS
             System.out.println("No BufferSize parameter for " + relation
-                    + "...  Assuming 1.");
+                + "...  Assuming 1.");
 
             // continue;
             bufferSize = 1;
@@ -1665,9 +1677,8 @@ public class SDFPortInliner implements PortInliner {
 
         return bufferSize;
     }
-    
-    private boolean _forceConversions = true;
 
+    private boolean _forceConversions = true;
     private boolean _debug;
     private CompositeActor _model;
     private SootClass _modelClass;

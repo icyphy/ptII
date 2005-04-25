@@ -44,7 +44,7 @@ import javax.swing.text.BadLocationException;
 
 public class TimedDisplay extends Display implements Placeable, SequenceActor {
     public TimedDisplay(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         rowsDisplayed.setToken(new IntToken(20));
     }
@@ -78,7 +78,7 @@ public class TimedDisplay extends Display implements Placeable, SequenceActor {
 
                 try {
                     int lineOffset = textArea.getLineStartOffset(textArea
-                            .getLineCount() - 1);
+                                        .getLineCount() - 1);
                     textArea.setCaretPosition(lineOffset);
                 } catch (BadLocationException ex) {
                     // Ignore ... worst case is that the scrollbar

@@ -66,7 +66,7 @@ public class ScopeExtendingAttribute extends Attribute implements ScopeExtender 
      *   an attribute already in the container.
      */
     public ScopeExtendingAttribute(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -92,7 +92,7 @@ public class ScopeExtendingAttribute extends Attribute implements ScopeExtender 
      *   an attribute with the name of this attribute.
      */
     public void setContainer(NamedObj container)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         Nameable oldContainer = getContainer();
         super.setContainer(container);
 
@@ -119,14 +119,14 @@ public class ScopeExtendingAttribute extends Attribute implements ScopeExtender 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
     private void _invalidateShadowedSettables(NamedObj object)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (object == null) {
             // Nothing to do.
             return;
         }
 
         for (Iterator variables = object.attributeList(Variable.class).iterator();
-             variables.hasNext();) {
+                        variables.hasNext();) {
             Variable variable = (Variable) variables.next();
 
             if (getAttribute(variable.getName()) != null) {
@@ -137,13 +137,13 @@ public class ScopeExtendingAttribute extends Attribute implements ScopeExtender 
         // Also invalidate the variables inside any
         // scopeExtendingAttributes.
         Iterator scopeAttributes = object.attributeList(ScopeExtendingAttribute.class)
-            .iterator();
+                                                     .iterator();
 
         while (scopeAttributes.hasNext()) {
             ScopeExtendingAttribute attribute = (ScopeExtendingAttribute) scopeAttributes
-                .next();
+                            .next();
             Iterator variables = attribute.attributeList(Variable.class)
-                .iterator();
+                                                      .iterator();
 
             while (variables.hasNext()) {
                 Variable variable = (Variable) variables.next();

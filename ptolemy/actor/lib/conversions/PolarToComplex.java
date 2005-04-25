@@ -65,7 +65,7 @@ public class PolarToComplex extends TypedAtomicActor {
      *   actor with this name.
      */
     public PolarToComplex(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         magnitude = new TypedIOPort(this, "magnitude", true, false);
@@ -78,8 +78,8 @@ public class PolarToComplex extends TypedAtomicActor {
         output.setTypeEquals(BaseType.COMPLEX);
 
         _attachText("_iconDescription",
-                "<svg>\n" + "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
-                + "style=\"fill:white\"/>\n" + "</svg>\n");
+            "<svg>\n" + "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
+            + "style=\"fill:white\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////

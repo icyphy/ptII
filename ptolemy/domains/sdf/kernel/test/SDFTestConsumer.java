@@ -54,7 +54,7 @@ import ptolemy.kernel.util.Workspace;
  */
 public class SDFTestConsumer extends TypedAtomicActor {
     public SDFTestConsumer(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input = new TypedIOPort(this, "input", true, false);
         input_tokenConsumptionRate = new Parameter(input,
@@ -86,7 +86,7 @@ public class SDFTestConsumer extends TypedAtomicActor {
      */
     public void fire() throws IllegalActionException {
         int tokens = ((IntToken) input_tokenConsumptionRate.getToken())
-            .intValue();
+                        .intValue();
         int i;
 
         for (i = 0; i < tokens; i++) {

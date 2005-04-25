@@ -102,7 +102,7 @@ public class MobileModel extends TypedCompositeActor {
      *   an actor already in the container.
      */
     public MobileModel(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _init();
     }
@@ -176,7 +176,7 @@ public class MobileModel extends TypedCompositeActor {
 
         if (modelString.getWidth() < 1) {
             throw new IllegalActionException(getName() + "need to have"
-                    + "the modelString port be connected");
+                + "the modelString port be connected");
         } else if (modelString.hasToken(0)) {
             StringToken str = null;
 
@@ -186,7 +186,7 @@ public class MobileModel extends TypedCompositeActor {
                 _parser.reset();
 
                 CompositeActor model = (CompositeActor) _parser.parse(str
-                        .stringValue());
+                                    .stringValue());
                 StringWriter writer = new StringWriter();
 
                 try {
@@ -219,7 +219,7 @@ public class MobileModel extends TypedCompositeActor {
                 }
 
                 throw new IllegalActionException(this, ex,
-                        "Problem parsing " + str.stringValue());
+                    "Problem parsing " + str.stringValue());
             }
         }
 
@@ -356,7 +356,7 @@ public class MobileModel extends TypedCompositeActor {
     /** Export the moml description of this.
      */
     protected void _exportMoMLContents(Writer output, int depth)
-            throws IOException {
+        throws IOException {
         Iterator attributes = attributeList().iterator();
 
         while (attributes.hasNext()) {
@@ -386,7 +386,7 @@ public class MobileModel extends TypedCompositeActor {
     private void _createDirector() throws IllegalActionException {
         try {
             String directorName = ((StringToken) director.getToken())
-                .stringValue();
+                            .stringValue();
             Class directorClass = Class.forName(directorName);
             Class[] argClasses = new Class[2];
             argClasses[0] = CompositeEntity.class;
@@ -410,14 +410,14 @@ public class MobileModel extends TypedCompositeActor {
             }
         } catch (Exception ex) {
             throw new IllegalActionException("get an illegal action exception"
-                    + "when create director" + ex);
+                + "when create director" + ex);
         }
     }
 
     /** Create the parameters and ports. This method is called by the
      *  constructors.
      *  @exception IllegalActionException If creating the parameters
-     *  and ports throws it.     
+     *  and ports throws it.
      */
     private void _init() throws IllegalActionException {
         try {
@@ -470,7 +470,7 @@ public class MobileModel extends TypedCompositeActor {
         while (entities.hasNext()) {
             Entity entity = (Entity) entities.next();
             delete.append("<deleteEntity name=\"" + entity.getName()
-                    + "\" class=\"" + entity.getClass().getName() + "\"/>");
+                + "\" class=\"" + entity.getClass().getName() + "\"/>");
         }
 
         Iterator relations = actor.relationList().iterator();
@@ -478,7 +478,7 @@ public class MobileModel extends TypedCompositeActor {
         while (relations.hasNext()) {
             IORelation relation = (IORelation) relations.next();
             delete.append("<deleteRelation name=\"" + relation.getName()
-                    + "\" class=\"ptolemy.actor.TypedIORelation\"/>");
+                + "\" class=\"ptolemy.actor.TypedIORelation\"/>");
         }
 
         delete.append("</group>");

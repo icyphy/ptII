@@ -78,7 +78,7 @@ public abstract class Source extends TypedAtomicActor {
      *   actor with this name.
      */
     public Source(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         output = new TypedIOPort(this, "output", false, true);
         trigger = new TypedIOPort(this, "trigger", true, false);
@@ -130,7 +130,7 @@ public abstract class Source extends TypedAtomicActor {
             }
         }
     }
-        
+
     /** If the trigger input is connected and it has no input or an unknown
      *  state, then return false. Otherwise, return true.
      *  @return True, unless the trigger input is connected
@@ -145,12 +145,15 @@ public abstract class Source extends TypedAtomicActor {
                     return super.prefire();
                 }
             }
+
             if (_debugging) {
-                _debug("Called prefire(), which returns false because" +
-                        " the trigger port is connected and has no input.");
+                _debug("Called prefire(), which returns false because"
+                    + " the trigger port is connected and has no input.");
             }
+
             return false;
         }
+
         return super.prefire();
     }
 }

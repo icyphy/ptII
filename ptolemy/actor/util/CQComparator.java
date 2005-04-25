@@ -50,7 +50,6 @@ import java.util.Comparator;
    @see java.util.Comparator
 */
 public interface CQComparator extends Comparator {
-    
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -75,7 +74,7 @@ public interface CQComparator extends Comparator {
      *  to perform a downcast on the arguments (of type Object) to the
      *  appropriate user defined classes. If the arguments are not of
      *  appropriate type, the implementation should throw a
-     *  ClassCastException. 
+     *  ClassCastException.
      *
      *  @param entry An object that can be inserted in a calendar queue.
      *  @return The index of the bin.

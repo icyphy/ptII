@@ -537,7 +537,7 @@ public class KeyStoreActor extends TypedAtomicActor {
 
             if (keyStoreInputStream == null) {
                 if (((BooleanToken) createFileOrURLIfNecessary.getToken())
-                        .booleanValue()) {
+                                .booleanValue()) {
                     String keystoreFileName = fileOrURL.stringValue();
 
                     try {
@@ -548,7 +548,7 @@ public class KeyStoreActor extends TypedAtomicActor {
                             keystoreFileName = ((StringToken) Constants.get(
                                     "PTII")).stringValue() + "/"
                                 + keystoreFileName.substring(classpathProperty
-                                    .length());
+                                                .length());
                         }
 
                         createKeystore(keystoreFileName);
@@ -586,7 +586,7 @@ public class KeyStoreActor extends TypedAtomicActor {
 
                     // Add all the aliases as possible choices.
                     for (Enumeration aliases = _keyStore.aliases();
-                            aliases.hasMoreElements();) {
+                                    aliases.hasMoreElements();) {
                         String aliasName = (String) aliases.nextElement();
                         alias.addChoice(aliasName);
                     }
@@ -819,7 +819,7 @@ public class KeyStoreActor extends TypedAtomicActor {
                 // if there is no data present, but the string can still
                 // read.
                 while (((length = _inputStreamReader.read(chars, 0, 80)) != -1)
-                        && !_stopRequested && !_stopFireRequested) {
+                                && !_stopRequested && !_stopFireRequested) {
                     if (_debugging) {
                         // Note that ready might be false here since
                         // we already read the data.

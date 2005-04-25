@@ -78,7 +78,7 @@ public class ExpressionWriter extends LineWriter {
      *   actor with this name.
      */
     public ExpressionWriter(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input.setTypeEquals(BaseType.GENERAL);
     }

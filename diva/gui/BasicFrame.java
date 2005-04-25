@@ -66,7 +66,7 @@ public class BasicFrame extends ApplicationContext {
     }
 
     public BasicFrame(String title, JComponent component,
-            boolean show_and_size_window) {
+        boolean show_and_size_window) {
         super();
 
         setTitle(title);

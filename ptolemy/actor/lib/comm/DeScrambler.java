@@ -69,7 +69,7 @@ public class DeScrambler extends Transformer {
      *   actor with this name.
      */
     public DeScrambler(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         polynomial = new Parameter(this, "polynomial");
@@ -114,18 +114,18 @@ public class DeScrambler extends Transformer {
      *  non-positive or the lower-order bit is not 1.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == polynomial) {
             int mask = ((IntToken) polynomial.getToken()).intValue();
 
             if (mask <= 0) {
                 throw new IllegalActionException(this,
-                        "Polynomial is required to be strictly positive.");
+                    "Polynomial is required to be strictly positive.");
             }
 
             if ((mask & 1) == 0) {
                 throw new IllegalActionException(this,
-                        "The low-order bit of the the polynomial is not set.");
+                    "The low-order bit of the the polynomial is not set.");
             }
         } else {
             super.attributeChanged(attribute);
@@ -172,7 +172,7 @@ public class DeScrambler extends Transformer {
     public void initialize() throws IllegalActionException {
         super.initialize();
         _latestShiftReg = _shiftReg = ((IntToken) initialState.getToken())
-            .intValue();
+                            .intValue();
     }
 
     /** Record the most recent shift register state as the new

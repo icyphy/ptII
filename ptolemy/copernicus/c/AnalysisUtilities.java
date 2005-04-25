@@ -138,7 +138,7 @@ public class AnalysisUtilities {
         HashSet classes = new HashSet();
 
         if (method.isConcrete()
-                && !OverriddenMethodGenerator.isOverridden(method)) {
+                        && !OverriddenMethodGenerator.isOverridden(method)) {
             Iterator locals = method.retrieveActiveBody().getLocals().iterator();
 
             while (locals.hasNext()) {
@@ -175,7 +175,7 @@ public class AnalysisUtilities {
                     SootClass superclass = (SootClass) classes.next();
 
                     if (!interfaceSet.contains(superclass)
-                            && !gray.contains(superclass)) {
+                                    && !gray.contains(superclass)) {
                         gray.addLast(superclass);
                     }
                 }

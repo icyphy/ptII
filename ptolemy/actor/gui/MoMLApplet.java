@@ -27,8 +27,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.gui;
 
-import java.net.URL;
-
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Manager;
 import ptolemy.kernel.ComponentEntity;
@@ -41,6 +39,8 @@ import ptolemy.moml.Documentation;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.filter.BackwardCompatibility;
 import ptolemy.moml.filter.RemoveGraphicalClasses;
+
+import java.net.URL;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -114,10 +114,8 @@ public class MoMLApplet extends PtolemyApplet {
      */
     public String getAppletInfo() {
         // Include the release and build number to aid in user support.
-        String version = "Ptolemy II "
-                + VersionAttribute.CURRENT_VERSION;
-        String build = 
-                "\n(Build: $Id$)";
+        String version = "Ptolemy II " + VersionAttribute.CURRENT_VERSION;
+        String build = "\n(Build: $Id$)";
 
         if (_toplevel != null) {
             String tip = Documentation.consolidate(_toplevel);
@@ -130,8 +128,8 @@ public class MoMLApplet extends PtolemyApplet {
         }
 
         return "MoML applet for " + version
-            + "\nPtolemy II comes from UC Berkeley, Department of EECS.\n"
-            + "See http://ptolemy.eecs.berkeley.edu/ptolemyII" + build;
+        + "\nPtolemy II comes from UC Berkeley, Department of EECS.\n"
+        + "See http://ptolemy.eecs.berkeley.edu/ptolemyII" + build;
     }
 
     /** Describe the applet parameters.
@@ -139,8 +137,12 @@ public class MoMLApplet extends PtolemyApplet {
      */
     public String[][] getParameterInfo() {
         String[][] newInfo = {
-            { "modelURL", "", "URL for the MoML file" },
-        };
+                {
+                    "modelURL",
+                    "",
+                    "URL for the MoML file"
+                },
+            };
         return _concatStringArrays(super.getParameterInfo(), newInfo);
     }
 
@@ -155,7 +157,7 @@ public class MoMLApplet extends PtolemyApplet {
      *  @exception Exception If something goes wrong.
      */
     protected NamedObj _createModel(Workspace workspace)
-            throws Exception {
+        throws Exception {
         // Filter out graphical classes.
         return _createModel(workspace, true);
     }
@@ -168,11 +170,11 @@ public class MoMLApplet extends PtolemyApplet {
      *  @exception Exception If something goes wrong.
      */
     protected NamedObj _createModel(Workspace workspace,
-            boolean filterGraphicalClasses) throws Exception {
+        boolean filterGraphicalClasses) throws Exception {
         // ptolemy.vergil.MoMLViewerApplet() calls this with
         // filterGraphicalClasses set to false.
-
         _modelURL = _readModelURLParameter();
+
         MoMLParser parser = new MoMLParser();
 
         // FIXME: if we call _createModel twice, then we will add
@@ -204,7 +206,7 @@ public class MoMLApplet extends PtolemyApplet {
 
             if (inside == null) {
                 throw new IllegalActionException(toplevel,
-                        "No such contained entity: " + _fragment);
+                    "No such contained entity: " + _fragment);
             }
 
             toplevel = inside;
@@ -223,7 +225,7 @@ public class MoMLApplet extends PtolemyApplet {
         return toplevel;
     }
 
-    /** Read the modelURL applet parameter. 
+    /** Read the modelURL applet parameter.
      *  If the modelURL applet parameter does not exist, then
      *  read the model applet parameter.  As a side effect,
      *  the _fragment field is set with any text after a "#".
@@ -255,6 +257,7 @@ public class MoMLApplet extends PtolemyApplet {
             _fragment = _modelURL.substring(sharp + 1);
             _modelURL = _modelURL.substring(0, sharp);
         }
+
         return _modelURL;
     }
 

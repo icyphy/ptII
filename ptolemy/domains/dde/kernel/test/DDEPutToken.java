@@ -59,7 +59,7 @@ public class DDEPutToken extends DDEPut {
     /**
      */
     public DDEPutToken(TypedCompositeActor cont, String name, int numTokens)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(cont, name);
 
         _numTokens = numTokens;
@@ -86,7 +86,7 @@ public class DDEPutToken extends DDEPut {
                         rcvr.put(_tokens[cnt]);
                     } else {
                         rcvr.put(_tokens[cnt],
-                                new Time(getDirector(), _times[cnt]));
+                            new Time(getDirector(), _times[cnt]));
                     }
                 }
             }

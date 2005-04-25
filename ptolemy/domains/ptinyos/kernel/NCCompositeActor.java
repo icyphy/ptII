@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.ptinyos.kernel;
 
 import ptolemy.actor.CompositeActor;
@@ -35,8 +34,10 @@ import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// NCCompositeActor
+
 /**
 
    // FIXME
@@ -53,7 +54,6 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating Red (celaine)
 */
 public class NCCompositeActor extends CompositeActor {
-
     /** Construct a NCCompositeActor in the default workspace with no container
      *  and an empty string as its name. Add the actor to the workspace
      *  directory.
@@ -63,6 +63,7 @@ public class NCCompositeActor extends CompositeActor {
      */
     public NCCompositeActor() {
         super();
+
         // When exporting MoML, set the class name to NCCompositeActor
         // instead of the default TypedCompositeActor.
         setClassName("ptolemy.domains.ptinyos.kernel.NCCompositeActor");
@@ -87,8 +88,9 @@ public class NCCompositeActor extends CompositeActor {
      *   an actor already in the container.
      */
     public NCCompositeActor(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
+
         // When exporting MoML, set the class name to NCCompositeActor
         // instead of the default TypedCompositeActor.
         setClassName("ptolemy.domains.ptinyos.kernel.NCCompositeActor");
@@ -111,6 +113,7 @@ public class NCCompositeActor extends CompositeActor {
      */
     public NCCompositeActor(Workspace workspace) {
         super(workspace);
+
         // When exporting MoML, set the class name to NCCompositeActor
         // instead of the default TypedCompositeActor.
         setClassName("ptolemy.domains.ptinyos.kernel.NCCompositeActor");

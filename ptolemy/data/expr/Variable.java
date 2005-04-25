@@ -216,7 +216,7 @@ import java.util.Set;
    @see #setPersistent(boolean)
 */
 public class Variable extends AbstractSettableAttribute implements Typeable,
-                                                                   ValueListener {
+    ValueListener {
     /** Construct a variable in the default workspace with an empty string
      *  as its name. The variable is added to the list of objects in the
      *  workspace. Increment the version number of the workspace.
@@ -252,7 +252,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
      *   variable already in the container.
      */
     public Variable(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         setPersistent(false);
     }
@@ -272,7 +272,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
      *   variable already in the container.
      */
     public Variable(NamedObj container, String name, ptolemy.data.Token token)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // Notification is important here so that the attributeChanged()
@@ -339,9 +339,9 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
 
         // set _declaredType and _varType
         if (_declaredType instanceof StructuredType
-                && !_declaredType.isConstant()) {
+                        && !_declaredType.isConstant()) {
             newObject._declaredType = (Type) ((StructuredType) _declaredType)
-                .clone();
+                            .clone();
             newObject._varType = newObject._declaredType;
         }
 
@@ -738,7 +738,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
      *   an attribute with the name of this variable.
      */
     public void setContainer(NamedObj container)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         Nameable cont = getContainer();
         super.setContainer(container);
 
@@ -894,7 +894,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
      *   container rejects the change.
      */
     public void setToken(ptolemy.data.Token token)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (_debugging) {
             _debug("setToken: " + token);
         }
@@ -1004,8 +1004,8 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
 
         if (!type.isInstantiable()) {
             throw new IllegalActionException(this,
-                    "setTypeAtMost(): " + "the argument " + type
-                    + " is not an instantiable type in the type lattice.");
+                "setTypeAtMost(): " + "the argument " + type
+                + " is not an instantiable type in the type lattice.");
         }
 
         Type currentType = getType();
@@ -1013,10 +1013,10 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
 
         if ((typeInfo == CPO.HIGHER) || (typeInfo == CPO.INCOMPARABLE)) {
             throw new IllegalActionException(this,
-                    "setTypeAtMost(): " + "the current type "
-                    + currentType.toString()
-                    + " is not less than the desired bounding type "
-                    + type.toString());
+                "setTypeAtMost(): " + "the current type "
+                + currentType.toString()
+                + " is not less than the desired bounding type "
+                + type.toString());
         }
 
         _typeAtMost = type;
@@ -1046,10 +1046,10 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
                 _token = type.convert(_token);
             } else {
                 throw new IllegalActionException(this,
-                        "The currently contained token "
-                        + _token.getClass().getName() + "(" + _token.toString()
-                        + ") is not compatible with the desired type "
-                        + type.toString());
+                    "The currently contained token "
+                    + _token.getClass().getName() + "(" + _token.toString()
+                    + ") is not compatible with the desired type "
+                    + type.toString());
             }
         }
 
@@ -1059,7 +1059,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
             _declaredType = (Type) type.clone();
         } catch (CloneNotSupportedException cnse) {
             throw new InternalErrorException("Variable.setTypeEquals: "
-                    + "The specified type cannot be cloned.");
+                + "The specified type cannot be cloned.");
         }
 
         // set _varType. It is _token.getType() if _token is not null, or
@@ -1068,7 +1068,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
 
         if ((_token != null) && _declaredType instanceof StructuredType) {
             ((StructuredType) _varType).updateType((StructuredType) _token
-                    .getType());
+                            .getType());
         }
     }
 
@@ -1370,7 +1370,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
      */
     protected void _evaluate() throws IllegalActionException {
         if ((_currentExpression == null)
-                || _currentExpression.trim().equals("")) {
+                        || _currentExpression.trim().equals("")) {
             _setToken(null);
             return;
         }
@@ -1382,8 +1382,8 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
         if (_dependencyLoop) {
             _dependencyLoop = false;
             throw new IllegalActionException("There is a dependency loop"
-                    + " where " + getFullName() + " directly or indirectly"
-                    + " refers to itself in its expression: " + _currentExpression);
+                + " where " + getFullName() + " directly or indirectly"
+                + " refers to itself in its expression: " + _currentExpression);
         }
 
         _dependencyLoop = true;
@@ -1406,7 +1406,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
         } catch (IllegalActionException ex) {
             _needsEvaluation = true;
             throw new IllegalActionException(this, ex,
-                    "Error evaluating expression: " + _currentExpression);
+                "Error evaluating expression: " + _currentExpression);
         } finally {
             _dependencyLoop = false;
             workspace().doneReading();
@@ -1444,7 +1444,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
         if (!_parseTreeValid) {
             if (_currentExpression == null) {
                 throw new IllegalActionException(this,
-                        "Empty expression cannot be parsed!");
+                    "Empty expression cannot be parsed!");
             }
 
             PtParser parser = new PtParser();
@@ -1535,7 +1535,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
                 if (listener instanceof Variable) {
                     if (((Variable) listener)._needsEvaluation) {
                         List additionalErrors = ((Variable) listener)
-                            ._propagate();
+                                        ._propagate();
 
                         if (additionalErrors != null) {
                             if (result == null) {
@@ -1562,7 +1562,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
      *   be propagated.
      */
     protected void _propagateValue(NamedObj destination)
-            throws IllegalActionException {
+        throws IllegalActionException {
         ((Settable) destination).setExpression(getExpression());
     }
 
@@ -1602,7 +1602,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
                 declaredType = (Type) _declaredType.clone();
             } catch (CloneNotSupportedException cnse) {
                 throw new InternalErrorException("Variable._setToken: "
-                        + "Cannot clone the declared type of this Variable.");
+                    + "Cannot clone the declared type of this Variable.");
             }
 
             if (declaredType instanceof StructuredType) {
@@ -1613,16 +1613,16 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
                 newToken = declaredType.convert(newToken);
             } else {
                 throw new IllegalActionException(this,
-                        "Variable._setToken: Cannot store a token of type "
-                        + newToken.getType().toString()
-                        + ", which is incompatible with type "
-                        + declaredType.toString());
+                    "Variable._setToken: Cannot store a token of type "
+                    + newToken.getType().toString()
+                    + ", which is incompatible with type "
+                    + declaredType.toString());
             }
 
             // update _varType to the type of the new token.
             if (_declaredType instanceof StructuredType) {
                 ((StructuredType) _varType).updateType((StructuredType) newToken
-                        .getType());
+                                .getType());
             } else {
                 // _declaredType is a BaseType
                 _varType = newToken.getType();
@@ -1635,12 +1635,12 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
                 int comparison = TypeLattice.compare(tokenType, _typeAtMost);
 
                 if ((comparison == CPO.HIGHER)
-                        || (comparison == CPO.INCOMPARABLE)) {
+                                || (comparison == CPO.INCOMPARABLE)) {
                     // Incompatible type!
                     throw new IllegalActionException(this,
-                            "Cannot store a token of type " + tokenType.toString()
-                            + ", which is not less than or equal to "
-                            + _typeAtMost.toString());
+                        "Cannot store a token of type " + tokenType.toString()
+                        + ", which is not less than or equal to "
+                        + _typeAtMost.toString());
                 }
             }
 
@@ -1676,7 +1676,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
      *   to set to null a variable that has value dependents.
      */
     protected void _setTokenAndNotify(Token newToken)
-            throws IllegalActionException {
+        throws IllegalActionException {
         // Save to restore in case the change is rejected.
         Token oldToken = _token;
         Type oldVarType = _varType;
@@ -1686,8 +1686,8 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
                 oldVarType = (Type) ((StructuredType) _varType).clone();
             } catch (CloneNotSupportedException ex2) {
                 throw new InternalErrorException(
-                        "Variable._setTokenAndNotify: " + " Cannot clone _varType"
-                        + ex2.getMessage());
+                    "Variable._setTokenAndNotify: " + " Cannot clone _varType"
+                    + ex2.getMessage());
             }
         }
 
@@ -1702,7 +1702,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
 
             if (container != null) {
                 if (!oldVarType.equals(_varType)
-                        && (oldVarType != BaseType.UNKNOWN)) {
+                                && (oldVarType != BaseType.UNKNOWN)) {
                     container.attributeTypeChanged(this);
                 }
 
@@ -1715,7 +1715,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
             _token = oldToken;
 
             if (_varType instanceof StructuredType
-                    && oldVarType instanceof StructuredType) {
+                            && oldVarType instanceof StructuredType) {
                 ((StructuredType) _varType).updateType((StructuredType) oldVarType);
             } else {
                 _varType = oldVarType;
@@ -1753,14 +1753,14 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
     private void _invalidateShadowedSettables(NamedObj object)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (object == null) {
             // Nothing to do.
             return;
         }
 
         for (Iterator variables = object.attributeList(Variable.class).iterator();
-             variables.hasNext();) {
+                        variables.hasNext();) {
             Variable variable = (Variable) variables.next();
 
             if (variable.getName().equals(getName())) {
@@ -1771,13 +1771,13 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
         // Also invalidate the variables inside any
         // scopeExtendingAttributes.
         Iterator scopeAttributes = object.attributeList(ScopeExtendingAttribute.class)
-            .iterator();
+                                                     .iterator();
 
         while (scopeAttributes.hasNext()) {
             ScopeExtendingAttribute attribute = (ScopeExtendingAttribute) scopeAttributes
-                .next();
+                            .next();
             Iterator variables = attribute.attributeList(Variable.class)
-                .iterator();
+                                                      .iterator();
 
             while (variables.hasNext()) {
                 Variable variable = (Variable) variables.next();
@@ -1916,12 +1916,12 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
         public void initialize(Object e) throws IllegalActionException {
             if (!isSettable()) {
                 throw new IllegalActionException("TypeTerm.initialize: "
-                        + "The type is not settable.");
+                    + "The type is not settable.");
             }
 
             if (!(e instanceof Type)) {
                 throw new IllegalActionException("TypeTerm.initialize: "
-                        + "The argument is not a Type.");
+                    + "The argument is not a Type.");
             }
 
             if (_declaredType == BaseType.UNKNOWN) {
@@ -1960,16 +1960,16 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
         public void setValue(Object e) throws IllegalActionException {
             if (!isSettable()) {
                 throw new IllegalActionException("TypeTerm.setValue: The "
-                        + "type is not settable.");
+                    + "type is not settable.");
             }
 
             if (!_declaredType.isSubstitutionInstance((Type) e)) {
                 throw new IllegalActionException("Variable$TypeTerm"
-                        + ".setValue: "
-                        + "Cannot update the type of this variable to the "
-                        + "new type." + " Variable: " + Variable.this.getFullName()
-                        + ", Variable type: " + _declaredType.toString()
-                        + ", New type: " + e.toString());
+                    + ".setValue: "
+                    + "Cannot update the type of this variable to the "
+                    + "new type." + " Variable: " + Variable.this.getFullName()
+                    + ", Variable type: " + _declaredType.toString()
+                    + ", New type: " + e.toString());
             }
 
             if (_declaredType == BaseType.UNKNOWN) {
@@ -2017,7 +2017,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
          *  exists with the given name, but cannot be evaluated.
          */
         public ptolemy.data.Token get(String name)
-                throws IllegalActionException {
+            throws IllegalActionException {
             if (_variablesDependentOn == null) {
                 _variablesDependentOn = new HashMap();
             } else {
@@ -2068,7 +2068,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
          *  exists with the given name, but cannot be evaluated.
          */
         public ptolemy.data.type.Type getType(String name)
-                throws IllegalActionException {
+            throws IllegalActionException {
             NamedObj reference = _reference;
 
             if (_reference == null) {
@@ -2093,7 +2093,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
          *  exists with the given name, but cannot be evaluated.
          */
         public ptolemy.graph.InequalityTerm getTypeTerm(String name)
-                throws IllegalActionException {
+            throws IllegalActionException {
             NamedObj reference = _reference;
 
             if (_reference == null) {

@@ -66,7 +66,7 @@ public class SecretKeyReader extends PrivateKeyReader {
      *   actor with this name.
      */
     public SecretKeyReader(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // SecretKeys do not have certificates.

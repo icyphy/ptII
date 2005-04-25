@@ -70,7 +70,7 @@ public class ParameterPort extends TypedIOPort {
      *   a port already in the container.
      */
     public ParameterPort(ComponentEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         setInput(true);
         setMultiport(false);
@@ -117,7 +117,7 @@ public class ParameterPort extends TypedIOPort {
      *  @exception NameDuplicationException If the superclass throws it.
      */
     public void setContainer(Entity entity)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         Entity previousContainer = (Entity) getContainer();
         super.setContainer(entity);
 
@@ -163,7 +163,7 @@ public class ParameterPort extends TypedIOPort {
      *   contains an attribute with the proposed name.
      */
     public void setName(String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         if (_settingName || (_parameter == null)) {
             super.setName(name);
         } else {

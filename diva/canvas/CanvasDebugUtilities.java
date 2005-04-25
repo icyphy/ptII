@@ -55,7 +55,7 @@ public final class CanvasDebugUtilities {
     }
 
     private static String printHelper(Figure root, String prefix,
-            TransformContext parent) {
+        TransformContext parent) {
         String out = "";
 
         if (root.getTransformContext() != parent) {

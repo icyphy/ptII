@@ -95,7 +95,7 @@ public class AllPairShortestPathAnalysis extends Analysis {
      */
     public List shortestPath(Node startNode, Node endNode) {
         return ((AllPairShortestPathAnalyzer) analyzer()).shortestPath(startNode,
-                endNode);
+            endNode);
     }
 
     /** Return the length of the shortest path from the node
@@ -108,7 +108,7 @@ public class AllPairShortestPathAnalysis extends Analysis {
      */
     public double shortestPathLength(Node startNode, Node endNode) {
         return ((AllPairShortestPathAnalyzer) analyzer()).shortestPathLength(startNode,
-                endNode);
+            endNode);
     }
 
     /** Return a matrix representing the result of the all pair shortest path
@@ -134,7 +134,7 @@ public class AllPairShortestPathAnalysis extends Analysis {
      */
     public String toString() {
         return "All pair shortest path analysis using the following analyzer:\n"
-            + analyzer().toString();
+        + analyzer().toString();
     }
 
     /** Check if a given analyzer is compatible with this analysis.

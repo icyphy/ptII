@@ -103,7 +103,7 @@ public class LMSAdaptive extends FIR {
      *   actor with this name.
      */
     public LMSAdaptive(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         interpolation.setVisibility(Settable.NONE);
@@ -177,7 +177,7 @@ public class LMSAdaptive extends FIR {
      *  an invalid value or if the super method throws it.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == initialTaps) {
             taps.setToken(initialTaps.getToken());
         } else {
@@ -213,7 +213,7 @@ public class LMSAdaptive extends FIR {
         int errorDelayValue = ((IntToken) errorDelay.getToken()).intValue();
         int decimationValue = ((IntToken) decimation.getToken()).intValue();
         int decimationPhaseValue = ((IntToken) decimationPhase.getToken())
-            .intValue();
+                        .intValue();
         int index = (errorDelayValue * decimationValue) + decimationPhaseValue;
         Token factor = error.get(0).multiply(stepSize.getToken());
 

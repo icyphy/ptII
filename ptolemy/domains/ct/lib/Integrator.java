@@ -111,10 +111,11 @@ public class Integrator extends CTBaseIntegrator {
      * @exception IllegalActionException If there was an internal problem.
      */
     public Integrator(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         new Parameter(input, "signalType", new StringToken("CONTINUOUS"));
-//        new Parameter(discreteInput, "signalType", new StringToken("DISCRETE"));
+
+        //        new Parameter(discreteInput, "signalType", new StringToken("DISCRETE"));
         new Parameter(output, "signalType", new StringToken("CONTINUOUS"));
     }
 }

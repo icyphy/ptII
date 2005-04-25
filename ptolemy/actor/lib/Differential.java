@@ -56,7 +56,7 @@ public class Differential extends Transformer {
      *   actor with this name.
      */
     public Differential(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
     }
 

@@ -194,7 +194,7 @@ public class ModelReference extends TypedAtomicActor
      *   an actor already in the container.
      */
     public ModelReference(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // FIXME: Need a way to specify a filter for the file browser.
@@ -271,11 +271,11 @@ public class ModelReference extends TypedAtomicActor
      *   to this container (not thrown in this base class).
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == modelFileOrURL) {
             if (_debugging) {
                 _debug("Setting modelFileOrURL to: "
-                        + modelFileOrURL.getExpression());
+                    + modelFileOrURL.getExpression());
             }
 
             // Open the file and read the MoML to create a model.
@@ -290,7 +290,7 @@ public class ModelReference extends TypedAtomicActor
 
                     if (!asFile.isFile()) {
                         throw new IllegalActionException(this,
-                                "Not a file: " + url);
+                            "Not a file: " + url);
                     }
                 }
 
@@ -309,7 +309,7 @@ public class ModelReference extends TypedAtomicActor
                     _model = parser.parse(null, url);
                 } catch (Exception ex) {
                     throw new IllegalActionException(this, ex,
-                            "Failed to read model from: " + url);
+                        "Failed to read model from: " + url);
                 }
 
                 // Create a manager, if appropriate.
@@ -338,8 +338,8 @@ public class ModelReference extends TypedAtomicActor
                 _executionOnFiringValue = _DO_NOTHING;
             } else {
                 throw new IllegalActionException(this,
-                        "Unrecognized option for executionOnFiring: "
-                        + executionOnFiringValue);
+                    "Unrecognized option for executionOnFiring: "
+                    + executionOnFiringValue);
             }
         } else if (attribute == postfireAction) {
             String postfireActionValue = postfireAction.stringValue();
@@ -350,8 +350,8 @@ public class ModelReference extends TypedAtomicActor
                 _postfireActionValue = _STOP_EXECUTING;
             } else {
                 throw new IllegalActionException(this,
-                        "Unrecognized value for postfireAction: "
-                        + postfireActionValue);
+                    "Unrecognized value for postfireAction: "
+                    + postfireActionValue);
             }
         } else {
             super.attributeChanged(attribute);
@@ -365,8 +365,7 @@ public class ModelReference extends TypedAtomicActor
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ModelReference newActor = (ModelReference) super.clone(workspace);
         newActor._manager = null;
         newActor._model = null;
@@ -383,8 +382,7 @@ public class ModelReference extends TypedAtomicActor
      *  @param manager The manager controlling the execution.
      *  @param throwable The throwable to report.
      */
-    public synchronized void executionError(Manager manager,
-            Throwable throwable) {
+    public synchronized void executionError(Manager manager, Throwable throwable) {
         _throwable = throwable;
         _executing = false;
 
@@ -441,8 +439,8 @@ public class ModelReference extends TypedAtomicActor
             Throwable throwable = _throwable;
             _throwable = null;
             throw new IllegalActionException(this, throwable,
-                    "Run in a new thread threw an exception "
-                    + "on the previous firing.");
+                "Run in a new thread threw an exception "
+                + "on the previous firing.");
         }
 
         if (_model instanceof CompositeActor) {
@@ -480,7 +478,7 @@ public class ModelReference extends TypedAtomicActor
                         try {
                             if (_debugging) {
                                 _debug(
-                                        "** Waiting for previous execution to finish.");
+                                    "** Waiting for previous execution to finish.");
                             }
 
                             // Use workspace version of wait to release
@@ -513,14 +511,14 @@ public class ModelReference extends TypedAtomicActor
             if (_executionOnFiringValue == _RUN_IN_CALLING_THREAD) {
                 if (_debugging) {
                     _debug(
-                            "** Executing referenced model in the calling thread.");
+                        "** Executing referenced model in the calling thread.");
                 }
 
                 try {
                     _manager.execute();
                 } catch (KernelException ex) {
                     throw new IllegalActionException(this, ex,
-                            "Execution failed.");
+                        "Execution failed.");
                 }
 
                 _writeOutputs();
@@ -538,8 +536,8 @@ public class ModelReference extends TypedAtomicActor
                 // because we need to write outputs upon completion.
                 if (_manager.getState() != Manager.IDLE) {
                     throw new IllegalActionException(this,
-                            "Cannot start an execution. " + "Referenced model is "
-                            + _manager.getState().getDescription());
+                        "Cannot start an execution. " + "Referenced model is "
+                        + _manager.getState().getDescription());
                 }
 
                 // NOTE: There is a possible race condition. We would like to
@@ -552,7 +550,7 @@ public class ModelReference extends TypedAtomicActor
                             try {
                                 if (_debugging) {
                                     _debug(
-                                            "** Executing model in a new thread.");
+                                        "** Executing model in a new thread.");
                                 }
 
                                 _manager.execute();
@@ -576,13 +574,13 @@ public class ModelReference extends TypedAtomicActor
             }
 
             long lingerTimeValue = ((LongToken) lingerTime.getToken())
-                .longValue();
+                            .longValue();
 
             if (lingerTimeValue > 0L) {
                 try {
                     if (_debugging) {
                         _debug("** Lingering for " + lingerTimeValue
-                                + " milliseconds.");
+                            + " milliseconds.");
                     }
 
                     _lingeringThread = Thread.currentThread();
@@ -616,7 +614,7 @@ public class ModelReference extends TypedAtomicActor
         if ((_postfireActionValue == _STOP_EXECUTING) && (_manager != null)) {
             if (_debugging) {
                 _debug(
-                        "** Calling finish() on the Manager to request termination.");
+                    "** Calling finish() on the Manager to request termination.");
             }
 
             _manager.finish();
@@ -691,7 +689,7 @@ public class ModelReference extends TypedAtomicActor
             Throwable throwable = _throwable;
             _throwable = null;
             throw new IllegalActionException(this, throwable,
-                    "Background run threw an exception");
+                "Background run threw an exception");
         }
     }
 
@@ -743,14 +741,14 @@ public class ModelReference extends TypedAtomicActor
                 if (attribute instanceof Variable) {
                     if (_debugging) {
                         _debug("** Transferring input to parameter: "
-                                + port.getName());
+                            + port.getName());
                     }
 
                     ((Variable) attribute).setToken(token);
                 } else if (attribute instanceof Settable) {
                     if (_debugging) {
                         _debug("** Transferring input as string to parameter: "
-                                + port.getName());
+                            + port.getName());
                     }
 
                     ((Settable) attribute).setExpression(token.toString());
@@ -787,19 +785,19 @@ public class ModelReference extends TypedAtomicActor
                 if (attribute instanceof Variable) {
                     if (_debugging) {
                         _debug("** Transferring parameter to output: "
-                                + port.getName());
+                            + port.getName());
                     }
 
                     port.send(0, ((Variable) attribute).getToken());
                 } else if (attribute instanceof Settable) {
                     if (_debugging) {
                         _debug(
-                                "** Transferring parameter as string to output: "
-                                + port.getName());
+                            "** Transferring parameter as string to output: "
+                            + port.getName());
                     }
 
                     port.send(0,
-                            new StringToken(((Settable) attribute).getExpression()));
+                        new StringToken(((Settable) attribute).getExpression()));
                 }
             }
         }

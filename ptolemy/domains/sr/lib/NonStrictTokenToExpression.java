@@ -61,7 +61,7 @@ public class NonStrictTokenToExpression extends TokenToExpression {
      *   actor with this name.
      */
     public NonStrictTokenToExpression(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         new Attribute(this, "_nonStrictMarker");

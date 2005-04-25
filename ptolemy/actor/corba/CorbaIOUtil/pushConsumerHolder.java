@@ -18,7 +18,7 @@ public final class pushConsumerHolder
     }
 
     public pushConsumerHolder(
-            ptolemy.actor.corba.CorbaIOUtil.pushConsumer initialValue) {
+        ptolemy.actor.corba.CorbaIOUtil.pushConsumer initialValue) {
         value = initialValue;
     }
 

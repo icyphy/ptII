@@ -174,7 +174,7 @@ public class CircleGeometry implements Geometry {
 
                 public void remove() {
                     throw new UnsupportedOperationException(
-                            "Site cannot be removed");
+                        "Site cannot be removed");
                 }
             };
     }
@@ -183,7 +183,7 @@ public class CircleGeometry implements Geometry {
      */
     public void translate(double x, double y) {
         _rect.setFrame(_rect.getX() + x, _rect.getY() + y, _rect.getWidth(),
-                _rect.getHeight());
+            _rect.getHeight());
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -285,7 +285,7 @@ public class CircleGeometry implements Geometry {
             }
 
             throw new IllegalArgumentException("Illegal direction: "
-                    + direction);
+                + direction);
         }
 
         /** Test if this site has a normal in the given direction.

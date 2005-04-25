@@ -163,7 +163,7 @@ public class MessageHandler {
      *  the "Cancel" button.
      */
     public static void warning(String info, Throwable throwable)
-            throws ptolemy.util.CancelException {
+        throws ptolemy.util.CancelException {
         _handler._warning(info + ": " + throwable.getMessage(), throwable);
     }
 
@@ -238,7 +238,7 @@ public class MessageHandler {
      *  "Cancel" button.
      */
     protected void _warning(String info, Throwable throwable)
-            throws ptolemy.util.CancelException {
+        throws ptolemy.util.CancelException {
         _error(info, throwable);
     }
 
@@ -252,7 +252,7 @@ public class MessageHandler {
         System.out.print(" (yes or no) ");
 
         BufferedReader stdIn = new BufferedReader(new InputStreamReader(
-                                                          System.in));
+                    System.in));
 
         try {
             String reply = stdIn.readLine();

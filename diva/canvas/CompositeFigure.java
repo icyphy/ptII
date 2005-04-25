@@ -352,7 +352,7 @@ public class CompositeFigure extends AbstractFigureContainer {
         region = ShapeUtilities.transformBounds(region, at);
 
         Figure hit = CanvasUtilities.pick(_children.getIntersectedFigures(
-                                                  region).figuresFromFront(), region);
+                    region).figuresFromFront(), region);
 
         if ((hit == null) && (_background != null) && _background.hit(region)) {
             return CanvasUtilities.pick(new UnitIterator(_background), region);
@@ -374,7 +374,7 @@ public class CompositeFigure extends AbstractFigureContainer {
 
         if ((hit == null) && (_background != null) && _background.hit(region)) {
             return CanvasUtilities.pick(new UnitIterator(_background), region,
-                    filter);
+                filter);
         }
 
         return hit;

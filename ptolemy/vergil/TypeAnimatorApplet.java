@@ -102,7 +102,7 @@ public class TypeAnimatorApplet extends MoMLViewerApplet {
      *  @return  The model that was created
      */
     protected NamedObj _createModel(Workspace workspace)
-            throws Exception {
+        throws Exception {
         _toplevel = super._createModel(workspace);
 
         if (_toplevel instanceof CompositeEntity) {

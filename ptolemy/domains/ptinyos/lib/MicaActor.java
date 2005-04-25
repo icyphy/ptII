@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.ptinyos.lib;
 
 import ptolemy.actor.TypedIOPort;
@@ -37,21 +36,21 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// MicaActor
+
 /**
  * This composite actor is designed for use in the PtinyOS domain.
  *
  * FIXME comment
- * 
+ *
  * @author Elaine Cheong
  * @version $Id$
  * @Pt.ProposedRating Red (celaine)
  * @Pt.AcceptedRating Red (celaine)
  */
-
 public class MicaActor extends PtinyOSActor {
-
     /** Construct an actor in the default workspace with an empty string
      *  as its name.  The object is added to the workspace directory.
      *  Increment the version number of the workspace.
@@ -69,8 +68,8 @@ public class MicaActor extends PtinyOSActor {
      */
     public MicaActor(Workspace workspace) {
         super(workspace);
-    }  
-    
+    }
+
     /** Construct an actor in the specified container with the specified
      *  name.
      *  @param container The container.
@@ -81,13 +80,14 @@ public class MicaActor extends PtinyOSActor {
      *   an actor already in the container.
      */
     public MicaActor(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // Photo input port.
         // FIXME why is the name hidden in Vergil?
         photo = new PortParameter(this, "photo");
         photo.setExpression("0");
+
         // FIXME this is really an unsigned short (uint16_t), not an int.
         photo.setTypeEquals(BaseType.DOUBLE);
 
@@ -110,7 +110,7 @@ public class MicaActor extends PtinyOSActor {
         magy = new PortParameter(this, "magy");
         magy.setExpression("0");
         magy.setTypeEquals(BaseType.DOUBLE);
-        
+
         // LED output ports.
         ledRed = new TypedIOPort(this, "ledRed", false, true);
         ledRed.setTypeEquals(BaseType.BOOLEAN);
@@ -137,34 +137,29 @@ public class MicaActor extends PtinyOSActor {
     public PortParameter accely;
     public PortParameter magx;
     public PortParameter magy;
-    
+
     /* From tinyos-1.x/tos/platform/pc/sensorboard.h
-       
-enum {
-  TOS_ADC_PHOTO_PORT = 1,
-  TOS_ADC_TEMP_PORT = 2,
-  TOS_ADC_MIC_PORT = 3,
-  TOS_ADC_ACCEL_X_PORT = 4,
-  TOS_ADC_ACCEL_Y_PORT = 5,
-  TOS_ADC_MAG_X_PORT = 6,
-  // TOS_ADC_VOLTAGE_PORT = 7,  defined this in hardware.h
-  TOS_ADC_MAG_Y_PORT = 8,
-};
+
+    enum {
+    TOS_ADC_PHOTO_PORT = 1,
+    TOS_ADC_TEMP_PORT = 2,
+    TOS_ADC_MIC_PORT = 3,
+    TOS_ADC_ACCEL_X_PORT = 4,
+    TOS_ADC_ACCEL_Y_PORT = 5,
+    TOS_ADC_MAG_X_PORT = 6,
+    // TOS_ADC_VOLTAGE_PORT = 7,  defined this in hardware.h
+    TOS_ADC_MAG_Y_PORT = 8,
+    };
      */
-    
+
     /** LED output ports
      */
     public TypedIOPort ledRed;
     public TypedIOPort ledGreen;
     public TypedIOPort ledYellow;
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-      
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
-
 }

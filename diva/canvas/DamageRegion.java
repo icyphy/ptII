@@ -71,7 +71,7 @@ public abstract class DamageRegion {
     /** Create a damage region in this context over the given rectangle.
      */
     public static DamageRegion createDamageRegion(TransformContext c,
-            Rectangle2D r) {
+        Rectangle2D r) {
         // FIXME: cache this object
         return new RectangleDamageRegion(c, r);
     }
@@ -79,7 +79,7 @@ public abstract class DamageRegion {
     /** Create a damage region in this context over the given rectangle.
      */
     public static DamageRegion createDamageRegion(TransformContext c, double x,
-            double y, double w, double h) {
+        double y, double w, double h) {
         // FIXME: cache this object
         return new RectangleDamageRegion(c, x, y, w, h);
     }
@@ -120,7 +120,7 @@ public abstract class DamageRegion {
         /** Create it
          */
         private RectangleDamageRegion(TransformContext c, double x, double y,
-                double w, double h) {
+            double w, double h) {
             _context = c;
             _rectangle = new Rectangle2D.Double(x, y, w, h);
         }
@@ -148,7 +148,7 @@ public abstract class DamageRegion {
 
             // urk -- we lost the time argument...
             canvas.repaint(0, (int) xdash, (int) ydash, (int) xdash1,
-                    (int) ydash1);
+                (int) ydash1);
         }
 
         /** Get the bounds of this damage region.

@@ -88,7 +88,7 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
      *   CompositeActor and the name collides with an entity in the container.
      */
     public CTEmbeddedDirector(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -127,12 +127,12 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
     public void emitCurrentStates() {
         try {
             Iterator dynamicActors = getScheduler().getSchedule()
-                .get(CTSchedule.DYNAMIC_ACTORS)
-                .actorIterator();
+                                                     .get(CTSchedule.DYNAMIC_ACTORS)
+                                                     .actorIterator();
 
             while (dynamicActors.hasNext() && !_stopRequested) {
                 CTDynamicActor dynamicActor = (CTDynamicActor) dynamicActors
-                    .next();
+                                .next();
                 dynamicActor.emitCurrentStates();
             }
         } catch (IllegalActionException e) {
@@ -176,26 +176,22 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
         // to that.
         CTExecutionPhase executionPhase = getExecutionPhase();
 
-        if (executionPhase == 
-            CTExecutionPhase.ITERATING_PURELY_DISCRETE_ACTORS_PHASE) {
+        if (executionPhase == CTExecutionPhase.ITERATING_PURELY_DISCRETE_ACTORS_PHASE) {
             super._iteratePurelyDiscreteActors(schedule);
-        } else if (executionPhase == 
-            CTExecutionPhase.FIRING_DYNAMIC_ACTORS_PHASE) {
+        } else if (executionPhase == CTExecutionPhase.FIRING_DYNAMIC_ACTORS_PHASE) {
             getCurrentODESolver().fireDynamicActors();
-        } else if (executionPhase == 
-            CTExecutionPhase.FIRING_EVENT_GENERATORS_PHASE) {
+        } else if (executionPhase == CTExecutionPhase.FIRING_EVENT_GENERATORS_PHASE) {
             super.fireEventGenerators();
-        } else if (executionPhase == 
-            CTExecutionPhase.FIRING_STATE_TRANSITION_ACTORS_PHASE) {
+        } else if (executionPhase == CTExecutionPhase.FIRING_STATE_TRANSITION_ACTORS_PHASE) {
             getCurrentODESolver().fireStateTransitionActors();
+
             // There is not a seperate state for producing output,
             // because a CT subsystem needs to produce output
             // if it works as a state transition actor.
             super.produceOutput();
         } else if (executionPhase == CTExecutionPhase.GENERATING_EVENTS_PHASE) {
             super._iterateEventGenerators(schedule);
-        } else if (executionPhase == 
-            CTExecutionPhase.GENERATING_WAVEFORMS_PHASE) {
+        } else if (executionPhase == CTExecutionPhase.GENERATING_WAVEFORMS_PHASE) {
             super._iterateWaveformGenerators(schedule);
         }
     }
@@ -213,8 +209,8 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
             // This should never happen because a CT model with
             // a CTEmbeddedDirector must be used inside another CT model.
             throw new InternalErrorException("A CT model with a "
-                    + "CTEmbeddedDirector must be used inside "
-                    + "another CT model.");
+                + "CTEmbeddedDirector must be used inside "
+                + "another CT model.");
         }
     }
 
@@ -231,8 +227,8 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
             // This should never happen because a CT model with
             // a CTEmbeddedDirector must be used inside another CT model.
             throw new InternalErrorException("A CT model with a "
-                    + "CTEmbeddedDirector must be used inside "
-                    + "another CT model.");
+                + "CTEmbeddedDirector must be used inside "
+                + "another CT model.");
         }
     }
 
@@ -249,8 +245,8 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
             // This should never happen because a CT model with
             // a CTEmbeddedDirector must be used inside another CT model.
             throw new InternalErrorException("A CT model with a "
-                    + "CTEmbeddedDirector must be used inside "
-                    + "another CT model.");
+                + "CTEmbeddedDirector must be used inside "
+                + "another CT model.");
         }
     }
 
@@ -266,8 +262,8 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
             // This should never happen because a CT model with
             // a CTEmbeddedDirector must be used inside another CT model.
             throw new InternalErrorException("A CT model with a "
-                    + "CTEmbeddedDirector must be used inside "
-                    + "another CT model.");
+                + "CTEmbeddedDirector must be used inside "
+                + "another CT model.");
         }
     }
 
@@ -278,12 +274,12 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
             setModelTime(getIterationBeginTime());
 
             Iterator statefulActors = getScheduler().getSchedule()
-                .get(CTSchedule.STATEFUL_ACTORS)
-                .actorIterator();
+                                                      .get(CTSchedule.STATEFUL_ACTORS)
+                                                      .actorIterator();
 
             while (statefulActors.hasNext() && !_stopRequested) {
                 CTStatefulActor statefulActor = (CTStatefulActor) statefulActors
-                    .next();
+                                .next();
                 statefulActor.goToMarkedState();
             }
         } catch (IllegalActionException e) {
@@ -291,15 +287,15 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
         }
     }
 
-    /** Call the initialize() method of the super class. Set the 
+    /** Call the initialize() method of the super class. Set the
      *  _initialStatesNotReady variable to false indicating no special
-     *  process to construct initial states is needed.  
+     *  process to construct initial states is needed.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
         _initialStatesNotReady = false;
     }
-    
+
     /** Return true if this is the discrete phase execution.
      *  @return True if this is the discrete phase execution.
      */
@@ -312,8 +308,8 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
             // This should never happen because a CT model with
             // a CTEmbeddedDirector must be used inside another CT model.
             throw new InternalErrorException("A CT model with a "
-                    + "CTEmbeddedDirector must be used inside "
-                    + "another CT model.");
+                + "CTEmbeddedDirector must be used inside "
+                + "another CT model.");
         }
     }
 
@@ -342,12 +338,12 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
     public void markState() {
         try {
             Iterator statefulActors = getScheduler().getSchedule()
-                .get(CTSchedule.STATEFUL_ACTORS)
-                .actorIterator();
+                                                      .get(CTSchedule.STATEFUL_ACTORS)
+                                                      .actorIterator();
 
             while (statefulActors.hasNext() && !_stopRequested) {
                 CTStatefulActor statefulActor = (CTStatefulActor) statefulActors
-                    .next();
+                                .next();
                 statefulActor.markState();
             }
         } catch (IllegalActionException e) {
@@ -363,11 +359,9 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
      *  postfire method.
      */
     public boolean postfire() throws IllegalActionException {
-        if (getExecutionPhase() == 
-            CTExecutionPhase.UPDATING_CONTINUOUS_STATES_PHASE) {
+        if (getExecutionPhase() == CTExecutionPhase.UPDATING_CONTINUOUS_STATES_PHASE) {
             super.updateContinuousStates();
-        } else if (getExecutionPhase() == 
-            CTExecutionPhase.POSTFIRING_EVENT_GENERATORS_PHASE) {
+        } else if (getExecutionPhase() == CTExecutionPhase.POSTFIRING_EVENT_GENERATORS_PHASE) {
             super.postfireEventGenerators();
         }
 
@@ -384,13 +378,13 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
 
             if (_debugging) {
                 _debug(getName(), "at " + getModelTime(),
-                        " predicts next step size as " + nextStepSize);
+                    " predicts next step size as " + nextStepSize);
             }
 
             return nextStepSize;
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(
-                    " Fail to predict the next step size." + ex.getMessage());
+                " Fail to predict the next step size." + ex.getMessage());
         }
     }
 
@@ -424,11 +418,11 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
     public void preinitialize() throws IllegalActionException {
         if (!(getContainer() instanceof CTStepSizeControlActor)) {
             throw new IllegalActionException(this,
-                    "can only be contained by "
-                    + "a composite actor that implements "
-                    + "the CTStepSizeControlActor "
-                    + "interface, for example, a continuous "
-                    + "time composite actor.");
+                "can only be contained by "
+                + "a composite actor that implements "
+                + "the CTStepSizeControlActor "
+                + "interface, for example, a continuous "
+                + "time composite actor.");
         }
 
         super.preinitialize();
@@ -453,7 +447,7 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
             return refinedStepSize;
         } catch (IllegalActionException ex) {
             throw new InternalErrorException("Fail to refine step size. "
-                    + ex.getMessage());
+                + ex.getMessage());
         }
     }
 

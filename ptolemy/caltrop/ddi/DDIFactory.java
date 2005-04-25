@@ -29,14 +29,18 @@
 */
 package ptolemy.caltrop.ddi;
 
+import caltrop.interpreter.Context;
+
+import caltrop.interpreter.ast.Actor;
+
+import caltrop.interpreter.environment.Environment;
+
 import ptolemy.actor.TypedAtomicActor;
 
-import caltrop.interpreter.Context;
-import caltrop.interpreter.ast.Actor;
-import caltrop.interpreter.environment.Environment;
 
 //////////////////////////////////////////////////////////////////////////
 //// DDIFactory
+
 /**
    The <tt>DDIFactory</tt> is used to create domain dependent plugins.
 
@@ -57,5 +61,5 @@ public interface DDIFactory {
      * @return A <tt>DDI</tt> for this domain.
      */
     DDI create(TypedAtomicActor ptActor, Actor actor, Context context,
-            Environment env);
+        Environment env);
 }

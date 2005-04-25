@@ -56,7 +56,6 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating Red (eal)
 */
 public class PeriodicTrigger extends TypedAtomicActor {
-
     /** Construct an actor in the specified container with the specified
      *  name.
      *  @param container The container.
@@ -67,7 +66,7 @@ public class PeriodicTrigger extends TypedAtomicActor {
      *   an actor already in the container.
      */
     public PeriodicTrigger(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.GENERAL);
@@ -112,14 +111,14 @@ public class PeriodicTrigger extends TypedAtomicActor {
     /** Once the period is updated, calculate the execution period.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == period) {
             long periodValue = ((LongToken) period.getToken()).longValue();
 
             if (periodValue < 100) {
                 throw new IllegalActionException(this,
-                        "does not support period lower than 100, value was:"
-                        + periodValue);
+                    "does not support period lower than 100, value was:"
+                    + periodValue);
             }
 
             _period = periodValue;
@@ -145,21 +144,22 @@ public class PeriodicTrigger extends TypedAtomicActor {
     }
 
     // Inner class
-    /** A Trigger thread. 
+
+    /** A Trigger thread.
      *  The trigger sleeps for the amount of time named by the
      *  <i>periodValue</i> parameter.
      */
     public class Trigger implements Runnable {
-        /** Construct a trigger.  
+        /** Construct a trigger.
          *  @param container The container of this trigger.
-         */ 
+         */
         public Trigger(Actor container) {
             _container = container;
         }
 
         /** Run the thread by sleeping for the amount of time in ms
          *  named by the <i>periodValue</i> parameter.
-         */    
+         */
         public void run() {
             while (true) {
                 try {
@@ -172,7 +172,7 @@ public class PeriodicTrigger extends TypedAtomicActor {
                     _container.iterate(1);
                 } catch (IllegalActionException ex) {
                     throw new InvalidStateException((NamedObj) _container,
-                            "IllegalActionException at execution" + ex.getMessage());
+                        "IllegalActionException at execution" + ex.getMessage());
                 }
             }
         }

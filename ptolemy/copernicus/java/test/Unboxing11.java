@@ -90,7 +90,7 @@ public class Unboxing11 {
 
         if (_numberOfInputs <= 0) {
             throw new RuntimeException("Invalid numberOfInputs: "
-                    + _numberOfInputs);
+                + _numberOfInputs);
         }
 
         int i = _numberOfLags;
@@ -123,7 +123,7 @@ public class Unboxing11 {
 
         if (_numberOfInputs <= 0) {
             throw new RuntimeException("Invalid numberOfInputs: "
-                    + _numberOfInputs);
+                + _numberOfInputs);
         }
 
         i = _numberOfLags;
@@ -161,7 +161,7 @@ public class Unboxing11 {
 
         if (_numberOfInputs <= 0) {
             throw new RuntimeException("Invalid numberOfInputs: "
-                    + _numberOfInputs);
+                + _numberOfInputs);
         }
 
         i = _numberOfLags;

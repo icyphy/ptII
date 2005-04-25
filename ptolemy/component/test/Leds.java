@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.component.test;
 
 import ptolemy.component.AtomicComponent;
@@ -36,8 +35,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Leds
+
 /**
    Display received argument value to the std output.
 
@@ -47,9 +48,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Yellow (ellen_zh)
    @Pt.AcceptedRating red (cxh)
 */
-
 public class Leds extends AtomicComponent {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -59,16 +58,18 @@ public class Leds extends AtomicComponent {
      *   actor with this name.
      */
     public Leds(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         display = new MethodCallPort(this, "display", true) {
-                public synchronized TupleToken call(TupleToken args) {
-                    System.out.println("---call method Leds.displays.");
-                    IntToken arg = (IntToken)args.getElement(0);
-                    System.out.println("*** Leds Displays: " + arg.intValue());
-                    return TupleToken.VOID;
-                }
-            };
+                    public synchronized TupleToken call(TupleToken args) {
+                        System.out.println("---call method Leds.displays.");
+
+                        IntToken arg = (IntToken) args.getElement(0);
+                        System.out.println("*** Leds Displays: "
+                            + arg.intValue());
+                        return TupleToken.VOID;
+                    }
+                };
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -79,5 +80,4 @@ public class Leds extends AtomicComponent {
      *  has type general.
      */
     public MethodCallPort display;
-
 }

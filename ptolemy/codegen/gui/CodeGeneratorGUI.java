@@ -25,8 +25,8 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.codegen.gui;
+
 
 // Ptolemy imports.
 import ptolemy.actor.gui.Configuration;
@@ -55,8 +55,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// CodeGeneratorGUI
+
 /**
    This is an attribute that creates an editor for configuring and
    running a code generator.  This is designed to be contained by
@@ -72,7 +74,6 @@ import javax.swing.JTextArea;
    @Pt.AcceptedRating Red (eal)
 */
 public class CodeGeneratorGUI extends PtolemyFrame {
-
     /** Construct a frame to control code generation for
      *  the specified Ptolemy II model.
      *  After constructing this, it is necessary
@@ -86,23 +87,21 @@ public class CodeGeneratorGUI extends PtolemyFrame {
      *  @exception NameDuplicationException If a name collision occurs.
      */
     public CodeGeneratorGUI(final CodeGenerator codeGenerator, Tableau tableau)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(codeGenerator, tableau);
 
         setTitle(codeGenerator.getName());
 
-        if (getEffigy() == null
-                || getEffigy().uri == null
-                || getEffigy().uri.getURI() == null) {
+        if ((getEffigy() == null) || (getEffigy().uri == null)
+                        || (getEffigy().uri.getURI() == null)) {
             throw new InternalErrorException("Cannot get an effigy!");
         }
 
         // Caveats panel.
         JPanel caveatsPanel = new JPanel();
-        caveatsPanel.setBorder(
-                BorderFactory.createEmptyBorder(5, 0, 0, 0));
-        caveatsPanel.setLayout(new BoxLayout(caveatsPanel,
-                                       BoxLayout.X_AXIS));
+        caveatsPanel.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
+        caveatsPanel.setLayout(new BoxLayout(caveatsPanel, BoxLayout.X_AXIS));
+
         JTextArea messageArea = new JTextArea(
                 "NOTE: This is a highly preliminary "
                 + "code generator facility, with many "
@@ -118,19 +117,20 @@ public class CodeGeneratorGUI extends PtolemyFrame {
         moreInfoButton.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent evt) {
                     try {
-                    	Configuration configuration = getConfiguration();
-                    	// FIXME: Customize to the particular code generator.
-                    	// Use Thread.currentThread() so that this code will
+                        Configuration configuration = getConfiguration();
+
+                        // FIXME: Customize to the particular code generator.
+                        // Use Thread.currentThread() so that this code will
                         // work under WebStart.
-                        URL infoURL = Thread.currentThread().getContextClassLoader()
-                            .getResource("ptolemy/codegen/README.html");
-                        
-                        configuration.openModel(
-                                null, infoURL, infoURL.toExternalForm());
+                        URL infoURL = Thread.currentThread()
+                                                        .getContextClassLoader()
+                                                        .getResource("ptolemy/codegen/README.html");
+
+                        configuration.openModel(null, infoURL,
+                            infoURL.toExternalForm());
                     } catch (Exception ex) {
                         throw new InternalErrorException(codeGenerator, ex,
-                                "Failed to open doc/codegen.htm: ");
-
+                            "Failed to open doc/codegen.htm: ");
                     }
                 }
             });
@@ -147,9 +147,8 @@ public class CodeGeneratorGUI extends PtolemyFrame {
 
         // Button panel first.
         JButton parametersButton = new JButton("Parameters");
-        parametersButton
-            .setToolTipText("Sanity check the Parameters and then "
-                    + "display a summary.");
+        parametersButton.setToolTipText("Sanity check the Parameters and then "
+            + "display a summary.");
         buttonPanel.add(parametersButton);
 
         JButton goButton = new JButton("Generate");
@@ -170,23 +169,23 @@ public class CodeGeneratorGUI extends PtolemyFrame {
         Configurer configurer = new Configurer(codeGenerator);
         JPanel controlPanel = new JPanel();
         controlPanel.add(configurer);
+
         JScrollPane scrollPane = new JScrollPane(controlPanel);
 
         left.add(scrollPane, BorderLayout.CENTER);
 
         // Create a JTextAreaExec without Start and Cancel buttons.
-        final JTextAreaExec exec =
-            new JTextAreaExec("Code Generator Commands", false);
+        final JTextAreaExec exec = new JTextAreaExec("Code Generator Commands",
+                false);
 
-        JSplitPane splitPane =
-            new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
-                    left, exec);
+        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
+                left, exec);
         splitPane.setOneTouchExpandable(true);
 
         // Adjust the divider so that the control panel does not
         // have a horizontal scrollbar.
         Dimension preferred = left.getPreferredSize();
-        splitPane.setDividerLocation((int)(preferred.width + 20));
+        splitPane.setDividerLocation((int) (preferred.width + 20));
 
         getContentPane().add(splitPane, BorderLayout.CENTER);
 
@@ -199,6 +198,7 @@ public class CodeGeneratorGUI extends PtolemyFrame {
                     } catch (Exception ex) {
                         exec.appendJTextArea(ex.toString());
                     }
+
                     // FIXME: Print out all parameter values
                     // exec.appendJTextArea(options.toString());
                 }
@@ -220,17 +220,15 @@ public class CodeGeneratorGUI extends PtolemyFrame {
                 public void actionPerformed(ActionEvent evt) {
                     try {
                         exec.updateStatusBar("Starting " + codeGenerator
-                                + " code generation.");
+                            + " code generation.");
 
                         StringBuffer code = new StringBuffer();
                         codeGenerator.generateCode(code);
                         exec.updateStatusBar(code.toString());
 
-                        exec.updateStatusBar("Code generation "
-                                + "complete.");
+                        exec.updateStatusBar("Code generation " + "complete.");
                     } catch (Exception ex) {
-                        MessageHandler.error("Code generation failed.",
-                                ex);
+                        MessageHandler.error("Code generation failed.", ex);
                     }
                 }
             });

@@ -61,7 +61,7 @@ public class FileWriter extends ptolemy.actor.lib.Writer {
      *   actor with this name.
      */
     public FileWriter(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         filename = new Parameter(this, "filename");
         filename.setExpression("");
@@ -88,7 +88,7 @@ public class FileWriter extends ptolemy.actor.lib.Writer {
      *   is <i>filename</i> and the file cannot be opened.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == filename) {
             try {
                 StringToken filenameToken = (StringToken) filename.getToken();
@@ -107,7 +107,7 @@ public class FileWriter extends ptolemy.actor.lib.Writer {
                 }
             } catch (IOException ex) {
                 throw new IllegalActionException(this, ex,
-                        "attributeChanged(" + attribute.getName() + ") failed");
+                    "attributeChanged(" + attribute.getName() + ") failed");
             }
         }
     }

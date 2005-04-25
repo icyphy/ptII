@@ -69,7 +69,7 @@ public class JAIMedianFilter extends Transformer {
      *   actor with this name.
      */
     public JAIMedianFilter(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         shape = new StringAttribute(this, "shape");
@@ -120,7 +120,7 @@ public class JAIMedianFilter extends Transformer {
      *  or if a contained method throws it.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == shape) {
             String name = shape.getExpression();
 
@@ -134,7 +134,7 @@ public class JAIMedianFilter extends Transformer {
                 _shape = MedianFilterDescriptor.MEDIAN_MASK_X;
             } else {
                 throw new IllegalActionException(this,
-                        "Unrecognized Shape Name: " + name);
+                    "Unrecognized Shape Name: " + name);
             }
         } else if (attribute == size) {
             _size = ((IntToken) size.getToken()).intValue();

@@ -70,7 +70,7 @@ public class SampleDelay extends SDFTransformer {
      *   actor with this name.
      */
     public SampleDelay(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         initialOutputs = new Parameter(this, "initialOutputs");
@@ -106,7 +106,7 @@ public class SampleDelay extends SDFTransformer {
      *   allowed on the specified attribute.
      */
     public void attributeTypeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute != initialOutputs) {
             super.attributeTypeChanged(attribute);
         }
@@ -169,8 +169,8 @@ public class SampleDelay extends SDFTransformer {
 
         if (!(contents instanceof ArrayToken)) {
             throw new IllegalActionException(this,
-                    "InitialOutputs was " + contents + " which is not an"
-                    + " array token.");
+                "InitialOutputs was " + contents + " which is not an"
+                + " array token.");
         }
 
         _outputsArray = (ArrayToken) contents;

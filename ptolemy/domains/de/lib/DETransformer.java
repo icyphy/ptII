@@ -58,7 +58,7 @@ public abstract class DETransformer extends DEActor {
      *   actor with this name.
      */
     protected DETransformer(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         input = new TypedIOPort(this, "input", true, false);

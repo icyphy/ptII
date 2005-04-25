@@ -63,7 +63,7 @@ public class Writer extends Sink {
      *   actor with this name.
      */
     public Writer(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         if (_stdOut == null) {
@@ -117,7 +117,7 @@ public class Writer extends Sink {
             }
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
-                    "setWriter(" + writer + ") failed");
+                "setWriter(" + writer + ") failed");
         }
 
         if (writer != null) {
@@ -137,7 +137,7 @@ public class Writer extends Sink {
             }
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
-                    "wrapup(" + _writer + ") failed");
+                "wrapup(" + _writer + ") failed");
         }
     }
 

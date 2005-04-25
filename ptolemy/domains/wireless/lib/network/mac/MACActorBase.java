@@ -76,7 +76,7 @@ public class MACActorBase extends NetworkActorBase {
      *   an actor already in the container.
      */
     public MACActorBase(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // Configure MAC layer parameters.
@@ -219,7 +219,7 @@ public class MACActorBase extends NetworkActorBase {
      *   to this container.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         int temp = 0;
 
         if (attribute == aSifsTime) {
@@ -227,8 +227,8 @@ public class MACActorBase extends NetworkActorBase {
 
             if (temp < 0) {
                 throw new IllegalActionException(this,
-                        "aSifsTime is required to be positive. "
-                        + "Attempt to set it to: " + temp);
+                    "aSifsTime is required to be positive. "
+                    + "Attempt to set it to: " + temp);
             } else {
                 _aSifsTime = temp;
             }
@@ -237,8 +237,8 @@ public class MACActorBase extends NetworkActorBase {
 
             if (temp < 0) {
                 throw new IllegalActionException(this,
-                        "preamble Length is required to be nonnegative. "
-                        + "Attempt to set it to: " + temp);
+                    "preamble Length is required to be nonnegative. "
+                    + "Attempt to set it to: " + temp);
             } else {
                 _aPreambleLength = temp;
             }
@@ -247,8 +247,8 @@ public class MACActorBase extends NetworkActorBase {
 
             if (temp < 0) {
                 throw new IllegalActionException(this,
-                        "PLCPHeader Length is required to be nonnegative. "
-                        + "Attempt to set it to: " + temp);
+                    "PLCPHeader Length is required to be nonnegative. "
+                    + "Attempt to set it to: " + temp);
             } else {
                 _aPlcpHeaderLength = temp;
             }
@@ -257,8 +257,8 @@ public class MACActorBase extends NetworkActorBase {
 
             if (temp < 0) {
                 throw new IllegalActionException(this,
-                        "aRxTxTurnaroundTime is required to be nonnegative. "
-                        + "Attempt to set it to: " + temp);
+                    "aRxTxTurnaroundTime is required to be nonnegative. "
+                    + "Attempt to set it to: " + temp);
             } else {
                 _aRxTxTurnaroundTime = temp;
             }
@@ -267,8 +267,8 @@ public class MACActorBase extends NetworkActorBase {
 
             if (temp < 0) {
                 throw new IllegalActionException(this,
-                        "sAckCtsLng is required to be nonnegative. "
-                        + "Attempt to set it to: " + temp);
+                    "sAckCtsLng is required to be nonnegative. "
+                    + "Attempt to set it to: " + temp);
             } else {
                 _sAckCtsLng = temp;
             }
@@ -277,8 +277,8 @@ public class MACActorBase extends NetworkActorBase {
 
             if (temp < 0) {
                 throw new IllegalActionException(this,
-                        "mBrate is required to be nonnegative. "
-                        + "Attempt to set it to: " + temp);
+                    "mBrate is required to be nonnegative. "
+                    + "Attempt to set it to: " + temp);
             } else {
                 _mBrate = temp;
             }
@@ -287,8 +287,8 @@ public class MACActorBase extends NetworkActorBase {
 
             if (temp < 0) {
                 throw new IllegalActionException(this,
-                        "aSlotTime is required to be nonnegative. "
-                        + "Attempt to set it to: " + temp);
+                    "aSlotTime is required to be nonnegative. "
+                    + "Attempt to set it to: " + temp);
             } else {
                 _aSlotTime = temp;
             }
@@ -297,8 +297,8 @@ public class MACActorBase extends NetworkActorBase {
 
             if (temp < 0) {
                 throw new IllegalActionException(this,
-                        "aRxRfDelay is required to be nonnegative. "
-                        + "Attempt to set it to: " + temp);
+                    "aRxRfDelay is required to be nonnegative. "
+                    + "Attempt to set it to: " + temp);
             } else {
                 _aRxRfDelay = temp;
             }
@@ -307,8 +307,8 @@ public class MACActorBase extends NetworkActorBase {
 
             if (temp < 0) {
                 throw new IllegalActionException(this,
-                        "aRxPlcpDelay is required to be nonnegative. "
-                        + "Attempt to set it to: " + temp);
+                    "aRxPlcpDelay is required to be nonnegative. "
+                    + "Attempt to set it to: " + temp);
             } else {
                 _aRxPlcpDelay = temp;
             }
@@ -317,8 +317,8 @@ public class MACActorBase extends NetworkActorBase {
 
             if (temp < 0) {
                 throw new IllegalActionException(this,
-                        "aCWmin is required to be nonnegative. "
-                        + "Attempt to set it to: " + temp);
+                    "aCWmin is required to be nonnegative. "
+                    + "Attempt to set it to: " + temp);
             } else {
                 _aCWmin = temp;
             }
@@ -327,8 +327,8 @@ public class MACActorBase extends NetworkActorBase {
 
             if (temp < 0) {
                 throw new IllegalActionException(this,
-                        "aCWmax is required to be nonnegative. "
-                        + "Attempt to set it to: " + temp);
+                    "aCWmax is required to be nonnegative. "
+                    + "Attempt to set it to: " + temp);
             } else {
                 _aCWmax = temp;
             }
@@ -337,8 +337,8 @@ public class MACActorBase extends NetworkActorBase {
 
             if (temp < 0) {
                 throw new IllegalActionException(this,
-                        "dot11ShortRetryLimit is required to be nonnegative. "
-                        + "Attempt to set it to: " + temp);
+                    "dot11ShortRetryLimit is required to be nonnegative. "
+                    + "Attempt to set it to: " + temp);
             } else {
                 _dot11ShortRetryLimit = temp;
             }
@@ -347,8 +347,8 @@ public class MACActorBase extends NetworkActorBase {
 
             if (temp < 0) {
                 throw new IllegalActionException(this,
-                        "dot11LongRetryLimit is required to be nonnegative. "
-                        + "Attempt to set it to: " + temp);
+                    "dot11LongRetryLimit is required to be nonnegative. "
+                    + "Attempt to set it to: " + temp);
             } else {
                 _dot11LongRetryLimit = temp;
             }
@@ -357,8 +357,8 @@ public class MACActorBase extends NetworkActorBase {
 
             if (temp < 0) {
                 throw new IllegalActionException(this,
-                        "dotllRTSThreshold is required to be nonnegative. "
-                        + "Attempt to set it to: " + temp);
+                    "dotllRTSThreshold is required to be nonnegative. "
+                    + "Attempt to set it to: " + temp);
             } else {
                 _dotllRTSThreshold = temp;
             }
@@ -399,52 +399,139 @@ public class MACActorBase extends NetworkActorBase {
     protected Attribute _mBkIP = null;
 
     // message formats
-    protected static final String[] TxStartMsgFields = { "kind", "length", "rate" };
-    protected static final String[] TxDataMsgFields = { "kind", "pdu" };
-    protected static final String[] RtsTimeoutMsgFields = { "kind" };
+    protected static final String[] TxStartMsgFields = {
+            "kind",
+            "length",
+            "rate"
+        };
+    protected static final String[] TxDataMsgFields = {
+            "kind",
+            "pdu"
+        };
+    protected static final String[] RtsTimeoutMsgFields = {
+            "kind"
+        };
     protected static final String[] RxMpduMsgFields = {
-        "kind", "pdu", "endRx", "rxRate"
-    };
-    protected static final String[] UseIfsMsgFields = { "kind", "tRxEnd" };
+            "kind",
+            "pdu",
+            "endRx",
+            "rxRate"
+        };
+    protected static final String[] UseIfsMsgFields = {
+            "kind",
+            "tRxEnd"
+        };
     protected static final String[] RxIndicateMessageFields = {
-        "kind", "pdu", "endRx", "rxRate"
-    };
+            "kind",
+            "pdu",
+            "endRx",
+            "rxRate"
+        };
     protected static final String[] NeedAckMessageFields = {
-        "kind", "ackto", "endRx", "rxRate", "dAck"
-    };
+            "kind",
+            "ackto",
+            "endRx",
+            "rxRate",
+            "dAck"
+        };
     protected static final String[] SetNavMessageFields = {
-        "kind", "tRef", "dNav", "src"
-    };
-    protected static final String[] CSMsgFields = { "kind" };
+            "kind",
+            "tRef",
+            "dNav",
+            "src"
+        };
+    protected static final String[] CSMsgFields = {
+            "kind"
+        };
 
     // the value for the pdu field is a record with fields
     // as DataPacket's fields.
-    protected static final String[] TxRequestMsgFields = { "kind", "pdu", "rate" };
-    protected static final String[] TxConfirmMsgFields = { "kind" };
+    protected static final String[] TxRequestMsgFields = {
+            "kind",
+            "pdu",
+            "rate"
+        };
+    protected static final String[] TxConfirmMsgFields = {
+            "kind"
+        };
     protected static final String[] DataPacket = {
-        "protocolVer", "Type", "Subtype", "toDs", "frDs", "moreFrag",
-        "retryBit", "pwrMgt", "moreData", "wepBit", "orderBit", "FCS",
-        "durId", "Addr1", "Addr2", "Addr3", "SeqNum", "FragNum", "Addr4",
-        "payload", "Length"
-    };
+            "protocolVer",
+            "Type",
+            "Subtype",
+            "toDs",
+            "frDs",
+            "moreFrag",
+            "retryBit",
+            "pwrMgt",
+            "moreData",
+            "wepBit",
+            "orderBit",
+            "FCS",
+            "durId",
+            "Addr1",
+            "Addr2",
+            "Addr3",
+            "SeqNum",
+            "FragNum",
+            "Addr4",
+            "payload",
+            "Length"
+        };
 
     // use Addr1 for RA, so FilterMpdu does not need to check packet type
     // before checking Addr1 or RA filed
     protected static final String[] AckPacket = {
-        "protocolVer", "Type", "Subtype", "toDs", "frDs", "moreFrag",
-        "retryBit", "pwrMgt", "moreData", "wepBit", 
-        //"orderBit", "FCS", "durId", "RA","Length"};
-        "orderBit", "FCS", "durId", "Addr1", "Length"
-    };
+            "protocolVer",
+            "Type",
+            "Subtype",
+            "toDs",
+            "frDs",
+            "moreFrag",
+            "retryBit",
+            "pwrMgt",
+            "moreData",
+            "wepBit",
+            
+            //"orderBit", "FCS", "durId", "RA","Length"};
+            "orderBit",
+            "FCS",
+            "durId",
+            "Addr1",
+            "Length"
+        };
     protected static final String[] RtsPacket = {
-        "protocolVer", "Type", "Subtype", "toDs", "frDs", "moreFrag",
-        "retryBit", "pwrMgt", "moreData", "wepBit", 
-        //     "orderBit", "FCS", "durId", "RA", "TA","Length"};
-        "orderBit", "FCS", "durId", "Addr1", "Addr2", "Length"
-    };
-    protected static final String[] BackoffDoneMsgFields = { "kind", "cnt" };
-    protected static final String[] getBackoffMsgFields = { "kind", "ccw", "cnt" };
-    protected static final String[] GotCtsMsgFields = { "kind", "endRx" };
+            "protocolVer",
+            "Type",
+            "Subtype",
+            "toDs",
+            "frDs",
+            "moreFrag",
+            "retryBit",
+            "pwrMgt",
+            "moreData",
+            "wepBit",
+            
+            //     "orderBit", "FCS", "durId", "RA", "TA","Length"};
+            "orderBit",
+            "FCS",
+            "durId",
+            "Addr1",
+            "Addr2",
+            "Length"
+        };
+    protected static final String[] BackoffDoneMsgFields = {
+            "kind",
+            "cnt"
+        };
+    protected static final String[] getBackoffMsgFields = {
+            "kind",
+            "ccw",
+            "cnt"
+        };
+    protected static final String[] GotCtsMsgFields = {
+            "kind",
+            "endRx"
+        };
 
     // message types
     protected static final int NeedAck = 1;
@@ -515,7 +602,7 @@ public class MACActorBase extends NetworkActorBase {
     // A convenient method for the MAC actors to set an
     // attibute of the MAC composite.
     protected void _setAttribute(Attribute attribute, Token token)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute != null) {
             if (attribute instanceof Variable) {
                 ((Variable) attribute).setToken(token);

@@ -93,7 +93,7 @@ public class SRRandomizedScheduler extends Scheduler {
      *   an attribute already in the container.
      */
     public SRRandomizedScheduler(Director container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -116,16 +116,16 @@ public class SRRandomizedScheduler extends Scheduler {
 
         if (director == null) {
             throw new NotSchedulableException(this,
-                    "SRRandomizedScheduler "
-                    + "cannot schedule graph with no director.");
+                "SRRandomizedScheduler "
+                + "cannot schedule graph with no director.");
         }
 
         CompositeActor compositeActor = (CompositeActor) (director.getContainer());
 
         if (compositeActor == null) {
             throw new NotSchedulableException(this,
-                    "SRRandomizedScheduler "
-                    + "cannot schedule graph with no container.");
+                "SRRandomizedScheduler "
+                + "cannot schedule graph with no container.");
         }
 
         List actorList = compositeActor.deepEntityList();

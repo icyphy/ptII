@@ -27,13 +27,15 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.lib.colt;
 
+import cern.jet.random.Exponential;
+
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import cern.jet.random.Exponential;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// Exponential
@@ -46,14 +48,14 @@ import cern.jet.random.Exponential;
    deviation given by parameters.  In addition, the seed can be
    specified as a parameter to control the sequence that is generated.
 
-   <p> This actor instantiates a 
+   <p> This actor instantiates a
    <a href="http://hoschek.home.cern.ch/hoschek/colt/V1.0.3/doc/cern/jet/random/Exponential.html">cern.jet.random.Exponential</a> object with
     lambda set to 1.0.  The distribution is defined as
 <pre>
 p(x) = lambda*exp(-x*lambda) for x >= 0, lambda > 0
 </pre>
    The above description of Exponential is
-   <a href="doc-files/colt-copyright.htm">copyrighted</a>. 
+   <a href="doc-files/colt-copyright.htm">copyrighted</a>.
 
     <p>A definition of the Exponential distribution can be found at
 <a href="http://www.cern.ch/RD11/rkb/AN16pp/node78.html#SECTION000780000000000000000"><code>http://www.cern.ch/RD11/rkb/AN16pp/node78.html#SECTION000780000000000000000</code></a>
@@ -65,7 +67,6 @@ p(x) = lambda*exp(-x*lambda) for x >= 0, lambda > 0
    @Pt.AcceptedRating Red (cxh)
 */
 public class ColtExponential extends ColtRandomSource {
-    
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -75,7 +76,7 @@ public class ColtExponential extends ColtRandomSource {
      *   actor with this name.
      */
     public ColtExponential(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         output.setTypeEquals(BaseType.DOUBLE);
@@ -125,10 +126,10 @@ public class ColtExponential extends ColtRandomSource {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The random number for the current iteration. */
     private double _current;
-    
+
     /** The random number generator. */
     private Exponential _generator;
 }

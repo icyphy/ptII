@@ -53,7 +53,6 @@ import java.util.Random;
    @Pt.AcceptedRating Green (bilung)
 */
 public abstract class RandomSource extends Source {
-    
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -63,7 +62,7 @@ public abstract class RandomSource extends Source {
      *   actor with this name.
      */
     public RandomSource(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         seed = new Parameter(this, "seed", new LongToken(0));
         seed.setTypeEquals(BaseType.LONG);
@@ -110,12 +109,13 @@ public abstract class RandomSource extends Source {
      */
     public void fire() throws IllegalActionException {
         super.fire();
+
         if (_needNew) {
             _generateRandomNumber();
             _needNew = false;
         }
     }
-  
+
     /** Calculate the next random number.
      *  @exception IllegalActionException If the base class throws it.
      *  @return True if it is ok to continue.
@@ -124,7 +124,7 @@ public abstract class RandomSource extends Source {
         _needNew = true;
         return super.postfire();
     }
-    
+
     /** Initialize the random number generator with the seed, if it
      *  has been given.  A seed of zero is interpreted to mean that no
      *  seed is specified.  In such cases, a seed based on the current
@@ -142,18 +142,20 @@ public abstract class RandomSource extends Source {
         } else {
             _random.setSeed(System.currentTimeMillis() + hashCode());
         }
+
         _needNew = true;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Generate a new random number. 
+    /** Generate a new random number.
      *  @exception IllegalActionException Not thrown in this base class.
      *  Derived classes may throw it if there are problems getting parameter
-     *  values.   
+     *  values.
      */
-    protected abstract void _generateRandomNumber() throws IllegalActionException;
+    protected abstract void _generateRandomNumber()
+        throws IllegalActionException;
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////

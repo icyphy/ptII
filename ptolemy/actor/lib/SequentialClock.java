@@ -106,7 +106,7 @@ public class SequentialClock extends TypedAtomicActor implements SequenceActor {
      *   actor with this name.
      */
     public SequentialClock(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         output = new TypedIOPort(this, "output", false, true);
@@ -176,7 +176,7 @@ public class SequentialClock extends TypedAtomicActor implements SequenceActor {
      *   nondecreasing and nonnegative, or it is not a row vector.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == offsets) {
             ArrayToken offsetsValue = (ArrayToken) offsets.getToken();
             _offsets = new double[offsetsValue.length()];
@@ -185,13 +185,13 @@ public class SequentialClock extends TypedAtomicActor implements SequenceActor {
 
             for (int i = 0; i < offsetsValue.length(); i++) {
                 _offsets[i] = ((DoubleToken) offsetsValue.getElement(i))
-                    .doubleValue();
+                                .doubleValue();
 
                 // Check nondecreasing property.
                 if (_offsets[i] < previous) {
                     throw new IllegalActionException(this,
-                            "Value of offsets is not nondecreasing "
-                            + "and nonnegative.");
+                        "Value of offsets is not nondecreasing "
+                        + "and nonnegative.");
                 }
 
                 previous = _offsets[i];
@@ -201,8 +201,8 @@ public class SequentialClock extends TypedAtomicActor implements SequenceActor {
 
             if (periodValue <= 0.0) {
                 throw new IllegalActionException(this,
-                        "Period is required to be positive.  " + "Period given: "
-                        + periodValue);
+                    "Period is required to be positive.  " + "Period given: "
+                    + periodValue);
             }
         } else {
             super.attributeChanged(attribute);
@@ -287,8 +287,8 @@ public class SequentialClock extends TypedAtomicActor implements SequenceActor {
 
         if (_offsets[_phase] >= periodValue) {
             throw new IllegalActionException(this,
-                    "Offset number " + _phase + " with value " + _offsets[_phase]
-                    + " must be less than the " + "period, which is " + periodValue);
+                "Offset number " + _phase + " with value " + _offsets[_phase]
+                + " must be less than the " + "period, which is " + periodValue);
         }
 
         Time nextIterationTime = _cycleStartTime.add(_offsets[_phase]);
@@ -306,7 +306,7 @@ public class SequentialClock extends TypedAtomicActor implements SequenceActor {
 
         if ((val == null) || (val.length() <= _phase)) {
             throw new IllegalActionException(this,
-                    "Offsets and values parameters lengths do not match.");
+                "Offsets and values parameters lengths do not match.");
         }
 
         _currentValue = val.getElement(_phase);

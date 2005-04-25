@@ -90,71 +90,71 @@ public class GenerateCopyrights {
         // Add the classnames and copyrights.
         // Alphabetical by className.
         _addIfPresent(copyrightsMap, "ptolemy.backtrack.ast.TypeAnalyzer",
-                "ptolemy/backtrack/ast/eclipse-copyright.htm");
+            "ptolemy/backtrack/ast/eclipse-copyright.htm");
 
         _addIfPresent(copyrightsMap, "caltrop.ptolemy.actors.CalInterpreter",
-                "ptolemy/cal/saxon-copyright.htm");
+            "ptolemy/cal/saxon-copyright.htm");
 
         _addIfPresent(copyrightsMap, "caltrop.ptolemy.actors.CalInterpreter",
-                "ptolemy/cal/cup-copyright.htm");
+            "ptolemy/cal/cup-copyright.htm");
 
         _addIfPresent(copyrightsMap, "ptolemy.actor.lib.colt.ColtRandomSource",
-                "ptolemy/actor/lib/colt/colt-copyright.htm");
+            "ptolemy/actor/lib/colt/colt-copyright.htm");
 
         _addIfPresent(copyrightsMap, "ptolemy.domains.gr.kernel.GRActor",
-                "ptolemy/domains/gr/lib/java3d-copyright.htm");
+            "ptolemy/domains/gr/lib/java3d-copyright.htm");
 
         _addIfPresent(copyrightsMap, "ptolemy.actor.lib.io.comm.SerialComm",
-                "ptolemy/actor/lib/io/comm/copyright.htm");
+            "ptolemy/actor/lib/io/comm/copyright.htm");
 
         _addIfPresent(copyrightsMap, "ptolemy.actor.lib.jai.JAIImageToken",
-                "ptolemy/actor/lib/jai/jai-copyright.htm");
+            "ptolemy/actor/lib/jai/jai-copyright.htm");
 
         _addIfPresent(copyrightsMap, "ptolemy.actor.lib.jmf.JMFImageToken",
-                "ptolemy/actor/lib/jmf/jmf-copyright.htm");
+            "ptolemy/actor/lib/jmf/jmf-copyright.htm");
 
         _addIfPresent(copyrightsMap, "ptolemy.actor.lib.joystick.Joystick",
-                "ptolemy/actor/lib/joystick/copyright.htm");
+            "ptolemy/actor/lib/joystick/copyright.htm");
 
         _addIfPresent(copyrightsMap, "ptolemy.actor.lib.python.PythonScript",
-                "ptolemy/actor/lib/python/copyright.htm");
+            "ptolemy/actor/lib/python/copyright.htm");
 
         _addIfPresent(copyrightsMap, "ptolemy.actor.lib.x10.X10Interface",
-                "ptolemy/actor/lib/x10/x10-copyright.htm");
+            "ptolemy/actor/lib/x10/x10-copyright.htm");
 
         _addIfPresent(copyrightsMap, "ptolemy.copernicus.kernel.KernelMain",
-                "ptolemy/copernicus/kernel/soot-license.html");
+            "ptolemy/copernicus/kernel/soot-license.html");
 
         _addIfPresent(copyrightsMap,
-                "ptolemy.domains.gr.lib.quicktime.MovieViewScreen2D",
-                "ptolemy/domains/gr/lib/quicktime/quicktime-copyright.htm");
+            "ptolemy.domains.gr.lib.quicktime.MovieViewScreen2D",
+            "ptolemy/domains/gr/lib/quicktime/quicktime-copyright.htm");
 
         _addIfPresent(copyrightsMap,
-                "ptolemy.domains.psdf.kernel.PSDFScheduler",
-                "ptolemy/domains/psdf/mapss-copyright.htm");
+            "ptolemy.domains.psdf.kernel.PSDFScheduler",
+            "ptolemy/domains/psdf/mapss-copyright.htm");
 
         _addIfPresent(copyrightsMap, "ptolemy.matlab.Expression",
-                "ptolemy/matlab/copyright.htm");
+            "ptolemy/matlab/copyright.htm");
 
-        _addIfPresent(copyrightsMap,
-                "vendors.vr.Volume",
-                "ptolemy/domains/gr/lib/vr/vr-copyright.htm");
+        _addIfPresent(copyrightsMap, "vendors.vr.Volume",
+            "ptolemy/domains/gr/lib/vr/vr-copyright.htm");
 
         // FIXME: This is really lame needing to add in sub package
         // copyrights for other apps, but it is the best we can do right now.
         _addIfPresent(copyrightsMap, "mescal.domains.mescalPE.kernel.parser",
-                "mescal/configs/doc/cup-copyright.htm");
+            "mescal/configs/doc/cup-copyright.htm");
 
         _addIfPresent(copyrightsMap,
-                "org.satlive.jsat.objects.ExternalLiteral",
-                "mescal/configs/doc/jsat-copyright.htm");
+            "org.satlive.jsat.objects.ExternalLiteral",
+            "mescal/configs/doc/jsat-copyright.htm");
 
         // Now generate the HTML
         String applicationName = "Ptolemy II";
 
         try {
             StringAttribute applicationNameAttribute = (StringAttribute) configuration
-                .getAttribute("_applicationName", StringAttribute.class);
+                            .getAttribute("_applicationName",
+                                StringAttribute.class);
 
             if (applicationNameAttribute != null) {
                 applicationName = applicationNameAttribute.getExpression();
@@ -168,11 +168,12 @@ public class GenerateCopyrights {
 
         try {
             StringAttribute applicationCopyrightAttribute = (StringAttribute) configuration
-                .getAttribute("_applicationCopyright", StringAttribute.class);
+                            .getAttribute("_applicationCopyright",
+                                StringAttribute.class);
 
             if (applicationCopyrightAttribute != null) {
                 applicationCopyright = applicationCopyrightAttribute
-                    .getExpression();
+                                .getExpression();
             }
         } catch (Exception ex) {
             // Ignore and use the default applicationCopyright
@@ -184,43 +185,43 @@ public class GenerateCopyrights {
 
         StringBuffer htmlBuffer = new StringBuffer();
         htmlBuffer.append("<html>\n<head>\n<title>Copyrights</title>\n"
-                + "</head>\n<body>\n" + "<h1>" + applicationName + "</h1>\n"
-                + "The primary copyright for the " + applicationName
-                + " System can be\n" + "found in <a href=\""
-                + applicationCopyrightURL + "\"><code>"
-                + _canonicalizeURLToPTII(applicationCopyrightURL)
-                + "</code></a>.\n"
-                + "This configuration includes code that uses packages\n"
-                + "with the following copyrights.\n");
+            + "</head>\n<body>\n" + "<h1>" + applicationName + "</h1>\n"
+            + "The primary copyright for the " + applicationName
+            + " System can be\n" + "found in <a href=\""
+            + applicationCopyrightURL + "\"><code>"
+            + _canonicalizeURLToPTII(applicationCopyrightURL)
+            + "</code></a>.\n"
+            + "This configuration includes code that uses packages\n"
+            + "with the following copyrights.\n");
 
         if (!applicationCopyright.equals(defaultApplicationCopyright)) {
             // If the Ptolemy II copyright is not the main copyright, add it.
             String ptolemyIICopyright = _findURL(defaultApplicationCopyright);
             htmlBuffer.append("<p>" + applicationName + " uses Ptolemy II "
-                    + VersionAttribute.CURRENT_VERSION.getExpression() + ".\n"
-                    + "PtolemyII is covered by the copyright in\n " + "<a href=\""
-                    + ptolemyIICopyright + "\"><code>"
-                    + _canonicalizeURLToPTII(ptolemyIICopyright) + "</code></a>\n");
+                + VersionAttribute.CURRENT_VERSION.getExpression() + ".\n"
+                + "PtolemyII is covered by the copyright in\n " + "<a href=\""
+                + ptolemyIICopyright + "\"><code>"
+                + _canonicalizeURLToPTII(ptolemyIICopyright) + "</code></a>\n");
         }
 
         htmlBuffer.append("<p>" + applicationName
-                + " uses AElfred as an XML Parser.\n"
-                + "AElfred is covered by the copyright in\n " + "<a href=\""
-                + aelfredCopyright + "\"><code>"
-                + _canonicalizeURLToPTII(aelfredCopyright) + "</code></a>\n");
+            + " uses AElfred as an XML Parser.\n"
+            + "AElfred is covered by the copyright in\n " + "<a href=\""
+            + aelfredCopyright + "\"><code>"
+            + _canonicalizeURLToPTII(aelfredCopyright) + "</code></a>\n");
 
         Iterator copyrights = copyrightsMap.entrySet().iterator();
 
         if (copyrights.hasNext()) {
             // DSP configuration might not include other actors.
             htmlBuffer.append("<p>Below we list features and the "
-                    + "corresponding copyright "
-                    + " of the package that is used.  If a feature is not "
-                    + "listed below, then the " + applicationName
-                    + " copyright is the " + "only copyright." + "<table>\n"
-                    + "  <tr><th>Feature</th>\n"
-                    + "      <th>Copyright of package used by the feature</th>\n"
-                    + "  </tr>\n");
+                + "corresponding copyright "
+                + " of the package that is used.  If a feature is not "
+                + "listed below, then the " + applicationName
+                + " copyright is the " + "only copyright." + "<table>\n"
+                + "  <tr><th>Feature</th>\n"
+                + "      <th>Copyright of package used by the feature</th>\n"
+                + "  </tr>\n");
 
             while (copyrights.hasNext()) {
                 Map.Entry entry = (Map.Entry) copyrights.next();
@@ -244,22 +245,22 @@ public class GenerateCopyrights {
                     String codeDoc = _findURL(docName.replace('.', '/')
                             + ".html");
                     entityBuffer.append("<a href=\"" + codeDoc + "\">"
-                            + entityClassName + "</a>");
+                        + entityClassName + "</a>");
                 }
 
                 String foundCopyright = _findURL(copyrightURL);
 
                 htmlBuffer.append("<tr><td>" + entityBuffer
-                        + "</td>\n    <td> <a href=\"" + foundCopyright
-                        + "\"><code>" + _canonicalizeURLToPTII(foundCopyright)
-                        + "</code></a></td>\n</tr>\n");
+                    + "</td>\n    <td> <a href=\"" + foundCopyright
+                    + "\"><code>" + _canonicalizeURLToPTII(foundCopyright)
+                    + "</code></a></td>\n</tr>\n");
             }
 
             htmlBuffer.append("</table>\n</p>");
         }
 
         htmlBuffer.append("<p>Other information <a href=\"about:\">about</a>\n"
-                + "this configuration.\n" + "</body>\n</html>");
+            + "this configuration.\n" + "</body>\n</html>");
         return htmlBuffer.toString();
     }
 
@@ -268,7 +269,7 @@ public class GenerateCopyrights {
     // If a className is can be found, then add the className
     // and copyrightPath to copyrightsMap
     private static void _addIfPresent(Map copyrightsMap, String className,
-            String copyrightPath) {
+        String copyrightPath) {
         try {
             Class.forName(className);
 
@@ -320,7 +321,7 @@ public class GenerateCopyrights {
     private static String _findURL(String localURL) {
         try {
             URL url = Thread.currentThread().getContextClassLoader()
-                .getResource(localURL);
+                                        .getResource(localURL);
             return url.toString();
         } catch (Exception ex) {
             // Ignore it and use the copyright from the website
@@ -342,7 +343,7 @@ public class GenerateCopyrights {
 
             String majorVersion = majorVersionBuffer.toString();
             return "http://ptolemy.eecs.berkeley.edu/ptolemyII/" + "ptII"
-                + majorVersion + "/ptII" + majorVersion + "/" + localURL;
+            + majorVersion + "/ptII" + majorVersion + "/" + localURL;
         }
     }
 }

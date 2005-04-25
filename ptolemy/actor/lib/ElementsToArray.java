@@ -72,7 +72,7 @@ public class ElementsToArray extends Transformer {
      *   already has an actor with this name.
      */
     public ElementsToArray(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // set the output type to be an ArrayType.
@@ -81,8 +81,8 @@ public class ElementsToArray extends Transformer {
 
         // Set the icon.
         _attachText("_iconDescription",
-                "<svg>\n" + "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
-                + "style=\"fill:white\"/>\n" + "</svg>\n");
+            "<svg>\n" + "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
+            + "style=\"fill:white\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////

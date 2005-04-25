@@ -166,7 +166,7 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor {
 
         // Find the method...
         CachedMethod cachedMethod = CachedMethod.findMethod(node
-                .getFunctionName(), argTypes, CachedMethod.FUNCTION);
+                            .getFunctionName(), argTypes, CachedMethod.FUNCTION);
 
         if (!cachedMethod.isValid()) {
             throw new IllegalActionException("Function " + cachedMethod
@@ -174,8 +174,8 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor {
         }
 
         if (cachedMethod instanceof CachedMethod.BaseConvertCachedMethod
-                || cachedMethod instanceof CachedMethod.ArrayMapCachedMethod
-                || cachedMethod instanceof CachedMethod.MatrixMapCachedMethod) {
+                        || cachedMethod instanceof CachedMethod.ArrayMapCachedMethod
+                        || cachedMethod instanceof CachedMethod.MatrixMapCachedMethod) {
             throw new IllegalActionException(
                 "CodeGeneration not supported for " + cachedMethod.getClass());
         }
@@ -183,7 +183,7 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor {
         Method method = cachedMethod.getMethod();
 
         CachedMethod.ArgumentConversion[] conversions = cachedMethod
-            .getConversions();
+                        .getConversions();
 
         for (int i = 0; i < argCount; i++) {
             // Insert the appropriate conversion.

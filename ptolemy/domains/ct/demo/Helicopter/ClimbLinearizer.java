@@ -58,7 +58,7 @@ public class ClimbLinearizer extends TypedAtomicActor {
     /** Constructor
      */
     public ClimbLinearizer(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         inputPx = new TypedIOPort(this, "inputPx");
         inputPx.setInput(true);
@@ -183,9 +183,9 @@ public class ClimbLinearizer extends TypedAtomicActor {
         double D4Pz = ((DoubleToken) inputD4Pz.get(0)).doubleValue();
 
         double Vx = -1.0 * ((_alphaV[0] * (DPx - _cVx)) + (_alphaV[1] * DDPx)
-                + (_alphaV[2] * D3Px) + (_alphaV[3] * D4Px));
+                        + (_alphaV[2] * D3Px) + (_alphaV[3] * D4Px));
         double Vz = -1.0 * ((_alphaV[0] * (DPz - _cVz)) + (_alphaV[1] * DDPz)
-                + (_alphaV[2] * D3Pz) + (_alphaV[3] * D4Pz));
+                        + (_alphaV[2] * D3Pz) + (_alphaV[3] * D4Pz));
 
         double V = Math.sqrt((DPx * DPx) + (DPz * DPz));
         double R = Math.PI / 2.0;
@@ -213,7 +213,7 @@ public class ClimbLinearizer extends TypedAtomicActor {
 
             if (stokens.countTokens() < 4) {
                 throw new IllegalActionException(this,
-                        "Not enough parameter numbers.");
+                    "Not enough parameter numbers.");
             }
 
             while (stokens.hasMoreTokens() && (index < 4)) {
@@ -300,7 +300,12 @@ public class ClimbLinearizer extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    private double[] _alphaV = { 100.0, 110.0, 57.0, 12.80 };
+    private double[] _alphaV = {
+            100.0,
+            110.0,
+            57.0,
+            12.80
+        };
     private double _cVx;
     private double _cVz;
 }

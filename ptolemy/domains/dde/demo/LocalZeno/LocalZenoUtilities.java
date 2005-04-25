@@ -1,4 +1,4 @@
-/* Utilities for DDE LocalZeno demonstration 
+/* Utilities for DDE LocalZeno demonstration
 
 Copyright (c) 2005 The Regents of the University of California.
 All rights reserved.
@@ -32,11 +32,12 @@ import ptolemy.actor.process.ProcessDirector;
 import ptolemy.actor.process.TerminateProcessException;
 import ptolemy.kernel.util.IllegalActionException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// LocalZenoUtilities
 
 /**
- *  Utilities for DDE LocalZeno demonstration. 
+ *  Utilities for DDE LocalZeno demonstration.
  *
  *  @author Christopher Brooksn
  *  @since Ptolemy II 5.0
@@ -44,7 +45,6 @@ import ptolemy.kernel.util.IllegalActionException;
  *  @Pt.AcceptedRating Red (davisj)
  */
 public class LocalZenoUtilities {
-
     /** Instances of this class cannot be created.
      */
     private LocalZenoUtilities() {
@@ -55,7 +55,7 @@ public class LocalZenoUtilities {
      *  then we throw a TerminateProcessException, which stops all
      *  the other Processes.  If Thread.sleep() gets interrupted and
      *  ProcessDirector.stop() was not called, then we throw an
-     *  IllegalActionException. 
+     *  IllegalActionException.
      *  <p>This method is used to slow down execution for the purposes
      *  of illustration.
      *  @param actor The actor used for checking whether stop() was called.
@@ -63,16 +63,17 @@ public class LocalZenoUtilities {
      *  interrupted and stop() was not called on the director.
      */
     public static void sleepProcess(TypedAtomicActor actor)
-            throws IllegalActionException {
+        throws IllegalActionException {
         try {
             Thread.sleep(100);
         } catch (InterruptedException ex) {
-            if (((ProcessDirector)actor.getDirector()).isStopFireRequested()) {
+            if (((ProcessDirector) actor.getDirector()).isStopFireRequested()) {
                 throw new TerminateProcessException(actor, ex.getMessage());
+
                 // Ignore
             } else {
                 throw new IllegalActionException(actor, ex,
-                        "InterruptedException during a sleeping thread.");
+                    "InterruptedException during a sleeping thread.");
             }
         }
     }

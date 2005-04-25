@@ -28,15 +28,15 @@
 */
 package ptolemy.actor.lib.x10;
 
+import x10.CM11ASerialController;
+import x10.CM17ASerialController;
+import x10.Controller;
+
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-
-import x10.CM11ASerialController;
-import x10.CM17ASerialController;
-import x10.Controller;
 
 import java.io.IOException;
 import java.util.Enumeration;
@@ -121,7 +121,7 @@ public class X10Interface extends TypedAtomicActor {
      *   actor with this name.
      */
     public X10Interface(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // Create input ports and port parameters.
@@ -140,7 +140,7 @@ public class X10Interface extends TypedAtomicActor {
 
         while (ports.hasMoreElements()) {
             CommPortIdentifier identifier = (CommPortIdentifier) ports
-                .nextElement();
+                            .nextElement();
 
             if (identifier.getPortType() == CommPortIdentifier.PORT_SERIAL) {
                 String value = identifier.getName();
@@ -204,7 +204,7 @@ public class X10Interface extends TypedAtomicActor {
             _interface = _openInterface(_portName, _controllerName);
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
-                    "Failed to open X10 controller.");
+                "Failed to open X10 controller.");
         }
     }
 
@@ -238,8 +238,8 @@ public class X10Interface extends TypedAtomicActor {
             // If the port is not in the HashMap, then opening it failed.
             if (_serialNameToController.containsKey(portName)) {
                 _serialNameToUserCount.put(portName,
-                        new Integer(((Integer) _serialNameToUserCount.get(portName))
-                                .intValue() - 1));
+                    new Integer(((Integer) _serialNameToUserCount.get(portName))
+                                    .intValue() - 1));
 
                 if (((Integer) _serialNameToUserCount.get(portName)).intValue() == 0) {
                     // FIXME: Unfortunately, the x10 API takes down the controller
@@ -267,23 +267,23 @@ public class X10Interface extends TypedAtomicActor {
      *  @exception IOException If the serial port cannot be opened.
      */
     private static Controller _openInterface(String portName, String controller)
-            throws IOException {
+        throws IOException {
         synchronized (_serialNameToController) {
             if (!_serialNameToController.containsKey(portName)) {
                 if (controller.equals("CM11A")) {
                     _serialNameToController.put(portName,
-                            new CM11ASerialController(portName));
+                        new CM11ASerialController(portName));
                 } else if (controller.equals("CM17A")) {
                     _serialNameToController.put(portName,
-                            new CM17ASerialController(portName));
+                        new CM17ASerialController(portName));
                 }
 
                 _serialNameToUserCount.put(portName, new Integer(1));
             } else {
                 _serialNameToUserCount.put(portName,
-                        new Integer(1
-                                + ((Integer) _serialNameToUserCount.get(portName))
-                                .intValue()));
+                    new Integer(1
+                        + ((Integer) _serialNameToUserCount.get(portName))
+                                    .intValue()));
             }
 
             return ((Controller) _serialNameToController.get(portName));

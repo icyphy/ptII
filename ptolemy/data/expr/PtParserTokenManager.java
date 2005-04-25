@@ -28,8 +28,6 @@ Created : May 1998
 */
 package ptolemy.data.expr;
 
-
-
 public class PtParserTokenManager implements PtParserConstants {
     public java.io.PrintStream debugStream = System.out;
 
@@ -148,7 +146,10 @@ public class PtParserTokenManager implements PtParserConstants {
     }
 
     static final long[] jjbitVec0 = {
-            0x0L, 0x0L, 0xffffffffffffffffL, 0xffffffffffffffffL
+            0x0L,
+            0x0L,
+            0xffffffffffffffffL,
+            0xffffffffffffffffL
         };
 
     private final int jjMoveNfa_5(int startState, int curPos) {
@@ -271,7 +272,7 @@ MatchLoop:
             ++curPos;
 
             if ((i = jjnewStateCnt) == (startsAt = 3
-                        - (jjnewStateCnt = startsAt))) {
+                                - (jjnewStateCnt = startsAt))) {
                 return curPos;
             }
 
@@ -1709,7 +1710,7 @@ MatchLoop:
             ++curPos;
 
             if ((i = jjnewStateCnt) == (startsAt = 84
-                        - (jjnewStateCnt = startsAt))) {
+                                - (jjnewStateCnt = startsAt))) {
                 return curPos;
             }
 
@@ -1929,7 +1930,7 @@ MatchLoop:
             ++curPos;
 
             if ((i = jjnewStateCnt) == (startsAt = 10
-                        - (jjnewStateCnt = startsAt))) {
+                                - (jjnewStateCnt = startsAt))) {
                 return curPos;
             }
 
@@ -2069,7 +2070,7 @@ MatchLoop:
             ++curPos;
 
             if ((i = jjnewStateCnt) == (startsAt = 2
-                        - (jjnewStateCnt = startsAt))) {
+                                - (jjnewStateCnt = startsAt))) {
                 return curPos;
             }
 
@@ -2170,7 +2171,7 @@ MatchLoop:
             ++curPos;
 
             if ((i = jjnewStateCnt) == (startsAt = 3
-                        - (jjnewStateCnt = startsAt))) {
+                                - (jjnewStateCnt = startsAt))) {
                 return curPos;
             }
 
@@ -2382,7 +2383,7 @@ MatchLoop:
             ++curPos;
 
             if ((i = jjnewStateCnt) == (startsAt = 10
-                        - (jjnewStateCnt = startsAt))) {
+                                - (jjnewStateCnt = startsAt))) {
                 return curPos;
             }
 
@@ -2395,36 +2396,249 @@ MatchLoop:
     }
 
     static final int[] jjnextStates = {
-            50, 51, 54, 45, 46, 49, 56, 57, 62, 63, 66, 67, 49, 70, 71, 76, 77,
-            80, 81, 54, 19, 20, 21, 1, 2, 3, 39, 42, 2, 43, 40, 2, 41, 42, 2, 43,
-            58, 59, 49, 66, 67, 49, 72, 73, 54, 80, 81, 54, 13, 14, 16, 34, 37,
-            28, 30, 23, 24, 47, 48, 52, 53, 60, 61, 64, 65, 68, 69, 74, 75, 78,
-            79, 82, 83, 2, 3, 5, 6, 7, 9, 2, 3, 5, 6, 7, 9,
+            50,
+            51,
+            54,
+            45,
+            46,
+            49,
+            56,
+            57,
+            62,
+            63,
+            66,
+            67,
+            49,
+            70,
+            71,
+            76,
+            77,
+            80,
+            81,
+            54,
+            19,
+            20,
+            21,
+            1,
+            2,
+            3,
+            39,
+            42,
+            2,
+            43,
+            40,
+            2,
+            41,
+            42,
+            2,
+            43,
+            58,
+            59,
+            49,
+            66,
+            67,
+            49,
+            72,
+            73,
+            54,
+            80,
+            81,
+            54,
+            13,
+            14,
+            16,
+            34,
+            37,
+            28,
+            30,
+            23,
+            24,
+            47,
+            48,
+            52,
+            53,
+            60,
+            61,
+            64,
+            65,
+            68,
+            69,
+            74,
+            75,
+            78,
+            79,
+            82,
+            83,
+            2,
+            3,
+            5,
+            6,
+            7,
+            9,
+            2,
+            3,
+            5,
+            6,
+            7,
+            9,
         };
     public static final String[] jjstrLiteralImages = {
-            "", null, null, null, null, null, null, null, null, null, "\53",
-            "\55", "\52", "\57", "\45", "\136", "\50", "\51", "\173", "\175",
-            "\133", "\135", "\54", "\56", "\72", "\77", "\76", "\74", "\76\75",
-            "\74\75", "\41\75", "\75\75", "\46\46", "\174\174", "\41", "\176",
-            "\46", "\174", "\43", "\74\74", "\76\76", "\76\76\76", null, null,
-            null, null, null, null, null, null, null,
-            "\146\165\156\143\164\151\157\156", null, null, null, "\75", "\73",
-            null, "\44", "\44\173", "\44\50", null, null, null, null, null, null,
+            "",
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            "\53",
+            "\55",
+            "\52",
+            "\57",
+            "\45",
+            "\136",
+            "\50",
+            "\51",
+            "\173",
+            "\175",
+            "\133",
+            "\135",
+            "\54",
+            "\56",
+            "\72",
+            "\77",
+            "\76",
+            "\74",
+            "\76\75",
+            "\74\75",
+            "\41\75",
+            "\75\75",
+            "\46\46",
+            "\174\174",
+            "\41",
+            "\176",
+            "\46",
+            "\174",
+            "\43",
+            "\74\74",
+            "\76\76",
+            "\76\76\76",
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            "\146\165\156\143\164\151\157\156",
+            null,
+            null,
+            null,
+            "\75",
+            "\73",
+            null,
+            "\44",
+            "\44\173",
+            "\44\50",
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
             null,
         };
     public static final String[] lexStateNames = {
-            "DEFAULT", "SingleLineCommentMode", "MultiLineCommentMode",
-            "StringModeIDBrace", "StringModeIDParen", "StringMode",
+            "DEFAULT",
+            "SingleLineCommentMode",
+            "MultiLineCommentMode",
+            "StringModeIDBrace",
+            "StringModeIDParen",
+            "StringMode",
             "StringModeIDNone",
         };
     public static final int[] jjnewLexState = {
-            -1, 1, 2, 0, 0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
-            -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
-            -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
-            -1, -1, -1, -1, -1, -1, 6, 3, 4, 5, -1, -1, 5, -1, 5, -1,
+            -1,
+            1,
+            2,
+            0,
+            0,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            6,
+            3,
+            4,
+            5,
+            -1,
+            -1,
+            5,
+            -1,
+            5,
+            -1,
         };
-    static final long[] jjtoToken = { 0xbfdf07fffffffc01L, 0xfL, };
-    static final long[] jjtoSkip = { 0x3feL, 0x0L, };
+    static final long[] jjtoToken = {
+            0xbfdf07fffffffc01L,
+            0xfL,
+        };
+    static final long[] jjtoSkip = {
+            0x3feL,
+            0x0L,
+        };
     protected SimpleCharStream input_stream;
     private final int[] jjrounds = new int[84];
     private final int[] jjstateSet = new int[168];
@@ -2518,7 +2732,7 @@ EOFLoop:
                     input_stream.backup(0);
 
                     while ((curChar <= 32)
-                            && ((0x100002600L & (1L << curChar)) != 0L)) {
+                                    && ((0x100002600L & (1L << curChar)) != 0L)) {
                         curChar = input_stream.BeginToken();
                     }
                 } catch (java.io.IOException e1) {
@@ -2588,7 +2802,7 @@ EOFLoop:
                 }
 
                 if ((jjtoToken[jjmatchedKind >> 6]
-                        & (1L << (jjmatchedKind & 077))) != 0L) {
+                                & (1L << (jjmatchedKind & 077))) != 0L) {
                     matchedToken = jjFillToken();
 
                     if (jjnewLexState[jjmatchedKind] != -1) {

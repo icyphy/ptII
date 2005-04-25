@@ -70,7 +70,7 @@ public class Place extends Transformer {
      *   an entity already in the container.
      */
     public Place(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         initialMarking = new Parameter(this, "initialMarking");
@@ -134,7 +134,7 @@ public class Place extends Transformer {
         _temporaryMarking = _temporaryMarking - i;
     }
 
-    /**  Increase the temporary marking. 
+    /**  Increase the temporary marking.
      *   @param i the number to be increased for the TemporaryMarking
      *   in the place.
      */

@@ -83,8 +83,7 @@ public class ModelUtilities {
      * or failed to execute the model.
      */
     public static synchronized RecordToken executeModel(URL url,
-            RecordToken args, String[] resultLabels)
-            throws IllegalActionException {
+        RecordToken args, String[] resultLabels) throws IllegalActionException {
         if (url != null) {
             MoMLParser parser = new MoMLParser();
             NamedObj model;
@@ -93,7 +92,7 @@ public class ModelUtilities {
                 model = parser.parse(null, url);
             } catch (Exception ex) {
                 throw new IllegalActionException(ex
-                        + "Failed to pass the model URL." + url.toString());
+                    + "Failed to pass the model URL." + url.toString());
             }
 
             if (model instanceof CompositeActor) {
@@ -123,7 +122,7 @@ public class ModelUtilities {
      * @exception IllegalActionException If failed to execute the model.
      */
     public static synchronized RecordToken executeModel(CompositeActor model,
-            RecordToken args, String[] resultLabels) throws IllegalActionException {
+        RecordToken args, String[] resultLabels) throws IllegalActionException {
         Manager manager = model.getManager();
 
         if (manager == null) {
@@ -154,7 +153,7 @@ public class ModelUtilities {
      *   setting the parameters causes it.
      */
     private static void _setAttribute(CompositeActor model, RecordToken args)
-            throws IllegalActionException {
+        throws IllegalActionException {
         Object[] labels = args.labelSet().toArray();
         int length = args.length();
 
@@ -189,7 +188,7 @@ public class ModelUtilities {
      *   setting the parameters causes it.
      */
     private static RecordToken _getResult(CompositeActor model,
-            String[] resultLabels) throws IllegalActionException {
+        String[] resultLabels) throws IllegalActionException {
         Token[] value = new Token[resultLabels.length];
 
         for (int i = 0; i < resultLabels.length; i++) {

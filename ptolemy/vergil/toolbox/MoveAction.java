@@ -101,8 +101,8 @@ public class MoveAction extends FigureAction {
 
         if (target.getDerivedLevel() < Integer.MAX_VALUE) {
             MessageHandler.error("Cannot change the position of "
-                    + target.getFullName()
-                    + " because the position is set by the class.");
+                + target.getFullName()
+                + " because the position is set by the class.");
             return;
         }
 
@@ -135,7 +135,7 @@ public class MoveAction extends FigureAction {
      *  @param context The context.
      */
     public static void move(final List targets, final MoveType type,
-            final NamedObj context) {
+        final NamedObj context) {
         final int[] priorIndexes = new int[targets.size()];
         boolean movedOne = false;
 
@@ -206,17 +206,17 @@ public class MoveAction extends FigureAction {
 
                             for (int i = 0; i < targets.size(); i++) {
                                 NamedObj target = (NamedObj) targetIterator
-                                    .next();
+                                                .next();
                                 target.moveToIndex(priorIndexes[i]);
                             }
                         } else {
                             // Traverse the list in reverse order.
                             ListIterator targetIterator = targets.listIterator(targets
-                                    .size());
+                                                .size());
 
                             for (int i = targets.size() - 1; i >= 0; i--) {
                                 NamedObj target = (NamedObj) targetIterator
-                                    .previous();
+                                                .previous();
                                 target.moveToIndex(priorIndexes[i]);
                             }
                         }
@@ -235,7 +235,7 @@ public class MoveAction extends FigureAction {
                         };
 
                     UndoStackAttribute undoInfo = UndoStackAttribute
-                        .getUndoInfo(context);
+                                    .getUndoInfo(context);
                     undoInfo.push(redoAction);
                 }
             };

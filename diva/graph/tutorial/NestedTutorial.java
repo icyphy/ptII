@@ -123,13 +123,13 @@ public class NestedTutorial {
      * this might be useful in some cases.
      */
     public void layoutPostDisplay(final MutableGraphModel model,
-            AppContext context) {
+        AppContext context) {
         final BasicGraphController bgc = new BasicGraphController();
         context.getContentPane().add(new JGraph(new GraphPane(bgc, model)));
         SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
                     RandomLayout random = new RandomLayout(new BasicLayoutTarget(
-                                                                   bgc));
+                                bgc));
                     random.layout(model.getRoot());
                 }
             });

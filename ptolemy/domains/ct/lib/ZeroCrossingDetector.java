@@ -61,7 +61,7 @@ public class ZeroCrossingDetector extends LevelCrossingDetector {
      *   an entity already in the container.
      */
     public ZeroCrossingDetector(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _removeAttribute(level);
         _level = 0;

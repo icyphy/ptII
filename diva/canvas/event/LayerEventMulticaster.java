@@ -130,7 +130,7 @@ public class LayerEventMulticaster extends AWTEventMulticaster
      * returns the resulting multicast listener.
      */
     public static LayerMotionListener add(LayerMotionListener a,
-            LayerMotionListener b) {
+        LayerMotionListener b) {
         return (LayerMotionListener) addInternal(a, b);
     }
 
@@ -147,7 +147,7 @@ public class LayerEventMulticaster extends AWTEventMulticaster
      * returns the resulting multicast listener.
      */
     public static LayerMotionListener remove(LayerMotionListener l,
-            LayerMotionListener oldl) {
+        LayerMotionListener oldl) {
         return (LayerMotionListener) removeInternal(l, oldl);
     }
 }

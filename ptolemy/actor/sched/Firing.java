@@ -193,7 +193,7 @@ public class Firing extends ScheduleElement {
         public boolean hasNext() {
             if (_startingVersion != _getVersion()) {
                 throw new ConcurrentModificationException(
-                        "Schedule structure changed while iterator is active.");
+                    "Schedule structure changed while iterator is active.");
             } else {
                 return (_currentElement <= _iterationCount);
             }

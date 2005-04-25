@@ -89,8 +89,8 @@ public class LayerEvent extends MouseEvent {
      */
     public LayerEvent(MouseEvent e) {
         super(e.getComponent(), e.getID(), e.getWhen(), e.getModifiersEx(),
-                e.getX(), e.getY(), e.getClickCount(), e.isPopupTrigger(),
-                e.getButton());
+            e.getX(), e.getY(), e.getClickCount(), e.isPopupTrigger(),
+            e.getButton());
 
         _backingEvent = e;
         _layerX = e.getX();
@@ -104,7 +104,7 @@ public class LayerEvent extends MouseEvent {
      */
     public LayerEvent(MouseEvent e, int id) {
         super(e.getComponent(), id, e.getWhen(), e.getModifiersEx(), e.getX(),
-                e.getY(), e.getClickCount(), e.isPopupTrigger(), e.getButton());
+            e.getY(), e.getClickCount(), e.isPopupTrigger(), e.getButton());
 
         _backingEvent = e;
         _layerX = e.getX();
@@ -196,9 +196,9 @@ public class LayerEvent extends MouseEvent {
     public String toString() {
         StringBuffer result = new StringBuffer(this.getClass().getName());
         result.append("[" + idToString(getID()) + ",mods="
-                + getModifiersExText(getModifiersEx()) + ",clickcount="
-                + getClickCount() + ",figure=" + getFigureSource() + ",layer=("
-                + _layerX + "," + _layerY + ")" + ",consumed=" + isConsumed() + "]");
+            + getModifiersExText(getModifiersEx()) + ",clickcount="
+            + getClickCount() + ",figure=" + getFigureSource() + ",layer=("
+            + _layerX + "," + _layerY + ")" + ",consumed=" + isConsumed() + "]");
         return result.toString() + _backingEvent;
     }
 

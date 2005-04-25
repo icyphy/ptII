@@ -173,7 +173,7 @@ public class Director extends Attribute implements Executable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Override the base class to update local variables.
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If timeResolution is
@@ -181,39 +181,44 @@ public class Director extends Attribute implements Executable {
      *   preinitialize()).
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == timeResolution) {
-        	// This is extremely frequently used, so cache the value.
+            // This is extremely frequently used, so cache the value.
             // Prevent this from changing during a run!
-            double newResolution = ((DoubleToken)timeResolution.getToken()).doubleValue();
+            double newResolution = ((DoubleToken) timeResolution.getToken())
+                            .doubleValue();
+
             if (newResolution != _timeResolution) {
                 NamedObj container = getContainer();
+
                 if (container instanceof Actor) {
-                    Manager manager = ((Actor)container).getManager();
+                    Manager manager = ((Actor) container).getManager();
+
                     if (manager != null) {
                         Manager.State state = manager.getState();
-                        if (state != Manager.IDLE
-                                && state != Manager.PREINITIALIZING) {
+
+                        if ((state != Manager.IDLE)
+                                        && (state != Manager.PREINITIALIZING)) {
                             throw new IllegalActionException(this,
-                                    "Cannot change timePrecision during a run.");
+                                "Cannot change timePrecision during a run.");
                         }
                     }
                 }
-                if (newResolution <= ExtendedMath.
-                        DOUBLE_PRECISION_SMALLEST_NORMALIZED_POSITIVE_DOUBLE) {
-                	throw new IllegalActionException(this,
-                            "Invalid timeResolution: "
-                            + newResolution + "\n The value must be " 
-                            + "greater than the smallest, normalized, " 
-                            + "positive, double value with a double " 
-                            + "precision: " + ExtendedMath.
-                            DOUBLE_PRECISION_SMALLEST_NORMALIZED_POSITIVE_DOUBLE
-                            );
+
+                if (newResolution <= ExtendedMath.DOUBLE_PRECISION_SMALLEST_NORMALIZED_POSITIVE_DOUBLE) {
+                    throw new IllegalActionException(this,
+                        "Invalid timeResolution: " + newResolution
+                        + "\n The value must be "
+                        + "greater than the smallest, normalized, "
+                        + "positive, double value with a double "
+                        + "precision: "
+                        + ExtendedMath.DOUBLE_PRECISION_SMALLEST_NORMALIZED_POSITIVE_DOUBLE);
                 }
 
-                _timeResolution = newResolution;               
+                _timeResolution = newResolution;
             }
         }
+
         super.attributeChanged(attribute);
     }
 
@@ -351,7 +356,7 @@ public class Director extends Attribute implements Executable {
 
         if (container instanceof CompositeActor) {
             Iterator actors = ((CompositeActor) container).deepEntityList()
-                               .iterator();
+                                           .iterator();
             int iterationCount = 1;
 
             while (actors.hasNext() && !_stopRequested) {
@@ -611,7 +616,7 @@ public class Director extends Attribute implements Executable {
         if (_debugging) {
             _debug("Called initialize().");
         }
-        
+
         Nameable container = getContainer();
 
         if (container instanceof CompositeActor) {
@@ -620,9 +625,8 @@ public class Director extends Attribute implements Executable {
             // Initialize the current time.
             if (containersContainer instanceof CompositeActor) {
                 // The container is an embedded model.
-                Time currentTime = 
-                    ((CompositeActor) containersContainer).getDirector()
-                                    .getModelTime();
+                Time currentTime = ((CompositeActor) containersContainer).getDirector()
+                                                .getModelTime();
                 _currentTime = currentTime;
             } else {
                 // The container is at the top level.
@@ -633,7 +637,7 @@ public class Director extends Attribute implements Executable {
 
             // Initialize the contained actors.
             Iterator actors = ((CompositeActor) container).deepEntityList()
-                               .iterator();
+                                           .iterator();
 
             while (actors.hasNext() && !_stopRequested) {
                 Actor actor = (Actor) actors.next();
@@ -802,7 +806,7 @@ public class Director extends Attribute implements Executable {
 
         if (container instanceof Actor) {
             Director executiveDirector = ((Actor) container)
-                .getExecutiveDirector();
+                            .getExecutiveDirector();
 
             if (executiveDirector != null) {
                 Time outTime = executiveDirector.getModelTime();
@@ -854,7 +858,7 @@ public class Director extends Attribute implements Executable {
 
         if (container instanceof CompositeActor) {
             Iterator actors = ((CompositeActor) container).deepEntityList()
-                               .iterator();
+                                           .iterator();
 
             while (actors.hasNext()) {
                 Actor actor = (Actor) actors.next();
@@ -938,7 +942,7 @@ public class Director extends Attribute implements Executable {
             Nameable oldContainer = getContainer();
 
             if (oldContainer instanceof CompositeActor
-                    && (oldContainer != container)) {
+                            && (oldContainer != container)) {
                 // Need to remove this director as the active one of the
                 // old container. Search for another director contained
                 // by the composite.  If it contains more than one,
@@ -946,7 +950,7 @@ public class Director extends Attribute implements Executable {
                 Director previous = null;
                 CompositeActor castContainer = (CompositeActor) oldContainer;
                 Iterator directors = castContainer.attributeList(Director.class)
-                                                  .iterator();
+                                                              .iterator();
 
                 while (directors.hasNext()) {
                     Director altDirector = (Director) directors.next();
@@ -1025,7 +1029,7 @@ public class Director extends Attribute implements Executable {
 
         if (container instanceof CompositeActor) {
             Iterator actors = ((CompositeActor) container).deepEntityList()
-                               .iterator();
+                                           .iterator();
 
             while (actors.hasNext()) {
                 Actor actor = (Actor) actors.next();
@@ -1058,7 +1062,7 @@ public class Director extends Attribute implements Executable {
 
         if (container instanceof CompositeActor) {
             Iterator actors = ((CompositeActor) container).deepEntityList()
-                               .iterator();
+                                           .iterator();
 
             while (actors.hasNext()) {
                 Actor actor = (Actor) actors.next();
@@ -1075,8 +1079,9 @@ public class Director extends Attribute implements Executable {
      */
     public String[] suggestedModalModelDirectors() {
         // Default is just one suggestion.
-        String[] defaultSuggestions = 
-            { "ptolemy.domains.fsm.kernel.FSMDirector" };
+        String[] defaultSuggestions = {
+                "ptolemy.domains.fsm.kernel.FSMDirector"
+            };
         return defaultSuggestions;
     }
 
@@ -1105,7 +1110,7 @@ public class Director extends Attribute implements Executable {
 
         if (container instanceof CompositeActor) {
             Iterator actors = ((CompositeActor) container).deepEntityList()
-                               .iterator();
+                                           .iterator();
 
             while (actors.hasNext()) {
                 Actor actor = (Actor) actors.next();
@@ -1163,7 +1168,7 @@ public class Director extends Attribute implements Executable {
 
         if (container instanceof CompositeActor) {
             Iterator actors = ((CompositeActor) container).deepEntityList()
-                               .iterator();
+                                           .iterator();
 
             while (actors.hasNext()) {
                 Actor actor = (Actor) actors.next();
@@ -1211,7 +1216,6 @@ public class Director extends Attribute implements Executable {
             //  result += "FIXME {\n";
             //  result += _getIndentPrefix(indent) + "}";
             // }
-
             if (bracket == 2) {
                 result += "}";
             }
@@ -1252,16 +1256,15 @@ public class Director extends Attribute implements Executable {
 
     ///////////////////////////////////////////////////////////////////
     ////                       protected variables                 ////
-    
+
     /** The current time of the model. */
     protected Time _currentTime;
 
     /** Indicator that a stop has been requested by a call to stop(). */
     protected boolean _stopRequested = false;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
     // Add an XML graphic as a hint to UIs for rendering the director.
     private void _addIcon() {
         _attachText("_iconDescription",
@@ -1274,12 +1277,13 @@ public class Director extends Attribute implements Executable {
     private void _initializeParameters() {
         // This must happen first before any time objects get created.
         try {
-            timeResolution = new SharedParameter(this,
-                    "timeResolution", Director.class, "1E-10");
+            timeResolution = new SharedParameter(this, "timeResolution",
+                    Director.class, "1E-10");
+
             // Since by default directors have no time, this is
             // invisible.
             timeResolution.setVisibility(Settable.NONE);
-            
+
             // Make sure getCurrentTime() never returns null.
             _currentTime = new Time(this, Double.NEGATIVE_INFINITY);
         } catch (Throwable throwable) {
@@ -1287,13 +1291,13 @@ public class Director extends Attribute implements Executable {
             // the timeResolution parameter, no exception should ever
             // be thrown.
             throw new InternalErrorException(this, throwable,
-                    "Cannot set parameter:\n" + throwable);
+                "Cannot set parameter:\n" + throwable);
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                       private variables                   ////
-    
+
     /** Time resolution cache, with a reasonable default value. */
     private double _timeResolution = 1E-10;
 }

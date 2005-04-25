@@ -149,7 +149,7 @@ public class MirrorTransformation extends Analysis {
      */
     public String toString() {
         return "Mirror transformation using the following analyzer:\n"
-            + analyzer().toString();
+        + analyzer().toString();
     }
 
     /** Return the transformed version of a given object in the original graph.

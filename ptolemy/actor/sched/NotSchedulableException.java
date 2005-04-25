@@ -75,7 +75,7 @@ public class NotSchedulableException extends InvalidStateException {
      *  @param detail The message.
      */
     public NotSchedulableException(Nameable nameable1, Nameable nameable2,
-            String detail) {
+        String detail) {
         super(nameable1, nameable2, detail);
     }
 
@@ -94,11 +94,11 @@ public class NotSchedulableException extends InvalidStateException {
      *  names of a Collection of nameables, the causing Throwable
      *  and the detail argument.
      *  @param actors The unschedulable actors.
-     *  @param cause The cause.   
+     *  @param cause The cause.
      *  @param detail The message.
      */
     public NotSchedulableException(Collection actors, Throwable cause,
-            String detail) {
+        String detail) {
         super(actors, cause, detail);
     }
 

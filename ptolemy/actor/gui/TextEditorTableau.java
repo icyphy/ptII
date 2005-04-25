@@ -65,7 +65,7 @@ public class TextEditorTableau extends Tableau {
      *   attribute already in the container.
      */
     public TextEditorTableau(TextEffigy container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         this(container, name, null);
     }
 
@@ -79,8 +79,8 @@ public class TextEditorTableau extends Tableau {
      *   attribute already in the container.
      */
     public TextEditorTableau(TextEffigy container, String name,
-            TextEditor editor)
-            throws IllegalActionException, NameDuplicationException {
+        TextEditor editor)
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         String title = "Unnamed";
@@ -132,7 +132,7 @@ public class TextEditorTableau extends Tableau {
          *   an attribute already in the container.
          */
         public Factory(NamedObj container, String name)
-                throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
             super(container, name);
 
             String editorPreference = ".";
@@ -161,12 +161,20 @@ public class TextEditorTableau extends Tableau {
                 }
 
                 _tableauConstructor = tableauClass.getConstructor(new Class[] {
-                    TextEffigy.class, String.class
-                });
+                            TextEffigy.class,
+                            String.class
+                        });
                 _newTextEffigyText = effigyClass.getMethod("newTextEffigy",
-                        new Class[] { CompositeEntity.class, String.class });
+                        new Class[] {
+                            CompositeEntity.class,
+                            String.class
+                        });
                 _newTextEffigyURL = effigyClass.getMethod("newTextEffigy",
-                        new Class[] { CompositeEntity.class, URL.class, URL.class });
+                        new Class[] {
+                            CompositeEntity.class,
+                            URL.class,
+                            URL.class
+                        });
             } catch (ClassNotFoundException ex) {
                 throw new IllegalActionException(ex.toString());
             } catch (NoSuchMethodException ex) {
@@ -205,11 +213,14 @@ public class TextEditorTableau extends Tableau {
                 // First see whether the effigy already contains a
                 // TextEditorTableau with the appropriate name.
                 TextEditorTableau tableau = (TextEditorTableau) effigy
-                    .getEntity("textTableau");
+                                .getEntity("textTableau");
 
                 if (tableau == null) {
                     tableau = (TextEditorTableau) _tableauConstructor
-                        .newInstance(new Object[] { effigy, "textTableau" });
+                                    .newInstance(new Object[] {
+                                            effigy,
+                                            "textTableau"
+                                        });
                 }
 
                 tableau.setEditable(effigy.isModifiable());
@@ -219,7 +230,7 @@ public class TextEditorTableau extends Tableau {
                 // See whether it contains an instance of TextEffigy
                 // named "textEffigy", and if it does return that instance.
                 Iterator effigies = effigy.entityList(TextEffigy.class)
-                    .iterator();
+                                                      .iterator();
 
                 while (effigies.hasNext()) {
                     TextEffigy textEffigy = (TextEffigy) effigies.next();
@@ -242,9 +253,12 @@ public class TextEditorTableau extends Tableau {
                     // sense for the Effigy base class to have a method
                     // that gives a textual description of the data?
                     String moml = ((PtolemyEffigy) effigy).getModel()
-                        .exportMoML();
+                                               .exportMoML();
                     textEffigy = (TextEffigy) _newTextEffigyText.invoke(null,
-                            new Object[] { effigy, moml });
+                            new Object[] {
+                                effigy,
+                                moml
+                            });
 
                     // FIXME: Eventually, it would be nice that this be
                     // editable if the PtolemyEffigy is modifiable.
@@ -254,7 +268,11 @@ public class TextEditorTableau extends Tableau {
                 } else {
                     // The View Source choice of the HTMLViewer runs this code.
                     textEffigy = (TextEffigy) _newTextEffigyURL.invoke(null,
-                            new Object[] { effigy, url, url });
+                            new Object[] {
+                                effigy,
+                                url,
+                                url
+                            });
                     textEffigy.setName("textEffigy");
                 }
 

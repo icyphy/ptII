@@ -27,6 +27,7 @@ COPYRIGHTENDKEY
 package ptolemy.copernicus.java;
 
 import soot.SootField;
+
 import soot.tagkit.AttributeValueException;
 import soot.tagkit.Tag;
 

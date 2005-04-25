@@ -61,7 +61,7 @@ public class TimeGap extends DETransformer {
      *   actor with this name.
      */
     public TimeGap(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         output.setTypeEquals(BaseType.DOUBLE);
     }
@@ -85,7 +85,7 @@ public class TimeGap extends DETransformer {
 
         if (_previousTime.compareTo(Time.NEGATIVE_INFINITY) != 0) {
             DoubleToken outToken = new DoubleToken(currentTime.subtract(
-                                                           _previousTime).getDoubleValue());
+                        _previousTime).getDoubleValue());
             output.send(0, outToken);
         }
     }

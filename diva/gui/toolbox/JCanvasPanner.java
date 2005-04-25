@@ -108,7 +108,7 @@ public class JCanvasPanner extends JPanel {
         Rectangle2D viewRect = null;
 
         for (Iterator layers = _target.getCanvasPane().layers();
-             layers.hasNext();) {
+                        layers.hasNext();) {
             CanvasLayer layer = (CanvasLayer) layers.next();
             Rectangle2D rect = layer.getLayerBounds();
 
@@ -135,7 +135,7 @@ public class JCanvasPanner extends JPanel {
      */
     public Rectangle2D getVisibleSize() {
         AffineTransform current = _target.getCanvasPane().getTransformContext()
-            .getTransform();
+                                                     .getTransform();
         AffineTransform inverse;
 
         try {
@@ -183,11 +183,11 @@ public class JCanvasPanner extends JPanel {
 
         // Place the center of the canvas at the desired point.
         AffineTransform newTransform = _target.getCanvasPane()
-            .getTransformContext()
-            .getTransform();
+                                                          .getTransformContext()
+                                                          .getTransform();
 
         newTransform.translate(visibleRect.getCenterX() - newCenter.getX(),
-                visibleRect.getCenterY() - newCenter.getY());
+            visibleRect.getCenterY() - newCenter.getY());
 
         _target.getCanvasPane().setTransform(newTransform);
 
@@ -235,7 +235,8 @@ public class JCanvasPanner extends JPanel {
 
             // Also invert the current transform on the canvas.
             AffineTransform current = canvas.getCanvasPane()
-                .getTransformContext().getTransform();
+                                                        .getTransformContext()
+                                                        .getTransform();
 
             AffineTransform inverse;
 
@@ -260,7 +261,7 @@ public class JCanvasPanner extends JPanel {
 
             g.setColor(Color.red);
             g.drawRect((int) visibleRect.getX(), (int) visibleRect.getY(),
-                    (int) visibleRect.getWidth(), (int) visibleRect.getHeight());
+                (int) visibleRect.getWidth(), (int) visibleRect.getHeight());
 
             // NOTE: No longer meaningful, since always full space.
 
@@ -294,7 +295,7 @@ public class JCanvasPanner extends JPanel {
         implements MouseMotionListener {
         public void mousePressed(MouseEvent evt) {
             if ((_target != null)
-                    && ((evt.getModifiers() & MouseEvent.BUTTON1_MASK) != 0)) {
+                            && ((evt.getModifiers() & MouseEvent.BUTTON1_MASK) != 0)) {
                 setPosition(evt.getX(), evt.getY());
             }
         }
@@ -304,7 +305,7 @@ public class JCanvasPanner extends JPanel {
 
         public void mouseDragged(MouseEvent evt) {
             if ((_target != null)
-                    && ((evt.getModifiers() & MouseEvent.BUTTON1_MASK) != 0)) {
+                            && ((evt.getModifiers() & MouseEvent.BUTTON1_MASK) != 0)) {
                 setPosition(evt.getX(), evt.getY());
             }
         }

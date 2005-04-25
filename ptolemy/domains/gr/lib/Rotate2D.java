@@ -73,7 +73,7 @@ public class Rotate2D extends GRTransform2D {
      *   actor with this name.
      */
     public Rotate2D(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         angleType = new StringAttribute(this, "angleType");
@@ -145,7 +145,7 @@ public class Rotate2D extends GRTransform2D {
      *  throws such an exception.
      */
     protected void _applyInitialTransform(Figure figure)
-            throws IllegalActionException {
+        throws IllegalActionException {
         _oldAngle = ((DoubleToken) initialTheta.getToken()).doubleValue();
         _oldAnchorX = ((DoubleToken) initialAnchorX.getToken()).doubleValue();
         _oldAnchorY = ((DoubleToken) initialAnchorY.getToken()).doubleValue();
@@ -155,7 +155,7 @@ public class Rotate2D extends GRTransform2D {
         }
 
         figure.transform(AffineTransform.getRotateInstance(_oldAngle,
-                                 _oldAnchorX, _oldAnchorY));
+                _oldAnchorX, _oldAnchorY));
     }
 
     /** Apply the current rotation transformation to the figure.
@@ -164,7 +164,7 @@ public class Rotate2D extends GRTransform2D {
      *  such an exception.
      */
     protected void _applyTransform(final Figure figure)
-            throws IllegalActionException {
+        throws IllegalActionException {
         double angle = _oldAngle;
         double anchorXValue = _oldAnchorX;
         double anchorYValue = _oldAnchorY;
@@ -192,12 +192,12 @@ public class Rotate2D extends GRTransform2D {
 
         if (needsTransform) {
             final AffineTransform inputTransform = AffineTransform
-                .getRotateInstance(angle, anchorXValue, anchorYValue);
+                            .getRotateInstance(angle, anchorXValue, anchorYValue);
 
             if (!figure.getTransformContext().getTransform().equals(inputTransform)) {
                 if (!_isAccumulating()) {
                     inputTransform.concatenate(figure.getTransformContext()
-                            .getInverseTransform());
+                                                                 .getInverseTransform());
                 }
 
                 figure.transform(inputTransform);

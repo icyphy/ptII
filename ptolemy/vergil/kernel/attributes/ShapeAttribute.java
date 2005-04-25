@@ -78,7 +78,7 @@ public abstract class ShapeAttribute extends Attribute {
      *   an attribute already in the container.
      */
     public ShapeAttribute(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // Hide the name.
@@ -131,10 +131,10 @@ public abstract class ShapeAttribute extends Attribute {
      *   to this container (should not be thrown).
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == lineWidth) {
             double lineWidthValue = ((DoubleToken) lineWidth.getToken())
-                .doubleValue();
+                            .doubleValue();
             _icon.setLineWidth((float) lineWidthValue);
         } else if (attribute == lineColor) {
             Color lineColorValue = lineColor.asColor();

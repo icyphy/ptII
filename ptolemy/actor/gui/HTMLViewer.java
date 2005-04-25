@@ -81,7 +81,7 @@ import javax.swing.text.html.HTMLFrameHyperlinkEvent;
    @Pt.AcceptedRating Red (johnr)
 */
 public class HTMLViewer extends TableauFrame implements Printable,
-                                                        HyperlinkListener {
+    HyperlinkListener {
     /** Construct a blank viewer.
      */
     public HTMLViewer() {
@@ -134,7 +134,7 @@ public class HTMLViewer extends TableauFrame implements Printable,
                     newURL = HTMLAbout.hyperlinkUpdate(event, getConfiguration());
                 } catch (Throwable throwable) {
                     MessageHandler.error("Problem processing '"
-                            + event.getDescription() + "'.", throwable);
+                        + event.getDescription() + "'.", throwable);
                 }
             }
 
@@ -209,11 +209,11 @@ public class HTMLViewer extends TableauFrame implements Printable,
                     if (configuration != null) {
                         if (useBrowser && (BrowserEffigy.staticFactory != null)) {
                             configuration.openModel(newURL, newURL,
-                                    newURL.toExternalForm(),
-                                    BrowserEffigy.staticFactory);
+                                newURL.toExternalForm(),
+                                BrowserEffigy.staticFactory);
                         } else {
                             configuration.openModel(newURL, newURL,
-                                    newURL.toExternalForm());
+                                newURL.toExternalForm());
                         }
                     } else {
                         // If there is no configuration,
@@ -240,7 +240,7 @@ public class HTMLViewer extends TableauFrame implements Printable,
      *  @exception PrinterException If the print job is terminated.
      */
     public int print(Graphics graphics, PageFormat format, int index)
-            throws PrinterException {
+        throws PrinterException {
         Dimension dimension = pane.getSize();
 
         // How much do we have to scale the width?
@@ -310,13 +310,14 @@ public class HTMLViewer extends TableauFrame implements Printable,
      */
     protected void _writeFile(File file) throws IOException {
         java.io.FileWriter fileWriter = null;
+
         try {
-        	fileWriter = new java.io.FileWriter(file);
-        	fileWriter.write(pane.getText());
+            fileWriter = new java.io.FileWriter(file);
+            fileWriter.write(pane.getText());
         } finally {
-        	if (fileWriter != null) {
-        		fileWriter.close();   
-        	}
+            if (fileWriter != null) {
+                fileWriter.close();
+            }
         }
     }
 

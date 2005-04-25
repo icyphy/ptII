@@ -103,7 +103,7 @@ public class SmallWorldRouter extends TypedAtomicActor {
      *   a relation already in the container.
      */
     public SmallWorldRouter(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // Create and configure the parameters.
@@ -290,7 +290,7 @@ public class SmallWorldRouter extends TypedAtomicActor {
             RecordToken in = (RecordToken) input.get(0);
             double data = ((DoubleToken) in.get("data")).doubleValue();
             String destination = ((StringToken) in.get("destination"))
-                .stringValue();
+                            .stringValue();
             String routeTo = ((StringToken) in.get("routeTo")).stringValue();
             int hops = ((IntToken) in.get("hops")).intValue();
 
@@ -324,15 +324,15 @@ public class SmallWorldRouter extends TypedAtomicActor {
 
                 if ((destLocation == null) || (myLocation == null)) {
                     throw new IllegalActionException(
-                            "Cannot determine location for node "
-                            + destNode.getName() + ".");
+                        "Cannot determine location for node "
+                        + destNode.getName() + ".");
                 }
 
                 Iterator nodes = _connectedNodes.iterator();
                 double minDistance = _distanceBetween(destLocation, myLocation);
                 String to = " ";
                 boolean multi = ((BooleanToken) doublePath.getToken())
-                    .booleanValue();
+                                .booleanValue();
                 double nextMinDistance = _distanceBetween(destLocation,
                         myLocation);
                 String to2 = " ";
@@ -344,8 +344,8 @@ public class SmallWorldRouter extends TypedAtomicActor {
 
                     if (location == null) {
                         throw new IllegalActionException(
-                                "Cannot determine location for node "
-                                + node.getName() + ".");
+                            "Cannot determine location for node "
+                            + node.getName() + ".");
                     }
 
                     double d = _distanceBetween(destLocation, location);
@@ -372,9 +372,11 @@ public class SmallWorldRouter extends TypedAtomicActor {
                 // by the <i>delay<i> parameter.
                 Director director = getDirector();
                 Token[] values = {
-                    new DoubleToken(data), new StringToken(destination),
-                    new StringToken(to), new IntToken(hops + 1)
-                };
+                        new DoubleToken(data),
+                        new StringToken(destination),
+                        new StringToken(to),
+                        new IntToken(hops + 1)
+                    };
                 double delayTime = ((DoubleToken) delay.getToken()).doubleValue();
                 Time time = director.getModelTime().add(delayTime);
 
@@ -383,7 +385,12 @@ public class SmallWorldRouter extends TypedAtomicActor {
                 }
 
                 Double timeDouble = new Double(time.getDoubleValue());
-                String[] labels = { "data", "destination", "routeTo", "hops" };
+                String[] labels = {
+                        "data",
+                        "destination",
+                        "routeTo",
+                        "hops"
+                    };
                 RecordToken result = new RecordToken(labels, values);
                 _receptions.put(timeDouble, result);
 
@@ -391,9 +398,11 @@ public class SmallWorldRouter extends TypedAtomicActor {
 
                 if (multi) {
                     Token[] values2 = {
-                        new DoubleToken(data), new StringToken(destination),
-                        new StringToken(to2), new IntToken(hops + 1)
-                    };
+                            new DoubleToken(data),
+                            new StringToken(destination),
+                            new StringToken(to2),
+                            new IntToken(hops + 1)
+                        };
 
                     if (_receptions == null) {
                         _receptions = new HashMap();
@@ -411,7 +420,7 @@ public class SmallWorldRouter extends TypedAtomicActor {
             if (_receptions != null) {
                 // We may be getting fired because of an impending event.
                 double currentTimeValue = getDirector().getModelTime()
-                    .getDoubleValue();
+                                                          .getDoubleValue();
                 Double timeDouble = new Double(currentTimeValue);
                 RecordToken reception = (RecordToken) _receptions.get(timeDouble);
 
@@ -483,11 +492,11 @@ public class SmallWorldRouter extends TypedAtomicActor {
      *   cannot be determined.
      */
     protected double _distanceBetween(Locatable location1, Locatable location2)
-            throws IllegalActionException {
+        throws IllegalActionException {
         double[] p1 = location1.getLocation();
         double[] p2 = location2.getLocation();
         return Math.sqrt(((p1[0] - p2[0]) * (p1[0] - p2[0]))
-                + ((p1[1] - p2[1]) * (p1[1] - p2[1])));
+            + ((p1[1] - p2[1]) * (p1[1] - p2[1])));
     }
 
     /** Return the list of nodes that can receive from the specified
@@ -498,7 +507,7 @@ public class SmallWorldRouter extends TypedAtomicActor {
      *   evaluated.
      */
     protected List nodesInRange(WirelessIOPort sourcePort)
-            throws IllegalActionException {
+        throws IllegalActionException {
         List nodesInRangeList = new LinkedList();
         CompositeEntity container = (CompositeEntity) getContainer();
         Iterator ports = ModelTopology.listeningInputPorts(container,
@@ -517,7 +526,7 @@ public class SmallWorldRouter extends TypedAtomicActor {
 
             double experiment = _random.nextDouble();
             double probability = ((DoubleToken) lossProbability.getToken())
-                .doubleValue();
+                            .doubleValue();
 
             if (_debugging) {
                 _debug(" **** loss probability is: " + probability);

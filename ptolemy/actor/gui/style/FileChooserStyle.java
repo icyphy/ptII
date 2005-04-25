@@ -90,7 +90,7 @@ public class FileChooserStyle extends ParameterEditorStyle {
      *   an attribute already in the container.
      */
     public FileChooserStyle(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -169,9 +169,9 @@ public class FileChooserStyle extends ParameterEditorStyle {
         }
 
         query.addFileChooser(name, name, defaultValue, modelURI, directory,
-                allowFiles, allowDirectories,
-                PtolemyQuery.preferredBackgroundColor(container),
-                PtolemyQuery.preferredForegroundColor(container));
+            allowFiles, allowDirectories,
+            PtolemyQuery.preferredBackgroundColor(container),
+            PtolemyQuery.preferredForegroundColor(container));
         query.attachParameter(container, name);
     }
 }

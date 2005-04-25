@@ -26,12 +26,13 @@ COPYRIGHTENDKEY
 */
 package ptolemy.copernicus.java;
 
-import ptolemy.actor.TypedIOPort;
-
 import soot.ValueBox;
+
 import soot.jimple.InvokeExpr;
 import soot.jimple.JimpleBody;
 import soot.jimple.Stmt;
+
+import ptolemy.actor.TypedIOPort;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -58,31 +59,31 @@ public interface PortInliner {
      *  given body with a circular array reference.
      */
     public void inlineBroadcast(JimpleBody body, Stmt stmt, InvokeExpr expr,
-            TypedIOPort port);
+        TypedIOPort port);
 
     /** Replace the get invocation in the given box
      *  at the given unit in the
      *  given body with a circular array reference.
      */
     public void inlineGet(JimpleBody body, Stmt stmt, ValueBox box,
-            InvokeExpr expr, TypedIOPort port);
+        InvokeExpr expr, TypedIOPort port);
 
     /** Replace the getInside invocation in the given box
      *  at the given unit in the
      *  given body with a circular array reference.
      */
     public void inlineGetInside(JimpleBody body, Stmt stmt, ValueBox box,
-            InvokeExpr expr, TypedIOPort port);
+        InvokeExpr expr, TypedIOPort port);
 
     /** Replace the send command at the given unit in the
      *  given body with a circular array reference.
      */
     public void inlineSend(JimpleBody body, Stmt stmt, InvokeExpr expr,
-            TypedIOPort port);
+        TypedIOPort port);
 
     /** Replace the send command at the given unit in the
      *  given body with a circular array reference.
      */
     public void inlineSendInside(JimpleBody body, Stmt stmt, InvokeExpr expr,
-            TypedIOPort port);
+        TypedIOPort port);
 }

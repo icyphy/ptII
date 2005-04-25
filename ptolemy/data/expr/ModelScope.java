@@ -57,7 +57,7 @@ public abstract class ModelScope implements ParserScope {
      * considered in scope.
      */
     public static Set getAllScopedVariableNames(Variable exclude,
-            NamedObj container) {
+        NamedObj container) {
         List variableList = container.attributeList(Variable.class);
         variableList.remove(exclude);
 
@@ -79,7 +79,7 @@ public abstract class ModelScope implements ParserScope {
         // Get variables in scope extenders.  Moving down the scope
         // extenders terminates at hierarchy leaves.
         Iterator extenders = container.attributeList(ScopeExtender.class)
-            .iterator();
+                                                  .iterator();
 
         while (extenders.hasNext()) {
             ScopeExtender extender = (ScopeExtender) extenders.next();
@@ -87,7 +87,7 @@ public abstract class ModelScope implements ParserScope {
             // It would be nice if ScopeExtender and NamedObj were common in
             // some way to avoid this cast.
             nameSet.addAll(getAllScopedVariableNames(exclude,
-                                   (NamedObj) extender));
+                    (NamedObj) extender));
         }
 
         return nameSet;
@@ -105,7 +105,7 @@ public abstract class ModelScope implements ParserScope {
      *  @param name The variable name to search for.
      */
     public static Variable getScopedVariable(Variable exclude,
-            NamedObj container, String name) {
+        NamedObj container, String name) {
         String insideName = name.replaceAll("::", ".");
 
         while (container != null) {
@@ -125,22 +125,22 @@ public abstract class ModelScope implements ParserScope {
     // Search recursively in any instance of ScopeExtender in the
     // container.
     private static Variable _searchIn(Variable exclude, NamedObj container,
-            String name) {
+        String name) {
         Attribute result = container.getAttribute(name);
 
         if ((result != null) && result instanceof Variable
-                && (result != exclude)) {
+                        && (result != exclude)) {
             return (Variable) result;
         } else {
             Iterator extenders = container.attributeList(ScopeExtender.class)
-                .iterator();
+                                                      .iterator();
 
             while (extenders.hasNext()) {
                 ScopeExtender extender = (ScopeExtender) extenders.next();
                 result = extender.getAttribute(name);
 
                 if ((result != null) && result instanceof Variable
-                        && (result != exclude)) {
+                                && (result != exclude)) {
                     return (Variable) result;
                 }
 

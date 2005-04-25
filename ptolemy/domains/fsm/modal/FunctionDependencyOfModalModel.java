@@ -69,7 +69,7 @@ public class FunctionDependencyOfModalModel
      *  the attribute is not compatible with the specified container.
      */
     public FunctionDependencyOfModalModel(CompositeActor compositeActor,
-            String name) throws IllegalActionException, NameDuplicationException {
+        String name) throws IllegalActionException, NameDuplicationException {
         super(compositeActor, name);
     }
 
@@ -84,13 +84,14 @@ public class FunctionDependencyOfModalModel
         LinkedList entities = new LinkedList();
 
         try {
-            FSMActor controller = 
-                (FSMActor) ((ModalModel) getContainer()).getController();
+            FSMActor controller = (FSMActor) ((ModalModel) getContainer())
+                            .getController();
             Actor[] actors = controller.currentState().getRefinement();
+
             // If the modal model has no refinements, the modal model is
             // basically an FSM actor. We use the function dependency of
             // the controller instead.
-            if (actors != null && actors.length > 0) {
+            if ((actors != null) && (actors.length > 0)) {
                 for (int i = 0; i < actors.length; ++i) {
                     entities.add(actors[i]);
                 }

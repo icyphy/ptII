@@ -29,17 +29,19 @@
 */
 package ptolemy.caltrop.ddi;
 
+import caltrop.interpreter.InputChannel;
+
 import ptolemy.actor.TypedIOPort;
 import ptolemy.caltrop.CalIOException;
 import ptolemy.kernel.util.IllegalActionException;
 
-import caltrop.interpreter.InputChannel;
-
 import java.util.ArrayList;
 import java.util.List;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// DFInputChannel
+
 /**
    @author J&#246;rn W. Janneck
    @version $Id$
@@ -48,7 +50,6 @@ import java.util.List;
    @Pt.AcceptedRating Red (cxh)
 */
 class DFInputChannel implements InputChannel {
-
     public DFInputChannel(TypedIOPort port, int channel) {
         this.port = port;
         this.channel = channel;
@@ -62,17 +63,21 @@ class DFInputChannel implements InputChannel {
      */
     public Object get(int n) {
         int m = n - buffer.size() + 1;
+
         if (m <= 0) {
             tokensRead = Math.max(tokensRead, n + 1);
             return buffer.get(n);
         }
+
         try {
             if (!port.hasToken(channel, m)) {
                 throw new CalIOException("Insufficient number of tokens.");
             }
+
             for (int i = 0; i < m; i++) {
                 buffer.add(port.get(channel));
             }
+
             tokensRead = Math.max(tokensRead, n + 1);
             return buffer.get(n);
         } catch (IllegalActionException e) {
@@ -94,6 +99,7 @@ class DFInputChannel implements InputChannel {
                 buffer.remove(0);
             }
         }
+
         tokensRead = 0;
     }
 
@@ -109,16 +115,20 @@ class DFInputChannel implements InputChannel {
      */
     public boolean hasAvailable(int n) {
         int m = n - buffer.size();
-        if (m <= 0)
+
+        if (m <= 0) {
             return true;
+        }
+
         try {
-            if (channel < port.getWidth())
+            if (channel < port.getWidth()) {
                 return port.hasToken(channel, m);
-            else
+            } else {
                 return n == 0;
+            }
         } catch (IllegalActionException ex) {
             throw new CalIOException("Could not test for presence of tokens.",
-                    ex);
+                ex);
         }
     }
 

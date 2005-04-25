@@ -244,7 +244,7 @@ public class UnitLibrary {
             us = (UnitSystem) (container.getAttribute("SI"));
         } catch (Throwable throwable) {
             throw new InternalErrorException(null, throwable,
-                    "Failed to initialize statics in UnitLibrary");
+                "Failed to initialize statics in UnitLibrary");
         }
 
         // Initialize the Library.

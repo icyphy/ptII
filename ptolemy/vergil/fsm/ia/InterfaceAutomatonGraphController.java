@@ -108,7 +108,7 @@ public class InterfaceAutomatonGraphController extends FSMGraphController {
             super("Compose With");
             putValue("tooltip", "Compose with another interface automaton");
             putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
-                    new Integer(KeyEvent.VK_C));
+                new Integer(KeyEvent.VK_C));
         }
 
         /** Compose with another interface automaton by first opening a file
@@ -120,7 +120,7 @@ public class InterfaceAutomatonGraphController extends FSMGraphController {
             // NOTE: This code is mostly copied from Top.
             JFileChooser fileDialog = new JFileChooser();
             fileDialog.setDialogTitle(
-                    "Select an interface automaton to compose with.");
+                "Select an interface automaton to compose with.");
 
             if (_directory != null) {
                 fileDialog.setCurrentDirectory(_directory);
@@ -158,11 +158,11 @@ public class InterfaceAutomatonGraphController extends FSMGraphController {
 
                     // compose the two interface automata and show result
                     InterfaceAutomaton model1 = (InterfaceAutomaton) getFrame()
-                        .getModel();
+                                                                                     .getModel();
                     InterfaceAutomatonGraphFrame graphFrame2 = (InterfaceAutomatonGraphFrame) newAutomatonTableau
-                        .getFrame();
+                                    .getFrame();
                     InterfaceAutomaton model2 = (InterfaceAutomaton) graphFrame2
-                        .getModel();
+                                    .getModel();
 
                     InterfaceAutomaton composition = model1.compose(model2);
                     configuration.openModel(composition);

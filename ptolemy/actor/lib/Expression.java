@@ -123,7 +123,7 @@ public class Expression extends TypedAtomicActor {
      *   actor with this name.
      */
     public Expression(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         output = new TypedIOPort(this, "output", false, true);
@@ -151,7 +151,7 @@ public class Expression extends TypedAtomicActor {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == expression) {
             _parseTree = null;
         }
@@ -194,7 +194,7 @@ public class Expression extends TypedAtomicActor {
                     _tokenMap.put(port.getName(), inputToken);
                 } else {
                     throw new IllegalActionException(this,
-                            "Input port " + port.getName() + " has no data.");
+                        "Input port " + port.getName() + " has no data.");
                 }
             }
         }
@@ -228,8 +228,8 @@ public class Expression extends TypedAtomicActor {
 
         if (result == null) {
             throw new IllegalActionException(this,
-                    "Expression yields a null result: "
-                    + expression.getExpression());
+                "Expression yields a null result: "
+                + expression.getExpression());
         }
 
         output.send(0, result);
@@ -296,7 +296,7 @@ public class Expression extends TypedAtomicActor {
         public Token get(String name) throws IllegalActionException {
             if (name.equals("time")) {
                 return new DoubleToken(getDirector().getModelTime()
-                        .getDoubleValue());
+                                                       .getDoubleValue());
             } else if (name.equals("iteration")) {
                 return new IntToken(_iterationCount);
             }
@@ -353,7 +353,7 @@ public class Expression extends TypedAtomicActor {
          *  exists with the given name, but cannot be evaluated.
          */
         public ptolemy.graph.InequalityTerm getTypeTerm(String name)
-                throws IllegalActionException {
+            throws IllegalActionException {
             if (name.equals("time")) {
                 return new TypeConstant(BaseType.DOUBLE);
             } else if (name.equals("iteration")) {
@@ -423,7 +423,7 @@ public class Expression extends TypedAtomicActor {
                     // requires a large amount of memory.
                     PtParser parser = new PtParser();
                     _parseTree = parser.generateParseTree(expression
-                            .getExpression());
+                                        .getExpression());
                 }
 
                 if (_scope == null) {
@@ -434,7 +434,7 @@ public class Expression extends TypedAtomicActor {
                 return type;
             } catch (Exception ex) {
                 throw new IllegalActionException(Expression.this, ex,
-                        "An error occurred during expression type inference");
+                    "An error occurred during expression type inference");
             }
         }
 
@@ -452,7 +452,7 @@ public class Expression extends TypedAtomicActor {
                 if (_parseTree == null) {
                     PtParser parser = new PtParser();
                     _parseTree = parser.generateParseTree(expression
-                            .getExpression());
+                                        .getExpression());
                 }
 
                 if (_scope == null) {
@@ -473,7 +473,7 @@ public class Expression extends TypedAtomicActor {
                 }
 
                 return (InequalityTerm[]) termList.toArray(new InequalityTerm[termList
-                                                                   .size()]);
+                                .size()]);
             } catch (IllegalActionException ex) {
                 return new InequalityTerm[0];
             }

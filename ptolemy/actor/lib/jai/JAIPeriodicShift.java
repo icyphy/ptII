@@ -67,7 +67,7 @@ public class JAIPeriodicShift extends Transformer {
      *   actor with this name.
      */
     public JAIPeriodicShift(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         xShift = new Parameter(this, "xShift", new IntToken(0));
@@ -98,7 +98,7 @@ public class JAIPeriodicShift extends Transformer {
      *  @exception IllegalActionException If a contained method throws it.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == xShift) {
             _xShift = ((IntToken) xShift.getToken()).intValue();
         } else if (attribute == yShift) {

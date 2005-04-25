@@ -22,11 +22,24 @@ public interface PtParserTreeConstants {
     public int JJTPTRECORDCONSTRUCTNODE = 17;
     public int JJTPTARRAYCONSTRUCTNODE = 18;
     public String[] jjtNodeName = {
-            "PtRootNode", "PtAssignmentNode", "PtSumNode", "void", "PtLeafNode",
-            "PtFunctionalIfNode", "PtLogicalNode", "PtBitwiseNode",
-            "PtRelationalNode", "PtPowerNode", "PtShiftNode", "PtProductNode",
-            "PtUnaryNode", "PtMethodCallNode", "PtFunctionApplicationNode",
-            "PtFunctionDefinitionNode", "PtMatrixConstructNode",
-            "PtRecordConstructNode", "PtArrayConstructNode",
+            "PtRootNode",
+            "PtAssignmentNode",
+            "PtSumNode",
+            "void",
+            "PtLeafNode",
+            "PtFunctionalIfNode",
+            "PtLogicalNode",
+            "PtBitwiseNode",
+            "PtRelationalNode",
+            "PtPowerNode",
+            "PtShiftNode",
+            "PtProductNode",
+            "PtUnaryNode",
+            "PtMethodCallNode",
+            "PtFunctionApplicationNode",
+            "PtFunctionDefinitionNode",
+            "PtMatrixConstructNode",
+            "PtRecordConstructNode",
+            "PtArrayConstructNode",
         };
 }

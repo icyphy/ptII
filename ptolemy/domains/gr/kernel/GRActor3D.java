@@ -64,7 +64,7 @@ abstract public class GRActor3D extends GRActor {
      *   an entity already in the container.
      */
     public GRActor3D(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -80,7 +80,7 @@ abstract public class GRActor3D extends GRActor {
      */
     protected void _addChild(Node node) throws IllegalActionException {
         throw new IllegalActionException(this,
-                "GR domain actor cannot have children");
+            "GR domain actor cannot have children");
     }
 
     /** Return the Java3D node associated with this actor. Derived
@@ -99,7 +99,7 @@ abstract public class GRActor3D extends GRActor {
             _viewScreen = (ViewScreen3D) actor;
         } else {
             throw new RuntimeException("Actor " + getClass().getName()
-                    + " can only be used with a ViewScreen3D");
+                + " can only be used with a ViewScreen3D");
         }
     }
 

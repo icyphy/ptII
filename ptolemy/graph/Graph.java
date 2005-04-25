@@ -153,12 +153,12 @@ public class Graph implements Cloneable {
     public void addAnalysis(Analysis analysis) {
         if (analysis.graph() != this) {
             throw new IllegalArgumentException("Invalid associated graph.\n"
-                    + "The analysis:\n" + analysis + "\n");
+                + "The analysis:\n" + analysis + "\n");
         }
 
         if (_analysisList.contains(analysis)) {
             throw new IllegalArgumentException("Attempt to add "
-                    + "duplicate analysis.\nThe analysis:\n" + analysis);
+                + "duplicate analysis.\nThe analysis:\n" + analysis);
         }
 
         _analysisList.add(analysis);
@@ -210,7 +210,7 @@ public class Graph implements Cloneable {
      *  added (i.e., if no nodes x1, x2 satisfy the above condition).
      */
     public Collection addEdge(Object weight1, Object weight2,
-            Object newEdgeWeight) {
+        Object newEdgeWeight) {
         return _addEdges(weight1, weight2, true, newEdgeWeight);
     }
 
@@ -241,18 +241,18 @@ public class Graph implements Cloneable {
     public Edge addEdge(Edge edge) {
         if (!containsNode(edge.source())) {
             throw new GraphElementException(edge, this,
-                    "The source node is not in the graph.");
+                "The source node is not in the graph.");
         } else if (!containsNode(edge.sink())) {
             throw new GraphElementException(edge, this,
-                    "The sink node is not in the graph.");
+                "The sink node is not in the graph.");
         } else if (containsEdge(edge)) {
             throw new GraphConstructionException("Attempt to add an edge that "
-                    + "is already in the graph."
-                    + GraphException.elementDump(edge, this));
+                + "is already in the graph."
+                + GraphException.elementDump(edge, this));
         } else if (hidden(edge)) {
             throw new GraphConstructionException("Attempt to add an edge that "
-                    + "is already hidden in the graph."
-                    + GraphException.elementDump(edge, this));
+                + "is already hidden in the graph."
+                + GraphException.elementDump(edge, this));
         } else {
             _registerEdge(edge);
             return edge;
@@ -305,8 +305,8 @@ public class Graph implements Cloneable {
     public Node addNode(Node node) {
         if (containsNode(node)) {
             throw new GraphConstructionException("Attempt to add a node "
-                    + "that is already contained in the graph."
-                    + GraphException.elementDump(node, this));
+                + "that is already contained in the graph."
+                + GraphException.elementDump(node, this));
         } else {
             _registerNode(node);
             return node;
@@ -708,7 +708,7 @@ public class Graph implements Cloneable {
         Graph argumentGraph = (Graph) graph;
 
         if ((argumentGraph.nodeCount() != nodeCount())
-                || (argumentGraph.edgeCount() != edgeCount())) {
+                        || (argumentGraph.edgeCount() != edgeCount())) {
             return false;
         }
 
@@ -1092,12 +1092,12 @@ public class Graph implements Cloneable {
             // Make sure the source and sink are still in the graph.
             if (!containsNode(edge.source())) {
                 throw new GraphElementException(edge, this,
-                        "Source node is not in the graph.");
+                    "Source node is not in the graph.");
             }
 
             if (!containsNode(edge.sink())) {
                 throw new GraphElementException(edge, this,
-                        "Sink node is not in the graph.");
+                    "Sink node is not in the graph.");
             }
 
             // Re-connect the edge.
@@ -1189,8 +1189,8 @@ public class Graph implements Cloneable {
 
             if (!containsNode(node)) {
                 throw new GraphElementException(node, this,
-                        "Attempt to form an induced subgraph containing a "
-                        + "node that is not in the 'parent' graph.");
+                    "Attempt to form an induced subgraph containing a "
+                    + "node that is not in the 'parent' graph.");
             }
 
             Iterator incidentEdges = incidentEdges(node).iterator();
@@ -1199,8 +1199,8 @@ public class Graph implements Cloneable {
                 Edge edge = (Edge) (incidentEdges.next());
 
                 if (subgraph.containsNode(edge.source())
-                        && subgraph.containsNode(edge.sink())
-                        && !subgraph.containsEdge(edge)) {
+                                && subgraph.containsNode(edge.sink())
+                                && !subgraph.containsEdge(edge)) {
                     subgraph.addEdge(edge);
                 }
             }
@@ -1234,8 +1234,8 @@ public class Graph implements Cloneable {
 
             if (!containsNode(node)) {
                 throw new GraphElementException(node, this,
-                        "Attempt to form a subgraph containing a node "
-                        + "that is not in the 'parent' graph.");
+                    "Attempt to form a subgraph containing a node "
+                    + "that is not in the 'parent' graph.");
             }
         }
 
@@ -1246,8 +1246,8 @@ public class Graph implements Cloneable {
 
             if (!containsEdge(edge)) {
                 throw new GraphElementException(edge, this,
-                        "Attempt to form a subgraph containing an edge "
-                        + "that is not in the 'parent' graph.");
+                    "Attempt to form a subgraph containing an edge "
+                    + "that is not in the 'parent' graph.");
             }
         }
 
@@ -1317,19 +1317,19 @@ public class Graph implements Cloneable {
     public boolean validateWeight(Edge edge) {
         if (edge == null) {
             throw new NullPointerException("Attempt to validate the weight "
-                    + "of a null graph edge.");
+                + "of a null graph edge.");
         }
 
         if (!containsEdge(edge)) {
             throw new GraphElementException(edge, this,
-                    "The specified edge is not in the graph.");
+                "The specified edge is not in the graph.");
         }
 
         Object weightArgument = edge.hasWeight() ? edge.getWeight() : null;
 
         if (!validEdgeWeight(weightArgument)) {
             throw new GraphWeightException(weightArgument, edge, this,
-                    "Invalid weight associated with an edge in the graph.\n");
+                "Invalid weight associated with an edge in the graph.\n");
         }
 
         boolean changed = _edges.changeWeight(edge);
@@ -1355,14 +1355,14 @@ public class Graph implements Cloneable {
     public boolean validateWeight(Edge edge, Object oldWeight) {
         if (!containsEdge(edge)) {
             throw new GraphElementException(edge, this,
-                    "The specified edge is not in the graph.");
+                "The specified edge is not in the graph.");
         }
 
         Object newWeight = edge.hasWeight() ? edge.getWeight() : null;
 
         if (!validEdgeWeight(newWeight)) {
             throw new GraphWeightException(newWeight, edge, this,
-                    "Invalid weight associated with an edge in the graph.");
+                "Invalid weight associated with an edge in the graph.");
         }
 
         boolean changed = _edges.validateWeight(edge, oldWeight);
@@ -1402,19 +1402,19 @@ public class Graph implements Cloneable {
     public boolean validateWeight(Node node) {
         if (node == null) {
             throw new NullPointerException("Attempt to validate the weight "
-                    + "of a null graph node.");
+                + "of a null graph node.");
         }
 
         if (!containsNode(node)) {
             throw new GraphElementException(node, this,
-                    "The specified node is not in the graph.");
+                "The specified node is not in the graph.");
         }
 
         Object weightArgument = node.hasWeight() ? node.getWeight() : null;
 
         if (!validNodeWeight(weightArgument)) {
             throw new GraphWeightException(weightArgument, node, this,
-                    "Invalid weight associated with a node in the graph.");
+                "Invalid weight associated with a node in the graph.");
         }
 
         boolean changed = _nodes.changeWeight(node);
@@ -1463,14 +1463,14 @@ public class Graph implements Cloneable {
     public boolean validateWeight(Node node, Object oldWeight) {
         if (!containsNode(node)) {
             throw new GraphElementException(node, this,
-                    "The specified node is not in the graph.");
+                "The specified node is not in the graph.");
         }
 
         Object newWeight = node.hasWeight() ? node.getWeight() : null;
 
         if (!validNodeWeight(newWeight)) {
             throw new GraphWeightException(newWeight, node, this,
-                    "Invalid weight associated with a node in the graph.");
+                "Invalid weight associated with a node in the graph.");
         }
 
         boolean changed = _nodes.validateWeight(node, oldWeight);
@@ -1512,16 +1512,16 @@ public class Graph implements Cloneable {
 
                     if (element == null) {
                         throw new NullPointerException("Null graph element "
-                                + "specified.\n");
+                            + "specified.\n");
                     } else {
                         result[i] = element.getWeight();
                     }
                 }
             } catch (ClassCastException exception) {
                 throw new GraphElementException("Illegal graph element "
-                        + "(neither a Node nor an Edge) specified.\n"
-                        + "The element's type is: " + element.getClass().getName()
-                        + ".\n");
+                    + "(neither a Node nor an Edge) specified.\n"
+                    + "The element's type is: " + element.getClass().getName()
+                    + ".\n");
             }
 
             return result;
@@ -1549,17 +1549,17 @@ public class Graph implements Cloneable {
      *  the specified weight is null.
      */
     protected Edge _addEdge(Node node1, Node node2, boolean weighted,
-            Object weight) {
+        Object weight) {
         if (!containsNode(node1)) {
             throw new GraphElementException(node1, this,
-                    "The specified first node is not in the graph.");
+                "The specified first node is not in the graph.");
         } else if (!containsNode(node2)) {
             throw new GraphElementException(node2, this,
-                    "The specified second node is not in the graph.");
+                "The specified second node is not in the graph.");
         } else if (weighted && (weight == null)) {
             throw new NullPointerException("Attempt to assign a null "
-                    + "weight to an edge. The first node:\n" + node1
-                    + "\nThe second node:\n" + node2 + "\nThe graph: \n" + this);
+                + "weight to an edge. The first node:\n" + node1
+                + "\nThe second node:\n" + node2 + "\nThe graph: \n" + this);
         } else {
             Edge edge = null;
 
@@ -1585,8 +1585,8 @@ public class Graph implements Cloneable {
     protected void _connect(Edge edge, Node node) {
         if (_incidentEdgeList(node).contains(edge)) {
             throw new GraphConstructionException(
-                    "Attempt to connect the same edge multiple times."
-                    + GraphException.elementDump(edge, this));
+                "Attempt to connect the same edge multiple times."
+                + GraphException.elementDump(edge, this));
         } else {
             _incidentEdgeList(node).add(edge);
         }
@@ -1669,8 +1669,8 @@ public class Graph implements Cloneable {
             graph = (Graph) (getClass().newInstance());
         } catch (Exception exception) {
             throw new GraphConstructionException("Could not create an "
-                    + "empty graph from this one.\n" + exception + "\n"
-                    + GraphException.graphDump(this));
+                + "empty graph from this one.\n" + exception + "\n"
+                + GraphException.graphDump(this));
         }
 
         return graph;
@@ -1728,7 +1728,7 @@ public class Graph implements Cloneable {
 
         if (!validEdgeWeight(weight)) {
             throw new GraphWeightException(weight, edge, this,
-                    "Invalid edge weight.");
+                "Invalid edge weight.");
         }
 
         _edges.add(edge);
@@ -1751,7 +1751,7 @@ public class Graph implements Cloneable {
 
         if (!validNodeWeight(weight)) {
             throw new GraphWeightException(weight, node, this,
-                    "Invalid node weight.");
+                "Invalid node weight.");
         }
 
         _nodes.add(node);
@@ -1775,7 +1775,7 @@ public class Graph implements Cloneable {
     // added (i.e., if no nodes x1, x2 satisfy the above condition.
     // The method throws a NullPointerException if w1 or w2 is null.
     private Collection _addEdges(Object weight1, Object weight2,
-            boolean weighted, Object weight) {
+        boolean weighted, Object weight) {
         if (weight1 == null) {
             throw new NullPointerException("Null source node weight");
         } else if (weight2 == null) {
@@ -1799,9 +1799,9 @@ public class Graph implements Cloneable {
 
         if (newEdges.isEmpty()) {
             throw new GraphConstructionException("No edge can be added based "
-                    + "on the specified source and sink node weights.\n"
-                    + "Weight1:\n" + weight1 + "\nWeight2:\n" + weight2 + "\n"
-                    + GraphException.graphDump(this));
+                + "on the specified source and sink node weights.\n"
+                + "Weight1:\n" + weight1 + "\nWeight2:\n" + weight2 + "\n"
+                + GraphException.graphDump(this));
         } else {
             return newEdges;
         }

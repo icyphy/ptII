@@ -92,7 +92,7 @@ public class FunctionDependencyOfCompositeActor extends FunctionDependency {
      *   an entity with the specified name.
      */
     public FunctionDependencyOfCompositeActor(CompositeActor compositeActor,
-            String name) throws IllegalActionException, NameDuplicationException {
+        String name) throws IllegalActionException, NameDuplicationException {
         super(compositeActor, name);
     }
 
@@ -160,14 +160,15 @@ public class FunctionDependencyOfCompositeActor extends FunctionDependency {
             while (inputs.hasNext()) {
                 IOPort inputPort = (IOPort) inputs.next();
                 Collection reachableOutputs = _detailedDependencyGraph
-                    .reachableNodes(_detailedDependencyGraph.node(inputPort));
+                                .reachableNodes(_detailedDependencyGraph.node(
+                                        inputPort));
                 Iterator outputs = actor.outputPortList().listIterator();
 
                 while (outputs.hasNext()) {
                     IOPort outputPort = (IOPort) outputs.next();
 
                     if (reachableOutputs.contains(_detailedDependencyGraph.node(
-                                                          outputPort))) {
+                                            outputPort))) {
                         _dependencyGraph.addEdge(inputPort, outputPort);
                     }
                 }
@@ -307,7 +308,7 @@ public class FunctionDependencyOfCompositeActor extends FunctionDependency {
                             IOPort ioPort = receivers[i][j].getContainer();
 
                             if (embeddedActors.contains(ioPort.getContainer())
-                                    || outputPorts.contains(ioPort)) {
+                                            || outputPorts.contains(ioPort)) {
                                 _detailedDependencyGraph.addEdge(outPort, ioPort);
                             }
                         }
@@ -338,7 +339,7 @@ public class FunctionDependencyOfCompositeActor extends FunctionDependency {
                     // The receivers may belong to either the inputs of
                     // contained actors, or the outputs of the container.
                     if (embeddedActors.contains(ioPortContainer)
-                            || actor.equals(ioPortContainer)) {
+                                    || actor.equals(ioPortContainer)) {
                         _detailedDependencyGraph.addEdge(inputPort, ioPort);
                     }
                 }
@@ -354,15 +355,15 @@ public class FunctionDependencyOfCompositeActor extends FunctionDependency {
         while (actors.hasNext()) {
             Actor embeddedActor = (Actor) actors.next();
             FunctionDependency functionDependency = embeddedActor
-                .getFunctionDependency();
+                            .getFunctionDependency();
 
             if (functionDependency != null) {
                 _detailedDependencyGraph.addGraph(functionDependency
-                        .getDependencyGraph());
+                                .getDependencyGraph());
             } else {
                 throw new InternalErrorException("FunctionDependency can "
-                        + "not be null. Check all four types of function "
-                        + "dependencies. There must be something wrong.");
+                    + "not be null. Check all four types of function "
+                    + "dependencies. There must be something wrong.");
             }
         }
     }

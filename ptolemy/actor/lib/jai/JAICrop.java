@@ -66,7 +66,7 @@ public class JAICrop extends Transformer {
      *   actor with this name.
      */
     public JAICrop(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         xOrigin = new Parameter(this, "xOrigin", new IntToken(0));
@@ -112,7 +112,7 @@ public class JAICrop extends Transformer {
      *  @exception IllegalActionException If a contained method throws it.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == xOrigin) {
             _xOrigin = ((IntToken) xOrigin.getToken()).intValue();
         } else if (attribute == yOrigin) {

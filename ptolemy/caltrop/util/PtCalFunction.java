@@ -29,13 +29,15 @@
 */
 package ptolemy.caltrop.util;
 
+import caltrop.interpreter.Function;
+
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 
-import caltrop.interpreter.Function;
 
 //////////////////////////////////////////////////////////////////////////
 //// PtCalFunction
+
 /**
    This class is an adapter for {@link caltrop.interpreter.Function
    Function} objects that provides the Ptolemy II
@@ -51,7 +53,6 @@ import caltrop.interpreter.Function;
    @see caltrop.interpreter.Function
 */
 public class PtCalFunction implements ptolemy.data.Function {
-
     public PtCalFunction(Function function) {
         _function = function;
     }
@@ -89,6 +90,5 @@ public class PtCalFunction implements ptolemy.data.Function {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private Function _function;
 }

@@ -87,7 +87,7 @@ abstract public class CipherActor extends CryptographyActor {
      *   actor with this name.
      */
     public CipherActor(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         mode = new StringParameter(this, "mode");
@@ -217,7 +217,7 @@ abstract public class CipherActor extends CryptographyActor {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == mode) {
             _updateCipherNeeded = true;
             _mode = ((StringToken) mode.getToken()).stringValue();
@@ -308,9 +308,9 @@ abstract public class CipherActor extends CryptographyActor {
                 }
             } catch (Throwable throwable) {
                 throw new IllegalActionException(this, throwable,
-                        "Failed to initialize Cipher with " + "algorithm: '"
-                        + _algorithm + "', padding: '" + _padding
-                        + "', provider: '" + _provider + "'");
+                    "Failed to initialize Cipher with " + "algorithm: '"
+                    + _algorithm + "', padding: '" + _padding
+                    + "', provider: '" + _provider + "'");
             }
 
             _updateCipherNeeded = false;

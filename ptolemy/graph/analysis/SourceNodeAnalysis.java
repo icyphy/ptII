@@ -83,7 +83,7 @@ public class SourceNodeAnalysis extends Analysis {
      */
     public String toString() {
         return "Source node analysis using the following analyzer:\n"
-            + analyzer().toString();
+        + analyzer().toString();
     }
 
     /** Check if a given analyzer is compatible with this analysis.

@@ -149,8 +149,8 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
 
         if (!(director instanceof PNDirector)) {
             throw new IllegalActionException(port,
-                    "Cannot use an instance of PNQueueReceiver "
-                    + "since the director is not a PNDirector.");
+                "Cannot use an instance of PNQueueReceiver "
+                + "since the director is not a PNDirector.");
         }
 
         _director = (PNDirector) director;
@@ -202,7 +202,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  receiver. If a process is indeed blocked, then unblock the
      *  process, and inform the director of the same.
      *  Otherwise return.
-     *  @param branch The Branch managin the execution of this method. 
+     *  @param branch The Branch managin the execution of this method.
      *  @return The oldest Token read from the queue
      */
     public Token get(Branch branch) {

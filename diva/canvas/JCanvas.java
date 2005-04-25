@@ -110,7 +110,7 @@ public class JCanvas extends JComponent implements Printable {
         setBackground(Color.white);
         setCanvasPane(pane);
         enableEvents(AWTEvent.MOUSE_EVENT_MASK
-                | AWTEvent.MOUSE_MOTION_EVENT_MASK);
+                        | AWTEvent.MOUSE_MOTION_EVENT_MASK);
 
         // We have to set this to something other than null, or else no
         // tool tips will appear!
@@ -142,7 +142,7 @@ public class JCanvas extends JComponent implements Printable {
         layerevent = new LayerEvent(e);
 
         AffineTransform at = _canvasPane.getTransformContext()
-            .getInverseTransform();
+                                                    .getInverseTransform();
         layerevent.transform(at);
 
         // Process it on the pane
@@ -184,7 +184,7 @@ public class JCanvas extends JComponent implements Printable {
         }
 
         boolean paintAll = ((clip.x == 0) && (clip.y == 0)
-                && (clip.width == d.width) && (clip.height == d.height));
+                        && (clip.width == d.width) && (clip.height == d.height));
 
         if (!isDoubleBuffered()) {
             Graphics2D g2d = (Graphics2D) g;
@@ -209,7 +209,7 @@ public class JCanvas extends JComponent implements Printable {
             // to the off-screen buffer, so that the memory can be freed
             // if necessary by the GC and reallocated for the new buffer.
             if ((_offscreen == null) || (_offscreen.getWidth() != clip.width)
-                    || (_offscreen.getHeight() != clip.height)) {
+                            || (_offscreen.getHeight() != clip.height)) {
                 _offscreen = null; // in case GC needs it
                 _offscreen = new BufferedImage(clip.width, clip.height,
                         BufferedImage.TYPE_INT_RGB);
@@ -255,7 +255,7 @@ public class JCanvas extends JComponent implements Printable {
      *  @exception PrinterException If the print job is terminated.
      */
     public int print(Graphics graphics, PageFormat format, int index)
-            throws PrinterException {
+        throws PrinterException {
         Dimension dimension = getSize();
         Rectangle2D bounds = new Rectangle2D.Double(0, 0, dimension.width,
                 dimension.height);
@@ -275,7 +275,7 @@ public class JCanvas extends JComponent implements Printable {
      *  @exception PrinterException If the print job is terminated.
      */
     public int print(Graphics graphics, PageFormat format, int index,
-            Rectangle2D printRegion) throws PrinterException {
+        Rectangle2D printRegion) throws PrinterException {
         // We only print on one page.
         if (index >= 1) {
             return Printable.NO_SUCH_PAGE;
@@ -285,7 +285,7 @@ public class JCanvas extends JComponent implements Printable {
                 format.getImageableY(), format.getImageableWidth(),
                 format.getImageableHeight());
         ((Graphics2D) graphics).transform(CanvasUtilities.computeFitTransform(
-                                                  printRegion, pageBounds));
+                printRegion, pageBounds));
         graphics.setClip(printRegion);
 
         paint(graphics);
@@ -392,7 +392,7 @@ public class JCanvas extends JComponent implements Printable {
      */
     public Rectangle2D getVisibleSize() {
         AffineTransform current = getCanvasPane().getTransformContext()
-            .getTransform();
+                                                  .getTransform();
         AffineTransform inverse;
 
         try {
@@ -459,7 +459,7 @@ public class JCanvas extends JComponent implements Printable {
         layerevent = new LayerEvent(e);
 
         AffineTransform at = _canvasPane.getTransformContext()
-            .getInverseTransform();
+                                                    .getInverseTransform();
         layerevent.transform(at);
 
         // Process it on the pane

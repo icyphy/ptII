@@ -62,7 +62,7 @@ public class ThrowException extends Sink {
      *   an actor already in the container.
      */
     public ThrowException(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         input.setTypeEquals(BaseType.BOOLEAN);

@@ -27,13 +27,15 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.lib.colt;
 
+import cern.jet.random.Gamma;
+
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import cern.jet.random.Gamma;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// Gamma
@@ -46,7 +48,7 @@ import cern.jet.random.Gamma;
    deviation given by parameters.  In addition, the seed can be
    specified as a parameter to control the sequence that is generated.
 
-   <p> This actor instantiates a 
+   <p> This actor instantiates a
    <a href="http://hoschek.home.cern.ch/hoschek/colt/V1.0.3/doc/cern/jet/random/Gamma.html">cern.jet.random.Gamma</a> object with
     double and lambda both set to 1.0.
 
@@ -66,7 +68,7 @@ public class ColtGamma extends ColtRandomSource {
      *   actor with this name.
      */
     public ColtGamma(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         output.setTypeEquals(BaseType.DOUBLE);
@@ -75,7 +77,7 @@ public class ColtGamma extends ColtRandomSource {
         alpha.setTypeEquals(BaseType.DOUBLE);
         lambda = new Parameter(this, "lambda", new DoubleToken(1.0));
         lambda.setTypeEquals(BaseType.DOUBLE);
-        
+
         lambda.moveToFirst();
         alpha.moveToFirst();
     }
@@ -132,7 +134,7 @@ public class ColtGamma extends ColtRandomSource {
 
     /** The random number for the current iteration. */
     private double _current;
-    
+
     /** The random number generator. */
     private Gamma _generator;
 }

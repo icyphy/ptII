@@ -58,7 +58,7 @@ public class TestComponentPort extends ComponentPort {
      *   a port already in the container.
      */
     public TestComponentPort(ComponentEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 

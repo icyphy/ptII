@@ -72,7 +72,7 @@ public class JNLPUtilities {
      *  @exception java.net.MalformedURLException If new URL() throws it.
      */
     public static URL canonicalizeJarURL(URL possibleJarURL)
-            throws java.net.MalformedURLException {
+        throws java.net.MalformedURLException {
         // This method is needed so that under Web Start we are always
         // referring to files like intro.htm with the same URL.
         // The reason is that the Web Start under Windows is likely
@@ -83,7 +83,7 @@ public class JNLPUtilities {
             // FIXME: Could it be that we only want to convert spaces before
             // the '!/' string?
             URL jarURL = new URL(StringUtilities.substitute(
-                                         possibleJarURL.toExternalForm(), " ", "%20"));
+                        possibleJarURL.toExternalForm(), " ", "%20"));
 
             // FIXME: should we check to see if the jarURL exists here?
             return jarURL;
@@ -124,7 +124,7 @@ public class JNLPUtilities {
      *  @see java.net.JarURLConnection
      */
     public static URL jarURLEntryResource(String spec)
-            throws IOException {
+        throws IOException {
         return ClassUtilities.jarURLEntryResource(spec);
     }
 
@@ -148,7 +148,7 @@ public class JNLPUtilities {
      *  @return the name of the temporary file that was created
      */
     public static String saveJarURLAsTempFile(String jarURLName, String prefix,
-            String suffix, File directory) throws IOException {
+        String suffix, File directory) throws IOException {
         URL jarURL = _lookupJarURL(jarURLName);
         jarURLName = jarURL.toString();
 
@@ -190,7 +190,7 @@ public class JNLPUtilities {
      *  null if the file cannot be created
      */
     public static String saveJarURLInClassPath(String jarURLName)
-            throws IOException {
+        throws IOException {
         URL jarURL = _lookupJarURL(jarURLName);
         jarURLName = jarURL.toString();
 
@@ -216,7 +216,7 @@ public class JNLPUtilities {
                 entryFileName.lastIndexOf("/"));
 
         if (jarURLParentFileName.endsWith(parentEntryFileName)
-                && jarURLParentFileName.startsWith("jar:file:/")) {
+                        && jarURLParentFileName.startsWith("jar:file:/")) {
             // The top level directory, probably $PTII
             String jarURLTop = jarURLParentFileName.substring(10,
                     jarURLParentFileName.length()
@@ -240,7 +240,7 @@ public class JNLPUtilities {
     ////                         private methods                   ////
     // Lookup a jarURLName as a resource.
     private static URL _lookupJarURL(String jarURLName)
-            throws IOException {
+        throws IOException {
         // We call jarURLEntryResource here so that we get a URL
         // that has the right jar file associated with the right entry.
         URL jarURL = jarURLEntryResource(jarURLName);
@@ -251,7 +251,7 @@ public class JNLPUtilities {
 
         if (jarURL == null) {
             throw new FileNotFoundException("Could not find '" + jarURLName
-                    + "'");
+                + "'");
         }
 
         return jarURL;

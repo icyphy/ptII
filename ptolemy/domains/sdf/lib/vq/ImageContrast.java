@@ -60,7 +60,7 @@ public class ImageContrast extends Transformer {
      *   actor with this name.
      */
     public ImageContrast(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         output.setTypeEquals(BaseType.INT_MATRIX);
@@ -113,9 +113,9 @@ public class ImageContrast extends Transformer {
 
                 if ((frameElement < 0) || (frameElement > 255)) {
                     throw new IllegalActionException("ImageContrast:"
-                            + "input image pixel contains at" + j + "," + i
-                            + "with value" + frameElement
-                            + "that is out of bounds." + " Not between 0 and 255.");
+                        + "input image pixel contains at" + j + "," + i
+                        + "with value" + frameElement
+                        + "that is out of bounds." + " Not between 0 and 255.");
                 }
 
                 colorHistogram[frameElement]++;

@@ -18,7 +18,7 @@ public interface CorbaActorOperations {
      *   method is an illegal action of the actor.
      */
     void fire()
-            throws ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionException;
+        throws ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionException;
 
     /* Return the value (in the form of a string) of
      * a parameter.
@@ -28,7 +28,7 @@ public interface CorbaActorOperations {
      *  name is not known by the actor.
      */
     String getParameter(String paramName)
-            throws ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionException, 
+        throws ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionException, 
             ptolemy.domains.ct.demo.Corba.util.CorbaUnknownParamException;
 
     /* Mirror the initialize() method of the Ptolmey
@@ -37,7 +37,7 @@ public interface CorbaActorOperations {
      *   method is an illegal action of the actor.
      */
     void initialize()
-            throws ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionException;
+        throws ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionException;
 
     /* Return true if the specified channel of the specified
      * port contains unsent data.
@@ -49,7 +49,7 @@ public interface CorbaActorOperations {
      *   channel index is out of the width of the port.
      */
     boolean hasData(String portName, short portIndex)
-            throws ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionException, 
+        throws ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionException, 
             ptolemy.domains.ct.demo.Corba.util.CorbaIndexOutofBoundException, 
             ptolemy.domains.ct.demo.Corba.util.CorbaUnknownPortException;
 
@@ -66,7 +66,7 @@ public interface CorbaActorOperations {
      * @param isMultiport True if the port is a multiport.
      */
     boolean hasPort(String portName, boolean isInput, boolean isOutput,
-            boolean isMultiport);
+        boolean isMultiport);
 
     /* Set the width of the specified port.
      * @param portName The name of the port.
@@ -79,7 +79,7 @@ public interface CorbaActorOperations {
      *  not known by the actor.
      */
     void setPortWidth(String portName, short width)
-            throws ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionException, 
+        throws ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionException, 
             ptolemy.domains.ct.demo.Corba.util.CorbaUnknownPortException;
 
     /* Mirror the postfire() method of the Ptolmey
@@ -88,7 +88,7 @@ public interface CorbaActorOperations {
      *   method is an illegal action of the actor.
      */
     boolean postfire()
-            throws ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionException;
+        throws ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionException;
 
     /* Mirror the prefire() method of the Ptolmey
      * executable interface.
@@ -96,7 +96,7 @@ public interface CorbaActorOperations {
      *   method is an illegal action of the actor.
      */
     boolean prefire()
-            throws ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionException;
+        throws ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionException;
 
     /* Set the value of the specified parameter.
      * @param paramName The parameter name.
@@ -109,7 +109,7 @@ public interface CorbaActorOperations {
      *  is invalid for this parameter.
      */
     void setParameter(String paramName, String paramValue)
-            throws ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionException, 
+        throws ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionException, 
             ptolemy.domains.ct.demo.Corba.util.CorbaUnknownParamException, 
             ptolemy.domains.ct.demo.Corba.util.CorbaIllegalValueException;
 
@@ -119,7 +119,7 @@ public interface CorbaActorOperations {
      *   method is an illegal action of the actor.
      */
     void stopFire()
-            throws ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionException;
+        throws ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionException;
 
     /* Mirror the terminate() method of the Ptolmey
      * executable interface.
@@ -127,7 +127,7 @@ public interface CorbaActorOperations {
      *   method is an illegal action of the actor.
      */
     void terminate()
-            throws ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionException;
+        throws ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionException;
 
     /* Transfer the input data to the specified port.
      * @param portName The port name.
@@ -143,7 +143,7 @@ public interface CorbaActorOperations {
      *  valid, e.g. the string cannot be converted to a value.
      */
     void transferInput(String portName, short portIndex, String tokenValue)
-            throws ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionException, 
+        throws ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionException, 
             ptolemy.domains.ct.demo.Corba.util.CorbaUnknownPortException, 
             ptolemy.domains.ct.demo.Corba.util.CorbaIndexOutofBoundException, 
             ptolemy.domains.ct.demo.Corba.util.CorbaIllegalValueException;
@@ -159,7 +159,7 @@ public interface CorbaActorOperations {
      *  number is out of the width of the port.
      */
     String transferOutput(String portName, short portIndex)
-            throws ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionException, 
+        throws ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionException, 
             ptolemy.domains.ct.demo.Corba.util.CorbaUnknownPortException, 
             ptolemy.domains.ct.demo.Corba.util.CorbaIndexOutofBoundException;
 
@@ -169,5 +169,5 @@ public interface CorbaActorOperations {
      *   method is an illegal action of the actor.
      */
     void wrapup()
-            throws ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionException;
+        throws ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionException;
 } // interface CorbaActorOperations

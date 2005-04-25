@@ -74,7 +74,7 @@ public class ImageReader extends Source {
      *   actor with this name.
      */
     public ImageReader(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // Set the type of the output port.
@@ -103,7 +103,7 @@ public class ImageReader extends Source {
      *   is <i>URL</i> and the file cannot be opened.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == fileOrURL) {
             // Would it be worth checking to see if the URL exists and
             // is readable?
@@ -140,7 +140,7 @@ public class ImageReader extends Source {
 
         if ((_image.getWidth(null) == -1) && (_image.getHeight(null) == -1)) {
             throw new IllegalActionException(this,
-                    "Image size is -1 x -1.  Failed to open '" + _fileRoot + "'");
+                "Image size is -1 x -1.  Failed to open '" + _fileRoot + "'");
         }
 
         return super.prefire();

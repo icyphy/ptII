@@ -65,7 +65,7 @@ public class Accumulator extends Transformer {
      *   actor with this name.
      */
     public Accumulator(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         input.setMultiport(true);

@@ -75,13 +75,13 @@ public class BusAssembler extends TypedAtomicActor {
      *   actor with this name.
      */
     public BusAssembler(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         output = new TypedIOPort(this, "output", false, true);
         output.setMultiport(true);
         _attachText("_iconDescription",
-                "<svg>\n" + "<rect x=\"0\" y=\"0\" width=\"6\" "
-                + "height=\"40\" style=\"fill:black\"/>\n" + "</svg>\n");
+            "<svg>\n" + "<rect x=\"0\" y=\"0\" width=\"6\" "
+            + "height=\"40\" style=\"fill:black\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -116,7 +116,7 @@ public class BusAssembler extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
         Iterator inputPorts = inputPortList().iterator();
         TypedIOPort inputPort = (TypedIOPort) (inputPorts.hasNext()
-                ? inputPorts.next() : null);
+            ? inputPorts.next() : null);
         int inputWidth = (inputPort != null) ? inputPort.getWidth() : 0;
         int i = 0;
         int j = 0;
@@ -134,7 +134,7 @@ public class BusAssembler extends TypedAtomicActor {
 
             if (++i >= inputWidth) {
                 inputPort = (TypedIOPort) (inputPorts.hasNext()
-                        ? inputPorts.next() : null);
+                    ? inputPorts.next() : null);
                 inputWidth = (inputPort != null) ? inputPort.getWidth() : 0;
                 i = 0;
             }
@@ -146,12 +146,12 @@ public class BusAssembler extends TypedAtomicActor {
     public void preinitialize() throws IllegalActionException {
         if (outputPortList().size() > 1) {
             throw new IllegalActionException(this,
-                    "can have only one output port.");
+                "can have only one output port.");
         }
 
         if (output.linkedRelationList().size() > 1) {
             throw new IllegalActionException(this,
-                    "can have only one output relation linked.");
+                "can have only one output relation linked.");
         }
 
         _recalculateOutputWidth();

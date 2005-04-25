@@ -27,9 +27,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.copernicus.java.test;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import ptolemy.actor.lib.Sink;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
@@ -45,10 +42,14 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.moml.SharedParameter;
 import ptolemy.util.StringUtilities;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// CGNonStrictTest
-/** 
+
+/**
 NonStrictTest actor suitable for use with Copernicus.
 
 This actor differs from actor.lib.NonStrictTest in that
@@ -62,7 +63,6 @@ the trainingMode parameter is a Parameter, not a SharedParameter.
 @Pt.AcceptedRating Redw (cxh)
 */
 public class CGNonStrictTest extends Sink {
-
     // FIXME: we can't extend actor.lib.NonStrictTest here because
     // Copernicus deep codegen barfs:
     // Renaming field <IIR.IIR_Test4: ptolemy.data.expr.Parameter trainingMode> to ptolemy_actor_lib_NonStrictTesttrainingMode to avoid collision with superClass field <ptolemy.actor.lib.NonStrictTest: ptolemy.moml.SharedParameter trainingMode>
@@ -74,7 +74,6 @@ public class CGNonStrictTest extends Sink {
     // at java.lang.reflect.Field.set(Field.java:519)
     // at ptolemy.kernel.util.NamedObj._cloneFixAttributeFields(NamedObj.java:2056)
     // at ptolemy.kernel.util.NamedObj.clone(NamedObj.java:505)
-
     // The Test actor could be extended so that Strictness was a parameter,
     // but that would require some slightly tricky code to handle
     // multiports in a non-strict fashion.  The problem is that if
@@ -83,7 +82,6 @@ public class CGNonStrictTest extends Sink {
     // tokens we have seen on each channel. Also, this actor does
     // not read inputs until postfire(), which is too late to produce
     // an output, as done by Test.
-
 
     /** Construct an actor with an input multiport.
      *  @param container The container.
@@ -94,7 +92,7 @@ public class CGNonStrictTest extends Sink {
      *   actor with this name.
      */
     public CGNonStrictTest(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         correctValues = new Parameter(this, "correctValues");
@@ -143,7 +141,7 @@ public class CGNonStrictTest extends Sink {
      *  increasing and nonnegative, or the indexes is not a row vector.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == tolerance) {
             _tolerance = ((DoubleToken) (tolerance.getToken())).doubleValue();
         } else {
@@ -179,11 +177,11 @@ public class CGNonStrictTest extends Sink {
         if (((BooleanToken) trainingMode.getToken()).booleanValue()) {
             if (isRunningNightlyBuild()) {
                 throw new IllegalActionException(this,
-                        TRAINING_MODE_ERROR_MESSAGE);
+                    TRAINING_MODE_ERROR_MESSAGE);
             } else {
                 System.err.println("Warning: '" + getFullName()
-                        + "' is in training mode, set the trainingMode "
-                        + "parameter to false before checking in");
+                    + "' is in training mode, set the trainingMode "
+                    + "parameter to false before checking in");
             }
         }
     }
@@ -200,7 +198,7 @@ public class CGNonStrictTest extends Sink {
      */
     public static boolean isRunningNightlyBuild() {
         if (StringUtilities.getProperty("ptolemy.ptII.isRunningNightlyBuild")
-                .length() > 0) {
+                                       .length() > 0) {
             return true;
         }
 
@@ -219,12 +217,12 @@ public class CGNonStrictTest extends Sink {
     public boolean postfire() throws IllegalActionException {
         if (input.getWidth() != 1) {
             throw new IllegalActionException(this,
-                    "Width of input is " + input.getWidth()
-                    + " but NonStrictTest only supports a width of 1.");
+                "Width of input is " + input.getWidth()
+                + " but NonStrictTest only supports a width of 1.");
         }
 
         boolean training = ((BooleanToken) trainingMode.getToken())
-            .booleanValue();
+                        .booleanValue();
 
         if (training) {
             if (_trainingTokens == null) {
@@ -239,7 +237,7 @@ public class CGNonStrictTest extends Sink {
         }
 
         if (_numberOfInputTokensSeen >= ((ArrayToken) (correctValues.getToken()))
-                .length()) {
+                        .length()) {
             // Consume and discard input values.  We are beyond the end
             // of the correctValues array.
             if (input.hasToken(0)) {
@@ -250,7 +248,7 @@ public class CGNonStrictTest extends Sink {
         }
 
         Token referenceToken = ((ArrayToken) (correctValues.getToken()))
-            .getElement(_numberOfInputTokensSeen);
+                        .getElement(_numberOfInputTokensSeen);
 
         if (input.hasToken(0)) {
             Token token = input.get(0);
@@ -258,9 +256,9 @@ public class CGNonStrictTest extends Sink {
 
             if (token.isCloseTo(referenceToken, _tolerance).booleanValue() == false) {
                 throw new IllegalActionException(this,
-                        "Test fails in iteration " + _iteration + ".\n"
-                        + "Value was: " + token + ". Should have been: "
-                        + referenceToken);
+                    "Test fails in iteration " + _iteration + ".\n"
+                    + "Value was: " + token + ". Should have been: "
+                    + referenceToken);
             }
         }
 
@@ -279,7 +277,7 @@ public class CGNonStrictTest extends Sink {
         super.wrapup();
 
         boolean training = ((BooleanToken) trainingMode.getToken())
-            .booleanValue();
+                        .booleanValue();
 
         if (!training && _initialized) {
             if (!_firedOnce) {
@@ -291,16 +289,16 @@ public class CGNonStrictTest extends Sink {
 
                 if (StringUtilities.getProperty(fireCompatProperty).length() > 0) {
                     System.err.println("Warning: '" + getFullName() + "' "
-                            + errorMessage
-                            + "\nThis error is being ignored because " + "the "
-                            + fireCompatProperty + "property was set.");
+                        + errorMessage
+                        + "\nThis error is being ignored because " + "the "
+                        + fireCompatProperty + "property was set.");
                 } else {
                     throw new IllegalActionException(this, errorMessage);
                 }
             }
 
             if (_numberOfInputTokensSeen < ((ArrayToken) (correctValues
-                                                    .getToken())).length()) {
+                            .getToken())).length()) {
                 String errorMessage = "The test produced only "
                     + _numberOfInputTokensSeen
                     + " tokens, yet the correctValues parameter was "
@@ -309,7 +307,7 @@ public class CGNonStrictTest extends Sink {
                     + " tokens.";
 
                 System.err.println("Warning: '" + getFullName() + "' "
-                        + errorMessage);
+                    + errorMessage);
             }
         }
 
@@ -318,7 +316,7 @@ public class CGNonStrictTest extends Sink {
         // Note that wrapup() might get called by the manager before
         // we have any data...
         if (training && (_trainingTokens != null)
-                && (_trainingTokens.size() > 0)) {
+                        && (_trainingTokens.size() > 0)) {
             Object[] newValues = _trainingTokens.toArray();
 
             // NOTE: Support input multiport for the benefit of derived classes.
@@ -346,10 +344,12 @@ public class CGNonStrictTest extends Sink {
             correctValues.setToken(new ArrayToken(newTokens));
             correctValues.setPersistent(true);
         }
-        if (training && 
-                (_trainingTokens == null || (_trainingTokens.size() == 0))) {
+
+        if (training
+                        && ((_trainingTokens == null)
+                        || (_trainingTokens.size() == 0))) {
             System.err.println("Warning: '" + getFullName()
-                    + "' The test produced 0 tokens.");
+                + "' The test produced 0 tokens.");
         }
     }
 
@@ -360,12 +360,12 @@ public class CGNonStrictTest extends Sink {
      *  the nightly build and the trainingMode parameter is true.
      */
     public static final String TRAINING_MODE_ERROR_MESSAGE =
-    "Training Mode set for test actor and isRunningNightlyBuild()\n"
-    + "  returned true, indicating that the\n"
-    + "  ptolemy.ptII.isRunningNightlyBuild property is set.\n"
-    + "  The trainingMode parameter should not be set in files\n"
-    + "  that are checked into the nightly build!"
-    + "  To run the tests in nightly build mode, use" + "     make nightly";
+        "Training Mode set for test actor and isRunningNightlyBuild()\n"
+        + "  returned true, indicating that the\n"
+        + "  ptolemy.ptII.isRunningNightlyBuild property is set.\n"
+        + "  The trainingMode parameter should not be set in files\n"
+        + "  that are checked into the nightly build!"
+        + "  To run the tests in nightly build mode, use" + "     make nightly";
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////

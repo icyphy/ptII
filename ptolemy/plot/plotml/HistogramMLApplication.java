@@ -81,7 +81,7 @@ public class HistogramMLApplication extends PlotMLApplication {
      *  @exception Exception If command line arguments have problems.
      */
     public HistogramMLApplication(Histogram plot, String[] args)
-            throws Exception {
+        throws Exception {
         super(plot, args);
         setTitle("Ptolemy Histogram");
     }
@@ -94,7 +94,7 @@ public class HistogramMLApplication extends PlotMLApplication {
      *  <pre>
      *  java -classpath $PTII ptolemy.plot.plotml.HistogramMLApplication
      *  <pre>
-     *  @param args Arguments suitable for the 
+     *  @param args Arguments suitable for the
      *  {@link ptolemy.plot.Histogram} class.
      */
     public static void main(final String[] args) {
@@ -109,13 +109,13 @@ public class HistogramMLApplication extends PlotMLApplication {
                         }
                     }
                 };
+
             // NOTE: Using invokeAndWait() here risks causing
             // deadlock.  However, the Sun Tutorial recommends calling
             // invokeAndWait so that the work finishes before returning.
             // if we call invokeLater() then demo/PlotFourierSeries.java
             // has problems.
             SwingUtilities.invokeAndWait(doActions);
-
         } catch (Exception ex) {
             System.err.println(ex.toString());
             ex.printStackTrace();
@@ -139,26 +139,26 @@ public class HistogramMLApplication extends PlotMLApplication {
      */
     protected void _about() {
         JOptionPane.showMessageDialog(this,
-                "HistogramMLApplication class\n" + "By: Edward A. Lee "
-                + "and Christopher Hylands\n" + "Version " + PlotBox.PTPLOT_RELEASE
-                + ", Build: $Id$\n\n"
-                + "For more information, see\n"
-                + "http://ptolemy.eecs.berkeley.edu/java/ptplot\n\n"
-                + "Copyright (c) 1997-2005 "
-                + "The Regents of the University of California.",
-                "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
+            "HistogramMLApplication class\n" + "By: Edward A. Lee "
+            + "and Christopher Hylands\n" + "Version " + PlotBox.PTPLOT_RELEASE
+            + ", Build: $Id$\n\n"
+            + "For more information, see\n"
+            + "http://ptolemy.eecs.berkeley.edu/java/ptplot\n\n"
+            + "Copyright (c) 1997-2005 "
+            + "The Regents of the University of California.",
+            "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
     }
 
     /** Display more detailed information than given by _about().
      */
     protected void _help() {
         JOptionPane.showMessageDialog(this,
-                "HistogramMLApplication is a standalone plot " + " application.\n"
-                + "  File formats understood: PlotML and Ptplot ASCII.\n"
-                + "  Left mouse button: Zooming.\n"
-                + "  Right mouse button: Editing data (use edit menu to select "
-                + "a dataset).\n\n" + _usage(), "About Ptolemy Plot",
-                JOptionPane.INFORMATION_MESSAGE);
+            "HistogramMLApplication is a standalone plot " + " application.\n"
+            + "  File formats understood: PlotML and Ptplot ASCII.\n"
+            + "  Left mouse button: Zooming.\n"
+            + "  Right mouse button: Editing data (use edit menu to select "
+            + "a dataset).\n\n" + _usage(), "About Ptolemy Plot",
+            JOptionPane.INFORMATION_MESSAGE);
     }
 
     /** Create a new parser object for the application.  Derived classes can

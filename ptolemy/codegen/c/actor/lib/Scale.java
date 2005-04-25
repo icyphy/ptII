@@ -25,11 +25,11 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.codegen.c.actor.lib;
 
 import ptolemy.codegen.kernel.CCodeGeneratorHelper;
 import ptolemy.kernel.util.IllegalActionException;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// Scale
@@ -44,7 +44,6 @@ import ptolemy.kernel.util.IllegalActionException;
    @Pt.AcceptedRating Red (eal)
 */
 public class Scale extends CCodeGeneratorHelper {
-
     /** Construct a helper with the given ptolemy.actor.lib.Scale actor.
      *  @param actor The given ptolemy.actor.lib.Scale actor.
      */
@@ -54,13 +53,12 @@ public class Scale extends CCodeGeneratorHelper {
 
     /**
      * Generate fire code
-     * The method reads in codeBlock1 and puts into the 
+     * The method reads in codeBlock1 and puts into the
      * given stream buffer
      * @param stream the given buffer to append the code to
      */
     public void generateFireCode(StringBuffer stream)
-            throws IllegalActionException {
-
+        throws IllegalActionException {
         CodeStream tmpStream = new CodeStream(this);
         tmpStream.appendCodeBlock("codeBlock1");
         stream.append(processCode(tmpStream.toString()));

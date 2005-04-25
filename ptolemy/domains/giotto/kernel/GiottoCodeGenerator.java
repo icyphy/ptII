@@ -81,7 +81,7 @@ public class GiottoCodeGenerator extends Attribute {
      *   an attribute already in the container.
      */
     public GiottoCodeGenerator()
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super();
         _init();
     }
@@ -95,7 +95,7 @@ public class GiottoCodeGenerator extends Attribute {
      *   an attribute already in the container.
      */
     public GiottoCodeGenerator(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _init();
     }
@@ -109,7 +109,7 @@ public class GiottoCodeGenerator extends Attribute {
      *  @exception IllegalActionException If code can not be generated.
      */
     public String generateGiottoCode(TypedCompositeActor model)
-            throws IllegalActionException {
+        throws IllegalActionException {
         return GiottoCodeGeneratorUtilities.generateGiottoCode(model);
     }
 
@@ -125,20 +125,20 @@ public class GiottoCodeGenerator extends Attribute {
      *  factory with the same name.
      */
     protected void _instantiateEditorFactoryClass()
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         new GiottoEditorFactory(this, "_editorFactory");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
     private void _init()
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         _attachText("_iconDescription",
-                "<svg>\n"
-                + "<rect x=\"-50\" y=\"-20\" width=\"100\" height=\"40\" "
-                + "style=\"fill:blue\"/>" + "<text x=\"-40\" y=\"-5\" "
-                + "style=\"font-size:12; font-family:SansSerif; fill:white\">"
-                + "Double click to\ngenerate code.</text></svg>");
+            "<svg>\n"
+            + "<rect x=\"-50\" y=\"-20\" width=\"100\" height=\"40\" "
+            + "style=\"fill:blue\"/>" + "<text x=\"-40\" y=\"-5\" "
+            + "style=\"font-size:12; font-family:SansSerif; fill:white\">"
+            + "Double click to\ngenerate code.</text></svg>");
 
         _instantiateEditorFactoryClass();
 
@@ -163,7 +163,7 @@ public class GiottoCodeGenerator extends Attribute {
          *  an attribute already in the container.
          */
         public GiottoEditorFactory(NamedObj container, String name)
-                throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
             super(container, name);
         }
 
@@ -175,11 +175,11 @@ public class GiottoCodeGenerator extends Attribute {
         public void createEditor(NamedObj object, Frame parent) {
             try {
                 Configuration configuration = ((TableauFrame) parent)
-                    .getConfiguration();
+                                .getConfiguration();
 
                 // NamedObj container = (NamedObj)object.getContainer();
                 TypedCompositeActor model = (TypedCompositeActor) GiottoCodeGenerator.this
-                    .getContainer();
+                                .getContainer();
 
                 // Preinitialize and resolve types.
                 CompositeActor toplevel = (CompositeActor) model.toplevel();
@@ -193,7 +193,7 @@ public class GiottoCodeGenerator extends Attribute {
                 manager.preinitializeAndResolveTypes();
 
                 TextEffigy codeEffigy = TextEffigy.newTextEffigy(configuration
-                        .getDirectory(), generateGiottoCode(model));
+                                    .getDirectory(), generateGiottoCode(model));
                 codeEffigy.setModified(true);
                 configuration.createPrimaryTableau(codeEffigy);
 
@@ -202,7 +202,7 @@ public class GiottoCodeGenerator extends Attribute {
                 manager.wrapup();
             } catch (Exception ex) {
                 throw new InternalErrorException(object, ex,
-                        "Cannot generate code. Perhaps outside Vergil?");
+                    "Cannot generate code. Perhaps outside Vergil?");
             }
         }
     }

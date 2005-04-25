@@ -75,7 +75,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
         // _initialize method correctly, which is hard.
         if (value.length == 0) {
             throw new IllegalActionException("The "
-                    + "length of the specified array is zero.");
+                + "length of the specified array is zero.");
         }
 
         _elementPrototype = value[0];
@@ -99,8 +99,8 @@ public class ArrayToken extends AbstractNotConvertibleToken {
                 _value[i] = value[i]; // _elementType.convert(value[i]);
             } else {
                 throw new IllegalActionException(
-                        "Elements of the array do not have the same type:"
-                        + "value[0]=" + value[0] + " value[" + i + "]=" + value[i]);
+                    "Elements of the array do not have the same type:"
+                    + "value[0]=" + value[0] + " value[" + i + "]=" + value[i]);
             }
         }
     }
@@ -127,7 +127,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
             _initialize(value);
         } else {
             throw new IllegalActionException("An array token cannot be"
-                    + " created from the expression '" + init + "'");
+                + " created from the expression '" + init + "'");
         }
     }
 
@@ -149,12 +149,12 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      * @return dataBytes the resulting unsigned byte array.
      */
     public static byte[] arrayTokenToUnsignedByteArray(
-            ArrayToken dataArrayToken) {
+        ArrayToken dataArrayToken) {
         byte[] dataBytes = new byte[dataArrayToken.length()];
 
         for (int j = 0; j < dataArrayToken.length(); j++) {
             UnsignedByteToken dataToken = (UnsignedByteToken) dataArrayToken
-                .getElement(j);
+                            .getElement(j);
             dataBytes[j] = (byte) dataToken.byteValue();
         }
 
@@ -201,7 +201,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
             // better error message that has the types of the
             // arguments that were passed in.
             throw new IllegalActionException(null, ex,
-                    notSupportedMessage("elementAdd", this, token));
+                notSupportedMessage("elementAdd", this, token));
         }
 
         return new ArrayToken(result);
@@ -224,7 +224,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
             // better error message that has the types of the
             // arguments that were passed in.
             throw new IllegalActionException(null, ex,
-                    notSupportedMessage("elementDivide", this, token));
+                notSupportedMessage("elementDivide", this, token));
         }
 
         return new ArrayToken(result);
@@ -247,7 +247,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
             // better error message that has the types of the
             // arguments that were passed in.
             throw new IllegalActionException(null, ex,
-                    notSupportedMessage("elementModulo", this, token));
+                notSupportedMessage("elementModulo", this, token));
         }
 
         return new ArrayToken(result);
@@ -259,7 +259,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *  not of a type that can be multiplied to an element of this token.
      */
     public ArrayToken elementMultiply(Token token)
-            throws IllegalActionException {
+        throws IllegalActionException {
         Token[] result = new Token[_value.length];
 
         try {
@@ -271,7 +271,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
             // better error message that has the types of the
             // arguments that were passed in.
             throw new IllegalActionException(null, ex,
-                    notSupportedMessage("elementMultiply", this, token));
+                notSupportedMessage("elementMultiply", this, token));
         }
 
         return new ArrayToken(result);
@@ -288,10 +288,10 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *  @return The type of the value returned from the corresponding function.
      */
     public static Type elementMultiplyReturnType(Type type1, Type type2)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (type1 instanceof ArrayType) {
             return new ArrayType(TypeLattice.leastUpperBound(
-                                         ((ArrayType) type1).getElementType(), type2));
+                    ((ArrayType) type1).getElementType(), type2));
         } else {
             return new ArrayType(BaseType.UNKNOWN);
         }
@@ -303,7 +303,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *  of a type that can be subtracted from an element of this token.
      */
     public ArrayToken elementSubtract(Token token)
-            throws IllegalActionException {
+        throws IllegalActionException {
         Token[] result = new Token[_value.length];
 
         try {
@@ -315,7 +315,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
             // better error message that has the types of the
             // arguments that were passed in.
             throw new IllegalActionException(null, ex,
-                    notSupportedMessage("elementSubtract", this, token));
+                notSupportedMessage("elementSubtract", this, token));
         }
 
         return new ArrayToken(result);
@@ -374,14 +374,14 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *  @since Ptolemy II 4.1
      */
     public ArrayToken extract(ArrayToken selection)
-            throws IllegalActionException {
+        throws IllegalActionException {
         List result = new LinkedList();
 
         if (selection.getElementType() == BaseType.BOOLEAN) {
             if (selection.length() != length()) {
                 throw new IllegalActionException(
-                        "When the argument is an array of booleans, it must have "
-                        + "the same length as this array.");
+                    "When the argument is an array of booleans, it must have "
+                    + "the same length as this array.");
             }
 
             for (int i = 0; i < selection.length(); i++) {
@@ -398,7 +398,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
             }
         } else {
             throw new IllegalActionException(
-                    "The argument must be {boolean} or {int}.");
+                "The argument must be {boolean} or {int}.");
         }
 
         if (result.size() > 0) {
@@ -490,10 +490,10 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *  @since Ptolemy II 4.1
      */
     public ArrayToken subarray(int index, int count)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (index < 0) {
             throw new IllegalActionException(
-                    "index argument of subarray() must be non-negative.");
+                "index argument of subarray() must be non-negative.");
         }
 
         if ((count > 0) && (index < _value.length) && (index >= 0)) {
@@ -536,7 +536,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      * @exception IllegalActionException If ArrayToken can not be created.
      */
     public static ArrayToken unsignedByteArrayToArrayToken(byte[] dataBytes)
-            throws IllegalActionException {
+        throws IllegalActionException {
         int bytesAvailable = dataBytes.length;
         Token[] dataArrayToken = new Token[bytesAvailable];
 
@@ -628,7 +628,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *  to this token.
      */
     protected BooleanToken _isCloseTo(Token token, double epsilon)
-            throws IllegalActionException {
+        throws IllegalActionException {
         ArrayToken rightArray = (ArrayToken) token;
 
         if (length() != rightArray.length()) {
@@ -659,7 +659,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *  @return A true-valued token if the argument is equal.
      */
     protected BooleanToken _isEqualTo(Token token)
-            throws IllegalActionException {
+        throws IllegalActionException {
         _checkArgumentLength(token);
 
         ArrayToken rightArray = (ArrayToken) token;
@@ -707,7 +707,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *  of the element token throws it.
      */
     protected Token _multiply(Token rightArgument)
-            throws IllegalActionException {
+        throws IllegalActionException {
         _checkArgumentLength(rightArgument);
 
         ArrayToken rightArray = (ArrayToken) rightArgument;
@@ -730,7 +730,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *  of the element token throws it.
      */
     protected Token _subtract(Token rightArgument)
-            throws IllegalActionException {
+        throws IllegalActionException {
         _checkArgumentLength(rightArgument);
 
         ArrayToken rightArray = (ArrayToken) rightArgument;
@@ -748,13 +748,13 @@ public class ArrayToken extends AbstractNotConvertibleToken {
     // Throw an exception if the argument is not an ArrayToken of the
     // same length.
     private void _checkArgumentLength(Token token)
-            throws IllegalActionException {
+        throws IllegalActionException {
         int length = ((ArrayToken) token).length();
 
         if (length() != length) {
             throw new IllegalActionException("The length of the argument ("
-                    + length + ") is not the same as the length of this token ("
-                    + length() + ").");
+                + length + ") is not the same as the length of this token ("
+                + length() + ").");
         }
     }
 
@@ -762,7 +762,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
     private void _initialize(Token[] value) throws IllegalActionException {
         if (value.length == 0) {
             throw new IllegalActionException("The "
-                    + "length of the specified array is zero.");
+                + "length of the specified array is zero.");
         }
 
         _elementPrototype = value[0];
@@ -786,8 +786,8 @@ public class ArrayToken extends AbstractNotConvertibleToken {
                 _value[i] = value[i]; // elementType.convert(value[i]);
             } else {
                 throw new IllegalActionException(
-                        "Elements of the array do not have the same type:"
-                        + "value[0]=" + value[0] + " value[" + i + "]=" + value[i]);
+                    "Elements of the array do not have the same type:"
+                    + "value[0]=" + value[0] + " value[" + i + "]=" + value[i]);
             }
         }
     }

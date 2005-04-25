@@ -69,7 +69,7 @@ public class ExternalTextTableau extends TextEditorTableau {
      *   attribute already in the container.
      */
     public ExternalTextTableau(TextEffigy container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 

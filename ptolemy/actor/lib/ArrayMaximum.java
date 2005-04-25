@@ -72,7 +72,7 @@ public class ArrayMaximum extends Transformer {
      *   actor with this name.
      */
     public ArrayMaximum(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // Create index port
@@ -134,8 +134,8 @@ public class ArrayMaximum extends Transformer {
             input.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
         } else if (!(inputType instanceof ArrayType)) {
             throw new IllegalStateException("ArrayElement.typeConstraintList: "
-                    + "The input type, " + inputType.toString() + " is not an "
-                    + "array type.");
+                + "The input type, " + inputType.toString() + " is not an "
+                + "array type.");
         }
 
         // NOTE: superclass will put in type constraints for

@@ -88,7 +88,7 @@ public abstract class Manipulator extends FigureDecorator {
 
         if (_grabHandles.size() > 0) {
             bounds = bounds.createUnion(CanvasUtilities.computeCompositeBounds(
-                                                _grabHandles.iterator()));
+                        _grabHandles.iterator()));
         }
 
         return bounds;

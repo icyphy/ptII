@@ -156,7 +156,7 @@ public class CompositeProcessDirector extends ProcessDirector {
      *   CompositeActor and the name collides with an entity in the container.
      */
     public CompositeProcessDirector(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -175,7 +175,7 @@ public class CompositeProcessDirector extends ProcessDirector {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         CompositeProcessDirector newObj = (CompositeProcessDirector) super
-            .clone(workspace);
+                        .clone(workspace);
         newObj._onFirstIteration = true;
         newObj._inputBranchController = null;
         newObj._outputBranchController = null;
@@ -193,7 +193,7 @@ public class CompositeProcessDirector extends ProcessDirector {
      *   not opaque.
      */
     public void createBranchController(Iterator ports)
-            throws IllegalActionException {
+        throws IllegalActionException {
         IOPort port = null;
 
         while (ports.hasNext()) {
@@ -201,7 +201,7 @@ public class CompositeProcessDirector extends ProcessDirector {
 
             if (!port.isOpaque()) {
                 throw new IllegalActionException(this, port,
-                        "port argument is not an opaque port.");
+                    "port argument is not an opaque port.");
             }
 
             if (port.isInput()) {
@@ -247,7 +247,7 @@ public class CompositeProcessDirector extends ProcessDirector {
 
         if (container != null) {
             CompositeActor containersContainer = (CompositeActor) container
-                .getContainer();
+                            .getContainer();
 
             if (containersContainer == null) {
                 // Use the overridden setCurrentTime() method
@@ -255,7 +255,7 @@ public class CompositeProcessDirector extends ProcessDirector {
                 setModelTime(new Time(this));
             } else {
                 Time currentTime = containersContainer.getDirector()
-                    .getModelTime();
+                                                                  .getModelTime();
 
                 // Use the overridden setCurrentTime() method
                 // to set time backwards.
@@ -499,9 +499,9 @@ public class CompositeProcessDirector extends ProcessDirector {
         if (_debugging) {
             _debug("Checking for deadlock:");
             _debug("There are " + _getBlockedActorsCount()
-                    + " Blocked actors, " + _getStoppedActorsCount()
-                    + " Stopped actors, and " + _getActiveActorsCount()
-                    + " active actors.");
+                + " Blocked actors, " + _getStoppedActorsCount()
+                + " Stopped actors, and " + _getActiveActorsCount()
+                + " active actors.");
         }
 
         if (_getBlockedActorsCount() >= _getActiveActorsCount()) {
@@ -624,7 +624,7 @@ public class CompositeProcessDirector extends ProcessDirector {
             } catch (InterruptedException e) {
                 //TODO: determine best way to handle the exception
                 throw new InternalErrorException(this.getFullName()
-                        + "interrupted.");
+                    + "interrupted.");
             }
         }
 
@@ -682,9 +682,9 @@ public class CompositeProcessDirector extends ProcessDirector {
                 if (execDir == null) {
                     // This is the top level director - problem!!!
                     throw new IllegalActionException(this,
-                            "No executive director exists yet this "
-                            + "director's composite actor is externally "
-                            + "deadlocked.");
+                        "No executive director exists yet this "
+                        + "director's composite actor is externally "
+                        + "deadlocked.");
                 } else if (execDir instanceof CompositeProcessDirector) {
                     // This is contained by a process-oriented MoC
                     return _registerBlockedReceiversWithExecutive();
@@ -699,9 +699,9 @@ public class CompositeProcessDirector extends ProcessDirector {
                 if (execDir == null) {
                     // This is the top level director - problem!!!
                     throw new IllegalActionException(this,
-                            "No executive director exists yet this "
-                            + "director's composite actor is externally "
-                            + "deadlocked.");
+                        "No executive director exists yet this "
+                        + "director's composite actor is externally "
+                        + "deadlocked.");
                 } else if (execDir instanceof CompositeProcessDirector) {
                     // This is contained by a process-oriented MoC
                     return _registerBlockedReceiversWithExecutive();

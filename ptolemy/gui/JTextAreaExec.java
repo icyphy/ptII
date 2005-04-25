@@ -90,7 +90,7 @@ public class JTextAreaExec extends JPanel {
         add(jScrollPane);
 
         setBorder(BorderFactory.createTitledBorder(
-                          BorderFactory.createLineBorder(Color.black), name));
+                BorderFactory.createLineBorder(Color.black), name));
 
         _progressBar = new JProgressBar();
 
@@ -128,7 +128,7 @@ public class JTextAreaExec extends JPanel {
 
         Border progressBarBorder = _progressBar.getBorder();
         _progressBar.setBorder(BorderFactory.createCompoundBorder(spaceBelow,
-                                       progressBarBorder));
+                progressBarBorder));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -274,7 +274,7 @@ public class JTextAreaExec extends JPanel {
                     // and converting substrings that begin and end
                     // with double quotes into one array element.
                     final String[] commandTokens = StringUtilities
-                        .tokenizeForExec((String) commands.next());
+                                    .tokenizeForExec((String) commands.next());
 
                     appendJTextArea("About to execute:\n");
 
@@ -304,11 +304,11 @@ public class JTextAreaExec extends JPanel {
 
                     // Set up a Thread to read in any error messages
                     _StreamReaderThread errorGobbler = new _StreamReaderThread(_process
-                            .getErrorStream(), "ERROR", this);
+                                        .getErrorStream(), "ERROR", this);
 
                     // Set up a Thread to read in any output messages
                     _StreamReaderThread outputGobbler = new _StreamReaderThread(_process
-                            .getInputStream(), "OUTPUT", this);
+                                        .getInputStream(), "OUTPUT", this);
 
                     // Start up the Threads
                     errorGobbler.start();
@@ -386,17 +386,17 @@ public class JTextAreaExec extends JPanel {
                  * InterruptedException in _executeCommands().
                  */
                 _worker = new SwingWorker() {
-                        public Object construct() {
-                            return _executeCommands();
-                        }
+                            public Object construct() {
+                                return _executeCommands();
+                            }
 
-                        public void finished() {
-                            _enableStartButton();
-                            _cancelButton.setEnabled(false);
-                            _updateProgressBar(0);
-                            _statusBar.setText(get().toString());
-                        }
-                    };
+                            public void finished() {
+                                _enableStartButton();
+                                _cancelButton.setEnabled(false);
+                                _updateProgressBar(0);
+                                _statusBar.setText(get().toString());
+                            }
+                        };
                 _worker.start();
             }
         };
@@ -422,7 +422,7 @@ public class JTextAreaExec extends JPanel {
     // JTextArea.
     private class _StreamReaderThread extends Thread {
         _StreamReaderThread(InputStream inputStream, String streamType,
-                JTextAreaExec jTextAreaExec) {
+            JTextAreaExec jTextAreaExec) {
             _inputStream = inputStream;
             _streamType = streamType;
             _jTextAreaExec = jTextAreaExec;
@@ -438,7 +438,7 @@ public class JTextAreaExec extends JPanel {
 
                 while ((line = bufferedReader.readLine()) != null) {
                     _jTextAreaExec.appendJTextArea( /*_streamType + ">" +*/
-                            line);
+                        line);
                 }
             } catch (IOException ioe) {
                 _jTextAreaExec.appendJTextArea("IOException: " + ioe);

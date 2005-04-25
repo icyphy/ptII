@@ -34,9 +34,9 @@ import ptolemy.actor.util.Time;
 //// TimedDirector
 
 /**
-   This is an interface for directors that direct the executions of timed 
+   This is an interface for directors that direct the executions of timed
    actors. Actors that implement the TimedActor marker interface are allowed
-   to be executed by directors that implement this interface. 
+   to be executed by directors that implement this interface.
 
    @see TimedActor
    @author Haiyang Zheng
@@ -46,7 +46,6 @@ import ptolemy.actor.util.Time;
    @Pt.AcceptedRating Red (hyzheng)
 */
 public interface TimedDirector {
-    
     /** Return a time object that contains the value of the current time.
      *  @return A time object that contains the value of the current time.
      */

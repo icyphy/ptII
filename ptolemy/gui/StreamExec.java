@@ -186,7 +186,7 @@ public class StreamExec {
                     // and converting substrings that begin and end
                     // with double quotes into one array element.
                     final String[] commandTokens = StringUtilities
-                        .tokenizeForExec((String) commands.next());
+                                    .tokenizeForExec((String) commands.next());
 
                     stdout("About to execute:\n");
 
@@ -216,11 +216,11 @@ public class StreamExec {
 
                     // Set up a Thread to read in any error messages
                     _StreamReaderThread errorGobbler = new _StreamReaderThread(_process
-                            .getErrorStream(), "ERROR", this);
+                                        .getErrorStream(), "ERROR", this);
 
                     // Set up a Thread to read in any output messages
                     _StreamReaderThread outputGobbler = new _StreamReaderThread(_process
-                            .getInputStream(), "OUTPUT", this);
+                                        .getInputStream(), "OUTPUT", this);
 
                     // Start up the Threads
                     errorGobbler.start();
@@ -259,7 +259,7 @@ public class StreamExec {
     // JTextArea.
     private class _StreamReaderThread extends Thread {
         _StreamReaderThread(InputStream inputStream, String streamType,
-                StreamExec streamExec) {
+            StreamExec streamExec) {
             _inputStream = inputStream;
             _streamType = streamType;
             _streamExec = streamExec;
@@ -274,7 +274,7 @@ public class StreamExec {
 
                 while ((line = bufferedReader.readLine()) != null) {
                     _streamExec.stdout( /*_streamType + ">" +*/
-                            line);
+                        line);
                 }
             } catch (IOException ioe) {
                 _streamExec.stderr("IOException: " + ioe);

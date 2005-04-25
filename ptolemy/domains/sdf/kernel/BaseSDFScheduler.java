@@ -100,7 +100,7 @@ public abstract class BaseSDFScheduler extends Scheduler {
      *   an attribute already in the container.
      */
     public BaseSDFScheduler(Director container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -126,21 +126,21 @@ public abstract class BaseSDFScheduler extends Scheduler {
      *  @param analysis The ConstVariableModelAnalysis
      *  @param port The port that gets the DependencyDeclaration.
      *  @param name The name of the DependencyDeclaration.
-     *  @param dependents 
+     *  @param dependents
      *  @exception IllegalActionException If there is a problem setting
      *  the rate dependency on a port
      */
     protected void _declareDependency(ConstVariableModelAnalysis analysis,
-            Port port, String name, List dependents) throws IllegalActionException {
+        Port port, String name, List dependents) throws IllegalActionException {
         if (_debugging && VERBOSE) {
             _debug("declaring dependency for rate variable " + name
-                    + " in port " + port.getFullName());
+                + " in port " + port.getFullName());
         }
 
         Variable variable = (Variable) DFUtilities.getRateVariable(port, name);
         DependencyDeclaration declaration = (DependencyDeclaration) variable
-            .getAttribute("_SDFRateDependencyDeclaration",
-                    DependencyDeclaration.class);
+                        .getAttribute("_SDFRateDependencyDeclaration",
+                            DependencyDeclaration.class);
 
         if (declaration == null) {
             try {
@@ -160,16 +160,17 @@ public abstract class BaseSDFScheduler extends Scheduler {
      *  throw an InternalErrorException.
      *  @param port The given port.
      *  @param receiver The receiver we are looking for.
-     *  @return The channel number if any. 
+     *  @return The channel number if any.
      *  @exception IllegalActionException If the receiver was not found
      *  in the port.
      */
     protected int _getChannel(IOPort port, Receiver receiver)
-            throws IllegalActionException {
+        throws IllegalActionException {
         // FIXME: Move this functionality to the kernel.
         int width = port.getWidth();
         Receiver[][] receivers = port.getReceivers();
         int channel;
+
         if (_debugging && VERBOSE) {
             _debug("-- getting channels on port " + port.getFullName());
             _debug("port width = " + width);
@@ -179,12 +180,12 @@ public abstract class BaseSDFScheduler extends Scheduler {
         for (channel = 0; channel < receivers.length; channel++) {
             if (_debugging && VERBOSE) {
                 _debug("number of receivers in channel " + channel + " = "
-                        + receivers[channel].length);
+                    + receivers[channel].length);
             }
 
             for (int destinationIndex = 0;
-                 destinationIndex < receivers[channel].length;
-                 destinationIndex++) {
+                            destinationIndex < receivers[channel].length;
+                            destinationIndex++) {
                 if (receivers[channel][destinationIndex] == receiver) {
                     if (_debugging && VERBOSE) {
                         _debug("-- returning channel number:" + channel);
@@ -197,27 +198,26 @@ public abstract class BaseSDFScheduler extends Scheduler {
 
         // Hmm...  didn't find it yet.  Port might be connected on the inside,
         // so try the inside relations.
-        Receiver [][] insideReceivers = port.getInsideReceivers();
+        Receiver[][] insideReceivers = port.getInsideReceivers();
 
         for (channel = 0; channel < insideReceivers.length; channel++) {
             if (_debugging && VERBOSE) {
                 _debug("number of inside receivers = "
-                        + receivers[channel].length);
+                    + receivers[channel].length);
             }
 
             for (int destinationIndex = 0;
-                 destinationIndex < insideReceivers[channel].length;
-                 destinationIndex++) {
+                            destinationIndex < insideReceivers[channel].length;
+                            destinationIndex++) {
                 if (insideReceivers[channel][destinationIndex] == receiver) {
                     return channel;
                 }
             }
         }
 
-        
         throw new InternalErrorException("Receiver for port "
-                + receiver.getContainer() + " not found in the port "
-                + port.getFullName());
+            + receiver.getContainer() + " not found in the port "
+            + port.getFullName());
     }
 
     /** Create and set a parameter in each relation according
@@ -238,32 +238,32 @@ public abstract class BaseSDFScheduler extends Scheduler {
 
                         if (bufferSizeObject instanceof Integer) {
                             int bufferSize = ((Integer) bufferSizeObject)
-                                .intValue();
+                                            .intValue();
                             DFUtilities.setOrCreate(relation, "bufferSize",
-                                    bufferSize);
+                                bufferSize);
 
                             if (_debugging) {
                                 _debug("Adding bufferSize parameter to "
-                                        + relation.getName() + " with value "
-                                        + bufferSize);
+                                    + relation.getName() + " with value "
+                                    + bufferSize);
                             }
                         } else if (bufferSizeObject instanceof String) {
                             String bufferSizeExpression = (String) bufferSizeObject;
                             DFUtilities.setOrCreate(relation, "bufferSize",
-                                    "\"" + bufferSizeExpression + "\"");
+                                "\"" + bufferSizeExpression + "\"");
 
                             if (_debugging) {
                                 _debug("Adding bufferSize parameter to "
-                                        + relation.getName() + " with expression "
-                                        + bufferSizeExpression);
+                                    + relation.getName() + " with expression "
+                                    + bufferSizeExpression);
                             }
                         } else if (bufferSizeObject == null) {
                         } else {
                             throw new InternalErrorException(
-                                    "Invalid value found "
-                                    + "in buffer size map.\nValue is of type "
-                                    + bufferSizeObject.getClass().getName()
-                                    + ".\nIt should be of type Integer or String.\n");
+                                "Invalid value found "
+                                + "in buffer size map.\nValue is of type "
+                                + bufferSizeObject.getClass().getName()
+                                + ".\nIt should be of type Integer or String.\n");
                         }
                     }
                 }
@@ -288,7 +288,7 @@ public abstract class BaseSDFScheduler extends Scheduler {
      *   tokenInitProduction.
      */
     protected void _saveContainerRates(Map externalRates)
-            throws NotSchedulableException, IllegalActionException {
+        throws NotSchedulableException, IllegalActionException {
         Director director = (Director) getContainer();
         CompositeActor container = (CompositeActor) director.getContainer();
         Iterator ports = container.portList().iterator();
@@ -304,18 +304,18 @@ public abstract class BaseSDFScheduler extends Scheduler {
 
             if (port.isInput() && port.isOutput()) {
                 throw new NotSchedulableException(port,
-                        "External port is both an input and an output, "
-                        + "which is not allowed in SDF.");
+                    "External port is both an input and an output, "
+                    + "which is not allowed in SDF.");
             } else if (port.isInput()) {
                 DFUtilities.setIfNotDefined(port, "tokenConsumptionRate",
-                        rate.intValue());
+                    rate.intValue());
 
                 if (_debugging && VERBOSE) {
                     _debug("Setting tokenConsumptionRate to " + rate.intValue());
                 }
             } else if (port.isOutput()) {
                 DFUtilities.setIfNotDefined(port, "tokenProductionRate",
-                        rate.intValue());
+                    rate.intValue());
 
                 if (_debugging && VERBOSE) {
                     _debug("Setting tokenProductionRate to " + rate.intValue());
@@ -344,10 +344,10 @@ public abstract class BaseSDFScheduler extends Scheduler {
                     // rate for any other internal port is correct.
                     if ((foundOutputPort != null) && (newRate != inferredRate)) {
                         throw new NotSchedulableException(
-                                "External output port " + port
-                                + " is connected on the inside to ports "
-                                + "with different initial production: "
-                                + foundOutputPort + " and " + connectedPort);
+                            "External output port " + port
+                            + " is connected on the inside to ports "
+                            + "with different initial production: "
+                            + foundOutputPort + " and " + connectedPort);
                     }
 
                     foundOutputPort = connectedPort;
@@ -355,15 +355,15 @@ public abstract class BaseSDFScheduler extends Scheduler {
                 }
 
                 DFUtilities.setIfNotDefined(port, "tokenInitProduction",
-                        inferredRate);
+                    inferredRate);
 
                 if (_debugging && VERBOSE) {
                     _debug("Setting tokenInitProduction to " + inferredRate);
                 }
             } else {
                 throw new NotSchedulableException(port,
-                        "External port is neither an input and an output, "
-                        + "which is not allowed in SDF.");
+                    "External port is neither an input and an output, "
+                    + "which is not allowed in SDF.");
             }
         }
     }
@@ -380,19 +380,19 @@ public abstract class BaseSDFScheduler extends Scheduler {
                 "Record firings per iteration") {
                 protected void _execute() throws KernelException {
                     Iterator entities = entityToFiringsPerIteration.keySet()
-                        .iterator();
+                                                                               .iterator();
 
                     while (entities.hasNext()) {
                         Entity entity = (Entity) entities.next();
                         int firingCount = ((Integer) entityToFiringsPerIteration
-                                .get(entity)).intValue();
+                                        .get(entity)).intValue();
                         DFUtilities.setOrCreate(entity, "firingsPerIteration",
-                                firingCount);
+                            firingCount);
 
                         if (_debugging) {
                             _debug("Adding firingsPerIteration parameter to "
-                                    + entity.getName() + " with value "
-                                    + firingCount);
+                                + entity.getName() + " with value "
+                                + firingCount);
                         }
                     }
                 }
@@ -410,6 +410,6 @@ public abstract class BaseSDFScheduler extends Scheduler {
     /** If true, then print verbose messages.  By default, this variable
      *  is set to false.  To enable verbose messages, edit the source file
      *  and recompile.
-     */     
+     */
     protected static final boolean VERBOSE = false;
 }

@@ -91,7 +91,7 @@ public class FixToFix extends Converter {
      *   actor with this name.
      */
     public FixToFix(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         input.setTypeEquals(BaseType.FIX);
         output.setTypeEquals(BaseType.FIX);
@@ -129,13 +129,13 @@ public class FixToFix extends Converter {
      *  @exception IllegalActionException If the parameter value is invalid.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == precision) {
             IntMatrixToken token = (IntMatrixToken) precision.getToken();
 
             if ((token.getRowCount() != 1) || (token.getColumnCount() != 2)) {
                 throw new IllegalActionException(this,
-                        "Invalid precision (not a 1 by 2 matrix).");
+                    "Invalid precision (not a 1 by 2 matrix).");
             }
 
             Precision precision = new Precision(token.getElementAt(0, 0),

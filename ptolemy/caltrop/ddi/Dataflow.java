@@ -29,22 +29,25 @@
 */
 package ptolemy.caltrop.ddi;
 
-import ptolemy.actor.TypedAtomicActor;
-import ptolemy.actor.TypedIOPort;
-import ptolemy.caltrop.ddi.util.DataflowActorInterpreter;
-import ptolemy.kernel.util.IllegalActionException;
-
 import caltrop.interpreter.Context;
 import caltrop.interpreter.InputPort;
 import caltrop.interpreter.SingleInputPort;
 import caltrop.interpreter.SingleOutputPort;
+
 import caltrop.interpreter.ast.Action;
 import caltrop.interpreter.ast.Actor;
 import caltrop.interpreter.ast.PortDecl;
 import caltrop.interpreter.ast.QID;
 import caltrop.interpreter.ast.Transition;
+
 import caltrop.interpreter.environment.Environment;
+
 import caltrop.interpreter.util.PriorityUtil;
+
+import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.TypedIOPort;
+import ptolemy.caltrop.ddi.util.DataflowActorInterpreter;
+import ptolemy.kernel.util.IllegalActionException;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -53,8 +56,10 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Dataflow
+
 /**
    @author J&#246;rn W. Janneck
    @version $Id$
@@ -63,9 +68,8 @@ import java.util.Set;
    @Pt.AcceptedRating Red (cxh)
 */
 public class Dataflow extends AbstractDDI implements DDI {
-
     public Dataflow(TypedAtomicActor ptActor, Actor actor, Context context,
-            Environment env) {
+        Environment env) {
         _ptActor = ptActor;
         _actor = actor;
         _actions = PriorityUtil.prioritySortActions(_actor);
@@ -77,25 +81,28 @@ public class Dataflow extends AbstractDDI implements DDI {
                 _env, _inputPorts, _outputPorts);
     }
 
-    private Map createPortMap(PortDecl [] ports, boolean isInput) {
+    private Map createPortMap(PortDecl[] ports, boolean isInput) {
         Map portMap = new HashMap();
+
         for (int i = 0; i < ports.length; i++) {
             String name = ports[i].getName();
             TypedIOPort port = (TypedIOPort) _ptActor.getPort(name);
+
             if (isInput) {
-                portMap.put(name, new SingleInputPort(name,
-                                    new DFInputChannel(port, 0)));
+                portMap.put(name,
+                    new SingleInputPort(name, new DFInputChannel(port, 0)));
             } else {
-                portMap.put(name, new SingleOutputPort(name,
-                                    new DFOutputChannel(port, 0)));
+                portMap.put(name,
+                    new SingleOutputPort(name, new DFOutputChannel(port, 0)));
             }
         }
+
         return portMap;
     }
 
     protected TypedAtomicActor _ptActor;
     protected Actor _actor;
-    protected Action [] _actions;
+    protected Action[] _actions;
     protected Context _context;
     protected Environment _env;
     protected Set _currentStateSet;
@@ -103,7 +110,6 @@ public class Dataflow extends AbstractDDI implements DDI {
     protected Map _inputPorts;
     protected Map _outputPorts;
     protected Action _lastFiredAction;
-
 
     public boolean isLegalActor() {
         return PriorityUtil.isValidPriorityOrder(_actor);
@@ -133,13 +139,12 @@ public class Dataflow extends AbstractDDI implements DDI {
         // FIXMELATER: state transition and potentially rollback
         try {
             if (_actorInterpreter.currentAction() == null) {
-
                 // This point is reached iff this is not the first
                 // fire() call of this iteration.
                 // Hence we could put rollback work here.
-
                 _selectAction();
             }
+
             if (_actorInterpreter.currentAction() != null) {
                 _lastFiredAction = _actorInterpreter.currentAction();
                 _actorInterpreter.actionStep();
@@ -148,7 +153,7 @@ public class Dataflow extends AbstractDDI implements DDI {
             }
         } catch (Exception ex) {
             throw new IllegalActionException(null, ex,
-                    "Could not fire CAL actor '" + _actor.getName() + "'");
+                "Could not fire CAL actor '" + _actor.getName() + "'");
         }
     }
 
@@ -165,13 +170,15 @@ public class Dataflow extends AbstractDDI implements DDI {
      * @return The action number that was selected, a value <0 if no
      * action was selected.
      */
-    private int  _selectAction() {
+    private int _selectAction() {
         _rollbackInputChannels();
+
         for (int i = 0; i < _actions.length; i++) {
             if (this.isEligibleAction(_actions[i])) {
                 // Note: could we perhaps reuse environment?
                 _rollbackInputChannels();
                 _actorInterpreter.actionSetup(_actions[i]);
+
                 if (_actorInterpreter.actionEvaluatePrecondition()) {
                     return i;
                 } else {
@@ -179,25 +186,28 @@ public class Dataflow extends AbstractDDI implements DDI {
                 }
             }
         }
+
         _rollbackInputChannels();
         return -1;
     }
 
     protected int _selectInitializer() {
-        Action [] actions = _actor.getInitializers();
+        Action[] actions = _actor.getInitializers();
+
         for (int i = 0; i < actions.length; i++) {
             // Note: could we perhaps reuse environment?
             _rollbackInputChannels();
             _actorInterpreter.actionSetup(actions[i]);
+
             if (_actorInterpreter.actionEvaluatePrecondition()) {
                 return i;
             } else {
                 _actorInterpreter.actionClear();
             }
         }
+
         return -1;
     }
-
 
     /**
      * In SDF, selecting which initializer to fire is already done in
@@ -208,17 +218,18 @@ public class Dataflow extends AbstractDDI implements DDI {
         if (_actor.getScheduleFSM() == null) {
             _currentStateSet = null;
         } else {
-            _currentStateSet = Collections.singleton(
-                    _actor.getScheduleFSM().getInitialState());
+            _currentStateSet = Collections.singleton(_actor.getScheduleFSM()
+                                                                       .getInitialState());
         }
 
         try {
             _selectInitializer();
         } catch (Exception ex) {
             throw new IllegalActionException(null, ex,
-                    "Error during initializer selection in actor '"
-                    + _actor.getName() + "'");
+                "Error during initializer selection in actor '"
+                + _actor.getName() + "'");
         }
+
         try {
             if (_actorInterpreter.currentAction() != null) {
                 _actorInterpreter.actionStep();
@@ -227,28 +238,30 @@ public class Dataflow extends AbstractDDI implements DDI {
             }
         } catch (Exception ex) {
             throw new IllegalActionException(null, ex,
-                    "Could not fire initializer in CAL actor '"
-                    + _actor.getName() + "'");
+                "Could not fire initializer in CAL actor '" + _actor.getName()
+                + "'");
         }
     }
 
-    private void  _commitInputChannels() {
+    private void _commitInputChannels() {
         for (Iterator iterator = _inputPorts.values().iterator();
-             iterator.hasNext();) {
+                        iterator.hasNext();) {
             InputPort inputPort = (InputPort) iterator.next();
+
             for (int i = 0; i < inputPort.width(); i++) {
-                DFInputChannel c = (DFInputChannel)inputPort.getChannel(i);
+                DFInputChannel c = (DFInputChannel) inputPort.getChannel(i);
                 c.commit();
             }
         }
     }
 
-    private void  _rollbackInputChannels() {
+    private void _rollbackInputChannels() {
         for (Iterator iterator = _inputPorts.values().iterator();
-             iterator.hasNext();) {
+                        iterator.hasNext();) {
             InputPort inputPort = (InputPort) iterator.next();
+
             for (int i = 0; i < inputPort.width(); i++) {
-                DFInputChannel c = (DFInputChannel)inputPort.getChannel(i);
+                DFInputChannel c = (DFInputChannel) inputPort.getChannel(i);
                 c.rollback();
             }
         }
@@ -258,8 +271,8 @@ public class Dataflow extends AbstractDDI implements DDI {
      * Postfire this actor.
      */
     public boolean postfire() throws IllegalActionException {
-        _currentStateSet =
-            computeNextStateSet(_currentStateSet, _lastFiredAction);
+        _currentStateSet = computeNextStateSet(_currentStateSet,
+                _lastFiredAction);
         _commitInputChannels();
         _lastFiredAction = null;
         return true;
@@ -275,8 +288,10 @@ public class Dataflow extends AbstractDDI implements DDI {
      */
     public boolean prefire() throws IllegalActionException {
         _lastFiredAction = null;
+
         try {
             _selectAction();
+
             //            if (_actorInterpreter.currentAction() != null)
             //                return true;
             //            else
@@ -284,57 +299,64 @@ public class Dataflow extends AbstractDDI implements DDI {
             return true;
         } catch (Exception ex) {
             throw new IllegalActionException(null, ex,
-                    "Error during action selection in actor '"
-                    + _actor.getName() + "'");
+                "Error during action selection in actor '" + _actor.getName()
+                + "'");
         }
     }
 
-    private boolean  isEligibleAction(Action a) {
+    private boolean isEligibleAction(Action a) {
         QID tag = a.getTag();
-        if (tag != null && _currentStateSet != null) {
-            Transition [] ts = _actor.getScheduleFSM().getTransitions();
+
+        if ((tag != null) && (_currentStateSet != null)) {
+            Transition[] ts = _actor.getScheduleFSM().getTransitions();
+
             for (int i = 0; i < ts.length; i++) {
                 Transition t = ts[i];
-                if (_currentStateSet.contains(t.getSourceState())
-                        && isPrefixedByTagList(tag, t.getActionTags())) {
 
+                if (_currentStateSet.contains(t.getSourceState())
+                                && isPrefixedByTagList(tag, t.getActionTags())) {
                     return true;
                 }
             }
+
             return false;
         } else {
             return true;
         }
     }
 
-    private Set  computeNextStateSet(Set s, Action a) {
-        if (s == null)
+    private Set computeNextStateSet(Set s, Action a) {
+        if (s == null) {
             return null;
-        if (a == null || a.getTag() == null)
+        }
+
+        if ((a == null) || (a.getTag() == null)) {
             return s;
+        }
 
         Set ns = new HashSet();
         QID tag = a.getTag();
-        Transition [] ts = _actor.getScheduleFSM().getTransitions();
+        Transition[] ts = _actor.getScheduleFSM().getTransitions();
+
         for (int i = 0; i < ts.length; i++) {
             Transition t = ts[i];
-            if (s.contains(t.getSourceState())
-                    && isPrefixedByTagList(tag, t.getActionTags())) {
 
+            if (s.contains(t.getSourceState())
+                            && isPrefixedByTagList(tag, t.getActionTags())) {
                 ns.add(t.getDestinationState());
             }
         }
+
         return ns;
     }
 
-    private boolean  isPrefixedByTagList(QID tag, QID [] tags) {
+    private boolean isPrefixedByTagList(QID tag, QID[] tags) {
         for (int j = 0; j < tags.length; j++) {
             if (tags[j].isPrefixOf(tag)) {
                 return true;
             }
         }
+
         return false;
     }
 }
-
-

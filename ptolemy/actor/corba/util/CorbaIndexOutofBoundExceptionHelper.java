@@ -11,7 +11,7 @@ abstract public class CorbaIndexOutofBoundExceptionHelper {
     private static String _id = "IDL:util/CorbaIndexOutofBoundException:1.0";
 
     public static void insert(org.omg.CORBA.Any a,
-            ptolemy.actor.corba.util.CorbaIndexOutofBoundException that) {
+        ptolemy.actor.corba.util.CorbaIndexOutofBoundException that) {
         org.omg.CORBA.portable.OutputStream out = a.create_output_stream();
         a.type(type());
         write(out, that);
@@ -19,7 +19,7 @@ abstract public class CorbaIndexOutofBoundExceptionHelper {
     }
 
     public static ptolemy.actor.corba.util.CorbaIndexOutofBoundException extract(
-            org.omg.CORBA.Any a) {
+        org.omg.CORBA.Any a) {
         return read(a.create_input_stream());
     }
 
@@ -42,7 +42,8 @@ abstract public class CorbaIndexOutofBoundExceptionHelper {
                     _members0[0] = new org.omg.CORBA.StructMember("index",
                             _tcOf_members0, null);
                     __typeCode = org.omg.CORBA.ORB.init().create_struct_tc(ptolemy.actor.corba.util.CorbaIndexOutofBoundExceptionHelper
-                            .id(), "CorbaIndexOutofBoundException", _members0);
+                                        .id(), "CorbaIndexOutofBoundException",
+                            _members0);
                     __active = false;
                 }
             }
@@ -56,7 +57,7 @@ abstract public class CorbaIndexOutofBoundExceptionHelper {
     }
 
     public static ptolemy.actor.corba.util.CorbaIndexOutofBoundException read(
-            org.omg.CORBA.portable.InputStream istream) {
+        org.omg.CORBA.portable.InputStream istream) {
         ptolemy.actor.corba.util.CorbaIndexOutofBoundException value = new ptolemy.actor.corba.util.CorbaIndexOutofBoundException();
 
         // read and discard the repository ID
@@ -66,7 +67,7 @@ abstract public class CorbaIndexOutofBoundExceptionHelper {
     }
 
     public static void write(org.omg.CORBA.portable.OutputStream ostream,
-            ptolemy.actor.corba.util.CorbaIndexOutofBoundException value) {
+        ptolemy.actor.corba.util.CorbaIndexOutofBoundException value) {
         // write the repository ID
         ostream.write_string(id());
         ostream.write_short(value.index);

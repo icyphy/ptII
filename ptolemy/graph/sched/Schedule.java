@@ -196,11 +196,11 @@ public class Schedule extends ScheduleElement {
                     _schedule.add(index, element);
                 } else {
                     throw new RuntimeException("Attempt to add a non "
-                            + "authorized firing element");
+                        + "authorized firing element");
                 }
             } else {
                 throw new RuntimeException("Attempt to add a non "
-                        + "authorized firing element");
+                    + "authorized firing element");
             }
         } else {
             element.setParent(this);
@@ -277,7 +277,7 @@ public class Schedule extends ScheduleElement {
     public List firings(Object firingElement) {
         Map firingElementFiringsMap = _getFiringElementFiringsMap();
         return Collections.unmodifiableList((List) firingElementFiringsMap.get(
-                                                    firingElement));
+                firingElement));
     }
 
     /** Return the element at the specified position in the list.
@@ -325,8 +325,8 @@ public class Schedule extends ScheduleElement {
 
             if (lexicalList.contains(firingElement)) {
                 throw new IllegalStateException(
-                        "Not a single appearance schedule to compute "
-                        + "the lexical order of nodes.");
+                    "Not a single appearance schedule to compute "
+                    + "the lexical order of nodes.");
             } else {
                 lexicalList.add(firingElement);
             }
@@ -394,7 +394,7 @@ public class Schedule extends ScheduleElement {
         while (schedules.hasNext()) {
             ScheduleElement schedule = (ScheduleElement) schedules.next();
             result += (delimiter
-                    + schedule.toParenthesisString(nameMap, delimiter));
+                        + schedule.toParenthesisString(nameMap, delimiter));
         }
 
         result += ")";
@@ -449,7 +449,7 @@ public class Schedule extends ScheduleElement {
         public boolean hasNext() {
             if (_currentVersion != _getVersion()) {
                 throw new ConcurrentModificationException(
-                        "Schedule structure changed while iterator is active.");
+                    "Schedule structure changed while iterator is active.");
             } else if (_advance == true) {
                 boolean returnValue;
 
@@ -481,7 +481,7 @@ public class Schedule extends ScheduleElement {
                         if (returnValue == true) {
                             _currentFiring = (Firing) _firingIterator.next();
                             _currentFiringElement = _currentFiring
-                                .getFiringElement();
+                                            .getFiringElement();
                             _currentIteration++;
                             _advance = false;
                             _lastHasNext = true;
@@ -509,7 +509,7 @@ public class Schedule extends ScheduleElement {
                 throw new NoSuchElementException("No element to return.");
             } else if (_currentVersion != _getVersion()) {
                 throw new ConcurrentModificationException(
-                        "Schedule structure changed while iterator is active.");
+                    "Schedule structure changed while iterator is active.");
             } else {
                 _advance = true;
                 return _currentFiringElement;
@@ -578,7 +578,7 @@ public class Schedule extends ScheduleElement {
             // schedule tree.
             if (_startingVersion != _getVersion()) {
                 throw new ConcurrentModificationException(
-                        "Schedule structure changed while iterator is active.");
+                    "Schedule structure changed while iterator is active.");
             } else if (_advance == true) {
                 // Try to go to the next firing node in the tree. Return
                 // false if we fail.
@@ -606,8 +606,8 @@ public class Schedule extends ScheduleElement {
                 } else {
                     // Throw runtime exception.
                     throw new RuntimeException(
-                            "Encountered a ScheduleElement that "
-                            + "is not an instance " + "of Schedule or Firing.");
+                        "Encountered a ScheduleElement that "
+                        + "is not an instance " + "of Schedule or Firing.");
                 }
 
                 _advance = false;
@@ -629,7 +629,7 @@ public class Schedule extends ScheduleElement {
                 throw new NoSuchElementException("No element to return.");
             } else if (_startingVersion != _getVersion()) {
                 throw new ConcurrentModificationException(
-                        "Schedule structure changed while iterator is active.");
+                    "Schedule structure changed while iterator is active.");
             } else {
                 _advance = true;
                 return _currentNode;
@@ -670,10 +670,10 @@ public class Schedule extends ScheduleElement {
             if (node == null) {
                 return null;
             } else if (node.size() > (++_horizontalNodePosition[_currentDepth
-                                              + 1])) {
+                            + 1])) {
                 return node;
             } else if ((++_iterationCounts[_currentDepth]) < node
-                    .getIterationCount()) {
+                            .getIterationCount()) {
                 _horizontalNodePosition[_currentDepth + 1] = 0;
                 return node;
             }

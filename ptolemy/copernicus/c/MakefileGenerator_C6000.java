@@ -76,11 +76,11 @@ public class MakefileGenerator_C6000 extends MakeFileGenerator {
 
         // Native Bodies.
         code.append("NATIVE_BODIES ="
-                + NativeMethodGenerator.getNativeBodyLib() + "\n");
+            + NativeMethodGenerator.getNativeBodyLib() + "\n");
 
         // Overridden bodies.
         code.append("OVER_BODIES = "
-                + OverriddenMethodGenerator.getOverriddenBodyLib() + "\n");
+            + OverriddenMethodGenerator.getOverriddenBodyLib() + "\n");
 
         // Java-to-C library.
         code.append("LIB = " + Options.v().get("lib") + "\n");
@@ -97,7 +97,7 @@ public class MakefileGenerator_C6000 extends MakeFileGenerator {
         // Options
         code.append("\n#Options\n");
         code.append("CC62OPTS = -qq -i. -i../runtime -i$(LIB) "
-                + "-i$(NATIVE_BODIES) -i$(OVER_BODIES)\n");
+            + "-i$(NATIVE_BODIES) -i$(OVER_BODIES)\n");
         code.append("AS62OPTS = -g\n");
         code.append("LD62OPTS = -c -stack 0x400 -heap 0x400 -q\n");
         code.append("LIBS     = -l$(TI_DIR)/c6000/cgtools/lib/rts6700.lib\n");
@@ -111,8 +111,8 @@ public class MakefileGenerator_C6000 extends MakeFileGenerator {
 
         // Get names of all .c files in the transitive closure.
         code.append("SOURCES = $(RUNTIME)/pccg_runtime.c "
-                + "$(RUNTIME)/pccg_array.c $(RUNTIME)/strings.c\\\n" + "\t"
-                + source.getName() + "_main.c\\\n");
+            + "$(RUNTIME)/pccg_array.c $(RUNTIME)/strings.c\\\n" + "\t"
+            + source.getName() + "_main.c\\\n");
 
         HashSet libSources = RequiredFileGenerator.generateUserClasses(code);
 
@@ -146,7 +146,7 @@ public class MakefileGenerator_C6000 extends MakeFileGenerator {
 
         code.append("%.out : %.obj\n");
         code.append("\t$(LD62) $(LD62FLAGS) $(LD62OPTS) -o $@ $< *.obj "
-                + "$(LIBS) $(CMDS)\n");
+            + "$(LIBS) $(CMDS)\n");
 
         code.append("\n");
         return code.toString();

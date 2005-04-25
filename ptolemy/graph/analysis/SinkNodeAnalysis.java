@@ -83,7 +83,7 @@ public class SinkNodeAnalysis extends Analysis {
      */
     public String toString() {
         return "Sink node analysis using the following analyzer:\n"
-            + analyzer().toString();
+        + analyzer().toString();
     }
 
     /** Check if a given analyzer is compatible with this analysis.

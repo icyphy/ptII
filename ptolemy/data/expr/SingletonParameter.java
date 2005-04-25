@@ -66,7 +66,7 @@ public class SingletonParameter extends Parameter {
      *   a parameter already in the container.
      */
     public SingletonParameter(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -97,7 +97,7 @@ public class SingletonParameter extends Parameter {
      *   SingletonConfigurableAttribute.
      */
     public void setContainer(NamedObj container)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         Attribute previous = null;
 
         if (container != null) {

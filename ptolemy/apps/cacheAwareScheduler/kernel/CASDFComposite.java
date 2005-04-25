@@ -27,7 +27,6 @@ COPYRIGHTENDKEY
 @ProposedRating Red (sanjeev)
 @AcceptedRating Red (sanjeev)
 */
-
 package ptolemy.apps.cacheAwareScheduler.kernel;
 
 import ptolemy.actor.TypedCompositeActor;
@@ -44,8 +43,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// TypedCompositeActor
+
 /**
    This is a composite actor for use in the sdf domain to conduct experiments
    with the cache aware scheudler.
@@ -54,7 +55,6 @@ import ptolemy.kernel.util.NameDuplicationException;
    @version $Id$
 */
 public class CASDFComposite extends TypedCompositeActor {
-
     /** Construct a composite actor with a name and a container.
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown.  This actor will use the
@@ -72,7 +72,7 @@ public class CASDFComposite extends TypedCompositeActor {
      *   an actor already in the container.
      */
     public CASDFComposite(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // Set version to 0.
@@ -95,11 +95,12 @@ public class CASDFComposite extends TypedCompositeActor {
         noOfActors.setExpression("4");
 
         sdfDirector = new SDFDirector(this, "sdfDirector");
-        _cacheAwareScheduler =
-            new CacheAwareScheduler(sdfDirector, "MyScheduler");
+        _cacheAwareScheduler = new CacheAwareScheduler(sdfDirector,
+                "MyScheduler");
 
         // Randomly generate a vectorization factor for the SDF Director
-        sdfDirector.vectorizationFactor.setExpression("1 + roundToInt(random()*9)");
+        sdfDirector.vectorizationFactor.setExpression(
+            "1 + roundToInt(random()*9)");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -115,7 +116,6 @@ public class CASDFComposite extends TypedCompositeActor {
     /** The number of actors in the chain-structured graph
      */
     public Parameter noOfActors;
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -135,7 +135,6 @@ public class CASDFComposite extends TypedCompositeActor {
     /** Generate the random chain structured graph, and construct schedule.
      */
     public void preinitialize() throws IllegalActionException {
-
         // Evaluate (validate) the required parameters.
         dSPMSize.validate();
         iSPMSize.validate();
@@ -150,36 +149,40 @@ public class CASDFComposite extends TypedCompositeActor {
         // attributes
         Token token;
         token = noOfActors.getToken();
-        int totalActors = ((IntToken)token).intValue();
+
+        int totalActors = ((IntToken) token).intValue();
 
         ExperimentalActor[] actors = new ExperimentalActor[totalActors];
 
         try {
             for (int i = 0; i < totalActors; i++) {
                 // Instantiate a new actor of type ExperimentalActor
-                actors[i] = new ExperimentalActor(this, "actor" + (i+1));
+                actors[i] = new ExperimentalActor(this, "actor" + (i + 1));
 
                 // Randomly assign production and consumption rates to it
                 if (i == 0) {
                     actors[i].input_tokenConsumptionRate.setToken("0");
                 } else {
-                    actors[i].input_tokenConsumptionRate.setToken("1 + roundToInt(random()*9)");
+                    actors[i].input_tokenConsumptionRate.setToken(
+                        "1 + roundToInt(random()*9)");
                 }
+
                 if (i == (totalActors - 1)) {
                     actors[i].output_tokenProductionRate.setToken("0");
                 } else {
-                    actors[i].output_tokenProductionRate.setToken("1 + roundToInt(random()*9)");
+                    actors[i].output_tokenProductionRate.setToken(
+                        "1 + roundToInt(random()*9)");
                 }
 
                 // Connect the input and output ports to the previous and next
                 // actor in chain respectively. No connections need to be
                 // made to the input of first actor and output of last actor.
                 if (!(i == 0)) {
-                    TypedIORelation relation =
-                        new TypedIORelation(this, "actor" + i + "output");
-                    actors[i-1].output.link(relation);
+                    TypedIORelation relation = new TypedIORelation(this,
+                            "actor" + i + "output");
+                    actors[i - 1].output.link(relation);
                     actors[i].input.link(relation);
-                }   // end of if (1(i ==0))
+                } // end of if (1(i ==0))
             }
         } catch (Exception ex) {
             //  System.out.println("Exception Caught while generating the random " + "graph. It is " + ex);
@@ -207,14 +210,13 @@ public class CASDFComposite extends TypedCompositeActor {
         System.out.println();
         System.out.println();
         System.out.println(cacheAwareSchedule);
-        int imp =  _cacheAwareScheduler.instructionMissPenalty();
-        int dmp =  _cacheAwareScheduler.dataMissPenalty();
-        System.out.println("The IMP for Cache Aware Schedule is : "
-                + imp);
-        System.out.println("The DMP for Cache Aware Schedule is : "
-                + dmp);
+
+        int imp = _cacheAwareScheduler.instructionMissPenalty();
+        int dmp = _cacheAwareScheduler.dataMissPenalty();
+        System.out.println("The IMP for Cache Aware Schedule is : " + imp);
+        System.out.println("The DMP for Cache Aware Schedule is : " + dmp);
         System.out.println("The total CMP for Cache Aware Schedule is : "
-                + (imp + dmp));
+            + (imp + dmp));
         _cacheAwareScheduler.calculateMPMBScheduleCMP();
         _cacheAwareScheduler.calculateSAMAScheduleCMP();
         super.wrapup();
@@ -222,28 +224,22 @@ public class CASDFComposite extends TypedCompositeActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
-
     // The generated Cache Aware Schedule
     public Schedule cacheAwareSchedule;
 
     // The associated SDF director
     public SDFDirector sdfDirector;
 
-
     ///////////////////////////////////////////////////////////////////
     ////                    protected functions                    ////
-
     protected void _exportMoMLContents(Writer output, int depth) {
-
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The cache aware scheduler
     private CacheAwareScheduler _cacheAwareScheduler;
 
     // The version of composite actor
     private int _version;
-
 }

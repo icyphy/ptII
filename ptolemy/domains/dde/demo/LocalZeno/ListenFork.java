@@ -67,7 +67,7 @@ public class ListenFork extends DoubleFork {
      *  instantiating and specifying the type of this actor's ports.
      */
     public ListenFork(CompositeEntity cont, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(cont, name);
     }
 

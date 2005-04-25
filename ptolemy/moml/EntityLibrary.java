@@ -197,7 +197,7 @@ public class EntityLibrary extends CompositeEntity implements Configurable {
      *   actor with this name.
      */
     public EntityLibrary(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // NOTE: Used to call uniqueName() here to choose the name for the
@@ -501,7 +501,7 @@ public class EntityLibrary extends CompositeEntity implements Configurable {
 
                     if (trimmed.startsWith("<?") && trimmed.endsWith("?>")) {
                         trimmed = trimmed.substring(2, trimmed.length() - 2)
-                            .trim();
+                                                     .trim();
 
                         if (trimmed.startsWith("moml")) {
                             trimmed = trimmed.substring(4).trim();
@@ -528,7 +528,7 @@ public class EntityLibrary extends CompositeEntity implements Configurable {
             // Note that under JDK1.4, the stack trace is printed in
             // both cases.
             throw new InvalidStateException(this, ex,
-                    "Failed to populate Library");
+                "Failed to populate Library");
         } finally {
             _populating = false;
         }
@@ -547,7 +547,7 @@ public class EntityLibrary extends CompositeEntity implements Configurable {
      *  @exception IOException If an I/O error occurs.
      */
     protected void _exportMoMLContents(Writer output, int depth)
-            throws IOException {
+        throws IOException {
         output.write(_getIndentPrefix(depth) + "<configure>\n");
         output.write(_getIndentPrefix(depth + 1) + "<group>\n");
         super._exportMoMLContents(output, depth + 2);
@@ -565,10 +565,10 @@ public class EntityLibrary extends CompositeEntity implements Configurable {
      *   be propagated.
      */
     protected void _propagateValue(NamedObj destination)
-            throws IllegalActionException {
+        throws IllegalActionException {
         try {
             ((Configurable) destination).configure(_base, _configureSource,
-                    _configureText);
+                _configureText);
         } catch (Exception ex) {
             throw new IllegalActionException(this, ex, "Propagation failed.");
         }

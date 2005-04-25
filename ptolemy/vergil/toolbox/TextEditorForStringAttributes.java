@@ -54,7 +54,7 @@ public class TextEditorForStringAttributes extends TextEditor {
      *  @param title The window title to use.
      */
     public TextEditorForStringAttributes(TextEditorFactory factory,
-            StringAttribute attributeToEdit, int rows, int columns, String title) {
+        StringAttribute attributeToEdit, int rows, int columns, String title) {
         super(title);
         this._factory = factory;
         _attributeToEdit = attributeToEdit;
@@ -141,7 +141,11 @@ public class TextEditorForStringAttributes extends TextEditor {
     // Open a dialog to prompt the user to apply the data.
     // Return false if the user clicks "cancel", and otherwise return true.
     private boolean _queryForApply() {
-        Object[] options = { "Apply", "Discard changes", "Cancel" };
+        Object[] options = {
+                "Apply",
+                "Discard changes",
+                "Cancel"
+            };
         String query = "Apply changes to " + _attributeToEdit.getFullName()
             + "?";
 

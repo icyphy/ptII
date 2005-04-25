@@ -74,7 +74,7 @@ public class Locator extends TypedAtomicActor {
      *   actor with this name.
      */
     public Locator(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // Create and configure the parameters.
@@ -139,7 +139,10 @@ public class Locator extends TypedAtomicActor {
             }
 
             // Construct the message about the input signal detected.
-            String[] labels = { "location", "time" };
+            String[] labels = {
+                    "location",
+                    "time"
+                };
 
             // Get the location and wrap each coordinate in a token.
             double[] location = _getLocation();
@@ -151,8 +154,9 @@ public class Locator extends TypedAtomicActor {
 
             double timeValue = getDirector().getModelTime().getDoubleValue();
             Token[] values = {
-                new ArrayToken(locationArray), new DoubleToken(timeValue)
-            };
+                    new ArrayToken(locationArray),
+                    new DoubleToken(timeValue)
+                };
             Token result = new RecordToken(labels, values);
 
             output.send(0, result);
@@ -172,13 +176,14 @@ public class Locator extends TypedAtomicActor {
      *  @exception IllegalActionException If the location attribute does
      *   not exist or cannot be evaluated.
      */
-    protected double[] _getLocation() throws IllegalActionException {        Token[] result = new Token[2];
+    protected double[] _getLocation() throws IllegalActionException {
+        Token[] result = new Token[2];
         Location locationAttribute = (Location) getAttribute("_location",
                 Location.class);
 
         if (locationAttribute == null) {
             throw new IllegalActionException(this,
-                    "Cannot find a _location attribute of class Location.");
+                "Cannot find a _location attribute of class Location.");
         }
 
         return locationAttribute.getLocation();

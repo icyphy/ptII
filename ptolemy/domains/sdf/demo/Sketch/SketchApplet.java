@@ -84,7 +84,7 @@ public class SketchApplet extends MoMLApplet implements EditListener {
             CompositeActor toplevel = (CompositeActor) _toplevel;
             SDFDirector director = (SDFDirector) toplevel.getDirector();
             int iterations = ((IntToken) (director.iterations.getToken()))
-                .intValue();
+                            .intValue();
 
             _sketchedSource = (SketchedSource) toplevel.getEntity(
                     "SketchedSource");

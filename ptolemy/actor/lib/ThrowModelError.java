@@ -72,7 +72,7 @@ public class ThrowModelError extends Sink {
      *   an actor already in the container.
      */
     public ThrowModelError(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         input.setTypeEquals(BaseType.BOOLEAN);
@@ -115,7 +115,7 @@ public class ThrowModelError extends Sink {
             //handleModelError(this,
             //      new IllegalActionException(this, message.getExpression()));
             handleModelError(this,
-                    new InvariantViolationException(this, message.getExpression()));
+                new InvariantViolationException(this, message.getExpression()));
         }
 
         return super.postfire();

@@ -34,12 +34,13 @@ import ptolemy.data.StringToken;
 
 import java.util.HashSet;
 
+
 //////////////////////////////////////////////////////////////////////////
 ///ParkingManager
 
 /**
     This class manages the information of which parking lot is taken, and
-    which is still free. 
+    which is still free.
 
     @author Yang Zhao
     @version $Id$

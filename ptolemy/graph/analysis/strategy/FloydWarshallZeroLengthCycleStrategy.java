@@ -54,7 +54,7 @@ public class FloydWarshallZeroLengthCycleStrategy extends CachedStrategy
      *  @param edgeLengths The lengths associated with the given graph.
      */
     public FloydWarshallZeroLengthCycleStrategy(Graph graph,
-            ToDoubleMapping edgeLengths) {
+        ToDoubleMapping edgeLengths) {
         super(graph);
         _edgeLengths = edgeLengths;
         _strategy = new FloydWarshallAllPairShortestPathStrategy(graph,
@@ -78,7 +78,7 @@ public class FloydWarshallZeroLengthCycleStrategy extends CachedStrategy
      */
     public String toString() {
         return "Zero Length analyzer"
-            + " based on the Floyd-Warshall algorithm.";
+        + " based on the Floyd-Warshall algorithm.";
     }
 
     /** Check for compatibility between the analysis and the given

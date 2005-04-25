@@ -56,7 +56,7 @@ public class ECSLAbs extends Transformer {
      *   an actor already in the container.
      */
     public ECSLAbs(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input.setMultiport(true);
         output.setMultiport(true);

@@ -69,7 +69,7 @@ public class KeyWriter extends KeyStoreActor {
      *   actor with this name.
      */
     public KeyWriter(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         input = new TypedIOPort(this, "input", true, false);
@@ -105,18 +105,18 @@ public class KeyWriter extends KeyStoreActor {
 
             if (key instanceof java.security.PrivateKey) {
                 throw new IllegalActionException(this,
-                        "Key is a PrivateKey, which is not supported because "
-                        + "it requires a certificate");
+                    "Key is a PrivateKey, which is not supported because "
+                    + "it requires a certificate");
             }
 
             // Now we add the key to the keystore, protected
             // by the password.
             try {
                 _keyStore.setKeyEntry(_alias, key, _keyPassword.toCharArray(),
-                        null /* No certificate */);
+                    null /* No certificate */);
             } catch (Exception ex) {
                 throw new IllegalActionException(this, ex,
-                        "Failed to set key '" + key + "' to alias '" + alias + "'");
+                    "Failed to set key '" + key + "' to alias '" + alias + "'");
             }
 
             try {
@@ -124,9 +124,9 @@ public class KeyWriter extends KeyStoreActor {
 
                 try {
                     keyStoreOutputStream = new FileOutputStream(fileOrURL
-                            .asFile());
+                                        .asFile());
                     _keyStore.store(keyStoreOutputStream,
-                            _storePassword.toCharArray());
+                        _storePassword.toCharArray());
                     keyStoreOutputStream.close();
                 } finally {
                     try {
@@ -135,7 +135,7 @@ public class KeyWriter extends KeyStoreActor {
                         }
                     } catch (Throwable throwable) {
                         System.out.println("Ignoring failure to close stream "
-                                + "on " + fileOrURL.asFile());
+                            + "on " + fileOrURL.asFile());
                         throwable.printStackTrace();
                     }
                 }
@@ -143,7 +143,7 @@ public class KeyWriter extends KeyStoreActor {
                 output.broadcast(BooleanToken.TRUE);
             } catch (Throwable throwable) {
                 throw new IllegalActionException(this, throwable,
-                        "Failed to store " + fileOrURLDescription());
+                    "Failed to store " + fileOrURLDescription());
             }
         }
 

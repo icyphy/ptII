@@ -96,7 +96,7 @@ public class ReceiverComparator implements Comparator {
         double time2 = receiver2.getReceiverTime().getDoubleValue();
 
         if ((time1 == PrioritizedTimedQueue.IGNORE)
-                || (time2 == PrioritizedTimedQueue.IGNORE)) {
+                        || (time2 == PrioritizedTimedQueue.IGNORE)) {
             _timeKeeper._ignoredReceivers = true;
         } else {
             _timeKeeper._ignoredReceivers = false;
@@ -120,10 +120,10 @@ public class ReceiverComparator implements Comparator {
 
         // Compare Negative Time with Negative Time
         if ((time1 == PrioritizedTimedQueue.IGNORE)
-                && (time2 == PrioritizedTimedQueue.INACTIVE)) {
+                        && (time2 == PrioritizedTimedQueue.INACTIVE)) {
             return -1;
         } else if ((time1 == PrioritizedTimedQueue.INACTIVE)
-                && (time2 == PrioritizedTimedQueue.IGNORE)) {
+                        && (time2 == PrioritizedTimedQueue.IGNORE)) {
             return 1;
         }
 

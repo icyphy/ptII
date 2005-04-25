@@ -137,7 +137,7 @@ public class FileAttribute extends StringAttribute {
      *   an attribute already in the container.
      */
     public FileAttribute(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -180,7 +180,7 @@ public class FileAttribute extends StringAttribute {
             // Java 1.4.2 some times reports:
             //  java.lang.IllegalArgumentException: URI is not absolute
             throw new IllegalActionException(this, ex,
-                    "Failed to create a file with name '" + name + "'.");
+                "Failed to create a file with name '" + name + "'.");
         }
     }
 
@@ -209,7 +209,7 @@ public class FileAttribute extends StringAttribute {
 
             if (result == null) {
                 throw new IllegalActionException(this,
-                        "Cannot find file in classpath: " + name);
+                    "Cannot find file in classpath: " + name);
             }
 
             return result;
@@ -220,14 +220,14 @@ public class FileAttribute extends StringAttribute {
         if (file.isAbsolute()) {
             if (!file.canRead()) {
                 throw new IllegalActionException(this,
-                        "Cannot read file: " + name);
+                    "Cannot read file: " + name);
             }
 
             try {
                 return file.toURL();
             } catch (MalformedURLException ex) {
                 throw new IllegalActionException(this,
-                        "Cannot open file: " + ex.toString());
+                    "Cannot open file: " + ex.toString());
             }
         } else {
             // Try relative to the base directory.
@@ -240,7 +240,7 @@ public class FileAttribute extends StringAttribute {
                     return newURI.toURL();
                 } catch (MalformedURLException e) {
                     throw new IllegalActionException(this,
-                            "Unable to open as a file or URL: " + name);
+                        "Unable to open as a file or URL: " + name);
                 }
             }
 
@@ -250,7 +250,7 @@ public class FileAttribute extends StringAttribute {
                 return new URL(name);
             } catch (MalformedURLException e) {
                 throw new IllegalActionException(this,
-                        "Unable to open as a file or URL: " + name);
+                    "Unable to open as a file or URL: " + name);
             }
         }
     }
@@ -379,7 +379,7 @@ public class FileAttribute extends StringAttribute {
             return _writer;
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
-                    "Cannot open file for writing");
+                "Cannot open file for writing");
         }
     }
 

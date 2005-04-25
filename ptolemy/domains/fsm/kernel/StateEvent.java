@@ -44,7 +44,6 @@ import ptolemy.kernel.util.NamedObj;
    @Pt.AcceptedRating Red (nobody)
 */
 public class StateEvent implements DebugEvent {
-
     /** Construct an event with the specified source and destination
      *  state.
      *  @param source The source of this state event.

@@ -66,7 +66,7 @@ public class StatePair {
     public boolean equals(Object object) {
         if (object instanceof StatePair) {
             return ((this.first() == ((StatePair) object).first())
-                    && (this.second() == ((StatePair) object).second()));
+                        && (this.second() == ((StatePair) object).second()));
         }
 
         return false;

@@ -47,7 +47,7 @@ import ptolemy.kernel.util.Workspace;
  */
 public class PortNameProblem extends Entity {
     public PortNameProblem(Workspace workspace, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(workspace, name);
 
         // This port should be oke

@@ -27,17 +27,10 @@ COPYRIGHTENDKEY
 */
 package ptolemy.vergil;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.net.MalformedURLException;
-import java.net.URL;
-import javax.swing.JFrame;
-
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.MoMLApplet;
 import ptolemy.actor.gui.MoMLApplication;
 import ptolemy.actor.gui.SizeAttribute;
-import ptolemy.actor.gui.Tableau;
 import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.NamedObj;
@@ -46,9 +39,14 @@ import ptolemy.vergil.actor.ActorGraphModel;
 import ptolemy.vergil.actor.ActorViewerGraphController;
 import ptolemy.vergil.fsm.FSMGraphController;
 import ptolemy.vergil.fsm.FSMGraphModel;
+
 import diva.graph.GraphModel;
 import diva.graph.GraphPane;
 import diva.graph.JGraph;
+
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.net.URL;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -119,9 +117,17 @@ public class MoMLViewerApplet extends MoMLApplet {
      */
     public String[][] getParameterInfo() {
         String[][] newinfo = {
-            { "includeRunPanel", "", "Indicator to include run panel" },
-            { "configuration", "", "Ptolemy II configuration"},
-        };
+                {
+                    "includeRunPanel",
+                    "",
+                    "Indicator to include run panel"
+                },
+                {
+                    "configuration",
+                    "",
+                    "Ptolemy II configuration"
+                },
+            };
         return _concatStringArrays(super.getParameterInfo(), newinfo);
     }
 
@@ -144,12 +150,10 @@ public class MoMLViewerApplet extends MoMLApplet {
      *  @exception Exception If something goes wrong.
      */
     protected NamedObj _createModel(Workspace workspace)
-            throws Exception {
+        throws Exception {
         // Do not filter out graphical classes.
-
         // FIXME: if we have a configuration, then we are parsing
         // the model twice!!!
-
         return _createModel(workspace, false);
     }
 
@@ -164,16 +168,15 @@ public class MoMLViewerApplet extends MoMLApplet {
 
         // Get the configuration, if any
         String configurationPath = getParameter("configuration");
+
         if (configurationPath != null) {
             try {
-            	URL specificationURL =
-                    MoMLApplication.specToURL(configurationPath);
-            	_configuration =
-            		MoMLApplication.readConfiguration(specificationURL);
-            	report("Opened '" + specificationURL + "': " + _configuration);
+                URL specificationURL = MoMLApplication.specToURL(configurationPath);
+                _configuration = MoMLApplication.readConfiguration(specificationURL);
+                report("Opened '" + specificationURL + "': " + _configuration);
             } catch (Exception ex) {
-            	throw new RuntimeException("Failed to open '"
-                        + configurationPath + "':", ex);
+                throw new RuntimeException("Failed to open '"
+                    + configurationPath + "':", ex);
             }
         }
 
@@ -191,48 +194,46 @@ public class MoMLViewerApplet extends MoMLApplet {
                 //tableau.setFrame(frame);
                 //getContentPane().add(tableau.getFrame().getContentPane(),
                 //        BorderLayout.NORTH);
-
             } catch (Exception ex) {
-                throw new RuntimeException("Failed to open '"
-                        + _modelURL + "'.", ex);
+                throw new RuntimeException("Failed to open '" + _modelURL
+                    + "'.", ex);
             }
         }
+
         GraphPane pane = null;
+
         // FIXME: Temporary hack so we can view FSMs properly.
         // This should be replaced with a proper tableau mechanism.
-
         if (_toplevel instanceof FSMActor) {
             FSMGraphController controller = new FSMGraphController();
-            FSMGraphModel graphModel =
-                new FSMGraphModel((FSMActor) _toplevel);
+            FSMGraphModel graphModel = new FSMGraphModel((FSMActor) _toplevel);
 
             // FIXME: To get things like open documentation to work, have
             // to specify a configuration.  But currently, there isn't one.
             if (_configuration != null) {
                 controller.setConfiguration(_configuration);
             }
+
             pane = new GraphPane(controller, graphModel);
         } else {
             // top level is not an FSM actor.
-            ActorViewerGraphController controller =
-                new ActorViewerGraphController();
+            ActorViewerGraphController controller = new ActorViewerGraphController();
 
             controller.setConfiguration(_configuration);
 
-            GraphModel model =
-                new ActorGraphModel((CompositeEntity) _toplevel);
+            GraphModel model = new ActorGraphModel((CompositeEntity) _toplevel);
             pane = new GraphPane(controller, model);
         }
 
         JGraph modelViewer = new JGraph(pane);
+
         // Get dimensions from the model, if they are present.
         // Otherwise, use the same defaults used by vergil.
         boolean boundsSet = false;
 
         try {
-            SizeAttribute vergilBounds =
-                (SizeAttribute) _toplevel.getAttribute("_vergilSize",
-                        SizeAttribute.class);
+            SizeAttribute vergilBounds = (SizeAttribute) _toplevel.getAttribute("_vergilSize",
+                    SizeAttribute.class);
             boundsSet = vergilBounds.setSize(modelViewer);
         } catch (Throwable throwable) {
             // Ignore and set to default.
@@ -260,13 +261,13 @@ public class MoMLViewerApplet extends MoMLApplet {
         String panelFlag = getParameter("includeRunPanel");
 
         if ((panelFlag != null)
-                && panelFlag.trim().toLowerCase().equals("true")) {
+                        && panelFlag.trim().toLowerCase().equals("true")) {
             // NOTE: We could create a separator between the schematic
             // and the control panel here.
             super._createView();
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private fields                    ////
 

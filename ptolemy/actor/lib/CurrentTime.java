@@ -58,7 +58,7 @@ public class CurrentTime extends TimedSource {
      *   actor with this name.
      */
     public CurrentTime(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // set the type constraints.

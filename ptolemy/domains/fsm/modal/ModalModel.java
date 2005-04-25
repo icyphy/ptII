@@ -121,7 +121,7 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
      *   an entity with the specified name.
      */
     public ModalModel(Workspace workspace)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -137,7 +137,7 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
      *   an actor already in the container.
      */
     public ModalModel(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _init();
     }
@@ -157,7 +157,7 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
 
     /** React to a change of the director or other property. */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == directorClass) {
             // We should change the director only if the current
             // director is not of the right class.
@@ -165,14 +165,14 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
             String className = directorClass.stringValue();
 
             if ((director == null)
-                    || !director.getClass().getName().equals(className)) {
+                            || !director.getClass().getName().equals(className)) {
                 // Check the class name to get immediate feedback
                 // to the user.
                 try {
                     Class.forName(className);
                 } catch (ClassNotFoundException e) {
                     throw new IllegalActionException(this, null, e,
-                            "Invalid directorClass.");
+                        "Invalid directorClass.");
                 }
 
                 // NOTE: Creating a new director has to be done in a
@@ -182,23 +182,25 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
                         protected void _execute() throws Exception {
                             Director director = getDirector();
                             Class newDirectorClass = Class.forName(directorClass
-                                    .stringValue());
+                                                .stringValue());
                             Constructor newDirectorConstructor = newDirectorClass
-                                .getConstructor(new Class[] {
-                                    CompositeEntity.class, String.class
-                                });
+                                            .getConstructor(new Class[] {
+                                                    CompositeEntity.class,
+                                                    String.class
+                                                });
                             FSMDirector newDirector = (FSMDirector) newDirectorConstructor
-                                .newInstance(new Object[] {
-                                    ModalModel.this, uniqueName("_Director")
-                                });
+                                            .newInstance(new Object[] {
+                                                    ModalModel.this,
+                                                    uniqueName("_Director")
+                                                });
 
                             // The director should not be persistent.
                             newDirector.setPersistent(false);
                             newDirector.controllerName.setExpression(
-                                    "_Controller");
+                                "_Controller");
 
                             if ((director != null)
-                                    && (director.getContainer() == ModalModel.this)) {
+                                            && (director.getContainer() == ModalModel.this)) {
                                 // Delete the old director.
                                 director.setContainer(null);
                             }
@@ -251,8 +253,8 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
             newModel.executeChangeRequests();
         } catch (IllegalActionException e) {
             throw new CloneNotSupportedException(
-                    "Failed to validate the director of the clone of "
-                    + getFullName());
+                "Failed to validate the director of the clone of "
+                + getFullName());
         }
 
         return newModel;
@@ -274,11 +276,11 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
             } catch (NameDuplicationException e) {
                 // This should not happen.
                 throw new InternalErrorException("Failed to construct a"
-                        + "function dependency object for " + getName());
+                    + "function dependency object for " + getName());
             } catch (IllegalActionException e) {
                 // This should not happen.
                 throw new InternalErrorException("Failed to construct a"
-                        + "function dependency object for " + getName());
+                    + "function dependency object for " + getName());
             }
         }
 
@@ -358,7 +360,7 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
             // This exception should not occur, so we throw a runtime
             // exception.
             throw new InternalErrorException(
-                    "ModalModel.newPort: Internal error: " + ex.getMessage());
+                "ModalModel.newPort: Internal error: " + ex.getMessage());
         } finally {
             _workspace.doneWriting();
         }
@@ -374,7 +376,7 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
     ////                         private methods                   ////
     // Initialize the model.
     private void _init()
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         // Mark this composite actor as a strict actor. This will be used for
         // scheduling analysis, for example in the DE domain.
         new Attribute(this, "_strictMarker");
@@ -391,7 +393,7 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
 
         // configure the directorClass parameter
         directorClass = new StringParameter(this, "directorClass");
-        
+
         // Set the director to the default. Note that doing
         // this manually rather than in attributeChanged() prevents
         // attributeChanged() from issuing a change request
@@ -412,7 +414,7 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
             // FIXME: Better solution is to override the returned
             // list of choices in the parameter class.
             String[] suggestions = executiveDirector
-                .suggestedModalModelDirectors();
+                            .suggestedModalModelDirectors();
 
             for (int i = 0; i < suggestions.length; i++) {
                 directorClass.addChoice(suggestions[i]);
@@ -427,19 +429,19 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
             // dropped into a blank editor. Model designers need to configure
             // it if FSMDirector is not the desired director.
             directorClass.setExpression(
-                    "ptolemy.domains.fsm.kernel.FSMDirector");
+                "ptolemy.domains.fsm.kernel.FSMDirector");
         }
 
         // Create a more reasonable default icon.
         _attachText("_iconDescription",
-                "<svg>\n" + "<rect x=\"-30\" y=\"-20\" width=\"60\" "
-                + "height=\"40\" style=\"fill:red\"/>\n"
-                + "<rect x=\"-28\" y=\"-18\" width=\"56\" "
-                + "height=\"36\" style=\"fill:lightgrey\"/>\n"
-                + "<ellipse cx=\"0\" cy=\"0\"" + " rx=\"15\" ry=\"10\"/>\n"
-                + "<circle cx=\"-15\" cy=\"0\""
-                + " r=\"5\" style=\"fill:white\"/>\n"
-                + "<circle cx=\"15\" cy=\"0\""
-                + " r=\"5\" style=\"fill:white\"/>\n" + "</svg>\n");
+            "<svg>\n" + "<rect x=\"-30\" y=\"-20\" width=\"60\" "
+            + "height=\"40\" style=\"fill:red\"/>\n"
+            + "<rect x=\"-28\" y=\"-18\" width=\"56\" "
+            + "height=\"36\" style=\"fill:lightgrey\"/>\n"
+            + "<ellipse cx=\"0\" cy=\"0\"" + " rx=\"15\" ry=\"10\"/>\n"
+            + "<circle cx=\"-15\" cy=\"0\""
+            + " r=\"5\" style=\"fill:white\"/>\n"
+            + "<circle cx=\"15\" cy=\"0\""
+            + " r=\"5\" style=\"fill:white\"/>\n" + "</svg>\n");
     }
 }

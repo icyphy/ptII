@@ -70,7 +70,7 @@ public class LocationAttribute extends Parameter {
      *   an attribute already in the container.
      */
     public LocationAttribute(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         setVisibility(Settable.NONE);
     }

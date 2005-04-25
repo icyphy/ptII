@@ -106,7 +106,7 @@ public class Triangulator extends TypedAtomicActor {
      *   actor with this name.
      */
     public Triangulator(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         input = new TypedIOPort(this, "input", true, false);
@@ -186,14 +186,14 @@ public class Triangulator extends TypedAtomicActor {
 
             if (locationArray.length() < 2) {
                 throw new IllegalActionException(this,
-                        "Input is malformed: location field does not "
-                        + "have two entries.");
+                    "Input is malformed: location field does not "
+                    + "have two entries.");
             }
 
             double locationX = ((DoubleToken) locationArray.getElement(0))
-                .doubleValue();
+                            .doubleValue();
             double locationY = ((DoubleToken) locationArray.getElement(1))
-                .doubleValue();
+                            .doubleValue();
 
             double time = ((DoubleToken) recordToken.get("time")).doubleValue();
 
@@ -207,7 +207,7 @@ public class Triangulator extends TypedAtomicActor {
 
             for (int i = 0; i < 3; i++) {
                 if ((_locationsX[i] == locationX)
-                        && (_locationsY[i] == locationY)) {
+                                && (_locationsY[i] == locationY)) {
                     _times[i] = time;
                     foundMatch = true;
                 }
@@ -245,7 +245,7 @@ public class Triangulator extends TypedAtomicActor {
             // from three distinct locations.
             double timeSpan = newestTime - oldestTime;
             double timeWindowValue = ((DoubleToken) timeWindow.getToken())
-                .doubleValue();
+                            .doubleValue();
 
             if (timeSpan > timeWindowValue) {
                 // We do not have enough data.
@@ -254,7 +254,7 @@ public class Triangulator extends TypedAtomicActor {
 
             // Get signal speed, from the signalPropagationSpeed parameter.
             double speed = ((DoubleToken) (signalPropagationSpeed.getToken()))
-                .doubleValue();
+                            .doubleValue();
 
             // FIXME: Pass in the arrays for scalability.
             // FIXME: Replace naked 3 everywhere.
@@ -306,8 +306,8 @@ public class Triangulator extends TypedAtomicActor {
     // @return True if the calculated location and time is consistent with the
     //  observations.
     private static boolean _checkResult(double[] result, double x1, double y1,
-            double t1, double x2, double y2, double t2, double x3, double y3,
-            double t3, double v) {
+        double t1, double x2, double y2, double t2, double x3, double y3,
+        double t3, double v) {
         if ((result[2] > t1) || (result[2] > t2) || (result[2] > t3)) {
             return false;
         }
@@ -369,42 +369,58 @@ public class Triangulator extends TypedAtomicActor {
      *  the observations.
      */
     private static double[] _locate(double x1, double y1, double t1, double x2,
-            double y2, double t2, double x3, double y3, double t3, double v) {
+        double y2, double t2, double x3, double y3, double t3, double v) {
         double[] result = new double[3];
         double v2 = v * v;
         double[][] m = {
-            { 2 * (x2 - x1), 2 * (y2 - y1) },
-            { 2 * (x3 - x1), 2 * (y3 - y1) }
-        };
-        double[] b = { 2 * v2 * (t2 - t1), 2 * v2 * (t3 - t1) };
+                {
+                    2 * (x2 - x1),
+                    2 * (y2 - y1)
+                },
+                {
+                    2 * (x3 - x1),
+                    2 * (y3 - y1)
+                }
+            };
+        double[] b = {
+                2 * v2 * (t2 - t1),
+                2 * v2 * (t3 - t1)
+            };
         double[] c = {
-            (((t1 * t1 * v2) - (t2 * t2 * v2) + (x2 * x2)) - (x1 * x1)
-                    + (y2 * y2)) - (y1 * y1),
-            (((t1 * t1 * v2) - (t3 * t3 * v2) + (x3 * x3)) - (x1 * x1)
-                    + (y3 * y3)) - (y1 * y1)
-        };
+                (((t1 * t1 * v2) - (t2 * t2 * v2) + (x2 * x2)) - (x1 * x1)
+                + (y2 * y2)) - (y1 * y1),
+                
+                (((t1 * t1 * v2) - (t3 * t3 * v2) + (x3 * x3)) - (x1 * x1)
+                + (y3 * y3)) - (y1 * y1)
+            };
 
         // FIXME: what if det_m is 0? That is, the three sensors are located on
         // a straight line.
         double det_m = (m[0][0] * m[1][1]) - (m[1][0] * m[0][1]);
         double[][] m_inv = {
-            { m[1][1] / det_m, -m[0][1] / det_m },
-            { -m[1][0] / det_m, m[0][0] / det_m }
-        };
+                {
+                    m[1][1] / det_m,
+                    -m[0][1] / det_m
+                },
+                {
+                    -m[1][0] / det_m,
+                    m[0][0] / det_m
+                }
+            };
         double[] m_inv_b = {
-            (m_inv[0][0] * b[0]) + (m_inv[0][1] * b[1]),
-            (m_inv[1][0] * b[0]) + (m_inv[1][1] * b[1])
-        };
+                (m_inv[0][0] * b[0]) + (m_inv[0][1] * b[1]),
+                (m_inv[1][0] * b[0]) + (m_inv[1][1] * b[1])
+            };
         double[] m_inv_c = {
-            (m_inv[0][0] * c[0]) + (m_inv[0][1] * c[1]),
-            (m_inv[1][0] * c[0]) + (m_inv[1][1] * c[1])
-        };
+                (m_inv[0][0] * c[0]) + (m_inv[0][1] * c[1]),
+                (m_inv[1][0] * c[0]) + (m_inv[1][1] * c[1])
+            };
         double ea = ((m_inv_b[0] * m_inv_b[0]) + (m_inv_b[1] * m_inv_b[1]))
             - v2;
         double eb = (2 * m_inv_b[0] * (m_inv_c[0] - x1))
             + (2 * m_inv_b[1] * (m_inv_c[1] - y1)) + (2 * v2 * t1);
         double ec = (((m_inv_c[0] - x1) * (m_inv_c[0] - x1))
-                + ((m_inv_c[1] - y1) * (m_inv_c[1] - y1))) - (t1 * t1 * v2);
+            + ((m_inv_c[1] - y1) * (m_inv_c[1] - y1))) - (t1 * t1 * v2);
         double delta = (eb * eb) - (4 * ea * ec);
 
         //System.out.println("delta is " + delta);

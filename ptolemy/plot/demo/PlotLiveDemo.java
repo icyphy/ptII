@@ -71,15 +71,15 @@ public class PlotLiveDemo extends PlotLive {
         // for faster response, but in our case, we really need
         // to slow down the response for visual aesthetics.
         addPoint(0, Math.sin((Math.PI * _count) / 25),
-                Math.cos((Math.PI * _count) / 100), false);
+            Math.cos((Math.PI * _count) / 100), false);
         addPoint(0, Math.sin((Math.PI * _count) / 45),
-                Math.cos((Math.PI * _count) / 70), true);
+            Math.cos((Math.PI * _count) / 70), true);
         addPoint(1, Math.sin((Math.PI * _count) / 45),
-                Math.cos((Math.PI * _count) / 70), false);
+            Math.cos((Math.PI * _count) / 70), false);
         addPoint(2, Math.sin((Math.PI * _count) / 20),
-                Math.cos((Math.PI * _count) / 100), false);
+            Math.cos((Math.PI * _count) / 100), false);
         addPoint(3, Math.sin((Math.PI * _count) / 50),
-                Math.cos((Math.PI * _count) / 70), false);
+            Math.cos((Math.PI * _count) / 70), false);
         _count += 1.0;
 
         try {
@@ -117,6 +117,7 @@ public class PlotLiveDemo extends PlotLive {
                     }
                 }
             };
+
         try {
             SwingUtilities.invokeAndWait(doActions);
         } catch (Exception ex) {

@@ -26,7 +26,6 @@ COPYRIGHTENDKEY
 @ProposedRating Red (acataldo)
 @AcceptedRating Red (reviewmoderator)
 */
-
 package ptolemy.apps.softwalls;
 
 import ptolemy.actor.TypedAtomicActor;
@@ -39,8 +38,10 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// AngleProcessor
+
 /**
    Given an input angle, it computes the equivalent angle in the range
    [minAngle, maxAngle).  Typically, maxAngle - minAngle = 2 * pi
@@ -65,17 +66,15 @@ public class AngleProcessor extends TypedAtomicActor {
      *   an actor already in the container.
      */
     public AngleProcessor(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
-
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // Create and configure ports and parameters
         inputAngle = new TypedIOPort(this, "inputAngle", true, false);
         outputAngle = new TypedIOPort(this, "outputAngle", false, true);
-        minAngle = new PortParameter(this,
-                "minAngle", new DoubleToken(0.0));
-        maxAngle = new PortParameter(this,
-                "maxAngle", new DoubleToken(2 * Math.PI));
+        minAngle = new PortParameter(this, "minAngle", new DoubleToken(0.0));
+        maxAngle = new PortParameter(this, "maxAngle",
+                new DoubleToken(2 * Math.PI));
         inputAngle.setTypeEquals(BaseType.DOUBLE);
         outputAngle.setTypeEquals(BaseType.DOUBLE);
         minAngle.setTypeEquals(BaseType.DOUBLE);
@@ -110,13 +109,11 @@ public class AngleProcessor extends TypedAtomicActor {
      *  from reading an attribute.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == minAngle) {
-            _minAngle =
-                ((DoubleToken)(minAngle.getToken())).doubleValue();
+            _minAngle = ((DoubleToken) (minAngle.getToken())).doubleValue();
         } else if (attribute == maxAngle) {
-            _maxAngle =
-                ((DoubleToken)(maxAngle.getToken())).doubleValue();
+            _maxAngle = ((DoubleToken) (maxAngle.getToken())).doubleValue();
         }
     }
 
@@ -129,16 +126,16 @@ public class AngleProcessor extends TypedAtomicActor {
         double angle;
         double range;
 
-        angle = ((DoubleToken)(inputAngle.get(0))).doubleValue();
+        angle = ((DoubleToken) (inputAngle.get(0))).doubleValue();
 
         minAngle.update();
         maxAngle.update();
-        _minAngle = ((DoubleToken)(minAngle.getToken())).doubleValue();
-        _maxAngle = ((DoubleToken)(maxAngle.getToken())).doubleValue();
+        _minAngle = ((DoubleToken) (minAngle.getToken())).doubleValue();
+        _maxAngle = ((DoubleToken) (maxAngle.getToken())).doubleValue();
 
         if (_minAngle >= _maxAngle) {
             throw new IllegalActionException(getContainer(),
-                    "minAngle >= maxAngle");
+                "minAngle >= maxAngle");
         }
 
         range = _maxAngle - _minAngle;
@@ -146,6 +143,7 @@ public class AngleProcessor extends TypedAtomicActor {
         while (angle < _minAngle) {
             angle = angle + range;
         }
+
         while (angle >= _maxAngle) {
             angle = angle - range;
         }
@@ -158,8 +156,8 @@ public class AngleProcessor extends TypedAtomicActor {
      *  from reading the minAngle or maxAngle parameters.
      */
     public void initialize() throws IllegalActionException {
-        _minAngle = ((DoubleToken)(minAngle.getToken())).doubleValue();
-        _maxAngle = ((DoubleToken)(maxAngle.getToken())).doubleValue();
+        _minAngle = ((DoubleToken) (minAngle.getToken())).doubleValue();
+        _maxAngle = ((DoubleToken) (maxAngle.getToken())).doubleValue();
     }
 
     /** Return true of the inputAngle port has a token, otherwise return
@@ -173,7 +171,9 @@ public class AngleProcessor extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+    private double _minAngle;
 
-    private double _minAngle, _maxAngle;
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+    private double _maxAngle;
 }
-

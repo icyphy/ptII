@@ -81,7 +81,7 @@ import ptolemy.plot.Plot;
 */
 public class SigmaDelta extends TypedCompositeActor {
     public SigmaDelta(Workspace workspace)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         // Creating the model.
         super(workspace);
         setName("DigitalSystem");
@@ -208,7 +208,7 @@ public class SigmaDelta extends TypedCompositeActor {
 
         FIR mav = new FIR(this, "MAV");
         mav.taps.setExpression("{0.1, 0.1, 0.1, 0.1, 0.1, 0.05, 0.05, 0.05, "
-                + "0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05}");
+            + "0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05}");
 
         // DE connections.
         connect(subout, delay.input);

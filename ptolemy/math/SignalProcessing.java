@@ -135,9 +135,9 @@ public class SignalProcessing {
         for (int i = 0; i < array1.length; i++) {
             for (int j = 0; j < array2.length; j++) {
                 reals[i + j] += ((array1[i].real * array2[j].real)
-                        - (array1[i].imag * array2[j].imag));
+                            - (array1[i].imag * array2[j].imag));
                 imags[i + j] += ((array1[i].imag * array2[j].real)
-                        + (array1[i].real * array2[j].imag));
+                            + (array1[i].real * array2[j].imag));
             }
         }
 
@@ -194,7 +194,7 @@ public class SignalProcessing {
 
         if (type >= DCT_TYPES) {
             throw new IllegalArgumentException(
-                    "ptolemy.math.SignalProcessing.DCT(): Unrecognized DCT type");
+                "ptolemy.math.SignalProcessing.DCT(): Unrecognized DCT type");
         }
 
         int size = 1 << order;
@@ -212,7 +212,7 @@ public class SignalProcessing {
             double factor = Math.sqrt(2.0 / size);
             returnValue = DoubleArrayMath.scale(returnValue, factor);
 
-            // no break here
+        // no break here
         case DCT_TYPE_NORMALIZED:
             returnValue[0] *= ExtendedMath.ONE_OVER_SQRT_2;
             break;
@@ -277,21 +277,21 @@ public class SignalProcessing {
     public static final double[] downsample(double[] x, int n, int startIndex) {
         if (x.length <= 0) {
             throw new IllegalArgumentException(
-                    "ptolemy.math.SignalProcessing.downsample(): "
-                    + "array length must be greater than 0.");
+                "ptolemy.math.SignalProcessing.downsample(): "
+                + "array length must be greater than 0.");
         }
 
         if (n <= 0) {
             throw new IllegalArgumentException(
-                    "ptolemy.math.SignalProcessing.downsample(): "
-                    + "downsampling factor must be greater than 0.");
+                "ptolemy.math.SignalProcessing.downsample(): "
+                + "downsampling factor must be greater than 0.");
         }
 
         if ((startIndex < 0) || (startIndex > (x.length - 1))) {
             throw new IllegalArgumentException(
-                    "ptolemy.math.SignalProcessing.downsample(): "
-                    + "startIndex must be between 0 and L - 1, where L is the "
-                    + "size of the input array.");
+                "ptolemy.math.SignalProcessing.downsample(): "
+                + "startIndex must be between 0 and L - 1, where L is the "
+                + "size of the input array.");
         }
 
         int length = ((x.length + 1) - startIndex) / n;
@@ -601,7 +601,7 @@ public class SignalProcessing {
         // check if order > 31
         if (type >= DCT_TYPES) {
             throw new IllegalArgumentException(
-                    "ptolemy.math.SignalProcessing.IDCT() : Bad DCT type");
+                "ptolemy.math.SignalProcessing.IDCT() : Bad DCT type");
         }
 
         int size = 1 << order;
@@ -794,8 +794,8 @@ public class SignalProcessing {
     public static final double[] generateBartlettWindow(int length) {
         if (length < 1) {
             throw new IllegalArgumentException("ptolemy.math.SignalProcessing"
-                    + ".generateBartlettWindow(): "
-                    + " length of window should be greater than 0.");
+                + ".generateBartlettWindow(): "
+                + " length of window should be greater than 0.");
         }
 
         int M = length - 1;
@@ -825,8 +825,8 @@ public class SignalProcessing {
     public static final double[] generateBlackmanWindow(int length) {
         if (length < 1) {
             throw new IllegalArgumentException("ptolemy.math.SignalProcessing"
-                    + ".generateBlackmanWindow(): "
-                    + " length of window should be greater than 0.");
+                + ".generateBlackmanWindow(): "
+                + " length of window should be greater than 0.");
         }
 
         int M = length - 1;
@@ -853,8 +853,8 @@ public class SignalProcessing {
     public static final double[] generateBlackmanHarrisWindow(int length) {
         if (length < 1) {
             throw new IllegalArgumentException("ptolemy.math.SignalProcessing"
-                    + ".generateBlackmanHarrisWindow(): "
-                    + " length of window should be greater than 0.");
+                + ".generateBlackmanHarrisWindow(): "
+                + " length of window should be greater than 0.");
         }
 
         int M = length - 1;
@@ -867,7 +867,7 @@ public class SignalProcessing {
 
         for (n = 0; n < length; n++) {
             window[n] = (0.35875 - (0.48829 * Math.cos(twoPiOverM * n))
-                    + (0.14128 * Math.cos(fourPiOverM * n)))
+                + (0.14128 * Math.cos(fourPiOverM * n)))
                 - (0.01168 * Math.cos(sixPiOverM * n));
         }
 
@@ -885,11 +885,11 @@ public class SignalProcessing {
      *  @return An array that contains samples of the Gaussian curve.
      */
     public static final double[] generateGaussianCurve(
-            double standardDeviation, double extent, int length) {
+        double standardDeviation, double extent, int length) {
         GaussianSampleGenerator generator = new GaussianSampleGenerator(0.0,
                 standardDeviation);
         return sampleWave(length, -extent * standardDeviation,
-                (2.0 * extent * standardDeviation) / length, generator);
+            (2.0 * extent * standardDeviation) / length, generator);
     }
 
     /** Return a new array that is filled with samples of a Hamming
@@ -901,8 +901,8 @@ public class SignalProcessing {
     public static final double[] generateHammingWindow(int length) {
         if (length < 1) {
             throw new IllegalArgumentException(
-                    "ptolemy.math.SignalProcessing.generateHammingWindow(): "
-                    + " length of window should be greater than 0.");
+                "ptolemy.math.SignalProcessing.generateHammingWindow(): "
+                + " length of window should be greater than 0.");
         }
 
         int M = length - 1;
@@ -927,8 +927,8 @@ public class SignalProcessing {
     public static final double[] generateHanningWindow(int length) {
         if (length < 1) {
             throw new IllegalArgumentException(
-                    "ptolemy.math.SignalProcessing.generateHanningWindow(): "
-                    + " length of window should be greater than 0.");
+                "ptolemy.math.SignalProcessing.generateHanningWindow(): "
+                + " length of window should be greater than 0.");
         }
 
         int M = length - 1;
@@ -959,7 +959,7 @@ public class SignalProcessing {
      *  @return An array that contains samples of a polynomial curve.
      */
     public static final double[] generatePolynomialCurve(double[] polynomial,
-            double start, double step, int length) {
+        double start, double step, int length) {
         PolynomialSampleGenerator generator = new PolynomialSampleGenerator(polynomial,
                 1);
         return sampleWave(length, start, step, generator);
@@ -989,7 +989,7 @@ public class SignalProcessing {
      *  @return An array containing a symmetric raised-cosine pulse.
      */
     public static final double[] generateRaisedCosinePulse(
-            double excessBandwidth, double firstZeroCrossing, int length) {
+        double excessBandwidth, double firstZeroCrossing, int length) {
         RaisedCosineSampleGenerator generator = new RaisedCosineSampleGenerator(firstZeroCrossing,
                 excessBandwidth);
         return sampleWave(length, -(length - 1) / 2.0, 1.0, generator);
@@ -1004,8 +1004,8 @@ public class SignalProcessing {
     public static final double[] generateRectangularWindow(int length) {
         if (length < 1) {
             throw new IllegalArgumentException("ptolemy.math.SignalProcessing"
-                    + ".generateRectangularWindow(): "
-                    + " length of window should be greater than 0.");
+                + ".generateRectangularWindow(): "
+                + " length of window should be greater than 0.");
         }
 
         int n;
@@ -1046,7 +1046,7 @@ public class SignalProcessing {
      *  @return A new array containing a square-root raised-cosine pulse.
      */
     public static final double[] generateSqrtRaisedCosinePulse(
-            double excessBandwidth, double firstZeroCrossing, int length) {
+        double excessBandwidth, double firstZeroCrossing, int length) {
         RaisedCosineSampleGenerator generator = new RaisedCosineSampleGenerator(firstZeroCrossing,
                 excessBandwidth);
         return sampleWave(length, -(length - 1) / 2.0, 1.0, generator);
@@ -1062,27 +1062,33 @@ public class SignalProcessing {
     public static final double[] generateWindow(int length, int windowType) {
         if (length < 1) {
             throw new IllegalArgumentException(
-                    "ptolemy.math.SignalProcessing.generateWindow(): "
-                    + " length of window should be greater than 0.");
+                "ptolemy.math.SignalProcessing.generateWindow(): "
+                + " length of window should be greater than 0.");
         }
 
         switch (windowType) {
-        case WINDOW_TYPE_RECTANGULAR:return generateRectangularWindow(length);
+        case WINDOW_TYPE_RECTANGULAR:
+            return generateRectangularWindow(length);
 
-        case WINDOW_TYPE_BARTLETT:return generateBartlettWindow(length);
+        case WINDOW_TYPE_BARTLETT:
+            return generateBartlettWindow(length);
 
-        case WINDOW_TYPE_HANNING:return generateHanningWindow(length);
+        case WINDOW_TYPE_HANNING:
+            return generateHanningWindow(length);
 
-        case WINDOW_TYPE_HAMMING:return generateHammingWindow(length);
+        case WINDOW_TYPE_HAMMING:
+            return generateHammingWindow(length);
 
-        case WINDOW_TYPE_BLACKMAN:return generateBlackmanWindow(length);
+        case WINDOW_TYPE_BLACKMAN:
+            return generateBlackmanWindow(length);
 
-        case WINDOW_TYPE_BLACKMAN_HARRIS:return generateBlackmanHarrisWindow(length);
+        case WINDOW_TYPE_BLACKMAN_HARRIS:
+            return generateBlackmanHarrisWindow(length);
 
         default:
             throw new IllegalArgumentException(
-                    "ptolemy.math.SignalProcessing.generateWindow(): "
-                    + "Unknown window type (" + windowType + ").");
+                "ptolemy.math.SignalProcessing.generateWindow(): "
+                + "Unknown window type (" + windowType + ").");
         }
     }
 
@@ -1094,8 +1100,8 @@ public class SignalProcessing {
     public static final int nextPowerOfTwo(double x) {
         if (x <= 0.0) {
             throw new IllegalArgumentException(
-                    "ptolemy.math.SignalProcessing.nextPowerOfTwo(): "
-                    + "argument (" + x + ") is not a positive number.");
+                "ptolemy.math.SignalProcessing.nextPowerOfTwo(): "
+                + "argument (" + x + ") is not a positive number.");
         }
 
         double m = Math.log(x) * _LOG2SCALE;
@@ -1112,7 +1118,7 @@ public class SignalProcessing {
     public static final int order(int size) {
         if (size <= 0) {
             throw new IllegalArgumentException("ptolemy.math.SignalProcessing:"
-                    + " size of transform must be positive.");
+                + " size of transform must be positive.");
         }
 
         double m = Math.log(size) * _LOG2SCALE;
@@ -1134,7 +1140,7 @@ public class SignalProcessing {
      *  frequency response.
      */
     public static final Complex[] poleZeroToFrequency(Complex[] poles,
-            Complex[] zeros, Complex gain, int numSteps) {
+        Complex[] zeros, Complex gain, int numSteps) {
         double step = (2 * Math.PI) / numSteps;
         Complex[] freq = new Complex[numSteps];
 
@@ -1176,7 +1182,7 @@ public class SignalProcessing {
      *  @see ptolemy.math.DoubleUnaryOperation
      */
     public static final double[] sampleWave(int length, double startTime,
-            double interval, DoubleUnaryOperation sampleGen) {
+        double interval, DoubleUnaryOperation sampleGen) {
         double time = startTime;
 
         double[] returnValue = new double[length];
@@ -1207,12 +1213,12 @@ public class SignalProcessing {
     public static double sawtooth(double period, double phase, double time) {
         if (period <= 0) {
             throw new IllegalArgumentException(
-                    "ptolemy.math.SignalProcessing.sawtooth(): "
-                    + "period should be greater than 0.");
+                "ptolemy.math.SignalProcessing.sawtooth(): "
+                + "period should be greater than 0.");
         }
 
         double point = (2 / period) * Math.IEEEremainder(time
-                + (phase * period), period);
+                            + (phase * period), period);
 
         // get rid of negative zero
         point = (point == -0.0) ? 0.0 : point;
@@ -1257,12 +1263,12 @@ public class SignalProcessing {
     public static double square(double period, double phase, double time) {
         if (period <= 0) {
             throw new IllegalArgumentException(
-                    "ptolemy.math.SignalProcessing.square(): "
-                    + "period should be greater than 0.");
+                "ptolemy.math.SignalProcessing.square(): "
+                + "period should be greater than 0.");
         }
 
         double point = (2 / period) * Math.IEEEremainder(time
-                + (phase * period), period);
+                            + (phase * period), period);
 
         // hole at +1.0
         return ((point >= 0) && (point < 1)) ? 1.0 : (-1.0);
@@ -1285,8 +1291,8 @@ public class SignalProcessing {
     public static double triangle(double period, double phase, double time) {
         if (period <= 0) {
             throw new IllegalArgumentException(
-                    "ptolemy.math.SignalProcessing.triangle(): "
-                    + "period should be greater than 0.");
+                "ptolemy.math.SignalProcessing.triangle(): "
+                + "period should be greater than 0.");
         }
 
         double point = Math.IEEEremainder(time + (phase * period), period);
@@ -1361,8 +1367,8 @@ public class SignalProcessing {
     public static final double[] upsample(double[] x, int n) {
         if (n <= 0) {
             throw new IllegalArgumentException(
-                    "ptolemy.math.SignalProcessing.upsample(): "
-                    + "upsampling factor must be greater than or equal to 0.");
+                "ptolemy.math.SignalProcessing.upsample(): "
+                + "upsampling factor must be greater than or equal to 0.");
         }
 
         int length = x.length * n;
@@ -1571,8 +1577,8 @@ public class SignalProcessing {
         public PolynomialSampleGenerator(double[] coefficients, int direction) {
             if ((direction != 1) && (direction != -1)) {
                 throw new IllegalArgumentException(
-                        "ptolemy.math.SignalProcessing.LineSampleGenerator: "
-                        + "direction must be either 1 or -1");
+                    "ptolemy.math.SignalProcessing.LineSampleGenerator: "
+                    + "direction must be either 1 or -1");
             }
 
             _coeffLength = coefficients.length;
@@ -1702,7 +1708,7 @@ public class SignalProcessing {
          *  called the rolloff factor.
          */
         public RaisedCosineSampleGenerator(double firstZeroCrossing,
-                double excess) {
+            double excess) {
             _oneOverFZC = 1.0 / firstZeroCrossing;
             _excess = excess;
         }
@@ -1780,7 +1786,7 @@ public class SignalProcessing {
          *  cosine pulse (also called the rolloff factor).
          */
         public SqrtRaisedCosineSampleGenerator(double firstZeroCrossing,
-                double excess) {
+            double excess) {
             _excess = excess;
 
             _oneOverFZC = 1.0 / firstZeroCrossing;
@@ -1834,14 +1840,16 @@ public class SignalProcessing {
                 double oneOverTimeSquared = oneOverTime * oneOverTime;
 
                 return _fzcSqrtFZCOverEightExcessPI * oneOverTime * ((_onePlus * Math
-                                                                             .sin(onePlusTime))
-                        - (_oneMinusFZCOverFourExcess * oneOverTime * Math.cos(oneMinusTime))
-                        + (_fzcOverFourExcess * oneOverTimeSquared * Math.sin(oneMinusTime)));
+                            .sin(onePlusTime))
+                            - (_oneMinusFZCOverFourExcess * oneOverTime * Math
+                            .cos(oneMinusTime))
+                            + (_fzcOverFourExcess * oneOverTimeSquared * Math
+                            .sin(oneMinusTime)));
             }
 
             return (_fourExcessOverPISqrtFZC * (Math.cos(onePlusTime)
-                            + (Math.sin(oneMinusTime) / (x * _fourExcess)))) / (1.0
-                                    - (_sixteenExcessSquared * x * x));
+                        + (Math.sin(oneMinusTime) / (x * _fourExcess)))) / (1.0
+                        - (_sixteenExcessSquared * x * x));
         }
 
         private final double _oneOverFZC;
@@ -1867,12 +1875,12 @@ public class SignalProcessing {
     private static void _checkTransformOrder(int order) {
         if (order < 0) {
             throw new IllegalArgumentException(
-                    "ptolemy.math.SignalProcessing : order of transform "
-                    + "must be non-negative.");
+                "ptolemy.math.SignalProcessing : order of transform "
+                + "must be non-negative.");
         } else if (order > 31) {
             throw new IllegalArgumentException(
-                    "ptolemy.math.SignalProcessing : order of transform "
-                    + "must be less than 32.");
+                "ptolemy.math.SignalProcessing : order of transform "
+                + "must be less than 32.");
         }
     }
 
@@ -1880,7 +1888,7 @@ public class SignalProcessing {
     // _checkTransformInput() and _checkTransformOrder(). Return an
     // appropriately padded array on which to perform the transform.
     private static double[] _checkTransformArgs(double[] x, int order,
-            boolean inverse) {
+        boolean inverse) {
         _checkTransformOrder(order);
 
         int size = 1 << order;
@@ -1888,7 +1896,7 @@ public class SignalProcessing {
         // Zero pad the array if necessary
         if (x.length < size) {
             x = inverse ? DoubleArrayMath.padMiddle(x, size)
-                : DoubleArrayMath.resize(x, size);
+                        : DoubleArrayMath.resize(x, size);
         }
 
         return x;
@@ -1898,7 +1906,7 @@ public class SignalProcessing {
     // _checkTransformInput() and _checkTransformOrder(). Return an
     // appropriately padded array on which to perform the transform.
     private static Complex[] _checkTransformArgs(Complex[] x, int order,
-            boolean inverse) {
+        boolean inverse) {
         _checkTransformOrder(order);
 
         int size = 1 << order;
@@ -1917,7 +1925,7 @@ public class SignalProcessing {
     // of the cosDFT function.
     private static double[] _cosDFT(double[] x, int size, int order) {
         switch (size) {
-            // Base cases for lower orders
+        // Base cases for lower orders
         case 0:
             return null; // should never be used
 
@@ -1934,7 +1942,7 @@ public class SignalProcessing {
             return returnValue;
         }
 
-            // Optimized base case for higher orders
+        // Optimized base case for higher orders
         case 4: {
             double[] returnValue = new double[3];
             returnValue[0] = x[0] + x[1] + x[2] + x[3];
@@ -1983,13 +1991,13 @@ public class SignalProcessing {
     // of the sinDFT function.
     private static double[] _sinDFT(double[] x, int size, int order) {
         switch (size) {
-            // Base cases for lower orders
+        // Base cases for lower orders
         case 0:
         case 1:
         case 2:
             return null; // should never be used
 
-            // Optimized base case for higher orders
+        // Optimized base case for higher orders
         case 4: {
             double[] returnValue = new double[2];
 
@@ -2014,7 +2022,7 @@ public class SignalProcessing {
         for (int k = 0; k < quarterN; k++) {
             int twoIp = (k << 1) + 1;
             x3[k] = ((k & 1) == 1) ? (x[size - twoIp] - x[twoIp])
-                : (x[twoIp] - x[size - twoIp]);
+                                   : (x[twoIp] - x[size - twoIp]);
         }
 
         double[] halfSinDFT = _sinDFT(x1, halfN, order - 1);

@@ -93,9 +93,9 @@ public class HierarchicalStateController extends StateController {
         super(controller, access);
 
         _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                                                new AddRefinementAction()));
+                new AddRefinementAction()));
         _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                                                new RemoveRefinementAction()));
+                new RemoveRefinementAction()));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -129,7 +129,7 @@ public class HierarchicalStateController extends StateController {
             }
 
             final CompositeEntity container = (CompositeEntity) immediateContainer
-                .getContainer();
+                            .getContainer();
 
             if (container == null) {
                 MessageHandler.error("State container has no container!");
@@ -143,23 +143,24 @@ public class HierarchicalStateController extends StateController {
 
             // See whether the configuration offers state refinements.
             Configuration configuration = ((FSMGraphController) getController())
-                .getConfiguration();
+                            .getConfiguration();
             Entity refinements = configuration.getEntity("_stateRefinements");
 
             // Default choices.
             String[] choiceClasses = {
-                "ptolemy.domains.fsm.modal.Refinement",
-                "ptolemy.domains.fsm.modal.ModalController"
-            };
+                    "ptolemy.domains.fsm.modal.Refinement",
+                    "ptolemy.domains.fsm.modal.ModalController"
+                };
             String[] choiceNames = {
-                "Default Refinement", "State Machine Refinement"
-            };
+                    "Default Refinement",
+                    "State Machine Refinement"
+                };
 
             // Check the configuration to see whether the default is overridden.
             if (refinements instanceof CompositeEntity) {
                 // There is a specification.
                 List refinementList = ((CompositeEntity) refinements)
-                    .entityList();
+                                .entityList();
                 choiceNames = new String[refinementList.size()];
                 choiceClasses = new String[refinementList.size()];
 
@@ -189,7 +190,7 @@ public class HierarchicalStateController extends StateController {
 
             if (container.getEntity(newName) != null) {
                 MessageHandler.error("There is already a refinement with name "
-                        + newName + ".");
+                    + newName + ".");
                 return;
             }
 
@@ -253,10 +254,10 @@ public class HierarchicalStateController extends StateController {
                                 Port newPort = entity.newPort(port.getName());
 
                                 if (newPort instanceof RefinementPort
-                                        && port instanceof IOPort) {
+                                                && port instanceof IOPort) {
                                     try {
                                         ((RefinementPort) newPort)
-                                            .setMirrorDisable(true);
+                                                    .setMirrorDisable(true);
 
                                         if (((IOPort) port).isInput()) {
                                             ((RefinementPort) newPort).setInput(true);
@@ -264,12 +265,12 @@ public class HierarchicalStateController extends StateController {
 
                                         if (((IOPort) port).isOutput()) {
                                             ((RefinementPort) newPort)
-                                                .setOutput(true);
+                                                        .setOutput(true);
                                         }
 
                                         if (((IOPort) port).isMultiport()) {
                                             ((RefinementPort) newPort)
-                                                .setMultiport(true);
+                                                        .setMultiport(true);
                                         }
 
                                         /* No longer needed since Yuhong modified
@@ -282,7 +283,7 @@ public class HierarchicalStateController extends StateController {
                                         */
                                     } finally {
                                         ((RefinementPort) newPort)
-                                            .setMirrorDisable(false);
+                                                    .setMirrorDisable(false);
                                     }
                                 }
                             } finally {
@@ -326,7 +327,7 @@ public class HierarchicalStateController extends StateController {
 
             // Check that all these containers exist.
             CompositeEntity immediateContainer = (CompositeEntity) state
-                .getContainer();
+                            .getContainer();
 
             if (immediateContainer == null) {
                 MessageHandler.error("State has no container!");
@@ -334,7 +335,7 @@ public class HierarchicalStateController extends StateController {
             }
 
             final CompositeEntity container = (CompositeEntity) immediateContainer
-                .getContainer();
+                            .getContainer();
 
             if (container == null) {
                 MessageHandler.error("State container has no container!");
@@ -364,7 +365,7 @@ public class HierarchicalStateController extends StateController {
             // Open a dialog to get the refinement name and class.
             Query query = new Query();
             query.addChoice("Refinement", "Refinement", choices, choices[0],
-                    false);
+                false);
 
             // FIXME: Need a frame owner for first arg.
             // Perhaps calling getController(), which returns a GraphController
@@ -404,7 +405,7 @@ public class HierarchicalStateController extends StateController {
 
                 if ((other != state) && other instanceof State) {
                     String refinementList = ((State) other).refinementName
-                        .getExpression();
+                                    .getExpression();
 
                     if (refinementList == null) {
                         continue;
@@ -429,14 +430,14 @@ public class HierarchicalStateController extends StateController {
 
             if (!foundOne) {
                 Iterator transitions = immediateContainer.relationList()
-                    .iterator();
+                                                                     .iterator();
 
                 while (transitions.hasNext()) {
                     NamedObj other = (NamedObj) transitions.next();
 
                     if (other instanceof Transition) {
                         String refinementList = ((Transition) other).refinementName
-                            .getExpression();
+                                        .getExpression();
 
                         if (refinementList == null) {
                             continue;

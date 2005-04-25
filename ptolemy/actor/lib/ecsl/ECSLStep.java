@@ -59,7 +59,7 @@ public class ECSLStep extends ContinuousClock {
      *   an actor already in the container.
      */
     public ECSLStep(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         After = new Parameter(this, "After");
@@ -90,7 +90,7 @@ public class ECSLStep extends ContinuousClock {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == After) {
             // FIXME: Ther is probably a better way to do this.
             values.setExpression("{0.0, " + After.getToken() + "}");

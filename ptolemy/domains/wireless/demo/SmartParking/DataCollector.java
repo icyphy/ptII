@@ -39,12 +39,13 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 ///DataCollector
 
 /**
     This class collectes sensor update for the state of each parking spot,
-    and provides a parking client information of available parking spots. 
+    and provides a parking client information of available parking spots.
 
     @author Yang Zhao
     @version $Id$
@@ -54,12 +55,18 @@ import ptolemy.kernel.util.NameDuplicationException;
 */
 public class DataCollector extends TypedAtomicActor {
     public DataCollector(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         update = new TypedIOPort(this, "update", true, false);
 
-        String[] labels = { "lot", "state" };
-        Type[] types = { BaseType.STRING, BaseType.INT };
+        String[] labels = {
+                "lot",
+                "state"
+            };
+        Type[] types = {
+                BaseType.STRING,
+                BaseType.INT
+            };
         RecordType recordType = new RecordType(labels, types);
         update.setTypeEquals(recordType);
 

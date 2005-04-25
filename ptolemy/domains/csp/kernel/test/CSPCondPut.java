@@ -53,8 +53,8 @@ public class CSPCondPut extends CSPPutToken {
     /**
      */
     public CSPCondPut(TypedCompositeActor cont, String name, int numTokens,
-            int receiverCount)
-            throws IllegalActionException, NameDuplicationException {
+        int receiverCount)
+        throws IllegalActionException, NameDuplicationException {
         super(cont, name, numTokens);
 
         _receiverCount = receiverCount;
@@ -84,9 +84,9 @@ public class CSPCondPut extends CSPPutToken {
 
         if (_receiverCount != numRcvrs) {
             throw new IllegalActionException(getName()
-                    + ": Error in the number"
-                    + " of receivers. Be sure constructor is properly"
-                    + " instantiated.");
+                + ": Error in the number"
+                + " of receivers. Be sure constructor is properly"
+                + " instantiated.");
         }
 
         ConditionalBranch[] Branchs = new ConditionalBranch[numRcvrs];

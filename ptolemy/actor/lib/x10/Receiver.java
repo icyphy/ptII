@@ -69,7 +69,7 @@ public class Receiver extends X10Interface {
      *   actor with this name.
      */
     public Receiver(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         trigger = new TypedIOPort(this, "trigger", true, false);
@@ -126,7 +126,7 @@ public class Receiver extends X10Interface {
         }
 
         boolean blockingValue = ((BooleanToken) blocking.getToken())
-            .booleanValue();
+                        .booleanValue();
 
         if (blockingValue) {
             if (_debugging) {
@@ -136,7 +136,7 @@ public class Receiver extends X10Interface {
             synchronized (this) {
                 try {
                     while (!_commandReady() && !_stopRequested
-                            && !_stopFireRequested) {
+                                    && !_stopFireRequested) {
                         if (_debugging) {
                             _debug("Waiting for an X10 command.");
                         }
@@ -145,7 +145,7 @@ public class Receiver extends X10Interface {
                     }
                 } catch (InterruptedException ex) {
                     throw new IllegalActionException(this, ex,
-                            "Thread interrupted while waiting for X10 data.");
+                        "Thread interrupted while waiting for X10 data.");
                 }
             }
 
@@ -155,7 +155,7 @@ public class Receiver extends X10Interface {
         }
 
         boolean discardOldDataValue = ((BooleanToken) discardOldData.getToken())
-            .booleanValue();
+                        .booleanValue();
 
         if (discardOldDataValue) {
             while (_commandQueue.size() > 1) {
@@ -172,7 +172,7 @@ public class Receiver extends X10Interface {
 
                 if (_debugging) {
                     _debug(
-                            "Calling fireAtCurrentTime() to deal with additional pending commands.");
+                        "Calling fireAtCurrentTime() to deal with additional pending commands.");
                 }
 
                 getDirector().fireAtCurrentTime(this);
@@ -344,7 +344,7 @@ public class Receiver extends X10Interface {
         private void _appendCommand(UnitEvent event) {
             if (_debugging) {
                 _debug("Detected X10 command: "
-                        + _commandToString(event.getCommand()));
+                    + _commandToString(event.getCommand()));
             }
 
             synchronized (_commandQueue) {
@@ -357,7 +357,7 @@ public class Receiver extends X10Interface {
                     getDirector().fireAtCurrentTime(Receiver.this);
                 } catch (IllegalActionException ex) {
                     throw new KernelRuntimeException(Receiver.this, null, ex,
-                            "fireAtCurrentTime() failed.");
+                        "fireAtCurrentTime() failed.");
                 }
             }
 

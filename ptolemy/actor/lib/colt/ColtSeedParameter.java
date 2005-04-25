@@ -73,7 +73,6 @@ import java.util.Iterator;
    @Pt.AcceptedRating Red (cxh)
 */
 public class ColtSeedParameter extends SharedParameter {
-    
     /** Construct a parameter with the given container and name.
      *  The container class will be used to determine which other
      *  instances of ColtSeedParameter are shared with this one.
@@ -85,7 +84,7 @@ public class ColtSeedParameter extends SharedParameter {
      *   a parameter already in the container.
      */
     public ColtSeedParameter(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         this(container, name, null);
     }
 
@@ -100,8 +99,9 @@ public class ColtSeedParameter extends SharedParameter {
      *  @exception NameDuplicationException If the name coincides with
      *   a parameter already in the container.
      */
-    public ColtSeedParameter(NamedObj container, String name, Class containerClass)
-            throws IllegalActionException, NameDuplicationException {
+    public ColtSeedParameter(NamedObj container, String name,
+        Class containerClass)
+        throws IllegalActionException, NameDuplicationException {
         super(container, name, containerClass, "0L");
         setTypeEquals(BaseType.LONG);
     }
@@ -114,41 +114,53 @@ public class ColtSeedParameter extends SharedParameter {
      */
     public void setExpression(String expression) {
         boolean previousSuppress = isSuppressingPropagation();
+
         try {
             setSuppressingPropagation(true);
             super.setExpression(expression);
         } finally {
-        	setSuppressingPropagation(previousSuppress);
+            setSuppressingPropagation(previousSuppress);
         }
+
         // Have to evaluate the expression using getToken(),
         // rather than parsing the string. Unfortunately,
         // the Variable base class doesn't allow us to throw
         // IllegalActionException.  Too bad...
         try {
-            LongToken token = (LongToken)getToken();
-        	long value = 0L;
+            LongToken token = (LongToken) getToken();
+            long value = 0L;
+
             if (token != null) {
                 value = token.longValue();
             }
+
             if (value == 0L) {
                 // Call again without suppression of propagation.
-            	super.setExpression(expression);
+                super.setExpression(expression);
             } else {
-            	// Need to assign unique values.
+                // Need to assign unique values.
                 if (!isSuppressingPropagation()) {
                     NamedObj toplevel = getRoot();
+
                     // Do not do sharing if this is within an EntityLibrary.
                     if (toplevel != null) {
-                        Iterator sharedParameters = sharedParameterList(toplevel).iterator();
+                        Iterator sharedParameters = sharedParameterList(toplevel)
+                                                                    .iterator();
+
                         while (sharedParameters.hasNext()) {
-                            ColtSeedParameter sharedParameter = (ColtSeedParameter)sharedParameters.next();
+                            ColtSeedParameter sharedParameter = (ColtSeedParameter) sharedParameters
+                                            .next();
+
                             if (sharedParameter != this) {
                                 try {
                                     sharedParameter.setSuppressingPropagation(true);
                                     value++;
+
                                     String newExpression = value + "L";
+
                                     if (!sharedParameter.getExpression().equals(newExpression)) {
                                         sharedParameter.setExpression(newExpression);
+
                                         // Make sure the new value is not persistent.
                                         sharedParameter.setPersistent(false);
                                     }
@@ -162,10 +174,10 @@ public class ColtSeedParameter extends SharedParameter {
             }
         } catch (IllegalActionException ex) {
             // FIXME: This is a lousy way to report a syntax error.
-        	throw new InternalErrorException(ex);
+            throw new InternalErrorException(ex);
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

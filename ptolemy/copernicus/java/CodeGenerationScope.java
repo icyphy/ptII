@@ -28,10 +28,10 @@ COPYRIGHTENDKEY
 */
 package ptolemy.copernicus.java;
 
+import soot.Local;
+
 import ptolemy.data.expr.ParserScope;
 import ptolemy.kernel.util.IllegalActionException;
-
-import soot.Local;
 
 
 //////////////////////////////////////////////////////////////////////////

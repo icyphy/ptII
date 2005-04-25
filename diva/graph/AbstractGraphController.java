@@ -295,7 +295,7 @@ public abstract class AbstractGraphController implements GraphController {
 
             if (_model.isEdge(object)) {
                 if (!GraphUtilities.isPartiallyContainedEdge(object,
-                            _model.getRoot(), _model)) {
+                                    _model.getRoot(), _model)) {
                     if (_selectionModel.containsSelection(figure)) {
                         _selectionModel.removeSelection(figure);
                     }
@@ -319,7 +319,7 @@ public abstract class AbstractGraphController implements GraphController {
 
             if (_model.isNode(object)) {
                 if (!GraphUtilities.isContainedNode(object, _model.getRoot(),
-                            _model)) {
+                                    _model)) {
                     if (_selectionModel.containsSelection(figure)) {
                         _selectionModel.removeSelection(figure);
                     }
@@ -351,7 +351,7 @@ public abstract class AbstractGraphController implements GraphController {
 
         // Save the selected nodes.
         Iterator nodes = (GraphUtilities.nodeSet(_model.getRoot(), _model))
-            .iterator();
+                        .iterator();
 
         while (nodes.hasNext()) {
             Object node = nodes.next();

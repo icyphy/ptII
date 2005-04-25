@@ -68,7 +68,9 @@ public class ModelServer {
 
             // bind the object Reference in Naming
             NameComponent nc = new NameComponent("Nonlinear", "");
-            NameComponent[] path = { nc };
+            NameComponent[] path = {
+                    nc
+                };
             ncRef.rebind(path, impl);
 
             //wait for request

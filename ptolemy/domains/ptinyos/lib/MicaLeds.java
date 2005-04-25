@@ -28,8 +28,8 @@
    COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.ptinyos.lib;
+
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.BooleanToken;
@@ -41,8 +41,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.vergil.icon.EditorIcon;
 import ptolemy.vergil.kernel.attributes.RectangleAttribute;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// MicaLeds
+
 /** FIXME comment
     @author Elaine Cheong
     @version $Id$
@@ -51,7 +53,6 @@ import ptolemy.vergil.kernel.attributes.RectangleAttribute;
     @Pt.AcceptedRating Red (celaine)
 */
 public class MicaLeds extends TypedAtomicActor {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -61,8 +62,8 @@ public class MicaLeds extends TypedAtomicActor {
      *   actor with this name.
      */
     public MicaLeds(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException,
-            java.lang.Exception  {
+        throws NameDuplicationException, IllegalActionException, 
+            java.lang.Exception {
         super(container, name);
 
         //create the node icon.
@@ -70,8 +71,12 @@ public class MicaLeds extends TypedAtomicActor {
 
         // The icon has 3 LEDs: red, yellow, and green.
         _ledRed = new RectangleAttribute(node_icon, "_ledRed");
+
         Location ledRedLoc = new Location(_ledRed, "_location");
-        double[] ledRedLocVal = {-20.0, 0.0};
+        double[] ledRedLocVal = {
+                -20.0,
+                0.0
+            };
         ledRedLoc.setLocation(ledRedLocVal);
         _ledRed.width.setToken("20.0");
         _ledRed.height.setToken("39.0");
@@ -79,8 +84,12 @@ public class MicaLeds extends TypedAtomicActor {
         _redOff();
 
         _ledGreen = new RectangleAttribute(node_icon, "_ledGreen");
+
         Location ledGreenLoc = new Location(_ledGreen, "_location");
-        double[] ledGreenLocVal = {0.0, 0.0};
+        double[] ledGreenLocVal = {
+                0.0,
+                0.0
+            };
         ledGreenLoc.setLocation(ledGreenLocVal);
         _ledGreen.width.setToken("20.0");
         _ledGreen.height.setToken("39.0");
@@ -88,8 +97,12 @@ public class MicaLeds extends TypedAtomicActor {
         _greenOff();
 
         _ledYellow = new RectangleAttribute(node_icon, "_ledYellow");
+
         Location ledYellowLoc = new Location(_ledYellow, "_location");
-        double[] ledYellowLocVal = {20.0, 0.0};
+        double[] ledYellowLocVal = {
+                20.0,
+                0.0
+            };
         ledYellowLoc.setLocation(ledYellowLocVal);
         _ledYellow.width.setToken("20.0");
         _ledYellow.height.setToken("39.0");
@@ -101,7 +114,7 @@ public class MicaLeds extends TypedAtomicActor {
         ledGreen = new TypedIOPort(this, "ledGreen", true, false);
         ledGreen.setTypeEquals(BaseType.BOOLEAN);
         ledYellow = new TypedIOPort(this, "ledYellow", true, false);
-        ledYellow.setTypeEquals(BaseType.BOOLEAN);        
+        ledYellow.setTypeEquals(BaseType.BOOLEAN);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -133,8 +146,9 @@ public class MicaLeds extends TypedAtomicActor {
             _debug("Called fire()");
         }
 
-        if (ledRed.getWidth() > 0 && ledRed.hasToken(0)) {
+        if ((ledRed.getWidth() > 0) && ledRed.hasToken(0)) {
             BooleanToken red = (BooleanToken) ledRed.get(0);
+
             if (red.booleanValue()) {
                 _redOn();
             } else {
@@ -142,17 +156,19 @@ public class MicaLeds extends TypedAtomicActor {
             }
         }
 
-        if (ledGreen.getWidth() > 0 && ledGreen.hasToken(0)) {
+        if ((ledGreen.getWidth() > 0) && ledGreen.hasToken(0)) {
             BooleanToken green = (BooleanToken) ledGreen.get(0);
+
             if (green.booleanValue()) {
                 _greenOn();
             } else {
                 _greenOff();
             }
         }
-        
-        if (ledYellow.getWidth() > 0 && ledYellow.hasToken(0)) {
+
+        if ((ledYellow.getWidth() > 0) && ledYellow.hasToken(0)) {
             BooleanToken yellow = (BooleanToken) ledYellow.get(0);
+
             if (yellow.booleanValue()) {
                 _yellowOn();
             } else {
@@ -163,7 +179,6 @@ public class MicaLeds extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                 ////
-
     private void _redOn() throws IllegalActionException {
         _ledRed.fillColor.setToken("{1.0,0.0,0.0,1.0}");
     }
@@ -188,14 +203,15 @@ public class MicaLeds extends TypedAtomicActor {
         _ledYellow.fillColor.setToken("{0.5,0.5,0.0,1.0}");
     }
 
-    
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                ////
 
     /** Red LED */
     private RectangleAttribute _ledRed;
+
     /** Green LED */
     private RectangleAttribute _ledGreen;
+
     /** Yellow LED */
     private RectangleAttribute _ledYellow;
 }

@@ -86,7 +86,7 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
      *   an entity already in the container.
      */
     public PtolemyEffigy(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -121,7 +121,7 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
         } else if (!change.isErrorReported()) {
             change.setErrorReported(true);
             MessageHandler.error("Change failed: " + change.getDescription(),
-                    exception);
+                exception);
         }
     }
 
@@ -200,27 +200,28 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
      *  @exception IOException If the write fails.
      */
     public void writeFile(File file) throws IOException {
-    	java.io.FileWriter fileWriter = null;
-    	try {
-    		fileWriter = new java.io.FileWriter(file);
-    		
-    		String name = getModel().getName();
-    		
-    		String filename = file.getName();
-    		int period = filename.indexOf(".");
-    		
-    		if (period > 0) {
-    			name = filename.substring(0, period);
-    		} else {
-    			name = filename;
-    		}
-    		
-    		getModel().exportMoML(fileWriter, 0, name);
-    	} finally {
-    		if (fileWriter != null) {
+        java.io.FileWriter fileWriter = null;
+
+        try {
+            fileWriter = new java.io.FileWriter(file);
+
+            String name = getModel().getName();
+
+            String filename = file.getName();
+            int period = filename.indexOf(".");
+
+            if (period > 0) {
+                name = filename.substring(0, period);
+            } else {
+                name = filename;
+            }
+
+            getModel().exportMoML(fileWriter, 0, name);
+        } finally {
+            if (fileWriter != null) {
                 fileWriter.close();
             }
-    	}
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -233,12 +234,12 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
      *   an acceptable class.
      */
     protected void _checkContainer(CompositeEntity container)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if ((container != null) && !(container instanceof ModelDirectory)
-                && !(container instanceof PtolemyEffigy)) {
+                        && !(container instanceof PtolemyEffigy)) {
             throw new IllegalActionException(this, container,
-                    "The container can only be set to an "
-                    + "instance of ModelDirectory or PtolemyEffigy.");
+                "The container can only be set to an "
+                + "instance of ModelDirectory or PtolemyEffigy.");
         }
     }
 
@@ -262,7 +263,7 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
          *   an entity already in the container.
          */
         public Factory(CompositeEntity container, String name)
-                throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
             super(container, name);
         }
 
@@ -301,7 +302,7 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
          *   is malformed in some way.
          */
         public Effigy createEffigy(CompositeEntity container, URL base,
-                URL input) throws Exception {
+            URL input) throws Exception {
             if (input == null) {
                 // Create a blank effigy.
                 // Use the strategy pattern so derived classes can
@@ -357,9 +358,9 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                         // FIXME: We could try using reflection to invoke
                         // the HSIFEffigyFactory here.
                         System.out.println("Warning: Could not open up '"
-                                + input + "' because it ends with '.hsif'.\n"
-                                + "Try running " + "$PTII/bin/vergil -hyvisual "
-                                + input);
+                            + input + "' because it ends with '.hsif'.\n"
+                            + "Try running " + "$PTII/bin/vergil -hyvisual "
+                            + input);
                     }
 
                     return null;
@@ -390,7 +391,7 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                             // might have a URL that refers to another
                             // jar file.
                             URL anotherURL = ClassUtilities.jarURLEntryResource(input
-                                    .toString());
+                                                .toString());
 
                             if (anotherURL != null) {
                                 toplevel = parser.parse(base, anotherURL);
@@ -431,17 +432,18 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                                 // is a %20 instead of a space.  This could
                                 // cause problems in Web Start
                                 String inputExternalFormFixed = StringUtilities
-                                    .substitute(input.toExternalForm(), " ",
-                                            "%20");
+                                                .substitute(input
+                                                    .toExternalForm(), " ",
+                                                    "%20");
 
                                 try {
                                     inputURI = new URI(inputExternalFormFixed);
                                 } catch (Exception ex2) {
                                     throw new Exception("Failed to generate "
-                                            + "a URI from '"
-                                            + input.toExternalForm()
-                                            + "' and from '"
-                                            + inputExternalFormFixed + "'", ex);
+                                        + "a URI from '"
+                                        + input.toExternalForm()
+                                        + "' and from '"
+                                        + inputExternalFormFixed + "'", ex);
                                 }
                             }
 
@@ -490,7 +492,7 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                         // and report the error here.  Otherwise, we
                         // pass the error to the caller.
                         ModelDirectory dir = (ModelDirectory) effigy.topEffigy()
-                            .getContainer();
+                                                                                .getContainer();
                         List effigies = dir.entityList(Effigy.class);
 
                         // We might get to here if we are running a
@@ -554,8 +556,8 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
          *  @return A new effigy.
          */
         protected PtolemyEffigy _newEffigy(CompositeEntity container,
-                String name)
-                throws IllegalActionException, NameDuplicationException {
+            String name)
+            throws IllegalActionException, NameDuplicationException {
             return new PtolemyEffigy(container, name);
         }
     }
@@ -575,7 +577,7 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
          *   an entity already in the container.
          */
         public FactoryWithoutNew(CompositeEntity container, String name)
-                throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
             super(container, name);
         }
 

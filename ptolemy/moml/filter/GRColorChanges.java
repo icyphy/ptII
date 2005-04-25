@@ -65,12 +65,12 @@ public class GRColorChanges implements MoMLFilter {
      *   to be ignored (unless the attributeValue argument is null).
      */
     public String filterAttributeValue(NamedObj container, String element,
-            String attributeName, String attributeValue) {
+        String attributeName, String attributeValue) {
         if ((attributeValue != null) && (attributeName != null)) {
             if (attributeValue.equals("RGB color")
-                    && attributeName.equals("name")
-                    && _actorsWithRGBColor.contains(container.getClass()
-                            .getName())) {
+                            && attributeName.equals("name")
+                            && _actorsWithRGBColor.contains(
+                                container.getClass().getName())) {
                 // NOTE: This relies on their being no nested
                 // instance of this attribute, which there shouldn't
                 // be.
@@ -95,13 +95,14 @@ public class GRColorChanges implements MoMLFilter {
      *  @param elementName The element name.
      */
     public void filterEndElement(NamedObj container, String elementName)
-            throws Exception {
+        throws Exception {
         if (_foundOne) {
             _foundOne = false;
 
             if ((elementName != null) && elementName.equals("property")
-                    && container.getName().equals("diffuseColor")
-                    && ((Settable) container).getExpression().trim().startsWith("[")) {
+                            && container.getName().equals("diffuseColor")
+                            && ((Settable) container).getExpression().trim()
+                                            .startsWith("[")) {
                 // Found one in matrix format.
                 String value = ((Settable) container).getExpression().trim();
                 value = value.replace('[', '{');
@@ -114,11 +115,11 @@ public class GRColorChanges implements MoMLFilter {
         // Fix the background color of the ViewScreen actor.
         // Note that the ViewScreen actor also has a name change.
         if ((container != null)
-                && container.getName().equals("backgroundColor")) {
+                        && container.getName().equals("backgroundColor")) {
             NamedObj actor = container.getContainer();
 
             if ((actor != null)
-                    && actor.getClass().getName().startsWith("ptolemy.domains.gr.lib.ViewScreen")) {
+                            && actor.getClass().getName().startsWith("ptolemy.domains.gr.lib.ViewScreen")) {
                 String value = ((Settable) container).getExpression().trim();
 
                 if (value.startsWith("[")) {
@@ -135,7 +136,7 @@ public class GRColorChanges implements MoMLFilter {
             NamedObj actor = container.getContainer();
 
             if ((actor != null)
-                    && actor.getClass().getName().equals("ptolemy.domains.gr.lib.PolyCylinder3D")) {
+                            && actor.getClass().getName().equals("ptolemy.domains.gr.lib.PolyCylinder3D")) {
                 String value = ((Settable) container).getExpression().trim();
 
                 if (value.startsWith("[")) {
@@ -167,21 +168,19 @@ public class GRColorChanges implements MoMLFilter {
     static {
         GRColorChanges._actorsWithRGBColor.add("ptolemy.domains.gr.lib.Box3D");
         GRColorChanges._actorsWithRGBColor.add(
-                "ptolemy.domains.gr.lib.CircularSweep3D");
+            "ptolemy.domains.gr.lib.CircularSweep3D");
+        GRColorChanges._actorsWithRGBColor.add("ptolemy.domains.gr.lib.Cone3D");
         GRColorChanges._actorsWithRGBColor.add(
-                "ptolemy.domains.gr.lib.Cone3D");
+            "ptolemy.domains.gr.lib.Cylinder3D");
         GRColorChanges._actorsWithRGBColor.add(
-                "ptolemy.domains.gr.lib.Cylinder3D");
+            "ptolemy.domains.gr.lib.Loader3D");
         GRColorChanges._actorsWithRGBColor.add(
-                "ptolemy.domains.gr.lib.Loader3D");
+            "ptolemy.domains.gr.lib.PolyCylinder3D");
         GRColorChanges._actorsWithRGBColor.add(
-                "ptolemy.domains.gr.lib.PolyCylinder3D");
+            "ptolemy.domains.gr.lib.Sphere3D");
         GRColorChanges._actorsWithRGBColor.add(
-                "ptolemy.domains.gr.lib.Sphere3D");
-        GRColorChanges._actorsWithRGBColor.add(
-                "ptolemy.domains.gr.lib.TextString3D");
-        GRColorChanges._actorsWithRGBColor.add(
-                "ptolemy.domains.gr.lib.Torus3D");
+            "ptolemy.domains.gr.lib.TextString3D");
+        GRColorChanges._actorsWithRGBColor.add("ptolemy.domains.gr.lib.Torus3D");
     }
 
     /** Flag indicating that we found one whose name needed changing. */

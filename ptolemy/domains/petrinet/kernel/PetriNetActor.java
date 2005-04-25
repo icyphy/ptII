@@ -95,7 +95,7 @@ public class PetriNetActor extends TypedCompositeActor {
      *   an entity already in the container.
      */
     public PetriNetActor(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         setClassName("ptolemy.domains.petrinet.kernel.PetriNetActor");
     }
@@ -124,7 +124,7 @@ public class PetriNetActor extends TypedCompositeActor {
      */
     public void fire() throws IllegalActionException {
         System.out.println("PetriNetActor.fire, the actors is " + "  "
-                + getFullName() + " Container is " + getContainer().getFullName());
+            + getFullName() + " Container is " + getContainer().getFullName());
 
         PetriNetDirector director = (PetriNetDirector) getDirector();
         director.fire();

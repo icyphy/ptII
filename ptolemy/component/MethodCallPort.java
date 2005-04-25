@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.component;
 
 import ptolemy.component.data.TupleToken;
@@ -39,9 +38,9 @@ import ptolemy.kernel.util.Workspace;
 import java.util.Iterator;
 
 
-
 //////////////////////////////////////////////////////////////////////////
 //// MethodCallPort
+
 /**
    A port for use in the component domain.
 
@@ -51,9 +50,7 @@ import java.util.Iterator;
    @Pt.ProposedRating yellow(cxh)
    @Pt.AcceptedRating red(cxh)
 */
-
 public class MethodCallPort extends ComponentPort {
-
     /** Construct a port in the default workspace with an empty string
      *  as its name. Increment the version number of the workspace.
      *  The object is added to the workspace directory.
@@ -87,7 +84,7 @@ public class MethodCallPort extends ComponentPort {
      *   a port already in the container.
      */
     public MethodCallPort(ComponentEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -107,12 +104,11 @@ public class MethodCallPort extends ComponentPort {
      *   a port already in the container.
      */
     public MethodCallPort(ComponentEntity container, String name,
-            boolean isProvidedPort)
-            throws IllegalActionException, NameDuplicationException {
+        boolean isProvidedPort)
+        throws IllegalActionException, NameDuplicationException {
         this(container, name);
         _isProvider = isProvidedPort;
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -126,9 +122,8 @@ public class MethodCallPort extends ComponentPort {
      *   attributes cannot be cloned.
      *  @return A new ComponentPort.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        MethodCallPort newObject = (MethodCallPort)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        MethodCallPort newObject = (MethodCallPort) super.clone(workspace);
         newObject._insideLinks = new CrossRefList(newObject);
         return newObject;
     }
@@ -159,14 +154,18 @@ public class MethodCallPort extends ComponentPort {
         if (!isProvider()) {
             Iterator ports = this.deepConnectedPortList().iterator();
             TupleToken result = TupleToken.VOID;
+
             while (ports.hasNext()) {
                 MethodCallPort port = (MethodCallPort) ports.next();
+
                 if (port.isProvider()) {
                     result = TupleToken.merge(result, port.call(arguments));
                 }
             }
+
             return result;
         }
+
         // The port provided should over write this method.
         return TupleToken.VOID;
     }

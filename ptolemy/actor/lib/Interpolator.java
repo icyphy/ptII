@@ -90,7 +90,7 @@ public class Interpolator extends SequenceSource {
      *   actor with this name.
      */
     public Interpolator(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         _interpolation = new Interpolation();
@@ -159,14 +159,14 @@ public class Interpolator extends SequenceSource {
      *   is not supported by the Interpolation class.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == values) {
             ArrayToken valuesValue = (ArrayToken) values.getToken();
             _values = new double[valuesValue.length()];
 
             for (int i = 0; i < valuesValue.length(); i++) {
                 _values[i] = ((DoubleToken) valuesValue.getElement(i))
-                    .doubleValue();
+                                .doubleValue();
             }
 
             _interpolation.setValues(_values);
@@ -182,8 +182,8 @@ public class Interpolator extends SequenceSource {
                 // Check nondecreasing property.
                 if (_indexes[i] < previous) {
                     throw new IllegalActionException(this,
-                            "Value of indexes is not nondecreasing "
-                            + "and nonnegative.");
+                        "Value of indexes is not nondecreasing "
+                        + "and nonnegative.");
                 }
 
                 previous = _indexes[i];

@@ -102,6 +102,7 @@ public class ExternalIOPortController extends AttributeController {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public members                    ////
+
     /** Prototype input port. */
     public static final IOPort _GENERIC_INPUT = new IOPort();
 
@@ -160,7 +161,7 @@ public class ExternalIOPortController extends AttributeController {
     protected boolean _hide(java.lang.Object node) {
         if (node instanceof Locatable) {
             if (((NamedObj) ((Locatable) node).getContainer()).getAttribute(
-                        "_hideInside") != null) {
+                                "_hideInside") != null) {
                 return true;
             }
         }
@@ -285,7 +286,7 @@ public class ExternalIOPortController extends AttributeController {
                 figure = new CompositeFigure(figure);
 
                 if ((name != null) && !name.equals("")
-                        && !(port instanceof ParameterPort)) {
+                                && !(port instanceof ParameterPort)) {
                     LabelFigure label = new LabelFigure(name, _labelFont, 1.0,
                             SwingConstants.SOUTH_WEST);
 
@@ -296,40 +297,40 @@ public class ExternalIOPortController extends AttributeController {
                 }
 
                 figure = new TerminalFigure(figure, tsite) {
-                        // Override this because the tooltip may
-                        // change over time.  I.e., the port may
-                        // change from being an input or output, etc.
-                        public String getToolTipText() {
-                            String tipText = port.getName();
+                            // Override this because the tooltip may
+                            // change over time.  I.e., the port may
+                            // change from being an input or output, etc.
+                            public String getToolTipText() {
+                                String tipText = port.getName();
 
-                            if (port instanceof IOPort) {
-                                IOPort ioport = (IOPort) port;
+                                if (port instanceof IOPort) {
+                                    IOPort ioport = (IOPort) port;
 
-                                if (ioport.isInput()) {
-                                    tipText += ", Input";
+                                    if (ioport.isInput()) {
+                                        tipText += ", Input";
+                                    }
+
+                                    if (ioport.isOutput()) {
+                                        tipText += ", Output";
+                                    }
+
+                                    if (ioport.isMultiport()) {
+                                        tipText += ", Multiport";
+                                    }
+
+                                    try {
+                                        tipText = tipText + ", type:"
+                                            + ((Typeable) port).getType();
+                                    } catch (ClassCastException ex) {
+                                        // Do nothing.
+                                    } catch (IllegalActionException ex) {
+                                        // Do nothing.
+                                    }
                                 }
 
-                                if (ioport.isOutput()) {
-                                    tipText += ", Output";
-                                }
-
-                                if (ioport.isMultiport()) {
-                                    tipText += ", Multiport";
-                                }
-
-                                try {
-                                    tipText = tipText + ", type:"
-                                        + ((Typeable) port).getType();
-                                } catch (ClassCastException ex) {
-                                    // Do nothing.
-                                } catch (IllegalActionException ex) {
-                                    // Do nothing.
-                                }
+                                return tipText;
                             }
-
-                            return tipText;
-                        }
-                    };
+                        };
 
                 // Have to do this as well or awt will not render a tooltip.
                 figure.setToolTipText(port.getName());

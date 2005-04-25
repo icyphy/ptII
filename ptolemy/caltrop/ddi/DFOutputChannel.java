@@ -29,16 +29,18 @@
 */
 package ptolemy.caltrop.ddi;
 
+import caltrop.interpreter.OutputChannel;
+
 import ptolemy.actor.NoRoomException;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.caltrop.CalIOException;
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 
-import caltrop.interpreter.OutputChannel;
 
 //////////////////////////////////////////////////////////////////////////
 //// DFOutputChannel
+
 /**
    @author J&#246;rn W. Janneck
    @version $Id$
@@ -47,7 +49,6 @@ import caltrop.interpreter.OutputChannel;
    @Pt.AcceptedRating Red (cxh)
 */
 class DFOutputChannel implements OutputChannel {
-
     public DFOutputChannel(TypedIOPort port, int channel) {
         this.port = port;
         this.channel = channel;
@@ -58,7 +59,7 @@ class DFOutputChannel implements OutputChannel {
      */
     public void put(Object a) {
         try {
-            port.send(channel, (Token)a);
+            port.send(channel, (Token) a);
         } catch (IllegalActionException ex) {
             throw new CalIOException("Could not send token.", ex);
         } catch (NoRoomException ex) {

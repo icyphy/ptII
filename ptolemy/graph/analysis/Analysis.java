@@ -116,7 +116,7 @@ public class Analysis {
             _analyzer = analyzer;
         } else {
             throw new InvalidAnalyzerException(
-                    "Invalid analyzer for the analysis:\n" + toString());
+                "Invalid analyzer for the analysis:\n" + toString());
         }
     }
 
@@ -137,7 +137,7 @@ public class Analysis {
      */
     public String toString() {
         return "Analysis using the following analyzer:\n"
-            + _analyzer.toString();
+        + _analyzer.toString();
     }
 
     /** Return the validity of the associated analyzer. An analyzer is valid

@@ -30,6 +30,7 @@ import soot.SceneTransformer;
 import soot.SootClass;
 import soot.SootMethod;
 import soot.ValueBox;
+
 import soot.jimple.InstanceInvokeExpr;
 import soot.jimple.InvokeExpr;
 import soot.jimple.Jimple;
@@ -37,6 +38,7 @@ import soot.jimple.JimpleBody;
 import soot.jimple.SpecialInvokeExpr;
 import soot.jimple.StaticInvokeExpr;
 import soot.jimple.Stmt;
+
 import soot.jimple.toolkits.callgraph.CallGraph;
 import soot.jimple.toolkits.callgraph.Filter;
 import soot.jimple.toolkits.callgraph.InstanceInvokeEdgesPred;
@@ -72,7 +74,7 @@ public class InvocationBinder extends SceneTransformer {
 
     protected void internalTransform(String phaseName, Map options) {
         System.out.println("InvocationBinder.internalTransform(" + phaseName
-                + ", " + options + ")");
+            + ", " + options + ")");
 
         Filter instanceInvokesFilter = new Filter(new InstanceInvokeEdgesPred());
         String modifierOptions = "unsafe";
@@ -99,7 +101,7 @@ public class InvocationBinder extends SceneTransformer {
                 }
 
                 if (!instanceInvokesFilter.wrap(cg.edgesOutOf(container))
-                        .hasNext()) {
+                                                      .hasNext()) {
                     continue;
                 }
 
@@ -120,7 +122,7 @@ public class InvocationBinder extends SceneTransformer {
                     InvokeExpr ie = (InvokeExpr) s.getInvokeExpr();
 
                     if (ie instanceof StaticInvokeExpr
-                            || ie instanceof SpecialInvokeExpr) {
+                                    || ie instanceof SpecialInvokeExpr) {
                         // System.out.println("skipping " + container + ":" +
                         //        s + ": not virtual");
                         continue;
@@ -140,7 +142,7 @@ public class InvocationBinder extends SceneTransformer {
 
                     // Ok, we have an Interface or VirtualInvoke going to 1.
                     if (!AccessManager.ensureAccess(container, target,
-                                modifierOptions)) {
+                                        modifierOptions)) {
                         // System.out.println("skipping: no access");
                         continue;
                     }
@@ -153,7 +155,7 @@ public class InvocationBinder extends SceneTransformer {
                     // HACK! because the callgraph seems to be
                     // incorrect in soot 2.0.1
                     if (!Scene.v().getApplicationClasses().contains(target
-                                .getDeclaringClass())) {
+                                        .getDeclaringClass())) {
                         continue;
                     }
 
@@ -161,7 +163,7 @@ public class InvocationBinder extends SceneTransformer {
                     // a new VirtualInvoke.
                     ValueBox box = s.getInvokeExprBox();
                     box.setValue(Jimple.v().newVirtualInvokeExpr((Local) ((InstanceInvokeExpr) ie)
-                                         .getBase(), target, ie.getArgs()));
+                                        .getBase(), target, ie.getArgs()));
                 }
             }
         }

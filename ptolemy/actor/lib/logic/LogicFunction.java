@@ -89,7 +89,7 @@ public class LogicFunction extends Transformer {
      *   actor with this name.
      */
     public LogicFunction(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // Parameters
@@ -105,9 +105,9 @@ public class LogicFunction extends Transformer {
         output.setTypeEquals(BaseType.BOOLEAN);
 
         _attachText("_iconDescription",
-                "<svg>\n" + "<rect x=\"-30\" y=\"-15\" "
-                + "width=\"60\" height=\"30\" " + "style=\"fill:white\"/>\n"
-                + "</svg>\n");
+            "<svg>\n" + "<rect x=\"-30\" y=\"-15\" "
+            + "width=\"60\" height=\"30\" " + "style=\"fill:white\"/>\n"
+            + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -128,7 +128,7 @@ public class LogicFunction extends Transformer {
      *  @exception IllegalActionException If the function is not recognized.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == function) {
             String functionName = function.getExpression().trim().toLowerCase();
 
@@ -152,9 +152,9 @@ public class LogicFunction extends Transformer {
                 _negate = true;
             } else {
                 throw new IllegalActionException(this,
-                        "Unrecognized logic function: " + functionName
-                        + ".  Valid functions are 'and', 'or', 'xor', "
-                        + "'nand', 'nor', and 'xnor'.");
+                    "Unrecognized logic function: " + functionName
+                    + ".  Valid functions are 'and', 'or', 'xor', "
+                    + "'nand', 'nor', and 'xnor'.");
             }
         } else {
             super.attributeChanged(attribute);
@@ -199,7 +199,7 @@ public class LogicFunction extends Transformer {
      *  @exception IllegalActionException If thrown by BooleanToken operations.
      */
     protected BooleanToken _updateFunction(BooleanToken in, BooleanToken old)
-            throws IllegalActionException {
+        throws IllegalActionException {
         Token result;
 
         if (old == null) {
@@ -220,9 +220,9 @@ public class LogicFunction extends Transformer {
 
             default:
                 throw new InternalErrorException(
-                        "Invalid value for _function private variable. "
-                        + "LogicFunction actor (" + getFullName() + ")"
-                        + " on function type " + _function);
+                    "Invalid value for _function private variable. "
+                    + "LogicFunction actor (" + getFullName() + ")"
+                    + " on function type " + _function);
             }
         }
 

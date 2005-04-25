@@ -74,7 +74,7 @@ public abstract class FilledShapeAttribute extends ShapeAttribute {
      *   an attribute already in the container.
      */
     public FilledShapeAttribute(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         width = new Parameter(this, "width");
@@ -132,9 +132,9 @@ public abstract class FilledShapeAttribute extends ShapeAttribute {
      *   to this container (should not be thrown).
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (((attribute == width) || (attribute == height))
-                && !_inAttributeChanged) {
+                        && !_inAttributeChanged) {
             try {
                 // Prevent redundant actions here... When we evaluate the
                 // _other_ atribute here (whichever one did _not_ trigger
@@ -144,12 +144,12 @@ public abstract class FilledShapeAttribute extends ShapeAttribute {
                 _inAttributeChanged = true;
 
                 double widthValue = ((DoubleToken) width.getToken())
-                    .doubleValue();
+                                .doubleValue();
                 double heightValue = ((DoubleToken) height.getToken())
-                    .doubleValue();
+                                .doubleValue();
 
                 if ((widthValue != _widthValue)
-                        || (heightValue != _heightValue)) {
+                                || (heightValue != _heightValue)) {
                     _widthValue = widthValue;
                     _heightValue = heightValue;
                     _icon.setShape(_newShape());
@@ -159,7 +159,7 @@ public abstract class FilledShapeAttribute extends ShapeAttribute {
             }
         } else if (attribute == centered) {
             boolean centeredValue = ((BooleanToken) centered.getToken())
-                .booleanValue();
+                            .booleanValue();
 
             if (centeredValue != _centeredValue) {
                 _centeredValue = centeredValue;

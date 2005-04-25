@@ -27,6 +27,8 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.lib.colt;
 
+import cern.jet.random.Zeta;
+
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
@@ -34,7 +36,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import cern.jet.random.Zeta;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// Zeta
@@ -47,7 +49,7 @@ import cern.jet.random.Zeta;
    deviation given by parameters.  In addition, the seed can be
    specified as a parameter to control the sequence that is generated.
 
-   <p> This actor instantiates a 
+   <p> This actor instantiates a
    <a href="http://hoschek.home.cern.ch/hoschek/colt/V1.0.3/doc/cern/jet/random/Zeta.html">cern.jet.random.Zeta</a> object with
     ro and pk set to 1.0.
 
@@ -58,7 +60,6 @@ import cern.jet.random.Zeta;
    @Pt.AcceptedRating Red (cxh)
 */
 public class ColtZeta extends ColtRandomSource {
-    
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -68,7 +69,7 @@ public class ColtZeta extends ColtRandomSource {
      *   actor with this name.
      */
     public ColtZeta(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         output.setTypeEquals(BaseType.INT);
@@ -77,7 +78,7 @@ public class ColtZeta extends ColtRandomSource {
         ro.setTypeEquals(BaseType.DOUBLE);
         pk = new Parameter(this, "pk", new DoubleToken(1.0));
         pk.setTypeEquals(BaseType.DOUBLE);
-        
+
         pk.moveToFirst();
         ro.moveToFirst();
     }
@@ -107,7 +108,7 @@ public class ColtZeta extends ColtRandomSource {
         super.fire();
         output.send(0, new IntToken(_current));
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -133,7 +134,7 @@ public class ColtZeta extends ColtRandomSource {
 
     /** The random number for the current iteration. */
     private int _current;
-    
+
     /** The random number generator. */
     private Zeta _generator;
 }

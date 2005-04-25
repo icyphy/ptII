@@ -184,7 +184,7 @@ public final class DEEvent implements Comparable {
      */
     public final boolean hasTheSameTagAs(DEEvent event) {
         return (timeStamp().equals(event.timeStamp()))
-            && (microstep() == event.microstep());
+                    && (microstep() == event.microstep());
     }
 
     /** Return the destination IO port of this event. Note that
@@ -216,13 +216,13 @@ public final class DEEvent implements Comparable {
     public String toString() {
         if (_ioPort != null) {
             return "DEEvent(time = " + _timestamp + ", microstep = "
-                + _microstep + ", depth = " + _depth + ", dest = "
-                + ((NamedObj) _actor).getFullName() + "." + _ioPort.getName()
-                + ").";
+            + _microstep + ", depth = " + _depth + ", dest = "
+            + ((NamedObj) _actor).getFullName() + "." + _ioPort.getName()
+            + ").";
         } else {
             return "DEEvent(time = " + _timestamp + ", microstep = "
-                + _microstep + ", depth = " + _depth + ", dest = "
-                + ((NamedObj) _actor).getFullName() + ")" + " -- A PURE EVENT.";
+            + _microstep + ", depth = " + _depth + ", dest = "
+            + ((NamedObj) _actor).getFullName() + ")" + " -- A PURE EVENT.";
         }
     }
 

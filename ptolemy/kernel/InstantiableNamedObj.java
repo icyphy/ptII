@@ -116,7 +116,7 @@ public class InstantiableNamedObj extends NamedObj implements Instantiable {
      *  @exception IllegalActionException If the name has a period.
      */
     public InstantiableNamedObj(Workspace workspace, String name)
-            throws IllegalActionException {
+        throws IllegalActionException {
         super(workspace, name);
     }
 
@@ -209,7 +209,7 @@ public class InstantiableNamedObj extends NamedObj implements Instantiable {
      *  @see ptolemy.kernel.util.MoMLExportable
      */
     public void exportMoML(Writer output, int depth, String name)
-            throws IOException {
+        throws IOException {
         if (!isClassDefinition()) {
             super.exportMoML(output, depth, name);
             return;
@@ -225,14 +225,14 @@ public class InstantiableNamedObj extends NamedObj implements Instantiable {
             // No container, and this is a top level moml element.
             // Generate header information.
             output.write("<?xml version=\"1.0\" standalone=\"no\"?>\n"
-                    + "<!DOCTYPE class PUBLIC "
-                    + "\"-//UC Berkeley//DTD MoML 1//EN\"\n"
-                    + "    \"http://ptolemy.eecs.berkeley.edu"
-                    + "/xml/dtd/MoML_1.dtd\">\n");
+                + "<!DOCTYPE class PUBLIC "
+                + "\"-//UC Berkeley//DTD MoML 1//EN\"\n"
+                + "    \"http://ptolemy.eecs.berkeley.edu"
+                + "/xml/dtd/MoML_1.dtd\">\n");
         }
 
         output.write(_getIndentPrefix(depth) + "<class name=\"" + name
-                + "\" extends=\"" + getClassName() + "\"");
+            + "\" extends=\"" + getClassName() + "\"");
 
         if (getSource() != null) {
             output.write(" source=\"" + getSource() + "\">\n");
@@ -358,12 +358,12 @@ public class InstantiableNamedObj extends NamedObj implements Instantiable {
      *  @see Instantiable
      */
     public Instantiable instantiate(NamedObj container, String name)
-            throws CloneNotSupportedException, IllegalActionException, 
+        throws CloneNotSupportedException, IllegalActionException, 
             NameDuplicationException {
         if (!isClassDefinition()) {
             throw new IllegalActionException(this,
-                    "Cannot instantiate an object that is not a "
-                    + "class definition");
+                "Cannot instantiate an object that is not a "
+                + "class definition");
         }
 
         // Use the workspace of the container, if there is one,
@@ -416,15 +416,15 @@ public class InstantiableNamedObj extends NamedObj implements Instantiable {
      *  @see Instantiable
      */
     public void setClassDefinition(boolean isClass)
-            throws IllegalActionException {
+        throws IllegalActionException {
         workspace().getWriteAccess();
 
         try {
             if (!isClass && _isClassDefinition && (getChildren() != null)
-                    && (getChildren().size() > 0)) {
+                            && (getChildren().size() > 0)) {
                 throw new IllegalActionException(this,
-                        "Cannot change from a class to an instance because"
-                        + " there are subclasses and/or instances.");
+                    "Cannot change from a class to an instance because"
+                    + " there are subclasses and/or instances.");
             }
 
             _isClassDefinition = isClass;
@@ -464,11 +464,11 @@ public class InstantiableNamedObj extends NamedObj implements Instantiable {
      *  @see Instantiable
      */
     protected void _setParent(Instantiable parent)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if ((parent != null) && !(parent instanceof InstantiableNamedObj)) {
             throw new IllegalActionException(this,
-                    "Parent of an InstantiableNamedObj must also "
-                    + "be an InstantiableNamedObj.");
+                "Parent of an InstantiableNamedObj must also "
+                + "be an InstantiableNamedObj.");
         }
 
         try {
@@ -489,7 +489,7 @@ public class InstantiableNamedObj extends NamedObj implements Instantiable {
 
                     while (references.hasNext()) {
                         WeakReference reference = (WeakReference) references
-                            .next();
+                                        .next();
 
                         if ((reference == null) || (reference.get() == this)) {
                             references.remove();

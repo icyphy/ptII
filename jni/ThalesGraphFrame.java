@@ -81,8 +81,8 @@ public class ThalesGraphFrame extends ActorGraphFrame {
 
         // TRT Add JNI Menu
         JMenuItem[] jniMenuItems = {
-            new JMenuItem("Generate C Interface", KeyEvent.VK_G)
-        };
+                new JMenuItem("Generate C Interface", KeyEvent.VK_G)
+            };
 
         _jniMenu = new JMenu("JNI");
         _jniMenu.setMnemonic(KeyEvent.VK_J);

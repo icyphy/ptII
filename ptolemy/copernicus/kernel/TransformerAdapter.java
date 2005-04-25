@@ -31,6 +31,7 @@ import soot.Scene;
 import soot.SceneTransformer;
 import soot.SootClass;
 import soot.SootMethod;
+
 import soot.jimple.JimpleBody;
 
 import java.util.Iterator;
@@ -67,7 +68,7 @@ public class TransformerAdapter extends SceneTransformer {
 
     protected void internalTransform(String phaseName, Map options) {
         System.out.println("TransformerAdapter.internalTransform(" + phaseName
-                + ", " + options + ")");
+            + ", " + options + ")");
 
         Iterator classes = Scene.v().getApplicationClasses().iterator();
 
@@ -86,9 +87,9 @@ public class TransformerAdapter extends SceneTransformer {
                     JimpleBody body = (JimpleBody) method.retrieveActiveBody();
 
                     for (Iterator transformers = _transformers.iterator();
-                         transformers.hasNext();) {
+                                    transformers.hasNext();) {
                         BodyTransformer transformer = (BodyTransformer) transformers
-                            .next();
+                                        .next();
 
                         // FIXME: pass in the options.
                         // Currently this is not possible because the
@@ -97,7 +98,7 @@ public class TransformerAdapter extends SceneTransformer {
                     }
                 } catch (RuntimeException ex) {
                     System.err.println("Exception occurred while processing "
-                            + method);
+                        + method);
                     throw ex;
                 }
             }

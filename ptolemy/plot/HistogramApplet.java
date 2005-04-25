@@ -51,7 +51,7 @@ public class HistogramApplet extends PlotApplet {
      */
     public String getAppletInfo() {
         return "Histogram 1.0: Demo of PlotApplet.\n" + "By: Edward A. Lee\n "
-            + "($Id$)";
+        + "($Id$)";
     }
 
     /** Create a new Histogram object for the applet.

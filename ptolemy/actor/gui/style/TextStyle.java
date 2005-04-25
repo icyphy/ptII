@@ -84,7 +84,7 @@ public class TextStyle extends ParameterEditorStyle {
      *   an attribute already in the container.
      */
     public TextStyle(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _initialize();
     }
@@ -130,9 +130,9 @@ public class TextStyle extends ParameterEditorStyle {
             int heightValue = ((IntToken) height.getToken()).intValue();
             int widthValue = ((IntToken) width.getToken()).intValue();
             query.addTextArea(name, name, defaultValue,
-                    PtolemyQuery.preferredBackgroundColor(container),
-                    PtolemyQuery.preferredForegroundColor(container), heightValue,
-                    widthValue);
+                PtolemyQuery.preferredBackgroundColor(container),
+                PtolemyQuery.preferredForegroundColor(container), heightValue,
+                widthValue);
             query.attachParameter(container, name);
         } catch (IllegalActionException e) {
             throw new InternalErrorException(e);
@@ -144,7 +144,7 @@ public class TextStyle extends ParameterEditorStyle {
     // Initialize height and width.  This method is called by the
     // constructors so as to avoid code duplication.
     private void _initialize()
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         height = new Parameter(this, "height");
         height.setToken("10");
         height.setTypeEquals(BaseType.INT);

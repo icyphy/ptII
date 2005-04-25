@@ -27,6 +27,8 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.lib.xslt;
 
+import org.w3c.dom.Document;
+
 import ptolemy.actor.lib.Transformer;
 import ptolemy.data.StringToken;
 import ptolemy.data.XMLToken;
@@ -42,8 +44,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import javax.xml.transform.TransformerException;
-
-import org.w3c.dom.Document;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -77,7 +77,7 @@ public class XSLTransformer extends Transformer {
      *   actor with this name.
      */
     public XSLTransformer(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // Set the type of the input port.
@@ -143,27 +143,27 @@ public class XSLTransformer extends Transformer {
 
                         if (_debugging) {
                             _debug("--- transform the xmlSource: "
-                                    + in.toString() + "\n");
+                                + in.toString() + "\n");
                         }
 
                         if (out != null) {
                             if (_debugging) {
                                 _debug("--- moml change request string: "
-                                        + out.toString() + "\n");
+                                    + out.toString() + "\n");
                             }
 
                             StringToken outputToken = new StringToken(out
-                                    .toString());
+                                                .toString());
                             output.broadcast(outputToken);
 
                             if (_debugging) {
                                 _debug("--- change request string token "
-                                        + "send out. \n");
+                                    + "send out. \n");
                             }
                         }
                     } catch (TransformerException ex) {
                         throw new IllegalActionException(this, ex,
-                                "Failed  to process '" + in + "'");
+                            "Failed  to process '" + in + "'");
                     }
 
                     try {
@@ -171,7 +171,7 @@ public class XSLTransformer extends Transformer {
                         out.close();
                     } catch (IOException ex) {
                         throw new IllegalActionException(this, ex,
-                                "Failed  to close or flush '" + out + "'");
+                            "Failed  to close or flush '" + out + "'");
                     }
                 }
             }
@@ -217,32 +217,32 @@ public class XSLTransformer extends Transformer {
 
             if (_xsltSource != null) {
                 _transformerFactory = javax.xml.transform.TransformerFactory
-                    .newInstance();
+                                .newInstance();
 
                 if (!_transformerFactory.getClass().getName().startsWith("net.sf.saxon")) {
                     throw new IllegalActionException(this,
-                            "The XSLTransformer actor works best\nwith "
-                            + "saxon7.jar.\n" + "The transformerFactory was '"
-                            + _transformerFactory.getClass().getName()
-                            + "'.\nIf saxon7.jar was in the classpath, then "
-                            + "it should have\nstarted with "
-                            + "\"net.sf.saxon\".\n" + "If this actor does not use "
-                            + "saxon, then the results will be "
-                            + "different between\nruns that "
-                            + "use saxon and runs that " + "do not.\nDetails:\n"
-                            + "This actor uses "
-                            + "javax.xml.transform.TransformerFactory.\nThe "
-                            + "concrete TransformerFactory class can be "
-                            + "adjusted by\nsetting the "
-                            + "javax.xml.transform.TransformerFactory "
-                            + "property or by\nreading in a jar file that "
-                            + "has the appropriate\nService Provider set.\n"
-                            + "(For details about Jar Service Providers,\nsee "
-                            + "http://java.sun.com/j2se/1.4.2/docs/guide/jar/jar.html)\n"
-                            + "The saxon7.jar file includes a\n"
-                            + "META-INF/services/javax.xml.transform.TransformerFactory "
-                            + "\nfile that sets the TransformerFactory "
-                            + "class name start with 'net.sf.saxon'.");
+                        "The XSLTransformer actor works best\nwith "
+                        + "saxon7.jar.\n" + "The transformerFactory was '"
+                        + _transformerFactory.getClass().getName()
+                        + "'.\nIf saxon7.jar was in the classpath, then "
+                        + "it should have\nstarted with "
+                        + "\"net.sf.saxon\".\n" + "If this actor does not use "
+                        + "saxon, then the results will be "
+                        + "different between\nruns that "
+                        + "use saxon and runs that " + "do not.\nDetails:\n"
+                        + "This actor uses "
+                        + "javax.xml.transform.TransformerFactory.\nThe "
+                        + "concrete TransformerFactory class can be "
+                        + "adjusted by\nsetting the "
+                        + "javax.xml.transform.TransformerFactory "
+                        + "property or by\nreading in a jar file that "
+                        + "has the appropriate\nService Provider set.\n"
+                        + "(For details about Jar Service Providers,\nsee "
+                        + "http://java.sun.com/j2se/1.4.2/docs/guide/jar/jar.html)\n"
+                        + "The saxon7.jar file includes a\n"
+                        + "META-INF/services/javax.xml.transform.TransformerFactory "
+                        + "\nfile that sets the TransformerFactory "
+                        + "class name start with 'net.sf.saxon'.");
                 }
 
                 _transformer = _transformerFactory.newTransformer(_xsltSource);

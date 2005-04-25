@@ -27,6 +27,12 @@ COPYRIGHTENDKEY
 */
 package ptolemy.domains.gr.lib.vr;
 
+import vendors.vr.Axis2DRenderer;
+import vendors.vr.Context;
+import vendors.vr.Texture2DVolume;
+import vendors.vr.VolFile;
+import vendors.vr.Volume;
+
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.actor.parameters.DoubleRangeParameter;
@@ -44,12 +50,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-import vendors.vr.Axis2DRenderer;
-import vendors.vr.Context;
-import vendors.vr.Texture2DVolume;
-import vendors.vr.VolFile;
-import vendors.vr.Volume;
-
 import java.net.URL;
 
 import javax.media.j3d.Appearance;
@@ -64,6 +64,7 @@ import javax.media.j3d.Texture3D;
 import javax.media.j3d.TransparencyAttributes;
 import javax.media.j3d.View;
 import javax.vecmath.Color3f;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// GRTexture3D
@@ -107,8 +108,8 @@ import javax.vecmath.Color3f;
     only have an effect on the next run of the model.
 
     @author
-    @version 
-    @since 
+    @version
+    @since
     @Pt.ProposedRating Red
     @Pt.AcceptedRating Red
 */
@@ -122,15 +123,14 @@ public class GRTexture3D extends GRActor3D {
      *   actor with this name.
      */
     public GRTexture3D(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         volFile = new FilePortParameter(this, "volFile");
         volFile.setExpression("$CLASSPATH/doc/img/cubes64.vol");
-        
+
         //context = new FilePortParameter(this, "context");
         //context.setExpression("$CLASSPATH/doc/img/");
-     
         sceneGraphOut = new TypedIOPort(this, "sceneGraphOut");
         sceneGraphOut.setOutput(true);
         sceneGraphOut.setTypeEquals(SceneGraphToken.TYPE);
@@ -145,10 +145,8 @@ public class GRTexture3D extends GRActor3D {
         specularColor.setExpression("{1.0, 1.0, 1.0, 1.0}");
 
         //texture = new FileParameter(this, "texture");
-
         // The following ensures that revert to defaults works properly.
         //texture.setExpression("");
-
         shininess = new DoubleRangeParameter(this, "shininess");
         shininess.min.setExpression("1.0");
         shininess.max.setExpression("128.0");
@@ -171,7 +169,7 @@ public class GRTexture3D extends GRActor3D {
         allowRuntimeChanges = new Parameter(this, "allowRuntimeChanges");
         allowRuntimeChanges.setExpression("false");
         allowRuntimeChanges.setTypeEquals(BaseType.BOOLEAN);
-        
+
         rSize = new DoubleRangeParameter(this, "rSize");
         rSize.setExpression("1.0");
         rSize.setTypeEquals(BaseType.DOUBLE);
@@ -220,11 +218,11 @@ public class GRTexture3D extends GRActor3D {
      */
     public ColorAttribute specularColor;
 
-   /* /** Texture URL, which if non-empty, specifies an image file
-     *  or URL. The image from the file is mapped onto the shape
-     *  as a texture.
-     
-   public FileParameter texture; */
+    /* /** Texture URL, which if non-empty, specifies an image file
+      *  or URL. The image from the file is mapped onto the shape
+      *  as a texture.
+
+    public FileParameter texture; */
 
     /** The transparency, where 0.0 means opaque (the default) and 1.0
      *  means fully transparent. The type is double.
@@ -240,23 +238,22 @@ public class GRTexture3D extends GRActor3D {
      *  This is a boolean that defaults to false.
      */
     public Parameter flat;
-    
+
     /** This parameter provides a third dimension to the images.  The
      * value is a scaled version of the actual known slice depth.
      */
     public DoubleRangeParameter rSize;
-    
-    
-    /** The input port that reads a in a URL to the file holding the 
+
+    /** The input port that reads a in a URL to the file holding the
      *  volume to be rendered.
      */
     public FilePortParameter volFile;
-    
-    /** The input port that reads a in a URL to the file holding the 
+
+    /** The input port that reads a in a URL to the file holding the
      *  context.
      */
     public FilePortParameter context;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -264,15 +261,15 @@ public class GRTexture3D extends GRActor3D {
      *  an update is supported by the <i>allowRuntimeChanges</i> parameter.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         // If allowRuntimeChanges is null, then we are in the
         // constructor, and don't need to do any of this.
         if (allowRuntimeChanges != null) {
             if (_changesAllowedNow) {
                 if ((attribute == transparency)
-                        && (_transparencyAttributes != null)) {
+                                && (_transparencyAttributes != null)) {
                     float transparent = (float) ((DoubleToken) transparency
-                            .getToken()).doubleValue();
+                                    .getToken()).doubleValue();
 
                     if (transparent > 0.0) {
                         _transparencyAttributes.setTransparencyMode(TransparencyAttributes.NICEST);
@@ -285,7 +282,7 @@ public class GRTexture3D extends GRActor3D {
 
                 if ((attribute == flat) && (_coloringAttributes != null)) {
                     boolean flatValue = ((BooleanToken) flat.getToken())
-                        .booleanValue();
+                                    .booleanValue();
                     int shadeModel = ColoringAttributes.SHADE_GOURAUD;
 
                     if (flatValue) {
@@ -307,27 +304,26 @@ public class GRTexture3D extends GRActor3D {
                         _material.setSpecularColor(color);
                     } else if (attribute == shininess) {
                         float shine = (float) ((DoubleToken) shininess.getToken())
-                            .doubleValue();
+                                        .doubleValue();
                         _material.setShininess(shine);
                     }
                 }
 
-            /*    if ((attribute == texture) && (_appearance != null)) {
-                    URL textureURL = texture.asURL(); 
+                /*    if ((attribute == texture) && (_appearance != null)) {
+                        URL textureURL = texture.asURL();
 
-                    if ((_viewScreen != null) && (textureURL != null)) {
-                        TextureLoader loader;
-                        loader = new TextureLoader(textureURL,
-                                _viewScreen.getCanvas());
+                        if ((_viewScreen != null) && (textureURL != null)) {
+                            TextureLoader loader;
+                            loader = new TextureLoader(textureURL,
+                                    _viewScreen.getCanvas());
 
-                        Texture loadedTexture = loader.getTexture();
+                            Texture loadedTexture = loader.getTexture();
 
-                        if (loadedTexture != null) {
-                            _appearance.setTexture(loadedTexture);
+                            if (loadedTexture != null) {
+                                _appearance.setTexture(loadedTexture);
+                            }
                         }
-                    }
-                } */
-
+                    } */
                 if ((attribute == wireFrame) && (_polygonAttributes != null)) {
                     int mode = PolygonAttributes.POLYGON_FILL;
 
@@ -361,39 +357,38 @@ public class GRTexture3D extends GRActor3D {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-       _createModel();
+        _createModel();
     }
 
     /** Return false if the scene graph is already initialized.
      *  @return False if the scene graph is already initialized.
      *  @exception IllegalActionException Not thrown in this base class
-     * @throws 
+     * @throws
      */
     public boolean prefire() throws IllegalActionException {
         if (_debugging) {
             _debug("Called prefire()");
         }
-       /* //Read in .vol file
-        //FIXME: Make it so that port is updated when neccessary
-        _fileURL = volFile.asURL();
-        
-        //FIXME: Is this neccessary, bad coding?
-        try {
-			_imageVol = new VolFile(_fileURL);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        
-        //Create texture space  ???
-        _volume = new Volume(_context);
-        
-        //Load Texture
-        
-        //Get access to the Shape3D to send to Viewcreen3D
-        _renderedVolume = new Axis2DRenderer(_view, _context, _volume); */
-        
-        
+
+        /* //Read in .vol file
+         //FIXME: Make it so that port is updated when neccessary
+         _fileURL = volFile.asURL();
+
+         //FIXME: Is this neccessary, bad coding?
+         try {
+                         _imageVol = new VolFile(_fileURL);
+                 } catch (IOException e) {
+                         // TODO Auto-generated catch block
+                         e.printStackTrace();
+                 }
+
+         //Create texture space  ???
+         _volume = new Volume(_context);
+
+         //Load Texture
+
+         //Get access to the Shape3D to send to Viewcreen3D
+         _renderedVolume = new Axis2DRenderer(_view, _context, _volume); */
         if (_isSceneGraphInitialized) {
             return false;
         } else {
@@ -443,7 +438,7 @@ public class GRTexture3D extends GRActor3D {
         _appearance = new Appearance();
 
         boolean allowChanges = ((BooleanToken) allowRuntimeChanges.getToken())
-            .booleanValue();
+                        .booleanValue();
 
         Color3f color = new Color3f(emissiveColor.asColor());
         _material.setEmissiveColor(color);
@@ -464,7 +459,7 @@ public class GRTexture3D extends GRActor3D {
 
         // Deal with transparent attributes.
         float transparent = (float) ((DoubleToken) transparency.getToken())
-            .doubleValue();
+                        .doubleValue();
 
         if ((transparent > 0.0) || allowChanges) {
             int mode = TransparencyAttributes.NICEST;
@@ -529,13 +524,12 @@ public class GRTexture3D extends GRActor3D {
      */
     protected void _createModel() throws IllegalActionException {
         _createAppearance();
+
         if (_debugging) {
             _debug("Created Appearance()");
         }
-            
-        
-   }
-    
+    }
+
     /** Return the ??????*/
     protected Node _getNodeObject() {
         return _containedNode;
@@ -554,32 +548,32 @@ public class GRTexture3D extends GRActor3D {
     protected void _setViewScreen(GRActor actor) throws IllegalActionException {
         super._setViewScreen(actor);
 
-       /* URL textureURL = texture.asURL();
-        TextureAttributes attributes = null;
+        /* URL textureURL = texture.asURL();
+         TextureAttributes attributes = null;
 
-       if (textureURL != null) {
-            TextureLoader loader;
-            loader = new TextureLoader(textureURL, _viewScreen.getCanvas());
+        if (textureURL != null) {
+             TextureLoader loader;
+             loader = new TextureLoader(textureURL, _viewScreen.getCanvas());
 
-            Texture loadedTexture = loader.getTexture();
+             Texture loadedTexture = loader.getTexture();
 
-            if (loadedTexture != null) {
-                attributes = new TextureAttributes();
-                attributes.setTextureMode(TextureAttributes.MODULATE);
-                _appearance.setTextureAttributes(attributes);
+             if (loadedTexture != null) {
+                 attributes = new TextureAttributes();
+                 attributes.setTextureMode(TextureAttributes.MODULATE);
+                 _appearance.setTextureAttributes(attributes);
 
-                _appearance.setTexture(loadedTexture);
-            } 
-        } 
+                 _appearance.setTexture(loadedTexture);
+             }
+         }
 
-        // If runtime changes are allowed, then we need to set texture
-        // attributes even if not needed now.
-        if ((attributes == null)
-                && ((BooleanToken) allowRuntimeChanges.getToken()).booleanValue()) {
-            attributes = new TextureAttributes();
-            attributes.setTextureMode(TextureAttributes.MODULATE);
-            _appearance.setTextureAttributes(attributes);
-        } */
+         // If runtime changes are allowed, then we need to set texture
+         // attributes even if not needed now.
+         if ((attributes == null)
+                 && ((BooleanToken) allowRuntimeChanges.getToken()).booleanValue()) {
+             attributes = new TextureAttributes();
+             attributes.setTextureMode(TextureAttributes.MODULATE);
+             _appearance.setTextureAttributes(attributes);
+         } */
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -602,47 +596,43 @@ public class GRTexture3D extends GRActor3D {
 
     /** The transparency attributes, or null if not created. */
     protected TransparencyAttributes _transparencyAttributes;
-    
+
     /** The object holding the data from the .vol file.  */
     protected VolFile _imageVol;
-    
+
     /** ?????? */
     protected Volume _volume;
-    
+
     /** ?????? */
     protected Context _context;
-    
+
     /** ?????? */
-    protected View _view; 
-    
+    protected View _view;
+
     /** ?????? */
     protected Axis2DRenderer _renderedVolume;
-    
+
     /** ?????? */
     protected Texture2DVolume _texture2DVolume;
-    
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     /** The URL that specifies where the file is located. */
     private URL _fileURL;
-    
+
     /** The URL that specifies where the file is located. */
     private URL _fileContext;
-    
+
     /** The Image. */
     private Node _containedNode;
-    
+
     /** 3D Texture. */
     private Texture3D _texture;
-    
+
     /** ImageComponent. */
     private ImageComponent3D _imageComponent;
-    
+
     /** QuadArray. */
     private QuadArray _quadArray;
-    
-    
-    
 }

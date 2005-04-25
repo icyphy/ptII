@@ -72,7 +72,7 @@ public class Sphere3D extends GRShadedShape {
      *   actor with this name.
      */
     public Sphere3D(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         radius = new Parameter(this, "radius");
@@ -110,7 +110,7 @@ public class Sphere3D extends GRShadedShape {
      *  @param attribute The attribute to change.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if ((attribute == radius) && _changesAllowedNow) {
             if (_scaleTransform != null) {
                 double scale = ((DoubleToken) radius.getToken()).doubleValue();
@@ -167,7 +167,7 @@ public class Sphere3D extends GRShadedShape {
             scaler.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
             _scaleTransform = new Transform3D();
             _scaleTransform.setScale(new Vector3d(radiusValue, radiusValue,
-                                             radiusValue));
+                    radiusValue));
             scaler.setTransform(_scaleTransform);
             scaler.addChild(_containedNode);
             _containedNode = scaler;

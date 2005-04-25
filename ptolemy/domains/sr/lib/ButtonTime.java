@@ -65,7 +65,6 @@ public class ButtonTime extends WallClockTime implements Placeable {
     // There is no need to have a copy here. An alternative design is to
     // put one of them into actor.lib direcory.
 
-
     /** Construct an actor with an input multiport of type GENERAL.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -75,7 +74,7 @@ public class ButtonTime extends WallClockTime implements Placeable {
      *   actor with this name.
      */
     public ButtonTime(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         text = new StringAttribute(this, "text");
@@ -179,7 +178,7 @@ public class ButtonTime extends WallClockTime implements Placeable {
      *  @exception NameDuplicationException If the base class throws it.
      */
     public void setContainer(CompositeEntity container)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super.setContainer(container);
 
         if (container == null) {

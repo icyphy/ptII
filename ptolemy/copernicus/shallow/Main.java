@@ -26,6 +26,13 @@ COPYRIGHTENDKEY
 */
 package ptolemy.copernicus.shallow;
 
+import soot.Pack;
+import soot.PackManager;
+
+import soot.jimple.toolkits.typing.TypeAssigner;
+
+import soot.toolkits.scalar.LocalSplitter;
+
 import ptolemy.copernicus.kernel.ClassWriter;
 import ptolemy.copernicus.kernel.GeneratorAttribute;
 import ptolemy.copernicus.kernel.GrimpTransformer;
@@ -35,11 +42,6 @@ import ptolemy.copernicus.kernel.KernelMain;
 import ptolemy.copernicus.kernel.MakefileWriter;
 import ptolemy.copernicus.kernel.TransformerAdapter;
 import ptolemy.copernicus.kernel.WatchDogTimer;
-
-import soot.Pack;
-import soot.PackManager;
-import soot.jimple.toolkits.typing.TypeAssigner;
-import soot.toolkits.scalar.LocalSplitter;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -74,13 +76,13 @@ public class Main extends KernelMain {
 
         // Generate the makefile files in outDir
         addTransform(pack, "wjtp.makefileWriter", MakefileWriter.v(_toplevel),
-                "_generatorAttributeFileName:" + _generatorAttributeFileName
-                + " targetPackage:" + _targetPackage + " templateDirectory:"
-                + _templateDirectory + " outDir:" + _outputDirectory);
+            "_generatorAttributeFileName:" + _generatorAttributeFileName
+            + " targetPackage:" + _targetPackage + " templateDirectory:"
+            + _templateDirectory + " outDir:" + _outputDirectory);
 
         // Create a class for the composite actor of the model
         addTransform(pack, "wjtp.mt", ShallowModelTransformer.v(_toplevel),
-                "targetPackage:" + _targetPackage);
+            "targetPackage:" + _targetPackage);
 
         addTransform(pack, "wjtp.ls7", new TransformerAdapter(LocalSplitter.v()));
 
@@ -96,22 +98,21 @@ public class Main extends KernelMain {
         addTransform(pack, "wjtp.gt", GrimpTransformer.v());
 
         /*   */
-
         // This snapshot should be last...
         addTransform(pack, "wjtp.finalSnapshotJimple", JimpleWriter.v(),
-                "outDir:" + _outputDirectory);
+            "outDir:" + _outputDirectory);
         addTransform(pack, "wjtp.finalSnapshot", ClassWriter.v(),
-                "outDir:" + _outputDirectory);
+            "outDir:" + _outputDirectory);
 
         // Disable the watch dog timer
         addTransform(pack, "wjtp.watchDogCancel", WatchDogTimer.v(),
-                "cancel:true");
+            "cancel:true");
     }
 
     /** Parse any code generator specific arguments.
      */
     protected String[] _parseArgs(GeneratorAttribute attribute)
-            throws Exception {
+        throws Exception {
         _targetPackage = attribute.getParameter("targetPackage");
         _templateDirectory = attribute.getParameter("templateDirectory");
         _watchDogTimeout = attribute.getParameter("watchDogTimeout");

@@ -153,18 +153,18 @@ public class ProcessThread extends PtolemyThread {
                             // altogether and skip to wrapup().
                             if (_director.isStopRequested()) {
                                 _debug(
-                                        "-- Thread stop requested, so cancel iteration.");
+                                    "-- Thread stop requested, so cancel iteration.");
                                 break;
                             }
 
                             _debug(
-                                    "-- Thread waiting for canceled pause request.");
+                                "-- Thread waiting for canceled pause request.");
 
                             try {
                                 workspace.wait(_director);
                             } catch (InterruptedException ex) {
                                 _debug(
-                                        "-- Thread interrupted, so cancel iteration.");
+                                    "-- Thread interrupted, so cancel iteration.");
                                 break;
                             }
                         }
@@ -201,12 +201,12 @@ public class ProcessThread extends PtolemyThread {
                 if (thrownWhenIterate instanceof TerminateProcessException) {
                     // Process was terminated.
                     _debug(
-                            "-- Blocked Receiver call threw TerminateProcessException.");
+                        "-- Blocked Receiver call threw TerminateProcessException.");
                 } else if (thrownWhenIterate instanceof InterruptedException) {
                     // Process was terminated by call to stop();
                     _debug("-- Thread was interrupted: " + thrownWhenIterate);
                 } else if (thrownWhenIterate instanceof InterruptedIOException
-                        || ((thrownWhenIterate != null)
+                                || ((thrownWhenIterate != null)
                                 && thrownWhenIterate.getCause() instanceof InterruptedIOException)) {
                     // PSDF has problems here when run with JavaScope
                     _debug("-- IO was interrupted: " + thrownWhenIterate);

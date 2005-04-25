@@ -56,7 +56,7 @@ import diva.canvas.toolbox.BasicFigure;
 */
 public class Rectangle2D extends RectangularFigure2D {
     public Rectangle2D(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         arcWidth = new Parameter(this, "arcWidth", new DoubleToken(0.0));

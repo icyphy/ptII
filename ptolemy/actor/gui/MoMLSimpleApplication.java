@@ -158,7 +158,7 @@ public class MoMLSimpleApplication implements ChangeListener, ExecutionListener 
         }
 
         throw new RuntimeException("MoMLSimplApplication.changeFailed(): "
-                + description + " failed: ", exception);
+            + description + " failed: ", exception);
     }
 
     /** Report an execution failure.   This method will be called
@@ -179,7 +179,7 @@ public class MoMLSimpleApplication implements ChangeListener, ExecutionListener 
         _executionFinishedOrError = true;
         _sawThrowable = throwable;
         throw new RuntimeException("Execution error "
-                + Thread.currentThread().getName(), throwable);
+            + Thread.currentThread().getName(), throwable);
     }
 
     /** Report that the current execution has finished and

@@ -52,7 +52,7 @@ public class CSPCondGet extends CSPGet {
     /**
      */
     public CSPCondGet(TypedCompositeActor cont, String name, int receiverCount)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(cont, name);
 
         _receiverCount = receiverCount;
@@ -82,9 +82,9 @@ public class CSPCondGet extends CSPGet {
 
         if (_receiverCount != numReceivers) {
             throw new IllegalActionException(getName()
-                    + ": Error in the number"
-                    + " of receivers. Be sure constructor is properly"
-                    + " instantiated.");
+                + ": Error in the number"
+                + " of receivers. Be sure constructor is properly"
+                + " instantiated.");
         }
 
         ConditionalBranch[] brchs = new ConditionalBranch[numReceivers];

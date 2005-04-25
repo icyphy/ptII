@@ -75,7 +75,7 @@ public class ImageAttribute extends Attribute {
      *   an attribute already in the container.
      */
     public ImageAttribute(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // Hide the name.
@@ -87,9 +87,10 @@ public class ImageAttribute extends Attribute {
         _icon.setPersistent(false);
 
         source = new FileParameter(this, "source");
+
         // Put the gif in the local directory so that it stays with this actor.
         source.setExpression(
-                "$CLASSPATH/ptolemy/vergil/kernel/attributes/ptIIplanetIcon.gif");
+            "$CLASSPATH/ptolemy/vergil/kernel/attributes/ptIIplanetIcon.gif");
 
         scale = new Parameter(this, "scale");
         scale.setTypeEquals(BaseType.DOUBLE);
@@ -128,7 +129,7 @@ public class ImageAttribute extends Attribute {
      *   to this container (should not be thrown).
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == source) {
             URL url = source.asURL();
             Toolkit tk = Toolkit.getDefaultToolkit();

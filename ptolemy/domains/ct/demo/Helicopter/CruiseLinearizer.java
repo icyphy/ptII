@@ -58,7 +58,7 @@ public class CruiseLinearizer extends TypedAtomicActor {
     /** Constructor
      */
     public CruiseLinearizer(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         inputPx = new TypedIOPort(this, "inputPx");
         inputPx.setInput(true);
@@ -190,9 +190,10 @@ public class CruiseLinearizer extends TypedAtomicActor {
         double D4Pz = ((DoubleToken) inputD4Pz.get(0)).doubleValue();
 
         double Vx = -1.0 * ((_alphaV[0] * (DPx - _cVx)) + (_alphaV[1] * DDPx)
-                + (_alphaV[2] * D3Px) + (_alphaV[3] * D4Px));
+                        + (_alphaV[2] * D3Px) + (_alphaV[3] * D4Px));
         double Vz = -1.0 * ((_alphaP[0] * (Pz - _cPz)) + (_alphaP[1] * DPz)
-                + (_alphaP[2] * DDPz) + (_alphaP[3] * D3Pz) + (_alphaP[4] * D4Pz));
+                        + (_alphaP[2] * DDPz) + (_alphaP[3] * D3Pz)
+                        + (_alphaP[4] * D4Pz));
 
         double V = Math.sqrt((DPx * DPx) + (DPz * DPz));
         double R = Math.PI / 2.0;
@@ -220,7 +221,7 @@ public class CruiseLinearizer extends TypedAtomicActor {
 
             if (stokens.countTokens() < 5) {
                 throw new IllegalActionException(this,
-                        "Not enough parameter numbers.");
+                    "Not enough parameter numbers.");
             }
 
             while (stokens.hasMoreTokens() && (index < 5)) {
@@ -234,7 +235,7 @@ public class CruiseLinearizer extends TypedAtomicActor {
 
             if (stokens.countTokens() < 4) {
                 throw new IllegalActionException(this,
-                        "Not enough parameter numbers.");
+                    "Not enough parameter numbers.");
             }
 
             while (stokens.hasMoreTokens() && (index < 4)) {
@@ -326,8 +327,19 @@ public class CruiseLinearizer extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    private double[] _alphaP = { 500.0, 650.0, 395.0, 121.0, 17.8 };
-    private double[] _alphaV = { 100.0, 110.0, 57.0, 12.80 };
+    private double[] _alphaP = {
+            500.0,
+            650.0,
+            395.0,
+            121.0,
+            17.8
+        };
+    private double[] _alphaV = {
+            100.0,
+            110.0,
+            57.0,
+            12.80
+        };
     private double _cVx;
     private double _cPz;
 }

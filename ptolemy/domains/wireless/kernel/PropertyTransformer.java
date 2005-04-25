@@ -85,6 +85,6 @@ public interface PropertyTransformer {
      *   transformed for some reason.
      */
     public RecordToken transformProperties(RecordToken properties,
-            WirelessIOPort source, WirelessIOPort destination)
-            throws IllegalActionException;
+        WirelessIOPort source, WirelessIOPort destination)
+        throws IllegalActionException;
 }

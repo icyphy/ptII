@@ -107,7 +107,7 @@ public class VersionAttribute extends StringAttribute implements Comparable {
      *   an attribute already in the container.
      */
     public VersionAttribute(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _tupleList = new LinkedList();
         setVisibility(Settable.NONE);
@@ -147,7 +147,7 @@ public class VersionAttribute extends StringAttribute implements Comparable {
         }
 
         while (versionTuples.hasNext()
-                || ((tuples != null) && tuples.hasNext())) {
+                        || ((tuples != null) && tuples.hasNext())) {
             String versionTuple;
             String tuple;
 
@@ -246,7 +246,7 @@ public class VersionAttribute extends StringAttribute implements Comparable {
 
         if (expression.indexOf(' ') != -1) {
             throw new IllegalActionException(this,
-                    "Versions cannot contain spaces: '" + expression + "'");
+                "Versions cannot contain spaces: '" + expression + "'");
         }
 
         _tupleList = new LinkedList();
@@ -291,8 +291,8 @@ public class VersionAttribute extends StringAttribute implements Comparable {
             CURRENT_VERSION = new VersionAttribute("5.0-beta");
         } catch (Exception ex) {
             throw new ExceptionInInitializerError(
-                    "Failed to create CURRENT_VERSION: "
-                    + KernelException.stackTraceToString(ex));
+                "Failed to create CURRENT_VERSION: "
+                + KernelException.stackTraceToString(ex));
         }
     }
 

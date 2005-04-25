@@ -120,7 +120,7 @@ public class AudioReadBuffer extends Transformer {
      *   actor with this name.
      */
     public AudioReadBuffer(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         output.setTypeEquals(BaseType.DOUBLE);
         output.setMultiport(true);
@@ -156,14 +156,14 @@ public class AudioReadBuffer extends Transformer {
      *   allowed.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == sourceURL) {
             if (_safeToInitialize == true) {
                 try {
                     _initializeReader();
                 } catch (IOException ex) {
                     throw new IllegalActionException(this,
-                            "Cannot read audio:\n" + ex);
+                        "Cannot read audio:\n" + ex);
                 }
             }
         } else if (attribute == bufferLength) {
@@ -172,7 +172,7 @@ public class AudioReadBuffer extends Transformer {
                     _initializeReader();
                 } catch (IOException ex) {
                     throw new IllegalActionException(this,
-                            "Cannot read audio:\n" + ex);
+                        "Cannot read audio:\n" + ex);
                 }
             }
         } else {
@@ -193,7 +193,7 @@ public class AudioReadBuffer extends Transformer {
             _initializeReader();
         } catch (IOException ex) {
             throw new IllegalActionException(this,
-                    "Cannot open the specified URL: " + ex);
+                "Cannot open the specified URL: " + ex);
         }
 
         _safeToInitialize = true;
@@ -260,7 +260,7 @@ public class AudioReadBuffer extends Transformer {
                 _soundReader.closeFile();
             } catch (IOException ex) {
                 throw new IllegalActionException(this,
-                        "Problem closing sound file: \n" + ex.getMessage());
+                    "Problem closing sound file: \n" + ex.getMessage());
             }
         }
     }
@@ -278,7 +278,7 @@ public class AudioReadBuffer extends Transformer {
      *   the audio reader.
      */
     private synchronized void _initializeReader()
-            throws IOException, IllegalActionException {
+        throws IOException, IllegalActionException {
         if (_soundReader != null) {
             _soundReader.closeFile();
         }

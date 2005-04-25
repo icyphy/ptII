@@ -54,7 +54,7 @@ public interface BitwiseOperationToken {
      *  sense for this type.
      */
     public BitwiseOperationToken bitwiseAnd(Token rightArgument)
-            throws IllegalActionException;
+        throws IllegalActionException;
 
     /** Returns a token representing the bitwise NOT of this token.
      *  @return The bitwise NOT of this token.
@@ -73,7 +73,7 @@ public interface BitwiseOperationToken {
      *  sense for this type.
      */
     public BitwiseOperationToken bitwiseOr(Token rightArgument)
-            throws IllegalActionException;
+        throws IllegalActionException;
 
     /** Returns a token representing the bitwise XOR of this token and
      *  the given token.
@@ -84,5 +84,5 @@ public interface BitwiseOperationToken {
      *  sense for this type.
      */
     public BitwiseOperationToken bitwiseXor(Token rightArgument)
-            throws IllegalActionException;
+        throws IllegalActionException;
 }

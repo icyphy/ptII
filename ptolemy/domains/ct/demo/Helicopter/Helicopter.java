@@ -74,7 +74,7 @@ import java.util.Iterator;
 */
 public class Helicopter extends TypedCompositeActor {
     public Helicopter(Workspace workspace)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         // Creating the model.
         super(workspace);
 
@@ -193,13 +193,13 @@ public class Helicopter extends TypedCompositeActor {
         accelState.outgoingPort.link(tr2);
         cruise1State.incomingPort.link(tr2);
         tr2.setGuardExpression("(outputV >= 5.0) && (inputPz > -2.05) "
-                + "&& (inputPz < -1.95)");
+            + "&& (inputPz < -1.95)");
 
         Transition tr3 = new Transition(hsctrl, "tr3");
         cruise1State.outgoingPort.link(tr3);
         climbState.incomingPort.link(tr3);
         tr3.setGuardExpression("(outputV > 4.9) && (outputV < 5.1) "
-                + "&& (outputR > -0.01) && (outputR < 0.01)");
+            + "&& (outputR > -0.01) && (outputR < 0.01)");
 
         Transition tr4 = new Transition(hsctrl, "tr4");
         climbState.outgoingPort.link(tr4);
@@ -207,7 +207,7 @@ public class Helicopter extends TypedCompositeActor {
 
         //
         tr4.setGuardExpression("(outputV > 4.9) && (outputV < 5.1) "
-                + "&& (inputPz > -10.05) && (inputPz < -9.95)");
+            + "&& (inputPz > -10.05) && (inputPz < -9.95)");
 
         TypedIORelation rSubPx = new TypedIORelation(sub, "rSubPx");
         TypedIORelation rSubDPx = new TypedIORelation(sub, "rSubDPx");
@@ -547,7 +547,7 @@ public class Helicopter extends TypedCompositeActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
     CTCompositeActor _createLinearizer(TypedCompositeActor container, int code)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         CTCompositeActor sub = new CTCompositeActor(container, "dummy");
         CTEmbeddedDirector subdir = new CTEmbeddedDirector(sub,
                 "CTInnerDirector");

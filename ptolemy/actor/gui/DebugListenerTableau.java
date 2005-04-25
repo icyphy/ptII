@@ -68,7 +68,7 @@ public class DebugListenerTableau extends Tableau {
      *   attribute already in the container.
      */
     public DebugListenerTableau(Effigy container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         final DebugListenerFrame frame = new DebugListenerFrame();

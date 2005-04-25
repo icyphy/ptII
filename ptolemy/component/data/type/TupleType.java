@@ -24,7 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.component.data.type;
 
 import ptolemy.component.data.TupleToken;
@@ -39,8 +38,10 @@ import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// TupleType
+
 /**
    A class representing the type of a FunctionToken.
 
@@ -50,9 +51,7 @@ import ptolemy.kernel.util.InternalErrorException;
    @Pt.ProposedRating Red (neuendor)
    @Pt.AcceptedRating Red (cxh)
 */
-
 public class TupleType extends StructuredType {
-
     /** Construct a new TupleType with the specified argument types
      *  and the given return type.  To leave the types of some fields
      *  undeclared, use BaseType.UNKNOWN.  To construct the type for a
@@ -66,6 +65,7 @@ public class TupleType extends StructuredType {
      */
     public TupleType(Type[] types) {
         _elementTypeTerms = new FieldTypeTerm[types.length];
+
         for (int i = 0; i < types.length; i++) {
             FieldTypeTerm fieldType = new FieldTypeTerm(types[i]);
             _elementTypeTerms[i] = fieldType;
@@ -85,17 +85,20 @@ public class TupleType extends StructuredType {
         } else {
             // construct the labels and declared types array
             Type[] types = new Type[_elementTypeTerms.length];
+
             for (int i = 0; i < types.length; i++) {
                 types[i] = getElementType(i);
             }
-            TupleType newObj =
-                new TupleType(types);
+
+            TupleType newObj = new TupleType(types);
+
             try {
                 newObj.updateType(this);
             } catch (IllegalActionException ex) {
                 throw new InternalErrorException(null, ex,
-                        "Failed to update new instance.");
+                    "Failed to update new instance.");
             }
+
             return newObj;
         }
     }
@@ -110,15 +113,16 @@ public class TupleType extends StructuredType {
      */
     public Token convert(Token token) throws IllegalActionException {
         if (!(token instanceof TupleToken)) {
-            throw new IllegalArgumentException(
-                    Token.notSupportedIncomparableConversionMessage(
-                            token, toString()));
+            throw new IllegalArgumentException(Token
+                            .notSupportedIncomparableConversionMessage(token,
+                                toString()));
         }
 
-        TupleToken argumentTupleToken = (TupleToken)token;
+        TupleToken argumentTupleToken = (TupleToken) token;
 
         Token[] argumentTuple = argumentTupleToken.tupleValue();
         Token[] resultArray = new Token[argumentTuple.length];
+
         if (argumentTupleToken.length() == _elementTypeTerms.length) {
             try {
                 for (int i = 0; i < argumentTuple.length; i++) {
@@ -126,10 +130,10 @@ public class TupleType extends StructuredType {
                 }
             } catch (IllegalActionException ex) {
                 throw new IllegalActionException(null, ex,
-                        Token.notSupportedConversionMessage(token, "int"));
-
+                    Token.notSupportedConversionMessage(token, "int"));
             }
         }
+
         return new TupleToken(resultArray);
     }
 
@@ -146,7 +150,7 @@ public class TupleType extends StructuredType {
             return false;
         }
 
-        TupleType TupleType = (TupleType)object;
+        TupleType TupleType = (TupleType) object;
 
         if (getElementCount() != TupleType.getElementCount()) {
             return false;
@@ -155,10 +159,12 @@ public class TupleType extends StructuredType {
         for (int i = 0; i < getElementCount(); i++) {
             Type myType = this.getElementType(i);
             Type argType = TupleType.getElementType(i);
+
             if (!myType.equals(argType)) {
                 return false;
             }
         }
+
         return true;
     }
 
@@ -172,13 +178,16 @@ public class TupleType extends StructuredType {
      *  @return a Type.
      */
     public Type getElementType(int i) {
-        if (i < 0 || i >= _elementTypeTerms.length) {
+        if ((i < 0) || (i >= _elementTypeTerms.length)) {
             return null;
         }
+
         FieldTypeTerm fieldType = _elementTypeTerms[i];
+
         if (fieldType == null) {
             return null;
         }
+
         return fieldType._resolvedType;
     }
 
@@ -210,16 +219,16 @@ public class TupleType extends StructuredType {
     public void initialize(Type type) {
         try {
             for (int i = 0; i < getElementCount(); i++) {
-                FieldTypeTerm fieldType = (FieldTypeTerm)getArgTypeTerm(i);
+                FieldTypeTerm fieldType = (FieldTypeTerm) getArgTypeTerm(i);
+
                 if (fieldType.isSettable()) {
                     fieldType.initialize(type);
                 }
             }
         } catch (IllegalActionException iae) {
-            throw new InternalErrorException(
-                    "TupleType.initialize: Cannot " +
-                    "initialize the element type to " + type + " " +
-                    iae.getMessage());
+            throw new InternalErrorException("TupleType.initialize: Cannot "
+                + "initialize the element type to " + type + " "
+                + iae.getMessage());
         }
     }
 
@@ -234,11 +243,11 @@ public class TupleType extends StructuredType {
             return true;
         }
 
-        if ( !(type instanceof TupleType)) {
+        if (!(type instanceof TupleType)) {
             return false;
         }
 
-        TupleType argumentTupleType = (TupleType)type;
+        TupleType argumentTupleType = (TupleType) type;
 
         // The given type cannot be losslessly converted to this type
         // if it does not contain the same number of arguments.
@@ -248,13 +257,13 @@ public class TupleType extends StructuredType {
 
         // Loop through all of the fields of this type...
         for (int i = 0; i < getElementCount(); i++) {
-            Type argumentFieldTypeTerm =
-                argumentTupleType.getElementType(i);
+            Type argumentFieldTypeTerm = argumentTupleType.getElementType(i);
 
             // The given function type cannot be losslessly converted
             // to this type if the individual arguments are not
             // compatible.
             Type thisFieldTypeTerm = getElementType(i);
+
             if (!argumentFieldTypeTerm.isCompatible(thisFieldTypeTerm)) {
                 return false;
             }
@@ -273,11 +282,13 @@ public class TupleType extends StructuredType {
         for (int i = 0; i < getElementCount(); i++) {
             FieldTypeTerm fieldType = getArgTypeTerm(i);
             Type type = fieldType._declaredType;
+
             // Return false if the field is not constant.
             if (!type.isConstant()) {
                 return false;
             }
         }
+
         return true;
     }
 
@@ -290,11 +301,13 @@ public class TupleType extends StructuredType {
         // Loop through all of the fields of this type...
         for (int i = 0; i < getElementCount(); i++) {
             Type type = getElementType(i);
+
             // Return false if the field is not instantiable.
             if (!type.isInstantiable()) {
                 return false;
             }
         }
+
         return true;
     }
 
@@ -311,7 +324,7 @@ public class TupleType extends StructuredType {
             return false;
         }
 
-        TupleType TupleType = (TupleType)type;
+        TupleType TupleType = (TupleType) type;
 
         // Check that the argument counts are the same
         int argCount = getElementCount();
@@ -324,6 +337,7 @@ public class TupleType extends StructuredType {
         for (int i = 0; i < getElementCount(); i++) {
             Type myArgType = getElementType(i);
             Type argType = TupleType.getElementType(i);
+
             if (!myArgType.isSubstitutionInstance(argType)) {
                 return false;
             }
@@ -340,12 +354,15 @@ public class TupleType extends StructuredType {
     public String toString() {
         // construct the string representation of this token.
         String s = "{";
+
         for (int i = 0; i < getElementCount(); i++) {
             if (i != 0) {
                 s += ", ";
             }
-            s += "a" + i + ":" + getElementType(i);
+
+            s += ("a" + i + ":" + getElementType(i));
         }
+
         return s + "}";
     }
 
@@ -359,30 +376,30 @@ public class TupleType extends StructuredType {
      *   TupleType or it does not have the same structure as this one.
      */
     public void updateType(StructuredType newType)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (this.isConstant()) {
             if (this.equals(newType)) {
                 return;
             } else {
-                throw new IllegalActionException("TupleType.updateType: " +
-                        "This type is a constant and the argument is not the" +
-                        " same as this type. This type: " + this.toString() +
-                        " argument: " + newType.toString());
+                throw new IllegalActionException("TupleType.updateType: "
+                    + "This type is a constant and the argument is not the"
+                    + " same as this type. This type: " + this.toString()
+                    + " argument: " + newType.toString());
             }
         }
 
         // This type is a variable.
-        if ( !this.isSubstitutionInstance(newType)) {
+        if (!this.isSubstitutionInstance(newType)) {
             throw new IllegalActionException("TupleType.updateType: "
-                    + "Cannot update this type to the new type.");
+                + "Cannot update this type to the new type.");
         }
 
         // Loop through all of the fields of this type...
         for (int i = 0; i < getElementCount(); i++) {
             FieldTypeTerm argTypeTerm = getArgTypeTerm(i);
+
             if (argTypeTerm.isSettable()) {
-                Type newArgType =
-                    ((TupleType)newType).getElementType(i);
+                Type newArgType = ((TupleType) newType).getElementType(i);
                 argTypeTerm.setValue(newArgType);
             }
         }
@@ -405,20 +422,20 @@ public class TupleType extends StructuredType {
      *   not a TupleType.
      */
     protected int _compare(StructuredType type) {
-        if ( !(type instanceof TupleType)) {
-            throw new IllegalArgumentException("TupleType.compare: " +
-                    "The argument is not a TupleType.");
+        if (!(type instanceof TupleType)) {
+            throw new IllegalArgumentException("TupleType.compare: "
+                + "The argument is not a TupleType.");
         }
 
         if (this.equals(type)) {
             return CPO.SAME;
         }
 
-        if (_isLessThanOrEqualTo(this, (TupleType)type)) {
+        if (_isLessThanOrEqualTo(this, (TupleType) type)) {
             return CPO.LOWER;
         }
 
-        if (_isLessThanOrEqualTo((TupleType)type, this)) {
+        if (_isLessThanOrEqualTo((TupleType) type, this)) {
             return CPO.HIGHER;
         }
 
@@ -441,21 +458,21 @@ public class TupleType extends StructuredType {
      *   not a TupleType.
      */
     protected StructuredType _greatestLowerBound(StructuredType type) {
-        if ( !(type instanceof TupleType)) {
+        if (!(type instanceof TupleType)) {
             throw new IllegalArgumentException(
-                    "TupleType.greatestLowerBound: The argument is not a " +
-                    "TupleType.");
+                "TupleType.greatestLowerBound: The argument is not a "
+                + "TupleType.");
         }
 
-        TupleType TupleType = (TupleType)type;
+        TupleType TupleType = (TupleType) type;
 
         // construct the GLB FunctionToken
         int argCount = getElementCount();
 
-        if ( TupleType.getElementCount() != argCount ) {
+        if (TupleType.getElementCount() != argCount) {
             throw new IllegalArgumentException(
-                    "Types are not comparable because they have" +
-                    " different numbers of arguments");
+                "Types are not comparable because they have"
+                + " different numbers of arguments");
         }
 
         Type[] types = new Type[argCount];
@@ -463,13 +480,14 @@ public class TupleType extends StructuredType {
         for (int i = 0; i < argCount; i++) {
             Type type1 = getElementType(i);
             Type type2 = TupleType.getElementType(i);
+
             if (type1 == null) {
                 types[i] = type2;
             } else if (type2 == null) {
                 types[i] = type1;
             } else {
-                types[i] = (Type)TypeLattice.lattice().greatestLowerBound(
-                        type1, type2);
+                types[i] = (Type) TypeLattice.lattice().greatestLowerBound(type1,
+                        type2);
             }
         }
 
@@ -485,20 +503,20 @@ public class TupleType extends StructuredType {
      *   not a TupleType.
      */
     protected StructuredType _leastUpperBound(StructuredType type) {
-        if ( !(type instanceof TupleType)) {
+        if (!(type instanceof TupleType)) {
             throw new IllegalArgumentException("TupleType.leastUpperBound: "
-                    + "The argument is not a TupleType.");
+                + "The argument is not a TupleType.");
         }
 
-        TupleType TupleType = (TupleType)type;
+        TupleType TupleType = (TupleType) type;
 
         // construct the LUB FunctionToken
         int argCount = getElementCount();
 
-        if ( TupleType.getElementCount() != argCount ) {
+        if (TupleType.getElementCount() != argCount) {
             throw new IllegalArgumentException(
-                    "Types are not comparable because they have" +
-                    " different numbers of arguments");
+                "Types are not comparable because they have"
+                + " different numbers of arguments");
         }
 
         Type[] types = new Type[argCount];
@@ -506,13 +524,14 @@ public class TupleType extends StructuredType {
         for (int i = 0; i < argCount; i++) {
             Type type1 = getElementType(i);
             Type type2 = TupleType.getElementType(i);
+
             if (type1 == null) {
                 types[i] = type2;
             } else if (type2 == null) {
                 types[i] = type1;
             } else {
-                types[i] = (Type)TypeLattice.lattice().leastUpperBound(
-                        type1, type2);
+                types[i] = (Type) TypeLattice.lattice().leastUpperBound(type1,
+                        type2);
             }
         }
 
@@ -521,14 +540,12 @@ public class TupleType extends StructuredType {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     // Test if the first TupleType is less than or equal to the second
     private boolean _isLessThanOrEqualTo(TupleType t1, TupleType t2) {
-
         // construct the LUB FunctionToken
         int argCount = t1.getElementCount();
 
-        if ( t2.getElementCount() != argCount ) {
+        if (t2.getElementCount() != argCount) {
             return false;
         }
 
@@ -537,7 +554,8 @@ public class TupleType extends StructuredType {
             Type type1 = t1.getElementType(i);
             Type type2 = t2.getElementType(i);
             int result = TypeLattice.compare(type1, type2);
-            if (result == CPO.HIGHER || result == CPO.INCOMPARABLE) {
+
+            if ((result == CPO.HIGHER) || (result == CPO.INCOMPARABLE)) {
                 return false;
             }
         }
@@ -547,7 +565,6 @@ public class TupleType extends StructuredType {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // Mapping from label to field information.
     private FieldTypeTerm[] _elementTypeTerms;
 
@@ -556,19 +573,17 @@ public class TupleType extends StructuredType {
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////
-
     // A class that encapsulates the declared and resolved types of a
     // field and implements the InequalityTerm interface.
     private class FieldTypeTerm implements InequalityTerm {
-
         // Construct an instance of FieldTypeTerm.
         private FieldTypeTerm(Type declaredType) {
             try {
-                _declaredType = (Type)declaredType.clone();
+                _declaredType = (Type) declaredType.clone();
                 _resolvedType = _declaredType;
             } catch (CloneNotSupportedException cnse) {
-                throw new InternalErrorException("TupleType.FieldTypeTerm: " +
-                        "The specified type cannot be cloned.");
+                throw new InternalErrorException("TupleType.FieldTypeTerm: "
+                    + "The specified type cannot be cloned.");
             }
         }
 
@@ -599,6 +614,7 @@ public class TupleType extends StructuredType {
                 variable[0] = this;
                 return variable;
             }
+
             return (new InequalityTerm[0]);
         }
 
@@ -610,20 +626,20 @@ public class TupleType extends StructuredType {
          */
         public void initialize(Object e) throws IllegalActionException {
             if (!isSettable()) {
-                throw new IllegalActionException("TupleType$FieldTypeTerm." +
-                        "initialize: The type is not settable.");
+                throw new IllegalActionException("TupleType$FieldTypeTerm."
+                    + "initialize: The type is not settable.");
             }
 
             if (!(e instanceof Type)) {
                 throw new IllegalActionException("FieldTypeTerm.initialize: "
-                        + "The argument is not a Type.");
+                    + "The argument is not a Type.");
             }
 
             if (_declaredType == BaseType.UNKNOWN) {
-                _resolvedType = (Type)e;
+                _resolvedType = (Type) e;
             } else {
                 // this field type is a structured type.
-                ((StructuredType)_resolvedType).initialize((Type)e);
+                ((StructuredType) _resolvedType).initialize((Type) e);
             }
         }
 
@@ -649,30 +665,29 @@ public class TupleType extends StructuredType {
          *   the declared field type.
          */
         public void setValue(Object e) throws IllegalActionException {
-            if ( !isSettable()) {
+            if (!isSettable()) {
                 throw new IllegalActionException(
-                        "TupleType$FieldTypeTerm.setValue: The type is not " +
-                        "settable.");
+                    "TupleType$FieldTypeTerm.setValue: The type is not "
+                    + "settable.");
             }
 
-            if ( !_declaredType.isSubstitutionInstance((Type)e)) {
+            if (!_declaredType.isSubstitutionInstance((Type) e)) {
                 throw new IllegalActionException("FieldTypeTerm.setValue: "
-                        + "Cannot update the field type of this TupleType "
-                        + "to the new type."
-                        + " Field type: " + _declaredType.toString()
-                        + ", New type: " + e.toString());
+                    + "Cannot update the field type of this TupleType "
+                    + "to the new type." + " Field type: "
+                    + _declaredType.toString() + ", New type: " + e.toString());
             }
 
             if (_declaredType == BaseType.UNKNOWN) {
                 try {
-                    _resolvedType = (Type)((Type)e).clone();
+                    _resolvedType = (Type) ((Type) e).clone();
                 } catch (CloneNotSupportedException cnse) {
                     throw new InternalErrorException(
-                            "TupleType$FieldTypeTerm.setValue: " +
-                            "The specified type cannot be cloned.");
+                        "TupleType$FieldTypeTerm.setValue: "
+                        + "The specified type cannot be cloned.");
                 }
             } else {
-                ((StructuredType)_resolvedType).updateType((StructuredType)e);
+                ((StructuredType) _resolvedType).updateType((StructuredType) e);
             }
         }
 
@@ -685,9 +700,7 @@ public class TupleType extends StructuredType {
 
         ///////////////////////////////////////////////////////////////
         ////                  private inner variables              ////
-
         private Type _declaredType = null;
         private Type _resolvedType = null;
     }
 }
-

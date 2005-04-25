@@ -30,13 +30,13 @@
 */
 package ptolemy.data.expr;
 
+import org.w3c.dom.Document;
+
 import java.io.InputStream;
 import java.io.StringBufferInputStream;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-
-import org.w3c.dom.Document;
 
 
 //////////////////////////////////////////////////////////////////////

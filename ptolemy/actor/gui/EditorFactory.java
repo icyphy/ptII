@@ -76,7 +76,7 @@ public abstract class EditorFactory extends Attribute {
      *   an attribute already in the container.
      */
     public EditorFactory(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 

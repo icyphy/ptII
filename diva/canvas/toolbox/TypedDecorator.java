@@ -109,6 +109,6 @@ public class TypedDecorator extends FigureDecorator {
      */
     public void setParent(CanvasComponent fc) {
         throw new UnsupportedOperationException(
-                "TypedDecorator cannot be inserted into a figure tree");
+            "TypedDecorator cannot be inserted into a figure tree");
     }
 }

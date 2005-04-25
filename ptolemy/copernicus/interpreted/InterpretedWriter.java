@@ -26,13 +26,13 @@ COPYRIGHTENDKEY
 */
 package ptolemy.copernicus.interpreted;
 
-import ptolemy.actor.CompositeActor;
-import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.util.StringUtilities;
-
 import soot.HasPhaseOptions;
 import soot.PhaseOptions;
 import soot.SceneTransformer;
+
+import ptolemy.actor.CompositeActor;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.util.StringUtilities;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -110,7 +110,7 @@ public class InterpretedWriter extends SceneTransformer
     protected void internalTransform(String phaseName, Map options) {
         // FIXME: Perhaps AppletWriter should call this transformer?
         System.out.println("InterpretedWriter.internalTransform(" + phaseName
-                + ", " + options + ")");
+            + ", " + options + ")");
 
         _outputDirectory = PhaseOptions.getString(options, "outDir");
 
@@ -133,16 +133,16 @@ public class InterpretedWriter extends SceneTransformer
         String modelFileName = _outputDirectory + "/" + _sanitizedModelName
             + ".xml";
         System.out.println("InterpretedWriter: about to write '"
-                + modelFileName + "'");
+            + modelFileName + "'");
 
         try {
             Writer modelFileWriter = new BufferedWriter(new OutputStreamWriter(
-                                                                new FileOutputStream(modelFileName)));
+                        new FileOutputStream(modelFileName)));
             _model.exportMoML(modelFileWriter);
             modelFileWriter.close();
         } catch (IOException ex) {
             throw new InternalErrorException("Problem writing '"
-                    + modelFileName + "': " + ex);
+                + modelFileName + "': " + ex);
         }
     }
 

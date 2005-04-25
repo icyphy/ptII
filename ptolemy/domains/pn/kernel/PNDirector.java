@@ -113,8 +113,7 @@ public class PNDirector extends CompositeProcessDirector {
      *  @exception NameDuplicationException If the container already contains
      *   an entity with the specified name.
      */
-    public PNDirector()
-            throws IllegalActionException, NameDuplicationException {
+    public PNDirector() throws IllegalActionException, NameDuplicationException {
         super();
         _init();
     }
@@ -132,7 +131,7 @@ public class PNDirector extends CompositeProcessDirector {
      *   an entity with the specified name.
      */
     public PNDirector(Workspace workspace)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -154,7 +153,7 @@ public class PNDirector extends CompositeProcessDirector {
      *   CompositeActor and the name collides with an entity in the container.
      */
     public PNDirector(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _init();
     }
@@ -235,7 +234,7 @@ public class PNDirector extends CompositeProcessDirector {
         // be set in preinitialize().
         try {
             int capacity = ((IntToken) initialQueueCapacity.getToken())
-                .intValue();
+                            .intValue();
             receiver.setCapacity(capacity);
         } catch (IllegalActionException e) {
             throw new InternalErrorException(e);
@@ -263,7 +262,7 @@ public class PNDirector extends CompositeProcessDirector {
         // in the container, then the execution might restart on receiving
         // additional data.
         if (!((((CompositeActor) getContainer()).inputPortList()).isEmpty())
-                && (_getActiveActorsCount() != 0)) {
+                        && (_getActiveActorsCount() != 0)) {
             // Avoid returning false on detected deadlock.
             return !_stopRequested;
         } else {
@@ -313,9 +312,10 @@ public class PNDirector extends CompositeProcessDirector {
      *  @see ptolemy.actor.Director#suggestedModalModelDirectors()
      */
     public String[] suggestedModalModelDirectors() {
-        return new String [] {
+        return new String[] {
             "ptolemy.domains.fsm.kernel.MultirateFSMDirector",
-            "ptolemy.domains.fsm.kernel.FSMDirector"};
+            "ptolemy.domains.fsm.kernel.FSMDirector"
+        };
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -385,7 +385,7 @@ public class PNDirector extends CompositeProcessDirector {
      *   exceed the value of <i>maximumQueueCapacity</i>.
      */
     protected void _incrementLowestWriteCapacityPort()
-            throws IllegalActionException {
+        throws IllegalActionException {
         PNQueueReceiver smallestCapacityQueue = null;
         int smallestCapacity = -1;
         Iterator receivers = _writeBlockedQueues.iterator();
@@ -413,13 +413,13 @@ public class PNDirector extends CompositeProcessDirector {
             capacity = 1;
         } else {
             int maximumCapacity = ((IntToken) maximumQueueCapacity.getToken())
-                .intValue();
+                            .intValue();
 
             if ((maximumCapacity > 0) && ((capacity * 2) > maximumCapacity)) {
                 throw new IllegalActionException(this,
-                        "Queue size exceeds the maximum capacity in port "
-                        + smallestCapacityQueue.getContainer().getFullName()
-                        + ". Perhaps you have an unbounded queue?");
+                    "Queue size exceeds the maximum capacity in port "
+                    + smallestCapacityQueue.getContainer().getFullName()
+                    + ". Perhaps you have an unbounded queue?");
             }
 
             smallestCapacityQueue.setCapacity(capacity * 2);
@@ -427,8 +427,8 @@ public class PNDirector extends CompositeProcessDirector {
 
         if (_debugging) {
             _debug("increasing the capacity of receiver "
-                    + smallestCapacityQueue.getContainer() + " to "
-                    + smallestCapacityQueue.getCapacity());
+                + smallestCapacityQueue.getContainer() + " to "
+                + smallestCapacityQueue.getCapacity());
         }
 
         _actorUnBlocked(smallestCapacityQueue);
@@ -543,7 +543,7 @@ public class PNDirector extends CompositeProcessDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
     private void _init()
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         initialQueueCapacity = new Parameter(this, "initialQueueCapacity",
                 new IntToken(1));
         initialQueueCapacity.setTypeEquals(BaseType.INT);

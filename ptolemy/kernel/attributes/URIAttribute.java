@@ -82,7 +82,7 @@ public class URIAttribute extends SingletonAttribute {
      *   an attribute already in the container.
      */
     public URIAttribute(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         setPersistent(false);
     }
@@ -202,7 +202,7 @@ public class URIAttribute extends SingletonAttribute {
             } catch (URISyntaxException ex2) {
                 // Should not occur because a URL is a valid URI.
                 throw new InternalErrorException(this, ex2,
-                        "Error constructing URI from " + url);
+                    "Error constructing URI from " + url);
             }
         }
 

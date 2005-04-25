@@ -98,7 +98,7 @@ public class ComponentDialog extends JDialog {
      *   of the dialog.
      */
     public ComponentDialog(Frame owner, String title, Component component,
-            String[] buttons) {
+        String[] buttons) {
         this(owner, title, component, buttons, null);
     }
 
@@ -119,7 +119,7 @@ public class ComponentDialog extends JDialog {
      *   if no message is needed.
      */
     public ComponentDialog(Frame owner, String title, Component component,
-            String[] buttons, String message) {
+        String[] buttons, String message) {
         super(owner, title, true);
 
         // Create a panel that contains the optional message
@@ -162,8 +162,9 @@ public class ComponentDialog extends JDialog {
                     // PropertyChange is an extremely non-selective listener,
                     // so we have to filter...
                     if (isVisible() && (e.getSource() == _optionPane)
-                            && (prop.equals(JOptionPane.VALUE_PROPERTY)
-                                    || prop.equals(JOptionPane.INPUT_VALUE_PROPERTY))) {
+                                    && (prop.equals(JOptionPane.VALUE_PROPERTY)
+                                    || prop.equals(
+                                        JOptionPane.INPUT_VALUE_PROPERTY))) {
                         Object value = _optionPane.getValue();
 
                         // Ignore reset.
@@ -212,7 +213,7 @@ public class ComponentDialog extends JDialog {
             // in centering on the screen, but it is not required to.
             Toolkit tk = Toolkit.getDefaultToolkit();
             setLocation((tk.getScreenSize().width - getSize().width) / 2,
-                    (tk.getScreenSize().height - getSize().height) / 2);
+                (tk.getScreenSize().height - getSize().height) / 2);
         }
 
         // NOTE: Java's AWT may yield random results if we do the following.
@@ -288,7 +289,10 @@ public class ComponentDialog extends JDialog {
     private static String[] _buttons;
 
     // Default button labels.
-    private static String[] _defaultButtons = { "OK", "Cancel" };
+    private static String[] _defaultButtons = {
+            "OK",
+            "Cancel"
+        };
 
     // Indicator that we have notified of window closing.
     private boolean _doneHandleClosing = false;

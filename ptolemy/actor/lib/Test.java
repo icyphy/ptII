@@ -151,7 +151,7 @@ public class Test extends NonStrictTest {
         // If we are in training mode, read the inputs and add to the
         // training data.
         boolean training = ((BooleanToken) trainingMode.getToken())
-            .booleanValue();
+                        .booleanValue();
 
         if (training) {
             if (_trainingTokens == null) {
@@ -175,7 +175,7 @@ public class Test extends NonStrictTest {
         }
 
         if (_numberOfInputTokensSeen >= ((ArrayToken) (correctValues.getToken()))
-                .length()) {
+                        .length()) {
             // Consume and discard input values.  We are beyond the end
             // of the correctValues array.
             for (int i = 0; i < width; i++) {
@@ -192,7 +192,7 @@ public class Test extends NonStrictTest {
         output.send(0, new BooleanToken(false));
 
         Token referenceToken = ((ArrayToken) (correctValues.getToken()))
-            .getElement(_numberOfInputTokensSeen);
+                        .getElement(_numberOfInputTokensSeen);
         Token[] reference;
 
         if ((width == 1) && !(referenceToken instanceof ArrayToken)) {
@@ -231,7 +231,7 @@ public class Test extends NonStrictTest {
 
             try {
                 isClose = token.isCloseTo(reference[i], _tolerance)
-                               .booleanValue();
+                                           .booleanValue();
             } catch (IllegalActionException ex) {
                 // Chain the exceptions together so we know which test
                 // actor failed if there was more than one...

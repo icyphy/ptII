@@ -65,20 +65,33 @@ public class FileChooserQuery extends JFrame implements QueryListener {
         _query.addLine("line", "Entry box", "default entry");
         _query.addDisplay("display", "Display", "displayed string");
 
-        String[] choices = { "a", "b", "c" };
+        String[] choices = {
+                "a",
+                "b",
+                "c"
+            };
         _query.addChoice("choice", "Choice", choices, "b");
 
-        String[] moreChoices = { "d", "e", "f" };
+        String[] moreChoices = {
+                "d",
+                "e",
+                "f"
+            };
         _query.addChoice("editchoice", "Editable Choice", moreChoices, "d", true);
         _query.addSlider("slider", "Slider", 0, -100, 100);
 
-        String[] options = { "mayonnaise", "mustard", "both", "none" };
+        String[] options = {
+                "mayonnaise",
+                "mustard",
+                "both",
+                "none"
+            };
         _query.addRadioButtons("radio", "Radio buttons", options, "none");
 
         _query.addFileChooser("fileChooser", "FileChooser", "default", null,
-                null);
+            null);
         _query.addColorChooser("colorChooser", "ColorChoser",
-                "{0.0, 0.0, 0.0, 1.0}");
+            "{0.0, 0.0, 0.0, 1.0}");
 
         _query.addQueryListener(this);
         _query.setBackground(getBackground());
@@ -94,7 +107,7 @@ public class FileChooserQuery extends JFrame implements QueryListener {
      */
     public void changed(String name) {
         System.out.println("Changed " + name + " to: "
-                + _query.getStringValue(name));
+            + _query.getStringValue(name));
     }
 
     /** Create a FileChooserQuery and configure it

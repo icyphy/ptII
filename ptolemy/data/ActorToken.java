@@ -62,7 +62,7 @@ public class ActorToken extends Token {
             _entity = (Entity) entity.clone();
         } catch (CloneNotSupportedException ex) {
             throw new IllegalActionException(null, ex,
-                    "Failed to create actor token");
+                "Failed to create actor token");
         }
     }
 
@@ -77,7 +77,7 @@ public class ActorToken extends Token {
             return (Entity) _entity.clone();
         } catch (CloneNotSupportedException ex) {
             throw new RuntimeException(
-                    "Failed to clone actor, but I already cloned it once!!!");
+                "Failed to clone actor, but I already cloned it once!!!");
         }
     }
 
@@ -101,9 +101,9 @@ public class ActorToken extends Token {
             return new BooleanToken(this == token);
         } else {
             throw new IllegalActionException(
-                    "Equality test not supported between "
-                    + this.getClass().getName() + " and "
-                    + token.getClass().getName() + ".");
+                "Equality test not supported between "
+                + this.getClass().getName() + " and "
+                + token.getClass().getName() + ".");
         }
     }
 
@@ -118,7 +118,7 @@ public class ActorToken extends Token {
         return "ActorToken(" + _entity + ")";
     }
 
-    /** The type of the ActorToken. */ 
+    /** The type of the ActorToken. */
     public static class ActorType implements Type, Serializable {
         ///////////////////////////////////////////////////////////////////
         ////                         public methods                    ////
@@ -142,7 +142,7 @@ public class ActorToken extends Token {
                 return token;
             } else {
                 throw new IllegalActionException("Attempt to convert token "
-                        + token + " into a test token, which is not possible.");
+                    + token + " into a test token, which is not possible.");
             }
         }
 

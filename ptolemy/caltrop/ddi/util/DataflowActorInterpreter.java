@@ -38,6 +38,7 @@ import caltrop.interpreter.OutputChannel;
 import caltrop.interpreter.OutputPort;
 import caltrop.interpreter.SimpleThunk;
 import caltrop.interpreter.StmtEvaluator;
+
 import caltrop.interpreter.ast.Action;
 import caltrop.interpreter.ast.Actor;
 import caltrop.interpreter.ast.Decl;
@@ -45,14 +46,17 @@ import caltrop.interpreter.ast.Expression;
 import caltrop.interpreter.ast.InputPattern;
 import caltrop.interpreter.ast.OutputExpression;
 import caltrop.interpreter.ast.Statement;
+
 import caltrop.interpreter.environment.Environment;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// DataFlowActorInterpreter
+
 /**
    The actor interpreter provides an abstract interface to the execution
    of an actor. It provides a number of operations on the actions of an
@@ -89,7 +93,6 @@ import java.util.Map;
    @see #actionClear
 */
 public class DataflowActorInterpreter {
-
     /**
      * Set up the local environment of the specified action. This
      * method is the only way a new action may be set up for
@@ -99,48 +102,51 @@ public class DataflowActorInterpreter {
      *
      * @param action The action to setup.
      */
-    public void  actionSetup(Action action) {
+    public void actionSetup(Action action) {
         env = null;
         envAction = null;
 
         final Environment local = actorEnv.newFrame();
 
         final InputPattern[] inputPatterns = action.getInputPatterns();
+
         for (int i = 0; i < inputPatterns.length; i++) {
             final InputPattern inputPattern = inputPatterns[i];
-            final String [] vars = inputPattern.getVariables();
+            final String[] vars = inputPattern.getVariables();
             final Expression repExpr = inputPattern.getRepeatExpr();
 
             if (repExpr == null) {
                 for (int j = 0; j < vars.length; j++) {
-                    final InputChannel channel =
-                        ((InputPort)(inputPortMap.get(inputPattern
-                                             .getPortname()))).getChannel(0); // FIXME
-                    local.bind(vars[j],
-                            new SingleTokenReaderThunk(channel, j));
+                    final InputChannel channel = ((InputPort) (inputPortMap.get(inputPattern
+                                        .getPortname()))).getChannel(0); // FIXME
+                    local.bind(vars[j], new SingleTokenReaderThunk(channel, j));
                 }
             } else {
-                SimpleThunk repExprThunk =
-                    new SimpleThunk(repExpr, context, local);
+                SimpleThunk repExprThunk = new SimpleThunk(repExpr, context,
+                        local);
                 local.bind(new EnvironmentKey(inputPattern.getPortname()),
-                        repExprThunk);
+                    repExprThunk);
+
                 for (int j = 0; j < vars.length; j++) {
-                    final InputChannel channel =
-                        ((InputPort)(inputPortMap.get(inputPattern
-                                             .getPortname()))).getChannel(0); // FIXME
-                    local.bind(vars[j], new MultipleTokenReaderThunk(channel,
-                                       j, vars.length, repExprThunk, context));
+                    final InputChannel channel = ((InputPort) (inputPortMap.get(inputPattern
+                                        .getPortname()))).getChannel(0); // FIXME
+                    local.bind(vars[j],
+                        new MultipleTokenReaderThunk(channel, j, vars.length,
+                            repExprThunk, context));
                 }
             }
         }
-        final Decl [] decls = action.getDecls();
+
+        final Decl[] decls = action.getDecls();
+
         for (int i = 0; i < decls.length; i++) {
             final Expression v = decls[i].getInitialValue();
+
             if (v == null) {
                 local.bind(decls[i].getName(), null);
             } else {
                 local.bind(decls[i].getName(),
-                        new SimpleThunk(v, context, local));
+                    new SimpleThunk(v, context, local));
             }
         }
 
@@ -168,42 +174,51 @@ public class DataflowActorInterpreter {
      * evaluation of the guards could not be successfully completed.
      */
     public boolean actionEvaluatePrecondition() {
-        if (envAction == null)
+        if (envAction == null) {
             throw new InterpreterException(
-                    "DataflowActorInterpreter: Must call actionSetup() "
-                    + "before calling actionEvaluatePrecondition().");
+                "DataflowActorInterpreter: Must call actionSetup() "
+                + "before calling actionEvaluatePrecondition().");
+        }
+
         final Action action = envAction;
         final InputPattern[] inputPatterns = action.getInputPatterns();
+
         for (int i = 0; i < inputPatterns.length; i++) {
             final InputPattern inputPattern = inputPatterns[i];
+
             // FIXME: handle multiports
-            final InputChannel channel =
-                ((InputPort)(inputPortMap.get(inputPattern
-                                     .getPortname()))).getChannel(0);
+            final InputChannel channel = ((InputPort) (inputPortMap.get(inputPattern
+                                .getPortname()))).getChannel(0);
+
             if (inputPattern.getRepeatExpr() == null) {
                 if (!channel.hasAvailable(inputPattern.getVariables().length)) {
                     // System.out.println("Not enough inputs:" + inputPattern.getVariables().length);
                     return false;
                 }
             } else {
-                int repeatVal = context.intValue(env
-                        .get(new EnvironmentKey(inputPattern.getPortname())));
+                int repeatVal = context.intValue(env.get(
+                            new EnvironmentKey(inputPattern.getPortname())));
+
                 if (!channel.hasAvailable(
-                            inputPattern.getVariables().length * repeatVal)) {
+                                    inputPattern.getVariables().length * repeatVal)) {
                     // System.out.println("Not enough repeated inputs:" + inputPattern.getVariables().length * repeatVal);
                     return false;
                 }
             }
         }
+
         final ExprEvaluator eval = new ExprEvaluator(context, env);
-        final Expression [] guards = action.getGuards();
+        final Expression[] guards = action.getGuards();
+
         for (int i = 0; i < guards.length; i++) {
             final Object g = eval.evaluate(guards[i]);
-            if (! context.booleanValue(g))  {
+
+            if (!context.booleanValue(g)) {
                 // System.out.println("guard not satisfied:" + guards[i]);
                 return false;
             }
         }
+
         return true;
     }
 
@@ -217,18 +232,19 @@ public class DataflowActorInterpreter {
     public void actionStep() {
         if (envAction == null) {
             throw new InterpreterException(
-                    "DataflowActorInterpreter: Must call actionSetup() "
-                    + "before calling actionStep().");
+                "DataflowActorInterpreter: Must call actionSetup() "
+                + "before calling actionStep().");
         }
 
         // First evaluate the action-level thunks, so that their value
         // will not be affected by subsequent assignments to action
         // or actor variables.
-
         env.freezeLocal();
+
         final Action action = envAction;
         final StmtEvaluator eval = new StmtEvaluator(context, env);
-        final Statement [] body = action.getBody();
+        final Statement[] body = action.getBody();
+
         for (int i = 0; i < body.length; i++) {
             eval.evaluate(body[i]);
         }
@@ -243,31 +259,30 @@ public class DataflowActorInterpreter {
     public void actionComputeOutputs() {
         if (envAction == null) {
             throw new InterpreterException(
-                    "DataflowActorInterpreter: Must call actionSetup() "
-                    + "before calling actionComputeOutputs().");
+                "DataflowActorInterpreter: Must call actionSetup() "
+                + "before calling actionComputeOutputs().");
         }
+
         final Action action = envAction;
         final ExprEvaluator eval = new ExprEvaluator(context, env);
-        final OutputExpression [] outputExpressions =
-            action.getOutputExpressions();
+        final OutputExpression[] outputExpressions = action
+                        .getOutputExpressions();
+
         for (int i = 0; i < outputExpressions.length; i++) {
             final OutputExpression outputExpression = outputExpressions[i];
-            final Expression [] expressions =
-                outputExpression.getExpressions();
+            final Expression[] expressions = outputExpression.getExpressions();
             final Expression repeatExpr = outputExpression.getRepeatExpr();
 
-            final OutputChannel channel =
-                ((OutputPort)(outputPortMap.get(outputExpression
-                                      .getPortname()))).getChannel(0);
+            final OutputChannel channel = ((OutputPort) (outputPortMap.get(outputExpression
+                                .getPortname()))).getChannel(0);
 
             // FIXME: handle multiports
             if (repeatExpr != null) {
                 int repeatValue = context.intValue(eval.evaluate(repeatExpr));
-                List [] lists = new List[expressions.length];
+                List[] lists = new List[expressions.length];
 
                 for (int j = 0; j < lists.length; j++) {
-                    lists[j] =
-                        context.getList(eval.evaluate(expressions[j]));
+                    lists[j] = context.getList(eval.evaluate(expressions[j]));
                 }
 
                 for (int j = 0; j < repeatValue; j++) {
@@ -288,6 +303,7 @@ public class DataflowActorInterpreter {
      * is a mapping from channels to rates.
      * @return Map[ChannelID -> Integer]
      */
+
     /*public Map actionComputeOutputProfile() {
       if (envAction < 0) {
       throw new InterpreterException(
@@ -322,7 +338,7 @@ public class DataflowActorInterpreter {
      * cleared, too, allowing the system to reclaim any resources
      * associated with it.
      */
-    public void         actionClear() {
+    public void actionClear() {
         envAction = null;
         env = null;
     }
@@ -332,8 +348,7 @@ public class DataflowActorInterpreter {
      *
      * @return The current action, null if none.
      */
-
-    public Action          currentAction() {
+    public Action currentAction() {
         return envAction;
     }
 
@@ -341,8 +356,7 @@ public class DataflowActorInterpreter {
      * Return the number of actions in this actor.
      * @return Number of actions.
      */
-
-    public int          nActions() {
+    public int nActions() {
         return actor.getActions().length;
     }
 
@@ -350,8 +364,7 @@ public class DataflowActorInterpreter {
      * Return the number of initializers in this actor.
      * @return Number of initializers.
      */
-
-    public int          nInitializers() {
+    public int nInitializers() {
         return actor.getInitializers().length;
     }
 
@@ -367,8 +380,8 @@ public class DataflowActorInterpreter {
      * @see caltrop.interpreter.OutputChannel
      */
     public DataflowActorInterpreter(final Actor actor, final Context context,
-            final Environment actorEnv,
-            final Map inputPortMap, final Map outputPortMap) {
+        final Environment actorEnv, final Map inputPortMap,
+        final Map outputPortMap) {
         this.actor = actor;
         this.context = context;
         this.actorEnv = actorEnv;
@@ -376,24 +389,20 @@ public class DataflowActorInterpreter {
         this.outputPortMap = outputPortMap;
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    private Actor           actor;
-    private Context         context;
-    private Environment     actorEnv;
-    private Environment     env = null;
-    private Action          envAction = null;
-
-    private Map  inputPortMap;
+    private Actor actor;
+    private Context context;
+    private Environment actorEnv;
+    private Environment env = null;
+    private Action envAction = null;
+    private Map inputPortMap;
 
     public void setOutputPortMap(Map outputPortMap) {
         this.outputPortMap = outputPortMap;
     }
 
-    private Map  outputPortMap;
-
+    private Map outputPortMap;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
@@ -409,8 +418,9 @@ public class DataflowActorInterpreter {
         public Object value() {
             if (val == this) {
                 val = channel.get(index);
-                channel = null;         // release ref to channel
+                channel = null; // release ref to channel
             }
+
             return val;
         }
 
@@ -427,18 +437,18 @@ public class DataflowActorInterpreter {
         }
 
         public SingleTokenReaderThunk(final InputChannel channel,
-                final int index) {
+            final int index) {
             this.channel = channel;
             this.index = index;
+
             // this is definitely not a legal value for a token
             val = this;
         }
 
         private InputChannel channel;
-        private int     index;
-        private Object  val;
+        private int index;
+        private Object val;
     }
-
 
     private static class MultipleTokenReaderThunk
         implements Environment.VariableContainer {
@@ -457,16 +467,18 @@ public class DataflowActorInterpreter {
                 Object repeatVal = repeatExpr.value();
                 int length = context.intValue(repeatVal);
                 List tokens = new ArrayList();
+
                 for (int i = 0; i < length; i++) {
-                    tokens.add(channel.get(offset + i*period));
+                    tokens.add(channel.get(offset + (i * period)));
                 }
+
                 val = context.createList(tokens);
                 channel = null;
             }
         }
 
         public MultipleTokenReaderThunk(InputChannel channel, int offset,
-                int period, SimpleThunk repeatExpr, Context context) {
+            int period, SimpleThunk repeatExpr, Context context) {
             this.channel = channel;
             this.offset = offset;
             this.period = period;
@@ -476,13 +488,11 @@ public class DataflowActorInterpreter {
         }
 
         private InputChannel channel;
-        private int     offset;
-        private int     period;
+        private int offset;
+        private int period;
         private SimpleThunk repeatExpr;
-        private Object  val;
+        private Object val;
         private Context context;
-
-
     }
 
     private static class EnvironmentKey {
@@ -497,7 +507,7 @@ public class DataflowActorInterpreter {
 
         public boolean equals(Object obj) {
             if (obj instanceof EnvironmentKey) {
-                return thingy.equals(((EnvironmentKey)obj).thingy);
+                return thingy.equals(((EnvironmentKey) obj).thingy);
             } else {
                 return false;
             }

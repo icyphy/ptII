@@ -81,7 +81,7 @@ public class ContinuousClock extends Clock {
      *   actor with this name.
      */
     public ContinuousClock(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         defaultValue = new Parameter(this, "defaultValue");
         defaultValue.setExpression("0");
@@ -89,11 +89,11 @@ public class ContinuousClock extends Clock {
         // Override the signal type to be CONTINUOUS to indicate
         // that this actor produce outputs with state semantics.
         ((Parameter) output.getAttribute("signalType")).setToken(new StringToken(
-                                                                         "CONTINUOUS"));
+                "CONTINUOUS"));
 
         // Override of the trigger signal type to CONTINUOUS.
         ((Parameter) trigger.getAttribute("signalType")).setToken(new StringToken(
-                                                                          "CONTINUOUS"));
+                "CONTINUOUS"));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -114,7 +114,6 @@ public class ContinuousClock extends Clock {
      *  @exception IllegalActionException If output can not send value.
      */
     public void fire() throws IllegalActionException {
-
         // Use the strategy pattern here so that derived classes can
         // override how this is done.
         _updateTentativeValues();
@@ -122,17 +121,19 @@ public class ContinuousClock extends Clock {
         // In initialize() method, we already ensured that the director is
         // a CTDirector. 
         CTDirector director = (CTDirector) getDirector();
+
         if (director.isDiscretePhase()) {
             // Get the current time and period.
             Time currentTime = director.getModelTime();
             double periodValue = ((DoubleToken) period.getToken()).doubleValue();
-            
+
             // Use Time.NEGATIVE_INFINITY to indicate that no refire
             // event should be scheduled because we aren't at a phase boundary.
             _tentativeNextFiringTime = Time.NEGATIVE_INFINITY;
+
             // By default, the cycle count will not be incremented.
             _tentativeCycleCountIncrement = 0;
-            
+
             // In case current time has reached or crossed a boundary between
             // periods, update it.  Note that normally the time will not
             // advance more than one period
@@ -141,69 +142,68 @@ public class ContinuousClock extends Clock {
             // But do not do this if we are before the first iteration.
             // FIXME: why?
             if (_tentativeCycleCount > 0) {
-                while (_tentativeCycleStartTime.add(periodValue)
-                        .compareTo(currentTime) <= 0) {
-                    _tentativeCycleStartTime = 
-                        _tentativeCycleStartTime.add(periodValue);
+                while (_tentativeCycleStartTime.add(periodValue).compareTo(currentTime) <= 0) {
+                    _tentativeCycleStartTime = _tentativeCycleStartTime.add(periodValue);
                 }
             }
 
             // Adjust the phase if the current time has moved beyond 
             // the current phase time.
-            Time currentPhaseTime = 
-                _tentativeCycleStartTime.add(_offsets[_tentativePhase]);
+            Time currentPhaseTime = _tentativeCycleStartTime.add(_offsets[_tentativePhase]);
+
             if (currentTime.compareTo(currentPhaseTime) == 0) {
                 // Phase boundary.  Change the current value.
                 _tentativeCurrentValue = _getValue(_tentativePhase);
+
                 // If we are beyond the number of cycles requested, then
                 // change the output value to zero.
-                int cycleLimit = 
-                    ((IntToken) numberOfCycles.getToken()).intValue();
-                
+                int cycleLimit = ((IntToken) numberOfCycles.getToken())
+                                .intValue();
+
                 // FIXME: performance suffers from this. cache the stop time.
                 // NOTE: there are two stop time. One is based on the cycles
                 // and period, and the other one is based on the stopTime 
                 // parameter.
-                Time stopTime = 
-                    _tentativeStartTime.add(cycleLimit * periodValue);
-                
+                Time stopTime = _tentativeStartTime.add(cycleLimit * periodValue);
+
                 if (((cycleLimit > 0) && (currentTime.compareTo(stopTime) >= 0))
-                        || _tentativeDone) {
+                                || _tentativeDone) {
                     _tentativeCurrentValue = defaultValue.getToken();
                 }
-                
+
                 // Schedule the next firing in this period.
                 // NOTE: In the TM domain, this may not occur if we have
                 // missed a deadline.  As a consequence, the clock will stop.
                 _tentativeNextFiringTime = _tentativeCycleStartTime.add(_offsets[_tentativePhase]);
-                
+
                 if (_debugging) {
                     _debug("next firing is at " + _tentativeNextFiringTime);
                 }
-                
+
                 // Increment to the next phase.
                 _tentativePhase++;
-                
+
                 if (_tentativePhase >= _offsets.length) {
                     _tentativePhase = 0;
-                    
+
                     // Schedule the first firing in the next period.
                     _tentativeCycleStartTime = _tentativeCycleStartTime.add(periodValue);
-                    
+
                     // Indicate that the cycle count should increase.
                     _tentativeCycleCountIncrement++;
                 }
-                
+
                 if (_offsets[_tentativePhase] >= periodValue) {
                     throw new IllegalActionException(this,
-                            "Offset number " + _tentativePhase + " with value "
-                            + _offsets[_tentativePhase]
-                                       + " must be strictly less than the "
-                                       + "period, which is " + periodValue);
+                        "Offset number " + _tentativePhase + " with value "
+                        + _offsets[_tentativePhase]
+                        + " must be strictly less than the "
+                        + "period, which is " + periodValue);
                 }
             } else if (currentTime.compareTo(currentPhaseTime) < 0) {
                 _tentativeNextFiringTime = currentPhaseTime;
             }
+
             _updateStates();
         }
 
@@ -211,7 +211,7 @@ public class ContinuousClock extends Clock {
 
         if (_debugging) {
             _debug("Output: " + _currentValue + " at "
-                    + getDirector().getModelTime() + ".");
+                + getDirector().getModelTime() + ".");
         }
     }
 
@@ -233,7 +233,7 @@ public class ContinuousClock extends Clock {
     public void preinitialize() throws IllegalActionException {
         if (!(getDirector() instanceof CTDirector)) {
             throw new IllegalActionException("ContinuousClock can only"
-                    + " be used inside CT domain.");
+                + " be used inside CT domain.");
         }
 
         super.preinitialize();
@@ -259,9 +259,11 @@ public class ContinuousClock extends Clock {
         if (getDirector().getModelTime().compareTo(getModelStopTime()) > 0) {
             postfireReturns = false;
         }
+
         if (_debugging) {
             _debug(" --- Postfire returns " + postfireReturns + ".");
         }
+
         return postfireReturns;
     }
 }

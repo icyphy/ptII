@@ -61,7 +61,7 @@ public class LempelZivCoder extends Transformer {
      *   actor with this name.
      */
     public LempelZivCoder(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // Declare port types.
@@ -90,22 +90,22 @@ public class LempelZivCoder extends Transformer {
                 _previousIndex = index;
             }
         } /*else if (_current != "") {
-          // FIXME: This part of output can not be produced.
-          // The last few input booleans can not be encoded and produced.
-          // The input probably should be a string or frame of booleans.
-          // I.e., the actor knows whether the current input is the last
-          // input token, probably by giving a parameter to specify the
-          // length of the input.
-          int length = _current.length();
-          _previousIndex =
-          _codeBook.indexOf(_current.substring(0, length - 2));
-          output.send(0, new IntToken(_previousIndex));
-          if (_current.endsWith("1")) {
-          output.send(0, new IntToken(1));
-          } else {
-          output.send(0, new IntToken(0));
-          }
-          }*/}
+        // FIXME: This part of output can not be produced.
+        // The last few input booleans can not be encoded and produced.
+        // The input probably should be a string or frame of booleans.
+        // I.e., the actor knows whether the current input is the last
+        // input token, probably by giving a parameter to specify the
+        // length of the input.
+        int length = _current.length();
+        _previousIndex =
+        _codeBook.indexOf(_current.substring(0, length - 2));
+        output.send(0, new IntToken(_previousIndex));
+        if (_current.endsWith("1")) {
+        output.send(0, new IntToken(1));
+        } else {
+        output.send(0, new IntToken(0));
+        }
+        }*/}
 
     /** Initialize the actor by creating the code book containing
      *  only one empty string "".

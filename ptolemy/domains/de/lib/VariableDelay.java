@@ -61,7 +61,7 @@ public class VariableDelay extends TimedDelay {
      *   actor with this name.
      */
     public VariableDelay(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
     }
 
@@ -87,8 +87,8 @@ public class VariableDelay extends TimedDelay {
 
         if (_delay < 0) {
             throw new IllegalActionException("Can not have a "
-                    + "negative delay: " + _delay + ". "
-                    + "Check whether overflow happens.");
+                + "negative delay: " + _delay + ". "
+                + "Check whether overflow happens.");
         }
 
         // NOTE: _delay may be 0.0, which may change
@@ -114,7 +114,7 @@ public class VariableDelay extends TimedDelay {
      *  parameter values.
      */
     protected void _init()
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         delay = new PortParameter(this, "delay");
         delay.setExpression("1.0");
         delay.setTypeEquals(BaseType.DOUBLE);

@@ -86,7 +86,7 @@ public abstract class ParameterEditorStyle extends Attribute {
      *   an attribute already in the container.
      */
     public ParameterEditorStyle(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -112,7 +112,7 @@ public abstract class ParameterEditorStyle extends Attribute {
      *   has a value that cannot be edited using this style.
      */
     public abstract void addEntry(PtolemyQuery query)
-            throws IllegalActionException;
+        throws IllegalActionException;
 
     /** Override the base class to first check that the container is
      *  an instance of Settable.
@@ -126,7 +126,7 @@ public abstract class ParameterEditorStyle extends Attribute {
      *   an attribute with the name of this attribute.
      */
     public void setContainer(NamedObj container)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         // We want this check, but here is not the place.
         //     if (container != null && !(container instanceof Settable)) {
         //    throw new IllegalActionException(this, container,

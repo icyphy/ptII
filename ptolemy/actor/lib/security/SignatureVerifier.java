@@ -86,7 +86,7 @@ public class SignatureVerifier extends SignatureActor {
      *   actor with this name.
      */
     public SignatureVerifier(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         signature = new TypedIOPort(this, "signature", true, false);
@@ -135,23 +135,23 @@ public class SignatureVerifier extends SignatureActor {
         if (input.hasToken(0) && signature.hasToken(0) && (_publicKey != null)) {
             // Process the input data to generate a signature.
             byte[] signatureData = ArrayToken.arrayTokenToUnsignedByteArray((ArrayToken) signature
-                    .get(0));
+                                .get(0));
             ArrayToken inputToken = (ArrayToken) input.get(0);
 
             try {
                 _signature.initVerify(_publicKey);
                 _signature.update(ArrayToken.arrayTokenToUnsignedByteArray(
-                                          inputToken));
+                        inputToken));
 
                 if (!_signature.verify(signatureData)) {
                     throw new IllegalActionException(this,
-                            "Signature verification failed, "
-                            + "potential corruption or man in the "
-                            + "middle attack?");
+                        "Signature verification failed, "
+                        + "potential corruption or man in the "
+                        + "middle attack?");
                 }
             } catch (java.security.GeneralSecurityException ex) {
                 throw new IllegalActionException(this, ex,
-                        "There was a problem with the key or signature.");
+                    "There was a problem with the key or signature.");
             }
 
             // If we got to here, then the signature verified, so

@@ -14,7 +14,7 @@ package ptolemy.domains.ct.demo.Corba.util;
 public abstract class _CorbaActorImplBase
     extends org.omg.CORBA.portable.ObjectImpl
     implements ptolemy.domains.ct.demo.Corba.util.CorbaActor,
-               org.omg.CORBA.portable.InvokeHandler {
+        org.omg.CORBA.portable.InvokeHandler {
     // Constructors
     public _CorbaActorImplBase() {
     }
@@ -40,402 +40,404 @@ public abstract class _CorbaActorImplBase
     }
 
     public org.omg.CORBA.portable.OutputStream _invoke(String method,
-            org.omg.CORBA.portable.InputStream in,
-            org.omg.CORBA.portable.ResponseHandler rh) {
+        org.omg.CORBA.portable.InputStream in,
+        org.omg.CORBA.portable.ResponseHandler rh) {
         org.omg.CORBA.portable.OutputStream out = null;
         java.lang.Integer __method = (java.lang.Integer) _methods.get(method);
 
         if (__method == null) {
             throw new org.omg.CORBA.BAD_OPERATION(0,
-                    org.omg.CORBA.CompletionStatus.COMPLETED_MAYBE);
+                org.omg.CORBA.CompletionStatus.COMPLETED_MAYBE);
         }
 
         switch (__method.intValue()) {
-            /* Mirror the fire() method of the Ptolemy
-             * executable interface.
-             * @exception CorbaIllegalActionException If the
-             *   method is an illegal action of the actor.
-             */
+        /* Mirror the fire() method of the Ptolemy
+         * executable interface.
+         * @exception CorbaIllegalActionException If the
+         *   method is an illegal action of the actor.
+         */
         case 0: // util/CorbaActor/fire
-            {
-                try {
-                    this.fire();
-                    out = rh.createReply();
-                } catch (ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionException __ex) {
-                    out = rh.createExceptionReply();
-                    ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionExceptionHelper
-                        .write(out, __ex);
-                }
-
-                break;
+         {
+            try {
+                this.fire();
+                out = rh.createReply();
+            } catch (ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionException __ex) {
+                out = rh.createExceptionReply();
+                ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionExceptionHelper
+                            .write(out, __ex);
             }
 
-            /* Return the value (in the form of a string) of
-             * a parameter.
-             * @exception CorbaIllegalActionException If the
-             *  query of parameter is not supported by the actor.
-             * @exception CorbaUnknowParamException If the parameter
-             *  name is not known by the actor.
-             */
+            break;
+        }
+
+        /* Return the value (in the form of a string) of
+         * a parameter.
+         * @exception CorbaIllegalActionException If the
+         *  query of parameter is not supported by the actor.
+         * @exception CorbaUnknowParamException If the parameter
+         *  name is not known by the actor.
+         */
         case 1: // util/CorbaActor/getParameter
-            {
-                try {
-                    String paramName = in.read_string();
-                    String __result = null;
-                    __result = this.getParameter(paramName);
-                    out = rh.createReply();
-                    out.write_string(__result);
-                } catch (ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionException __ex) {
-                    out = rh.createExceptionReply();
-                    ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionExceptionHelper
-                        .write(out, __ex);
-                } catch (ptolemy.domains.ct.demo.Corba.util.CorbaUnknownParamException __ex) {
-                    out = rh.createExceptionReply();
-                    ptolemy.domains.ct.demo.Corba.util.CorbaUnknownParamExceptionHelper
-                        .write(out, __ex);
-                }
-
-                break;
-            }
-
-            /* Mirror the initialize() method of the Ptolmey
-             * executable interface.
-             * @exception CorbaIllegalActionException If the
-             *   method is an illegal action of the actor.
-             */
-        case 2: // util/CorbaActor/initialize
-            {
-                try {
-                    this.initialize();
-                    out = rh.createReply();
-                } catch (ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionException __ex) {
-                    out = rh.createExceptionReply();
-                    ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionExceptionHelper
-                        .write(out, __ex);
-                }
-
-                break;
-            }
-
-            /* Return true if the specified channel of the specified
-             * port contains unsent data.
-             * @exception CorbaIllegalActionException If the query is
-             *   not supported by the actor.
-             * @exception CorbaUnknownPortException If the specified
-             *   port is not known by the actor.
-             * @exception CorbaIndexOutofBoundException If the
-             *   channel index is out of the width of the port.
-             */
-        case 3: // util/CorbaActor/hasData
-            {
-                try {
-                    String portName = in.read_string();
-                    short portIndex = in.read_short();
-                    boolean __result = false;
-                    __result = this.hasData(portName, portIndex);
-                    out = rh.createReply();
-                    out.write_boolean(__result);
-                } catch (ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionException __ex) {
-                    out = rh.createExceptionReply();
-                    ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionExceptionHelper
-                        .write(out, __ex);
-                } catch (ptolemy.domains.ct.demo.Corba.util.CorbaIndexOutofBoundException __ex) {
-                    out = rh.createExceptionReply();
-                    ptolemy.domains.ct.demo.Corba.util.CorbaIndexOutofBoundExceptionHelper
-                        .write(out, __ex);
-                } catch (ptolemy.domains.ct.demo.Corba.util.CorbaUnknownPortException __ex) {
-                    out = rh.createExceptionReply();
-                    ptolemy.domains.ct.demo.Corba.util.CorbaUnknownPortExceptionHelper
-                        .write(out, __ex);
-                }
-
-                break;
-            }
-
-            /* Return true if there is a parameter of the specified
-             * name defined in the actor.
-             */
-        case 4: // util/CorbaActor/hasParameter
-            {
+         {
+            try {
                 String paramName = in.read_string();
-                boolean __result = false;
-                __result = this.hasParameter(paramName);
+                String __result = null;
+                __result = this.getParameter(paramName);
                 out = rh.createReply();
-                out.write_boolean(__result);
-                break;
+                out.write_string(__result);
+            } catch (ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionException __ex) {
+                out = rh.createExceptionReply();
+                ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionExceptionHelper
+                            .write(out, __ex);
+            } catch (ptolemy.domains.ct.demo.Corba.util.CorbaUnknownParamException __ex) {
+                out = rh.createExceptionReply();
+                ptolemy.domains.ct.demo.Corba.util.CorbaUnknownParamExceptionHelper
+                            .write(out, __ex);
             }
 
-            /* Return true if there is a port of the specified name
-             * and specified property contained by the actor.
-             * @param portName The name of the port.
-             * @param isInput True if the port is an input port.
-             * @param isOutput True if the port is an output port.
-             * @param isMultiport True if the port is a multiport.
-             */
-        case 5: // util/CorbaActor/hasPort
-            {
+            break;
+        }
+
+        /* Mirror the initialize() method of the Ptolmey
+         * executable interface.
+         * @exception CorbaIllegalActionException If the
+         *   method is an illegal action of the actor.
+         */
+        case 2: // util/CorbaActor/initialize
+         {
+            try {
+                this.initialize();
+                out = rh.createReply();
+            } catch (ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionException __ex) {
+                out = rh.createExceptionReply();
+                ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionExceptionHelper
+                            .write(out, __ex);
+            }
+
+            break;
+        }
+
+        /* Return true if the specified channel of the specified
+         * port contains unsent data.
+         * @exception CorbaIllegalActionException If the query is
+         *   not supported by the actor.
+         * @exception CorbaUnknownPortException If the specified
+         *   port is not known by the actor.
+         * @exception CorbaIndexOutofBoundException If the
+         *   channel index is out of the width of the port.
+         */
+        case 3: // util/CorbaActor/hasData
+         {
+            try {
                 String portName = in.read_string();
-                boolean isInput = in.read_boolean();
-                boolean isOutput = in.read_boolean();
-                boolean isMultiport = in.read_boolean();
+                short portIndex = in.read_short();
                 boolean __result = false;
-                __result = this.hasPort(portName, isInput, isOutput, isMultiport);
+                __result = this.hasData(portName, portIndex);
                 out = rh.createReply();
                 out.write_boolean(__result);
-                break;
+            } catch (ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionException __ex) {
+                out = rh.createExceptionReply();
+                ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionExceptionHelper
+                            .write(out, __ex);
+            } catch (ptolemy.domains.ct.demo.Corba.util.CorbaIndexOutofBoundException __ex) {
+                out = rh.createExceptionReply();
+                ptolemy.domains.ct.demo.Corba.util.CorbaIndexOutofBoundExceptionHelper
+                            .write(out, __ex);
+            } catch (ptolemy.domains.ct.demo.Corba.util.CorbaUnknownPortException __ex) {
+                out = rh.createExceptionReply();
+                ptolemy.domains.ct.demo.Corba.util.CorbaUnknownPortExceptionHelper
+                            .write(out, __ex);
             }
 
-            /* Set the width of the specified port.
-             * @param portName The name of the port.
-             * @param width The width to be set.
-             * @exception CorbaIllegalActionException If the width
-             *  to be set is not supported by the port, e.g. the
-             *  port is restricted to a single port, but the width
-             *  to be set is greater than one.
-             * @exception CorbaUnknownPortException If the port is \
-             *  not known by the actor.
-             */
+            break;
+        }
+
+        /* Return true if there is a parameter of the specified
+         * name defined in the actor.
+         */
+        case 4: // util/CorbaActor/hasParameter
+         {
+            String paramName = in.read_string();
+            boolean __result = false;
+            __result = this.hasParameter(paramName);
+            out = rh.createReply();
+            out.write_boolean(__result);
+            break;
+        }
+
+        /* Return true if there is a port of the specified name
+         * and specified property contained by the actor.
+         * @param portName The name of the port.
+         * @param isInput True if the port is an input port.
+         * @param isOutput True if the port is an output port.
+         * @param isMultiport True if the port is a multiport.
+         */
+        case 5: // util/CorbaActor/hasPort
+         {
+            String portName = in.read_string();
+            boolean isInput = in.read_boolean();
+            boolean isOutput = in.read_boolean();
+            boolean isMultiport = in.read_boolean();
+            boolean __result = false;
+            __result = this.hasPort(portName, isInput, isOutput, isMultiport);
+            out = rh.createReply();
+            out.write_boolean(__result);
+            break;
+        }
+
+        /* Set the width of the specified port.
+         * @param portName The name of the port.
+         * @param width The width to be set.
+         * @exception CorbaIllegalActionException If the width
+         *  to be set is not supported by the port, e.g. the
+         *  port is restricted to a single port, but the width
+         *  to be set is greater than one.
+         * @exception CorbaUnknownPortException If the port is \
+         *  not known by the actor.
+         */
         case 6: // util/CorbaActor/setPortWidth
-            {
-                try {
-                    String portName = in.read_string();
-                    short width = in.read_short();
-                    this.setPortWidth(portName, width);
-                    out = rh.createReply();
-                } catch (ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionException __ex) {
-                    out = rh.createExceptionReply();
-                    ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionExceptionHelper
-                        .write(out, __ex);
-                } catch (ptolemy.domains.ct.demo.Corba.util.CorbaUnknownPortException __ex) {
-                    out = rh.createExceptionReply();
-                    ptolemy.domains.ct.demo.Corba.util.CorbaUnknownPortExceptionHelper
-                        .write(out, __ex);
-                }
-
-                break;
+         {
+            try {
+                String portName = in.read_string();
+                short width = in.read_short();
+                this.setPortWidth(portName, width);
+                out = rh.createReply();
+            } catch (ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionException __ex) {
+                out = rh.createExceptionReply();
+                ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionExceptionHelper
+                            .write(out, __ex);
+            } catch (ptolemy.domains.ct.demo.Corba.util.CorbaUnknownPortException __ex) {
+                out = rh.createExceptionReply();
+                ptolemy.domains.ct.demo.Corba.util.CorbaUnknownPortExceptionHelper
+                            .write(out, __ex);
             }
 
-            /* Mirror the postfire() method of the Ptolmey
-             * executable interface.
-             * @exception CorbaIllegalActionException If the
-             *   method is an illegal action of the actor.
-             */
+            break;
+        }
+
+        /* Mirror the postfire() method of the Ptolmey
+         * executable interface.
+         * @exception CorbaIllegalActionException If the
+         *   method is an illegal action of the actor.
+         */
         case 7: // util/CorbaActor/postfire
-            {
-                try {
-                    boolean __result = false;
-                    __result = this.postfire();
-                    out = rh.createReply();
-                    out.write_boolean(__result);
-                } catch (ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionException __ex) {
-                    out = rh.createExceptionReply();
-                    ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionExceptionHelper
-                        .write(out, __ex);
-                }
-
-                break;
+         {
+            try {
+                boolean __result = false;
+                __result = this.postfire();
+                out = rh.createReply();
+                out.write_boolean(__result);
+            } catch (ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionException __ex) {
+                out = rh.createExceptionReply();
+                ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionExceptionHelper
+                            .write(out, __ex);
             }
 
-            /* Mirror the prefire() method of the Ptolmey
-             * executable interface.
-             * @exception CorbaIllegalActionException If the
-             *   method is an illegal action of the actor.
-             */
+            break;
+        }
+
+        /* Mirror the prefire() method of the Ptolmey
+         * executable interface.
+         * @exception CorbaIllegalActionException If the
+         *   method is an illegal action of the actor.
+         */
         case 8: // util/CorbaActor/prefire
-            {
-                try {
-                    boolean __result = false;
-                    __result = this.prefire();
-                    out = rh.createReply();
-                    out.write_boolean(__result);
-                } catch (ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionException __ex) {
-                    out = rh.createExceptionReply();
-                    ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionExceptionHelper
-                        .write(out, __ex);
-                }
-
-                break;
+         {
+            try {
+                boolean __result = false;
+                __result = this.prefire();
+                out = rh.createReply();
+                out.write_boolean(__result);
+            } catch (ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionException __ex) {
+                out = rh.createExceptionReply();
+                ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionExceptionHelper
+                            .write(out, __ex);
             }
 
-            /* Set the value of the specified parameter.
-             * @param paramName The parameter name.
-             * @param paramValue The value to be set.
-             * @exception CorbaIllegalActionException If the set
-             *  value opertaion is not supported by the parameter.
-             * @exception CorbaUnknownParamException If the
-             *  parameter name is not known by the actor.
-             * @exception CorbaIllegalValueException If the value
-             *  is invalid for this parameter.
-             */
+            break;
+        }
+
+        /* Set the value of the specified parameter.
+         * @param paramName The parameter name.
+         * @param paramValue The value to be set.
+         * @exception CorbaIllegalActionException If the set
+         *  value opertaion is not supported by the parameter.
+         * @exception CorbaUnknownParamException If the
+         *  parameter name is not known by the actor.
+         * @exception CorbaIllegalValueException If the value
+         *  is invalid for this parameter.
+         */
         case 9: // util/CorbaActor/setParameter
-            {
-                try {
-                    String paramName = in.read_string();
-                    String paramValue = in.read_string();
-                    this.setParameter(paramName, paramValue);
-                    out = rh.createReply();
-                } catch (ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionException __ex) {
-                    out = rh.createExceptionReply();
-                    ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionExceptionHelper
-                        .write(out, __ex);
-                } catch (ptolemy.domains.ct.demo.Corba.util.CorbaUnknownParamException __ex) {
-                    out = rh.createExceptionReply();
-                    ptolemy.domains.ct.demo.Corba.util.CorbaUnknownParamExceptionHelper
-                        .write(out, __ex);
-                } catch (ptolemy.domains.ct.demo.Corba.util.CorbaIllegalValueException __ex) {
-                    out = rh.createExceptionReply();
-                    ptolemy.domains.ct.demo.Corba.util.CorbaIllegalValueExceptionHelper
-                        .write(out, __ex);
-                }
-
-                break;
+         {
+            try {
+                String paramName = in.read_string();
+                String paramValue = in.read_string();
+                this.setParameter(paramName, paramValue);
+                out = rh.createReply();
+            } catch (ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionException __ex) {
+                out = rh.createExceptionReply();
+                ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionExceptionHelper
+                            .write(out, __ex);
+            } catch (ptolemy.domains.ct.demo.Corba.util.CorbaUnknownParamException __ex) {
+                out = rh.createExceptionReply();
+                ptolemy.domains.ct.demo.Corba.util.CorbaUnknownParamExceptionHelper
+                            .write(out, __ex);
+            } catch (ptolemy.domains.ct.demo.Corba.util.CorbaIllegalValueException __ex) {
+                out = rh.createExceptionReply();
+                ptolemy.domains.ct.demo.Corba.util.CorbaIllegalValueExceptionHelper
+                            .write(out, __ex);
             }
 
-            /*  Mirror the stopFire() method of the Ptolmey
-             * executable interface.
-             * @exception CorbaIllegalActionException If the
-             *   method is an illegal action of the actor.
-             */
+            break;
+        }
+
+        /*  Mirror the stopFire() method of the Ptolmey
+         * executable interface.
+         * @exception CorbaIllegalActionException If the
+         *   method is an illegal action of the actor.
+         */
         case 10: // util/CorbaActor/stopFire
-            {
-                try {
-                    this.stopFire();
-                    out = rh.createReply();
-                } catch (ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionException __ex) {
-                    out = rh.createExceptionReply();
-                    ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionExceptionHelper
-                        .write(out, __ex);
-                }
-
-                break;
+         {
+            try {
+                this.stopFire();
+                out = rh.createReply();
+            } catch (ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionException __ex) {
+                out = rh.createExceptionReply();
+                ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionExceptionHelper
+                            .write(out, __ex);
             }
 
-            /* Mirror the terminate() method of the Ptolmey
-             * executable interface.
-             * @exception CorbaIllegalActionException If the
-             *   method is an illegal action of the actor.
-             */
+            break;
+        }
+
+        /* Mirror the terminate() method of the Ptolmey
+         * executable interface.
+         * @exception CorbaIllegalActionException If the
+         *   method is an illegal action of the actor.
+         */
         case 11: // util/CorbaActor/terminate
-            {
-                try {
-                    this.terminate();
-                    out = rh.createReply();
-                } catch (ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionException __ex) {
-                    out = rh.createExceptionReply();
-                    ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionExceptionHelper
-                        .write(out, __ex);
-                }
-
-                break;
+         {
+            try {
+                this.terminate();
+                out = rh.createReply();
+            } catch (ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionException __ex) {
+                out = rh.createExceptionReply();
+                ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionExceptionHelper
+                            .write(out, __ex);
             }
 
-            /* Transfer the input data to the specified port.
-             * @param portName The port name.
-             * @param portIndex The channel number within the port.
-             * @param tokenValue The string for the value of the
-             *        data token.
-             * @exception CorbaIllegalActionException If the action is
-             *  illegal.
-             * @exception CorbaUnknownPortException If the port is unknown.
-             * @exception CorbaIndexOutofBoundException If the index
-             *  number is out of the width of the port.
-             * @exception CorbaIllegalValueException If the value is not
-             *  valid, e.g. the string cannot be converted to a value.
-             */
+            break;
+        }
+
+        /* Transfer the input data to the specified port.
+         * @param portName The port name.
+         * @param portIndex The channel number within the port.
+         * @param tokenValue The string for the value of the
+         *        data token.
+         * @exception CorbaIllegalActionException If the action is
+         *  illegal.
+         * @exception CorbaUnknownPortException If the port is unknown.
+         * @exception CorbaIndexOutofBoundException If the index
+         *  number is out of the width of the port.
+         * @exception CorbaIllegalValueException If the value is not
+         *  valid, e.g. the string cannot be converted to a value.
+         */
         case 12: // util/CorbaActor/transferInput
-            {
-                try {
-                    String portName = in.read_string();
-                    short portIndex = in.read_short();
-                    String tokenValue = in.read_string();
-                    this.transferInput(portName, portIndex, tokenValue);
-                    out = rh.createReply();
-                } catch (ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionException __ex) {
-                    out = rh.createExceptionReply();
-                    ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionExceptionHelper
-                        .write(out, __ex);
-                } catch (ptolemy.domains.ct.demo.Corba.util.CorbaUnknownPortException __ex) {
-                    out = rh.createExceptionReply();
-                    ptolemy.domains.ct.demo.Corba.util.CorbaUnknownPortExceptionHelper
-                        .write(out, __ex);
-                } catch (ptolemy.domains.ct.demo.Corba.util.CorbaIndexOutofBoundException __ex) {
-                    out = rh.createExceptionReply();
-                    ptolemy.domains.ct.demo.Corba.util.CorbaIndexOutofBoundExceptionHelper
-                        .write(out, __ex);
-                } catch (ptolemy.domains.ct.demo.Corba.util.CorbaIllegalValueException __ex) {
-                    out = rh.createExceptionReply();
-                    ptolemy.domains.ct.demo.Corba.util.CorbaIllegalValueExceptionHelper
-                        .write(out, __ex);
-                }
-
-                break;
+         {
+            try {
+                String portName = in.read_string();
+                short portIndex = in.read_short();
+                String tokenValue = in.read_string();
+                this.transferInput(portName, portIndex, tokenValue);
+                out = rh.createReply();
+            } catch (ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionException __ex) {
+                out = rh.createExceptionReply();
+                ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionExceptionHelper
+                            .write(out, __ex);
+            } catch (ptolemy.domains.ct.demo.Corba.util.CorbaUnknownPortException __ex) {
+                out = rh.createExceptionReply();
+                ptolemy.domains.ct.demo.Corba.util.CorbaUnknownPortExceptionHelper
+                            .write(out, __ex);
+            } catch (ptolemy.domains.ct.demo.Corba.util.CorbaIndexOutofBoundException __ex) {
+                out = rh.createExceptionReply();
+                ptolemy.domains.ct.demo.Corba.util.CorbaIndexOutofBoundExceptionHelper
+                            .write(out, __ex);
+            } catch (ptolemy.domains.ct.demo.Corba.util.CorbaIllegalValueException __ex) {
+                out = rh.createExceptionReply();
+                ptolemy.domains.ct.demo.Corba.util.CorbaIllegalValueExceptionHelper
+                            .write(out, __ex);
             }
 
-            /* Transfer the output from an output port.
-             * @param portName The port name
-             * @param portIndex The channel index within the port.
-             * @exception CorbaIllegalActionException If the operation
-             *  is illegal, e.g. the port is not an output port.
-             * @exception CorbaUnknownPortException If the port name
-             *  is unknown.
-             * @exception CorbaIndexOutofBoundException If the index
-             *  number is out of the width of the port.
-             */
+            break;
+        }
+
+        /* Transfer the output from an output port.
+         * @param portName The port name
+         * @param portIndex The channel index within the port.
+         * @exception CorbaIllegalActionException If the operation
+         *  is illegal, e.g. the port is not an output port.
+         * @exception CorbaUnknownPortException If the port name
+         *  is unknown.
+         * @exception CorbaIndexOutofBoundException If the index
+         *  number is out of the width of the port.
+         */
         case 13: // util/CorbaActor/transferOutput
-            {
-                try {
-                    String portName = in.read_string();
-                    short portIndex = in.read_short();
-                    String __result = null;
-                    __result = this.transferOutput(portName, portIndex);
-                    out = rh.createReply();
-                    out.write_string(__result);
-                } catch (ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionException __ex) {
-                    out = rh.createExceptionReply();
-                    ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionExceptionHelper
-                        .write(out, __ex);
-                } catch (ptolemy.domains.ct.demo.Corba.util.CorbaUnknownPortException __ex) {
-                    out = rh.createExceptionReply();
-                    ptolemy.domains.ct.demo.Corba.util.CorbaUnknownPortExceptionHelper
-                        .write(out, __ex);
-                } catch (ptolemy.domains.ct.demo.Corba.util.CorbaIndexOutofBoundException __ex) {
-                    out = rh.createExceptionReply();
-                    ptolemy.domains.ct.demo.Corba.util.CorbaIndexOutofBoundExceptionHelper
-                        .write(out, __ex);
-                }
-
-                break;
+         {
+            try {
+                String portName = in.read_string();
+                short portIndex = in.read_short();
+                String __result = null;
+                __result = this.transferOutput(portName, portIndex);
+                out = rh.createReply();
+                out.write_string(__result);
+            } catch (ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionException __ex) {
+                out = rh.createExceptionReply();
+                ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionExceptionHelper
+                            .write(out, __ex);
+            } catch (ptolemy.domains.ct.demo.Corba.util.CorbaUnknownPortException __ex) {
+                out = rh.createExceptionReply();
+                ptolemy.domains.ct.demo.Corba.util.CorbaUnknownPortExceptionHelper
+                            .write(out, __ex);
+            } catch (ptolemy.domains.ct.demo.Corba.util.CorbaIndexOutofBoundException __ex) {
+                out = rh.createExceptionReply();
+                ptolemy.domains.ct.demo.Corba.util.CorbaIndexOutofBoundExceptionHelper
+                            .write(out, __ex);
             }
 
-            /* Mirror the wrapup() method of the Ptolmey
-             * executable interface.
-             * @exception CorbaIllegalActionException If the
-             *   method is an illegal action of the actor.
-             */
+            break;
+        }
+
+        /* Mirror the wrapup() method of the Ptolmey
+         * executable interface.
+         * @exception CorbaIllegalActionException If the
+         *   method is an illegal action of the actor.
+         */
         case 14: // util/CorbaActor/wrapup
-            {
-                try {
-                    this.wrapup();
-                    out = rh.createReply();
-                } catch (ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionException __ex) {
-                    out = rh.createExceptionReply();
-                    ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionExceptionHelper
-                        .write(out, __ex);
-                }
-
-                break;
+         {
+            try {
+                this.wrapup();
+                out = rh.createReply();
+            } catch (ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionException __ex) {
+                out = rh.createExceptionReply();
+                ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionExceptionHelper
+                            .write(out, __ex);
             }
+
+            break;
+        }
 
         default:
             throw new org.omg.CORBA.BAD_OPERATION(0,
-                    org.omg.CORBA.CompletionStatus.COMPLETED_MAYBE);
+                org.omg.CORBA.CompletionStatus.COMPLETED_MAYBE);
         }
 
         return out;
     } // _invoke
 
     // Type-specific CORBA::Object operations
-    private static String[] __ids = { "IDL:util/CorbaActor:1.0" };
+    private static String[] __ids = {
+            "IDL:util/CorbaActor:1.0"
+        };
 
     public String[] _ids() {
         return __ids;

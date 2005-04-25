@@ -81,7 +81,7 @@ public class WirelessToWired extends TypedAtomicActor {
      *   actor with this name.
      */
     public WirelessToWired(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         properties = new TypedIOPort(this, "properties", false, true);
@@ -100,8 +100,8 @@ public class WirelessToWired extends TypedAtomicActor {
         (new SingletonParameter(payload, "_showName")).setToken(BooleanToken.TRUE);
 
         _attachText("_iconDescription",
-                "<svg>\n" + "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
-                + "style=\"fill:white\"/>\n" + "</svg>\n");
+            "<svg>\n" + "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
+            + "style=\"fill:white\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////

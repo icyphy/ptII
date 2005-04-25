@@ -112,7 +112,7 @@ public class GiottoDirector extends StaticSchedulingDirector
      *   attribute in the container.
      */
     public GiottoDirector(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _init();
     }
@@ -141,12 +141,12 @@ public class GiottoDirector extends StaticSchedulingDirector
      *   is <i>filename</i> and the file cannot be opened.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == period) {
             _periodValue = ((DoubleToken) period.getToken()).doubleValue();
         } else if (attribute == synchronizeToRealTime) {
             _synchronizeToRealTime = ((BooleanToken) synchronizeToRealTime
-                    .getToken()).booleanValue();
+                            .getToken()).booleanValue();
         } else {
             super.attributeChanged(attribute);
         }
@@ -191,7 +191,7 @@ public class GiottoDirector extends StaticSchedulingDirector
 
             if (_expectedNextIterationTime.getDoubleValue() > elapsedTimeInSeconds) {
                 long timeToWait = (long) ((_expectedNextIterationTime
-                                                  .getDoubleValue() - elapsedTimeInSeconds) * 1000.0);
+                                .getDoubleValue() - elapsedTimeInSeconds) * 1000.0);
 
                 if (timeToWait > 0) {
                     if (_debugging) {
@@ -233,7 +233,7 @@ public class GiottoDirector extends StaticSchedulingDirector
 
             if (_debugging) {
                 _debug("Updating destination receivers of "
-                        + ((NamedObj) actor).getFullName());
+                    + ((NamedObj) actor).getFullName());
             }
 
             List outputPortList = actor.outputPortList();
@@ -372,7 +372,7 @@ public class GiottoDirector extends StaticSchedulingDirector
             while (outputPorts.hasNext()) {
                 IOPort port = (IOPort) outputPorts.next();
                 Parameter initialValueParameter = (Parameter) ((NamedObj) port)
-                    .getAttribute("initialValue");
+                                .getAttribute("initialValue");
 
                 if (initialValueParameter != null) {
                     // Since we delay the transfer of outputs, we have to
@@ -433,7 +433,7 @@ public class GiottoDirector extends StaticSchedulingDirector
             // Iteration is complete when the unit index wraps around.
             if (_debugging) {
                 _debug("===== Director completing unit of iteration: "
-                        + _iterationCount);
+                    + _iterationCount);
             }
 
             _iterationCount++;
@@ -489,7 +489,7 @@ public class GiottoDirector extends StaticSchedulingDirector
         if (_isEmbedded()) {
             CompositeActor container = (CompositeActor) getContainer();
             Time outsideCurrentTime = ((Actor) container).getExecutiveDirector()
-                .getModelTime();
+                                                   .getModelTime();
 
             if (outsideCurrentTime.compareTo(_expectedNextIterationTime) < 0) {
                 // not the scheduled time to fire.
@@ -533,13 +533,13 @@ public class GiottoDirector extends StaticSchedulingDirector
 
             if (executiveDirector instanceof GiottoDirector) {
                 double periodValue = ((GiottoDirector) executiveDirector)
-                    .getPeriod();
+                                .getPeriod();
                 Attribute frequency = compositeActor.getAttribute("frequency");
                 int frequencyValue;
 
                 if (frequency != null) {
                     frequencyValue = ((IntToken) (((Parameter) frequency)
-                                              .getToken())).intValue();
+                                    .getToken())).intValue();
                 } else {
                     frequencyValue = 1;
                 }
@@ -567,8 +567,7 @@ public class GiottoDirector extends StaticSchedulingDirector
      */
     public String[] suggestedModalModelDirectors() {
         String[] defaultSuggestions = new String[2];
-        defaultSuggestions[0] = 
-            "ptolemy.domains.fsm.kernel.NonStrictFSMDirector";
+        defaultSuggestions[0] = "ptolemy.domains.fsm.kernel.NonStrictFSMDirector";
         defaultSuggestions[1] = "ptolemy.domains.fsm.kernel.FSMDirector";
         return defaultSuggestions;
     }
@@ -588,8 +587,8 @@ public class GiottoDirector extends StaticSchedulingDirector
     public boolean transferInputs(IOPort port) throws IllegalActionException {
         if (!port.isInput() || !port.isOpaque()) {
             throw new IllegalActionException(this, port,
-                    "transferInputs: port argument is not an opaque"
-                    + "input port.");
+                "transferInputs: port argument is not an opaque"
+                + "input port.");
         }
 
         boolean transfer = false;
@@ -602,14 +601,14 @@ public class GiottoDirector extends StaticSchedulingDirector
                 if ((insideReceivers != null) && (insideReceivers[i] != null)) {
                     if (_debugging) {
                         _debug(getName(),
-                                "transferring input from " + port.getName()
-                                + " channel " + i);
+                            "transferring input from " + port.getName()
+                            + " channel " + i);
                     }
 
                     for (int j = 0; j < insideReceivers[i].length; j++) {
                         if (_debugging) {
                             _debug("Sending token to receiver of "
-                                    + insideReceivers[i][j].getContainer());
+                                + insideReceivers[i][j].getContainer());
                         }
 
                         insideReceivers[i][j].put(t);
@@ -638,7 +637,7 @@ public class GiottoDirector extends StaticSchedulingDirector
     public boolean transferOutputs(IOPort port) throws IllegalActionException {
         if (!port.isOutput() || !port.isOpaque()) {
             throw new IllegalActionException(port,
-                    "transferOutputs: this port is not " + "an opaque output port.");
+                "transferOutputs: this port is not " + "an opaque output port.");
         }
 
         boolean wasTransferred = false;
@@ -653,13 +652,13 @@ public class GiottoDirector extends StaticSchedulingDirector
                                 if (insideReceivers[i][j].hasToken()) {
                                     if (_debugging) {
                                         _debug(getName(),
-                                                "transferring output from "
-                                                + port.getName() + " to channel "
-                                                + i);
+                                            "transferring output from "
+                                            + port.getName() + " to channel "
+                                            + i);
                                     }
 
                                     Token t = ((GiottoReceiver) insideReceivers[i][j])
-                                        .remove();
+                                                    .remove();
                                     port.send(i, t);
                                     wasTransferred = true;
                                 }
@@ -726,7 +725,7 @@ public class GiottoDirector extends StaticSchedulingDirector
             timeResolution.setVisibility(Settable.FULL);
         } catch (KernelException ex) {
             throw new InternalErrorException("Cannot initialize director: "
-                    + ex.getMessage());
+                + ex.getMessage());
         }
     }
 
@@ -737,12 +736,12 @@ public class GiottoDirector extends StaticSchedulingDirector
     private void _requestFiring() throws IllegalActionException {
         if (_debugging) {
             _debug("Request refiring of opaque composite actor at "
-                    + _expectedNextIterationTime);
+                + _expectedNextIterationTime);
         }
 
         // Enqueue a refire for the container of this director.
         ((CompositeActor) getContainer()).getExecutiveDirector().fireAt((Actor) getContainer(),
-                _expectedNextIterationTime);
+            _expectedNextIterationTime);
     }
 
     ///////////////////////////////////////////////////////////////////

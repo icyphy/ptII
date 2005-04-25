@@ -63,7 +63,7 @@ public class PortClassChanges implements MoMLFilter {
      *  @return the value of the attributeValue argument.
      */
     public String filterAttributeValue(NamedObj container, String element,
-            String attributeName, String attributeValue) {
+        String attributeName, String attributeValue) {
         // This method gets called many times by the MoMLParser,
         // so we try to be smart about the number of comparisons
         // and we try to group comparisons together so that we
@@ -83,8 +83,8 @@ public class PortClassChanges implements MoMLFilter {
             // by the portMap, find the class mapping and record the
             // name of the port.
             if (_currentlyProcessingActorWithPortClassChanges
-                    && (_portMap != null)
-                    && _portMap.containsKey(attributeValue)) {
+                            && (_portMap != null)
+                            && _portMap.containsKey(attributeValue)) {
                 _classMap = (HashMap) _portMap.get(attributeValue);
 
                 _portName = attributeValue;
@@ -103,7 +103,7 @@ public class PortClassChanges implements MoMLFilter {
                 // Find the port mapping of the current actor.
                 _portMap = (HashMap) _actorsWithPortClassChanges.get(attributeValue);
             } else if (_foundPort && _lastNameSeen.equals(_portName)
-                    && _classMap.containsKey(attributeValue)) {
+                            && _classMap.containsKey(attributeValue)) {
                 // We found the port.
                 // We use the new class to replace the old class.
                 String newClass = (String) _classMap.get(attributeValue);
@@ -125,7 +125,7 @@ public class PortClassChanges implements MoMLFilter {
      *  @param elementName The element name.
      */
     public void filterEndElement(NamedObj container, String elementName)
-            throws Exception {
+        throws Exception {
         _foundPort = false;
     }
 
@@ -158,7 +158,7 @@ public class PortClassChanges implements MoMLFilter {
                     String oldClass = (String) classChanges.next();
                     String newClass = (String) classMap.get(oldClass);
                     results.append("\t\t" + oldClass + "\t -> " + newClass
-                            + "\n");
+                        + "\n");
                 }
             }
         }
@@ -201,12 +201,12 @@ public class PortClassChanges implements MoMLFilter {
         HashMap variableDelayPortChanges = new HashMap();
 
         variableDelayPorts.put("ptolemy.domains.de.kernel.DEIOPort",
-                "ptolemy.actor.parameters.ParameterPort");
+            "ptolemy.actor.parameters.ParameterPort");
 
         variableDelayPortChanges.put("delay", variableDelayPorts);
 
         _actorsWithPortClassChanges.put("ptolemy.domains.de.lib.VariableDelay",
-                variableDelayPortChanges);
+            variableDelayPortChanges);
 
         // Server: serviceTime is now a ParameterPort,
         // not a DEIOPort.
@@ -214,35 +214,35 @@ public class PortClassChanges implements MoMLFilter {
         HashMap serverPortChanges = new HashMap();
 
         serverPorts.put("ptolemy.domains.de.kernel.DEIOPort",
-                "ptolemy.actor.parameters.ParameterPort");
+            "ptolemy.actor.parameters.ParameterPort");
 
         serverPortChanges.put("newServiceTime", serverPorts);
 
         _actorsWithPortClassChanges.put("ptolemy.domains.de.lib.Server",
-                serverPortChanges);
+            serverPortChanges);
 
         // ImagePartition input and output are now TypedIOPort
         HashMap sdfPortChanges = new HashMap();
         sdfPortChanges.put("ptolemy.domains.sdf.kernel.SDFIOPort",
-                "ptolemy.actor.TypedIOPort");
+            "ptolemy.actor.TypedIOPort");
 
         HashMap inputOutputTypedIOPortClassChanges = new HashMap();
         inputOutputTypedIOPortClassChanges.put("input", sdfPortChanges);
         inputOutputTypedIOPortClassChanges.put("output", sdfPortChanges);
 
         _actorsWithPortClassChanges.put("ptolemy.domains.sdf.lib.vq.ImagePartition",
-                inputOutputTypedIOPortClassChanges);
+            inputOutputTypedIOPortClassChanges);
 
         // ImageUnpartition
         _actorsWithPortClassChanges.put("ptolemy.domains.sdf.lib.vq.ImageUnpartition",
-                inputOutputTypedIOPortClassChanges);
+            inputOutputTypedIOPortClassChanges);
 
         // HTVQEncode
         _actorsWithPortClassChanges.put("ptolemy.domains.sdf.lib.vq.HTVQEncode",
-                inputOutputTypedIOPortClassChanges);
+            inputOutputTypedIOPortClassChanges);
 
         // VQDecode
         _actorsWithPortClassChanges.put("ptolemy.domains.sdf.lib.vq.VQDecode",
-                inputOutputTypedIOPortClassChanges);
+            inputOutputTypedIOPortClassChanges);
     }
 }

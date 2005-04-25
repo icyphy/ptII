@@ -40,12 +40,13 @@ import ptolemy.kernel.util.NameDuplicationException;
 import java.util.HashSet;
 import java.util.Random;
 
+
 //////////////////////////////////////////////////////////////////////////
 ///ParkingClient
 
 /**
-    This class contact with the ParkingManager to check the available 
-    parking spots and randomly choose one to park. 
+    This class contact with the ParkingManager to check the available
+    parking spots and randomly choose one to park.
 
     @author Yang Zhao
     @version $Id$
@@ -53,10 +54,9 @@ import java.util.Random;
     @Pt.ProposedRating Yellow (cxh)
     @Pt.AcceptedRating Yellow (cxh)
 */
-
 public class ParkingClient extends TypedAtomicActor {
     public ParkingClient(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         carArrival = new TypedIOPort(this, "carArrival", true, false);
         parkingTo = new TypedIOPort(this, "parkingTo", false, true);
@@ -83,9 +83,9 @@ public class ParkingClient extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** check the available parking spots and randomly choose one to 
+    /** check the available parking spots and randomly choose one to
      * park.
-     * @exception IllegalActionException If the superclass throws it. 
+     * @exception IllegalActionException If the superclass throws it.
      */
     public void fire() throws IllegalActionException {
         super.fire();
@@ -120,7 +120,6 @@ public class ParkingClient extends TypedAtomicActor {
     ////                         private methods                ////
     //  Generate random number uniformly distributed between 0 and the 
     // <i>size</i> parameter.
-    
     private int _getRandom(int size) {
         // Generate a double between 0 and 1, uniformly distributed.
         double randomValue = _random.nextDouble();

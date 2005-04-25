@@ -64,7 +64,7 @@ import javax.swing.JScrollPane;
 */
 public abstract class PtolemyDialog extends JFrame implements ActionListener {
     public PtolemyDialog(String title, DialogTableau dialogTableau,
-            Frame owner, Entity target, Configuration configuration) {
+        Frame owner, Entity target, Configuration configuration) {
         super(title);
         _owner = owner;
         _dialogTableau = dialogTableau;
@@ -95,7 +95,7 @@ public abstract class PtolemyDialog extends JFrame implements ActionListener {
             });
 
         GraphicsEnvironment ge = GraphicsEnvironment
-            .getLocalGraphicsEnvironment();
+                        .getLocalGraphicsEnvironment();
         GraphicsDevice[] SCREENS = ge.getScreenDevices();
         Point ownerLoc = owner.getLocation();
         Rectangle screenBounds = null;

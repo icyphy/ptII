@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.codegen.kernel;
 
 import ptolemy.kernel.util.NamedObj;
@@ -33,6 +32,7 @@ import ptolemy.kernel.util.NamedObj;
 
 //////////////////////////////////////////////////////////////////////////
 //// CCodeGeneratorHelper
+
 /**
    Base class for C code generator helper.
 
@@ -42,9 +42,7 @@ import ptolemy.kernel.util.NamedObj;
    @Pt.ProposedRating Red (eal)
    @Pt.AcceptedRating Red (eal)
 */
-
 public class CCodeGeneratorHelper extends CodeGeneratorHelper {
-
     /** FIXME
      */
     public CCodeGeneratorHelper(NamedObj component) {
@@ -53,7 +51,4 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-
-
-
 }

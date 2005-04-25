@@ -105,9 +105,9 @@ public class ActorViewerGraphController extends RunnableGraphController {
     public void addToMenuAndToolbar(JMenu menu, JToolBar toolbar) {
         super.addToMenuAndToolbar(menu, toolbar);
         GUIUtilities.addHotKey(getFrame().getJGraph(),
-                _entityController._lookInsideAction);
+            _entityController._lookInsideAction);
         GUIUtilities.addHotKey(getFrame().getJGraph(),
-                _classDefinitionController._lookInsideAction);
+            _classDefinitionController._lookInsideAction);
     }
 
     /** React to an event by highlighting the actor being iterated.
@@ -128,7 +128,7 @@ public class ActorViewerGraphController extends RunnableGraphController {
                 NamedObj toplevel = graphModel.getPtolemyModel();
 
                 while ((objToHighlight != null)
-                        && (objToHighlight.getContainer() != toplevel)) {
+                                && (objToHighlight.getContainer() != toplevel)) {
                     objToHighlight = (NamedObj) objToHighlight.getContainer();
                 }
 
@@ -147,10 +147,10 @@ public class ActorViewerGraphController extends RunnableGraphController {
                         }
 
                         FiringEvent.FiringEventType type = ((FiringEvent) event)
-                            .getType();
+                                        .getType();
 
                         if ((type == FiringEvent.BEFORE_ITERATE)
-                                || (type == FiringEvent.BEFORE_FIRE)) {
+                                        || (type == FiringEvent.BEFORE_FIRE)) {
                             _animationRenderer.renderSelected(figure);
                             _animated = figure;
 
@@ -163,7 +163,7 @@ public class ActorViewerGraphController extends RunnableGraphController {
                                 }
                             }
                         } else if ((type == FiringEvent.AFTER_ITERATE)
-                                || (type == FiringEvent.AFTER_POSTFIRE)) {
+                                        || (type == FiringEvent.AFTER_POSTFIRE)) {
                             if (_animated != null) {
                                 _animationRenderer.renderDeselected(_animated);
                             }
@@ -223,7 +223,7 @@ public class ActorViewerGraphController extends RunnableGraphController {
                 // controller that is distinct from the entity controller.
                 // In the edit, there will be.
                 if ((_classDefinitionController != null)
-                        && ((Entity) semanticObject).isClassDefinition()) {
+                                && ((Entity) semanticObject).isClassDefinition()) {
                     return _classDefinitionController;
                 } else {
                     return _entityController;
@@ -240,7 +240,7 @@ public class ActorViewerGraphController extends RunnableGraphController {
         }
 
         throw new RuntimeException("Node with unknown semantic object: "
-                + object);
+            + object);
     }
 
     /** Set the configuration.  The configuration is used when

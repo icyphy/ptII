@@ -112,7 +112,7 @@ public class ProcessDirector extends Director {
      *   CompositeActor and the name collides with an entity in the container.
      */
     public ProcessDirector(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -346,7 +346,7 @@ public class ProcessDirector extends Director {
         // needs to distinguish between stopFire() and this method.
         if (_debugging) {
             _debug("stop() has been called. Active thread count is: "
-                    + _activeActorCount);
+                + _activeActorCount);
         }
 
         _stopRequested = true;
@@ -421,7 +421,7 @@ public class ProcessDirector extends Director {
 
     /** Do nothing.  Input transfers in process domains are handled by
      *  branches, which transfer inputs in a separate thread.
-     *  @param port The port. 
+     *  @param port The port.
      *  @return False, to indicate that no tokens were transferred.
      */
     public boolean transferInputs(IOPort port) {
@@ -430,7 +430,7 @@ public class ProcessDirector extends Director {
 
     /** Do nothing.  Output transfers in process domains are handled by
      *  branches, which transfer inputs in a separate thread.
-     *  @param port The port. 
+     *  @param port The port.
      *  @return False, to indicate that no tokens were transferred.
      */
     public boolean transferOutputs(IOPort port) {
@@ -460,7 +460,7 @@ public class ProcessDirector extends Director {
 
         if (container instanceof CompositeActor) {
             Iterator actors = ((CompositeActor) container).deepEntityList()
-                .iterator();
+                                           .iterator();
             Iterator actorPorts;
             ProcessReceiver nextReceiver;
 
@@ -621,8 +621,8 @@ public class ProcessDirector extends Director {
     protected synchronized void _decreaseActiveCount() {
         if (_debugging) {
             _debug("Thread for actor "
-                    + ((ProcessThread) Thread.currentThread()).getActor()
-                    + " is deactivating.");
+                + ((ProcessThread) Thread.currentThread()).getActor()
+                + " is deactivating.");
         }
 
         _activeActorCount--;
@@ -664,7 +664,7 @@ public class ProcessDirector extends Director {
      *  throws it.
      */
     protected ProcessThread _getProcessThread(Actor actor,
-            ProcessDirector director) throws IllegalActionException {
+        ProcessDirector director) throws IllegalActionException {
         return new ProcessThread(actor, director);
     }
 

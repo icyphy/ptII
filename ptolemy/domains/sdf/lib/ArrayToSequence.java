@@ -79,7 +79,7 @@ public class ArrayToSequence extends SDFTransformer {
      *   actor with this name.
      */
     public ArrayToSequence(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // Set type constraints.
@@ -100,8 +100,8 @@ public class ArrayToSequence extends SDFTransformer {
 
         // Set the icon.
         _attachText("_iconDescription",
-                "<svg>\n" + "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
-                + "style=\"fill:white\"/>\n" + "</svg>\n");
+            "<svg>\n" + "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
+            + "style=\"fill:white\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -127,13 +127,13 @@ public class ArrayToSequence extends SDFTransformer {
      *  @exception IllegalActionException If the parameters are out of range.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == arrayLength) {
             int rate = ((IntToken) arrayLength.getToken()).intValue();
 
             if (rate < 0) {
                 throw new IllegalActionException(this,
-                        "Invalid arrayLength: " + rate);
+                    "Invalid arrayLength: " + rate);
             }
         } else {
             super.attributeChanged(attribute);
@@ -166,13 +166,13 @@ public class ArrayToSequence extends SDFTransformer {
         ArrayToken token = (ArrayToken) input.get(0);
         int rate = ((IntToken) arrayLength.getToken()).intValue();
         boolean enforce = ((BooleanToken) enforceArrayLength.getToken())
-            .booleanValue();
+                        .booleanValue();
 
         if (enforce && (token.length() != rate)) {
             throw new IllegalActionException(this,
-                    "The " + "number of elements in the input ArrayToken ("
-                    + token.length() + ") is not the same as the arrayLength "
-                    + "parameter (" + rate + ").");
+                "The " + "number of elements in the input ArrayToken ("
+                + token.length() + ") is not the same as the arrayLength "
+                + "parameter (" + rate + ").");
         }
 
         Token[] elements = token.arrayValue();

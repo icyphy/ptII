@@ -39,100 +39,97 @@ import ptolemy.kernel.util.IllegalActionException;
 import java.util.HashSet;
 import java.util.Set;
 
+
 /**
  * @author Jackie
  *
  */
 public class LineReader extends CCodeGeneratorHelper {
-
     /**
      * Constructor method for the LineReader helper
      * @param actor the associated actor
      */
-	public LineReader(ptolemy.actor.lib.io.LineReader actor) {
-		super(actor);
-	}
+    public LineReader(ptolemy.actor.lib.io.LineReader actor) {
+        super(actor);
+    }
 
     /**
      * Generate fire code
-     * The method reads in codeBlock1 and puts into the 
+     * The method reads in codeBlock1 and puts into the
      * given stream buffer
      * @param stream the given buffer to append the code to
      */
-	public void  generateFireCode(StringBuffer stream)
-	    throws IllegalActionException {
-		CodeStream tmpStream = new CodeStream(this);
-		tmpStream.appendCodeBlock("readLine");
-		stream.append(processCode(tmpStream.toString()));
-	}
-   
+    public void generateFireCode(StringBuffer stream)
+        throws IllegalActionException {
+        CodeStream tmpStream = new CodeStream(this);
+        tmpStream.appendCodeBlock("readLine");
+        stream.append(processCode(tmpStream.toString()));
+    }
+
     /** Generate initialization code.
      *  This method reads the <code>initBlock</code> from Test.c,
      *  replaces macros with their values and returns the results.
      *  @return The processed <code>initBlock</code>.
      */
-	public String generateInitializeCode()
-	    throws IllegalActionException {
-		
-		super.generateInitializeCode();
+    public String generateInitializeCode() throws IllegalActionException {
+        super.generateInitializeCode();
 
         CodeStream tmpStream = new CodeStream(this);
         tmpStream.appendCodeBlock("initBlock");
 
-        ptolemy.actor.lib.io.LineReader actor =
-			(ptolemy.actor.lib.io.LineReader)getComponent();
-        
-        int skipLines = Integer.parseInt(
-                actor.numberOfLinesToSkip.getExpression());
-        
+        ptolemy.actor.lib.io.LineReader actor = (ptolemy.actor.lib.io.LineReader) getComponent();
+
+        int skipLines = Integer.parseInt(actor.numberOfLinesToSkip
+                            .getExpression());
+
         String fileNameString = actor.fileOrURL.getExpression();
         fileNameString = fileNameString.replaceFirst("file:/", "");
         fileNameString = fileNameString.replaceAll("%20", " ");
-    
+
         if (fileNameString.equals("System.in")) {
             _fileOpen = false;
-            tmpStream.append("openForStdin");            
+            tmpStream.append("openForStdin");
         } else {
             _fileOpen = true;
             tmpStream.appendCodeBlock("openForRead");
-        	for (int i=0; i<skipLines; i++) {
-        		tmpStream.appendCodeBlock("skipLine");
+
+            for (int i = 0; i < skipLines; i++) {
+                tmpStream.appendCodeBlock("skipLine");
             }
         }
-		return processCode(tmpStream.toString());
-   }
+
+        return processCode(tmpStream.toString());
+    }
 
     /** Generate wrap up code.
      *  This method reads the <code>wrapUpBlock</code> from LineReader.c,
      *  replaces macros with their values and returns the results.
      *  @return The processed <code>wrapUpBlock</code>.
      */
-   public void generateWrapupCode(StringBuffer stream)
+    public void generateWrapupCode(StringBuffer stream)
         throws IllegalActionException {
-   
-   	    if (_fileOpen) {
-   	    	CodeStream tmpStream = new CodeStream(this);
+        if (_fileOpen) {
+            CodeStream tmpStream = new CodeStream(this);
             tmpStream.appendCodeBlock("wrapUpBlock");
             stream.append(processCode(tmpStream.toString()));
-       }
-   }
-   
-   /** Get the files needed by the code generated for the
-    *  LineReader actor.
-    *  @return A set of strings that are names of the files
-    *   needed by the code generated for the LineReader actor.
-    */
-   public Set getIncludingFiles() {
-       Set files = new HashSet();
-       files.add("\"stdio.h\"");
-       return files;
-   }
+        }
+    }
 
-   /** 
-    * indicate whether or not the user requests to open a file
-    * e.g. false - write to standard (console) output
-    *      true - some file name is specified 
-    */
-   private boolean _fileOpen = false;
-    
+    /** Get the files needed by the code generated for the
+     *  LineReader actor.
+     *  @return A set of strings that are names of the files
+     *   needed by the code generated for the LineReader actor.
+     */
+    public Set getIncludingFiles() {
+        Set files = new HashSet();
+        files.add("\"stdio.h\"");
+        return files;
+    }
+
+    /**
+     * indicate whether or not the user requests to open a file
+     * e.g. false - write to standard (console) output
+     *      true - some file name is specified
+     */
+    private boolean _fileOpen = false;
 }

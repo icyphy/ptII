@@ -108,9 +108,9 @@ public class KernelRuntimeException extends RuntimeException {
      *  @param detail The message.
      */
     public KernelRuntimeException(Nameable object1, Nameable object2,
-            Throwable cause, String detail) {
+        Throwable cause, String detail) {
         _setMessage(KernelException.generateMessage(object1, object2, cause,
-                            detail));
+                detail));
         _setCause(cause);
     }
 
@@ -121,7 +121,7 @@ public class KernelRuntimeException extends RuntimeException {
      *  @param detail The message.
      */
     public KernelRuntimeException(Collection objects, Throwable cause,
-            String detail) {
+        String detail) {
         _setMessage(KernelException.generateMessage(objects, cause, detail));
         _setCause(cause);
     }

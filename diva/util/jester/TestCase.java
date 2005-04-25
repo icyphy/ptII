@@ -74,7 +74,7 @@ public abstract class TestCase {
      * of the expression that produced the first argument.
      */
     public void assertExpr(boolean passed, String msg)
-            throws TestFailedException {
+        throws TestFailedException {
         if (!passed) {
             throw new TestFailedException(msg);
         }
@@ -91,7 +91,7 @@ public abstract class TestCase {
      *
      */
     public void assertEquals(Object first, Object second, String msg)
-            throws TestFailedException {
+        throws TestFailedException {
         if (!first.equals(second)) {
             throw new TestFailedException(msg, first, second);
         }

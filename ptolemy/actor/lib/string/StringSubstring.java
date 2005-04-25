@@ -68,7 +68,7 @@ public class StringSubstring extends Transformer {
      *   actor with this name.
      */
     public StringSubstring(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // Create new parameters and ports.

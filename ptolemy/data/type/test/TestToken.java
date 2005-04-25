@@ -87,9 +87,9 @@ public class TestToken extends Token {
             return new BooleanToken(this == token);
         } else {
             throw new IllegalActionException(
-                    "Equality test not supported between "
-                    + this.getClass().getName() + " and "
-                    + token.getClass().getName() + ".");
+                "Equality test not supported between "
+                + this.getClass().getName() + " and "
+                + token.getClass().getName() + ".");
         }
     }
 
@@ -135,7 +135,7 @@ public class TestToken extends Token {
                 return token;
             } else {
                 throw new IllegalActionException("Attempt to convert token "
-                        + token + " into a test token, which is not possible.");
+                    + token + " into a test token, which is not possible.");
             }
         }
 

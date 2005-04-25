@@ -62,7 +62,7 @@ public class TextAttribute extends AbstractTextAttribute {
      *   an attribute already in the container.
      */
     public TextAttribute(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // Don't use StringParameter here because variable
@@ -92,7 +92,7 @@ public class TextAttribute extends AbstractTextAttribute {
      *   to this container (should not be thrown).
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == text) {
             _icon.setText(text.getExpression());
         } else {

@@ -84,7 +84,7 @@ public class TerminateProcessException extends RuntimeException {
      *  @param detail The message.
      */
     public TerminateProcessException(Nameable object1, Nameable object2,
-            String detail) {
+        String detail) {
         String object1String = _getFullName(object1);
         String object2String = _getFullName(object2);
         String prefix;

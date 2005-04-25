@@ -104,7 +104,7 @@ public class LibraryAttribute extends ConfigurableAttribute {
      *   LibraryAttribute.
      */
     public LibraryAttribute(NamedObj container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
     }
 
@@ -139,8 +139,8 @@ public class LibraryAttribute extends ConfigurableAttribute {
 
         if (!(library instanceof CompositeEntity)) {
             throw new IllegalActionException(this,
-                    "Expected library to be in an instance of CompositeEntity,"
-                    + " but it is: " + library.getClass().getName());
+                "Expected library to be in an instance of CompositeEntity,"
+                + " but it is: " + library.getClass().getName());
         }
 
         // Ensure that the library is marked as a library.
@@ -171,7 +171,7 @@ public class LibraryAttribute extends ConfigurableAttribute {
                     new SingletonAttribute(_library, "_libraryMarker");
                 } catch (KernelException ex) {
                     throw new InternalErrorException(
-                            "Can't add library marker: " + ex);
+                        "Can't add library marker: " + ex);
                 }
             }
         }

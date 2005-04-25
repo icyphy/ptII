@@ -36,6 +36,7 @@ import java.util.AbstractList;
 
 //////////////////////////////////////////////////////////////////////////
 //// IntegerList
+
 /**
    FIXME: What does this class do?
    @author J&#246;rn W. Janneck
@@ -45,7 +46,6 @@ import java.util.AbstractList;
    @Pt.AcceptedRating Red (cxh)
 */
 public class IntegerList extends AbstractList {
-
     public IntegerList(Context context, int a, int b) {
         assert a <= b;
 
@@ -56,23 +56,22 @@ public class IntegerList extends AbstractList {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
     public Object get(int n) {
-        if (_a + n > _b) {
-            throw new IndexOutOfBoundsException(
-                    _a + " + " +  n + " is greater than " + _b);
+        if ((_a + n) > _b) {
+            throw new IndexOutOfBoundsException(_a + " + " + n
+                + " is greater than " + _b);
         }
+
         return _context.createInteger(_a + n);
     }
 
-    public int  size() {
+    public int size() {
         return (_b - _a) + 1;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private Context _context;
-    private int  _a;
-    private int  _b;
+    private int _a;
+    private int _b;
 }

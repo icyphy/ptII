@@ -24,7 +24,6 @@
    COPYRIGHTENDKEY
 
 */
-
 package ptolemy.codegen.c.actor.lib;
 
 import ptolemy.codegen.kernel.CCodeGeneratorHelper;
@@ -32,6 +31,7 @@ import ptolemy.kernel.util.IllegalActionException;
 
 import java.util.HashSet;
 import java.util.Set;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// Test
@@ -46,7 +46,6 @@ import java.util.Set;
    @Pt.AcceptedRating Red (eal)
 */
 public class Test extends CCodeGeneratorHelper {
-
     /** Construct a C code generator Test actor that contains
      *  a standard actor.lib.Test actor.
      *  @param actor The master Test actor.
@@ -64,9 +63,9 @@ public class Test extends CCodeGeneratorHelper {
      *  replaces macros with their values and returns the results.
      *  @return The processed <code>initBlock</code>.
      */
-    public String generateInitializeCode()
-            throws IllegalActionException {
+    public String generateInitializeCode() throws IllegalActionException {
         super.generateInitializeCode();
+
         CodeStream tmpStream = new CodeStream(this);
         tmpStream.appendCodeBlock("initBlock");
         return processCode(tmpStream.toString());
@@ -78,13 +77,13 @@ public class Test extends CCodeGeneratorHelper {
      *  @return The processed <code>initBlock</code>.
      */
     public void generateFireCode(StringBuffer stream)
-            throws IllegalActionException {
+        throws IllegalActionException {
         // FIXME: handle widths greater than 1.
         if (_testActor.input.getWidth() > 1) {
             throw new IllegalActionException(_testActor,
-                    "The C version of the Test actor currently only handles "
-                    + "inputs of width 1.  The width of input was: "
-                    + _testActor.input.getWidth());
+                "The C version of the Test actor currently only handles "
+                + "inputs of width 1.  The width of input was: "
+                + _testActor.input.getWidth());
         }
 
         CodeStream tmpStream = new CodeStream(this);

@@ -68,16 +68,16 @@ class TablePanel extends Panel {
 
             // draw the table.
             g.drawOval(origin.X - tableR, origin.Y - tableR, tableR * 2,
-                    tableR * 2);
+                tableR * 2);
 
             for (int i = 0; i < 5; i++) {
                 // draw each philosopher.
                 if (_philosophers[i].gotLeft && _philosophers[i].gotRight) {
                     g.fillOval(philsLoc[i].pos.X, philsLoc[i].pos.Y, 2 * pR,
-                            2 * pR);
+                        2 * pR);
                 } else {
                     g.drawOval(philsLoc[i].pos.X, philsLoc[i].pos.Y, 2 * pR,
-                            2 * pR);
+                        2 * pR);
                 }
 
                 int j = (i - 1 + 5) % 5;
@@ -85,30 +85,30 @@ class TablePanel extends Panel {
                 if (!(_philosophers[i].gotLeft || _philosophers[j].gotRight)) {
                     // chopstick is on the table.
                     g.drawLine(chopsticksLoc[i].pos[0].X,
-                            chopsticksLoc[i].pos[0].Y, chopsticksLoc[i].pos[1].X,
-                            chopsticksLoc[i].pos[1].Y);
+                        chopsticksLoc[i].pos[0].Y, chopsticksLoc[i].pos[1].X,
+                        chopsticksLoc[i].pos[1].Y);
                 } else {
                     if (_philosophers[i].gotLeft) {
                         // the philosopher on the right has it.
                         g.drawLine(philsLoc[i].leftPos[0].X,
-                                philsLoc[i].leftPos[0].Y, philsLoc[i].leftPos[1].X,
-                                philsLoc[i].leftPos[1].Y);
+                            philsLoc[i].leftPos[0].Y, philsLoc[i].leftPos[1].X,
+                            philsLoc[i].leftPos[1].Y);
 
                         if (_philosophers[j].waitingRight) {
                             // the philosopher on the left is waiting for it.
                             g.fillOval(philsLoc[j].rightPos[1].X - 2,
-                                    philsLoc[j].rightPos[1].Y - 2, 4, 4);
+                                philsLoc[j].rightPos[1].Y - 2, 4, 4);
                         }
                     } else {
                         // the philosopher on the left has it.
                         g.drawLine(philsLoc[j].rightPos[0].X,
-                                philsLoc[j].rightPos[0].Y,
-                                philsLoc[j].rightPos[1].X, philsLoc[j].rightPos[1].Y);
+                            philsLoc[j].rightPos[0].Y,
+                            philsLoc[j].rightPos[1].X, philsLoc[j].rightPos[1].Y);
 
                         if (_philosophers[i].waitingLeft) {
                             // the philosopher on the right is waiting for it.
                             g.fillOval(philsLoc[i].leftPos[1].X - 2,
-                                    philsLoc[i].leftPos[1].Y - 2, 4, 4);
+                                philsLoc[i].leftPos[1].Y - 2, 4, 4);
                         }
                     }
                 }
@@ -287,7 +287,7 @@ class TablePanel extends Panel {
         Coordinate pos;
 
         public void setPos(Coordinate p, Coordinate l_1, Coordinate l_2,
-                Coordinate r_1, Coordinate r_2) {
+            Coordinate r_1, Coordinate r_2) {
             pos = p;
             leftPos[0] = l_1;
             leftPos[1] = l_2;

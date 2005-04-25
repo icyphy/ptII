@@ -127,7 +127,7 @@ public class Scheduler extends Attribute {
      *   an attribute already in the container.
      */
     public Scheduler(Director container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -167,7 +167,7 @@ public class Scheduler extends Attribute {
      *  by the derived schedulers.
      */
     public Schedule getSchedule()
-            throws IllegalActionException, NotSchedulableException {
+        throws IllegalActionException, NotSchedulableException {
         try {
             workspace().getReadAccess();
 
@@ -175,15 +175,15 @@ public class Scheduler extends Attribute {
 
             if (director == null) {
                 throw new IllegalActionException(this,
-                        "Scheduler has no director.");
+                    "Scheduler has no director.");
             }
 
             CompositeActor compositeActor = (CompositeActor) (director
-                    .getContainer());
+                            .getContainer());
 
             if (compositeActor == null) {
                 throw new IllegalActionException(this,
-                        "Director has no container.");
+                    "Director has no container.");
             }
 
             if (!isValid() || (_cachedGetSchedule == null)) {
@@ -237,7 +237,7 @@ public class Scheduler extends Attribute {
      *   CompositeActor.
      */
     public void setContainer(NamedObj container)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         try {
             _workspace.getWriteAccess();
 
@@ -251,7 +251,7 @@ public class Scheduler extends Attribute {
                 Scheduler previous = null;
                 StaticSchedulingDirector castContainer = (StaticSchedulingDirector) oldContainer;
                 Iterator schedulers = castContainer.attributeList(Scheduler.class)
-                    .iterator();
+                                                               .iterator();
 
                 while (schedulers.hasNext()) {
                     Scheduler altScheduler = (Scheduler) schedulers.next();
@@ -324,7 +324,7 @@ public class Scheduler extends Attribute {
      *  @see ptolemy.kernel.CompositeEntity#deepGetEntities()
      */
     protected Schedule _getSchedule()
-            throws IllegalActionException, NotSchedulableException {
+        throws IllegalActionException, NotSchedulableException {
         StaticSchedulingDirector director = (StaticSchedulingDirector) getContainer();
         CompositeActor compositeActor = (CompositeActor) (director.getContainer());
         List actors = compositeActor.deepEntityList();

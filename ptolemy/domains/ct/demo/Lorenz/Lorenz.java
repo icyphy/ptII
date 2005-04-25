@@ -72,7 +72,7 @@ import ptolemy.plot.Plot;
 */
 public class Lorenz extends TypedCompositeActor {
     public Lorenz(Workspace workspace)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         // Create the model.
         super(workspace);
         setName("LorenzSystem");
@@ -207,11 +207,11 @@ public class Lorenz extends TypedCompositeActor {
      *  stopTime parameter of the director.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         CTDirector director = (CTDirector) getDirector();
 
         if ((director != null) && (director.stopTime != null)
-                && (stopTime != null)) {
+                        && (stopTime != null)) {
             // This is a hack, we should really use controls=directorparamter
             // in the applet
             director.stopTime.setToken(stopTime.getToken());

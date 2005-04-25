@@ -109,7 +109,7 @@ public class IOPortController extends AttributeController {
 
         // "Listen to Actor"
         _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                                                new ListenToPortAction()));
+                new ListenToPortAction()));
 
         // Ports of entities do not use a selection interactor with
         // the same selection model as the rest of the first level figures.
@@ -207,7 +207,7 @@ public class IOPortController extends AttributeController {
             }
 
             StringAttribute _colorAttr = (StringAttribute) (port.getAttribute(
-                                                                    "_color"));
+                    "_color"));
 
             if (_colorAttr != null) {
                 String _color = _colorAttr.getExpression();
@@ -215,7 +215,7 @@ public class IOPortController extends AttributeController {
             }
 
             ActorGraphModel model = (ActorGraphModel) getController()
-                .getGraphModel();
+                                                                      .getGraphModel();
 
             // Wrap the figure in a TerminalFigure to set the direction that
             // connectors exit the port. Note that this direction is the
@@ -274,7 +274,7 @@ public class IOPortController extends AttributeController {
 
             // Transform the port shape so it is facing the right way.
             AffineTransform transform = AffineTransform.getRotateInstance(Math
-                    .toRadians(rotation));
+                                .toRadians(rotation));
             shape = ShapeUtilities.transformModify(shape, transform);
 
             Figure figure = new BasicFigure(shape, fill, (float) 1.5) {
@@ -285,7 +285,7 @@ public class IOPortController extends AttributeController {
                     public String getToolTipText() {
                         String tipText = port.getName();
                         StringAttribute _explAttr = (StringAttribute) (port
-                                .getAttribute("_explanation"));
+                                        .getAttribute("_explanation"));
 
                         if (_explAttr != null) {
                             tipText = _explAttr.getExpression();
@@ -323,7 +323,7 @@ public class IOPortController extends AttributeController {
         public void actionPerformed(ActionEvent e) {
             if (_configuration == null) {
                 MessageHandler.error(
-                        "Cannot listen to port without a configuration.");
+                    "Cannot listen to port without a configuration.");
                 return;
             }
 
@@ -350,7 +350,7 @@ public class IOPortController extends AttributeController {
 
                 DebugListenerTableau debugTableau = new DebugListenerTableau(textEffigy,
                         textEffigy.uniqueName("debugListener"
-                                + object.getName()));
+                            + object.getName()));
                 debugTableau.setDebuggable(object);
             } catch (KernelException ex) {
                 MessageHandler.error("Failed to create debug listener.", ex);

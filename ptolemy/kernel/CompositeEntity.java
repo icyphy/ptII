@@ -151,7 +151,7 @@ public class CompositeEntity extends ComponentEntity {
      *   an entity already in the container.
      */
     public CompositeEntity(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _addIcon();
     }
@@ -286,7 +286,7 @@ public class CompositeEntity extends ComponentEntity {
             while (relations.hasNext()) {
                 ComponentRelation relation = (ComponentRelation) relations.next();
                 ComponentRelation newRelation = (ComponentRelation) relation
-                    .clone(workspace);
+                                .clone(workspace);
 
                 // Assume that since we are dealing with clones,
                 // exceptions won't occur normally.  If they do, throw a
@@ -295,7 +295,7 @@ public class CompositeEntity extends ComponentEntity {
                     newRelation.setContainer(newEntity);
                 } catch (KernelException ex) {
                     throw new CloneNotSupportedException(
-                            "Failed to clone a CompositeEntity: " + ex.getMessage());
+                        "Failed to clone a CompositeEntity: " + ex.getMessage());
                 }
             }
 
@@ -304,9 +304,9 @@ public class CompositeEntity extends ComponentEntity {
 
             while (classes.hasNext()) {
                 ComponentEntity classDefinition = (ComponentEntity) classes
-                    .next();
+                                .next();
                 ComponentEntity newSubentity = (ComponentEntity) classDefinition
-                    .clone(workspace);
+                                .clone(workspace);
 
                 // Assume that since we are dealing with clones,
                 // exceptions won't occur normally.  If they do, throw a
@@ -315,8 +315,8 @@ public class CompositeEntity extends ComponentEntity {
                     newSubentity.setContainer(newEntity);
                 } catch (KernelException ex) {
                     throw new CloneNotSupportedException(
-                            "Failed to clone a CompositeEntity: "
-                            + KernelException.stackTraceToString(ex));
+                        "Failed to clone a CompositeEntity: "
+                        + KernelException.stackTraceToString(ex));
                 }
             }
 
@@ -334,8 +334,8 @@ public class CompositeEntity extends ComponentEntity {
                     newSubentity.setContainer(newEntity);
                 } catch (KernelException ex) {
                     throw new CloneNotSupportedException(
-                            "Failed to clone a CompositeEntity: "
-                            + KernelException.stackTraceToString(ex));
+                        "Failed to clone a CompositeEntity: "
+                        + KernelException.stackTraceToString(ex));
                 }
 
                 // Clone the links of the ports of the cloned entities.
@@ -347,27 +347,27 @@ public class CompositeEntity extends ComponentEntity {
 
                     while (linkedRelations.hasMoreElements()) {
                         ComponentRelation rel = (ComponentRelation) linkedRelations
-                            .nextElement();
+                                        .nextElement();
 
                         // A null link (supported since indexed links) might
                         // yield a null relation here. EAL 7/19/00.
                         if (rel != null) {
                             if (rel.getContainer() != this) {
                                 throw new CloneNotSupportedException(
-                                        "Cannot clone a CompositeEntity with "
-                                        + "level crossing transitions.");
+                                    "Cannot clone a CompositeEntity with "
+                                    + "level crossing transitions.");
                             }
 
                             ComponentRelation newRelation = newEntity
-                                .getRelation(rel.getName());
+                                            .getRelation(rel.getName());
                             Port newPort = newSubentity.getPort(port.getName());
 
                             try {
                                 newPort.link(newRelation);
                             } catch (IllegalActionException ex) {
                                 throw new CloneNotSupportedException(
-                                        "Failed to clone a CompositeEntity: "
-                                        + ex.getMessage());
+                                    "Failed to clone a CompositeEntity: "
+                                    + ex.getMessage());
                             }
                         }
                     }
@@ -384,15 +384,15 @@ public class CompositeEntity extends ComponentEntity {
                 while (relations.hasNext()) {
                     Relation relation = (Relation) relations.next();
                     ComponentRelation newRelation = newEntity.getRelation(relation
-                            .getName());
+                                        .getName());
                     Port newPort = newEntity.getPort(port.getName());
 
                     try {
                         newPort.link(newRelation);
                     } catch (IllegalActionException ex) {
                         throw new CloneNotSupportedException(
-                                "Failed to clone a CompositeEntity: "
-                                + ex.getMessage());
+                            "Failed to clone a CompositeEntity: "
+                            + ex.getMessage());
                     }
                 }
             }
@@ -426,13 +426,13 @@ public class CompositeEntity extends ComponentEntity {
      *   if a disallowed level-crossing connection would result.
      */
     public ComponentRelation connect(ComponentPort port1, ComponentPort port2)
-            throws IllegalActionException {
+        throws IllegalActionException {
         try {
             return connect(port1, port2, uniqueName("_R"));
         } catch (NameDuplicationException ex) {
             // This exception should not be thrown.
             throw new InternalErrorException(this, ex,
-                    "Internal error in CompositeEntity.connect() method!");
+                "Internal error in CompositeEntity.connect() method!");
         }
     }
 
@@ -457,17 +457,17 @@ public class CompositeEntity extends ComponentEntity {
      *   the specified name in this entity.
      */
     public ComponentRelation connect(ComponentPort port1, ComponentPort port2,
-            String relationName)
-            throws IllegalActionException, NameDuplicationException {
+        String relationName)
+        throws IllegalActionException, NameDuplicationException {
         if ((port1 == null) || (port2 == null)) {
             throw new IllegalActionException(this,
-                    "Attempt to connect null port.");
+                "Attempt to connect null port.");
         }
 
         if ((port1.workspace() != port2.workspace())
-                || (port1.workspace() != _workspace)) {
+                        || (port1.workspace() != _workspace)) {
             throw new IllegalActionException(port1, port2,
-                    "Cannot connect ports because workspaces are different.");
+                "Cannot connect ports because workspaces are different.");
         }
 
         try {
@@ -536,7 +536,7 @@ public class CompositeEntity extends ComponentEntity {
                             result.add(entity);
                         } else {
                             result.addAll(((CompositeEntity) entity)
-                                    .deepEntityList());
+                                            .deepEntityList());
                         }
                     }
                 }
@@ -627,7 +627,7 @@ public class CompositeEntity extends ComponentEntity {
                     ComponentEntity entity = (ComponentEntity) entities.next();
 
                     if (filter.isInstance(entity)
-                            && !entity.isClassDefinition()) {
+                                    && !entity.isClassDefinition()) {
                         result.add(entity);
                     }
                 }
@@ -670,7 +670,7 @@ public class CompositeEntity extends ComponentEntity {
      *  @exception IOException If an I/O error occurs.
      */
     public String exportLinks(int depth, Collection filter)
-            throws IOException {
+        throws IOException {
         // To get the ordering right,
         // we read the links from the ports, not from the relations.
         StringBuffer result = new StringBuffer();
@@ -705,15 +705,15 @@ public class CompositeEntity extends ComponentEntity {
                 // because if both ends of the link are implied, then the
                 // link is implied.
                 if ((relation.getDerivedLevel() <= depth)
-                        && (port.getDerivedLevel() <= depth)) {
+                                && (port.getDerivedLevel() <= depth)) {
                     continue;
                 }
 
                 // Apply filter.
                 if ((filter == null)
-                        || (filter.contains(relation)
+                                || (filter.contains(relation)
                                 && (filter.contains(port)
-                                        || filter.contains(port.getContainer())))) {
+                                || filter.contains(port.getContainer())))) {
                     // In order to support level-crossing links, consider the
                     // possibility that the relation is not contained by this.
                     String relationName;
@@ -727,12 +727,12 @@ public class CompositeEntity extends ComponentEntity {
                     if (useIndex) {
                         useIndex = false;
                         result.append(_getIndentPrefix(depth) + "<link port=\""
-                                + port.getName() + "\" insertAt=\"" + index
-                                + "\" relation=\"" + relationName + "\"/>\n");
+                            + port.getName() + "\" insertAt=\"" + index
+                            + "\" relation=\"" + relationName + "\"/>\n");
                     } else {
                         result.append(_getIndentPrefix(depth) + "<link port=\""
-                                + port.getName() + "\" relation=\"" + relationName
-                                + "\"/>\n");
+                            + port.getName() + "\" relation=\"" + relationName
+                            + "\"/>\n");
                     }
                 }
             }
@@ -759,7 +759,7 @@ public class CompositeEntity extends ComponentEntity {
                     index++;
 
                     ComponentRelation relation = (ComponentRelation) relations
-                        .next();
+                                    .next();
 
                     if (relation == null) {
                         // Gap in the links.  The next link has to use an
@@ -773,17 +773,17 @@ public class CompositeEntity extends ComponentEntity {
                     // because if both ends of the link are implied, then the
                     // link is implied.
                     if ((relation.getDerivedLevel() <= depth)
-                            && (port.getDerivedLevel() <= (depth + 1))
-                            && (((NamedObj) port.getContainer())
+                                    && (port.getDerivedLevel() <= (depth + 1))
+                                    && (((NamedObj) port.getContainer())
                                     .getDerivedLevel() <= depth)) {
                         continue;
                     }
 
                     // Apply filter.
                     if ((filter == null)
-                            || (filter.contains(relation)
+                                    || (filter.contains(relation)
                                     && (filter.contains(port)
-                                            || filter.contains(port.getContainer())))) {
+                                    || filter.contains(port.getContainer())))) {
                         // In order to support level-crossing links,
                         // consider the possibility that the relation
                         // is not contained by this.
@@ -798,14 +798,14 @@ public class CompositeEntity extends ComponentEntity {
                         if (useIndex) {
                             useIndex = false;
                             result.append(_getIndentPrefix(depth)
-                                    + "<link port=\"" + entity.getName() + "."
-                                    + port.getName() + "\" insertAt=\"" + index
-                                    + "\" relation=\"" + relationName + "\"/>\n");
+                                + "<link port=\"" + entity.getName() + "."
+                                + port.getName() + "\" insertAt=\"" + index
+                                + "\" relation=\"" + relationName + "\"/>\n");
                         } else {
                             result.append(_getIndentPrefix(depth)
-                                    + "<link port=\"" + entity.getName() + "."
-                                    + port.getName() + "\" relation=\""
-                                    + relationName + "\"/>\n");
+                                + "<link port=\"" + entity.getName() + "."
+                                + port.getName() + "\" relation=\""
+                                + relationName + "\"/>\n");
                         }
                     }
                 }
@@ -1020,7 +1020,7 @@ public class CompositeEntity extends ComponentEntity {
      *   already in the container.
      */
     public ComponentRelation newRelation(String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         try {
             _workspace.getWriteAccess();
 
@@ -1131,8 +1131,8 @@ public class CompositeEntity extends ComponentEntity {
                 } catch (KernelException ex) {
                     // This exception should not be thrown.
                     throw new InternalErrorException(this, ex,
-                            "Internal error in CompositeEntity."
-                            + "removeAllEntities() method!");
+                        "Internal error in CompositeEntity."
+                        + "removeAllEntities() method!");
                 }
             }
         } finally {
@@ -1159,8 +1159,8 @@ public class CompositeEntity extends ComponentEntity {
                 } catch (KernelException ex) {
                     // This exception should not be thrown.
                     throw new InternalErrorException(this, ex,
-                            "Internal error in CompositeEntity."
-                            + "removeAllRelations() method!");
+                        "Internal error in CompositeEntity."
+                        + "removeAllRelations() method!");
                 }
             }
         } finally {
@@ -1212,9 +1212,9 @@ public class CompositeEntity extends ComponentEntity {
         int uniqueNameIndex = 2;
 
         while ((getAttribute(candidate) != null)
-                || (getPort(candidate) != null)
-                || (getEntity(candidate) != null)
-                || (getRelation(candidate) != null)) {
+                        || (getPort(candidate) != null)
+                        || (getEntity(candidate) != null)
+                        || (getRelation(candidate) != null)) {
             candidate = prefix + uniqueNameIndex++;
         }
 
@@ -1301,10 +1301,10 @@ public class CompositeEntity extends ComponentEntity {
      *  already in the entity.
      */
     protected void _addEntity(ComponentEntity entity)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         if (entity.deepContains(this)) {
             throw new IllegalActionException(entity, this,
-                    "Attempt to construct recursive containment");
+                "Attempt to construct recursive containment");
         }
 
         _containedEntities.append(entity);
@@ -1322,7 +1322,7 @@ public class CompositeEntity extends ComponentEntity {
      *   already on the contained relations list.
      */
     protected void _addRelation(ComponentRelation relation)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         _containedRelations.append(relation);
     }
 
@@ -1410,7 +1410,7 @@ public class CompositeEntity extends ComponentEntity {
                 while (classes.hasNext()) {
                     ComponentEntity entity = (ComponentEntity) classes.next();
                     result += (entity._description(detail, indent + 1, 2)
-                            + "\n");
+                                + "\n");
                 }
 
                 result += (_getIndentPrefix(indent) + "} entities {\n");
@@ -1420,7 +1420,7 @@ public class CompositeEntity extends ComponentEntity {
                 while (entities.hasNext()) {
                     ComponentEntity entity = (ComponentEntity) entities.next();
                     result += (entity._description(detail, indent + 1, 2)
-                            + "\n");
+                                + "\n");
                 }
 
                 result += (_getIndentPrefix(indent) + "} relations {\n");
@@ -1430,7 +1430,7 @@ public class CompositeEntity extends ComponentEntity {
                 while (relations.hasNext()) {
                     Relation relation = (Relation) relations.next();
                     result += (relation._description(detail, indent + 1, 2)
-                            + "\n");
+                                + "\n");
                 }
 
                 result += (_getIndentPrefix(indent) + "}");
@@ -1458,25 +1458,25 @@ public class CompositeEntity extends ComponentEntity {
      *  @exception IOException If an I/O error occurs.
      */
     protected void _exportMoMLContents(Writer output, int depth)
-            throws IOException {
+        throws IOException {
         if ((depth == 1) && (getContainer() == null)) {
             if (getAttribute("_createdBy") == null) {
                 // If there is no _createdBy attribute, then add one.
                 output.write(_getIndentPrefix(depth)
-                        + "<property name=\"_createdBy\" " + "class=\""
-                        + VersionAttribute.CURRENT_VERSION.getClass().getName()
-                        + "\" value=\""
-                        + VersionAttribute.CURRENT_VERSION.getExpression()
-                        + "\">\n");
+                    + "<property name=\"_createdBy\" " + "class=\""
+                    + VersionAttribute.CURRENT_VERSION.getClass().getName()
+                    + "\" value=\""
+                    + VersionAttribute.CURRENT_VERSION.getExpression()
+                    + "\">\n");
                 output.write(_getIndentPrefix(depth) + "</property>\n");
             } else if (getAttribute("_createdBy") != null) {
                 try {
                     ((VersionAttribute) getAttribute("_createdBy"))
-                        .setExpression(VersionAttribute.CURRENT_VERSION
-                                .getExpression());
+                                .setExpression(VersionAttribute.CURRENT_VERSION
+                                    .getExpression());
                 } catch (IllegalActionException ex) {
                     throw new InternalErrorException(this, ex,
-                            "Failed to update _createdBy");
+                        "Failed to update _createdBy");
                 }
             }
         }
@@ -1554,20 +1554,20 @@ public class CompositeEntity extends ComponentEntity {
     ////                         private methods                   ////
     private void _addIcon() {
         _attachText("_iconDescription",
-                "<svg>\n" + "<rect x=\"-30\" y=\"-20\" width=\"60\" "
-                + "height=\"40\" style=\"fill:red\"/>\n"
-                + "<rect x=\"-28\" y=\"-18\" width=\"56\" "
-                + "height=\"36\" style=\"fill:lightgrey\"/>\n"
-                + "<rect x=\"-15\" y=\"-10\" width=\"10\" height=\"8\" "
-                + "style=\"fill:white\"/>\n"
-                + "<rect x=\"-15\" y=\"2\" width=\"10\" height=\"8\" "
-                + "style=\"fill:white\"/>\n"
-                + "<rect x=\"5\" y=\"-4\" width=\"10\" height=\"8\" "
-                + "style=\"fill:white\"/>\n"
-                + "<line x1=\"-5\" y1=\"-6\" x2=\"0\" y2=\"-6\"/>"
-                + "<line x1=\"-5\" y1=\"6\" x2=\"0\" y2=\"6\"/>"
-                + "<line x1=\"0\" y1=\"-6\" x2=\"0\" y2=\"6\"/>"
-                + "<line x1=\"0\" y1=\"0\" x2=\"5\" y2=\"0\"/>" + "</svg>\n");
+            "<svg>\n" + "<rect x=\"-30\" y=\"-20\" width=\"60\" "
+            + "height=\"40\" style=\"fill:red\"/>\n"
+            + "<rect x=\"-28\" y=\"-18\" width=\"56\" "
+            + "height=\"36\" style=\"fill:lightgrey\"/>\n"
+            + "<rect x=\"-15\" y=\"-10\" width=\"10\" height=\"8\" "
+            + "style=\"fill:white\"/>\n"
+            + "<rect x=\"-15\" y=\"2\" width=\"10\" height=\"8\" "
+            + "style=\"fill:white\"/>\n"
+            + "<rect x=\"5\" y=\"-4\" width=\"10\" height=\"8\" "
+            + "style=\"fill:white\"/>\n"
+            + "<line x1=\"-5\" y1=\"-6\" x2=\"0\" y2=\"-6\"/>"
+            + "<line x1=\"-5\" y1=\"6\" x2=\"0\" y2=\"6\"/>"
+            + "<line x1=\"0\" y1=\"-6\" x2=\"0\" y2=\"6\"/>"
+            + "<line x1=\"0\" y1=\"0\" x2=\"5\" y2=\"0\"/>" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////

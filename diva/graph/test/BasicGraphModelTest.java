@@ -85,7 +85,7 @@ public class BasicGraphModelTest extends TestSuite {
      */
     public static void main(String[] argv) {
         new BasicGraphModelTest(new TestHarness(),
-                new BasicGraphModelTest.BasicGraphModelFactory()).run();
+            new BasicGraphModelTest.BasicGraphModelFactory()).run();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -182,7 +182,7 @@ public class BasicGraphModelTest extends TestSuite {
 
                 public void check() throws TestFailedException {
                     assertExpr(g.getNodeCount(root) == 65536,
-                            "Node count != 65536");
+                        "Node count != 65536");
                 }
             });
     }

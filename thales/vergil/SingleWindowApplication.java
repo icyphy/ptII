@@ -24,12 +24,12 @@
 */
 package thales.vergil;
 
+import thales.actor.gui.SingleWindowHTMLViewer;
+
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.VergilApplication;
-
-import thales.actor.gui.SingleWindowHTMLViewer;
 
 import java.net.URL;
 
@@ -83,16 +83,16 @@ public class SingleWindowApplication extends VergilApplication {
      * @see ptolemy.actor.gui.MoMLApplication#_createDefaultConfiguration()
      */
     protected Configuration _createDefaultConfiguration()
-            throws Exception {
+        throws Exception {
         return _readConfiguration(specToURL(
-                                          "thales/configs/singleWindow/singleWindowConfiguration.xml"));
+                "thales/configs/singleWindow/singleWindowConfiguration.xml"));
     }
 
     /* (non-Javadoc)
      * @see ptolemy.actor.gui.MoMLApplication#_createEmptyConfiguration()
      */
     protected Configuration _createEmptyConfiguration()
-            throws Exception {
+        throws Exception {
         Configuration configuration = _createDefaultConfiguration();
 
         try {

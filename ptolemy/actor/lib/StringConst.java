@@ -63,7 +63,7 @@ public class StringConst extends Const {
      *   actor with this name.
      */
     public StringConst(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         value.setExpression("");
@@ -73,8 +73,8 @@ public class StringConst extends Const {
         output.setTypeEquals(BaseType.STRING);
 
         _attachText("_iconDescription",
-                "<svg>\n" + "<rect x=\"0\" y=\"0\" "
-                + "width=\"60\" height=\"20\" " + "style=\"fill:lightBlue\"/>\n"
-                + "</svg>\n");
+            "<svg>\n" + "<rect x=\"0\" y=\"0\" "
+            + "width=\"60\" height=\"20\" " + "style=\"fill:lightBlue\"/>\n"
+            + "</svg>\n");
     }
 }

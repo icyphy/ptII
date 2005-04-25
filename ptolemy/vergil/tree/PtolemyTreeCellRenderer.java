@@ -65,11 +65,11 @@ public class PtolemyTreeCellRenderer extends DefaultTreeCellRenderer {
      *  attributes and use those.
      */
     public Component getTreeCellRendererComponent(JTree tree, Object value,
-            boolean selected, boolean expanded, boolean leaf, int row,
-            boolean hasFocus) {
+        boolean selected, boolean expanded, boolean leaf, int row,
+        boolean hasFocus) {
         DefaultTreeCellRenderer component = (DefaultTreeCellRenderer) super
-            .getTreeCellRendererComponent(tree, value, selected, expanded,
-                    leaf, row, hasFocus);
+                        .getTreeCellRendererComponent(tree, value, selected,
+                            expanded, leaf, row, hasFocus);
 
         if (value instanceof NamedObj) {
             NamedObj object = (NamedObj) value;
@@ -103,8 +103,8 @@ public class PtolemyTreeCellRenderer extends DefaultTreeCellRenderer {
                 List iconList = object.attributeList(EditorIcon.class);
 
                 if ((iconList.size() > 0)
-                        || (object.getAttribute("_iconDescription") != null)
-                        || (object.getAttribute("_smallIconDescription") != null)) {
+                                || (object.getAttribute("_iconDescription") != null)
+                                || (object.getAttribute("_smallIconDescription") != null)) {
                     // NOTE: this code is similar to that in IconController.
                     EditorIcon icon = null;
 
@@ -118,8 +118,8 @@ public class PtolemyTreeCellRenderer extends DefaultTreeCellRenderer {
                         }
                     } catch (KernelException ex) {
                         throw new InternalErrorException(
-                                "could not create icon in " + object
-                                + " even though one did not previously exist.");
+                            "could not create icon in " + object
+                            + " even though one did not previously exist.");
                     }
 
                     // Wow.. this is a confusing line of code.. :)
@@ -132,11 +132,11 @@ public class PtolemyTreeCellRenderer extends DefaultTreeCellRenderer {
                 Attribute tooltipAttribute = object.getAttribute("tooltip");
 
                 if ((tooltipAttribute != null)
-                        && tooltipAttribute instanceof Documentation) {
+                                && tooltipAttribute instanceof Documentation) {
                     // FIXME: This doesn't work with calling this
                     // on either this or component.
                     this.setToolTipText(((Documentation) tooltipAttribute)
-                            .getValue());
+                                    .getValue());
                 } else {
                     String tip = Documentation.consolidate(object);
 

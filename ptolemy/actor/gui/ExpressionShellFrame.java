@@ -64,7 +64,7 @@ public class ExpressionShellFrame extends TableauFrame {
      *  @exception NameDuplicationException If a name collision occurs.
      */
     public ExpressionShellFrame(ExpressionShellTableau tableau)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(tableau);
 
         JPanel component = new JPanel();

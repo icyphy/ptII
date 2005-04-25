@@ -85,7 +85,7 @@ public class TypeConstant implements InequalityTerm {
      */
     public void initialize(Object e) throws IllegalActionException {
         throw new IllegalActionException("TypeConstant.initialize: "
-                + "Type constant cannot be initialized.");
+            + "Type constant cannot be initialized.");
     }
 
     /** Return false since this term represent a constant.
@@ -114,7 +114,7 @@ public class TypeConstant implements InequalityTerm {
      */
     public void setValue(Object e) throws IllegalActionException {
         throw new IllegalActionException("TypeConstant.setValue: Cannot set "
-                + "the value of a type constant.");
+            + "the value of a type constant.");
     }
 
     /** Return a string representation of this term.

@@ -29,6 +29,25 @@
 */
 package ptolemy.caltrop.actors;
 
+import caltrop.interpreter.Context;
+import caltrop.interpreter.ExprEvaluator;
+
+import caltrop.interpreter.ast.Actor;
+import caltrop.interpreter.ast.Decl;
+import caltrop.interpreter.ast.Expression;
+import caltrop.interpreter.ast.Import;
+import caltrop.interpreter.ast.PortDecl;
+import caltrop.interpreter.ast.TypeExpr;
+
+import caltrop.interpreter.environment.CacheEnvironment;
+import caltrop.interpreter.environment.Environment;
+import caltrop.interpreter.environment.HashEnvironment;
+
+import caltrop.interpreter.util.CalScriptImportHandler;
+import caltrop.interpreter.util.ClassLoadingImportHandler;
+import caltrop.interpreter.util.EnvironmentFactoryImportHandler;
+import caltrop.interpreter.util.ImportUtil;
+
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
@@ -43,22 +62,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-import caltrop.interpreter.Context;
-import caltrop.interpreter.ExprEvaluator;
-import caltrop.interpreter.ast.Actor;
-import caltrop.interpreter.ast.Decl;
-import caltrop.interpreter.ast.Expression;
-import caltrop.interpreter.ast.Import;
-import caltrop.interpreter.ast.PortDecl;
-import caltrop.interpreter.ast.TypeExpr;
-import caltrop.interpreter.environment.CacheEnvironment;
-import caltrop.interpreter.environment.Environment;
-import caltrop.interpreter.environment.HashEnvironment;
-import caltrop.interpreter.util.CalScriptImportHandler;
-import caltrop.interpreter.util.ClassLoadingImportHandler;
-import caltrop.interpreter.util.EnvironmentFactoryImportHandler;
-import caltrop.interpreter.util.ImportUtil;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -67,8 +70,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+
 //////////////////////////////////////////////////////////////////////////
 ////AbstractCalInterpreter
+
 /**
    This class is the base class for actors that interpret CAL source
    inside the Ptolemy II framework. It configures itself according to an
@@ -96,7 +101,6 @@ import java.util.Set;
    @see PtolemyPlatform
 */
 abstract public class AbstractCalInterpreter extends TypedAtomicActor {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -106,7 +110,7 @@ abstract public class AbstractCalInterpreter extends TypedAtomicActor {
      *   actor with this name.
      */
     public AbstractCalInterpreter(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
     }
 
@@ -122,28 +126,35 @@ abstract public class AbstractCalInterpreter extends TypedAtomicActor {
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
-        Environment env = new HashEnvironment(
-                new CacheEnvironment(_env, _theContext), _theContext);
+
+        Environment env = new HashEnvironment(new CacheEnvironment(_env,
+                    _theContext), _theContext);
+
         try {
             _bindActorParameters(env);
             _initializeStateVariables(env);
         } catch (Exception ex) {
             throw new IllegalActionException(this, ex,
-                    "Failed to initialize CAL actor environment.");
+                "Failed to initialize CAL actor environment.");
         }
+
         _ddi = _getDDI(env);
+
         boolean isLegal;
+
         // FIXME: use exeception to return reasonable error message.
         try {
             isLegal = _ddi.isLegalActor();
         } catch (RuntimeException ex) {
             throw new IllegalActionException(this, ex,
-                    "Actor is not a valid " + _ddi.getName() + " actor.");
+                "Actor is not a valid " + _ddi.getName() + " actor.");
         }
+
         if (!_ddi.isLegalActor()) {
             throw new IllegalActionException(this,
-                    "Actor is not a valid " + _ddi.getName() + " actor.");
+                "Actor is not a valid " + _ddi.getName() + " actor.");
         }
+
         _ddi.setupActor();
     }
 
@@ -185,7 +196,6 @@ abstract public class AbstractCalInterpreter extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                       protected members                   ////
-
     // Initialize this ptolemy actor using declarations in the given
     // CAL actor.
     protected void _setupActor(Actor actor) throws Exception {
@@ -197,44 +207,42 @@ abstract public class AbstractCalInterpreter extends TypedAtomicActor {
         _refreshTypedIOPorts(actor.getOutputPorts(), false, true);
         _refreshParameters();
 
-        CompositeEntity container = (CompositeEntity)getContainer();
-        if (_lastGeneratedActorName != null &&
-                _lastGeneratedActorName.equals(getName())) {
-            if (container != null
-                    && container.getEntity(actor.getName()) != this) {
+        CompositeEntity container = (CompositeEntity) getContainer();
+
+        if ((_lastGeneratedActorName != null)
+                        && _lastGeneratedActorName.equals(getName())) {
+            if ((container != null)
+                            && (container.getEntity(actor.getName()) != this)) {
                 _lastGeneratedActorName = ((CompositeEntity) getContainer())
-                    .uniqueName(actor.getName());
+                                .uniqueName(actor.getName());
                 setName(_lastGeneratedActorName);
             }
         }
+
         _attachActorIcon(actor.getName());
     }
 
     protected void _attachActorIcon(String name) {
-        _attachText("_iconDescription", "<svg>\n" +
-                "<rect x=\"-20\" y=\"-20\" "
-                + "width=\"60\" height=\"40\" "
-                + "style=\"fill:white\"/>\n"
-                + "<text x=\"-3\" y=\"5\" "
-                + "style=\"font-size:18\">\n"
-                + "CAL\n"
-                + "</text>\n"
-                + "<text x=\"-16\" y=\"17\" "
-                + "style=\"font-size:10\">\n"
-                + name + "\n"
-                + "</text>\n"
-                + "</svg>\n");
+        _attachText("_iconDescription",
+            "<svg>\n" + "<rect x=\"-20\" y=\"-20\" "
+            + "width=\"60\" height=\"40\" " + "style=\"fill:white\"/>\n"
+            + "<text x=\"-3\" y=\"5\" " + "style=\"font-size:18\">\n" + "CAL\n"
+            + "</text>\n" + "<text x=\"-16\" y=\"17\" "
+            + "style=\"font-size:10\">\n" + name + "\n" + "</text>\n"
+            + "</svg>\n");
     }
 
     // Get the Ptolemy type that corresponds to the given type expression.
-    protected static ptolemy.data.type.Type _getPtolemyType(
-            TypeExpr typeExpr) {
-        if (typeExpr == null)
+    protected static ptolemy.data.type.Type _getPtolemyType(TypeExpr typeExpr) {
+        if (typeExpr == null) {
             return ptolemy.data.type.BaseType.GENERAL;
+        }
 
-        String s = (String)_typeReplacementMap.get(typeExpr.getName());
-        if (s == null)
+        String s = (String) _typeReplacementMap.get(typeExpr.getName());
+
+        if (s == null) {
             s = typeExpr.getName();
+        }
 
         ptolemy.data.type.Type t = ptolemy.data.type.BaseType.forName(s);
         return (t == null) ? ptolemy.data.type.BaseType.GENERAL : t;
@@ -242,12 +250,12 @@ abstract public class AbstractCalInterpreter extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     // Get the values of Ptolemy actor parameters and plug them into
     // the given environment.
     private void _bindActorParameters(Environment env)
-            throws IllegalActionException {
+        throws IllegalActionException {
         List pars = attributeList(Parameter.class);
+
         for (Iterator i = pars.iterator(); i.hasNext();) {
             Parameter p = (Parameter) i.next();
             env.bind(p.getName(), p.getToken());
@@ -258,17 +266,18 @@ abstract public class AbstractCalInterpreter extends TypedAtomicActor {
     // initial values.
     private void _initializeStateVariables(Environment env) {
         Decl[] decls = _actor.getStateVars();
+
         if (decls != null) {
             ExprEvaluator eval = new ExprEvaluator(_theContext, env);
+
             for (int i = 0; i < decls.length; i++) {
                 String var = decls[i].getName();
                 Expression valExpr = decls[i].getInitialValue();
 
                 // Note: this assumes that declarations are
                 // ordered by eager dependency
-
-                Object value = (valExpr == null)
-                    ? _theContext.createNull() : eval.evaluate(valExpr);
+                Object value = (valExpr == null) ? _theContext.createNull()
+                                                 : eval.evaluate(valExpr);
                 env.bind(var, value);
             }
         }
@@ -276,8 +285,10 @@ abstract public class AbstractCalInterpreter extends TypedAtomicActor {
 
     // Get a DDI appropriate for the actor's director.
     private DDI _getDDI(Environment env) {
-        DDIFactory pluginFactory = (DDIFactory) _directorToDDIMap
-            .get(getDirector().getClass().getName());
+        DDIFactory pluginFactory = (DDIFactory) _directorToDDIMap.get(getDirector()
+                                                                                      .getClass()
+                                                                                      .getName());
+
         if (pluginFactory != null) {
             return pluginFactory.create(this, _actor, _theContext, env);
         } else {
@@ -289,21 +300,26 @@ abstract public class AbstractCalInterpreter extends TypedAtomicActor {
     // Create parameters of the Ptolemy actor to correspond with the
     // interface specified in the CAL code.
     private void _refreshParameters()
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         Set parNames = new HashSet();
+
         if (_actor.getParameters() != null) {
             for (int i = 0; i < _actor.getParameters().length; i++) {
                 String name = _actor.getParameters()[i].getName();
-                if (getAttribute(name, ptolemy.data.expr.Parameter.class)
-                        == null)
+
+                if (getAttribute(name, ptolemy.data.expr.Parameter.class) == null) {
                     new Parameter(this, name);
+                }
+
                 parNames.add(name);
             }
         }
-        List parameters =
-            attributeList(ptolemy.data.expr.Parameter.class);
+
+        List parameters = attributeList(ptolemy.data.expr.Parameter.class);
+
         for (Iterator i = parameters.iterator(); i.hasNext();) {
             Parameter a = (Parameter) i.next();
+
             if (!parNames.contains(a.getName())) {
                 a.setContainer(null);
             }
@@ -312,96 +328,106 @@ abstract public class AbstractCalInterpreter extends TypedAtomicActor {
 
     // Create ports of the Ptolemy actor to correspond with the
     // interface specified in the CAL code.
-    private void _refreshTypedIOPorts(PortDecl[] ports,
-            boolean isInput, boolean isOutput)
-            throws IllegalActionException, NameDuplicationException {
+    private void _refreshTypedIOPorts(PortDecl[] ports, boolean isInput,
+        boolean isOutput)
+        throws IllegalActionException, NameDuplicationException {
         Set portNames = new HashSet();
 
         // Create new ports.
         for (int i = 0; i < ports.length; i++) {
             TypedIOPort port = (TypedIOPort) getPort(ports[i].getName());
-            if (port != null &&
-                    ((port.isInput() != isInput)
-                            || (port.isOutput() != isOutput) ||
-                            (port.isMultiport() != ports[i].isMultiport()))) {
+
+            if ((port != null)
+                            && ((port.isInput() != isInput)
+                            || (port.isOutput() != isOutput)
+                            || (port.isMultiport() != ports[i].isMultiport()))) {
                 port.setContainer(null);
                 port = null;
             }
+
             if (port == null) {
-                port = new TypedIOPort(this, ports[i].getName(),
-                        isInput, isOutput);
+                port = new TypedIOPort(this, ports[i].getName(), isInput,
+                        isOutput);
             }
+
             portNames.add(ports[i].getName());
         }
+
         // Release any ports which are no longer used.
         for (Iterator i = isInput ? inputPortList().iterator()
-                 : outputPortList().iterator();
-             i.hasNext();) {
+                                  : outputPortList().iterator(); i.hasNext();) {
             IOPort p = (IOPort) i.next();
+
             if (!portNames.contains(p.getName())) {
                 p.setContainer(null);
             }
         }
+
         // Set the types.
         for (int i = 0; i < ports.length; i++) {
-            ((TypedIOPort) getPort(ports[i].getName()))
-                .setTypeEquals(_getPtolemyType(ports[i].getType()));
+            ((TypedIOPort) getPort(ports[i].getName())).setTypeEquals(_getPtolemyType(
+                    ports[i].getType()));
         }
     }
 
     // Process actor import statements
-    private Environment _extendEnvWithImports(
-            Environment env, Import[] imports) {
-        Environment newEnv =
-            ImportUtil.handleImportList(env, importHandlers, imports);
-        if (newEnv == null)
+    private Environment _extendEnvWithImports(Environment env, Import[] imports) {
+        Environment newEnv = ImportUtil.handleImportList(env, importHandlers,
+                imports);
+
+        if (newEnv == null) {
             throw new RuntimeException("Failed to process import list.");
+        }
+
         return newEnv;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                        private members                    ////
-
     // The CAL actor.
-    private Actor  _actor;
+    private Actor _actor;
+
     // The domain-dependent interpreter.
     private DDI _ddi;
+
     // The environment used to evaluate parameters.
     private Environment _env;
+
     // The default global environment.
-    private final static Environment _globalEnv =
-    PtolemyPlatform.thePlatform.createGlobalEnvironment();
+    private final static Environment _globalEnv = PtolemyPlatform.thePlatform
+                    .createGlobalEnvironment();
+
     // The Ptolemy-specific context
-    private final static Context _theContext =
-    PtolemyPlatform.thePlatform.context();
+    private final static Context _theContext = PtolemyPlatform.thePlatform
+                    .context();
 
     // Map from director name to DDI.
     private final static Map _directorToDDIMap = new HashMap();
+
     static {
         _directorToDDIMap.put("ptolemy.domains.sdf.kernel.SDFDirector",
-                new SDFFactory());
+            new SDFFactory());
         _directorToDDIMap.put("ptolemy.domains.csp.kernel.CSPDirector",
-                new CSPFactory());
+            new CSPFactory());
     }
 
     // List of import handlers.
     private static List importHandlers;
+
     static {
         importHandlers = new ArrayList();
-        importHandlers.add(
-                new EnvironmentFactoryImportHandler(
-                        PtolemyPlatform.thePlatform));
-        importHandlers.add(
-                new CalScriptImportHandler(
-                        PtolemyPlatform.thePlatform));
-        importHandlers.add(
-                new ClassLoadingImportHandler(
-                        PtolemyPlatform.thePlatform,
-                        AbstractCalInterpreter.class.getClassLoader()));
+        importHandlers.add(new EnvironmentFactoryImportHandler(
+                PtolemyPlatform.thePlatform));
+        importHandlers.add(new CalScriptImportHandler(
+                PtolemyPlatform.thePlatform));
+        importHandlers.add(new ClassLoadingImportHandler(
+                PtolemyPlatform.thePlatform,
+                AbstractCalInterpreter.class.getClassLoader()));
     }
 
     // Map of substitutions from CAL types to Ptolemy types.
     private static Map _typeReplacementMap;
+
     static {
         _typeReplacementMap = new HashMap();
         _typeReplacementMap.put("UINT8", "int");
@@ -413,5 +439,3 @@ abstract public class AbstractCalInterpreter extends TypedAtomicActor {
     private String _lastGeneratedActorName = null;
     private final static String defaultNamePrefix = "CalInterpreter";
 }
-
-

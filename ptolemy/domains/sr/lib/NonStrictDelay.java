@@ -74,7 +74,7 @@ public class NonStrictDelay extends Transformer {
      *   an actor already in the container.
      */
     public NonStrictDelay(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         new Attribute(this, "_nonStrictMarker");
 

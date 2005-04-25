@@ -49,7 +49,7 @@ import ptolemy.kernel.util.Workspace;
 */
 public class Time {
     public static void main(String[] arg)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         Workspace w = new Workspace("w");
         TypedCompositeActor toplevel = new TypedCompositeActor(w);
         toplevel.setName("toplevel");
@@ -69,6 +69,6 @@ public class Time {
         manager.run();
         manager.run();
         System.out.println("Total number of events seen by Recorder: "
-                + recorder.getCount());
+            + recorder.getCount());
     }
 }

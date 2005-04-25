@@ -64,7 +64,7 @@ public class HTMLEffigyFactory extends EffigyFactory {
      *   an entity already in the container.
      */
     public HTMLEffigyFactory(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -96,7 +96,7 @@ public class HTMLEffigyFactory extends EffigyFactory {
      *   is malformed in some way.
      */
     public Effigy createEffigy(CompositeEntity container, URL base, URL in)
-            throws Exception {
+        throws Exception {
         if (in == null) {
             return null;
         }
@@ -125,7 +125,7 @@ public class HTMLEffigyFactory extends EffigyFactory {
             }
 
             if (!contentType.startsWith("text/html")
-                    && !contentType.startsWith("text/rtf")) {
+                            && !contentType.startsWith("text/rtf")) {
                 return null;
             }
         }

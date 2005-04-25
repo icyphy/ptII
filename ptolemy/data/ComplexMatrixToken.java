@@ -72,10 +72,10 @@ public class ComplexMatrixToken extends MatrixToken {
      *   is null.
      */
     public ComplexMatrixToken(final Complex[][] value)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (value == null) {
             throw new IllegalActionException("ComplexMatrixToken: The "
-                    + "specified matrix is null.");
+                + "specified matrix is null.");
         }
 
         _initialize(value, DO_COPY);
@@ -96,10 +96,10 @@ public class ComplexMatrixToken extends MatrixToken {
      *   is null.
      */
     public ComplexMatrixToken(final Complex[][] value, int copy)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (value == null) {
             throw new IllegalActionException("ComplexMatrixToken: The "
-                    + "specified matrix is null.");
+                + "specified matrix is null.");
         }
 
         _initialize(value, copy);
@@ -120,7 +120,7 @@ public class ComplexMatrixToken extends MatrixToken {
             _initialize(value, DO_COPY);
         } else {
             throw new IllegalActionException("A ComplexMatrixToken cannot be"
-                    + " created from the expression '" + init + "'");
+                + " created from the expression '" + init + "'");
         }
     }
 
@@ -138,16 +138,16 @@ public class ComplexMatrixToken extends MatrixToken {
      *  of the array cannot be losslessly converted to an integer.
      */
     public ComplexMatrixToken(Token[] tokens, int rows, int columns)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (tokens == null) {
             throw new IllegalActionException(
-                    "ComplexMatrixToken: The specified" + " array is null.");
+                "ComplexMatrixToken: The specified" + " array is null.");
         }
 
         if (tokens.length != (rows * columns)) {
             throw new IllegalActionException(
-                    "ComplexMatrixToken: The specified"
-                    + " array is not of the correct length");
+                "ComplexMatrixToken: The specified"
+                + " array is not of the correct length");
         }
 
         _rowCount = rows;
@@ -159,11 +159,11 @@ public class ComplexMatrixToken extends MatrixToken {
 
             if (token instanceof ScalarToken) {
                 _value[i / columns][i % columns] = ((ScalarToken) token)
-                    .complexValue();
+                                .complexValue();
             } else {
                 throw new IllegalActionException("ComplexMatrixToken: Element "
-                        + i + " in the array with value " + token
-                        + " is not a ScalarToken");
+                    + i + " in the array with value " + token
+                    + " is not a ScalarToken");
             }
         }
     }
@@ -192,7 +192,7 @@ public class ComplexMatrixToken extends MatrixToken {
      *   be carried out.
      */
     public static ComplexMatrixToken convert(Token token)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (token instanceof ComplexMatrixToken) {
             return (ComplexMatrixToken) token;
         }
@@ -201,7 +201,7 @@ public class ComplexMatrixToken extends MatrixToken {
 
         if ((compare == CPO.LOWER) || (compare == CPO.INCOMPARABLE)) {
             throw new IllegalActionException(notSupportedIncomparableConversionMessage(
-                                                     token, "[complex]"));
+                    token, "[complex]"));
         }
 
         // try Complex
@@ -223,7 +223,7 @@ public class ComplexMatrixToken extends MatrixToken {
         // The argument is below ComplexMatrixToken in the type hierarchy,
         // but I don't recognize it.
         throw new IllegalActionException(notSupportedConversionMessage(token,
-                                                 "[complex]"));
+                "[complex]"));
     }
 
     /** Return true if the argument is an instance of ComplexMatrixToken
@@ -279,7 +279,7 @@ public class ComplexMatrixToken extends MatrixToken {
      *   row or column number is outside the range of the matrix.
      */
     public Token getElementAsToken(final int row, final int column)
-            throws ArrayIndexOutOfBoundsException {
+        throws ArrayIndexOutOfBoundsException {
         return new ComplexToken(_value[row][column]);
     }
 
@@ -343,11 +343,11 @@ public class ComplexMatrixToken extends MatrixToken {
     public Token one() {
         try {
             return new ComplexMatrixToken(ComplexMatrixMath.identity(_rowCount),
-                    DO_NOT_COPY);
+                DO_NOT_COPY);
         } catch (IllegalActionException illegalAction) {
             // should not happen
             throw new InternalErrorException("ComplexMatrixToken.one: "
-                    + "Cannot create identity matrix.");
+                + "Cannot create identity matrix.");
         }
     }
 
@@ -361,11 +361,11 @@ public class ComplexMatrixToken extends MatrixToken {
     public Token oneRight() {
         try {
             return new ComplexMatrixToken(ComplexMatrixMath.identity(
-                                                  _columnCount), DO_NOT_COPY);
+                    _columnCount), DO_NOT_COPY);
         } catch (IllegalActionException illegalAction) {
             // should not happen
             throw new InternalErrorException("ComplexMatrixToken.oneRight: "
-                    + "Cannot create identity matrix.");
+                + "Cannot create identity matrix.");
         }
     }
 
@@ -378,11 +378,11 @@ public class ComplexMatrixToken extends MatrixToken {
     public Token zero() {
         try {
             return new ComplexMatrixToken(ComplexMatrixMath.zero(_rowCount,
-                                                  _columnCount), DO_NOT_COPY);
+                    _columnCount), DO_NOT_COPY);
         } catch (IllegalActionException illegalAction) {
             // should not happen
             throw new InternalErrorException("ComplexMatrixToken.zero: "
-                    + "Cannot create zero matrix.");
+                + "Cannot create zero matrix.");
         }
     }
 
@@ -399,7 +399,7 @@ public class ComplexMatrixToken extends MatrixToken {
      *  @return A new ComplexMatrixToken containing the result.
      */
     protected MatrixToken _add(MatrixToken rightArgument)
-            throws IllegalActionException {
+        throws IllegalActionException {
         ComplexMatrixToken convertedArgument = (ComplexMatrixToken) rightArgument;
         Complex[][] result = ComplexMatrixMath.add(_value,
                 convertedArgument._getInternalComplexMatrix());
@@ -416,7 +416,7 @@ public class ComplexMatrixToken extends MatrixToken {
      *  @return A new ComplexMatrixToken containing the result.
      */
     protected MatrixToken _addElement(Token rightArgument)
-            throws IllegalActionException {
+        throws IllegalActionException {
         Complex scalar = ((ComplexToken) rightArgument).complexValue();
         Complex[][] result = ComplexMatrixMath.add(_value, scalar);
         return new ComplexMatrixToken(result);
@@ -432,7 +432,7 @@ public class ComplexMatrixToken extends MatrixToken {
      *  @return A new Token containing the result.
      */
     protected MatrixToken _divideElement(Token rightArgument)
-            throws IllegalActionException {
+        throws IllegalActionException {
         Complex scalar = ((ComplexToken) rightArgument).complexValue();
         Complex[][] result = ComplexMatrixMath.divide(_value, scalar);
         return new ComplexMatrixToken(result);
@@ -458,7 +458,7 @@ public class ComplexMatrixToken extends MatrixToken {
      *  @return A new ComplexMatrixToken containing the result.
      */
     protected MatrixToken _multiply(MatrixToken rightArgument)
-            throws IllegalActionException {
+        throws IllegalActionException {
         ComplexMatrixToken convertedArgument = (ComplexMatrixToken) rightArgument;
         Complex[][] result = ComplexMatrixMath.multiply(_value,
                 convertedArgument._getInternalComplexMatrix());
@@ -473,7 +473,7 @@ public class ComplexMatrixToken extends MatrixToken {
      *  @return A new ComplexMatrixToken containing the result.
      */
     protected MatrixToken _multiplyElement(Token rightArgument)
-            throws IllegalActionException {
+        throws IllegalActionException {
         Complex scalar = ((ComplexToken) rightArgument).complexValue();
         Complex[][] result = ComplexMatrixMath.multiply(_value, scalar);
         return new ComplexMatrixToken(result);
@@ -489,7 +489,7 @@ public class ComplexMatrixToken extends MatrixToken {
      *  @return A new ComplexMatrixToken containing the result.
      */
     protected MatrixToken _subtract(MatrixToken rightArgument)
-            throws IllegalActionException {
+        throws IllegalActionException {
         ComplexMatrixToken convertedArgument = (ComplexMatrixToken) rightArgument;
         Complex[][] result = ComplexMatrixMath.subtract(_value,
                 convertedArgument._getInternalComplexMatrix());
@@ -506,7 +506,7 @@ public class ComplexMatrixToken extends MatrixToken {
      *  @return A new Token containing the result.
      */
     protected MatrixToken _subtractElement(Token rightArgument)
-            throws IllegalActionException {
+        throws IllegalActionException {
         Complex scalar = ((ComplexToken) rightArgument).complexValue();
         Complex[][] result = ComplexMatrixMath.add(_value, scalar.negate());
         return new ComplexMatrixToken(result);
@@ -522,10 +522,10 @@ public class ComplexMatrixToken extends MatrixToken {
      *  @return A new Token containing the result.
      */
     protected MatrixToken _subtractElementReverse(Token rightArgument)
-            throws IllegalActionException {
+        throws IllegalActionException {
         Complex scalar = ((ComplexToken) rightArgument).complexValue();
         Complex[][] result = ComplexMatrixMath.negative(ComplexMatrixMath.add(
-                                                                _value, scalar.negate()));
+                    _value, scalar.negate()));
         return new ComplexMatrixToken(result);
     }
 

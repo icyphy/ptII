@@ -79,7 +79,7 @@ public class ComplexToken extends ScalarToken {
             _value = ((ComplexToken) token).complexValue();
         } else {
             throw new IllegalActionException("A ComplexToken cannot be"
-                    + " created from the expression '" + init + "'");
+                + " created from the expression '" + init + "'");
         }
     }
 
@@ -110,7 +110,7 @@ public class ComplexToken extends ScalarToken {
      *   cannot be carried out.
      */
     public static ComplexToken convert(Token token)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (token instanceof ComplexToken) {
             return (ComplexToken) token;
         }
@@ -119,7 +119,7 @@ public class ComplexToken extends ScalarToken {
 
         if ((compare == CPO.LOWER) || (compare == CPO.INCOMPARABLE)) {
             throw new IllegalActionException(notSupportedIncomparableConversionMessage(
-                                                     token, "complex"));
+                    token, "complex"));
         }
 
         compare = TypeLattice.compare(BaseType.DOUBLE, token);
@@ -128,14 +128,14 @@ public class ComplexToken extends ScalarToken {
             DoubleToken doubleToken = DoubleToken.convert(token);
             ComplexToken result = new ComplexToken(doubleToken.complexValue());
             result._unitCategoryExponents = doubleToken
-                ._copyOfCategoryExponents();
+                            ._copyOfCategoryExponents();
             return result;
         }
 
         // The argument is below ComplexToken in the type hierarchy,
         // but I don't recognize it.
         throw new IllegalActionException(notSupportedConversionMessage(token,
-                                                 "complex"));
+                "complex"));
     }
 
     /** Return true if the argument's class is IntToken and it has the
@@ -225,9 +225,9 @@ public class ComplexToken extends ScalarToken {
      *  @return An exception.
      */
     protected ScalarToken _bitwiseAnd(ScalarToken rightArgument)
-            throws IllegalActionException {
+        throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("bitwiseAnd",
-                                                 this, rightArgument));
+                this, rightArgument));
     }
 
     /** Throw an exception because bitwise NOT is not supported.
@@ -236,7 +236,7 @@ public class ComplexToken extends ScalarToken {
      */
     protected ScalarToken _bitwiseNot() throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("bitwiseNot",
-                                                 this, this));
+                this, this));
     }
 
     /** Throw an exception because bitwise OR is not supported.
@@ -244,9 +244,9 @@ public class ComplexToken extends ScalarToken {
      *  @return An exception.
      */
     protected ScalarToken _bitwiseOr(ScalarToken rightArgument)
-            throws IllegalActionException {
+        throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("bitwiseOr", this,
-                                                 rightArgument));
+                rightArgument));
     }
 
     /** Throw an exception because bitwise XOR is not supported.
@@ -254,9 +254,9 @@ public class ComplexToken extends ScalarToken {
      *  @return An exception.
      */
     protected ScalarToken _bitwiseXor(ScalarToken rightArgument)
-            throws IllegalActionException {
+        throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("bitwiseXor",
-                                                 this, rightArgument));
+                this, rightArgument));
     }
 
     /** Return a new token whose value is the value of this token
@@ -266,9 +266,9 @@ public class ComplexToken extends ScalarToken {
      *  @return A new ComplexToken containing the result.
      */
     protected ScalarToken _divide(ScalarToken rightArgument)
-            throws IllegalActionException {
+        throws IllegalActionException {
         Complex result = _value.divide(((ComplexToken) rightArgument)
-                .complexValue());
+                            .complexValue());
         return new ComplexToken(result);
     }
 
@@ -284,7 +284,7 @@ public class ComplexToken extends ScalarToken {
      */
     protected BooleanToken _isCloseTo(ScalarToken rightArgument, double epsilon) {
         return BooleanToken.getInstance(complexValue().isCloseTo(((ComplexToken) rightArgument)
-                                                .complexValue(), epsilon));
+                            .complexValue(), epsilon));
     }
 
     /** Throw an exception because complex values cannot be compared.
@@ -293,10 +293,10 @@ public class ComplexToken extends ScalarToken {
      *  @return An exception.
      */
     protected BooleanToken _isLessThan(ScalarToken rightArgument)
-            throws IllegalActionException {
+        throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("isLessThan",
-                                                 this, rightArgument)
-                + " because complex numbers cannot be compared.");
+                this, rightArgument)
+            + " because complex numbers cannot be compared.");
     }
 
     /** Throw an exception because the modulo operation does not
@@ -306,9 +306,9 @@ public class ComplexToken extends ScalarToken {
      *  @return An exception.
      */
     protected ScalarToken _modulo(ScalarToken rightArgument)
-            throws IllegalActionException {
+        throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("modulo", this,
-                                                 rightArgument));
+                rightArgument));
     }
 
     /** Return a new token whose value is the value of this token
@@ -319,7 +319,7 @@ public class ComplexToken extends ScalarToken {
      */
     protected ScalarToken _multiply(ScalarToken rightArgument) {
         Complex result = _value.multiply(((ComplexToken) rightArgument)
-                .complexValue());
+                            .complexValue());
         return new ComplexToken(result);
     }
 
@@ -331,7 +331,7 @@ public class ComplexToken extends ScalarToken {
      */
     protected ScalarToken _subtract(ScalarToken rightArgument) {
         Complex result = _value.subtract(((ComplexToken) rightArgument)
-                .complexValue());
+                            .complexValue());
         return new ComplexToken(result);
     }
 

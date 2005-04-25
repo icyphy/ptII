@@ -112,7 +112,7 @@ public class QueueReceiver extends AbstractReceiver {
         } catch (NoSuchElementException ex) {
             // The queue is empty.
             throw new NoTokenException(getContainer(),
-                    "Attempt to get token from an empty QueueReceiver.");
+                "Attempt to get token from an empty QueueReceiver.");
         }
 
         return t;
@@ -141,9 +141,9 @@ public class QueueReceiver extends AbstractReceiver {
             return (Token) _queue.get(offset);
         } catch (NoSuchElementException ex) {
             throw new NoTokenException(getContainer(),
-                    "Offset " + offset + " out of range with " + _queue.size()
-                    + " tokens in the receiver and " + _queue.historySize()
-                    + " in history.");
+                "Offset " + offset + " out of range with " + _queue.size()
+                + " tokens in the receiver and " + _queue.historySize()
+                + " in history.");
         }
     }
 
@@ -182,7 +182,7 @@ public class QueueReceiver extends AbstractReceiver {
     public boolean hasRoom(int numberOfTokens) throws IllegalArgumentException {
         if (numberOfTokens < 1) {
             throw new IllegalArgumentException(
-                    "The number of tokens must be greater than 0");
+                "The number of tokens must be greater than 0");
         }
 
         return (_queue.size() + numberOfTokens) < _queue.getCapacity();
@@ -207,7 +207,7 @@ public class QueueReceiver extends AbstractReceiver {
     public boolean hasToken(int numberOfTokens) throws IllegalArgumentException {
         if (numberOfTokens < 1) {
             throw new IllegalArgumentException(
-                    "The number of tokens must be greater than 0");
+                "The number of tokens must be greater than 0");
         }
 
         return _queue.size() >= numberOfTokens;
@@ -254,7 +254,7 @@ public class QueueReceiver extends AbstractReceiver {
     public void put(Token token) {
         if (!_queue.put(token)) {
             throw new NoRoomException(getContainer(),
-                    "Queue is at capacity. Cannot put a token.");
+                "Queue is at capacity. Cannot put a token.");
         }
     }
 
@@ -270,7 +270,7 @@ public class QueueReceiver extends AbstractReceiver {
             _queue.setCapacity(capacity);
         } catch (IllegalActionException ex) {
             throw new IllegalActionException(getContainer(), ex,
-                    "Failed to set capacity to " + capacity);
+                "Failed to set capacity to " + capacity);
         }
     }
 
@@ -289,7 +289,7 @@ public class QueueReceiver extends AbstractReceiver {
             _queue.setHistoryCapacity(capacity);
         } catch (IllegalActionException ex) {
             throw new IllegalActionException(getContainer(), ex,
-                    "Failed to setHistoryCapacity to " + capacity);
+                "Failed to setHistoryCapacity to " + capacity);
         }
     }
 

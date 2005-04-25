@@ -306,7 +306,7 @@ public class ASTPtRootNode implements Node, Cloneable {
      */
     public String toString() {
         return PtParserTreeConstants.jjtNodeName[_id] + ":" + _isConstant + ":"
-            + _ptType + ":" + _ptToken;
+        + _ptType + ":" + _ptToken;
     }
 
     public String toString(String prefix) {
@@ -319,7 +319,7 @@ public class ASTPtRootNode implements Node, Cloneable {
      */
     public void visit(ParseTreeVisitor visitor) throws IllegalActionException {
         throw new IllegalActionException("The visit() method is not "
-                + " implemented for nodes of type " + getClass().getName() + ".");
+            + " implemented for nodes of type " + getClass().getName() + ".");
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -92,7 +92,7 @@ public abstract class URLReader extends Source {
      *   actor with this name.
      */
     public URLReader(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // Set the type of the output port.
@@ -138,7 +138,7 @@ public abstract class URLReader extends Source {
      *   is <i>URL</i> and the file cannot be opened.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == sourceURL) {
             StringToken urlToken = null;
 
@@ -156,13 +156,13 @@ public abstract class URLReader extends Source {
                     } else {
                         URL url = new URL(_source);
                         java.io.BufferedReader reader = new BufferedReader(new InputStreamReader(
-                                                                                   url.openStream()));
+                                    url.openStream()));
                         _setURLReader(reader);
                     }
                 }
             } catch (IOException ex) {
                 throw new IllegalActionException(this, ex,
-                        "Failed to evaluate sourceURL '" + urlToken + "'");
+                    "Failed to evaluate sourceURL '" + urlToken + "'");
             }
         } else if (attribute == refresh) {
             _refreshFlag = ((BooleanToken) refresh.getToken()).booleanValue();
@@ -201,7 +201,7 @@ public abstract class URLReader extends Source {
      *  @exception IllegalActionException If an IO error occurs.
      */
     protected void _setURLReader(java.io.BufferedReader reader)
-            throws IllegalActionException {
+        throws IllegalActionException {
         try {
             if ((_reader != null) && (_reader != _stdIn)) {
                 _reader.close();

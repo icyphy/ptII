@@ -130,7 +130,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
      *   contained by the proposed container.
      */
     public PrioritizedTimedQueue(IOPort container)
-            throws IllegalActionException {
+        throws IllegalActionException {
         super(container);
         _initializeTimeVariables();
     }
@@ -143,7 +143,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
      *   contained by the proposed container.
      */
     public PrioritizedTimedQueue(IOPort container, int priority)
-            throws IllegalActionException {
+        throws IllegalActionException {
         super(container);
         _priority = priority;
         _initializeTimeVariables();
@@ -171,8 +171,8 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
 
         if (event == null) {
             throw new NoTokenException(getContainer(),
-                    "Attempt to get token from an empty "
-                    + "PrioritizedTimedQueue.");
+                "Attempt to get token from an empty "
+                + "PrioritizedTimedQueue.");
         }
 
         token = event.getToken();
@@ -193,7 +193,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
             }
         } catch (IllegalActionException e) {
             System.err.println("An exception thrown while setting"
-                    + " the output time of TimeKeeper");
+                + " the output time of TimeKeeper");
         }
 
         // Call updateReceiverList() even if _queue.size() == 0,
@@ -252,7 +252,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
     public boolean hasRoom(int numberOfTokens) throws IllegalArgumentException {
         if (numberOfTokens < 1) {
             throw new IllegalArgumentException(
-                    "hasRoom() requires a positive argument.");
+                "hasRoom() requires a positive argument.");
         }
 
         return ((_queue.getCapacity() - _queue.size()) > numberOfTokens);
@@ -277,7 +277,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
     public boolean hasToken(int numberOfTokens) throws IllegalArgumentException {
         if (numberOfTokens < 1) {
             throw new IllegalArgumentException(
-                    "hasToken() requires a positive argument.");
+                "hasToken() requires a positive argument.");
         }
 
         return (_queue.size() > numberOfTokens);
@@ -290,7 +290,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
      */
     public void put(Token token) {
         throw new NoRoomException("put(Token) is not used in the "
-                + "DDE domain.");
+            + "DDE domain.");
     }
 
     /** Put a token on the queue with the specified time stamp and set
@@ -309,17 +309,17 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
         double timeValue = time.getDoubleValue();
 
         if ((time.compareTo(_lastTime) < 0) && (timeValue != INACTIVE)
-                && (timeValue != IGNORE)) {
+                        && (timeValue != IGNORE)) {
             NamedObj actor = (NamedObj) getContainer().getContainer();
             throw new IllegalArgumentException(actor.getName()
-                    + " - Attempt to set current time to the past; time = " + time
-                    + ". The _lastTime was " + _lastTime);
+                + " - Attempt to set current time to the past; time = " + time
+                + ". The _lastTime was " + _lastTime);
         } else if ((timeValue < 0.0) && (timeValue != INACTIVE)
-                && (timeValue != IGNORE)) {
+                        && (timeValue != IGNORE)) {
             NamedObj actor = (NamedObj) getContainer().getContainer();
             throw new IllegalArgumentException(actor.getName()
-                    + " - Attempt to set current time to a"
-                    + " a negative value = " + time);
+                + " - Attempt to set current time to a"
+                + " a negative value = " + time);
         }
 
         /*
@@ -354,7 +354,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
         try {
             if (!_queue.put(event)) {
                 throw new NoRoomException(getContainer(),
-                        "Queue is at capacity. Cannot insert token.");
+                    "Queue is at capacity. Cannot insert token.");
             }
         } catch (NoRoomException e) {
             _lastTime = _lastTimeCache;
@@ -379,8 +379,8 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
 
         if (event == null) {
             throw new NoTokenException(getContainer(),
-                    "Attempt to get token from an empty "
-                    + "PrioritizedTimedQueue.");
+                "Attempt to get token from an empty "
+                + "PrioritizedTimedQueue.");
         }
 
         event.getToken();
@@ -400,7 +400,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
             }
         } catch (IllegalActionException e) {
             System.err.println("An exception thrown while setting"
-                    + " the output time of TimeKeeper");
+                + " the output time of TimeKeeper");
         }
 
         // Set the receiver time if value is still IGNORE
@@ -419,8 +419,8 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
      */
     public void reset() {
         DDEDirector director = (DDEDirector) ((Actor) getContainer()
-                .getContainer())
-            .getDirector();
+                                                                      .getContainer())
+                        .getDirector();
         Time time = director.getModelTime();
         _receiverTime = time;
         _lastTime = time;
@@ -499,7 +499,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
 
         if ((timeValue < 0.0) && (timeValue != PrioritizedTimedQueue.ETERNITY)) {
             throw new IllegalArgumentException("Attempt to set "
-                    + "completion time to a negative value.");
+                + "completion time to a negative value.");
         }
 
         _completionTime = time;
@@ -520,15 +520,16 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
     // Initialize some time variables.
     private void _initializeTimeVariables() {
         Actor actor = (Actor) getContainer().getContainer();
+
         try {
-			_completionTime = new Time(actor.getDirector(), ETERNITY);
-			_lastTime = new Time(actor.getDirector());
-			_receiverTime = new Time(actor.getDirector());
-		} catch (IllegalActionException e) {
+            _completionTime = new Time(actor.getDirector(), ETERNITY);
+            _lastTime = new Time(actor.getDirector());
+            _receiverTime = new Time(actor.getDirector());
+        } catch (IllegalActionException e) {
             // If the time resolution of the director is invalid,
             // it should have been caught before this.
             throw new InternalErrorException(e);
-		}
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

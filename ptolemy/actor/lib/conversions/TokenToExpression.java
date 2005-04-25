@@ -61,7 +61,7 @@ public class TokenToExpression extends Converter {
      *   actor with this name.
      */
     public TokenToExpression(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         input.setTypeEquals(BaseType.UNKNOWN);

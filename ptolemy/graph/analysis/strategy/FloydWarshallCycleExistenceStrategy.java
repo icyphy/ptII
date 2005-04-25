@@ -73,7 +73,7 @@ public class FloydWarshallCycleExistenceStrategy extends CachedStrategy
      */
     public String toString() {
         return "Cycle existence analyzer"
-            + " based on the Floyd-Warshall algorithm.";
+        + " based on the Floyd-Warshall algorithm.";
     }
 
     /** Check for compatibility between the analysis and the given

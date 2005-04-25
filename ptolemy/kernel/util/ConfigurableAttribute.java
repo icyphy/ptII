@@ -61,7 +61,7 @@ import java.util.List;
    @Pt.AcceptedRating Green (janneck)
 */
 public class ConfigurableAttribute extends Attribute implements Configurable,
-                                                                Settable {
+    Settable {
     /** Construct a new attribute with no
      *  container and an empty string as its name. Add the attribute to the
      *  default workspace directory.
@@ -92,7 +92,7 @@ public class ConfigurableAttribute extends Attribute implements Configurable,
      *   attribute with this name.
      */
     public ConfigurableAttribute(NamedObj container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
     }
 
@@ -141,7 +141,7 @@ public class ConfigurableAttribute extends Attribute implements Configurable,
      *  @exception Exception Not thrown in this base class.
      */
     public void configure(URL base, String source, String text)
-            throws Exception {
+        throws Exception {
         if (_defaultText == null) {
             _defaultText = _configureText;
         }
@@ -317,22 +317,23 @@ public class ConfigurableAttribute extends Attribute implements Configurable,
             URL textFile = new URL(_configureSource);
             InputStream stream = textFile.openStream();
             BufferedReader reader = null;
+
             try {
-            	reader = new BufferedReader(new InputStreamReader(
-            			stream));
-            	String line = reader.readLine();
-            	
-            	while (line != null) {
-            		value.append(line);
-            		value.append("\n");
-            		line = reader.readLine();
-            	}
+                reader = new BufferedReader(new InputStreamReader(stream));
+
+                String line = reader.readLine();
+
+                while (line != null) {
+                    value.append(line);
+                    value.append("\n");
+                    line = reader.readLine();
+                }
             } finally {
-            	if (reader != null) {
-            		reader.close();
-            	}
+                if (reader != null) {
+                    reader.close();
+                }
             }
-            
+
             // NOTE: Do we need to close both?  Java docs don't say.
             stream.close();
         }
@@ -356,7 +357,7 @@ public class ConfigurableAttribute extends Attribute implements Configurable,
      *  @exception IOException If an I/O error occurs.
      */
     protected void _exportMoMLContents(Writer output, int depth)
-            throws IOException {
+        throws IOException {
         super._exportMoMLContents(output, depth);
 
         String sourceSpec = "";
@@ -366,13 +367,13 @@ public class ConfigurableAttribute extends Attribute implements Configurable,
 
             if (_configureText == null) {
                 output.write(_getIndentPrefix(depth) + "<configure"
-                        + sourceSpec + "/>\n");
+                    + sourceSpec + "/>\n");
             }
         }
 
         if (_configureText != null) {
             output.write(_getIndentPrefix(depth) + "<configure" + sourceSpec
-                    + ">" + _configureText + "</configure>\n");
+                + ">" + _configureText + "</configure>\n");
         }
     }
 
@@ -386,10 +387,10 @@ public class ConfigurableAttribute extends Attribute implements Configurable,
      *   be propagated.
      */
     protected void _propagateValue(NamedObj destination)
-            throws IllegalActionException {
+        throws IllegalActionException {
         try {
             ((Configurable) destination).configure(_base, _configureSource,
-                    _configureText);
+                _configureText);
         } catch (Exception ex) {
             throw new IllegalActionException(this, ex, "Propagation failed.");
         }

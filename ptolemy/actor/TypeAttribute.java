@@ -112,7 +112,7 @@ public class TypeAttribute extends Parameter {
      *   an attribute already in the container.
      */
     public TypeAttribute(TypedIOPort container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -126,11 +126,11 @@ public class TypeAttribute extends Parameter {
      *   TypedIOPort, or if the base class throws it.
      */
     protected void _checkContainer(NamedObj container)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (!(container instanceof TypedIOPort) && (container != null)) {
             throw new IllegalActionException(container, this,
-                    "TypeAttribute can only be contained by instances "
-                    + "of TypedIOPort.");
+                "TypeAttribute can only be contained by instances "
+                + "of TypedIOPort.");
         }
     }
 }

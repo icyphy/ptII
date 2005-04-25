@@ -24,13 +24,14 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.component;
 
 import ptolemy.kernel.util.IllegalActionException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ComponentDirector
+
 /**
    FIXME
 
@@ -41,7 +42,6 @@ import ptolemy.kernel.util.IllegalActionException;
    @Pt.AcceptedRating red (davisj)
 */
 public class ComponentDirector implements Component {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

@@ -26,8 +26,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.copernicus.java;
 
-import ptolemy.copernicus.kernel.PtolemyUtilities;
-
 import soot.Body;
 import soot.BodyTransformer;
 import soot.Hierarchy;
@@ -36,13 +34,18 @@ import soot.Scene;
 import soot.Unit;
 import soot.Value;
 import soot.ValueBox;
+
 import soot.jimple.DefinitionStmt;
 import soot.jimple.NullConstant;
 import soot.jimple.SpecialInvokeExpr;
 import soot.jimple.Stmt;
+
 import soot.toolkits.graph.CompleteUnitGraph;
+
 import soot.toolkits.scalar.SimpleLiveLocals;
 import soot.toolkits.scalar.SimpleLocalDefs;
+
+import ptolemy.copernicus.kernel.PtolemyUtilities;
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -84,19 +87,19 @@ public class DeadObjectEliminator extends BodyTransformer {
         Set set = new HashSet();
 
         set.addAll(hierarchy.getSubclassesOfIncluding(
-                           PtolemyUtilities.tokenClass));
+                PtolemyUtilities.tokenClass));
         set.addAll(hierarchy.getSubclassesOfIncluding(
-                           PtolemyUtilities.baseTypeClass));
+                PtolemyUtilities.baseTypeClass));
         set.addAll(hierarchy.getSubclassesOfIncluding(
-                           PtolemyUtilities.arrayTypeClass));
+                PtolemyUtilities.arrayTypeClass));
         set.addAll(hierarchy.getSubclassesOfIncluding(
-                           PtolemyUtilities.recordTypeClass));
+                PtolemyUtilities.recordTypeClass));
         set.addAll(hierarchy.getSubclassesOfIncluding(
-                           PtolemyUtilities.matrixTypeClass));
+                PtolemyUtilities.matrixTypeClass));
         set.addAll(hierarchy.getSubclassesOfIncluding(
-                           PtolemyUtilities.attributeClass));
+                PtolemyUtilities.attributeClass));
         set.addAll(hierarchy.getSubclassesOfIncluding(
-                           Scene.v().loadClassAndSupport("ptolemy.data.expr.PtParser")));
+                Scene.v().loadClassAndSupport("ptolemy.data.expr.PtParser")));
 
         _removeDeadObjectCreation(body, set);
     }
@@ -116,7 +119,7 @@ public class DeadObjectEliminator extends BodyTransformer {
         SimpleLiveLocals liveLocals = new SimpleLiveLocals(unitGraph);
 
         for (Iterator units = body.getUnits().snapshotIterator();
-             units.hasNext();) {
+                        units.hasNext();) {
             Stmt stmt = (Stmt) units.next();
 
             if (!stmt.containsInvokeExpr()) {
@@ -132,8 +135,8 @@ public class DeadObjectEliminator extends BodyTransformer {
                 //      System.out.println("compare " + r.getMethod().getDeclaringClass());
                 //                 System.out.println("with " + theClass);
                 if (classSet.contains(r.getMethod().getDeclaringClass())
-                        && !liveLocals.getLiveLocalsAfter(stmt).contains(r
-                                .getBase())) {
+                                && !liveLocals.getLiveLocalsAfter(stmt)
+                                                          .contains(r.getBase())) {
                     // Remove the initialization and the constructor.
                     // Note: This assumes a fairly tight coupling between
                     // the new and the object constructor.  This may
@@ -141,15 +144,15 @@ public class DeadObjectEliminator extends BodyTransformer {
                     body.getUnits().remove(stmt);
 
                     for (Iterator defs = localDefs.getDefsOfAt(
-                                 (Local) r.getBase(), stmt).iterator();
-                         defs.hasNext();) {
+                                (Local) r.getBase(), stmt).iterator();
+                                    defs.hasNext();) {
                         Unit defUnit = (Unit) defs.next();
 
                         if (defUnit instanceof DefinitionStmt) {
                             // If we are keeping a definition, then
                             // set the definition to be null.
                             ((DefinitionStmt) defUnit).getRightOpBox().setValue(NullConstant
-                                    .v());
+                                            .v());
                         } else {
                             // I can't imagine when this would
                             // be true?

@@ -60,7 +60,7 @@ public class ECSLGain extends Scale {
      *   an actor already in the container.
      */
     public ECSLGain(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input.setTypeEquals(BaseType.DOUBLE);
 
@@ -91,7 +91,7 @@ public class ECSLGain extends Scale {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == Gain) {
             factor.setToken(Gain.getToken());
         } else {
@@ -107,7 +107,7 @@ public class ECSLGain extends Scale {
     public void fire() throws IllegalActionException {
         if (output.getWidth() > 1) {
             throw new IllegalActionException("Output widths greater than "
-                    + "1 not yet supported");
+                + "1 not yet supported");
         }
 
         super.fire();

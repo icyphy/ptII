@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.codegen.kernel;
 
 import ptolemy.actor.Actor;
@@ -38,6 +37,7 @@ import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// StaticSchedulingCodeGenerator
 
@@ -49,9 +49,8 @@ import ptolemy.kernel.util.NamedObj;
  *  @Pt.ProposedRating Red (eal)
  *  @Pt.AcceptedRating Red (eal)
  */
-public class StaticSchedulingCodeGenerator
-    extends CodeGenerator implements ActorCodeGenerator {
-
+public class StaticSchedulingCodeGenerator extends CodeGenerator
+    implements ActorCodeGenerator {
     /** Create a new instance of the C code generator.
      *  @param container The container.
      *  @param name The name.
@@ -59,13 +58,12 @@ public class StaticSchedulingCodeGenerator
      *  @exception NameDuplicationException
      */
     public StaticSchedulingCodeGenerator(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     parameters                            ////
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -87,14 +85,16 @@ public class StaticSchedulingCodeGenerator
      */
     public void generateCode(StringBuffer code) throws KernelException {
         // If necessary, create a manager.
-        Actor container = ((Actor)getContainer());
+        Actor container = ((Actor) getContainer());
         Manager manager = container.getManager();
+
         if (manager == null) {
-            CompositeActor toplevel = (CompositeActor)
-                ((NamedObj)container).toplevel();
+            CompositeActor toplevel = (CompositeActor) ((NamedObj) container)
+                            .toplevel();
             manager = new Manager(toplevel.workspace(), "Manager");
             toplevel.setManager(manager);
         }
+
         try {
             manager.preinitializeAndResolveTypes();
             super.generateCode(code);
@@ -110,28 +110,26 @@ public class StaticSchedulingCodeGenerator
      *  @param code The code stream into which to generate the code.
      */
     public void generateFireCode(StringBuffer code)
-            throws IllegalActionException {
-
-        CompositeEntity model = (CompositeEntity)getContainer();
+        throws IllegalActionException {
+        CompositeEntity model = (CompositeEntity) getContainer();
 
         // NOTE: The cast is safe because setContainer ensures
         // the container is an Actor.
-        ptolemy.actor.Director director = ((Actor)model).getDirector();
+        ptolemy.actor.Director director = ((Actor) model).getDirector();
 
         if (director == null) {
             throw new IllegalActionException(this,
-                    "The model " + model.getName()
-                    + " does not have a director.");
+                "The model " + model.getName() + " does not have a director.");
         }
 
         if (!(director instanceof StaticSchedulingDirector)) {
             throw new IllegalActionException(this,
-                    "The director of the model " + model.getName()
-                    + " is not a StaticSchedulingDirector.");
+                "The director of the model " + model.getName()
+                + " is not a StaticSchedulingDirector.");
         }
 
-        ComponentCodeGenerator directorHelper = _getHelper((NamedObj)director);
-        ((Director)directorHelper).generateFireCode(code);
+        ComponentCodeGenerator directorHelper = _getHelper((NamedObj) director);
+        ((Director) directorHelper).generateFireCode(code);
     }
 
     /** Set the container of this object to be the given container.
@@ -142,12 +140,13 @@ public class StaticSchedulingCodeGenerator
      *   is not null and not an instance of CompositeActor.
      */
     public void setContainer(NamedObj container)
-            throws IllegalActionException, NameDuplicationException {
-        if (container != null && !(container instanceof CompositeActor)) {
+        throws IllegalActionException, NameDuplicationException {
+        if ((container != null) && !(container instanceof CompositeActor)) {
             throw new IllegalActionException(this, container,
-                    "StaticSchedulingCodeGenerator can only be contained "
-                    + " by CompositeActor");
+                "StaticSchedulingCodeGenerator can only be contained "
+                + " by CompositeActor");
         }
+
         super.setContainer(container);
     }
 
@@ -159,16 +158,16 @@ public class StaticSchedulingCodeGenerator
      *  @return The code generator helper.
      */
     protected ComponentCodeGenerator _getHelper(NamedObj actor)
-            throws IllegalActionException {
+        throws IllegalActionException {
         ComponentCodeGenerator helperObject = super._getHelper(actor);
+
         if (!(helperObject instanceof ActorCodeGenerator)) {
             throw new IllegalActionException(this,
-                    "Cannot generate code for this actor: "
-                    + actor
-                    + ". Its helper class does not"
-                    + " implement ActorCodeGenerator.");
+                "Cannot generate code for this actor: " + actor
+                + ". Its helper class does not"
+                + " implement ActorCodeGenerator.");
         }
+
         return helperObject;
     }
-
 }

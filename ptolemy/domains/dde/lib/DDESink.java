@@ -68,7 +68,7 @@ public class DDESink extends TypedAtomicActor {
      *  instantiating and specifying the type of this actor's ports.
      */
     public DDESink(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         input = new TypedIOPort(this, "input", true, false);

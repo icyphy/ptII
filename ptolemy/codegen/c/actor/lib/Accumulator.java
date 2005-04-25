@@ -37,11 +37,11 @@ package ptolemy.codegen.c.actor.lib;
 import ptolemy.codegen.kernel.CCodeGeneratorHelper;
 import ptolemy.kernel.util.IllegalActionException;
 
+
 /**
  * @author Man-Kit Leung
  */
 public class Accumulator extends CCodeGeneratorHelper {
-
     /**
      * Constructor method for the Accumulator helper
      * @param actor the associated actor
@@ -52,13 +52,12 @@ public class Accumulator extends CCodeGeneratorHelper {
 
     /**
      * Generate fire code
-     * The method reads in codeBlock1 and puts into the 
+     * The method reads in codeBlock1 and puts into the
      * given stream buffer
      * @param stream the given buffer to append the code to
      */
-    public void  generateFireCode(StringBuffer stream)
-            throws IllegalActionException {
-
+    public void generateFireCode(StringBuffer stream)
+        throws IllegalActionException {
         CodeStream tmpStream = new CodeStream(this);
         tmpStream.appendCodeBlock("codeBlock1");
         stream.append(processCode(tmpStream.toString()));
@@ -67,11 +66,11 @@ public class Accumulator extends CCodeGeneratorHelper {
     /**
      * Generate initialization code
      * The method reads in codeBlock1 and returns the code
-     * @return the initialization code  
+     * @return the initialization code
      */
-    public String generateInitializeCode()
-            throws IllegalActionException {
+    public String generateInitializeCode() throws IllegalActionException {
         super.generateInitializeCode();
+
         CodeStream tmpStream = new CodeStream(this);
         tmpStream.appendCodeBlock("initBlock");
 

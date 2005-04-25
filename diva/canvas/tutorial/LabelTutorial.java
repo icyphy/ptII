@@ -97,28 +97,52 @@ public class LabelTutorial {
 
         // The data to display
         int[] anchors = {
-            SwingConstants.CENTER, SwingConstants.NORTH,
-            SwingConstants.NORTH_EAST, SwingConstants.EAST,
-            SwingConstants.SOUTH_EAST, SwingConstants.SOUTH,
-            SwingConstants.SOUTH_WEST, SwingConstants.WEST,
-            SwingConstants.NORTH_WEST
-        };
+                SwingConstants.CENTER,
+                SwingConstants.NORTH,
+                SwingConstants.NORTH_EAST,
+                SwingConstants.EAST,
+                SwingConstants.SOUTH_EAST,
+                SwingConstants.SOUTH,
+                SwingConstants.SOUTH_WEST,
+                SwingConstants.WEST,
+                SwingConstants.NORTH_WEST
+            };
 
         String[] labels = {
-            "center", "north", "north-east", "east", "south-east", "south",
-            "south-west", "west", "north-west"
-        };
+                "center",
+                "north",
+                "north-east",
+                "east",
+                "south-east",
+                "south",
+                "south-west",
+                "west",
+                "north-west"
+            };
 
         String[] fonts = {
-            "Dialog", "DialogInput", "Monospaced", "Serif", "SansSerif",
-            "Symbol", "Times", "Courier", "Helvetica"
-        };
+                "Dialog",
+                "DialogInput",
+                "Monospaced",
+                "Serif",
+                "SansSerif",
+                "Symbol",
+                "Times",
+                "Courier",
+                "Helvetica"
+            };
 
         int[] styles = {
-            Font.PLAIN, Font.BOLD, Font.ITALIC, Font.BOLD | Font.ITALIC,
-            Font.PLAIN, Font.BOLD, Font.ITALIC, Font.BOLD | Font.ITALIC,
-            Font.PLAIN
-        };
+                Font.PLAIN,
+                Font.BOLD,
+                Font.ITALIC,
+                Font.BOLD | Font.ITALIC,
+                Font.PLAIN,
+                Font.BOLD,
+                Font.ITALIC,
+                Font.BOLD | Font.ITALIC,
+                Font.PLAIN
+            };
 
         // Draw a rectangle to position them
         BasicRectangle square = new BasicRectangle(160, 80, 120, 120);

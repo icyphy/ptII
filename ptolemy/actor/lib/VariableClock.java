@@ -78,7 +78,7 @@ public class VariableClock extends Clock {
      *   actor with this name.
      */
     public VariableClock(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         periodControl = new TypedIOPort(this, "periodControl", true, false);

@@ -52,7 +52,7 @@ public class CSPPut extends CSPActor {
     /**
      */
     public CSPPut(TypedCompositeActor cont, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(cont, name);
 
         outputPort = new TypedIOPort(this, "output", false, true);

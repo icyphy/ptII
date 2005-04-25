@@ -73,7 +73,7 @@ public class SequenceToArray extends SDFTransformer {
      *   actor with this name.
      */
     public SequenceToArray(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         input_tokenConsumptionRate.setExpression("arrayLength");
@@ -87,8 +87,8 @@ public class SequenceToArray extends SDFTransformer {
 
         // Set the icon.
         _attachText("_iconDescription",
-                "<svg>\n" + "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
-                + "style=\"fill:white\"/>\n" + "</svg>\n");
+            "<svg>\n" + "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
+            + "style=\"fill:white\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -107,13 +107,13 @@ public class SequenceToArray extends SDFTransformer {
      *  @exception IllegalActionException If the parameters are out of range.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == arrayLength) {
             int rate = ((IntToken) arrayLength.getToken()).intValue();
 
             if (rate < 0) {
                 throw new IllegalActionException(this,
-                        "Invalid arrayLength: " + rate);
+                    "Invalid arrayLength: " + rate);
             }
         } else {
             super.attributeChanged(attribute);

@@ -123,7 +123,7 @@ public class EditorIcon extends Attribute {
      *   a period.
      */
     public EditorIcon(Workspace workspace, String name)
-            throws IllegalActionException {
+        throws IllegalActionException {
         super(workspace);
 
         try {
@@ -148,7 +148,7 @@ public class EditorIcon extends Attribute {
      *   an attribute already in the container.
      */
     public EditorIcon(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // Create a tableau factory so that an instance
@@ -198,7 +198,7 @@ public class EditorIcon extends Attribute {
             // "visible attribute" containing an attribute named "_icon"
             // that actually has the icon.
             Iterator subIcons = attribute.attributeList(EditorIcon.class)
-                .iterator();
+                                                     .iterator();
 
             while (subIcons.hasNext()) {
                 EditorIcon subIcon = (EditorIcon) subIcons.next();
@@ -223,9 +223,9 @@ public class EditorIcon extends Attribute {
                     // FIXME: Don't use FilledShapeAttribute... promote
                     // centered capability to a base class.
                     if (attribute instanceof FilledShapeAttribute
-                            && subFigure instanceof BasicFigure) {
+                                    && subFigure instanceof BasicFigure) {
                         boolean centeredValue = ((BooleanToken) ((FilledShapeAttribute) attribute).centered
-                                .getToken()).booleanValue();
+                                        .getToken()).booleanValue();
 
                         if (centeredValue) {
                             ((BasicFigure) subFigure).setCentered(true);
@@ -238,7 +238,7 @@ public class EditorIcon extends Attribute {
                     if (location != null) {
                         double[] locationValue = location.getLocation();
                         CanvasUtilities.translateTo(subFigure,
-                                locationValue[0], locationValue[1]);
+                            locationValue[0], locationValue[1]);
                     }
                 } catch (IllegalActionException e) {
                     throw new InternalErrorException(e);
@@ -298,7 +298,7 @@ public class EditorIcon extends Attribute {
                     LabelFigure label = new LabelFigure(name, _labelFont, 1.0,
                             SwingConstants.CENTER);
                     label.translateTo(backBounds.getCenterX(),
-                            backBounds.getCenterY());
+                        backBounds.getCenterY());
                     figure.add(label);
                 }
             }
@@ -346,14 +346,14 @@ public class EditorIcon extends Attribute {
      *  @exception IOException If an I/O error occurs.
      */
     public void exportMoML(Writer output, int depth, String name)
-            throws IOException {
+        throws IOException {
         // If this icon is not persistent, do nothing.
         if (_isMoMLSuppressed(depth)) {
             return;
         }
 
         output.write(_getIndentPrefix(depth) + "<" + _elementName + " name=\""
-                + name + "\" class=\"" + getClassName() + "\"" + ">\n");
+            + name + "\" class=\"" + getClassName() + "\"" + ">\n");
         _exportMoMLContents(output, depth + 1);
         output.write(_getIndentPrefix(depth) + "</" + _elementName + ">\n");
     }

@@ -27,6 +27,8 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.lib.x10;
 
+import x10.Command;
+
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
@@ -36,8 +38,6 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-
-import x10.Command;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -83,7 +83,7 @@ public class CommandListener extends Receiver {
      *   actor with this name.
      */
     public CommandListener(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // Create output port.
@@ -168,8 +168,8 @@ public class CommandListener extends Receiver {
             int unitCodeValue = ((IntToken) unitCode.getToken()).intValue();
 
             if (sensedHouseCode.equals(houseCodeValue)
-                    && (sensedUnitCode == unitCodeValue)
-                    && (function == functionOfInterest)) {
+                            && (sensedUnitCode == unitCodeValue)
+                            && (function == functionOfInterest)) {
                 detected.send(0, BooleanToken.TRUE);
             } else {
                 detected.send(0, BooleanToken.FALSE);

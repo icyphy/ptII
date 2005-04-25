@@ -55,7 +55,7 @@ public class FloydWarshallNegativeLengthCycleStrategy extends CachedStrategy
      *  @param edgeLengths The lengths associated with the given graph.
      */
     public FloydWarshallNegativeLengthCycleStrategy(Graph graph,
-            ToDoubleMapping edgeLengths) {
+        ToDoubleMapping edgeLengths) {
         super(graph);
         _edgeLengths = edgeLengths;
         _strategy = new FloydWarshallAllPairShortestPathStrategy(graph,
@@ -79,7 +79,7 @@ public class FloydWarshallNegativeLengthCycleStrategy extends CachedStrategy
      */
     public String toString() {
         return "Negative Length analyzer"
-            + " based on the Floyd-Warshall algorithm.";
+        + " based on the Floyd-Warshall algorithm.";
     }
 
     /** Check for compatibility between the analysis and the given

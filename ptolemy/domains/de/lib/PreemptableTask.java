@@ -81,7 +81,7 @@ public class PreemptableTask extends DETransformer {
      *   actor with this name.
      */
     public PreemptableTask(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         interrupt = new TypedIOPort(this, "interrupt", true, false);
@@ -118,15 +118,15 @@ public class PreemptableTask extends DETransformer {
      *  @exception IllegalActionException If the service time is negative.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == executionTime) {
             _executionTimeValue = ((DoubleToken) (executionTime.getToken()))
-                .doubleValue();
+                            .doubleValue();
 
             if (_executionTimeValue < 0.0) {
                 throw new IllegalActionException(this,
-                        "Cannot have negative execution time: "
-                        + _executionTimeValue);
+                    "Cannot have negative execution time: "
+                    + _executionTimeValue);
             }
         } else {
             super.attributeChanged(attribute);
@@ -170,7 +170,7 @@ public class PreemptableTask extends DETransformer {
         // If there is an interrupt.
         if (interrupt.hasToken(0)) {
             boolean interruptValue = ((BooleanToken) interrupt.get(0))
-                .booleanValue();
+                            .booleanValue();
 
             if (interruptValue) {
                 _interruptTime = currentTime;
@@ -180,7 +180,7 @@ public class PreemptableTask extends DETransformer {
 
                 if (_executing) {
                     _outputTime = _outputTime.add(currentTime.subtract(
-                                                          _interruptTime));
+                                _interruptTime));
                     director.fireAt(this, _outputTime);
                 }
             }

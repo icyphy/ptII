@@ -65,7 +65,7 @@ public class ThalesGraphTableau extends ActorGraphTableau {
      * @exception NameDuplicationException If thrown by the super class.
      */
     public ThalesGraphTableau(Workspace workspace)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(workspace);
     }
 
@@ -79,30 +79,29 @@ public class ThalesGraphTableau extends ActorGraphTableau {
      * @exception NameDuplicationException If thrown by the super class.
      */
     public ThalesGraphTableau(PtolemyEffigy container, String name)
-    throws IllegalActionException, NameDuplicationException {
-    	super(container, name);
-    	
-    	NamedObj model = container.getModel();
-    	
-    	if (model == null) {
-    		return;
-    	}
-    	
-    	if (!(model instanceof CompositeEntity)) {
-    		throw new IllegalActionException(this,
-    				"Cannot graphically edit a model "
-    				+ "that is not a CompositeEntity. Model is a " + model);
-    	}
-    	
-    	CompositeEntity entity = (CompositeEntity) model;
-    	
-    	ThalesGraphFrame frame = new ThalesGraphFrame(entity, this);
-    	setFrame(frame);
-    	frame.setBackground(BACKGROUND_COLOR);
-    	
-    	// Don't call setVisible() here, otherwise there will be no menus.
-    	// frame.setVisible(true);
-    	
+        throws IllegalActionException, NameDuplicationException {
+        super(container, name);
+
+        NamedObj model = container.getModel();
+
+        if (model == null) {
+            return;
+        }
+
+        if (!(model instanceof CompositeEntity)) {
+            throw new IllegalActionException(this,
+                "Cannot graphically edit a model "
+                + "that is not a CompositeEntity. Model is a " + model);
+        }
+
+        CompositeEntity entity = (CompositeEntity) model;
+
+        ThalesGraphFrame frame = new ThalesGraphFrame(entity, this);
+        setFrame(frame);
+        frame.setBackground(BACKGROUND_COLOR);
+
+        // Don't call setVisible() here, otherwise there will be no menus.
+        // frame.setVisible(true);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -120,7 +119,7 @@ public class ThalesGraphTableau extends ActorGraphTableau {
          *   an attribute already in the container.
          */
         public Factory(NamedObj container, String name)
-                throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
             super(container, name);
         }
 
@@ -142,7 +141,7 @@ public class ThalesGraphTableau extends ActorGraphTableau {
             if (effigy instanceof PtolemyEffigy) {
                 // First see whether the effigy already contains a RunTableau.
                 ThalesGraphTableau tableau = (ThalesGraphTableau) effigy
-                    .getEntity("graphTableau");
+                                .getEntity("graphTableau");
 
                 if (tableau == null) {
                     tableau = new ThalesGraphTableau((PtolemyEffigy) effigy,

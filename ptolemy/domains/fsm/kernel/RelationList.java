@@ -1,4 +1,4 @@
-/* A RelationList object contains the information of the relations of a 
+/* A RelationList object contains the information of the relations of a
 guard expression.
 
 Copyright (c) 2003-2005 The Regents of the University of California.
@@ -41,25 +41,25 @@ import java.util.ListIterator;
 /**
    A RelationList object contains a list of relations of a guard expression.
    It provides facilities to access the previous and current information of
-   each relation of a guard expression during its evaluation. The information 
-   includes relation type and the difference information. (See 
-   {@link ParseTreeEvaluatorForGuardExpression} for the detailed explanation 
-   of relation type and difference.) This attribute is non-persistent and will 
+   each relation of a guard expression during its evaluation. The information
+   includes relation type and the difference information. (See
+   {@link ParseTreeEvaluatorForGuardExpression} for the detailed explanation
+   of relation type and difference.) This attribute is non-persistent and will
    not be exported into MoML.
-   <p> 
-   This class is designed to be used with ParseTreeEvaluatorForGuardExpression.  
+   <p>
+   This class is designed to be used with ParseTreeEvaluatorForGuardExpression.
    The common usage would be like:
    <p>
-   <i>Construct a relation list for a transition with the first argument of the 
+   <i>Construct a relation list for a transition with the first argument of the
    constructor as that transition.</i>
    <pre>
    _relationList = new RelationList(this, "relationList");
    </pre>
    <p>
-   <i>Associate the relation list with the an object of 
+   <i>Associate the relation list with the an object of
    ParseTreeEvaluatorForGuardExpression</i>
    <pre>
-   _parseTreeEvaluator = 
+   _parseTreeEvaluator =
        new ParseTreeEvaluatorForGuardExpression(_relationList);
    </pre>
    <p>
@@ -89,7 +89,7 @@ public class RelationList extends Attribute {
      *   has an attribute with the name.
      */
     public RelationList(Transition transition, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(transition, name);
         setPersistent(false);
         _relationList = new LinkedList();
@@ -112,6 +112,7 @@ public class RelationList extends Attribute {
      */
     public void clearRelationList() {
         ListIterator relations = _relationList.listIterator();
+
         while (relations.hasNext()) {
             ((RelationNode) relations.next()).clear();
         }
@@ -121,6 +122,7 @@ public class RelationList extends Attribute {
      */
     public void commitRelationValues() {
         ListIterator relations = _relationList.listIterator();
+
         while (relations.hasNext()) {
             ((RelationNode) relations.next()).commit();
         }
@@ -138,7 +140,7 @@ public class RelationList extends Attribute {
      */
     public double getPreviousMaximumDistance() {
         return ((RelationNode) _relationList.get(_maximumDifferenceIndex))
-            .gePreviousDifference();
+                    .gePreviousDifference();
     }
 
     /** Return true if there exists an event caused by the type change of
@@ -149,6 +151,7 @@ public class RelationList extends Attribute {
         boolean result = false;
 
         ListIterator relations = _relationList.listIterator();
+
         while (relations.hasNext() && !result) {
             result = result || ((RelationNode) relations.next()).hasEvent();
         }
@@ -174,7 +177,7 @@ public class RelationList extends Attribute {
         return _relationList.size();
     }
 
-    /** Return the maximum current difference of all the relations by iterating 
+    /** Return the maximum current difference of all the relations by iterating
      *  the relation list.
      *  @return maximumDistance The maximum current distance.
      */
@@ -185,13 +188,16 @@ public class RelationList extends Attribute {
         _maximumDifferenceIndex = 0;
 
         ListIterator relations = _relationList.listIterator();
+
         while (relations.hasNext()) {
             RelationNode relation = ((RelationNode) relations.next());
             difference = Math.abs(relation.getDifference());
+
             if (relation.typeChanged() && (difference > maxDifference)) {
                 maxDifference = difference;
                 _maximumDifferenceIndex = index;
             }
+
             index++;
         }
 
@@ -207,8 +213,7 @@ public class RelationList extends Attribute {
      *  @param difference The current difference of the relation.
      */
     public void setRelation(int relationIndex, int type, double difference) {
-        RelationNode relationNode = 
-            (RelationNode) _relationList.get(relationIndex);
+        RelationNode relationNode = (RelationNode) _relationList.get(relationIndex);
         relationNode.setType(type);
         relationNode.setDifference(difference);
     }
@@ -243,7 +248,7 @@ public class RelationList extends Attribute {
         ////                       public inner methods            ////
 
         /** Reset the relation node by setting the former type and difference
-         *  information to 0 and 0.0 respectively. Note that having the type 
+         *  information to 0 and 0.0 respectively. Note that having the type
          *  value as 0 indicating the former information is invalid.
          */
         public void clear() {

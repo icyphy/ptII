@@ -80,7 +80,7 @@ public class SizeAttribute extends Parameter implements ComponentListener {
      *   an attribute already in the container.
      */
     public SizeAttribute(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         setVisibility(Settable.NONE);
 

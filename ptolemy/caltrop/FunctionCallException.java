@@ -29,8 +29,10 @@
 */
 package ptolemy.caltrop;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// FunctionCallException
+
 /**
    A convenience exception used to indicate an error in a built-in function.
 
@@ -59,8 +61,7 @@ public class FunctionCallException
      * @param arg The argument.
      * @param cause The cause.
      */
-    public FunctionCallException(
-            String name, Object arg, Throwable cause) {
+    public FunctionCallException(String name, Object arg, Throwable cause) {
         super("Failed to apply function '" + name + "' to " + arg, cause);
     }
 
@@ -72,9 +73,9 @@ public class FunctionCallException
      * @param arg2 The argument.
      * @param cause The cause.
      */
-    public FunctionCallException(
-            String name, Object arg1, Object arg2, Throwable cause) {
-        super("Failed to apply function '" + name + "' to " +
-                arg1 + " and " + arg2, cause);
+    public FunctionCallException(String name, Object arg1, Object arg2,
+        Throwable cause) {
+        super("Failed to apply function '" + name + "' to " + arg1 + " and "
+            + arg2, cause);
     }
 }

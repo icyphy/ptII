@@ -33,6 +33,7 @@ import soot.Scene;
 import soot.SootClass;
 import soot.SootMethod;
 import soot.Value;
+
 import soot.jimple.AddExpr;
 import soot.jimple.BinopExpr;
 import soot.jimple.DefinitionStmt;
@@ -40,13 +41,17 @@ import soot.jimple.IfStmt;
 import soot.jimple.IntConstant;
 import soot.jimple.JimpleBody;
 import soot.jimple.Stmt;
+
 import soot.jimple.toolkits.scalar.Evaluator;
+
 import soot.toolkits.graph.Block;
 import soot.toolkits.graph.BlockGraph;
 import soot.toolkits.graph.CompleteBlockGraph;
 import soot.toolkits.graph.CompleteUnitGraph;
+
 import soot.toolkits.scalar.SimpleLiveLocals;
 import soot.toolkits.scalar.SimpleLocalDefs;
+
 import soot.util.Chain;
 
 import java.util.Iterator;
@@ -86,7 +91,7 @@ public class ConstantLoopUnroller extends BodyTransformer {
 
     protected void internalTransform(String phaseName, Map options) {
         System.out.println("ConstantLoopUnroller.internalTransform("
-                + phaseName + ", " + options + ")");
+            + phaseName + ", " + options + ")");
 
         Iterator classes = Scene.v().getApplicationClasses().iterator();
 
@@ -123,7 +128,7 @@ public class ConstantLoopUnroller extends BodyTransformer {
 
             // filter out anything that doesn't look like a loop block.
             if ((block.getPreds().size() != 1)
-                    || (block.getSuccs().size() != 1)) {
+                            || (block.getSuccs().size() != 1)) {
                 continue;
             }
 
@@ -132,8 +137,8 @@ public class ConstantLoopUnroller extends BodyTransformer {
             Block conditional = (Block) block.getSuccs().get(0);
 
             if ((conditional != block.getPreds().get(0))
-                    || (conditional.getPreds().size() != 2)
-                    || (conditional.getSuccs().size() != 2)) {
+                            || (conditional.getPreds().size() != 2)
+                            || (conditional.getSuccs().size() != 2)) {
                 continue;
             }
 
@@ -163,7 +168,7 @@ public class ConstantLoopUnroller extends BodyTransformer {
                             jumpStmt = ifStmt;
                         } else {
                             throw new RuntimeException(
-                                    "Two jumps in conditional!");
+                                "Two jumps in conditional!");
                         }
                     }
                 }
@@ -229,7 +234,7 @@ public class ConstantLoopUnroller extends BodyTransformer {
 
             if (Evaluator.isValueConstantValued(counterStmt.getRightOp())) {
                 initial = ((IntConstant) Evaluator.getConstantValueOf(counterStmt
-                                   .getRightOp())).value;
+                                    .getRightOp())).value;
                 System.out.println("initial = " + initial);
             } else {
                 continue;

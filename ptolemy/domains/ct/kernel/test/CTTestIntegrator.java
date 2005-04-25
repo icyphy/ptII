@@ -57,7 +57,7 @@ public class CTTestIntegrator extends CTBaseIntegrator {
      * @exception IllegalActionException If there was an internal problem.
      */
     public CTTestIntegrator(TypedCompositeActor container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
     }
 

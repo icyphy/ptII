@@ -86,7 +86,7 @@ public class TopMatrixType extends StructuredType implements Serializable {
             return token;
         } else {
             throw new IllegalActionException("Cannot convert " + token
-                    + " to TopMatrixType");
+                + " to TopMatrixType");
         }
     }
 
@@ -125,7 +125,7 @@ public class TopMatrixType extends StructuredType implements Serializable {
      */
     public void initialize(Type type) {
         throw new InternalErrorException("TopMatrixType.initialize: Cannot "
-                + "initialize the element type to " + type + ".");
+            + "initialize the element type to " + type + ".");
     }
 
     /** Test if the argument type is compatible with this type. The method
@@ -181,9 +181,9 @@ public class TopMatrixType extends StructuredType implements Serializable {
      *   different structure.
      */
     public void updateType(StructuredType newType)
-            throws IllegalActionException {
+        throws IllegalActionException {
         throw new InternalErrorException("TopMatrixType.updateType: Cannot "
-                + "updateType the element type to " + newType + ".");
+            + "updateType the element type to " + newType + ".");
     }
 
     ///////////////////////////////////////////////////////////////////

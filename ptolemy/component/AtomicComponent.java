@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.component;
 
 import ptolemy.component.data.TupleToken;
@@ -38,6 +37,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// AtomicComponent
+
 /**
    A component with functionality given in Java. The functionality can
    be given in the {@link #run()} method or by the
@@ -50,9 +50,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating yellow (ellen_zh)
    @Pt.AcceptedRating red (cxh)
 */
-public class AtomicComponent extends ComponentEntity
-    implements Component {
-
+public class AtomicComponent extends ComponentEntity implements Component {
     /** Construct an entity with the given name contained by the specified
      *  entity. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This entity will use the
@@ -68,7 +66,7 @@ public class AtomicComponent extends ComponentEntity
      *   an entity already in the container.
      */
     public AtomicComponent(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         setContainer(container);
         _addIcon();
@@ -100,9 +98,10 @@ public class AtomicComponent extends ComponentEntity
      *   port with the specified name.
      */
     public Port newPort(String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         try {
             _workspace.getWriteAccess();
+
             Port port = new MethodCallPort(this, name);
             return port;
         } finally {
@@ -164,24 +163,23 @@ public class AtomicComponent extends ComponentEntity
      *   name already in the entity.
      */
     protected void _addPort(Port port)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         if (!(port instanceof MethodCallPort)) {
             throw new IllegalActionException(this, port,
-                    "Incompatible port class for this entity.");
+                "Incompatible port class for this entity.");
         }
+
         super._addPort(port);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     private void _addIcon() {
-        _attachText("_iconDescription", "<svg>\n" +
-                "<rect x=\"-30\" y=\"-20\" width=\"60\" " +
-                "height=\"40\" style=\"fill:white\"/>\n" +
-                "<polygon points=\"-20,-10 20,0 -20,10\" " +
-                "style=\"fill:blue\"/>\n" +
-                "</svg>\n");
+        _attachText("_iconDescription",
+            "<svg>\n" + "<rect x=\"-30\" y=\"-20\" width=\"60\" "
+            + "height=\"40\" style=\"fill:white\"/>\n"
+            + "<polygon points=\"-20,-10 20,0 -20,10\" "
+            + "style=\"fill:blue\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////

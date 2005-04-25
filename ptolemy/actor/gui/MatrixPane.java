@@ -158,7 +158,7 @@ public class MatrixPane extends JScrollPane {
             // There is a bug in JTable, where it happily tries to access
             // rows and columns that are outside of range.
             if ((row >= _matrix.getRowCount())
-                    || (column >= _matrix.getColumnCount())) {
+                            || (column >= _matrix.getColumnCount())) {
                 return (_emptyStringToken);
             }
 

@@ -27,6 +27,8 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.lib.colt;
 
+import cern.jet.random.Binomial;
+
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
@@ -34,7 +36,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import cern.jet.random.Binomial;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// Binomial
@@ -47,9 +49,9 @@ import cern.jet.random.Binomial;
    deviation given by parameters.  In addition, the seed can be
    specified as a parameter to control the sequence that is generated.
 
-   <p> This actor instantiates a 
+   <p> This actor instantiates a
    <a href="http://hoschek.home.cern.ch/hoschek/colt/V1.0.3/doc/cern/jet/random/Binomial.html">cern.jet.random.Binomial</a> object with
-    n, the number of trials (also known as the sample size) set to 1 
+    n, the number of trials (also known as the sample size) set to 1
     and p, the probability of success, set to 0.5.
 
     A definition of Binomial by Wolfgang Hoschek can be found at
@@ -82,7 +84,7 @@ binomial</h3>
 <br><code>p</code> - the probability of success (must be in <tt>(0.0,1.0)</tt>).
 </blockquote>
    The above description of binomial() is
-   <a href="doc-files/colt-copyright.htm">copyrighted</a>. 
+   <a href="doc-files/colt-copyright.htm">copyrighted</a>.
 
    @author David Bauer and Kostas Oikonomou
    @version $Id$
@@ -91,7 +93,6 @@ binomial</h3>
    @Pt.AcceptedRating Red (cxh)
 */
 public class ColtBinomial extends ColtRandomSource {
-    
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -101,7 +102,7 @@ public class ColtBinomial extends ColtRandomSource {
      *   actor with this name.
      */
     public ColtBinomial(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         output.setTypeEquals(BaseType.INT);
@@ -160,10 +161,10 @@ public class ColtBinomial extends ColtRandomSource {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The random number for the current iteration. */
     private int _current;
-    
+
     /** The random number generator. */
     private Binomial _generator;
 }

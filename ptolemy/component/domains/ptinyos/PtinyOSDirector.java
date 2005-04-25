@@ -24,15 +24,16 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.component.domains.ptinyos;
 
 import ptolemy.component.Component;
 import ptolemy.component.ComponentDirector;
 import ptolemy.kernel.util.IllegalActionException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// PtinyOSDirector
+
 /**
    FIXME
 
@@ -43,7 +44,6 @@ import ptolemy.kernel.util.IllegalActionException;
    @Pt.AcceptedRating red (davisj)
 */
 public class PtinyOSDirector extends ComponentDirector {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

@@ -170,7 +170,7 @@ public class RunCompositeActor extends LifeCycleManager {
      *   an actor already in the container.
      */
     public RunCompositeActor(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // By default, when exporting MoML, the class name is whatever

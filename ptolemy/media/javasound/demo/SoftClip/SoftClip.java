@@ -97,7 +97,7 @@ public class SoftClip {
             LiveSound.setChannels(channels);
             LiveSound.setBufferSize(inBufferSize);
             System.out.println("Attempting to set both buffer sizes: "
-                    + outBufferSize + " samples.");
+                + outBufferSize + " samples.");
             LiveSound.setTransferSize(getSamplesSize);
 
             int putSamplesSize = getSamplesSize;
@@ -114,9 +114,9 @@ public class SoftClip {
         double[][] capturedSamplesArray = new double[channels][getSamplesSize];
 
         System.out.println("   Actual audio capture buffer size: "
-                + LiveSound.getBufferSizeCapture() + " samples.");
+            + LiveSound.getBufferSizeCapture() + " samples.");
         System.out.println("  Actual audio playback buffer size: "
-                + LiveSound.getBufferSizePlayback() + " samples.");
+            + LiveSound.getBufferSizePlayback() + " samples.");
 
         try {
             // Loop forever.

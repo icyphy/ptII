@@ -110,7 +110,7 @@ public class ApplyFilterOverArray extends TypedAtomicActor
      *   an actor already in the container.
      */
     public ApplyFilterOverArray(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         inputArray = new TypedIOPort(this, "inputArray", true, false);
@@ -156,7 +156,7 @@ public class ApplyFilterOverArray extends TypedAtomicActor
      *   to this container (not thrown in this base class).
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == modelFileOrURL) {
             // Open the file and read the MoML to create a model.
             URL url = modelFileOrURL.asURL();
@@ -177,7 +177,7 @@ public class ApplyFilterOverArray extends TypedAtomicActor
                     _model = parser.parse(null, url);
                 } catch (Exception ex) {
                     throw new IllegalActionException(this, ex,
-                            "Failed to read model.");
+                        "Failed to read model.");
                 }
 
                 // Create a manager, if appropriate.
@@ -202,7 +202,7 @@ public class ApplyFilterOverArray extends TypedAtomicActor
                 _outputLength = length.intValue();
             } else {
                 throw new IllegalActionException(this,
-                        "output array length is less than or equal 0?!");
+                    "output array length is less than or equal 0?!");
             }
         } else {
             super.attributeChanged(attribute);
@@ -217,10 +217,8 @@ public class ApplyFilterOverArray extends TypedAtomicActor
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        ApplyFilterOverArray newActor =
-            (ApplyFilterOverArray) super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        ApplyFilterOverArray newActor = (ApplyFilterOverArray) super.clone(workspace);
         newActor._manager = null;
         newActor._model = null;
         newActor._throwable = null;
@@ -324,7 +322,7 @@ public class ApplyFilterOverArray extends TypedAtomicActor
                     _manager.execute();
                 } catch (KernelException ex) {
                     throw new IllegalActionException(this, ex,
-                            "Execution failed.");
+                        "Execution failed.");
                 }
 
                 if (_getResult()) {
@@ -417,7 +415,7 @@ public class ApplyFilterOverArray extends TypedAtomicActor
             Throwable throwable = _throwable;
             _throwable = null;
             throw new IllegalActionException(this, throwable,
-                    "Background run threw an exception");
+                "Background run threw an exception");
         }
     }
 
@@ -450,7 +448,7 @@ public class ApplyFilterOverArray extends TypedAtomicActor
             return ((BooleanToken) t).booleanValue();
         } else if (attribute instanceof Settable) {
             BooleanToken t = new BooleanToken(((Settable) attribute)
-                    .getExpression());
+                                .getExpression());
             return t.booleanValue();
         }
 

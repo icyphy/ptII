@@ -74,7 +74,7 @@ public class SetProperties extends TypedAtomicActor {
      *   actor with this name.
      */
     public SetProperties(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         payload = new TypedIOPort(this, "payload", true, false);
@@ -90,8 +90,8 @@ public class SetProperties extends TypedAtomicActor {
         output.setTypeSameAs(payload);
 
         _attachText("_iconDescription",
-                "<svg>\n" + "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
-                + "style=\"fill:green\"/>\n" + "</svg>\n");
+            "<svg>\n" + "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
+            + "style=\"fill:green\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////

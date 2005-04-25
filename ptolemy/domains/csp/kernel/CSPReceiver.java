@@ -170,7 +170,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
             }
         } catch (InterruptedException ex) {
             throw new TerminateProcessException(
-                    "CSPReceiver.get() interrupted.");
+                "CSPReceiver.get() interrupted.");
         } finally {
             if (blocked) {
                 // process was blocked, woken up and terminated.
@@ -452,7 +452,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
             }
         } catch (InterruptedException ex) {
             throw new TerminateProcessException(
-                    "CSPReceiver.put() interrupted.");
+                "CSPReceiver.put() interrupted.");
         } finally {
             if (blocked) {
                 // process was blocked, awakened and terminated.
@@ -512,7 +512,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      *   interrupted while waiting(for a rendezvous to complete).
      */
     protected synchronized void _checkFlagsAndWait()
-            throws TerminateProcessException, InterruptedException {
+        throws TerminateProcessException, InterruptedException {
         _checkFlags();
         wait();
         _checkFlags();
@@ -535,7 +535,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
         return _otherController;
     }
 
-    /** Return the branch ID of the branch that requested the 
+    /** Return the branch ID of the branch that requested the
      *  conditional receive.
      *  @return The branch ID.
      */
@@ -590,7 +590,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      *   conditional send.
      */
     protected synchronized void _setConditionalSend(boolean v,
-            ConditionalBranchController p, int otherID) {
+        ConditionalBranchController p, int otherID) {
         _conditionalSendWaiting = v;
         _otherController = p;
         _otherID = otherID;
@@ -609,7 +609,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      *   conditional receive.
      */
     protected synchronized void _setConditionalReceive(boolean v,
-            ConditionalBranchController p, int otherID) {
+        ConditionalBranchController p, int otherID) {
         _conditionalReceiveWaiting = v;
         _otherController = p;
         _otherID = otherID;
@@ -631,7 +631,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
     private synchronized void _checkFlags() throws TerminateProcessException {
         if (_modelFinished) {
             throw new TerminateProcessException(getContainer().getName()
-                    + ": terminated.");
+                + ": terminated.");
         }
     }
 
@@ -652,8 +652,8 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
             // If a thread has a reference to a receiver with no director it
             // is an error so terminate the process.
             throw new TerminateProcessException("CSPReceiver: trying to "
-                    + " rendezvous with a receiver with no "
-                    + "director => terminate.");
+                + " rendezvous with a receiver with no "
+                + "director => terminate.");
         }
     }
 

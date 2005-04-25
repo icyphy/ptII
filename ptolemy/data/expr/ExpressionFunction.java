@@ -56,7 +56,7 @@ import java.util.Map;
 */
 public class ExpressionFunction implements Function {
     public ExpressionFunction(List argumentNames, Type[] argumentTypes,
-            ASTPtRootNode exprRoot) {
+        ASTPtRootNode exprRoot) {
         _argumentNames = new ArrayList(argumentNames);
         _argumentTypes = argumentTypes;
         _exprRoot = exprRoot;
@@ -73,7 +73,7 @@ public class ExpressionFunction implements Function {
      *   the function.
      */
     public ptolemy.data.Token apply(ptolemy.data.Token[] arguments)
-            throws IllegalActionException {
+        throws IllegalActionException {
         ParseTreeEvaluator parseTreeEvaluator = new ParseTreeEvaluator();
 
         // construct a NamedConstantsScope that contains mappings from

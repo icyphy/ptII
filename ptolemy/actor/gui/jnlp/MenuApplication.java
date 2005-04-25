@@ -85,55 +85,55 @@ MenuApplication.class
 @Pt.ProposedRating Red (cxh)
 @Pt.AcceptedRating Red (cxh)
 */
-    public class MenuApplication {
-        /* Main method that sets user.dir as necessary and calls
-         * VergilApplication.main()
-         * @param args Arguments to be passed on to VergilApplication.main()
-         */
-        public static void main(final String[] args) {
-            // If we were started from a menu choice instead of a command
-            // line, then the current working directory is likely
-            // somewhere odd, so set the current working directory (the
-            // user.dir property) to the home directory of the user (the
-            // user.home property)
-            // Note that Java has a very poor notion of the current
-            // directory and that changing user.dir will not necessarily
-            // change the current directory for all aspects of Java.
-            // In particular, the File class does not seems to always respect
-            // the value of user.dir.  In general, changing user.dir
-            // is frowned upon, but we do what we can here.
-            if (_invokedFromAMenu()) {
-                try {
-                    System.setProperty("user.dir",
-                            StringUtilities.getProperty("user.home"));
-                } catch (Exception ex) {
-                    // Don't crash here, just print a message and move on
-                    System.out.println("Warning, could not get user.home property "
-                            + "or set user.dir property:");
-                    ex.printStackTrace();
-                }
+public class MenuApplication {
+    /* Main method that sets user.dir as necessary and calls
+     * VergilApplication.main()
+     * @param args Arguments to be passed on to VergilApplication.main()
+     */
+    public static void main(final String[] args) {
+        // If we were started from a menu choice instead of a command
+        // line, then the current working directory is likely
+        // somewhere odd, so set the current working directory (the
+        // user.dir property) to the home directory of the user (the
+        // user.home property)
+        // Note that Java has a very poor notion of the current
+        // directory and that changing user.dir will not necessarily
+        // change the current directory for all aspects of Java.
+        // In particular, the File class does not seems to always respect
+        // the value of user.dir.  In general, changing user.dir
+        // is frowned upon, but we do what we can here.
+        if (_invokedFromAMenu()) {
+            try {
+                System.setProperty("user.dir",
+                    StringUtilities.getProperty("user.home"));
+            } catch (Exception ex) {
+                // Don't crash here, just print a message and move on
+                System.out.println("Warning, could not get user.home property "
+                    + "or set user.dir property:");
+                ex.printStackTrace();
             }
-
-            // Note that VergilApplication.main() invokes the VergilApplication
-            // constructor in the Swing Event thread.
-            ptolemy.vergil.VergilApplication.main(args);
         }
 
-        ///////////////////////////////////////////////////////////////////
-        ////                         private methods                   ////
-        // Return true if this command was invoked from a menu.
-        private static boolean _invokedFromAMenu() {
-            // Check for Web Start
-            if (StringUtilities.getProperty("javawebstart.version").length() > 0) {
-                return true;
-            }
-
-            if (StringUtilities.getProperty("lax.user.dir").length() > 0) {
-                // If we are running under ZeroG's InstallAnywhere, then this
-                // property will be present.
-                return true;
-            }
-
-            return false;
-        }
+        // Note that VergilApplication.main() invokes the VergilApplication
+        // constructor in the Swing Event thread.
+        ptolemy.vergil.VergilApplication.main(args);
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+    // Return true if this command was invoked from a menu.
+    private static boolean _invokedFromAMenu() {
+        // Check for Web Start
+        if (StringUtilities.getProperty("javawebstart.version").length() > 0) {
+            return true;
+        }
+
+        if (StringUtilities.getProperty("lax.user.dir").length() > 0) {
+            // If we are running under ZeroG's InstallAnywhere, then this
+            // property will be present.
+            return true;
+        }
+
+        return false;
+    }
+}

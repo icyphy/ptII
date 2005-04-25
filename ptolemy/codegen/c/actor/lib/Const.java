@@ -35,6 +35,7 @@ package ptolemy.codegen.c.actor.lib;
 import ptolemy.codegen.kernel.CCodeGeneratorHelper;
 import ptolemy.kernel.util.IllegalActionException;
 
+
 /**
 * @author Man-Kit Leung
 *
@@ -42,26 +43,24 @@ import ptolemy.kernel.util.IllegalActionException;
 * Window - Preferences - Java - Code Style - Code Templates
 */
 public class Const extends CCodeGeneratorHelper {
+    /**
+     * Constructor method for the Const helper
+     * @param actor the associated actor
+     */
+    public Const(ptolemy.actor.lib.Const actor) {
+        super(actor);
+    }
 
-  /**
-   * Constructor method for the Const helper
-   * @param actor the associated actor
-   */
-  public Const(ptolemy.actor.lib.Const actor) {
-      super(actor);
-  }
-
-  /**
-   * Generate fire code
-   * The method reads in codeBlock1 and puts into the 
-   * given stream buffer
-   * @param stream the given buffer to append the code to
-   */
-  public void  generateFireCode(StringBuffer stream)
-          throws IllegalActionException {
-
-      CodeStream tmpStream = new CodeStream(this);
-      tmpStream.appendCodeBlock("codeBlock1");
-      stream.append(processCode(tmpStream.toString()));
-  }
+    /**
+     * Generate fire code
+     * The method reads in codeBlock1 and puts into the
+     * given stream buffer
+     * @param stream the given buffer to append the code to
+     */
+    public void generateFireCode(StringBuffer stream)
+        throws IllegalActionException {
+        CodeStream tmpStream = new CodeStream(this);
+        tmpStream.appendCodeBlock("codeBlock1");
+        stream.append(processCode(tmpStream.toString()));
+    }
 }

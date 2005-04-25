@@ -42,7 +42,7 @@ public class XmlUtilities {
      * complete it and turn it into a URL.
      */
     public static final String makeAbsoluteURL(String url)
-            throws MalformedURLException {
+        throws MalformedURLException {
         URL baseURL;
         System.out.println("orig url: " + url);
 

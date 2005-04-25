@@ -25,14 +25,15 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.codegen.c.actor.lib;
 
 import ptolemy.codegen.kernel.CCodeGeneratorHelper;
 import ptolemy.kernel.util.IllegalActionException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// AddSubtract
+
 /**
    A helper class for ptolemy.actor.lib.AddSubtract
 
@@ -43,7 +44,6 @@ import ptolemy.kernel.util.IllegalActionException;
    @Pt.AcceptedRating Red (eal)
 */
 public class AddSubtract extends CCodeGeneratorHelper {
-
     /**
      * Constructor method for the AddSubtract helper
      * @param actor the associated actor
@@ -54,32 +54,35 @@ public class AddSubtract extends CCodeGeneratorHelper {
 
     /**
      * Generate fire code
-     * The method generate code that loops through each 
-     * INPUT [multi-ports] and combine (add or substract) them. 
+     * The method generate code that loops through each
+     * INPUT [multi-ports] and combine (add or substract) them.
      * The result code is put into the given stream buffer
      * @param stream the given buffer to append the code to
      */
-    public void  generateFireCode(StringBuffer stream)
-            throws IllegalActionException {
-
-        ptolemy.actor.lib.AddSubtract actor =
-            (ptolemy.actor.lib.AddSubtract)getComponent();
+    public void generateFireCode(StringBuffer stream)
+        throws IllegalActionException {
+        ptolemy.actor.lib.AddSubtract actor = (ptolemy.actor.lib.AddSubtract) getComponent();
         StringBuffer tmpStream = new StringBuffer();
         tmpStream.append("$ref(output) = ");
+
         for (int i = 0; i < actor.plus.getWidth(); i++) {
             tmpStream.append("$ref(plus#" + i + ")");
-            if (i < actor.plus.getWidth() - 1) {
+
+            if (i < (actor.plus.getWidth() - 1)) {
                 tmpStream.append(" + ");
             } else if (actor.minus.getWidth() > 0) {
                 tmpStream.append(" - ");
             }
         }
+
         for (int i = 0; i < actor.minus.getWidth(); i++) {
             tmpStream.append("$ref(minus#" + i + ")");
-            if (i < actor.minus.getWidth() - 1) {
+
+            if (i < (actor.minus.getWidth() - 1)) {
                 tmpStream.append(" - ");
             }
         }
+
         tmpStream.append(";\n");
 
         stream.append(processCode(tmpStream.toString()));

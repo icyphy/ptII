@@ -25,9 +25,7 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.component;
-
 
 import ptolemy.actor.Director;
 import ptolemy.actor.Executable;
@@ -57,6 +55,7 @@ import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// ComponentActor
+
 /**
    A Component is outside compatable with components and inside compatable
    with actors.
@@ -67,9 +66,7 @@ import java.util.List;
    @Pt.ProposedRating yellow (ellen_zh)
    @Pt.AcceptedRating red (cxh)
 */
-public class ComponentActor extends TypedCompositeActor
-    implements Component {
-
+public class ComponentActor extends TypedCompositeActor implements Component {
     /** Construct an entity with the given name contained by the specified
      *  entity. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This entity will use the
@@ -85,7 +82,7 @@ public class ComponentActor extends TypedCompositeActor
      *   an entity already in the container.
      */
     public ComponentActor(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         setContainer(container);
         input = new IOMethodPort(this, "input", true, false);
@@ -97,7 +94,6 @@ public class ComponentActor extends TypedCompositeActor
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
     public IOMethodPort input;
-
     public IOMethodPort output;
 
     ///////////////////////////////////////////////////////////////////
@@ -121,9 +117,8 @@ public class ComponentActor extends TypedCompositeActor
      *   or if one of the attributes cannot be cloned.
      *  @return A new CompositeActor.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        ComponentActor newObject = (ComponentActor)super.clone(workspace);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        ComponentActor newObject = (ComponentActor) super.clone(workspace);
         newObject._inputPortsVersion = -1;
         newObject._outputPortsVersion = -1;
         return newObject;
@@ -136,6 +131,7 @@ public class ComponentActor extends TypedCompositeActor
      *  methods, since their width may have changed.
      *  @param port The port that has connection changes.
      */
+
     //FIXME: the reason that i need overwrite this method is because
     // it checked whether the container is compositeActor to avoid
     // infinite loop. But here it should be componentActor. We should change
@@ -144,22 +140,25 @@ public class ComponentActor extends TypedCompositeActor
         if (_debugging) {
             _debug("Connections changed on port: " + port.getName());
         }
+
         super.connectionsChanged(port);
+
         if (port instanceof ComponentPort) {
             // NOTE: deepInsidePortList() is not the right thing here
             // since it will return the same port if it is opaque.
-            Iterator insidePorts
-                = ((ComponentPort)port).insidePortList().iterator();
+            Iterator insidePorts = ((ComponentPort) port).insidePortList()
+                                                .iterator();
+
             try {
                 _inConnectionsChanged = true;
+
                 while (insidePorts.hasNext()) {
-                    ComponentPort insidePort
-                        = (ComponentPort)insidePorts.next();
-                    Entity portContainer = (Entity)insidePort.getContainer();
+                    ComponentPort insidePort = (ComponentPort) insidePorts.next();
+                    Entity portContainer = (Entity) insidePort.getContainer();
+
                     // Avoid an infinite loop where notifications are traded.
                     if (!(portContainer instanceof ComponentActor)
-                            || !((ComponentActor)portContainer)
-                            ._inConnectionsChanged) {
+                                    || !((ComponentActor) portContainer)._inConnectionsChanged) {
                         portContainer.connectionsChanged(insidePort);
                     }
                 }
@@ -167,29 +166,33 @@ public class ComponentActor extends TypedCompositeActor
                 _inConnectionsChanged = false;
             }
         }
+
         if (port instanceof IOPort) {
             IOPort castPort = (IOPort) port;
+
             if (castPort.isOpaque()) {
-                if (castPort.isOutput() && getDirector() != null) {
+                if (castPort.isOutput() && (getDirector() != null)) {
                     // Note that even if castPort is opaque, we still have to
                     // check for director above.
                     try {
                         castPort.createReceivers();
                     } catch (IllegalActionException ex) {
                         // Should never happen.
-                        throw new InternalErrorException(
-                                this, ex, "Cannot create receivers");
+                        throw new InternalErrorException(this, ex,
+                            "Cannot create receivers");
                     }
                 }
-                if (castPort.isInput() && getExecutiveDirector() != null) {
+
+                if (castPort.isInput() && (getExecutiveDirector() != null)) {
                     try {
                         castPort.createReceivers();
                     } catch (IllegalActionException ex) {
                         // Should never happen.
-                        throw new InternalErrorException(
-                                this, ex, "Cannot create receivers");
+                        throw new InternalErrorException(this, ex,
+                            "Cannot create receivers");
                     }
                 }
+
                 // Invalidate the local director schedule and types
                 if (getDirector() != null) {
                     getDirector().invalidateSchedule();
@@ -219,14 +222,19 @@ public class ComponentActor extends TypedCompositeActor
         if (_debugging) {
             _debug("Called fire()");
         }
+
         try {
             _workspace.getReadAccess();
+
             if (!isOpaque()) {
                 throw new IllegalActionException(this,
-                        "Cannot fire a non-opaque actor.");
+                    "Cannot fire a non-opaque actor.");
             }
 
-            if (_stopRequested) return;
+            if (_stopRequested) {
+                return;
+            }
+
             Director director = getDirector();
             director.fire();
         } finally {
@@ -255,7 +263,6 @@ public class ComponentActor extends TypedCompositeActor
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-
     }
 
     /* (non-Javadoc)
@@ -268,16 +275,19 @@ public class ComponentActor extends TypedCompositeActor
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
+
     /** Invoke one iteration and transfer the token to a method call.
      */
     protected TupleToken _executeInside() {
         if (_debugging) {
             _debug("execute inside");
         }
-        System.out.println("call execute inside");
-        try {
 
+        System.out.println("call execute inside");
+
+        try {
             int iter = iterate(1);
+
             //System.out.println("the iterate return is: " + iter);
             if (iter == Executable.COMPLETED) {
                 return output.call();
@@ -302,17 +312,19 @@ public class ComponentActor extends TypedCompositeActor
     /*  Create receivers for each input port.
      *  @exception IllegalActionException If any port throws it.
      */
+
     //FIXME: how should I modify this mehtod.
     private void _createReceivers() throws IllegalActionException {
         Iterator ports = portList().iterator();
+
         while (ports.hasNext()) {
-            IOMethodPort onePort = (IOMethodPort)ports.next();
+            IOMethodPort onePort = (IOMethodPort) ports.next();
             onePort.createReceivers();
         }
     }
 
     protected void _addRelation(ComponentRelation relation)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
     }
 
     // Indicator that we are in the connectionsChanged method.
@@ -328,38 +340,28 @@ public class ComponentActor extends TypedCompositeActor
     //private FunctionDependencyOfCompositeActor _functionDependency;
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-
-
-
-
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     private void _addIcon() {
-        _attachText("_iconDescription", "<svg>\n" +
-                "<rect x=\"-30\" y=\"-20\" width=\"60\" " +
-                "height=\"40\" style=\"fill:white\"/>\n" +
-                "<polygon points=\"-20,-10 20,0 -20,10\" " +
-                "style=\"fill:blue\"/>\n" +
-                "</svg>\n");
+        _attachText("_iconDescription",
+            "<svg>\n" + "<rect x=\"-30\" y=\"-20\" width=\"60\" "
+            + "height=\"40\" style=\"fill:white\"/>\n"
+            + "<polygon points=\"-20,-10 20,0 -20,10\" "
+            + "style=\"fill:blue\"/>\n" + "</svg>\n");
     }
-
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     /** The container. */
     private CompositeEntity _container;
-
     private HashMap _methods;
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////
-
     // A class that encapsulates the declared and resolved types of a
     // field and implements the InequalityTerm interface.
     private class IOMethodPort extends TypedIOPort implements Method {
-
         /** Construct a port in the default workspace with an empty string
          *  as its name. Increment the version number of the workspace.
          *  The object is added to the workspace directory.
@@ -393,7 +395,7 @@ public class ComponentActor extends TypedCompositeActor
          *   a port already in the container.
          */
         public IOMethodPort(ComponentEntity container, String name)
-                throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
             super(container, name);
         }
 
@@ -413,12 +415,13 @@ public class ComponentActor extends TypedCompositeActor
          *   a port already in the container.
          */
         public IOMethodPort(ComponentEntity container, String name,
-                boolean isInput, boolean isOutput)
-                throws IllegalActionException, NameDuplicationException {
+            boolean isInput, boolean isOutput)
+            throws IllegalActionException, NameDuplicationException {
             this(container, name);
             setInput(isInput);
             setOutput(isOutput);
         }
+
         ///////////////////////////////////////////////////////////////
         ////                   public inner methods                ////
 
@@ -430,6 +433,7 @@ public class ComponentActor extends TypedCompositeActor
             //FIXME: we assume only one token is going to be outputed.
             //what is the correct sematics here?
             System.out.println("try to call outside");
+
             if (isOutput()) {
                 try {
                     for (int i = 0; i < getWidthInside(); i++) {
@@ -438,8 +442,11 @@ public class ComponentActor extends TypedCompositeActor
                             Token t = getInside(i);
                             Token[] tokens = new Token[1];
                             tokens[0] = t;
-                            Iterator ports = this.deepConnectedPortList().iterator();
+
+                            Iterator ports = this.deepConnectedPortList()
+                                                             .iterator();
                             MethodCallPort port = (MethodCallPort) ports.next();
+
                             //System.out.println("get the connected method call port");
                             return port.call(new TupleToken(tokens));
                         } else {
@@ -454,22 +461,26 @@ public class ComponentActor extends TypedCompositeActor
                 // The port provided should over write this method.
                 return TupleToken.VOID;
             }
-            return TupleToken.VOID;
 
+            return TupleToken.VOID;
         }
 
         public synchronized TupleToken call(TupleToken token) {
             if (isInput()) {
                 int l = token.length();
+
                 //Assume only one port is connected to this.
                 Iterator ports = this.deepInsidePortList().iterator();
                 IOPort port = (IOPort) ports.next();
                 Receiver[][] receivers = port.getReceivers();
-                for (int i = 0; i < l; i++ ) {
+
+                for (int i = 0; i < l; i++) {
                     Token t = token.getElement(i);
+
                     //assume not multiple port.
                     receivers[0][0].put(t);
                 }
+
                 return _executeInside();
             } else {
                 return TupleToken.VOID;
@@ -498,10 +509,11 @@ public class ComponentActor extends TypedCompositeActor
          *   an opaque input port or if there is no director.
          */
         public void createReceivers() throws IllegalActionException {
-
             boolean output = isOutput();
+
             if (output) {
                 Iterator insideRelations = insideRelationList().iterator();
+
                 if (insideRelations.hasNext()) {
                     _insideReceivers = new Receiver[1][1];
                     _insideReceivers[0][0] = _newInsideReceiver();
@@ -531,7 +543,7 @@ public class ComponentActor extends TypedCompositeActor
          *   from the outside.
          */
         public Receiver[][] getReceivers(IORelation relation, int occurrence)
-                throws IllegalActionException {
+            throws IllegalActionException {
             return _insideReceivers;
         }
 
@@ -556,8 +568,7 @@ public class ComponentActor extends TypedCompositeActor
          *   in the same workspace as the relation.
          */
         protected void _checkLiberalLink(Relation relation)
-                throws IllegalActionException {
-
+            throws IllegalActionException {
         }
 
         /** Override parent method to ensure compatibility of the relation
@@ -575,12 +586,11 @@ public class ComponentActor extends TypedCompositeActor
          *   not in the same workspace as the relation.
          */
         protected void _checkLink(Relation relation)
-                throws IllegalActionException {
-
+            throws IllegalActionException {
         }
+
         // Lists of local receivers, indexed by relation.
         private Receiver[][] _insideReceivers;
-
         private boolean _isProviedPort = false;
     }
 }

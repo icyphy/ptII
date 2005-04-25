@@ -74,7 +74,7 @@ public class JAIPNMWriter extends JAIWriter {
      *   actor with this name.
      */
     public JAIPNMWriter(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         writeRawData = new Parameter(this, "writeRawData");
@@ -104,7 +104,7 @@ public class JAIPNMWriter extends JAIWriter {
         _imageEncoderName = "PNM";
 
         boolean writeRawDataValue = ((BooleanToken) writeRawData.getToken())
-            .booleanValue();
+                        .booleanValue();
         PNMEncodeParam pnmEncodeParam = new PNMEncodeParam();
         pnmEncodeParam.setRaw(writeRawDataValue);
         _imageEncodeParam = pnmEncodeParam;

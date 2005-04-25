@@ -147,7 +147,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
      *   an actor already in the container.
      */
     public TypedCompositeActor(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // By default, when exporting MoML, the class name is whatever
@@ -199,7 +199,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
      *   already on the container's contents list.
      */
     public ComponentRelation newRelation(String name)
-            throws NameDuplicationException {
+        throws NameDuplicationException {
         try {
             workspace().getWriteAccess();
 
@@ -222,11 +222,11 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
      *  @exception TypeConflictException If a type conflict is detected.
      */
     public static void resolveTypes(TypedCompositeActor topLevel)
-            throws TypeConflictException {
+        throws TypeConflictException {
         if (topLevel.getContainer() != null) {
             throw new IllegalArgumentException(
-                    "TypedCompositeActor.resolveTypes: The specified actor is "
-                    + "not the top level container.");
+                "TypedCompositeActor.resolveTypes: The specified actor is "
+                + "not the top level container.");
         }
 
         try {
@@ -249,7 +249,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
             */
             if (constraintList.size() > 0) {
                 InequalitySolver solver = new InequalitySolver(TypeLattice
-                        .lattice());
+                                    .lattice());
                 Iterator constraints = constraintList.iterator();
                 solver.addInequalities(constraints);
 
@@ -271,9 +271,9 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
                         // Check if type variables are resolved to unacceptable
                         //types
                         InequalityTerm[] lesserVariables = inequality.getLesserTerm()
-                            .getVariables();
+                                                                                 .getVariables();
                         InequalityTerm[] greaterVariables = inequality.getGreaterTerm()
-                            .getVariables();
+                                                                                  .getVariables();
                         boolean added = false;
 
                         for (int i = 0; i < lesserVariables.length; i++) {
@@ -302,16 +302,16 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
 
             if (conflicts.size() > 0) {
                 throw new TypeConflictException(conflicts,
-                        "Type conflicts occurred in " + topLevel.getFullName()
-                        + " on the following inequalities:");
+                    "Type conflicts occurred in " + topLevel.getFullName()
+                    + " on the following inequalities:");
             }
         } catch (IllegalActionException ex) {
             // This should not happen. The exception means that
             // _checkDeclaredType or typeConstraintList is called on a
             // transparent actor.
             throw new InternalErrorException(topLevel, ex,
-                    "Type resolution failed because of an error "
-                    + "during type inference");
+                "Type resolution failed because of an error "
+                + "during type inference");
         }
     }
 
@@ -359,7 +359,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
                         TypedIOPort sourcePort = (TypedIOPort) ports.next();
                         List destinationPorts = sourcePort.sinkPortList();
                         result.addAll(_typeConstraintsFromTo(sourcePort,
-                                              destinationPorts));
+                                destinationPorts));
                     }
                 }
 
@@ -371,7 +371,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
                     TypedIOPort sourcePort = (TypedIOPort) boundaryPorts.next();
                     List destinationPorts = sourcePort.insideSinkPortList();
                     result.addAll(_typeConstraintsFromTo(sourcePort,
-                                          destinationPorts));
+                            destinationPorts));
                 }
             }
 
@@ -423,11 +423,11 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
      *   already on the actor contents list.
      */
     protected void _addEntity(ComponentEntity entity)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         if (!(entity instanceof TypedActor)) {
             throw new IllegalActionException(this, entity,
-                    "TypedCompositeActor can only contain entities that "
-                    + "implement the TypedActor interface.");
+                "TypedCompositeActor can only contain entities that "
+                + "implement the TypedActor interface.");
         }
 
         super._addEntity(entity);
@@ -450,11 +450,11 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
      *   name already in the actor.
      */
     protected void _addPort(Port port)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         if (!(port instanceof TypedIOPort)) {
             throw new IllegalActionException(this, port,
-                    "TypedCompositeActor can only contain instances of "
-                    + "TypedIOPort.");
+                "TypedCompositeActor can only contain instances of "
+                + "TypedIOPort.");
         }
 
         super._addPort(port);
@@ -475,11 +475,11 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
      *   already on the contained relations list.
      */
     protected void _addRelation(ComponentRelation relation)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         if (!(relation instanceof TypedIORelation)) {
             throw new IllegalActionException(this, relation,
-                    "TypedCompositeActor can only contain instances of "
-                    + "TypedIORelation.");
+                "TypedCompositeActor can only contain instances of "
+                + "TypedIORelation.");
         }
 
         super._addRelation(relation);
@@ -495,7 +495,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
      *   type constraints that are not satisfied.
      */
     protected List _checkTypesFromTo(TypedIOPort sourcePort,
-            List destinationPortList) {
+        List destinationPortList) {
         List result = new LinkedList();
 
         boolean isUndeclared = sourcePort.getTypeTerm().isSettable();
@@ -507,7 +507,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
 
             while (destinationPorts.hasNext()) {
                 TypedIOPort destinationPort = (TypedIOPort) destinationPorts
-                    .next();
+                                .next();
                 isUndeclared = destinationPort.getTypeTerm().isSettable();
 
                 if (!isUndeclared) {
@@ -517,9 +517,10 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
                     int compare = TypeLattice.compare(srcDeclared, destDeclared);
 
                     if ((compare == CPO.HIGHER)
-                            || (compare == CPO.INCOMPARABLE)) {
+                                    || (compare == CPO.INCOMPARABLE)) {
                         Inequality inequality = new Inequality(sourcePort
-                                .getTypeTerm(), destinationPort.getTypeTerm());
+                                            .getTypeTerm(),
+                                destinationPort.getTypeTerm());
                         result.add(inequality);
                     }
                 }
@@ -540,7 +541,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
      *  @return A list of instances of Inequality.
      */
     protected List _typeConstraintsFromTo(TypedIOPort sourcePort,
-            List destinationPortList) {
+        List destinationPortList) {
         List result = new LinkedList();
 
         boolean srcUndeclared = sourcePort.getTypeTerm().isSettable();
@@ -584,7 +585,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
     private List _checkDeclaredTypes() throws IllegalActionException {
         if (!isOpaque()) {
             throw new IllegalActionException(this,
-                    "Cannot check types on a non-opaque actor.");
+                "Cannot check types on a non-opaque actor.");
         }
 
         List result = new LinkedList();

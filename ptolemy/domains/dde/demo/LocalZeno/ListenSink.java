@@ -62,7 +62,7 @@ public class ListenSink extends DDESink {
      * @params name The name of this actor.
      */
     public ListenSink(CompositeEntity cont, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(cont, name);
     }
 

@@ -64,7 +64,7 @@ public class PlotEffigy extends Effigy {
      *  @param name The name of this effigy.
      */
     public PlotEffigy(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -103,7 +103,7 @@ public class PlotEffigy extends Effigy {
                         stream.close();
                     } catch (Throwable throwable) {
                         System.out.println("Ignoring failure to close stream "
-                                + "on " + file);
+                            + "on " + file);
                         throwable.printStackTrace();
                     }
                 }
@@ -131,7 +131,7 @@ public class PlotEffigy extends Effigy {
          *   an entity already in the container.
          */
         public Factory(CompositeEntity container, String name)
-                throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
             super(container, name);
         }
 
@@ -164,7 +164,7 @@ public class PlotEffigy extends Effigy {
          *  @exception Exception If the URL cannot be read.
          */
         public Effigy createEffigy(CompositeEntity container, URL base,
-                URL input) throws Exception {
+            URL input) throws Exception {
             if (input != null) {
                 String extension = getExtension(input);
 

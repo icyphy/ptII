@@ -205,7 +205,7 @@ public class FilePortParameter extends PortParameter {
      *   a parameter already in the container.
      */
     public FilePortParameter(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         setStringMode(true);
         setTypeEquals(BaseType.STRING);
@@ -231,8 +231,8 @@ public class FilePortParameter extends PortParameter {
      *   an parameter already in the container.
      */
     public FilePortParameter(NamedObj container, String name,
-            ptolemy.data.Token token)
-            throws IllegalActionException, NameDuplicationException {
+        ptolemy.data.Token token)
+        throws IllegalActionException, NameDuplicationException {
         super(container, name, token);
         setStringMode(true);
         setTypeEquals(BaseType.STRING);
@@ -279,7 +279,7 @@ public class FilePortParameter extends PortParameter {
             // Java 1.4.2 some times reports:
             //  java.lang.IllegalArgumentException: URI is not absolute
             throw new IllegalActionException(this, ex,
-                    "Failed to create a file with name '" + name + "'.");
+                "Failed to create a file with name '" + name + "'.");
         }
     }
 
@@ -298,10 +298,10 @@ public class FilePortParameter extends PortParameter {
 
         try {
             return FileUtilities.nameToURL(name, getBaseDirectory(),
-                    getClass().getClassLoader());
+                getClass().getClassLoader());
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
-                    "Cannot read file '" + name + "'");
+                "Cannot read file '" + name + "'");
         }
     }
 
@@ -430,7 +430,7 @@ public class FilePortParameter extends PortParameter {
             return _writer;
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
-                    "Cannot open file for writing");
+                "Cannot open file for writing");
         }
     }
 

@@ -97,7 +97,7 @@ public class StateController extends AttributeController {
             // NOTE: The following requires that the configuration be
             // non-null, or it will report an error.
             _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                                                    _lookInsideAction));
+                    _lookInsideAction));
         }
     }
 
@@ -114,7 +114,7 @@ public class StateController extends AttributeController {
             // NOTE: The following requires that the configuration be
             // non-null, or it will report an error.
             _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                                                    _lookInsideAction));
+                    _lookInsideAction));
         }
     }
 
@@ -148,14 +148,14 @@ public class StateController extends AttributeController {
             // For some inexplicable reason, the I key doesn't work here.
             // So we use L.
             putValue(GUIUtilities.ACCELERATOR_KEY,
-                    KeyStroke.getKeyStroke(KeyEvent.VK_L,
-                            Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+                KeyStroke.getKeyStroke(KeyEvent.VK_L,
+                    Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         }
 
         public void actionPerformed(ActionEvent e) {
             if (_configuration == null) {
                 MessageHandler.error(
-                        "Cannot look inside without a configuration.");
+                    "Cannot look inside without a configuration.");
                 return;
             }
 
@@ -195,7 +195,7 @@ public class StateController extends AttributeController {
         }
 
         /** Render an object.
-         *  @param n The object to be rendered.  This object should 
+         *  @param n The object to be rendered.  This object should
          *  of type Locatable.
          *  @return A Figure.
          */
@@ -213,7 +213,7 @@ public class StateController extends AttributeController {
                 // but not inserted.
                 if (icons.size() == 0) {
                     XMLIcon alreadyCreated = (XMLIcon) _iconsPendingContainer
-                        .get(object);
+                                    .get(object);
 
                     if (alreadyCreated != null) {
                         icons.add(alreadyCreated);
@@ -280,7 +280,7 @@ public class StateController extends AttributeController {
                 }
             } catch (KernelException ex) {
                 throw new InternalErrorException("could not create icon "
-                        + "in " + object + " even " + "though one did not exist");
+                    + "in " + object + " even " + "though one did not exist");
             }
 
             Figure figure = icon.createFigure();

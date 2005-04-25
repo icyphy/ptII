@@ -26,7 +26,6 @@
    @ProposedRating Red
    @AcceptedRating Red (cxh)
 */
-
 package ptolemy.component.test;
 
 import ptolemy.component.data.TupleToken;
@@ -46,13 +45,13 @@ import java.io.StringWriter;
 
 //////////////////////////////////////////////////////////////////////////
 //// MCApplication
+
 /** An application for testing the component domain.
  //FIXME:
  @author  Yang Zhao
  @version $Id$
 */
 public class MCApplication {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -64,20 +63,23 @@ public class MCApplication {
         try {
             Workspace workspace = new Workspace("NC");
             _toplevel = new CompositeEntity(workspace);
-            _toplevel.setName( "NCTest");
+            _toplevel.setName("NCTest");
+
             Counter counter = new Counter(_toplevel, "Couter");
             Leds leds = new Leds(_toplevel, "Leds");
-            Relation r1 = (Relation)
-                _toplevel.connect(counter.output, leds.display, "R1");
+            Relation r1 = (Relation) _toplevel.connect(counter.output,
+                    leds.display, "R1");
 
             //generate moml file to be tested in vergil
             StringWriter buffer = new StringWriter();
             _toplevel.exportMoML(buffer);
-            String fileName =
-                "c:/NCApplication.xml";
+
+            String fileName = "c:/NCApplication.xml";
             FileOutputStream file = null;
+
             try {
                 file = new FileOutputStream(fileName);
+
                 PrintStream out = new PrintStream(file);
                 out.println(buffer);
                 out.flush();
@@ -87,16 +89,20 @@ public class MCApplication {
                         file.close();
                     } catch (Throwable throwable) {
                         System.out.println("Ignoring failure to close stream "
-                                + "on " + fileName);
+                            + "on " + fileName);
                         throwable.printStackTrace();
                     }
                 }
             }
+
             //execute the model.
             counter.initialize();
+
             IntToken[] t = new IntToken[1];
             t[0] = new IntToken(2);
+
             TupleToken arg = new TupleToken(t);
+
             for (int i = 0; i < 10; i++) {
                 counter.increment.call(arg);
             }
@@ -105,13 +111,10 @@ public class MCApplication {
         } catch (IOException ex) {
             throw new InternalErrorException("IOException");
         } catch (IllegalActionException ex) {
-            throw new InternalErrorException("IllegalAction:"+
-                    ex.getMessage());
+            throw new InternalErrorException("IllegalAction:" + ex.getMessage());
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-
 }

@@ -93,7 +93,7 @@ public class EditorTutorial {
         _editor = new JGraph(pane);
         context.getContentPane().add("Center", _editor);
         _target = new BasicLayoutTarget(_editor.getGraphPane()
-                .getGraphController());
+                                                           .getGraphController());
         _layout = new LevelLayout(_target);
 
         LayoutWidget lw = new LayoutWidget(_target, _model.getRoot(), true);

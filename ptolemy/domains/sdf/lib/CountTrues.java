@@ -60,7 +60,7 @@ public class CountTrues extends SDFTransformer {
      *   actor with this name.
      */
     public CountTrues(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         input.setTypeEquals(BaseType.BOOLEAN);

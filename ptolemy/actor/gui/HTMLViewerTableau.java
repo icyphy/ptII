@@ -80,7 +80,7 @@ public class HTMLViewerTableau extends Tableau {
      *   attribute already in the container.
      */
     public HTMLViewerTableau(Effigy container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         url = new StringAttribute(this, "url");
@@ -106,7 +106,7 @@ public class HTMLViewerTableau extends Tableau {
      *   or if the base class throws it.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == url) {
             String urlSpec = ((Settable) attribute).getExpression();
 
@@ -118,7 +118,7 @@ public class HTMLViewerTableau extends Tableau {
                 ((HTMLViewer) getFrame()).setPage(toRead);
             } catch (IOException ex) {
                 throw new IllegalActionException(this, ex,
-                        "Cannot open URL: " + urlSpec);
+                    "Cannot open URL: " + urlSpec);
             }
         } else {
             super.attributeChanged(attribute);
@@ -140,7 +140,7 @@ public class HTMLViewerTableau extends Tableau {
          *   an attribute already in the container.
          */
         public Factory(NamedObj container, String name)
-                throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
             super(container, name);
         }
 
@@ -171,7 +171,7 @@ public class HTMLViewerTableau extends Tableau {
                 // First see whether the effigy already contains an
                 // HTMLViewerTableau.
                 HTMLViewerTableau tableau = (HTMLViewerTableau) effigy
-                    .getEntity("htmlTableau");
+                                .getEntity("htmlTableau");
 
                 if (tableau == null) {
                     tableau = new HTMLViewerTableau((HTMLEffigy) effigy,
@@ -219,17 +219,17 @@ public class HTMLViewerTableau extends Tableau {
                         try {
                             // URI's can't deal with spaces, so we
                             // convert to %20
-                            URL canonicalizedURL =
-                                JNLPUtilities.canonicalizeJarURL(anotherURL);
-                            effigy.uri.setURI(
-                                    new URI(canonicalizedURL.toString()));
+                            URL canonicalizedURL = JNLPUtilities
+                                            .canonicalizeJarURL(anotherURL);
+                            effigy.uri.setURI(new URI(
+                                    canonicalizedURL.toString()));
                             tableau.setTitle(canonicalizedURL.toString());
                         } catch (Exception ex2) {
                             throw ex;
                         }
                     }
-                    ((HTMLViewer) tableau.getFrame()).setPage(anotherURL);
 
+                    ((HTMLViewer) tableau.getFrame()).setPage(anotherURL);
                 }
 
                 // Don't call show() here.  If show() is called here,
@@ -261,7 +261,7 @@ public class HTMLViewerTableau extends Tableau {
      *  @exception MalformedURLException If there are problems creating a URL.
      */
     public static URL _absolutePTIIURLToJarURL(String urlName)
-            throws java.net.URISyntaxException, java.net.MalformedURLException {
+        throws java.net.URISyntaxException, java.net.MalformedURLException {
         // Try looking up the URL as a resource relative to $PTII.
         String ptIIDirAsURLName = StringUtilities.getProperty(
                 "ptolemy.ptII.dirAsURL");
@@ -299,7 +299,7 @@ public class HTMLViewerTableau extends Tableau {
                 // If the ptIIDirAsURLName has a space in it, then it is
                 // not a legitimate URI, so we substitute in %20
                 ptIIDirAsURI = new URI(StringUtilities.substitute(
-                                               ptIIDirAsURLName, " ", "%20"));
+                            ptIIDirAsURLName, " ", "%20"));
             }
 
             URI relativeURI = uri.relativize(ptIIDirAsURI);
@@ -313,7 +313,7 @@ public class HTMLViewerTableau extends Tableau {
 
                 // Hmm, should this be
                 relativePath = uri.toString().substring(ptIIDirAsURI.toString()
-                        .length()
+                                                                                .length()
                         + offset);
 
                 //relativePath = urlName.substring(ptIIDirAsURLName.length());
@@ -328,7 +328,7 @@ public class HTMLViewerTableau extends Tableau {
             }
 
             URL anotherURL = Thread.currentThread().getContextClassLoader()
-                .getResource(relativePath);
+                                               .getResource(relativePath);
 
             if ((anotherURL == null) && (relativePath.indexOf('#') != -1)) {
                 // getResource does not work on paths that look like:
@@ -355,7 +355,7 @@ public class HTMLViewerTableau extends Tableau {
     // we return null
     // @param urlString A string representing a jar URL or a relative URL.
     private static URL _entryResourceWithoutFragment(String urlString)
-            throws IOException, MalformedURLException {
+        throws IOException, MalformedURLException {
         String urlStringBase = urlString.substring(0, urlString.lastIndexOf("#"));
 
         URL anotherURL = null;
@@ -364,7 +364,7 @@ public class HTMLViewerTableau extends Tableau {
             anotherURL = ClassUtilities.jarURLEntryResource(urlStringBase);
         } else {
             anotherURL = Thread.currentThread().getContextClassLoader()
-                .getResource(urlStringBase);
+                                           .getResource(urlStringBase);
         }
 
         if (anotherURL != null) {

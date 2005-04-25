@@ -89,7 +89,7 @@ import javax.swing.SwingUtilities;
    @Pt.AcceptedRating Green (cxh)
 */
 public class PlotterBase extends TypedAtomicActor implements Configurable,
-                                                             Placeable {
+    Placeable {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -99,7 +99,7 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
      *   actor with this name.
      */
     public PlotterBase(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         fillOnWrapup = new Parameter(this, "fillOnWrapup",
@@ -114,16 +114,16 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
         _plotSize = new SizeAttribute(this, "_plotSize");
 
         _attachText("_iconDescription",
-                "<svg>\n" + "<rect x=\"-20\" y=\"-20\" "
-                + "width=\"40\" height=\"40\" " + "style=\"fill:lightGrey\"/>\n"
-                + "<rect x=\"-12\" y=\"-12\" " + "width=\"24\" height=\"24\" "
-                + "style=\"fill:white\"/>\n" + "<rect x=\"2\" y=\"-18\" "
-                + "width=\"4\" height=\"4\" " + "style=\"fill:grey\"/>\n"
-                + "<rect x=\"8\" y=\"-18\" " + "width=\"4\" height=\"4\" "
-                + "style=\"fill:grey\"/>\n" + "<rect x=\"14\" y=\"-18\" "
-                + "width=\"4\" height=\"4\" " + "style=\"fill:grey\"/>\n"
-                + "<polyline points=\"-10,0, -5,-8, 5,8, 10,0\" "
-                + "style=\"stroke:red\"/>\n" + "</svg>\n");
+            "<svg>\n" + "<rect x=\"-20\" y=\"-20\" "
+            + "width=\"40\" height=\"40\" " + "style=\"fill:lightGrey\"/>\n"
+            + "<rect x=\"-12\" y=\"-12\" " + "width=\"24\" height=\"24\" "
+            + "style=\"fill:white\"/>\n" + "<rect x=\"2\" y=\"-18\" "
+            + "width=\"4\" height=\"4\" " + "style=\"fill:grey\"/>\n"
+            + "<rect x=\"8\" y=\"-18\" " + "width=\"4\" height=\"4\" "
+            + "style=\"fill:grey\"/>\n" + "<rect x=\"14\" y=\"-18\" "
+            + "width=\"4\" height=\"4\" " + "style=\"fill:grey\"/>\n"
+            + "<polyline points=\"-10,0, -5,-8, 5,8, 10,0\" "
+            + "style=\"stroke:red\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -150,7 +150,7 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
      *  @exception IllegalActionException If the superclass throws it.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         // NOTE: Do not react to changes in _windowProperties.
         // Those properties are only used when originally opening a window.
         if (attribute == legend) {
@@ -201,7 +201,7 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
      *   or if the configuration information is incorrect.
      */
     public void configure(URL base, String source, String text)
-            throws Exception {
+        throws Exception {
         _base = base;
         _source = source;
         _text = text;
@@ -373,7 +373,7 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
      *  @exception NameDuplicationException If the base class throws it.
      */
     public void setContainer(CompositeEntity container)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         Nameable previousContainer = getContainer();
         super.setContainer(container);
 
@@ -408,7 +408,7 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
      *  @exception IOException If an I/O error occurs.
      */
     protected void _exportMoMLContents(Writer output, int depth)
-            throws IOException {
+        throws IOException {
         // Make sure that the current position of the frame, if any,
         // is up to date.
         if (_frame != null) {
@@ -429,7 +429,7 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
 
         if (plot != null) {
             output.write(_getIndentPrefix(depth) + "<configure>\n<?plotml "
-                    + header + "\n<plot>\n");
+                + header + "\n<plot>\n");
 
             PrintWriter print = new PrintWriter(output);
 
@@ -437,7 +437,7 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
             // should be referenced.
             plot.writeFormat(print);
             output.write("</plot>?>\n" + _getIndentPrefix(depth)
-                    + "</configure>\n");
+                + "</configure>\n");
         } else if (_configureSources != null) {
             // Configuration has been specified, but not yet evaluated.
             // Save the configuration just as specified.
@@ -452,7 +452,7 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
 
                 if ((source != null) && !source.trim().equals("")) {
                     output.write(_getIndentPrefix(depth)
-                            + "<configure source=\"" + source + "\">");
+                        + "<configure source=\"" + source + "\">");
 
                     if (text != null) {
                         output.write("<![CDATA[\n");
@@ -527,7 +527,7 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
      *   be propagated.
      */
     protected void _propagateValue(NamedObj destination)
-            throws IllegalActionException {
+        throws IllegalActionException {
         try {
             ((Configurable) destination).configure(_base, _source, _text);
         } catch (Exception ex) {
@@ -640,7 +640,7 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
          *   attribute already in the container.
          */
         public PlotWindowTableau(PlotEffigy container, String name)
-                throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
             super(container, name);
             frame = new PlotterPlotFrame(this, plot);
             setFrame(frame);

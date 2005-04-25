@@ -82,7 +82,7 @@ public class InterfaceAutomatonGraphFrame extends FSMGraphFrame {
      *   to use if the model does not have a library.
      */
     public InterfaceAutomatonGraphFrame(CompositeEntity entity,
-            Tableau tableau, LibraryAttribute defaultLibrary) {
+        Tableau tableau, LibraryAttribute defaultLibrary) {
         super(entity, tableau, defaultLibrary);
     }
 

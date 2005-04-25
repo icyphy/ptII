@@ -197,7 +197,7 @@ public final class CanvasUtilities {
      * rectangle change into the second.
      */
     public static AffineTransform computeTransform(RectangularShape r,
-            RectangularShape s) {
+        RectangularShape s) {
         AffineTransform at = new AffineTransform();
         at.translate(s.getX(), s.getY());
         at.scale(s.getWidth() / r.getWidth(), s.getHeight() / r.getHeight());
@@ -209,7 +209,7 @@ public final class CanvasUtilities {
      * rectangle change fit within the second, while preserving the shape.
      */
     public static AffineTransform computeFitTransform(RectangularShape r,
-            RectangularShape s) {
+        RectangularShape s) {
         AffineTransform at = new AffineTransform();
         at.translate(s.getX(), s.getY());
 
@@ -365,7 +365,7 @@ public final class CanvasUtilities {
 
         default:
             throw new IllegalArgumentException("Unknown location constant: "
-                    + location);
+                + location);
         }
 
         return new Point2D.Double(x, y);
@@ -383,8 +383,8 @@ public final class CanvasUtilities {
         //            ( AffineTransform.TYPE_GENERAL_ROTATION
         //            | AffineTransform.TYPE_GENERAL_TRANSFORM)) == 0;
         return (t
-                & (AffineTransform.TYPE_MASK_ROTATION
-                        | AffineTransform.TYPE_GENERAL_TRANSFORM)) == 0;
+                    & (AffineTransform.TYPE_MASK_ROTATION
+                    | AffineTransform.TYPE_GENERAL_TRANSFORM)) == 0;
     }
 
     /** Return the angle between -PI and PI that corresponds to the
@@ -487,14 +487,14 @@ public final class CanvasUtilities {
         final Rectangle2D rl = region;
 
         return new FilteredIterator(i,
-                new Filter() {
-                    Rectangle2D _region = rl;
+            new Filter() {
+                Rectangle2D _region = rl;
 
-                    public boolean accept(Object o) {
-                        Figure f = (Figure) o;
-                        return f.hit(_region);
-                    }
-                });
+                public boolean accept(Object o) {
+                    Figure f = (Figure) o;
+                    return f.hit(_region);
+                }
+            });
     }
 
     /** Reverse a direction flag. The flag must one of the eight
@@ -532,7 +532,7 @@ public final class CanvasUtilities {
 
         default:
             throw new IllegalArgumentException("Unknown direction constant: "
-                    + direction);
+                + direction);
         }
     }
 
@@ -556,9 +556,9 @@ public final class CanvasUtilities {
             r.setFrame(bounds);
             return r;
         } else if ((at.getType()
-                           & (AffineTransform.TYPE_MASK_SCALE
-                                   | AffineTransform.TYPE_TRANSLATION
-                                   | AffineTransform.TYPE_IDENTITY)) != 0) {
+                        & (AffineTransform.TYPE_MASK_SCALE
+                        | AffineTransform.TYPE_TRANSLATION
+                        | AffineTransform.TYPE_IDENTITY)) != 0) {
             double x = r.getX();
             double y = r.getY();
             double w = r.getWidth();
@@ -573,11 +573,11 @@ public final class CanvasUtilities {
             at.getMatrix(m);
 
             switch (at.getType()) {
-                case (AffineTransform.TYPE_GENERAL_SCALE
+            case (AffineTransform.TYPE_GENERAL_SCALE
                         | AffineTransform.TYPE_TRANSLATION):
-                    case (AffineTransform.TYPE_UNIFORM_SCALE
-                            | AffineTransform.TYPE_TRANSLATION):
-                    xdash = (x * m[m00]) + m[m02];
+            case (AffineTransform.TYPE_UNIFORM_SCALE
+                        | AffineTransform.TYPE_TRANSLATION):
+                xdash = (x * m[m00]) + m[m02];
                 ydash = (y * m[m11]) + m[m12];
                 wdash = w * m[m00];
                 hdash = h * m[m11];
@@ -634,7 +634,7 @@ public final class CanvasUtilities {
      *  @deprecated Use local.getTransform(root) instead.
      */
     public static Point2D transformInto(Point2D p, TransformContext local,
-            TransformContext root) {
+        TransformContext root) {
         Point2D p2 = p;
 
         while (local != root) {
@@ -672,7 +672,7 @@ public final class CanvasUtilities {
      * defined in SwingConstants. Return the same point, but modified.
      */
     public static Point2D translate(Point2D.Double p, double distance,
-            int direction) {
+        int direction) {
         switch (direction) {
         case SwingConstants.NORTH:
             p.y -= distance;
@@ -712,7 +712,7 @@ public final class CanvasUtilities {
 
         default:
             throw new IllegalArgumentException("Unknown direction constant: "
-                    + direction);
+                + direction);
         }
 
         return p;
@@ -723,7 +723,7 @@ public final class CanvasUtilities {
      * defined in SwingConstants. Return the same point, but modified.
      */
     public static Point2D translate(Point2D.Float p, double distance,
-            int direction) {
+        int direction) {
         switch (direction) {
         case SwingConstants.NORTH:
             p.y -= (float) distance;
@@ -763,7 +763,7 @@ public final class CanvasUtilities {
 
         default:
             throw new IllegalArgumentException("Unknown direction constant: "
-                    + direction);
+                + direction);
         }
 
         return p;

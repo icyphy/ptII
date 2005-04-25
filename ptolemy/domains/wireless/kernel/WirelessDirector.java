@@ -63,7 +63,7 @@ public class WirelessDirector extends DEDirector {
      *   CompositeActor and the name collides with an entity in the container.
      */
     public WirelessDirector(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 

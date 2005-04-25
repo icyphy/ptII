@@ -167,7 +167,7 @@ public interface Receiver {
      *  @exception NoRoomException If the token array cannot be put.
      */
     public void putArray(Token[] tokenArray, int numberOfTokens)
-            throws NoRoomException;
+        throws NoRoomException;
 
     /** Set the container.
      *  @param port The container.

@@ -73,7 +73,7 @@ public class StringParameter extends Parameter {
      *   a parameter already in the container.
      */
     public StringParameter(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         setStringMode(true);
     }

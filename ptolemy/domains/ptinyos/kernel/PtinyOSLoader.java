@@ -1,4 +1,4 @@
-/* FIXME Interface for 
+/* FIXME Interface for
 
 Copyright (c) 1997-2004 The Regents of the University of California.
 All rights reserved.
@@ -26,15 +26,15 @@ COPYRIGHTENDKEY
 
 
 */
-
 package ptolemy.domains.ptinyos.kernel;
 
 
 //////////////////////////////////////////////////////////////////////////
 //// PtinyOSLoader
+
 /**
    FIXME A PtinyOSLoader
-   
+
    @author Elaine Cheong
    @version $Id$
    @since Ptolemy II 0.2
@@ -42,31 +42,35 @@ package ptolemy.domains.ptinyos.kernel;
    @Pt.AcceptedRating Red (celaine)
 
 */
-
 import ptolemy.kernel.util.IllegalActionException;
 
-public interface PtinyOSLoader {
 
+public interface PtinyOSLoader {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** FIXME
      */
     public void load(String path, PtinyOSDirector director);
-    public int main(String argsToMain[]);
+
+    public int main(String[] argsToMain);
 
     // Called from C.
     public void enqueueEvent(String newtime) throws IllegalActionException;
+
     public void tosdbg(String dbgmode, String msg, String nodenum);
+
     public char getCharParameterValue(String param)
-            throws IllegalActionException;
+        throws IllegalActionException;
+
     public boolean getBooleanParameterValue(String param)
-            throws IllegalActionException;
+        throws IllegalActionException;
+
     public int sendToPort(String portname, String expression)
-            throws IllegalActionException;
+        throws IllegalActionException;
 
     // Called from Java.
     public void processEvent(long currentTime);
+
     public void receivePacket(long currentTime, String packet);
 }
-

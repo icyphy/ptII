@@ -207,11 +207,11 @@ public abstract class SizedMatrixType extends StructuredType
      *   different structure.
      */
     public void updateType(StructuredType newType)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (newType._getRepresentative() != _getRepresentative()) {
             throw new InternalErrorException(
-                    "SizedMatrixType.updateType: Cannot "
-                    + "updateType the element type to " + newType + ".");
+                "SizedMatrixType.updateType: Cannot "
+                + "updateType the element type to " + newType + ".");
         }
     }
 
@@ -226,7 +226,7 @@ public abstract class SizedMatrixType extends StructuredType
                 return BooleanMatrixToken.convert((MatrixToken) token);
             } else {
                 throw new IllegalActionException(Token
-                        .notSupportedConversionMessage(token, toString()));
+                                .notSupportedConversionMessage(token, toString()));
             }
         }
 
@@ -246,7 +246,7 @@ public abstract class SizedMatrixType extends StructuredType
                 return ComplexMatrixToken.convert((MatrixToken) token);
             } else {
                 throw new IllegalActionException(Token
-                        .notSupportedConversionMessage(token, toString()));
+                                .notSupportedConversionMessage(token, toString()));
             }
         }
 
@@ -266,7 +266,7 @@ public abstract class SizedMatrixType extends StructuredType
                 return DoubleMatrixToken.convert((MatrixToken) token);
             } else {
                 throw new IllegalActionException(Token
-                        .notSupportedConversionMessage(token, toString()));
+                                .notSupportedConversionMessage(token, toString()));
             }
         }
 
@@ -285,11 +285,11 @@ public abstract class SizedMatrixType extends StructuredType
             if (token instanceof MatrixToken) {
                 return IntMatrixToken.convert((MatrixToken) token);
             } else if ((getRowCount() == getColumnCount())
-                    && token instanceof ScalarToken) {
+                            && token instanceof ScalarToken) {
                 return IntMatrixToken.convert((ScalarToken) token, getRowCount());
             } else {
                 throw new IllegalActionException(Token
-                        .notSupportedConversionMessage(token, toString()));
+                                .notSupportedConversionMessage(token, toString()));
             }
         }
 
@@ -309,7 +309,7 @@ public abstract class SizedMatrixType extends StructuredType
                 return FixMatrixToken.convert((MatrixToken) token);
             } else {
                 throw new IllegalActionException(Token
-                        .notSupportedConversionMessage(token, toString()));
+                                .notSupportedConversionMessage(token, toString()));
             }
         }
 
@@ -329,7 +329,7 @@ public abstract class SizedMatrixType extends StructuredType
                 return LongMatrixToken.convert((MatrixToken) token);
             } else {
                 throw new IllegalActionException(Token
-                        .notSupportedConversionMessage(token, toString()));
+                                .notSupportedConversionMessage(token, toString()));
             }
         }
 

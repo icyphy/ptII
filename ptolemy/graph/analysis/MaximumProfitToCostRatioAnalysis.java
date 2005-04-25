@@ -66,9 +66,9 @@ public class MaximumProfitToCostRatioAnalysis extends Analysis {
      *  @param edgeCosts The costs associated with the edges of the graph.
      */
     public MaximumProfitToCostRatioAnalysis(Graph graph,
-            ToDoubleMapping edgeProfits, ToIntMapping edgeCosts) {
+        ToDoubleMapping edgeProfits, ToIntMapping edgeCosts) {
         super(new ParhiMaximumProfitToCostRatioStrategy(graph, edgeProfits,
-                      edgeCosts));
+                edgeCosts));
     }
 
     /** Construct an instance of this class using a given analyzer.
@@ -76,7 +76,7 @@ public class MaximumProfitToCostRatioAnalysis extends Analysis {
      *  @param analyzer The given analyzer.
      */
     public MaximumProfitToCostRatioAnalysis(
-            MaximumProfitToCostRatioAnalyzer analyzer) {
+        MaximumProfitToCostRatioAnalyzer analyzer) {
         super(analyzer);
     }
 
@@ -106,7 +106,7 @@ public class MaximumProfitToCostRatioAnalysis extends Analysis {
      */
     public String toString() {
         return "Maximum profit to cost ratio analysis using "
-            + "the following analyzer:\n" + analyzer().toString();
+        + "the following analyzer:\n" + analyzer().toString();
     }
 
     /** Check if a given analyzer is compatible with this analysis.

@@ -2,7 +2,6 @@
 // NO WARRANTY! See README, and copyright below.
 // $Id$
 // Modified 11/8/98 to add package statement.
-
 package com.microstar.xml.demo;
 
 import com.microstar.xml.XmlParser;
@@ -24,34 +23,30 @@ import java.io.InputStream;
   * @see EventDemo
   */
 public class StreamDemo extends EventDemo {
+    public static void main(String[] args) throws Exception {
+        StreamDemo handler = new StreamDemo();
+        InputStream is = null;
 
-  public static void main (String args[]) 
-    throws Exception
-  {
-    StreamDemo handler = new StreamDemo();
-    InputStream is = null;
+        if (args.length != 1) {
+            System.err.println("Usage: java StreamDemo <file>");
+            System.exit(1);
+        }
 
-    if (args.length != 1) {
-      System.err.println("Usage: java StreamDemo <file>");
-      System.exit(1);
-    }
+        try {
+            is = new FileInputStream(args[0]);
 
-    try {
-        is = new FileInputStream(args[0]);
-
-        XmlParser parser = new XmlParser();
-        parser.setHandler(handler);
-        parser.parse(makeAbsoluteURL(args[0]), null, is, null);
-    } finally { 
-        if (is != null) {
-            try {
-                is.close();
-            } catch (Throwable throwable) {
-                System.out.println("Failed to close '" + args[0] + "'");
-                throwable.printStackTrace();
+            XmlParser parser = new XmlParser();
+            parser.setHandler(handler);
+            parser.parse(makeAbsoluteURL(args[0]), null, is, null);
+        } finally {
+            if (is != null) {
+                try {
+                    is.close();
+                } catch (Throwable throwable) {
+                    System.out.println("Failed to close '" + args[0] + "'");
+                    throwable.printStackTrace();
+                }
             }
         }
-    }        
-  }
-
+    }
 }

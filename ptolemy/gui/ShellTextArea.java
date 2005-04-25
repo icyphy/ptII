@@ -85,7 +85,7 @@ public class ShellTextArea extends JPanel {
         add(jScrollPane);
 
         setBorder(BorderFactory.createTitledBorder(
-                          BorderFactory.createLineBorder(Color.black), ""));
+                BorderFactory.createLineBorder(Color.black), ""));
 
         // Event handling
         _jTextArea.addKeyListener(new ShellKeyListener());
@@ -195,7 +195,7 @@ public class ShellTextArea extends JPanel {
     /** Replace a range in the JTextArea.
      */
     public void replaceRangeJTextArea(final String text, final int start,
-            final int end) {
+        final int end) {
         Runnable doReplaceRangeJTextArea = new Runnable() {
                 public void run() {
                     _jTextArea.replaceRange(text, start, end);

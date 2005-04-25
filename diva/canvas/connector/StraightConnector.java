@@ -170,7 +170,7 @@ public class StraightConnector extends AbstractConnector {
 
         Line2D line = (Line2D) getShape();
         line.setLine(line.getX1() + x, line.getY1() + y, line.getX2() + x,
-                line.getY2() + y);
+            line.getY2() + y);
 
         if (getLabelFigure() != null) {
             getLabelFigure().translate(x, y);

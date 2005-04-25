@@ -123,7 +123,7 @@ public class RaisedCosine extends FIR {
      *   actor with this name.
      */
     public RaisedCosine(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         length = new Parameter(this, "length", new IntToken(64));
@@ -171,9 +171,9 @@ public class RaisedCosine extends FIR {
      *  @exception IllegalActionException If the parameters are out of range.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if ((attribute == excessBW) || (attribute == length)
-                || (attribute == root) || (attribute == symbolInterval)) {
+                        || (attribute == root) || (attribute == symbolInterval)) {
             _initialize();
         } else {
             super.attributeChanged(attribute);
@@ -184,31 +184,31 @@ public class RaisedCosine extends FIR {
     // parameters.
     private void _initialize() throws IllegalActionException {
         double excessBWValue = ((DoubleToken) (excessBW.getToken()))
-            .doubleValue();
+                        .doubleValue();
         int symbolIntervalValue = ((IntToken) (symbolInterval.getToken()))
-            .intValue();
+                        .intValue();
         int lengthValue = ((IntToken) (length.getToken())).intValue();
         boolean sqrt = ((BooleanToken) (root.getToken())).booleanValue();
 
         if (excessBWValue < 0.0) {
             throw new IllegalActionException(this,
-                    "Excess bandwidth was " + excessBWValue
-                    + " which is not greater than or equal to zero.");
+                "Excess bandwidth was " + excessBWValue
+                + " which is not greater than or equal to zero.");
         }
 
         if (lengthValue <= 0) {
             throw new IllegalActionException(this,
-                    "Length was " + lengthValue
-                    + " which is not greater than zero.");
+                "Length was " + lengthValue
+                + " which is not greater than zero.");
         }
 
         double center = lengthValue * 0.5;
 
         DoubleUnaryOperation raisedCosineSampleGenerator = sqrt
             ? (DoubleUnaryOperation) new SignalProcessing.SqrtRaisedCosineSampleGenerator(symbolIntervalValue,
-                    excessBWValue)
+                excessBWValue)
             : (DoubleUnaryOperation) new SignalProcessing.RaisedCosineSampleGenerator(symbolIntervalValue,
-                    excessBWValue);
+                excessBWValue);
 
         double[] tapsArray = SignalProcessing.sampleWave(lengthValue, -center,
                 1.0, raisedCosineSampleGenerator);

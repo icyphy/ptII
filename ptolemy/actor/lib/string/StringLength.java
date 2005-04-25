@@ -58,7 +58,7 @@ public class StringLength extends Transformer {
      *   actor with this name.
      */
     public StringLength(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // Set the types of the ports.

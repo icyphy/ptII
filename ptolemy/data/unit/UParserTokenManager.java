@@ -27,8 +27,6 @@
 */
 package ptolemy.data.unit;
 
-
-
 public class UParserTokenManager implements UParserConstants {
     public java.io.PrintStream debugStream = System.out;
 
@@ -503,7 +501,7 @@ MatchLoop:
             ++curPos;
 
             if ((i = jjnewStateCnt) == (startsAt = 28
-                        - (jjnewStateCnt = startsAt))) {
+                                - (jjnewStateCnt = startsAt))) {
                 return curPos;
             }
 
@@ -516,17 +514,64 @@ MatchLoop:
     }
 
     static final int[] jjnextStates = {
-            14, 15, 20, 21, 24, 25, 7, 3, 4, 7, 16, 17, 7, 24, 25, 7, 5, 6, 18,
-            19, 22, 23, 26, 27,
+            14,
+            15,
+            20,
+            21,
+            24,
+            25,
+            7,
+            3,
+            4,
+            7,
+            16,
+            17,
+            7,
+            24,
+            25,
+            7,
+            5,
+            6,
+            18,
+            19,
+            22,
+            23,
+            26,
+            27,
         };
     public static final String[] jjstrLiteralImages = {
-            "", null, null, null, null, "\53", "\55", "\52", "\57", "\136",
-            "\75", "\74", "\44", "\73", null, null, null, null, null, null,
-            "\50", "\51",
+            "",
+            null,
+            null,
+            null,
+            null,
+            "\53",
+            "\55",
+            "\52",
+            "\57",
+            "\136",
+            "\75",
+            "\74",
+            "\44",
+            "\73",
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            "\50",
+            "\51",
         };
-    public static final String[] lexStateNames = { "DEFAULT", };
-    static final long[] jjtoToken = { 0x3b7fe1L, };
-    static final long[] jjtoSkip = { 0x1eL, };
+    public static final String[] lexStateNames = {
+            "DEFAULT",
+        };
+    static final long[] jjtoToken = {
+            0x3b7fe1L,
+        };
+    static final long[] jjtoSkip = {
+            0x1eL,
+        };
     protected SimpleCharStream input_stream;
     private final int[] jjrounds = new int[28];
     private final int[] jjstateSet = new int[56];
@@ -617,7 +662,7 @@ EOFLoop:
                 input_stream.backup(0);
 
                 while ((curChar <= 32)
-                        && ((0x100002600L & (1L << curChar)) != 0L)) {
+                                && ((0x100002600L & (1L << curChar)) != 0L)) {
                     curChar = input_stream.BeginToken();
                 }
             } catch (java.io.IOException e1) {
@@ -634,7 +679,7 @@ EOFLoop:
                 }
 
                 if ((jjtoToken[jjmatchedKind >> 6]
-                        & (1L << (jjmatchedKind & 077))) != 0L) {
+                                & (1L << (jjmatchedKind & 077))) != 0L) {
                     matchedToken = jjFillToken();
                     return matchedToken;
                 } else {

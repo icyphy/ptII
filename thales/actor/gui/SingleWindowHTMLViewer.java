@@ -22,6 +22,11 @@
 */
 package thales.actor.gui;
 
+import thales.vergil.SingleWindowApplication;
+
+import thales.vergil.navigable.NavigableActorGraphFrame;
+import thales.vergil.navigable.NavigationPTree;
+
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.HTMLViewer;
 import ptolemy.actor.gui.PtolemyEffigy;
@@ -31,10 +36,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
-
-import thales.vergil.SingleWindowApplication;
-import thales.vergil.navigable.NavigableActorGraphFrame;
-import thales.vergil.navigable.NavigationPTree;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -117,7 +118,7 @@ public class SingleWindowHTMLViewer extends HTMLViewer implements ChangeListener
 
                         if (index > 0) {
                             final Component theClickedOne = tabbedPane
-                                .getComponentAt(index);
+                                            .getComponentAt(index);
                             JPopupMenu popUpMenu = new JPopupMenu();
                             JMenuItem close = new JMenuItem("Close");
                             close.addActionListener(new ActionListener() {
@@ -130,7 +131,7 @@ public class SingleWindowHTMLViewer extends HTMLViewer implements ChangeListener
                                 });
                             popUpMenu.add(close);
                             popUpMenu.show((Component) e.getSource(), e.getX(),
-                                    e.getY());
+                                e.getY());
                         }
                     }
                 }
@@ -266,7 +267,7 @@ public class SingleWindowHTMLViewer extends HTMLViewer implements ChangeListener
 
                     if (tableau != null) {
                         fillMainFrame(((Tableau) tableau).getFrame()
-                                .getJMenuBar());
+                                                   .getJMenuBar());
                         _statusBar.setVisible(false);
                     }
                 } else {

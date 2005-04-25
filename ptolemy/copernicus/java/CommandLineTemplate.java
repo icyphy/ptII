@@ -127,10 +127,10 @@ public class CommandLineTemplate {
             long freeMemory1 = runtime.freeMemory() / 1024;
             timeAndMemory(startTime, totalMemory1, freeMemory1, buffer1);
             System.out.println("Spent " + (startTime - _parseStartTime)
-                    + " ms. creating the model.");
+                + " ms. creating the model.");
 
             System.out.println(modelName + ": Stats before execution:    "
-                    + buffer1);
+                + buffer1);
 
             // Second, we run and print memory stats.
             startRun(model);
@@ -140,7 +140,7 @@ public class CommandLineTemplate {
             timeAndMemory(startTime, totalMemory2, freeMemory2, buffer2);
 
             System.out.println(modelName + ": Execution stats:           "
-                    + buffer2);
+                + buffer2);
 
             // GC, again to the log.
             System.gc();
@@ -149,7 +149,7 @@ public class CommandLineTemplate {
             long totalMemory3 = runtime.totalMemory() / 1024;
             long freeMemory3 = runtime.freeMemory() / 1024;
             System.out.println(modelName + ": After Garbage Collection:  "
-                    + timeAndMemory(startTime, totalMemory3, freeMemory3));
+                + timeAndMemory(startTime, totalMemory3, freeMemory3));
 
             // Print out the standard stats at the end
             // so as not to break too many scripts
@@ -185,7 +185,7 @@ public class CommandLineTemplate {
      */
     public void report(String message, Exception ex) {
         System.err.println("Exception thrown.\n" + message + "\n"
-                + ex.toString());
+            + ex.toString());
         ex.printStackTrace();
     }
 
@@ -281,14 +281,14 @@ public class CommandLineTemplate {
     }
 
     public static String timeAndMemory(long startTime, long totalMemory,
-            long freeMemory) {
+        long freeMemory) {
         StringBuffer buffer = new StringBuffer();
         timeAndMemory(startTime, totalMemory, freeMemory, buffer);
         return buffer.toString();
     }
 
     public static void timeAndMemory(long startTime, long totalMemory,
-            long freeMemory, StringBuffer buffer) {
+        long freeMemory, StringBuffer buffer) {
         Runtime runtime = Runtime.getRuntime();
         buffer.append(System.currentTimeMillis() - startTime);
         buffer.append(" ms. Memory: ");
@@ -297,7 +297,7 @@ public class CommandLineTemplate {
         buffer.append(freeMemory);
         buffer.append("K (");
         buffer.append(Math.round(
-                              (((double) freeMemory) / ((double) totalMemory)) * 100.0));
+                (((double) freeMemory) / ((double) totalMemory)) * 100.0));
         buffer.append("%)");
     }
 

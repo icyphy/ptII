@@ -80,7 +80,7 @@ public class Recorder extends Sink {
      *   actor with this name.
      */
     public Recorder(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         capacity = new Parameter(this, "capacity", new IntToken(-1));
@@ -147,7 +147,7 @@ public class Recorder extends Sink {
      */
     public Token getLatest(int channel) {
         if ((_latest == null) || (channel >= _latest.length)
-                || (_latest[channel] == null)) {
+                        || (_latest[channel] == null)) {
             return (_bottom);
         }
 
@@ -213,7 +213,7 @@ public class Recorder extends Sink {
         if (capacityValue != 0) {
             _records.add(record);
             _timeRecord.add(new Double(getDirector().getModelTime()
-                                    .getDoubleValue()));
+                                                       .getDoubleValue()));
 
             if ((capacityValue > 0) && (_records.size() > capacityValue)) {
                 // Remove the first element.

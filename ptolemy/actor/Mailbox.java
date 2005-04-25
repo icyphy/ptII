@@ -78,7 +78,7 @@ public class Mailbox extends AbstractReceiver {
     public Token get() throws NoTokenException {
         if (_token == null) {
             throw new NoTokenException(getContainer(),
-                    "Attempt to get data from an empty mailbox.");
+                "Attempt to get data from an empty mailbox.");
         }
 
         Token token = _token;
@@ -103,7 +103,7 @@ public class Mailbox extends AbstractReceiver {
     public boolean hasRoom(int numberOfTokens) throws IllegalArgumentException {
         if (numberOfTokens < 1) {
             throw new IllegalArgumentException(
-                    "hasRoom() requires a positive argument.");
+                "hasRoom() requires a positive argument.");
         }
 
         if (numberOfTokens == 1) {
@@ -131,7 +131,7 @@ public class Mailbox extends AbstractReceiver {
     public boolean hasToken(int numberOfTokens) throws IllegalArgumentException {
         if (numberOfTokens < 1) {
             throw new IllegalArgumentException(
-                    "hasToken() requires a positive argument.");
+                "hasToken() requires a positive argument.");
         }
 
         if (numberOfTokens == 1) {
@@ -149,7 +149,7 @@ public class Mailbox extends AbstractReceiver {
     public void put(Token token) throws NoRoomException {
         if (_token != null) {
             throw new NoRoomException(getContainer(),
-                    "Cannot put a token in a full mailbox.");
+                "Cannot put a token in a full mailbox.");
         }
 
         _token = token;

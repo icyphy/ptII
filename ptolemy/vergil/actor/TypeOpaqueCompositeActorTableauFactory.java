@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.vergil.actor;
 
 import ptolemy.actor.TypeOpaqueCompositeActor;
@@ -36,11 +35,13 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// TypeOpaqueCompositeActorTableauFactory
+
 /**
  * A factory that creates graph editing tableaux for untyped models.
- * 
+ *
  * @author Elaine Cheong and Edward A. Lee
  * @version $Id: TypeOpaqueCompositeActor.java,v 1.73 2004/04/13 05:12:39 cxh
  *          Exp $
@@ -49,10 +50,8 @@ import ptolemy.kernel.util.NamedObj;
  * @see ptolemy.actor.TypeOpaqueCompositeActor
  * @see ptolemy.vergil.actor.ActorGraphTableau.Factory
  */
-
 public class TypeOpaqueCompositeActorTableauFactory
-        extends ActorGraphTableau.Factory {
-
+    extends ActorGraphTableau.Factory {
     /** Create an factory with the given name and container.
      *  @param container The container.
      *  @param name The name.
@@ -60,11 +59,10 @@ public class TypeOpaqueCompositeActorTableauFactory
      *   with this attribute.
      *  @exception NameDuplicationException If the name coincides with
      *   an attribute already in the container.
-     */    
-    public TypeOpaqueCompositeActorTableauFactory(
-            NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
-    	super(container, name);
+     */
+    public TypeOpaqueCompositeActorTableauFactory(NamedObj container,
+        String name) throws IllegalActionException, NameDuplicationException {
+        super(container, name);
     }
 
     /** Create a tableau in the default workspace with no name for the
@@ -83,11 +81,11 @@ public class TypeOpaqueCompositeActorTableauFactory
      */
     public Tableau createTableau(Effigy effigy) throws Exception {
         if (effigy instanceof PtolemyEffigy) {
-            if (((PtolemyEffigy)effigy).getModel()
-                    instanceof TypeOpaqueCompositeActor) {
-            	return super.createTableau(effigy);
+            if (((PtolemyEffigy) effigy).getModel() instanceof TypeOpaqueCompositeActor) {
+                return super.createTableau(effigy);
             }
         }
+
         return null;
     }
 }

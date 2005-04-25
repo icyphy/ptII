@@ -120,7 +120,7 @@ public class ViterbiDecoder extends Transformer {
      *   actor with this name.
      */
     public ViterbiDecoder(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         uncodedRate = new Parameter(this, "uncodedRate");
@@ -226,7 +226,7 @@ public class ViterbiDecoder extends Transformer {
      *  <i>polynomialArray</i> is non-positive.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         /*if (attribute == mode) {
           String modeName = mode.getExpression();
           if (modeName.equals("Hard Decoding")) {
@@ -248,7 +248,7 @@ public class ViterbiDecoder extends Transformer {
           } else */
         if ((attribute == softDecoding) || (attribute == trellisDecoding)) {
             _trellisMode = ((BooleanToken) trellisDecoding.getToken())
-                .booleanValue();
+                            .booleanValue();
             _softMode = ((BooleanToken) softDecoding.getToken()).booleanValue();
 
             // Set different input port types for soft and hard decoding.
@@ -269,7 +269,7 @@ public class ViterbiDecoder extends Transformer {
 
             if (_inputNumber < 1) {
                 throw new IllegalActionException(this,
-                        "inputLength must be non-negative.");
+                    "inputLength must be non-negative.");
             }
 
             // Set a flag indicating the private variable
@@ -284,7 +284,7 @@ public class ViterbiDecoder extends Transformer {
 
             if (_depth < 1) {
                 throw new IllegalActionException(this,
-                        "Delay must be a positive integer.");
+                    "Delay must be a positive integer.");
             }
 
             _depthInvalid = true;
@@ -299,7 +299,7 @@ public class ViterbiDecoder extends Transformer {
 
                 if (_mask[i] <= 0) {
                     throw new IllegalActionException(this,
-                            "Polynomial is required to be strictly positive.");
+                        "Polynomial is required to be strictly positive.");
                 }
 
                 // Find maximum value in integer of all polynomials.
@@ -312,7 +312,7 @@ public class ViterbiDecoder extends Transformer {
 
             // Set the output production rate.
             boolean trellisMode = ((BooleanToken) trellisDecoding.getToken())
-                .booleanValue();
+                            .booleanValue();
 
             if (trellisMode) {
                 _inputRate.setToken(new IntToken(1));
@@ -356,19 +356,19 @@ public class ViterbiDecoder extends Transformer {
 
             if (ampToken.length() != (1 << constellationOrder)) {
                 throw new IllegalActionException(this,
-                        "Invalid amplitudes for soft decoding!");
+                    "Invalid amplitudes for soft decoding!");
             }
 
             for (int i = 0; i < ampToken.length(); i++) {
                 _constellation[i] = ((ComplexToken) ampToken.getElement(i))
-                    .complexValue();
+                                .complexValue();
             }
         } else if (_mode == _SOFT) {
             ArrayToken ampToken = ((ArrayToken) constellation.getToken());
 
             if (ampToken.length() != (1 << constellationOrder)) {
                 throw new IllegalActionException(this,
-                        "Invalid amplitudes for soft decoding!");
+                    "Invalid amplitudes for soft decoding!");
             }
 
             _falseAmp = ((DoubleToken) ampToken.getElement(0)).doubleValue();
@@ -382,7 +382,7 @@ public class ViterbiDecoder extends Transformer {
         if (_inputNumberInvalid) {
             if (_inputNumber >= _maskNumber) {
                 throw new IllegalActionException(this,
-                        "Output rate should be larger than input rate.");
+                    "Output rate should be larger than input rate.");
             }
 
             //Comput the length of shift register.
@@ -399,8 +399,8 @@ public class ViterbiDecoder extends Transformer {
 
             if (_inputNumber >= _shiftRegLength) {
                 throw new IllegalActionException(this,
-                        "The highest order of all polynomials is "
-                        + "still too low.");
+                    "The highest order of all polynomials is "
+                    + "still too low.");
             }
 
             _inputNumberInvalid = false;
@@ -507,7 +507,7 @@ public class ViterbiDecoder extends Transformer {
                     }
 
                     d = (double) (_computeHardDistance(y,
-                                          _truthTable[state][colIndex][0], _maskNumber));
+                            _truthTable[state][colIndex][0], _maskNumber));
                 }
 
                 // The previous state for that possibility.
@@ -666,8 +666,8 @@ public class ViterbiDecoder extends Transformer {
      *  @return The distance.
      */
     private double _computeSoftDistance(double[] y, double falseAmp,
-            double trueAmp, int truthValue, int inputRate)
-            throws IllegalActionException {
+        double trueAmp, int truthValue, int inputRate)
+        throws IllegalActionException {
         /*if (trellisMode) {
           Complex truthComplex = constellation[truthValue];
           Complex z = truthComplex.subtract(y[0].complexValue());
@@ -705,7 +705,7 @@ public class ViterbiDecoder extends Transformer {
      *  @return The distance.
      */
     private double _computeTrellisDistance(Complex y, Complex[] constellation,
-            int truthValue) {
+        int truthValue) {
         Complex truthComplex = constellation[truthValue];
 
         //Complex z = y;

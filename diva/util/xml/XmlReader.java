@@ -25,12 +25,12 @@
 */
 package diva.util.xml;
 
+import diva.resource.DefaultBundle;
+import diva.util.LoggableOp;
+
 import com.microstar.xml.XmlException;
 import com.microstar.xml.XmlHandler;
 import com.microstar.xml.XmlParser;
-
-import diva.resource.DefaultBundle;
-import diva.util.LoggableOp;
 
 import java.io.File;
 import java.io.FileReader;
@@ -116,7 +116,7 @@ public class XmlReader extends LoggableOp {
 
             if (file == null) {
                 throw new XmlException("Document contains no URL or File", "",
-                        0, 0);
+                    0, 0);
             }
 
             FileReader in = new FileReader(file);
@@ -133,7 +133,7 @@ public class XmlReader extends LoggableOp {
      * a severe error, such as an I/O error, not an XML error.
      */
     public void parse(XmlDocument document, InputStream in)
-            throws Exception {
+        throws Exception {
         URL url = document.getURL();
         parse(document, url, null, null, in, null);
     }
@@ -147,7 +147,7 @@ public class XmlReader extends LoggableOp {
      * a severe error, such as an I/O error, not an XML error.
      */
     public void parse(XmlDocument document, Reader in)
-            throws Exception {
+        throws Exception {
         URL url = document.getURL();
         parse(document, url, null, in, null, null);
     }
@@ -182,8 +182,8 @@ public class XmlReader extends LoggableOp {
      * the Aelfred parser.
      */
     private void parse(XmlDocument document, URL systemId, URL publicId,
-            Reader reader, InputStream stream, String encoding)
-            throws Exception {
+        Reader reader, InputStream stream, String encoding)
+        throws Exception {
         String pubString;
         String sysString;
 
@@ -261,7 +261,7 @@ public class XmlReader extends LoggableOp {
          *  @exception XmlException If the name or value is null.
          */
         public void attribute(String name, String value, boolean specified)
-                throws Exception {
+            throws Exception {
             if (isVerbose()) {
                 logInfo("attr", name + "=\"" + value + "\" (" + specified + ")");
             }
@@ -278,7 +278,7 @@ public class XmlReader extends LoggableOp {
          * the current XML element.
          */
         public void charData(char[] c, int offset, int length)
-                throws Exception {
+            throws Exception {
             String s = new String(c, offset, length);
 
             if (isVerbose()) {
@@ -301,10 +301,10 @@ public class XmlReader extends LoggableOp {
          * identifiers in the XmlDocument.
          */
         public void doctypeDecl(String name, String publicId, String systemId)
-                throws java.lang.Exception {
+            throws java.lang.Exception {
             if (isVerbose()) {
                 logInfo("doctype",
-                        name + " \"" + publicId + "\" \"" + systemId + "\"");
+                    name + " \"" + publicId + "\" \"" + systemId + "\"");
             }
 
             _document.setDocType(name);
@@ -365,7 +365,7 @@ public class XmlReader extends LoggableOp {
          * Print an error message to the error stream.
          */
         public void error(String message, String sysid, int line, int column)
-                throws Exception {
+            throws Exception {
             if (sysid != null) {
                 logError("[" + sysid + "] " + message);
             } else {
@@ -380,7 +380,7 @@ public class XmlReader extends LoggableOp {
          * @exception java.lang.Exception Derived methods may throw exceptions.
          */
         public void ignorableWhitespace(char[] ch, int start, int length)
-                throws java.lang.Exception {
+            throws java.lang.Exception {
         }
 
         /**
@@ -390,7 +390,7 @@ public class XmlReader extends LoggableOp {
          * @exception java.lang.Exception Derived methods may throw exceptions.
          */
         public void processingInstruction(String target, String data)
-                throws java.lang.Exception {
+            throws java.lang.Exception {
             ; // ?
         }
 
@@ -403,7 +403,7 @@ public class XmlReader extends LoggableOp {
          * default resource bundle, diva/resource/Defaults.properties.
          */
         public Object resolveEntity(String pubID, String sysID)
-                throws Exception {
+            throws Exception {
             if (isVerbose()) {
                 logInfo("resolve", "\"" + pubID + "\" \"" + sysID + "\"");
             }
@@ -479,7 +479,7 @@ public class XmlReader extends LoggableOp {
         public void startElement(String name) {
             if (isVerbose()) {
                 logInfo("start",
-                        "<" + name + "> (" + printEntityType(name) + ")");
+                    "<" + name + "> (" + printEntityType(name) + ")");
                 indent();
             }
 

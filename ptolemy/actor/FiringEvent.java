@@ -87,7 +87,7 @@ public class FiringEvent implements DebugEvent {
      *
      */
     public FiringEvent(Director source, Actor actor, FiringEventType type,
-            int multiplicity) {
+        int multiplicity) {
         _director = source;
         _actor = actor;
         _type = type;

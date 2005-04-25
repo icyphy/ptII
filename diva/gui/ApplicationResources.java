@@ -76,7 +76,7 @@ public class ApplicationResources extends ResourceBundle {
      * given ResourceBundle as the one that gets overridden.
      */
     public ApplicationResources(String baseName, Class withLoader,
-            ResourceBundle overrides) {
+        ResourceBundle overrides) {
         try {
             _delegate = ResourceBundle.getBundle(baseName, Locale.getDefault());
         } catch (MissingResourceException e) {
@@ -138,7 +138,7 @@ public class ApplicationResources extends ResourceBundle {
     /** Get an object from a ResourceBundle.
      */
     protected Object handleGetObject(String key)
-            throws MissingResourceException {
+        throws MissingResourceException {
         return _delegate.getObject(key);
     }
 

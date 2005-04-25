@@ -60,7 +60,7 @@ public class PublicKeyReader extends KeyReader {
      *   actor with this name.
      */
     public PublicKeyReader(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // This actor always gets the public key.

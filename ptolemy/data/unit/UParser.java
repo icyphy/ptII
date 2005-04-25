@@ -662,7 +662,13 @@ label_2:
 
     private static void jj_la1_0() {
         jj_la1_0 = new int[] {
-                0x1b4180, 0x1b4180, 0x1b4000, 0xa0000, 0xc00, 0x4040, 0x14000,
+                0x1b4180,
+                0x1b4180,
+                0x1b4000,
+                0xa0000,
+                0xc00,
+                0x4040,
+                0x14000,
             };
     }
 
@@ -813,7 +819,7 @@ label_2:
 
             if (jj_scanpos.next == null) {
                 jj_lastpos = jj_scanpos = jj_scanpos.next = token_source
-                            .getNextToken();
+                                        .getNextToken();
             } else {
                 jj_lastpos = jj_scanpos = jj_scanpos.next;
             }
@@ -903,7 +909,7 @@ label_2:
             boolean exists = false;
 
             for (java.util.Enumeration e = jj_expentries.elements();
-                    e.hasMoreElements();) {
+                            e.hasMoreElements();) {
                 int[] oldentry = (int[]) (e.nextElement());
 
                 if (oldentry.length == jj_expentry.length) {

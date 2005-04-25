@@ -90,7 +90,7 @@ public class FullTreeModel extends ClassAndEntityTreeModel {
 
         if (index >= (numAttributes + numPorts + numRelations)) {
             return super.getChild(parent,
-                    index - numAttributes - numPorts - numRelations);
+                index - numAttributes - numPorts - numRelations);
         } else if (index >= (numAttributes + numPorts)) {
             return relations.get(index - numAttributes - numPorts);
         } else if (index >= numAttributes) {
@@ -120,7 +120,7 @@ public class FullTreeModel extends ClassAndEntityTreeModel {
         int numRelations = relations.size();
 
         return numAttributes + numPorts + numRelations
-            + super.getChildCount(parent);
+        + super.getChildCount(parent);
     }
 
     /** Return the index of the given child within the given parent.

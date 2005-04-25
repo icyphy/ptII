@@ -293,7 +293,7 @@ public class SelectionDragger extends DragInteractor {
         }
 
         for (Iterator i = ((HashSet) _holdovers.clone()).iterator();
-             i.hasNext();) {
+                        i.hasNext();) {
             Figure f = (Figure) i.next();
 
             if (f.hit(_rubberBand)) {
@@ -324,7 +324,7 @@ public class SelectionDragger extends DragInteractor {
                     SelectionInteractor interactor = (SelectionInteractor) r;
 
                     if (_selectionModels.contains(
-                                interactor.getSelectionModel())) {
+                                        interactor.getSelectionModel())) {
                         expandSelection((SelectionInteractor) r, f);
                     }
                 }
@@ -341,7 +341,7 @@ public class SelectionDragger extends DragInteractor {
                     SelectionInteractor interactor = (SelectionInteractor) r;
 
                     if (_selectionModels.contains(
-                                interactor.getSelectionModel())) {
+                                        interactor.getSelectionModel())) {
                         contractSelection((SelectionInteractor) r, f);
                     }
                 }
@@ -359,7 +359,7 @@ public class SelectionDragger extends DragInteractor {
                     SelectionInteractor interactor = (SelectionInteractor) r;
 
                     if (_selectionModels.contains(
-                                interactor.getSelectionModel())) {
+                                        interactor.getSelectionModel())) {
                         if (interactor.getSelectionModel().containsSelection(f)) {
                             contractSelection(interactor, f);
                         } else {

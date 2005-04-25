@@ -98,7 +98,7 @@ public class TypeTest extends Discard {
      *   actor with this name.
      */
     public TypeTest(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         parameterTypes = new Parameter(this, "parameterTypes");
         parameterTypes.setExpression("");
@@ -165,7 +165,7 @@ public class TypeTest extends Discard {
             ArrayList portTypes = new ArrayList();
 
             for (Iterator ports = entity.portList().iterator();
-                 ports.hasNext();) {
+                            ports.hasNext();) {
                 TypedIOPort port = (TypedIOPort) ports.next();
                 portNames.add(port.getName());
                 portTypes.add(new StringToken(port.getType().toString()));
@@ -174,16 +174,17 @@ public class TypeTest extends Discard {
             if (portNames.size() > 0) {
                 portActorNameList.add(entity.getName());
                 portAssignments.add(new RecordToken(
-                                            (String[]) portNames.toArray(
-                                                    new String[portNames.size()]),
-                                            (Token[]) portTypes.toArray(new Token[portTypes.size()])));
+                        (String[]) portNames.toArray(
+                            new String[portNames.size()]),
+                        (Token[]) portTypes.toArray(new Token[portTypes.size()])));
             }
 
             ArrayList paramNames = new ArrayList();
             ArrayList paramTypes = new ArrayList();
 
             for (Iterator params = entity.attributeList(Parameter.class)
-                     .iterator(); params.hasNext();) {
+                                                     .iterator();
+                            params.hasNext();) {
                 Parameter param = (Parameter) params.next();
                 paramNames.add(param.getName());
                 paramTypes.add(new StringToken(param.getType().toString()));
@@ -192,30 +193,30 @@ public class TypeTest extends Discard {
             if (paramNames.size() > 0) {
                 parameterActorNameList.add(entity.getName());
                 parameterAssignments.add(new RecordToken(
-                                                 (String[]) paramNames.toArray(
-                                                         new String[paramNames.size()]),
-                                                 (Token[]) paramTypes.toArray(
-                                                         new Token[paramTypes.size()])));
+                        (String[]) paramNames.toArray(
+                            new String[paramNames.size()]),
+                        (Token[]) paramTypes.toArray(
+                            new Token[paramTypes.size()])));
             }
         }
 
         RecordToken actualPortTypes = new RecordToken((String[]) portActorNameList
-                .toArray(new String[portActorNameList.size()]),
+                            .toArray(new String[portActorNameList.size()]),
                 (Token[]) portAssignments.toArray(
-                        new Token[portAssignments.size()]));
+                    new Token[portAssignments.size()]));
         RecordToken actualParameterTypes = new RecordToken((String[]) parameterActorNameList
-                .toArray(new String[parameterActorNameList.size()]),
+                            .toArray(new String[parameterActorNameList.size()]),
                 (Token[]) parameterAssignments.toArray(
-                        new Token[parameterAssignments.size()]));
+                    new Token[parameterAssignments.size()]));
 
         if (((BooleanToken) trainingMode.getToken()).booleanValue()) {
             if (NonStrictTest.isRunningNightlyBuild()) {
                 throw new IllegalActionException(this,
-                        NonStrictTest.TRAINING_MODE_ERROR_MESSAGE);
+                    NonStrictTest.TRAINING_MODE_ERROR_MESSAGE);
             } else {
                 System.err.println("Warning: '" + this.getFullName()
-                        + "' is in training mode, set the trainingMode "
-                        + "parameter to false before checking in");
+                    + "' is in training mode, set the trainingMode "
+                    + "parameter to false before checking in");
             }
 
             if (actualPortTypes.length() > 0) {
@@ -232,36 +233,36 @@ public class TypeTest extends Discard {
         } else {
             RecordToken correctPortTypes = (RecordToken) portTypes.getToken();
             RecordToken correctParameterTypes = (RecordToken) parameterTypes
-                .getToken();
+                            .getToken();
 
             if (correctPortTypes != null) {
                 for (Iterator actorNames = correctPortTypes.labelSet().iterator();
-                     actorNames.hasNext();) {
+                                actorNames.hasNext();) {
                     String actorName = (String) actorNames.next();
                     RecordToken assignment = (RecordToken) correctPortTypes.get(actorName);
 
                     for (Iterator names = assignment.labelSet().iterator();
-                         names.hasNext();) {
+                                    names.hasNext();) {
                         String name = (String) names.next();
                         StringToken value = (StringToken) assignment.get(name);
 
                         if (actualPortTypes.get(actorName) == null) {
                             throw new IllegalActionException(this,
-                                    "actualPortTypes.get(" + actorName
-                                    + ") returned null.  Perhaps there is no "
-                                    + "actor by that name?");
+                                "actualPortTypes.get(" + actorName
+                                + ") returned null.  Perhaps there is no "
+                                + "actor by that name?");
                         }
 
                         StringToken actualValue = (StringToken) ((RecordToken) actualPortTypes
-                                .get(actorName)).get(name);
+                                        .get(actorName)).get(name);
 
                         if (!value.equals(actualValue)) {
                             throw new IllegalActionException(this,
-                                    "Type of port "
-                                    + ((CompositeEntity) getContainer()).getEntity(
-                                            actorName).getFullName() + "." + name
-                                    + " should have been " + value + " but was "
-                                    + actualValue + ".");
+                                "Type of port "
+                                + ((CompositeEntity) getContainer()).getEntity(
+                                    actorName).getFullName() + "." + name
+                                + " should have been " + value + " but was "
+                                + actualValue + ".");
                         }
                     }
                 }
@@ -269,26 +270,26 @@ public class TypeTest extends Discard {
 
             if (correctParameterTypes != null) {
                 for (Iterator actorNames = correctParameterTypes.labelSet()
-                         .iterator();
-                     actorNames.hasNext();) {
+                                                                            .iterator();
+                                actorNames.hasNext();) {
                     String actorName = (String) actorNames.next();
                     RecordToken assignment = (RecordToken) correctParameterTypes
-                        .get(actorName);
+                                    .get(actorName);
 
                     for (Iterator names = assignment.labelSet().iterator();
-                         names.hasNext();) {
+                                    names.hasNext();) {
                         String name = (String) names.next();
                         StringToken value = (StringToken) assignment.get(name);
                         StringToken actualValue = (StringToken) ((RecordToken) actualParameterTypes
-                                .get(actorName)).get(name);
+                                        .get(actorName)).get(name);
 
                         if (!value.equals(actualValue)) {
                             throw new IllegalActionException(this,
-                                    "Type of parameter "
-                                    + ((CompositeEntity) getContainer()).getEntity(
-                                            actorName).getFullName() + "." + name
-                                    + " should have been " + value + " but was "
-                                    + actualValue + ".");
+                                "Type of parameter "
+                                + ((CompositeEntity) getContainer()).getEntity(
+                                    actorName).getFullName() + "." + name
+                                + " should have been " + value + " but was "
+                                + actualValue + ".");
                         }
                     }
                 }

@@ -99,7 +99,7 @@ public class TransientSingletonConfigurableAttribute
      *   SingletonConfigurableAttribute.
      */
     public TransientSingletonConfigurableAttribute(NamedObj container,
-            String name) throws NameDuplicationException, IllegalActionException {
+        String name) throws NameDuplicationException, IllegalActionException {
         super(container, name);
         setPersistent(false);
     }
@@ -136,7 +136,7 @@ public class TransientSingletonConfigurableAttribute
      *   SingletonConfigurableAttribute.
      */
     public void setContainer(NamedObj container)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         Attribute previous = null;
 
         if (container != null) {

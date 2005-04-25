@@ -22,6 +22,8 @@
 */
 package thales.actor.gui;
 
+import thales.vergil.navigable.NavigationTreeModel;
+
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.EffigyFactory;
@@ -40,8 +42,6 @@ import ptolemy.moml.ParserAttribute;
 import ptolemy.util.ClassUtilities;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
-
-import thales.vergil.navigable.NavigationTreeModel;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -89,7 +89,7 @@ public class NavigableEffigy extends PtolemyEffigy {
      * @exception NameDuplicationException
      */
     public NavigableEffigy(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -162,7 +162,7 @@ public class NavigableEffigy extends PtolemyEffigy {
          *   an entity already in the container.
          */
         public Factory(CompositeEntity container, String name)
-                throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
             super(container, name);
             _tagToCheck = "_navigable";
         }
@@ -201,7 +201,7 @@ public class NavigableEffigy extends PtolemyEffigy {
          *   is malformed in some way.
          */
         public Effigy createEffigy(CompositeEntity container, URL base,
-                URL input) throws Exception {
+            URL input) throws Exception {
             if (input == null) {
                 // Create a blank effigy.
                 // Use the strategy pattern so derived classes can
@@ -242,7 +242,7 @@ public class NavigableEffigy extends PtolemyEffigy {
                 // Checking to see if there already is a _parser attribute
                 // might be overkill, but it is safer.
                 ParserAttribute parserAttribute = (ParserAttribute) newModel
-                    .getAttribute("_parser", ParserAttribute.class);
+                                .getAttribute("_parser", ParserAttribute.class);
 
                 if (parserAttribute == null) {
                     parserAttribute = new ParserAttribute(newModel, "_parser");
@@ -309,7 +309,8 @@ public class NavigableEffigy extends PtolemyEffigy {
                                 // might have a URL that refers to another
                                 // jar file.
                                 URL anotherURL = ClassUtilities
-                                    .jarURLEntryResource(input.toString());
+                                                .jarURLEntryResource(input
+                                                    .toString());
 
                                 if (anotherURL != null) {
                                     toplevel = parser.parse(base, anotherURL);
@@ -350,18 +351,19 @@ public class NavigableEffigy extends PtolemyEffigy {
                                     // is a %20 instead of a space.  This could
                                     // cause problems in Web Start
                                     String inputExternalFormFixed = StringUtilities
-                                        .substitute(input.toExternalForm(),
-                                                " ", "%20");
+                                                    .substitute(input
+                                                        .toExternalForm(), " ",
+                                                        "%20");
 
                                     try {
                                         inputURI = new URI(inputExternalFormFixed);
                                     } catch (Exception ex2) {
                                         throw new Exception(
-                                                "Failed to generate "
-                                                + "a URI from '"
-                                                + input.toExternalForm()
-                                                + "' and from '"
-                                                + inputExternalFormFixed + "'", ex);
+                                            "Failed to generate "
+                                            + "a URI from '"
+                                            + input.toExternalForm()
+                                            + "' and from '"
+                                            + inputExternalFormFixed + "'", ex);
                                     }
                                 }
 
@@ -410,7 +412,7 @@ public class NavigableEffigy extends PtolemyEffigy {
                             // and report the error here.  Otherwise, we
                             // pass the error to the caller.
                             ModelDirectory dir = (ModelDirectory) effigy.topEffigy()
-                                .getContainer();
+                                                                                    .getContainer();
                             List effigies = dir.entityList(Effigy.class);
 
                             // We might get to here if we are running a
@@ -479,14 +481,16 @@ public class NavigableEffigy extends PtolemyEffigy {
 
             try {
                 reader = new BufferedReader(new InputStreamReader(
-                                                    url.openStream()));
+                            url.openStream()));
 
                 String aLine = "";
 
                 while ((aLine = reader.readLine()) != null) {
                     if ((aLine.indexOf("<property") != -1)
-                            && ((aLine.indexOf("name=\"" + _tagToCheck + "\"") != -1)
-                                    || (aLine.indexOf("name='" + _tagToCheck + "'") != -1))) {
+                                    && ((aLine.indexOf("name=\"" + _tagToCheck
+                                        + "\"") != -1)
+                                    || (aLine.indexOf("name='" + _tagToCheck
+                                        + "'") != -1))) {
                         answer = true;
                         break;
                     }
@@ -494,13 +498,12 @@ public class NavigableEffigy extends PtolemyEffigy {
             } catch (IOException e1) {
                 e1.printStackTrace();
             } finally {
-            	if (reader != null) {
+                if (reader != null) {
                     try {
                         reader.close();
                     } catch (IOException ex) {
-                        ex.printStackTrace();   
+                        ex.printStackTrace();
                     }
-                    
                 }
             }
 
@@ -515,8 +518,8 @@ public class NavigableEffigy extends PtolemyEffigy {
          *  @return A new effigy.
          */
         protected NavigableEffigy _newEffigy(CompositeEntity container,
-                String name)
-                throws IllegalActionException, NameDuplicationException {
+            String name)
+            throws IllegalActionException, NameDuplicationException {
             return new NavigableEffigy(container, name);
         }
     }
@@ -536,7 +539,7 @@ public class NavigableEffigy extends PtolemyEffigy {
          *   an entity already in the container.
          */
         public FactoryWithoutNew(CompositeEntity container, String name)
-                throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
             super(container, name);
         }
 

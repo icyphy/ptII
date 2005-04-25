@@ -64,7 +64,7 @@ abstract public class GRTransform extends GRActor3D {
      *   actor with this name.
      */
     public GRTransform(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         sceneGraphIn = new TypedIOPort(this, "sceneGraphIn");
         sceneGraphIn.setInput(true);

@@ -56,7 +56,7 @@ public class Absent extends Undefined {
      *   an actor already in the container.
      */
     public Absent(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 

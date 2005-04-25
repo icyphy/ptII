@@ -68,7 +68,7 @@ public class Maximum extends TypedAtomicActor {
      *   actor with this name.
      */
     public Maximum(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         input = new TypedIOPort(this, "input", true, false);

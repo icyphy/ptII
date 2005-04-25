@@ -65,7 +65,7 @@ public class InstantaneousDialogGenerator extends TypedAtomicActor {
      *   an actor already in the container.
      */
     public InstantaneousDialogGenerator(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         new Attribute(this, "_nonStrictMarker");
 

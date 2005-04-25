@@ -77,7 +77,7 @@ public class SingletonAttribute extends Attribute implements Singleton {
      *   SingletonAttribute.
      */
     public SingletonAttribute(NamedObj container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
     }
 
@@ -113,7 +113,7 @@ public class SingletonAttribute extends Attribute implements Singleton {
      *   SingletonConfigurableAttribute.
      */
     public void setContainer(NamedObj container)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         Attribute previous = null;
 
         if (container != null) {

@@ -88,7 +88,7 @@ public class FloatArrayMath {
      *  append(array1, 0, array1.length, array2, 0, array2.length)
      */
     public static final float[] append(final float[] array1,
-            final float[] array2) {
+        final float[] array2) {
         return append(array1, 0, array1.length, array2, 0, array2.length);
     }
 
@@ -108,8 +108,8 @@ public class FloatArrayMath {
      *  @return A new array of floats.
      */
     public static final float[] append(final float[] array1, final int idx1,
-            final int length1, final float[] array2, final int idx2,
-            final int length2) {
+        final int length1, final float[] array2, final int idx2,
+        final int length2) {
         float[] returnValue = new float[length1 + length2];
 
         if (length1 > 0) {
@@ -130,7 +130,7 @@ public class FloatArrayMath {
      *  If the length of the array is 0, return a new array of length 0.
      */
     public static final float[] applyBinaryOperation(FloatBinaryOperation op,
-            final float[] array, final float z) {
+        final float[] array, final float z) {
         int length = array.length;
         float[] returnValue = new float[length];
 
@@ -148,7 +148,7 @@ public class FloatArrayMath {
      *  If the length of the array is 0, return a new array of length 0.
      */
     public static final float[] applyBinaryOperation(FloatBinaryOperation op,
-            final float z, final float[] array) {
+        final float z, final float[] array) {
         int length = array.length;
         float[] returnValue = new float[length];
 
@@ -169,7 +169,7 @@ public class FloatArrayMath {
      *  IllegalArgumentException.
      */
     public static final float[] applyBinaryOperation(FloatBinaryOperation op,
-            final float[] array1, final float[] array2) {
+        final float[] array1, final float[] array2) {
         int length = _commonLength(array1, array2,
                 "FloatArrayMath.applyBinaryOperation");
         float[] returnValue = new float[length];
@@ -187,7 +187,7 @@ public class FloatArrayMath {
      *  If the length of the array is 0, return a new array of length 0.
      */
     public static final float[] applyUnaryOperation(
-            final FloatUnaryOperation op, final float[] array) {
+        final FloatUnaryOperation op, final float[] array) {
         int length = array.length;
         float[] returnValue = new float[length];
 
@@ -211,7 +211,7 @@ public class FloatArrayMath {
      *  @return A new array of floats.
      */
     public static final float[] divideElements(final float[] array1,
-            final float[] array2) {
+        final float[] array2) {
         int length = _commonLength(array1, array2,
                 "FloatArrayMath.divideElements");
         float[] returnValue = new float[length];
@@ -245,7 +245,7 @@ public class FloatArrayMath {
      *  IllegalArgumentException.
      */
     public static final float dotProduct(final float[] array1,
-            final float[] array2) {
+        final float[] array2) {
         int length = _commonLength(array1, array2, "FloatArrayMath.dotProduct");
 
         float sum = 0.0f;
@@ -278,15 +278,15 @@ public class FloatArrayMath {
      *  @return A new array with values in the range [bottom, top].
      */
     public static final float[] limit(final float[] array, final float bottom,
-            final float top) {
+        final float top) {
         float[] returnValue = new float[array.length];
 
         for (int i = 0; i < array.length; i++) {
             if ((array[i] > top) || (array[i] == Float.NaN)
-                    || (array[i] == Float.POSITIVE_INFINITY)) {
+                            || (array[i] == Float.POSITIVE_INFINITY)) {
                 returnValue[i] = top;
             } else if ((array[i] < bottom) || (array[i] == -Float.NaN)
-                    || (array[i] == Float.NEGATIVE_INFINITY)) {
+                            || (array[i] == Float.NEGATIVE_INFINITY)) {
                 returnValue[i] = bottom;
             } else {
                 returnValue[i] = array[i];
@@ -303,7 +303,7 @@ public class FloatArrayMath {
      *  IllegalArgumentException.
      */
     public static final float[] multiply(final float[] array1,
-            final float[] array2) {
+        final float[] array2) {
         int length = _commonLength(array1, array2, "FloatArrayMath.multiply");
         float[] returnValue = new float[length];
 
@@ -366,15 +366,15 @@ public class FloatArrayMath {
      *  @return A new array of floats.
      */
     public static final float[] padMiddle(final float[] array,
-            final int newLength) {
+        final int newLength) {
         int length = array.length;
 
         int entriesNeeded = newLength - length;
 
         if (entriesNeeded < 0) {
             throw new IllegalArgumentException("ptolemy.math."
-                    + "FloatArrayMath.padMiddle() : newLength must be "
-                    + ">= length of array.");
+                + "FloatArrayMath.padMiddle() : newLength must be "
+                + ">= length of array.");
         } else if (entriesNeeded == 0) {
             return resize(array, newLength); // allocates a new array
         }
@@ -387,7 +387,7 @@ public class FloatArrayMath {
         System.arraycopy(array, 0, returnValue, 0, halfLengthCeil);
 
         System.arraycopy(array, halfLengthFloor, returnValue,
-                newLength - halfLengthCeil, halfLengthCeil);
+            newLength - halfLengthCeil, halfLengthCeil);
 
         return returnValue;
     }
@@ -421,15 +421,15 @@ public class FloatArrayMath {
      *  @return A new array of floats of length newLength.
      */
     public static final float[] resize(float[] array, final int newLength,
-            final int startIdx) {
+        final int startIdx) {
         float[] returnValue = new float[newLength];
         int copySize = Math.min(newLength, array.length - startIdx);
 
         if ((startIdx >= array.length) && (copySize > 0)) {
             throw new IllegalArgumentException("resize():  the start index '"
-                    + startIdx + "' is greather than equal to the array length '"
-                    + array.length + "' and the number of items to be copied '"
-                    + copySize + "' is greater than zero.");
+                + startIdx + "' is greather than equal to the array length '"
+                + array.length + "' and the number of items to be copied '"
+                + copySize + "' is greater than zero.");
         }
 
         if (copySize > 0) {
@@ -459,7 +459,7 @@ public class FloatArrayMath {
      *  If the lengths of both arrays are 0, return a new array of length 0.
      */
     public static final float[] subtract(final float[] array1,
-            final float[] array2) {
+        final float[] array2) {
         int length = _commonLength(array1, array2, "FloatArrayMath.subtract");
         float[] returnValue = new float[length];
 
@@ -569,7 +569,7 @@ public class FloatArrayMath {
      *  format argument.
      */
     public static final String toString(final float[] array,
-            String elementDelimiter, String vectorBegin, String vectorEnd) {
+        String elementDelimiter, String vectorBegin, String vectorEnd) {
         int length = array.length;
         StringBuffer sb = new StringBuffer();
 
@@ -603,12 +603,12 @@ public class FloatArrayMath {
      *   length.
      */
     public static final boolean within(final float[] array1,
-            final float[] array2, float maxError) {
+        final float[] array2, float maxError) {
         int length = _commonLength(array1, array2, "FloatArrayMath.within");
 
         for (int i = 0; i < length; i++) {
             if ((array1[i] > (array2[i] + maxError))
-                    || (array1[i] < (array2[i] - maxError))) {
+                            || (array1[i] < (array2[i] - maxError))) {
                 return false;
             }
         }
@@ -633,12 +633,12 @@ public class FloatArrayMath {
      *   length.
      */
     public static final boolean within(final float[] array1,
-            final float[] array2, float[] maxError) {
+        final float[] array2, float[] maxError) {
         int length = _commonLength(array1, array2, "FloatArrayMath.within");
 
         for (int i = 0; i < length; i++) {
             if ((array1[i] > (array2[i] + maxError[i]))
-                    || (array1[i] < (array2[i] - maxError[i]))) {
+                            || (array1[i] < (array2[i] - maxError[i]))) {
                 return false;
             }
         }
@@ -660,22 +660,22 @@ public class FloatArrayMath {
      *  @return The common length of both arrays.
      */
     protected static final int _commonLength(final float[] array1,
-            final float[] array2, String methodName) {
+        final float[] array2, String methodName) {
         if (array1 == null) {
             throw new IllegalArgumentException("ptolemy.math." + methodName
-                    + "() : first input array is null.");
+                + "() : first input array is null.");
         }
 
         if (array2 == null) {
             throw new IllegalArgumentException("ptolemy.math." + methodName
-                    + "() : second input array is null.");
+                + "() : second input array is null.");
         }
 
         if (array1.length != array2.length) {
             throw new IllegalArgumentException("ptolemy.math." + methodName
-                    + "() : input arrays must have the same length, "
-                    + "but the first array has length " + array1.length
-                    + " and the second array has length " + array2.length + ".");
+                + "() : input arrays must have the same length, "
+                + "but the first array has length " + array1.length
+                + " and the second array has length " + array2.length + ".");
         }
 
         return array1.length;

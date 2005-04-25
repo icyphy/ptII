@@ -30,6 +30,7 @@ import soot.Scene;
 import soot.SceneTransformer;
 import soot.SootClass;
 import soot.SootMethod;
+
 import soot.grimp.Grimp;
 
 import java.util.Iterator;
@@ -62,20 +63,20 @@ public class GrimpTransformer extends SceneTransformer {
     protected void internalTransform(String phaseName, Map options) {
         int localCount = 0;
         System.out.println("GrimpTransformer.internalTransform(" + phaseName
-                + ", " + options + ")");
+            + ", " + options + ")");
 
         // Loop through all the methods and kill all the used fields.
         for (Iterator i = Scene.v().getApplicationClasses().iterator();
-             i.hasNext();) {
+                        i.hasNext();) {
             SootClass entityClass = (SootClass) i.next();
 
             for (Iterator methods = entityClass.getMethods().iterator();
-                 methods.hasNext();) {
+                            methods.hasNext();) {
                 SootMethod method = (SootMethod) methods.next();
 
                 if (method.isConcrete()) {
                     method.setActiveBody(Grimp.v().newBody(method
-                                                 .retrieveActiveBody(), "gb"));
+                                        .retrieveActiveBody(), "gb"));
                 }
             }
         }

@@ -72,7 +72,7 @@ public class TextEffigy extends Effigy {
      *  @param name The name of this effigy.
      */
     public TextEffigy(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -97,7 +97,7 @@ public class TextEffigy extends Effigy {
      *   text cannot be inserted into the document.
      */
     public static TextEffigy newTextEffigy(CompositeEntity container,
-            String text) throws Exception {
+        String text) throws Exception {
         // Create a new effigy.
         TextEffigy effigy = new TextEffigy(container,
                 container.uniqueName("effigy"));
@@ -126,7 +126,7 @@ public class TextEffigy extends Effigy {
      *   is malformed in some way.
      */
     public static TextEffigy newTextEffigy(CompositeEntity container, URL base,
-            URL in) throws Exception {
+        URL in) throws Exception {
         // Create a new effigy.
         TextEffigy effigy = new TextEffigy(container,
                 container.uniqueName("effigy"));
@@ -134,58 +134,60 @@ public class TextEffigy extends Effigy {
         effigy.setDocument(doc);
 
         if (in != null) {
-        	// A URL has been given.  Read it.
-        	BufferedReader reader = null;
-        	try {
-        		try {
-        			InputStream inputStream = null;
-        			
-        			try {
-        				inputStream = in.openStream();
-        			} catch (NullPointerException npe) {
-        				throw new IOException("Failed to open '" + in
-        						+ "', base: '" + base + "' : openStream() threw a "
-								+ "NullPointerException");
-        			}
-        			
-        			reader = new BufferedReader(new InputStreamReader(inputStream));
-        			
-        			// openStream throws an IOException, not a
-        			// FileNotFoundException
-        		} catch (IOException ex) {
-        			try {
-        				// If we are running under WebStart, and try
-        				// view source on a .html file that is not in
-        				// ptsupport.jar, then we may end up here,
-        				// so we look for the file as a resource.
-        				URL jarURL = ptolemy.util.ClassUtilities.jarURLEntryResource(in.toString());
-        				reader = new BufferedReader(new InputStreamReader(
-        						jarURL.openStream()));
-        				
-        				// We were able to open the URL, so update the
-        				// original URL so that the title bar accurately
-        				// reflects the location of the file.
-        				in = jarURL;
-        			} catch (Throwable throwable) {
-        				// Looking for the file as a resource did not work,
-        				// so we rethrow the original exception.
-        				throw ex;
-        			}
-        		}
-        		
-        		String line = reader.readLine();
-        		
-        		while (line != null) {
-        			// Translate newlines to Java form.
-        			doc.insertString(doc.getLength(), line + "\n", null);
-        			line = reader.readLine();
-        		}
-        		
-        	} finally {
-        		if (reader != null) {
-        			reader.close();
-        		}
-        	}
+            // A URL has been given.  Read it.
+            BufferedReader reader = null;
+
+            try {
+                try {
+                    InputStream inputStream = null;
+
+                    try {
+                        inputStream = in.openStream();
+                    } catch (NullPointerException npe) {
+                        throw new IOException("Failed to open '" + in
+                            + "', base: '" + base + "' : openStream() threw a "
+                            + "NullPointerException");
+                    }
+
+                    reader = new BufferedReader(new InputStreamReader(
+                                inputStream));
+
+                    // openStream throws an IOException, not a
+                    // FileNotFoundException
+                } catch (IOException ex) {
+                    try {
+                        // If we are running under WebStart, and try
+                        // view source on a .html file that is not in
+                        // ptsupport.jar, then we may end up here,
+                        // so we look for the file as a resource.
+                        URL jarURL = ptolemy.util.ClassUtilities
+                                        .jarURLEntryResource(in.toString());
+                        reader = new BufferedReader(new InputStreamReader(
+                                    jarURL.openStream()));
+
+                        // We were able to open the URL, so update the
+                        // original URL so that the title bar accurately
+                        // reflects the location of the file.
+                        in = jarURL;
+                    } catch (Throwable throwable) {
+                        // Looking for the file as a resource did not work,
+                        // so we rethrow the original exception.
+                        throw ex;
+                    }
+                }
+
+                String line = reader.readLine();
+
+                while (line != null) {
+                    // Translate newlines to Java form.
+                    doc.insertString(doc.getLength(), line + "\n", null);
+                    line = reader.readLine();
+                }
+            } finally {
+                if (reader != null) {
+                    reader.close();
+                }
+            }
 
             // Check the URL to see whether it is a file,
             // and if so, whether it is writable.
@@ -226,20 +228,22 @@ public class TextEffigy extends Effigy {
      *  @exception IOException If the write fails.
      */
     public void writeFile(File file) throws IOException {
-    	if (_doc != null) {
-    		java.io.FileWriter fileWriter = null;
-    		try {
-    			fileWriter = new java.io.FileWriter(file);
-    			try {
-    				fileWriter.write(_doc.getText(0, _doc.getLength()));
-    			} catch (BadLocationException ex) {
-    				throw new IOException("Failed to get text from the document: "
-    						+ ex);
-    			}		
-    		} finally {
-    			if (fileWriter != null) {
-    				fileWriter.close();
-    			}
+        if (_doc != null) {
+            java.io.FileWriter fileWriter = null;
+
+            try {
+                fileWriter = new java.io.FileWriter(file);
+
+                try {
+                    fileWriter.write(_doc.getText(0, _doc.getLength()));
+                } catch (BadLocationException ex) {
+                    throw new IOException(
+                        "Failed to get text from the document: " + ex);
+                }
+            } finally {
+                if (fileWriter != null) {
+                    fileWriter.close();
+                }
             }
         }
     }
@@ -264,7 +268,7 @@ public class TextEffigy extends Effigy {
          *   an entity already in the container.
          */
         public Factory(CompositeEntity container, String name)
-                throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
             super(container, name);
 
             try {
@@ -288,7 +292,11 @@ public class TextEffigy extends Effigy {
                 }
 
                 _newTextEffigyURL = effigyClass.getMethod("newTextEffigy",
-                        new Class[] { CompositeEntity.class, URL.class, URL.class });
+                        new Class[] {
+                            CompositeEntity.class,
+                            URL.class,
+                            URL.class
+                        });
             } catch (ClassNotFoundException ex) {
                 throw new IllegalActionException(ex.toString());
             } catch (NoSuchMethodException ex) {
@@ -325,11 +333,15 @@ public class TextEffigy extends Effigy {
          *   is malformed in some way.
          */
         public Effigy createEffigy(CompositeEntity container, URL base, URL in)
-                throws Exception {
+            throws Exception {
             // Create a new effigy.
             try {
                 return (Effigy) _newTextEffigyURL.invoke(null,
-                        new Object[] { container, base, in });
+                    new Object[] {
+                        container,
+                        base,
+                        in
+                    });
             } catch (java.lang.reflect.InvocationTargetException ex) {
                 if (ex instanceof Exception) {
                     // Rethrow the initial cause

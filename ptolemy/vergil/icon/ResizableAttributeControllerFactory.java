@@ -71,7 +71,7 @@ public class ResizableAttributeControllerFactory extends NodeControllerFactory {
      *   attribute with this name.
      */
     public ResizableAttributeControllerFactory(NamedObj container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
     }
 

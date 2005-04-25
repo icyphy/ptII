@@ -15,7 +15,7 @@ public final class CorbaIllegalActionExceptionHolder
     }
 
     public CorbaIllegalActionExceptionHolder(
-            ptolemy.actor.corba.util.CorbaIllegalActionException initialValue) {
+        ptolemy.actor.corba.util.CorbaIllegalActionException initialValue) {
         value = initialValue;
     }
 
@@ -25,7 +25,7 @@ public final class CorbaIllegalActionExceptionHolder
 
     public void _write(org.omg.CORBA.portable.OutputStream o) {
         ptolemy.actor.corba.util.CorbaIllegalActionExceptionHelper.write(o,
-                value);
+            value);
     }
 
     public org.omg.CORBA.TypeCode _type() {

@@ -52,15 +52,15 @@ import java.util.LinkedList;
    (FCFS) fashion. This actor extends the Timer actor.
    <p>
    The key difference between the NonInterruptibleTimer actor and the Server
-   actor is how the service time is specified.  In the NonInterruptibleTimer 
-   actor, whenever an input arrives, the value of the input token specifies 
-   the service time.  This actor will guarantee that much service time to be 
-   given to that input.  In the Server actor, service times for inputs ar 
-   decided by the ServiceTime parameter, which may change any time during an 
-   execution. In particular, how much service time an input actually gets is 
-   decided the value of the ServiceTime parameter at the time the server is 
+   actor is how the service time is specified.  In the NonInterruptibleTimer
+   actor, whenever an input arrives, the value of the input token specifies
+   the service time.  This actor will guarantee that much service time to be
+   given to that input.  In the Server actor, service times for inputs ar
+   decided by the ServiceTime parameter, which may change any time during an
+   execution. In particular, how much service time an input actually gets is
+   decided the value of the ServiceTime parameter at the time the server is
    ready to serve that input.
-   
+
    @see Timer
    @author Haiyang Zheng
    @version $Id$
@@ -78,7 +78,7 @@ public class NonInterruptibleTimer extends Timer {
      *   actor with this name.
      */
     public NonInterruptibleTimer(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
     }
 
@@ -123,12 +123,12 @@ public class NonInterruptibleTimer extends Timer {
         if (_delayedOutputTokens.size() > 0) {
             if (currentTime.compareTo(_nextTimeFree) == 0) {
                 TimedEvent earliestEvent = (TimedEvent) _delayedOutputTokens
-                    .get();
+                                .get();
                 Time eventTime = earliestEvent.timeStamp;
 
                 if (!eventTime.equals(currentTime)) {
                     throw new InternalErrorException("Timer time is "
-                            + "reached, but output is not available.");
+                        + "reached, but output is not available.");
                 }
 
                 _currentOutput = (Token) earliestEvent.contents;
@@ -176,14 +176,14 @@ public class NonInterruptibleTimer extends Timer {
         // output at the time: current time + delay specified by the input
         // being processed.
         if ((_delayedInputTokensList.size() != 0)
-                && _delayedOutputTokens.isEmpty()) {
+                        && _delayedOutputTokens.isEmpty()) {
             // NOTE: the input has a fixed data type as double.
             DoubleToken delayToken = (DoubleToken) _delayedInputTokensList
-                .removeFirst();
+                            .removeFirst();
             double delay = delayToken.doubleValue();
             _nextTimeFree = currentTime.add(delay);
             _delayedOutputTokens.put(new TimedEvent(_nextTimeFree,
-                                             value.getToken()));
+                    value.getToken()));
             getDirector().fireAt(this, _nextTimeFree);
         }
 

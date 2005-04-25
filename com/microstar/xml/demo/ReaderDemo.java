@@ -2,7 +2,6 @@
 // NO WARRANTY! See README, and copyright below.
 // $Id$
 // Modified 11/8/98 to add package statement.
-
 package com.microstar.xml.demo;
 
 import com.microstar.xml.XmlParser;
@@ -24,23 +23,20 @@ import java.io.StringReader;
   * @see EventDemo
   */
 public class ReaderDemo extends EventDemo {
+    public static void main(String[] args) throws Exception {
+        ReaderDemo handler = new ReaderDemo();
+        Reader reader;
 
-  public static void main (String args[]) 
-    throws Exception
-  {
-    ReaderDemo handler = new ReaderDemo();
-    Reader reader;
+        if (args.length != 0) {
+            System.err.println("Usage: java ReaderDemo");
+            System.exit(1);
+        }
 
-    if (args.length != 0) {
-      System.err.println("Usage: java ReaderDemo");
-      System.exit(1);
+        reader = new StringReader(
+                "<doc>\n<title>Sample</title>\n<p n=\"1\">Sample document</p>\n</doc>\n");
+
+        XmlParser parser = new XmlParser();
+        parser.setHandler(handler);
+        parser.parse(null, null, reader);
     }
-
-    reader = new StringReader("<doc>\n<title>Sample</title>\n<p n=\"1\">Sample document</p>\n</doc>\n");
-
-    XmlParser parser = new XmlParser();
-    parser.setHandler(handler);
-    parser.parse(null, null, reader);
-  }
-
 }

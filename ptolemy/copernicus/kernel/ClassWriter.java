@@ -98,7 +98,7 @@ public class ClassWriter extends SceneTransformer implements HasPhaseOptions {
      */
     protected void internalTransform(String phaseName, Map options) {
         System.out.println("ClassWriter.internalTransform(" + phaseName + ", "
-                + options + ")");
+            + options + ")");
 
         String outDir = PhaseOptions.getString(options, "outDir");
 
@@ -111,7 +111,7 @@ public class ClassWriter extends SceneTransformer implements HasPhaseOptions {
         }
 
         for (Iterator classes = Scene.v().getApplicationClasses().iterator();
-             classes.hasNext();) {
+                        classes.hasNext();) {
             SootClass theClass = (SootClass) classes.next();
 
             try {
@@ -120,7 +120,7 @@ public class ClassWriter extends SceneTransformer implements HasPhaseOptions {
                 // If we get an IOException, we might not have any idea
                 // of which directory was problematic
                 throw new RuntimeException("Creating class file for '"
-                        + theClass + "' in directory '" + outDir + "' failed", ex);
+                    + theClass + "' in directory '" + outDir + "' failed", ex);
             }
         }
     }

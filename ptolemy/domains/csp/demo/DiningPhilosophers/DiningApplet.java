@@ -72,7 +72,7 @@ import java.text.NumberFormat;
    @Pt.AcceptedRating Red (cxh)
 */
 public class DiningApplet extends Applet implements Runnable,
-                                                    PhilosopherListener {
+    PhilosopherListener {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -148,58 +148,58 @@ public class DiningApplet extends Applet implements Runnable,
 
             // Now connect up the Actors
             univ.connect((TypedIOPort) p1.getPort("leftIn"),
-                    (TypedIOPort) f5.getPort("rightOut"));
+                (TypedIOPort) f5.getPort("rightOut"));
             univ.connect((TypedIOPort) p1.getPort("leftOut"),
-                    (TypedIOPort) f5.getPort("rightIn"));
+                (TypedIOPort) f5.getPort("rightIn"));
             univ.connect((TypedIOPort) p1.getPort("rightIn"),
-                    (TypedIOPort) f1.getPort("leftOut"));
+                (TypedIOPort) f1.getPort("leftOut"));
             univ.connect((TypedIOPort) p1.getPort("rightOut"),
-                    (TypedIOPort) f1.getPort("leftIn"));
+                (TypedIOPort) f1.getPort("leftIn"));
 
             univ.connect((TypedIOPort) p2.getPort("leftIn"),
-                    (TypedIOPort) f1.getPort("rightOut"));
+                (TypedIOPort) f1.getPort("rightOut"));
             univ.connect((TypedIOPort) p2.getPort("leftOut"),
-                    (TypedIOPort) f1.getPort("rightIn"));
+                (TypedIOPort) f1.getPort("rightIn"));
             univ.connect((TypedIOPort) p2.getPort("rightIn"),
-                    (TypedIOPort) f2.getPort("leftOut"));
+                (TypedIOPort) f2.getPort("leftOut"));
             univ.connect((TypedIOPort) p2.getPort("rightOut"),
-                    (TypedIOPort) f2.getPort("leftIn"));
+                (TypedIOPort) f2.getPort("leftIn"));
 
             univ.connect((TypedIOPort) p3.getPort("leftIn"),
-                    (TypedIOPort) f2.getPort("rightOut"));
+                (TypedIOPort) f2.getPort("rightOut"));
 
             univ.connect((TypedIOPort) p3.getPort("leftOut"),
-                    (TypedIOPort) f2.getPort("rightIn"));
+                (TypedIOPort) f2.getPort("rightIn"));
 
             univ.connect((TypedIOPort) p3.getPort("rightIn"),
-                    (TypedIOPort) f3.getPort("leftOut"));
+                (TypedIOPort) f3.getPort("leftOut"));
 
             univ.connect((TypedIOPort) p3.getPort("rightOut"),
-                    (TypedIOPort) f3.getPort("leftIn"));
+                (TypedIOPort) f3.getPort("leftIn"));
 
             univ.connect((TypedIOPort) p4.getPort("leftIn"),
-                    (TypedIOPort) f3.getPort("rightOut"));
+                (TypedIOPort) f3.getPort("rightOut"));
 
             univ.connect((TypedIOPort) p4.getPort("leftOut"),
-                    (TypedIOPort) f3.getPort("rightIn"));
+                (TypedIOPort) f3.getPort("rightIn"));
 
             univ.connect((TypedIOPort) p4.getPort("rightIn"),
-                    (TypedIOPort) f4.getPort("leftOut"));
+                (TypedIOPort) f4.getPort("leftOut"));
 
             univ.connect((TypedIOPort) p4.getPort("rightOut"),
-                    (TypedIOPort) f4.getPort("leftIn"));
+                (TypedIOPort) f4.getPort("leftIn"));
 
             univ.connect((TypedIOPort) p5.getPort("leftIn"),
-                    (TypedIOPort) f4.getPort("rightOut"));
+                (TypedIOPort) f4.getPort("rightOut"));
 
             univ.connect((TypedIOPort) p5.getPort("leftOut"),
-                    (TypedIOPort) f4.getPort("rightIn"));
+                (TypedIOPort) f4.getPort("rightIn"));
 
             univ.connect((TypedIOPort) p5.getPort("rightIn"),
-                    (TypedIOPort) f5.getPort("leftOut"));
+                (TypedIOPort) f5.getPort("leftOut"));
 
             univ.connect((TypedIOPort) p5.getPort("rightOut"),
-                    (TypedIOPort) f5.getPort("leftIn"));
+                (TypedIOPort) f5.getPort("leftIn"));
         } catch (Exception ex) {
             System.err.println("Setup failed: " + ex.getMessage());
             ex.printStackTrace();
@@ -323,10 +323,10 @@ public class DiningApplet extends Applet implements Runnable,
                 if (_localDirector != null) {
                     // get the current time from director.
                     double currentTime = _localDirector.getModelTime()
-                        .getDoubleValue();
+                                                                   .getDoubleValue();
                     _currentTimeLabel.setText("Current time = "
-                            + nf.format(currentTime));
-    
+                        + nf.format(currentTime));
+
                     try {
                         sleep(100);
                     } catch (InterruptedException e) {
@@ -384,7 +384,7 @@ public class DiningApplet extends Applet implements Runnable,
                     spec = (Double.valueOf(timespec)).doubleValue();
                 } catch (NumberFormatException ex) {
                     System.err.println("Invalid eating rate: "
-                            + ex.getMessage() + ", defaulting to 1.0");
+                        + ex.getMessage() + ", defaulting to 1.0");
                 }
 
                 try {
@@ -409,7 +409,7 @@ public class DiningApplet extends Applet implements Runnable,
                     spec = (Double.valueOf(timespec)).doubleValue();
                 } catch (NumberFormatException ex) {
                     System.err.println("Invalid thinking rate: "
-                            + ex.getMessage() + ", defaulting to 1.0");
+                        + ex.getMessage() + ", defaulting to 1.0");
                 }
 
                 try {

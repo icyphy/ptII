@@ -90,7 +90,7 @@ public class KeystrokeSensor extends TypedAtomicActor {
      *   actor with this name.
      */
     public KeystrokeSensor(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         controlC = new TypedIOPort(this, "controlC");
@@ -174,7 +174,7 @@ public class KeystrokeSensor extends TypedAtomicActor {
                             getDirector().fireAtCurrentTime(KeystrokeSensor.this);
                         } catch (IllegalActionException ex) {
                             System.out.println(this
-                                    + "Ex calling fireAtCurrentTime");
+                                + "Ex calling fireAtCurrentTime");
                             throw new RuntimeException("-fireAt* C catch-");
                         }
                     }
@@ -190,7 +190,7 @@ public class KeystrokeSensor extends TypedAtomicActor {
                         } catch (IllegalActionException ex) {
                             System.out.println("--" + ex.toString() + "--");
                             System.out.println(this
-                                    + "Exception calling fireAtCurrentTime");
+                                + "Exception calling fireAtCurrentTime");
                             throw new RuntimeException("-fireAt* catch-");
                         }
                     }
@@ -203,13 +203,13 @@ public class KeystrokeSensor extends TypedAtomicActor {
 
             // Paste registration of call-back.
             label.registerKeyboardAction(myPasteListener, "Paste",
-                    KeyStroke.getKeyStroke(KeyEvent.VK_V, java.awt.Event.CTRL_MASK),
-                    JComponent.WHEN_IN_FOCUSED_WINDOW);
+                KeyStroke.getKeyStroke(KeyEvent.VK_V, java.awt.Event.CTRL_MASK),
+                JComponent.WHEN_IN_FOCUSED_WINDOW);
 
             // Copy registration of call-back.
             label.registerKeyboardAction(myCopyListener, "Copy",
-                    KeyStroke.getKeyStroke(KeyEvent.VK_C, java.awt.Event.CTRL_MASK),
-                    JComponent.WHEN_IN_FOCUSED_WINDOW);
+                KeyStroke.getKeyStroke(KeyEvent.VK_C, java.awt.Event.CTRL_MASK),
+                JComponent.WHEN_IN_FOCUSED_WINDOW);
 
             label.setRequestFocusEnabled(true);
             label.addMouseListener(new FocusMouseListener());

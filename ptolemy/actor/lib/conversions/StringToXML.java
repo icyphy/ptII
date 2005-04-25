@@ -61,7 +61,7 @@ public class StringToXML extends Transformer {
      *   actor with this name.
      */
     public StringToXML(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // Set the type of the input port.
@@ -92,7 +92,7 @@ public class StringToXML extends Transformer {
                     //k++;
                 } catch (java.lang.Exception ex) {
                     throw new IllegalActionException(this, ex,
-                            "Can't construct an XML Token from '" + in + "'");
+                        "Can't construct an XML Token from '" + in + "'");
                 }
             }
         }

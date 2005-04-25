@@ -96,7 +96,7 @@ public final class SDFIOPort extends TypedIOPort {
      *   a port already in the container.
      */
     public SDFIOPort(ComponentEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _initialize();
     }
@@ -117,8 +117,8 @@ public final class SDFIOPort extends TypedIOPort {
      *   a port already in the container.
      */
     public SDFIOPort(ComponentEntity container, String name, boolean isInput,
-            boolean isOutput)
-            throws IllegalActionException, NameDuplicationException {
+        boolean isOutput)
+        throws IllegalActionException, NameDuplicationException {
         this(container, name);
         setInput(isInput);
         setOutput(isOutput);
@@ -164,7 +164,7 @@ public final class SDFIOPort extends TypedIOPort {
      *  @return The number of tokens consumed on this port, as specified in
      *  the tokenConsumptionRate Parameter.
      *  @exception IllegalActionException If calling getToken() throws it.
-     *  @see #setTokenConsumptionRate(int)   
+     *  @see #setTokenConsumptionRate(int)
      */
     public int getTokenConsumptionRate() throws IllegalActionException {
         return ((IntToken) tokenConsumptionRate.getToken()).intValue();
@@ -250,7 +250,7 @@ public final class SDFIOPort extends TypedIOPort {
      *  @param rate The number of tokens that are consumed
      *  @exception IllegalActionException If the rate is less than zero,
      *  or the port is not an input port.
-     *  @see #getTokenConsumptionRate()   
+     *  @see #getTokenConsumptionRate()
      */
     public void setTokenConsumptionRate(int rate) throws IllegalActionException {
         if (rate < 0) {
@@ -259,7 +259,7 @@ public final class SDFIOPort extends TypedIOPort {
 
         if (!isInput()) {
             throw new IllegalActionException(this,
-                    "Port " + "is not an input port.");
+                "Port " + "is not an input port.");
         }
 
         tokenConsumptionRate.setToken(new IntToken(rate));
@@ -281,7 +281,7 @@ public final class SDFIOPort extends TypedIOPort {
 
         if (!isOutput()) {
             throw new IllegalActionException(this,
-                    "Port " + "is not an Output Port.");
+                "Port " + "is not an Output Port.");
         }
 
         tokenInitProduction.setToken(new IntToken(count));
@@ -304,7 +304,7 @@ public final class SDFIOPort extends TypedIOPort {
 
         if (!isOutput()) {
             throw new IllegalActionException(this,
-                    "Port " + "is not an Output Port.");
+                "Port " + "is not an Output Port.");
         }
 
         tokenProductionRate.setToken(new IntToken(rate));

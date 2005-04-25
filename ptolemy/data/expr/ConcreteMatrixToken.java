@@ -66,7 +66,7 @@ public class ConcreteMatrixToken extends MatrixToken {
      *  @exception ArrayIndexOutOfBoundsException Always thrown.
      */
     public Token getElementAsToken(int row, int column)
-            throws ArrayIndexOutOfBoundsException {
+        throws ArrayIndexOutOfBoundsException {
         throw new ArrayIndexOutOfBoundsException("Empty matrix.");
     }
 

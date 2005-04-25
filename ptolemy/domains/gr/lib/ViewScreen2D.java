@@ -81,7 +81,7 @@ import javax.swing.JFrame;
    @Pt.AcceptedRating Red (cxh)
 */
 public class ViewScreen2D extends GRActor2D implements Placeable,
-                                                       ViewScreenInterface {
+    ViewScreenInterface {
     /** Construct a ViewScreen2D in the given container with the given name.
      *  If the container argument is null, a NullPointerException will
      *  be thrown. If the name argument is null, then the name is set
@@ -95,7 +95,7 @@ public class ViewScreen2D extends GRActor2D implements Placeable,
      *   CompositeActor and the name collides with an entity in the container.
      */
     public ViewScreen2D(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         sceneGraphIn = new TypedIOPort(this, "sceneGraphIn");
@@ -403,11 +403,11 @@ public class ViewScreen2D extends GRActor2D implements Placeable,
 
         _container.add("Center", _canvas);
         _canvas.setMinimumSize(new Dimension(horizontalDimension,
-                                       verticalDimension));
+                verticalDimension));
         _canvas.setMaximumSize(new Dimension(horizontalDimension,
-                                       verticalDimension));
+                verticalDimension));
         _canvas.setPreferredSize(new Dimension(horizontalDimension,
-                                         verticalDimension));
+                verticalDimension));
 
         if (_frame != null) {
             _frame.pack();
@@ -416,17 +416,17 @@ public class ViewScreen2D extends GRActor2D implements Placeable,
         double upperLeftXValue = ((IntToken) upperLeftX.getToken()).doubleValue();
         double upperLeftYValue = ((IntToken) upperLeftY.getToken()).doubleValue();
         double lowerRightXValue = ((IntToken) lowerRightX.getToken())
-            .doubleValue();
+                        .doubleValue();
         double lowerRightYValue = ((IntToken) lowerRightY.getToken())
-            .doubleValue();
+                        .doubleValue();
         java.awt.geom.Rectangle2D visibleRect = new java.awt.geom.Rectangle2D.Double(upperLeftXValue,
                 upperLeftYValue, lowerRightXValue - upperLeftXValue,
                 lowerRightYValue - upperLeftYValue);
 
         if ((visibleRect.getHeight() == 0) || (visibleRect.getWidth() == 0)) {
             throw new IllegalActionException(this,
-                    "The width and height "
-                    + "of the visible rectangle cannot be zero.");
+                "The width and height "
+                + "of the visible rectangle cannot be zero.");
         }
 
         AffineTransform transform = CanvasUtilities.computeTransform(visibleRect,
@@ -440,9 +440,9 @@ public class ViewScreen2D extends GRActor2D implements Placeable,
         pane.setAntialiasing(true);
 
         _crosshairX = new BasicFigure(new java.awt.geom.Line2D.Double(0, 2, 0,
-                                              -2));
+                    -2));
         _crosshairY = new BasicFigure(new java.awt.geom.Line2D.Double(2, 0, -2,
-                                              0));
+                    0));
         _overlayLayer.add(_crosshairX.getShape());
         _overlayLayer.add(_crosshairY.getShape());
 
@@ -499,7 +499,7 @@ public class ViewScreen2D extends GRActor2D implements Placeable,
     ///////////////////////////////////////////////////////////////////
     ////                       private inner classes               ////
     public class ViewScreen2DListener implements LayerListener,
-                                                 LayerMotionListener, KeyListener {
+        LayerMotionListener, KeyListener {
         ///////////////////////////////////////////////////////////////////
         ////                         public methods                    ////
 
@@ -590,12 +590,13 @@ public class ViewScreen2D extends GRActor2D implements Placeable,
             //Translate the origin while the mouse cursor is in the window
             //and the user is dragging the origin marker.
             if (_originRelocatable && _mouseInWindow
-                    && (getCrosshairX().getBounds().contains(e.getLayerPoint())
-                            || getCrosshairY().getBounds().contains(e.getLayerPoint())
-                            || (_mouseDragging == true))) {
+                            && (getCrosshairX().getBounds().contains(e
+                                .getLayerPoint())
+                            || getCrosshairY().getBounds().contains(e
+                                .getLayerPoint()) || (_mouseDragging == true))) {
                 _mouseDragging = true;
                 _canvas.setCursor(Cursor.getPredefinedCursor(
-                                          Cursor.CROSSHAIR_CURSOR));
+                        Cursor.CROSSHAIR_CURSOR));
                 _origin = (Point2D.Double) e.getLayerPoint();
                 _canvas.getCanvasPane().translate(_origin.x, _origin.y);
             }

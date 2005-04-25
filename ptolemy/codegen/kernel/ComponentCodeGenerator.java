@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.codegen.kernel;
 
 import ptolemy.kernel.util.IllegalActionException;
@@ -47,7 +46,6 @@ import ptolemy.kernel.util.NamedObj;
  *  @Pt.AcceptedRating Red (eal)
  */
 public interface ComponentCodeGenerator {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -56,8 +54,7 @@ public interface ComponentCodeGenerator {
      *  @param code The code stream into which to generate the code.
      *  @exception IllegalActionException If something goes wrong.
      */
-    public String generateInitializeCode()
-            throws IllegalActionException;
+    public String generateInitializeCode() throws IllegalActionException;
 
     /** Generate into the specified code stream the code associated
      *  with wrapping up the container composite actor.
@@ -65,7 +62,7 @@ public interface ComponentCodeGenerator {
      *  @exception IllegalActionException If something goes wrong.
      */
     public void generateWrapupCode(StringBuffer code)
-            throws IllegalActionException;
+        throws IllegalActionException;
 
     /** Return the associated component.
      *  @return The component for which this is a helper to generate code.

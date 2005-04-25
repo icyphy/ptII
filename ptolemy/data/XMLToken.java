@@ -28,12 +28,12 @@ COPYRIGHTENDKEY
 */
 package ptolemy.data;
 
+import org.w3c.dom.Document;
+
 import ptolemy.data.expr.XMLParser;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
-
-import org.w3c.dom.Document;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -87,7 +87,7 @@ public class XMLToken extends Token {
         }
 
         throw new IllegalActionException(notSupportedConversionMessage(token,
-                                                 "xmltoken"));
+                "xmltoken"));
     }
 
     /** Return the dom document parsed from the xml string.
@@ -123,7 +123,7 @@ public class XMLToken extends Token {
      *  @return A BooleanToken containing the result.
      */
     protected BooleanToken _isCloseTo(Token rightArgument, double epsilon)
-            throws IllegalActionException {
+        throws IllegalActionException {
         return _isEqualTo(rightArgument);
     }
 
@@ -136,10 +136,10 @@ public class XMLToken extends Token {
      *  @return A BooleanToken containing the result.
      */
     protected BooleanToken _isEqualTo(Token rightArgument)
-            throws IllegalActionException {
+        throws IllegalActionException {
         StringToken convertedArgument = (StringToken) rightArgument;
         return BooleanToken.getInstance(toString().compareTo(convertedArgument
-                                                .toString()) == 0);
+                            .toString()) == 0);
     }
 
     ///////////////////////////////////////////////////////////////////

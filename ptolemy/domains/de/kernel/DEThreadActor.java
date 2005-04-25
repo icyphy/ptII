@@ -83,7 +83,7 @@ public abstract class DEThreadActor extends DEActor implements Runnable {
      *   actor with this name.
      */
     public DEThreadActor(TypedCompositeActor container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
     }
 
@@ -192,7 +192,7 @@ public abstract class DEThreadActor extends DEActor implements Runnable {
                     }
                 } catch (IllegalActionException ex) {
                     throw new InternalErrorException(this, ex,
-                            "Failed to empty ports?");
+                        "Failed to empty ports?");
                 }
             }
         }

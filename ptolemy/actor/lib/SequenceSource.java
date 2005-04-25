@@ -72,7 +72,7 @@ public class SequenceSource extends Source implements SequenceActor {
      *   actor with this name.
      */
     public SequenceSource(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         firingCountLimit = new Parameter(this, "firingCountLimit");
         firingCountLimit.setExpression("0");
@@ -97,10 +97,10 @@ public class SequenceSource extends Source implements SequenceActor {
      *  @exception IllegalActionException If the function is not recognized.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == firingCountLimit) {
             _firingCountLimit = ((IntToken) firingCountLimit.getToken())
-                .intValue();
+                            .intValue();
         }
     }
 

@@ -66,7 +66,7 @@ public class HideAnnotationNames implements MoMLFilter {
      *  @return the value of the attributeValue argument.
      */
     public String filterAttributeValue(NamedObj container, String element,
-            String attributeName, String attributeValue) {
+        String attributeName, String attributeValue) {
         if (attributeValue == null) {
             // attributeValue == null is fairly common, so we check for
             // that first
@@ -82,7 +82,7 @@ public class HideAnnotationNames implements MoMLFilter {
                 _currentAnnotationFullName = container.getFullName() + "."
                     + attributeValue;
             } else if (_currentlyProcessingAnnotation
-                    && attributeValue.equals("_hideName")) {
+                            && attributeValue.equals("_hideName")) {
                 // We are processing an annotation and it already
                 // has _hideName
                 _currentlyProcessingAnnotation = false;
@@ -91,12 +91,12 @@ public class HideAnnotationNames implements MoMLFilter {
         }
 
         if (_currentlyProcessingAnnotation && (container != null)
-                && !container.getFullName().equals(_currentAnnotationFullName)
-                && ((_currentAnnotationFullName == null)
+                        && !container.getFullName().equals(_currentAnnotationFullName)
+                        && ((_currentAnnotationFullName == null)
                         || ((_currentAnnotationFullName != null)
-                                && !_currentAnnotationFullName.startsWith(
-                                        container.getFullName())))
-                && !container.getFullName().startsWith(_currentAnnotationFullName)) {
+                        && !_currentAnnotationFullName.startsWith(
+                            container.getFullName())))
+                        && !container.getFullName().startsWith(_currentAnnotationFullName)) {
             // We found another class in a different container
             // while handling an annotation.
             _currentlyProcessingAnnotation = false;
@@ -112,13 +112,13 @@ public class HideAnnotationNames implements MoMLFilter {
      *  @param elementName The element name.
      */
     public void filterEndElement(NamedObj container, String elementName)
-            throws Exception {
+        throws Exception {
         if (!elementName.equals("property")) {
             return;
         }
 
         if (_currentlyProcessingAnnotation && (container != null)
-                && container.getFullName().equals(_currentAnnotationFullName)) {
+                        && container.getFullName().equals(_currentAnnotationFullName)) {
             _currentlyProcessingAnnotation = false;
             _currentAnnotationFullName = null;
 
@@ -141,7 +141,7 @@ public class HideAnnotationNames implements MoMLFilter {
      */
     public String toString() {
         return getClass().getName() + ": If an annotation name ends with\n"
-            + "'annotation1', then add _hideName if necessary.\n";
+        + "'annotation1', then add _hideName if necessary.\n";
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -41,7 +41,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 public class TwoPort extends TypedAtomicActor {
     public TwoPort(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         input1 = new TypedIOPort(this, "input1");

@@ -59,35 +59,35 @@ public class SimpleCharStream {
         try {
             if (wrapAround) {
                 System.arraycopy(buffer, tokenBegin, newbuffer, 0,
-                        bufsize - tokenBegin);
+                    bufsize - tokenBegin);
                 System.arraycopy(buffer, 0, newbuffer, bufsize - tokenBegin,
-                        bufpos);
+                    bufpos);
                 buffer = newbuffer;
 
                 System.arraycopy(bufline, tokenBegin, newbufline, 0,
-                        bufsize - tokenBegin);
+                    bufsize - tokenBegin);
                 System.arraycopy(bufline, 0, newbufline, bufsize - tokenBegin,
-                        bufpos);
+                    bufpos);
                 bufline = newbufline;
 
                 System.arraycopy(bufcolumn, tokenBegin, newbufcolumn, 0,
-                        bufsize - tokenBegin);
+                    bufsize - tokenBegin);
                 System.arraycopy(bufcolumn, 0, newbufcolumn,
-                        bufsize - tokenBegin, bufpos);
+                    bufsize - tokenBegin, bufpos);
                 bufcolumn = newbufcolumn;
 
                 maxNextCharInd = (bufpos += (bufsize - tokenBegin));
             } else {
                 System.arraycopy(buffer, tokenBegin, newbuffer, 0,
-                        bufsize - tokenBegin);
+                    bufsize - tokenBegin);
                 buffer = newbuffer;
 
                 System.arraycopy(bufline, tokenBegin, newbufline, 0,
-                        bufsize - tokenBegin);
+                    bufsize - tokenBegin);
                 bufline = newbufline;
 
                 System.arraycopy(bufcolumn, tokenBegin, newbufcolumn, 0,
-                        bufsize - tokenBegin);
+                    bufsize - tokenBegin);
                 bufcolumn = newbufcolumn;
 
                 maxNextCharInd = (bufpos -= tokenBegin);
@@ -125,7 +125,7 @@ public class SimpleCharStream {
 
         try {
             if ((i = inputStream.read(buffer, maxNextCharInd,
-                         available - maxNextCharInd)) == -1) {
+                                    available - maxNextCharInd)) == -1) {
                 inputStream.close();
                 throw new java.io.IOException();
             } else {
@@ -254,7 +254,7 @@ public class SimpleCharStream {
     }
 
     public SimpleCharStream(java.io.Reader dstream, int startline,
-            int startcolumn, int buffersize) {
+        int startcolumn, int buffersize) {
         inputStream = dstream;
         line = startline;
         column = startcolumn - 1;
@@ -266,7 +266,7 @@ public class SimpleCharStream {
     }
 
     public SimpleCharStream(java.io.Reader dstream, int startline,
-            int startcolumn) {
+        int startcolumn) {
         this(dstream, startline, startcolumn, 4096);
     }
 
@@ -275,7 +275,7 @@ public class SimpleCharStream {
     }
 
     public void ReInit(java.io.Reader dstream, int startline, int startcolumn,
-            int buffersize) {
+        int buffersize) {
         inputStream = dstream;
         line = startline;
         column = startcolumn - 1;
@@ -301,13 +301,13 @@ public class SimpleCharStream {
     }
 
     public SimpleCharStream(java.io.InputStream dstream, int startline,
-            int startcolumn, int buffersize) {
+        int startcolumn, int buffersize) {
         this(new java.io.InputStreamReader(dstream), startline, startcolumn,
-                4096);
+            4096);
     }
 
     public SimpleCharStream(java.io.InputStream dstream, int startline,
-            int startcolumn) {
+        int startcolumn) {
         this(dstream, startline, startcolumn, 4096);
     }
 
@@ -316,9 +316,9 @@ public class SimpleCharStream {
     }
 
     public void ReInit(java.io.InputStream dstream, int startline,
-            int startcolumn, int buffersize) {
+        int startcolumn, int buffersize) {
         ReInit(new java.io.InputStreamReader(dstream), startline, startcolumn,
-                4096);
+            4096);
     }
 
     public void ReInit(java.io.InputStream dstream) {
@@ -326,7 +326,7 @@ public class SimpleCharStream {
     }
 
     public void ReInit(java.io.InputStream dstream, int startline,
-            int startcolumn) {
+        int startcolumn) {
         ReInit(dstream, startline, startcolumn, 4096);
     }
 
@@ -335,7 +335,7 @@ public class SimpleCharStream {
             return new String(buffer, tokenBegin, bufpos - tokenBegin + 1);
         } else {
             return new String(buffer, tokenBegin, bufsize - tokenBegin)
-                + new String(buffer, 0, bufpos + 1);
+            + new String(buffer, 0, bufpos + 1);
         }
     }
 
@@ -346,7 +346,7 @@ public class SimpleCharStream {
             System.arraycopy(buffer, bufpos - len + 1, ret, 0, len);
         } else {
             System.arraycopy(buffer, bufsize - (len - bufpos - 1), ret, 0,
-                    len - bufpos - 1);
+                len - bufpos - 1);
             System.arraycopy(buffer, 0, ret, len - bufpos - 1, bufpos + 1);
         }
 
@@ -379,7 +379,7 @@ public class SimpleCharStream {
         int columnDiff = 0;
 
         while ((i < len)
-                && (bufline[j = start % bufsize] == bufline[k = ++start % bufsize])) {
+                        && (bufline[j = start % bufsize] == bufline[k = ++start % bufsize])) {
             bufline[j] = newLine;
             nextColDiff = (columnDiff + bufcolumn[k]) - bufcolumn[j];
             bufcolumn[j] = newCol + columnDiff;

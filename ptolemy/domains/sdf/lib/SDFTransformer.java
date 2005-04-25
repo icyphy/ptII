@@ -65,7 +65,7 @@ public class SDFTransformer extends TypedAtomicActor implements SequenceActor {
      *   actor with this name.
      */
     public SDFTransformer(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         input = new TypedIOPort(this, "input", true, false);

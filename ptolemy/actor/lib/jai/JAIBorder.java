@@ -86,7 +86,7 @@ public class JAIBorder extends Transformer {
      *   actor with this name.
      */
     public JAIBorder(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         leftPadding = new Parameter(this, "leftPadding", new IntToken(0));
@@ -140,7 +140,7 @@ public class JAIBorder extends Transformer {
      *  or if a contained method throws it.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == borderType) {
             String name = borderType.getExpression();
 
@@ -156,7 +156,7 @@ public class JAIBorder extends Transformer {
                 _borderType = _BORDER_ZERO;
             } else {
                 throw new IllegalActionException(this,
-                        "Unrecognized Border Name: " + name);
+                    "Unrecognized Border Name: " + name);
             }
         } else if (attribute == leftPadding) {
             _leftPadding = ((IntToken) leftPadding.getToken()).intValue();
@@ -202,22 +202,22 @@ public class JAIBorder extends Transformer {
 
         case _BORDER_COPY:
             parameters.add(BorderExtender.createInstance(
-                                   BorderExtender.BORDER_COPY));
+                    BorderExtender.BORDER_COPY));
             break;
 
         case _BORDER_REFLECT:
             parameters.add(BorderExtender.createInstance(
-                                   BorderExtender.BORDER_REFLECT));
+                    BorderExtender.BORDER_REFLECT));
             break;
 
         case _BORDER_WRAP:
             parameters.add(BorderExtender.createInstance(
-                                   BorderExtender.BORDER_WRAP));
+                    BorderExtender.BORDER_WRAP));
             break;
 
         case _BORDER_ZERO:
             parameters.add(BorderExtender.createInstance(
-                                   BorderExtender.BORDER_ZERO));
+                    BorderExtender.BORDER_ZERO));
             break;
 
         default:
@@ -238,7 +238,9 @@ public class JAIBorder extends Transformer {
     private int _borderType;
 
     /** An initial array that simply copies a three banded image. */
-    private DoubleToken[] _initialArray = { new DoubleToken(0) };
+    private DoubleToken[] _initialArray = {
+            new DoubleToken(0)
+        };
 
     /** The amount to pad on the four sides. */
     private int _bottomPadding;

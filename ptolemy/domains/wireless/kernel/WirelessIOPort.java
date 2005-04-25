@@ -110,7 +110,7 @@ public class WirelessIOPort extends TypedIOPort {
      *  of this port throws it.
      */
     public WirelessIOPort(Workspace workspace)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(workspace);
         outsideChannel = new StringParameter(this, "outsideChannel");
         outsideChannel.setExpression("");
@@ -137,7 +137,7 @@ public class WirelessIOPort extends TypedIOPort {
      *   a port already in the container.
      */
     public WirelessIOPort(ComponentEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         this(container, name, false, false);
     }
 
@@ -156,8 +156,8 @@ public class WirelessIOPort extends TypedIOPort {
      *   a port already in the container.
      */
     public WirelessIOPort(ComponentEntity container, String name,
-            boolean isInput, boolean isOutput)
-            throws IllegalActionException, NameDuplicationException {
+        boolean isInput, boolean isOutput)
+        throws IllegalActionException, NameDuplicationException {
         super(container, name, isInput, isOutput);
 
         outsideChannel = new StringParameter(this, "outsideChannel");
@@ -214,25 +214,25 @@ public class WirelessIOPort extends TypedIOPort {
      *   to this container.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == insideTransmitProperties) {
             Token value = insideTransmitProperties.getToken();
 
             if ((value != null) && !(value instanceof RecordToken)) {
                 throw new IllegalActionException(this,
-                        "Expected a record for insideTransmitProperties "
-                        + "but got: " + value);
+                    "Expected a record for insideTransmitProperties "
+                    + "but got: " + value);
             }
         } else if (attribute == outsideTransmitProperties) {
             Token value = outsideTransmitProperties.getToken();
 
             if ((value != null) && !(value instanceof RecordToken)) {
                 throw new IllegalActionException(this,
-                        "Expected a record for outsideTransmitProperties "
-                        + "but got: " + value);
+                    "Expected a record for outsideTransmitProperties "
+                    + "but got: " + value);
             }
         } else if ((attribute == insideChannel)
-                || (attribute == outsideChannel)) {
+                        || (attribute == outsideChannel)) {
             // Since the channel parameters affect connectivity, we should
             // treat changes to their values as changes to the topology.
             // To do that, we listen for changes and increment the version
@@ -257,11 +257,11 @@ public class WirelessIOPort extends TypedIOPort {
         if (channel != null) {
             if (_debugging) {
                 _debug("broadcast to wireless channel " + channel.getName()
-                        + ": " + token);
+                    + ": " + token);
             }
 
             channel.transmit(token, this,
-                    (RecordToken) outsideTransmitProperties.getToken());
+                (RecordToken) outsideTransmitProperties.getToken());
         } else {
             super.broadcast(token);
         }
@@ -278,20 +278,20 @@ public class WirelessIOPort extends TypedIOPort {
      *   be converted to the type of this port
      */
     public void broadcast(Token[] tokenArray, int vectorLength)
-            throws IllegalActionException, NoRoomException {
+        throws IllegalActionException, NoRoomException {
         WirelessChannel channel = getOutsideChannel();
 
         if (channel != null) {
             if (_debugging) {
                 _debug("broadcast array of tokens to wireless channel "
-                        + channel.getName());
+                    + channel.getName());
             }
 
             for (int i = 0; i < tokenArray.length; i++) {
                 Token token = tokenArray[i];
                 _checkType(token);
                 channel.transmit(token, this,
-                        (RecordToken) outsideTransmitProperties.getToken());
+                    (RecordToken) outsideTransmitProperties.getToken());
             }
         } else {
             super.broadcast(tokenArray, vectorLength);
@@ -313,7 +313,7 @@ public class WirelessIOPort extends TypedIOPort {
             }
 
             channel.transmit(null, this,
-                    (RecordToken) outsideTransmitProperties.getToken());
+                (RecordToken) outsideTransmitProperties.getToken());
         } else {
             super.broadcastClear();
         }
@@ -416,7 +416,7 @@ public class WirelessIOPort extends TypedIOPort {
 
             if (containersContainer instanceof CompositeEntity) {
                 ComponentEntity channel = ((CompositeEntity) containersContainer)
-                    .getEntity(channelName);
+                                .getEntity(channelName);
 
                 if (channel instanceof WirelessChannel) {
                     _outsideChannel = (WirelessChannel) channel;
@@ -448,7 +448,7 @@ public class WirelessIOPort extends TypedIOPort {
 
             for (int j = 0; j < localReceivers[channelIndex].length; j++) {
                 Token localToken = ((WirelessReceiver) localReceivers[channelIndex][j])
-                    .getProperties();
+                                .getProperties();
 
                 if (token == null) {
                     token = localToken;
@@ -480,7 +480,7 @@ public class WirelessIOPort extends TypedIOPort {
 
             for (int j = 0; j < localReceivers[channelIndex].length; j++) {
                 Token localToken = ((WirelessReceiver) localReceivers[channelIndex][j])
-                    .getProperties();
+                                .getProperties();
 
                 if (token == null) {
                     token = localToken;
@@ -577,13 +577,13 @@ public class WirelessIOPort extends TypedIOPort {
      *   is out of range.
      */
     public boolean hasRoomInside(int channelIndex)
-            throws IllegalActionException {
+        throws IllegalActionException {
         WirelessChannel channel = getInsideChannel();
 
         if (channel != null) {
             if (_debugging) {
                 _debug("hasRoomInside on channel " + channelIndex
-                        + " returns true.");
+                    + " returns true.");
             }
 
             return true;
@@ -703,18 +703,18 @@ public class WirelessIOPort extends TypedIOPort {
      *   This should not occur in the DE domain.
      */
     public void send(int channelIndex, Token token)
-            throws IllegalActionException, NoRoomException {
+        throws IllegalActionException, NoRoomException {
         WirelessChannel channel = getOutsideChannel();
 
         if (channel != null) {
             if (_debugging) {
                 _debug("send to wireless channel " + channel.getName() + ": "
-                        + token);
+                    + token);
             }
 
             _checkType(token);
             channel.transmit(token, this,
-                    (RecordToken) outsideTransmitProperties.getToken());
+                (RecordToken) outsideTransmitProperties.getToken());
         } else {
             super.send(channelIndex, token);
         }
@@ -735,20 +735,20 @@ public class WirelessIOPort extends TypedIOPort {
      *   argument.
      */
     public void send(int channelIndex, Token[] tokenArray, int vectorLength)
-            throws IllegalActionException, NoRoomException {
+        throws IllegalActionException, NoRoomException {
         WirelessChannel channel = getOutsideChannel();
 
         if (channel != null) {
             if (_debugging) {
                 _debug("broadcast array of tokens to wireless channel "
-                        + channel.getName());
+                    + channel.getName());
             }
 
             for (int i = 0; i < tokenArray.length; i++) {
                 Token token = tokenArray[i];
                 _checkType(token);
                 channel.transmit(token, this,
-                        (RecordToken) outsideTransmitProperties.getToken());
+                    (RecordToken) outsideTransmitProperties.getToken());
             }
         } else {
             super.send(channelIndex, tokenArray, vectorLength);
@@ -772,7 +772,7 @@ public class WirelessIOPort extends TypedIOPort {
             }
 
             channel.transmit(null, this,
-                    (RecordToken) outsideTransmitProperties.getToken());
+                (RecordToken) outsideTransmitProperties.getToken());
         } else {
             super.sendClear(channelIndex);
         }
@@ -795,7 +795,7 @@ public class WirelessIOPort extends TypedIOPort {
             }
 
             channel.transmit(null, this,
-                    (RecordToken) outsideTransmitProperties.getToken());
+                (RecordToken) outsideTransmitProperties.getToken());
         } else {
             super.sendClearInside(channelIndex);
         }
@@ -814,18 +814,18 @@ public class WirelessIOPort extends TypedIOPort {
      *   the destination port cannot be done.
      */
     public void sendInside(int channelIndex, Token token)
-            throws IllegalActionException, NoRoomException {
+        throws IllegalActionException, NoRoomException {
         WirelessChannel channel = getInsideChannel();
 
         if (channel != null) {
             if (_debugging) {
                 _debug("send inside to wireless channel " + channel.getName()
-                        + ": " + token);
+                    + ": " + token);
             }
 
             _checkType(token);
             channel.transmit(token, this,
-                    (RecordToken) insideTransmitProperties.getToken());
+                (RecordToken) insideTransmitProperties.getToken());
         } else {
             super.sendInside(channelIndex, token);
         }

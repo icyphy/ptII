@@ -25,10 +25,10 @@
 */
 package diva.gui;
 
+import diva.util.ModelParser;
+
 import com.microstar.xml.HandlerBase;
 import com.microstar.xml.XmlParser;
-
-import diva.util.ModelParser;
 
 import java.io.CharArrayReader;
 import java.io.Reader;
@@ -131,7 +131,7 @@ public class MultipageParser extends HandlerBase {
      * @see com.microstar.xml.XmlHandler#attribute
      */
     public void attribute(String name, String value, boolean isSpecified)
-            throws Exception {
+        throws Exception {
         _currentAttributes.put(name, value);
     }
 
@@ -142,9 +142,9 @@ public class MultipageParser extends HandlerBase {
      * the array.
      */
     public void charData(char[] chars, int offset, int length)
-            throws Exception {
+        throws Exception {
         Object model = _modelParser.parse(new CharArrayReader(chars, offset,
-                                                  length));
+                    length));
         _currentPage.setModel(model);
     }
 
@@ -212,7 +212,7 @@ public class MultipageParser extends HandlerBase {
      *
      */
     public void parse(Reader reader, MultipageModel multi)
-            throws java.lang.Exception {
+        throws java.lang.Exception {
         _multi = multi;
 
         // create the parser

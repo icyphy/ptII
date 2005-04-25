@@ -52,7 +52,7 @@ public class Utilities {
         // maximum double value, the following algorithm will
         // get overflow, which gives a wrong answer.
         double newValue = Math.round(value * Math.pow(10, precision)) / Math
-            .pow(10, precision);
+                        .pow(10, precision);
         return newValue;
     }
 }

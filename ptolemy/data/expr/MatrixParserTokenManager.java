@@ -27,8 +27,6 @@
 */
 package ptolemy.data.expr;
 
-
-
 public class MatrixParserTokenManager implements MatrixParserConstants {
     public static java.io.PrintStream debugStream = System.out;
 
@@ -115,7 +113,10 @@ public class MatrixParserTokenManager implements MatrixParserConstants {
     }
 
     static final long[] jjbitVec0 = {
-            0x0L, 0x0L, 0xffffffffffffffffL, 0xffffffffffffffffL
+            0x0L,
+            0x0L,
+            0xffffffffffffffffL,
+            0xffffffffffffffffL
         };
 
     static private final int jjMoveNfa_0(int startState, int curPos) {
@@ -465,7 +466,7 @@ MatchLoop:
             ++curPos;
 
             if ((i = jjnewStateCnt) == (startsAt = 23
-                        - (jjnewStateCnt = startsAt))) {
+                                - (jjnewStateCnt = startsAt))) {
                 return curPos;
             }
 
@@ -478,16 +479,53 @@ MatchLoop:
     }
 
     static final int[] jjnextStates = {
-            13, 14, 15, 8, 17, 18, 20, 21, 14, 15, 8, 4, 5, 9, 10,
+            13,
+            14,
+            15,
+            8,
+            17,
+            18,
+            20,
+            21,
+            14,
+            15,
+            8,
+            4,
+            5,
+            9,
+            10,
         };
     public static final String[] jjstrLiteralImages = {
-            "", null, null, null, null, null, null, null, null, null, null, null,
-            null, "\133", "\73", "\135", "\54",
+            "",
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            "\133",
+            "\73",
+            "\135",
+            "\54",
         };
-    public static final String[] lexStateNames = { "DEFAULT", };
-    static final long[] jjtoToken = { 0x1ee21L, };
-    static final long[] jjtoSkip = { 0x101eL, };
-    static final long[] jjtoSpecial = { 0x1000L, };
+    public static final String[] lexStateNames = {
+            "DEFAULT",
+        };
+    static final long[] jjtoToken = {
+            0x1ee21L,
+        };
+    static final long[] jjtoSkip = {
+            0x101eL,
+        };
+    static final long[] jjtoSpecial = {
+            0x1000L,
+        };
     static protected SimpleCharStream input_stream;
     static private final int[] jjrounds = new int[23];
     static private final int[] jjstateSet = new int[46];
@@ -579,7 +617,7 @@ EOFLoop:
                 input_stream.backup(0);
 
                 while ((curChar <= 32)
-                        && ((0x100002600L & (1L << curChar)) != 0L)) {
+                                && ((0x100002600L & (1L << curChar)) != 0L)) {
                     curChar = input_stream.BeginToken();
                 }
             } catch (java.io.IOException e1) {
@@ -596,13 +634,13 @@ EOFLoop:
                 }
 
                 if ((jjtoToken[jjmatchedKind >> 6]
-                        & (1L << (jjmatchedKind & 077))) != 0L) {
+                                & (1L << (jjmatchedKind & 077))) != 0L) {
                     matchedToken = jjFillToken();
                     matchedToken.specialToken = specialToken;
                     return matchedToken;
                 } else {
                     if ((jjtoSpecial[jjmatchedKind >> 6]
-                            & (1L << (jjmatchedKind & 077))) != 0L) {
+                                    & (1L << (jjmatchedKind & 077))) != 0L) {
                         matchedToken = jjFillToken();
 
                         if (specialToken == null) {

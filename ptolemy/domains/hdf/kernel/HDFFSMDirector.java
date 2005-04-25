@@ -92,7 +92,7 @@ public class HDFFSMDirector extends MultirateFSMDirector {
      *  CompositeActor and the name collides with an entity in the container.
      */
     public HDFFSMDirector(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -122,8 +122,8 @@ public class HDFFSMDirector extends MultirateFSMDirector {
         // NOTE: Paranoid coding.
         if ((actors == null) || (actors.length != 1)) {
             throw new IllegalActionException(this,
-                    "Current state is required to have exactly one refinement: "
-                    + currentState.getName());
+                "Current state is required to have exactly one refinement: "
+                + currentState.getName());
         }
 
         for (int i = 0; i < actors.length; ++i) {
@@ -133,6 +133,7 @@ public class HDFFSMDirector extends MultirateFSMDirector {
 
             if (actors[i].prefire()) {
                 actors[i].fire();
+
                 //_refinementPostfire = actors[i].postfire();
                 _refinementPostfire = actors[i].postfire();
             }
@@ -144,7 +145,7 @@ public class HDFFSMDirector extends MultirateFSMDirector {
             ChangeRequest request = new ChangeRequest(this,
                     "choose a transition") {
                     protected void _execute()
-                            throws KernelException, IllegalActionException {
+                        throws KernelException, IllegalActionException {
                         FSMActor controller = getController();
                         State currentState = controller.currentState();
                         chooseNonTransientTransition(currentState);
@@ -188,7 +189,6 @@ public class HDFFSMDirector extends MultirateFSMDirector {
         super.initialize();
     }
 
-
     /** Request a change of state transition to the manager.
      *  @return True if the postfire of the current state refinement
      *   returns true.
@@ -201,8 +201,7 @@ public class HDFFSMDirector extends MultirateFSMDirector {
         if (_sendRequest) {
             _sendRequest = false;
 
-            ChangeRequest request = new ChangeRequest(this,
-                    "make a transition") {
+            ChangeRequest request = new ChangeRequest(this, "make a transition") {
                     protected void _execute() throws KernelException {
                         _sendRequest = true;
                         makeStateTransition();
@@ -232,5 +231,4 @@ public class HDFFSMDirector extends MultirateFSMDirector {
      *  global iteration.
      */
     private boolean _sendRequest;
-
 }

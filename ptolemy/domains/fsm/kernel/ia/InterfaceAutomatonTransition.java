@@ -64,9 +64,9 @@ import ptolemy.kernel.util.StringAttribute;
    and internal transitions, the guard is set to true. Each of the output
    and internal transitions contain an Action. The expression of the Action
    is also set automatically. For output transition, the action is set to
-   &lt;outputPort&gt;=true, where &lt;outputPort&gt; is the output port 
-   corresponding to this transition; for internal transition, the action is set 
-   to &lt;parameter&gt;=true, where &lt;parameter&gt; is the parameter 
+   &lt;outputPort&gt;=true, where &lt;outputPort&gt; is the output port
+   corresponding to this transition; for internal transition, the action is set
+   to &lt;parameter&gt;=true, where &lt;parameter&gt; is the parameter
    corresponding to this transition.
 
    @author Yuhong Xiong, Xiaojun Liu and Edward A. Lee
@@ -91,7 +91,7 @@ public class InterfaceAutomatonTransition extends Transition {
      *   any relation already in the container.
      */
     public InterfaceAutomatonTransition(InterfaceAutomaton container,
-            String name) throws IllegalActionException, NameDuplicationException {
+        String name) throws IllegalActionException, NameDuplicationException {
         super(container, name);
         label = new StringAttribute(this, "label");
         outputActions.setVisibility(Settable.NONE);
@@ -124,7 +124,7 @@ public class InterfaceAutomatonTransition extends Transition {
      *   <i>label</i> and it does not ends with "?" or "!" or ";".
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         super.attributeChanged(attribute);
 
         if (attribute == label) {
@@ -150,10 +150,10 @@ public class InterfaceAutomatonTransition extends Transition {
                     } catch (NameDuplicationException exception) {
                         // should not happen
                         throw new InternalErrorException(
-                                "InterfaceAutomatonTransition."
-                                + "attributeChanged:\n"
-                                + "Cannot create Parameter for internal "
-                                + "transition:\n" + exception.getMessage());
+                            "InterfaceAutomatonTransition."
+                            + "attributeChanged:\n"
+                            + "Cannot create Parameter for internal "
+                            + "transition:\n" + exception.getMessage());
                     }
                 }
 
@@ -161,9 +161,9 @@ public class InterfaceAutomatonTransition extends Transition {
                 outputActions.setExpression(name + "=true");
             } else {
                 throw new IllegalActionException(
-                        "InterfaceAutomatonTransition.attributeChanged: "
-                        + "The argument " + label + " does not end with ? "
-                        + "or ! or ;");
+                    "InterfaceAutomatonTransition.attributeChanged: "
+                    + "The argument " + label + " does not end with ? "
+                    + "or ! or ;");
             }
         }
     }
@@ -197,8 +197,8 @@ public class InterfaceAutomatonTransition extends Transition {
             return _INTERNAL_TRANSITION;
         } else {
             throw new InternalErrorException(
-                    "InterfaceAutomatonTransition.getType: "
-                    + "The label does not end with ? or ! or ;");
+                "InterfaceAutomatonTransition.getType: "
+                + "The label does not end with ? or ! or ;");
         }
     }
 
@@ -216,11 +216,11 @@ public class InterfaceAutomatonTransition extends Transition {
      *   an relation with the name of this transition.
      */
     public void setContainer(CompositeEntity container)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         if (!(container instanceof InterfaceAutomaton) && (container != null)) {
             throw new IllegalActionException(container, this,
-                    "Transition can only be contained by instances of "
-                    + "InterfaceAutomaton.");
+                "Transition can only be contained by instances of "
+                + "InterfaceAutomaton.");
         }
 
         super.setContainer(container);
@@ -233,17 +233,20 @@ public class InterfaceAutomatonTransition extends Transition {
      */
     public void setTriggerExpression(String expression) {
         throw new UnsupportedOperationException(
-                "InterfaceAutomatonTransition.setTriggerExpression: "
-                + "The trigger expression is not used in InterfaceAutomaton, "
-                + "so this method should not be called.");
+            "InterfaceAutomatonTransition.setTriggerExpression: "
+            + "The trigger expression is not used in InterfaceAutomaton, "
+            + "so this method should not be called.");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
+
     /** The input transition type. */
     protected static final int _INPUT_TRANSITION = 0;
+
     /** The output transition type. */
     protected static final int _OUTPUT_TRANSITION = 1;
+
     /** The internal transition type. */
     protected static final int _INTERNAL_TRANSITION = 2;
 }

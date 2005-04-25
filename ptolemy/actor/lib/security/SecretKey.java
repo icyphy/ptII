@@ -87,7 +87,7 @@ public class SecretKey extends Source {
      *   actor with this name.
      */
     public SecretKey(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         algorithm = new StringParameter(this, "algorithm");
@@ -163,7 +163,7 @@ public class SecretKey extends Source {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == algorithm) {
             _updateSecretKeyNeeded = true;
             _algorithm = ((StringToken) algorithm.getToken()).stringValue();
@@ -234,7 +234,7 @@ public class SecretKey extends Source {
                 _secretKeyToken = new KeyToken(_secretKey);
             } catch (Throwable throwable) {
                 throw new IllegalActionException(this, throwable,
-                        "Failed to initialize Key.");
+                    "Failed to initialize Key.");
             }
 
             _updateSecretKeyNeeded = false;

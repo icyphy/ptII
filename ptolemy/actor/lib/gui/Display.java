@@ -79,7 +79,7 @@ import javax.swing.text.BadLocationException;
    <p>
    This actor has a <i>suppressBlankLines</i> parameter, whose default value
    is false. If this parameter is configured to be true, this actor does not
-   put a blank line in the display.  
+   put a blank line in the display.
    <p>
    Note that because of complexities in Swing, if you resize the display
    window, then, unlike the plotters, the new size will not be persistent.
@@ -107,7 +107,7 @@ public class Display extends Sink implements Placeable {
      *   actor with this name.
      */
     public Display(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // Set the type of the input port.
@@ -121,7 +121,7 @@ public class Display extends Sink implements Placeable {
         suppressBlankLines = new Parameter(this, "suppressBlankLines");
         suppressBlankLines.setTypeEquals(BaseType.BOOLEAN);
         suppressBlankLines.setToken(BooleanToken.FALSE);
-        
+
         title = new StringAttribute(this, "title");
         title.setExpression("");
 
@@ -129,18 +129,18 @@ public class Display extends Sink implements Placeable {
                 "_windowProperties");
 
         _attachText("_iconDescription",
-                "<svg>\n" + "<rect x=\"-20\" y=\"-15\" "
-                + "width=\"40\" height=\"30\" " + "style=\"fill:lightGrey\"/>\n"
-                + "<rect x=\"-15\" y=\"-10\" " + "width=\"30\" height=\"20\" "
-                + "style=\"fill:white\"/>\n"
-                + "<line x1=\"-13\" y1=\"-6\" x2=\"-4\" y2=\"-6\" "
-                + "style=\"stroke:grey\"/>\n"
-                + "<line x1=\"-13\" y1=\"-2\" x2=\"0\" y2=\"-2\" "
-                + "style=\"stroke:grey\"/>\n"
-                + "<line x1=\"-13\" y1=\"2\" x2=\"-8\" y2=\"2\" "
-                + "style=\"stroke:grey\"/>\n"
-                + "<line x1=\"-13\" y1=\"6\" x2=\"4\" y2=\"6\" "
-                + "style=\"stroke:grey\"/>\n" + "</svg>\n");
+            "<svg>\n" + "<rect x=\"-20\" y=\"-15\" "
+            + "width=\"40\" height=\"30\" " + "style=\"fill:lightGrey\"/>\n"
+            + "<rect x=\"-15\" y=\"-10\" " + "width=\"30\" height=\"20\" "
+            + "style=\"fill:white\"/>\n"
+            + "<line x1=\"-13\" y1=\"-6\" x2=\"-4\" y2=\"-6\" "
+            + "style=\"stroke:grey\"/>\n"
+            + "<line x1=\"-13\" y1=\"-2\" x2=\"0\" y2=\"-2\" "
+            + "style=\"stroke:grey\"/>\n"
+            + "<line x1=\"-13\" y1=\"2\" x2=\"-8\" y2=\"2\" "
+            + "style=\"stroke:grey\"/>\n"
+            + "<line x1=\"-13\" y1=\"6\" x2=\"4\" y2=\"6\" "
+            + "style=\"stroke:grey\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -156,8 +156,8 @@ public class Display extends Sink implements Placeable {
      */
     public Parameter rowsDisplayed;
 
-    /** The flag indicating whether this display actor suppress 
-     *  blank lines. The default value is false. 
+    /** The flag indicating whether this display actor suppress
+     *  blank lines. The default value is false.
      */
     public Parameter suppressBlankLines;
 
@@ -177,7 +177,7 @@ public class Display extends Sink implements Placeable {
      *   is <i>rowsDisplayed</i> and its value is not positive.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         // NOTE: Do not react to changes in _windowProperties.
         // Those properties are only used when originally opening a window.
         if (attribute == rowsDisplayed) {
@@ -185,7 +185,7 @@ public class Display extends Sink implements Placeable {
 
             if (numRows <= 0) {
                 throw new IllegalActionException(this,
-                        "rowsDisplayed: requires a positive value.");
+                    "rowsDisplayed: requires a positive value.");
             }
 
             if (numRows != _previousNumRows) {
@@ -205,7 +205,7 @@ public class Display extends Sink implements Placeable {
 
             if (numColumns <= 0) {
                 throw new IllegalActionException(this,
-                        "columnsDisplayed: requires a positive value.");
+                    "columnsDisplayed: requires a positive value.");
             }
 
             if (numColumns != _previousNumColumns) {
@@ -220,8 +220,8 @@ public class Display extends Sink implements Placeable {
                 }
             }
         } else if (attribute == suppressBlankLines) {
-            _suppressBlankLines = 
-                ((BooleanToken) suppressBlankLines.getToken()).booleanValue();
+            _suppressBlankLines = ((BooleanToken) suppressBlankLines.getToken())
+                            .booleanValue();
         }
     }
 
@@ -265,8 +265,8 @@ public class Display extends Sink implements Placeable {
 
             if (containerEffigy == null) {
                 throw new IllegalActionException(this,
-                        "Cannot find effigy for top level: "
-                        + toplevel().getFullName());
+                    "Cannot find effigy for top level: "
+                    + toplevel().getFullName());
             }
 
             try {
@@ -283,7 +283,7 @@ public class Display extends Sink implements Placeable {
                 _frame = tableau.frame;
             } catch (Exception ex) {
                 throw new IllegalActionException(this, null, ex,
-                        "Error creating effigy and tableau");
+                    "Error creating effigy and tableau");
             }
 
             textArea = _frame.text;
@@ -391,7 +391,7 @@ public class Display extends Sink implements Placeable {
         int width = input.getWidth();
 
         boolean currentInputIsBlankLine = true;
-        
+
         for (int i = 0; i < width; i++) {
             if (input.hasToken(i)) {
                 Token token = input.get(i);
@@ -405,10 +405,10 @@ public class Display extends Sink implements Placeable {
 
                 // If the value is a pure string, strip the quotation marks.
                 if ((value.length() > 1) && value.startsWith("\"")
-                        && value.endsWith("\"")) {
+                                && value.endsWith("\"")) {
                     value = value.substring(1, value.length() - 1);
                 }
-                
+
                 // If the value is not an empty string, set the 
                 // currentInputIsBlankLine to false.
                 // Note that if there are multiple input ports, and if any of 
@@ -433,7 +433,7 @@ public class Display extends Sink implements Placeable {
                 // is already where want it).
                 try {
                     int lineOffset = textArea.getLineStartOffset(textArea
-                            .getLineCount() - 1);
+                                        .getLineCount() - 1);
                     textArea.setCaretPosition(lineOffset);
                 } catch (BadLocationException ex) {
                     // Ignore ... worst case is that the scrollbar
@@ -444,8 +444,8 @@ public class Display extends Sink implements Placeable {
 
         // If the current input is not a blank line, or the supressBlankLines 
         // parameter is configured to false, append a newline character.
-        if (textArea != null && 
-                !(_suppressBlankLines && currentInputIsBlankLine)) {
+        if ((textArea != null)
+                        && !(_suppressBlankLines && currentInputIsBlankLine)) {
             textArea.append("\n");
         }
 
@@ -469,7 +469,7 @@ public class Display extends Sink implements Placeable {
      *  @exception NameDuplicationException If the base class throws it.
      */
     public void setContainer(CompositeEntity container)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         Nameable previousContainer = getContainer();
         super.setContainer(container);
 
@@ -489,7 +489,7 @@ public class Display extends Sink implements Placeable {
      *  @exception IOException If an I/O error occurs.
      */
     protected void _exportMoMLContents(Writer output, int depth)
-            throws IOException {
+        throws IOException {
         // Make sure that the current position of the frame, if any,
         // is up to date.
         if (_frame != null) {
@@ -539,7 +539,7 @@ public class Display extends Sink implements Placeable {
 
     // The flag indicating whether the blank lines will be suppressed.
     private boolean _suppressBlankLines = false;
-    
+
     // A specification for the window properties of the frame.
     private WindowPropertiesAttribute _windowProperties;
 
@@ -588,7 +588,7 @@ public class Display extends Sink implements Placeable {
          *   attribute already in the container.
          */
         public DisplayWindowTableau(TextEffigy container, String name)
-                throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
             super(container, name);
 
             String title = Display.this.title.getExpression();

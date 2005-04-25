@@ -164,7 +164,7 @@ public class SRDirector extends StaticSchedulingDirector {
      *   attribute in the container.
      */
     public SRDirector(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _init();
     }
@@ -201,7 +201,7 @@ public class SRDirector extends StaticSchedulingDirector {
      *   specified is not valid.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == scheduler) {
             _debug(getFullName() + " updating scheduler...");
 
@@ -225,7 +225,7 @@ public class SRDirector extends StaticSchedulingDirector {
                 _updateScheduler = true;
             } else {
                 throw new IllegalActionException(this,
-                        "Unrecognized SR scheduler: " + className);
+                    "Unrecognized SR scheduler: " + className);
             }
         } else {
             super.attributeChanged(attribute);
@@ -286,10 +286,10 @@ public class SRDirector extends StaticSchedulingDirector {
 
             iterationCount++;
         } while ( //usingRandomizedScheduler &&
-                !_hasIterationConverged() && !_stopRequested);
+                    !_hasIterationConverged() && !_stopRequested);
 
         _debug("It takes " + iterationCount
-                + " iterations to find a fixed point.");
+            + " iterations to find a fixed point.");
         _roughCost += (iterationCount * numberOfActors);
     }
 
@@ -340,18 +340,17 @@ public class SRDirector extends StaticSchedulingDirector {
         // _isEmbedded = true;
         // Roda o SR embedded por um instante
         // iterations.setToken(new IntToken(1));
-
         try {
-            Class sdfDirector =
-                Class.forName("ptolemy.domains.sdf.kernel.SDFDirector");
+            Class sdfDirector = Class.forName(
+                    "ptolemy.domains.sdf.kernel.SDFDirector");
+
             if (sdfDirector.isInstance(fatherDirector)) {
                 Iterator outputPorts = actor.outputPortList().iterator();
 
                 while (outputPorts.hasNext()) {
                     IOPort port = (IOPort) outputPorts.next();
 
-                    int initialToken =
-                        DFUtilities.getTokenInitProduction(port);
+                    int initialToken = DFUtilities.getTokenInitProduction(port);
 
                     if (initialToken > 0) {
                         Parameter parameter = (Parameter) port.getAttribute(
@@ -362,22 +361,22 @@ public class SRDirector extends StaticSchedulingDirector {
 
                             if (!(token instanceof ArrayToken)) {
                                 throw new IllegalActionException(port,
-                                        "initialTokens was " + token
-                                        + " which is not an array token.");
+                                    "initialTokens was " + token
+                                    + " which is not an array token.");
                             }
 
                             ArrayToken initValues = (ArrayToken) token;
 
                             if (initValues.length() != initialToken) {
                                 throw new IllegalActionException(port,
-                                        "tokenInitProduction '" + initialToken
-                                        + "' does not match "
-                                        + "number of initialTokens '"
-                                        + initValues.length() + "'");
+                                    "tokenInitProduction '" + initialToken
+                                    + "' does not match "
+                                    + "number of initialTokens '"
+                                    + initValues.length() + "'");
                             }
 
                             port.broadcast(initValues.arrayValue(),
-                                    initValues.length());
+                                initValues.length());
                         }
                     }
                 }
@@ -441,12 +440,12 @@ public class SRDirector extends StaticSchedulingDirector {
         }
 
         _debug("SRDirector: Instant", String.valueOf(_currentIteration),
-                "is complete.");
+            "is complete.");
 
         _currentIteration++;
 
         _debug("So far, the rough cost is " + _roughCost
-                + "; and the real cost is " + _realCost + ".");
+            + "; and the real cost is " + _realCost + ".");
 
         // All receivers must be reset before any actors are executed in the
         // next iteration.  Since some domains (including SR) might fire one
@@ -459,7 +458,7 @@ public class SRDirector extends StaticSchedulingDirector {
         int numberOfIterations = getIterations();
 
         if ((numberOfIterations > 0)
-                && (_currentIteration >= numberOfIterations)) {
+                        && (_currentIteration >= numberOfIterations)) {
             _currentIteration = 0;
             return false;
         }
@@ -560,7 +559,7 @@ public class SRDirector extends StaticSchedulingDirector {
     /** Return true if all the inputs of the specified actor are known.
      */
     private boolean _areAllInputsKnown(Actor actor)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (_cachedAllInputsKnown == null) {
             _cachedAllInputsKnown = new HashSet();
         }
@@ -586,7 +585,7 @@ public class SRDirector extends StaticSchedulingDirector {
     /** Return true if all the outputs of the specified actor are known.
      */
     private boolean _areAllOutputsKnown(Actor actor)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (_cachedAllOutputsKnown == null) {
             _cachedAllOutputsKnown = new HashSet();
         }
@@ -700,7 +699,7 @@ public class SRDirector extends StaticSchedulingDirector {
 
         if (currentScheduler == null) {
             throw new IllegalActionException(this,
-                    "SRDirector has no associated scheduler.");
+                "SRDirector has no associated scheduler.");
         }
 
         return currentScheduler.getSchedule();
@@ -721,13 +720,13 @@ public class SRDirector extends StaticSchedulingDirector {
 
         if (_debugging) {
             _debug("  previousNumberOfActorsAllowedToFire is",
-                    String.valueOf(previousNumberOfActorsAllowedToFire));
+                String.valueOf(previousNumberOfActorsAllowedToFire));
             _debug("  currentNumberOfActorsAllowedToFire is",
-                    String.valueOf(currentNumberOfActorsAllowedToFire));
+                String.valueOf(currentNumberOfActorsAllowedToFire));
             _debug("  previousNumberOfKnownReceivers is",
-                    String.valueOf(previousNumberOfKnownReceivers));
+                String.valueOf(previousNumberOfKnownReceivers));
             _debug("  currentNumberOfKnownReceivers is",
-                    String.valueOf(currentNumberOfKnownReceivers));
+                String.valueOf(currentNumberOfKnownReceivers));
         }
 
         // Update the previous values for use the next time this method
@@ -770,18 +769,18 @@ public class SRDirector extends StaticSchedulingDirector {
         try {
             scheduler = new StringParameter(this, "scheduler");
             scheduler.setExpression(
-                    "ptolemy.domains.sr.kernel.SROptimizedScheduler");
+                "ptolemy.domains.sr.kernel.SROptimizedScheduler");
             scheduler.addChoice(
-                    "ptolemy.domains.sr.kernel.SROptimizedScheduler");
+                "ptolemy.domains.sr.kernel.SROptimizedScheduler");
             scheduler.addChoice(
-                    "ptolemy.domains.sr.kernel.SRRandomizedScheduler");
+                "ptolemy.domains.sr.kernel.SRRandomizedScheduler");
             attributeChanged(scheduler);
 
             iterations = new Parameter(this, "iterations", new IntToken(0));
             iterations.setTypeEquals(BaseType.INT);
         } catch (KernelException ex) {
             throw new InternalErrorException("Cannot initialize SRDirector: "
-                    + ex.getMessage());
+                + ex.getMessage());
         }
     }
 
@@ -814,7 +813,7 @@ public class SRDirector extends StaticSchedulingDirector {
      *       created.
      */
     private Scheduler _instantiateScheduler(String className)
-            throws IllegalActionException {
+        throws IllegalActionException {
         Scheduler newScheduler;
         _debug("instantiating scheduler..." + className);
 
@@ -825,7 +824,7 @@ public class SRDirector extends StaticSchedulingDirector {
 
             Class schedulerClass = Class.forName(className);
             Constructor schedulerConstructor = schedulerClass
-                .getDeclaredConstructor(constructorParameters);
+                            .getDeclaredConstructor(constructorParameters);
 
             Object[] constructorArguments = new Object[2];
             constructorArguments[0] = this;
@@ -834,21 +833,21 @@ public class SRDirector extends StaticSchedulingDirector {
             newScheduler = (Scheduler) schedulerConstructor.newInstance(constructorArguments);
         } catch (ClassNotFoundException e) {
             throw new IllegalActionException(this,
-                    "Scheduler: " + className + " not found.");
+                "Scheduler: " + className + " not found.");
         } catch (InstantiationException e) {
             throw new IllegalActionException(this,
-                    "Scheduler: " + className + " instantiation failed.");
+                "Scheduler: " + className + " instantiation failed.");
         } catch (IllegalAccessException e) {
             throw new IllegalActionException(this,
-                    "Scheduler: " + className + " not accessible.");
+                "Scheduler: " + className + " not accessible.");
         } catch (NoSuchMethodException e) {
             throw new IllegalActionException(this,
-                    "Scheduler: " + className + " has no constructor that takes a "
-                    + "Director and a String.");
+                "Scheduler: " + className + " has no constructor that takes a "
+                + "Director and a String.");
         } catch (InvocationTargetException e) {
             throw new IllegalActionException(this,
-                    "Scheduler: " + className + " constructor threw exception: "
-                    + e.getMessage());
+                "Scheduler: " + className + " constructor threw exception: "
+                + e.getMessage());
         }
 
         return newScheduler;
@@ -858,7 +857,7 @@ public class SRDirector extends StaticSchedulingDirector {
      *  has finished firing if it is strict and has defined all of its outputs.
      */
     private boolean _isFinishedFiring(Actor actor)
-            throws IllegalActionException {
+        throws IllegalActionException {
         // Nonstrict actors should fire in every phase in case more inputs
         // become available (the inputs might be, for example, cached and
         // used in a subsequent iteration).
@@ -907,14 +906,14 @@ public class SRDirector extends StaticSchedulingDirector {
      */
     private boolean _isFiringAllowed(Actor actor) {
         return (!(_actorsAllowedToFire == null)
-                && _actorsAllowedToFire.contains(actor));
+                    && _actorsAllowedToFire.contains(actor));
     }
 
     /** Return true if the specified actor is allowed to iterate.
      */
     private boolean _isIterationAllowed(Actor actor) {
         return ((_actorsNotAllowedToIterate == null)
-                || !_actorsNotAllowedToIterate.contains(actor));
+                    || !_actorsNotAllowedToIterate.contains(actor));
     }
 
     /** Return true if the specified actor is a nonstrict actor.
@@ -999,13 +998,13 @@ public class SRDirector extends StaticSchedulingDirector {
      *  specified actor if the actor is strict.
      */
     private void _sendClearToAllUnknownOutputsOf(Actor actor)
-            throws IllegalActionException {
+        throws IllegalActionException {
         // Nonstrict actors may intend to output undefined values.
         if ((!_isNonStrict(actor)) && (!_isFinishedFiring(actor))) {
             // No need to do anything if this actor has defined all of its
             // outputs.
             _debug("  SRDirector is calling sendClear()",
-                    "on the output ports of", _getNameOf(actor));
+                "on the output ports of", _getNameOf(actor));
 
             Iterator outputPorts = actor.outputPortList().iterator();
 
@@ -1024,7 +1023,7 @@ public class SRDirector extends StaticSchedulingDirector {
     /** Create a new scheduler, and set it as the scheduler for the director.
      */
     private void _setNewScheduler(String className)
-            throws IllegalActionException {
+        throws IllegalActionException {
         try {
             Scheduler oldScheduler = getScheduler();
 
@@ -1036,7 +1035,7 @@ public class SRDirector extends StaticSchedulingDirector {
             setScheduler(newScheduler);
         } catch (NameDuplicationException ex) {
             throw new IllegalActionException(this,
-                    "SRDirector cannot" + " set scheduler to " + className + ".");
+                "SRDirector cannot" + " set scheduler to " + className + ".");
         }
     }
 

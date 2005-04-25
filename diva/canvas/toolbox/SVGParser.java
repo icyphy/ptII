@@ -69,10 +69,20 @@ public class SVGParser {
      */
     public static String[] colorNames() {
         String[] result = {
-            "black", "blue", "cyan", "darkgray", "gray", "green",
-            "lightgray", "magenta", "orange", "pink", "red", "white",
-            "yellow"
-        };
+                "black",
+                "blue",
+                "cyan",
+                "darkgray",
+                "gray",
+                "green",
+                "lightgray",
+                "magenta",
+                "orange",
+                "pink",
+                "red",
+                "white",
+                "yellow"
+            };
         return result;
     }
 
@@ -85,7 +95,7 @@ public class SVGParser {
      * </ul>
      */
     public static PaintedObject createPaintedObject(String type,
-            String attributes, String content) {
+        String attributes, String content) {
         Map hm = new HashMap();
         hashAttributes(attributes, hm);
         return createPaintedObject(type, hm, content);
@@ -99,7 +109,7 @@ public class SVGParser {
      *
      */
     public static PaintedObject createPaintedObject(String type,
-            Map attributes, String content) {
+        Map attributes, String content) {
         if (type.equals("rect")) {
             double x;
             double y;
@@ -111,7 +121,7 @@ public class SVGParser {
             height = _getDouble(attributes, "height");
 
             PaintedShape ps = new PaintedShape(new Rectangle2D.Double(x, y,
-                                                       width, height));
+                        width, height));
             processPaintedShapeAttributes(ps, attributes);
             return ps;
         } else if (type.equals("circle")) {
@@ -123,7 +133,7 @@ public class SVGParser {
             r = _getDouble(attributes, "r");
 
             PaintedShape ps = new PaintedShape(new Ellipse2D.Double(cx - r,
-                                                       cy - r, 2 * r, 2 * r));
+                        cy - r, 2 * r, 2 * r));
             processPaintedShapeAttributes(ps, attributes);
             return ps;
         } else if (type.equals("ellipse")) {
@@ -137,7 +147,7 @@ public class SVGParser {
             ry = _getDouble(attributes, "ry");
 
             PaintedShape ps = new PaintedShape(new Ellipse2D.Double(cx - rx,
-                                                       cy - ry, 2 * rx, 2 * ry));
+                        cy - ry, 2 * rx, 2 * ry));
             processPaintedShapeAttributes(ps, attributes);
             return ps;
         } else if (type.equals("line")) {
@@ -215,7 +225,7 @@ public class SVGParser {
                                     "diva.canvas.toolbox.SVGParser");
                         } catch (ClassNotFoundException ex) {
                             throw new RuntimeException("Could not find "
-                                    + "diva.canvas.toolbox.SVGParser");
+                                + "diva.canvas.toolbox.SVGParser");
                         }
                     }
 
@@ -412,7 +422,7 @@ public class SVGParser {
     /** Set the attributes of a PaintedShape from a hash-table
      */
     private static void processPaintedShapeAttributes(PaintedShape ps,
-            Map attributes) {
+        Map attributes) {
         String style = (String) attributes.get("style");
 
         if (style != null) {
@@ -438,7 +448,7 @@ public class SVGParser {
     /** Set the attributes of a PaintedPath from a hash-table
      */
     private static void processPaintedPathAttributes(PaintedPath pp,
-            Map attributes) {
+        Map attributes) {
         String style = (String) attributes.get("style");
 
         if (style != null) {
@@ -462,7 +472,7 @@ public class SVGParser {
     /** Set the attributes of a PaintedString from a hash-table
      */
     private static void processPaintedStringAttributes(PaintedString pp,
-            Map attributes) {
+        Map attributes) {
         String style = (String) attributes.get("style");
 
         if (style != null) {
@@ -491,7 +501,7 @@ public class SVGParser {
 
         if (!name.equals("svg")) {
             throw new IllegalArgumentException("Input XML has a root"
-                    + "name which is '" + name + "' instead of 'svg':" + root);
+                + "name which is '" + name + "' instead of 'svg':" + root);
         }
 
         Iterator children = root.elements();

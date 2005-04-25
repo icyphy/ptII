@@ -85,8 +85,8 @@ public class NativeMethodGenerator {
     public static void generateStub(SootMethod method) {
         if (!method.isNative()) {
             System.err.println(
-                    "NativeMethodGenerator.generateStub(SootMethod):"
-                    + "\n\tWARNING: " + method.toString() + " is not native.\n");
+                "NativeMethodGenerator.generateStub(SootMethod):"
+                + "\n\tWARNING: " + method.toString() + " is not native.\n");
         }
 
         // Leading Comment.
@@ -100,9 +100,9 @@ public class NativeMethodGenerator {
 
         // Add a #include if the method body exists.
         if (FileHandler.exists(Options.v().get("runtimeDir")
-                    + "/native_bodies/" + fileContainingCodeFor(method))) {
+                            + "/native_bodies/" + fileContainingCodeFor(method))) {
             code.append(_indent(1) + "#include \"native_bodies/"
-                    + fileContainingCodeFor(method) + "\"\n");
+                + fileContainingCodeFor(method) + "\"\n");
         }
         // Otherwise declare and return a dummy variable of the appropriate
         // type if the method is not void.
@@ -187,7 +187,7 @@ public class NativeMethodGenerator {
         // method belongs to, if the method is non-static.
         if (!method.isStatic()) {
             code.append(CNames.instanceNameOf(method.getDeclaringClass())
-                    + " instance");
+                + " instance");
 
             // Put a comma if there are more parameters.
             if (numParameters > 0) {

@@ -66,7 +66,7 @@ public class JavaToC {
      *  @param className The name of the class to translate.
      */
     public static void convert(String classPath, String className)
-            throws IOException {
+        throws IOException {
         boolean generateSingleClass = Options.v().get("compileMode").equals("singleClass");
         boolean verbose = Options.v().getBoolean("verbose");
 
@@ -101,7 +101,7 @@ public class JavaToC {
         // Generate the "interface header" file.
         String code = sGenerator.generate(sootClass);
         FileHandler.write(CNames.sanitize(className)
-                + StubFileGenerator.stubFileNameSuffix(), code);
+            + StubFileGenerator.stubFileNameSuffix(), code);
 
         // Generate the .h file.
         code = hGenerator.generate(sootClass);
@@ -114,7 +114,7 @@ public class JavaToC {
         if (!generateSingleClass) {
             // Generate other required files.
             RequiredFileGenerator.generateTransitiveClosureOf(classPath,
-                    className);
+                className);
 
             // Generate the makefile.
             MakeFileGenerator.generateMakeFile(classPath, className);
@@ -191,13 +191,13 @@ public class JavaToC {
      */
     public static void showHelp() {
         System.out.println("USAGE: java "
-                + " javatoc classPath [flags] [value] [flag] [value] "
-                + "... className"
-                + " [flag][value] ... [flag] [value] [className2]...\n");
+            + " javatoc classPath [flags] [value] [flag] [value] "
+            + "... className"
+            + " [flag][value] ... [flag] [value] [className2]...\n");
         System.out.println("Command-line flags and their possible values\n"
-                + "verbose (true/false)\n"
-                + "compileMode (singleClass/headersOnly/full) \n"
-                + "lib (path to library directory).");
+            + "verbose (true/false)\n"
+            + "compileMode (singleClass/headersOnly/full) \n"
+            + "lib (path to library directory).");
 
         System.out.println("help flags        : [-h] to see this message");
         System.out.println("\nLater flags override earlier ones.");

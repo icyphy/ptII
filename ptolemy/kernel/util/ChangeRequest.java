@@ -124,8 +124,8 @@ public abstract class ChangeRequest {
     public final synchronized void execute() {
         if (!_pending) {
             throw new InternalErrorException(
-                    "Attempted to execute a change request "
-                    + "that had already been executed.");
+                "Attempted to execute a change request "
+                + "that had already been executed.");
         }
 
         _exception = null;
@@ -175,7 +175,7 @@ public abstract class ChangeRequest {
                     } else {
                         needToReport = false;
                         ((ChangeListener) listener).changeFailed(this,
-                                _exception);
+                            _exception);
                     }
                 }
             }
@@ -193,8 +193,8 @@ public abstract class ChangeRequest {
                 }
 
                 throw new InternalErrorException(object, _exception,
-                        "ChangeRequest failed (NOTE: there is no "
-                        + "ChangeListener):\n" + _description);
+                    "ChangeRequest failed (NOTE: there is no "
+                    + "ChangeListener):\n" + _description);
             }
         }
 
@@ -368,7 +368,7 @@ public abstract class ChangeRequest {
      *   throws it.
      */
     public final synchronized void waitForCompletion()
-            throws Exception {
+        throws Exception {
         while (_pending) {
             wait();
         }

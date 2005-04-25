@@ -158,7 +158,7 @@ public class Configuration extends CompositeEntity {
 
             if (model != null) {
                 Iterator factories = model.attributeList(TableauFactory.class)
-                    .iterator();
+                                                      .iterator();
 
                 // If there are more than one of these, use the first
                 // one that agrees to open the model.
@@ -238,16 +238,16 @@ public class Configuration extends CompositeEntity {
 
                         if (toRead != null) {
                             return openModel(null, toRead,
-                                    toRead.toExternalForm());
+                                toRead.toExternalForm());
                         } else {
                             MessageHandler.error(
-                                    "Cannot find a tableau or the source code for "
-                                    + object.getFullName());
+                                "Cannot find a tableau or the source code for "
+                                + object.getFullName());
                         }
                     } catch (Exception exception) {
                         MessageHandler.error(
-                                "Failed to open the source code for "
-                                + object.getFullName(), exception);
+                            "Failed to open the source code for "
+                            + object.getFullName(), exception);
                     }
                 }
 
@@ -255,7 +255,7 @@ public class Configuration extends CompositeEntity {
                 // because removing the effigy may result in
                 // the application exiting.
                 MessageHandler.error("Failed to open tableau for "
-                        + effigy.identifier.getExpression(), ex);
+                    + effigy.identifier.getExpression(), ex);
             }
         }
 
@@ -328,7 +328,7 @@ public class Configuration extends CompositeEntity {
      *  @exception Exception If the URL cannot be read.
      */
     public Tableau openModel(URL base, URL in, String identifier)
-            throws Exception {
+        throws Exception {
         return openModel(base, in, identifier, null);
     }
 
@@ -347,7 +347,7 @@ public class Configuration extends CompositeEntity {
      *  @exception Exception If the URL cannot be read.
      */
     public Tableau openModel(URL base, URL in, String identifier,
-            EffigyFactory factory) throws Exception {
+        EffigyFactory factory) throws Exception {
         ModelDirectory directory = (ModelDirectory) getEntity(_DIRECTORY_NAME);
 
         if (directory == null) {
@@ -366,15 +366,15 @@ public class Configuration extends CompositeEntity {
 
             if (factory == null) {
                 throw new InternalErrorException(
-                        "No effigy factories in the configuration!");
+                    "No effigy factories in the configuration!");
             }
 
             effigy = factory.createEffigy(directory, base, in);
 
             if (effigy == null) {
                 MessageHandler.error(
-                        "Unsupported file type or connection not available: "
-                        + in.toExternalForm());
+                    "Unsupported file type or connection not available: "
+                    + in.toExternalForm());
                 return null;
             }
 
@@ -431,7 +431,7 @@ public class Configuration extends CompositeEntity {
      *   should not be thrown).
      */
     public Tableau openModel(NamedObj entity)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         return openModel(entity, null);
     }
 
@@ -453,7 +453,7 @@ public class Configuration extends CompositeEntity {
      *   should not be thrown).
      */
     public Tableau openModel(NamedObj entity, CompositeEntity container)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         // If the entity defers its MoML definition to another,
         // then open that other, unless this is a class extending another,
         // and also unless this is an object that contains a TableauFactory.
@@ -466,7 +466,7 @@ public class Configuration extends CompositeEntity {
 
         if (entity instanceof InstantiableNamedObj) {
             deferredTo = (InstantiableNamedObj) ((InstantiableNamedObj) entity)
-                .getParent();
+                            .getParent();
             isClass = ((InstantiableNamedObj) entity).isClassDefinition();
         }
 
@@ -487,11 +487,11 @@ public class Configuration extends CompositeEntity {
      *  @exception IllegalActionException If the argument is not null.
      */
     public void setContainer(InstantiableNamedObj container)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (container != null) {
             throw new IllegalActionException(this,
-                    "Configuration can only be at the top level "
-                    + "of a hierarchy.");
+                "Configuration can only be at the top level "
+                + "of a hierarchy.");
         }
     }
 
@@ -574,10 +574,10 @@ public class Configuration extends CompositeEntity {
     // Recursively search the specified composite for an instance of
     // PtolemyEffigy that matches the specified model.
     private PtolemyEffigy _findEffigyForModel(CompositeEntity composite,
-            NamedObj model) {
+        NamedObj model) {
         if (composite != null) {
             Iterator effigies = composite.entityList(PtolemyEffigy.class)
-                .iterator();
+                                                     .iterator();
 
             while (effigies.hasNext()) {
                 PtolemyEffigy effigy = (PtolemyEffigy) effigies.next();
@@ -610,7 +610,7 @@ public class Configuration extends CompositeEntity {
      *   should not be thrown).
      */
     private Tableau _openModel(NamedObj entity, CompositeEntity container)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         // Search the model directory for an effigy that already
         // refers to this model.
         PtolemyEffigy effigy = getEffigy(entity);
@@ -640,7 +640,7 @@ public class Configuration extends CompositeEntity {
                 // the value might not get set.
                 if (uri == null) {
                     effigy.identifier.setExpression(_effigyIdentifier(effigy,
-                                                            entity));
+                            entity));
                 } else {
                     effigy.identifier.setExpression(uri.toString());
                 }

@@ -11,7 +11,7 @@ abstract public class CorbaUnknownPortExceptionHelper {
     private static String _id = "IDL:util/CorbaUnknownPortException:1.0";
 
     public static void insert(org.omg.CORBA.Any a,
-            ptolemy.domains.ct.demo.Corba.util.CorbaUnknownPortException that) {
+        ptolemy.domains.ct.demo.Corba.util.CorbaUnknownPortException that) {
         org.omg.CORBA.portable.OutputStream out = a.create_output_stream();
         a.type(type());
         write(out, that);
@@ -19,7 +19,7 @@ abstract public class CorbaUnknownPortExceptionHelper {
     }
 
     public static ptolemy.domains.ct.demo.Corba.util.CorbaUnknownPortException extract(
-            org.omg.CORBA.Any a) {
+        org.omg.CORBA.Any a) {
         return read(a.create_input_stream());
     }
 
@@ -45,7 +45,8 @@ abstract public class CorbaUnknownPortExceptionHelper {
                     _members0[1] = new org.omg.CORBA.StructMember("message",
                             _tcOf_members0, null);
                     __typeCode = org.omg.CORBA.ORB.init().create_struct_tc(ptolemy.domains.ct.demo.Corba.util.CorbaUnknownPortExceptionHelper
-                            .id(), "CorbaUnknownPortException", _members0);
+                                        .id(), "CorbaUnknownPortException",
+                            _members0);
                     __active = false;
                 }
             }
@@ -59,7 +60,7 @@ abstract public class CorbaUnknownPortExceptionHelper {
     }
 
     public static ptolemy.domains.ct.demo.Corba.util.CorbaUnknownPortException read(
-            org.omg.CORBA.portable.InputStream istream) {
+        org.omg.CORBA.portable.InputStream istream) {
         ptolemy.domains.ct.demo.Corba.util.CorbaUnknownPortException value = new ptolemy.domains.ct.demo.Corba.util.CorbaUnknownPortException();
 
         // read and discard the repository ID
@@ -70,7 +71,7 @@ abstract public class CorbaUnknownPortExceptionHelper {
     }
 
     public static void write(org.omg.CORBA.portable.OutputStream ostream,
-            ptolemy.domains.ct.demo.Corba.util.CorbaUnknownPortException value) {
+        ptolemy.domains.ct.demo.Corba.util.CorbaUnknownPortException value) {
         // write the repository ID
         ostream.write_string(id());
         ostream.write_string(value.portName);

@@ -92,7 +92,7 @@ public class CTRateLimiter extends Transformer {
      *   actor with this name.
      */
     public CTRateLimiter(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         input.setTypeEquals(BaseType.DOUBLE);
         output.setTypeEquals(BaseType.DOUBLE);
@@ -147,21 +147,21 @@ public class CTRateLimiter extends Transformer {
                 output.send(0, _newToken);
             } else {
                 double valueDifference = ((DoubleToken) _newToken.subtract(_lastToken))
-                    .doubleValue();
+                                .doubleValue();
                 double timeDifference = currentTime.subtract(_lastTime)
-                    .getDoubleValue();
+                                                               .getDoubleValue();
                 double rate = valueDifference / timeDifference;
                 double risingRate = ((DoubleToken) risingSlewRate.getToken())
-                    .doubleValue();
+                                .doubleValue();
                 double fallingRate = ((DoubleToken) fallingSlewRate.getToken())
-                    .doubleValue();
+                                .doubleValue();
 
                 if (rate > risingRate) {
                     _newToken = (new DoubleToken(timeDifference * risingRate))
-                        .add(_lastToken);
+                                    .add(_lastToken);
                 } else if (rate < fallingRate) {
                     _newToken = (new DoubleToken(timeDifference * fallingRate))
-                        .add(_lastToken);
+                                    .add(_lastToken);
                 }
 
                 output.send(0, _newToken);

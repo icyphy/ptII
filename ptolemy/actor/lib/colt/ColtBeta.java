@@ -27,13 +27,15 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.lib.colt;
 
+import cern.jet.random.Beta;
+
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import cern.jet.random.Beta;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// Beta
@@ -46,7 +48,7 @@ import cern.jet.random.Beta;
    deviation given by parameters.  In addition, the seed can be
    specified as a parameter to control the sequence that is generated.
 
-   <p> This actor instantiates a 
+   <p> This actor instantiates a
    <a href="http://hoschek.home.cern.ch/hoschek/colt/V1.0.3/doc/cern/jet/random/Beta.html">cern.jet.random.Beta</a> object with
     alpha and beta both set to 2.0.
 
@@ -76,8 +78,8 @@ beta</h3>
  <tt>1 - P(1-x)  =  Gamma.incompleteBeta( b, a, x )</tt>;
 </blockquote>
    The above description of beta() is
-   <a href="doc-files/colt-copyright.htm">copyrighted</a>. 
-   <br>In this actor, <i>alpha</i> corresponds with <i>a</i> 
+   <a href="doc-files/colt-copyright.htm">copyrighted</a>.
+   <br>In this actor, <i>alpha</i> corresponds with <i>a</i>
    <i>beta</i> corresponds with <i>b</i>.
 
 
@@ -88,7 +90,6 @@ beta</h3>
    @Pt.AcceptedRating Red (cxh)
 */
 public class ColtBeta extends ColtRandomSource {
-    
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -98,7 +99,7 @@ public class ColtBeta extends ColtRandomSource {
      *   actor with this name.
      */
     public ColtBeta(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         output.setTypeEquals(BaseType.DOUBLE);
@@ -160,7 +161,7 @@ public class ColtBeta extends ColtRandomSource {
 
     /** The random number for the current iteration. */
     private double _current;
-    
+
     /** The random number generator. */
     private Beta _generator;
 }

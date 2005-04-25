@@ -60,7 +60,7 @@ public class MonitorImage extends Sink {
      *   actor with this name.
      */
     public MonitorImage(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         input.setTypeEquals(BaseType.OBJECT);

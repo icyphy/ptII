@@ -77,8 +77,8 @@ public abstract class Element {
     public final Object getWeight() {
         if (!hasWeight()) {
             throw new IllegalStateException("Attempt to access the weight "
-                    + "of the following unweighted " + descriptor() + ": " + this
-                    + "\n");
+                + "of the following unweighted " + descriptor() + ": " + this
+                + "\n");
         } else {
             return _weight;
         }
@@ -118,8 +118,8 @@ public abstract class Element {
         // FIXME: add @see Graph#validateWeight(Edge)
         if (weight == null) {
             throw new IllegalArgumentException("Attempt to assign a null "
-                    + "weight to the following " + descriptor() + ": " + this
-                    + "\n");
+                + "weight to the following " + descriptor() + ": " + this
+                + "\n");
         } else {
             _weight = weight;
         }

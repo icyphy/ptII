@@ -124,7 +124,7 @@ public class BasicZList implements ZList {
 
                 public void remove() {
                     throw new UnsupportedOperationException(
-                            "Cannot delete figure from zlist");
+                        "Cannot delete figure from zlist");
                 }
             };
     }
@@ -253,7 +253,7 @@ public class BasicZList implements ZList {
 
                     public void remove() {
                         throw new UnsupportedOperationException(
-                                "Cannot delete figure from geometric set");
+                            "Cannot delete figure from geometric set");
                     }
                 };
         }
@@ -284,7 +284,7 @@ public class BasicZList implements ZList {
         /* Filter the figures into the given ArrayList
          */
         protected abstract void _filter(ArrayList result, Iterator i,
-                Rectangle2D region);
+            Rectangle2D region);
     }
 
     /** The figures with intersecting bounding boxes

@@ -193,8 +193,8 @@ public class OverlayLayer extends CanvasLayer implements VisibleComponent {
         double w = region.getWidth();
         double h = region.getHeight();
         repaint(DamageRegion.createDamageRegion(getTransformContext(),
-                        x - lineWidth, y - lineWidth, w + (2 * lineWidth),
-                        h + (2 * lineWidth)));
+                x - lineWidth, y - lineWidth, w + (2 * lineWidth),
+                h + (2 * lineWidth)));
     }
 
     /** Schedule a repaint of this layer over the given shape.

@@ -145,7 +145,7 @@ public abstract class JPseudoFrame extends JComponent {
         add(_iconifyButton);
 
         _minimizeButton = new JButton((Icon) ui.get(
-                                              "InternalFrame.minimizeIcon"));
+                    "InternalFrame.minimizeIcon"));
         _minimizeButton.setBounds(16, 2, 16, 14);
         _minimizeButton.setRequestFocusEnabled(false);
         _minimizeButton.addActionListener(new ActionListener() {

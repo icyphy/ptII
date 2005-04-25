@@ -210,7 +210,7 @@ public class StraightTerminal extends AbstractFigure implements Terminal {
      */
     public void relocate() {
         translate(_attachSite.getX() - _line.getX1(),
-                _attachSite.getY() - _line.getY1());
+            _attachSite.getY() - _line.getY1());
     }
 
     /** Set the site to which the terminal is attached.
@@ -268,7 +268,7 @@ public class StraightTerminal extends AbstractFigure implements Terminal {
     public void translate(double x, double y) {
         //// repaint();
         _line.setLine(_line.getX1() + x, _line.getY1() + y, _line.getX2() + x,
-                _line.getY2() + y);
+            _line.getY2() + y);
 
         if (_end != null) {
             _end.translate(x, y);
@@ -337,7 +337,7 @@ public class StraightTerminal extends AbstractFigure implements Terminal {
          */
         public void setPoint(Point2D point) {
             throw new UnsupportedOperationException(
-                    "Terminal connection points cannot be moved");
+                "Terminal connection points cannot be moved");
         }
 
         /** Translate the site by the indicated distance. This
@@ -345,7 +345,7 @@ public class StraightTerminal extends AbstractFigure implements Terminal {
          */
         public void translate(double x, double y) {
             throw new UnsupportedOperationException(
-                    "Terminal connection points cannot be moved");
+                "Terminal connection points cannot be moved");
         }
     }
 }

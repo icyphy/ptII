@@ -36,8 +36,10 @@ import ptolemy.kernel.util.IllegalActionException;
 
 import java.util.List;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// SampleDelay
+
 /**
 A code generation helper class for ptolemy.domains.sdf.lib.SampleDelay
 
@@ -47,10 +49,8 @@ A code generation helper class for ptolemy.domains.sdf.lib.SampleDelay
 @Pt.ProposedRating Red (eal)
 @Pt.AcceptedRating Red (eal)
 */
-
 public class SampleDelay extends CCodeGeneratorHelper {
-
-    /** Construct a helper with the given 
+    /** Construct a helper with the given
      *  ptolemy.domains.sdf.lib.SampleDelay actor.
      *  @param actor The given ptolemy.domains.sdf.lib.SampleDelay actor.
      */
@@ -66,10 +66,11 @@ public class SampleDelay extends CCodeGeneratorHelper {
      *   SampleDelay actor is appended to.
      */
     public void generateFireCode(StringBuffer stream)
-            throws IllegalActionException {
+        throws IllegalActionException {
         CodeStream tmpStream = new CodeStream(this);
         tmpStream.appendCodeBlock("codeBlock1");
         stream.append(processCode(tmpStream.toString()));
+
         //stream.append(processCode("$ref(output) = $ref(input);\n"));
     }
 
@@ -84,28 +85,35 @@ public class SampleDelay extends CCodeGeneratorHelper {
      */
     public String generateInitializeCode() throws IllegalActionException {
         super.generateInitializeCode();
+
         StringBuffer code = new StringBuffer();
-        ptolemy.domains.sdf.lib.SampleDelay actor =
-            (ptolemy.domains.sdf.lib.SampleDelay) getComponent();
-        Token[] initialOutputs = 
-                ((ArrayToken)actor.initialOutputs.getToken()).arrayValue();
+        ptolemy.domains.sdf.lib.SampleDelay actor = (ptolemy.domains.sdf.lib.SampleDelay) getComponent();
+        Token[] initialOutputs = ((ArrayToken) actor.initialOutputs.getToken())
+                        .arrayValue();
         List sinkChannels = getSinkChannels(actor.output, 0);
-        for (int i = 0; i < initialOutputs.length; i ++) {
-            for (int j = 0; j < sinkChannels.size(); j ++) {
+
+        for (int i = 0; i < initialOutputs.length; i++) {
+            for (int j = 0; j < sinkChannels.size(); j++) {
                 Channel channel = (Channel) sinkChannels.get(j);
                 IOPort port = (IOPort) channel.port;
                 code.append(port.getFullName().replace('.', '_'));
+
                 if (port.isMultiport()) {
                     code.append("[" + channel.channelNumber + "]");
                 }
+
                 int bufferSize = getBufferSize(port);
+
                 if (bufferSize > 1) {
                     code.append("[" + i + "]");
                 }
+
                 code.append(" = ");
             }
+
             code.append(initialOutputs[i].toString() + ";\n");
         }
+
         // FIXME: Do we need /Should we update the offset of input of
         // the SampleDelay?
         setOffset(actor.input, 0, new Integer(initialOutputs.length));

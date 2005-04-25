@@ -59,7 +59,7 @@ import ptolemy.plot.Plot;
 */
 public class Butterfly extends TypedCompositeActor {
     public Butterfly(Workspace workspace)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(workspace);
         setName("Butterfly");
 
@@ -78,7 +78,7 @@ public class Butterfly extends TypedCompositeActor {
         TypedIOPort expInput = new TypedIOPort(expression, "ramp");
         expInput.setInput(true);
         expression.expression.setExpression("-2.0*cos(4.0*ramp) + "
-                + "exp(cos(ramp)) + (sin(ramp/12.0) * (sin(ramp/12.0))^4)");
+            + "exp(cos(ramp)) + (sin(ramp/12.0) * (sin(ramp/12.0))^4)");
 
         // Next, a conversion to use the ramp as an angle specifier,
         // and the output of the expression as the vector length.

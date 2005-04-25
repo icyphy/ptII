@@ -64,7 +64,7 @@ public class DDEGetNToken extends DDEGet {
     /**
      */
     public DDEGetNToken(TypedCompositeActor cont, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(cont, name);
 
         numTokens = new Parameter(this, "numTokens");
@@ -74,7 +74,7 @@ public class DDEGetNToken extends DDEGet {
     /**
      */
     public DDEGetNToken(TypedCompositeActor cont, String name, int tokens)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         this(cont, name);
         numTokens.setToken(new IntToken(tokens));
     }
@@ -136,7 +136,7 @@ public class DDEGetNToken extends DDEGet {
                         if (rcvr.hasToken()) {
                             // System.out.println("#####");
                             System.out.println(
-                                    "#####Past DDEGetNToken.rcvr.hasToken()");
+                                "#####Past DDEGetNToken.rcvr.hasToken()");
 
                             // System.out.println("#####");
                             _tokens[cnt] = rcvr.get();

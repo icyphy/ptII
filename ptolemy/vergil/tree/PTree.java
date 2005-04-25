@@ -66,7 +66,7 @@ public class PTree extends JTree {
         super(model);
         setCellRenderer(new PtolemyTreeCellRenderer());
         DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(this,
-                DnDConstants.ACTION_COPY_OR_MOVE, new PTreeDragGestureListener());
+            DnDConstants.ACTION_COPY_OR_MOVE, new PTreeDragGestureListener());
     }
 
     ///////////////////////////////////////////////////////////////////

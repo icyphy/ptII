@@ -92,7 +92,7 @@ public class HistogramPlotter extends PlotterBase implements Placeable {
      *   actor with this name.
      */
     public HistogramPlotter(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         input = new TypedIOPort(this, "input", true, false);
@@ -108,19 +108,19 @@ public class HistogramPlotter extends PlotterBase implements Placeable {
         binOffset.setTypeEquals(BaseType.DOUBLE);
 
         _attachText("_iconDescription",
-                "<svg>\n" + "<rect x=\"-20\" y=\"-20\" "
-                + "width=\"40\" height=\"40\" " + "style=\"fill:lightGrey\"/>\n"
-                + "<rect x=\"-12\" y=\"-12\" " + "width=\"24\" height=\"24\" "
-                + "style=\"fill:white\"/>\n" + "<rect x=\"2\" y=\"-18\" "
-                + "width=\"4\" height=\"4\" " + "style=\"fill:grey\"/>\n"
-                + "<rect x=\"8\" y=\"-18\" " + "width=\"4\" height=\"4\" "
-                + "style=\"fill:grey\"/>\n" + "<rect x=\"14\" y=\"-18\" "
-                + "width=\"4\" height=\"4\" " + "style=\"fill:grey\"/>\n"
-                + "<rect x=\"-8\" y=\"2\" " + "width=\"4\" height=\"10\" "
-                + "style=\"fill:red\"/>\n" + "<rect x=\"-2\" y=\"-8\" "
-                + "width=\"4\" height=\"20\" " + "style=\"fill:red\"/>\n"
-                + "<rect x=\"4\" y=\"-5\" " + "width=\"4\" height=\"17\" "
-                + "style=\"fill:red\"/>\n" + "</svg>\n");
+            "<svg>\n" + "<rect x=\"-20\" y=\"-20\" "
+            + "width=\"40\" height=\"40\" " + "style=\"fill:lightGrey\"/>\n"
+            + "<rect x=\"-12\" y=\"-12\" " + "width=\"24\" height=\"24\" "
+            + "style=\"fill:white\"/>\n" + "<rect x=\"2\" y=\"-18\" "
+            + "width=\"4\" height=\"4\" " + "style=\"fill:grey\"/>\n"
+            + "<rect x=\"8\" y=\"-18\" " + "width=\"4\" height=\"4\" "
+            + "style=\"fill:grey\"/>\n" + "<rect x=\"14\" y=\"-18\" "
+            + "width=\"4\" height=\"4\" " + "style=\"fill:grey\"/>\n"
+            + "<rect x=\"-8\" y=\"2\" " + "width=\"4\" height=\"10\" "
+            + "style=\"fill:red\"/>\n" + "<rect x=\"-2\" y=\"-8\" "
+            + "width=\"4\" height=\"20\" " + "style=\"fill:red\"/>\n"
+            + "<rect x=\"4\" y=\"-5\" " + "width=\"4\" height=\"17\" "
+            + "style=\"fill:red\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -148,7 +148,7 @@ public class HistogramPlotter extends PlotterBase implements Placeable {
      *  @exception IllegalActionException If the bin width is not positive.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         // NOTE: Do not react to changes in _windowProperties.
         // Those properties are only used when originally opening a window.
         if (attribute == binWidth) {
@@ -156,7 +156,7 @@ public class HistogramPlotter extends PlotterBase implements Placeable {
 
             if (width <= 0.0) {
                 throw new IllegalActionException(this,
-                        "Invalid bin width (must be positive): " + width);
+                    "Invalid bin width (must be positive): " + width);
             }
 
             if (plot instanceof Histogram) {
@@ -186,7 +186,7 @@ public class HistogramPlotter extends PlotterBase implements Placeable {
      *   or if the configuration information is incorrect.
      */
     public void configure(URL base, String source, String text)
-            throws Exception {
+        throws Exception {
         if (plot instanceof Histogram) {
             _base = base;
             _source = source;
@@ -257,8 +257,8 @@ public class HistogramPlotter extends PlotterBase implements Placeable {
 
             if (containerEffigy == null) {
                 throw new IllegalActionException(this,
-                        "Cannot find effigy for top level: "
-                        + toplevel().getFullName());
+                    "Cannot find effigy for top level: "
+                    + toplevel().getFullName());
             }
 
             try {
@@ -275,7 +275,7 @@ public class HistogramPlotter extends PlotterBase implements Placeable {
                 _frame = tableau.frame;
             } catch (Exception ex) {
                 throw new IllegalActionException(this, null, ex,
-                        "Error creating effigy and tableau");
+                    "Error creating effigy and tableau");
             }
 
             _windowProperties.setProperties(_frame);

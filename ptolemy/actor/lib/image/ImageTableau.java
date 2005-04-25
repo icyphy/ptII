@@ -26,14 +26,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.lib.image;
 
-import java.awt.BorderLayout;
-import java.awt.Container;
-import java.awt.Image;
-import java.util.Iterator;
-import java.util.List;
-
-import javax.swing.JFrame;
-
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TableauFactory;
@@ -46,6 +38,14 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.media.Picture;
+
+import java.awt.BorderLayout;
+import java.awt.Container;
+import java.awt.Image;
+import java.util.Iterator;
+import java.util.List;
+
+import javax.swing.JFrame;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -71,7 +71,7 @@ public class ImageTableau extends TokenTableau {
      *   attribute already in the container.
      */
     public ImageTableau(Effigy container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -86,7 +86,7 @@ public class ImageTableau extends TokenTableau {
      *   attribute already in the container.
      */
     public ImageTableau(Effigy container, String name, TableauFrame frame)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name, frame);
     }
 
@@ -102,8 +102,9 @@ public class ImageTableau extends TokenTableau {
      *  @exception NameDuplicationException If the name coincides with an
      *   attribute already in the container.
      */
-    public ImageTableau(Effigy container, String name, TableauFrame frame, int width, int height)
-            throws IllegalActionException, NameDuplicationException {
+    public ImageTableau(Effigy container, String name, TableauFrame frame,
+        int width, int height)
+        throws IllegalActionException, NameDuplicationException {
         super(container, name, frame);
         _oldxsize = width;
         _oldysize = height;
@@ -192,12 +193,11 @@ public class ImageTableau extends TokenTableau {
      *  @exception If the token is not an ImageToken.
      */
     public void display(ImageToken token) throws IllegalActionException {
-
         Image image = token.asAWTImage();
 
         if (image == null) {
             throw new IllegalActionException(this,
-                    "ImageTableau: input image was null!");
+                "ImageTableau: input image was null!");
         } else {
             int xsize = image.getWidth(null);
             int ysize = image.getHeight(null);
@@ -209,14 +209,15 @@ public class ImageTableau extends TokenTableau {
 
                 _oldxsize = xsize;
                 _oldysize = ysize;
-                
+
                 Container container = _picture.getParent();
                 Container top = container.getParent();
 
                 while (top.getParent() != null) {
                     top = top.getParent();
                 }
-                JFrame castTop = (JFrame)top;
+
+                JFrame castTop = (JFrame) top;
 
                 if (_picture != null) {
                     castTop.getContentPane().remove(_picture);
@@ -225,14 +226,16 @@ public class ImageTableau extends TokenTableau {
                 _picture = new Picture(xsize, ysize);
                 _picture.setImage(image);
                 _picture.setBackground(null);
+
                 // FIXME: This messes up the menus!
                 castTop.getContentPane().add(_picture, BorderLayout.CENTER);
+
                 // FIXME: All the below appear to be required only by superstition.
                 castTop.getContentPane().validate();
+
                 // container.invalidate();
                 // container.repaint();
                 // container.doLayout();
-                
                 castTop.pack();
             } else {
                 _picture.setImage(image);
@@ -273,7 +276,7 @@ public class ImageTableau extends TokenTableau {
          *   an attribute already in the container.
          */
         public Factory(NamedObj container, String name)
-                throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
             super(container, name);
         }
 

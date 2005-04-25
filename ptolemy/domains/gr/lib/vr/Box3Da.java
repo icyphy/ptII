@@ -77,7 +77,7 @@ public class Box3Da extends GRShadedShape {
      *   actor with this name.
      */
     public Box3Da(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         xLength = new PortParameter(this, "xLength");
@@ -124,20 +124,20 @@ public class Box3Da extends GRShadedShape {
     /** If the dimensions change, then update the box.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         // Check that a box has been previously created.
         if (_changesAllowedNow
-                && ((attribute == xLength) || (attribute == yHeight)
+                        && ((attribute == xLength) || (attribute == yHeight)
                         || (attribute == zWidth))) {
             if (_scaleTransform != null) {
                 float height = (float) (((DoubleToken) yHeight.getToken())
-                        .doubleValue() / 2.0);
+                                .doubleValue() / 2.0);
 
                 float length = (float) (((DoubleToken) xLength.getToken())
-                        .doubleValue() / 2.0);
+                                .doubleValue() / 2.0);
 
                 float width = (float) (((DoubleToken) zWidth.getToken())
-                        .doubleValue() / 2.0);
+                                .doubleValue() / 2.0);
 
                 _scaleTransform.setScale(new Vector3d(length, height, width));
 
@@ -149,69 +149,65 @@ public class Box3Da extends GRShadedShape {
             super.attributeChanged(attribute);
         }
     }
+
     public void initialize() throws IllegalActionException {
         super.initialize();
         _parameterPort = xLength.getPort();
-      
     }
-    
+
     public boolean prefire() throws IllegalActionException {
         if (_debugging) {
             _debug("Called prefire()");
             _debug("Port width = " + _parameterPort.getWidth());
             _debug("Port hasToken = " + _parameterPort.hasToken(0));
-            
         }
-        
-        if (_isSceneGraphInitialized){
-            
+
+        if (_isSceneGraphInitialized) {
             /** Updating the PortParameter, cannot call update()
-             * because need to access token for condition 
+             * because need to access token for condition
              */
-            if ((_parameterPort != null) && (_parameterPort.getWidth() > 0) && _parameterPort.hasToken(0)) {
-                _doubleToken = (DoubleToken)(_parameterPort.get(0));
+            if ((_parameterPort != null) && (_parameterPort.getWidth() > 0)
+                            && _parameterPort.hasToken(0)) {
+                _doubleToken = (DoubleToken) (_parameterPort.get(0));
                 xLength.setCurrentValue(_doubleToken);
 
                 if (_debugging) {
                     _debug("Updated parameter value to: " + _doubleToken);
                 }
-            }else {
+            } else {
                 if (_debugging) {
                     _debug("Did not update parameter");
-                }   
+                }
             }
-            
+
             if (_debugging) {
                 _debug("Port value = " + _doubleToken.doubleValue());
             }
-        	if (_doubleToken.doubleValue() > 0.0){
-                
-                /** Set _isSceneGraphInitialized back to false so 
+
+            if (_doubleToken.doubleValue() > 0.0) {
+                /** Set _isSceneGraphInitialized back to false so
                  * node can be sent. fire() will set it back to true
                  */
-        		_isSceneGraphInitialized = false;
-        		_createModel();
-                 
+                _isSceneGraphInitialized = false;
+                _createModel();
+
                 if (_debugging) {
                     _debug("Prefire returned true");
                     _debug("xLength = " + xLength);
-                    
                 }
-               
-                return true;   
-        	}else {
-        		
+
+                return true;
+            } else {
                 if (_debugging) {
-         
                     _debug("Prefire returned false");
-					_debug("xLength = " + xLength);
+                    _debug("xLength = " + xLength);
                 }
-               
-        		return false;
+
+                return false;
             }
-        } 
+        }
         /** Should only reach this code during first prefire()
-         * all other times _isSceneGraphInitialized should be true from 
+         * all other times _isSceneGraphInitialized should be true from
          * fire method.
          */
         else {
@@ -219,13 +215,10 @@ public class Box3Da extends GRShadedShape {
                 _debug("Prefire returned true");
                 _debug("xLength = " + xLength);
             }
-           
-        	return true;   
+
+            return true;
         }
-     
     }
-    
-    
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -292,13 +285,13 @@ public class Box3Da extends GRShadedShape {
                     _appearance);
             _scaleTransform = null;
         }
+
         _branchGroup = new BranchGroup();
         _branchGroup.setCapability(BranchGroup.ALLOW_CHILDREN_READ);
         _branchGroup.setCapability(BranchGroup.ALLOW_CHILDREN_WRITE);
         _branchGroup.addChild(_containedNode);
     }
 
-    
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -309,13 +302,10 @@ public class Box3Da extends GRShadedShape {
 
     /** The box. */
     private Node _containedNode;
-    
+
     /** BranchGroup */
     private BranchGroup _branchGroup;
-    
     private DoubleToken _doubleToken;
-    
     private double _portValue;
-    
     private ParameterPort _parameterPort;
 }

@@ -27,10 +27,10 @@
 */
 package ptolemy.copernicus.c;
 
-import ptolemy.copernicus.kernel.WatchDogTimer;
-
 import soot.Pack;
 import soot.PackManager;
+
+import ptolemy.copernicus.kernel.WatchDogTimer;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -58,6 +58,6 @@ public class Main extends ptolemy.copernicus.java.Main {
         addTransform(pack, "wjtp.finalSnapshotC", CWriter.v());
 
         addTransform(pack, "wjtp.watchDogCancel", WatchDogTimer.v(),
-                "cancel:true");
+            "cancel:true");
     }
 }

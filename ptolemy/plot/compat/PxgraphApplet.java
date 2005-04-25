@@ -67,20 +67,36 @@ public class PxgraphApplet extends PlotApplet {
      */
     public String getAppletInfo() {
         return "PxgraphApplet " + PlotBox.PTPLOT_RELEASE
-            + ": A data plotter.\n" + "By: Edward A. Lee and\n "
-            + "Christopher Hylands\n"
-            + "($Id$)";
+        + ": A data plotter.\n" + "By: Edward A. Lee and\n "
+        + "Christopher Hylands\n"
+        + "($Id$)";
     }
 
     /** Return information about parameters.
      */
     public String[][] getParameterInfo() {
         String[][] pinfo = {
-            { "background", "hexcolor value", "background color" },
-            { "foreground", "hexcolor value", "foreground color" },
-            { "dataurl", "url", "the URL of the data to plot" },
-            { "pxgraphargs", "args", "pxgraph style command line arguments" }
-        };
+                {
+                    "background",
+                    "hexcolor value",
+                    "background color"
+                },
+                {
+                    "foreground",
+                    "hexcolor value",
+                    "foreground color"
+                },
+                {
+                    "dataurl",
+                    "url",
+                    "the URL of the data to plot"
+                },
+                {
+                    "pxgraphargs",
+                    "args",
+                    "pxgraph style command line arguments"
+                }
+            };
         return pinfo;
     }
 
@@ -111,7 +127,7 @@ public class PxgraphApplet extends PlotApplet {
                 showStatus("Done reading arguments");
             } catch (CmdLineArgException e) {
                 System.err.println("PxgraphApplet: failed to parse `"
-                        + pxgraphargs + "': " + e);
+                    + pxgraphargs + "': " + e);
             } catch (FileNotFoundException e) {
                 System.err.println(e.toString());
             } catch (IOException e) {

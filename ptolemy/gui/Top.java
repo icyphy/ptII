@@ -176,7 +176,7 @@ public abstract class Top extends JFrame {
                 public void run() {
                     Toolkit tk = Toolkit.getDefaultToolkit();
                     setLocation((tk.getScreenSize().width - getSize().width) / 2,
-                            (tk.getScreenSize().height - getSize().height) / 2);
+                        (tk.getScreenSize().height - getSize().height) / 2);
 
                     // Make this the default context for modal messages.
                     GraphicalMessageHandler.setContext(Top.this);
@@ -259,7 +259,7 @@ public abstract class Top extends JFrame {
     public boolean getCentering() {
         return _centering;
     }
-    
+
     /** If called before the first time pack() is called, this
      *  method will prevent the appearance of a menu bar. This is
      *  rarely desirable, but some subclasses of Top have to
@@ -269,7 +269,7 @@ public abstract class Top extends JFrame {
      *  Call this to prevent a menu bar.
      */
     public void hideMenuBar() {
-    	_hideMenuBar = true;
+        _hideMenuBar = true;
     }
 
     /** Return true if the data associated with this window has been
@@ -325,7 +325,7 @@ public abstract class Top extends JFrame {
                 public void run() {
                     if (_statusBar != null) {
                         _statusBar.setMessage(MessageHandler.shortDescription(
-                                                      throwable) + ". " + message);
+                                throwable) + ". " + message);
                     }
 
                     MessageHandler.error(message, throwable);
@@ -398,7 +398,7 @@ public abstract class Top extends JFrame {
 
                         // Open button = ctrl-o.
                         _fileMenuItems[0].setAccelerator(KeyStroke.getKeyStroke(
-                                                                 KeyEvent.VK_O, Event.CTRL_MASK));
+                                KeyEvent.VK_O, Event.CTRL_MASK));
 
                         // The mnemonic isn't set in the static initializer because
                         // JMenu doesn't have an appropriate constructor.
@@ -409,16 +409,16 @@ public abstract class Top extends JFrame {
 
                         // Save button = ctrl-s.
                         _fileMenuItems[3].setAccelerator(KeyStroke.getKeyStroke(
-                                                                 KeyEvent.VK_S, Event.CTRL_MASK));
+                                KeyEvent.VK_S, Event.CTRL_MASK));
 
                         // Print button = ctrl-p.
                         _fileMenuItems[5].setAccelerator(KeyStroke.getKeyStroke(
-                                                                 KeyEvent.VK_P, Event.CTRL_MASK));
+                                KeyEvent.VK_P, Event.CTRL_MASK));
 
                         // Print button disabled by default, unless this class implements
                         // one of the JDK1.2 printing interfaces.
                         if (Top.this instanceof Printable
-                                || Top.this instanceof Pageable) {
+                                        || Top.this instanceof Pageable) {
                             _fileMenuItems[5].setEnabled(true);
                         } else {
                             _fileMenuItems[5].setEnabled(false);
@@ -426,7 +426,7 @@ public abstract class Top extends JFrame {
 
                         // Close button = ctrl-w.
                         _fileMenuItems[6].setAccelerator(KeyStroke.getKeyStroke(
-                                                                 KeyEvent.VK_W, Event.CTRL_MASK));
+                                KeyEvent.VK_W, Event.CTRL_MASK));
 
                         // Construct the File menu by adding action commands
                         // and action listeners.
@@ -435,7 +435,7 @@ public abstract class Top extends JFrame {
                         // Set the action command and listener for each menu item.
                         for (int i = 0; i < _fileMenuItems.length; i++) {
                             _fileMenuItems[i].setActionCommand(_fileMenuItems[i]
-                                    .getText());
+                                            .getText());
                             _fileMenuItems[i].addActionListener(fileMenuListener);
                             _fileMenu.add(_fileMenuItems[i]);
                         }
@@ -449,7 +449,7 @@ public abstract class Top extends JFrame {
                         // Set the action command and listener for each menu item.
                         for (int i = 0; i < _helpMenuItems.length; i++) {
                             _helpMenuItems[i].setActionCommand(_helpMenuItems[i]
-                                    .getText());
+                                            .getText());
                             _helpMenuItems[i].addActionListener(helpMenuListener);
                             _helpMenu.add(_helpMenuItems[i]);
                         }
@@ -514,13 +514,13 @@ public abstract class Top extends JFrame {
      */
     protected void _about() {
         JOptionPane.showMessageDialog(this,
-                "Ptolemy II " + getClass().getName() + "\n"
-                + "By: Claudius Ptolemaeus, ptolemy@eecs.berkeley.edu\n"
-                + "For more information, see\n"
-                + "http://ptolemy.eecs.berkeley.edu/ptolemyII\n\n"
-                + "Copyright (c) 1997-2005, "
-                + "The Regents of the University of California.",
-                "About Ptolemy II", JOptionPane.INFORMATION_MESSAGE);
+            "Ptolemy II " + getClass().getName() + "\n"
+            + "By: Claudius Ptolemaeus, ptolemy@eecs.berkeley.edu\n"
+            + "For more information, see\n"
+            + "http://ptolemy.eecs.berkeley.edu/ptolemyII\n\n"
+            + "Copyright (c) 1997-2005, "
+            + "The Regents of the University of California.",
+            "About Ptolemy II", JOptionPane.INFORMATION_MESSAGE);
     }
 
     /** Add menus to the menu bar.  In this base class, this does nothing.
@@ -679,7 +679,7 @@ public abstract class Top extends JFrame {
                 // It signals that it is a user cancellation with the special
                 // string pattern "*** Canceled." in the message.
                 if ((ex.getMessage() != null)
-                        && !ex.getMessage().startsWith("*** Canceled.")) {
+                                && !ex.getMessage().startsWith("*** Canceled.")) {
                     // No need to report a CancelException, since it results
                     // from the user clicking a "Cancel" button.
                     report("Error reading input", ex);
@@ -744,7 +744,11 @@ public abstract class Top extends JFrame {
      *   _FAILED if the user selects save and the save fails.
      */
     protected int _queryForSave() {
-        Object[] options = { "Save", "Discard changes", "Cancel" };
+        Object[] options = {
+                "Save",
+                "Discard changes",
+                "Cancel"
+            };
 
         String query = "Save changes to " + StringUtilities.split(_getName())
             + "?";
@@ -899,23 +903,24 @@ public abstract class Top extends JFrame {
 
     /** Items in the file menu. */
     protected JMenuItem[] _fileMenuItems = {
-        new JMenuItem("Open File", KeyEvent.VK_O),
-        new JMenuItem("Open URL", KeyEvent.VK_U), new JMenu("New"),
-        new JMenuItem("Save", KeyEvent.VK_S),
-        new JMenuItem("SaveAs", KeyEvent.VK_A),
-        new JMenuItem("Print", KeyEvent.VK_P),
-        new JMenuItem("Close", KeyEvent.VK_C),
-        new JMenuItem("Exit", KeyEvent.VK_X),
-    };
+            new JMenuItem("Open File", KeyEvent.VK_O),
+            new JMenuItem("Open URL", KeyEvent.VK_U),
+            new JMenu("New"),
+            new JMenuItem("Save", KeyEvent.VK_S),
+            new JMenuItem("SaveAs", KeyEvent.VK_A),
+            new JMenuItem("Print", KeyEvent.VK_P),
+            new JMenuItem("Close", KeyEvent.VK_C),
+            new JMenuItem("Exit", KeyEvent.VK_X),
+        };
 
     /** Help menu for this frame. */
     protected JMenu _helpMenu = new JMenu("Help");
 
     /** Help menu items. */
     protected JMenuItem[] _helpMenuItems = {
-        new JMenuItem("About", KeyEvent.VK_A),
-        new JMenuItem("Help", KeyEvent.VK_H),
-    };
+            new JMenuItem("About", KeyEvent.VK_A),
+            new JMenuItem("Help", KeyEvent.VK_H),
+        };
 
     /** Menubar for this frame. */
     protected JMenuBar _menubar = new JMenuBar();
@@ -934,7 +939,7 @@ public abstract class Top extends JFrame {
 
     // The input file.
     private File _file = null;
-    
+
     // Flag to hide the menu bar.
     private boolean _hideMenuBar = false;
 

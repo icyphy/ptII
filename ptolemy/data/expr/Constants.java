@@ -141,7 +141,6 @@ public class Constants {
     public static TreeMap types() {
         // We use a separate map of types so that we can list the
         // types in the port configurer dialog
-
         // We return a TreeMap here because we do not need the
         // synchronization in a Hashtable, but we do want it sorted.
         return new TreeMap(_types);
@@ -238,7 +237,6 @@ public class Constants {
         _table.putAll(_types);
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
     // Look up a property and add it to the _table.
@@ -247,11 +245,11 @@ public class Constants {
     private static void _putProperty(String variableName, String property) {
         try {
             _table.put(variableName,
-                    new StringToken(StringUtilities.getProperty(property)));
+                new StringToken(StringUtilities.getProperty(property)));
         } catch (SecurityException ex) {
             System.out.println("Warning: While trying to set '" + variableName
-                    + "', failed to read '" + property + "' property "
-                    + "(-sandbox always causes this)");
+                + "', failed to read '" + property + "' property "
+                + "(-sandbox always causes this)");
         }
     }
 }

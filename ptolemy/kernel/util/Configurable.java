@@ -92,7 +92,7 @@ public interface Configurable {
      *  @exception Exception If something goes wrong.
      */
     public void configure(URL base, String source, String text)
-            throws Exception;
+        throws Exception;
 
     /** Return the input source that was specified the last time the configure
      *  method was called.

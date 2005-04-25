@@ -139,7 +139,7 @@ public class EntityTreeModel implements TreeModel {
     /** Return true if the object is a leaf node.  In this base class,
      *  an object is a leaf node if it is not an instance of CompositeEntity.
      *  @param object The object in question.
-     *  @return True if the node has no children.  
+     *  @return True if the node has no children.
      */
     public boolean isLeaf(Object object) {
         if (!(object instanceof CompositeEntity)) {
@@ -192,7 +192,8 @@ public class EntityTreeModel implements TreeModel {
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-    /** A ChangeListener that updates the Tree. */ 
+
+    /** A ChangeListener that updates the Tree. */
     public class TreeUpdateListener implements ChangeListener {
         /** Trigger an update of the tree.  If the change
          *  request indicates that it is localized, then only
@@ -234,7 +235,7 @@ public class EntityTreeModel implements TreeModel {
                         }
 
                         valueForPathChanged(new TreePath(path.toArray()),
-                                locality);
+                            locality);
                     }
                 });
         }

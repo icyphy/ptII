@@ -78,7 +78,7 @@ public class Plotter extends PlotterBase {
      *   actor with this name.
      */
     public Plotter(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         startingDataset = new Parameter(this, "startingDataset", new IntToken(0));
@@ -103,13 +103,13 @@ public class Plotter extends PlotterBase {
      *   superclass throws it.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         // NOTE: Do not react to changes in _windowProperties.
         // Those properties are only used when originally opening a window.
         if (attribute == startingDataset) {
             if (((IntToken) startingDataset.getToken()).intValue() < 0) {
                 throw new IllegalActionException(this,
-                        "startingDataset: negative value is not allowed.");
+                    "startingDataset: negative value is not allowed.");
             }
         } else {
             super.attributeChanged(attribute);
@@ -141,8 +141,8 @@ public class Plotter extends PlotterBase {
 
             if (containerEffigy == null) {
                 throw new IllegalActionException(this,
-                        "Cannot find effigy for top level: "
-                        + toplevel().getFullName());
+                    "Cannot find effigy for top level: "
+                    + toplevel().getFullName());
             }
 
             try {
@@ -159,7 +159,7 @@ public class Plotter extends PlotterBase {
                 _frame = tableau.frame;
             } catch (Exception ex) {
                 throw new IllegalActionException(this, null, ex,
-                        "Error creating effigy and tableau");
+                    "Error creating effigy and tableau");
             }
 
             _windowProperties.setProperties(_frame);

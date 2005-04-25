@@ -90,14 +90,14 @@ public class GraphReader {
             Object entity = actors.next();
 
             if (entity instanceof AtomicActor
-                    || entity instanceof CompositeActor) {
+                            || entity instanceof CompositeActor) {
                 Actor actor = (Actor) entity;
                 Node newNode = graph.addNodeWeight(_computeNodeWeight(actor));
                 _actorMap.put(actor, newNode);
                 _processNewNode(graph, newNode, actor);
             } else {
                 throw new RuntimeException("Unsupported deep entity type: "
-                        + entity.getClass().getName() + " (value = " + entity + ")");
+                    + entity.getClass().getName() + " (value = " + entity + ")");
             }
         }
 
@@ -121,11 +121,11 @@ public class GraphReader {
                     if (graph.containsNode((Node) (_actorMap.get(sink)))) {
                         if (_debug) {
                             System.out.println("Adding edge from " + source
-                                    + " to " + sink);
+                                + " to " + sink);
                         }
 
                         Edge newEdge = graph.addEdge((Node) (_actorMap.get(
-                                                                     source)), (Node) (_actorMap.get(sink)),
+                                    source)), (Node) (_actorMap.get(sink)),
                                 _computeEdgeWeight(outPort, inPort));
                         _processNewEdge(graph, newEdge, outPort, inPort);
                     }
@@ -192,7 +192,7 @@ public class GraphReader {
      *  @param sinkPort The sink port of the connection.
      */
     protected void _processNewEdge(Graph graph, Edge edge, IOPort sourcePort,
-            IOPort sinkPort) {
+        IOPort sinkPort) {
         return;
     }
 
@@ -225,13 +225,13 @@ public class GraphReader {
     protected void _transformTopology(Graph graph) {
         if (_debug) {
             System.out.println("A dump of the graph before global "
-                    + "transformation:\n" + graph.toString() + "\n");
+                + "transformation:\n" + graph.toString() + "\n");
         }
 
         //write transform strategy here.
         if (_debug) {
             System.out.println("A dump of the graph after global "
-                    + "transformation:\n" + graph.toString() + "\n");
+                + "transformation:\n" + graph.toString() + "\n");
         }
     }
 

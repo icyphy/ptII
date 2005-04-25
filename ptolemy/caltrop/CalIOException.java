@@ -29,8 +29,10 @@
 */
 package ptolemy.caltrop;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// CalIOException
+
 /**
    An exception used to indicate an IO error during interpretation of a
    CAL actor in Ptolemy.  This can occur during the getting/putting of a
@@ -43,11 +45,11 @@ package ptolemy.caltrop;
    @Pt.AcceptedRating Red (cxh)
 */
 public class CalIOException extends RuntimeException {
-
     /**
      * Create a <tt>CalIOException()</tt>.
      */
-    public CalIOException() {}
+    public CalIOException() {
+    }
 
     /**
      * Create a <tt>CalIOException</tt> with a message.

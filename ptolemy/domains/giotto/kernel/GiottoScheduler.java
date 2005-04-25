@@ -174,11 +174,11 @@ public class GiottoScheduler extends Scheduler {
 
         if (actorCount < 1) {
             throw new NotSchedulableException("Could not get schedule, "
-                    + "the number of deeply contained entities for '"
-                    + compositeActor.getFullName() + "' is " + actorCount
-                    + ", which is less than 1."
-                    + "If you have empty composite actors, try adding an  actor"
-                    + "to the inside of one of the empty composite actors.");
+                + "the number of deeply contained entities for '"
+                + compositeActor.getFullName() + "' is " + actorCount
+                + ", which is less than 1."
+                + "If you have empty composite actors, try adding an  actor"
+                + "to the inside of one of the empty composite actors.");
         }
 
         int[] frequencyArray = new int[actorCount];
@@ -221,7 +221,7 @@ public class GiottoScheduler extends Scheduler {
                 Actor actor = (Actor) actorListIterator.next();
 
                 if (((_giottoSchedulerTime % intervalArray[i]) == 0)
-                        && (iterateArray[i] > 0)) {
+                                && (iterateArray[i] > 0)) {
                     Firing firing = new Firing();
                     firing.setActor(actor);
                     fireAtSameTimeSchedule.add(firing);
@@ -298,7 +298,7 @@ public class GiottoScheduler extends Scheduler {
 
         if (count < 1) {
             throw new RuntimeException(
-                    "Length array passed to _lcm() is less than 1?");
+                "Length array passed to _lcm() is less than 1?");
         }
 
         int X = array[0];
@@ -311,8 +311,7 @@ public class GiottoScheduler extends Scheduler {
                 }
 
                 i++;
-            }
-            else {
+            } else {
                 X = X + 1;
                 i = 0;
             }
@@ -360,11 +359,11 @@ public class GiottoScheduler extends Scheduler {
          */
         public int compare(Object actor1, Object actor2) {
             if ((actor1 != null) && actor1 instanceof Actor && (actor2 != null)
-                    && actor2 instanceof Actor) {
+                            && actor2 instanceof Actor) {
                 if (getFrequency((Actor) actor1) < getFrequency((Actor) actor2)) {
                     return -1;
                 } else if (getFrequency((Actor) actor1) == getFrequency(
-                                   (Actor) actor2)) {
+                                    (Actor) actor2)) {
                     return 0;
                 } else {
                     return 1;

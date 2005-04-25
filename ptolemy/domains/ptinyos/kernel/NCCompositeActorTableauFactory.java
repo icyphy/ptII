@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.domains.ptinyos.kernel;
 
 import ptolemy.actor.gui.Effigy;
@@ -36,11 +35,13 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.vergil.actor.ActorGraphTableau;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// NCCompositeActorTableauFactory
+
 /**
  * A factory that creates graph editing tableaux for NCCompositeActor's.
- * 
+ *
  * @author Elaine Cheong
  * @version $Id: NCCompositeActor.java,v 1.73 2004/04/13 05:12:39 cxh
  *          Exp $
@@ -48,10 +49,7 @@ import ptolemy.vergil.actor.ActorGraphTableau;
  * @Pt.AcceptedRating Red (cxh)
  * @see ptolemy.vergil.actor.TypeOpaqueCompositeActorTableauFactory
  */
-
-public class NCCompositeActorTableauFactory
-        extends ActorGraphTableau.Factory {
-
+public class NCCompositeActorTableauFactory extends ActorGraphTableau.Factory {
     /** Create an factory with the given name and container.
      *  @param container The container.
      *  @param name The name.
@@ -59,11 +57,10 @@ public class NCCompositeActorTableauFactory
      *   with this attribute.
      *  @exception NameDuplicationException If the name coincides with
      *   an attribute already in the container.
-     */    
-    public NCCompositeActorTableauFactory(
-            NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
-    	super(container, name);
+     */
+    public NCCompositeActorTableauFactory(NamedObj container, String name)
+        throws IllegalActionException, NameDuplicationException {
+        super(container, name);
     }
 
     /** Create a tableau in the default workspace with no name for the
@@ -82,11 +79,11 @@ public class NCCompositeActorTableauFactory
      */
     public Tableau createTableau(Effigy effigy) throws Exception {
         if (effigy instanceof PtolemyEffigy) {
-            if (((PtolemyEffigy)effigy).getModel()
-                    instanceof NCCompositeActor) {
-            	return super.createTableau(effigy);
+            if (((PtolemyEffigy) effigy).getModel() instanceof NCCompositeActor) {
+                return super.createTableau(effigy);
             }
         }
+
         return null;
     }
 }

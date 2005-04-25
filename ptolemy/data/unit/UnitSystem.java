@@ -80,7 +80,7 @@ public class UnitSystem extends ScopeExtendingAttribute {
      *   an attribute already in the container.
      */
     public UnitSystem(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 }

@@ -56,13 +56,12 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Red (cxh)
 */
 public class CSPSieve extends CSPActor {
-
     /** Construct a DDESink with the specified container and name.
      *  This method calls the super class constructor and creates
-     *  the necessary ports. 
+     *  the necessary ports.
      *  @param container The container of this actor.
      *  @param name The name of this actor.
-     *  @param prime The prime this sieve is filtering out.   
+     *  @param prime The prime this sieve is filtering out.
      *  @exception NameDuplicationException If more than one port
      *   with the same name is added to this actor, or if the entity
      *   containing this actor already contains an actor with the name
@@ -71,7 +70,7 @@ public class CSPSieve extends CSPActor {
      *   by the proposed container.
      */
     public CSPSieve(TypedCompositeActor container, String name, int prime)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         _prime = prime;
         input = new TypedIOPort(this, "input", true, false);

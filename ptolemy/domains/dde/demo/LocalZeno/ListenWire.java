@@ -67,7 +67,7 @@ public class ListenWire extends Wire {
      *  instantiating and specifying the type of this actor's ports.
      */
     public ListenWire(CompositeEntity cont, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(cont, name);
     }
 

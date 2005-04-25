@@ -60,7 +60,7 @@ public class ActorGraphTableau extends Tableau {
      *  @param workspace The workspace.
      */
     public ActorGraphTableau(Workspace workspace)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(workspace);
     }
 
@@ -70,10 +70,10 @@ public class ActorGraphTableau extends Tableau {
      *  @param name The name.
      */
     public ActorGraphTableau(PtolemyEffigy container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         this(container, name, null);
     }
-    
+
     /** Create a tableau with the specified container, name, and
      *  default library.
      *  @param container The container.
@@ -81,28 +81,27 @@ public class ActorGraphTableau extends Tableau {
      *  @param defaultLibrary The default library, or null to not specify one.
      */
     public ActorGraphTableau(PtolemyEffigy container, String name,
-    		LibraryAttribute defaultLibrary)
-    throws IllegalActionException, NameDuplicationException {
-    	super(container, name);
-    	
-    	NamedObj model = container.getModel();
-    	
-    	if (model == null) {
-    		return;
-    	}
-    	
-    	if (!(model instanceof CompositeEntity)) {
-    		throw new IllegalActionException(this,
-    				"Cannot graphically edit a model "
-    				+ "that is not a CompositeEntity. Model is a " + model);
-    	}
-    	
-    	CompositeEntity entity = (CompositeEntity) model;
-    	
-    	ActorGraphFrame frame = new ActorGraphFrame(entity, this,
-    			defaultLibrary);
-    	setFrame(frame);
-    	frame.setBackground(BACKGROUND_COLOR);
+        LibraryAttribute defaultLibrary)
+        throws IllegalActionException, NameDuplicationException {
+        super(container, name);
+
+        NamedObj model = container.getModel();
+
+        if (model == null) {
+            return;
+        }
+
+        if (!(model instanceof CompositeEntity)) {
+            throw new IllegalActionException(this,
+                "Cannot graphically edit a model "
+                + "that is not a CompositeEntity. Model is a " + model);
+        }
+
+        CompositeEntity entity = (CompositeEntity) model;
+
+        ActorGraphFrame frame = new ActorGraphFrame(entity, this, defaultLibrary);
+        setFrame(frame);
+        frame.setBackground(BACKGROUND_COLOR);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -125,7 +124,7 @@ public class ActorGraphTableau extends Tableau {
          *   an attribute already in the container.
          */
         public Factory(NamedObj container, String name)
-                throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
             super(container, name);
         }
 
@@ -147,7 +146,7 @@ public class ActorGraphTableau extends Tableau {
             if (effigy instanceof PtolemyEffigy) {
                 // First see whether the effigy already contains a graphTableau.
                 ActorGraphTableau tableau = (ActorGraphTableau) effigy
-                    .getEntity("graphTableau");
+                                .getEntity("graphTableau");
 
                 if (tableau == null) {
                     // Check to see whether this factory contains a

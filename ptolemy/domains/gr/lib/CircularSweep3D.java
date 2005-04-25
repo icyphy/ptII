@@ -76,16 +76,24 @@ public class CircularSweep3D extends GRShadedShape {
      *   actor with this name.
      */
     public CircularSweep3D(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         polyline = new Parameter(this, "polyline",
                 new DoubleMatrixToken(new double[][] {
-                    {
-                        0.5, 0.25, 0.5, -0.25, 0.25, -0.25, 0.25, 0.25, 0.5,
-                        0.25
-                    }
-                }));
+                        {
+                            0.5,
+                            0.25,
+                            0.5,
+                            -0.25,
+                            0.25,
+                            -0.25,
+                            0.25,
+                            0.25,
+                            0.5,
+                            0.25
+                        }
+                    }));
         angleSpan = new Parameter(this, "angleSpan",
                 new DoubleToken(2 * Math.PI));
         slices = new Parameter(this, "slices", new IntToken(32));

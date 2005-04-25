@@ -56,7 +56,7 @@ public class ECSLLogic extends Transformer {
      *   an actor already in the container.
      */
     public ECSLLogic(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input.setMultiport(true);
         output.setMultiport(true);

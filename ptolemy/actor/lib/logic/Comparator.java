@@ -89,7 +89,7 @@ public class Comparator extends TypedAtomicActor {
      *   actor with this name.
      */
     public Comparator(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // Parameters
@@ -108,12 +108,12 @@ public class Comparator extends TypedAtomicActor {
         output.setTypeEquals(BaseType.BOOLEAN);
 
         _attachText("_iconDescription",
-                "<svg>\n" + "<rect x=\"-30\" y=\"-15\" "
-                + "width=\"60\" height=\"30\" " + "style=\"fill:white\"/>\n"
-                + "<polyline points=\"-30,-10, -10,-10, -10,0\" "
-                + "style=\"stroke:grey\"/>\n"
-                + "<polyline points=\"-30,10, 10,10, 10,0\" "
-                + "style=\"stroke:grey\"/>\n" + "</svg>\n");
+            "<svg>\n" + "<rect x=\"-30\" y=\"-15\" "
+            + "width=\"60\" height=\"30\" " + "style=\"fill:white\"/>\n"
+            + "<polyline points=\"-30,-10, -10,-10, -10,0\" "
+            + "style=\"stroke:grey\"/>\n"
+            + "<polyline points=\"-30,10, 10,10, 10,0\" "
+            + "style=\"stroke:grey\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -148,7 +148,7 @@ public class Comparator extends TypedAtomicActor {
      *  @exception IllegalActionException If the comparison is not recognized.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == tolerance) {
             _tolerance = ((DoubleToken) tolerance.getToken()).doubleValue();
         } else if (attribute == comparison) {
@@ -166,7 +166,7 @@ public class Comparator extends TypedAtomicActor {
                 _comparison = _EQ;
             } else {
                 throw new IllegalActionException(this,
-                        "Unrecognized comparison: " + comparisonName);
+                    "Unrecognized comparison: " + comparisonName);
             }
         } else {
             super.attributeChanged(attribute);
@@ -219,7 +219,7 @@ public class Comparator extends TypedAtomicActor {
         case _EQ:
 
             if ((leftIn <= (rightIn + _tolerance))
-                    && (leftIn >= (rightIn - _tolerance))) {
+                            && (leftIn >= (rightIn - _tolerance))) {
                 result = BooleanToken.TRUE;
             }
 
@@ -227,9 +227,9 @@ public class Comparator extends TypedAtomicActor {
 
         default:
             throw new InternalErrorException(
-                    "Invalid value for _comparison private variable. "
-                    + "Comparator actor (" + getFullName() + ")"
-                    + " on comparison type " + _comparison);
+                "Invalid value for _comparison private variable. "
+                + "Comparator actor (" + getFullName() + ")"
+                + " on comparison type " + _comparison);
         }
 
         output.send(0, result);

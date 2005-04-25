@@ -69,16 +69,16 @@ public class Equals extends Transformer {
      *   an actor already in the container.
      */
     public Equals(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input.setMultiport(true);
         output.setTypeEquals(BaseType.BOOLEAN);
 
         _attachText("_iconDescription",
-                "<svg>\n" + "<rect x=\"-30\" y=\"-15\" "
-                + "width=\"60\" height=\"30\" " + "style=\"fill:white\"/>\n"
-                + "<text x=\"-14\" y=\"8\"" + "style=\"font-size:24\">==</text>\n"
-                + "</svg>\n");
+            "<svg>\n" + "<rect x=\"-30\" y=\"-15\" "
+            + "width=\"60\" height=\"30\" " + "style=\"fill:white\"/>\n"
+            + "<text x=\"-14\" y=\"8\"" + "style=\"font-size:24\">==</text>\n"
+            + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////

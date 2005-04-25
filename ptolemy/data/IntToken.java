@@ -111,7 +111,7 @@ public class IntToken extends ScalarToken {
 
         if ((compare == CPO.LOWER) || (compare == CPO.INCOMPARABLE)) {
             throw new IllegalActionException(notSupportedIncomparableConversionMessage(
-                                                     token, "int"));
+                    token, "int"));
         }
 
         compare = TypeLattice.compare(BaseType.UNSIGNED_BYTE, token);
@@ -120,14 +120,14 @@ public class IntToken extends ScalarToken {
             UnsignedByteToken unsignedByteToken = UnsignedByteToken.convert(token);
             IntToken result = new IntToken(unsignedByteToken.intValue());
             result._unitCategoryExponents = unsignedByteToken
-                ._copyOfCategoryExponents();
+                            ._copyOfCategoryExponents();
             return result;
         }
 
         // The argument is below UnsignedByteToken in the type hierarchy,
         // but I don't recognize it.
         throw new IllegalActionException(notSupportedConversionMessage(token,
-                                                 "int"));
+                "int"));
     }
 
     /** Return the value in the token as a double.
@@ -363,7 +363,7 @@ public class IntToken extends ScalarToken {
      *  @return A new Token containing the result.
      */
     protected BooleanToken _isLessThan(ScalarToken rightArgument)
-            throws IllegalActionException {
+        throws IllegalActionException {
         IntToken convertedArgument = (IntToken) rightArgument;
         return BooleanToken.getInstance(_value < convertedArgument.intValue());
     }

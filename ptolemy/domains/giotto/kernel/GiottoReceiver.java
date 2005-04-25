@@ -89,7 +89,7 @@ public class GiottoReceiver extends AbstractReceiver implements StateReceiver {
     public Token get() throws NoTokenException {
         if (_token == null) {
             throw new NoTokenException(getContainer(),
-                    "Attempt to get data from an empty receiver.");
+                "Attempt to get data from an empty receiver.");
         }
 
         return _token;
@@ -154,7 +154,7 @@ public class GiottoReceiver extends AbstractReceiver implements StateReceiver {
     public Token remove() throws NoTokenException {
         if (_token == null) {
             throw new NoTokenException(getContainer(),
-                    "Attempt to get data from an empty receiver.");
+                "Attempt to get data from an empty receiver.");
         }
 
         Token buffer = _token;

@@ -65,7 +65,7 @@ public class StreamLoader extends Source {
      *   actor with this name.
      */
     public StreamLoader(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         output.setTypeEquals(BaseType.OBJECT);
         fileOrURL = new FileParameter(this, "fileOrURL");

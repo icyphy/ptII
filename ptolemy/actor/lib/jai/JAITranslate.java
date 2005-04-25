@@ -78,7 +78,7 @@ public class JAITranslate extends Transformer {
      *   actor with this name.
      */
     public JAITranslate(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         xShift = new Parameter(this, "xShift", new DoubleToken("0.0F"));
@@ -128,7 +128,7 @@ public class JAITranslate extends Transformer {
      *  @exception IllegalActionException If the function is not recognized.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == interpolationType) {
             String typeName = interpolationType.getExpression();
 
@@ -142,7 +142,7 @@ public class JAITranslate extends Transformer {
                 _interpolationType = _NEARESTNEIGHBOR;
             } else {
                 throw new IllegalActionException(this,
-                        "Unrecognized interpolation type: " + typeName);
+                    "Unrecognized interpolation type: " + typeName);
             }
         } else if (attribute == xShift) {
             _xShift = ((DoubleToken) xShift.getToken()).doubleValue();
@@ -199,7 +199,7 @@ public class JAITranslate extends Transformer {
 
         default:
             throw new IllegalActionException(
-                    "Invalid value for interpolationType");
+                "Invalid value for interpolationType");
         }
 
         RenderedOp newImage = JAI.create("translate", parameters, null);

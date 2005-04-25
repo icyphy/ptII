@@ -86,7 +86,7 @@ public class HadamardCode extends Source {
      *   actor with this name.
      */
     public HadamardCode(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         index = new PortParameter(this, "index");
@@ -126,13 +126,13 @@ public class HadamardCode extends Source {
      *   or <i>log2Length</i> is not strictly positive.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == index) {
             int indexValue = ((IntToken) index.getToken()).intValue();
 
             if (indexValue < 0) {
                 throw new IllegalActionException(this,
-                        "index parameter is not permitted to be negative.");
+                    "index parameter is not permitted to be negative.");
             }
 
             // Set a flag indicating that the private variable _row
@@ -146,15 +146,15 @@ public class HadamardCode extends Source {
 
             if (log2LengthValue <= 0) {
                 throw new IllegalActionException(this,
-                        "log2Length parameter is required to be "
-                        + "strictly positive.");
+                    "log2Length parameter is required to be "
+                    + "strictly positive.");
             }
 
             // Assuming an int is 32 bits, our implementation will only
             // work if this is less than 32.
             if (log2LengthValue >= 32) {
                 throw new IllegalActionException(this,
-                        "log2Length parameter is required to be " + "less than 32.");
+                    "log2Length parameter is required to be " + "less than 32.");
             }
 
             // Set a flag indicating that the private variable _row
@@ -273,7 +273,7 @@ public class HadamardCode extends Source {
                 }
             } else {
                 System.arraycopy(halfRow, 0, result, halfDimension,
-                        halfDimension);
+                    halfDimension);
             }
 
             return result;
@@ -295,8 +295,14 @@ public class HadamardCode extends Source {
     private boolean[] _row;
 
     // Rows of H<sub>1</sub>.
-    private static boolean[] _row0 = { true, true };
-    private static boolean[] _row1 = { true, false };
+    private static boolean[] _row0 = {
+            true,
+            true
+        };
+    private static boolean[] _row1 = {
+            true,
+            false
+        };
 
     // A flag indicating that the private variable _row is invalid.
     private transient boolean _rowValueInvalid = true;

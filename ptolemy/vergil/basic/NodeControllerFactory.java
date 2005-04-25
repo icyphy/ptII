@@ -72,7 +72,7 @@ public class NodeControllerFactory extends SingletonAttribute {
      *   attribute with this name.
      */
     public NodeControllerFactory(NamedObj container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
     }
 

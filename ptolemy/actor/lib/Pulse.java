@@ -90,7 +90,7 @@ public class Pulse extends SequenceSource {
      *   actor with this name.
      */
     public Pulse(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         indexes = new Parameter(this, "indexes");
@@ -146,7 +146,7 @@ public class Pulse extends SequenceSource {
      *   increasing and nonnegative, or the indexes is not a row vector.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == indexes) {
             ArrayToken indexesValue = (ArrayToken) indexes.getToken();
             _indexes = new int[indexesValue.length()];
@@ -159,8 +159,8 @@ public class Pulse extends SequenceSource {
                 // Check nondecreasing property.
                 if (_indexes[i] < previous) {
                     throw new IllegalActionException(this,
-                            "Value of indexes is not nondecreasing "
-                            + "and nonnegative.");
+                        "Value of indexes is not nondecreasing "
+                        + "and nonnegative.");
                 }
 
                 previous = _indexes[i];
@@ -172,11 +172,11 @@ public class Pulse extends SequenceSource {
                 _zero = prototype.zero();
             } catch (ArrayIndexOutOfBoundsException ex) {
                 throw new IllegalActionException(this,
-                        "Cannot set values to an empty array.");
+                    "Cannot set values to an empty array.");
             } catch (ClassCastException ex) {
                 throw new IllegalActionException(this,
-                        "Cannot set values to something that is not an array: "
-                        + values.getToken());
+                    "Cannot set values to something that is not an array: "
+                    + values.getToken());
             }
         } else if (attribute == repeat) {
             _repeatFlag = ((BooleanToken) repeat.getToken()).booleanValue();
@@ -216,8 +216,8 @@ public class Pulse extends SequenceSource {
         if (_indexColCount < _indexes.length) {
             if (val.length() != _indexes.length) {
                 throw new IllegalActionException(this,
-                        "Parameters values and indexes have "
-                        + "different lengths.");
+                    "Parameters values and indexes have "
+                    + "different lengths.");
             }
 
             currentIndex = _indexes[_indexColCount];

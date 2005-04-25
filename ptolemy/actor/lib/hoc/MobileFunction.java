@@ -68,7 +68,7 @@ public class MobileFunction extends TypedAtomicActor {
      *   actor with this name.
      */
     public MobileFunction(Workspace workspace)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(workspace);
         input = new TypedIOPort(this, "input", true, false);
         function = new TypedIOPort(this, "function", true, false);
@@ -89,7 +89,7 @@ public class MobileFunction extends TypedAtomicActor {
      *   an actor already in the container.
      */
     public MobileFunction(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input = new TypedIOPort(this, "input", true, false);
         function = new TypedIOPort(this, "function", true, false);
@@ -149,7 +149,9 @@ public class MobileFunction extends TypedAtomicActor {
                 // function only has one argument.  how to resolve type and type
                 // signature?
                 Token in = input.get(0);
-                Token[] argList = new Token[] { in };
+                Token[] argList = new Token[] {
+                        in
+                    };
                 Token t = _function.apply(argList);
                 output.broadcast(t);
             }

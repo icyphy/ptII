@@ -29,6 +29,13 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.corba;
 
+import org.omg.CORBA.ORB;
+import org.omg.CORBA.UserException;
+
+import org.omg.CosNaming.NameComponent;
+import org.omg.CosNaming.NamingContext;
+import org.omg.CosNaming.NamingContextHelper;
+
 import ptolemy.actor.corba.CorbaIOUtil.CorbaIllegalActionException;
 import ptolemy.actor.corba.CorbaIOUtil.pullSupplier;
 import ptolemy.actor.lib.Source;
@@ -44,12 +51,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 import java.util.StringTokenizer;
-
-import org.omg.CORBA.ORB;
-import org.omg.CORBA.UserException;
-import org.omg.CosNaming.NameComponent;
-import org.omg.CosNaming.NamingContext;
-import org.omg.CosNaming.NamingContextHelper;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -86,7 +87,7 @@ public class PullConsumer extends Source {
      *   actor with this name.
      */
     public PullConsumer(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         ORBInitProperties = new Parameter(this, "ORBInitProperties");
@@ -138,7 +139,7 @@ public class PullConsumer extends Source {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == blocking) {
             _blocking = ((BooleanToken) blocking.getToken()).booleanValue();
         } else {
@@ -157,7 +158,7 @@ public class PullConsumer extends Source {
 
         // String tokenize the parameter ORBInitProperties
         StringTokenizer st = new StringTokenizer(((StringToken) ORBInitProperties
-                                                         .getToken()).stringValue());
+                            .getToken()).stringValue());
         String[] args = new String[st.countTokens()];
         int i = 0;
 
@@ -218,7 +219,7 @@ public class PullConsumer extends Source {
                         }
                     } catch (InterruptedException e) {
                         throw new IllegalActionException(this,
-                                "blocking interrupted." + e.getMessage());
+                            "blocking interrupted." + e.getMessage());
                     }
                 }
 
@@ -232,7 +233,7 @@ public class PullConsumer extends Source {
             }
         } catch (IllegalActionException ex) {
             throw new IllegalActionException(this,
-                    "remote actor throws IllegalActionException" + ex.getMessage());
+                "remote actor throws IllegalActionException" + ex.getMessage());
         }
     }
 
@@ -286,26 +287,28 @@ public class PullConsumer extends Source {
 
             //resolve the remote consumer reference in Naming
             NameComponent namecomp = new NameComponent(((StringToken) remoteSupplierName
-                                                               .getToken()).stringValue(), "");
+                                .getToken()).stringValue(), "");
             _debug(getName(), " looking for name: ",
-                    (remoteSupplierName.getToken()).toString());
+                (remoteSupplierName.getToken()).toString());
 
-            NameComponent[] path = { namecomp };
+            NameComponent[] path = {
+                    namecomp
+                };
 
             // locate the remote actor
             _remoteSupplier = ptolemy.actor.corba.CorbaIOUtil.pullSupplierHelper
-                .narrow(ncRef.resolve(path));
+                            .narrow(ncRef.resolve(path));
 
             if (_remoteSupplier == null) {
                 throw new IllegalActionException(this,
-                        " can not find the remote supplier.");
+                    " can not find the remote supplier.");
             }
         } catch (UserException ex) {
             throw new IllegalActionException(this,
-                    " initialize ORB failed. Please make sure the "
-                    + "naming server has already started and the "
-                    + "ORBInitProperty parameter is configured correctly. "
-                    + "the error message is: " + ex.getMessage());
+                " initialize ORB failed. Please make sure the "
+                + "naming server has already started and the "
+                + "ORBInitProperty parameter is configured correctly. "
+                + "the error message is: " + ex.getMessage());
         }
     }
 

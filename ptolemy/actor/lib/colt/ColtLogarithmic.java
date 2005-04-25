@@ -27,13 +27,15 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.lib.colt;
 
+import cern.jet.random.Logarithmic;
+
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import cern.jet.random.Logarithmic;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// Logarithmic
@@ -46,7 +48,7 @@ import cern.jet.random.Logarithmic;
    deviation given by parameters.  In addition, the seed can be
    specified as a parameter to control the sequence that is generated.
 
-   <p> This actor instantiates a 
+   <p> This actor instantiates a
    <a href="http://hoschek.home.cern.ch/hoschek/colt/V1.0.3/doc/cern/jet/random/Logarithmic.html">cern.jet.random.Logarithmic</a> object with
     p set to 0.5
 
@@ -66,14 +68,14 @@ public class ColtLogarithmic extends ColtRandomSource {
      *   actor with this name.
      */
     public ColtLogarithmic(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         output.setTypeEquals(BaseType.DOUBLE);
 
         p = new Parameter(this, "p", new DoubleToken(0.5));
         p.setTypeEquals(BaseType.DOUBLE);
-        
+
         p.moveToFirst();
     }
 
@@ -121,7 +123,7 @@ public class ColtLogarithmic extends ColtRandomSource {
 
     /** The random number for the current iteration. */
     private double _current;
-    
+
     /** The random number generator. */
     private Logarithmic _generator;
 }

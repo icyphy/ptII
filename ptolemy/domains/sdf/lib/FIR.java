@@ -113,7 +113,7 @@ public class FIR extends SDFTransformer {
      *   actor with this name.
      */
     public FIR(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         decimation = new Parameter(this, "decimation");
@@ -176,15 +176,15 @@ public class FIR extends SDFTransformer {
      *  an invalid value or if the super method throws it.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == interpolation) {
             IntToken token = (IntToken) (interpolation.getToken());
             _interpolationValue = token.intValue();
 
             if (_interpolationValue <= 0) {
                 throw new IllegalActionException(this,
-                        "Invalid interpolation: " + _interpolationValue
-                        + ". Must be positive.");
+                    "Invalid interpolation: " + _interpolationValue
+                    + ". Must be positive.");
             }
 
             _reinitializeNeeded = true;
@@ -194,8 +194,8 @@ public class FIR extends SDFTransformer {
 
             if (_decimationValue <= 0) {
                 throw new IllegalActionException(this,
-                        "Invalid decimation: " + _decimationValue
-                        + ". Must be positive.");
+                    "Invalid decimation: " + _decimationValue
+                    + ". Must be positive.");
             }
 
             _reinitializeNeeded = true;
@@ -205,8 +205,8 @@ public class FIR extends SDFTransformer {
 
             if (_decimationPhaseValue < 0) {
                 throw new IllegalActionException(this,
-                        "Invalid decimationPhase: " + _decimationPhaseValue
-                        + ". Must be nonnegative.");
+                    "Invalid decimationPhase: " + _decimationPhaseValue
+                    + ". Must be nonnegative.");
             }
 
             _reinitializeNeeded = true;
@@ -344,8 +344,8 @@ public class FIR extends SDFTransformer {
     protected void _reinitialize() throws IllegalActionException {
         if (_decimationPhaseValue >= _decimationValue) {
             throw new IllegalActionException(this,
-                    "Invalid decimationPhase: " + _decimationPhaseValue
-                    + ". Must be less than decimation: " + _decimationValue + ".");
+                "Invalid decimationPhase: " + _decimationPhaseValue
+                + ". Must be less than decimation: " + _decimationValue + ".");
         }
 
         _phaseLength = (int) (_taps.length / _interpolationValue);

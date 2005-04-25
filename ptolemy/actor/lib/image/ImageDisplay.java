@@ -75,7 +75,6 @@ import javax.swing.SwingUtilities;
    @Pt.AcceptedRating Red
 */
 public class ImageDisplay extends Sink implements Placeable {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -85,9 +84,9 @@ public class ImageDisplay extends Sink implements Placeable {
      *   actor with this name.
      */
     public ImageDisplay(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         // FIXME: This is required to be an ImageToken, but
         // we don't see to have that class.
         input.setTypeEquals(BaseType.OBJECT);
@@ -103,7 +102,7 @@ public class ImageDisplay extends Sink implements Placeable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then removes association with graphical objects
      *  belonging to the original class.
@@ -136,16 +135,17 @@ public class ImageDisplay extends Sink implements Placeable {
 
         // This has to be done in the Swing event thread.
         Runnable doDisplay = new Runnable() {
-            public void run() {
-                _createOrShowWindow();
-            }
-        };
+                public void run() {
+                    _createOrShowWindow();
+                }
+            };
+
         SwingUtilities.invokeLater(doDisplay);
     }
 
-	/** Set the container that this actor should display data in.  If place
-     * is not called, then the actor will create its own frame for display.
-     */
+    /** Set the container that this actor should display data in.  If place
+    * is not called, then the actor will create its own frame for display.
+    */
     public void place(Container container) {
         // If there was a previous container that doesn't match this one,
         // remove the pane from it.
@@ -200,23 +200,26 @@ public class ImageDisplay extends Sink implements Placeable {
     public boolean postfire() throws IllegalActionException {
         if (input.hasToken(0)) {
             final Token in = input.get(0);
+
             if (!(in instanceof ImageToken)) {
-            	throw new IllegalActionException(this, "Input is not an ImageToken. It is: " + in);
+                throw new IllegalActionException(this,
+                    "Input is not an ImageToken. It is: " + in);
             }
 
             // Display probably to be done in the Swing event thread.
             Runnable doDisplay = new Runnable() {
-            	public void run() {
-                    _display(in);                    
-                }
-            };
+                    public void run() {
+                        _display(in);
+                    }
+                };
+
             SwingUtilities.invokeLater(doDisplay);
         }
 
         return super.postfire();
     }
 
-	/** Set the background */
+    /** Set the background */
     public void setBackground(Color background) {
         _container.setBackground(background);
     }
@@ -236,8 +239,8 @@ public class ImageDisplay extends Sink implements Placeable {
 
                 if (containerEffigy == null) {
                     throw new InternalErrorException(
-                            "Cannot find effigy for top level: "
-                            + toplevel().getFullName());
+                        "Cannot find effigy for top level: "
+                        + toplevel().getFullName());
                 }
 
                 try {
@@ -260,7 +263,8 @@ public class ImageDisplay extends Sink implements Placeable {
                     // Regrettably, since setSize() in swing doesn't actually
                     // set the size of the frame, we have to also set the
                     // size of the internal component.
-                    Component[] components = _frame.getContentPane().getComponents();
+                    Component[] components = _frame.getContentPane()
+                                                               .getComponents();
 
                     if (components.length > 0) {
                         _pictureSize.setSize(components[0]);
@@ -295,13 +299,14 @@ public class ImageDisplay extends Sink implements Placeable {
         if (_frame != null) {
             List tokens = new LinkedList();
             tokens.add(in);
+
             try {
-				_effigy.setTokens(tokens);
-			} catch (IllegalActionException e) {
-				throw new InternalErrorException(e);
-			}
+                _effigy.setTokens(tokens);
+            } catch (IllegalActionException e) {
+                throw new InternalErrorException(e);
+            }
         } else if (_picture != null) {
-            Image image = ((ImageToken)in).asAWTImage();
+            Image image = ((ImageToken) in).asAWTImage();
             int xsize = image.getWidth(null);
             int ysize = image.getHeight(null);
 
@@ -313,7 +318,7 @@ public class ImageDisplay extends Sink implements Placeable {
 
                 _oldxsize = xsize;
                 _oldysize = ysize;
-                
+
                 Container container = _picture.getParent();
 
                 if (_picture != null) {
@@ -335,8 +340,9 @@ public class ImageDisplay extends Sink implements Placeable {
                     c.invalidate();
                     c.validate();
                     c = c.getParent();
+
                     if (c instanceof JFrame) {
-                        ((JFrame)c).pack();
+                        ((JFrame) c).pack();
                     }
                 }
             } else {
@@ -358,7 +364,7 @@ public class ImageDisplay extends Sink implements Placeable {
 
     /** The frame, if one is used. */
     private ImageWindow _frame;
-    
+
     /** The horizontal size of the previous image. */
     private int _oldxsize = 0;
 
@@ -367,13 +373,13 @@ public class ImageDisplay extends Sink implements Placeable {
 
     /** The picture panel. */
     private Picture _picture;
-    
+
     /** A specification of the size of the picture if it's in its own window. */
     private SizeAttribute _pictureSize;
-    
+
     /** The tableau with the display, if any. */
     private ImageTableau _tableau;
-    
+
     /** A specification for the window properties of the frame. */
     private WindowPropertiesAttribute _windowProperties;
 

@@ -27,11 +27,12 @@ COPYRIGHTENDKEY
 @ProposedRating Red (sanjeev)
 @AcceptedRating Red (sanjeev)
 */
-
 package ptolemy.apps.cacheAwareScheduler.kernel;
+
 
 ///////////////////////////////////////////////////////////////////////////
 //// MemoryAddress
+
 /**
 
 This class represents a memory address for data produced and consumed by
@@ -47,9 +48,7 @@ index of the produced token.
 @since Ptolemy II 2.0
 
 */
-
 public class MemoryAddress {
-
     /** Default constructor.
      */
     public MemoryAddress() {
@@ -81,13 +80,16 @@ public class MemoryAddress {
      *  @return boolean True iff equal else False.
      */
     public boolean equals(Object memoryAddress) {
-        if (((MemoryAddress)memoryAddress).actorID == actorID) {
-            if (((MemoryAddress)memoryAddress).tokenNumber == tokenNumber) {
+        if (((MemoryAddress) memoryAddress).actorID == actorID) {
+            if (((MemoryAddress) memoryAddress).tokenNumber == tokenNumber) {
                 return true;
-            } else return false;
-        } else return false;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
     }
-
 
     /** Returns a hashcode for this object. This function overrides the
      *  hashcode function of the Object class.
@@ -95,7 +97,7 @@ public class MemoryAddress {
      *  @return The hascode of this object.
      */
     public int hashCode() {
-        return (actorID*1000 + tokenNumber);
+        return ((actorID * 1000) + tokenNumber);
     }
 
     /** This method sets the actorId and tokenNumber equal to the specified
@@ -112,10 +114,9 @@ public class MemoryAddress {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
-
     // ID of the actor that produced this data token
     public int actorID;
+
     // Index of the produced token
     public int tokenNumber;
 }
-

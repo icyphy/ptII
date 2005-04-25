@@ -25,13 +25,14 @@
   COPYRIGHTENDKEY
 
 */
-
 package ptolemy.caltrop.ddi;
 
 import ptolemy.actor.Executable;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// DDI
+
 /**
    An interface for domain dependent interpretation. Each instance of
    {@link ptolemy.caltrop.actors.CalInterpreter CalInterpreter} is
@@ -48,7 +49,6 @@ import ptolemy.actor.Executable;
    @Pt.AcceptedRating Red (cxh)
 */
 public interface DDI extends Executable {
-
     /**
      * Perform static checking on the actor, ensuring its validity in
      * a given domain.

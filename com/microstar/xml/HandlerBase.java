@@ -1,9 +1,7 @@
 // HandlerBase.java: Simple base class for AElfred processors.
 // NO WARRANTY! See README, and copyright below.
 // $Id$
-
 package com.microstar.xml;
-
 
 
 /**
@@ -36,153 +34,131 @@ package com.microstar.xml;
   * @see XmlException
   */
 public class HandlerBase implements XmlHandler {
+    /**
+      * Handle the start of the document.
+      * <p>The default implementation does nothing.
+      * @see com.microstar.xml.XmlHandler#startDocument
+      * @exception java.lang.Exception Derived methods may throw exceptions.
+      */
+    public void startDocument() throws java.lang.Exception {
+    }
 
-  /**
-    * Handle the start of the document.
-    * <p>The default implementation does nothing.
-    * @see com.microstar.xml.XmlHandler#startDocument
-    * @exception java.lang.Exception Derived methods may throw exceptions.
-    */
-  public void startDocument () 
-    throws java.lang.Exception
-  {
-  }
+    /**
+      * Handle the end of the document.
+      * <p>The default implementation does nothing.
+      * @see com.microstar.xml.XmlHandler#endDocument
+      * @exception java.lang.Exception Derived methods may throw exceptions.
+      */
+    public void endDocument() throws java.lang.Exception {
+    }
 
-  /**
-    * Handle the end of the document.
-    * <p>The default implementation does nothing.
-    * @see com.microstar.xml.XmlHandler#endDocument
-    * @exception java.lang.Exception Derived methods may throw exceptions.
-    */
-  public void endDocument ()
-    throws java.lang.Exception
-  {
-  }
+    /**
+      * Resolve an external entity.
+      * <p>The default implementation simply returns the supplied
+      * system identifier.
+      * @see com.microstar.xml.XmlHandler#resolveEntity
+      * @exception java.lang.Exception Derived methods may throw exceptions.
+      */
+    public Object resolveEntity(String publicId, String systemId)
+        throws java.lang.Exception {
+        return null;
+    }
 
-  /**
-    * Resolve an external entity.
-    * <p>The default implementation simply returns the supplied
-    * system identifier.
-    * @see com.microstar.xml.XmlHandler#resolveEntity
-    * @exception java.lang.Exception Derived methods may throw exceptions.
-    */
-  public Object resolveEntity (String publicId, String systemId) 
-    throws java.lang.Exception
-  {
-    return null;
-  }
+    /**
+      * Handle the start of an external entity.
+      * <p>The default implementation does nothing.
+      * @see com.microstar.xml.XmlHandler#startExternalEntity
+      * @exception java.lang.Exception Derived methods may throw exceptions.
+      */
+    public void startExternalEntity(String systemId) throws java.lang.Exception {
+    }
 
+    /**
+      * Handle the end of an external entity.
+      * <p>The default implementation does nothing.
+      * @see com.microstar.xml.XmlHandler#endExternalEntity
+      * @exception java.lang.Exception Derived methods may throw exceptions.
+      */
+    public void endExternalEntity(String systemId) throws java.lang.Exception {
+    }
 
-  /**
-    * Handle the start of an external entity.
-    * <p>The default implementation does nothing.
-    * @see com.microstar.xml.XmlHandler#startExternalEntity
-    * @exception java.lang.Exception Derived methods may throw exceptions.
-    */
-  public void startExternalEntity (String systemId)
-    throws java.lang.Exception
-  {
-  }
+    /**
+      * Handle a document type declaration.
+      * <p>The default implementation does nothing.
+      * @see com.microstar.xml.XmlHandler#doctypeDecl
+      * @exception java.lang.Exception Derived methods may throw exceptions.
+      */
+    public void doctypeDecl(String name, String publicId, String systemId)
+        throws java.lang.Exception {
+    }
 
-  /**
-    * Handle the end of an external entity.
-    * <p>The default implementation does nothing.
-    * @see com.microstar.xml.XmlHandler#endExternalEntity
-    * @exception java.lang.Exception Derived methods may throw exceptions.
-    */
-  public void endExternalEntity (String systemId)
-    throws java.lang.Exception
-  {
-  }
+    /**
+      * Handle an attribute assignment.
+      * <p>The default implementation does nothing.
+      * @see com.microstar.xml.XmlHandler#attribute
+      * @exception java.lang.Exception Derived methods may throw exceptions.
+      */
+    public void attribute(String aname, String value, boolean isSpecified)
+        throws java.lang.Exception {
+    }
 
-  /**
-    * Handle a document type declaration.
-    * <p>The default implementation does nothing.
-    * @see com.microstar.xml.XmlHandler#doctypeDecl
-    * @exception java.lang.Exception Derived methods may throw exceptions.
-    */
-  public void doctypeDecl (String name, String publicId, String systemId)
-    throws java.lang.Exception
-  {
-  }
+    /**
+      * Handle the start of an element.
+      * <p>The default implementation does nothing.
+      * @see com.microstar.xml.XmlHandler#startElement
+      * @exception java.lang.Exception Derived methods may throw exceptions.
+      */
+    public void startElement(String elname) throws java.lang.Exception {
+    }
 
-  /**
-    * Handle an attribute assignment.
-    * <p>The default implementation does nothing.
-    * @see com.microstar.xml.XmlHandler#attribute
-    * @exception java.lang.Exception Derived methods may throw exceptions.
-    */
-  public void attribute (String aname, String value, boolean isSpecified)
-    throws java.lang.Exception
-  {
-  }
+    /**
+      * Handle the end of an element.
+      * <p>The default implementation does nothing.
+      * @see com.microstar.xml.XmlHandler#endElement
+      * @exception java.lang.Exception Derived methods may throw exceptions.
+      */
+    public void endElement(String elname) throws java.lang.Exception {
+    }
 
-  /**
-    * Handle the start of an element.
-    * <p>The default implementation does nothing.
-    * @see com.microstar.xml.XmlHandler#startElement
-    * @exception java.lang.Exception Derived methods may throw exceptions.
-    */
-  public void startElement (String elname)
-    throws java.lang.Exception
-  {
-  }
+    /**
+      * Handle character data.
+      * <p>The default implementation does nothing.
+      * @see com.microstar.xml.XmlHandler#charData
+      * @exception java.lang.Exception Derived methods may throw exceptions.
+      */
+    public void charData(char[] ch, int start, int length)
+        throws java.lang.Exception {
+    }
 
-  /**
-    * Handle the end of an element.
-    * <p>The default implementation does nothing.
-    * @see com.microstar.xml.XmlHandler#endElement
-    * @exception java.lang.Exception Derived methods may throw exceptions.
-    */
-  public void endElement (String elname)
-    throws java.lang.Exception
-  {
-  }
+    /**
+      * Handle ignorable whitespace.
+      * <p>The default implementation does nothing.
+      * @see com.microstar.xml.XmlHandler#ignorableWhitespace
+      * @exception java.lang.Exception Derived methods may throw exceptions.
+      */
+    public void ignorableWhitespace(char[] ch, int start, int length)
+        throws java.lang.Exception {
+    }
 
-  /**
-    * Handle character data.
-    * <p>The default implementation does nothing.
-    * @see com.microstar.xml.XmlHandler#charData
-    * @exception java.lang.Exception Derived methods may throw exceptions.
-    */
-  public void charData (char ch[], int start, int length)
-    throws java.lang.Exception
-  {
-  }
+    /**
+      * Handle a processing instruction.
+      * <p>The default implementation does nothing.
+      * @see com.microstar.xml.XmlHandler#processingInstruction
+      * @exception java.lang.Exception Derived methods may throw exceptions.
+      */
+    public void processingInstruction(String target, String data)
+        throws java.lang.Exception {
+    }
 
-  /**
-    * Handle ignorable whitespace.
-    * <p>The default implementation does nothing.
-    * @see com.microstar.xml.XmlHandler#ignorableWhitespace
-    * @exception java.lang.Exception Derived methods may throw exceptions.
-    */
-  public void ignorableWhitespace (char ch[], int start, int length)
-    throws java.lang.Exception
-  {
-  }
-
-  /**
-    * Handle a processing instruction.
-    * <p>The default implementation does nothing.
-    * @see com.microstar.xml.XmlHandler#processingInstruction
-    * @exception java.lang.Exception Derived methods may throw exceptions.
-    */
-  public void processingInstruction (String target, String data)
-    throws java.lang.Exception
-  {
-  }
-
-  /**
-    * Throw an exception for a fatal error.
-    * <p>The default implementation throws <code>XmlException</code>.
-    * @see com.microstar.xml.XmlHandler#error
-    * @exception com.microstar.xml.XmlException A specific parsing error.
-    * @exception java.lang.Exception Derived methods may throw exceptions.
-    */
-  public void error (String message, String systemId, int line, int column)
-    throws XmlException, java.lang.Exception
-  {
-    throw new XmlException(message, systemId, line, column);
-  }
-
+    /**
+      * Throw an exception for a fatal error.
+      * <p>The default implementation throws <code>XmlException</code>.
+      * @see com.microstar.xml.XmlHandler#error
+      * @exception com.microstar.xml.XmlException A specific parsing error.
+      * @exception java.lang.Exception Derived methods may throw exceptions.
+      */
+    public void error(String message, String systemId, int line, int column)
+        throws XmlException, java.lang.Exception {
+        throw new XmlException(message, systemId, line, column);
+    }
 }

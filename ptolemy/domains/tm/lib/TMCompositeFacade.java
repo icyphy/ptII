@@ -72,7 +72,7 @@ public class TMCompositeFacade extends TypedCompositeActor implements TMActor {
      *   an actor already in the container.
      */
     public TMCompositeFacade(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         priority = new Parameter(this, "priority", new IntToken(10));
         priority.setTypeEquals(BaseType.INT);
@@ -98,13 +98,13 @@ public class TMCompositeFacade extends TypedCompositeActor implements TMActor {
     /** update local cache of executionTime.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == executionTime) {
             double time = ((DoubleToken) executionTime.getToken()).doubleValue();
 
             if (time < 0.0) {
                 throw new IllegalActionException(this,
-                        " execution time cannot be less than 0.");
+                    " execution time cannot be less than 0.");
             }
 
             _executionTime = time;
@@ -166,7 +166,7 @@ public class TMCompositeFacade extends TypedCompositeActor implements TMActor {
     /** Transfer inputs from the ports.
      *  @exception IllegalActionException If the director throws it
      *  while transferring inputs.
-     */   
+     */
     protected synchronized void _transferInputs() throws IllegalActionException {
         Iterator inputPorts = inputPortList().iterator();
 
@@ -179,9 +179,9 @@ public class TMCompositeFacade extends TypedCompositeActor implements TMActor {
     /** Transfer outputs from the ports.
      *  @exception IllegalActionException If the director throws it
      *  while transferring outputs
-     */   
+     */
     protected synchronized void _transferOutputs()
-            throws IllegalActionException {
+        throws IllegalActionException {
         // Use the executive director to transfer outputs.
         Director executiveDirector = getExecutiveDirector();
 

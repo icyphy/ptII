@@ -97,7 +97,7 @@ public class AtomicActor extends ComponentEntity implements Actor {
      *   an entity already in the container.
      */
     public AtomicActor(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -201,11 +201,11 @@ public class AtomicActor extends ComponentEntity implements Actor {
             } catch (NameDuplicationException e) {
                 // This should not happen.
                 throw new InternalErrorException("Failed to construct a"
-                        + "function dependency object for " + getName());
+                    + "function dependency object for " + getName());
             } catch (IllegalActionException e) {
                 // This should not happen.
                 throw new InternalErrorException("Failed to construct a"
-                        + "function dependency object for " + getName());
+                    + "function dependency object for " + getName());
             }
         }
 
@@ -363,7 +363,7 @@ public class AtomicActor extends ComponentEntity implements Actor {
 
         if (director == null) {
             throw new IllegalActionException(this,
-                    "Cannot create a receiver without a director.");
+                "Cannot create a receiver without a director.");
         }
 
         return director.newReceiver();
@@ -506,7 +506,7 @@ public class AtomicActor extends ComponentEntity implements Actor {
      *   an entity with the name of this entity.
      */
     public void setContainer(CompositeEntity container)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         // Invalidate the schedule and type resolution of the old director.
         Director oldDirector = getDirector();
 
@@ -601,10 +601,10 @@ public class AtomicActor extends ComponentEntity implements Actor {
      *   name already in the entity.
      */
     protected void _addPort(Port port)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         if (!(port instanceof IOPort)) {
             throw new IllegalActionException(this, port,
-                    "Incompatible port class for this entity.");
+                "Incompatible port class for this entity.");
         }
 
         super._addPort(port);

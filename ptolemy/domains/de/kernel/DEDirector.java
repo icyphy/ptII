@@ -245,7 +245,7 @@ public class DEDirector extends Director implements TimedDirector {
      *   CompositeActor and the name collides with an entity in the container.
      */
     public DEDirector(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _initParameters();
     }
@@ -328,21 +328,21 @@ public class DEDirector extends Director implements TimedDirector {
      *  Not thrown in this class.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == startTime) {
             double startTimeValue = ((DoubleToken) startTime.getToken())
-                .doubleValue();
+                            .doubleValue();
             _startTime = new Time(this, startTimeValue);
         } else if (attribute == stopTime) {
             double stopTimeValue = ((DoubleToken) stopTime.getToken())
-                .doubleValue();
+                            .doubleValue();
             _stopTime = new Time(this, stopTimeValue);
         } else if (attribute == stopWhenQueueIsEmpty) {
             _stopWhenQueueIsEmpty = ((BooleanToken) stopWhenQueueIsEmpty
-                    .getToken()).booleanValue();
+                            .getToken()).booleanValue();
         } else if (attribute == synchronizeToRealTime) {
             _synchronizeToRealTime = ((BooleanToken) synchronizeToRealTime
-                    .getToken()).booleanValue();
+                            .getToken()).booleanValue();
         } else {
             super.attributeChanged(attribute);
         }
@@ -405,7 +405,7 @@ public class DEDirector extends Director implements TimedDirector {
                     // of this director that are scheduled for future firings.
                     if (_debugging) {
                         _debug("No actor requests to be fired "
-                                + "at the current tag.");
+                            + "at the current tag.");
                     }
                 }
 
@@ -431,7 +431,7 @@ public class DEDirector extends Director implements TimedDirector {
 
             if (_debugging) {
                 _debug("DE director fires at " + getModelTime()
-                        + "  with microstep as " + _microstep);
+                    + "  with microstep as " + _microstep);
             }
 
             // Keep firing the actor to be fired until there are no more input
@@ -459,7 +459,7 @@ public class DEDirector extends Director implements TimedDirector {
                     }
 
                     _debug(new FiringEvent(this, actorToFire,
-                                   FiringEvent.BEFORE_PREFIRE));
+                            FiringEvent.BEFORE_PREFIRE));
 
                     if (!actorToFire.prefire()) {
                         _debug("*** Prefire returned false.");
@@ -467,20 +467,20 @@ public class DEDirector extends Director implements TimedDirector {
                     }
 
                     _debug(new FiringEvent(this, actorToFire,
-                                   FiringEvent.AFTER_PREFIRE));
+                            FiringEvent.AFTER_PREFIRE));
 
                     _debug(new FiringEvent(this, actorToFire,
-                                   FiringEvent.BEFORE_FIRE));
+                            FiringEvent.BEFORE_FIRE));
                     actorToFire.fire();
                     _debug(new FiringEvent(this, actorToFire,
-                                   FiringEvent.AFTER_FIRE));
+                            FiringEvent.AFTER_FIRE));
 
                     _debug(new FiringEvent(this, actorToFire,
-                                   FiringEvent.BEFORE_POSTFIRE));
+                            FiringEvent.BEFORE_POSTFIRE));
 
                     if (!actorToFire.postfire()) {
                         _debug("*** Postfire returned false:",
-                                ((Nameable) actorToFire).getName());
+                            ((Nameable) actorToFire).getName());
 
                         // This actor requests not to be fired again.
                         _disableActor(actorToFire);
@@ -488,7 +488,7 @@ public class DEDirector extends Director implements TimedDirector {
                     }
 
                     _debug(new FiringEvent(this, actorToFire,
-                                   FiringEvent.AFTER_POSTFIRE));
+                            FiringEvent.AFTER_POSTFIRE));
                 } else {
                     // No debugging.
                     if (((Nameable) actorToFire).getContainer() == null) {
@@ -558,13 +558,12 @@ public class DEDirector extends Director implements TimedDirector {
                         // proceed to postfire().
                         break;
                     } else if ((next.timeStamp().compareTo(getModelTime()) < 0)
-                            || (next.microstep() < _microstep)) {
+                                    || (next.microstep() < _microstep)) {
                         throw new IllegalActionException(
-                                "The tag of the next event (" + next.timeStamp()
-                                + "." + next.microstep() 
-                                + ") can not be less than"
-                                + " the current tag (" + getModelTime() + "."
-                                + _microstep + ") !");
+                            "The tag of the next event (" + next.timeStamp()
+                            + "." + next.microstep() + ") can not be less than"
+                            + " the current tag (" + getModelTime() + "."
+                            + _microstep + ") !");
                     } else {
                         // The next event has the same tag as the current tag,
                         // indicating that at least one actor is going to be
@@ -589,7 +588,7 @@ public class DEDirector extends Director implements TimedDirector {
     public void fireAt(Actor actor, Time time) throws IllegalActionException {
         if (_eventQueue == null) {
             throw new IllegalActionException(this,
-                    "Calling fireAt() before preinitialize().");
+                "Calling fireAt() before preinitialize().");
         }
 
         // We want to keep event queues at all levels in hierarchy
@@ -619,7 +618,7 @@ public class DEDirector extends Director implements TimedDirector {
      *  a negative time value, or event queue is not ready.
      */
     public void fireAtRelativeTime(Actor actor, Time time)
-            throws IllegalActionException {
+        throws IllegalActionException {
         fireAt(actor, time.add(getModelTime()));
     }
 
@@ -789,7 +788,7 @@ public class DEDirector extends Director implements TimedDirector {
     public boolean postfire() throws IllegalActionException {
         boolean result = super.postfire();
         boolean stop = ((BooleanToken) stopWhenQueueIsEmpty.getToken())
-            .booleanValue();
+                        .booleanValue();
 
         // There are two conditions to stop the model.
         // 1. There are no more actors to be fired (i.e. event queue is
@@ -799,8 +798,8 @@ public class DEDirector extends Director implements TimedDirector {
         // 2. The event queue is not empty, but the current time exceeds
         // the stop time.
         if (_noMoreActorsToFire
-                && 
-                (stop || (getModelTime().compareTo(getModelStopTime()) == 0))) {
+                        && (stop
+                        || (getModelTime().compareTo(getModelStopTime()) == 0))) {
             _exceedStopTime = true;
             result = result && false;
         } else if (_exceedStopTime) {
@@ -907,9 +906,9 @@ public class DEDirector extends Director implements TimedDirector {
         // in the queue, then there's a missing firing.
         if (modelTime.compareTo(nextEventTime) > 0) {
             throw new IllegalActionException(this,
-                    "Missed a firing. This director is scheduled to fire at "
-                    + nextEventTime + ", while" + " the outside time is already "
-                    + modelTime + ".");
+                "Missed a firing. This director is scheduled to fire at "
+                + nextEventTime + ", while" + " the outside time is already "
+                + modelTime + ".");
         }
 
         // Now, the model time is either less than or equal to the
@@ -1052,8 +1051,7 @@ public class DEDirector extends Director implements TimedDirector {
      */
     public String[] suggestedModalModelDirectors() {
         String[] defaultSuggestions = new String[2];
-        defaultSuggestions[1] = 
-            "ptolemy.domains.fsm.kernel.MultirateFSMDirector";
+        defaultSuggestions[1] = "ptolemy.domains.fsm.kernel.MultirateFSMDirector";
         defaultSuggestions[0] = "ptolemy.domains.fsm.kernel.FSMDirector";
         return defaultSuggestions;
     }
@@ -1127,9 +1125,9 @@ public class DEDirector extends Director implements TimedDirector {
      *  or the new event can not be enqueued.
      */
     protected void _enqueueEvent(Actor actor, Time time)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if ((_eventQueue == null)
-                || ((_disabledActors != null)
+                        || ((_disabledActors != null)
                         && _disabledActors.contains(actor))) {
             return;
         }
@@ -1150,17 +1148,16 @@ public class DEDirector extends Director implements TimedDirector {
             }
         } else if (time.compareTo(getModelTime()) < 0) {
             throw new IllegalActionException((Nameable) actor,
-                    "Attempt to queue an event in the past:" 
-                    + " Current time is "
-                    + getModelTime() + " while event time is " + time);
+                "Attempt to queue an event in the past:" + " Current time is "
+                + getModelTime() + " while event time is " + time);
         }
 
         int depth = _getDepthOfActor(actor);
 
         if (_debugging) {
             _debug("enqueue a pure event: ", ((NamedObj) actor).getName(),
-                    "time = " + time + " microstep = " + microstep + " depth = "
-                    + depth);
+                "time = " + time + " microstep = " + microstep + " depth = "
+                + depth);
         }
 
         DEEvent newEvent = new DEEvent(actor, time, microstep, depth);
@@ -1183,11 +1180,11 @@ public class DEDirector extends Director implements TimedDirector {
      *  or the new event can not be enqueued.
      */
     protected void _enqueueTriggerEvent(IOPort ioPort)
-            throws IllegalActionException {
+        throws IllegalActionException {
         Actor actor = (Actor) ioPort.getContainer();
 
         if ((_eventQueue == null)
-                || ((_disabledActors != null)
+                        || ((_disabledActors != null)
                         && _disabledActors.contains(actor))) {
             return;
         }
@@ -1196,20 +1193,18 @@ public class DEDirector extends Director implements TimedDirector {
 
         if (_debugging) {
             _debug("enqueue a trigger event for ",
-                    ((NamedObj) actor).getName(),
-                    " time = " + getModelTime() + " microstep = " + _microstep
-                    + " depth = " + depth);
+                ((NamedObj) actor).getName(),
+                " time = " + getModelTime() + " microstep = " + _microstep
+                + " depth = " + depth);
         }
 
         // Register this trigger event.
-        DEEvent newEvent = 
-            new DEEvent(ioPort, getModelTime(), _microstep, depth);
+        DEEvent newEvent = new DEEvent(ioPort, getModelTime(), _microstep, depth);
         _eventQueue.put(newEvent);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
     // Based on the depths of IO ports, calculate the depths of actors.
     // The results are cached in a hashtable _actorToDepth.
     // Update the depths of existing events in the event queue.
@@ -1339,7 +1334,7 @@ public class DEDirector extends Director implements TimedDirector {
 
         if (_debugging && _verbose) {
             _debug("## adjusting port depths based "
-                    + "on the strictness constraints.");
+                + "on the strictness constraints.");
         }
 
         LinkedList actorsWithPortDepthsAdjusted = new LinkedList();
@@ -1354,7 +1349,7 @@ public class DEDirector extends Director implements TimedDirector {
 
             // get the strictnessAttribute of actor.
             Attribute strictnessAttribute = ((NamedObj) portContainer)
-                .getAttribute(STRICT_ATTRIBUTE_NAME);
+                            .getAttribute(STRICT_ATTRIBUTE_NAME);
 
             // Normally, we adjust port depths based on output ports.
             // However, if this input port belongs to a sink actor, and
@@ -1448,16 +1443,15 @@ public class DEDirector extends Director implements TimedDirector {
 
             // we skip the ports of the container and their depths are handled
             // by the upper level executive director of this container.
-            if (portContainer.equals((Actor)getContainer())) {
+            if (portContainer.equals((Actor) getContainer())) {
                 continue;
             }
 
             // Get the function dependency of the container actor
             FunctionDependency functionDependency = portContainer
-                .getFunctionDependency();
+                            .getFunctionDependency();
 
-            Set inputPorts = 
-                functionDependency.getInputPortsDependentOn(ioPort);
+            Set inputPorts = functionDependency.getInputPortsDependentOn(ioPort);
             Iterator inputsIterator = inputPorts.iterator();
 
             // Iterate all input ports the current output depends on,
@@ -1482,7 +1476,7 @@ public class DEDirector extends Director implements TimedDirector {
 
                 if (_debugging && _verbose) {
                     _debug(((Nameable) input).getFullName(),
-                            "depth is adjusted to: " + maximumPortDepth);
+                        "depth is adjusted to: " + maximumPortDepth);
                 }
 
                 // Insert the hashtable entry.
@@ -1502,7 +1496,7 @@ public class DEDirector extends Director implements TimedDirector {
     // directed edges representing their dependencies. The directed graph
     // is returned.
     private DirectedAcyclicGraph _constructDirectedGraph()
-            throws IllegalActionException {
+        throws IllegalActionException {
         // Clear the graph
         DirectedAcyclicGraph portsGraph = new DirectedAcyclicGraph();
 
@@ -1517,9 +1511,8 @@ public class DEDirector extends Director implements TimedDirector {
 
         // Get the functionDependency attribute of the container of this
         // director. If there is no such attribute, construct one.
-        FunctionDependencyOfCompositeActor functionDependency = 
-            (FunctionDependencyOfCompositeActor) castContainer
-            .getFunctionDependency();
+        FunctionDependencyOfCompositeActor functionDependency = (FunctionDependencyOfCompositeActor) castContainer
+                        .getFunctionDependency();
 
         // NOTE: The following may be a very costly test.
         //       -- from the comments of previous implementations.
@@ -1538,16 +1531,16 @@ public class DEDirector extends Director implements TimedDirector {
                     }
 
                     names.append(((Nameable) cycleNodes[i]).getContainer()
-                            .getFullName());
+                                              .getFullName());
                 }
             }
 
             throw new IllegalActionException(this.getContainer(),
-                    "Found zero delay loop including: " + names.toString());
+                "Found zero delay loop including: " + names.toString());
         }
 
         portsGraph = functionDependency.getDetailedDependencyGraph()
-            .toDirectedAcyclicGraph();
+                                                   .toDirectedAcyclicGraph();
 
         return portsGraph;
     }
@@ -1577,8 +1570,7 @@ public class DEDirector extends Director implements TimedDirector {
      *  is not sorted.
      */
     private int _getDepthOfActor(Actor actor) throws IllegalActionException {
-        if ((_sortValid != workspace().getVersion()) 
-                || (_actorToDepth == null)) {
+        if ((_sortValid != workspace().getVersion()) || (_actorToDepth == null)) {
             _computePortDepth();
             _computeActorDepth();
         }
@@ -1589,7 +1581,7 @@ public class DEDirector extends Director implements TimedDirector {
             return depth.intValue();
         } else {
             throw new IllegalActionException("Attempt to get depth of actor "
-                    + ((NamedObj) actor).getName() + " that was not sorted.");
+                + ((NamedObj) actor).getName() + " that was not sorted.");
         }
     }
 
@@ -1599,10 +1591,8 @@ public class DEDirector extends Director implements TimedDirector {
      *  @return An int representing the depth of the given ioPort.
      *  @exception IllegalActionException If the ioPort is not sorted.
      */
-    private int _getDepthOfIOPort(IOPort ioPort) 
-        throws IllegalActionException {
-        if ((_sortValid != workspace().getVersion()) 
-                || (_portToDepth == null)) {
+    private int _getDepthOfIOPort(IOPort ioPort) throws IllegalActionException {
+        if ((_sortValid != workspace().getVersion()) || (_portToDepth == null)) {
             _computePortDepth();
             _computeActorDepth();
         }
@@ -1613,7 +1603,7 @@ public class DEDirector extends Director implements TimedDirector {
             return depth.intValue();
         } else {
             throw new IllegalActionException("Attempt to get depth of ioPort "
-                    + ((NamedObj) ioPort).getName() + " that was not sorted.");
+                + ((NamedObj) ioPort).getName() + " that was not sorted.");
         }
     }
 
@@ -1637,7 +1627,7 @@ public class DEDirector extends Director implements TimedDirector {
     private Actor _getNextActorToFire() throws IllegalActionException {
         if (_eventQueue == null) {
             throw new IllegalActionException(
-                    "Fire method called before the preinitialize method.");
+                "Fire method called before the preinitialize method.");
         }
 
         Actor actorToFire = null;
@@ -1682,15 +1672,15 @@ public class DEDirector extends Director implements TimedDirector {
                     // that only happen at the current tag.
                     // If the event is in the past, that is an error.
                     if ((nextEvent.timeStamp().compareTo(getModelTime()) < 0)
-                            || (nextEvent.timeStamp().equals(getModelTime())
+                                    || (nextEvent.timeStamp().equals(getModelTime())
                                     && (nextEvent.microstep() < _microstep))) {
                         // missed an event
                         throw new IllegalActionException(
-                                "Fire: Missed an event: the next event tag "
-                                + nextEvent.timeStamp() + " :: "
-                                + nextEvent.microstep()
-                                + " is earlier than the current model tag "
-                                + getModelTime() + " :: " + _microstep + " !");
+                            "Fire: Missed an event: the next event tag "
+                            + nextEvent.timeStamp() + " :: "
+                            + nextEvent.microstep()
+                            + " is earlier than the current model tag "
+                            + getModelTime() + " :: " + _microstep + " !");
                     }
 
                     // If the event is in the future time, it is ignored
@@ -1726,7 +1716,7 @@ public class DEDirector extends Director implements TimedDirector {
                     // 2. There are no more events in the event queue,
                     // and the current time is equal to the stop time.
                     if ((actorToFire != null)
-                            || (getModelTime().equals(getModelStopTime()))) {
+                                    || (getModelTime().equals(getModelStopTime()))) {
                         // jump out of the loop: LOOPLABEL::GetNextEvent
                         break;
                     }
@@ -1775,7 +1765,7 @@ public class DEDirector extends Director implements TimedDirector {
             // In the rest of this method, this is not checked any more.
             if (nextEvent == null) {
                 throw new IllegalActionException("The event to be handled"
-                        + " can not be null!");
+                    + " can not be null!");
             }
 
             // If the actorToFire is null, find the destination actor associated
@@ -1811,22 +1801,19 @@ public class DEDirector extends Director implements TimedDirector {
                             // from the assumption that the smallest
                             // time interval between any two events is the
                             // minimum double value.
-                            double elapsedTimeInSeconds = 
-                                ((double) elapsedTime) / 1000.0;
+                            double elapsedTimeInSeconds = ((double) elapsedTime) / 1000.0;
 
-                            if (currentTime.getDoubleValue() 
-                                    <= elapsedTimeInSeconds) {
+                            if (currentTime.getDoubleValue() <= elapsedTimeInSeconds) {
                                 break;
                             }
 
-                            long timeToWait = (long) 
-                                (currentTime.subtract(elapsedTimeInSeconds)
-                                    .getDoubleValue() * 1000.0);
+                            long timeToWait = (long) (currentTime.subtract(elapsedTimeInSeconds)
+                                                                             .getDoubleValue() * 1000.0);
 
                             if (timeToWait > 0) {
                                 if (_debugging) {
                                     _debug("Waiting for real time to pass: "
-                                            + timeToWait);
+                                        + timeToWait);
                                 }
 
                                 try {
@@ -1861,11 +1848,11 @@ public class DEDirector extends Director implements TimedDirector {
                     // NOTE: The _enqueueEvent method discards the events
                     // for disabled actors.
                     if ((_disabledActors != null)
-                            && _disabledActors.contains(actorToFire)) {
+                                    && _disabledActors.contains(actorToFire)) {
                         // This actor has requested not to be fired again.
                         if (_debugging) {
                             _debug("Skipping disabled actor: ",
-                                    ((Nameable) actorToFire).getFullName());
+                                ((Nameable) actorToFire).getFullName());
                         }
 
                         actorToFire = null;
@@ -1935,8 +1922,7 @@ public class DEDirector extends Director implements TimedDirector {
             stopWhenQueueIsEmpty.setExpression("true");
             stopWhenQueueIsEmpty.setTypeEquals(BaseType.BOOLEAN);
 
-            synchronizeToRealTime = 
-                new Parameter(this, "synchronizeToRealTime");
+            synchronizeToRealTime = new Parameter(this, "synchronizeToRealTime");
             synchronizeToRealTime.setExpression("false");
             synchronizeToRealTime.setTypeEquals(BaseType.BOOLEAN);
 
@@ -1953,13 +1939,13 @@ public class DEDirector extends Director implements TimedDirector {
             binCountFactor = new Parameter(this, "binCountFactor");
             binCountFactor.setExpression("2");
             binCountFactor.setTypeEquals(BaseType.INT);
-            binCountFactor.setVisibility(Settable.EXPERT);            
+            binCountFactor.setVisibility(Settable.EXPERT);
 
             timeResolution.setVisibility(Settable.FULL);
             timeResolution.moveToLast();
         } catch (KernelException e) {
             throw new InternalErrorException("Cannot set parameter:\n"
-                    + e.getMessage());
+                + e.getMessage());
         }
     }
 
@@ -1978,12 +1964,11 @@ public class DEDirector extends Director implements TimedDirector {
 
         if (_debugging) {
             _debug("Request refiring of an opaque composite actor: "
-                    + container.getName());
+                + container.getName());
         }
 
         // Enqueue a pure event to fire the container of this director.
-        container.getExecutiveDirector().fireAt(
-                container, nextEvent.timeStamp());
+        container.getExecutiveDirector().fireAt(container, nextEvent.timeStamp());
     }
 
     ///////////////////////////////////////////////////////////////////

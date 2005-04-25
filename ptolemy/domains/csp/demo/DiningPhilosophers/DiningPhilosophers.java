@@ -121,45 +121,45 @@ public class DiningPhilosophers {
 
             // Now connect up the Actors
             univ.connect((TypedIOPort) p1.getPort("leftIn"),
-                    (TypedIOPort) f5.getPort("rightOut"));
+                (TypedIOPort) f5.getPort("rightOut"));
             univ.connect((TypedIOPort) p1.getPort("leftOut"),
-                    (TypedIOPort) f5.getPort("rightIn"));
+                (TypedIOPort) f5.getPort("rightIn"));
             univ.connect((TypedIOPort) p1.getPort("rightIn"),
-                    (TypedIOPort) f1.getPort("leftOut"));
+                (TypedIOPort) f1.getPort("leftOut"));
             univ.connect((TypedIOPort) p1.getPort("rightOut"),
-                    (TypedIOPort) f1.getPort("leftIn"));
+                (TypedIOPort) f1.getPort("leftIn"));
             univ.connect((TypedIOPort) p2.getPort("leftIn"),
-                    (TypedIOPort) f1.getPort("rightOut"));
+                (TypedIOPort) f1.getPort("rightOut"));
             univ.connect((TypedIOPort) p2.getPort("leftOut"),
-                    (TypedIOPort) f1.getPort("rightIn"));
+                (TypedIOPort) f1.getPort("rightIn"));
             univ.connect((TypedIOPort) p2.getPort("rightIn"),
-                    (TypedIOPort) f2.getPort("leftOut"));
+                (TypedIOPort) f2.getPort("leftOut"));
             univ.connect((TypedIOPort) p2.getPort("rightOut"),
-                    (TypedIOPort) f2.getPort("leftIn"));
+                (TypedIOPort) f2.getPort("leftIn"));
             univ.connect((TypedIOPort) p3.getPort("leftIn"),
-                    (TypedIOPort) f2.getPort("rightOut"));
+                (TypedIOPort) f2.getPort("rightOut"));
             univ.connect((TypedIOPort) p3.getPort("leftOut"),
-                    (TypedIOPort) f2.getPort("rightIn"));
+                (TypedIOPort) f2.getPort("rightIn"));
             univ.connect((TypedIOPort) p3.getPort("rightIn"),
-                    (TypedIOPort) f3.getPort("leftOut"));
+                (TypedIOPort) f3.getPort("leftOut"));
             univ.connect((TypedIOPort) p3.getPort("rightOut"),
-                    (TypedIOPort) f3.getPort("leftIn"));
+                (TypedIOPort) f3.getPort("leftIn"));
             univ.connect((TypedIOPort) p4.getPort("leftIn"),
-                    (TypedIOPort) f3.getPort("rightOut"));
+                (TypedIOPort) f3.getPort("rightOut"));
             univ.connect((TypedIOPort) p4.getPort("leftOut"),
-                    (TypedIOPort) f3.getPort("rightIn"));
+                (TypedIOPort) f3.getPort("rightIn"));
             univ.connect((TypedIOPort) p4.getPort("rightIn"),
-                    (TypedIOPort) f4.getPort("leftOut"));
+                (TypedIOPort) f4.getPort("leftOut"));
             univ.connect((TypedIOPort) p4.getPort("rightOut"),
-                    (TypedIOPort) f4.getPort("leftIn"));
+                (TypedIOPort) f4.getPort("leftIn"));
             univ.connect((TypedIOPort) p5.getPort("leftIn"),
-                    (TypedIOPort) f4.getPort("rightOut"));
+                (TypedIOPort) f4.getPort("rightOut"));
             univ.connect((TypedIOPort) p5.getPort("leftOut"),
-                    (TypedIOPort) f4.getPort("rightIn"));
+                (TypedIOPort) f4.getPort("rightIn"));
             univ.connect((TypedIOPort) p5.getPort("rightIn"),
-                    (TypedIOPort) f5.getPort("leftOut"));
+                (TypedIOPort) f5.getPort("leftOut"));
             univ.connect((TypedIOPort) p5.getPort("rightOut"),
-                    (TypedIOPort) f5.getPort("leftIn"));
+                (TypedIOPort) f5.getPort("leftIn"));
 
             //System.out.println(univ.description(1023));
             System.out.println(univ.getFullName() + " starting!");

@@ -147,14 +147,14 @@ public class PathGeometry implements Geometry {
 
                 case PathIterator.SEG_QUADTO:
                     p.quadTo(_coordinate[c], _coordinate[c + 1],
-                            _coordinate[c + 2], _coordinate[c + 3]);
+                        _coordinate[c + 2], _coordinate[c + 3]);
                     c += 4;
                     break;
 
                 case PathIterator.SEG_CUBICTO:
                     p.curveTo(_coordinate[c], _coordinate[c + 1],
-                            _coordinate[c + 2], _coordinate[c + 3],
-                            _coordinate[c + 4], _coordinate[c + 5]);
+                        _coordinate[c + 2], _coordinate[c + 3],
+                        _coordinate[c + 4], _coordinate[c + 5]);
                     c += 6;
                     break;
                 }
@@ -242,7 +242,7 @@ public class PathGeometry implements Geometry {
 
                     // Depending on the type of segment
                     switch (_type[cursor]) {
-                        // If a cubic curve, then make sure to include the two control points
+                    // If a cubic curve, then make sure to include the two control points
                     case PathIterator.SEG_CUBICTO:
 
                         if (control_point == 0) {
@@ -256,7 +256,7 @@ public class PathGeometry implements Geometry {
                             return _vertices[cursor++];
                         }
 
-                        // If a quadratic curve, then make sure to include the one control point
+                    // If a quadratic curve, then make sure to include the one control point
                     case PathIterator.SEG_QUADTO:
 
                         if (control_point == 0) {
@@ -275,7 +275,7 @@ public class PathGeometry implements Geometry {
 
                 public void remove() {
                     throw new UnsupportedOperationException(
-                            "Vertex sites cannot be removed");
+                        "Vertex sites cannot be removed");
                 }
             };
     }
@@ -575,7 +575,7 @@ public class PathGeometry implements Geometry {
          */
         public void translate(double x, double y) {
             throw new UnsupportedOperationException(
-                    "Cannot translate close segments of a path");
+                "Cannot translate close segments of a path");
         }
     }
 }

@@ -39,6 +39,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import java.util.HashSet;
 import java.util.Set;
 
+
 /**
  * @author Jackie
  *
@@ -49,18 +50,18 @@ public class PolarToCartesian extends CCodeGeneratorHelper {
      * @param actor the associated actor
      */
     public PolarToCartesian(
-            ptolemy.actor.lib.conversions.PolarToCartesian actor) {
+        ptolemy.actor.lib.conversions.PolarToCartesian actor) {
         super(actor);
     }
 
     /**
      * Generate fire code
-     * The method reads in <code>codeBlock1</code> and 
-     * append the processed <code>codeBlock1</code> to the 
+     * The method reads in <code>codeBlock1</code> and
+     * append the processed <code>codeBlock1</code> to the
      * given stream buffer.
      * @param stream the given buffer to append the code to
      */
-    public void  generateFireCode(StringBuffer stream)
+    public void generateFireCode(StringBuffer stream)
         throws IllegalActionException {
         CodeStream tmpStream = new CodeStream(this);
         tmpStream.appendCodeBlock("codeBlock1");

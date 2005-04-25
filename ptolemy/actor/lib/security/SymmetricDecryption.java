@@ -87,7 +87,7 @@ public class SymmetricDecryption extends CipherActor {
      *   actor with this name.
      */
     public SymmetricDecryption(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         algorithm.setVisibility(Settable.NOT_EDITABLE);
@@ -165,7 +165,7 @@ public class SymmetricDecryption extends CipherActor {
             return byteArrayOutputStream.toByteArray();
         } catch (Exception ex) {
             throw new IllegalActionException(this, ex,
-                    "Problem processing " + dataBytes.length + " bytes.");
+                "Problem processing " + dataBytes.length + " bytes.");
         }
     }
 

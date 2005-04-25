@@ -75,7 +75,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
      *   or the labels array contains duplicate elements.
      */
     public RecordToken(String[] labels, Token[] values)
-            throws IllegalActionException {
+        throws IllegalActionException {
         _initialize(labels, values);
     }
 
@@ -105,7 +105,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
             _initialize(labels, values);
         } else {
             throw new IllegalActionException("A record token cannot be"
-                    + " created from the expression '" + init + "'");
+                + " created from the expression '" + init + "'");
         }
     }
 
@@ -468,7 +468,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
      *   argument is close to the value of this token.
      */
     protected BooleanToken _isCloseTo(Token rightArgument, double epsilon)
-            throws IllegalActionException {
+        throws IllegalActionException {
         RecordToken recordToken = (RecordToken) rightArgument;
 
         Set myLabelSet = _fields.keySet();
@@ -507,7 +507,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
      *  @return True if the argument is equal to this.
      */
     protected BooleanToken _isEqualTo(Token rightArgument)
-            throws IllegalActionException {
+        throws IllegalActionException {
         RecordToken recordToken = (RecordToken) rightArgument;
 
         Set myLabelSet = _fields.keySet();
@@ -577,7 +577,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
      *  one of the record fields throws it.
      */
     protected Token _multiply(Token rightArgument)
-            throws IllegalActionException {
+        throws IllegalActionException {
         RecordToken recordToken = (RecordToken) rightArgument;
 
         Set intersectionSet = new HashSet();
@@ -613,7 +613,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
      *  method on one of the record fields throws it.
      */
     protected Token _subtract(Token rightArgument)
-            throws IllegalActionException {
+        throws IllegalActionException {
         RecordToken recordToken = (RecordToken) rightArgument;
 
         Set intersectionSet = new HashSet();
@@ -645,25 +645,25 @@ public class RecordToken extends AbstractNotConvertibleToken {
     // initialize this token using the specified labels and values.
     // This method is called by the constructor.
     private void _initialize(String[] labels, Token[] values)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if ((labels == null) || (values == null)
-                || (labels.length != values.length)) {
+                        || (labels.length != values.length)) {
             throw new IllegalActionException("RecordToken: the labels or "
-                    + "the values array do not have the same length, "
-                    + "or is null.");
+                + "the values array do not have the same length, "
+                + "or is null.");
         }
 
         for (int i = 0; i < labels.length; i++) {
             if ((labels[i] == null) || (values[i] == null)) {
                 throw new IllegalActionException("RecordToken: the " + i
-                        + "'th element of the labels or values array is null");
+                    + "'th element of the labels or values array is null");
             }
 
             if (!_fields.containsKey(labels[i])) {
                 _fields.put(labels[i], values[i]);
             } else {
                 throw new IllegalActionException("RecordToken: The "
-                        + "labels array contain duplicate element: " + labels[i]);
+                    + "labels array contain duplicate element: " + labels[i]);
             }
         }
     }

@@ -204,7 +204,7 @@ public class ConnectorManipulator extends Manipulator {
 
         if (!(f instanceof Connector)) {
             throw new IllegalArgumentException(
-                    "Connector required by ConnectorManipulator");
+                "Connector required by ConnectorManipulator");
         }
 
         _createGrabHandles((Connector) f);

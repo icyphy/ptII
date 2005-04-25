@@ -28,6 +28,32 @@ COPYRIGHTENDKEY
 */
 package ptolemy.copernicus.java;
 
+import soot.BooleanType;
+import soot.FastHierarchy;
+import soot.Hierarchy;
+import soot.IntType;
+import soot.Local;
+import soot.Modifier;
+import soot.RefType;
+import soot.Scene;
+import soot.SootClass;
+import soot.SootField;
+import soot.SootMethod;
+import soot.Type;
+
+import soot.jimple.Expr;
+import soot.jimple.IntConstant;
+import soot.jimple.Jimple;
+import soot.jimple.JimpleBody;
+import soot.jimple.Stmt;
+
+import soot.jimple.toolkits.scalar.LocalNameStandardizer;
+import soot.jimple.toolkits.typing.TypeResolver;
+
+import soot.toolkits.scalar.LocalSplitter;
+
+import soot.util.Chain;
+
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.parameters.ParameterPort;
@@ -43,28 +69,6 @@ import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelRuntimeException;
-
-import soot.BooleanType;
-import soot.FastHierarchy;
-import soot.Hierarchy;
-import soot.IntType;
-import soot.Local;
-import soot.Modifier;
-import soot.RefType;
-import soot.Scene;
-import soot.SootClass;
-import soot.SootField;
-import soot.SootMethod;
-import soot.Type;
-import soot.jimple.Expr;
-import soot.jimple.IntConstant;
-import soot.jimple.Jimple;
-import soot.jimple.JimpleBody;
-import soot.jimple.Stmt;
-import soot.jimple.toolkits.scalar.LocalNameStandardizer;
-import soot.jimple.toolkits.typing.TypeResolver;
-import soot.toolkits.scalar.LocalSplitter;
-import soot.util.Chain;
 
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -83,9 +87,9 @@ import java.util.Map;
 */
 public class SDFDirectorInliner implements DirectorInliner {
     public void inlineDirector(CompositeActor model, SootClass modelClass,
-            String phaseName, Map options) throws IllegalActionException {
+        String phaseName, Map options) throws IllegalActionException {
         InlinePortTransformer.setPortInliner(model,
-                new SDFPortInliner(modelClass, model, options));
+            new SDFPortInliner(modelClass, model, options));
         System.out.println("Inlining director for " + model.getFullName());
 
         Type actorType = RefType.v(PtolemyUtilities.actorClass);
@@ -121,11 +125,11 @@ public class SDFDirectorInliner implements DirectorInliner {
 
             // Initialize the postfire flag.
             units.insertBefore(Jimple.v().newAssignStmt(postfireReturnsLocal,
-                                       IntConstant.v(1)), insertPoint);
+                    IntConstant.v(1)), insertPoint);
             units.insertBefore(Jimple.v().newAssignStmt(Jimple.v()
-                                       .newInstanceFieldRef(thisLocal,
-                                               postfireReturnsField), postfireReturnsLocal),
-                    insertPoint);
+                                                                          .newInstanceFieldRef(thisLocal,
+                                    postfireReturnsField), postfireReturnsLocal),
+                insertPoint);
 
             // Add code to the beginning of the preinitialize method that
             // initializes the attributes.
@@ -134,7 +138,7 @@ public class SDFDirectorInliner implements DirectorInliner {
             //                     model, body.getThisLocal(),
             //                     modelClass);
             for (Iterator entities = model.deepEntityList().iterator();
-                 entities.hasNext();) {
+                            entities.hasNext();) {
                 Entity entity = (Entity) entities.next();
                 String fieldName = ModelTransformer.getFieldNameForEntity(entity,
                         model);
@@ -143,18 +147,18 @@ public class SDFDirectorInliner implements DirectorInliner {
                         options);
                 SootClass theClass = Scene.v().loadClassAndSupport(className);
                 SootMethod preinitializeMethod = SootUtilities
-                    .searchForMethodByName(theClass, "preinitialize");
+                                .searchForMethodByName(theClass, "preinitialize");
                 Local actorLocal = Jimple.v().newLocal("actor",
                         RefType.v(theClass));
                 body.getLocals().add(actorLocal);
 
                 // Get the field.
                 units.insertBefore(Jimple.v().newAssignStmt(actorLocal,
-                                           Jimple.v().newInstanceFieldRef(thisLocal, field)),
-                        insertPoint);
+                        Jimple.v().newInstanceFieldRef(thisLocal, field)),
+                    insertPoint);
                 units.insertBefore(Jimple.v().newInvokeStmt(Jimple.v()
-                                           .newVirtualInvokeExpr(actorLocal,
-                                                   preinitializeMethod)), insertPoint);
+                                                                              .newVirtualInvokeExpr(actorLocal,
+                                        preinitializeMethod)), insertPoint);
             }
 
             //            units.insertBefore(Jimple.v().newReturnVoidStmt(),
@@ -175,15 +179,16 @@ public class SDFDirectorInliner implements DirectorInliner {
 
             if (iterationLimit > 0) {
                 units.insertBefore(Jimple.v().newAssignStmt(Jimple.v()
-                                           .newInstanceFieldRef(thisLocal,
-                                                   iterationField), IntConstant.v(0)), insertPoint);
+                                                                              .newInstanceFieldRef(thisLocal,
+                                        iterationField), IntConstant.v(0)),
+                    insertPoint);
             }
 
             Local actorLocal = Jimple.v().newLocal("actor", actorType);
             body.getLocals().add(actorLocal);
 
             for (Iterator entities = model.deepEntityList().iterator();
-                 entities.hasNext();) {
+                            entities.hasNext();) {
                 Entity entity = (Entity) entities.next();
                 String fieldName = ModelTransformer.getFieldNameForEntity(entity,
                         model);
@@ -192,15 +197,15 @@ public class SDFDirectorInliner implements DirectorInliner {
                         options);
                 SootClass theClass = Scene.v().loadClassAndSupport(className);
                 SootMethod initializeMethod = SootUtilities
-                    .searchForMethodByName(theClass, "initialize");
+                                .searchForMethodByName(theClass, "initialize");
 
                 // Set the field.
                 units.insertBefore(Jimple.v().newAssignStmt(actorLocal,
-                                           Jimple.v().newInstanceFieldRef(thisLocal, field)),
-                        insertPoint);
+                        Jimple.v().newInstanceFieldRef(thisLocal, field)),
+                    insertPoint);
                 units.insertBefore(Jimple.v().newInvokeStmt(Jimple.v()
-                                           .newVirtualInvokeExpr(actorLocal,
-                                                   initializeMethod)), insertPoint);
+                                                                              .newVirtualInvokeExpr(actorLocal,
+                                        initializeMethod)), insertPoint);
             }
 
             //            units.insertBefore(Jimple.v().newReturnVoidStmt(),insertPoint);
@@ -251,7 +256,8 @@ public class SDFDirectorInliner implements DirectorInliner {
 
             // Update PortParameters.
             for (Iterator parameters = model.attributeList(PortParameter.class)
-                     .iterator(); parameters.hasNext();) {
+                                                        .iterator();
+                            parameters.hasNext();) {
                 PortParameter parameter = (PortParameter) parameters.next();
                 String fieldName = ModelTransformer.getFieldNameForAttribute(parameter,
                         model);
@@ -265,15 +271,15 @@ public class SDFDirectorInliner implements DirectorInliner {
 
                 // Get a reference to the port parameter.
                 units.insertBefore(Jimple.v().newAssignStmt(parameterLocal,
-                                           Jimple.v().newInstanceFieldRef(thisLocal, field)),
-                        insertPoint);
+                        Jimple.v().newInstanceFieldRef(thisLocal, field)),
+                    insertPoint);
 
                 // Invoke the update() method.
                 units.insertBefore(Jimple.v().newInvokeStmt(Jimple.v()
-                                           .newVirtualInvokeExpr(parameterLocal,
-                                                   fieldClass.getMethod(
-                                                           PtolemyUtilities.portParameterUpdateMethod
-                                                           .getSubSignature()))), insertPoint);
+                                                                              .newVirtualInvokeExpr(parameterLocal,
+                                        fieldClass.getMethod(
+                                            PtolemyUtilities.portParameterUpdateMethod
+                                            .getSubSignature()))), insertPoint);
             }
 
             // FIXME: This is the quiescent point where parameters
@@ -281,7 +287,7 @@ public class SDFDirectorInliner implements DirectorInliner {
             // evaluated.
             // Transfer Inputs from input ports.
             for (Iterator ports = model.inputPortList().iterator();
-                 ports.hasNext();) {
+                            ports.hasNext();) {
                 IOPort port = (IOPort) ports.next();
 
                 if (port instanceof ParameterPort) {
@@ -304,41 +310,41 @@ public class SDFDirectorInliner implements DirectorInliner {
                         PtolemyUtilities.ioportType);
                 body.getLocals().add(tempPortLocal);
                 units.insertBefore(Jimple.v().newAssignStmt(tempPortLocal,
-                                           Jimple.v().newInstanceFieldRef(thisLocal, field)),
-                        insertPoint);
+                        Jimple.v().newInstanceFieldRef(thisLocal, field)),
+                    insertPoint);
                 units.insertBefore(Jimple.v().newAssignStmt(portLocal,
-                                           Jimple.v().newCastExpr(tempPortLocal,
-                                                   PtolemyUtilities.ioportType)), insertPoint);
+                        Jimple.v().newCastExpr(tempPortLocal,
+                            PtolemyUtilities.ioportType)), insertPoint);
 
                 for (int i = 0; i < port.getWidth(); i++) {
                     // The list of initializer instructions.
                     List initializerList = new LinkedList();
                     initializerList.add(Jimple.v().newAssignStmt(indexLocal,
-                                                IntConstant.v(0)));
+                            IntConstant.v(0)));
 
                     // The list of body instructions.
                     List bodyList = new LinkedList();
 
                     // Read
                     bodyList.add(Jimple.v().newAssignStmt(tokenLocal,
-                                         Jimple.v().newVirtualInvokeExpr(portLocal,
-                                                 PtolemyUtilities.getMethod, IntConstant.v(i))));
+                            Jimple.v().newVirtualInvokeExpr(portLocal,
+                                PtolemyUtilities.getMethod, IntConstant.v(i))));
 
                     // Write
                     bodyList.add(Jimple.v().newInvokeStmt(Jimple.v()
-                                         .newVirtualInvokeExpr(portLocal,
-                                                 PtolemyUtilities.sendInsideMethod,
-                                                 IntConstant.v(i), tokenLocal)));
+                                                                            .newVirtualInvokeExpr(portLocal,
+                                            PtolemyUtilities.sendInsideMethod,
+                                            IntConstant.v(i), tokenLocal)));
 
                     // Increment the index.
                     bodyList.add(Jimple.v().newAssignStmt(indexLocal,
-                                         Jimple.v().newAddExpr(indexLocal, IntConstant.v(1))));
+                            Jimple.v().newAddExpr(indexLocal, IntConstant.v(1))));
 
                     Expr conditionalExpr = Jimple.v().newLtExpr(indexLocal,
                             IntConstant.v(rate));
 
                     SootUtilities.createForLoopBefore(body, insertPoint,
-                            initializerList, bodyList, conditionalExpr);
+                        initializerList, bodyList, conditionalExpr);
                 }
             }
 
@@ -347,8 +353,8 @@ public class SDFDirectorInliner implements DirectorInliner {
             body.getLocals().add(localPostfireReturnsLocal);
 
             units.insertBefore(Jimple.v().newAssignStmt(postfireReturnsLocal,
-                                       Jimple.v().newInstanceFieldRef(thisLocal,
-                                               postfireReturnsField)), insertPoint);
+                    Jimple.v().newInstanceFieldRef(thisLocal,
+                        postfireReturnsField)), insertPoint);
 
             // Execute the schedule
             Iterator schedule = null;
@@ -371,16 +377,16 @@ public class SDFDirectorInliner implements DirectorInliner {
                         options);
                 SootClass theClass = Scene.v().loadClassAndSupport(className);
                 SootMethod actorPrefireMethod = SootUtilities
-                    .searchForMethodByName(theClass, "prefire");
+                                .searchForMethodByName(theClass, "prefire");
                 SootMethod actorFireMethod = SootUtilities
-                    .searchForMethodByName(theClass, "fire");
+                                .searchForMethodByName(theClass, "fire");
                 SootMethod actorPostfireMethod = SootUtilities
-                    .searchForMethodByName(theClass, "postfire");
+                                .searchForMethodByName(theClass, "postfire");
 
                 // Set the field.
                 units.insertBefore(Jimple.v().newAssignStmt(actorLocal,
-                                           Jimple.v().newInstanceFieldRef(thisLocal, field)),
-                        insertPoint);
+                        Jimple.v().newInstanceFieldRef(thisLocal, field)),
+                    insertPoint);
 
                 // The threshold at which it is better to generate loops,
                 // than to inline code.  A threshold of 2 means that loops will
@@ -391,54 +397,55 @@ public class SDFDirectorInliner implements DirectorInliner {
                 if (firingCount < threshold) {
                     for (int i = 0; i < firingCount; i++) {
                         units.insertBefore(Jimple.v().newInvokeStmt(Jimple.v()
-                                                   .newVirtualInvokeExpr(actorLocal,
-                                                           actorPrefireMethod)), insertPoint);
+                                                                                      .newVirtualInvokeExpr(actorLocal,
+                                                actorPrefireMethod)),
+                            insertPoint);
                         units.insertBefore(Jimple.v().newInvokeStmt(Jimple.v()
-                                                   .newVirtualInvokeExpr(actorLocal,
-                                                           actorFireMethod)), insertPoint);
+                                                                                      .newVirtualInvokeExpr(actorLocal,
+                                                actorFireMethod)), insertPoint);
                         units.insertBefore(Jimple.v().newAssignStmt(localPostfireReturnsLocal,
-                                                   Jimple.v().newVirtualInvokeExpr(actorLocal,
-                                                           actorPostfireMethod)), insertPoint);
+                                Jimple.v().newVirtualInvokeExpr(actorLocal,
+                                    actorPostfireMethod)), insertPoint);
                         units.insertBefore(Jimple.v().newAssignStmt(postfireReturnsLocal,
-                                                   Jimple.v().newAndExpr(postfireReturnsLocal,
-                                                           localPostfireReturnsLocal)), insertPoint);
+                                Jimple.v().newAndExpr(postfireReturnsLocal,
+                                    localPostfireReturnsLocal)), insertPoint);
                     }
                 } else {
                     // The list of initializer instructions.
                     List initializerList = new LinkedList();
                     initializerList.add(Jimple.v().newAssignStmt(indexLocal,
-                                                IntConstant.v(0)));
+                            IntConstant.v(0)));
 
                     // The list of body instructions.
                     List bodyList = new LinkedList();
                     bodyList.add(Jimple.v().newInvokeStmt(Jimple.v()
-                                         .newVirtualInvokeExpr(actorLocal,
-                                                 actorPrefireMethod)));
+                                                                            .newVirtualInvokeExpr(actorLocal,
+                                            actorPrefireMethod)));
                     bodyList.add(Jimple.v().newInvokeStmt(Jimple.v()
-                                         .newVirtualInvokeExpr(actorLocal,
-                                                 actorFireMethod)));
+                                                                            .newVirtualInvokeExpr(actorLocal,
+                                            actorFireMethod)));
                     bodyList.add(Jimple.v().newAssignStmt(localPostfireReturnsLocal,
-                                         Jimple.v().newVirtualInvokeExpr(actorLocal,
-                                                 actorPostfireMethod)));
+                            Jimple.v().newVirtualInvokeExpr(actorLocal,
+                                actorPostfireMethod)));
                     bodyList.add(Jimple.v().newAssignStmt(postfireReturnsLocal,
-                                         Jimple.v().newAndExpr(postfireReturnsLocal,
-                                                 localPostfireReturnsLocal)));
+                            Jimple.v().newAndExpr(postfireReturnsLocal,
+                                localPostfireReturnsLocal)));
 
                     // Increment the index.
                     bodyList.add(Jimple.v().newAssignStmt(indexLocal,
-                                         Jimple.v().newAddExpr(indexLocal, IntConstant.v(1))));
+                            Jimple.v().newAddExpr(indexLocal, IntConstant.v(1))));
 
                     Expr conditionalExpr = Jimple.v().newLtExpr(indexLocal,
                             IntConstant.v(firingCount));
 
                     SootUtilities.createForLoopBefore(body, insertPoint,
-                            initializerList, bodyList, conditionalExpr);
+                        initializerList, bodyList, conditionalExpr);
                 }
             }
 
             // Transfer outputs from output ports
             for (Iterator ports = model.outputPortList().iterator();
-                 ports.hasNext();) {
+                            ports.hasNext();) {
                 IOPort port = (IOPort) ports.next();
                 int rate;
                 rate = DFUtilities.getTokenProductionRate(port);
@@ -456,50 +463,50 @@ public class SDFDirectorInliner implements DirectorInliner {
                         PtolemyUtilities.ioportType);
                 body.getLocals().add(tempPortLocal);
                 units.insertBefore(Jimple.v().newAssignStmt(tempPortLocal,
-                                           Jimple.v().newInstanceFieldRef(thisLocal, field)),
-                        insertPoint);
+                        Jimple.v().newInstanceFieldRef(thisLocal, field)),
+                    insertPoint);
                 units.insertBefore(Jimple.v().newAssignStmt(portLocal,
-                                           Jimple.v().newCastExpr(tempPortLocal,
-                                                   PtolemyUtilities.ioportType)), insertPoint);
+                        Jimple.v().newCastExpr(tempPortLocal,
+                            PtolemyUtilities.ioportType)), insertPoint);
 
                 for (int i = 0; i < port.getWidthInside(); i++) {
                     // The list of initializer instructions.
                     List initializerList = new LinkedList();
                     initializerList.add(Jimple.v().newAssignStmt(indexLocal,
-                                                IntConstant.v(0)));
+                            IntConstant.v(0)));
 
                     // The list of body instructions.
                     List bodyList = new LinkedList();
 
                     // Read
                     bodyList.add(Jimple.v().newAssignStmt(tokenLocal,
-                                         Jimple.v().newVirtualInvokeExpr(portLocal,
-                                                 PtolemyUtilities.getInsideMethod,
-                                                 IntConstant.v(i))));
+                            Jimple.v().newVirtualInvokeExpr(portLocal,
+                                PtolemyUtilities.getInsideMethod,
+                                IntConstant.v(i))));
 
                     // Write
                     bodyList.add(Jimple.v().newInvokeStmt(Jimple.v()
-                                         .newVirtualInvokeExpr(portLocal,
-                                                 PtolemyUtilities.sendMethod, IntConstant.v(i),
-                                                 tokenLocal)));
+                                                                            .newVirtualInvokeExpr(portLocal,
+                                            PtolemyUtilities.sendMethod,
+                                            IntConstant.v(i), tokenLocal)));
 
                     // Increment the index.
                     bodyList.add(Jimple.v().newAssignStmt(indexLocal,
-                                         Jimple.v().newAddExpr(indexLocal, IntConstant.v(1))));
+                            Jimple.v().newAddExpr(indexLocal, IntConstant.v(1))));
 
                     Expr conditionalExpr = Jimple.v().newLtExpr(indexLocal,
                             IntConstant.v(rate));
 
                     SootUtilities.createForLoopBefore(body, insertPoint,
-                            initializerList, bodyList, conditionalExpr);
+                        initializerList, bodyList, conditionalExpr);
                 }
             }
 
             // Return.
             units.insertBefore(Jimple.v().newAssignStmt(Jimple.v()
-                                       .newInstanceFieldRef(thisLocal,
-                                               postfireReturnsField), postfireReturnsLocal),
-                    insertPoint);
+                                                                          .newInstanceFieldRef(thisLocal,
+                                    postfireReturnsField), postfireReturnsLocal),
+                insertPoint);
 
             //       units.insertBefore(Jimple.v().newReturnVoidStmt(),
             //              insertPoint);
@@ -521,8 +528,8 @@ public class SDFDirectorInliner implements DirectorInliner {
                     BooleanType.v());
             body.getLocals().add(postfireReturnsLocal);
             units.insertBefore(Jimple.v().newAssignStmt(postfireReturnsLocal,
-                                       Jimple.v().newInstanceFieldRef(thisLocal,
-                                               postfireReturnsField)), insertPoint);
+                    Jimple.v().newInstanceFieldRef(thisLocal,
+                        postfireReturnsField)), insertPoint);
 
             // If we need to keep track of the number of iterations, then...
             if (iterationLimit > 0) {
@@ -532,19 +539,19 @@ public class SDFDirectorInliner implements DirectorInliner {
 
                 // Get the current number of iterations
                 units.insertBefore(Jimple.v().newAssignStmt(iterationLocal,
-                                           Jimple.v().newInstanceFieldRef(body.getThisLocal(),
-                                                   iterationField)), insertPoint);
+                        Jimple.v().newInstanceFieldRef(body.getThisLocal(),
+                            iterationField)), insertPoint);
 
                 // Increment the number of iterations.
                 units.insertBefore(Jimple.v().newAssignStmt(iterationLocal,
-                                           Jimple.v().newAddExpr(iterationLocal, IntConstant.v(1))),
-                        insertPoint);
+                        Jimple.v().newAddExpr(iterationLocal, IntConstant.v(1))),
+                    insertPoint);
 
                 // Save the current number of iterations
                 units.insertBefore(Jimple.v().newAssignStmt(Jimple.v()
-                                           .newInstanceFieldRef(body
-                                                   .getThisLocal(), iterationField), iterationLocal),
-                        insertPoint);
+                                                                              .newInstanceFieldRef(body
+                                        .getThisLocal(), iterationField),
+                        iterationLocal), insertPoint);
 
                 Stmt endStmt = Jimple.v().newNopStmt();
 
@@ -552,16 +559,16 @@ public class SDFDirectorInliner implements DirectorInliner {
                 // limit, then don't force postfire return to be
                 // false.
                 units.insertBefore(Jimple.v().newIfStmt(Jimple.v().newLtExpr(iterationLocal,
-                                                                IntConstant.v(iterationLimit)), endStmt),
-                        insertPoint);
+                            IntConstant.v(iterationLimit)), endStmt),
+                    insertPoint);
                 units.insertBefore(Jimple.v().newAssignStmt(postfireReturnsLocal,
-                                           IntConstant.v(0)), // FALSE
-                        insertPoint);
+                        IntConstant.v(0)), // FALSE
+                    insertPoint);
                 units.insertBefore(endStmt, insertPoint);
             }
 
             units.insertBefore(Jimple.v().newReturnStmt(postfireReturnsLocal),
-                    insertPoint);
+                insertPoint);
             LocalSplitter.v().transform(body, phaseName + ".lns");
             LocalNameStandardizer.v().transform(body, phaseName + ".lns");
             TypeResolver.resolve(body, Scene.v());
@@ -580,7 +587,7 @@ public class SDFDirectorInliner implements DirectorInliner {
             body.getLocals().add(actorLocal);
 
             for (Iterator entities = model.deepEntityList().iterator();
-                 entities.hasNext();) {
+                            entities.hasNext();) {
                 Entity entity = (Entity) entities.next();
                 String fieldName = ModelTransformer.getFieldNameForEntity(entity,
                         model);
@@ -593,11 +600,11 @@ public class SDFDirectorInliner implements DirectorInliner {
 
                 // Set the field.
                 units.insertBefore(Jimple.v().newAssignStmt(actorLocal,
-                                           Jimple.v().newInstanceFieldRef(thisLocal, field)),
-                        insertPoint);
+                        Jimple.v().newInstanceFieldRef(thisLocal, field)),
+                    insertPoint);
                 units.insertBefore(Jimple.v().newInvokeStmt(Jimple.v()
-                                           .newVirtualInvokeExpr(actorLocal,
-                                                   wrapupMethod)), insertPoint);
+                                                                              .newVirtualInvokeExpr(actorLocal,
+                                        wrapupMethod)), insertPoint);
             }
 
             //       units.insertBefore(Jimple.v().newReturnVoidStmt(),

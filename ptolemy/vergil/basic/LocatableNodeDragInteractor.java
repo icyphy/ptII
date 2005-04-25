@@ -110,12 +110,12 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
         }
 
         BasicGraphController graphController = (BasicGraphController) _controller
-            .getController();
+                        .getController();
         BasicGraphFrame frame = graphController.getFrame();
 
         SelectionModel model = graphController.getSelectionModel();
         AbstractBasicGraphModel graphModel = (AbstractBasicGraphModel) graphController
-            .getGraphModel();
+                        .getGraphModel();
         Object[] selection = model.getSelectionAsArray();
         Object[] userObjects = new Object[selection.length];
 
@@ -133,7 +133,7 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
                 Object userObject = ((Figure) selection[i]).getUserObject();
 
                 if (graphModel.isEdge(userObject)
-                        || graphModel.isNode(userObject)) {
+                                || graphModel.isNode(userObject)) {
                     NamedObj actual = (NamedObj) graphModel.getSemanticObject(userObject);
 
                     if (actual != null) {
@@ -143,8 +143,8 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
                         // MoML and which may not be undoable.
                         // FIXME: This is no way to handle it...
                         System.out.println(
-                                "Object with no semantic object , class: "
-                                + userObject.getClass().getName());
+                            "Object with no semantic object , class: "
+                            + userObject.getClass().getName());
                     }
                 }
             }
@@ -179,7 +179,10 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
 
             // Give default values in case the previous locations value
             // has not yet been set
-            double[] newLocation = new double[] { 0, 0 };
+            double[] newLocation = new double[] {
+                    0,
+                    0
+                };
 
             if (locatable.getLocation() != null) {
                 newLocation = locatable.getLocation();
@@ -203,11 +206,11 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
             // location is a vertex
             String momlInfo = ((NamedObj) locatable).getElementName();
             moml.append("<" + momlInfo + " name=\"" + locatable.getName()
-                    + "\" value=\"[" + newLocation[0] + ", " + newLocation[1]
-                    + "]\" />\n");
+                + "\" value=\"[" + newLocation[0] + ", " + newLocation[1]
+                + "]\" />\n");
             undoMoml.append("<" + momlInfo + " name=\"" + locatable.getName()
-                    + "\" value=\"[" + oldLocation[0] + ", " + oldLocation[1]
-                    + "]\" />\n");
+                + "\" value=\"[" + oldLocation[0] + ", " + oldLocation[1]
+                + "]\" />\n");
             moml.append("</" + containingElementName + ">\n");
             undoMoml.append("</" + containingElementName + ">\n");
         }
@@ -236,7 +239,7 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
                     MoMLUndoEntry newEntry = new MoMLUndoEntry(toplevel,
                             finalUndoMoML.toString());
                     UndoStackAttribute undoInfo = UndoStackAttribute
-                        .getUndoInfo(toplevel);
+                                    .getUndoInfo(toplevel);
                     undoInfo.push(newEntry);
                 }
             };

@@ -34,15 +34,15 @@ import ptolemy.actor.util.Time;
 
 /**
    Interface that defines the methods for lower level CT directors in hierarchy
-   to query information from the upper level CT directors. The information 
+   to query information from the upper level CT directors. The information
    includes the current step size for integration, the current execution phase,
-   the beginning time of the current integration, and the current solver. 
-   All CT directors must implement this interface. 
+   the beginning time of the current integration, and the current solver.
+   All CT directors must implement this interface.
    <p>
-   The {@link CTDirector} class and {@link CTTransparentDirector} interface 
-   directly implements this interface. The CTDirector class focuses on how to 
+   The {@link CTDirector} class and {@link CTTransparentDirector} interface
+   directly implements this interface. The CTDirector class focuses on how to
    solve ordinary differential equations. The CTTransparentDirector interface
-   defines the methods for upper level CT directors in hierarchy to query 
+   defines the methods for upper level CT directors in hierarchy to query
    step size control information from the lower level CT directors.
 
    @author  Haiyang Zheng
@@ -61,7 +61,7 @@ public interface CTGeneralDirector {
      */
     public double getCurrentStepSize();
 
-    /** Return the error tolerance, used by state and output step size 
+    /** Return the error tolerance, used by state and output step size
      *  actors.
      *  @return The error tolerance.
      */
@@ -69,7 +69,7 @@ public interface CTGeneralDirector {
 
     /** Return the executive CT general director of this director, or null if
      *  this director is at the top level or the executive director is
-     *  not a CT general director. 
+     *  not a CT general director.
      *  @return The executive CT general director of this director, if there
      *  is any.
      */

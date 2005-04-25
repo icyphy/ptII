@@ -27,13 +27,15 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.lib.colt;
 
+import cern.jet.random.Normal;
+
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import cern.jet.random.Normal;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// Normal
@@ -46,7 +48,7 @@ import cern.jet.random.Normal;
    deviation given by parameters.  In addition, the seed can be
    specified as a parameter to control the sequence that is generated.
 
-   <p> This actor instantiates a 
+   <p> This actor instantiates a
    <a href="http://hoschek.home.cern.ch/hoschek/colt/V1.0.3/doc/cern/jet/random/Normal.html">cern.jet.random.Normal</a> object with
     a mean of 1.0 and a standardDeviation of 1.0.
 
@@ -66,7 +68,7 @@ public class ColtNormal extends ColtRandomSource {
      *   actor with this name.
      */
     public ColtNormal(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         output.setTypeEquals(BaseType.DOUBLE);
@@ -76,7 +78,7 @@ public class ColtNormal extends ColtRandomSource {
         standardDeviation = new Parameter(this, "standardDeviation",
                 new DoubleToken(1.0));
         standardDeviation.setTypeEquals(BaseType.DOUBLE);
-        
+
         standardDeviation.moveToFirst();
         mean.moveToFirst();
     }
@@ -122,7 +124,7 @@ public class ColtNormal extends ColtRandomSource {
     protected void _generateRandomNumber() throws IllegalActionException {
         double meanValue = ((DoubleToken) mean.getToken()).doubleValue();
         double standardDeviationValue = ((DoubleToken) standardDeviation
-                .getToken()).doubleValue();
+                        .getToken()).doubleValue();
 
         _generator.setState(meanValue, standardDeviationValue);
         _current = _generator.nextDouble();
@@ -133,7 +135,7 @@ public class ColtNormal extends ColtRandomSource {
 
     /** The random number for the current iteration. */
     private double _current;
-    
+
     /** The random number generator. */
     private Normal _generator;
 }

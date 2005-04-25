@@ -108,7 +108,7 @@ public class PaneWrapper extends AbstractFigure implements EventAcceptor {
             Point2D d = _wrappedPane.getSize();
             Rectangle2D r = new Rectangle2D.Double(0.0, 0.0, d.getX(), d.getY());
             AffineTransform at = _wrappedPane.getTransformContext()
-                .getTransform();
+                                                         .getTransform();
             return at.createTransformedShape(r);
         }
     }
@@ -242,7 +242,7 @@ public class PaneWrapper extends AbstractFigure implements EventAcceptor {
         double savedX = event.getLayerX();
         double savedY = event.getLayerX();
         AffineTransform at = _wrappedPane.getTransformContext()
-            .getInverseTransform();
+                                                     .getInverseTransform();
 
         if (!at.isIdentity()) {
             event.transform(at);

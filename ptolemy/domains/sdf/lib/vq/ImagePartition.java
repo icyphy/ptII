@@ -62,7 +62,7 @@ public class ImagePartition extends Transformer {
      *   an actor already in the container.
      */
     public ImagePartition(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         imageColumns = new Parameter(this, "imageColumns", new IntToken("176"));
@@ -78,7 +78,7 @@ public class ImagePartition extends Transformer {
         output_tokenProductionRate = new Parameter(output, "tokenProductionRate");
         output_tokenProductionRate.setTypeEquals(BaseType.INT);
         output_tokenProductionRate.setExpression(
-                "imageColumns * imageRows / partitionColumns / partitionRows");
+            "imageColumns * imageRows / partitionColumns / partitionRows");
 
         input.setTypeEquals(BaseType.INT_MATRIX);
         output.setTypeEquals(BaseType.INT_MATRIX);
@@ -121,12 +121,12 @@ public class ImagePartition extends Transformer {
 
         if ((_imageColumns % _partitionColumns) != 0) {
             throw new IllegalActionException(imageColumns, partitionColumns,
-                    "Partition size must evenly divide image size");
+                "Partition size must evenly divide image size");
         }
 
         if ((_imageRows % _partitionRows) != 0) {
             throw new IllegalActionException(imageRows, partitionRows,
-                    "Partition size must evenly divide image size");
+                "Partition size must evenly divide image size");
         }
 
         _part = new int[_partitionRows][_partitionColumns];
@@ -154,19 +154,19 @@ public class ImagePartition extends Transformer {
         message = (IntMatrixToken) input.get(0);
 
         if ((message.getRowCount() != _imageRows)
-                || (message.getColumnCount() != _imageColumns)) {
+                        || (message.getColumnCount() != _imageColumns)) {
             throw new IllegalActionException("Input data must be imageRows "
-                    + "by imageColumns");
+                + "by imageColumns");
         }
 
         int[][] image = message.intMatrix();
 
         for (j = 0, partitionNumber = 0; j < _imageRows; j += _partitionRows) {
             for (i = 0; i < _imageColumns;
-                 i += _partitionColumns, partitionNumber++) {
+                            i += _partitionColumns, partitionNumber++) {
                 for (y = 0; y < _partitionRows; y++) {
                     System.arraycopy(image[j + y], i, _part[y], 0,
-                            _partitionColumns);
+                        _partitionColumns);
                 }
 
                 _partitions[partitionNumber] = new IntMatrixToken(_part);

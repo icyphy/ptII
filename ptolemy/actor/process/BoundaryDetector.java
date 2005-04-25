@@ -84,7 +84,7 @@ public class BoundaryDetector {
             }
 
             ComponentEntity contEntity = (ComponentEntity) contPort
-                .getContainer();
+                            .getContainer();
             IOPort connectedPort = null;
             ComponentEntity connectedEntity = null;
 
@@ -92,12 +92,11 @@ public class BoundaryDetector {
 
             while (ports.hasNext()) {
                 connectedPort = (IOPort) ports.next();
-                connectedEntity =
-                    (ComponentEntity) connectedPort.getContainer();
+                connectedEntity = (ComponentEntity) connectedPort.getContainer();
 
                 if ((connectedEntity == contEntity.getContainer())
-                        && connectedPort.isInput()
-                        && connectedPort.isOpaque()) {
+                                && connectedPort.isInput()
+                                && connectedPort.isOpaque()) {
                     // The port container of this receiver is
                     // connected to the inside of a boundary port.
                     // Now determine if this receiver's channel is
@@ -114,14 +113,13 @@ public class BoundaryDetector {
                         }
                     }
                 } else if (connectedPort.isOpaque()
-                        && !connectedEntity.isAtomic()
-                        && connectedPort.isOutput()) {
+                                && !connectedEntity.isAtomic()
+                                && connectedPort.isOutput()) {
                     // The port container of this receiver is
                     // connected to the outside of a boundary port.
                     // Now determine if this receiver's channel is
                     // connected to the boundary port.
-                    Receiver[][] receivers =
-                        connectedPort.getRemoteReceivers();
+                    Receiver[][] receivers = connectedPort.getRemoteReceivers();
 
                     for (int i = 0; i < receivers.length; i++) {
                         for (int j = 0; j < receivers[i].length; j++) {
@@ -162,7 +160,7 @@ public class BoundaryDetector {
             }
 
             ComponentEntity contEntity = (ComponentEntity) contPort
-                .getContainer();
+                            .getContainer();
             IOPort connectedPort = null;
             ComponentEntity connectedEntity = null;
 
@@ -170,12 +168,11 @@ public class BoundaryDetector {
 
             while (ports.hasNext()) {
                 connectedPort = (IOPort) ports.next();
-                connectedEntity =
-                    (ComponentEntity) connectedPort.getContainer();
+                connectedEntity = (ComponentEntity) connectedPort.getContainer();
 
                 if ((connectedEntity == contEntity.getContainer())
-                        && connectedPort.isInput()
-                        && connectedPort.isOpaque()) {
+                                && connectedPort.isInput()
+                                && connectedPort.isOpaque()) {
                     // The port container of this receiver is
                     // connected to the inside of a boundary port.
                     // Now determine if this receiver's channel is
@@ -226,11 +223,11 @@ public class BoundaryDetector {
 
             while (ports.hasNext()) {
                 IOPort connectedPort = (IOPort) ports.next();
-                ComponentEntity connectedEntity =
-                    (ComponentEntity) connectedPort.getContainer();
+                ComponentEntity connectedEntity = (ComponentEntity) connectedPort
+                                .getContainer();
 
                 if (connectedPort.isOpaque() && !connectedEntity.isAtomic()
-                        && connectedPort.isOutput()) {
+                                && connectedPort.isOutput()) {
                     // The port container of this receiver is
                     // connected to the outside of a boundary port.
                     // Now determine if this receiver's channel is
@@ -277,10 +274,10 @@ public class BoundaryDetector {
             }
 
             ComponentEntity innerEntity = (ComponentEntity) innerPort
-                .getContainer();
+                            .getContainer();
 
             if ((innerEntity != null) && !innerEntity.isAtomic()
-                    && innerPort.isOpaque()) {
+                            && innerPort.isOpaque()) {
                 // The containing receiver is contained by the port
                 // of a composite actor.
                 if (innerPort.isOutput() && !innerPort.isInput()) {
@@ -293,9 +290,9 @@ public class BoundaryDetector {
                     // CONCERN: The following only works if the port
                     // is not both an input and output.
                     throw new IllegalArgumentException("A port that "
-                            + "is both an input and output can not be "
-                            + "properly dealt with by "
-                            + "PNQueueReceiver.isInsideBoundary");
+                        + "is both an input and output can not be "
+                        + "properly dealt with by "
+                        + "PNQueueReceiver.isInsideBoundary");
                 }
 
                 _insideBoundaryCacheIsOn = true;
@@ -330,10 +327,10 @@ public class BoundaryDetector {
             }
 
             ComponentEntity innerEntity = (ComponentEntity) innerPort
-                .getContainer();
+                            .getContainer();
 
             if ((innerEntity != null) && !innerEntity.isAtomic()
-                    && innerPort.isOpaque()) {
+                            && innerPort.isOpaque()) {
                 // The containing receiver is contained by the port
                 // of a composite actor.
                 if (innerPort.isOutput() && !innerPort.isInput()) {
@@ -346,9 +343,9 @@ public class BoundaryDetector {
                     // CONCERN: The following only works if the port
                     // is not both an input and output.
                     throw new IllegalArgumentException("A port that "
-                            + "is both an input and output can not be "
-                            + "properly dealt with by "
-                            + "PNQueueReceiver.isInsideBoundary");
+                        + "is both an input and output can not be "
+                        + "properly dealt with by "
+                        + "PNQueueReceiver.isInsideBoundary");
                 }
 
                 _outsideBoundaryCacheIsOn = true;

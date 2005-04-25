@@ -91,7 +91,7 @@ public class FeedBackDelay extends DDEActor {
      *  superclass throws a NameDuplicationException .
      */
     public FeedBackDelay()
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super();
         _setVariables();
     }
@@ -105,7 +105,7 @@ public class FeedBackDelay extends DDEActor {
      *  superclass throws a NameDuplicationException .
      */
     public FeedBackDelay(Workspace workspace)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(workspace);
         _setVariables();
     }
@@ -120,7 +120,7 @@ public class FeedBackDelay extends DDEActor {
      *  superclass throws a NameDuplicationException .
      */
     public FeedBackDelay(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _setVariables();
     }
@@ -169,23 +169,23 @@ public class FeedBackDelay extends DDEActor {
     public void fire() throws IllegalActionException {
         Token token = _getNextInput();
         boolean delayNullVal = ((BooleanToken) nullDelay.getToken())
-            .booleanValue();
+                        .booleanValue();
         boolean delayRealVal = ((BooleanToken) realDelay.getToken())
-            .booleanValue();
+                        .booleanValue();
         Thread thread = Thread.currentThread();
 
         if (thread instanceof DDEThread) {
             if (token instanceof NullToken) {
                 if (delayNullVal) {
                     _sendOutToken(token,
-                            getDirector().getModelTime().add(getDelay()));
+                        getDirector().getModelTime().add(getDelay()));
                 } else {
                     _sendOutToken(token, getDirector().getModelTime());
                 }
             } else {
                 if (delayRealVal) {
                     _sendOutToken(token,
-                            getDirector().getModelTime().add(getDelay()));
+                        getDirector().getModelTime().add(getDelay()));
                 } else {
                     _sendOutToken(token, getDirector().getModelTime());
                 }
@@ -209,7 +209,7 @@ public class FeedBackDelay extends DDEActor {
             for (int j = 0; j < receivers[i].length; j++) {
                 DDEReceiver rcvr = (DDEReceiver) receivers[i][j];
                 rcvr.put(new Token(),
-                        new Time(getDirector(), PrioritizedTimedQueue.IGNORE));
+                    new Time(getDirector(), PrioritizedTimedQueue.IGNORE));
             }
         }
 
@@ -243,7 +243,7 @@ public class FeedBackDelay extends DDEActor {
     /** Syntactic sugar for initializing parameters.
      */
     private void _setVariables()
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         input = new TypedIOPort(this, "input", true, false);
         output = new TypedIOPort(this, "output", false, true);
         input.setTypeEquals(BaseType.GENERAL);

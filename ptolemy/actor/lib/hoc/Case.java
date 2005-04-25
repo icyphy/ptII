@@ -56,7 +56,7 @@ public class Case extends AbstractCase {
      *   actor with this name.
      */
     public Case(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
     }
 

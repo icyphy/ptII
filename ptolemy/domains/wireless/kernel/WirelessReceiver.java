@@ -113,7 +113,10 @@ public class WirelessReceiver extends DEReceiver {
     public synchronized void put(Token token, Token properties) {
         // Bundle the two into one token.
         // Construct the message about the input signal detected.
-        String[] labels = { "properties", "value" };
+        String[] labels = {
+                "properties",
+                "value"
+            };
 
         if (properties == null) {
             properties = _dummy;
@@ -124,7 +127,10 @@ public class WirelessReceiver extends DEReceiver {
             token = _dummy;
         }
 
-        Token[] values = { properties, token };
+        Token[] values = {
+                properties,
+                token
+            };
         Token result = null;
 
         try {

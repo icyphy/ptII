@@ -272,7 +272,7 @@ public class URLDirectoryReader extends URLReader {
                         String filename = files[i].getName();
 
                         if ((endsWith == null) || (endsWith.length() == 0)
-                                || filename.endsWith(endsWith)) {
+                                        || filename.endsWith(endsWith)) {
                             resultsList.add(source + filename);
                         }
                     }
@@ -280,7 +280,9 @@ public class URLDirectoryReader extends URLReader {
                     String[] results = new String[resultsList.size()];
                     return (String[]) (resultsList.toArray(results));
                 } else if (file.isFile()) {
-                    return new String[] { file.toString() };
+                    return new String[] {
+                        file.toString()
+                    };
                 } else {
                     throw new IllegalActionException("'" + source
                         + "' is neither a file " + "or a directory?");
@@ -322,7 +324,7 @@ public class URLDirectoryReader extends URLReader {
         String contentType = urlConnection.getContentType();
 
         if (!contentType.startsWith("text/html")
-                && !contentType.startsWith("text/plain")) {
+                        && !contentType.startsWith("text/plain")) {
             throw new RuntimeException("Could not parse '" + source
                 + "', it is not \"text/html\", " + "or \"text/plain\", it is: "
                 + urlConnection.getContentType());
@@ -337,7 +339,7 @@ public class URLDirectoryReader extends URLReader {
                         urlConnection.getInputStream()));
 
             if (!contentType.startsWith("text/plain")
-                    && !urlConnection.getURL().toString().endsWith("/")) {
+                            && !urlConnection.getURL().toString().endsWith("/")) {
                 // text/plain urls need not end with /, but
                 // text/html urls _must_ end with / since the web server
                 // will rewrite them for us.
@@ -394,8 +396,9 @@ public class URLDirectoryReader extends URLReader {
                                             // here to verify that the target
                                             // exists.
                                             if ((endsWith == null)
-                                                    || (endsWith.length() == 0)
-                                                    || target.endsWith(endsWith)) {
+                                                            || (endsWith.length() == 0)
+                                                            || target.endsWith(
+                                                                endsWith)) {
                                                 resultsList.add(source + target);
                                             }
 

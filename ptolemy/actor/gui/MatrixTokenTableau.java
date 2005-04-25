@@ -62,7 +62,7 @@ public class MatrixTokenTableau extends TokenTableau {
      *   attribute already in the container.
      */
     public MatrixTokenTableau(Effigy container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -77,7 +77,7 @@ public class MatrixTokenTableau extends TokenTableau {
      *   attribute already in the container.
      */
     public MatrixTokenTableau(Effigy container, String name, TableauFrame frame)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name, frame);
     }
 
@@ -180,7 +180,7 @@ public class MatrixTokenTableau extends TokenTableau {
          *   an attribute already in the container.
          */
         public Factory(NamedObj container, String name)
-                throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
             super(container, name);
         }
 
@@ -232,7 +232,7 @@ public class MatrixTokenTableau extends TokenTableau {
                 }
 
                 return new MatrixTokenTableau((TokenEffigy) effigy,
-                        "tokenTableau");
+                    "tokenTableau");
             }
 
             return null;

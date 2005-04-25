@@ -72,11 +72,11 @@ public class FileHandler {
             return object;
         } catch (IOException e) {
             throw new RuntimeException("IOException while reading object from "
-                    + fileName + ": " + e.toString());
+                + fileName + ": " + e.toString());
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(
-                    "ClassNotFoundException while reading object from " + fileName
-                    + ": " + e.toString());
+                "ClassNotFoundException while reading object from " + fileName
+                + ": " + e.toString());
         }
     }
 
@@ -101,7 +101,7 @@ public class FileHandler {
             }
         } catch (IOException e) {
             System.err.println("FileHandler.readStringFromFile(String):\n"
-                    + "ERROR!: Unable to access file " + fileName);
+                + "ERROR!: Unable to access file " + fileName);
         }
 
         return code.toString();
@@ -119,8 +119,8 @@ public class FileHandler {
             out.close();
         } catch (IOException e) {
             throw new RuntimeException(e.toString()
-                    + "\nFileHandler.write(String, String): "
-                    + "could not create file: " + fileName + "\n");
+                + "\nFileHandler.write(String, String): "
+                + "could not create file: " + fileName + "\n");
         }
     }
 
@@ -137,8 +137,8 @@ public class FileHandler {
             out.close();
         } catch (IOException e) {
             throw new RuntimeException("IOException while writing object to "
-                    + fileName + ": " + e.toString() + "\nOBJECT: "
-                    + object.toString());
+                + fileName + ": " + e.toString() + "\nOBJECT: "
+                + object.toString());
         }
     }
 }

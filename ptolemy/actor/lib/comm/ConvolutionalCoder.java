@@ -175,7 +175,7 @@ public class ConvolutionalCoder extends Transformer {
      *   actor with this name.
      */
     public ConvolutionalCoder(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         uncodedRate = new Parameter(this, "uncodedRate");
@@ -235,13 +235,13 @@ public class ConvolutionalCoder extends Transformer {
      *  non-positive or any element of <i>polynomialArray</i> is non-positive.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == uncodedRate) {
             _inputNumber = ((IntToken) uncodedRate.getToken()).intValue();
 
             if (_inputNumber < 1) {
                 throw new IllegalActionException(this,
-                        "inputLength must be non-negative.");
+                    "inputLength must be non-negative.");
             }
 
             // Set a flag indicating the private variable
@@ -262,7 +262,7 @@ public class ConvolutionalCoder extends Transformer {
 
                 if (_mask[i] <= 0) {
                     throw new IllegalActionException(this,
-                            "Polynomial is required to be strictly positive.");
+                        "Polynomial is required to be strictly positive.");
                 }
 
                 if (_mask[i] > _maxPolyValue) {
@@ -289,12 +289,12 @@ public class ConvolutionalCoder extends Transformer {
         if (_inputNumberInvalid) {
             if (_inputNumber >= _maskNumber) {
                 throw new IllegalActionException(this,
-                        "Output rate should be larger than input rate.");
+                    "Output rate should be larger than input rate.");
             }
 
             if ((1 << _inputNumber) > _maxPolyValue) {
                 throw new IllegalActionException(this,
-                        "The highest order of all polynomials is too low.");
+                    "The highest order of all polynomials is too low.");
             }
 
             _inputNumberInvalid = false;
@@ -340,7 +340,7 @@ public class ConvolutionalCoder extends Transformer {
     public void initialize() throws IllegalActionException {
         super.initialize();
         _latestShiftReg = _shiftReg = ((IntToken) initialState.getToken())
-            .intValue();
+                            .intValue();
     }
 
     /** Record the most recent shift register state as the new

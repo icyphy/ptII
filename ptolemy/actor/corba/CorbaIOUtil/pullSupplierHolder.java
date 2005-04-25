@@ -18,7 +18,7 @@ public final class pullSupplierHolder
     }
 
     public pullSupplierHolder(
-            ptolemy.actor.corba.CorbaIOUtil.pullSupplier initialValue) {
+        ptolemy.actor.corba.CorbaIOUtil.pullSupplier initialValue) {
         value = initialValue;
     }
 

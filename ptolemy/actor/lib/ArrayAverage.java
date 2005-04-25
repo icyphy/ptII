@@ -72,7 +72,7 @@ public class ArrayAverage extends Transformer {
      *   actor with this name.
      */
     public ArrayAverage(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // set type constraints.
@@ -140,8 +140,8 @@ public class ArrayAverage extends Transformer {
             input.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
         } else if (!(inputType instanceof ArrayType)) {
             throw new IllegalStateException("ArrayElement.typeConstraintList: "
-                    + "The input type, " + inputType.toString() + " is not an "
-                    + "array type.");
+                + "The input type, " + inputType.toString() + " is not an "
+                + "array type.");
         }
 
         // NOTE: superclass will put in type constraints for

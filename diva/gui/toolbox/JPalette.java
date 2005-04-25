@@ -122,7 +122,7 @@ public class JPalette extends JPanel {
 
                         //initial cursor, transferable, dsource listener
                         e.startDrag(DragSource.DefaultCopyNoDrop, transferable,
-                                dsl);
+                            dsl);
                     } catch (InvalidDnDOperationException idoe) {
                         System.err.println(idoe);
                     }
@@ -130,7 +130,7 @@ public class JPalette extends JPanel {
             };
 
         DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(c,
-                DnDConstants.ACTION_COPY_OR_MOVE, dgl);
+            DnDConstants.ACTION_COPY_OR_MOVE, dgl);
     }
 
     /**

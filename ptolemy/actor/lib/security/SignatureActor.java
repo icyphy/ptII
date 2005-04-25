@@ -94,7 +94,7 @@ public class SignatureActor extends TypedAtomicActor {
      *   actor with this name.
      */
     public SignatureActor(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         input = new TypedIOPort(this, "input", true, false);
@@ -116,7 +116,7 @@ public class SignatureActor extends TypedAtomicActor {
         signatureAlgorithm = new StringParameter(this, "signatureAlgorithm");
 
         Iterator signatureAlgorithms = Security.getAlgorithms("Signature")
-            .iterator();
+                                                           .iterator();
 
         for (int i = 0; signatureAlgorithms.hasNext(); i++) {
             String algorithmName = (String) signatureAlgorithms.next();
@@ -168,11 +168,11 @@ public class SignatureActor extends TypedAtomicActor {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == signatureAlgorithm) {
             _updateSignatureNeeded = true;
             _signatureAlgorithm = ((StringToken) signatureAlgorithm.getToken())
-                .stringValue();
+                            .stringValue();
         } else if (attribute == provider) {
             _updateSignatureNeeded = true;
             _provider = ((StringToken) provider.getToken()).stringValue();
@@ -242,8 +242,8 @@ public class SignatureActor extends TypedAtomicActor {
                 }
             } catch (Throwable throwable) {
                 throw new IllegalActionException(this, throwable,
-                        "Failed to initialize Signature with algorithm: '"
-                        + _signatureAlgorithm + "', provider: '" + _provider + "'");
+                    "Failed to initialize Signature with algorithm: '"
+                    + _signatureAlgorithm + "', provider: '" + _provider + "'");
             }
 
             _updateSignatureNeeded = false;

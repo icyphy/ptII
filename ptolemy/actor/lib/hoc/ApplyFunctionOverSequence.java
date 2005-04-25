@@ -92,7 +92,7 @@ public class ApplyFunctionOverSequence extends TypedAtomicActor {
      *   actor with this name.
      */
     public ApplyFunctionOverSequence(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         output = new TypedIOPort(this, "output", false, true);
         function = new PortParameter(this, "function");
@@ -197,7 +197,7 @@ public class ApplyFunctionOverSequence extends TypedAtomicActor {
 
         if (type.getReturnType() instanceof ArrayType) {
             output.setTypeEquals(((ArrayType) type.getReturnType())
-                    .getElementType());
+                            .getElementType());
             _outputRate = DFUtilities.getTokenProductionRate(output);
         } else {
             output.setTypeEquals(type.getReturnType());

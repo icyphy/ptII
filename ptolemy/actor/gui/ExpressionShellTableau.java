@@ -73,7 +73,7 @@ public class ExpressionShellTableau extends Tableau implements ShellInterpreter 
      *   an entity with the specified name.
      */
     public ExpressionShellTableau(ExpressionShellEffigy container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         frame = new ExpressionShellFrame(this);
         setFrame(frame);
@@ -107,10 +107,10 @@ public class ExpressionShellTableau extends Tableau implements ShellInterpreter 
         }
 
         final NamedObj model = ((ExpressionShellEffigy) getContainer())
-            .getModel();
+                        .getModel();
         ParserScope scope = new ModelScope() {
                 public ptolemy.data.Token get(String name)
-                        throws IllegalActionException {
+                    throws IllegalActionException {
                     Variable result = getScopedVariable(null, model, name);
 
                     if (result != null) {
@@ -121,7 +121,7 @@ public class ExpressionShellTableau extends Tableau implements ShellInterpreter 
                 }
 
                 public ptolemy.data.type.Type getType(String name)
-                        throws IllegalActionException {
+                    throws IllegalActionException {
                     Variable result = getScopedVariable(null, model, name);
 
                     if (result != null) {
@@ -132,7 +132,7 @@ public class ExpressionShellTableau extends Tableau implements ShellInterpreter 
                 }
 
                 public InequalityTerm getTypeTerm(String name)
-                        throws IllegalActionException {
+                    throws IllegalActionException {
                     Variable result = getScopedVariable(null, model, name);
 
                     if (result != null) {
@@ -210,7 +210,7 @@ public class ExpressionShellTableau extends Tableau implements ShellInterpreter 
          *   an attribute already in the container.
          */
         public Factory(NamedObj container, String name)
-                throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
             super(container, name);
         }
 
@@ -231,7 +231,7 @@ public class ExpressionShellTableau extends Tableau implements ShellInterpreter 
             // effigy.  Is this what we want?
             if (effigy instanceof ExpressionShellEffigy) {
                 return new ExpressionShellTableau((ExpressionShellEffigy) effigy,
-                        "ExpressionShellTableau");
+                    "ExpressionShellTableau");
             } else {
                 return null;
             }

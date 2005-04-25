@@ -86,7 +86,7 @@ public class DelayChannel extends ErasureChannel {
      *   a relation already in the container.
      */
     public DelayChannel(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         propagationSpeed = new Parameter(this, "propagationSpeed");
         propagationSpeed.setTypeEquals(BaseType.DOUBLE);
@@ -113,14 +113,14 @@ public class DelayChannel extends ErasureChannel {
      *   to this container.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == propagationSpeed) {
             double speed = ((DoubleToken) propagationSpeed.getToken())
-                .doubleValue();
+                            .doubleValue();
 
             if (speed <= 0.0) {
                 throw new IllegalActionException(this,
-                        "Invalid value for propagationSpeed: " + speed);
+                    "Invalid value for propagationSpeed: " + speed);
             }
         } else {
             super.attributeChanged(attribute);
@@ -150,7 +150,7 @@ public class DelayChannel extends ErasureChannel {
 
                 // Use the superclass, not this class, or we just delay again.
                 super._transmitTo(reception.token, reception.sender,
-                        reception.receiver, reception.properties);
+                    reception.receiver, reception.properties);
             }
         }
     }
@@ -187,8 +187,8 @@ public class DelayChannel extends ErasureChannel {
      *   does not support clear.
      */
     protected void _transmitTo(Token token, WirelessIOPort sender,
-            WirelessReceiver receiver, RecordToken properties)
-            throws IllegalActionException {
+        WirelessReceiver receiver, RecordToken properties)
+        throws IllegalActionException {
         double speed = ((DoubleToken) propagationSpeed.getToken()).doubleValue();
 
         if (speed == Double.POSITIVE_INFINITY) {

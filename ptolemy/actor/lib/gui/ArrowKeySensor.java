@@ -92,7 +92,7 @@ public class ArrowKeySensor extends TypedAtomicActor {
      *   actor with this name.
      */
     public ArrowKeySensor(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // Outputs
@@ -304,43 +304,43 @@ public class ArrowKeySensor extends TypedAtomicActor {
             // See javax.swing.Jcomponent.registerKeyboardAction().
             // Registration of up-arrow call-backs.
             label.registerKeyboardAction(myUpPressedListener, "UpPressed",
-                    KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0, false),
-                    JComponent.WHEN_IN_FOCUSED_WINDOW);
+                KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0, false),
+                JComponent.WHEN_IN_FOCUSED_WINDOW);
 
             label.registerKeyboardAction(myUpReleasedListener, "UpReleased",
-                    KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0, true),
-                    JComponent.WHEN_IN_FOCUSED_WINDOW);
+                KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0, true),
+                JComponent.WHEN_IN_FOCUSED_WINDOW);
 
             // Registration of left-arrow call-backs.
             label.registerKeyboardAction(myLeftPressedListener, "LeftPressed",
-                    KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0, false),
-                    JComponent.WHEN_IN_FOCUSED_WINDOW);
+                KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0, false),
+                JComponent.WHEN_IN_FOCUSED_WINDOW);
 
             label.registerKeyboardAction(myLeftReleasedListener,
-                    "LeftReleased",
-                    KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0, true),
-                    JComponent.WHEN_IN_FOCUSED_WINDOW);
+                "LeftReleased",
+                KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0, true),
+                JComponent.WHEN_IN_FOCUSED_WINDOW);
 
             // Registration of right-arrow call-backs.
             label.registerKeyboardAction(myRightPressedListener,
-                    "RightPressed",
-                    KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0, false),
-                    JComponent.WHEN_IN_FOCUSED_WINDOW);
+                "RightPressed",
+                KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0, false),
+                JComponent.WHEN_IN_FOCUSED_WINDOW);
 
             label.registerKeyboardAction(myRightReleasedListener,
-                    "RightReleased",
-                    KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0, true),
-                    JComponent.WHEN_IN_FOCUSED_WINDOW);
+                "RightReleased",
+                KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0, true),
+                JComponent.WHEN_IN_FOCUSED_WINDOW);
 
             // Registration of down-arrow call-backs.
             label.registerKeyboardAction(myDownPressedListener, "DownPressed",
-                    KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0, false),
-                    JComponent.WHEN_IN_FOCUSED_WINDOW);
+                KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0, false),
+                JComponent.WHEN_IN_FOCUSED_WINDOW);
 
             label.registerKeyboardAction(myDownReleasedListener,
-                    "DownReleased",
-                    KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0, true),
-                    JComponent.WHEN_IN_FOCUSED_WINDOW);
+                "DownReleased",
+                KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0, true),
+                JComponent.WHEN_IN_FOCUSED_WINDOW);
 
             label.setRequestFocusEnabled(true);
             label.addMouseListener(new FocusMouseListener());

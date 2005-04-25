@@ -82,7 +82,7 @@ public class CSPSource extends AtomicActor {
      *   container.
      */
     public CSPSource(CompositeActor container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         this(container, name, -1, 0);
     }
 
@@ -107,7 +107,7 @@ public class CSPSource extends AtomicActor {
      *   or the tokenLimit parameter is not unique within the container.
      */
     public CSPSource(CompositeActor container, String name, int limit,
-            int initValue) throws IllegalActionException, NameDuplicationException {
+        int initValue) throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _value = initValue;
         tokenLimit = new Parameter(this, "tokenLimit", (new IntToken(limit)));
@@ -148,7 +148,7 @@ public class CSPSource extends AtomicActor {
             return;
         } catch (IllegalActionException ex) {
             System.out.println("CSPSource: illegalActionException, "
-                    + "exiting");
+                + "exiting");
         }
     }
 

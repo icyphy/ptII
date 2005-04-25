@@ -74,7 +74,7 @@ public class ResizablePolygonAttribute extends FilledShapeAttribute {
      *   an attribute already in the container.
      */
     public ResizablePolygonAttribute(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         vertices = new Parameter(this, "vertices");
@@ -103,16 +103,16 @@ public class ResizablePolygonAttribute extends FilledShapeAttribute {
      *   to this container (should not be thrown).
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if ((attribute == vertices) || (attribute == width)
-                || ((attribute == height) && !_inAttributeChanged)) {
+                        || ((attribute == height) && !_inAttributeChanged)) {
             // Check that the length of the array is even.
             ArrayToken verticesValue = (ArrayToken) vertices.getToken();
             int length = verticesValue.length();
 
             if ((length / 2) != ((length + 1) / 2)) {
                 throw new IllegalActionException(this,
-                        "Length of the vertices array is required to be even.");
+                    "Length of the vertices array is required to be even.");
             }
 
             try {
@@ -124,9 +124,9 @@ public class ResizablePolygonAttribute extends FilledShapeAttribute {
                 _inAttributeChanged = true;
 
                 double widthValue = ((DoubleToken) width.getToken())
-                    .doubleValue();
+                                .doubleValue();
                 double heightValue = ((DoubleToken) height.getToken())
-                    .doubleValue();
+                                .doubleValue();
                 _widthValue = widthValue;
                 _heightValue = heightValue;
                 _icon.setShape(_newShape());
@@ -164,9 +164,9 @@ public class ResizablePolygonAttribute extends FilledShapeAttribute {
             // First, read vertex values and find the bounds.
             for (int j = 0; j < (length / 2); j++) {
                 xPoints[j] = ((DoubleToken) verticesValue.getElement(2 * j))
-                    .doubleValue();
+                                .doubleValue();
                 yPoints[j] = ((DoubleToken) verticesValue.getElement((2 * j)
-                                      + 1)).doubleValue();
+                        + 1)).doubleValue();
 
                 if (xPoints[j] > xMax) {
                     xMax = xPoints[j];

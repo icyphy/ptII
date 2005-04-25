@@ -25,14 +25,15 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.codegen.c.actor.lib;
 
 import ptolemy.codegen.kernel.CCodeGeneratorHelper;
 import ptolemy.kernel.util.IllegalActionException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// MultiplyDivide
+
 /**
    A helper class for ptolemy.actor.lib.MultiplyDivide
 
@@ -43,7 +44,6 @@ import ptolemy.kernel.util.IllegalActionException;
    @Pt.AcceptedRating Red (eal)
 */
 public class MultiplyDivide extends CCodeGeneratorHelper {
-
     /**
      * Constructor method for the MultiplyDivide helper
      * @param actor the associated actor
@@ -54,38 +54,41 @@ public class MultiplyDivide extends CCodeGeneratorHelper {
 
     /**
      * Generate fire code
-     * The method generate code that loops through each 
-     * INPUT [multi-ports] and combine (add or substract) them. 
+     * The method generate code that loops through each
+     * INPUT [multi-ports] and combine (add or substract) them.
      * The result code is put into the given stream buffer
      * @param stream the given buffer to append the code to
      */
-    public void  generateFireCode(StringBuffer stream)
-            throws IllegalActionException {
-
-        ptolemy.actor.lib.MultiplyDivide actor =
-            (ptolemy.actor.lib.MultiplyDivide)getComponent();
+    public void generateFireCode(StringBuffer stream)
+        throws IllegalActionException {
+        ptolemy.actor.lib.MultiplyDivide actor = (ptolemy.actor.lib.MultiplyDivide) getComponent();
         StringBuffer tmpStream = new StringBuffer();
         tmpStream.append("$ref(output) = ");
+
         for (int i = 0; i < actor.multiply.getWidth(); i++) {
             tmpStream.append("$ref(multiply#" + i + ")");
-            if (i < actor.multiply.getWidth() - 1) {
+
+            if (i < (actor.multiply.getWidth() - 1)) {
                 tmpStream.append(" * ");
             } else if (actor.divide.getWidth() > 0) {
                 tmpStream.append(" / ");
             }
         }
-        
+
         // assume numerator of 1, if no input is connected to 
         // the multiply ports
-        if (actor.multiply.getWidth() == 0)     
-            tmpStream.append(" 1.0 / ");          
-        
+        if (actor.multiply.getWidth() == 0) {
+            tmpStream.append(" 1.0 / ");
+        }
+
         for (int i = 0; i < actor.divide.getWidth(); i++) {
             tmpStream.append("$ref(divide#" + i + ")");
-            if (i < actor.divide.getWidth() - 1) {
+
+            if (i < (actor.divide.getWidth() - 1)) {
                 tmpStream.append(" / ");
             }
         }
+
         tmpStream.append(";\n");
 
         stream.append(processCode(tmpStream.toString()));

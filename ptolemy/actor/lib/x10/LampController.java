@@ -27,6 +27,8 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.lib.x10;
 
+import x10.Command;
+
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
@@ -35,8 +37,6 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-
-import x10.Command;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -70,7 +70,7 @@ public class LampController extends Sender {
      *   actor with this name.
      */
     public LampController(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         bright = new TypedIOPort(this, "bright", true, false);
@@ -148,7 +148,7 @@ public class LampController extends Sender {
 
         if ((brightLevel >= 0) && (brightLevel <= 100)) {
             _transmit(new Command((_destination), x10.Command.BRIGHT,
-                              brightLevel));
+                    brightLevel));
         }
 
         if ((dimLevel >= 0) && (dimLevel <= 100)) {

@@ -27,6 +27,36 @@ COPYRIGHTENDKEY
 */
 package ptolemy.domains.gr.lib.quicktime;
 
+import quicktime.Errors;
+import quicktime.QTSession;
+
+import quicktime.app.display.QTCanvas;
+
+import quicktime.app.image.Paintable;
+import quicktime.app.image.QTImageDrawer;
+import quicktime.app.image.Redrawable;
+
+import quicktime.io.OpenMovieFile;
+import quicktime.io.QTFile;
+
+import quicktime.qd.QDGraphics;
+import quicktime.qd.QDRect;
+
+import quicktime.std.StdQTConstants;
+
+import quicktime.std.image.CSequence;
+import quicktime.std.image.CodecComponent;
+import quicktime.std.image.CompressedFrameInfo;
+import quicktime.std.image.ImageDescription;
+import quicktime.std.image.QTImage;
+
+import quicktime.std.movies.Movie;
+import quicktime.std.movies.Track;
+import quicktime.std.movies.media.VideoMedia;
+
+import quicktime.util.QTHandle;
+import quicktime.util.RawEncodedImage;
+
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
@@ -35,28 +65,6 @@ import ptolemy.domains.gr.lib.ViewScreen3D;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-
-import quicktime.Errors;
-import quicktime.QTSession;
-import quicktime.app.display.QTCanvas;
-import quicktime.app.image.Paintable;
-import quicktime.app.image.QTImageDrawer;
-import quicktime.app.image.Redrawable;
-import quicktime.io.OpenMovieFile;
-import quicktime.io.QTFile;
-import quicktime.qd.QDGraphics;
-import quicktime.qd.QDRect;
-import quicktime.std.StdQTConstants;
-import quicktime.std.image.CSequence;
-import quicktime.std.image.CodecComponent;
-import quicktime.std.image.CompressedFrameInfo;
-import quicktime.std.image.ImageDescription;
-import quicktime.std.image.QTImage;
-import quicktime.std.movies.Movie;
-import quicktime.std.movies.Track;
-import quicktime.std.movies.media.VideoMedia;
-import quicktime.util.QTHandle;
-import quicktime.util.RawEncodedImage;
 
 import com.sun.j3d.utils.universe.SimpleUniverse;
 
@@ -87,7 +95,7 @@ import javax.media.j3d.ImageComponent2D;
    @Pt.AcceptedRating Red (chf)
 */
 public class MovieViewScreen3D extends ViewScreen3D implements StdQTConstants,
-                                                               Errors {
+    Errors {
     /** Construct a ViewScreen2D in the given container with the given name.
      *  If the container argument is null, a NullPointerException will
      *  be thrown. If the name argument is null, then the name is set
@@ -101,7 +109,7 @@ public class MovieViewScreen3D extends ViewScreen3D implements StdQTConstants,
      *   CompositeActor and the name collides with an entity in the container.
      */
     public MovieViewScreen3D(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         fileName = new FileParameter(this, "fileName");
@@ -147,15 +155,15 @@ public class MovieViewScreen3D extends ViewScreen3D implements StdQTConstants,
                     _videoSize, codecFlagUpdatePrevious, _compressedFrame);
             boolean isKeyFrame = info.getSimilarity() == 0;
             System.out.println("f#:" + _frameNumber + ",kf=" + isKeyFrame
-                    + ",sim=" + info.getSimilarity());
+                + ",sim=" + info.getSimilarity());
 
             ImageDescription desc = _videoSequence.getDescription();
 
             // Add it to the video stream.
             _videoMedia.addSample(_imageHandle, 0, // dataOffset,
-                    info.getDataSize(), 600 / _frameRateValue, // frameDuration, in 1/600ths of a second.
-                    desc, 1, // one sample
-                    (isKeyFrame ? 0 : mediaSampleNotSync)); // no flags
+                info.getDataSize(), 600 / _frameRateValue, // frameDuration, in 1/600ths of a second.
+                desc, 1, // one sample
+                (isKeyFrame ? 0 : mediaSampleNotSync)); // no flags
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -190,7 +198,7 @@ public class MovieViewScreen3D extends ViewScreen3D implements StdQTConstants,
             _file = new QTFile(fileName.asFile());
             _movie = Movie.createMovieFile(_file, kMoviePlayer,
                     createMovieFileDeleteCurFile
-                    | createMovieFileDontCreateResFile);
+                                | createMovieFileDontCreateResFile);
 
             //
             // add content
@@ -250,7 +258,7 @@ public class MovieViewScreen3D extends ViewScreen3D implements StdQTConstants,
             int kMediaTime = 0;
             int kMediaRate = 1;
             _videoTrack.insertMedia(kTrackStart, kMediaTime,
-                    _videoMedia.getDuration(), kMediaRate);
+                _videoMedia.getDuration(), kMediaRate);
 
             // Save movie to file.
             OpenMovieFile outStream = OpenMovieFile.asWrite(_file);
@@ -276,9 +284,9 @@ public class MovieViewScreen3D extends ViewScreen3D implements StdQTConstants,
         _offScreenCanvas = new Canvas3D(config, true);
         _offScreenCanvas.getScreen3D().setSize(_canvas.getScreen3D().getSize());
         _offScreenCanvas.getScreen3D().setPhysicalScreenWidth(_canvas.getScreen3D()
-                .getPhysicalScreenWidth());
+                                                                                 .getPhysicalScreenWidth());
         _offScreenCanvas.getScreen3D().setPhysicalScreenHeight(_canvas.getScreen3D()
-                .getPhysicalScreenHeight());
+                                                                                  .getPhysicalScreenHeight());
 
         // attach the offscreen canvas to the view
         _canvas.getView().addCanvas3D(_offScreenCanvas);

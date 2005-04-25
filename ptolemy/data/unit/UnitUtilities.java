@@ -165,10 +165,10 @@ public class UnitUtilities {
     /** Return a copy of the category list.
      *  @return a copy of the category list
      */
-   public static ArrayList categoryList() {
-       // The port configuration window uses this.
-       return new ArrayList(_categoryList);
-   }
+    public static ArrayList categoryList() {
+        // The port configuration window uses this.
+        return new ArrayList(_categoryList);
+    }
 
     /** Return a copy of the given units array. If the given array is
      *  unitless, then return null.
@@ -333,7 +333,7 @@ public class UnitUtilities {
     public static String summarizeUnitCategories() {
         synchronized (_indexTable) {
             return "The registered categories are: " + _categories + " "
-                + _categoryList.toString();
+            + _categoryList.toString();
         }
     }
 

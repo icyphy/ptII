@@ -151,7 +151,7 @@ public class DirectedGraph extends Graph {
 
         if (sameWeightNodes.size() == 0) {
             throw new GraphWeightException(weight, null, this,
-                    "The specified weight is not a " + "node weight in this graph.");
+                "The specified weight is not a " + "node weight in this graph.");
         }
 
         return weightArray(backwardReachableNodes(sameWeightNodes));
@@ -428,7 +428,7 @@ public class DirectedGraph extends Graph {
 
         if (sameWeightNodes.size() == 0) {
             throw new GraphWeightException(weight, null, this,
-                    "The specified weight is not a node weight in this graph.");
+                "The specified weight is not a node weight in this graph.");
         }
 
         return weightArray(reachableNodes(sameWeightNodes));
@@ -503,7 +503,7 @@ public class DirectedGraph extends Graph {
 
         if (transitiveClosure.length != N) {
             throw new GraphStateException("Graph inconsistency."
-                    + " A dump of the graph follows.\n" + this);
+                + " A dump of the graph follows.\n" + this);
         }
 
         // initially, no nodes have been added to an SCC
@@ -549,7 +549,7 @@ public class DirectedGraph extends Graph {
             sortedSCCRepresentatives = topologicalSort(sccRepresentatives);
         } catch (GraphActionException ex) {
             throw new GraphStateException("nodes in different SCCs were"
-                    + " found to be strongly connected.");
+                + " found to be strongly connected.");
         }
 
         ArrayList sortedSCCNodeLists = new ArrayList();
@@ -598,7 +598,7 @@ public class DirectedGraph extends Graph {
         // of input and output edges minus the number of edges that
         // are connected to this node.
         return (inputEdgeCount(node) + outputEdgeCount(node))
-            - incidentEdgeCount(node);
+        - incidentEdgeCount(node);
     }
 
     /** Return the number of sink nodes in this graph.
@@ -702,7 +702,7 @@ public class DirectedGraph extends Graph {
             acyclicGraph = (DirectedAcyclicGraph) cloneAs(new DirectedAcyclicGraph());
         } else {
             throw new GraphTopologyException("This graph is not acyclic."
-                    + GraphException.graphDump(this));
+                + GraphException.graphDump(this));
         }
 
         return acyclicGraph;
@@ -724,7 +724,7 @@ public class DirectedGraph extends Graph {
      *  @see #topologicalSort(Object[])
      */
     public List topologicalSort(Collection nodeCollection)
-            throws GraphActionException {
+        throws GraphActionException {
         boolean[][] transitiveClosure = transitiveClosure();
 
         int N = nodeCollection.size();
@@ -744,7 +744,7 @@ public class DirectedGraph extends Graph {
                 if (transitiveClosure[label2][label1]) {
                     if (transitiveClosure[label1][label2]) {
                         throw new GraphActionException("Attempted to"
-                                + " topologically sort cyclic nodes.");
+                            + " topologically sort cyclic nodes.");
                     } else {
                         // Swap nodes
                         Node node = nodeArray[i];
@@ -771,7 +771,7 @@ public class DirectedGraph extends Graph {
      *  @see #topologicalSort(Collection)
      */
     public Object[] topologicalSort(Object[] weights)
-            throws GraphActionException {
+        throws GraphActionException {
         return weightArray(topologicalSort(nodes(Arrays.asList(weights))));
     }
 
@@ -814,7 +814,7 @@ public class DirectedGraph extends Graph {
      * @param remainingNodes Set of nodes that haven't been reached.
      */
     protected void _connectedSubGraph(Node node, DirectedGraph graph,
-            Collection remainingNodes) {
+        Collection remainingNodes) {
         if (!graph.containsNode(node)) {
             graph.addNode(node);
             remainingNodes.remove(node);

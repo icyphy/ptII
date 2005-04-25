@@ -45,7 +45,6 @@ import ptolemy.kernel.util.NamedObj;
    @Pt.AcceptedRating Red (cxh)
 */
 public class AttributeExpressionAttribute extends AttributeValueAttribute {
-    
     /** Construct an attribute with the given name contained by the
      *  specified container. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This attribute will use the
@@ -60,7 +59,7 @@ public class AttributeExpressionAttribute extends AttributeValueAttribute {
      *   an attribute already in the container.
      */
     public AttributeExpressionAttribute(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -87,6 +86,7 @@ public class AttributeExpressionAttribute extends AttributeValueAttribute {
 
             return truncated;
         }
+
         return "???";
     }
 }

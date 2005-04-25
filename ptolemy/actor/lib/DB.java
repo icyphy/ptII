@@ -74,7 +74,7 @@ public class DB extends Transformer {
      *   an actor already in the container.
      */
     public DB(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input.setTypeEquals(BaseType.DOUBLE);
         output.setTypeEquals(BaseType.DOUBLE);
@@ -164,7 +164,7 @@ public class DB extends Transformer {
      *  but no less than <i>minValue</i>.
      */
     private DoubleToken _doFunction(double number, double minValue)
-            throws IllegalActionException {
+        throws IllegalActionException {
         double outNumber;
 
         if (number <= 0.0) {

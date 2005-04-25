@@ -74,10 +74,10 @@ public class Transform {
 
         // Convert rotate to radians.
         rotateAffineTransform.rotate(rotate * (Math.PI / 180.0F), width / 2,
-                height / 2);
+            height / 2);
 
         rotateAffineTransform.translate((width / 2) - (height / 2),
-                (width / 2) - (height / 2));
+            (width / 2) - (height / 2));
 
         // Paint image.
         Graphics2D graphics2d = outputImage.createGraphics();
@@ -97,7 +97,7 @@ public class Transform {
     public static Image scale(Image originalImage, int maximumDimension) {
         // Determine the scale.
         double scale = (double) maximumDimension / (double) originalImage
-            .getHeight(null);
+                        .getHeight(null);
 
         if (originalImage.getWidth(null) > originalImage.getHeight(null)) {
             scale = (double) maximumDimension / (double) originalImage.getWidth(null);

@@ -61,7 +61,7 @@ public class Limiter extends Transformer {
      *   actor with this name.
      */
     public Limiter(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         bottom = new Parameter(this, "bottom");
         bottom.setExpression("0.0");

@@ -26,12 +26,12 @@ COPYRIGHTENDKEY
 */
 package ptolemy.copernicus.interpreted;
 
+import soot.Pack;
+import soot.PackManager;
+
 import ptolemy.copernicus.kernel.GeneratorAttribute;
 import ptolemy.copernicus.kernel.KernelMain;
 import ptolemy.copernicus.kernel.MakefileWriter;
-
-import soot.Pack;
-import soot.PackManager;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -58,19 +58,19 @@ public class Main extends KernelMain {
 
         // Generate the makefile files in outDir
         addTransform(pack, "wjtp.makefileWriter", MakefileWriter.v(_toplevel),
-                "_generatorAttributeFileName:" + _generatorAttributeFileName
-                + " targetPackage:" + _targetPackage + " templateDirectory:"
-                + _templateDirectory + " outDir:" + _outputDirectory);
+            "_generatorAttributeFileName:" + _generatorAttributeFileName
+            + " targetPackage:" + _targetPackage + " templateDirectory:"
+            + _templateDirectory + " outDir:" + _outputDirectory);
 
         // Generate the interpreted files in outDir
         addTransform(pack, "wjtp.interpretedWriter",
-                InterpretedWriter.v(_toplevel), " outDir:" + _outputDirectory);
+            InterpretedWriter.v(_toplevel), " outDir:" + _outputDirectory);
     }
 
     /** Parse any code generator specific arguments.
      */
     protected String[] _parseArgs(GeneratorAttribute attribute)
-            throws Exception {
+        throws Exception {
         _targetPackage = attribute.getParameter("targetPackage");
         _templateDirectory = attribute.getParameter("templateDirectory");
         _watchDogTimeout = attribute.getParameter("watchDogTimeout");

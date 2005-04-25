@@ -145,14 +145,14 @@ public class MoMLSimpleApplication extends NamedObj implements ChangeListener {
             StringBuffer moml = new StringBuffer(
                     "<group><entity  name=\"Const2\" class=\"ptolemy.actor.lib.Const\">");
             moml.append(
-                    "<property name=\"value\" class=\"ptolemy.data.expr.Parameter\" value=\"2\">");
+                "<property name=\"value\" class=\"ptolemy.data.expr.Parameter\" value=\"2\">");
             moml.append("</property>");
             moml.append(
-                    "<port name=\"in\" class=\"ptolemy.actor.TypedIOPort\">");
+                "<port name=\"in\" class=\"ptolemy.actor.TypedIOPort\">");
             moml.append("<property name=\"input\"/>");
             moml.append("</port>");
             moml.append(
-                    "<port name=\"out\" class=\"ptolemy.actor.TypedIOPort\">");
+                "<port name=\"out\" class=\"ptolemy.actor.TypedIOPort\">");
             moml.append("<property name=\"output\"/>");
             moml.append("</port>");
             moml.append("</entity></group>");
@@ -187,7 +187,7 @@ public class MoMLSimpleApplication extends NamedObj implements ChangeListener {
                         file.close();
                     } catch (Throwable throwable) {
                         System.out.println("Ignoring failure to close stream "
-                                + "on " + fileName);
+                            + "on " + fileName);
                         throwable.printStackTrace();
                     }
                 }

@@ -27,13 +27,15 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.lib.colt;
 
+import cern.jet.random.HyperGeometric;
+
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import cern.jet.random.HyperGeometric;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// HyperGeometric
@@ -46,7 +48,7 @@ import cern.jet.random.HyperGeometric;
    deviation given by parameters.  In addition, the seed can be
    specified as a parameter to control the sequence that is generated.
 
-   <p> This actor instantiates a 
+   <p> This actor instantiates a
    <a href="http://hoschek.home.cern.ch/hoschek/colt/V1.0.3/doc/cern/jet/random/HyperGeometric.html">cern.jet.random.HyperGeometric</a> object with
     N set to 2, and s and n both set to 1.
 
@@ -66,7 +68,7 @@ public class ColtHyperGeometric extends ColtRandomSource {
      *   actor with this name.
      */
     public ColtHyperGeometric(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         output.setTypeEquals(BaseType.INT);
@@ -79,7 +81,7 @@ public class ColtHyperGeometric extends ColtRandomSource {
 
         n = new Parameter(this, "n", new IntToken(1));
         n.setTypeEquals(BaseType.INT);
-        
+
         n.moveToFirst();
         s.moveToFirst();
         N.moveToFirst();
@@ -141,7 +143,7 @@ public class ColtHyperGeometric extends ColtRandomSource {
 
     /** The random number for the current iteration. */
     private int _current;
-    
+
     /** The random number generator. */
     private HyperGeometric _generator;
 }

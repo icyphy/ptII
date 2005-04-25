@@ -96,7 +96,7 @@ public class ContinuousTransferFunction extends TypedCompositeActor {
      * @exception IllegalActionException If there was an internal problem.
      */
     public ContinuousTransferFunction(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         input = new TypedIOPort(this, "input", true, false);
         output = new TypedIOPort(this, "output", false, true);
@@ -115,11 +115,11 @@ public class ContinuousTransferFunction extends TypedCompositeActor {
 
         // icon
         _attachText("_iconDescription",
-                "<svg>\n" + "<rect x=\"-30\" y=\"-20\" "
-                + "width=\"60\" height=\"40\" " + "style=\"fill:white\"/>\n"
-                + "<text x=\"-25\" y=\"0\" " + "style=\"font-size:14\">\n"
-                + "b(s)/a(s) \n" + "</text>\n" + "style=\"fill:blue\"/>\n"
-                + "</svg>\n");
+            "<svg>\n" + "<rect x=\"-30\" y=\"-20\" "
+            + "width=\"60\" height=\"40\" " + "style=\"fill:white\"/>\n"
+            + "<text x=\"-25\" y=\"0\" " + "style=\"font-size:14\">\n"
+            + "b(s)/a(s) \n" + "</text>\n" + "style=\"fill:blue\"/>\n"
+            + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -163,7 +163,7 @@ public class ContinuousTransferFunction extends TypedCompositeActor {
      *   denominator matrix is not a row vector.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == numerator) {
             // Set this composite to opaque.
             _opaque = true;
@@ -180,7 +180,7 @@ public class ContinuousTransferFunction extends TypedCompositeActor {
 
             if (((DoubleToken) aToken.getElement(0)).doubleValue() == 0.0) {
                 throw new IllegalActionException(this,
-                        "The denominator coefficient cannot start with 0.");
+                    "The denominator coefficient cannot start with 0.");
             }
 
             // Set this composite to opaque.
@@ -244,8 +244,8 @@ public class ContinuousTransferFunction extends TypedCompositeActor {
 
         if (m > n) {
             throw new IllegalActionException(this,
-                    "The order of the denominator must be greater than or "
-                    + "equal to the order of the numerator.");
+                "The order of the denominator must be greater than or "
+                + "equal to the order of the numerator.");
         }
 
         // Add leading zeros to bRow such that b has the same length as a.
@@ -286,10 +286,10 @@ public class ContinuousTransferFunction extends TypedCompositeActor {
                     integrators[i] = new Integrator(this, "Integrator" + i);
                     feedback[i] = new Scale(this, "Feedback" + i);
                     feedback[i].factor.setToken(new DoubleToken(
-                                                        -a[i + 1] / a[0]));
+                            -a[i + 1] / a[0]));
                     feedforward[i] = new Scale(this, "Feedforward" + i);
                     feedforward[i].factor.setToken(new DoubleToken(
-                                                           (b[i + 1] - (d * a[i + 1])) / a[0]));
+                            (b[i + 1] - (d * a[i + 1])) / a[0]));
 
                     // connections
                     nodes[i] = (IORelation) connect(integrators[i].output,
@@ -322,7 +322,7 @@ public class ContinuousTransferFunction extends TypedCompositeActor {
         } catch (NameDuplicationException ex) {
             // Should never happen.
             throw new InternalErrorException("Duplicated name when "
-                    + "constructing the subsystem" + ex.getMessage());
+                + "constructing the subsystem" + ex.getMessage());
         } finally {
             _workspace.doneWriting();
         }

@@ -33,8 +33,10 @@ import soot.SootClass;
 import soot.SootMethod;
 import soot.Type;
 import soot.VoidType;
+
 import soot.jimple.Jimple;
 import soot.jimple.JimpleBody;
+
 import soot.util.Chain;
 
 import java.util.ArrayList;
@@ -70,7 +72,7 @@ public class EntitySootClass extends SootClass {
         // Now create constructors to call the superclass constructors,
         // and then the __CGInit method.
         for (Iterator methods = getSuperclass().getMethods().iterator();
-             methods.hasNext();) {
+                        methods.hasNext();) {
             SootMethod method = (SootMethod) methods.next();
 
             if (!method.getName().equals("<init>")) {
@@ -85,7 +87,7 @@ public class EntitySootClass extends SootClass {
 
             // Call the __CGInit method.
             units.add(Jimple.v().newInvokeStmt(Jimple.v().newVirtualInvokeExpr(thisLocal,
-                                                       _initMethod)));
+                        _initMethod)));
 
             // return void
             units.add(Jimple.v().newReturnVoidStmt());
@@ -102,7 +104,7 @@ public class EntitySootClass extends SootClass {
     // given method with the same arguments, and then calls the
     // shared _CGInit initialization method.
     private SootMethod _createConstructor(SootClass theClass,
-            SootMethod superConstructor) {
+        SootMethod superConstructor) {
         // Create the constructor.
         SootMethod constructor = new SootMethod("<init>",
                 superConstructor.getParameterTypes(),
@@ -131,7 +133,7 @@ public class EntitySootClass extends SootClass {
 
         // Call the super constructor.
         units.add(Jimple.v().newInvokeStmt(Jimple.v().newSpecialInvokeExpr(thisLocal,
-                                                   superConstructor, parameterList)));
+                    superConstructor, parameterList)));
 
         return constructor;
     }

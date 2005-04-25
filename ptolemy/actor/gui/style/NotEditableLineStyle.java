@@ -84,7 +84,7 @@ public class NotEditableLineStyle extends ParameterEditorStyle {
      *   an attribute already in the container.
      */
     public NotEditableLineStyle(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 

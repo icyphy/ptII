@@ -77,7 +77,7 @@ public class DataPump extends MACActorBase {
      *   an actor already in the container.
      */
     public DataPump(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // Create and configure the ports.
@@ -202,9 +202,10 @@ public class DataPump extends MACActorBase {
                     int length = ((IntToken) _pdu.get("Length")).intValue();
                     int rate = ((IntToken) _inputMessage.get("rate")).intValue();
                     Token[] value = {
-                        new IntToken(TxStart), new IntToken(length),
-                        new IntToken(rate)
-                    };
+                            new IntToken(TxStart),
+                            new IntToken(length),
+                            new IntToken(rate)
+                        };
                     toPHYLayer.send(0, new RecordToken(TxStartMsgFields, value));
                     _state = Wait_TxStart;
 
@@ -222,7 +223,10 @@ public class DataPump extends MACActorBase {
             case Wait_TxStart:
 
                 if (_messageType == TxStartConfirm) {
-                    Token[] values = { new IntToken(TxData), _pdu };
+                    Token[] values = {
+                            new IntToken(TxData),
+                            _pdu
+                        };
                     RecordToken newPdu = new RecordToken(TxDataMsgFields, values);
                     toPHYLayer.send(0, newPdu);
                     _state = Wait_TxEnd;
@@ -233,7 +237,9 @@ public class DataPump extends MACActorBase {
             case Wait_TxEnd:
 
                 if (_messageType == TxEnd) {
-                    Token[] value = { new IntToken(TxConfirm) };
+                    Token[] value = {
+                            new IntToken(TxConfirm)
+                        };
                     RecordToken confirm = new RecordToken(TxConfirmMsgFields,
                             value);
 
@@ -285,7 +291,9 @@ public class DataPump extends MACActorBase {
     ////                         private methods                   ////
     private void _toBackoff(int kind) throws IllegalActionException {
         // send idle/busy event to the backoff block
-        Token[] value = { new IntToken(kind) };
+        Token[] value = {
+                new IntToken(kind)
+            };
         RecordToken t = new RecordToken(CSMsgFields, value);
         toBackoff.send(0, t);
     }

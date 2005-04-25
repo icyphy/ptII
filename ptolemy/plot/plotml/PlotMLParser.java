@@ -125,7 +125,7 @@ public class PlotMLParser extends PlotBoxMLParser {
                 String name = (String) _attributes.get("name");
 
                 if (!((Plot) _plot).getReuseDatasets() || (name == null)
-                        || (_currentDataset < 0)) {
+                                || (_currentDataset < 0)) {
                     // reuseDatasets was not present or if it was,
                     // the current dataset does not have a name
                     // or we have not yet seen a dataset.
@@ -221,7 +221,7 @@ public class PlotMLParser extends PlotBoxMLParser {
                 String msg = "XML element \"" + elementName
                     + "\" triggers exception:\n  " + ex.toString();
                 throw new XmlException(msg, _currentExternalEntity(),
-                        _parser.getLineNumber(), _parser.getColumnNumber());
+                    _parser.getLineNumber(), _parser.getColumnNumber());
             }
         }
 
@@ -252,7 +252,7 @@ public class PlotMLParser extends PlotBoxMLParser {
      *  @param element The name of the element.
      */
     protected void _addPoint(boolean connected, String element)
-            throws Exception {
+        throws Exception {
         String xSpec = (String) _attributes.get("x");
         double x;
 
@@ -294,7 +294,7 @@ public class PlotMLParser extends PlotBoxMLParser {
             }
 
             ((Plot) _plot).addPointWithErrorBars(_currentDataset, x, y, low,
-                    high, connected);
+                high, connected);
         }
     }
 }

@@ -102,8 +102,8 @@ public class JMFImageToken extends ImageToken {
         // FIXME: return a value that can be parsed by the expression language.
         Image image = asAWTImage();
         return "{type=\"" + getClass() + "\" width=\"" + image.getWidth(null)
-            + "\" height=\"" + image.getHeight(null) + "\" format=\""
-            + _videoFormat + "\"}";
+        + "\" height=\"" + image.getHeight(null) + "\" format=\""
+        + _videoFormat + "\"}";
     }
 
     ///////////////////////////////////////////////////////////////////

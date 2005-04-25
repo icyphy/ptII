@@ -28,8 +28,11 @@ package ptolemy.copernicus.kernel;
 
 import soot.Local;
 import soot.Unit;
+
 import soot.jimple.toolkits.annotation.nullcheck.BranchedRefVarsAnalysis;
+
 import soot.toolkits.graph.UnitGraph;
+
 import soot.toolkits.scalar.FlowSet;
 
 

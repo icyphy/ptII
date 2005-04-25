@@ -52,7 +52,7 @@ public class CSPGet extends CSPActor {
     /**
      */
     public CSPGet(TypedCompositeActor cont, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(cont, name);
 
         inputPort = new TypedIOPort(this, "input", true, false);

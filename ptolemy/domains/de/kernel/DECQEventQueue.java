@@ -72,7 +72,7 @@ public class DECQEventQueue implements DEEventQueue {
             // If the time resolution of the director is invalid,
             // it should have been caught before this.
             throw new InternalErrorException(e);
-		}
+        }
     }
 
     /** Construct an empty event queue with the specified parameters.
@@ -82,7 +82,7 @@ public class DECQEventQueue implements DEEventQueue {
      *  @param isAdaptive If the queue changes its number of bins at run time.
      */
     public DECQEventQueue(Director director, int minBinCount,
-            int binCountFactor, boolean isAdaptive) {
+        int binCountFactor, boolean isAdaptive) {
         _director = director;
 
         try {
@@ -94,6 +94,7 @@ public class DECQEventQueue implements DEEventQueue {
             // it should have been caught before this.
             throw new InternalErrorException(e);
         }
+
         _cQueue.setAdaptive(isAdaptive);
     }
 
@@ -182,16 +183,15 @@ public class DECQEventQueue implements DEEventQueue {
     // microsteps are identical, it has a smaller depth.
     // The default binWidth is 1.0, and the default zeroReference is 0.0.
     private class DECQComparator implements CQComparator {
-        
         /** Construct a new comparator.
          *  @exception IllegalActionException If the time resolution
          *  of the director is invalid.
          */
         public DECQComparator() throws IllegalActionException {
             // This constructor exists only to declare the thrown exception.
-        	super();
+            super();
         }
-        
+
         /** Compare two arguments for order. Return a negative integer,
          *  zero, or a positive integer if the first argument is less than,
          *  equal to, or greater than the second.
@@ -233,8 +233,8 @@ public class DECQEventQueue implements DEEventQueue {
             // If it is larger than what can be represented
             // in 64 bits, then the returned result will be wrapped.
             return (((DEEvent) event).timeStamp()
-                    .subtract(_zeroReference.timeStamp()))
-                    .divide(_binWidth.timeStamp());
+                                 .subtract(_zeroReference.timeStamp())).divide(_binWidth
+                            .timeStamp());
         }
 
         /** Given an array of DE events, set an appropriate bin width.
@@ -260,12 +260,12 @@ public class DECQEventQueue implements DEEventQueue {
                             new Time(_director, 0.0), 0, 0);
                     return;
                 }
-                
+
                 Time[] diff = new Time[entryArray.length - 1];
-                Time average = (((DEEvent) entryArray[entryArray.length - 1])
-                        .timeStamp()
-                        .subtract(((DEEvent) entryArray[0]).timeStamp()))
-                    .divide((long) (entryArray.length - 1));
+                Time average = (((DEEvent) entryArray[entryArray.length - 1]).timeStamp()
+                                             .subtract(((DEEvent) entryArray[0])
+                                    .timeStamp())).divide((long) (entryArray.length
+                        - 1));
                 Time zero = new Time(_director, 0.0);
                 Time effectiveAverage = zero;
                 int effectiveSamples = 0;
@@ -276,8 +276,9 @@ public class DECQEventQueue implements DEEventQueue {
 
                 for (int i = 0; i < (entryArray.length - 1); ++i) {
                     diff[i] = ((DEEvent) entryArray[i + 1]).timeStamp()
-                        .subtract(((DEEvent) entryArray[i]).timeStamp());
-                    
+                                           .subtract(((DEEvent) entryArray[i])
+                                        .timeStamp());
+
                     if (diff[i].compareTo(average.add(average)) < 0) {
                         effectiveSamples++;
                         effectiveAverage = effectiveAverage.add(diff[i]);
@@ -291,8 +292,7 @@ public class DECQEventQueue implements DEEventQueue {
                     return;
                 }
 
-                effectiveAverage =
-                    effectiveAverage.divide((long) effectiveSamples);
+                effectiveAverage = effectiveAverage.divide((long) effectiveSamples);
                 _binWidth = new DEEvent((Actor) null,
                         effectiveAverage.multiply(3L), 0, 0);
             } catch (IllegalActionException e) {

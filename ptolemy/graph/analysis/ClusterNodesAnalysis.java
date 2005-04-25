@@ -65,9 +65,9 @@ public class ClusterNodesAnalysis extends Analysis {
      *  @param superNode The node that replaces the subgraph.
      */
     public ClusterNodesAnalysis(Graph graph, Collection nodeCollection,
-            Node superNode) {
+        Node superNode) {
         super(new ClusterNodesTransformerStrategy(graph, nodeCollection,
-                      superNode));
+                superNode));
     }
 
     /** Construct an instance of this class with a given analyzer.
@@ -96,7 +96,7 @@ public class ClusterNodesAnalysis extends Analysis {
      */
     public String toString() {
         return "Cluster node analysis using the following analyzer:\n"
-            + analyzer().toString();
+        + analyzer().toString();
     }
 
     /** Check if a given analyzer is compatible with this analysis.

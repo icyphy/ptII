@@ -25,7 +25,6 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-
 package ptolemy.component.data;
 
 import ptolemy.component.data.type.TupleType;
@@ -33,8 +32,10 @@ import ptolemy.data.Token;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// TupleToken
+
 /**
    A token that contains an ordered set of tokens.
 
@@ -44,9 +45,7 @@ import ptolemy.kernel.util.IllegalActionException;
    @Pt.ProposedRating Yellow (neuendor)
    @Pt.AcceptedRating Red (cxh)
 */
-
 public class TupleToken extends Token {
-
     /** Construct a TupleToken with the specified token array as its value.
      *  @param value The value.
      */
@@ -64,6 +63,7 @@ public class TupleToken extends Token {
      */
     public Token[] tupleValue() {
         Token[] result = new Token[_value.length];
+
         // This code will create a token array of a more specific type
         // than token.  Eventually, we would like to use this code
         // since it will simplify writing some actors, but for the
@@ -90,15 +90,17 @@ public class TupleToken extends Token {
             return false;
         }
 
-        TupleToken tupleArgument = (TupleToken)object;
+        TupleToken tupleArgument = (TupleToken) object;
         int length = tupleArgument.length();
+
         if (_value.length != length) {
             return false;
         }
 
         Token[] array = tupleArgument._value;
+
         for (int i = 0; i < length; i++) {
-            if ( !_value[i].equals(array[i])) {
+            if (!_value[i].equals(array[i])) {
                 return false;
             }
         }
@@ -134,9 +136,11 @@ public class TupleToken extends Token {
      */
     public Type getType() {
         Type[] types = new Type[_value.length];
-        for (int i =0; i < _value.length; i++) {
+
+        for (int i = 0; i < _value.length; i++) {
             types[i] = getElementType(i);
         }
+
         return new TupleType(types);
     }
 
@@ -156,15 +160,17 @@ public class TupleToken extends Token {
         if (first == VOID) {
             return second;
         }
+
         if (second == VOID) {
             return first;
         }
+
         Token[] firstTokens = first._value;
         Token[] secondTokens = second._value;
         Token[] result = new Token[firstTokens.length + secondTokens.length];
         System.arraycopy(firstTokens, 0, result, 0, firstTokens.length);
-        System.arraycopy(secondTokens, 0, result,
-                firstTokens.length, secondTokens.length);
+        System.arraycopy(secondTokens, 0, result, firstTokens.length,
+            secondTokens.length);
         return new TupleToken(result);
     }
 
@@ -179,9 +185,11 @@ public class TupleToken extends Token {
      */
     public Token one() throws IllegalActionException {
         Token[] oneValueTuple = new Token[_value.length];
+
         for (int i = 0; i < _value.length; i++) {
             oneValueTuple[i] = _value[i].one();
         }
+
         return new TupleToken(oneValueTuple);
     }
 
@@ -193,12 +201,15 @@ public class TupleToken extends Token {
      */
     public String toString() {
         StringBuffer buffer = new StringBuffer("<");
+
         for (int i = 0; i < _value.length; i++) {
             buffer.append(_value[i].toString());
+
             if (i < (_value.length - 1)) {
                 buffer.append(", ");
             }
         }
+
         buffer.append(">");
         return buffer.toString();
     }
@@ -214,9 +225,11 @@ public class TupleToken extends Token {
      */
     public Token zero() throws IllegalActionException {
         Token[] zeroValueTuple = new Token[_value.length];
+
         for (int i = 0; i < _value.length; i++) {
             zeroValueTuple[i] = _value[i].zero();
         }
+
         return new TupleToken(zeroValueTuple);
     }
 
@@ -228,11 +241,11 @@ public class TupleToken extends Token {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     // Initialize this token using the specified array.
     private void _initialize(Token[] value) {
         int length = value.length;
         _value = new Token[length];
+
         for (int i = 0; i < length; i++) {
             _value[i] = value[i];
         }
@@ -240,6 +253,5 @@ public class TupleToken extends Token {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private Token[] _value;
 }

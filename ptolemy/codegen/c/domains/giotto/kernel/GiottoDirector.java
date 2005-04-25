@@ -29,6 +29,7 @@ package ptolemy.codegen.c.domains.giotto.kernel;
 
 import ptolemy.codegen.kernel.Director;
 
+
 //////////////////////////////////////////////////////////////////
 //// GiottoDirector
 
@@ -44,12 +45,10 @@ import ptolemy.codegen.kernel.Director;
    @Pt.AcceptedRating Red (eal)
 */
 public class GiottoDirector extends Director {
-
     /** Construct the code generator helper associated with the given GiottoDirector.
      *  @param component The associated component.
      */
     public GiottoDirector(ptolemy.domains.giotto.kernel.GiottoDirector director) {
         super(director);
     }
-
 }

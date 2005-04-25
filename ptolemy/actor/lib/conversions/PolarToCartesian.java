@@ -63,7 +63,7 @@ public class PolarToCartesian extends TypedAtomicActor {
      *   actor with this name.
      */
     public PolarToCartesian(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         magnitude = new TypedIOPort(this, "magnitude", true, false);
@@ -79,8 +79,8 @@ public class PolarToCartesian extends TypedAtomicActor {
         y.setTypeEquals(BaseType.DOUBLE);
 
         _attachText("_iconDescription",
-                "<svg>\n" + "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
-                + "style=\"fill:white\"/>\n" + "</svg>\n");
+            "<svg>\n" + "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
+            + "style=\"fill:white\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////

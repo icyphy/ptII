@@ -83,13 +83,13 @@ public class ObjectToken extends Token {
      *   cannot be carried out.
      */
     public static ObjectToken convert(Token token)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (token instanceof ObjectToken) {
             return (ObjectToken) token;
         }
 
         throw new IllegalActionException(notSupportedConversionMessage(token,
-                                                 "object"));
+                "object"));
     }
 
     /** Return true if the argument is an instance of ObjectToken and its

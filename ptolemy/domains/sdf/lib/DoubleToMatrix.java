@@ -69,7 +69,7 @@ public class DoubleToMatrix extends SDFConverter {
      *   actor with this name.
      */
     public DoubleToMatrix(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         rows = new Parameter(this, "rows");
@@ -106,14 +106,14 @@ public class DoubleToMatrix extends SDFConverter {
      *  @exception IllegalActionException If the parameters are out of range.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if ((attribute == rows) || (attribute == columns)) {
             _rows = ((IntToken) rows.getToken()).intValue();
             _columns = ((IntToken) columns.getToken()).intValue();
 
             if ((_rows <= 0) || (_columns <= 0)) {
                 throw new IllegalActionException(this,
-                        "Number of rows and columns is required to be positive.");
+                    "Number of rows and columns is required to be positive.");
             }
         } else {
             super.attributeChanged(attribute);
@@ -137,7 +137,7 @@ public class DoubleToMatrix extends SDFConverter {
         }
 
         output.send(0,
-                new DoubleMatrixToken(result, DoubleMatrixToken.DO_NOT_COPY));
+            new DoubleMatrixToken(result, DoubleMatrixToken.DO_NOT_COPY));
     }
 
     ///////////////////////////////////////////////////////////////////

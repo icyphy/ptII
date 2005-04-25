@@ -26,15 +26,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.copernicus.java;
 
-import ptolemy.actor.CompositeActor;
-import ptolemy.copernicus.kernel.MakefileWriter;
-import ptolemy.copernicus.kernel.PtolemyUtilities;
-import ptolemy.domains.fsm.kernel.FSMDirector;
-import ptolemy.domains.fsm.kernel.HSDirector;
-import ptolemy.domains.giotto.kernel.GiottoDirector;
-import ptolemy.domains.sdf.kernel.SDFDirector;
-import ptolemy.kernel.Entity;
-
 import soot.FastHierarchy;
 import soot.HasPhaseOptions;
 import soot.Hierarchy;
@@ -43,9 +34,19 @@ import soot.SceneTransformer;
 import soot.SootClass;
 import soot.SootMethod;
 import soot.ValueBox;
+
 import soot.jimple.InvokeExpr;
 import soot.jimple.JimpleBody;
 import soot.jimple.Stmt;
+
+import ptolemy.actor.CompositeActor;
+import ptolemy.copernicus.kernel.MakefileWriter;
+import ptolemy.copernicus.kernel.PtolemyUtilities;
+import ptolemy.domains.fsm.kernel.FSMDirector;
+import ptolemy.domains.fsm.kernel.HSDirector;
+import ptolemy.domains.giotto.kernel.GiottoDirector;
+import ptolemy.domains.sdf.kernel.SDFDirector;
+import ptolemy.kernel.Entity;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -98,14 +99,14 @@ public class InlineDirectorTransformer extends SceneTransformer
 
     protected void internalTransform(String phaseName, Map options) {
         System.out.println("InlineDirectorTransformer.internalTransform("
-                + phaseName + ", " + options + ")");
+            + phaseName + ", " + options + ")");
 
         SootClass modelClass = ModelTransformer.getModelClass();
         _inlineDirectorsIn(_model, modelClass, phaseName, options);
     }
 
     private void _inlineDirectorsIn(CompositeActor model, SootClass modelClass,
-            String phaseName, Map options) {
+        String phaseName, Map options) {
         for (Iterator i = model.deepEntityList().iterator(); i.hasNext();) {
             Entity entity = (Entity) i.next();
 
@@ -114,7 +115,7 @@ public class InlineDirectorTransformer extends SceneTransformer
                         options);
                 SootClass compositeClass = Scene.v().getSootClass(className);
                 _inlineDirectorsIn((CompositeActor) entity, compositeClass,
-                        phaseName, options);
+                    phaseName, options);
             }
         }
 
@@ -126,14 +127,14 @@ public class InlineDirectorTransformer extends SceneTransformer
             if (model.getDirector() instanceof SDFDirector) {
                 inliner = new SDFDirectorInliner();
             } else if (model.getDirector() instanceof HSDirector
-                    || model.getDirector() instanceof FSMDirector) {
+                            || model.getDirector() instanceof FSMDirector) {
                 inliner = new HSDirectorInliner();
             } else if (model.getDirector() instanceof GiottoDirector) {
                 inliner = new GiottoDirectorInliner();
             } else {
                 throw new RuntimeException("Inlining a director can not "
-                        + "be performed on a director of class "
-                        + model.getDirector().getClass().getName());
+                    + "be performed on a director of class "
+                    + model.getDirector().getClass().getName());
             }
 
             inliner.inlineDirector(model, modelClass, phaseName, options);
@@ -156,14 +157,14 @@ public class InlineDirectorTransformer extends SceneTransformer
 
             // Loop over all the methods...
             for (Iterator methods = theClass.getMethods().iterator();
-                 methods.hasNext();) {
+                            methods.hasNext();) {
                 SootMethod method = (SootMethod) methods.next();
 
                 JimpleBody body = (JimpleBody) method.retrieveActiveBody();
 
                 // Loop over all the statements.
                 for (Iterator units = body.getUnits().snapshotIterator();
-                     units.hasNext();) {
+                                units.hasNext();) {
                     Stmt unit = (Stmt) units.next();
 
                     if (!unit.containsInvokeExpr()) {
@@ -174,7 +175,7 @@ public class InlineDirectorTransformer extends SceneTransformer
                     InvokeExpr r = (InvokeExpr) box.getValue();
 
                     if (r.getMethod().getSubSignature().equals(PtolemyUtilities.invalidateResolvedTypesMethod
-                                .getSubSignature())) {
+                                        .getSubSignature())) {
                         // Remove calls to invalidateResolvedTypes()
                         body.getUnits().remove(unit);
                     }

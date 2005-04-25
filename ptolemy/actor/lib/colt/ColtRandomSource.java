@@ -27,6 +27,14 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.lib.colt;
 
+import cern.jet.random.engine.DRand;
+import cern.jet.random.engine.MersenneTwister;
+
+import edu.cornell.lassp.houle.RngPack.RandomElement;
+import edu.cornell.lassp.houle.RngPack.Ranecu;
+import edu.cornell.lassp.houle.RngPack.Ranlux;
+import edu.cornell.lassp.houle.RngPack.Ranmar;
+
 import ptolemy.actor.lib.Source;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.LongToken;
@@ -39,13 +47,6 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.SharedParameter;
-
-import cern.jet.random.engine.DRand;
-import cern.jet.random.engine.MersenneTwister;
-import edu.cornell.lassp.houle.RngPack.RandomElement;
-import edu.cornell.lassp.houle.RngPack.Ranecu;
-import edu.cornell.lassp.houle.RngPack.Ranlux;
-import edu.cornell.lassp.houle.RngPack.Ranmar;
 
 import java.util.Iterator;
 
@@ -92,7 +93,6 @@ on each run using the same technique described above
 @Pt.AcceptedRating Red (cxh)
 */
 public abstract class ColtRandomSource extends Source {
-    
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -102,24 +102,25 @@ public abstract class ColtRandomSource extends Source {
      *   actor with this name.
      */
     public ColtRandomSource(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        
+
         seed = new ColtSeedParameter(this, "seed", ColtRandomSource.class);
-        
-        generatorClass = new SharedParameter(
-                this, "generatorClass", ColtRandomSource.class, "DRand");
+
+        generatorClass = new SharedParameter(this, "generatorClass",
+                ColtRandomSource.class, "DRand");
         generatorClass.setStringMode(true);
-        
+
         generatorClass.addChoice("DRand");
         generatorClass.addChoice("MersenneTwister (MT19937)");
         generatorClass.addChoice("Ranecu");
         generatorClass.addChoice("Ranlux");
         generatorClass.addChoice("Ranmar");
-        
+
         _inferSeed();
-        
-        resetOnEachRun = new SharedParameter(this, "resetOnEachRun", ColtRandomSource.class, "false");
+
+        resetOnEachRun = new SharedParameter(this, "resetOnEachRun",
+                ColtRandomSource.class, "false");
         resetOnEachRun.setTypeEquals(BaseType.BOOLEAN);
     }
 
@@ -149,7 +150,7 @@ public abstract class ColtRandomSource extends Source {
      *  </menu>
      */
     public SharedParameter generatorClass;
-    
+
     /** If true, this parameter specifies that the random number
      *  generator should be reset on each run of the model (in
      *  the initialize() method). It is a boolean that defaults
@@ -158,7 +159,7 @@ public abstract class ColtRandomSource extends Source {
      *  in the model.
      */
     public SharedParameter resetOnEachRun;
-    
+
     /** The seed that controls the random number generation.
      *  A seed of zero is interpreted to mean that no seed is specified,
      *  in which case, the seed is set to
@@ -178,28 +179,30 @@ public abstract class ColtRandomSource extends Source {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** If the attribute is <i>generatorClass</i> or <i>seed</i>
      *  then create the base random number generator.
      *  @exception IllegalActionException If the change is not acceptable
      *   to this container (not thrown in this base class).
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         if (attribute == generatorClass) {
-            String generatorClassValue
-                    = ((StringToken)generatorClass.getToken()).stringValue();
-        	if (generatorClassValue != null
-                        && !generatorClassValue.equals(_generatorClassName)) {
-        		_createGenerator();
+            String generatorClassValue = ((StringToken) generatorClass.getToken())
+                            .stringValue();
+
+            if ((generatorClassValue != null)
+                            && !generatorClassValue.equals(_generatorClassName)) {
+                _createGenerator();
             }
         } else if (attribute == seed) {
             long seedValue = ((LongToken) (seed.getToken())).longValue();
+
             if (seedValue != _generatorSeed) {
-            	_createGenerator();
+                _createGenerator();
             }
         } else {
-        	super.attributeChanged(attribute);
+            super.attributeChanged(attribute);
         }
     }
 
@@ -213,12 +216,15 @@ public abstract class ColtRandomSource extends Source {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ColtRandomSource newObject = (ColtRandomSource) (super.clone(workspace));
         newObject._randomNumberGenerator = null;
+
         // Force creation of a new generator.
         try {
             newObject._createGenerator();
         } catch (IllegalActionException ex) {
-        	throw new CloneNotSupportedException("Failed to create generator: " + ex);
+            throw new CloneNotSupportedException("Failed to create generator: "
+                + ex);
         }
+
         return newObject;
     }
 
@@ -228,6 +234,7 @@ public abstract class ColtRandomSource extends Source {
      */
     public void fire() throws IllegalActionException {
         super.fire();
+
         if (_needNew) {
             _generateRandomNumber();
             _needNew = false;
@@ -243,12 +250,14 @@ public abstract class ColtRandomSource extends Source {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        if (((BooleanToken)resetOnEachRun.getToken()).booleanValue()) {
-        	_createGenerator();
+
+        if (((BooleanToken) resetOnEachRun.getToken()).booleanValue()) {
+            _createGenerator();
         }
+
         _needNew = true;
     }
-    
+
     /** Calculate the next random number.
      *  @exception IllegalActionException If the base class throws it.
      *  @return True if it is ok to continue.
@@ -268,30 +277,34 @@ public abstract class ColtRandomSource extends Source {
      *   an entity with the name of this entity.
      */
     public void setContainer(CompositeEntity container)
-            throws IllegalActionException, NameDuplicationException {
-    	super.setContainer(container);
+        throws IllegalActionException, NameDuplicationException {
+        super.setContainer(container);
+
         if (generatorClass != null) {
-        	generatorClass.inferValueFromContext("DRand");
+            generatorClass.inferValueFromContext("DRand");
         }
+
         if (resetOnEachRun != null) {
-        	resetOnEachRun.inferValueFromContext("false");
+            resetOnEachRun.inferValueFromContext("false");
         }
+
         _inferSeed();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
     /** Method that is called after _randomNumberGenerator is changed.
      */
     protected abstract void _createdNewRandomNumberGenerator();
-    
+
     /** Generate a new random number.
      *  @exception IllegalActionException Not thrown in this base class.
      *  Derived classes may throw it if there is a problem processing
      *  a parameter or if there is some other problem.
      */
-    protected abstract void _generateRandomNumber() throws IllegalActionException;
+    protected abstract void _generateRandomNumber()
+        throws IllegalActionException;
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
@@ -307,16 +320,22 @@ public abstract class ColtRandomSource extends Source {
     private void _createGenerator() throws IllegalActionException {
         long seedValue = ((LongToken) (seed.getToken())).longValue();
         _generatorSeed = seedValue;
+
         if (seedValue == 0L) {
             seedValue = System.currentTimeMillis() + hashCode();
         }
-        StringToken generatorToken = ((StringToken)generatorClass.getToken());
+
+        StringToken generatorToken = ((StringToken) generatorClass.getToken());
         String generatorClassValue = null;
+
         if (generatorToken != null) {
-        	generatorClassValue = generatorToken.stringValue();
+            generatorClassValue = generatorToken.stringValue();
         }
+
         _generatorClassName = generatorClassValue;
-        if (generatorClassValue == null || generatorClassValue.equals("DRand")) {
+
+        if ((generatorClassValue == null)
+                        || generatorClassValue.equals("DRand")) {
             _randomNumberGenerator = new DRand((int) seedValue);
         } else if (generatorClassValue.equals("MersenneTwister (MT19937)")) {
             _randomNumberGenerator = new MersenneTwister((int) seedValue);
@@ -327,9 +346,10 @@ public abstract class ColtRandomSource extends Source {
         } else if (generatorClassValue.equals("Ranmar")) {
             _randomNumberGenerator = new Ranmar((int) seedValue);
         }
+
         _createdNewRandomNumberGenerator();
     }
-        
+
     /** Infer the value of the seed from the container context.
      *  The inferred value is zero if all shared parameters have value
      *  zero, or if there are no shared parameters. Otherwise, it is
@@ -339,27 +359,35 @@ public abstract class ColtRandomSource extends Source {
         // If the seed parameter has not yet been constructed, then
         // do nothing.
         if (seed == null) {
-        	return;
+            return;
         }
+
         String seedValue = "0L";
         NamedObj root = seed.getRoot();
+
         if (root != null) {
-            Iterator sharedParameters 
-                    = seed.sharedParameterList(root).iterator();
+            Iterator sharedParameters = seed.sharedParameterList(root).iterator();
             long value = 0L;
+
             while (sharedParameters.hasNext()) {
-                ColtSeedParameter candidate = (ColtSeedParameter)sharedParameters.next();
+                ColtSeedParameter candidate = (ColtSeedParameter) sharedParameters
+                                .next();
+
                 if (candidate != seed) {
-                    long candidateValue = ((LongToken)candidate.getToken()).longValue();
+                    long candidateValue = ((LongToken) candidate.getToken())
+                                    .longValue();
+
                     if (candidateValue != 0L) {
-                    	if (candidateValue >= value) {
-                    		value = candidateValue + 1L;
+                        if (candidateValue >= value) {
+                            value = candidateValue + 1L;
                         }
                     }
                 }
             }
+
             seedValue = value + "L";
         }
+
         seed.setSuppressingPropagation(true);
         seed.setExpression(seedValue);
         seed.setSuppressingPropagation(false);
@@ -367,7 +395,7 @@ public abstract class ColtRandomSource extends Source {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The class name of the current _randomNumberGenerator.
      */
     private String _generatorClassName;
@@ -375,11 +403,11 @@ public abstract class ColtRandomSource extends Source {
     /** The seed used by the current _randomNumberGenerator.
      */
     private long _generatorSeed = 0L;
-    
+
     /** Indicator that a new random number is needed.
      */
     private boolean _needNew = false;
-        
+
     /** Counter used to assign unique seeds.
      */
     private long _seedCount = 0;

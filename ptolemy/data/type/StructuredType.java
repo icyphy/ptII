@@ -91,7 +91,7 @@ public abstract class StructuredType implements Type {
      *   different structure.
      */
     public abstract void updateType(StructuredType newType)
-            throws IllegalActionException;
+        throws IllegalActionException;
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////

@@ -70,7 +70,7 @@ public class StringIndexOf extends TypedAtomicActor {
      *   actor with this name.
      */
     public StringIndexOf(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         searchFor = new PortParameter(this, "searchFor");
@@ -152,11 +152,11 @@ public class StringIndexOf extends TypedAtomicActor {
         startIndex.update();
 
         String searchForString = ((StringToken) searchFor.getToken())
-            .stringValue();
+                        .stringValue();
         String inTextString = ((StringToken) inText.getToken()).stringValue();
         int startIndexValue = ((IntToken) startIndex.getToken()).intValue();
         boolean forwards = ((BooleanToken) searchForwards.getToken())
-            .booleanValue();
+                        .booleanValue();
 
         if (((BooleanToken) ignoreCase.getToken()).booleanValue()) {
             searchForString = searchForString.toLowerCase();

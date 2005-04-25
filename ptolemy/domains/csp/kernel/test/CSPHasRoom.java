@@ -51,7 +51,7 @@ public class CSPHasRoom extends CSPPut {
     /**
      */
     public CSPHasRoom(TypedCompositeActor cont, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(cont, name);
     }
 

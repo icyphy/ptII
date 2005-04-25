@@ -27,8 +27,8 @@ COPYRIGHTENDKEY
 @ProposedRating Red (sanjeev)
 @AcceptedRating Red (sanjeev)
 */
-
 package ptolemy.apps.cacheAwareScheduler.kernel;
+
 
 // Ptolemy imports
 import ptolemy.actor.Actor;
@@ -66,8 +66,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
+
 ////////////////////////////////////////////////////////////////////////////
 //// CacheAwareScheduler
+
 /**
 
 Notes:
@@ -84,15 +86,13 @@ this function. Rest all functions and schedule generations are generic.
 @version $Id$
 @since Ptolemy II 2.0
 */
-
 public class CacheAwareScheduler extends SDFScheduler {
-
     /** Construct a scheduler with no container(director)
      *  in the default workspace, the name of the scheduler is
      *  "Cache Aware Scheduler".
      */
     public CacheAwareScheduler()
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super();
         setName("Cache Aware Scheduler");
         _dataMissPenalty = 0;
@@ -111,7 +111,7 @@ public class CacheAwareScheduler extends SDFScheduler {
      *  @param workspace Object for synchronization and version tracking.
      */
     public CacheAwareScheduler(Workspace workspace)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(workspace);
         setName("Cache Aware Scheduler");
         _dataMissPenalty = 0;
@@ -135,7 +135,7 @@ public class CacheAwareScheduler extends SDFScheduler {
      *   an attribute already in the container.
      */
     public CacheAwareScheduler(Director container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _dataMissPenalty = 0;
         _instructionMissPenalty = 0;
@@ -152,14 +152,15 @@ public class CacheAwareScheduler extends SDFScheduler {
      *  schedule.
      */
     public int calculateMPMBScheduleCMP() throws IllegalActionException {
-        if (_noOfActors !=4) {
+        if (_noOfActors != 4) {
             System.out.println("The MPMBSchedule generation works only for "
-                    + "4 actor chain-structured graph at present.");
+                + "4 actor chain-structured graph at present.");
             return -1;
         }
 
         _MPMBSchedule = _generateMPMBSchedule();
         _linearizedMPMBSchedule = new Schedule();
+
         // Calling the _unloopSchedule method on _MPMBSchedule populates
         // the _linearizedMPMBSchedule.
         _unloopSchedule(_MPMBSchedule);
@@ -168,14 +169,12 @@ public class CacheAwareScheduler extends SDFScheduler {
         //System.out.println("The MPMBS Schedule is :");
         //System.out.println(_MPMBSchedule);
         //System.out.println();
-
         // Calculating the IMP, DMP and CMP of the MPMBSchedule.
         int cmp = _calculateAssociatedPenalties(_linearizedMPMBSchedule);
 
         //System.out.println("The Linearized MPMBS Schedule is :");
         //System.out.println(_linearizedMPMBSchedule);
         //System.out.println();
-
         return cmp;
     }
 
@@ -188,65 +187,77 @@ public class CacheAwareScheduler extends SDFScheduler {
      *  @param imp The variable to store instruction miss penalty in.
      */
     private int _calculateAssociatedPenalties(Schedule schedule)
-            throws IllegalActionException {
+        throws IllegalActionException {
         // Initializing the imp, dmp and cmp.
         int imp = 0;
         int dmp = 0;
         int cmp = 0;
         ScratchpadMemory dSPM = new ScratchpadMemory(_dataSPMSize);
         boolean[] iSPM = new boolean[_noOfActors];
+
         // Initializing the ISPM
-        for (int i = 0; i < _noOfActors; i++) iSPM[i] = false;
+        for (int i = 0; i < _noOfActors; i++) {
+            iSPM[i] = false;
+        }
+
         int usedISPM = 0;
+
         // Initializing the actors record for simulation of the execution.
         ActorRecord[] record = new ActorRecord[_noOfActors];
+
         for (int i = 0; i < _noOfActors; i++) {
             record[i] = new ActorRecord();
             record[i].actorNo = _actorsRecord[i].actorNo;
             record[i].consumptionRate = _actorsRecord[i].consumptionRate;
             record[i].productionRate = _actorsRecord[i].productionRate;
+
             // No actor has fired yet, so, this is zero for all rite now.
             record[i].fired = 0;
+
             if (i == 0) {
                 record[i].fireable = _firingCount[i];
-                record[i].inputTokensAvailable =
-                    _firingCount[i] * record[i].consumptionRate;
+                record[i].inputTokensAvailable = _firingCount[i] * record[i].consumptionRate;
             } else {
                 record[i].fireable = 0;
                 record[i].inputTokensAvailable = 0;
             }
+
             record[i].toFire = _firingCount[i];
             record[i].toProduce = _firingCount[i] * record[i].productionRate;
             record[i].toConsume = _firingCount[i] * record[i].consumptionRate;
             record[i].produced = 0;
             record[i].consumed = 0;
-            record[i].codeSize =  _actorsRecord[i].codeSize;
+            record[i].codeSize = _actorsRecord[i].codeSize;
         } // end of for loop that initializes the record Array.
 
         int currActor = 0;
         int iterationCount = 0;
 
         Iterator iterator = schedule.iterator();
+
         while (iterator.hasNext()) {
-            ScheduleElement element = (ScheduleElement)iterator.next();
+            ScheduleElement element = (ScheduleElement) iterator.next();
+
             if (element instanceof Firing) {
-                iterationCount = ((Firing)element).getIterationCount();
-                if (((Firing)element).getActor()
-                        == (Actor)_orderToActor.get(new Integer(0)))
+                iterationCount = ((Firing) element).getIterationCount();
+
+                if (((Firing) element).getActor() == (Actor) _orderToActor.get(
+                                    new Integer(0))) {
                     currActor = 0;
-                else if (((Firing)element).getActor()
-                        == (Actor)_orderToActor.get(new Integer(1)))
+                } else if (((Firing) element).getActor() == (Actor) _orderToActor
+                                .get(new Integer(1))) {
                     currActor = 1;
-                else if (((Firing)element).getActor()
-                        == (Actor)_orderToActor.get(new Integer(2)))
+                } else if (((Firing) element).getActor() == (Actor) _orderToActor
+                                .get(new Integer(2))) {
                     currActor = 2;
-                else if (((Firing)element).getActor()
-                        == (Actor)_orderToActor.get(new Integer(3)))
+                } else if (((Firing) element).getActor() == (Actor) _orderToActor
+                                .get(new Integer(3))) {
                     currActor = 3;
-                else throw new IllegalActionException("Could not recognize "
+                } else {
+                    throw new IllegalActionException("Could not recognize "
                         + "the index of the actor associated with this "
                         + "firing.");
-
+                }
 
                 // Calculating the DMP for this firing element.
                 for (int i = 1; i <= iterationCount; i++) {
@@ -255,50 +266,52 @@ public class CacheAwareScheduler extends SDFScheduler {
                     // for it.
                     if (currActor != 0) {
                         MemoryAddress tempAddress = new MemoryAddress();
-                        for (int p = 1; p <= record[currActor].consumptionRate; p++) {
-                            tempAddress.setFields((currActor-1),
-                                    (record[currActor].consumed + p));
-                            if (dSPM.contains(tempAddress))
+
+                        for (int p = 1; p <= record[currActor].consumptionRate;
+                                        p++) {
+                            tempAddress.setFields((currActor - 1),
+                                (record[currActor].consumed + p));
+
+                            if (dSPM.contains(tempAddress)) {
                                 dSPM.evict(tempAddress);
-                        }     // end of for (int p = 1...) loop
-                    }  // end of if (currActor != 0)
+                            }
+                        } // end of for (int p = 1...) loop
+                    } // end of if (currActor != 0)
 
                     // Add Produced tokens to DSPM. For last actor,
                     // production rate is zero, so, no need to check
                     // for it.
                     if (currActor != (_noOfActors - 1)) {
-                        for (int p = 1; p <= record[currActor].productionRate; p++) {
+                        for (int p = 1; p <= record[currActor].productionRate;
+                                        p++) {
                             if (dSPM.isFull()) {
                                 //dmp += (_DREADTIME + _DWRITETIME);
-                                dmp += (record[currActor].productionRate
-                                        - (p-1)) * (_DREADTIME + _DWRITETIME);
+                                dmp += ((record[currActor].productionRate
+                                            - (p - 1)) * (_DREADTIME
+                                            + _DWRITETIME));
                                 break;
                             } else {
-                                MemoryAddress tempAddress =
-                                    new MemoryAddress(currActor,
-                                            record[currActor].produced + p);
+                                MemoryAddress tempAddress = new MemoryAddress(currActor,
+                                        record[currActor].produced + p);
                                 dSPM.add(tempAddress);
-                            }  // end of else for if (dSPM.isFull())
-                        }  // end of for loop
-                    }  // end of if (currActor != (_noOfActors - 1)
-
+                            } // end of else for if (dSPM.isFull())
+                        } // end of for loop
+                    } // end of if (currActor != (_noOfActors - 1)
 
                     // Update the current actor's record
-                    record[currActor].fired ++;
-                    record[currActor].fireable --;
-                    record[currActor].produced +=
-                        record[currActor].productionRate;
-                    record[currActor].consumed +=
-                        record[currActor].consumptionRate;
-                    record[currActor].inputTokensAvailable -=
-                        record[currActor].consumptionRate;
+                    record[currActor].fired++;
+                    record[currActor].fireable--;
+                    record[currActor].produced += record[currActor].productionRate;
+                    record[currActor].consumed += record[currActor].consumptionRate;
+                    record[currActor].inputTokensAvailable -= record[currActor].consumptionRate;
+
                     if (currActor != (_noOfActors - 1)) {
-                        record[currActor + 1].inputTokensAvailable
-                            += record[currActor].productionRate;
+                        record[currActor + 1].inputTokensAvailable += record[currActor].productionRate;
+
                         // Update the fireable field of the successor.
-                        record[currActor + 1].fireable =
-                            record[currActor + 1].inputTokensAvailable/record[currActor + 1].consumptionRate;
-                    }    // end of if (currActor != (_noOfActors - 1)
+                        record[currActor + 1].fireable = record[currActor + 1].inputTokensAvailable / record[currActor
+                                        + 1].consumptionRate;
+                    } // end of if (currActor != (_noOfActors - 1)
                 } // end of for (int i = 1;..) loop
 
                 // Calculating IMP associated with bringing the current actor
@@ -315,26 +328,24 @@ public class CacheAwareScheduler extends SDFScheduler {
                             if (record[i].fired == record[i].toFire) {
                                 iSPM[i] = false;
                                 usedISPM -= record[i].codeSize;
-                            }    // end of if (record[i].fired == ..)
-                        }    // end of if (iSPM[i] == true)
-                    }    // end of for (int i = 0; ...) loop
+                            } // end of if (record[i].fired == ..)
+                        } // end of if (iSPM[i] == true)
+                    } // end of for (int i = 0; ...) loop
 
-                    if (usedISPM + record[currActor].codeSize >
-                            _instructionSPMSize) {
-
+                    if ((usedISPM + record[currActor].codeSize) > _instructionSPMSize) {
                         // Temp Variables
                         boolean foundActorToSwap = false;
                         int swapActor = -1;
                         int swapActorSize = 0;
                         int maxActor = -1;
                         int maxActorSize = 0;
+
                         // To be used in case we need to remove a set of actors
                         // to bring this successor in the I-Scratchpad.
                         ArrayList swapActorList = new ArrayList();
                         int swapListSize = 0;
 
-                        while ((swapListSize + _instructionSPMSize - usedISPM) < record[currActor].codeSize) {
-
+                        while (((swapListSize + _instructionSPMSize) - usedISPM) < record[currActor].codeSize) {
                             foundActorToSwap = false;
                             maxActor = -1;
                             swapActor = -1;
@@ -344,34 +355,32 @@ public class CacheAwareScheduler extends SDFScheduler {
                             for (int j = 0; j < _noOfActors; j++) {
                                 if (iSPM[j]) {
                                     if (!swapActorList.contains(new Integer(j))) {
-                                        if ((record[j].codeSize + swapListSize + _instructionSPMSize - usedISPM) >= record[currActor].codeSize) {
+                                        if (((record[j].codeSize + swapListSize
+                                                        + _instructionSPMSize)
+                                                        - usedISPM) >= record[currActor].codeSize) {
                                             if (foundActorToSwap == true) {
-                                                if (swapActorSize >
-                                                        record[j].codeSize) {
+                                                if (swapActorSize > record[j].codeSize) {
                                                     // Replace the current swap actor
                                                     // with this newly found smaller
                                                     // size swap actor.
                                                     swapActor = j;
-                                                    swapActorSize =
-                                                        record[j].codeSize;
-                                                }    // end of if (swapActorSize..)
-                                            }     // end of if (foundActorToSwap)
+                                                    swapActorSize = record[j].codeSize;
+                                                } // end of if (swapActorSize..)
+                                            } // end of if (foundActorToSwap)
                                             else {
                                                 foundActorToSwap = true;
                                                 swapActor = j;
-                                                swapActorSize =
-                                                    record[j].codeSize;
+                                                swapActorSize = record[j].codeSize;
                                             }
                                         } // end of finding the swap actor.
-                                        if (record[j].codeSize >
-                                                maxActorSize) {
+
+                                        if (record[j].codeSize > maxActorSize) {
                                             maxActor = j;
-                                            maxActorSize =
-                                                record[j].codeSize;
-                                        }    // end of if (actorsRecord..)
-                                    }    // end of if (!swapActorList..)
-                                }    // end of if (actorsInISPM[j])
-                            }    // end of for (int j = 0;...) loop
+                                            maxActorSize = record[j].codeSize;
+                                        } // end of if (actorsRecord..)
+                                    } // end of if (!swapActorList..)
+                                } // end of if (actorsInISPM[j])
+                            } // end of for (int j = 0;...) loop
 
                             if (foundActorToSwap) {
                                 swapActorList.add(new Integer(swapActor));
@@ -383,37 +392,43 @@ public class CacheAwareScheduler extends SDFScheduler {
                         } // end of while (swapListSize....)
 
                         Iterator tempActors = swapActorList.iterator();
+
                         while (tempActors.hasNext()) {
-                            int tempSwapActor =
-                                ((Integer)tempActors.next()).intValue();
-                            int tempSwapActorSize =
-                                record[tempSwapActor].codeSize;
+                            int tempSwapActor = ((Integer) tempActors.next())
+                                            .intValue();
+                            int tempSwapActorSize = record[tempSwapActor].codeSize;
                             iSPM[tempSwapActor] = false;
-                            usedISPM -= tempSwapActorSize ;
-                        }   // end of while (tempActors.hasNext())
+                            usedISPM -= tempSwapActorSize;
+                        } // end of while (tempActors.hasNext())
+
                         iSPM[currActor] = true;
                         usedISPM += record[currActor].codeSize;
-                    }    // end of if (usedISPM + ...)
+                    } // end of if (usedISPM + ...)
                     else {
                         usedISPM += record[currActor].codeSize;
                         iSPM[currActor] = true;
-                    }    // end of else for if (usedISPM + ..)
-                    imp += _IREADTIME * record[currActor].codeSize;
+                    } // end of else for if (usedISPM + ..)
+
+                    imp += (_IREADTIME * record[currActor].codeSize);
                 } // end of if (iSPM[currActor] == false)
             } // end of if (element instanceof Firing)
-            else throw new IllegalActionException("The linearized schedule "
+            else {
+                throw new IllegalActionException("The linearized schedule "
                     + "whose penalty has to be calculated contains an "
                     + "element that is not of type Firing. This function "
                     + "can not calculate the penalties of such a schedule.");
+            }
         } // end of while (iterator.hasNext())
 
         cmp = imp + dmp;
+
         /*
           System.out.println("IMP for MPMBS Schedule : " + imp);
           System.out.println("DMP for MPMBS Schedule : " + dmp);
           System.out.println("Total CMP for MPMBS Schedule : "
           + cmp );
         */
+
         // System.out.println();
         // System.out.println("MPMBS - CMP : " + cmp);
         return cmp;
@@ -429,30 +444,34 @@ public class CacheAwareScheduler extends SDFScheduler {
         int dmp = 0;
         int imp = 0;
         _SAMASchedule = new Schedule();
+
         // Iterate over the actors in the chain-structured graph and
         // update the imp and dmp associated with each of them.
         for (int i = 0; i < _noOfActors; i++) {
             Firing F = new Firing();
             _SAMASchedule.add(F);
             F.setIterationCount(_firingCount[i]);
-            F.setActor((Actor)_orderToActor.get(new Integer(i)));
+            F.setActor((Actor) _orderToActor.get(new Integer(i)));
 
-            imp += _actorsRecord[i].codeSize * _IREADTIME;
-            int totalTokensProduced =
-                _actorsRecord[i].productionRate * _actorsRecord[i].toFire;
-            if (totalTokensProduced > _dataSPMSize)
-                dmp += (totalTokensProduced - _dataSPMSize)
-                    * (_DREADTIME + _DWRITETIME);
+            imp += (_actorsRecord[i].codeSize * _IREADTIME);
+
+            int totalTokensProduced = _actorsRecord[i].productionRate * _actorsRecord[i].toFire;
+
+            if (totalTokensProduced > _dataSPMSize) {
+                dmp += ((totalTokensProduced - _dataSPMSize) * (_DREADTIME
+                            + _DWRITETIME));
+            }
         }
+
         cmp = imp + dmp;
+
         // System.out.println();
         System.out.println("The SAMAS Schedule is : ");
         System.out.println(_SAMASchedule);
 
         System.out.println("IMP for SAMAS Schedule : " + imp);
         System.out.println("DMP for SAMAS Schedule : " + dmp);
-        System.out.println("Total CMP for SAMAS Schedule : "
-                + cmp );
+        System.out.println("Total CMP for SAMAS Schedule : " + cmp);
 
         //System.out.println("SAMAS - CMP : " + cmp );
         return cmp;
@@ -478,8 +497,6 @@ public class CacheAwareScheduler extends SDFScheduler {
 
     ///////////////////////////////////////////////////////////////////
     ////                Public Member Variables                    ////
-
-
     ///////////////////////////////////////////////////////////////////
     ////                Protected Member Functions                 ////
 
@@ -499,15 +516,15 @@ public class CacheAwareScheduler extends SDFScheduler {
      *  @exception IllegalActionException If the given graph isn't
      *   chain-structured.
      */
-    protected Schedule _getSchedule() throws IllegalActionException{
-        StaticSchedulingDirector director =
-            (StaticSchedulingDirector)getContainer();
-        CompositeActor container = (CompositeActor)director.getContainer();
+    protected Schedule _getSchedule() throws IllegalActionException {
+        StaticSchedulingDirector director = (StaticSchedulingDirector) getContainer();
+        CompositeActor container = (CompositeActor) director.getContainer();
 
-        if (_containerVersion == ((CASDFComposite)container).getVersion()) {
+        if (_containerVersion == ((CASDFComposite) container).getVersion()) {
             return _cacheAwareSchedule;
+        } else {
+            _containerVersion = ((CASDFComposite) container).getVersion();
         }
-        else _containerVersion = ((CASDFComposite)container).getVersion();
 
         // Initialize the local variables
         _noOfActors = 0;
@@ -520,8 +537,9 @@ public class CacheAwareScheduler extends SDFScheduler {
         if (_chainStructured()) {
             // Find out the total no of actors.
             for (Iterator entities = container.deepEntityList().iterator();
-                 entities.hasNext();) {
-                ComponentEntity entity = (ComponentEntity)entities.next();
+                            entities.hasNext();) {
+                ComponentEntity entity = (ComponentEntity) entities.next();
+
                 if (entity instanceof Actor) {
                     _noOfActors++;
                 }
@@ -530,22 +548,25 @@ public class CacheAwareScheduler extends SDFScheduler {
             // Allocate memory for _firingCount and _actorsRecord.
             _firingCount = new int[_noOfActors];
             _actorsRecord = new ActorRecord[_noOfActors];
-            for (int i = 0; i < _noOfActors; i++)
+
+            for (int i = 0; i < _noOfActors; i++) {
                 _actorsRecord[i] = new ActorRecord();
+            }
+
             _instructionSPM = new boolean[_noOfActors];
             _populateActorsRecord();
             _generateCacheAwareSchedule();
 
             return _cacheAwareSchedule;
-        }
-        else throw new IllegalActionException("The given graph isn't"
+        } else {
+            throw new IllegalActionException("The given graph isn't"
                 + " chain-structured. Can't be scheduled by the cache aware"
                 + " scheduler.");
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                Protected Member Variables                 ////
-
     ///////////////////////////////////////////////////////////////////
     ////                Private Member Functions                   ////
 
@@ -565,43 +586,48 @@ public class CacheAwareScheduler extends SDFScheduler {
      *  @exception IllegalActionException If maxFiringsPossible is less than
      *   fired.
      */
+
     // NOTE: This function has a complexity of O(n) where n is the number of
     // Actors in the chain-structured SDF graph.
-    private int _calculateDMP(int actorNo, int maxFiringsPossible,
-            int fired) throws IllegalActionException {
-        if (maxFiringsPossible < fired)
+    private int _calculateDMP(int actorNo, int maxFiringsPossible, int fired)
+        throws IllegalActionException {
+        if (maxFiringsPossible < fired) {
             throw new IllegalActionException("Can't calculate Data"
-                    + " Miss Penalty, maxPossibleFirings is less than fired.");
+                + " Miss Penalty, maxPossibleFirings is less than fired.");
+        }
 
         // Temp variable to store data miss penalty
         int penalty = 0;
+
         // Temp variable that copies the D-Scratchpad's current used space.
         int tempUsedSpace = _dataSPM.usedSpace();
+
         // Temp variable to store the D-Scratchpad's total size.
         int tempDSPMSize = _dataSPM.size();
 
-        penalty = (maxFiringsPossible - fired) *
-            _actorsRecord[actorNo].productionRate;
+        penalty = (maxFiringsPossible - fired) * _actorsRecord[actorNo].productionRate;
 
         // Temp variables
-        int tempTokensInsideDSPM =
-            fired * _actorsRecord[actorNo].productionRate;
-        int tempTokensOutsideDSPM =
-            (maxFiringsPossible-fired) * _actorsRecord[actorNo].productionRate;
+        int tempTokensInsideDSPM = fired * _actorsRecord[actorNo].productionRate;
+        int tempTokensOutsideDSPM = (maxFiringsPossible - fired) * _actorsRecord[actorNo].productionRate;
         int tempFreeSpaceInDSPM = 0;
 
         // Check if the immediate successor is fireable.
         int successorNo = actorNo + 1;
         int successorFirings = 0;
+
         // The following if loop is necessary for initialization of
         // successor firings, because the last actor doesn't have any
         // successors and we need to make sure that _actorsRecord[_noOfActors]
         // isn't accessed.
-        if (successorNo < _noOfActors)
+        if (successorNo < _noOfActors) {
             // In calculation of DMP, we neglect the inputTokensAvailable
             // at the successor because we want to calculate the DMP caused
             // specifically by the new tokens produced by this actor.
-            successorFirings  = (maxFiringsPossible * _actorsRecord[successorNo-1].productionRate)/_actorsRecord[successorNo].consumptionRate;
+            successorFirings = (maxFiringsPossible * _actorsRecord[successorNo
+                            - 1].productionRate) / _actorsRecord[successorNo].consumptionRate;
+        }
+
         // If the immediate successor isn't fireable, then return a penalty of
         // zero.
         if (successorFirings == 0) {
@@ -611,40 +637,13 @@ public class CacheAwareScheduler extends SDFScheduler {
 
         // Else go on and compute the Data Miss Penalty at each successor.
         while ((successorFirings > 0) && (successorNo < _noOfActors)) {
+            if (_actorsRecord[successorNo].productionRate > _actorsRecord[successorNo].consumptionRate) {
+                int newTokensProduced = successorFirings * (_actorsRecord[successorNo].productionRate);
 
-            if (_actorsRecord[successorNo].productionRate >
-                    _actorsRecord[successorNo].consumptionRate) {
-                int newTokensProduced = successorFirings *
-                    (_actorsRecord[successorNo].productionRate);
-                if (successorFirings * _actorsRecord[successorNo].consumptionRate
-                        > tempTokensInsideDSPM) {
-                    int extraSpaceNeeded = newTokensProduced -
-                        tempTokensInsideDSPM;
-                    if (tempFreeSpaceInDSPM > extraSpaceNeeded) {
-                        // No penalty added as the extra space was found in
-                        // D-Scratchpad itself. Nothing will be written
-                        // outside the SPM. Free space will reduce inside SPM.
-                        penalty += 0 ;
-                        tempFreeSpaceInDSPM -= extraSpaceNeeded;
-                        tempTokensInsideDSPM = newTokensProduced;
-                        tempTokensOutsideDSPM = 0;
-                    }      //   end of if (tempFreeSpaceInDSPM > ..)
-                    else {
-                        // Some data will be written outside SPM. The
-                        // corresponding penalty has to be added. Free
-                        // space will go to zero inside SPM.
-                        penalty += extraSpaceNeeded - tempFreeSpaceInDSPM;
-                        tempTokensInsideDSPM += tempFreeSpaceInDSPM;
-                        tempTokensOutsideDSPM = extraSpaceNeeded -
-                            tempFreeSpaceInDSPM;
-                        tempFreeSpaceInDSPM = 0;
-                    }      //    end of else for if (tempFreeSpaceInDSPM > ..)
-                }     // end of if (successorFirings*actorsRecord...)
-                else {
-                    int tempTokensConsumed = successorFirings *
-                        _actorsRecord[successorNo].consumptionRate;
-                    int extraSpaceNeeded = newTokensProduced -
-                        tempTokensConsumed;
+                if ((successorFirings * _actorsRecord[successorNo].consumptionRate) > tempTokensInsideDSPM) {
+                    int extraSpaceNeeded = newTokensProduced
+                        - tempTokensInsideDSPM;
+
                     if (tempFreeSpaceInDSPM > extraSpaceNeeded) {
                         // No penalty added as the extra space was found in
                         // D-Scratchpad itself. Nothing will be written
@@ -653,28 +652,53 @@ public class CacheAwareScheduler extends SDFScheduler {
                         tempFreeSpaceInDSPM -= extraSpaceNeeded;
                         tempTokensInsideDSPM = newTokensProduced;
                         tempTokensOutsideDSPM = 0;
-                    }       // end of if (tempFreeSpaceInDSPM > ..)
+                    } //   end of if (tempFreeSpaceInDSPM > ..)
                     else {
                         // Some data will be written outside SPM. The
                         // corresponding penalty has to be added. Free
                         // space will go to zero inside SPM.
-                        penalty += extraSpaceNeeded - tempFreeSpaceInDSPM;
-                        tempTokensInsideDSPM = tempTokensConsumed +
-                            tempFreeSpaceInDSPM;
-                        tempTokensOutsideDSPM =
-                            extraSpaceNeeded - tempFreeSpaceInDSPM;
+                        penalty += (extraSpaceNeeded - tempFreeSpaceInDSPM);
+                        tempTokensInsideDSPM += tempFreeSpaceInDSPM;
+                        tempTokensOutsideDSPM = extraSpaceNeeded
+                            - tempFreeSpaceInDSPM;
                         tempFreeSpaceInDSPM = 0;
-                    }       // end of else for if (tempFreeSpaceInDSPM > ..)
-                }    // end of else for if (successorFirings*actorsRecord...)
-            }      // end of if (_actorsRecord[successorNo]..)
+                    } //    end of else for if (tempFreeSpaceInDSPM > ..)
+                } // end of if (successorFirings*actorsRecord...)
+                else {
+                    int tempTokensConsumed = successorFirings * _actorsRecord[successorNo].consumptionRate;
+                    int extraSpaceNeeded = newTokensProduced
+                        - tempTokensConsumed;
+
+                    if (tempFreeSpaceInDSPM > extraSpaceNeeded) {
+                        // No penalty added as the extra space was found in
+                        // D-Scratchpad itself. Nothing will be written
+                        // outside the SPM. Free space will reduce inside SPM.
+                        penalty += 0;
+                        tempFreeSpaceInDSPM -= extraSpaceNeeded;
+                        tempTokensInsideDSPM = newTokensProduced;
+                        tempTokensOutsideDSPM = 0;
+                    } // end of if (tempFreeSpaceInDSPM > ..)
+                    else {
+                        // Some data will be written outside SPM. The
+                        // corresponding penalty has to be added. Free
+                        // space will go to zero inside SPM.
+                        penalty += (extraSpaceNeeded - tempFreeSpaceInDSPM);
+                        tempTokensInsideDSPM = tempTokensConsumed
+                            + tempFreeSpaceInDSPM;
+                        tempTokensOutsideDSPM = extraSpaceNeeded
+                            - tempFreeSpaceInDSPM;
+                        tempFreeSpaceInDSPM = 0;
+                    } // end of else for if (tempFreeSpaceInDSPM > ..)
+                } // end of else for if (successorFirings*actorsRecord...)
+            } // end of if (_actorsRecord[successorNo]..)
             else {
-                int newTokensProduced = successorFirings *
-                    (_actorsRecord[successorNo].productionRate);
-                if (successorFirings * _actorsRecord[successorNo].consumptionRate
-                        > tempTokensInsideDSPM) {
+                int newTokensProduced = successorFirings * (_actorsRecord[successorNo].productionRate);
+
+                if ((successorFirings * _actorsRecord[successorNo].consumptionRate) > tempTokensInsideDSPM) {
                     if (newTokensProduced > tempTokensInsideDSPM) {
-                        int extraSpaceNeeded = newTokensProduced -
-                            tempTokensInsideDSPM;
+                        int extraSpaceNeeded = newTokensProduced
+                            - tempTokensInsideDSPM;
+
                         if (tempFreeSpaceInDSPM > extraSpaceNeeded) {
                             // No penalty added as the extra space was found
                             // in D-Scratchpad itself. Nothing will be written
@@ -684,51 +708,53 @@ public class CacheAwareScheduler extends SDFScheduler {
                             tempFreeSpaceInDSPM -= extraSpaceNeeded;
                             tempTokensInsideDSPM = newTokensProduced;
                             tempTokensOutsideDSPM = 0;
-                        }   //   end of if (tempFreeSpaceInDSPM > ..)
+                        } //   end of if (tempFreeSpaceInDSPM > ..)
                         else {
                             // Some data will be written outside SPM. The
                             // corresponding penalty has to be added. Free
                             // space will go to zero inside SPM.
-                            penalty += extraSpaceNeeded - tempFreeSpaceInDSPM;
+                            penalty += (extraSpaceNeeded - tempFreeSpaceInDSPM);
                             tempTokensInsideDSPM += tempFreeSpaceInDSPM;
-                            tempTokensOutsideDSPM = extraSpaceNeeded -
-                                tempFreeSpaceInDSPM;
+                            tempTokensOutsideDSPM = extraSpaceNeeded
+                                - tempFreeSpaceInDSPM;
                             tempFreeSpaceInDSPM = 0;
-                        }   //   end of else for if (tempFreeSpaceInDSPM > ..)
-                    }    //   end of if (newTokensProduced > ..)
+                        } //   end of else for if (tempFreeSpaceInDSPM > ..)
+                    } //   end of if (newTokensProduced > ..)
                     else {
                         // Nothing will be written outside the SPM, infact
                         // free space will increase inside SPM.
-                        int extraSpaceProduced = tempTokensInsideDSPM -
-                            newTokensProduced;
+                        int extraSpaceProduced = tempTokensInsideDSPM
+                            - newTokensProduced;
                         penalty += 0;
                         tempFreeSpaceInDSPM += extraSpaceProduced;
                         tempTokensInsideDSPM = newTokensProduced;
                         tempTokensOutsideDSPM = 0;
-                    }    // end of else for if (newTokensProduced > ..)
-                }       // end of if (successorFirings*actorsRecord..)
+                    } // end of else for if (newTokensProduced > ..)
+                } // end of if (successorFirings*actorsRecord..)
                 else {
                     // Nothing will be written outside the SPM. Free space
                     // will increase inside SPM.
                     penalty += 0;
-                    int tempTokensConsumed = successorFirings *
-                        _actorsRecord[successorNo].consumptionRate;
-                    int extraSpaceProduced = tempTokensConsumed -
-                        newTokensProduced;
+
+                    int tempTokensConsumed = successorFirings * _actorsRecord[successorNo].consumptionRate;
+                    int extraSpaceProduced = tempTokensConsumed
+                        - newTokensProduced;
                     tempFreeSpaceInDSPM += extraSpaceProduced;
                     tempTokensInsideDSPM = newTokensProduced;
                     tempTokensOutsideDSPM = 0;
-                }       // end of else for if (successorFirings*actorsRecord..)
-            }     // end of else for if (_actorsRecord[successorNo]..)
+                } // end of else for if (successorFirings*actorsRecord..)
+            } // end of else for if (_actorsRecord[successorNo]..)
 
             // Increment the successor number and update successorFirings
             successorNo++;
+
             // The following if loop is required to make sure that
             // _actorsRecord[_noOfActors] isn't accessed as it doesn't exist.
             if (successorNo < _noOfActors) {
-                successorFirings = (successorFirings * _actorsRecord[successorNo-1].productionRate)/_actorsRecord[successorNo].consumptionRate;
-            }         // end of if (successorNo < _noOfActors)
-        }          // end of while ((successorFirings > 0) && ...) loop
+                successorFirings = (successorFirings * _actorsRecord[successorNo
+                                - 1].productionRate) / _actorsRecord[successorNo].consumptionRate;
+            } // end of if (successorNo < _noOfActors)
+        } // end of while ((successorFirings > 0) && ...) loop
 
         // Scale the penalty appropriately. Whatever data is written to
         // the data memory is read as well, hence the scaling factors is
@@ -750,46 +776,62 @@ public class CacheAwareScheduler extends SDFScheduler {
      *  @exception IllegalActionException If maxFiringsPossible is less than
      *   fired or if fired is equal to zero.
      */
+
     // NOTE: This function has a complexity of O(n^3) where n is the number of
     // Actors in the chain-structured SDF graph.
     // NOTE: The calling function needs to make sure that the parameter
     // fired isn't equal to Zero.
-    private int _calculateIMP(int actorNo, int maxFiringsPossible,
-            int fired) throws IllegalActionException {
-        if (maxFiringsPossible < fired)
+    private int _calculateIMP(int actorNo, int maxFiringsPossible, int fired)
+        throws IllegalActionException {
+        if (maxFiringsPossible < fired) {
             throw new IllegalActionException("Can't calculate Instruction"
-                    + " Miss Penalty, maxPossibleFirings is less than fired.");
-        if (fired == 0)
+                + " Miss Penalty, maxPossibleFirings is less than fired.");
+        }
+
+        if (fired == 0) {
             throw new IllegalActionException("Can't calculate Instruction"
-                    + " Miss Penalty, fired parameter is zero.");
+                + " Miss Penalty, fired parameter is zero.");
+        }
 
         // Temp variable to store the instruction miss penalty
         int penalty = 0;
+
         // Temp variable used to calculate IMP. It is equal to
         // ceiling(maxFiringsPossible/fired)
         int multiplicationFactor = 0;
-        multiplicationFactor = maxFiringsPossible/fired;
-        if ((multiplicationFactor*fired) != maxFiringsPossible)
-            multiplicationFactor++;
+        multiplicationFactor = maxFiringsPossible / fired;
 
-        if (multiplicationFactor == 1) return penalty;
+        if ((multiplicationFactor * fired) != maxFiringsPossible) {
+            multiplicationFactor++;
+        }
+
+        if (multiplicationFactor == 1) {
+            return penalty;
+        }
+
         multiplicationFactor--;
 
         // Make a local copy of the I-Scratchpad contents
         boolean[] actorsInISPM = new boolean[_noOfActors];
-        for (int i = 0; i <_noOfActors; i++)
+
+        for (int i = 0; i < _noOfActors; i++) {
             actorsInISPM[i] = _instructionSPM[i];
+        }
+
         int tempISPMSize = _usedInstructionSPM;
 
         // Check if the immediate successor is fireable.
         int successorNo = actorNo + 1;
         int successorFirings = 0;
+
         // The following if loop is necessary for initialization of
         // successor firings, because the last actor doesn't have any
         // successors and we need to make sure that _actorsRecord[_noOfActors]
         // isn't accessed.
-        if (successorNo < _noOfActors)
-            successorFirings  = (_actorsRecord[successorNo].inputTokensAvailable + (fired * _actorsRecord[successorNo-1].productionRate))/_actorsRecord[successorNo].consumptionRate;
+        if (successorNo < _noOfActors) {
+            successorFirings = (_actorsRecord[successorNo].inputTokensAvailable
+                + (fired * _actorsRecord[successorNo - 1].productionRate)) / _actorsRecord[successorNo].consumptionRate;
+        }
 
         // If the immediate successor isn't fireable, then return a penalty of
         // zero.
@@ -805,9 +847,9 @@ public class CacheAwareScheduler extends SDFScheduler {
                 if (_actorsRecord[i].fired == _actorsRecord[i].toFire) {
                     actorsInISPM[i] = false;
                     tempISPMSize -= _actorsRecord[i].codeSize;
-                }    // end of if (_actorsRecord..)
-            }    // end of if (actorsInISPM[i] == true)
-        }    // end of for (int i = 0; ...) loop
+                } // end of if (_actorsRecord..)
+            } // end of if (actorsInISPM[i] == true)
+        } // end of for (int i = 0; ...) loop
 
         while ((successorFirings > 0) && (successorNo < _noOfActors)) {
             // Check if this successor is already present in I-scratchpad copy
@@ -815,20 +857,20 @@ public class CacheAwareScheduler extends SDFScheduler {
             // If no actor needs to be evicted to bring this successor, then
             // no penalty is added.
             if (!actorsInISPM[successorNo]) {
-                if (tempISPMSize + _actorsRecord[successorNo].codeSize
-                        > _instructionSPMSize) {
+                if ((tempISPMSize + _actorsRecord[successorNo].codeSize) > _instructionSPMSize) {
                     // Temp Variables
                     boolean foundActorToSwap = false;
                     int swapActor = -1;
                     int swapActorSize = 0;
                     int maxActor = -1;
                     int maxActorSize = 0;
+
                     // To be used in case we need to remove a set of actors
                     // to bring this successor in the I-Scratchpad.
                     ArrayList swapActorList = new ArrayList();
                     int swapListSize = 0;
 
-                    while ((swapListSize + _instructionSPMSize - tempISPMSize) < _actorsRecord[successorNo].codeSize) {
+                    while (((swapListSize + _instructionSPMSize) - tempISPMSize) < _actorsRecord[successorNo].codeSize) {
                         foundActorToSwap = false;
                         maxActor = -1;
                         swapActor = -1;
@@ -838,34 +880,33 @@ public class CacheAwareScheduler extends SDFScheduler {
                         for (int j = 0; j < _noOfActors; j++) {
                             if (actorsInISPM[j]) {
                                 if (!swapActorList.contains(new Integer(j))) {
-                                    if ((_actorsRecord[j].codeSize + swapListSize + _instructionSPMSize - tempISPMSize) >= _actorsRecord[successorNo].codeSize) {
+                                    if (((_actorsRecord[j].codeSize
+                                                    + swapListSize
+                                                    + _instructionSPMSize)
+                                                    - tempISPMSize) >= _actorsRecord[successorNo].codeSize) {
                                         if (foundActorToSwap == true) {
-                                            if (swapActorSize >
-                                                    _actorsRecord[j].codeSize) {
+                                            if (swapActorSize > _actorsRecord[j].codeSize) {
                                                 // Replace the current swap actor
                                                 // with this newly found smaller
                                                 // size swap actor.
                                                 swapActor = j;
-                                                swapActorSize =
-                                                    _actorsRecord[j].codeSize;
-                                            }    // end of if (swapActorSize..)
-                                        }     // end of if (foundActorToSwap)
+                                                swapActorSize = _actorsRecord[j].codeSize;
+                                            } // end of if (swapActorSize..)
+                                        } // end of if (foundActorToSwap)
                                         else {
                                             foundActorToSwap = true;
                                             swapActor = j;
-                                            swapActorSize =
-                                                _actorsRecord[j].codeSize;
+                                            swapActorSize = _actorsRecord[j].codeSize;
                                         }
                                     } // end of finding the swap actor.
-                                    if (_actorsRecord[j].codeSize >
-                                            maxActorSize) {
+
+                                    if (_actorsRecord[j].codeSize > maxActorSize) {
                                         maxActor = j;
-                                        maxActorSize =
-                                            _actorsRecord[j].codeSize;
-                                    }    // end of if (actorsRecord..)
-                                }    // end of if (!swapActorList..)
-                            }    // end of if (actorsInISPM[j])
-                        }    // end of for (int j = 0;...) loop
+                                        maxActorSize = _actorsRecord[j].codeSize;
+                                    } // end of if (actorsRecord..)
+                                } // end of if (!swapActorList..)
+                            } // end of if (actorsInISPM[j])
+                        } // end of for (int j = 0;...) loop
 
                         if (foundActorToSwap) {
                             swapActorList.add(new Integer(swapActor));
@@ -877,48 +918,55 @@ public class CacheAwareScheduler extends SDFScheduler {
                     } // end of while (swapListSize....)
 
                     Iterator tempActors = swapActorList.iterator();
+
                     while (tempActors.hasNext()) {
-                        int tempSwapActor =
-                            ((Integer)tempActors.next()).intValue();
-                        int tempSwapActorSize =
-                            _actorsRecord[tempSwapActor].codeSize;
+                        int tempSwapActor = ((Integer) tempActors.next())
+                                        .intValue();
+                        int tempSwapActorSize = _actorsRecord[tempSwapActor].codeSize;
+
                         // Add IMP to bring this successor by evicting
                         // the swap actor. Also modify the contents of
                         // the copy of instruction SPM (actorsInISPM)
                         // and its size
-                        if (tempSwapActor < actorNo) penalty += 0;
-                        else if (tempSwapActor > actorNo)
-                            penalty +=
-                                (multiplicationFactor * tempSwapActorSize);
+                        if (tempSwapActor < actorNo) {
+                            penalty += 0;
+                        } else if (tempSwapActor > actorNo) {
+                            penalty += (multiplicationFactor * tempSwapActorSize);
+                        }
                         // if the current actor itself needs to be evicted
                         // to bring the successor in I-Scratchpad then
                         // we need to add the penalty for bringing the
                         // current actor back to I-Scratchpad.
-                        else penalty += (multiplicationFactor * (tempSwapActorSize + _actorsRecord[successorNo].codeSize));
+                        else {
+                            penalty += (multiplicationFactor * (tempSwapActorSize
+                                        + _actorsRecord[successorNo].codeSize));
+                        }
 
                         actorsInISPM[tempSwapActor] = false;
-                        tempISPMSize -= tempSwapActorSize ;
-                    }   // end of while (tempActors.hasNext())
+                        tempISPMSize -= tempSwapActorSize;
+                    } // end of while (tempActors.hasNext())
+
                     actorsInISPM[successorNo] = true;
                     tempISPMSize += _actorsRecord[successorNo].codeSize;
-                }    // end of if (tempISPMSize + ...)
+                } // end of if (tempISPMSize + ...)
                 else {
                     // Simply bring this actor to the scratchpad's temporary
                     // copy. No penalty is added.
                     actorsInISPM[successorNo] = true;
                     tempISPMSize += _actorsRecord[successorNo].codeSize;
                 }
-            }          //end of if (!actorsInISPM[successorNo]
+            } //end of if (!actorsInISPM[successorNo]
 
             // Increment the successor number and update successorFirings
             successorNo++;
+
             // The following if loop is required to make sure that
             // _actorsRecord[_noOfActors] isn't accessed as it doesn't exist.
             if (successorNo < _noOfActors) {
-                successorFirings =
-                    (_actorsRecord[successorNo].inputTokensAvailable + successorFirings * _actorsRecord[successorNo-1].productionRate)/_actorsRecord[successorNo].consumptionRate;
-            }         // end of if (successorNo < _noOfActors)
-        }          // end of while ((successorFirings > 0) && ...) loop
+                successorFirings = (_actorsRecord[successorNo].inputTokensAvailable
+                    + (successorFirings * _actorsRecord[successorNo - 1].productionRate)) / _actorsRecord[successorNo].consumptionRate;
+            } // end of if (successorNo < _noOfActors)
+        } // end of while ((successorFirings > 0) && ...) loop
 
         // Scale the penalty appropriately. The instructions are only read
         // from the Instruction Memory, they are never written back. Hence
@@ -934,11 +982,14 @@ public class CacheAwareScheduler extends SDFScheduler {
     private void _computeOrder() throws IllegalActionException {
         DirectedAcyclicGraph dag = _constructDirectedGraph();
         Object[] sort = (Object[]) dag.topologicalSort();
+
         // Allocate a new hash table with the equal to the
         // number of actors sorted.
         _orderToActor = new Hashtable(sort.length);
+
         for (int i = sort.length - 1; i >= 0; i--) {
-            Actor actor = (Actor)sort[i];
+            Actor actor = (Actor) sort[i];
+
             // Insert the hashtable entry.
             _orderToActor.put(new Integer(i), actor);
         }
@@ -950,93 +1001,106 @@ public class CacheAwareScheduler extends SDFScheduler {
      *  @return The directed graph that is constructed.
      */
     private DirectedAcyclicGraph _constructDirectedGraph()
-            throws IllegalActionException {
+        throws IllegalActionException {
         // Declare the new graph.
         DirectedAcyclicGraph dag = new DirectedAcyclicGraph();
 
-        SDFDirector director =
-            (SDFDirector)getContainer();
-        CompositeActor container = (CompositeActor)director.getContainer();
+        SDFDirector director = (SDFDirector) getContainer();
+        CompositeActor container = (CompositeActor) director.getContainer();
 
         CompositeActor castContainer = container;
 
         // Get the function dependency object of the container of this
         // director. If there is no such attribute, construct one.
-        FunctionDependency functionDependency
-            = castContainer.getFunctionDependency();
+        FunctionDependency functionDependency = castContainer
+                        .getFunctionDependency();
 
         // The FunctionDependency attribute is used to construct
         // the schedule. If the schedule needs recalculation,
         // the FunctionDependency also needs recalculation.
         // functionDependency.invalidate();
-
         // FIXME: The following may be a very costly test.
         // -- from the comments of former implementation.
         // If the port based data flow graph contains directed
         // loops, the model is invalid. An IllegalActionException
         // is thrown with the names of the actors in the loop.
-        Object[] cycleNodes =
-            ((FunctionDependencyOfCompositeActor)functionDependency)
-            .getCycleNodes();
+        Object[] cycleNodes = ((FunctionDependencyOfCompositeActor) functionDependency)
+                        .getCycleNodes();
+
         if (cycleNodes.length != 0) {
             StringBuffer names = new StringBuffer();
+
             for (int i = 0; i < cycleNodes.length; i++) {
                 if (cycleNodes[i] instanceof Nameable) {
-                    if (i > 0) names.append(", ");
-                    names.append(((Nameable)cycleNodes[i])
-                            .getContainer().getFullName());
+                    if (i > 0) {
+                        names.append(", ");
+                    }
+
+                    names.append(((Nameable) cycleNodes[i]).getContainer()
+                                              .getFullName());
                 }
             }
+
             throw new IllegalActionException(this.getContainer(),
-                    "Found zero delay loop including: " + names.toString());
+                "Found zero delay loop including: " + names.toString());
         }
 
         // First, include all actors as nodes in the graph.
         // get all the contained actors.
         Iterator actors = castContainer.deepEntityList().iterator();
+
         while (actors.hasNext()) {
             dag.addNodeWeight(actors.next());
         }
 
         // Next, create the directed edges by iterating the actors again.
         actors = castContainer.deepEntityList().iterator();
+
         while (actors.hasNext()) {
-            Actor actor = (Actor)actors.next();
+            Actor actor = (Actor) actors.next();
+
             // Get the FunctionDependency attribute of current actor.
             functionDependency = actor.getFunctionDependency();
+
             // The following check may not be necessary since the FunctionDependency
             // attribute is constructed before. However, we check
             // it anyway.
             if (functionDependency == null) {
-                throw new IllegalActionException(this, "doesn't " +
-                        "contain a valid FunctionDependency attribute.");
+                throw new IllegalActionException(this,
+                    "doesn't "
+                    + "contain a valid FunctionDependency attribute.");
             }
 
             // get all the input ports of the current actor
             Iterator inputPorts = actor.inputPortList().iterator();
-            while (inputPorts.hasNext()) {
-                IOPort inputPort = (IOPort)inputPorts.next();
 
-                Set directlyDependentOutputPorts =
-                    functionDependency.getDependentOutputPorts(inputPort);
+            while (inputPorts.hasNext()) {
+                IOPort inputPort = (IOPort) inputPorts.next();
+
+                Set directlyDependentOutputPorts = functionDependency
+                                .getDependentOutputPorts(inputPort);
 
                 // get all the output ports of the current actor.
                 Iterator outputPorts = actor.outputPortList().iterator();
+
                 while (outputPorts.hasNext()) {
                     IOPort outputPort = (IOPort) outputPorts.next();
 
-                    if (directlyDependentOutputPorts != null &&
-                            !directlyDependentOutputPorts.contains(
-                                    outputPort)) {
+                    if ((directlyDependentOutputPorts != null)
+                                    && !directlyDependentOutputPorts.contains(
+                                        outputPort)) {
                         // Skip the port without direct dependence.
                         continue;
                     }
+
                     // find the inside input ports connected to outputPort
-                    Iterator inPortIterator =
-                        outputPort.deepConnectedInPortList().iterator();
+                    Iterator inPortIterator = outputPort.deepConnectedInPortList()
+                                                                    .iterator();
                     int referenceDepth = outputPort.depthInHierarchy();
+
                     while (inPortIterator.hasNext()) {
-                        IOPort port = (IOPort)inPortIterator.next();
+                        IOPort port = (IOPort) inPortIterator.next();
+
                         if (port.depthInHierarchy() < referenceDepth) {
                             // This destination port is higher in the hierarchy.
                             // We may be connected to it on the inside,
@@ -1045,13 +1109,14 @@ public class CacheAwareScheduler extends SDFScheduler {
                             // on the inside, we check whether the container
                             // of the destination port deeply contains
                             // source port.
-                            if (((NamedObj)port.getContainer())
-                                    .deepContains(outputPort)) {
+                            if (((NamedObj) port.getContainer()).deepContains(
+                                                outputPort)) {
                                 continue;
                             }
                         }
 
-                        Actor successor = (Actor)(port.getContainer());
+                        Actor successor = (Actor) (port.getContainer());
+
                         // If the destination is the same as the current
                         // actor, skip the destination.
                         if (successor.equals(actor)) {
@@ -1068,9 +1133,9 @@ public class CacheAwareScheduler extends SDFScheduler {
                             // This happens if there is a
                             // level-crossing transition.
                             throw new IllegalActionException(this,
-                                    "Level-crossing transition from "
-                                    + ((Nameable)actor).getFullName() + " to "
-                                    + ((Nameable)successor).getFullName());
+                                "Level-crossing transition from "
+                                + ((Nameable) actor).getFullName() + " to "
+                                + ((Nameable) successor).getFullName());
                         }
                     }
                 }
@@ -1086,29 +1151,34 @@ public class CacheAwareScheduler extends SDFScheduler {
     private void _generateCacheAwareSchedule() throws IllegalActionException {
         _cacheAwareSchedule = new Schedule();
         _dataSPM = new ScratchpadMemory(_dataSPMSize);
+
         // Temporary variables
         int totalFirings = 0;
         int firingsDone = 0;
+
         for (int i = 0; i < _noOfActors; i++) {
             totalFirings += _firingCount[i];
+
             // Initializing the ISPM
             _instructionSPM[i] = false;
         }
+
         // Initialising the ISPM
         _usedInstructionSPM = 0;
 
         // Initially the first actor is the current actor. Total number
         // of actors are 'n'. The corresponding indices are 0 to n-1.
         int currentActor = 0;
-        if (!(_actorsRecord[currentActor].fireable > 0))
+
+        if (!(_actorsRecord[currentActor].fireable > 0)) {
             throw new NotSchedulableException("Can't generate cache aware"
-                    + " schedule, the first actor isn't fireable once.");
+                + " schedule, the first actor isn't fireable once.");
+        }
 
         // Temporary variables
         boolean canPutMoreDataInDSPM;
         int tempFiringsOfCurrentActor;
         int tempMaxFirings;
-
 
         // Main while loop that continues till all actors are fired completely
         while (firingsDone != totalFirings) {
@@ -1126,136 +1196,152 @@ public class CacheAwareScheduler extends SDFScheduler {
             //  a set of actors is evicted to make space for the currentActor.
             _updateIMP(currentActor);
 
-            while ((canPutMoreDataInDSPM == true) &&
-                    (_actorsRecord[currentActor].fireable > 0)) {
-
+            while ((canPutMoreDataInDSPM == true)
+                            && (_actorsRecord[currentActor].fireable > 0)) {
                 // Fire the current actor till Data SPM can accomodate the
                 // produced data or till maximum possible firings are done for
                 // this current actor. If Data SPM gets full or
                 // can't take in the data produced by another firing of this
                 // actor, set the flag canPutMoreDataInDSPM
-
                 // Find the number of tokens to be consumed from the DSPM
                 // by this firing of the current actor
                 int tokensConsumedFromDSPMInThisFiring = 0;
+
                 if (currentActor != 0) {
                     MemoryAddress tempAddress = new MemoryAddress();
+
                     for (int p = 1;
-                         p <= _actorsRecord[currentActor].consumptionRate; p++) {
-                        tempAddress.setFields((currentActor-1),
-                                (_actorsRecord[currentActor].consumed + p));
-                        if (_dataSPM.contains(tempAddress))
+                                    p <= _actorsRecord[currentActor].consumptionRate;
+                                    p++) {
+                        tempAddress.setFields((currentActor - 1),
+                            (_actorsRecord[currentActor].consumed + p));
+
+                        if (_dataSPM.contains(tempAddress)) {
                             tokensConsumedFromDSPMInThisFiring++;
-                    }     // end of for (int p = 1...) loop
-                }     // end of if (currentActor != 0)
+                        }
+                    } // end of for (int p = 1...) loop
+                } // end of if (currentActor != 0)
 
                 // Check if the tokens produced by a firing of the current
                 // actor will be accomodated by DSPM. This is useful only if
                 // the tokens produced by the current actor are more than
                 // the tokens consumed by it.
-                if (_actorsRecord[currentActor].productionRate >
-                        tokensConsumedFromDSPMInThisFiring) {
+                if (_actorsRecord[currentActor].productionRate > tokensConsumedFromDSPMInThisFiring) {
+                    int tempNewTokensAddedToDSPM = _actorsRecord[currentActor].productionRate
+                        - tokensConsumedFromDSPMInThisFiring;
 
-                    int tempNewTokensAddedToDSPM = _actorsRecord[currentActor].productionRate - tokensConsumedFromDSPMInThisFiring;
                     if (_dataSPM.freeSpace() < tempNewTokensAddedToDSPM) {
                         canPutMoreDataInDSPM = false;
-                    }    // end of if (_dataSPM.freeSpace...)
+                    } // end of if (_dataSPM.freeSpace...)
                     else {
                         // Increment the temp firings of the current actor.
                         tempFiringsOfCurrentActor++;
+
                         // Remove consumed tokens from DSPM. For first actor,
                         // consumption rate is zero, so, no need to check
                         // for it.
                         if (currentActor != 0) {
                             MemoryAddress tempAddress = new MemoryAddress();
-                            for (int p = 1; p <= _actorsRecord[currentActor].consumptionRate; p++) {
-                                tempAddress.setFields((currentActor-1),
-                                        (_actorsRecord[currentActor].consumed
-                                                + p));
+
+                            for (int p = 1;
+                                            p <= _actorsRecord[currentActor].consumptionRate;
+                                            p++) {
+                                tempAddress.setFields((currentActor - 1),
+                                    (_actorsRecord[currentActor].consumed + p));
+
                                 if (_dataSPM.contains(tempAddress)) {
                                     _dataSPM.evict(tempAddress);
-                                }    // end of if (_dataSPM.contains...)
-                            }     // end of for (int p = 1...) loop
-                        }     // end of if (currentActor != 0)
+                                } // end of if (_dataSPM.contains...)
+                            } // end of for (int p = 1...) loop
+                        } // end of if (currentActor != 0)
 
                         // Add Produced tokens to DSPM. For last actor,
                         // production rate is zero, so, no need to check
                         // for it.
-                        if (currentActor != (_noOfActors-1)) {
+                        if (currentActor != (_noOfActors - 1)) {
                             for (int p = 1;
-                                 p<=_actorsRecord[currentActor].productionRate; p++) {
-                                MemoryAddress tempAddress =
-                                    new MemoryAddress(currentActor,
-                                            _actorsRecord[currentActor].produced+ p);
+                                            p <= _actorsRecord[currentActor].productionRate;
+                                            p++) {
+                                MemoryAddress tempAddress = new MemoryAddress(currentActor,
+                                        _actorsRecord[currentActor].produced
+                                        + p);
                                 _dataSPM.add(tempAddress);
                             }
                         }
+
                         // Update firingsDone variable.
                         firingsDone++;
+
                         // Update the current actor's record
                         _actorsRecord[currentActor].fired++;
                         _actorsRecord[currentActor].fireable--;
-                        _actorsRecord[currentActor].produced +=
-                            _actorsRecord[currentActor].productionRate;
-                        _actorsRecord[currentActor].consumed +=
-                            _actorsRecord[currentActor].consumptionRate;
-                        _actorsRecord[currentActor].inputTokensAvailable -=
-                            _actorsRecord[currentActor].consumptionRate;
+                        _actorsRecord[currentActor].produced += _actorsRecord[currentActor].productionRate;
+                        _actorsRecord[currentActor].consumed += _actorsRecord[currentActor].consumptionRate;
+                        _actorsRecord[currentActor].inputTokensAvailable -= _actorsRecord[currentActor].consumptionRate;
+
                         if (currentActor != (_noOfActors - 1)) {
                             _actorsRecord[currentActor + 1].inputTokensAvailable += _actorsRecord[currentActor].productionRate;
+
                             // Update the fireable field of the successor.
-                            _actorsRecord[currentActor + 1].fireable =
-                                _actorsRecord[currentActor + 1].inputTokensAvailable/_actorsRecord[currentActor + 1].consumptionRate;
-                        }    // end of if (currentActor != ....)
-                    }      // end of else for if (_dataSPM.freeSpace...)
-                }      // end of if (_actorsRecord[...]..)
+                            _actorsRecord[currentActor + 1].fireable = _actorsRecord[currentActor
+                                + 1].inputTokensAvailable / _actorsRecord[currentActor
+                                            + 1].consumptionRate;
+                        } // end of if (currentActor != ....)
+                    } // end of else for if (_dataSPM.freeSpace...)
+                } // end of if (_actorsRecord[...]..)
                 else {
                     // Increment the temp firings of the current actor.
                     tempFiringsOfCurrentActor++;
+
                     // Remove consumed tokens from DSPM. For first actor,
                     // consumption rate is zero, so, no need to check for it.
                     if (currentActor != 0) {
                         MemoryAddress tempAddress = new MemoryAddress();
-                        for (int p = 1; p <= _actorsRecord[currentActor].consumptionRate; p++) {
-                            tempAddress.setFields((currentActor-1),
-                                    (_actorsRecord[currentActor].consumed + p));
+
+                        for (int p = 1;
+                                        p <= _actorsRecord[currentActor].consumptionRate;
+                                        p++) {
+                            tempAddress.setFields((currentActor - 1),
+                                (_actorsRecord[currentActor].consumed + p));
+
                             if (_dataSPM.contains(tempAddress)) {
                                 _dataSPM.evict(tempAddress);
-                            }    // end of if (_dataSPM.contains...)
-                        }     // end of for (int p = 1...) loop
-                    }     // end of if (currentActor != 0)
+                            } // end of if (_dataSPM.contains...)
+                        } // end of for (int p = 1...) loop
+                    } // end of if (currentActor != 0)
 
                     // Add Produced tokens to DSPM. For last actor,
                     // production rate is zero, so, no need to check for it.
-                    if (currentActor != (_noOfActors-1)) {
+                    if (currentActor != (_noOfActors - 1)) {
                         for (int p = 1;
-                             p<=_actorsRecord[currentActor].productionRate;p++) {
-                            MemoryAddress tempAddress =
-                                new MemoryAddress(currentActor,
-                                        _actorsRecord[currentActor].produced+p);
+                                        p <= _actorsRecord[currentActor].productionRate;
+                                        p++) {
+                            MemoryAddress tempAddress = new MemoryAddress(currentActor,
+                                    _actorsRecord[currentActor].produced + p);
                             _dataSPM.add(tempAddress);
                         }
                     }
+
                     // Update firingsDone variable.
                     firingsDone++;
+
                     // Update the current actor's record
                     _actorsRecord[currentActor].fired++;
                     _actorsRecord[currentActor].fireable--;
-                    _actorsRecord[currentActor].produced +=
-                        _actorsRecord[currentActor].productionRate;
-                    _actorsRecord[currentActor].consumed +=
-                        _actorsRecord[currentActor].consumptionRate;
-                    _actorsRecord[currentActor].inputTokensAvailable -=
-                        _actorsRecord[currentActor].consumptionRate;
+                    _actorsRecord[currentActor].produced += _actorsRecord[currentActor].productionRate;
+                    _actorsRecord[currentActor].consumed += _actorsRecord[currentActor].consumptionRate;
+                    _actorsRecord[currentActor].inputTokensAvailable -= _actorsRecord[currentActor].consumptionRate;
+
                     if (currentActor != (_noOfActors - 1)) {
-                        _actorsRecord[currentActor + 1].inputTokensAvailable +=
-                            _actorsRecord[currentActor].productionRate;
+                        _actorsRecord[currentActor + 1].inputTokensAvailable += _actorsRecord[currentActor].productionRate;
+
                         // Update the fireable field of the successor.
-                        _actorsRecord[currentActor + 1].fireable =
-                            _actorsRecord[currentActor + 1].inputTokensAvailable/_actorsRecord[currentActor + 1].consumptionRate;
-                    }    // end of if (currentActor != ....)
-                }    // end of else for if (_actorsRecord[...]..)
-            }    // end of while ((canPutMoreDataInDSPM == true) && ...)
+                        _actorsRecord[currentActor + 1].fireable = _actorsRecord[currentActor
+                            + 1].inputTokensAvailable / _actorsRecord[currentActor
+                                        + 1].consumptionRate;
+                    } // end of if (currentActor != ....)
+                } // end of else for if (_actorsRecord[...]..)
+            } // end of while ((canPutMoreDataInDSPM == true) && ...)
 
             // Temporary Variable
             Actor actor;
@@ -1266,10 +1352,9 @@ public class CacheAwareScheduler extends SDFScheduler {
             if (!canPutMoreDataInDSPM) {
                 if (tempFiringsOfCurrentActor > 0) {
                     if (_calculateDMP(currentActor, tempMaxFirings,
-                                tempFiringsOfCurrentActor) >
-                            _calculateIMP(currentActor, tempMaxFirings,
-                                    tempFiringsOfCurrentActor)) {
-
+                                        tempFiringsOfCurrentActor) > _calculateIMP(
+                                        currentActor, tempMaxFirings,
+                                        tempFiringsOfCurrentActor)) {
                         // DMP is higher than IMP, so, switch control
                         // to the successor if its fireable atleast once,
                         // else fire the current actor completely. Now pass
@@ -1277,7 +1362,6 @@ public class CacheAwareScheduler extends SDFScheduler {
                         // atleast once. If the successor isn't fireable
                         // atleast once even now pass the control to the
                         // nearest predecessor that is fireable atleast once.
-
                         // NOTE: We aren't checking if the current actor is
                         // the last actor in this if loop because, for last
                         // actor, the control should never come here because
@@ -1287,87 +1371,92 @@ public class CacheAwareScheduler extends SDFScheduler {
                             // Add this element to the cache aware schedule
                             Firing S1 = new Firing();
                             S1.setIterationCount(tempFiringsOfCurrentActor);
-                            actor = (Actor)_orderToActor.get(new Integer(currentActor));
+                            actor = (Actor) _orderToActor.get(new Integer(
+                                        currentActor));
                             S1.setActor(actor);
                             _cacheAwareSchedule.add(S1);
                             currentActor += 1;
-                        }
-                        else {
+                        } else {
                             // Fire the current actor completely.
-
                             // Remove consumed tokens from DSPM. For first
                             // actor, consumption rate is zero, so, no need
                             // to check for it.
                             if (currentActor != 0) {
-                                MemoryAddress tempAddress =new MemoryAddress();
-                                for (int p = 1; p <= (_actorsRecord[currentActor].consumptionRate * (tempMaxFirings - tempFiringsOfCurrentActor)); p++) {
-                                    tempAddress.setFields((currentActor-1),
-                                            (_actorsRecord[currentActor].consumed + p));
+                                MemoryAddress tempAddress = new MemoryAddress();
+
+                                for (int p = 1;
+                                                p <= (_actorsRecord[currentActor].consumptionRate * (tempMaxFirings
+                                                - tempFiringsOfCurrentActor));
+                                                p++) {
+                                    tempAddress.setFields((currentActor - 1),
+                                        (_actorsRecord[currentActor].consumed
+                                        + p));
+
                                     if (_dataSPM.contains(tempAddress)) {
                                         _dataSPM.evict(tempAddress);
-                                    }    // end of if (_dataSPM.contains...)
-                                }     // end of for (int p = 1...) loop
-                            }     // end of if (currentActor != 0)
+                                    } // end of if (_dataSPM.contains...)
+                                } // end of for (int p = 1...) loop
+                            } // end of if (currentActor != 0)
 
                             // Add produced tokens to DSPM, if they can be
                             // added. For last actor, production rate is zero,
                             // so, no need to check for it.
                             if (currentActor != (_noOfActors - 1)) {
-                                int tempProducedTokens = _actorsRecord[currentActor].productionRate * (tempMaxFirings - tempFiringsOfCurrentActor);
+                                int tempProducedTokens = _actorsRecord[currentActor].productionRate * (tempMaxFirings
+                                                - tempFiringsOfCurrentActor);
+
                                 if (_dataSPM.freeSpace() < tempProducedTokens) {
                                     int tem = _dataSPM.freeSpace();
-                                    // Update the Data Miss Penalty (DMP)
-                                    _dataMissPenalty +=
-                                        (_DREADTIME + _DWRITETIME) *
-                                        (tempProducedTokens - tem);
-                                    for (int p = 1; p <= tem; p++) {
-                                        MemoryAddress tempAddress =
-                                            new MemoryAddress(currentActor,
-                                                    _actorsRecord[currentActor].produced + p);
-                                        _dataSPM.add(tempAddress);
-                                    }    // end of for (int p = 1...)
 
-                                }  // end of if (_dataSPM.freeSpace()..)
-                                else {
-                                    for (int p = 1;
-                                         p <= tempProducedTokens; p++) {
-                                        MemoryAddress tempAddress =
-                                            new MemoryAddress(currentActor,
-                                                    _actorsRecord[currentActor].produced+p);
+                                    // Update the Data Miss Penalty (DMP)
+                                    _dataMissPenalty += ((_DREADTIME
+                                                + _DWRITETIME) * (tempProducedTokens
+                                                - tem));
+
+                                    for (int p = 1; p <= tem; p++) {
+                                        MemoryAddress tempAddress = new MemoryAddress(currentActor,
+                                                _actorsRecord[currentActor].produced
+                                                + p);
                                         _dataSPM.add(tempAddress);
-                                    }    // end of for (int p = 1...)
-                                }   // end of else for if (_dataSPM.free...)
-                            }    // end of if (currentActor != ..)
+                                    } // end of for (int p = 1...)
+                                } // end of if (_dataSPM.freeSpace()..)
+                                else {
+                                    for (int p = 1; p <= tempProducedTokens;
+                                                    p++) {
+                                        MemoryAddress tempAddress = new MemoryAddress(currentActor,
+                                                _actorsRecord[currentActor].produced
+                                                + p);
+                                        _dataSPM.add(tempAddress);
+                                    } // end of for (int p = 1...)
+                                } // end of else for if (_dataSPM.free...)
+                            } // end of if (currentActor != ..)
 
                             // Update firingsDone variable
-                            int tempExtraFirings = tempMaxFirings -
-                                tempFiringsOfCurrentActor;
+                            int tempExtraFirings = tempMaxFirings
+                                - tempFiringsOfCurrentActor;
                             firingsDone += tempExtraFirings;
+
                             // Update the current actor's record
-                            _actorsRecord[currentActor].fired +=
-                                tempExtraFirings;
-                            _actorsRecord[currentActor].fireable -=
-                                tempExtraFirings;
-                            _actorsRecord[currentActor].produced +=
-                                (_actorsRecord[currentActor].productionRate *
-                                        tempExtraFirings);
-                            _actorsRecord[currentActor].consumed +=
-                                (_actorsRecord[currentActor].consumptionRate *
-                                        tempExtraFirings);
-                            _actorsRecord[currentActor].inputTokensAvailable -=
-                                (_actorsRecord[currentActor].consumptionRate *
-                                        tempExtraFirings);
+                            _actorsRecord[currentActor].fired += tempExtraFirings;
+                            _actorsRecord[currentActor].fireable -= tempExtraFirings;
+                            _actorsRecord[currentActor].produced += (_actorsRecord[currentActor].productionRate * tempExtraFirings);
+                            _actorsRecord[currentActor].consumed += (_actorsRecord[currentActor].consumptionRate * tempExtraFirings);
+                            _actorsRecord[currentActor].inputTokensAvailable -= (_actorsRecord[currentActor].consumptionRate * tempExtraFirings);
+
                             if (currentActor != (_noOfActors - 1)) {
                                 _actorsRecord[currentActor + 1].inputTokensAvailable += (_actorsRecord[currentActor].productionRate * tempExtraFirings);
+
                                 // Update the fireable field of the successor
-                                _actorsRecord[currentActor + 1].fireable =
-                                    _actorsRecord[currentActor + 1].inputTokensAvailable/_actorsRecord[currentActor + 1].consumptionRate;
-                            }    // end of if (currentActor != ....)
+                                _actorsRecord[currentActor + 1].fireable = _actorsRecord[currentActor
+                                    + 1].inputTokensAvailable / _actorsRecord[currentActor
+                                                + 1].consumptionRate;
+                            } // end of if (currentActor != ....)
 
                             // Add this element to the cache aware schedule
                             Firing S1 = new Firing();
                             S1.setIterationCount(tempMaxFirings);
-                            actor = (Actor)_orderToActor.get(new Integer(currentActor));
+                            actor = (Actor) _orderToActor.get(new Integer(
+                                        currentActor));
                             S1.setActor(actor);
                             _cacheAwareSchedule.add(S1);
 
@@ -1375,109 +1464,112 @@ public class CacheAwareScheduler extends SDFScheduler {
                             // once. If it is, make it the current actor else
                             // find the nearest predecessor that is fireable
                             // atleast once, make it the current actor.
-                            if (_actorsRecord[currentActor + 1].fireable > 0)
+                            if (_actorsRecord[currentActor + 1].fireable > 0) {
                                 currentActor += 1;
-                            else {
+                            } else {
                                 boolean tempFlag = false;
                                 int tempPredecessor = currentActor - 1;
-                                while ((tempFlag == false) &&
-                                        (tempPredecessor > 0)) {
-                                    if (_actorsRecord[tempPredecessor].fireable
-                                            > 0)
-                                        tempFlag = true;
-                                    else {
-                                        if (tempPredecessor > 0)
-                                            tempPredecessor -= 1;
-                                    }    // end of else for if (actorsRecord..)
-                                }    // end of while ((tempFlag == false) &&..)
-                                currentActor = tempPredecessor;
-                            }   // end of else for if (_actorsRecord[]..fire..)
-                        }  // end of else for if (_actorsRecord[..].fireable > 0)
-                    }    // end of if (_calculateDMP() > ..)
-                    else {
 
+                                while ((tempFlag == false)
+                                                && (tempPredecessor > 0)) {
+                                    if (_actorsRecord[tempPredecessor].fireable > 0) {
+                                        tempFlag = true;
+                                    } else {
+                                        if (tempPredecessor > 0) {
+                                            tempPredecessor -= 1;
+                                        }
+                                    } // end of else for if (actorsRecord..)
+                                } // end of while ((tempFlag == false) &&..)
+
+                                currentActor = tempPredecessor;
+                            } // end of else for if (_actorsRecord[]..fire..)
+                        } // end of else for if (_actorsRecord[..].fireable > 0)
+                    } // end of if (_calculateDMP() > ..)
+                    else {
                         // DMP is lesser than or equal to IMP. Fire
                         // the current actor completely and pass the control
                         // to its successor if its fireable atleast once else
                         // pass the control to the nearest predecessor that
                         // is fireable atleast once.
-
                         // NOTE: The current actor can never be the last actor,
                         // because canPutMoreDataInDSPM is never false for
                         // the last actor.
-
                         // Remove consumed tokens from DSPM. For first
                         // actor, consumption rate is zero, so, no need
                         // to check for it.
                         if (currentActor != 0) {
                             MemoryAddress tempAddress = new MemoryAddress();
-                            for (int p = 1; p <= (_actorsRecord[currentActor].consumptionRate * (tempMaxFirings - tempFiringsOfCurrentActor)); p++) {
-                                tempAddress.setFields((currentActor-1),
-                                        (_actorsRecord[currentActor].consumed + p));
+
+                            for (int p = 1;
+                                            p <= (_actorsRecord[currentActor].consumptionRate * (tempMaxFirings
+                                            - tempFiringsOfCurrentActor));
+                                            p++) {
+                                tempAddress.setFields((currentActor - 1),
+                                    (_actorsRecord[currentActor].consumed + p));
+
                                 if (_dataSPM.contains(tempAddress)) {
                                     _dataSPM.evict(tempAddress);
-                                }    // end of if (_dataSPM.contains...)
-                            }     // end of for (int p = 1...) loop
-                        }     // end of if (currentActor != 0)
+                                } // end of if (_dataSPM.contains...)
+                            } // end of for (int p = 1...) loop
+                        } // end of if (currentActor != 0)
 
                         // Add produced tokens to DSPM, if they can be
                         // added. For last actor, production rate is zero,
                         // so, no need to check for it.
                         if (currentActor != (_noOfActors - 1)) {
-                            int tempProducedTokens = _actorsRecord[currentActor].productionRate * (tempMaxFirings - tempFiringsOfCurrentActor);
+                            int tempProducedTokens = _actorsRecord[currentActor].productionRate * (tempMaxFirings
+                                            - tempFiringsOfCurrentActor);
+
                             if (_dataSPM.freeSpace() < tempProducedTokens) {
                                 int tem = _dataSPM.freeSpace();
+
                                 // Update the Data Miss Penalty (DMP)
-                                _dataMissPenalty +=
-                                    (_DREADTIME + _DWRITETIME) *
-                                    (tempProducedTokens - tem);
+                                _dataMissPenalty += ((_DREADTIME + _DWRITETIME) * (tempProducedTokens
+                                            - tem));
+
                                 for (int p = 1; p <= tem; p++) {
-                                    MemoryAddress tempAddress =
-                                        new MemoryAddress(currentActor,
-                                                _actorsRecord[currentActor].produced + p);
+                                    MemoryAddress tempAddress = new MemoryAddress(currentActor,
+                                            _actorsRecord[currentActor].produced
+                                            + p);
                                     _dataSPM.add(tempAddress);
-                                }    // end of for (int p = 1...)
-                            }  // end of if (_dataSPM.freeSpace()..)
+                                } // end of for (int p = 1...)
+                            } // end of if (_dataSPM.freeSpace()..)
                             else {
-                                for (int p = 1;
-                                     p <= tempProducedTokens; p++) {
-                                    MemoryAddress tempAddress =
-                                        new MemoryAddress(currentActor,
-                                                _actorsRecord[currentActor].produced + p);
+                                for (int p = 1; p <= tempProducedTokens; p++) {
+                                    MemoryAddress tempAddress = new MemoryAddress(currentActor,
+                                            _actorsRecord[currentActor].produced
+                                            + p);
                                     _dataSPM.add(tempAddress);
-                                }    // end of for (int p = 1...)
-                            }   // end of else for if (_dataSPM.free...)
-                        }    // end of if (currentActor != ..)
+                                } // end of for (int p = 1...)
+                            } // end of else for if (_dataSPM.free...)
+                        } // end of if (currentActor != ..)
 
                         // Update firingsDone variable
-                        int tempExtraFirings = tempMaxFirings -
-                            tempFiringsOfCurrentActor;
+                        int tempExtraFirings = tempMaxFirings
+                            - tempFiringsOfCurrentActor;
                         firingsDone += tempExtraFirings;
+
                         // Update the current actor's record
-                        _actorsRecord[currentActor].fired +=
-                            tempExtraFirings;
-                        _actorsRecord[currentActor].fireable -=
-                            tempExtraFirings;
-                        _actorsRecord[currentActor].produced +=
-                            (_actorsRecord[currentActor].productionRate *
-                                    tempExtraFirings);
-                        _actorsRecord[currentActor].consumed +=
-                            (_actorsRecord[currentActor].consumptionRate *
-                                    tempExtraFirings);
-                        _actorsRecord[currentActor].inputTokensAvailable -=
-                            (_actorsRecord[currentActor].consumptionRate *
-                                    tempExtraFirings);
+                        _actorsRecord[currentActor].fired += tempExtraFirings;
+                        _actorsRecord[currentActor].fireable -= tempExtraFirings;
+                        _actorsRecord[currentActor].produced += (_actorsRecord[currentActor].productionRate * tempExtraFirings);
+                        _actorsRecord[currentActor].consumed += (_actorsRecord[currentActor].consumptionRate * tempExtraFirings);
+                        _actorsRecord[currentActor].inputTokensAvailable -= (_actorsRecord[currentActor].consumptionRate * tempExtraFirings);
+
                         if (currentActor != (_noOfActors - 1)) {
                             _actorsRecord[currentActor + 1].inputTokensAvailable += (_actorsRecord[currentActor].productionRate * tempExtraFirings);
+
                             // Update the fireable field of the successor
-                            _actorsRecord[currentActor + 1].fireable =
-                                _actorsRecord[currentActor + 1].inputTokensAvailable/_actorsRecord[currentActor + 1].consumptionRate;
-                        }    // end of if (currentActor != ....)
+                            _actorsRecord[currentActor + 1].fireable = _actorsRecord[currentActor
+                                + 1].inputTokensAvailable / _actorsRecord[currentActor
+                                            + 1].consumptionRate;
+                        } // end of if (currentActor != ....)
 
                         // Add this element to the cache aware schedule
                         Firing S1 = new Firing();
                         S1.setIterationCount(tempMaxFirings);
-                        actor = (Actor)_orderToActor.get(new Integer(currentActor));
+                        actor = (Actor) _orderToActor.get(new Integer(
+                                    currentActor));
                         S1.setActor(actor);
                         _cacheAwareSchedule.add(S1);
 
@@ -1485,25 +1577,26 @@ public class CacheAwareScheduler extends SDFScheduler {
                         // once. If it is, make it the current actor else
                         // find the nearest predecessor that is fireable
                         // atleast once, make it the current actor.
-                        if (_actorsRecord[currentActor + 1].fireable > 0)
+                        if (_actorsRecord[currentActor + 1].fireable > 0) {
                             currentActor += 1;
-                        else {
+                        } else {
                             boolean tempFlag = false;
                             int tempPredecessor = currentActor - 1;
-                            while ((tempFlag == false) &&
-                                    (tempPredecessor > 0)) {
-                                if (_actorsRecord[tempPredecessor].fireable
-                                        > 0)
+
+                            while ((tempFlag == false) && (tempPredecessor > 0)) {
+                                if (_actorsRecord[tempPredecessor].fireable > 0) {
                                     tempFlag = true;
-                                else {
-                                    if (tempPredecessor > 0)
+                                } else {
+                                    if (tempPredecessor > 0) {
                                         tempPredecessor -= 1;
-                                }    // end of else for if (actorsRecord..)
-                            }    // end of while ((tempFlag == false) &&..)
+                                    }
+                                } // end of else for if (actorsRecord..)
+                            } // end of while ((tempFlag == false) &&..)
+
                             currentActor = tempPredecessor;
-                        }   // end of else for if (_actorsRecord[]..fire..)
-                    }    // end of else for if (_calculateDMP() > ..)
-                }    // end of if (tempFiringsOfCurrentActor > 0)
+                        } // end of else for if (_actorsRecord[]..fire..)
+                    } // end of else for if (_calculateDMP() > ..)
+                } // end of if (tempFiringsOfCurrentActor > 0)
                 else {
                     // Even the data produced by one firing of the
                     // current actor can't be accomodated by DSPM. Fire the
@@ -1511,82 +1604,83 @@ public class CacheAwareScheduler extends SDFScheduler {
                     // successor is fireable atleast once. If it is, pass on
                     // the control to it, else pass the control to the
                     // nearest predecessor that is fireable atleast once.
-
                     // NOTE: The current actor can never be the last actor,
                     // because canPutMoreDataInDSPM is never false for
                     // the last actor.
-
                     // Remove consumed tokens from DSPM. For first
                     // actor, consumption rate is zero, so, no need
                     // to check for it.
                     if (currentActor != 0) {
-                        MemoryAddress tempAddress =new MemoryAddress();
-                        for (int p = 1; p <= (_actorsRecord[currentActor].consumptionRate * (tempMaxFirings - tempFiringsOfCurrentActor)); p++) {
+                        MemoryAddress tempAddress = new MemoryAddress();
+
+                        for (int p = 1;
+                                        p <= (_actorsRecord[currentActor].consumptionRate * (tempMaxFirings
+                                        - tempFiringsOfCurrentActor)); p++) {
                             tempAddress.setFields((currentActor - 1),
-                                    (_actorsRecord[currentActor].consumed + p));
+                                (_actorsRecord[currentActor].consumed + p));
+
                             if (_dataSPM.contains(tempAddress)) {
                                 _dataSPM.evict(tempAddress);
-                            }    // end of if (_dataSPM.contains...)
-                        }     // end of for (int p = 1...) loop
-                    }     // end of if (currentActor != 0)
+                            } // end of if (_dataSPM.contains...)
+                        } // end of for (int p = 1...) loop
+                    } // end of if (currentActor != 0)
 
                     // Add produced tokens to DSPM, if they can be
                     // added. For last actor, production rate is zero,
                     // so, no need to check for it.
                     if (currentActor != (_noOfActors - 1)) {
-                        int tempProducedTokens = _actorsRecord[currentActor].productionRate * (tempMaxFirings - tempFiringsOfCurrentActor);
+                        int tempProducedTokens = _actorsRecord[currentActor].productionRate * (tempMaxFirings
+                                        - tempFiringsOfCurrentActor);
+
                         if (_dataSPM.freeSpace() < tempProducedTokens) {
                             int tem = _dataSPM.freeSpace();
+
                             // Update the Data Miss Penalty (DMP)
-                            _dataMissPenalty +=
-                                (_DREADTIME + _DWRITETIME) *
-                                (tempProducedTokens - tem);
+                            _dataMissPenalty += ((_DREADTIME + _DWRITETIME) * (tempProducedTokens
+                                        - tem));
+
                             for (int p = 1; p <= tem; p++) {
-                                MemoryAddress tempAddress =
-                                    new MemoryAddress(currentActor, _actorsRecord[currentActor].produced + p);
+                                MemoryAddress tempAddress = new MemoryAddress(currentActor,
+                                        _actorsRecord[currentActor].produced
+                                        + p);
                                 _dataSPM.add(tempAddress);
-                            }    // end of for (int p = 1...)
-                        }  // end of if (_dataSPM.freeSpace()..)
+                            } // end of for (int p = 1...)
+                        } // end of if (_dataSPM.freeSpace()..)
                         else {
-                            for (int p = 1;
-                                 p <= tempProducedTokens; p++) {
-                                MemoryAddress tempAddress =
-                                    new MemoryAddress(currentActor, _actorsRecord[currentActor].produced + p);
+                            for (int p = 1; p <= tempProducedTokens; p++) {
+                                MemoryAddress tempAddress = new MemoryAddress(currentActor,
+                                        _actorsRecord[currentActor].produced
+                                        + p);
                                 _dataSPM.add(tempAddress);
-                            }    // end of for (int p = 1...)
-                        }   // end of else for if (_dataSPM.free...)
-                    }    // end of if (currentActor != ..)
+                            } // end of for (int p = 1...)
+                        } // end of else for if (_dataSPM.free...)
+                    } // end of if (currentActor != ..)
 
                     // Update firingsDone variable
-                    int tempExtraFirings = tempMaxFirings -
-                        tempFiringsOfCurrentActor;
+                    int tempExtraFirings = tempMaxFirings
+                        - tempFiringsOfCurrentActor;
                     firingsDone += tempExtraFirings;
+
                     // Update the current actor's record
-                    _actorsRecord[currentActor].fired +=
-                        tempExtraFirings;
-                    _actorsRecord[currentActor].fireable -=
-                        tempExtraFirings;
-                    _actorsRecord[currentActor].produced +=
-                        (_actorsRecord[currentActor].productionRate *
-                                tempExtraFirings);
-                    _actorsRecord[currentActor].consumed +=
-                        (_actorsRecord[currentActor].consumptionRate *
-                                tempExtraFirings);
-                    _actorsRecord[currentActor].inputTokensAvailable -=
-                        (_actorsRecord[currentActor].consumptionRate *
-                                tempExtraFirings);
+                    _actorsRecord[currentActor].fired += tempExtraFirings;
+                    _actorsRecord[currentActor].fireable -= tempExtraFirings;
+                    _actorsRecord[currentActor].produced += (_actorsRecord[currentActor].productionRate * tempExtraFirings);
+                    _actorsRecord[currentActor].consumed += (_actorsRecord[currentActor].consumptionRate * tempExtraFirings);
+                    _actorsRecord[currentActor].inputTokensAvailable -= (_actorsRecord[currentActor].consumptionRate * tempExtraFirings);
+
                     if (currentActor != (_noOfActors - 1)) {
                         _actorsRecord[currentActor + 1].inputTokensAvailable += (_actorsRecord[currentActor].productionRate * tempExtraFirings);
+
                         // Update the fireable field of the successor
-                        _actorsRecord[currentActor + 1].fireable =
-                            _actorsRecord[currentActor + 1].inputTokensAvailable/_actorsRecord[currentActor + 1].consumptionRate;
-                    }    // end of if (currentActor != ....)
+                        _actorsRecord[currentActor + 1].fireable = _actorsRecord[currentActor
+                            + 1].inputTokensAvailable / _actorsRecord[currentActor
+                                        + 1].consumptionRate;
+                    } // end of if (currentActor != ....)
 
                     // Add this element to the cache aware schedule
                     Firing S1 = new Firing();
                     S1.setIterationCount(tempMaxFirings);
-                    actor =
-                        (Actor)_orderToActor.get(new Integer(currentActor));
+                    actor = (Actor) _orderToActor.get(new Integer(currentActor));
                     S1.setActor(actor);
                     _cacheAwareSchedule.add(S1);
 
@@ -1594,30 +1688,31 @@ public class CacheAwareScheduler extends SDFScheduler {
                     // once. If it is, make it the current actor else
                     // find the nearest predecessor that is fireable
                     // atleast once, make it the current actor.
-                    if (_actorsRecord[currentActor + 1].fireable > 0)
+                    if (_actorsRecord[currentActor + 1].fireable > 0) {
                         currentActor += 1;
-                    else {
+                    } else {
                         boolean tempFlag = false;
                         int tempPredecessor = currentActor - 1;
-                        while ((tempFlag == false) &&
-                                (tempPredecessor > 0)) {
-                            if (_actorsRecord[tempPredecessor].fireable > 0)
-                                tempFlag = true;
-                            else {
-                                if (tempPredecessor > 0)
-                                    tempPredecessor -= 1;
-                            }    // end of else for if (actorsRecord..)
-                        }    // end of while ((tempFlag == false) &&..)
-                        currentActor = tempPredecessor;
-                    }   // end of else for if (_actorsRecord[]..fire..)
-                }    // end of else for if (tempFiringsOfCurrentActor > 0)
-            }    //   end of if (!canPutMoreDataInDSPM)
-            else {
 
+                        while ((tempFlag == false) && (tempPredecessor > 0)) {
+                            if (_actorsRecord[tempPredecessor].fireable > 0) {
+                                tempFlag = true;
+                            } else {
+                                if (tempPredecessor > 0) {
+                                    tempPredecessor -= 1;
+                                }
+                            } // end of else for if (actorsRecord..)
+                        } // end of while ((tempFlag == false) &&..)
+
+                        currentActor = tempPredecessor;
+                    } // end of else for if (_actorsRecord[]..fire..)
+                } // end of else for if (tempFiringsOfCurrentActor > 0)
+            } //   end of if (!canPutMoreDataInDSPM)
+            else {
                 // Add this element to the cache aware schedule
                 Firing S1 = new Firing();
                 S1.setIterationCount(tempMaxFirings);
-                actor = (Actor)_orderToActor.get(new Integer(currentActor));
+                actor = (Actor) _orderToActor.get(new Integer(currentActor));
                 S1.setActor(actor);
                 _cacheAwareSchedule.add(S1);
 
@@ -1626,44 +1721,47 @@ public class CacheAwareScheduler extends SDFScheduler {
                 // its successor if its fireable atleast once else pass
                 // the control to the nearest predecessor that is
                 // fireable atleast once.
-
                 // NOTE: If the current actor is the last actor, pass the
                 // control to its nearest predecessor that is fireable atleast
                 // once. Don't check its successor.
                 if (currentActor != (_noOfActors - 1)) {
-                    if (_actorsRecord[currentActor + 1].fireable > 0)
+                    if (_actorsRecord[currentActor + 1].fireable > 0) {
                         currentActor += 1;
-                    else {
+                    } else {
                         boolean tempFlag = false;
                         int tempPredecessor = currentActor - 1;
-                        while ((tempFlag == false) &&
-                                (tempPredecessor > 0)) {
-                            if (_actorsRecord[tempPredecessor].fireable > 0)
+
+                        while ((tempFlag == false) && (tempPredecessor > 0)) {
+                            if (_actorsRecord[tempPredecessor].fireable > 0) {
                                 tempFlag = true;
-                            else {
-                                if (tempPredecessor > 0)
+                            } else {
+                                if (tempPredecessor > 0) {
                                     tempPredecessor -= 1;
-                            }    // end of else for if (actorsRecord..)
-                        }    // end of while ((tempFlag == false) &&..)
+                                }
+                            } // end of else for if (actorsRecord..)
+                        } // end of while ((tempFlag == false) &&..)
+
                         currentActor = tempPredecessor;
-                    }   // end of else for if (_actorsRecord[]..fire..)
-                }    // end of if (currentActor != (_noOfActors - 1)
+                    } // end of else for if (_actorsRecord[]..fire..)
+                } // end of if (currentActor != (_noOfActors - 1)
                 else {
                     boolean tempFlag = false;
                     int tempPredecessor = currentActor - 1;
-                    while ((tempFlag == false) &&
-                            (tempPredecessor > 0)) {
-                        if (_actorsRecord[tempPredecessor].fireable > 0)
+
+                    while ((tempFlag == false) && (tempPredecessor > 0)) {
+                        if (_actorsRecord[tempPredecessor].fireable > 0) {
                             tempFlag = true;
-                        else {
-                            if (tempPredecessor > 0)
+                        } else {
+                            if (tempPredecessor > 0) {
                                 tempPredecessor -= 1;
-                        }    // end of else for if (actorsRecord..)
-                    }    // end of while ((tempFlag == false) &&..)
+                            }
+                        } // end of else for if (actorsRecord..)
+                    } // end of while ((tempFlag == false) &&..)
+
                     currentActor = tempPredecessor;
-                }  // end of else for if (currentActor != (_noOfActors - 1)
-            }     // end of else for if (!canPutMoreDataInDSPM)
-        }   // end of while (firingsDone != ....)
+                } // end of else for if (currentActor != (_noOfActors - 1)
+            } // end of else for if (!canPutMoreDataInDSPM)
+        } // end of while (firingsDone != ....)
     }
 
     /** Generates the MPMBS Schedule for the given chain-structured graph.
@@ -1681,10 +1779,12 @@ public class CacheAwareScheduler extends SDFScheduler {
     private Schedule _generateMPMBSchedule() {
         Schedule[] schedules = new Schedule[5];
         int[] bufferRequirement = new int[5];
-        for (int i = 0; i <5; i++) {
+
+        for (int i = 0; i < 5; i++) {
             schedules[i] = new Schedule();
             bufferRequirement[i] = 0;
         }
+
         int minBufferScheduleIndex = 0;
 
         int fA = 1;
@@ -1700,26 +1800,25 @@ public class CacheAwareScheduler extends SDFScheduler {
 
         // Make all 5 schedules and then check which one
         // has the least data memory requirement.
-
         // Generating schedule 1 (index 0)
         fC = _firingCount[2];
         fD = _firingCount[3];
         fCD = ExtendedMath.gcd(fC, fD);
-        fC = fC/fCD;
-        fD = fD/fCD;
-        bufferRequirement[0] += fC*_actorsRecord[2].productionRate;
+        fC = fC / fCD;
+        fD = fD / fCD;
+        bufferRequirement[0] += (fC * _actorsRecord[2].productionRate);
 
         fB = _firingCount[1];
         fBCD = ExtendedMath.gcd(fB, fCD);
-        fB = fB/fBCD;
-        fCD = fCD/fBCD;
-        bufferRequirement[0] += fB*_actorsRecord[1].productionRate;
+        fB = fB / fBCD;
+        fCD = fCD / fBCD;
+        bufferRequirement[0] += (fB * _actorsRecord[1].productionRate);
 
         fA = _firingCount[0];
         fABCD = ExtendedMath.gcd(fA, fBCD);
-        fA = fA/fABCD;
-        fBCD = fBCD/fABCD;
-        bufferRequirement[0] += fA*_actorsRecord[0].productionRate;
+        fA = fA / fABCD;
+        fBCD = fBCD / fABCD;
+        bufferRequirement[0] += (fA * _actorsRecord[0].productionRate);
 
         minBufferScheduleIndex = 0;
 
@@ -1728,26 +1827,30 @@ public class CacheAwareScheduler extends SDFScheduler {
         Firing F1 = new Firing();
         schedules[0].add(F1);
         F1.setIterationCount(fA);
-        F1.setActor((Actor)_orderToActor.get(new Integer(0)));
+        F1.setActor((Actor) _orderToActor.get(new Integer(0)));
 
         Schedule S1 = new Schedule();
         schedules[0].add(S1);
         S1.setIterationCount(fBCD);
+
         Firing F2 = new Firing();
         S1.add(F2);
         F2.setIterationCount(fB);
-        F2.setActor((Actor)_orderToActor.get(new Integer(1)));
+        F2.setActor((Actor) _orderToActor.get(new Integer(1)));
+
         Schedule S2 = new Schedule();
         S1.add(S2);
         S2.setIterationCount(fCD);
+
         Firing F3 = new Firing();
         S2.add(F3);
         F3.setIterationCount(fC);
-        F3.setActor((Actor)_orderToActor.get(new Integer(2)));
+        F3.setActor((Actor) _orderToActor.get(new Integer(2)));
+
         Firing F4 = new Firing();
         S2.add(F4);
         F4.setIterationCount(fD);
-        F4.setActor((Actor)_orderToActor.get(new Integer(3)));
+        F4.setActor((Actor) _orderToActor.get(new Integer(3)));
 
         // FIXME. printing for debugging.
         /* System.out.println();
@@ -1760,56 +1863,59 @@ public class CacheAwareScheduler extends SDFScheduler {
            System.out.println("Its buffer requirement is : "
            + bufferRequirement[0]);
         */
-
         // Generating schedule 2 (index 1)
-
         fB = _firingCount[1];
         fC = _firingCount[2];
         fBC = ExtendedMath.gcd(fB, fC);
-        fB = fB/fBC;
-        fC = fC/fBC;
-        bufferRequirement[1] += fB*_actorsRecord[1].productionRate;
+        fB = fB / fBC;
+        fC = fC / fBC;
+        bufferRequirement[1] += (fB * _actorsRecord[1].productionRate);
 
         fD = _firingCount[3];
         fBCD = ExtendedMath.gcd(fBC, fD);
-        fD = fD/fBCD;
-        fBC = fBC/fBCD;
-        bufferRequirement[1] += fBC*fC*_actorsRecord[2].productionRate;
+        fD = fD / fBCD;
+        fBC = fBC / fBCD;
+        bufferRequirement[1] += (fBC * fC * _actorsRecord[2].productionRate);
 
         fA = _firingCount[0];
         fABCD = ExtendedMath.gcd(fA, fBCD);
-        fA = fA/fABCD;
-        fBCD = fBCD/fABCD;
-        bufferRequirement[1] += fA*_actorsRecord[0].productionRate;
+        fA = fA / fABCD;
+        fBCD = fBCD / fABCD;
+        bufferRequirement[1] += (fA * _actorsRecord[0].productionRate);
 
-        if (bufferRequirement[1] < bufferRequirement[minBufferScheduleIndex])
+        if (bufferRequirement[1] < bufferRequirement[minBufferScheduleIndex]) {
             minBufferScheduleIndex = 1;
+        }
 
         schedules[1].setIterationCount(fABCD);
 
         Firing F5 = new Firing();
         schedules[1].add(F5);
         F5.setIterationCount(fA);
-        F5.setActor((Actor)_orderToActor.get(new Integer(0)));
+        F5.setActor((Actor) _orderToActor.get(new Integer(0)));
 
         Schedule S3 = new Schedule();
         schedules[1].add(S3);
         S3.setIterationCount(fBCD);
+
         Schedule S4 = new Schedule();
         S3.add(S4);
         S4.setIterationCount(fBC);
+
         Firing F6 = new Firing();
         S4.add(F6);
         F6.setIterationCount(fB);
-        F6.setActor((Actor)_orderToActor.get(new Integer(1)));
+        F6.setActor((Actor) _orderToActor.get(new Integer(1)));
+
         Firing F7 = new Firing();
         S4.add(F7);
         F7.setIterationCount(fC);
-        F7.setActor((Actor)_orderToActor.get(new Integer(2)));
+        F7.setActor((Actor) _orderToActor.get(new Integer(2)));
+
         Firing F8 = new Firing();
         S3.add(F8);
         F8.setIterationCount(fD);
-        F8.setActor((Actor)_orderToActor.get(new Integer(3)));
+        F8.setActor((Actor) _orderToActor.get(new Integer(3)));
 
         // FIXME. printing for debugging.
         /* System.out.println();
@@ -1822,55 +1928,59 @@ public class CacheAwareScheduler extends SDFScheduler {
            System.out.println("Its buffer requirement is : "
            + bufferRequirement[1]);
         */
-
         // Generating schedule 3 (index 2)
         fA = _firingCount[0];
         fB = _firingCount[1];
         fAB = ExtendedMath.gcd(fA, fB);
-        fA = fA/fAB;
-        fB = fB/fAB;
-        bufferRequirement[2] += fA*_actorsRecord[0].productionRate;
+        fA = fA / fAB;
+        fB = fB / fAB;
+        bufferRequirement[2] += (fA * _actorsRecord[0].productionRate);
 
         fC = _firingCount[2];
         fD = _firingCount[3];
         fCD = ExtendedMath.gcd(fC, fD);
-        fC = fC/fCD;
-        fD = fD/fCD;
-        bufferRequirement[2] += fC*_actorsRecord[2].productionRate;
+        fC = fC / fCD;
+        fD = fD / fCD;
+        bufferRequirement[2] += (fC * _actorsRecord[2].productionRate);
 
         fABCD = ExtendedMath.gcd(fAB, fCD);
-        fAB = fAB/fABCD;
-        fCD = fCD/fABCD;
-        bufferRequirement[2] += fB*fAB*_actorsRecord[1].productionRate;
+        fAB = fAB / fABCD;
+        fCD = fCD / fABCD;
+        bufferRequirement[2] += (fB * fAB * _actorsRecord[1].productionRate);
 
-        if (bufferRequirement[2] < bufferRequirement[minBufferScheduleIndex])
+        if (bufferRequirement[2] < bufferRequirement[minBufferScheduleIndex]) {
             minBufferScheduleIndex = 2;
+        }
 
         schedules[2].setIterationCount(fABCD);
 
         Schedule S5 = new Schedule();
         schedules[2].add(S5);
         S5.setIterationCount(fAB);
+
         Firing F9 = new Firing();
         S5.add(F9);
         F9.setIterationCount(fA);
-        F9.setActor((Actor)_orderToActor.get(new Integer(0)));
+        F9.setActor((Actor) _orderToActor.get(new Integer(0)));
+
         Firing F10 = new Firing();
         S5.add(F10);
         F10.setIterationCount(fB);
-        F10.setActor((Actor)_orderToActor.get(new Integer(1)));
+        F10.setActor((Actor) _orderToActor.get(new Integer(1)));
 
         Schedule S6 = new Schedule();
         schedules[2].add(S6);
         S6.setIterationCount(fCD);
+
         Firing F11 = new Firing();
         S6.add(F11);
         F11.setIterationCount(fC);
-        F11.setActor((Actor)_orderToActor.get(new Integer(2)));
+        F11.setActor((Actor) _orderToActor.get(new Integer(2)));
+
         Firing F12 = new Firing();
         S6.add(F12);
         F12.setIterationCount(fD);
-        F12.setActor((Actor)_orderToActor.get(new Integer(3)));
+        F12.setActor((Actor) _orderToActor.get(new Integer(3)));
 
         // FIXME. printing for debugging.
         /* System.out.println();
@@ -1883,55 +1993,59 @@ public class CacheAwareScheduler extends SDFScheduler {
            System.out.println("Its buffer requirement is : "
            + bufferRequirement[2]);
         */
-
         // Generating schedule 4 (index 3)
         fA = _firingCount[0];
         fB = _firingCount[1];
         fAB = ExtendedMath.gcd(fA, fB);
-        fA = fA/fAB;
-        fB = fB/fAB;
-        bufferRequirement[3] += fA*_actorsRecord[0].productionRate;
+        fA = fA / fAB;
+        fB = fB / fAB;
+        bufferRequirement[3] += (fA * _actorsRecord[0].productionRate);
 
         fC = _firingCount[2];
         fABC = ExtendedMath.gcd(fAB, fC);
-        fAB = fAB/fABC;
-        fC = fC/fABC;
-        bufferRequirement[3] += fB*fAB*_actorsRecord[1].productionRate;
+        fAB = fAB / fABC;
+        fC = fC / fABC;
+        bufferRequirement[3] += (fB * fAB * _actorsRecord[1].productionRate);
 
         fD = _firingCount[3];
         fABCD = ExtendedMath.gcd(fABC, fD);
-        fABC = fABC/fABCD;
-        fD = fD/fABCD;
-        bufferRequirement[3] += fC*fABC*_actorsRecord[2].productionRate;
+        fABC = fABC / fABCD;
+        fD = fD / fABCD;
+        bufferRequirement[3] += (fC * fABC * _actorsRecord[2].productionRate);
 
-        if (bufferRequirement[3] < bufferRequirement[minBufferScheduleIndex])
+        if (bufferRequirement[3] < bufferRequirement[minBufferScheduleIndex]) {
             minBufferScheduleIndex = 3;
+        }
 
         schedules[3].setIterationCount(fABCD);
 
         Schedule S7 = new Schedule();
         schedules[3].add(S7);
         S7.setIterationCount(fABC);
+
         Schedule S8 = new Schedule();
         S7.add(S8);
         S8.setIterationCount(fAB);
+
         Firing F13 = new Firing();
         S8.add(F13);
         F13.setIterationCount(fA);
-        F13.setActor((Actor)_orderToActor.get(new Integer(0)));
+        F13.setActor((Actor) _orderToActor.get(new Integer(0)));
+
         Firing F14 = new Firing();
         S8.add(F14);
         F14.setIterationCount(fB);
-        F14.setActor((Actor)_orderToActor.get(new Integer(1)));
+        F14.setActor((Actor) _orderToActor.get(new Integer(1)));
+
         Firing F15 = new Firing();
         S7.add(F15);
         F15.setIterationCount(fC);
-        F15.setActor((Actor)_orderToActor.get(new Integer(2)));
+        F15.setActor((Actor) _orderToActor.get(new Integer(2)));
 
         Firing F16 = new Firing();
         schedules[3].add(F16);
         F16.setIterationCount(fD);
-        F16.setActor((Actor)_orderToActor.get(new Integer(3)));
+        F16.setActor((Actor) _orderToActor.get(new Integer(3)));
 
         // FIXME. printing for debugging.
         /* System.out.println();
@@ -1944,57 +2058,62 @@ public class CacheAwareScheduler extends SDFScheduler {
            System.out.println("Its buffer requirement is : "
            + bufferRequirement[3]);
         */
-
         // Generating schedule 5 (index 4)
         fB = _firingCount[1];
         fC = _firingCount[2];
         fBC = ExtendedMath.gcd(fB, fC);
-        fB = fB/fBC;
-        fC = fC/fBC;
-        bufferRequirement[4] += fB*_actorsRecord[1].productionRate;
+        fB = fB / fBC;
+        fC = fC / fBC;
+        bufferRequirement[4] += (fB * _actorsRecord[1].productionRate);
 
         fA = _firingCount[0];
         fABC = ExtendedMath.gcd(fA, fBC);
-        fA = fA/fABC;
-        fBC = fBC/fABC;
-        bufferRequirement[4] += fA*_actorsRecord[0].productionRate;
+        fA = fA / fABC;
+        fBC = fBC / fABC;
+        bufferRequirement[4] += (fA * _actorsRecord[0].productionRate);
 
         fD = _firingCount[3];
         fABCD = ExtendedMath.gcd(fABC, fD);
-        fABC = fABC/fABCD;
-        fD = fD/fABCD;
-        bufferRequirement[4] += fC*fBC*fABC*_actorsRecord[2].productionRate;
+        fABC = fABC / fABCD;
+        fD = fD / fABCD;
+        bufferRequirement[4] += (fC * fBC * fABC * _actorsRecord[2].productionRate);
 
-        if (bufferRequirement[4] < bufferRequirement[minBufferScheduleIndex])
+        if (bufferRequirement[4] < bufferRequirement[minBufferScheduleIndex]) {
             minBufferScheduleIndex = 4;
+        }
 
         schedules[4].setIterationCount(fABCD);
 
         Schedule S9 = new Schedule();
         schedules[4].add(S9);
         S9.setIterationCount(fABC);
+
         Firing F17 = new Firing();
         S9.add(F17);
         F17.setIterationCount(fA);
-        F17.setActor((Actor)_orderToActor.get(new Integer(0)));
+        F17.setActor((Actor) _orderToActor.get(new Integer(0)));
+
         Schedule S10 = new Schedule();
         S9.add(S10);
         S10.setIterationCount(fBC);
+
         Firing F18 = new Firing();
         S10.add(F18);
         F18.setIterationCount(fB);
-        F18.setActor((Actor)_orderToActor.get(new Integer(1)));
+        F18.setActor((Actor) _orderToActor.get(new Integer(1)));
+
         Firing F19 = new Firing();
         S10.add(F19);
         F19.setIterationCount(fC);
-        F19.setActor((Actor)_orderToActor.get(new Integer(2)));
+        F19.setActor((Actor) _orderToActor.get(new Integer(2)));
 
         Firing F20 = new Firing();
         schedules[4].add(F20);
         F20.setIterationCount(fD);
-        F20.setActor((Actor)_orderToActor.get(new Integer(3)));
+        F20.setActor((Actor) _orderToActor.get(new Integer(3)));
 
         // FIXME. printing for debugging.
+
         /*System.out.println();
           System.out.println("Fifth schedule (MPMBS generation) is :");
           System.out.println(schedules[4]);
@@ -2021,48 +2140,51 @@ public class CacheAwareScheduler extends SDFScheduler {
      *   scratchpad size is less than the code size of any given actor.
      */
     private void _populateActorsRecord() throws IllegalActionException {
-
-        SDFDirector director = (SDFDirector)getContainer();
-        CompositeActor container = (CompositeActor)director.getContainer();
+        SDFDirector director = (SDFDirector) getContainer();
+        CompositeActor container = (CompositeActor) director.getContainer();
 
         // A linked list containing all the actors.
         LinkedList allActorList = new LinkedList();
+
         // Populate it. Also find the total no of actors present in the
         // given chain-structured graph.
         for (Iterator entities = container.deepEntityList().iterator();
-             entities.hasNext();) {
-            ComponentEntity entity = (ComponentEntity)entities.next();
+                        entities.hasNext();) {
+            ComponentEntity entity = (ComponentEntity) entities.next();
+
             // Fill allActorList with the list of things that we can schedule
             if (entity instanceof ExperimentalActor) {
                 allActorList.addLast(entity);
             }
-        }   // end of for (Iterator entities = ....) loop
+        } // end of for (Iterator entities = ....) loop
 
         // Temporary variable
         Token token;
+
         // Finding the vectorization factor that is provided by the user.
         _vectorizationFactor = 1;
+
         if (director instanceof SDFDirector) {
-            token = ((SDFDirector)director).vectorizationFactor.getToken();
-            _vectorizationFactor = ((IntToken)token).intValue();
+            token = ((SDFDirector) director).vectorizationFactor.getToken();
+            _vectorizationFactor = ((IntToken) token).intValue();
         }
+
         if (_vectorizationFactor < 1) {
             throw new NotSchedulableException(this,
-                    "The supplied vectorizationFactor must be " +
-                    "a positive integer. " +
-                    "The given value was: " + _vectorizationFactor);
+                "The supplied vectorizationFactor must be "
+                + "a positive integer. " + "The given value was: "
+                + _vectorizationFactor);
         }
 
         // FIXME Checking the sizes of instruction and data scratchpads
         // for positive values and also for instruction scratchpad to be big
         // enough to accomodate the biggest given actor.
-
         // The above FIXME is not fixed for the time being as the
         // graph construction takes care of the code size constraint.
-
         if (container instanceof CASDFComposite) {
-            token = ((CASDFComposite)container).iSPMSize.getToken();
-            _instructionSPMSize = ((IntToken)token).intValue();
+            token = ((CASDFComposite) container).iSPMSize.getToken();
+            _instructionSPMSize = ((IntToken) token).intValue();
+
             // token = ((CASDFComposite)container).dSPMSize.getToken();
             // _dataSPMSize = ((IntToken)token).intValue();
         }
@@ -2074,9 +2196,9 @@ public class CacheAwareScheduler extends SDFScheduler {
           }*/
         else if (_instructionSPMSize < 1) {
             throw new NotSchedulableException(this,
-                    "The supplied instructionScratchpadSize must be " +
-                    "a positive integer. " +
-                    "The given value was: " + _instructionSPMSize);
+                "The supplied instructionScratchpadSize must be "
+                + "a positive integer. " + "The given value was: "
+                + _instructionSPMSize);
         }
 
         // externalRates maps from external
@@ -2088,20 +2210,19 @@ public class CacheAwareScheduler extends SDFScheduler {
         Map externalRates = new TreeMap(new DFUtilities.NamedObjComparator());
 
         // Initialize externalRates to zero.
-        for (Iterator ports = container.portList().iterator();
-             ports.hasNext();) {
+        for (Iterator ports = container.portList().iterator(); ports.hasNext();) {
             IOPort port = (IOPort) ports.next();
             externalRates.put(port, Fraction.ZERO);
         }
 
         // Getting the repetition vector for the given SDF graph.
-        Map entityToFiringsPerIteration =
-            _solveBalanceEquations(container, allActorList, externalRates);
+        Map entityToFiringsPerIteration = _solveBalanceEquations(container,
+                allActorList, externalRates);
 
         // Normalize the number of for each actor using the
         // vectorizationFactor.
         _normalizeFirings(_vectorizationFactor, entityToFiringsPerIteration,
-                externalRates);
+            externalRates);
 
         _firingVector = entityToFiringsPerIteration;
 
@@ -2121,22 +2242,26 @@ public class CacheAwareScheduler extends SDFScheduler {
 
         // Populating the _firingCount and _actorsRecord.
         for (int i = 0; i < _noOfActors; i++) {
-            ExperimentalActor actor = (ExperimentalActor)_orderToActor.get(new Integer(i));
-            _firingCount[i] = ((Integer)_firingVector.get((ComponentEntity)actor)).intValue();
+            ExperimentalActor actor = (ExperimentalActor) _orderToActor.get(new Integer(
+                        i));
+            _firingCount[i] = ((Integer) _firingVector.get((ComponentEntity) actor))
+                            .intValue();
             _actorsRecord[i].actorNo = i;
 
-            if (i == 0) _actorsRecord[i].consumptionRate = 0;
-            else {
-                token = ((ExperimentalActor)actor).input_tokenConsumptionRate.getToken();
-                _actorsRecord[i].consumptionRate =
-                    ((IntToken)token).intValue();
+            if (i == 0) {
+                _actorsRecord[i].consumptionRate = 0;
+            } else {
+                token = ((ExperimentalActor) actor).input_tokenConsumptionRate
+                                .getToken();
+                _actorsRecord[i].consumptionRate = ((IntToken) token).intValue();
             }
 
-            if (i == (_noOfActors - 1)) _actorsRecord[i].productionRate = 0;
-            else {
-                token = ((ExperimentalActor)actor).output_tokenProductionRate.getToken();
-                _actorsRecord[i].productionRate =
-                    ((IntToken)token).intValue();
+            if (i == (_noOfActors - 1)) {
+                _actorsRecord[i].productionRate = 0;
+            } else {
+                token = ((ExperimentalActor) actor).output_tokenProductionRate
+                                .getToken();
+                _actorsRecord[i].productionRate = ((IntToken) token).intValue();
             }
 
             // No actor has fired yet, so fired field is initialized to zero.
@@ -2144,40 +2269,38 @@ public class CacheAwareScheduler extends SDFScheduler {
 
             if (i == 0) {
                 _actorsRecord[i].fireable = _firingCount[i];
-                _actorsRecord[i].inputTokensAvailable =
-                    _firingCount[i] * _actorsRecord[i].consumptionRate;
-            }
-            else {
+                _actorsRecord[i].inputTokensAvailable = _firingCount[i] * _actorsRecord[i].consumptionRate;
+            } else {
                 _actorsRecord[i].fireable = 0;
                 _actorsRecord[i].inputTokensAvailable = 0;
             }
+
             _actorsRecord[i].toFire = _firingCount[i];
 
-            _actorsRecord[i].toProduce =
-                _firingCount[i] * _actorsRecord[i].productionRate;
+            _actorsRecord[i].toProduce = _firingCount[i] * _actorsRecord[i].productionRate;
 
-            _actorsRecord[i].toConsume =
-                _firingCount[i] * _actorsRecord[i].consumptionRate;
+            _actorsRecord[i].toConsume = _firingCount[i] * _actorsRecord[i].consumptionRate;
 
             _actorsRecord[i].produced = 0;
             _actorsRecord[i].consumed = 0;
 
             // Check if the codeSize of this actor is greater than the
             // Instruction Scratchpad size. If it is, throw an exception.
-            token = ((ExperimentalActor)actor).codeSize.getToken();
-            tempCodeSize = ((IntToken)token).intValue();
-            if (tempCodeSize > _instructionSPMSize ) {
+            token = ((ExperimentalActor) actor).codeSize.getToken();
+            tempCodeSize = ((IntToken) token).intValue();
+
+            if (tempCodeSize > _instructionSPMSize) {
                 throw new NotSchedulableException(this,
-                        "The supplied instructionScratchpadSize is : "
-                        +  _instructionSPMSize + ". It is less than"
-                        + " the size of actor " + actor
-                        + " which is : " + tempCodeSize );
+                    "The supplied instructionScratchpadSize is : "
+                    + _instructionSPMSize + ". It is less than"
+                    + " the size of actor " + actor + " which is : "
+                    + tempCodeSize);
+            } else {
+                _actorsRecord[i].codeSize = tempCodeSize;
             }
-            else {
-                _actorsRecord[i].codeSize =  tempCodeSize;
-            }
-            tempTotalTokensProduced += _actorsRecord[i].toFire * _actorsRecord[i].productionRate;
-        }   // end of for (i = 0;..) loop
+
+            tempTotalTokensProduced += (_actorsRecord[i].toFire * _actorsRecord[i].productionRate);
+        } // end of for (i = 0;..) loop
 
         // Setting the data SPM equal to 20% of the total number of tokens
         // produced if vectorization factor is 1. Else, letting
@@ -2185,30 +2308,34 @@ public class CacheAwareScheduler extends SDFScheduler {
         // updating its size to be 20% of total data consumed.
         if (_vectorizationFactor == 1) {
             //_dataSPMSize = 13;
-            _dataSPMSize = (int)(0.2*tempTotalTokensProduced);
+            _dataSPMSize = (int) (0.2 * tempTotalTokensProduced);
             _lastDataSPMSize = _dataSPMSize;
+        } else {
+            _dataSPMSize = _lastDataSPMSize;
         }
-        else _dataSPMSize = _lastDataSPMSize;
+
         // Printing the various parameters
         System.out.println();
         System.out.println();
         System.out.println("(Scheduler) Total Actors : " + _noOfActors);
-        System.out.println("Total Data to be Produced : " + tempTotalTokensProduced);
+        System.out.println("Total Data to be Produced : "
+            + tempTotalTokensProduced);
         System.out.println("(Scheduler) D-SPM Size : " + _dataSPMSize);
         System.out.println("(Scheduler) I-SPM Size : " + _instructionSPMSize);
-        System.out.println("(Scheduler) Vectorization Factor : " + _vectorizationFactor);
+        System.out.println("(Scheduler) Vectorization Factor : "
+            + _vectorizationFactor);
 
         for (int i = 0; i < _noOfActors; i++) {
             // Printing the actor's parameters
-            System.out.println("Actor " + (i+1) + "'s Consumption Rate is "
-                    + _actorsRecord[i].consumptionRate);
-            System.out.println("Actor " + (i+1) + "'s Production Rate is "
-                    + _actorsRecord[i].productionRate);
-            System.out.println("Actor " + (i+1) + "'s Firing Count is "
-                    + _actorsRecord[i].toFire);
-            System.out.println("Actor " + (i+1) + "'s Code Size is "
-                    + _actorsRecord[i].codeSize);
-        }    // end of for (i = 0;..) loop
+            System.out.println("Actor " + (i + 1) + "'s Consumption Rate is "
+                + _actorsRecord[i].consumptionRate);
+            System.out.println("Actor " + (i + 1) + "'s Production Rate is "
+                + _actorsRecord[i].productionRate);
+            System.out.println("Actor " + (i + 1) + "'s Firing Count is "
+                + _actorsRecord[i].toFire);
+            System.out.println("Actor " + (i + 1) + "'s Code Size is "
+                + _actorsRecord[i].codeSize);
+        } // end of for (i = 0;..) loop
     }
 
     /** Generates an unlooped (linearized) schedule from a given looped
@@ -2219,21 +2346,27 @@ public class CacheAwareScheduler extends SDFScheduler {
      *  @return The unlooped (linearized) schedule.
      */
     private void _unloopSchedule(Schedule loopedSchedule)
-            throws IllegalActionException {
+        throws IllegalActionException {
         int iterationCount = loopedSchedule.getIterationCount();
+
         for (int i = 1; i <= iterationCount; i++) {
             Iterator loopedScheduleIterator = loopedSchedule.iterator();
+
             while (loopedScheduleIterator.hasNext()) {
-                ScheduleElement element = ((ScheduleElement)loopedScheduleIterator.next());
+                ScheduleElement element = ((ScheduleElement) loopedScheduleIterator
+                                .next());
+
                 if (element instanceof Firing) {
                     _linearizedMPMBSchedule.add(element);
                 } else if (element instanceof Schedule) {
-                    _unloopSchedule((Schedule)element);
-                } else throw new IllegalActionException("The MPMBS Schedule "
+                    _unloopSchedule((Schedule) element);
+                } else {
+                    throw new IllegalActionException("The MPMBS Schedule "
                         + "contains an element that is not of type Firing or "
                         + "Schedule.");
-            }   // end of while loop
-        }    // end of for loop
+                }
+            } // end of while loop
+        } // end of for loop
     }
 
     /** Update the Instruction Miss Penalty when the specified actor
@@ -2250,7 +2383,6 @@ public class CacheAwareScheduler extends SDFScheduler {
      */
     private void _updateIMP(int actorNo) {
         if (_instructionSPM[actorNo] == false) {
-
             // See if any fully fired actors are residing in I-Scratchpad.
             // If any of them is found, evict it and free that space.
             for (int i = 0; i < _noOfActors; i++) {
@@ -2258,26 +2390,25 @@ public class CacheAwareScheduler extends SDFScheduler {
                     if (_actorsRecord[i].fired == _actorsRecord[i].toFire) {
                         _instructionSPM[i] = false;
                         _usedInstructionSPM -= _actorsRecord[i].codeSize;
-                    }    // end of if (_actorsRecord..)
-                }    // end of if (_instructionSPM[i] == true)
-            }    // end of for (int i = 0; ...) loop
+                    } // end of if (_actorsRecord..)
+                } // end of if (_instructionSPM[i] == true)
+            } // end of for (int i = 0; ...) loop
 
-            if (_usedInstructionSPM + _actorsRecord[actorNo].codeSize >
-                    _instructionSPMSize) {
-
+            if ((_usedInstructionSPM + _actorsRecord[actorNo].codeSize) > _instructionSPMSize) {
                 // Temp Variables
                 boolean foundActorToSwap = false;
                 int swapActor = -1;
                 int swapActorSize = 0;
                 int maxActor = -1;
                 int maxActorSize = 0;
+
                 // To be used in case we need to remove a set of actors
                 // to bring this successor in the I-Scratchpad.
                 ArrayList swapActorList = new ArrayList();
                 int swapListSize = 0;
 
-                while ((swapListSize + _instructionSPMSize - _usedInstructionSPM) < _actorsRecord[actorNo].codeSize) {
-
+                while (((swapListSize + _instructionSPMSize)
+                                - _usedInstructionSPM) < _actorsRecord[actorNo].codeSize) {
                     foundActorToSwap = false;
                     maxActor = -1;
                     swapActor = -1;
@@ -2287,34 +2418,32 @@ public class CacheAwareScheduler extends SDFScheduler {
                     for (int j = 0; j < _noOfActors; j++) {
                         if (_instructionSPM[j]) {
                             if (!swapActorList.contains(new Integer(j))) {
-                                if ((_actorsRecord[j].codeSize + swapListSize + _instructionSPMSize - _usedInstructionSPM) >= _actorsRecord[actorNo].codeSize) {
+                                if (((_actorsRecord[j].codeSize + swapListSize
+                                                + _instructionSPMSize)
+                                                - _usedInstructionSPM) >= _actorsRecord[actorNo].codeSize) {
                                     if (foundActorToSwap == true) {
-                                        if (swapActorSize >
-                                                _actorsRecord[j].codeSize) {
+                                        if (swapActorSize > _actorsRecord[j].codeSize) {
                                             // Replace the current swap actor
                                             // with this newly found smaller
                                             // size swap actor.
                                             swapActor = j;
-                                            swapActorSize =
-                                                _actorsRecord[j].codeSize;
-                                        }    // end of if (swapActorSize..)
-                                    }     // end of if (foundActorToSwap)
+                                            swapActorSize = _actorsRecord[j].codeSize;
+                                        } // end of if (swapActorSize..)
+                                    } // end of if (foundActorToSwap)
                                     else {
                                         foundActorToSwap = true;
                                         swapActor = j;
-                                        swapActorSize =
-                                            _actorsRecord[j].codeSize;
+                                        swapActorSize = _actorsRecord[j].codeSize;
                                     }
                                 } // end of finding the swap actor.
-                                if (_actorsRecord[j].codeSize >
-                                        maxActorSize) {
+
+                                if (_actorsRecord[j].codeSize > maxActorSize) {
                                     maxActor = j;
-                                    maxActorSize =
-                                        _actorsRecord[j].codeSize;
-                                }    // end of if (actorsRecord..)
-                            }    // end of if (!swapActorList..)
-                        }    // end of if (actorsInISPM[j])
-                    }    // end of for (int j = 0;...) loop
+                                    maxActorSize = _actorsRecord[j].codeSize;
+                                } // end of if (actorsRecord..)
+                            } // end of if (!swapActorList..)
+                        } // end of if (actorsInISPM[j])
+                    } // end of for (int j = 0;...) loop
 
                     if (foundActorToSwap) {
                         swapActorList.add(new Integer(swapActor));
@@ -2326,24 +2455,24 @@ public class CacheAwareScheduler extends SDFScheduler {
                 } // end of while (swapListSize....)
 
                 Iterator tempActors = swapActorList.iterator();
+
                 while (tempActors.hasNext()) {
-                    int tempSwapActor =
-                        ((Integer)tempActors.next()).intValue();
-                    int tempSwapActorSize =
-                        _actorsRecord[tempSwapActor].codeSize;
+                    int tempSwapActor = ((Integer) tempActors.next()).intValue();
+                    int tempSwapActorSize = _actorsRecord[tempSwapActor].codeSize;
                     _instructionSPM[tempSwapActor] = false;
-                    _usedInstructionSPM -= tempSwapActorSize ;
-                }   // end of while (tempActors.hasNext())
+                    _usedInstructionSPM -= tempSwapActorSize;
+                } // end of while (tempActors.hasNext())
+
                 _instructionSPM[actorNo] = true;
                 _usedInstructionSPM += _actorsRecord[actorNo].codeSize;
-            }    // end of if (_usedInstructionSPM + ...)
+            } // end of if (_usedInstructionSPM + ...)
             else {
                 _usedInstructionSPM += _actorsRecord[actorNo].codeSize;
                 _instructionSPM[actorNo] = true;
-            }    // end of else for if (_usedInstructionSPM + ..)
-            _instructionMissPenalty +=
-                _IREADTIME * _actorsRecord[actorNo].codeSize;
-        }   // end of if (_instructionSPM[actorNo] == false)
+            } // end of else for if (_usedInstructionSPM + ..)
+
+            _instructionMissPenalty += (_IREADTIME * _actorsRecord[actorNo].codeSize);
+        } // end of if (_instructionSPM[actorNo] == false)
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -2363,7 +2492,6 @@ public class CacheAwareScheduler extends SDFScheduler {
      *  No of times its fireable at an instant.
      */
     private class ActorRecord {
-
         /** Construct an ActorRecord
          */
         public ActorRecord() {
@@ -2383,34 +2511,44 @@ public class CacheAwareScheduler extends SDFScheduler {
 
         ///////////////////////////////////////////////////////////////////
         ////                Public Member Variables                   ////
-
         // To store the actor number.
         public int actorNo;
+
         // The code size of the actor.
         public int codeSize;
+
         // To keep an account on the number of tokens already consumed by the
         // actor.
         public int consumed;
+
         // The consumption rate of the actor.
         public int consumptionRate;
+
         // To keep an account on the number of possible firings of the actor
         // at an instant.
         public int fireable;
+
         // To keep an account on the number of times the actor has already
         // been fired.
         public int fired;
+
         // No of input tokens available to consume.
         public int inputTokensAvailable;
+
         // To keep an account on the number of tokens already produced by the
         // actor.
         public int produced;
+
         // The production rate of the actor.
         public int productionRate;
+
         // To store the total tokens to be consumed by the actor. For source
         // actors, this is zero.
         public int toConsume;
+
         // To store the total no of times the actor is supposed to fire.
         public int toFire;
+
         // To store the total tokens to be produced by the actor. For sink
         // actors, this is zero.
         public int toProduce;
@@ -2418,62 +2556,79 @@ public class CacheAwareScheduler extends SDFScheduler {
 
     ///////////////////////////////////////////////////////////////////
     ////                Private Member Variables                   ////
-
     // Constants
-
     // Time taken to read one unit of data from the instruction memory.
     private static final int _IREADTIME = 1;
+
     // Time taken to read one unit of data from the data  memory.
     private static final int _DREADTIME = 1;
+
     // Time taken to write one unit of data from the data memory.
     private static final int _DWRITETIME = 1;
 
     // Variables
-
     // The record for each actor during the schedule generation. The schedule
     // is generated by simulating an iteration of the graph, hence this
     // record is very critical for the correct schedule generation.
     private ActorRecord[] _actorsRecord;
+
     // The cache aware schedule that gets generated by this scheduler.
     private Schedule _cacheAwareSchedule;
+
     // The version of container which is a composite actor in this case
     private int _containerVersion;
+
     // The total Data Miss Penalty (DMP) associated with the cache aware
     // schedule.
     private int _dataMissPenalty;
+
     // The data scratchpad memory.
     private ScratchpadMemory _dataSPM;
+
     // The size of the data scratchpad memory.
     private int _dataSPMSize;
+
     // The firing vector for the given SDF graph. It has the firing count
     // for each actor and can be accessed using their respective orderings.
     private int[] _firingCount;
+
     // The firing vector.  A map from actor to an integer representing the
     // number of times the actor will fire.
     private Map _firingVector;
+
     // The total Instruction Miss Penalty (IMP) associated with the cache
     // aware schedule.
     private int _instructionMissPenalty;
+
     // The instruction scratchpad memory. We don't need to check individual
     // block level contents, we just need to know whether an actors is present
     // or not in the I-Scratchpad.
     private boolean[] _instructionSPM;
+
     // The size of the instruction scratchpad memory.
     private int _instructionSPMSize;
+
     // The size of D-SPM in last schedule generation.
     private int _lastDataSPMSize;
+
     // The looped MPMBS Schedule
     private Schedule _MPMBSchedule;
+
     // The total no of actors in the SDF graph.
     private int _noOfActors;
+
     // A Hashtable stores the mapping of each actor to its depth (ordering).
     private Hashtable _orderToActor = null;
+
     // The SAMAS schedule for the given chain-structured graph.
     private Schedule _SAMASchedule;
+
     // Vectorization factor for the given SDF graph
     private int _vectorizationFactor;
+
     // The unlooped or linearized version of MPMBS schedule
     private Schedule _linearizedMPMBSchedule;
+
     // Total used space in the I-Scratchpad Memory.
     private int _usedInstructionSPM;
 }

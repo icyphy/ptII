@@ -86,7 +86,7 @@ public class NonStrictLogicFunction extends LogicFunction {
      *   actor with this name.
      */
     public NonStrictLogicFunction(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         new Attribute(this, "_nonStrictMarker");
     }
@@ -151,7 +151,7 @@ public class NonStrictLogicFunction extends LogicFunction {
     /** Nullify results that cannot be asserted due to unknown inputs.
      */
     private BooleanToken _nullifyIncompleteResults(BooleanToken inValue)
-            throws IllegalActionException {
+        throws IllegalActionException {
         BooleanToken outValue = inValue;
         ;
 
@@ -186,9 +186,9 @@ public class NonStrictLogicFunction extends LogicFunction {
 
             default:
                 throw new InternalErrorException(
-                        "Invalid value for _function private variable. "
-                        + "LogicFunction actor (" + getFullName() + ")"
-                        + " on function type " + _function);
+                    "Invalid value for _function private variable. "
+                    + "LogicFunction actor (" + getFullName() + ")"
+                    + " on function type " + _function);
             }
         }
 

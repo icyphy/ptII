@@ -26,12 +26,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.copernicus.java;
 
-import ptolemy.actor.CompositeActor;
-import ptolemy.copernicus.kernel.PtolemyUtilities;
-import ptolemy.copernicus.kernel.SootUtilities;
-import ptolemy.kernel.Entity;
-import ptolemy.kernel.util.NamedObj;
-
 import soot.HasPhaseOptions;
 import soot.Local;
 import soot.NullType;
@@ -45,6 +39,7 @@ import soot.SootMethod;
 import soot.Unit;
 import soot.Value;
 import soot.ValueBox;
+
 import soot.jimple.BinopExpr;
 import soot.jimple.CastExpr;
 import soot.jimple.DefinitionStmt;
@@ -54,12 +49,20 @@ import soot.jimple.JimpleBody;
 import soot.jimple.NewExpr;
 import soot.jimple.NullConstant;
 import soot.jimple.Stmt;
+
 import soot.toolkits.graph.CompleteUnitGraph;
+
 import soot.toolkits.scalar.LocalDefs;
 import soot.toolkits.scalar.LocalUses;
 import soot.toolkits.scalar.SimpleLocalDefs;
 import soot.toolkits.scalar.SimpleLocalUses;
 import soot.toolkits.scalar.UnitValueBoxPair;
+
+import ptolemy.actor.CompositeActor;
+import ptolemy.copernicus.kernel.PtolemyUtilities;
+import ptolemy.copernicus.kernel.SootUtilities;
+import ptolemy.kernel.Entity;
+import ptolemy.kernel.util.NamedObj;
 
 import java.util.Iterator;
 import java.util.List;
@@ -109,7 +112,7 @@ public class NamedObjEqualityEliminator extends SceneTransformer
 
     protected void internalTransform(String phaseName, Map options) {
         System.out.println("NamedObjEqualityEliminator.internalTransform("
-                + phaseName + ", " + options + ")");
+            + phaseName + ", " + options + ")");
 
         _options = options;
         _debug = PhaseOptions.getBoolean(options, "debug");
@@ -120,14 +123,14 @@ public class NamedObjEqualityEliminator extends SceneTransformer
     private void _eliminateAllComparisons(CompositeActor model) {
         // Loop over all the actor instance classes.
         for (Iterator entities = model.deepEntityList().iterator();
-             entities.hasNext();) {
+                        entities.hasNext();) {
             Entity entity = (Entity) entities.next();
             String className = ModelTransformer.getInstanceClassName(entity,
                     _options);
             SootClass entityClass = Scene.v().loadClassAndSupport(className);
 
             for (Iterator methods = entityClass.getMethods().iterator();
-                 methods.hasNext();) {
+                            methods.hasNext();) {
                 SootMethod method = (SootMethod) methods.next();
                 eliminateNamedObjComparisons(method, _debug);
             }
@@ -142,7 +145,7 @@ public class NamedObjEqualityEliminator extends SceneTransformer
     /** Remove comparisons between equal objects in the given method.
      */
     public static boolean eliminateNamedObjComparisons(SootMethod method,
-            boolean debug) {
+        boolean debug) {
         boolean doneSomething = false;
 
         if (debug) {
@@ -157,11 +160,11 @@ public class NamedObjEqualityEliminator extends SceneTransformer
         SimpleLocalUses localUses = new SimpleLocalUses(unitGraph, localDefs);
 
         for (Iterator units = body.getUnits().snapshotIterator();
-             units.hasNext();) {
+                        units.hasNext();) {
             Stmt stmt = (Stmt) units.next();
 
             for (Iterator boxes = stmt.getUseBoxes().iterator();
-                 boxes.hasNext();) {
+                            boxes.hasNext();) {
                 ValueBox box = (ValueBox) boxes.next();
                 Value value = box.getValue();
 
@@ -181,7 +184,7 @@ public class NamedObjEqualityEliminator extends SceneTransformer
                         SootClass leftClass = leftType.getSootClass();
 
                         if (SootUtilities.derivesFrom(leftClass,
-                                    PtolemyUtilities.namedObjClass)) {
+                                            PtolemyUtilities.namedObjClass)) {
                             try {
                                 leftObject = getNamedObjValue(method,
                                         (Local) left, stmt, localDefs, localUses);
@@ -204,7 +207,7 @@ public class NamedObjEqualityEliminator extends SceneTransformer
                         SootClass rightClass = rightType.getSootClass();
 
                         if (SootUtilities.derivesFrom(rightClass,
-                                    PtolemyUtilities.namedObjClass)) {
+                                            PtolemyUtilities.namedObjClass)) {
                             try {
                                 rightObject = getNamedObjValue(method,
                                         (Local) right, stmt, localDefs,
@@ -247,7 +250,7 @@ public class NamedObjEqualityEliminator extends SceneTransformer
      *  otherwise throw an exception
      */
     public static NamedObj getNamedObjValue(SootMethod method, Local local,
-            Unit location, LocalDefs localDefs, LocalUses localUses) {
+        Unit location, LocalDefs localDefs, LocalUses localUses) {
         List definitionList = localDefs.getDefsOfAt(local, location);
 
         if (definitionList.size() == 1) {
@@ -256,11 +259,11 @@ public class NamedObjEqualityEliminator extends SceneTransformer
 
             if (value instanceof Local) {
                 return getNamedObjValue(method, (Local) value, stmt, localDefs,
-                        localUses);
+                    localUses);
             } else if (value instanceof CastExpr) {
                 return getNamedObjValue(method,
-                        (Local) ((CastExpr) value).getOp(), stmt, localDefs,
-                        localUses);
+                    (Local) ((CastExpr) value).getOp(), stmt, localDefs,
+                    localUses);
             } else if (value instanceof FieldRef) {
                 SootField field = ((FieldRef) value).getField();
                 ValueTag tag = (ValueTag) field.getTag("_CGValue");
@@ -268,8 +271,8 @@ public class NamedObjEqualityEliminator extends SceneTransformer
                 if (tag == null) {
                     // return null;
                     throw new RuntimeException(
-                            "Could not determine the static value of " + local
-                            + " in " + method);
+                        "Could not determine the static value of " + local
+                        + " in " + method);
                 } else {
                     return (NamedObj) tag.getObject();
                 }
@@ -286,7 +289,7 @@ public class NamedObjEqualityEliminator extends SceneTransformer
 
                         if (useStmt.getLeftOp() instanceof FieldRef) {
                             SootField field = ((FieldRef) useStmt.getLeftOp())
-                                .getField();
+                                            .getField();
                             ValueTag tag = (ValueTag) field.getTag("_CGValue");
 
                             if (tag == null) {
@@ -299,14 +302,14 @@ public class NamedObjEqualityEliminator extends SceneTransformer
                 }
 
                 throw new RuntimeException("Could not determine the "
-                        + " static value of" + local + " in " + method);
+                    + " static value of" + local + " in " + method);
             } else if (value instanceof NullConstant) {
                 // If we get to an assignment from null, then the
                 // attribute statically evaluates to null.
                 return null;
             } else {
                 throw new RuntimeException("Unknown type of value: " + value
-                        + " in " + method);
+                    + " in " + method);
             }
         } else {
             String string = "More than one definition of = " + local + "\n";

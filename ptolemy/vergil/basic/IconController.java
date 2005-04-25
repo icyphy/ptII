@@ -110,7 +110,7 @@ public class IconController extends ParameterizedNodeController {
                 // but not inserted.
                 if (iconList.size() == 0) {
                     XMLIcon alreadyCreated = (XMLIcon) _iconsPendingContainer
-                        .get(object);
+                                    .get(object);
 
                     if (alreadyCreated != null) {
                         iconList.add(alreadyCreated);
@@ -150,7 +150,7 @@ public class IconController extends ParameterizedNodeController {
                     // result in creation of yet another figure before this
                     // method even returns!
                     GraphController controller = IconController.this
-                        .getController();
+                                    .getController();
                     GraphModel graphModel = controller.getGraphModel();
                     ChangeRequest request = new ChangeRequest(graphModel,
                             "Set the container of a new XMLIcon.") {
@@ -183,8 +183,8 @@ public class IconController extends ParameterizedNodeController {
                 }
             } catch (KernelException ex) {
                 throw new InternalErrorException(null, ex,
-                        "Could not create icon " + "in " + object + " even "
-                        + "though one did not previously exist.");
+                    "Could not create icon " + "in " + object + " even "
+                    + "though one did not previously exist.");
             }
 
             result.setToolTipText(object.getClassName());
@@ -194,16 +194,16 @@ public class IconController extends ParameterizedNodeController {
             if (object instanceof ComponentEntity) {
                 ComponentEntity ce = (ComponentEntity) object;
                 StringAttribute _colorAttr = (StringAttribute) (ce.getAttribute(
-                                                                        "_color"));
+                        "_color"));
 
                 if (_colorAttr != null) {
                     String _color = _colorAttr.getExpression();
                     AnimationRenderer _animationRenderer = new AnimationRenderer(SVGUtilities
-                            .getColor(_color));
+                                        .getColor(_color));
                     _animationRenderer.renderSelected(result);
 
                     StringAttribute _explAttr = (StringAttribute) (ce
-                            .getAttribute("_explanation"));
+                                    .getAttribute("_explanation"));
 
                     if (_explAttr != null) {
                         result.setToolTipText(_explAttr.getExpression());
