@@ -89,6 +89,7 @@ foreach i $configs {
     $inputFileNamesToSkip add "/jmf/jmf.xml"
     $inputFileNamesToSkip add "/joystick/jstick.xml"
     $inputFileNamesToSkip add "/jxta/jxta.xml"
+    $inputFileNamesToSkip add "/ptinyos/lib/lib-composite.xml"
     $inputFileNamesToSkip add "/rectangle.xml"
     $inputFileNamesToSkip add "TOSIndex.xml"
     $inputFileNamesToSkip add "/quicktime.xml"
@@ -172,6 +173,7 @@ foreach i $configs {
 				    } else {
 					set msg "\n\nIn '$className'\n\
 					    The getName() method returns\n \
+					    '$sanitizedName' != '$field' \
 					    '[$fieldObj getName]' but the \
 					    field is named\n  '$field'.\n \
                                             Perhaps you should use an \
@@ -319,6 +321,7 @@ foreach i $configs {
                             [$moml toString]\n\
                             failed:\n\
                             $errMsg\n\
+	                    [jdkStackTrace]\n\
                             Perhaps there is a typo in the initial\n\
                             value of a parameter?\n"
 		    puts $msg
