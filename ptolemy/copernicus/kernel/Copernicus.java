@@ -572,8 +572,8 @@ public class Copernicus {
 
         // FIXME: If this is Deep codegen, then don't use Test, use CGTest
         // because Test has a SharedParameter
-        // 	removeGraphicalClasses.put("ptolemy.actor.lib.Test",
-        // 		"ptolemy.copernicus.java.test.CGTest");
+        //         removeGraphicalClasses.put("ptolemy.actor.lib.Test",
+        //                 "ptolemy.copernicus.java.test.CGTest");
         _parser.addMoMLFilter(removeGraphicalClasses);
 
         //         PropertyClassChanges propertyClassChanges =
