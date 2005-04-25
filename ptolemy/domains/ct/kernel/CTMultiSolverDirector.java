@@ -194,16 +194,16 @@ public class CTMultiSolverDirector extends CTDirector {
             if (newSolverClassName.trim().startsWith(_solverClasspath)) {
                 // The old solver name is a parameter starts with
                 // "ptolemy.domains.ct.kernel.solver."
-                _solverClassName = newSolverClassName;
+                _normalSolverClassName = newSolverClassName;
             } else {
-                _solverClassName = _solverClasspath + newSolverClassName;
+                _normalSolverClassName = _solverClasspath + newSolverClassName;
             }
 
-            ODESolver newODESolver = _instantiateODESolver(_solverClassName);
+            ODESolver newODESolver = _instantiateODESolver(_normalSolverClassName);
 
             if (newODESolver instanceof BreakpointODESolver) {
                 throw new IllegalActionException(this,
-                        _solverClassName
+                        _normalSolverClassName
                         + " can only be used as a breakpoint ODE solver.");
             }
 
@@ -626,10 +626,10 @@ public class CTMultiSolverDirector extends CTDirector {
         // Instantiate a normal ODE solver.
         if (_debugging) {
             _debug(getFullName(), " instantiating the ODE solver ",
-                    _solverClassName);
+                    _normalSolverClassName);
         }
 
-        _normalSolver = _instantiateODESolver(_solverClassName);
+        _normalSolver = _instantiateODESolver(_normalSolverClassName);
 
         // Instantiate a breakpoint solver.
         if (_debugging) {
@@ -723,17 +723,18 @@ public class CTMultiSolverDirector extends CTDirector {
         CTSchedule schedule = (CTSchedule) getScheduler().getSchedule();
         Iterator eventGenerators = schedule.get(CTSchedule.EVENT_GENERATORS)
             .actorIterator();
-
+        
+        boolean postfireReturns = true;
         while (eventGenerators.hasNext() && !_stopRequested) {
             Actor actor = (Actor) eventGenerators.next();
-
+            postfireReturns = actor.postfire();
+            _postfireReturns = _postfireReturns && postfireReturns;
             if (_debugging) {
                 _debug("Postfire event generator : "
                         + ((Nameable) actor).getName() + " at time "
-                        + getModelTime());
+                        + getModelTime() + ", which returns " + 
+                        postfireReturns);
             }
-
-            _postfireReturns = _postfireReturns && actor.postfire();
         }
 
         _setExecutionPhase(CTExecutionPhase.UNKNOWN_PHASE);
@@ -994,7 +995,7 @@ public class CTMultiSolverDirector extends CTDirector {
         super._initParameters();
 
         try {
-            _solverClassName = 
+            _normalSolverClassName = 
                 "ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver";
             ODESolver = new Parameter(this, "ODESolver",
                     new StringToken("ExplicitRK45Solver"));
@@ -1493,15 +1494,14 @@ public class CTMultiSolverDirector extends CTDirector {
                     // fire dynamic actors
                     _setExecutionPhase(
                         CTExecutionPhase.FIRING_DYNAMIC_ACTORS_PHASE);
+                    // NOTE: at exactly this point, time is advanced.
+                    // The amount of advance depends on the current ODE solver.
                     solver.fireDynamicActors();
                     _setExecutionPhase(CTExecutionPhase.UNKNOWN_PHASE);
 
-                    // NOTE: at exactly this point, time is advanced.
-                    // The amount of advance depends on the current ODE solver.
+                    // fire state transition actors to calculate derivatives
                     _setExecutionPhase(
                         CTExecutionPhase.FIRING_STATE_TRANSITION_ACTORS_PHASE);
-
-                    // fire state transition actors to calculate derivatives
                     solver.fireStateTransitionActors();
                     _setExecutionPhase(CTExecutionPhase.UNKNOWN_PHASE);
                 }
@@ -1680,7 +1680,7 @@ public class CTMultiSolverDirector extends CTDirector {
     private ODESolver _normalSolver;
 
     // The classname of the normal ODE solver.
-    private String _solverClassName;
+    private String _normalSolverClassName;
 
     // The classpath for solvers.
     private static String _solverClasspath = 
