@@ -295,7 +295,7 @@ public class PullSupplier extends Sink {
         /**
          * Implement the pull() method defined in the pullSupplier intefece.
          * When the stub method is called, the call is trasfered by ORB to here,
-         * and the pull request is propogated to the data source. The calling
+         * and the pull request is propagated to the data source. The calling
          * thread will wait until there is data returned.
          *
          */

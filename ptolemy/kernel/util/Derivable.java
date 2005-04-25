@@ -36,9 +36,9 @@ import java.util.List;
 /**
    This interface is for objects that can be derived.  A derived object
    is "inherited" via the class mechanism in Ptolemy II and tracks the
-   object from which it is derived. That object is its "proptotype."
+   object from which it is derived. That object is its "prototype."
    The derived object is usually created in its container as a side effect
-   of the creation of the proptotype.  The method propagateExistence()
+   of the creation of the prototype.  The method propagateExistence()
    is the mechanism by which derived objects are created.
    <p>
    The prototype and its derived objects are instances of the same Java

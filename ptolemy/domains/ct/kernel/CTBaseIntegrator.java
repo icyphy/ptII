@@ -301,7 +301,7 @@ public class CTBaseIntegrator extends TypedAtomicActor implements TimedActor,
      *  to a previous time point. Note that derivative is not stored.
      *  Therefore, when states are restored, they need to be propagated
      *  through state transition actors such that the derivatives are
-     *  restored (reconstructured) too.
+     *  restored (reconstructed) too.
      */
     public void goToMarkedState() {
         _state = _storedState;

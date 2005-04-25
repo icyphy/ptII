@@ -90,7 +90,7 @@ import java.math.BigInteger;
  * objects has an infinite time value, the time values of two time objects are
  * compared. If the time values are the same, the two time objects are treated
  * equal, or they represent the same model time. Otherwise, the time object
- * containing a bigger time value is regared to happen after the time object
+ * containing a bigger time value is regarded to happen after the time object
  * with a smaller time value.
  *
  * <p>
