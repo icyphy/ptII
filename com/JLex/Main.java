@@ -7358,7 +7358,7 @@ class CLexGen
  * This bug was the result of resizing the internal buffer not large enough
  * in some cases.  The name was then changed to JavaLexBitSet.
  *
- * Copyright (c) 1995-2004 Sun Microsystems, Inc. All Rights Reserved.
+ * Copyright (c) 1995-2005 Sun Microsystems, Inc. All Rights Reserved.
  *
  * Permission to use, copy, modify, and distribute this software
  * and its documentation for NON-COMMERCIAL purposes and without
