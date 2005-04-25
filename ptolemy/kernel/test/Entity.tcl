@@ -315,6 +315,7 @@ test Entity-9.3 {Test clone with badly named ports} {
 ####
 #
 test Entity-9.4 {Test clone with port that has no container } {
+    #ports that have had set container set to null do not exist.
     set w9_4 [java::new ptolemy.kernel.util.Workspace W9_4]
     set portHasNoContainer [java::new ptolemy.kernel.test.PortHasNoContainer \
 			     $w9_4 E9_4]
@@ -328,7 +329,8 @@ test Entity-9.4 {Test clone with port that has no container } {
 	set r [$portHasNoContainer description 15]
     }
     list $r
-} {}
+} {{ptolemy.kernel.util.IllegalActionException: Could not find a port named 'startTrigger';
+  in .E9_4}}
 
 ######################################################################
 ####
