@@ -1515,7 +1515,7 @@ public class CTMultiSolverDirector extends CTDirector {
                     if (!_isStateAccurate()) {
                         setCurrentStepSize(_refinedStepWRTState());
                     } else {
-                        // states are resolved sucessfully.
+                        // states are resolved successfully.
                         break;
                     }
                 } else {

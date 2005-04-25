@@ -124,7 +124,7 @@ public class PrepopulatedTutorial {
      * is applied to the nodes before the window is showing,
      * meaning that the nodes are layed out in a 0x0 frame,
      * and are all clustered in the upper-left corner.  This
-     * is remedied in the other techiques given below.
+     * is remedied in the other techniques given below.
      */
     public void bogusLayout(MutableGraphModel model, AppContext context) {
         BasicGraphController gc = new BasicGraphController();

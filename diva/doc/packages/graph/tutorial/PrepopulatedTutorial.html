@@ -29,7 +29,7 @@ or explicitly call a global layout once the window has been opened. More comment
 <H4>Bogus Layout</H4>
 <P>This is the first thing you'd probably think of, but this happens to be bogus, because the incremental layout
 is applied to the nodes before the window is showing, meaning that the nodes are layed out in a 0x0 frame, and
-are all clustered in the upper-left corner.  This is remedied in the other techiques given below.</P>
+are all clustered in the upper-left corner.  This is remedied in the other techniques given below.</P>
 <PRE>        TutorialWindow f = new TutorialWindow(&quot;Bogus Layout&quot;);
         f.getContentPane().add(&quot;Center&quot;, new JGraph(model));
         f.setLocation(0, 0);

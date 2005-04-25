@@ -96,11 +96,11 @@ public class CTSchedule extends Schedule {
     public final static int DYNAMIC_ACTORS = 2;
 
     /** Index for the schedule of actors that implement
-     *  the CTEventGenerator interface, topogically ordered.
+     *  the CTEventGenerator interface, topologically ordered.
      */
     public final static int EVENT_GENERATORS = 3;
 
-    /** Index for output schedule, topogically ordered.
+    /** Index for output schedule, topologically ordered.
      */
     public final static int OUTPUT_ACTORS = 4;
 
@@ -109,7 +109,7 @@ public class CTSchedule extends Schedule {
      */
     public final static int OUTPUT_STEP_SIZE_CONTROL_ACTORS = 5;
 
-    /** Index for state transition schedule, topogically sorted.
+    /** Index for state transition schedule, topologically sorted.
      */
     public final static int STATE_TRANSITION_ACTORS = 6;
 

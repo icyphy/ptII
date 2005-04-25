@@ -89,9 +89,10 @@ public class Sender extends X10Interface {
     ////                         public methods                    ////
 
     /** Get the destination and instruction for this command. Since each x10
-     * device is specialized, derived classes will define logic for each
-     * command.
-     *  @exception IllegalActionException If super class thows exception.
+     *  device is specialized, derived classes will define logic for each
+     *  command.
+     *  @exception IllegalActionException If the super class throws an
+     *  exception.
      */
     public void fire() throws IllegalActionException {
         super.fire();

@@ -513,7 +513,7 @@ public class MetaGraphController extends CompositeEntity
     /**
      * Dispatch the given graph view event to all registered grpah view
      * listeners.  This method is generally only called by subclasses and
-     * representatives of thse subclasses, such as a node controller or
+     * representatives of these subclasses, such as a node controller or
      * an edge controller.
      */
     public void dispatch(GraphViewEvent e) {

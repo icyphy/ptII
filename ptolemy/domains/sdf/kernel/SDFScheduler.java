@@ -1875,7 +1875,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** The firing vector.  A map from actor to an integer represaenting the
+    /** The firing vector.  A map from actor to an integer representing the
      * number of times the actor will fire.
      */
     private Map _firingVector;

@@ -73,7 +73,7 @@ import java.util.Set;
    <p>
    The 'difference' of a relation is calculated in the following way.
    For a leaf node evaluated as a boolean token, the difference is
-   0. This situatiion corresponds to the "true", or "false", or "x_isPresent"
+   0. This situation corresponds to the "true", or "false", or "x_isPresent"
    elements in a guard expression. For a relational node with the format
    (scalarLeft relationOperator scalarRight), the difference is the absolute
    double value of (scalarLeft - scalarRight).

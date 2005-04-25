@@ -219,7 +219,7 @@ public abstract class ODESolver extends NamedObj {
      *  successfully.
      *  In this base class, always return true. Derived classes may change
      *  the returned value.
-     *  @return True If states of the system have been resolved sucessfully.
+     *  @return True If states of the system have been resolved successfully.
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public boolean resolveStates() throws IllegalActionException {

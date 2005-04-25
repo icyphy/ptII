@@ -581,7 +581,7 @@ public class Director extends Attribute implements Executable {
         return getModelStopTime().getDoubleValue();
     }
 
-    /** Get the time resolution of the model. The time resoultion is
+    /** Get the time resolution of the model. The time resolution is
      *  the value of the <i>timeResolution</i> parameter. This is the
      *  smallest time unit for the model.
      *  @return The time resolution of the model.

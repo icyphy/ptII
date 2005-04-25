@@ -390,7 +390,7 @@ public class ArcConnector extends AbstractConnector {
      * the arc doesn't get into a "funny state" when switching between
      * self-loops and non-self-loops.
      *
-     * Not, however, that ths method should only be called when the
+     * Not, however, that this method should only be called when the
      * arc changes, otherwise manipulation won't work properly. Use
      * getSelfLoop() to test the current state of this flag.
      */

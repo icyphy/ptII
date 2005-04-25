@@ -807,7 +807,7 @@ public class DirectedGraph extends Graph {
 
     /** Given a node, get all the edges and nodes that are connected
      *  to it directly and/or indirectly. Add them in the given graph.
-     *  Remove the nodes from the remainning nodes.
+     *  Remove the nodes from the remaining nodes.
      *  FIXME: Hidden edges not considered.
      * @param node The given node.
      * @param graph The given graph.
