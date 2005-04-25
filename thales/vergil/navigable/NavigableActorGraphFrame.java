@@ -57,7 +57,7 @@ import javax.swing.KeyStroke;
 
 /**
    <p>Titre : NavigableActorGraphFrame</p>
-   <p>Description : This is a simple copy of the actuel ActorGraphFrame
+   <p>Description : This is a simple copy of the actual ActorGraphFrame
    with additional functionalities for the navigation.</p>
    <p>Soci&eacute;t&eacute; : Thales Research and technology</p>
 

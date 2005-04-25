@@ -582,7 +582,7 @@ public final class Workspace implements Nameable, Serializable {
      *  @exception InterruptedException If the calling thread is interrupted
      *   while waiting on the specified object and all the read accesses held
      *   earlier by the thread are re-acquired.
-     *  @exception InternalErrorException If re-acquring the read accesses
+     *  @exception InternalErrorException If re-acquiring the read accesses
      *   held earlier by the thread fails.
      */
     public void wait(Object obj) throws InterruptedException {

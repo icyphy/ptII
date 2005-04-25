@@ -70,7 +70,7 @@ public class FractionMatrixMath {
      *  adding the second matrix to the first one.  If the two
      *  matrices are not the same size, throw an
      *  IllegalArgumentException.
-     *  @param matrix1 The first matrix of Fractoins.
+     *  @param matrix1 The first matrix of Fractions.
      *  @param matrix2 The second matrix of Fractions.
      *  @return A new matrix of Fractions.  */
     public static final Fraction[][] add(final Fraction[][] matrix1,
