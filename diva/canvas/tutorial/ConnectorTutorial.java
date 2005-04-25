@@ -155,7 +155,7 @@ import javax.swing.SwingUtilities;
  * the same selection model.  One effect that this has is that selecting a
  * rectangle when a connector is already selected will deselect the connector.
  * If there were two selection models then connectors and rectangles could
- * be selected entirely independently from eachother.
+ * be selected entirely independently from each other.
  *
  * <p> The SRTarget in the above code is an inner class that implements
  * the ConnectorTarget interface. This class is used by the

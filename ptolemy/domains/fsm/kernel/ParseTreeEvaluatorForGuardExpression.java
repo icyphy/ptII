@@ -63,7 +63,7 @@ import java.util.Set;
    expression changes, the relation list will be reconstructed. During the
    update mode, the relation list gets updated only. The order of the elements
    get updated is the same order the relations of the guard expression get
-   eveluated.
+   evaluated.
    <p>
    When this visitor evaluates the parse tree, if the visiting node is a leaf
    node and the evaluated token is a boolean token, or the visiting node

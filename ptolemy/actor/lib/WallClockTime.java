@@ -140,7 +140,7 @@ public class WallClockTime extends Source {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Get the elpased time since the model starts.
+    /** Get the elapsed time since the model starts.
      *  @return A double value representing the elapsed time.
      */
     protected double _getCurrentTime() {

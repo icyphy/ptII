@@ -481,7 +481,7 @@ public class Agent {
                         String referParaName = (String) referParaIterator.next();
                         // Note that since it is not top level,
                         // the parameter does not have actual value.
-                        // The actual value is eveluated during simulation
+                        // The actual value is evaluated during simulation
                         // referring to the upper level parameters.
                         Parameter parameter = new Parameter(_container, paraName);
                         parameter.setExpression(referParaName);

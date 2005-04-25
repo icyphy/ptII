@@ -485,7 +485,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
     }
 
     /** Return true if the enabled refinements may produce events.
-     *  @return True if the emabled refinements may produce events.
+     *  @return True if the enabled refinements may produce events.
      */
     public boolean hasCurrentEvent() {
         boolean eventPresent = false;

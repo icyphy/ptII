@@ -316,7 +316,7 @@ public class LiveSoundActor extends TypedAtomicActor
     /** The transfer size.  Initialized from the transferSize parameter. */
     protected int _transferSize;
 
-    /** True if this actor is excecuting.  Set to true by initialize(),
+    /** True if this actor is executing.  Set to true by initialize(),
      *  set to false by wrapup().
      */
     protected boolean _isExecuting = false;

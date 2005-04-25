@@ -44,7 +44,7 @@ import java.util.Iterator;
    are {@link #fireDynamicActors} and {@link
    #fireStateTransitionActors}.  CT directors call these methods to
    resolve the initial states in a future time in the continuous phase
-   of exeution of a complete iteration. See {@link
+   of execution of a complete iteration. See {@link
    CTMultiSolverDirector} for explanation of initial states and phases
    of executions. The process of resolving the initial states in a
    future time is also known as an integration. A complete integration

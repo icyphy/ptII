@@ -67,7 +67,7 @@ public class CIActor extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Ask the dirctor to schedule this actor to fire.
+    /** Ask the director to schedule this actor to fire.
      */
     public void enableActor() {
         _director = (CIDirector) getDirector();

@@ -191,7 +191,7 @@ public class Chop extends SDFTransformer {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         // Note: it is important that none of these sections depend on
-        // eachother.
+        // each other.
         if (attribute == numberToRead) {
             _numberToRead = ((IntToken) numberToRead.getToken()).intValue();
 
