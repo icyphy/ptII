@@ -451,8 +451,6 @@ src_jar: #$(PTII_SRC)
 # it is _inside_ ptII$(VERSION) so that when the installer unjars it
 # the files come out in the right location
 
-# Location of the jar binary.  Cygwin /bin/jar is broken.
-JAR=c:/j2sdk1.4.2_06/bin/jar
 HYVISUAL_SRC_JAR = hyvisual$(VERSION).src.jar
 
 # The Jar file that we create.
