@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="AssemblyLine" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-alpha">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="50">
@@ -10,13 +10,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 35.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={5, 0, 1019, 738}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 0, 745, 758}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[804, 620]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[530, 640]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{402.0, 310.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{265.0, 320.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This demo shows how to use the NonInterruptibleTimer actor and Pulse actor to&#10;model an assembly line.&#10;&#10;The Clock actor (Jobs) generates a set of jobs at different times, where no two&#10;jobs happen at the same time. The Pulse actor (ServiceTimes) takes a job &#10;request and produces the service time of the job request. &#10;&#10;The NonInterruptibleTimer actor (Station) takes the service time and sets a&#10;timer. The timer goes off when the service time expires. The timer can not&#10;be interrupted to respond to another input when it is running. &#10;&#10;A job is passed along all three stations. The Plotter monitors the outputs&#10;from Stations plots the times when jobs leaves the station.&#10;&#10;This model is based on the assembly line example described in &quot;Distributed &#10;Discrete-Event Simulation&quot; by Jayadev Misra, Computer Serveys, Vol. 18, &#10;No. 1, March 1986.">
