@@ -62,6 +62,8 @@ to the newsgroups etc.  See also main.htm
 	discrete-event modeling,
 <li> <a href="../ptolemy/domains/dde/doc/body.htm" target="body">DDE</a>:
 	distributed discrete events (experimental),
+<li> <a href="../ptolemy/domains/ddf/doc/body.htm" target="body">DDF</a>:
+	dynamic dataflow
 <li> <a href="../ptolemy/domains/dt/doc/body.htm" target="body">DT</a>:
 	discrete time,
 <li> <a href="../ptolemy/domains/fsm/doc/body.htm" target="body">FSM</a>:
@@ -71,6 +73,8 @@ to the newsgroups etc.  See also main.htm
 <li> <a href="../ptolemy/domains/gr/doc/body.htm" target="body">GR</a>:
 	3-D graphics (experimental),
  <!-- petrinet ??-->
+<li> <a href="../ptolemy/domains/hdf/doc/body.htm" target="body">HDF</a>:
+	heterochronous dataflow
 <li> <a href="../ptolemy/domains/pn/doc/body.htm" target="body">PN</a>:
 	process networks,
 <li> <a href="../ptolemy/domains/psdf/doc/body.htm" target="body">PSDF</a>:
@@ -89,13 +93,13 @@ to the newsgroups etc.  See also main.htm
 <h2>Platforms</h2>
 
 The core of Ptolemy II 5.0 is 100% Java, so it should work on any
-platform that has JDK 1.4 or later
+platform that has JDK 1.4 or later.
 
- <p>We developed Ptolemy II 5.0 under Solaris 8 and Windows XP sp1 
-and with JDK1.4.2_04
+ <p>We developed Ptolemy II 5.0 under Solaris 8 and Windows XP sp2
+and with JDK1.4.2_08.
 
 <p>Ptolemy II 5.0 will not compile under Java 1.3 because we use the
-java.lang.URI class, which is present only in Java 1.4 and later
+java.lang.URI class, which is present only in Java 1.4 and later.
 
 <p>There are various problems with Java 1.5.0-beta:
 <menu>
@@ -110,7 +114,7 @@ under IBM JDK 1.5.0 and IBM JDK 1.4.1
 
 <!--whatsnew-->
 <h2>Major Features that are new in Ptolemy II 5.0 </h2>
-Below are new features that were not present in Ptolemy II 3.x
+Below are new features that were not present in Ptolemy II 4.x
 <ul>
 <li>
 <a href="../ptolemy/domains/wireless/demo/WirelessSoundDetection/WirelessSoundDetection.htm">
@@ -983,17 +987,10 @@ and continue with the start up.
 <li> Applet issues:
 	<ul>
 
-	<li> The GR applets do not work well under Java 1.5.0-beta.
-	Use 1.4.2-04 instead.
-
-        <li> The SDF TrellisDecoder and ViterbiDecoder applets sometimes do
-	not properly display the result values.
-	
 	<li> We've experienced problems with the browser freezing
 	when between applets.  What happens is that the previous
 	applet gets a InterruptedException and pops up a modal dialog
 	box, which freezed the browser.  We are working on a solution.
-
 
 	<li> Applets do not correctly display the TextAttribute,
 	DocumentationAttribute or the TM "Show schedule" icon.
@@ -1190,10 +1187,6 @@ lax.nl.java.option.additional=-Xdebug -Xrunjdwp:transport=dt_shmem,server=y,susp
         <li> HTVQ demo: The displays do not go away when
 	the demo is exited.
 
-        <li> GR demos: The ViewScreen actor does not go away when
-	the demo is exited.
-
-
 	<li> GR demos: Under Java 3D 1.3.1-beta, the ViewScreen
 	actor may display a black image when a second GR demo is run.
 	 <br>The workaround is to install Java 3D 1.2.1_04.
@@ -1241,6 +1234,7 @@ in future releases.  There are several known problems:
 <h3>Limitations in the Actor Libraries</h3>
 <ul>
 <li>The actor library is far from complete.
+
 <li>The Expression actor does not properly propagate type constraints in
 an expression-dependent fashion. It works correctly for double-valued
 expressions of double-valued inputs.
@@ -1272,9 +1266,8 @@ he set them by hand:
 </pre>
 he was able to get farther with the recompilation of the Matlab interface.
 
-<li>Matlab interface has problems work with gcc-3.3
-Under Windows, the Matlab interface has problems at runtime with gcc-3.3.
-<br>Under Windows, we recommend using gcc-3.2.
+<li>Under Windows, the Matlab interface has problems at runtime with gcc-3.3.
+<br>Under Windows, we recommend using gcc-3.2, or Microsoft Visual C.
 
 <li> The actor.lib.comm.SerialComm actor requires that Javacomm is installed
 
@@ -1347,7 +1340,6 @@ Below are some of the limitations of Vergil, the Ptolemy II Graphical
 User Interface.
 
 <ul>
-
 
 <li> The labeling of ports gets messed up if you change cardinality.
 
@@ -1493,7 +1485,6 @@ Code Generation limitations are covered on the
 <h3>Missing Domains</h3>
 <ul>
 <li>Boolean and integer dataflow.
-<li>Dynamic dataflow
 </ul>
  <p>For limitations discovered after the release, see the
 <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII5.0/#in_browser">Ptolemy II 5.0 website</a>
