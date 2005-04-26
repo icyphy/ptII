@@ -46,10 +46,10 @@ echo "Shallow codegen test results:" >> $mailmsg
 egrep '^Failed:' $GENDIR/logs/remote5.out >> $mailmsg
 echo "" >> $mailmsg
 echo "To get the copernicus/java logs, do:" >> $mailmsg
-echo "    scp maury:/users/ptII/adm/$GENVERSION/logs/remote4.out /tmp" >> $mailmsg
+echo "    scp maury:/users/ptII/adm/$GENVERSION/logs/remote4.out.old /tmp" >> $mailmsg
 echo "" >> $mailmsg
 echo "To get the copernicus/shallow logs, do:" >> $mailmsg
-echo "    scp maury:/users/ptII/adm/$GENVERSION/logs/remote5.out /tmp" >> $mailmsg
+echo "    scp maury:/users/ptII/adm/$GENVERSION/logs/remote5.out.old /tmp" >> $mailmsg
 
 echo "" >> $mailmsg
 echo "The output below consists of the names of the models"  >> $mailmsg
