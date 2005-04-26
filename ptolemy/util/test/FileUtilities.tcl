@@ -115,7 +115,44 @@ test FileUtilities-1.4 {binaryCopyURLToFile same file} {
 ######################################################################
 ####
 #
-test FileUtilities-2.1 {nameToURL} {
+test FileUtilities-2.1 {nameToFile: null and "" name} {
+    set file1 [java::call ptolemy.util.FileUtilities nameToFile \
+	[java::null] [java::null]]
+    set file2 [java::call ptolemy.util.FileUtilities nameToFile \
+	"" [java::null]]
+    list [java::isnull $file1] [java::isnull $file2]
+} {1 1}
+
+######################################################################
+####
+#
+test FileUtilities-2.2 {nameToFile: open a non-absolute file with a null base} {
+    set file1 [java::call ptolemy.util.FileUtilities nameToFile \
+	makefile [java::null]]
+    list [$file1 toString]
+} {makefile}
+
+######################################################################
+####
+#
+test FileUtilities-2.3 {nameToFile: open a non-absolute file with a non-null base} {
+    set baseURI [java::new java.net.URI .]
+    set file1 [java::call ptolemy.util.FileUtilities nameToFile \
+	makefile $baseURI]
+    list [$file1 toString]
+} {makefile}
+
+test FileUtilities-2.5 {nameToFile: open a non-absolute file with different base} {
+    set baseURI [java::new java.net.URI file:///. ]
+    set file1 [java::call ptolemy.util.FileUtilities nameToFile \
+	makefile $baseURI]
+    list [$file1 toString]
+} {makefile}
+
+######################################################################
+####
+#
+test FileUtilities-8.1 {nameToURL} {
     set url1 [java::call ptolemy.util.FileUtilities nameToURL \
 	"xxxxxxCLASSPATHxxxxxx/ptolemy/util/FileUtilities.java" \
 	[java::null] [java::null]]
