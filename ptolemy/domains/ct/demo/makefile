@@ -60,6 +60,7 @@ PTCLASSJAR =
 # We don't include Corba/Corba.jar because we don't ship Corba.
 PTCLASSALLJARS = \
 	BouncingBall/BouncingBall.jar \
+	Brownian/Brownian.jar \
 	CarTracking/CarTracking.jar \
 	ComparedClocks/ComparedClocks.jar \
 	ContinuousClock/ContinuousClock.jar \
