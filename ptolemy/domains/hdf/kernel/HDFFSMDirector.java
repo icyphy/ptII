@@ -73,6 +73,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
    @author Ye Zhou and Brian K. Vogel
    @version $Id$
+   @since Ptolemy II 5.0
    @Pt.ProposedRating Red (zhouye)
    @Pt.AcceptedRating Red (cxh)
    @see MultirateFSMDirector
