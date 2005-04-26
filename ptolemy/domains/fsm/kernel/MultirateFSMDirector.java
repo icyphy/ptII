@@ -509,11 +509,7 @@ public class MultirateFSMDirector extends FSMDirector {
         }
 
         boolean transferred = false;
-
-        // The receivers of the current refinement that receive data
-        // from "port."
         Receiver[][] insideReceivers = _currentLocalReceivers(port);
-
         int rate = DFUtilities.getTokenConsumptionRate(port);
 
         for (int i = 0; i < port.getWidth(); i++) {
