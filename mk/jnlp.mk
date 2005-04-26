@@ -242,6 +242,7 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/actor/lib/joystick/joystick.jar \
 	ptolemy/actor/lib/jxta/jxta.jar \
 	ptolemy/actor/lib/x10/x10.jar \
+	vendors/misc/joystick/Joystick.jar \
 	ptolemy/actor/lib/x10/demo/demo.jar \
 	vendors/misc/x10/tjx10p-12/lib/x10.jar \
 	lib/ptCal.jar \
