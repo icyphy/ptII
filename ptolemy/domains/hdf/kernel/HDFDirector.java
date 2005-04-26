@@ -59,13 +59,12 @@ import java.util.TreeMap;
 //// HDFDirector
 
 /**
-   The heterochronous dataflow (HDF) domain is an optimization of the
+   The heterochronous dataflow (HDF) domain is an extension of the
    SDFDirector and implements the HDF model of computation [1]. The HDF
    model of computation is a generalization of synchronous dataflow (SDF).
    In SDF, the set of port rates of an actor (called rate signatures) are
    constant. In HDF, however, rate signatures are allowed to change between
-   iterations of the HDF schedule. Within each state, the HDF model behaves
-   like an SDF model.
+   iterations of the HDF schedule.
    <p>
    This director is often used with HDFFSMDirector. The HDFFSMDirector
    governs the execution of a modal model. Rate signature changes can
@@ -73,14 +72,14 @@ import java.util.TreeMap;
    refinement infers a set of rate signatures.
    <p>
    This director recomputes the schedules dynamically. Schedules are
-   cached labeled by their corresponding rate signatures, with the most
+   cached and labeled by their corresponding rate signatures, with the most
    recently used at the end of the queue. When a state is revisited,
    the schedule identified by its rate signatures in the cache is used.
    Therefore, we do not need to recompute the schedule.
    The size of the cache can be set by the <i>scheduleCacheSize</i>
    parameter. The default value of this parameter is 100. If the cache
    is full, the least recently used schedule (at the beginning of the
-   cache) is discareded.
+   cache) is discarded.
    <p>
    <b>References</b>
    <p>
@@ -168,13 +167,14 @@ public class HDFDirector extends SDFDirector {
      *  For efficiency, this method maintains a schedule cache and
      *  will attempt to return a cached version of the schedule.
      *  If the cache does not contain the schedule for the current
-     *  hdf graph, then the schedule will be computed by calling
+     *  HDF graph, then the schedule will be computed by calling
      *  the getSchedule() method of the SDFScheduler.
      *  <p>
-     *  The schedule cache uses a least-recently-used replacement
-     *  policy. The size of the cache is specified by the
+     *  The schedule cache uses a least-recently-used replacement policy,
+     *  which means if the cache is full, the least-recently-used schedule
+     *  will be discarded. The size of the cache is specified by the
      *  scheduleCacheSize parameter. The default cache size is 100.
-     *  @return The Schedule for the current hdf graph.
+     *  @return The Schedule for the current HDF graph.
      *  @exception IllegalActionException If there is a problem getting
      *   the schedule.
      */
@@ -292,8 +292,9 @@ public class HDFDirector extends SDFDirector {
         // Get schedule here, no matter if it is the top level.
         // This is necessary when HDF is constructed in hierarchy.
         // The sub-controller may change modes but the upper controller
-        // will not be aware of it. Use SDF instead of HDF where
-        // everything has fixed port rates. This is more efficient.
+        // will not be aware of it. Use SDF with MultirateFSMDirector
+        // instead of HDF where everything has fixed port rates.
+        // This is more efficient.
         CompositeActor container = (CompositeActor) getContainer();
         ChangeRequest request = new ChangeRequest(this, "reschedule") {
                 protected void _execute() throws KernelException {
@@ -312,8 +313,7 @@ public class HDFDirector extends SDFDirector {
      *  preinitialize throws it.
      */
     public void preinitialize() throws IllegalActionException {
-        // FIXME
-        //_scheduleKeyList.clear();
+        _scheduleKeyList.clear();
         _mostRecentRates = "";
         super.preinitialize();
     }
