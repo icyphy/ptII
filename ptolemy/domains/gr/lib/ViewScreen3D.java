@@ -485,16 +485,18 @@ public class ViewScreen3D extends GRActor3D implements Placeable,
 
                     _frame.validate();
                     _frame.setSize(horizontalDimension + 50, verticalDimension);
-                    _container = _frame.getContentPane();
                 } catch (KernelException ex) {
                     throw new InternalErrorException(ex);
                 }
             }
         }
+        if (_container == null) {
+            _container = _frame.getContentPane();            
+        }
 
         // Lastly drop the canvas in the frame.
-        if (_canvas != null) {
-            _container.remove(_canvas);
+        if (_canvas != null && _container != null) {
+           _container.remove(_canvas);
         }
 
         _canvas = _newCanvas();
