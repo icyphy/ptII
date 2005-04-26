@@ -101,6 +101,27 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Prepare to register a block. If the branch object specified as
+     *  a parameter is non-null then register the block with the branch.
+     *  If the branch object specified as a parameter is null then
+     *  register the block with the local director.
+     *  @param branch The Branch managing execution of this method.
+     */
+    public void prepareToBlock(Branch branch) {
+        // NOTE: This used to be synchronized on this object, but
+        // since it calls director methods that are synchronized,
+        // that would cause deadlock.
+        synchronized (_director) {
+            if (branch != null) {
+                branch.registerReceiverBlocked(this);
+                _otherBranch = branch;
+            } else {
+                _director._actorBlocked(this);
+                _otherBranch = branch;
+            }
+        }
+    }
+
     /** Set the container. This overrides the base class to record
      *  the director.
      *  @param port The container.
@@ -135,6 +156,27 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
         _director = (PNDirector) director;
     }
 
+    /** Unblock this receiver and register this new state with
+     *  either the monitoring branch or the local director. If
+     *  there is no blocked branch waiting, then register the
+     *  new state with the local director; otherwise, register
+     *  the new state with the blocked branch.
+     */
+    public void wakeUpBlockedPartner() {
+        // NOTE: This method used to be synchronized on this
+        // receiver, but since it calls synchronized methods in
+        // the director, that can cause deadlock.
+        synchronized (_director) {
+            if (_otherBranch != null) {
+                _otherBranch.registerReceiverUnBlocked(this);
+            } else {
+                _director._actorUnBlocked(this);
+            }
+
+            _director.notifyAll();
+        }
+    }
+
     /** Get a token from this receiver. If the receiver is empty then
      *  block until a token becomes available. Use the local director
      *  to manage blocking reads that occur. If this receiver is
@@ -164,54 +206,41 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  @return The oldest Token read from the queue
      */
     public Token get(Branch branch) {
-
+        Workspace workspace = getContainer().workspace();
         Token result = null;
 
         // NOTE: This method used to be synchronized on this
         // receiver, but since it calls synchronized methods in
         // the director, that can cause deadlock.
-        synchronized(_director) {
-            // OK, I'm blocked on read.
-            if(null == branch) {
-                _director._actorBlocked(this, true);
-                _readNumBlocked++;
-            } else {
-                branch.registerReceiverBlocked(this);
-            }
+        synchronized (_director) {
+            while (!_terminate && !super.hasToken()) {
+                _readBlocked = true;
+                prepareToBlock(branch);
 
-            while(!_terminate) {
-                // Try to read.
-                if(super.hasToken()) {
-                    result = super.get();
-                    if(null == branch) {
-                        if(_readPending) {
-                            _readPending = false;
-                        } else {
-                            _readNumBlocked--;
-                            _director._actorUnBlocked(this, true);
-                        }
-                    } else {
-                        branch.registerReceiverUnBlocked(this);
+                while (_readBlocked && !_terminate) {
+                    try {
+                        workspace.wait(_director);
+                    } catch (InterruptedException e) {
+                        _terminate = true;
+                        break;
                     }
-                    _director.notifyAll();
-                    setWritePending();
-                    break;
-                }
-
-                // Wait to try again.
-                try {
-                    _director.wait();
-                } catch(InterruptedException e) {
-                    _terminate = true;
                 }
             }
 
-            if(_terminate) {
+            if (_terminate) {
                 throw new TerminateProcessException("");
-            }
-        }
+            } else {
+                result = super.get();
 
-        return result;
+                //Check if pending write to the Queue;
+                if (_writeBlocked) {
+                    wakeUpBlockedPartner();
+                    _writeBlocked = false;
+                }
+            }
+
+            return result;
+        }
     }
 
     /** Return true, since a channel in the Kahn process networks
@@ -350,7 +379,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
         // receiver, but since it is called by synchronized methods in
         // the director, that can cause deadlock.
         synchronized (_director) {
-            return 0 < _readNumBlocked;
+            return _readBlocked;
         }
     }
 
@@ -364,7 +393,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
         // receiver, but since it is called by synchronized methods in
         // the director, that can cause deadlock.
         synchronized (_director) {
-            return 0 < _writeNumBlocked;
+            return _writeBlocked;
         }
     }
 
@@ -398,48 +427,37 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  @param token The token to be put in the receiver.
      */
     public void put(Token token, Branch branch) {
+        Workspace workspace = getContainer().workspace();
 
         // NOTE: This used to synchronize on this, but since it calls
         // director methods that are synchronized on the director,
         // this can cause deadlock.
-        synchronized(_director) {
-            // OK, I'm blocked on write.
-            if(null == branch) {
-                _director._actorBlocked(this, false);
-                _writeNumBlocked++;
-            } else {
-                branch.registerReceiverBlocked(this);
-            }
+        synchronized (_director) {
+            while (!_terminate && !super.hasRoom()) {
+                _writeBlocked = true;
+                prepareToBlock(branch);
 
-            while(!_terminate) {
-                // Try to write.
-                if(super.hasRoom()) {
-                    super.put(token);
-                    if(null == branch) {
-                        if(_writePending) {
-                            _writePending = false;
-                        } else {
-                            _writeNumBlocked--;
-                            _director._actorUnBlocked(this, false);
-                        }
-                    } else {
-                        branch.registerReceiverUnBlocked(this);
+                while (_writeBlocked && !_terminate) {
+                    try {
+                        workspace.wait(_director);
+                    } catch (InterruptedException e) {
+                        _terminate = true;
+                        break;
                     }
-                    _director.notifyAll();
-                    setReadPending();
-                    break;
-                }
-
-                // Wait to try again.
-                try {
-                    _director.wait();
-                } catch(InterruptedException e) {
-                    _terminate = true;
                 }
             }
 
             if (_terminate) {
                 throw new TerminateProcessException("");
+            } else {
+                //token can be put in the queue;
+                super.put(token);
+
+                //Check if pending write to the Queue;
+                if (_readBlocked) {
+                    wakeUpBlockedPartner();
+                    _readBlocked = false;
+                }
             }
         }
     }
@@ -447,43 +465,37 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
     /** Reset the state variables in the receiver.
      */
     public void reset() {
-        _readPending = false;
-        _writePending = false;
-        _readNumBlocked = 0;
-        _writeNumBlocked = 0;
+        _readBlocked = false;
+        _writeBlocked = false;
         _terminate = false;
         _boundaryDetector.reset();
     }
 
     /** Set a state flag indicating that there is a process blocked while
      *  trying to read from this receiver.
+     *  @param readPending true if the calling process is blocking on a
+     *  read, false otherwise.
      */
-    public void setReadPending() {
+    public void setReadPending(boolean readPending) {
         // NOTE: This method used to be synchronized on this
         // receiver, but since it calls synchronized methods in
         // the director, that can cause deadlock.
         synchronized (_director) {
-            if(!_readPending && 0 < _readNumBlocked) {
-                _readPending = true;
-                _readNumBlocked--;
-                _director._actorUnBlocked(this, true);
-            }
+            _readBlocked = readPending;
         }
     }
 
     /** Set a state flag indicating that there is a process blocked
      *  (write-blocked) while trying to write to the receiver.
+     *  @param writePending true if the calling process is blocking on
+     *  a write, false otherwise.
      */
-    public void setWritePending() {
+    public void setWritePending(boolean writePending) {
         // NOTE: This method used to be synchronized on this
         // receiver, but since it calls synchronized methods in
         // the director, that can cause deadlock.
         synchronized (_director) {
-            if(!_writePending && 0 < _writeNumBlocked) {
-                _writePending = true;
-                _writeNumBlocked--;
-                _director._actorUnBlocked(this, false);
-            }
+            _writeBlocked = writePending;
         }
     }
 
@@ -506,14 +518,9 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
 
     /** The director in charge of this receiver. */
     private PNDirector _director;
-
-    private boolean _readPending = false;
-    private boolean _writePending = false;
-    private int _readNumBlocked = 0;
-    private int _writeNumBlocked = 0;
-
+    private boolean _readBlocked = false;
+    private boolean _writeBlocked = false;
     private boolean _terminate = false;
-
     private Branch _otherBranch = null;
     private BoundaryDetector _boundaryDetector;
 }
