@@ -176,7 +176,12 @@ public class FileUtilities {
             // Try to resolve the base directory.
             if (base != null) {
                 URI newURI = base.resolve(name);
-                file = new File(newURI);
+                String urlString = newURI.toString();
+                if (urlString.indexOf("file:/") != -1) {
+                    urlString = urlString.substring(6); //Removing 'file:/'
+                }
+                file = new File(StringUtilities.substitute(urlString,
+                                        "%20", " "));
             }
         }
 
@@ -308,12 +313,16 @@ public class FileUtilities {
                     }
                 }
 
+                String urlString = newURI.toString();
                 try {
-                    return newURI.toURL();
+                    // Adding another '/' for remote execution.
+                    urlString = urlString.substring(0,6) + "/"
+                        + urlString.substring(6);
+                    return new URL(urlString);
                 } catch (Exception ex3) {
                     IOException io = new IOException(
-                            "Problem with URI format in '" + name + "'. "
-                            + "This can happen if the '" + name
+                            "Problem with URI format in '" + urlString + "'. "
+                            + "This can happen if the '" + urlString
                             + "' is not absolute"
                             + " and is not present relative to the directory"
                             + " in which the specified model was read"
