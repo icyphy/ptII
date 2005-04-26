@@ -81,16 +81,16 @@ import ptolemy.kernel.util.NameDuplicationException;
 */
 public class HDFFSMDirector extends MultirateFSMDirector {
     /** Construct a director in the given container with the given name.
-     *  If the container argument must not be null, or a
+     *  The container argument must not be null, or a
      *  NullPointerException will be thrown.
      *  If the name argument is null, then the name is set to the
      *  empty string. Increment the version number of the workspace.
      *  @param container Container of the director.
      *  @param name Name of this director.
-     *  @exception IllegalActionException If the director is not compatible
-     *  with the specified container.
+     *  @exception IllegalActionException If the name has a period in it, or
+     *   the director is not compatible with the specified container.
      *  @exception NameDuplicationException If the container is not a
-     *  CompositeActor and the name collides with an entity in the container.
+     *   CompositeActor and the name collides with an entity in the container.
      */
     public HDFFSMDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -100,7 +100,7 @@ public class HDFFSMDirector extends MultirateFSMDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Fire the modal model
+    /** Fire the modal model.
      *  If the refinement of the current state of the mode controller
      *  is ready to fire, then fire the current refinement. Overrides
      *  the base class method by sending a request to choose a
@@ -117,7 +117,6 @@ public class HDFFSMDirector extends MultirateFSMDirector {
         Transition transition;
         State currentState = controller.currentState();
 
-        //_lastIntransientState = currentState;
         Actor[] actors = currentState.getRefinement();
 
         // NOTE: Paranoid coding.
@@ -134,8 +133,6 @@ public class HDFFSMDirector extends MultirateFSMDirector {
 
             if (actors[i].prefire()) {
                 actors[i].fire();
-
-                //_refinementPostfire = actors[i].postfire();
                 _refinementPostfire = actors[i].postfire();
             }
         }
@@ -149,7 +146,7 @@ public class HDFFSMDirector extends MultirateFSMDirector {
                             throws KernelException, IllegalActionException {
                         FSMActor controller = getController();
                         State currentState = controller.currentState();
-                        chooseNonTransientTransition(currentState);
+                        chooseNextNonTransientState(currentState);
                     }
                 };
 
@@ -166,8 +163,6 @@ public class HDFFSMDirector extends MultirateFSMDirector {
      *  transitions between toplevel iterations.
      */
     public Entity getContext() {
-        // Set the flag indicating whether we're in an SDF model or
-        // not.
         try {
             _getEnclosingDomainActor();
         } catch (IllegalActionException ex) {
