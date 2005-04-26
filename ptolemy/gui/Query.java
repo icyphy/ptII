@@ -275,12 +275,13 @@ public class Query extends JPanel {
         _addPair(name, lbl, displayField, displayField);
     }
 
-    /** Create a ColorChooser
+    /** Create a ColorChooser.
      *  @param name The name used to identify the entry (when calling get).
      *  @param label The label to attach to the entry.
      *  @param defaultColor The default color to use.
      */
-    public void addColorChooser(String name, String label, String defaultColor) {
+    public void addColorChooser(String name, String label,
+            String defaultColor) {
         JLabel lbl = new JLabel(label + ": ");
         lbl.setBackground(_background);
 
@@ -339,7 +340,7 @@ public class Query extends JPanel {
                 false, background, foreground);
     }
 
-    /** Create a FileChooser
+    /** Create a FileChooser.
      *  @param name The name used to identify the entry (when calling get).
      *  @param label The label to attach to the entry.
      *  @param defaultName The default file name to use.
@@ -476,7 +477,7 @@ public class Query extends JPanel {
         entryBox.addFocusListener(new QueryFocusListener(name));
     }
 
-    /*  Create a text area.
+    /**  Create a text area.
      *  @param name The name used to identify the entry (when calling get).
      *  @param label The label to attach to the entry.
      *  @param theValues The value of this text area
@@ -486,7 +487,7 @@ public class Query extends JPanel {
                 _width);
     }
 
-    /*  Create a text area.
+    /**  Create a text area.
      *  @param name The name used to identify the entry (when calling get).
      *  @param label The label to attach to the entry.
      *  @param theValues The value of this text area.
@@ -499,7 +500,8 @@ public class Query extends JPanel {
                 _width);
     }
 
-    /*  Create a text area with the specified height and width (in characters).
+    /**  Create a text area with the specified height and width (in
+     *  characters).
      *  @param name The name used to identify the entry (when calling get).
      *  @param label The label to attach to the entry.
      *  @param theValues The value of this text area.
@@ -535,6 +537,7 @@ public class Query extends JPanel {
      *  of the entry has changed since the last notification.
      *  If the listener has already been added, then do nothing.
      *  @param listener The listener to add.
+     *  @see #removeQueryListener(listener)
      */
     public void addQueryListener(QueryListener listener) {
         if (_listeners == null) {
@@ -682,6 +685,7 @@ public class Query extends JPanel {
     /** Get the current value in the entry with the given name
      *  and return as a boolean.  If the entry is not a checkbox,
      *  then throw an exception.
+     *  @param name The name of the entry.
      *  @deprecated Use getBooleanValue(String name) instead.
      *  @return The state of the checkbox.
      *  @exception NoSuchElementException If there is no item with the
@@ -700,6 +704,7 @@ public class Query extends JPanel {
      *  and return as a double value.  If the entry is not a line,
      *  then throw an exception.  If the value of the entry is not
      *  a double, then throw an exception.
+     *  @param name The name of the entry.
      *  @deprecated Use getDoubleValue(String name) instead.
      *  @return The value currently in the entry as a double.
      *  @exception NoSuchElementException If there is no item with the
@@ -721,6 +726,7 @@ public class Query extends JPanel {
     /** Get the current value in the entry with the given name
      *  and return as a boolean.  If the entry is not a checkbox,
      *  then throw an exception.
+     *  @param name The name of the entry.
      *  @return The state of the checkbox.
      *  @exception NoSuchElementException If there is no item with the
      *   specified name.  Note that this is a runtime exception, so it
@@ -752,6 +758,7 @@ public class Query extends JPanel {
      *  <p>If the entry is a password field, then it is recommended for
      *  strong security that each element of the array be set to 0
      *  after use.
+     *  @param name The name of the entry.
      *  @return The state of the entry
      *  @exception NoSuchElementException If there is no item with the
      *   specified name.  Note that this is a runtime exception, so it
@@ -782,6 +789,7 @@ public class Query extends JPanel {
      *  and return as a double value.  If the entry is not a line,
      *  then throw an exception.  If the value of the entry is not
      *  a double, then throw an exception.
+     *  @param name The name of the entry.
      *  @return The value currently in the entry as a double.
      *  @exception NoSuchElementException If there is no item with the
      *   specified name.  Note that this is a runtime exception, so it
@@ -812,9 +820,10 @@ public class Query extends JPanel {
         } else if (result instanceof JTextField) {
             return (new Double(((JTextField) result).getText())).doubleValue();
         } else {
+
             throw new IllegalArgumentException("Item named \"" + name
-                    + "\" is not a text line, and hence cannot be converted to "
-                    + "a double value.");
+                    + "\" is not a text line, and hence cannot be converted "
+                    + "to a double value.");
         }
     }
 
@@ -823,6 +832,7 @@ public class Query extends JPanel {
      *  choice, or slider, then throw an exception.
      *  If it is a choice or radio button, then return the
      *  index of the first selected item.
+     *  @param name The name of the entry.
      *  @return The value currently in the entry as an integer.
      *  @exception NoSuchElementException If there is no item with the
      *   specified name.  Note that this is a runtime exception, so it
@@ -899,6 +909,7 @@ public class Query extends JPanel {
      *  boxes created in using addLine().  The preferred width is set
      *  using setTextWidth().
      *  @return The preferred width of an entry box in characters.
+     *  @see #setTextWidth(int)
      */
     public int getTextWidth() {
         return _width;
@@ -921,6 +932,7 @@ public class Query extends JPanel {
      *  thread, since it needs to query to UI widgets for their current
      *  values.  If it is called from another thread, there is no
      *  assurance that the value returned will be the current value.
+     *  @param name The name of the entry.
      *  @return The value currently in the entry as a String.
      *  @exception NoSuchElementException If there is no item with the
      *   specified name.  Note that this is a runtime exception, so it
@@ -994,6 +1006,7 @@ public class Query extends JPanel {
      *  choice, or slider, then throw an exception.
      *  If it is a choice or radio button, then return the
      *  index of the first selected item.
+     *  @param name The name of the entry.
      *  @deprecated Use getIntValue(String name) instead.
      *  @return The value currently in the entry as an integer.
      *  @exception NoSuchElementException If there is no item with the
@@ -1027,6 +1040,7 @@ public class Query extends JPanel {
     /** Remove a listener.  If the listener has not been added, then
      *  do nothing.
      *  @param listener The listener to remove.
+     *  @see #addQueryListener(QueryListener)
      */
     public void removeQueryListener(QueryListener listener) {
         if (_listeners == null) {
@@ -1148,6 +1162,8 @@ public class Query extends JPanel {
     /** Set the current value in the entry with the given name.
      *  If the entry is not a checkbox, then throw an exception.
      *  Notify listeners that the value has changed.
+     *  @param name The name of the entry.
+     *  @param value  The new value of the entry.
      *  @exception NoSuchElementException If there is no item with the
      *   specified name.  Note that this is a runtime exception, so it
      *   need not be declared explicitly.
@@ -1359,6 +1375,7 @@ public class Query extends JPanel {
      *  in using addLine().  If this is called multiple times, then
      *  it only affects subsequent calls.
      *  @param characters The preferred width.
+     *  @param #getTextWidth()
      */
     public void setTextWidth(int characters) {
         _width = characters;
@@ -1382,6 +1399,7 @@ public class Query extends JPanel {
      *  thread, since it needs to query to UI widgets for their current
      *  values.  If it is called from another thread, there is no
      *  assurance that the value returned will be the current value.
+     *  @param name The name of the entry.
      *  @deprecated Use getStringValue(String name) instead.
      *  @return The value currently in the entry as a String.
      *  @exception NoSuchElementException If there is no item with the

@@ -195,6 +195,7 @@ public class BasicJApplet extends JApplet {
      *  This is protected so that derived classes can find out what the
      *  background color is. Derived classes may wish to know the
      *  color so they can match it in some of their components.
+     *  @return The background color.
      *  @deprecated Use the public method getBackground() instead.
      */
     protected Color _getBackground() {
@@ -220,7 +221,7 @@ public class BasicJApplet extends JApplet {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    /*  The background color as set by the "background" applet parameter.
+    /** The background color as set by the "background" applet parameter.
      *  This is protected so that derived classes can find out what the
      *  background color is. Derived classes may wish to know the
      *  color so they can match it in some of their components.

@@ -56,7 +56,7 @@ import java.util.List;
     @Pt.AcceptedRating Red (cxh)
 */
 public class StreamExec {
-    /** Create a StreamExec */
+    /** Create a StreamExec. */
     public StreamExec() {
         // Does nothing?
     }
@@ -79,6 +79,7 @@ public class StreamExec {
     /** Return the value of the Process.  Typically the return value
      *  of this method is used to have the caller wait for the process
      *  to exit.
+     *  @return The value of the process.
      */
     public Process getProcess() {
         return _process;
@@ -89,6 +90,7 @@ public class StreamExec {
      *  <pre>
      *        java -classpath $PTII ptolemy.gui.StreamExec
      *  </pre>
+     *  @param args Currently ignored.
      */
     public static void main(String[] args) {
         List execCommands = new LinkedList();
@@ -103,7 +105,9 @@ public class StreamExec {
         exec.start();
     }
 
-    /** Set the list of commands. */
+    /** Set the list of commands.
+     *  @param commands A list of Strings, where each element is a command.
+     */
     public void setCommands(List commands) {
         _commands = commands;
     }
@@ -119,6 +123,7 @@ public class StreamExec {
      *  append to a StringBuffer.  @link{JTextAreaExec} appends to a
      *  JTextArea. The output automatically gets a trailing newline
      *  appended.
+     *  @param text The text to append to stdandard error.
      */
     public void stderr(final String text) {
         System.err.println(text);
@@ -129,6 +134,7 @@ public class StreamExec {
      *  append to a StringBuffer.  @link{JTextAreaExec} appends to a
      *  JTextArea.
      *  The output automatically gets a trailing newline appended.
+     *  @param text The text to append to standard out.
      */
     public void stdout(final String text) {
         System.out.println(text);
@@ -137,6 +143,7 @@ public class StreamExec {
 
     /** Set the text of the status bar.  In this base class, do
      *  nothing, derived classes may update a status bar.
+     *  @param text The text with which the status bar is updated.
      */
     public void updateStatusBar(final String text) {
     }

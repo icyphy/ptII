@@ -175,6 +175,7 @@ public class ShellTextArea extends JPanel {
      *  <pre>
      *        java -classpath $PTII ptolemy.gui.ShellTextArea
      *  </pre>
+     *  @param args Currently ignored.
      */
     public static void main(String[] args) {
         JFrame jFrame = new JFrame("ShellTextArea Example");
@@ -193,6 +194,9 @@ public class ShellTextArea extends JPanel {
     }
 
     /** Replace a range in the JTextArea.
+     *  @param text The text with which the JTextArea is updated.
+     *  @param start The start index.
+     *  @param end The end index.
      */
     public void replaceRangeJTextArea(final String text, final int start,
             final int end) {

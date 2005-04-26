@@ -280,26 +280,28 @@ public class ComponentDialog extends JDialog {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-    // The label of the button pushed to dismiss the dialog.
+
+    /** The label of the button pushed to dismiss the dialog. */
     protected String _buttonPressed = "";
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    // Button labels.
+
+    /** Button labels. */
     private static String[] _buttons;
 
-    // Default button labels.
+    /** Default button labels. */
     private static String[] _defaultButtons = {
         "OK",
         "Cancel"
     };
 
-    // Indicator that we have notified of window closing.
+    /** Indicator that we have notified of window closing. */
     private boolean _doneHandleClosing = false;
 
-    // The pane with the buttons.
+    /** The pane with the buttons. */
     private JOptionPane _optionPane;
 
-    // The container for messages.
+    /** The container for messages. */
     private JTextArea _messageArea;
 }

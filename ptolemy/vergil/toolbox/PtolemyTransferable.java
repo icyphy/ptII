@@ -78,6 +78,7 @@ public class PtolemyTransferable implements Transferable, Serializable {
      * Add the given named object to the objects contained in this
      * transferable.  If the object already exists in this transferable,
      * then do not add it again.
+     * @param object The object to be added to this transferable. 
      */
     public void addObject(NamedObj object) {
         if (!_objectList.contains(object)) {
@@ -87,6 +88,7 @@ public class PtolemyTransferable implements Transferable, Serializable {
 
     /**
      * Return the data flavors that this transferable supports.
+     * @return The data flavors.
      */
     public synchronized DataFlavor[] getTransferDataFlavors() {
         return _flavors;
@@ -94,6 +96,8 @@ public class PtolemyTransferable implements Transferable, Serializable {
 
     /**
      * Return true if the given data flavor is supported.
+     * @param flavor The data flavor that is searched for.
+     * @return true if the given data flavor is supported.
      */
     public boolean isDataFlavorSupported(DataFlavor flavor) {
         int i;
@@ -138,8 +142,9 @@ public class PtolemyTransferable implements Transferable, Serializable {
     }
 
     /**
-     * Remove the given object from this transferable.
-     * If the object does not exist in the transferable, then do nothing.
+     *  Remove the given object from this transferable.
+     *  If the object does not exist in the transferable, then do nothing.
+     *  @param The object to be removed.
      */
     public void removeObject(NamedObj object) {
         if (_objectList.contains(object)) {
@@ -171,7 +176,9 @@ public class PtolemyTransferable implements Transferable, Serializable {
         }
     }
 
-    // Return a string with a moml description of all the objects in the list.
+    /** Return a string with a MoML description of all the objects in the list.
+     *  @return the MoML description.
+     */
     public String _getMoML() throws IOException {
         StringWriter buffer = new StringWriter();
         buffer.write("<group>\n");

@@ -178,21 +178,22 @@ public class RTPReceiver extends AbstractReceiver implements ProcessReceiver {
     }
 
     /** Return true, since writing to the receiver is always allowed.
-     *  @return True.
+     *  @return Always return true.
      */
     public boolean hasRoom() {
         return true;
     }
 
     /** Return true, since writing to the receiver is always allowed.
-     *  @return True.
+     *  @param The number of tokens (ignored in this base class).
+     *  @return Always return true.
      */
     public boolean hasRoom(int numberOfTokens) {
         return true;
     }
 
     /** Return true if there is a token available.
-     *  @return True if there is a token available.
+     *  @return Always return True, because there is always a token available.
      */
     public boolean hasToken() {
         return true;
@@ -200,7 +201,8 @@ public class RTPReceiver extends AbstractReceiver implements ProcessReceiver {
 
     /** Return true, since the get() method will stall until a
      *  token is available.
-     *  @return True.
+     *  @param The number of tokens (ignored in this base class).
+     *  @return Always return true.
      */
     public boolean hasToken(int numberOfTokens) {
         return true;

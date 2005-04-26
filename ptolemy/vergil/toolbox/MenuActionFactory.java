@@ -48,6 +48,9 @@ import javax.swing.JMenuItem;
    @Pt.AcceptedRating Red (johnr)
 */
 public class MenuActionFactory implements MenuItemFactory {
+    /** Construct a factory that adds a given action to a given context menu.
+     *  @param action The action to be associated with the context menu.
+     */
     public MenuActionFactory(Action action) {
         _action = action;
     }
@@ -60,6 +63,9 @@ public class MenuActionFactory implements MenuItemFactory {
         return menu.add(_action, (String) _action.getValue(Action.NAME));
     }
 
-    // The action that will be added to the context menu.
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    /** The action that will be added to the context menu. */
     private Action _action;
 }

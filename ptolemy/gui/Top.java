@@ -255,6 +255,7 @@ public abstract class Top extends JFrame {
 
     /** Return true if the window is set to be centered when pack() is called.
      *  @return True if the window will be centered when pack is called.
+     *  @see #setCentering(boolean)
      */
     public boolean getCentering() {
         return _centering;
@@ -360,6 +361,7 @@ public abstract class Top extends JFrame {
     /** Specify whether or not to center the window on the screen when
      *  packing it.  The default is true.
      *  @param centering Set to false to disable centering.
+     *  @see #getCentering()
      */
     public void setCentering(boolean centering) {
         _centering = centering;

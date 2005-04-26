@@ -54,6 +54,14 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating Red (liuj)
 */
 public class PeriodicTrigger extends TypedAtomicActor {
+    /** Construct an actor with the specified container and name.
+     *  @param container The container.
+     *  @param name The name of this actor.
+     *  @exception IllegalActionException If the entity cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
+     */
     public PeriodicTrigger(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);

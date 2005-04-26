@@ -136,6 +136,7 @@ public class JTextAreaExec extends JPanel {
 
     /** Append the text message to the JTextArea and include a trailing
      *  newline.
+     *  @param text The text message to be appended.
      */
     public void appendJTextArea(final String text) {
         Runnable doAppendJTextArea = new Runnable() {
@@ -170,6 +171,7 @@ public class JTextAreaExec extends JPanel {
      *  <pre>
      *        java -classpath $PTII ptolemy.gui.JTextAreaExec
      *  </pre>
+     *  @param args The command line arguments, currently ignored.
      */
     public static void main(String[] args) {
         JFrame jFrame = new JFrame("JTextAreaExec Example");
@@ -206,12 +208,15 @@ public class JTextAreaExec extends JPanel {
     /** Return the Start button.
      *  This method is used to get the Start button so we can
      *  set the focus to it.
+     *  @param the Start button.
      */
     public JButton getStartButton() {
         return _startButton;
     }
 
-    /** Set the list of commands. */
+    /** Set the list of commands.
+     *  @param commands a List of Strings, where each element is a command.
+     */
     public void setCommands(List commands) {
         _commands = commands;
         _enableStartButton();
@@ -222,7 +227,9 @@ public class JTextAreaExec extends JPanel {
         _startButton.doClick();
     }
 
-    /** Update the status area with the text message.*/
+    /** Update the status area with the text message.
+     *  @param text The text with which the status area is updated.
+     */
     public void updateStatusBar(final String text) {
         Runnable doUpdateStatusBar = new Runnable() {
                 public void run() {

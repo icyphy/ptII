@@ -73,6 +73,9 @@ import javax.swing.JMenuItem;
    @Pt.AcceptedRating Red (johnr)
 */
 public class FigureAction extends AbstractAction {
+    /** Construct an action that is attached to a figure on a named object.
+     *  @param name The name of the object.
+     */
     public FigureAction(String name) {
         super(name);
     }
@@ -287,11 +290,19 @@ public class FigureAction extends AbstractAction {
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
+
+    /** The source of the action. */
     public static class SourceType {
+        /** Construct a SourceType.
+         *  @param name The name of the SourceType.
+         */ 
         private SourceType(String name) {
             _name = name;
         }
 
+        /** Get the name of the SourceType.
+         *  @return the name.
+         */
         public String getName() {
             return _name;
         }

@@ -112,6 +112,8 @@ public class MessageHandler {
 
     /** Return the message handler instance that is used by the static
      *  methods in this class.
+     *  @return the message handler
+     *  @see #setMessageHandler(MessageHandler)
      */
     public static MessageHandler getMessageHandler() {
         return _handler;
@@ -129,6 +131,7 @@ public class MessageHandler {
      *  methods in this class.  If the given handler is null, then
      *  do nothing.
      *  @param handler The message handler.
+     *  @see #getMessageHandler()
      */
     public static void setMessageHandler(MessageHandler handler) {
         if (handler != null) {
@@ -143,7 +146,8 @@ public class MessageHandler {
      *  execution, something that is particularly useful if continuing
      *  execution will result in repeated warnings.
      *  @param info The message.
-     *  @exception ptolemy.util.CancelException If the user clicks on the "Cancel" button.
+     *  @exception ptolemy.util.CancelException If the user clicks on
+     *  the "Cancel" button.
      */
     public static void warning(String info) throws ptolemy.util.CancelException {
         _handler._warning(info);
@@ -159,6 +163,8 @@ public class MessageHandler {
      *  is thrown.  The stack trace information is only shown if the
      *  user clicks on the "Display Stack Trace" button.
      *  @param info The message.
+     *  @param throwable The throwable that will be displayed in the 
+     *  stack trace information window.
      *  @exception ptolemy.util.CancelException If the user clicks on
      *  the "Cancel" button.
      */
@@ -169,6 +175,7 @@ public class MessageHandler {
 
     /** Ask the user a yes/no question, and return true if the answer
      *  is yes.
+     *  @param question The yes/no question.
      *  @return True if the answer is yes.
      */
     public static boolean yesNoQuestion(String question) {
@@ -217,6 +224,7 @@ public class MessageHandler {
      *  execution, something that is particularly useful if continuing
      *  execution will result in repeated warnings.
      *  @param info The message.
+     *  @param throwable The throwable.
      *  @exception ptolemy.util.CancelException If the user clicks on
      *  the "Cancel" button.
      */
@@ -245,6 +253,7 @@ public class MessageHandler {
     /** Ask the user a yes/no question, and return true if the answer
      *  is yes.  In this base class, this prints the question on standard
      *  output and looks for the reply on standard input.
+     *  @param question The yes/no question.
      *  @return True if the answer is yes.
      */
     protected boolean _yesNoQuestion(String question) {
@@ -268,6 +277,7 @@ public class MessageHandler {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    // The message handler.
+
+    /** The message handler. */
     private static MessageHandler _handler = new MessageHandler();
 }
