@@ -364,18 +364,18 @@ public class MultirateFSMDirector extends FSMDirector {
         superPostfire = super.postfire();
         currentState = controller.currentState();
         TypedActor[] actors = currentState.getRefinement();
-        
+
         if ((actors == null) || (actors.length != 1)) {
             throw new IllegalActionException(this,
                     "Current state is required to have exactly "
                     + "one refinement: " + currentState.getName());
         }
-        
+
         actor = (TypedCompositeActor) (actors[0]);
 
         if (lastChosenTransition != null) {
             refinementDir = actor.getDirector();
-            
+
             if (refinementDir instanceof MultirateFSMDirector) {
                 refinementDir.postfire();
             } else if (refinementDir instanceof StaticSchedulingDirector) {
