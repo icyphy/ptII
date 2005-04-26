@@ -30,15 +30,15 @@
     </property>
     <property name="stopTime" class="ptolemy.data.expr.Parameter" value="100.0">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[809, 564]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[661, 533]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[129, 365]">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-2, 3, 1024, 682}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, -2, 876, 651}, maximized=false}">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{404.5, 282.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{330.5, 266.5}">
     </property>
     <property name="annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model demonstrates the use of the discrete event (DE) domain&#10;and hierarchical finite state machines (FSMs) to model the alternating&#10;bit protocol (ABP). ABP is a simple mechanism for achieving reliable,&#10;ordered delivery of messages over channels with unreliable delivery and&#10;variable delay.&#10;&#10;This demo shows that:&#10;* Hierarchical FSMs can efficiently capture complex sequential control behavior.&#10;* Embedding FSMs within other models of computation is a clean and flexible&#10;way to model the concurrent execution of FSMs.&#10;&#10;A detailed discussion of this model is in&#10;$PTII/ptolemy/domains/fsm/demo/ABP/ABP.htm&#10;">
@@ -214,7 +214,7 @@
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="received, sent, alternating">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={514, 2, 508, 355}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={513, 412, 508, 355}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
@@ -466,7 +466,7 @@
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{352.6420454545454, 258.9363952020202}">
             </property>
-            <property name="count" class="ptolemy.data.expr.Parameter" value="1">
+            <property name="count" class="ptolemy.data.expr.Parameter" value="5">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -647,7 +647,7 @@
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{325.825284090909, 193.0312499999999}">
             </property>
-            <property name="msg" class="ptolemy.data.expr.Parameter" value="12">
+            <property name="msg" class="ptolemy.data.expr.Parameter" value="16">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
