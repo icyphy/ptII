@@ -159,7 +159,7 @@ as a unit-handling integrator.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="40.0, 415.0">
         </property>
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 639]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[765, 633]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[-4, 8]">
     </property>
@@ -338,7 +338,7 @@ voltage, etc.) and then divides by its argument.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="350.0, 120.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, 5, 1032, 757}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 2, 980, 751}, maximized=false}">
     </property>
     <property name="annotation4" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -362,7 +362,7 @@ voltage, etc.) and then divides by its argument.</text></svg></configure>
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{408.5, 319.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{382.5, 316.5}">
     </property>
     <entity name="Scale2" class="ptolemy.actor.lib.Scale">
         <property name="factor" class="ptolemy.data.expr.Parameter" value="volt">

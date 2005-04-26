@@ -7,19 +7,19 @@
     <property name="WirelessDirector" class="ptolemy.domains.wireless.kernel.WirelessDirector">
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 30.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 50.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, -1, 911, 773}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 0, 911, 763}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[696, 655]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[696, 645]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{322.8550347222222, 309.9040404040404}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{348.0, 322.5}">
     </property>
     <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 5.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 25.0]">
         </property>
         <property name="width" class="ptolemy.data.expr.Parameter" value="271.0">
         </property>
@@ -31,7 +31,7 @@
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Sensors placed in a parking lot can be used to collect data (including which parking spot is taken, &#10;how long a car has parked on a spot). The parking lot can process the collected data and provide &#10;some services to clients to guide their parking. This demo illustrates these ideas. The dots are &#10;sensors on the parking spots. We use green color to indicate the spot is free and red to indicate &#10;the spot is taken. When a sensor detect a car arrives/leaves the spot, it sends an update to the &#10;server of the parking lot, which collects and processes sensor updates to provide information to &#10;parking clients. The &quot;car model&quot; component models when a car arrive/leave, and where if pick to &#10;park based on the information the server provides. It is a abstraction for all the cars dynamics &#10;during a specific of time. The components in the up right corner represents the server function, &#10;which receives sensor data and provides information the clients. The &quot;singal light&quot; component &#10;indicate whether the parking lot is full (using red color) or not (using green color).">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 425.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 445.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -47,7 +47,7 @@
         </property>
         <property name="lotName" class="ptolemy.data.expr.StringParameter" value="A27">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 345.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 365.0]">
         </property>
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
@@ -80,15 +80,15 @@
         </port>
     </entity>
     <entity name="ArrivalChannel" class="ptolemy.domains.wireless.lib.LimitedRangeChannel">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 40.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 60.0]">
         </property>
     </entity>
     <entity name="LeaveChannel" class="ptolemy.domains.wireless.lib.LimitedRangeChannel">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[308.0, 33.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[328.0, 53.0]">
         </property>
     </entity>
     <entity name="ReportChannel" class="ptolemy.domains.wireless.lib.LimitedRangeChannel">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[478.0, 138.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[498.0, 158.0]">
         </property>
     </entity>
     <entity name="car model" class="ptolemy.domains.wireless.kernel.WirelessComposite">
@@ -250,7 +250,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{70.0, 40.0}">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 115.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 135.0]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={170, 364, 815, 518}, maximized=false}">
         </property>
@@ -337,17 +337,17 @@
     <entity name="WirelessToWired" class="ptolemy.domains.wireless.lib.WirelessToWired">
         <property name="inputChannelName" class="ptolemy.data.expr.StringParameter" value="ReportChannel">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[418.0, 58.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[438.0, 78.0]">
         </property>
     </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={728, 326, 290, 227}, maximized=false}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[620.0, 65.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[640.0, 85.0]">
         </property>
     </entity>
     <entity name="dataCollector" class="ptolemy.domains.wireless.demo.SmartParking.DataCollector">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[538.0, 68.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[558.0, 88.0]">
         </property>
     </entity>
     <entity name="LotSensor2" class="ptolemy.domains.wireless.demo.SmartParking.LotSensor">
@@ -355,7 +355,7 @@
         </property>
         <property name="lotName" class="ptolemy.data.expr.StringParameter" value="A28">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 345.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 365.0]">
         </property>
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
@@ -392,7 +392,7 @@
         </property>
         <property name="lotName" class="ptolemy.data.expr.StringParameter" value="A37">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 405.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 425.0]">
         </property>
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
@@ -429,7 +429,7 @@
         </property>
         <property name="lotName" class="ptolemy.data.expr.StringParameter" value="A38">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 405.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 425.0]">
         </property>
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
@@ -466,7 +466,7 @@
         </property>
         <property name="lotName" class="ptolemy.data.expr.StringParameter" value="A8">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 220.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 240.0]">
         </property>
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
@@ -503,7 +503,7 @@
         </property>
         <property name="lotName" class="ptolemy.data.expr.StringParameter" value="A9">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 220.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 240.0]">
         </property>
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
@@ -540,7 +540,7 @@
         </property>
         <property name="lotName" class="ptolemy.data.expr.StringParameter" value="A17">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 280.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 300.0]">
         </property>
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
@@ -577,7 +577,7 @@
         </property>
         <property name="lotName" class="ptolemy.data.expr.StringParameter" value="A18">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 280.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 300.0]">
         </property>
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
@@ -614,7 +614,7 @@
         </property>
         <property name="lotName" class="ptolemy.data.expr.StringParameter" value="A25">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 345.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 365.0]">
         </property>
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
@@ -651,7 +651,7 @@
         </property>
         <property name="lotName" class="ptolemy.data.expr.StringParameter" value="A26">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 345.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 365.0]">
         </property>
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
@@ -688,7 +688,7 @@
         </property>
         <property name="lotName" class="ptolemy.data.expr.StringParameter" value="A35">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 405.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 425.0]">
         </property>
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
@@ -725,7 +725,7 @@
         </property>
         <property name="lotName" class="ptolemy.data.expr.StringParameter" value="A36">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 405.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 425.0]">
         </property>
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
@@ -762,7 +762,7 @@
         </property>
         <property name="lotName" class="ptolemy.data.expr.StringParameter" value="A6">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 220.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 240.0]">
         </property>
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
@@ -799,7 +799,7 @@
         </property>
         <property name="lotName" class="ptolemy.data.expr.StringParameter" value="A7">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 220.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 240.0]">
         </property>
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
@@ -836,7 +836,7 @@
         </property>
         <property name="lotName" class="ptolemy.data.expr.StringParameter" value="A15">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{320.0, 280.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 300.0]">
         </property>
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
@@ -873,7 +873,7 @@
         </property>
         <property name="lotName" class="ptolemy.data.expr.StringParameter" value="A16">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 280.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 300.0]">
         </property>
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
@@ -910,7 +910,7 @@
         </property>
         <property name="lotName" class="ptolemy.data.expr.StringParameter" value="A23">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 345.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 365.0]">
         </property>
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
@@ -947,7 +947,7 @@
         </property>
         <property name="lotName" class="ptolemy.data.expr.StringParameter" value="A24">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{255.0, 345.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 365.0]">
         </property>
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
@@ -984,7 +984,7 @@
         </property>
         <property name="lotName" class="ptolemy.data.expr.StringParameter" value="A33">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 405.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 425.0]">
         </property>
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
@@ -1021,7 +1021,7 @@
         </property>
         <property name="lotName" class="ptolemy.data.expr.StringParameter" value="A34">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 405.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 425.0]">
         </property>
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
@@ -1058,7 +1058,7 @@
         </property>
         <property name="lotName" class="ptolemy.data.expr.StringParameter" value="A3">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 220.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 240.0]">
         </property>
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
@@ -1095,7 +1095,7 @@
         </property>
         <property name="lotName" class="ptolemy.data.expr.StringParameter" value="A5">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 220.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 240.0]">
         </property>
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
@@ -1132,7 +1132,7 @@
         </property>
         <property name="lotName" class="ptolemy.data.expr.StringParameter" value="A13">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 280.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 300.0]">
         </property>
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
@@ -1169,7 +1169,7 @@
         </property>
         <property name="lotName" class="ptolemy.data.expr.StringParameter" value="A14">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 280.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 300.0]">
         </property>
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
@@ -1206,7 +1206,7 @@
         </property>
         <property name="lotName" class="ptolemy.data.expr.StringParameter" value="A21">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 345.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 365.0]">
         </property>
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
@@ -1243,7 +1243,7 @@
         </property>
         <property name="lotName" class="ptolemy.data.expr.StringParameter" value="A22">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 345.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 365.0]">
         </property>
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
@@ -1280,7 +1280,7 @@
         </property>
         <property name="lotName" class="ptolemy.data.expr.StringParameter" value="A31">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 405.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 425.0]">
         </property>
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
@@ -1317,7 +1317,7 @@
         </property>
         <property name="lotName" class="ptolemy.data.expr.StringParameter" value="A32">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 405.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 425.0]">
         </property>
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
@@ -1354,7 +1354,7 @@
         </property>
         <property name="lotName" class="ptolemy.data.expr.StringParameter" value="A1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{50.0, 220.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 240.0]">
         </property>
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
@@ -1391,7 +1391,7 @@
         </property>
         <property name="lotName" class="ptolemy.data.expr.StringParameter" value="A2">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 220.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 240.0]">
         </property>
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
@@ -1428,7 +1428,7 @@
         </property>
         <property name="lotName" class="ptolemy.data.expr.StringParameter" value="A11">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{50.0, 280.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 300.0]">
         </property>
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
@@ -1465,7 +1465,7 @@
         </property>
         <property name="lotName" class="ptolemy.data.expr.StringParameter" value="A12">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 280.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 300.0]">
         </property>
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
@@ -1498,7 +1498,7 @@
         </port>
     </entity>
     <entity name="signal light" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[615.0, 205.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[635.0, 225.0]">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">

@@ -4,9 +4,9 @@
 <entity name="EvaderAndPursuer" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={43, -1, 973, 782}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, -1, 933, 735}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[758, 664]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[718, 617]">
     </property>
     <property name="WirelessDirector" class="ptolemy.domains.wireless.kernel.WirelessDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -50,7 +50,7 @@
     <property name="model ID" class="ptolemy.vergil.kernel.attributes.IDAttribute">
         <property name="created" class="ptolemy.kernel.util.StringAttribute" value="Apr 12, 2005 12:01:09 AM">
         </property>
-        <property name="lastUpdated" class="ptolemy.kernel.util.StringAttribute" value="Apr 12, 2005 12:01:18 AM">
+        <property name="lastUpdated" class="ptolemy.kernel.util.StringAttribute" value="Apr 26, 2005 4:11:07 PM">
         </property>
         <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Yang Zhao">
         </property>
@@ -88,9 +88,9 @@ sensors.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="475.0, 95.0">
         </property>
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1280526651094">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{367.9772213855422, 308.4374999999999}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{359.0, 308.5}">
     </property>
     <entity name="RadioChannel" class="ptolemy.domains.wireless.lib.LimitedRangeChannel">
         <property name="defaultProperties" class="ptolemy.data.expr.Parameter" value="{range=200}">

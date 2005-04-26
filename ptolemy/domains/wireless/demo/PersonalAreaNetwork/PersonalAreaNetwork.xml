@@ -26,9 +26,9 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 30.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1032, 778}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 1, 1018, 762}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 660]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[803, 644]">
     </property>
     <property name="nodeColor" class="ptolemy.data.expr.Parameter" value="{0.0, 1.0, 0.0, 1.0}">
     </property>
@@ -39,7 +39,7 @@
             <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">The leader circles around the model, and once it becomes in range
 of the follower a wireless message of its location is passed on.
 The follower then follows the leader.  When the leader Becomes 
-in range it takes 26seconds for it to process.</text></svg></configure>
+in range it takes 26 seconds for it to process.</text></svg></configure>
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -57,10 +57,10 @@ in range it takes 26seconds for it to process.</text></svg></configure>
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{408.5, 330.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{401.5, 322.0}">
     </property>
     <entity name="Follower" class="ptolemy.domains.wireless.kernel.WirelessComposite">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{294.729635533386, 456.9615506024416}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{294.7296355333851, 456.9615506024418}">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1032, 776}}">
         </property>
@@ -303,7 +303,7 @@ in range it takes 26seconds for it to process.</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="100.0, 50.0">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{334.729635533386, 496.9615506024416}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{334.7296355333851, 496.9615506024418}">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1032, 776}}">
         </property>

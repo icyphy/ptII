@@ -7,12 +7,12 @@
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="30">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="100.0, 45.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 40.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={10, 19, 934, 593}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={10, 19, 907, 580}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[719, 475]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[692, 462]">
     </property>
     <property name="arraySize" class="ptolemy.data.expr.Parameter" value="1">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -30,7 +30,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="205.0, 40.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 35.0]">
         </property>
     </property>
     <property name="scale" class="ptolemy.data.expr.Parameter" value="1ub">
@@ -60,7 +60,7 @@ password.
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 290.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 285.0]">
         </property>
     </property>
     <property name="annotation2" class="ptolemy.kernel.util.Attribute">
@@ -83,12 +83,12 @@ which then causes an exception to be thrown.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 10.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 5.0]">
         </property>
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0506730874466">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{382.1616145833358, 233.1705729166681}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{346.0, 231.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
@@ -97,7 +97,7 @@ which then causes an exception to be thrown.</text></svg></configure>
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This actor throws an exception&#10;if there is a man in the middle&#10;attack.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 235.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 230.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -105,7 +105,7 @@ which then causes an exception to be thrown.</text></svg></configure>
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Christopher Brooks">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 430.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 425.0]">
         </property>
     </property>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
@@ -114,7 +114,7 @@ which then causes an exception to be thrown.</text></svg></configure>
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1ub">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 105.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 100.0]">
         </property>
     </entity>
     <entity name="SequenceToArray" class="ptolemy.domains.sdf.lib.SequenceToArray">
@@ -126,14 +126,14 @@ which then causes an exception to be thrown.</text></svg></configure>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 115.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 110.0]">
         </property>
     </entity>
     <entity name="PrivateKeyReader" class="ptolemy.actor.lib.security.PrivateKeyReader">
         <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/security/demo/Signature/ptKeystore">
         </property>
         <doc>Read a key public or private key from a key store&#10;	   and output it.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="100.0, 210.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 205.0]">
         </property>
         <port name="keyPassword" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
@@ -161,7 +161,7 @@ which then causes an exception to be thrown.</text></svg></configure>
         <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/security/demo/Signature/ptKeystore">
         </property>
         <doc>Read a key public or private key from a key store&#10;	   and output it.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 255.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 250.0]">
         </property>
     </entity>
     <entity name="ArrayToSequence" class="ptolemy.domains.sdf.lib.ArrayToSequence">
@@ -173,25 +173,25 @@ which then causes an exception to be thrown.</text></svg></configure>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[560.0, 210.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 205.0]">
         </property>
     </entity>
     <entity name="SignatureSigner" class="ptolemy.actor.lib.security.SignatureSigner">
         <property name="signatureAlgorithm" class="ptolemy.data.expr.StringParameter" value="SHA1WITHDSA">
         </property>
         <doc>Reads a public key from a port and creates a signature for&#10;	  the given piece of data to be sent to the signature verifier.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="225.0, 200.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 195.0]">
         </property>
     </entity>
     <entity name="SignatureVerifier" class="ptolemy.actor.lib.security.SignatureVerifier">
         <property name="signatureAlgorithm" class="ptolemy.data.expr.StringParameter" value="SHA1WITHDSA">
         </property>
         <doc>Receives a key from an AsymmetricDecryption actor and&#10;          uses it to encrypt a data input based on a given asymmetric&#10;          algorithm.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 210.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 205.0]">
         </property>
     </entity>
     <entity name="Man in the middle" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 125.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 120.0]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {130, 262, 815, 516}, maximized = false}">
         </property>
@@ -308,7 +308,7 @@ which then causes an exception to be thrown.</text></svg></configure>
         <entity name="Display" class="ptolemy.actor.lib.gui.Display">
             <property name="title" class="ptolemy.kernel.util.StringAttribute" value="Man in the Middle">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {654, 532, 290, 227}, maximized = false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={654, 532, 290, 227}, maximized=false}">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="500.0, 160.0">
             </property>
@@ -344,9 +344,9 @@ which then causes an exception to be thrown.</text></svg></configure>
     <entity name="Ramp Output" class="ptolemy.actor.lib.gui.Display">
         <property name="title" class="ptolemy.kernel.util.StringAttribute" value="Ramp Output">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {352, 531, 290, 227}, maximized = false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={352, 531, 290, 227}, maximized=false}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[645.0, 225.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[620.0, 220.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -362,11 +362,11 @@ which then causes an exception to be thrown.</text></svg></configure>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="305.0, 190.0">
+        <vertex name="vertex1" value="[280.0, 185.0]">
         </vertex>
     </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[345.0, 190.0]">
+        <vertex name="vertex1" value="[320.0, 185.0]">
         </vertex>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">

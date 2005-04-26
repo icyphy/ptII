@@ -2,9 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="OrderedMerge" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[809, 541]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[791, 541]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[62, 41]">
     </property>
@@ -83,7 +83,7 @@ computation, and produces outputs.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="175.0, 487.5">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {-3, 0, 1024, 657}, maximized = false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 1, 1006, 659}, maximized=false}">
     </property>
     <property name="annotation5" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -112,7 +112,7 @@ stopping the execution.</text></svg></configure>
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{404.5, 270.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{395.5, 270.5}">
     </property>
     <entity name="OrderedMerge" class="ptolemy.actor.lib.OrderedMerge">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 280.0]">

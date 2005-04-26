@@ -2,7 +2,7 @@
 <!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <class name="OrthogonalCom" extends="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0-alpha">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
     </property>
     <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="20">
@@ -10,7 +10,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="120.0, 70.0">
         </property>
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 663]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[793, 539]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[-4, -4]">
     </property>
@@ -41,11 +41,11 @@ See $PTII/doc/codegen.htm for details.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="290.0, 5.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {-4, -2, 1032, 772}, maximized = false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={4, 4, 1008, 657}, maximized=false}">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{408.5, 331.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{396.5, 269.5}">
     </property>
     <entity name="bitSource" class="ptolemy.actor.lib.DiscreteRandomSource">
         <property name="seed" class="ptolemy.data.expr.Parameter" value="0">
@@ -96,10 +96,22 @@ See $PTII/doc/codegen.htm for details.</text></svg></configure>
         </property>
     </entity>
     <entity name="correlator1" class="ptolemy.domains.sdf.lib.DotProduct">
+        <property name="DotProductIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 129, 815, 509}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="420.0, 195.0">
         </property>
     </entity>
     <entity name="correlator2" class="ptolemy.domains.sdf.lib.DotProduct">
+        <property name="DotProductIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 129, 815, 509}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="420.0, 275.0">
         </property>
     </entity>
@@ -115,6 +127,12 @@ See $PTII/doc/codegen.htm for details.</text></svg></configure>
     </entity>
     <entity name="SequenceToArray" class="ptolemy.domains.sdf.lib.SequenceToArray">
         <property name="arrayLength" class="ptolemy.actor.parameters.PortParameter" value="8">
+        </property>
+        <property name="SequenceToArrayIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {104, 129, 815, 509}, maximized = false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="185.0, 480.0">
         </property>

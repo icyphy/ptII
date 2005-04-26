@@ -2,11 +2,11 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="ConvolutionalCoder" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0-alpha">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {-3, 3, 1029, 693}, maximized = false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 4, 987, 695}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[800, 577]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[772, 577]">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
@@ -83,7 +83,7 @@ The ViterbiDecoder actor does hard decoding.</text></svg></configure>
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{407.0, 288.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{386.0, 288.5}">
     </property>
     <entity name="Bernoulli" class="ptolemy.actor.lib.Bernoulli">
         <property name="seed" class="ptolemy.data.expr.Parameter" value="0L">

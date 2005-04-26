@@ -13,14 +13,14 @@
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 40.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 40.0]">
         </property>
     </property>
     <property name="annotation" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:darkgray">Authors: James Yeh, Christopher Hylands Brooks</text></svg></configure>
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:darkgray">Authors: James Yeh, Christopher Brooks</text></svg></configure>
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -33,33 +33,33 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 370.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 370.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-1, -1, 864, 518}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 2, 864, 518}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[649, 400]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{288.8222064393939, 201.4012784090909}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{324.5, 200.0}">
     </property>
     <property name="annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Read in two images, combine them, recover one.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 15.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 15.0]">
         </property>
     </property>
     <entity name="JAIImageReader" class="ptolemy.actor.lib.jai.JAIImageReader">
         <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/doc/img/PtolemyII256x256.png">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 105.0]">
         </property>
     </entity>
     <entity name="JAIImageReader2" class="ptolemy.actor.lib.jai.JAIImageReader">
         <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/doc/img/Helen256x256.png">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 170.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 170.0]">
         </property>
     </entity>
     <entity name="JAIBorder" class="ptolemy.actor.lib.jai.JAIBorder">
@@ -87,7 +87,7 @@
         </property>
         <property name="constants" class="ptolemy.data.expr.Parameter" value="{0.0}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 85.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 85.0]">
         </property>
     </entity>
     <entity name="JAIBorder2" class="ptolemy.actor.lib.jai.JAIBorder">
@@ -115,7 +115,7 @@
         </property>
         <property name="constants" class="ptolemy.data.expr.Parameter" value="{0.0}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 205.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 205.0]">
         </property>
     </entity>
     <entity name="JAIDFT" class="ptolemy.actor.lib.jai.JAIDFT">
@@ -139,7 +139,7 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 85.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 85.0]">
         </property>
     </entity>
     <entity name="JAIDFT2" class="ptolemy.actor.lib.jai.JAIDFT">
@@ -163,19 +163,19 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 205.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 205.0]">
         </property>
     </entity>
     <entity name="JAIMagnitude" class="ptolemy.actor.lib.jai.JAIMagnitude">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 85.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 85.0]">
         </property>
     </entity>
     <entity name="JAIPhase" class="ptolemy.actor.lib.jai.JAIPhase">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 205.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 205.0]">
         </property>
     </entity>
     <entity name="JAIPolarToComplex" class="ptolemy.actor.lib.jai.JAIPolarToComplex">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 140.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[560.0, 140.0]">
         </property>
     </entity>
     <entity name="JAIIDFT" class="ptolemy.actor.lib.jai.JAIIDFT">
@@ -199,7 +199,7 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 340.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 340.0]">
         </property>
     </entity>
     <entity name="JAIDataConvert" class="ptolemy.actor.lib.jai.JAIDataConvert">
@@ -219,7 +219,7 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 340.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 340.0]">
         </property>
     </entity>
     <entity name="JAICrop" class="ptolemy.actor.lib.jai.JAICrop">
@@ -231,17 +231,17 @@
         </property>
         <property name="height" class="ptolemy.data.expr.Parameter" value="256">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 340.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 340.0]">
         </property>
     </entity>
-    <entity name="Recoverd Helen" class="ptolemy.actor.lib.image.ImageDisplay">
+    <entity name="Recovered Helen" class="ptolemy.actor.lib.image.ImageDisplay">
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={776, 460, 264, 311}, maximized=false}">
         </property>
         <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[256, 256]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{310.0, 340.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 340.0]">
         </property>
     </entity>
     <entity name="Original Helen" class="ptolemy.actor.lib.image.ImageDisplay">
@@ -251,7 +251,7 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[256, 256]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 265.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 265.0]">
         </property>
     </entity>
     <entity name="Original Ptolemy" class="ptolemy.actor.lib.image.ImageDisplay">
@@ -261,7 +261,7 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[256, 256]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 150.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 150.0]">
         </property>
     </entity>
     <entity name="Combined Images" class="ptolemy.actor.lib.image.ImageDisplay">
@@ -271,31 +271,31 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[256, 256]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 375.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[550.0, 370.0]">
         </property>
     </entity>
     <entity name="JAIBandCombine2" class="ptolemy.actor.lib.jai.JAIBandCombine">
         <property name="matrix" class="ptolemy.data.expr.Parameter" value="[0.333,0.333,0.33, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{120.0, 180.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 180.0]">
         </property>
     </entity>
     <entity name="JAIBandSelect2" class="ptolemy.actor.lib.jai.JAIBandSelect">
         <property name="bandIndices" class="ptolemy.data.expr.Parameter" value="{0}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 255.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 255.0]">
         </property>
     </entity>
     <entity name="JAIBandCombine" class="ptolemy.actor.lib.jai.JAIBandCombine">
         <property name="matrix" class="ptolemy.data.expr.Parameter" value="[0.333,0.333,0.33, 0.0; 0.0, 0.0, 0.0, 0.0; 0.0, 0.0, 0.0, 0.0]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 105.0]">
         </property>
     </entity>
     <entity name="JAIBandSelect" class="ptolemy.actor.lib.jai.JAIBandSelect">
         <property name="bandIndices" class="ptolemy.data.expr.Parameter" value="{0}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 35.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 35.0]">
         </property>
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
@@ -315,15 +315,15 @@
     <relation name="relation11" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[205.0, 205.0]">
+        <vertex name="vertex1" value="[240.0, 205.0]">
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[220.0, 85.0]">
+        <vertex name="vertex1" value="[255.0, 85.0]">
         </vertex>
     </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="{475.0, 295.0}">
+        <vertex name="vertex1" value="[510.0, 295.0]">
         </vertex>
     </relation>
     <relation name="relation12" class="ptolemy.actor.TypedIORelation">
@@ -359,7 +359,7 @@
     <link port="JAIDataConvert.output" relation="relation11"/>
     <link port="JAICrop.input" relation="relation11"/>
     <link port="JAICrop.output" relation="relation12"/>
-    <link port="Recoverd Helen.input" relation="relation12"/>
+    <link port="Recovered Helen.input" relation="relation12"/>
     <link port="Original Helen.input" relation="relation2"/>
     <link port="Original Ptolemy.input" relation="relation"/>
     <link port="Combined Images.input" relation="relation9"/>
