@@ -29,8 +29,6 @@
 
 package ptolemy.backtrack.ast;
 
-import ptolemy.kernel.util.KernelRuntimeException;
-
 //////////////////////////////////////////////////////////////////////////
 //// ASTRuntimeException
 /**
@@ -43,7 +41,7 @@ import ptolemy.kernel.util.KernelRuntimeException;
    @Pt.ProposedRating Red (tfeng)
    @Pt.AcceptedRating Red (tfeng)
 */
-public class ASTRuntimeException extends KernelRuntimeException {
+public class ASTRuntimeException extends RuntimeException {
 
     /** Create an exception with no message or cause.
      */
@@ -65,7 +63,7 @@ public class ASTRuntimeException extends KernelRuntimeException {
      *  @param cause The cause.
      */
     public ASTRuntimeException(String message, Throwable cause) {
-        super(cause, message);
+        super(message, cause);
     }
 
     /** Create an exception with a cause.
