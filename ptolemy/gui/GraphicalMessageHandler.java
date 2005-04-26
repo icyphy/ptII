@@ -364,6 +364,7 @@ public class GraphicalMessageHandler extends MessageHandler {
      *  output and looks for the reply on standard input.
      *  NOTE: This must be called in the swing event thread!
      *  It is an error to call it outside the swing event thread.
+     *  @param question The yes/no question.
      *  @return True if the answer is yes.
      */
     protected boolean _yesNoQuestion(String question) {
@@ -390,7 +391,8 @@ public class GraphicalMessageHandler extends MessageHandler {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-    // The context.
+
+    /** The context. */
     protected static WeakReference _context = null;
 
     ///////////////////////////////////////////////////////////////////
