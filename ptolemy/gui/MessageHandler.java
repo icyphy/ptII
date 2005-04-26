@@ -90,26 +90,6 @@ public class MessageHandler {
         _handler._error(info, throwable);
     }
 
-    /** Return a short description of the throwable.
-     *  @param throwable The throwable
-     *  @return If the throwable is an Exception, return "Exception",
-     *  if it is an Error, return "Error", if it is a Throwable, return
-     *  "Throwable".
-     */
-    public static String shortDescription(Throwable throwable) {
-        String throwableType = null;
-
-        if (throwable instanceof Exception) {
-            throwableType = "Exception";
-        } else if (throwable instanceof Error) {
-            throwableType = "Error";
-        } else {
-            throwableType = "Throwable";
-        }
-
-        return throwableType;
-    }
-
     /** Return the message handler instance that is used by the static
      *  methods in this class.
      *  @return the message handler
@@ -137,6 +117,26 @@ public class MessageHandler {
         if (handler != null) {
             _handler = handler;
         }
+    }
+
+    /** Return a short description of the throwable.
+     *  @param throwable The throwable
+     *  @return If the throwable is an Exception, return "Exception",
+     *  if it is an Error, return "Error", if it is a Throwable, return
+     *  "Throwable".
+     */
+    public static String shortDescription(Throwable throwable) {
+        String throwableType = null;
+
+        if (throwable instanceof Exception) {
+            throwableType = "Exception";
+        } else if (throwable instanceof Error) {
+            throwableType = "Error";
+        } else {
+            throwableType = "Throwable";
+        }
+
+        return throwableType;
     }
 
     /** Defer to the set message handler to

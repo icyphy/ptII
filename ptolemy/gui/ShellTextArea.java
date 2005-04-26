@@ -127,14 +127,6 @@ public class ShellTextArea extends JPanel {
         SwingUtilities.invokeLater(doAppendJTextArea);
     }
 
-    /** Get the interpreter that has been registered with setInterpreter().
-     *  @return The interpreter, or null if none has been set.
-     *  @see #setInterpreter(ShellInterpreter)
-     */
-    public ShellInterpreter getInterpreter() {
-        return _interpreter;
-    }
-
     /** Clear the JTextArea and reset the prompt cursor.
      *  The clearing is done in the swing thread, not immediately.
      *  This method immediately returns.
@@ -149,6 +141,14 @@ public class ShellTextArea extends JPanel {
             };
 
         SwingUtilities.invokeLater(doClearJTextArea);
+    }
+
+    /** Get the interpreter that has been registered with setInterpreter().
+     *  @return The interpreter, or null if none has been set.
+     *  @see #setInterpreter(ShellInterpreter)
+     */
+    public ShellInterpreter getInterpreter() {
+        return _interpreter;
     }
 
     /** Initialize the text area with the given starting message,
@@ -340,7 +340,8 @@ public class ShellTextArea extends JPanel {
                     - _historyCursor - 1);
         }
 
-        replaceRangeJTextArea(text, _promptCursor, _jTextArea.getText().length());
+        replaceRangeJTextArea(text, _promptCursor,
+                _jTextArea.getText().length());
     }
 
     // Replace the command with an entry from the history.
@@ -355,7 +356,8 @@ public class ShellTextArea extends JPanel {
                     - _historyCursor);
         }
 
-        replaceRangeJTextArea(text, _promptCursor, _jTextArea.getText().length());
+        replaceRangeJTextArea(text, _promptCursor,
+                _jTextArea.getText().length());
     }
 
     // Update the command history.

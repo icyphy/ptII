@@ -128,7 +128,8 @@ public class GraphicalMessageHandler extends MessageHandler {
                     // Show the MODAL dialog
                     JOptionPane.showOptionDialog(getContext(), message,
                             "Error", JOptionPane.YES_NO_OPTION,
-                            JOptionPane.ERROR_MESSAGE, null, options, options[0]);
+                            JOptionPane.ERROR_MESSAGE,
+                            null, options, options[0]);
                 }
             };
 
@@ -154,8 +155,10 @@ public class GraphicalMessageHandler extends MessageHandler {
                         return;
                     }
 
-                    // Sometimes you find that errors are reported multiple times.
-                    // To find out who is calling this method, uncomment the following.
+                    // Sometimes you find that errors are reported
+                    // multiple times.  To find out who is calling
+                    // this method, uncomment the following.
+
                     // System.out.println("------ reporting error:");
                     // (new Throwable()).printStackTrace();
                     Object[] message = new Object[1];
@@ -180,7 +183,8 @@ public class GraphicalMessageHandler extends MessageHandler {
                             message,
                             MessageHandler.shortDescription(throwable),
                             JOptionPane.YES_NO_OPTION,
-                            JOptionPane.ERROR_MESSAGE, null, options, options[0]);
+                            JOptionPane.ERROR_MESSAGE,
+                            null, options, options[0]);
 
                     if (selected == 1) {
                         _showStackTrace(throwable, info);

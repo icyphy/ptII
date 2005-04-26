@@ -164,7 +164,8 @@ public class ComponentDialog extends JDialog {
                     if (isVisible() && (e.getSource() == _optionPane)
                             && (prop.equals(JOptionPane.VALUE_PROPERTY)
                                     || prop.equals(
-                                            JOptionPane.INPUT_VALUE_PROPERTY))) {
+                                            JOptionPane
+                                            .INPUT_VALUE_PROPERTY))) {
                         Object value = _optionPane.getValue();
 
                         // Ignore reset.

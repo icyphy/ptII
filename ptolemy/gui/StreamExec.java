@@ -158,12 +158,6 @@ public class StreamExec {
     protected void _setProgressBarMaximum(int size) {
     }
 
-    /** Update the progress bar.  In this base class, do nothing.
-     *  @i The current location of the progress bar.
-     */
-    private void _updateProgressBar(final int i) {
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
     // Execute the commands in the list.  Update the output with
@@ -222,11 +216,13 @@ public class StreamExec {
                     _process = runtime.exec(commandTokens);
 
                     // Set up a Thread to read in any error messages
-                    _StreamReaderThread errorGobbler = new _StreamReaderThread(_process
+                    _StreamReaderThread errorGobbler =
+                        new _StreamReaderThread(_process
                             .getErrorStream(), "ERROR", this);
 
                     // Set up a Thread to read in any output messages
-                    _StreamReaderThread outputGobbler = new _StreamReaderThread(_process
+                    _StreamReaderThread outputGobbler =
+                        new _StreamReaderThread(_process
                             .getInputStream(), "OUTPUT", this);
 
                     // Start up the Threads
@@ -260,6 +256,12 @@ public class StreamExec {
         return "All Done"; // or this
     }
 
+    /** Update the progress bar.  In this base class, do nothing.
+     *  @i The current location of the progress bar.
+     */
+    private void _updateProgressBar(final int i) {
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
     // Private class that reads a stream in a thread and updates the
@@ -275,8 +277,10 @@ public class StreamExec {
         // Read lines from the _inputStream and output them.
         public void run() {
             try {
-                InputStreamReader inputStreamReader = new InputStreamReader(_inputStream);
-                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+                InputStreamReader inputStreamReader =
+                    new InputStreamReader(_inputStream);
+                BufferedReader bufferedReader =
+                    new BufferedReader(inputStreamReader);
                 String line = null;
 
                 while ((line = bufferedReader.readLine()) != null) {

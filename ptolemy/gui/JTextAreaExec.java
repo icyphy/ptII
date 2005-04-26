@@ -166,6 +166,15 @@ public class JTextAreaExec extends JPanel {
         _updateProgressBar(0);
     }
 
+    /** Return the Start button.
+     *  This method is used to get the Start button so we can
+     *  set the focus to it.
+     *  @param the Start button.
+     */
+    public JButton getStartButton() {
+        return _startButton;
+    }
+
     /** Main method used for testing.
      *  To run a simple test, use:
      *  <pre>
@@ -203,15 +212,6 @@ public class JTextAreaExec extends JPanel {
                     exec.start();
                 }
             });
-    }
-
-    /** Return the Start button.
-     *  This method is used to get the Start button so we can
-     *  set the focus to it.
-     *  @param the Start button.
-     */
-    public JButton getStartButton() {
-        return _startButton;
     }
 
     /** Set the list of commands.
@@ -305,17 +305,20 @@ public class JTextAreaExec extends JPanel {
                         statusCommand.append(" . . .");
                     }
 
-                    _statusBar.setText("Executing: " + statusCommand.toString());
+                    _statusBar.setText("Executing: "
+                            + statusCommand.toString());
 
                     _process = runtime.exec(commandTokens);
 
                     // Set up a Thread to read in any error messages
-                    _StreamReaderThread errorGobbler = new _StreamReaderThread(_process
-                            .getErrorStream(), "ERROR", this);
+                    _StreamReaderThread errorGobbler =
+                        new _StreamReaderThread(_process
+                                .getErrorStream(), "ERROR", this);
 
                     // Set up a Thread to read in any output messages
-                    _StreamReaderThread outputGobbler = new _StreamReaderThread(_process
-                            .getInputStream(), "OUTPUT", this);
+                    _StreamReaderThread outputGobbler =
+                        new _StreamReaderThread(_process
+                                .getInputStream(), "OUTPUT", this);
 
                     // Start up the Threads
                     errorGobbler.start();
@@ -332,7 +335,8 @@ public class JTextAreaExec extends JPanel {
                             break;
                         }
                     } catch (InterruptedException interrupted) {
-                        appendJTextArea("InterruptedException: " + interrupted);
+                        appendJTextArea("InterruptedException: "
+                                + interrupted);
                         throw interrupted;
                     }
                 }

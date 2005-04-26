@@ -256,6 +256,21 @@ public class Query extends JPanel {
         combobox.addItemListener(new QueryItemListener(name));
     }
 
+    /** Create a ColorChooser.
+     *  @param name The name used to identify the entry (when calling get).
+     *  @param label The label to attach to the entry.
+     *  @param defaultColor The default color to use.
+     */
+    public void addColorChooser(String name, String label,
+            String defaultColor) {
+        JLabel lbl = new JLabel(label + ": ");
+        lbl.setBackground(_background);
+
+        QueryColorChooser colorChooser = new QueryColorChooser(name,
+                defaultColor);
+        _addPair(name, lbl, colorChooser, colorChooser);
+    }
+
     /** Create a simple one-line text display, a non-editable value that
      *  is set externally using the setDisplay() method.
      *  @param name The name used to identify the entry (when calling get).
@@ -273,21 +288,6 @@ public class Query extends JPanel {
         displayField.setEditable(false);
         displayField.setBackground(_background);
         _addPair(name, lbl, displayField, displayField);
-    }
-
-    /** Create a ColorChooser.
-     *  @param name The name used to identify the entry (when calling get).
-     *  @param label The label to attach to the entry.
-     *  @param defaultColor The default color to use.
-     */
-    public void addColorChooser(String name, String label,
-            String defaultColor) {
-        JLabel lbl = new JLabel(label + ": ");
-        lbl.setBackground(_background);
-
-        QueryColorChooser colorChooser = new QueryColorChooser(name,
-                defaultColor);
-        _addPair(name, lbl, colorChooser, colorChooser);
     }
 
     /** Create a FileChooser that selects files only, not directories, and
@@ -335,7 +335,8 @@ public class Query extends JPanel {
      *  @param foreground The foreground color for the text entry box.
      */
     public void addFileChooser(String name, String label, String defaultName,
-            URI base, File startingDirectory, Color background, Color foreground) {
+            URI base, File startingDirectory,
+            Color background, Color foreground) {
         addFileChooser(name, label, defaultName, base, startingDirectory, true,
                 false, background, foreground);
     }
@@ -475,54 +476,6 @@ public class Query extends JPanel {
         // later, the focus is lost and the entered value becomes
         // the value of the parameter.  I don't know of any workaround.
         entryBox.addFocusListener(new QueryFocusListener(name));
-    }
-
-    /**  Create a text area.
-     *  @param name The name used to identify the entry (when calling get).
-     *  @param label The label to attach to the entry.
-     *  @param theValues The value of this text area
-     */
-    public void addTextArea(String name, String label, String theValue) {
-        addTextArea(name, label, theValue, Color.white, Color.black, _height,
-                _width);
-    }
-
-    /**  Create a text area.
-     *  @param name The name used to identify the entry (when calling get).
-     *  @param label The label to attach to the entry.
-     *  @param theValues The value of this text area.
-     *  @param background The background color.
-     *  @param foreground The foreground color.
-     */
-    public void addTextArea(String name, String label, String theValue,
-            Color background, Color foreground) {
-        addTextArea(name, label, theValue, background, foreground, _height,
-                _width);
-    }
-
-    /**  Create a text area with the specified height and width (in
-     *  characters).
-     *  @param name The name used to identify the entry (when calling get).
-     *  @param label The label to attach to the entry.
-     *  @param theValues The value of this text area.
-     *  @param background The background color.
-     *  @param foreground The foreground color.
-     *  @param height The height.
-     *  @param width The width.
-     */
-    public void addTextArea(String name, String label, String theValue,
-            Color background, Color foreground, int height, int width) {
-        JLabel lbl = new JLabel(label + ": ");
-        lbl.setBackground(_background);
-
-        JTextArea textArea = new JTextArea(theValue, height, width);
-        textArea.setEditable(true);
-        textArea.setBackground(background);
-        textArea.setForeground(foreground);
-
-        QueryScrollPane textPane = new QueryScrollPane(textArea);
-        _addPair(name, lbl, textPane, textPane);
-        textArea.addFocusListener(new QueryFocusListener(name));
     }
 
     /** Add a listener.  The changed() method of the listener will be
@@ -680,6 +633,54 @@ public class Query extends JPanel {
         JSlider slider = new JSlider(minimum, maximum, defaultValue);
         _addPair(name, lbl, slider, slider);
         slider.addChangeListener(new SliderListener(name));
+    }
+
+    /**  Create a text area.
+     *  @param name The name used to identify the entry (when calling get).
+     *  @param label The label to attach to the entry.
+     *  @param theValues The value of this text area
+     */
+    public void addTextArea(String name, String label, String theValue) {
+        addTextArea(name, label, theValue, Color.white, Color.black, _height,
+                _width);
+    }
+
+    /**  Create a text area.
+     *  @param name The name used to identify the entry (when calling get).
+     *  @param label The label to attach to the entry.
+     *  @param theValues The value of this text area.
+     *  @param background The background color.
+     *  @param foreground The foreground color.
+     */
+    public void addTextArea(String name, String label, String theValue,
+            Color background, Color foreground) {
+        addTextArea(name, label, theValue, background, foreground, _height,
+                _width);
+    }
+
+    /**  Create a text area with the specified height and width (in
+     *  characters).
+     *  @param name The name used to identify the entry (when calling get).
+     *  @param label The label to attach to the entry.
+     *  @param theValues The value of this text area.
+     *  @param background The background color.
+     *  @param foreground The foreground color.
+     *  @param height The height.
+     *  @param width The width.
+     */
+    public void addTextArea(String name, String label, String theValue,
+            Color background, Color foreground, int height, int width) {
+        JLabel lbl = new JLabel(label + ": ");
+        lbl.setBackground(_background);
+
+        JTextArea textArea = new JTextArea(theValue, height, width);
+        textArea.setEditable(true);
+        textArea.setBackground(background);
+        textArea.setForeground(foreground);
+
+        QueryScrollPane textPane = new QueryScrollPane(textArea);
+        _addPair(name, lbl, textPane, textPane);
+        textArea.addFocusListener(new QueryFocusListener(name));
     }
 
     /** Get the current value in the entry with the given name
@@ -905,27 +906,6 @@ public class Query extends JPanel {
         return preferred;
     }
 
-    /** Get the preferred width in characters to be used for entry
-     *  boxes created in using addLine().  The preferred width is set
-     *  using setTextWidth().
-     *  @return The preferred width of an entry box in characters.
-     *  @see #setTextWidth(int)
-     */
-    public int getTextWidth() {
-        return _width;
-    }
-
-    /** Get the preferred number of lines to be used for entry boxes created
-     *  in using addTextArea().  The preferred height is set using
-     *  setTextHeight().
-     *  @return The preferred height in lines.
-     *  @see #addTextArea(String, String, String)
-     *  @see #setTextHeight(int)
-     */
-    public int getTextHeight() {
-        return _height;
-    }
-
     /** Get the current value in the entry with the given name,
      *  and return as a String.  All entry types support this.
      *  Note that this method should be called from the event dispatch
@@ -999,6 +979,27 @@ public class Query extends JPanel {
                     + " a string representation for entries of type "
                     + result.getClass());
         }
+    }
+
+    /** Get the preferred number of lines to be used for entry boxes created
+     *  in using addTextArea().  The preferred height is set using
+     *  setTextHeight().
+     *  @return The preferred height in lines.
+     *  @see #addTextArea(String, String, String)
+     *  @see #setTextHeight(int)
+     */
+    public int getTextHeight() {
+        return _height;
+    }
+
+    /** Get the preferred width in characters to be used for entry
+     *  boxes created in using addLine().  The preferred width is set
+     *  using setTextWidth().
+     *  @return The preferred width of an entry box in characters.
+     *  @see #setTextWidth(int)
+     */
+    public int getTextWidth() {
+        return _width;
     }
 
     /** Get the current value in the entry with the given name
@@ -1202,7 +1203,8 @@ public class Query extends JPanel {
     public void setColumns(int columns) {
         if (columns <= 0) {
             throw new IllegalArgumentException(
-                    "Query.setColumns() requires a strictly positive argument.");
+                    "Query.setColumns() requires a strictly positive "
+                    + "argument.");
         }
 
         _columns = columns;
@@ -1728,7 +1730,8 @@ public class Query extends JPanel {
      */
     class QueryFileChooser extends Box implements ActionListener {
         public QueryFileChooser(String name, String defaultName, URI base,
-                File startingDirectory, boolean allowFiles, boolean allowDirectories) {
+                File startingDirectory, boolean allowFiles,
+                boolean allowDirectories) {
             this(name, defaultName, base, startingDirectory, allowFiles,
                     allowDirectories, Color.white, Color.black);
         }
@@ -1785,12 +1788,14 @@ public class Query extends JPanel {
             fileChooser.setApproveButtonMnemonic('S');
 
             if (_allowFiles && _allowDirectories) {
-                fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+                fileChooser.setFileSelectionMode(
+                        JFileChooser.FILES_AND_DIRECTORIES);
             } else if (_allowFiles && !_allowDirectories) {
                 // This is the default.
                 fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
             } else if (!_allowFiles && _allowDirectories) {
-                fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                fileChooser.setFileSelectionMode(
+                        JFileChooser.DIRECTORIES_ONLY);
             } else {
                 // Usually, we would use InternalErrorException here,
                 // but if we do, then this package would depend on kernel.util,

@@ -37,17 +37,21 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 
-// NOTE: This class is borrowed from Diva and modified.
+//////////////////////////////////////////////////////////////////////////
+//// StatusBar
 
-/** A status bar with a message and a progress bar, for putting at the
- *  bottom of application windows.
- *
- *  @author John Reekie and Edward A. Lee
- *  @version $Id$
- *  @since Ptolemy II 0.4
- *  @Pt.ProposedRating Yellow (eal)
- *  @Pt.AcceptedRating Red (eal)
- */
+/**
+A status bar with a message and a progress bar, for putting at the
+bottom of application windows.
+
+<p>NOTE: This class is borrowed from Diva and modified.
+
+@author John Reekie and Edward A. Lee
+@version $Id$
+@since Ptolemy II 0.4
+@Pt.ProposedRating Yellow (eal)
+@Pt.AcceptedRating Red (eal)
+*/
 public class StatusBar extends JPanel {
     /** Create a new status bar with an empty label and progress at zero.
      */

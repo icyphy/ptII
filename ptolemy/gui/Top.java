@@ -175,8 +175,10 @@ public abstract class Top extends JFrame {
         Runnable doCenter = new Runnable() {
                 public void run() {
                     Toolkit tk = Toolkit.getDefaultToolkit();
-                    setLocation((tk.getScreenSize().width - getSize().width) / 2,
-                            (tk.getScreenSize().height - getSize().height) / 2);
+                    setLocation((tk.getScreenSize().width
+                                        - getSize().width) / 2,
+                            (tk.getScreenSize().height
+                                    - getSize().height) / 2);
 
                     // Make this the default context for modal messages.
                     GraphicalMessageHandler.setContext(Top.this);
@@ -283,100 +285,6 @@ public abstract class Top extends JFrame {
         return _modified;
     }
 
-    /** Report a Throwable, which is usually an Exception but can also
-     *        be an Error.  This displays a message in a dialog by
-     *  calling the two-argument version with an empty string as the
-     *  first argument.  If this method is called outside the AWT event
-     *  thread, then its execution is deferred and performed in that thread.
-     *  @param throwable The Throwable to report
-     *  @see #report(String, Throwable)
-     */
-    public void report(Throwable throwable) {
-        report("", throwable);
-    }
-
-    /** Report a message to the user by displaying it in a status bar,
-     *  if there is one. If this method is called outside the AWT event
-     *  thread, then its execution is deferred and performed in that thread.
-     *  @param message The message to report.
-     */
-    public void report(final String message) {
-        Runnable doReport = new Runnable() {
-                public void run() {
-                    if (_statusBar != null) {
-                        _statusBar.setMessage(message);
-                    }
-                }
-            };
-
-        deferIfNecessary(doReport);
-    }
-
-    /** Report a Throwable, which is usually an Exception but can also
-     *  be an Error. If this method is called outside the AWT event
-     *  thread, then its execution is deferred and performed in that thread.
-     *  This pops up a window with the option of examining the stack
-     *  trace, and reports the specified message in the status bar, if
-     *  there is one.
-     *  @param message The message.
-     *  @param throwable The Throwable to report.
-     */
-    public void report(final String message, final Throwable throwable) {
-        Runnable doReport = new Runnable() {
-                public void run() {
-                    if (_statusBar != null) {
-                        _statusBar.setMessage(MessageHandler.shortDescription(
-                                                      throwable) + ". " + message);
-                    }
-
-                    MessageHandler.error(message, throwable);
-                }
-            };
-
-        deferIfNecessary(doReport);
-    }
-
-    /** Set background color.  This overrides the base class to set the
-     *  background of the status bar. If this method is called outside
-     *  the AWT event thread, then its execution is deferred and
-     *  performed in that thread.
-     *  @param background The background color.
-     */
-    public void setBackground(final Color background) {
-        Runnable doSet = new Runnable() {
-                public void run() {
-                    Top.super.setBackground(background);
-
-                    // This seems to be called in a base class constructor, before
-                    // this variable has been set. Hence the test against null.
-                    if (_statusBar != null) {
-                        _statusBar.setBackground(background);
-                    }
-                }
-            };
-
-        deferIfNecessary(doSet);
-    }
-
-    /** Specify whether or not to center the window on the screen when
-     *  packing it.  The default is true.
-     *  @param centering Set to false to disable centering.
-     *  @see #getCentering()
-     */
-    public void setCentering(boolean centering) {
-        _centering = centering;
-    }
-
-    /** Record whether the data associated with this window has been
-     *  modified since it was first read or last saved.  If you call
-     *  this with a true argument, then subsequent attempts to close
-     *  the window will trigger a dialog box to confirm the closing.
-     *  @param modified Indicator of whether the data has been modified.
-     */
-    public void setModified(boolean modified) {
-        _modified = modified;
-    }
-
     /** Size this window to its preferred size and make it
      *  displayable, and override the base class to populate the menu
      *  bar if the menus have not already been populated.  If the
@@ -402,8 +310,10 @@ public abstract class Top extends JFrame {
                         _fileMenuItems[0].setAccelerator(KeyStroke.getKeyStroke(
                                                                  KeyEvent.VK_O, Event.CTRL_MASK));
 
-                        // The mnemonic isn't set in the static initializer because
-                        // JMenu doesn't have an appropriate constructor.
+
+                        // The mnemonic isn't set in the static
+                        // initializer because JMenu doesn't have an
+                        // appropriate constructor.
                         _fileMenuItems[2].setMnemonic(KeyEvent.VK_N);
 
                         // New button disabled by default.
@@ -488,6 +398,102 @@ public abstract class Top extends JFrame {
             };
 
         deferIfNecessary(doPack);
+    }
+
+    /** Report a Throwable, which is usually an Exception but can also
+     *        be an Error.  This displays a message in a dialog by
+     *  calling the two-argument version with an empty string as the
+     *  first argument.  If this method is called outside the AWT event
+     *  thread, then its execution is deferred and performed in that thread.
+     *  @param throwable The Throwable to report
+     *  @see #report(String, Throwable)
+     */
+    public void report(Throwable throwable) {
+        report("", throwable);
+    }
+
+    /** Report a message to the user by displaying it in a status bar,
+     *  if there is one. If this method is called outside the AWT event
+     *  thread, then its execution is deferred and performed in that thread.
+     *  @param message The message to report.
+     */
+    public void report(final String message) {
+        Runnable doReport = new Runnable() {
+                public void run() {
+                    if (_statusBar != null) {
+                        _statusBar.setMessage(message);
+                    }
+                }
+            };
+
+        deferIfNecessary(doReport);
+    }
+
+    /** Report a Throwable, which is usually an Exception but can also
+     *  be an Error. If this method is called outside the AWT event
+     *  thread, then its execution is deferred and performed in that thread.
+     *  This pops up a window with the option of examining the stack
+     *  trace, and reports the specified message in the status bar, if
+     *  there is one.
+     *  @param message The message.
+     *  @param throwable The Throwable to report.
+     */
+    public void report(final String message, final Throwable throwable) {
+        Runnable doReport = new Runnable() {
+                public void run() {
+                    if (_statusBar != null) {
+                        _statusBar.setMessage(
+                                MessageHandler.shortDescription(throwable)
+                                + ". " + message);
+                    }
+
+                    MessageHandler.error(message, throwable);
+                }
+            };
+
+        deferIfNecessary(doReport);
+    }
+
+    /** Set background color.  This overrides the base class to set the
+     *  background of the status bar. If this method is called outside
+     *  the AWT event thread, then its execution is deferred and
+     *  performed in that thread.
+     *  @param background The background color.
+     */
+    public void setBackground(final Color background) {
+        Runnable doSet = new Runnable() {
+                public void run() {
+                    Top.super.setBackground(background);
+
+                    // This seems to be called in a base class
+                    // constructor, before this variable has been
+                    // set. Hence the test against null.
+                    if (_statusBar != null) {
+                        _statusBar.setBackground(background);
+                    }
+                }
+            };
+
+        deferIfNecessary(doSet);
+    }
+
+    /** Specify whether or not to center the window on the screen when
+     *  packing it.  The default is true.
+     *  @param centering Set to false to disable centering.
+     *  @see #getCentering()
+     */
+    public void setCentering(boolean centering) {
+        _centering = centering;
+    }
+
+    /** Record whether the data associated with this window has been
+     *  modified since it was first read or last saved.  If you call
+     *  this with a true argument, then subsequent attempts to close
+     *  the window will trigger a dialog box to confirm the closing.
+     *  @param modified Indicator of whether the data has been modified.
+     */
+    public void setModified(boolean modified) {
+        _modified = modified;
     }
 
     /** Override the base class to deiconify
