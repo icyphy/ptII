@@ -24,7 +24,7 @@
     </property>
     <property name="executionTime" class="ptolemy.data.expr.Parameter" value="100.0">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[803, 501]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[800, 500]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[72, 77]">
     </property>
