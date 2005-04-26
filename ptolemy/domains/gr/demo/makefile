@@ -34,7 +34,8 @@ ME =		ptolemy/domains/gr/demo
 # Root of the Java directory
 ROOT =		../../../..
 
-DIRS =		FurutaPendulum Pendulum StickyMasses Universe
+DIRS =		Helen FurutaPendulum Pendulum \
+		SolarSystem StickyMasses Universe
 
 CLASSPATH =	$(ROOT)
 
@@ -48,8 +49,10 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
+	Helen/Helen.jar \
 	FurutaPendulum/FurutaPendulum.jar \
 	Pendulum/Pendulum.jar \
+	SolarSystem/SolarSystem.jar \
 	StickyMasses/StickyMasses.jar \
 	Universe/Universe.jar
 
