@@ -152,7 +152,18 @@ test FileUtilities-2.5 {nameToFile: open a non-absolute file with different base
 ######################################################################
 ####
 #
-test FileUtilities-8.1 {nameToURL} {
+test FileUtilities-8.1 {nameToURL with nulls} {
+    set url1 [java::call ptolemy.util.FileUtilities nameToURL \
+	[java::null] [java::null] [java::null]]
+    set url2 [java::call ptolemy.util.FileUtilities nameToURL \
+	"" [java::null] [java::null]]
+    list [java::isnull $url1] [java::isnull $url2] 
+} {1 1}
+
+######################################################################
+####
+#
+test FileUtilities-8.2 {nameToURL} {
     set url1 [java::call ptolemy.util.FileUtilities nameToURL \
 	"xxxxxxCLASSPATHxxxxxx/ptolemy/util/FileUtilities.java" \
 	[java::null] [java::null]]
@@ -160,5 +171,52 @@ test FileUtilities-8.1 {nameToURL} {
 	"\$CLASSPATH/ptolemy/util/FileUtilities.java" \
 	[java::null] [java::null]]	
     list [$url1 sameFile $url2]
+} {1}
+
+######################################################################
+####
+#
+test FileUtilities-8.3 {nameToURL with a classloader} {
+    set classLoader [java::call ClassLoader getSystemClassLoader]
+    set url1 [java::call ptolemy.util.FileUtilities nameToURL \
+	"xxxxxxCLASSPATHxxxxxx/ptolemy/util/FileUtilities.java" \
+	[java::null] $classLoader]
+    set url2 [java::call ptolemy.util.FileUtilities nameToURL \
+	"\$CLASSPATH/ptolemy/util/FileUtilities.java" \
+	[java::null] $classLoader]	
+    list [$url1 sameFile $url2]
+} {1}
+
+######################################################################
+####
+#
+test FileUtilities-8.4 {nameToURL that does not exist with no base URI} {
+    set fileExists0 [file exists doesnotexist]
+
+    set url1 [java::call ptolemy.util.FileUtilities nameToURL \
+	    file:///doesnotexist [java::null] [java::null]]
+    list $fileExists0 [$url1 toString]
+} {1}
+
+######################################################################
+####
+#
+test FileUtilities-8.5 {nameToURL that does not exist with a base URI} {
+    set fileExists0 [file exists doesnotexist]
+    set baseURI [java::new java.net.URI .]
+    set url1 [java::call ptolemy.util.FileUtilities nameToURL \
+	file:///doesnotexist $baseURI [java::null]]
+    list $fileExists0 [$url1 toString]
+} {1}
+
+######################################################################
+####
+#
+test FileUtilities-8.6 {nameToURL that does not exist with a base URI} {
+    set fileExists0 [file exists doesnotexist]
+    set baseURI [java::new java.net.URI .]
+    set url1 [java::call ptolemy.util.FileUtilities nameToURL \
+	doesnotexist $baseURI [java::null]]
+    list $fileExists0 [$url1 toString]
 } {1}
 
