@@ -144,7 +144,7 @@ public class PtolemyTransferable implements Transferable, Serializable {
     /**
      *  Remove the given object from this transferable.
      *  If the object does not exist in the transferable, then do nothing.
-     *  @param The object to be removed.
+     *  @param object The object to be removed.
      */
     public void removeObject(NamedObj object) {
         if (_objectList.contains(object)) {

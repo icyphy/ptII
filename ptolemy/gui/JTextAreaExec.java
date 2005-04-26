@@ -169,7 +169,7 @@ public class JTextAreaExec extends JPanel {
     /** Return the Start button.
      *  This method is used to get the Start button so we can
      *  set the focus to it.
-     *  @param the Start button.
+     *  @return the Start button.
      */
     public JButton getStartButton() {
         return _startButton;

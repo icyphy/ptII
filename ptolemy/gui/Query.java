@@ -638,7 +638,7 @@ public class Query extends JPanel {
     /**  Create a text area.
      *  @param name The name used to identify the entry (when calling get).
      *  @param label The label to attach to the entry.
-     *  @param theValues The value of this text area
+     *  @param theValue The value of this text area
      */
     public void addTextArea(String name, String label, String theValue) {
         addTextArea(name, label, theValue, Color.white, Color.black, _height,
@@ -648,7 +648,7 @@ public class Query extends JPanel {
     /**  Create a text area.
      *  @param name The name used to identify the entry (when calling get).
      *  @param label The label to attach to the entry.
-     *  @param theValues The value of this text area.
+     *  @param theValue The value of this text area.
      *  @param background The background color.
      *  @param foreground The foreground color.
      */
@@ -662,7 +662,7 @@ public class Query extends JPanel {
      *  characters).
      *  @param name The name used to identify the entry (when calling get).
      *  @param label The label to attach to the entry.
-     *  @param theValues The value of this text area.
+     *  @param theValue The value of this text area.
      *  @param background The background color.
      *  @param foreground The foreground color.
      *  @param height The height.
@@ -1377,7 +1377,7 @@ public class Query extends JPanel {
      *  in using addLine().  If this is called multiple times, then
      *  it only affects subsequent calls.
      *  @param characters The preferred width.
-     *  @param #getTextWidth()
+     *  @see #getTextWidth()
      */
     public void setTextWidth(int characters) {
         _width = characters;
