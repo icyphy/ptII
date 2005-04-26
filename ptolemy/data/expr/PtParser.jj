@@ -60,8 +60,8 @@ import java.io.*;
 /** 
 This file implements an expression parser for Ptolemy II using the 
 JavaCC parser generator. It can handle all the basic arithmetic operators
-(*, /, +, -,, %), relational operators (<, <=, >, >=, == !=), logical 
-operators(&&, ||, !), bitwise operators (&, |, ^, ~)  and, using 
+(*, /, +, -, %, ^), relational operators (<, <=, >, >=, == !=), logical 
+operators(&&, ||, !), bitwise operators (&, |, #, ~)  and, using 
 reflection, all of the functionality available in the java.lang.Math 
 package. 
 <p>
