@@ -87,8 +87,11 @@ test FileUtilities-1.3 {binaryCopyURLToFile URL does not exist. sameFile } {
     set destinationFile [java::new java.io.File doesnotexist]
 
     set fileExists0 [file exists doesnotexist]
-    set results [java::call ptolemy.util.FileUtilities binaryCopyURLToFile \
-		     $sourceURL $destinationFile]
+    if [ catch {set results \
+	         [java::call ptolemy.util.FileUtilities binaryCopyURLToFile \
+              	     $sourceURL $destinationFile]} errMsg] {
+	puts $errMsg
+    }
     list $fileExists0 $results
 } {0 0}
 
