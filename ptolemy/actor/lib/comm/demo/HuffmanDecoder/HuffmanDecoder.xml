@@ -2,24 +2,24 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="HuffmanDecoder" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-alpha">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1032, 746}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={13, 10, 986, 730}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[800, 628]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[771, 612]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8523735002608">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{469.25, 388.3388921564276}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{385.5, 306.0}">
     </property>
     <property name="DDF Director" class="ptolemy.domains.ddf.kernel.DDFDirector">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 100.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 40.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This demo shows the Huffman coding and decoding given an alphabet list and its&#10;probability mass function (pmf).The Huffman coding scheme is an optimal source&#10;coding method for data compression. It uses fewer bits to represent symbols that&#10;have high probability of occurence and more bits for symbols that have low&#10;probability of occurence. Therefore, Huffman coding uses fewer bits on average&#10;to encode than fixed length coding scheme. Huffman code is also an instantaneous&#10;code which means it is uniquely decodable.&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 575.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 430.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -27,7 +27,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Ye Zhou">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 720.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 575.0]">
         </property>
     </property>
     <property name="pmf" class="ptolemy.data.expr.Parameter" value="{0.1, 0.05, 0.2, 0.3, 0.07, 0.28}">
@@ -46,7 +46,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[705.0, 170.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{545.0, 145.0}">
         </property>
     </property>
     <property name="alphabet" class="ptolemy.data.expr.Parameter" value="{1, 2, 3, 4, 5, 6}">
@@ -65,7 +65,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[705.0, 140.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 105.0]">
         </property>
     </property>
     <entity name="HuffmanCoder" class="ptolemy.actor.lib.comm.HuffmanCoder">
@@ -73,7 +73,7 @@
         </property>
         <property name="alphabet" class="ptolemy.data.expr.Parameter" value="alphabet">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 230.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 140.0]">
         </property>
     </entity>
     <entity name="HuffmanDecoder" class="ptolemy.actor.lib.comm.HuffmanDecoder">
@@ -81,7 +81,7 @@
         </property>
         <property name="alphabet" class="ptolemy.data.expr.Parameter" value="alphabet">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 220.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 160.0]">
         </property>
     </entity>
     <entity name="HuffmanCodeBook" class="ptolemy.actor.lib.MonitorValue">
@@ -96,17 +96,17 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="displayWidth">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[700.0, 315.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 260.0]">
         </property>
     </entity>
     <entity name="HuffmanCode" class="ptolemy.actor.lib.gui.Display">
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={19, 304, 269, 241}, maximized=false}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 165.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 105.0]">
         </property>
     </entity>
     <entity name="Counter" class="ptolemy.actor.lib.Counter">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 40.0]">
         </property>
     </entity>
     <entity name="NumberOfBitsUsingHuffmanCoder" class="ptolemy.actor.lib.MonitorValue">
@@ -119,11 +119,11 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="displayWidth">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[605.0, 40.0]">
         </property>
     </entity>
     <entity name="Counter2" class="ptolemy.actor.lib.Counter">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 410.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 335.0]">
         </property>
     </entity>
     <entity name="NumberOfBitsUsingBinaryCoder" class="ptolemy.actor.lib.MonitorValue">
@@ -136,7 +136,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="displayWidth">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[560.0, 410.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[615.0, 335.0]">
         </property>
     </entity>
     <entity name="FixedLengthBinaryCoder" class="ptolemy.actor.lib.comm.Slicer">
@@ -144,7 +144,7 @@
         </property>
         <property name="wordLength" class="ptolemy.data.expr.Parameter" value="roundToInt(ceil(log2(alphabet.length)))">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{250.0, 400.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 325.0]">
         </property>
     </entity>
     <entity name="DiscreteRandomSource" class="ptolemy.actor.lib.DiscreteRandomSource">
@@ -152,11 +152,11 @@
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="alphabet">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 230.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 125.0]">
         </property>
     </entity>
     <entity name="Equals" class="ptolemy.actor.lib.logic.Equals">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 515.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 395.0]">
         </property>
     </entity>
     <entity name="CompareDecodedWithUncoded" class="ptolemy.actor.lib.MonitorValue">
@@ -171,22 +171,22 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="displayWidth">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[630.0, 515.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[615.0, 395.0]">
         </property>
     </entity>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
         <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="200">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 230.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 125.0]">
         </property>
     </entity>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[190.1790313720703, 229.78207397460938]">
+        <vertex name="vertex1" value="{195.0, 125.0}">
         </vertex>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[335.0, 220.0]">
+        <vertex name="vertex1" value="[335.0, 130.0]">
         </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
