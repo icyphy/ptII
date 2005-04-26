@@ -422,7 +422,7 @@ HYVISUAL_SRC_TO_BE_REMOVED = \
 		thales
 
 # Location of the jar binary.  Cygwin /bin/jar is broken.
-JAR=c:/j2sdk1.4.2_06/bin/jar
+JAR=c:/j2sdk1.4.2_08/bin/jar
 
 # The Jar file that we create.
 src.jar: $(PTII_SRC_JAR)
