@@ -54,9 +54,15 @@ DOC_CODEDOC_JAR = \
 
 SIGNED_DIR =		signed
 
+lib/joystickWindows.jar: 
+	(cd vendors/misc/joystick/lib/; \
+		"$(JAR)" -cvf $(PTII)/lib/joystickWindows jjstick.dll)
+
 # NATIVE_SIGNED_LIB_JARS is a separate vaiable so that we can
 # include it in ALL_JNLP_JARS
-NATIVE_SIGNED_LIB_JARS = lib/matlabWindows.jar \
+NATIVE_SIGNED_LIB_JARS = \
+	lib/joystickWindows.jar \
+	lib/matlabWindows.jar \
 	lib/matlabSunOS.jar
 
 SIGNED_LIB_JARS =	$(NATIVE_SIGNED_LIB_JARS) \
