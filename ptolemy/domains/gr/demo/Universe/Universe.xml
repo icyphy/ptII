@@ -14,7 +14,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="78.0, 33.5">
         </property>
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[672, 450]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[738, 551]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[84, 102]">
     </property>
@@ -36,7 +36,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="455.0, 5.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 2, 887, 568}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 2, 953, 669}, maximized=false}">
     </property>
     <property name="annotation2" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -82,7 +82,7 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{336.0, 225.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{369.0, 275.5}">
     </property>
     <entity name="ViewScreen" class="ptolemy.domains.gr.lib.ViewScreen3D">
         <property name="horizontalResolution" class="ptolemy.data.expr.Parameter" value="400">
@@ -101,7 +101,9 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
         </property>
         <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0}">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={573, 365, 450, 400}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={543, 282, 408, 434}, maximized=false}">
+        </property>
+        <property name="_viewSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
         <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>

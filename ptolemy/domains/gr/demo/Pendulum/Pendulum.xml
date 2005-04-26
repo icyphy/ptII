@@ -41,7 +41,7 @@ the 3-D graphics and ODE capabilities of Ptolemy II</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="145.0, 15.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={114, 149, 796, 478}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 1, 796, 478}, maximized=false}">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
@@ -98,6 +98,10 @@ the 3-D graphics and ODE capabilities of Ptolemy II</text></svg></configure>
         </property>
         <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0}">
         </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={613, 337, 408, 434}, maximized=false}">
+        </property>
+        <property name="_viewSize" class="ptolemy.actor.gui.SizeAttribute" value="[400, 400]">
+        </property>
         <property name="scale" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="457.0, 185.0">
@@ -134,7 +138,7 @@ the 3-D graphics and ODE capabilities of Ptolemy II</text></svg></configure>
         </property>
     </entity>
     <entity name="Text" class="ptolemy.domains.gr.lib.TextString3D">
-        <property name="text" class="ptolemy.actor.parameters.PortParameter" value="&quot;Pendulum Model&quot;">
+        <property name="text" class="ptolemy.actor.parameters.PortParameter" value="Pendulum Model">
         </property>
         <property name="diffuseColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0}">
         </property>

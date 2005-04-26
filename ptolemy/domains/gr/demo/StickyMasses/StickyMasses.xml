@@ -36,7 +36,7 @@ a three-dimensional animation.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 280.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={5, 277, 968, 468}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 0, 968, 468}, maximized=false}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -827,6 +827,10 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
             </property>
             <property name="iterationSynchronized" class="ptolemy.data.expr.Parameter" value="false">
             </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={665, 433, 308, 334}, maximized=false}">
+            </property>
+            <property name="_viewSize" class="ptolemy.actor.gui.SizeAttribute">
+            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="688.0, 66.0">
             </property>
         </entity>
@@ -1583,7 +1587,7 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={355, 4, 663, 300}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 467, 663, 300}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[655, 245]">
         </property>
@@ -1932,13 +1936,13 @@ model (double click on that transition to see its actions).</text></svg></config
                     <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 34.5">
                     </property>
                 </property>
-                <property name="p1" class="ptolemy.data.expr.Parameter" value="1.1841457518696">
+                <property name="p1" class="ptolemy.data.expr.Parameter" value="1.9160866663321">
                 </property>
-                <property name="v1" class="ptolemy.data.expr.Parameter" value="-0.0963065515754">
+                <property name="v1" class="ptolemy.data.expr.Parameter" value="-0.1444380280063">
                 </property>
-                <property name="p2" class="ptolemy.data.expr.Parameter" value="1.1841457518696">
+                <property name="p2" class="ptolemy.data.expr.Parameter" value="1.9160866663321">
                 </property>
-                <property name="v2" class="ptolemy.data.expr.Parameter" value="-0.0963065515754">
+                <property name="v2" class="ptolemy.data.expr.Parameter" value="-0.1444380280063">
                 </property>
                 <property name="annotation" class="ptolemy.kernel.util.Attribute">
                     <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -2164,9 +2168,9 @@ of the two masses.</text></svg></configure>
                 </property>
                 <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[199, 1]">
                 </property>
-                <property name="p" class="ptolemy.data.expr.Parameter" value="1.1832010571166">
+                <property name="p" class="ptolemy.data.expr.Parameter" value="1.487037989932">
                 </property>
-                <property name="v" class="ptolemy.data.expr.Parameter" value="0.0864552781239">
+                <property name="v" class="ptolemy.data.expr.Parameter" value="0.2564728222117">
                 </property>
                 <property name="stickiness" class="ptolemy.data.expr.Parameter" value="10.0">
                 </property>

@@ -1,0 +1,126 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Helen" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
+    </property>
+    <property name="GR Director" class="ptolemy.domains.gr.kernel.GRDirector">
+        <property name="iterationTimeLowerBound" class="ptolemy.data.expr.Parameter" value="66">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{90, 30}">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={4, -2, 779, 468}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[564, 350]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{282.0, 175.0}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model illustrates mapping of a texture&#10;(from a PNG encoded photograph) onto a cube,&#10;and the tumbling of that cube using the&#10;axis rotator.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 10.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 325.0]">
+        </property>
+    </property>
+    <entity name="Box3D" class="ptolemy.domains.gr.lib.Box3D">
+        <property name="xLength" class="ptolemy.data.expr.Parameter" value="0.6">
+        </property>
+        <property name="yHeight" class="ptolemy.data.expr.Parameter" value="0.6">
+        </property>
+        <property name="zWidth" class="ptolemy.data.expr.Parameter" value="0.6">
+        </property>
+        <property name="diffuseColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
+        </property>
+        <property name="texture" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/doc/img/Helen.png">
+        </property>
+        <property name="Box3DIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={120, 11, 815, 516}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 90.0]">
+        </property>
+    </entity>
+    <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+        <property name="init" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="step" class="ptolemy.actor.parameters.PortParameter" value="-PI/100">
+        </property>
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 210.0]">
+        </property>
+    </entity>
+    <entity name="Ramp2" class="ptolemy.actor.lib.Ramp">
+        <property name="init" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="step" class="ptolemy.actor.parameters.PortParameter" value="-PI/100">
+        </property>
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 150.0]">
+        </property>
+    </entity>
+    <entity name="ViewScreen3D" class="ptolemy.domains.gr.lib.ViewScreen3D">
+        <property name="rotatable" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="scalable" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="translatable" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="showAxes" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="iterationSynchronized" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.6,1.0}">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={610, 333, 408, 434}, maximized=false}">
+        </property>
+        <property name="_viewSize" class="ptolemy.actor.gui.SizeAttribute" value="[400, 400]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 160.0]">
+        </property>
+    </entity>
+    <entity name="ThreeAxisRotator3D" class="ptolemy.domains.gr.lib.ThreeAxisRotator3D">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 160.0]">
+        </property>
+    </entity>
+    <entity name="Ramp3" class="ptolemy.actor.lib.Ramp">
+        <property name="init" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="step" class="ptolemy.actor.parameters.PortParameter" value="-PI/100">
+        </property>
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 275.0]">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Box3D.sceneGraphOut" relation="relation"/>
+    <link port="Ramp.output" relation="relation4"/>
+    <link port="Ramp2.output" relation="relation3"/>
+    <link port="ViewScreen3D.sceneGraphIn" relation="relation2"/>
+    <link port="ThreeAxisRotator3D.sceneGraphIn" relation="relation"/>
+    <link port="ThreeAxisRotator3D.rotateHorizontal" relation="relation3"/>
+    <link port="ThreeAxisRotator3D.rotateVertical" relation="relation4"/>
+    <link port="ThreeAxisRotator3D.tilt" relation="relation6"/>
+    <link port="ThreeAxisRotator3D.sceneGraphOut" relation="relation2"/>
+    <link port="Ramp3.output" relation="relation6"/>
+</entity>
