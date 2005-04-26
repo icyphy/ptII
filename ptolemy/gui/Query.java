@@ -490,7 +490,7 @@ public class Query extends JPanel {
      *  of the entry has changed since the last notification.
      *  If the listener has already been added, then do nothing.
      *  @param listener The listener to add.
-     *  @see #removeQueryListener(listener)
+     *  @see #removeQueryListener(QueryListener)
      */
     public void addQueryListener(QueryListener listener) {
         if (_listeners == null) {
