@@ -382,10 +382,15 @@ $(VERGIL_DOCS): javahtml.awk
 # and the convert Ptolemy Project web page to
 #     <a href="http://ptolemy.eecs.berkeley.edu/#in_browser">Ptolemy Project web page</a>
 mainVergil.htm: main.htm
-	sed -e 's@<a href="[^"]*" target="[^"]*">\([^<]*\)</a>@\1@' \
-		-e 's@Ptolemy Project web page@<a href="http://ptolemy.eecs.berkeley.edu/#in_browser">Ptolemy Project web page</a>@' \
-	        -e 's@^<link .*>@@' \
+	sed -e 's@" target="_top">@#in_browser">@' \
+	    -e 's@body.htm" target="body">@main.htm">@' \
+	    -e 's@^<link .*>@@' \
 		main.htm > $@
+# Used to be:
+#	sed -e 's@<a href="[^"]*" target="[^"]*">\([^<]*\)</a>@\1@' \
+#		-e 's@Ptolemy Project web page@<a href="http://ptolemy.eecs.berkeley.edu/#in_browser">Ptolemy Project web page</a>@' \
+#	        -e 's@^<link .*>@@' \
+#		main.htm > $@
 
 # Generate a file that consists of only the text within
 # <!--vergilDoc--> ... <!--/vergilDoc--> blocks
