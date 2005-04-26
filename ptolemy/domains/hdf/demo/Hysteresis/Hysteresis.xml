@@ -2,9 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Hysteresis" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-alpha">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[511, 528]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[511, 502]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[27, 18]">
     </property>
@@ -15,29 +15,29 @@
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 45.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 45.0]">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={91, 29, 726, 646}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 0, 726, 620}, maximized=false}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model shows the Hysteresis effect. Hysteresis is a retardation &#10;of an effect when the forces acting upon a body are changed. It is&#10;often used to decribe the phenomenon in which the magnetic induction &#10;of a ferromagnetic material lags behind the changing magnetic field.&#10;&#10;In this example, the noisy sinewave is turned into square wave. However,&#10;the polarity of the square wave does not change immediately as the&#10;sinewave change changes polarity.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 300.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 300.0]">
         </property>
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{263.8429054054054, 250.65625}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{255.5, 251.0}">
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Ye Zhou and Brian Vogel">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 470.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 470.0]">
         </property>
     </property>
     <entity name="modal model" class="ptolemy.domains.fsm.modal.ModalModel">
@@ -55,7 +55,7 @@
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 215.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 215.0]">
         </property>
         <port name="input" class="ptolemy.domains.fsm.modal.ModalPort">
             <property name="input"/>
@@ -335,13 +335,13 @@
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={108, 103, 811, 561}}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 135.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 135.0]">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
         </property>
     </entity>
     <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 145.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 145.0]">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
         </property>
@@ -354,7 +354,7 @@
         <property name="standardDeviation" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
         <doc>Create a sequence of gaussian random variables</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="66.0, 233.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[56.0, 233.0]">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
         </property>
@@ -362,7 +362,7 @@
     <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={531, 374, 479, 351}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={531, 374, 479, 349}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[471, 294]">
         </property>
@@ -372,7 +372,7 @@
         </property>
         <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 145.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 145.0]">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
         </property>
@@ -382,12 +382,12 @@
 <plot>
 <title></title>
 <xRange min="0.0" max="39.0"/>
-<yRange min="-1.1680396665637336" max="1.1645949124674162"/>
+<yRange min="-1.0562779501133337" max="1.0065236371523378"/>
 </plot>?>
         </configure>
     </entity>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[255.0, 145.0]">
+        <vertex name="vertex1" value="[245.0, 145.0]">
         </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">

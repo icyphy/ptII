@@ -2,21 +2,21 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="AdaptiveCoding" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-alpha">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={12, 18, 1005, 687}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 2, 974, 658}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[790, 569]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[759, 540]">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model demonstrates that HDF allows dynamic port rate changes and&#10;correctly shedules the two modal models.&#10;&#10;In this example, the model has two modes of Hamming Codec, a (7, 4) Hamming Code &#10;and a (3, 1) Hamming code. Each set of Codec has different consumption rates and &#10;production rates. The Switch actor produces booleans to control the switching&#10;between the two coding/decoding schemes. Such switching signal might come from &#10;a sensor, a performance detector, or a command issued by a person. &#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 370.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 340.0]">
         </property>
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0126351735913">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{408.1387730724544, 288.156097281267}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{379.5, 270.0}">
     </property>
     <property name="probabilityOfChannelError" class="ptolemy.data.expr.Parameter" value="0.1">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -32,19 +32,19 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 75.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 45.0]">
         </property>
     </property>
     <property name="HDF Director" class="ptolemy.domains.hdf.kernel.HDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="40">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{100, 70}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 40.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A noisy channel">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 120.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 90.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -52,7 +52,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Ye Zhou">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 535.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 505.0]">
         </property>
     </property>
     <entity name="Uncoded Symbols" class="ptolemy.actor.lib.Bernoulli">
@@ -61,7 +61,7 @@
         <property name="trueProbability" class="ptolemy.data.expr.Parameter" value="0.5">
         </property>
         <doc>Create a sequence of bernoulli random variables</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 170.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 140.0]">
         </property>
     </entity>
     <entity name="Switch" class="ptolemy.actor.lib.Bernoulli">
@@ -70,7 +70,7 @@
         <property name="trueProbability" class="ptolemy.data.expr.Parameter" value="0.5">
         </property>
         <doc>Create a sequence of bernoulli random variables</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 270.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 240.0]">
         </property>
     </entity>
     <entity name="Coder" class="ptolemy.domains.fsm.modal.ModalModel">
@@ -78,7 +78,7 @@
         </property>
         <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 150.0]">
         </property>
         <port name="input" class="ptolemy.domains.fsm.modal.ModalPort">
             <property name="input"/>
@@ -272,7 +272,7 @@
         </property>
         <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 260.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 230.0]">
         </property>
         <port name="input" class="ptolemy.domains.fsm.modal.ModalPort">
             <property name="input"/>
@@ -484,7 +484,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 150.0]">
         </property>
     </entity>
     <entity name="Bernoulli" class="ptolemy.actor.lib.Bernoulli">
@@ -493,11 +493,11 @@
         <property name="trueProbability" class="ptolemy.data.expr.Parameter" value="probabilityOfChannelError">
         </property>
         <doc>Create a sequence of bernoulli random variables</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 115.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 85.0]">
         </property>
     </entity>
     <entity name="Count Errors" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[555.0, 325.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 295.0]">
         </property>
         <property name="annotation" class="ptolemy.kernel.util.Attribute">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -653,7 +653,7 @@ the error rate.</text></svg></configure>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="displayWidth">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{715.0, 315.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[680.0, 285.0]">
         </property>
     </entity>
     <entity name="Error Rate" class="ptolemy.actor.lib.MonitorValue">
@@ -666,11 +666,11 @@ the error rate.</text></svg></configure>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="displayWidth">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[710.0, 390.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[680.0, 360.0]">
         </property>
     </entity>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[175.0, 270.0]">
+        <vertex name="vertex1" value="[145.0, 240.0]">
         </vertex>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
@@ -682,7 +682,7 @@ the error rate.</text></svg></configure>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[135.0, 335.0]">
+        <vertex name="vertex1" value="[105.0, 305.0]">
         </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
