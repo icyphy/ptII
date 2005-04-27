@@ -192,11 +192,11 @@ test FileUtilities-8.3 {nameToURL with a classloader} {
 #
 test FileUtilities-8.4 {nameToURL that does not exist with no base URI} {
     set fileExists0 [file exists doesnotexist]
-
+    # FIXME: should this throw an exception because doesnotexist is not found?
     set url1 [java::call ptolemy.util.FileUtilities nameToURL \
 	    file:///doesnotexist [java::null] [java::null]]
     list $fileExists0 [$url1 toString]
-} {1}
+} {0 file:/doesnotexist}
 
 ######################################################################
 ####
@@ -204,10 +204,11 @@ test FileUtilities-8.4 {nameToURL that does not exist with no base URI} {
 test FileUtilities-8.5 {nameToURL that does not exist with a base URI} {
     set fileExists0 [file exists doesnotexist]
     set baseURI [java::new java.net.URI .]
+    # FIXME: should this throw an exception because doesnotexist is not found?
     set url1 [java::call ptolemy.util.FileUtilities nameToURL \
 	file:///doesnotexist $baseURI [java::null]]
     list $fileExists0 [$url1 toString]
-} {1}
+} {0 file:///doesnotexist}
 
 ######################################################################
 ####
@@ -215,8 +216,26 @@ test FileUtilities-8.5 {nameToURL that does not exist with a base URI} {
 test FileUtilities-8.6 {nameToURL that does not exist with a base URI} {
     set fileExists0 [file exists doesnotexist]
     set baseURI [java::new java.net.URI .]
+    catch {
+        set url1 [java::call ptolemy.util.FileUtilities nameToURL \
+	    doesnotexist $baseURI [java::null]]
+    } errMsg
+    list $errMsg
+} {{java.io.IOException: Problem with URI format in 'doesnotexist'. This can happen if the 'doesnotexist' is not absolute and is not present relative to the directory in which the specified model was read (which was '.')}}
+
+######################################################################
+####
+#
+test FileUtilities-8.7 {nameToURL try to read a local stream} {
+    # FileParameter.asURL had a bug that was trigger by
+    # nameToURL passing back URLs like file://c:/foo/bar
+    set baseURL [java::call ptolemy.util.FileUtilities nameToURL \
+		     {$CLASSPATH/ptolemy/util/test/makefile} \
+		     [java::null] [java::null]]
+    set baseURI [java::new java.net.URI [$baseURL toString]]
     set url1 [java::call ptolemy.util.FileUtilities nameToURL \
-	doesnotexist $baseURI [java::null]]
-    list $fileExists0 [$url1 toString]
+	makefile $baseURI [java::null]]
+    set inputStream [$url1 openStream]
+    list [expr {[$inputStream available] > 0}]
 } {1}
 
