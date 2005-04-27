@@ -146,7 +146,15 @@ ptolemy/media/javasound/demo/livesines
 ptolemy/media/test/array.au
 ptolemy/media/test/tmp2.au
 ptolemy/moml/test/compat
+ptolemy/moml/test/compat1
+ptolemy/moml/test/compat2
+ptolemy/moml/test/compat3
+ptolemy/moml/test/compat4
 ptolemy/moml/test/compatDemo
+ptolemy/moml/test/compatDemo1
+ptolemy/moml/test/compatDemo2
+ptolemy/moml/test/compatDemo3
+ptolemy/moml/test/compatDemo4
 ptolemy/plot/adm
 ptolemy/plot/build.xml
 ptolemy/plot/Render
