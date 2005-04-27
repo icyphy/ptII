@@ -119,6 +119,8 @@ public class Transformer {
                     // A file list.
                     // Each line in the file contains a single file name.
                     String listName = pathOrFile.substring(1);
+                    File listFile = new File(listName);
+                    File listPath = listFile.getParentFile();
                     BufferedReader reader =
                         new BufferedReader(
                                 new InputStreamReader(
@@ -126,7 +128,7 @@ public class Transformer {
                     List strings = new LinkedList();
                     String line = reader.readLine();
                     while (line != null) {
-                        strings.add(line);
+                        strings.add(new File(listPath, line).getCanonicalPath());
                         line = reader.readLine();
                     }
                     files = new File[strings.size()];
@@ -136,7 +138,7 @@ public class Transformer {
                 } else
                     files = PathFinder.getJavaFiles(pathOrFile, true);
 
-                ClassFileLoader loader = new ClassFileLoader();
+                ClassFileLoader loader = new ClassFileLoader(paths);
                 for (int j = 0; j < files.length; j++) {
                     String fileName = files[j].getPath();
                     if (fileName.endsWith(".java"))
