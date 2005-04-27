@@ -47,6 +47,7 @@ import org.eclipse.jface.preference.DirectoryFieldEditor;
 import org.eclipse.jface.preference.FieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.FileFieldEditor;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.ListEditor;
 import org.eclipse.jface.preference.PathEditor;
 import org.eclipse.jface.preference.StringFieldEditor;
@@ -56,6 +57,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.FileDialog;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
@@ -64,9 +66,12 @@ import org.eclipse.ui.forms.events.ExpansionEvent;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.forms.widgets.Section;
+import org.eclipse.ui.forms.widgets.TableWrapData;
+import org.eclipse.ui.forms.widgets.TableWrapLayout;
 
 import ptolemy.backtrack.plugin.EclipsePlugin;
 import ptolemy.backtrack.plugin.util.Environment;
+import ptolemy.backtrack.plugin.util.SaveFileFieldEditor;
 
 //////////////////////////////////////////////////////////////////////////
 //// BacktrackingPreferencePage
@@ -92,16 +97,17 @@ public class BacktrackingPreferencePage
     public Control createContents(Composite parent) {
         _toolkit = new FormToolkit(getShell().getDisplay());
         
-        _form = _toolkit.createScrolledForm (parent);
+        _form = _toolkit.createScrolledForm(parent);
         _form.setLayoutData(new GridData(GridData.FILL_BOTH));
         _form.setBackground(null);
         
-        _form.getBody().setLayout(new GridLayout(1, true));
+        _form.getBody().setLayout(new TableWrapLayout());
         
         _createSection1();
         _createSection2();
         _createSection3();
         _createSection4();
+        _createSection5();
         
         initialize();
         checkState();
@@ -130,36 +136,29 @@ public class BacktrackingPreferencePage
     
     private void _checkEnabled() {
         String PTII = Environment.getPtolemyHome();
+        boolean formEnabled = PTII != null;
         Iterator fieldsIter = _fields.iterator();
         while (fieldsIter.hasNext()) {
             FieldEditor editor = (FieldEditor)fieldsIter.next();
-            editor.setEnabled(PTII != null, _getParent(editor));
+            if (formEnabled && editor == _configuration) {
+                IPreferenceStore store = EclipsePlugin.getDefault()
+                        .getPreferenceStore();
+                editor.setEnabled(store.getBoolean(
+                        PreferenceConstants.BACKTRACK_GENERATE_CONFIGURATION),
+                        _getParent(editor));
+            } else
+                editor.setEnabled(formEnabled, _getParent(editor));
         }
     }
     
     private void _createSection1() {
-        Section section = _toolkit.createSection(_form.getBody(),
-                Section.DESCRIPTION |
-                Section.TWISTIE |
-                Section.CLIENT_INDENT);
-        section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-        section.setBackground(null);
-        section.setText("Refactoring Sources");
-        //_toolkit.createCompositeSeparator(section);
-        section.setDescription(
+        Composite composite = _createSection(
+                "Refactoring Sources",
                 "Set the sources of refactoring. A source list file stores " +
                 "the complete list of Java source files to be refactored. " +
                 "A single Java source file name is written on each line of " +
                 "the source list. The source file names may use paths " +
                 "relative to the path where the source list file is in.");
-        section.addExpansionListener(new ExpansionAdapter() {
-            public void expansionStateChanged(ExpansionEvent e) {
-                _form.reflow(false);
-            }
-        });
-        
-        Composite composite = _newComposite(section);
-        section.setClient(composite);
         
         Composite currentComposite = _newComposite(composite);
         _sourceList = new FileFieldEditor(
@@ -193,6 +192,9 @@ public class BacktrackingPreferencePage
         gridData.horizontalAlignment = SWT.FILL;
         gridData.grabExcessHorizontalSpace = true;
         _sourceList.getTextControl(currentComposite).setLayoutData(gridData);
+        _sourceList.setFileExtensions(new String[]{
+                "*.lst", "*.*"
+        });
         _setParent(_sourceList, currentComposite);
         addField(_sourceList);
 
@@ -266,27 +268,13 @@ public class BacktrackingPreferencePage
     }
     
     private void _createSection2() {
-        Section section = _toolkit.createSection(_form.getBody(),
-                Section.DESCRIPTION |
-                Section.TWISTIE |
-                Section.CLIENT_INDENT);
-        section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-        section.setBackground(null);
-        section.setText("Location");
-        section.setDescription(
+        Composite composite = _createSection(
+                "Location",
                 "Set the location to store the refactored Java code. The " +
                 "location of the output files is defined by the root of the " +
                 "classes, and packages where the classes are in. A prefix " +
                 "may be added to existing package declarations at the time " +
                 "of refactoring.");
-        section.addExpansionListener(new ExpansionAdapter() {
-            public void expansionStateChanged(ExpansionEvent e) {
-                _form.reflow(false);
-            }
-        });
-        
-        Composite composite = _newComposite(section);
-        section.setClient(composite);
         
         Composite currentComposite = _newComposite(composite);
         _root = new DirectoryFieldEditor(
@@ -309,24 +297,10 @@ public class BacktrackingPreferencePage
     }
     
     private void _createSection3() {
-        Section section = _toolkit.createSection(_form.getBody(),
-                Section.DESCRIPTION |
-                Section.TWISTIE |
-                Section.CLIENT_INDENT);
-        section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-        section.setBackground(null);
-        section.setText("Extra Class Paths");
-        section.setDescription(
+        Composite composite = _createSection(
+                "Extra Class Paths",
                 "Add class paths to locate classes in name resolving. The " +
                 "Ptolemy II home directory is by default in the class paths.");
-        section.addExpansionListener(new ExpansionAdapter() {
-            public void expansionStateChanged(ExpansionEvent e) {
-                _form.reflow(false);
-            }
-        });
-        
-        Composite composite = _newComposite(section);
-        section.setClient(composite);
         
         Composite currentComposite = _newComposite(composite);
         _extraClassPaths = new PathEditor(
@@ -345,23 +319,55 @@ public class BacktrackingPreferencePage
     }
     
     private void _createSection4() {
-        Section section = _toolkit.createSection(_form.getBody(),
-                Section.DESCRIPTION |
-                Section.TWISTIE |
-                Section.CLIENT_INDENT);
-        section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-        section.setBackground(null);
-        section.setText("Miscalleneous");
-        section.setDescription(
-                "Set other options.");
-        section.addExpansionListener(new ExpansionAdapter() {
-            public void expansionStateChanged(ExpansionEvent e) {
-                _form.reflow(false);
-            }
-        });
+        Composite composite = _createSection(
+                "Actor Library Configuration",
+                "Set the file name of the XML configuration to be generated." +
+                "This configuration can be linked to the Ptolemy II actor " +
+                "library.");
         
-        Composite composite = _newComposite(section);
-        section.setClient(composite);
+        Group group = _newGroup(composite, "Configuration");
+        
+        Composite currentComposite = _newComposite(group);
+        _generateConfiguration = new BooleanFieldEditor(
+                PreferenceConstants.BACKTRACK_GENERATE_CONFIGURATION,
+                "&Generate configuration",
+                currentComposite) {
+            protected void doLoadDefault() {
+                super.doLoadDefault();
+                _configuration.setEnabled(getBooleanValue(),
+                        _getParent(_configuration));
+            }
+
+            protected void valueChanged(boolean oldValue, boolean newValue) {
+                super.valueChanged(oldValue, newValue);
+                _configuration.setEnabled(newValue,
+                        _getParent(_configuration));
+            }
+        };
+        _setParent(_generateConfiguration, currentComposite);
+        addField(_generateConfiguration);
+        
+        currentComposite = _newComposite(group);
+        _configuration = new SaveFileFieldEditor(
+                PreferenceConstants.BACKTRACK_CONFIGURATION,
+                "&Configuration:",
+                currentComposite, true);
+        GridData gridData = new GridData();
+        gridData.widthHint = 0;
+        gridData.horizontalAlignment = SWT.FILL;
+        gridData.grabExcessHorizontalSpace = true;
+        _configuration.getTextControl(currentComposite).setLayoutData(gridData);
+        _configuration.setFileExtensions(new String[]{
+                "*.xml", "*.*"
+        });
+        _setParent(_configuration, currentComposite);
+        addField(_configuration);
+    }
+    
+    private void _createSection5() {
+        Composite composite = _createSection(
+                "Miscalleneous",
+                "Set other options.");
         
         Composite currentComposite = _newComposite(composite);
         _overwrite = new BooleanFieldEditor(
@@ -372,12 +378,43 @@ public class BacktrackingPreferencePage
         addField(_overwrite);
     }
     
+    private Composite _createSection(String text, String description) {
+        Section section = _toolkit.createSection(_form.getBody(),
+                Section.DESCRIPTION |
+                Section.TWISTIE |
+                Section.CLIENT_INDENT);
+        section.setLayoutData(new TableWrapData());
+        section.setBackground(null);
+        section.setText(text);
+        section.setDescription(description);
+        section.addExpansionListener(new ExpansionAdapter() {
+            public void expansionStateChanged(ExpansionEvent e) {
+                _form.reflow(false);
+            }
+        });
+        
+        Composite composite = _newComposite(section);
+        section.setClient(composite);
+        
+        return composite;
+    }
+    
     private Composite _newComposite(Composite parent) {
         Composite composite = new Composite(parent, SWT.NULL);
         composite.setBackground(null);
         composite.setLayout(new GridLayout(1, true));
         composite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
         return composite;
+    }
+    
+    private Group _newGroup(Composite parent, String text) {
+        Group group = new Group(parent, SWT.SHADOW_ETCHED_IN);
+        group.setBackground(null);
+        GridLayout layout = new GridLayout(1, true);
+        group.setLayout(layout);
+        group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+        group.setText(text);
+        return group;
     }
     
     private boolean _updateSources() {
@@ -439,5 +476,9 @@ public class BacktrackingPreferencePage
     
     private PathEditor _extraClassPaths;
     
+    private BooleanFieldEditor _generateConfiguration;
+    
+    private FileFieldEditor _configuration;
+
     private BooleanFieldEditor _overwrite;
 }

@@ -33,14 +33,34 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
             if (sourceList.exists())
                 store.setDefault(PreferenceConstants.BACKTRACK_SOURCE_LIST,
                         sourceList.getLocation().toOSString());
+            else
+                store.setDefault(PreferenceConstants.BACKTRACK_SOURCE_LIST, "");
             
             store.setDefault(PreferenceConstants.BACKTRACK_ROOT,
                     ptIIProject.getLocation().toOSString());
             
-            store.setDefault(PreferenceConstants.BACKTRACK_PREFIX,
-                    "ptolemy.backtrack.automatic");
+            store.setDefault(PreferenceConstants.BACKTRACK_GENERATE_CONFIGURATION,
+                    true);
+            
+            IFile configuration = ptIIProject.getFile(
+                    "ptolemy/backtrack/automatic/ptolemy/configs/output.xml");
+            store.setDefault(PreferenceConstants.BACKTRACK_CONFIGURATION,
+                    configuration.getLocation().toOSString());
+        } else {
+            store.setDefault(PreferenceConstants.PTII, "");
+            
+            store.setDefault(PreferenceConstants.BACKTRACK_SOURCE_LIST, "");
+            
+            store.setDefault(PreferenceConstants.BACKTRACK_ROOT, "");
+            
+            store.setDefault(PreferenceConstants.BACKTRACK_GENERATE_CONFIGURATION,
+                    false);
+            
+            store.setDefault(PreferenceConstants.BACKTRACK_CONFIGURATION, "");
         }
         
+        store.setDefault(PreferenceConstants.BACKTRACK_PREFIX,
+                "ptolemy.backtrack.automatic");
         store.setDefault(PreferenceConstants.BACKTRACK_OVERWRITE, false);
 	}
 

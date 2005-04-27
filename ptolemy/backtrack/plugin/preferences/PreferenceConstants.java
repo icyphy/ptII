@@ -19,5 +19,9 @@ public class PreferenceConstants {
     
     public static final String BACKTRACK_OVERWRITE = "backtrackOverwrite";
 	
+    public static final String BACKTRACK_GENERATE_CONFIGURATION = "backtrackGenerateConfiguration";
+    
+    public static final String BACKTRACK_CONFIGURATION = "backtrackConfiguration";
+
     public static final String PTII_PREFERENCE_ID = "ptolemy.backtrack.plugin.preferences.PtolemyPreferencePage";
 }
