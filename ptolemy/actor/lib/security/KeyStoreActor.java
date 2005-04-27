@@ -45,6 +45,7 @@ import ptolemy.kernel.util.Nameable;
 import ptolemy.util.StringUtilities;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -530,9 +531,14 @@ public class KeyStoreActor extends TypedAtomicActor {
                 // The next line might throw a NullPointerException
                 // if the fileOrURL does not exist.
                 keyStoreInputStream = fileOrURL.asURL().openStream();
-            } catch (Exception ex) {
+            } catch (FileNotFoundException ex) {
                 // Ignore, this means that the file does not exist,
                 // so we are trying to create a new empty keyStore.
+            } catch (IOException ex2) {
+                // We once had a bug here where asURL() had a bug.
+                throw new IllegalActionException(this, ex2,
+                        "Failed to open '" + fileOrURL.asURL()
+                        + "' keyStore");
             }
 
             if (keyStoreInputStream == null) {
