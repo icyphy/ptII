@@ -76,6 +76,7 @@ ptolemy/configs/visualnc
 ptolemy/data/expr/TVariable.java
 ptolemy/gui/JPanelTest.java
 ptolemy/copernicus/*/cg
+ptolemy/copernicus/c/test/testOutput
 ptolemy/copernicus/c/test/java.lang.Object.c
 ptolemy/copernicus/c/test/java.lang.Object.h
 ptolemy/copernicus/deep
