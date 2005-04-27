@@ -149,6 +149,9 @@ public class HDFDirector extends SDFDirector {
         _init();
     }
 
+    ////////////////////////////////////////////////////////////////////////
+    ////                           parameters                           ////
+
     /** A parameter representing the size of the schedule cache to use.
      *  If the value is less than or equal to zero, then schedules
      *  will never be discarded from the cache. The default value is 100.
@@ -188,21 +191,24 @@ public class HDFDirector extends SDFDirector {
         } else {
             // The schedule is no longer valid, so check the schedule
             // cache.
-            if (_inputPortList == null) {
+            if (_inputPortList == null
+                    || _workspaceVersion != workspace().getVersion()) {
                 _inputPortList = _getInputPortList();
             }
 
-            if (_outputPortList == null) {
+            if (_outputPortList == null
+                    || _workspaceVersion != workspace().getVersion()) {
                 _outputPortList = _getOutputPortList();
             }
+            _workspaceVersion = workspace().getVersion();
 
             Iterator inputPorts = _inputPortList.iterator();
-            String rates = "";
+            StringBuffer rates = new StringBuffer();
 
             while (inputPorts.hasNext()) {
                 IOPort inputPort = (IOPort) inputPorts.next();
                 int rate = DFUtilities.getTokenConsumptionRate(inputPort);
-                rates = rates + String.valueOf(rate);
+                rates.append(rate);
             }
 
             Iterator outputPorts = _outputPortList.iterator();
@@ -210,13 +216,13 @@ public class HDFDirector extends SDFDirector {
             while (outputPorts.hasNext()) {
                 IOPort outputPort = (IOPort) outputPorts.next();
                 int rate = DFUtilities.getTokenProductionRate(outputPort);
-                rates = rates + String.valueOf(rate);
+                rates.append(rate);
 
                 int initRate = DFUtilities.getTokenInitProduction(outputPort);
-                rates = rates + String.valueOf(rate);
+                rates.append(rate);
             }
 
-            String rateKey = rates;
+            String rateKey = rates.toString();
             int cacheSize = ((IntToken) (scheduleCacheSize.getToken()))
                 .intValue();
 
@@ -258,14 +264,13 @@ public class HDFDirector extends SDFDirector {
 
                 if (cacheSize > 0) {
                     while (_scheduleKeyList.size() >= cacheSize) {
-                        // Cache is  full. Remove tail of list.
+                        // Cache is full. Remove tail of list.
                         Object object = _scheduleKeyList.get(cacheSize - 1);
                         _scheduleKeyList.remove(cacheSize - 1);
                         _externalRatesKeyList.remove(cacheSize - 1);
                         _scheduleCache.remove(object);
                         _externalRatesCache.remove(object);
                     }
-
                     // Add key to head of list.
                     _scheduleKeyList.add(0, rateKey);
                     _externalRatesKeyList.add(0, rateKey);
@@ -314,6 +319,7 @@ public class HDFDirector extends SDFDirector {
      */
     public void preinitialize() throws IllegalActionException {
         _scheduleKeyList.clear();
+        _scheduleCache.clear();
         _mostRecentRates = "";
         super.preinitialize();
     }
@@ -369,11 +375,8 @@ public class HDFDirector extends SDFDirector {
         return outputPortList;
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
     /** Initialize the object. In this case, we give the HDFDirector a
-     *  default scheduler of the class HDFScheduler.
+     *  default scheduler of the class SDFScheduler and a cacheSize parameter.
      */
     private void _init()
             throws IllegalActionException, NameDuplicationException {
@@ -404,6 +407,9 @@ public class HDFDirector extends SDFDirector {
         allowRateChanges.setPersistent(false);
     }
 
+    //////////////////////////////////////////////////////////////////
+    ////                       private variables                  ////
+
     // Hash maps for the schedule cache.
     private Map _scheduleCache;
     private List _scheduleKeyList;
@@ -413,4 +419,7 @@ public class HDFDirector extends SDFDirector {
     private List _inputPortList;
     private List _outputPortList;
     private int _cacheSize = 100;
+
+    // Local workspace version
+    private long _workspaceVersion = 0;
 }

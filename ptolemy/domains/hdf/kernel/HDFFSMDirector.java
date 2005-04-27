@@ -126,14 +126,14 @@ public class HDFFSMDirector extends MultirateFSMDirector {
                     + currentState.getName());
         }
 
-        for (int i = 0; i < actors.length; ++i) {
-            if (_stopRequested) {
-                break;
-            }
-
-            if (actors[i].prefire()) {
-                actors[i].fire();
-                _refinementPostfire = actors[i].postfire();
+        if (!_stopRequested) {
+            if (actors[0].prefire()) {
+                if (_debugging) {
+                    _debug(getFullName(), " fire refinement",
+                            ((ptolemy.kernel.util.NamedObj) actors[0]).getName());
+                }
+                actors[0].fire();
+                _refinementPostfire = actors[0].postfire();
             }
         }
 
@@ -153,8 +153,6 @@ public class HDFFSMDirector extends MultirateFSMDirector {
             request.setPersistent(false);
             container.requestChange(request);
         }
-
-        return;
     }
 
     /** Return the change context being made explicit.  This class
@@ -200,6 +198,7 @@ public class HDFFSMDirector extends MultirateFSMDirector {
             ChangeRequest request = new ChangeRequest(this, "make a transition") {
                     protected void _execute() throws KernelException {
                         _sendRequest = true;
+                        // The super.postfire() method is called here.
                         makeStateTransition();
                     }
                 };

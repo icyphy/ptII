@@ -125,7 +125,7 @@ public class MultirateFSMDirector extends FSMDirector {
         Transition transition;
 
         while (actors == null) {
-            // This is just to commit the last chosen transition.
+            // Commit the transition.
             super.postfire();
             state = chooseTransition(state);
             transition = _getLastChosenTransition();
@@ -226,6 +226,10 @@ public class MultirateFSMDirector extends FSMDirector {
         }
         if (!_stopRequested) {
             if (actors[0].prefire()) {
+                if (_debugging) {
+                    _debug(getFullName(), " fire refinement",
+                            ((ptolemy.kernel.util.NamedObj) actors[0]).getName());
+                }
                 actors[0].fire();
                 _refinementPostfire = actors[0].postfire();
             }
@@ -250,7 +254,7 @@ public class MultirateFSMDirector extends FSMDirector {
 
         while (currentRefinements == null) {
             chooseTransition(currentState);
-            // This is just to commit the last chosen transition.
+            // Commit the transition.
             super.postfire();
             currentState = controller.currentState();
 
