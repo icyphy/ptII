@@ -130,8 +130,6 @@ public class FileUtilities {
                     try {
                         output.close();
                     } catch (Throwable throwable) {
-                        System.out.println("Ignoring failure to close stream "
-                                + "on " + destinationFile);
                         throwable.printStackTrace();
                     }
                 }
@@ -141,8 +139,6 @@ public class FileUtilities {
                 try {
                     input.close();
                 } catch (Throwable throwable) {
-                    System.out.println("Ignoring failure to close stream "
-                            + "on " + sourceURL);
                     throwable.printStackTrace();
                 }
             }
@@ -317,8 +313,14 @@ public class FileUtilities {
                 String urlString = newURI.toString();
                 try {
                     // Adding another '/' for remote execution.
-                    urlString = urlString.substring(0,6) + "/"
-                        + urlString.substring(6);
+                    if (newURI.getScheme() != null
+                            && newURI.getAuthority() == null) {
+                        urlString = urlString.substring(0,6) + "//"
+                            + urlString.substring(6);
+                        //} else {
+                        // urlString = urlString.substring(0,6) + "/"
+                        // + urlString.substring(6);
+                    }
                     return new URL(urlString);
                 } catch (Exception ex3) {
                     IOException io = new IOException(
