@@ -10,8 +10,11 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.OutputStreamWriter;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+
+import ptolemy.backtrack.util.PathFinder;
 
 import com.microstar.xml.XmlParser;
 
@@ -31,20 +34,34 @@ public class ConfigParser {
         _xmlTree = xmlTree;
     }
 
-    public static String DEFAULT_SYSTEM_ID = "../../configs/full/configuration.xml";
+    public void addExcludedFile(String canonicalPath) {
+        _excludedFiles.add(canonicalPath);
+    }
+    
+    public void addExcludedFiles(Collection canonicalPaths) {
+        _excludedFiles.addAll(canonicalPaths);
+    }
 
     public void parseConfigFile(String fileName, Set includedClasses)
             throws Exception {
+        parseConfigFile(fileName, includedClasses, true);
+    }
+    
+    public void parseConfigFile(String fileName, Set includedClasses,
+            boolean backtrackingElement) throws Exception {
         XmlParser parser = new XmlParser();
         BufferedReader br = new BufferedReader(new FileReader(fileName));
         ConfigXmlHandler handler = new ConfigXmlHandler(_xmlTree, fileName, includedClasses);
+        handler.addExcludedFiles(_excludedFiles);
         parser.setHandler(handler);
         parser.parse(fileName, null, br);
 
         // Manually modify the resulting tree.
-        _xmlTree.setElementName("entity");
-        _xmlTree.setAttribute("name", "Backtracking");
-        _xmlTree.setAttribute("class", "ptolemy.moml.EntityLibrary");
+        if (backtrackingElement) {
+            _xmlTree.setElementName("entity");
+            _xmlTree.setAttribute("name", "Backtracking");
+            _xmlTree.setAttribute("class", "ptolemy.moml.EntityLibrary");
+        }
     }
 
     public void addPackagePrefix(String packagePrefix, Set classes) {
@@ -82,5 +99,11 @@ public class ConfigParser {
         writer.close();
     }
 
+    public static String DEFAULT_SYSTEM_ID =
+        PathFinder.getPtolemyPath() +
+        "ptolemy/configs/full/configuration.xml";
+
     private ConfigXmlTree _xmlTree;
+    
+    private Set _excludedFiles = new HashSet();
 }

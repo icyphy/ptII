@@ -54,7 +54,7 @@ import ptolemy.backtrack.xmlparser.ConfigParser;
 import ptolemy.backtrack.xmlparser.XmlOutput;
 
 //////////////////////////////////////////////////////////////////////////
-//// Transform
+//// Transformer
 /**
    A tool to transform Java source programs to support backtracking. This
    transformation is done by first analyzing the Java programs, and then
@@ -364,12 +364,14 @@ public class Transformer {
 
     protected static void _outputConfig() throws Exception {
         if (_configName != null) {
+            // Remove the configuration.
             SourceOutputStream stream =
                 SourceOutputStream.getStream(_configName, _overwrite);
             Set classSet = new HashSet();
             classSet.addAll(_classes);
 
             ConfigParser parser = new ConfigParser();
+            parser.addExcludedFile(new File(_configName).getCanonicalPath());
             parser.parseConfigFile(ConfigParser.DEFAULT_SYSTEM_ID, classSet);
             if (_prefix != null && _prefix.length() > 0)
                 parser.addPackagePrefix(_prefix, classSet);

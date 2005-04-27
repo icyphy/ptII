@@ -9,10 +9,11 @@ package ptolemy.backtrack.xmlparser;
 import java.io.File;
 import java.io.StringReader;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import ptolemy.util.StringUtilities;
+import ptolemy.backtrack.util.PathFinder;
 
 import com.microstar.xml.XmlParser;
 
@@ -29,6 +30,14 @@ public class ConfigXmlHandler extends XmlHandler {
 
         this.includedClasses = includedClasses;
     }
+    
+    public void addExcludedFile(String canonicalPath) {
+        _excludedFiles.add(canonicalPath);
+    }
+    
+    public void addExcludedFiles(Collection canonicalPaths) {
+        _excludedFiles.addAll(canonicalPaths);
+    }
 
     public void startElement(String elname) throws Exception {
         super.startElement(elname);
@@ -36,15 +45,20 @@ public class ConfigXmlHandler extends XmlHandler {
         if (elname.equals("input")) {
             String fileName = currentTree.getAttribute("source");
             try {
-                String newName = PTOLEMY_PATH + fileName;
+                String newName = PathFinder.getPtolemyPath() + fileName;
                 File newFile = new File(newName);
                 if (!newFile.exists()) {
                     File oldFile = new File(systemId);
                     newName = oldFile.getParent() + "/" + fileName;
+                    newFile = new File(newName);
                 }
 
-                ConfigParser subparser = new ConfigParser(currentTree);
-                subparser.parseConfigFile(newName, includedClasses);
+                String canonicalPath = newFile.getCanonicalPath();
+                if (!_excludedFiles.contains(canonicalPath)) {
+                    ConfigParser subparser = new ConfigParser(currentTree);
+                    subparser.addExcludedFiles(_excludedFiles);
+                    subparser.parseConfigFile(newName, includedClasses, false);
+                }
             } catch (Exception e) {
                 // FIXME: For the time being...
             }
@@ -52,7 +66,8 @@ public class ConfigXmlHandler extends XmlHandler {
     }
 
     public void endElement(String elname) throws Exception {
-        boolean keep = includedClasses == null ||   // If null, every element is kept.
+        boolean keep =
+            includedClasses == null ||   // If null, every element is kept.
             !currentTree.isLeaf() ||     // If not leaf, at least a descendant is kept.
             (                            // A match in the set.
                     currentTree.hasAttribute("class") &&
@@ -78,13 +93,12 @@ public class ConfigXmlHandler extends XmlHandler {
             StringReader dataReader = new StringReader(data);
             XmlParser newParser = new XmlParser();
             ConfigXmlHandler newHandler = new ConfigXmlHandler(currentTree, systemId, includedClasses);
+            newHandler.addExcludedFiles(_excludedFiles);
             newParser.setHandler(newHandler);
             newParser.parse(systemId, null, dataReader);
             dataReader.close();
         }
     }
-
-    public static String PTOLEMY_PATH = "../../../";
 
     public static final String[] REMOVE_ELEMENTS = new String[] {
         "configure",
@@ -95,20 +109,17 @@ public class ConfigXmlHandler extends XmlHandler {
         "ptolemy.kernel.CompositeEntity",
         "ptolemy.actor.gui.Configuration"
     };
+    
+    private Set _excludedFiles = new HashSet();
 
     private static Set REMOVE_ELEMENT_SET = new HashSet();
 
     private static Set REMOVE_CLASS_SET = new HashSet();
 
     private Set includedClasses;    // If null, every element matches.
-
+    
     static {
         REMOVE_ELEMENT_SET.addAll(Arrays.asList(REMOVE_ELEMENTS));
         REMOVE_CLASS_SET.addAll(Arrays.asList(REMOVE_CLASSES));
-
-        String PTII = StringUtilities.getProperty("ptolemy.ptII.dir");
-        if (PTII != null)
-            PTOLEMY_PATH = PTII + File.separatorChar;
     }
-
 }

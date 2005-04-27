@@ -54,6 +54,9 @@ public class RefactorAction implements IWorkbenchWindowActionDelegate {
                 store.getString(PreferenceConstants.BACKTRACK_SOURCE_LIST);
             boolean overwrite =
                 store.getBoolean(PreferenceConstants.BACKTRACK_OVERWRITE);
+            String configuration =
+                store.getString(PreferenceConstants.BACKTRACK_CONFIGURATION);
+            
             PathFinder.setPtolemyPath(PTII);
             
             PrintStream oldSystemErr = System.err;
@@ -73,6 +76,16 @@ public class RefactorAction implements IWorkbenchWindowActionDelegate {
                     overwrite ? "-overwrite" : "-nooverwrite",
                     "@" + sourceList
             };
+            if (configuration != null && !configuration.equals("")) {
+                String[] extraArgs = new String[] {
+                        "-config", configuration
+                };
+                String[] oldArgs = args;
+                args = new String[oldArgs.length + extraArgs.length];
+                System.arraycopy(extraArgs, 0, args, 0, extraArgs.length);
+                System.arraycopy(oldArgs, 0, args, extraArgs.length,
+                        oldArgs.length);
+            }
             new TransformThread(args,
                     new AsyncPrintStream(outputStream),
                     new AsyncPrintStream(errorStream)
