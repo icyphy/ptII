@@ -61,7 +61,7 @@ implemented as Java threads. These processes communicate by atomic,
 instantaneous actions called "rendezvous" (or sometimes, "synchronous
 message passing"). If two processes are to communicate, and one reaches
 the point first at which it is ready to communicate, then it stalls
-until the other process is ready to communicate. “Atomic” means that
+until the other process is ready to communicate. “Atomic? means that
 the two processes are simultaneously involved in the exchange, and that
 the exchange is initiated and completed in a single uninterruptable
 step. Examples of rendezvous models include Hoare’s communicating
@@ -255,8 +255,8 @@ yielding the so-called hybrid systems model of computation.
 <p>
 
 The FSM domain in Ptolemy II can be hierarchically combined with other
-domains. We call the resulting formalism “*charts” (pronounced
-“starcharts”) where the star represents a wildcard. Since most other
+domains. We call the resulting formalism ?*charts? (pronounced
+“starcharts?) where the star represents a wildcard. Since most other
 domains represent concurrent computations, *charts model concurrent
 finite state machines with a variety of concurrency semantics. When
 combined with CT, they yield hybrid systems and modal models. When
@@ -295,14 +295,14 @@ be constructed in CT and animated in GR.
 
 <h2><a name="hdf">HDF</a></h2>
 <p>
-The Heterochronous Dataflow (HDF) Domain, created by Ye Zhou
-is an optimization of the
-SDFDirector and implements the HDF model of computation. The HDF
-model of computation is a generalization of Synchronous Dataflow (SDF).
-In SDF, the set of port rates of an actor (called rate signatures) are
+The Heterochronous Dataflow (HDF) domain, created by Ye Zhou,
+is an extension of the Synchronous Dataflow (SDF) domain.
+In SDF, the set of port rates (called rate signatures) of an actor are
 constant. In HDF, however, rate signatures are allowed to change between
-iterations of the HDF schedule. Within each state, the HDF model behaves
-like an SDF model.
+iterations of the HDF schedule. The change of rate signatures can
+be modeled by state transitions of a modal model, in which each state
+refinement infers a set of rate signatures. Within each state, the HDF
+model behaves like an SDF model.
 
 <p> The HDF domain is experimental and is shipped only with the full Ptolemy II release.
 

@@ -7,14 +7,14 @@
 </head>
 <body>
 <h1>Heterochronous Dataflow Domain</h1>
-The Heterochronous Dataflow (HDF) Domain, created by Ye Zhou
-is an optimization of the
-SDFDirector and implements the HDF model of computation. The HDF
-model of computation is a generalization of Synchronous Dataflow (SDF).
-In SDF, the set of port rates of an actor (called rate signatures) are
-constant. In HDF, however, rate signatures are allowed to change between
-iterations of the HDF schedule. Within each state, the HDF model behaves
-like an SDF model.
+The Heterochronous Dataflow (HDF) domain, created by Ye Zhou,
+is an extension of the Synchronous Dataflow (SDF) domain. In SDF,
+the set of port rates (called rate signatures) of an actor are constant.
+In HDF, however, rate signatures are allowed to change between iterations
+of the HDF schedule. The change of rate signatures can be modeled by
+state transitions of a modal model, in which each state refinement infers
+a set of rate signatures. Within each state, the HDF model behaves like
+an SDF model.
 
 <!-- space at the bottom makes things look better -->
 <p>
