@@ -336,11 +336,12 @@ public class MultirateFSMDirector extends FSMDirector {
 
             // Tell the upper level scheduler that the current schedule
             // is no longer valid.
+            /*
             if (inputRateChanged || outputRateChanged) {
                 CompositeActor actor = _getEnclosingDomainActor();
                 Director director = actor.getExecutiveDirector();
-                director.invalidateSchedule();
-            }
+                //director.invalidateSchedule();
+            }*/
         }
     }
 
@@ -394,12 +395,12 @@ public class MultirateFSMDirector extends FSMDirector {
         // remains the same but the lower level state has changed.
         boolean inputRateChanged = _updateInputTokenConsumptionRates(actor);
         boolean outputRateChanged = _updateOutputTokenProductionRates(actor);
-
+        /*
         if (inputRateChanged || outputRateChanged) {
             CompositeActor compositeActor = _getEnclosingDomainActor();
             Director director = compositeActor.getExecutiveDirector();
-            director.invalidateSchedule();
-        }
+            //director.invalidateSchedule();
+        }*/
 
         return superPostfire;
     }
