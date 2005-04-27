@@ -32,6 +32,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
+
+import ptolemy.backtrack.ast.UnknownASTException;
 
 //////////////////////////////////////////////////////////////////////////
 //// ClassFileLoader
@@ -44,8 +49,16 @@ import java.io.IOException;
 @Pt.ProposedRating Red (tfeng)
 @Pt.AcceptedRating Red (tfeng)
 */
-public class ClassFileLoader extends ClassLoader {
+public class ClassFileLoader extends URLClassLoader {
 
+    public ClassFileLoader() {
+        this(null);
+    }
+    
+    public ClassFileLoader(String[] classPaths) {
+        super(_stringsToUrls(classPaths), null, null);
+    }
+    
     public Class loadClass(File classFile) throws FileNotFoundException,
             IOException, LinkageError, ClassNotFoundException {
         FileInputStream inputStream = new FileInputStream(classFile);
@@ -79,4 +92,23 @@ public class ClassFileLoader extends ClassLoader {
         }
     }
 
+    /** Convert an array of strings to an array of {@link URL}s with
+     *  {@link File#toURL()}.
+     *
+     *  @param strings The array of strings.
+     *  @return The array of urls.
+     */
+    private static URL[] _stringsToUrls(String[] strings) {
+        if (strings == null)
+            return new URL[0];
+
+        URL[] urls = new URL[strings.length];
+        for (int i = 0; i < strings.length; i++)
+            try {
+                urls[i] = new File(strings[i]).toURL();
+            } catch (MalformedURLException e) {
+                throw new UnknownASTException();
+            }
+        return urls;
+    }
 }
