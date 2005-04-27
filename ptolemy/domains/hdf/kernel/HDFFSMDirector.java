@@ -57,9 +57,9 @@ import ptolemy.kernel.util.NameDuplicationException;
    The HDF model of computation is a generalization of synchronous dataflow
    (SDF). In SDF, the set of port rates of an actor (called the rate
    signatures) are constant. In HDF, however, rate signatures are allowed
-   to change between iterations of the HDF schedule. Rate signature changes
-   can be modeled by state transitions of a modal model, in which each state
-   refinement infers a set of rate signatures.
+   to change between iterations of the HDF schedule. The change of rate
+   signatures can be modeled by state transitions of a modal model, in which
+   each state refinement infers a set of rate signatures.
    <p>
    <b>References</b>
    <p>
