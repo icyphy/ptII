@@ -185,7 +185,7 @@ public abstract class AbstractTransformer {
         int pos = -1;
         for (int i = 0; i < chars.length; i++) {
             int newPos = s.indexOf(chars[i], startPos);
-            if (pos == -1 || newPos < pos)
+            if (newPos != -1 && (pos == -1 || newPos < pos))
                 pos = newPos;
         }
         return pos;
