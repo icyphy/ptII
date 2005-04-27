@@ -143,7 +143,7 @@ test FileUtilities-2.3 {nameToFile: open a non-absolute file with a non-null bas
 } {makefile}
 
 test FileUtilities-2.5 {nameToFile: open a non-absolute file with different base} {
-    set baseURI [java::new java.net.URI file:///. ]
+    set baseURI [java::new java.net.URI file://. ]
     set file1 [java::call ptolemy.util.FileUtilities nameToFile \
 	makefile $baseURI]
     list [$file1 toString]
