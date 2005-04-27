@@ -173,10 +173,8 @@ public class FileUtilities {
             // Try to resolve the base directory.
             if (base != null) {
                 URI newURI = base.resolve(name);
-                String urlString = newURI.toString();
-                if (urlString.indexOf("file:/") != -1) {
-                    urlString = urlString.substring(6); //Removing 'file:/'
-                }
+                //file = new File(newURI);
+                String urlString = newURI.getPath();
                 file = new File(StringUtilities.substitute(urlString,
                                         "%20", " "));
             }
