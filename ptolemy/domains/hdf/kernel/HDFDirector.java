@@ -52,7 +52,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 
 ////////////////////////////////////////////////////////////////////
@@ -187,6 +186,7 @@ public class HDFDirector extends SDFDirector {
 
         if (isScheduleValid()) {
             // This will return a the current schedule.
+            //System.out.println("The schedule is valid");
             schedule = ((SDFScheduler) scheduler).getSchedule();
         } else {
             // The schedule is no longer valid, so check the schedule
@@ -231,56 +231,44 @@ public class HDFDirector extends SDFDirector {
                 _scheduleCache = new HashMap();
                 _scheduleKeyList = new ArrayList(cacheSize);
                 _cacheSize = cacheSize;
-
-                // When using a schedule from the cache, the external
-                // Rates also need to be updated. So we also need to
-                // cache the external rates.
-                _externalRatesCache = new TreeMap();
-                _externalRatesKeyList = new ArrayList(cacheSize);
             }
 
             if (rateKey.equals(_mostRecentRates)) {
+                //System.out.println("just use the current");
                 schedule = ((SDFScheduler) scheduler).getSchedule();
             } else if (_scheduleCache.containsKey(rateKey)) {
                 // cache hit.
+                //System.out.println("cache hit");
                 _mostRecentRates = rateKey;
 
                 if (cacheSize > 0) {
                     // Remove the key from its old position in
                     // the list and add it to the head of the list.
                     _scheduleKeyList.remove(rateKey);
-                    _externalRatesKeyList.remove(rateKey);
                     _scheduleKeyList.add(0, rateKey);
-                    _externalRatesKeyList.add(0, rateKey);
                 }
 
                 schedule = (Schedule) _scheduleCache.get(rateKey);
 
-                Map externalRates = (Map) _externalRatesCache.get(rateKey);
-                ((SDFScheduler) scheduler).setContainerRates(externalRates);
             } else {
+                //System.out.println("cache miss");
                 // cache miss.
                 _mostRecentRates = rateKey;
 
                 if (cacheSize > 0) {
                     while (_scheduleKeyList.size() >= cacheSize) {
                         // Cache is full. Remove tail of list.
+                        // System.out.println("cache is full.");
                         Object object = _scheduleKeyList.get(cacheSize - 1);
                         _scheduleKeyList.remove(cacheSize - 1);
-                        _externalRatesKeyList.remove(cacheSize - 1);
                         _scheduleCache.remove(object);
-                        _externalRatesCache.remove(object);
                     }
                     // Add key to head of list.
                     _scheduleKeyList.add(0, rateKey);
-                    _externalRatesKeyList.add(0, rateKey);
                 }
 
                 // Add key/schedule to the schedule map.
                 schedule = ((SDFScheduler) scheduler).getSchedule();
-
-                Map externalRates = ((SDFScheduler) scheduler).getExternalRates();
-                _externalRatesCache.put(rateKey, externalRates);
                 _scheduleCache.put(rateKey, schedule);
             }
         }
@@ -288,27 +276,25 @@ public class HDFDirector extends SDFDirector {
         return schedule;
     }
 
-    /** Send a request to the manager to get the HDF schedule.
-     *  The schedule may change when a state transition is made.
+    /** Send a request to the manager to get the HDF schedule if
+     *  this director is not at the top level. This is used to compute
+     *  the external rates.
      *  @exception IllegalActionException If no schedule can be found,
      *  or if the super class method throws it.
      */
     public boolean postfire() throws IllegalActionException {
-        // Get schedule here, no matter if it is the top level.
-        // This is necessary when HDF is constructed in hierarchy.
-        // The sub-controller may change modes but the upper controller
-        // will not be aware of it. Use SDF with MultirateFSMDirector
-        // instead of HDF where everything has fixed port rates.
-        // This is more efficient.
-        CompositeActor container = (CompositeActor) getContainer();
-        ChangeRequest request = new ChangeRequest(this, "reschedule") {
+        // Get schedule if it is not at the top level.
+        // This is necessary to update the external rates to the upper level.
+        if (getContainer() != toplevel()) {
+            CompositeActor container = (CompositeActor) getContainer();
+            ChangeRequest request = new ChangeRequest(this, "reschedule") {
                 protected void _execute() throws KernelException {
                     getSchedule();
                 }
             };
-
-        request.setPersistent(false);
-        container.requestChange(request);
+            request.setPersistent(false);
+            container.requestChange(request);
+        }
         return super.postfire();
     }
 
@@ -399,8 +385,6 @@ public class HDFDirector extends SDFDirector {
 
         _scheduleCache = new HashMap();
         _scheduleKeyList = new ArrayList(cacheSize);
-        _externalRatesCache = new TreeMap();
-        _externalRatesKeyList = new ArrayList(cacheSize);
 
         allowRateChanges.setToken(BooleanToken.TRUE);
         allowRateChanges.setVisibility(Settable.EXPERT);
@@ -410,14 +394,23 @@ public class HDFDirector extends SDFDirector {
     //////////////////////////////////////////////////////////////////
     ////                       private variables                  ////
 
-    // Hash maps for the schedule cache.
+    // Map for the schedule cache.
     private Map _scheduleCache;
+
+    // List of the schedule keys, which are strings that represent
+    // the rate signature.
     private List _scheduleKeyList;
-    private Map _externalRatesCache;
-    private List _externalRatesKeyList;
+
+    // A string that represents the most recent port rates.
     private String _mostRecentRates;
+
+    // A list of the input ports.
     private List _inputPortList;
+
+    // A list of the output ports.
     private List _outputPortList;
+
+    // The cache size.
     private int _cacheSize = 100;
 
     // Local workspace version
