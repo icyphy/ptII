@@ -69,8 +69,6 @@ abstract public class GRActor3D extends GRActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-    ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
     /** Add the node argument as a child to the encapsulated Java3D node
