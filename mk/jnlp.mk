@@ -1,6 +1,6 @@
 # Ptolemy II to build Web Start JNLP files
 #
-# @Author: Christopher Hylands
+# @Author: Christopher Brooks
 # @Version: $Id$
 #
 # Copyright (c) 2001-2005 The Regents of the University of California.
@@ -55,8 +55,17 @@ DOC_CODEDOC_JAR = \
 SIGNED_DIR =		signed
 
 lib/joystickWindows.jar: 
-	(cd vendors/misc/joystick/lib/; \
-		"$(JAR)" -cvf $(PTII)/lib/joystickWindows.jar jjstick.dll)
+	if [ -d vendors/misc/joystick/lib/ ]; then \
+		(cd vendors/misc/joystick/lib/; \
+	 	"$(JAR)" -cvf $(PTII)/lib/joystickWindows.jar jjstick.dll) \
+	else \
+		echo "vendors/misc/joystick not found, creating dummy jar"; \
+		echo "vendors/misc/joystick/lib not found" \
+			> README_joystick.txt;
+		"$(JAR)" -cvf $(PTII)/lib/joystickWindows.jar \
+			README_joystick.txt; \
+		rm -f README_joystick.txt; \
+	fi
 
 # NATIVE_SIGNED_LIB_JARS is a separate vaiable so that we can
 # include it in ALL_JNLP_JARS
@@ -83,17 +92,20 @@ NUMBER_OF_JARS_TO_LOAD_EAGERLY = 11
 
 # Jar files that will appear in most Ptolemy II JNLP files.
 # HyVisual has its own set of core jars
+
+# Order matters here, include the most important jars first
 CORE_JNLP_JARS = \
 	doc/docConfig.jar \
 	lib/diva.jar \
-	ptolemy/actor/parameters/demo/demo.jar \
+	ptolemy/ptsupport.jar \
+	ptolemy/vergil/vergil.jar \
 	ptolemy/domains/domains.jar \
+	lib/matlab.jar \
+	ptolemy/actor/parameters/demo/demo.jar \
 	ptolemy/domains/sdf/demo/demo.jar \
 	ptolemy/domains/sdf/doc/doc.jar \
-	ptolemy/matlab/demo/demo.jar \
-	lib/matlab.jar \
-	ptolemy/ptsupport.jar \
-	ptolemy/vergil/vergil.jar
+	ptolemy/matlab/demo/demo.jar
+
 
 #######
 # DSP - The smallest runtime
@@ -736,7 +748,7 @@ OTHER_FILES_TO_BE_DISTED = doc/img/PtolemyIISmall.gif \
 	ptolemy/configs/hyvisual/hyvisualPlanet.gif
 KEYSTORE2=/users/ptII/adm/certs/ptkeystore
 KEYALIAS2=ptolemy
-# make jnlp_dist STOREPASSWORD="-storepass xxx" KEYPASSWORD="-storepass xxx"
+# make jnlp_dist STOREPASSWORD="-storepass xxx" KEYPASSWORD="-keypass xxx"
 # make DIST_DIR=c:/cxh/hyv DIST_URL=file:///c:/cxh/hyv jnlp_dist KEYSTORE2=ptKeystore KEYALIAS2=claudius
 
 jnlp_dist: jnlp_dist_1 jnlp_dist_update
