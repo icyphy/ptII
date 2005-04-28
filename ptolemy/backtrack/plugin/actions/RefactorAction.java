@@ -54,6 +54,9 @@ public class RefactorAction implements IWorkbenchWindowActionDelegate {
                 store.getString(PreferenceConstants.BACKTRACK_SOURCE_LIST);
             boolean overwrite =
                 store.getBoolean(PreferenceConstants.BACKTRACK_OVERWRITE);
+            
+            boolean generateConfiguration =
+                store.getBoolean(PreferenceConstants.BACKTRACK_GENERATE_CONFIGURATION);
             String configuration =
                 store.getString(PreferenceConstants.BACKTRACK_CONFIGURATION);
             
@@ -76,7 +79,9 @@ public class RefactorAction implements IWorkbenchWindowActionDelegate {
                     overwrite ? "-overwrite" : "-nooverwrite",
                     "@" + sourceList
             };
-            if (configuration != null && !configuration.equals("")) {
+            if (generateConfiguration &&
+                    configuration != null &&
+                    !configuration.equals("")) {
                 String[] extraArgs = new String[] {
                         "-config", configuration
                 };

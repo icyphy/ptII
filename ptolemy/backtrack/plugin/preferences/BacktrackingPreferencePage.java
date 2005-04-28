@@ -366,13 +366,13 @@ public class BacktrackingPreferencePage
     
     private void _createSection5() {
         Composite composite = _createSection(
-                "Miscalleneous",
+                "Miscellaneous",
                 "Set other options.");
         
         Composite currentComposite = _newComposite(composite);
         _overwrite = new BooleanFieldEditor(
                 PreferenceConstants.BACKTRACK_OVERWRITE,
-                "&Overwrite existing Java files",
+                "&Overwrite existing files",
                 currentComposite);
         _setParent(_overwrite, currentComposite);
         addField(_overwrite);
