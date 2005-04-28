@@ -111,7 +111,8 @@ public class ImageDisplay extends Sink implements Placeable {
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+    public Object clone(Workspace workspace)
+            throws CloneNotSupportedException {
         ImageDisplay newObject = (ImageDisplay) super.clone(workspace);
 
         newObject._container = null;
@@ -120,7 +121,10 @@ public class ImageDisplay extends Sink implements Placeable {
         return newObject;
     }
 
-    /** Get the background */
+    /** Get the background.
+     *  @return The background color.
+     *  @see #setBackground()
+     */
     public Color getBackground() {
         return _container.getBackground();
     }
@@ -176,15 +180,15 @@ public class ImageDisplay extends Sink implements Placeable {
             _tableau = null;
             _effigy = null;
             _picture = null;
-            _oldxsize = 0;
-            _oldysize = 0;
+            _oldXSize = 0;
+            _oldYSize = 0;
 
             return;
         }
 
         if (_picture == null) {
             // Create the pane.
-            _picture = new Picture(_oldxsize, _oldysize);
+            _picture = new Picture(_oldXSize, _oldYSize);
         }
 
         // Place the pane in supplied container.
@@ -201,11 +205,6 @@ public class ImageDisplay extends Sink implements Placeable {
         if (input.hasToken(0)) {
             final Token in = input.get(0);
 
-            if (!(in instanceof ImageToken)) {
-                throw new IllegalActionException(this,
-                        "Input is not an ImageToken. It is: " + in);
-            }
-
             // Display probably to be done in the Swing event thread.
             Runnable doDisplay = new Runnable() {
                     public void run() {
@@ -219,9 +218,80 @@ public class ImageDisplay extends Sink implements Placeable {
         return super.postfire();
     }
 
-    /** Set the background */
+    /** Set the background.
+     *  @param background The background color.
+     *  @see #getBackground()
+     */
     public void setBackground(Color background) {
         _container.setBackground(background);
+    }
+
+    /** Display the specified token. This must be called in the Swing
+     *  event thread.
+     *  @param in The token to display
+     */
+    protected void _display(Token in) {
+        if (!(in instanceof ImageToken)) {
+            throw new InternalErrorException(
+                    "Input is not an ImageToken. It is: " + in);
+        }
+
+        // See also ptolemy/actor/lib/image/ImageTableau.java
+        if (_frame != null) {
+            List tokens = new LinkedList();
+            tokens.add(in);
+
+            try {
+                _effigy.setTokens(tokens);
+            } catch (IllegalActionException e) {
+                throw new InternalErrorException(e);
+            }
+        } else if (_picture != null) {
+            Image image = ((ImageToken) in).asAWTImage();
+            int xSize = image.getWidth(null);
+            int ySize = image.getHeight(null);
+
+            // If the size has changed, have to recreate the Picture object.
+            if ((_oldXSize != xSize) || (_oldYSize != ySize)) {
+                if (_debugging) {
+                    _debug("Image size has changed.");
+                }
+
+                _oldXSize = xSize;
+                _oldYSize = ySize;
+
+                Container container = _picture.getParent();
+        
+                if (_picture != null) {
+                    container.remove(_picture);
+                }
+
+                _picture = new Picture(xSize, ySize);
+                _picture.setImage(image);
+                _picture.setBackground(null);
+                container.add("Center", _picture);
+                container.validate();
+                container.invalidate();
+                container.repaint();
+                container.doLayout();
+
+                Container c = container.getParent();
+
+                while (c.getParent() != null) {
+                    c.invalidate();
+                    c.validate();
+                    c = c.getParent();
+
+                    if (c instanceof JFrame) {
+                        ((JFrame) c).pack();
+                    }
+                }
+            } else {
+                _picture.setImage(((ImageToken) in).asAWTImage());
+                _picture.displayImage();
+                _picture.repaint();
+            }
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -255,7 +325,7 @@ public class ImageDisplay extends Sink implements Placeable {
                     _frame = new ImageWindow();
 
                     _tableau = new ImageTableau(_effigy, "tokenTableau",
-                            _frame, _oldxsize, _oldysize);
+                            _frame, _oldXSize, _oldYSize);
                     _tableau.setTitle(getName());
                     _frame.setTableau(_tableau);
                     _windowProperties.setProperties(_frame);
@@ -291,90 +361,32 @@ public class ImageDisplay extends Sink implements Placeable {
         }
     }
 
-    /** Display the specified token. This must be called in the Swing
-     *  event thread.
-     *  @param in The token to display
-     */
-    private void _display(Token in) {
-        if (_frame != null) {
-            List tokens = new LinkedList();
-            tokens.add(in);
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
 
-            try {
-                _effigy.setTokens(tokens);
-            } catch (IllegalActionException e) {
-                throw new InternalErrorException(e);
-            }
-        } else if (_picture != null) {
-            Image image = ((ImageToken) in).asAWTImage();
-            int xsize = image.getWidth(null);
-            int ysize = image.getHeight(null);
+    /** The container for the image display, set by calling place() */
+    protected Container _container;
 
-            // If the size has changed, have to recreate the Picture object.
-            if ((_oldxsize != xsize) || (_oldysize != ysize)) {
-                if (_debugging) {
-                    _debug("Image size has changed.");
-                }
+    /** The effigy for the image data. */
+    protected TokenEffigy _effigy;
 
-                _oldxsize = xsize;
-                _oldysize = ysize;
+    /** The frame, if one is used. */
+    protected ImageWindow _frame;
 
-                Container container = _picture.getParent();
+    /** The horizontal size of the previous image. */
+    protected int _oldXSize = 0;
 
-                if (_picture != null) {
-                    container.remove(_picture);
-                }
+    /** The vertical size of the previous image. */
+    protected int _oldYSize = 0;
 
-                _picture = new Picture(xsize, ysize);
-                _picture.setImage(image);
-                _picture.setBackground(null);
-                container.add("Center", _picture);
-                container.validate();
-                container.invalidate();
-                container.repaint();
-                container.doLayout();
-
-                Container c = container.getParent();
-
-                while (c.getParent() != null) {
-                    c.invalidate();
-                    c.validate();
-                    c = c.getParent();
-
-                    if (c instanceof JFrame) {
-                        ((JFrame) c).pack();
-                    }
-                }
-            } else {
-                _picture.setImage(((ImageToken) in).asAWTImage());
-                _picture.displayImage();
-                _picture.repaint();
-            }
-        }
-    }
+    /** The picture panel. */
+    protected Picture _picture;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** The container for the image display, set by calling place() */
-    private Container _container;
-
-    /** The effigy for the image data. */
-    private TokenEffigy _effigy;
-
-    /** The frame, if one is used. */
-    private ImageWindow _frame;
-
-    /** The horizontal size of the previous image. */
-    private int _oldxsize = 0;
-
-    /** The vertical size of the previous image. */
-    private int _oldysize = 0;
-
-    /** The picture panel. */
-    private Picture _picture;
-
-    /** A specification of the size of the picture if it's in its own window. */
+    /** A specification of the size of the picture if it's in its own window.
+     */ 
     private SizeAttribute _pictureSize;
 
     /** The tableau with the display, if any. */
@@ -389,7 +401,7 @@ public class ImageDisplay extends Sink implements Placeable {
     /** Version of TableauFrame that removes its association with the
      *  ImageDisplay upon closing, and also records the size of the display.
      */
-    private class ImageWindow extends TableauFrame {
+    protected class ImageWindow extends TableauFrame {
         /** Construct an empty window.
          *  After constructing this, it is necessary
          *  to call setVisible(true) to make the frame appear
