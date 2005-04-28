@@ -70,12 +70,14 @@ PTCLASSALLJARS = \
 	Collisions/Collisions.jar \
 	EvaderAndPursuer/EvaderAndPursuer.jar \
 	MatlabWirelessSoundDetection/MatlabWirelessSoundDetection.jar \
-	PersonalAreaNetwork/PersonalAreaNetwork.jar \
 	PowerVariability/PowerVariability.jar \
 	SmallWorld/SmallWorld.jar \
 	SmartParking/SmartParking.jar \
 	TerrainModel/TerrainModel.jar \
 	WirelessSoundDetection/WirelessSoundDetection.jar
+
+# Not clear what this demo does
+#	PersonalAreaNetwork/PersonalAreaNetwork.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
