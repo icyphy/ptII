@@ -75,8 +75,9 @@ test PNDirector-2.0 {Try a PN inside DE model} {
     # PN Inside DE fails
     # See ptolemy hackers log for 12/15/2004 and 12/16/2004"
     catch {createAndExecute "PNInsideDE.xml"} errMsg
-    list $errMsg
+
+    # Truncate the string to handle differences between IBM and Sun JVMs
+    list [string range $errMsg 0 204]
 } {{ptolemy.kernel.util.IllegalActionException: At the current time, process-oriented domains (PN and CSP) cannot be nested inside firing-based domains (SDF, DE, CT, etc.).
-  in .PNInsideDE.CompositeActor.port
-Because:
-java.lang.ClassCastException}}
+  in .PNInsideDE.CompositeActor.port}}
+
