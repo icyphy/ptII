@@ -401,7 +401,7 @@ PTJACL_DIR =	@PTJACL_DIR@
 PTJACL_JAR =	@PTJACL_JAR@
 
 # Jar files used in configs/test/makefile and vergil/test/makefile
-PTJACL_JARS =   $(COLT_DIR)/colt.jar$(CLASSPATHSEPARATOR)$(DIVA_JAR)$(CLASSPATHSEPARATOR)$(JYTHON_DIR)/jython.jar$(CLASSPATHSEPARATOR)$(SOOT_CLASSES)$(CLASSPATHSEPARATOR)$(JXTA_JARS)
+PTJACL_JARS =   $(DIVA_JAR)$(CLASSPATHSEPARATOR)$(JYTHON_DIR)/jython.jar$(CLASSPATHSEPARATOR)$(JXTA_JARS)$(CLASSPATHSEPARATOR)$(SOOT_CLASSES)$(CLASSPATHSEPARATOR)$(PTCOLT_JARS)$(CLASSPATHSEPARATOR)
 
 # jtclsh script to run Jacl for the test suite.
 # We could use bin/ptjacl here, but instead we start it from within
