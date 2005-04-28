@@ -101,14 +101,20 @@ and with JDK1.4.2_08.
 <p>Ptolemy II 5.0 will not compile under Java 1.3 because we use the
 java.lang.URI class, which is present only in Java 1.4 and later.
 
-<p>There are various problems with Java 1.5.0-beta:
+<p>There are various problems with Sun Java 1.5.0:
 <menu>
 <li> <a href="#webstart1.5.0-beta">Web Start</a> does not work
-<li> Caltrop does not work
+<li> Caltrop does not work because of XML parser issues
 </menu>
 
  <p>Ptolemy II has been compiled and run
-under IBM JDK 1.5.0 and IBM JDK 1.4.1
+under IBM JDK 1.4.2_01-b06.  There are the following limitations
+under IBM JDK 1.4.2:
+<menu>
+<li> The Copernicus code generator does not work
+<li> Caltrop does not work.
+</menu>
+
 
 
 
@@ -1027,7 +1033,7 @@ and continue with the start up.
 	machine and view the applets using 
 	<CODE>http://localhost/</CODE>
 	
-        <li> Opera 6.03/Windows 2000/Java 1.5.0, may have
+        <li> Opera 6.03/Windows 2000/Java 1.4.0, may have
         problems running applets that include diva.jar if diva.jar
 	is not downloaded in the first applet.  To reproduce this problem:
 	<ol>
