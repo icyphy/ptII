@@ -2,9 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="BlindCommunication" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0-alpha">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {8, 18, 880, 607}, maximized = false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={4, 0, 880, 616}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[665, 498]">
     </property>
@@ -91,7 +91,7 @@
         </property>
     </property>
     <entity name="AudioReader" class="ptolemy.actor.lib.javasound.AudioReader">
-        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="PSK_l2_b1000_s8000_c7800_n40_pnormal_r0.5_v20030505T112338F41.wav">
+        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/domains/psdf/demo/BlindCommunication/PSK_l2_b1000_s8000_c7800_n40_pnormal_r0.5_v20030505T112338F41.wav">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="54.06085968017578, 45.27685546875">
         </property>
@@ -221,7 +221,7 @@
         <entity name="PlotSpectrumWithCarrier" class="ptolemy.actor.lib.gui.SequencePlotter">
             <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={512, 16, 508, 348}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={512, 16, 508, 355}, maximized=false}">
             </property>
             <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
             </property>
@@ -269,13 +269,19 @@
         <entity name="ArrayToSequence" class="ptolemy.domains.sdf.lib.ArrayToSequence">
             <property name="arrayLength" class="ptolemy.data.expr.Parameter" value="2^order">
             </property>
+            <property name="ArrayToSequenceIcon" class="ptolemy.vergil.icon.EditorIcon">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {104, 129, 815, 509}, maximized = false}">
+                </property>
+                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                </property>
+            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 310.0">
             </property>
         </entity>
         <entity name="PlotSpectrumWithoutCarrier" class="ptolemy.actor.lib.gui.SequencePlotter">
             <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 16, 509, 347}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 16, 509, 354}, maximized=false}">
             </property>
             <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[501, 299]">
             </property>
@@ -301,6 +307,12 @@
         </entity>
         <entity name="SequenceToArray" class="ptolemy.domains.sdf.lib.SequenceToArray">
             <property name="arrayLength" class="ptolemy.actor.parameters.PortParameter" value="2^(order)">
+            </property>
+            <property name="SequenceToArrayIcon" class="ptolemy.vergil.icon.EditorIcon">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {104, 129, 815, 509}, maximized = false}">
+                </property>
+                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                </property>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="470.0, 110.0">
             </property>
@@ -469,6 +481,12 @@
         </entity>
         <entity name="SequenceToArray" class="ptolemy.domains.sdf.lib.SequenceToArray">
             <property name="arrayLength" class="ptolemy.actor.parameters.PortParameter" value="(2^(order-1))-indexOffset">
+            </property>
+            <property name="SequenceToArrayIcon" class="ptolemy.vergil.icon.EditorIcon">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {104, 129, 815, 509}, maximized = false}">
+                </property>
+                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                </property>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="175.0, 240.0">
             </property>
@@ -724,6 +742,12 @@
             <link port="IdentifyBaudSamples.baud" relation="relation5"/>
         </entity>
         <entity name="BooleanSwitch" class="ptolemy.actor.lib.BooleanSwitch">
+            <property name="BooleanSwitchIcon" class="ptolemy.vergil.icon.EditorIcon">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {5, 136, 815, 516}, maximized = false}">
+                </property>
+                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                </property>
+            </property>
             <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="360.0, -10.0">
@@ -738,6 +762,12 @@
             <property name="numberOfTimes" class="ptolemy.data.expr.Parameter" value="2^order">
             </property>
             <property name="blockSize" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <property name="RepeatIcon" class="ptolemy.vergil.icon.EditorIcon">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {104, 129, 815, 509}, maximized = false}">
+                </property>
+                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                </property>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="115.0, 60.0">
             </property>
@@ -906,6 +936,12 @@
             </property>
             <property name="inputCount" class="ptolemy.actor.parameters.PortParameter" value="inputCount">
             </property>
+            <property name="ComputeHistogramIcon" class="ptolemy.vergil.icon.EditorIcon">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 129, 815, 509}, maximized=false}">
+                </property>
+                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                </property>
+            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="219.5, 285.0">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -950,17 +986,35 @@
         <entity name="ArrayToSequence" class="ptolemy.domains.sdf.lib.ArrayToSequence">
             <property name="arrayLength" class="ptolemy.data.expr.Parameter" value="270">
             </property>
+            <property name="ArrayToSequenceIcon" class="ptolemy.vergil.icon.EditorIcon">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {104, 129, 815, 509}, maximized = false}">
+                </property>
+                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                </property>
+            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="314.5, 285.0">
             </property>
         </entity>
         <entity name="SequenceToArray" class="ptolemy.domains.sdf.lib.SequenceToArray">
             <property name="arrayLength" class="ptolemy.actor.parameters.PortParameter" value="270">
             </property>
+            <property name="SequenceToArrayIcon" class="ptolemy.vergil.icon.EditorIcon">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {104, 129, 815, 509}, maximized = false}">
+                </property>
+                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                </property>
+            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="165.0, 365.0">
             </property>
         </entity>
         <entity name="MovingAverage" class="ptolemy.domains.sdf.lib.FIR">
             <property name="taps" class="ptolemy.data.expr.Parameter" value="repeat(11,1.0/11)">
+            </property>
+            <property name="FIRIcon" class="ptolemy.vergil.icon.EditorIcon">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {104, 129, 815, 509}, maximized = false}">
+                </property>
+                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                </property>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="450.0, 285.0">
             </property>
@@ -1091,7 +1145,7 @@
         <entity name="XYPlotter" class="ptolemy.actor.lib.gui.XYPlotter">
             <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, 341, 508, 408}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, 341, 508, 415}, maximized=false}">
             </property>
             <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 360]">
             </property>
@@ -1114,6 +1168,12 @@
         </entity>
         <entity name="FIR" class="ptolemy.domains.sdf.lib.FIR">
             <property name="taps" class="ptolemy.data.expr.Parameter" value="{1.0,-1.0}">
+            </property>
+            <property name="FIRIcon" class="ptolemy.vergil.icon.EditorIcon">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {104, 129, 815, 509}, maximized = false}">
+                </property>
+                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                </property>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="480.0, 340.0">
             </property>
