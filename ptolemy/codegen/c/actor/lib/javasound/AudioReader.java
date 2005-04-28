@@ -1,8 +1,5 @@
-/* A helper class for ptolemy.actor.lib.Minimum
+/*
 @Copyright (c) 2005 The Regents of the University of California.
-
-Copyright (c) 1997-2005 The Regents of the University of California.
->>>>>>> 1.7
 All rights reserved.
 Permission is hereby granted, without written agreement and without
 license or royalty fees, to use, copy, modify, and distribute this
@@ -32,7 +29,10 @@ COPYRIGHTENDKEY
  * Created on Apr 23, 2005
  *
  */
-package ptolemy.codegen.c.actor.lib;
+package ptolemy.codegen.c.actor.lib.javasound;
+
+import java.util.HashSet;
+import java.util.Set;
 
 import ptolemy.codegen.c.actor.lib.CodeStream;
 import ptolemy.codegen.kernel.CCodeGeneratorHelper;
@@ -42,49 +42,74 @@ import ptolemy.kernel.util.IllegalActionException;
  * @author Man-Kit Leung
  *
  */
-public class Minimum extends CCodeGeneratorHelper {
+public class AudioReader extends CCodeGeneratorHelper {
+
     /**
-     * Constructor method for the Minimum helper
+     * Constructor method for the AudioReader helper
      * @param actor the associated actor
      */
-    public Minimum(ptolemy.actor.lib.Minimum actor) {
+    public AudioReader(ptolemy.actor.lib.javasound.AudioReader actor) {
         super(actor);
     }
 
     /**
      * Generate fire code
-     * The method reads in <code>compareBlock</code> from Minimum.c 
+     * The method reads in <code>writeSoundFile</code> from AudioReader.c 
      * and puts into the given stream buffer
      * @param stream the given buffer to append the code to
      */
     public void  generateFireCode(StringBuffer stream)
         throws IllegalActionException {
-        ptolemy.actor.lib.Minimum actor = 
-            (ptolemy.actor.lib.Minimum) getComponent();
-        
+        ptolemy.actor.lib.javasound.AudioReader actor = 
+            (ptolemy.actor.lib.javasound.AudioReader) getComponent();
+       
         CodeStream tmpStream = new CodeStream(this);
-        tmpStream.appendCodeBlock("compareBlock");
+        tmpStream.appendCodeBlock("readSoundFile");
 
         stream.append(processCode(tmpStream.toString()));
     }
 
     /** Generate initialization code.
-     *  This method reads the <code>initMin</code>, <code>initChannelNum</code> from Minimum.c,
+     *  This method reads the <code>initBlock</code> from AudioReader.c,
      *  replaces macros with their values and returns the results.
      *  @return The processed code block.
      */
     public String generateInitializeCode()
         throws IllegalActionException {
         super.generateInitializeCode();
-        ptolemy.actor.lib.Minimum actor = 
-            (ptolemy.actor.lib.Minimum) getComponent();
 
         CodeStream tmpStream = new CodeStream(this);
-        if (actor.input.getWidth() > 0) {
-        	tmpStream.appendCodeBlock("initMin");
-        }
-        tmpStream.appendCodeBlock("initChannelNum");
+        tmpStream.appendCodeBlock("initBlock");
 
         return processCode(tmpStream.toString());
+    }
+    
+    /** Generate wrap up code.
+     *  This method reads the <code>wrapupBlock</code> 
+     *  from AudioReader.c,
+     *  replaces macros with their values and
+     *  put the processed code block into the given stream buffer
+     */
+    public void generateWrapupCode(StringBuffer stream)
+        throws IllegalActionException {
+        ptolemy.actor.lib.javasound.AudioReader actor = 
+            (ptolemy.actor.lib.javasound.AudioReader) getComponent();
+
+        CodeStream tmpStream = new CodeStream(this);
+        tmpStream.appendCodeBlock("wrapupBlock");
+
+        stream.append(processCode(tmpStream.toString()));
+    }
+
+    /** Get the files needed by the code generated for the
+     *  AudioReader actor.
+     *  @return A set of strings that are names of the files
+     *   needed by the code generated for the AudioReader actor.
+     */
+    public Set getIncludingFiles() {
+        Set files = new HashSet();
+        files.add("\"math.h\"");
+        files.add("\"stdio.h\"");
+        return files;
     }
 }

@@ -92,7 +92,7 @@ public class CodeStream {
      */
     public void appendCodeBlock(String blockName) throws IllegalActionException {
         if (_codeBlockTable == null) {
-            _constructCodeBlockTable();
+            _constructCodeTable();
         }
 
         StringBuffer codeBlock = (StringBuffer) _codeBlockTable.get(blockName);
@@ -149,11 +149,13 @@ public class CodeStream {
 
     /**
      * This method reads the .c file associate with the particular actor
-     * identified by the className and constructs the code block table.
+     * identified by the className and constructs the code block table
+     * and parameter table.
      *
      * @throws IllegalActionException Thrown if an error occurs during parsing.
      */
-    private void _constructCodeBlockTable() throws IllegalActionException {
+    private void _constructCodeTable() 
+        throws IllegalActionException {
         String className;
 
         if (_actorHelper == null) {
@@ -164,7 +166,8 @@ public class CodeStream {
         }
 
         _codeBlockTable = new Hashtable();
-
+        _parameterTable = new Hashtable();
+        
         BufferedReader reader = null;
 
         try {
@@ -311,7 +314,7 @@ public class CodeStream {
         CodeStream stream = new CodeStream(null);
 
         if (stream._codeBlockTable == null) {
-            stream._constructCodeBlockTable();
+            stream._constructCodeTable();
         }
 
         for (Iterator keys = stream._codeBlockTable.keySet().iterator();
@@ -346,6 +349,12 @@ public class CodeStream {
      */
     private Hashtable _codeBlockTable = null;
 
+    /**
+     * The code block table that stores the code block parameter(s) 
+     * with code block names (String) as keys.
+     */
+    private Hashtable _parameterTable = null;
+    
     /**
      * The associated actor helper object.
      */

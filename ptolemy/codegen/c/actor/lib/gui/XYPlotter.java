@@ -57,8 +57,8 @@ public class XYPlotter extends CCodeGeneratorHelper {
 
     /**
      * Generate fire code
-     * The method reads in <code>writeFile</code> and
-     * puts into the given stream buffer
+     * The method reads in <code>writeFile</code> from XYPlotter.c 
+     * and puts into the given stream buffer
      * @param stream the given buffer to append the code to
      */
     public void generateFireCode(StringBuffer stream)
@@ -91,8 +91,10 @@ public class XYPlotter extends CCodeGeneratorHelper {
      *  @return The processed <code>wrapUpBlock</code>.
      */
     public void generateWrapupCode(StringBuffer stream)
-            throws IllegalActionException {
-        ptolemy.actor.lib.gui.Plotter actor = (ptolemy.actor.lib.gui.Plotter) getComponent();
+        throws IllegalActionException {
+
+        ptolemy.actor.lib.gui.XYPlotter actor = 
+            (ptolemy.actor.lib.gui.XYPlotter) getComponent();
 
         CodeStream tmpStream = new CodeStream(this);
         tmpStream.appendCodeBlock("closeFile");
