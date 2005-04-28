@@ -57,13 +57,22 @@ import javax.swing.SwingUtilities;
 
 /**
    Display an image on the screen using the ptolemy.media.Picture
-   class.  For a sequence of images that are all the same size, this class
-   will continually update the picture with new data.   If the size of the
-   input image changes, then a new Picture object is created.  This class
-   will only accept a IntMatrixToken on its input, and assumes that the
-   input image contains greyscale pixel intensities between 0 and 255 (inclusive).
+   class.  For a sequence of images that are all the same size, this
+   class will continually update the picture with new data.  If the
+   size of the input image changes, then a new Picture object is
+   created.  This class will only accept a IntMatrixToken on its
+   input, and assumes that the input image contains greyscale pixel
+   intensities between 0 and 255 (inclusive).  The token is 
+   read in postfire().
+   
+   <p>Note that this actor really should be replaced by a conversion
+   actor that converts IntMatrixTokens to ImageTokens.  However,
+   there is no easy way to do that without accessing the graphical
+   context of the actor.  An alternative would be to use the
+   Java Advanced Imaging package and create an actor like
+   $PTII/ptolemy/actor/lib/jai/DoubleMatrixToJAI.java.
 
-   @author Steve Neuendorffer
+   @author Steve Neuendorffer, Christopher Brooks
    @version $Id$
    @since Ptolemy II 0.2
    @Pt.ProposedRating Yellow (neuendor)
@@ -86,133 +95,73 @@ public class ImageDisplay extends ptolemy.actor.lib.image.ImageDisplay {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
+    ////                         private methods                   ////
 
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then removes association with graphical objects
-     *  belonging to the original class.
-     *  @param workspace The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class contains
-     *   an attribute that cannot be cloned.
+    /** Convert an IntMatrixToken to a Packed RGB Image.
+     *  @param token An IntMatrixToken defining the black and white image. 
+     *  @return A packed RGB array of integers
      */
-    public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        ImageDisplay newObject = (ImageDisplay) super.clone(workspace);
-        return newObject;
-    }
+    private int[] _convertBWImageToPackedRGBImage(IntMatrixToken token) {
+        int[][] frame = token.intMatrix();
+        int xSize = token.getColumnCount();
+        int ySize = token.getRowCount();
 
-    /**
-     * Fire this actor.
-     * Consume an IntMatrixToken from the input port.  If the image is
-     * not the same size as the previous image, or this is the first
-     * image, then create a new Picture object to represent the image,
-     * and put it in the appropriate container (either the container
-     * set using place, or the frame created during the initialize
-     * phase).
-     * Convert the pixels from greyscale to RGBA triples (setting the
-     * image to be opaque) and update the picture.
-     * @exception IllegalActionException If a contained method throws it.
-     */
-    public boolean postfire() throws IllegalActionException {
-        if (input.hasToken(0)) {
-            final Token in = input.get(0);
+        int[] RGBbuffer = new int[xSize * ySize];
 
-            // Display probably to be done in the Swing event thread.
-            Runnable doDisplay = new Runnable() {
-                    public void run() {
-                        _display2(in);
-                    }
-                };
+        // convert the B/W image to a packed RGB image.  This includes
+        // flipping the image upside down.  (When it is drawn, it gets
+        // drawn from bottom up).
+        int i;
 
-            SwingUtilities.invokeLater(doDisplay);
+        // convert the B/W image to a packed RGB image.  This includes
+        // flipping the image upside down.  (When it is drawn, it gets
+        // drawn from bottom up).
+        int j;
+
+        // convert the B/W image to a packed RGB image.  This includes
+        // flipping the image upside down.  (When it is drawn, it gets
+        // drawn from bottom up).
+        int index = 0;
+
+        for (j = ySize - 1; j >= 0; j--) {
+            for (i = 0; i < xSize; i++, index++) {
+                RGBbuffer[index] = (255 << 24) | ((frame[j][i] & 255) << 16)
+                    | ((frame[j][i] & 255) << 8)
+                    | (frame[j][i] & 255);
+            }
         }
 
-        return true;
-
-//         IntMatrixToken message = (IntMatrixToken) input.get(0);
-//         int[][] frame = message.intMatrix();
-//         int xSize = message.getColumnCount();
-//         int ySize = message.getRowCount();
-
-//         // If the image changes size, then we have to go through some
-//         // trouble to resize the window.
-//         if ((_oldXSize != xSize) || (_oldYSize != ySize)) {
-//             _oldXSize = xSize;
-//             _oldYSize = ySize;
-//             _RGBbuffer = new int[xSize * ySize];
-
-//             if (_picture != null) {
-//                 _container.remove(_picture);
-//             }
-
-//             _picture = new Picture(xSize, ySize);
-//             _picture.setImage(_RGBbuffer);
-//             _picture.setBackground(null);
-
-//             _container.add("Center", _picture);
-//             _container.validate();
-//             _container.invalidate();
-//             _container.repaint();
-//             _container.doLayout();
-
-//             Container c = _container.getParent();
-
-//             while (c.getParent() != null) {
-//                 c.invalidate();
-//                 c.validate();
-//                 c = c.getParent();
-//             }
-
-//             if (_frame != null) {
-//                 _frame.pack();
-//             }
-//         }
-
-//         // convert the B/W image to a packed RGB image.  This includes
-//         // flipping the image upside down.  (When it is drawn, it gets
-//         // drawn from bottom up).
-//         int i;
-
-//         // convert the B/W image to a packed RGB image.  This includes
-//         // flipping the image upside down.  (When it is drawn, it gets
-//         // drawn from bottom up).
-//         int j;
-
-//         // convert the B/W image to a packed RGB image.  This includes
-//         // flipping the image upside down.  (When it is drawn, it gets
-//         // drawn from bottom up).
-//         int index = 0;
-
-//         for (j = ySize - 1; j >= 0; j--) {
-//             for (i = 0; i < xSize; i++, index++) {
-//                 _RGBbuffer[index] = (255 << 24) | ((frame[j][i] & 255) << 16)
-//                     | ((frame[j][i] & 255) << 8)
-//                     | (frame[j][i] & 255);
-//             }
-//         }
-
-//         // display it.
-//         _picture.displayImage();
-//         _picture.repaint();
-
-//         Thread.yield();
+        return RGBbuffer;
     }
 
     /** Display the specified token. This must be called in the Swing
      *  event thread.
-     *  @param in The token to display
+     *  @param in The token to display.
      */
-    private void _display2(Token in) {
+    protected void _display(Token in) {
+        // FIXME: lots of code duplication with parent and
+        // with ptolemy/actor/lib/image/ImageTableau.java
+        // We could try to refactor this, but it would get tricky
+        int xSize = ((IntMatrixToken) in).getColumnCount();
+        int ySize = ((IntMatrixToken) in).getRowCount();
+
         if (_frame != null) {
-            int xSize = ((IntMatrixToken) in).getColumnCount();
-            int ySize = ((IntMatrixToken) in).getRowCount();
+            // We have a frame already, so just create an AWTImageToken
+            // and tell the effigy about it.
             MemoryImageSource imageSource = 
                 new MemoryImageSource(xSize, ySize,
                         ColorModel.getRGBdefault(),
-                        _convertBWImageToPackedRGBImage((IntMatrixToken) in),
+                        _convertBWImageToPackedRGBImage(
+                                (IntMatrixToken) in),
                         0, xSize);
             imageSource.setAnimated(true);
+
+            // Sadly, we can't easily create an image without some sort
+            // of graphical context here.  This is a huge shortcoming of
+            // awt.  Just because I'm operating on images, I should not
+            // need a frame.
             Image image = _frame.getContentPane().createImage(imageSource);
+
             AWTImageToken token = new AWTImageToken(image);
             List tokens = new LinkedList();
             tokens.add(token);
@@ -223,11 +172,6 @@ public class ImageDisplay extends ptolemy.actor.lib.image.ImageDisplay {
                 throw new InternalErrorException(e);
             }
         } else if (_picture != null) {
-            //Image image = ((ImageToken) in).asAWTImage();
-            
-            int xSize = ((IntMatrixToken) in).getColumnCount();
-            int ySize = ((IntMatrixToken) in).getRowCount();
-
             // If the size has changed, have to recreate the Picture object.
             if ((_oldXSize != xSize) || (_oldYSize != ySize)) {
                 if (_debugging) {
@@ -266,7 +210,7 @@ public class ImageDisplay extends ptolemy.actor.lib.image.ImageDisplay {
                     }
                 }
             } else {
-                //_picture.setImage(((ImageToken) in).asAWTImage());
+                // The _frame is null, the size has not changed, set the image.
                 _picture.setImage(
                         _convertBWImageToPackedRGBImage((IntMatrixToken) in));
                 _picture.displayImage();
@@ -274,42 +218,4 @@ public class ImageDisplay extends ptolemy.actor.lib.image.ImageDisplay {
             }
         }
     }
-
-    private int[] _convertBWImageToPackedRGBImage(IntMatrixToken token) {
-        int[][] frame = token.intMatrix();
-        int xSize = token.getColumnCount();
-        int ySize = token.getRowCount();
-
-        int[] RGBbuffer = new int[xSize * ySize];
-
-        // convert the B/W image to a packed RGB image.  This includes
-        // flipping the image upside down.  (When it is drawn, it gets
-        // drawn from bottom up).
-        int i;
-
-        // convert the B/W image to a packed RGB image.  This includes
-        // flipping the image upside down.  (When it is drawn, it gets
-        // drawn from bottom up).
-        int j;
-
-        // convert the B/W image to a packed RGB image.  This includes
-        // flipping the image upside down.  (When it is drawn, it gets
-        // drawn from bottom up).
-        int index = 0;
-
-        for (j = ySize - 1; j >= 0; j--) {
-            for (i = 0; i < xSize; i++, index++) {
-                RGBbuffer[index] = (255 << 24) | ((frame[j][i] & 255) << 16)
-                    | ((frame[j][i] & 255) << 8)
-                    | (frame[j][i] & 255);
-            }
-        }
-
-        return RGBbuffer;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    //private int[] _RGBbuffer = null;
 }
