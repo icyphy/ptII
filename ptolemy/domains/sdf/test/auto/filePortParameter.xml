@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="filePortParameter" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={22, 220, 815, 518}, maximized=false}">
     </property>
@@ -19,7 +19,7 @@
         </property>
     </property>
     <entity name="DirectoryListing" class="ptolemy.actor.lib.io.DirectoryListing">
-        <property name="directoryOrURL" class="ptolemy.data.expr.FileParameter" value="filePortParameterTest">
+        <property name="directoryOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="filePortParameterTest">
         </property>
         <property name="pattern" class="ptolemy.data.expr.StringParameter" value=".*\.txt">
         </property>
@@ -80,7 +80,7 @@
         <entity name="Test" class="ptolemy.actor.lib.Test">
             <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;1&#10;&quot;, &quot;2&#10;&quot;, &quot;3&#10;&quot;}">
             </property>
-            <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+            <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{470.0, 145.0}">
             </property>
@@ -115,12 +115,21 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 145.0]">
         </property>
     </entity>
+    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={367, 270, 290, 227}, maximized=false}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{310, 255}">
+        </property>
+    </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[250.0, 140.0]">
+        </vertex>
     </relation>
     <link port="DirectoryListing.output" relation="relation"/>
     <link port="CompositeActor.fileName" relation="relation2"/>
     <link port="ArrayToSequence.input" relation="relation"/>
     <link port="ArrayToSequence.output" relation="relation2"/>
+    <link port="Display.input" relation="relation2"/>
 </entity>
