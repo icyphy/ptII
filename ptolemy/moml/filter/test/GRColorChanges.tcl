@@ -79,6 +79,12 @@ set expressionMoml  "$header
     </entity>
 </entity>"
 
+if [catch {java::call Class forName javax.media.j3d.Node} errMsg] {
+    puts "Skipping GRColorChanges.tcl backward compat tests."
+    puts "  Could not instantiate javax.media.j3d.Node, perhaps Java3D"
+    puts "  is not installed?"
+} else {
+
 test GRColorChanges-7.3 {Expression: ViewScreen backgroundColor} { 
     set parser [java::new ptolemy.moml.MoMLParser]
     # Note that 1.1 added the filter for all the parsers
@@ -140,3 +146,6 @@ test GRColorChanges-7.4 {Expression: Sphere3D: RGB color} {
     </entity>
 </entity>
 }}
+
+
+} # else java3d exists
