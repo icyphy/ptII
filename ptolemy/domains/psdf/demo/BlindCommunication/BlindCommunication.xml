@@ -105,7 +105,7 @@
         </property>
     </entity>
     <entity name="Baud Rate Estimate" class="ptolemy.actor.lib.MonitorValue">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="998.75">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
         <doc>Monitor and display values</doc>
         <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
@@ -114,7 +114,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="10">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="495.0, 80.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[595.0, 80.0]">
         </property>
     </entity>
     <entity name="Demodulate" class="ptolemy.actor.TypedCompositeActor">
@@ -221,9 +221,9 @@
         <entity name="PlotSpectrumWithCarrier" class="ptolemy.actor.lib.gui.SequencePlotter">
             <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={512, 16, 508, 355}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={507, 555, 508, 210}, maximized=false}">
             </property>
-            <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+            <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 155]">
             </property>
             <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
             </property>
@@ -281,9 +281,9 @@
         <entity name="PlotSpectrumWithoutCarrier" class="ptolemy.actor.lib.gui.SequencePlotter">
             <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 16, 509, 354}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={506, 319, 509, 236}, maximized=false}">
             </property>
-            <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[501, 299]">
+            <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[501, 181]">
             </property>
             <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
             </property>
@@ -593,7 +593,7 @@
         <link port="Differential.output" relation="relation6"/>
     </entity>
     <entity name="Carrier Estimate" class="ptolemy.actor.lib.MonitorValue">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="-199.21875">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
         <doc>Monitor and display values</doc>
         <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
@@ -1091,7 +1091,7 @@
         <link port="Wrap.input" relation="relation"/>
     </entity>
     <entity name="Sample Count" class="ptolemy.actor.lib.MonitorValue">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="255">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="0">
         </property>
         <doc>Monitor and display values</doc>
         <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
@@ -1104,7 +1104,7 @@
         </property>
     </entity>
     <entity name="Phase states" class="ptolemy.actor.lib.MonitorValue">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="2">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="0">
         </property>
         <doc>Monitor and display values</doc>
         <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
@@ -1113,11 +1113,11 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="10">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="600.0, 165.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[595.0, 175.0]">
         </property>
     </entity>
     <entity name="Plot Phase Difference" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="440.0, 270.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 280.0]">
         </property>
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
             <property name="_location" class="ptolemy.kernel.util.Location" value="360.0, 225.0">
@@ -1145,9 +1145,9 @@
         <entity name="XYPlotter" class="ptolemy.actor.lib.gui.XYPlotter">
             <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, 341, 508, 415}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, 386, 508, 380}, maximized=false}">
             </property>
-            <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 360]">
+            <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 325]">
             </property>
             <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
             </property>
