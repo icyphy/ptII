@@ -74,7 +74,8 @@ This FAQ can be found at:
 	<li> <a href="#Customizing the GUI"><b>5.5 How do I customize the GUI?</b></a>
 	<li> <a href="#MoML"><b>5.6 What file format are the models stored in?</b></a>
 	<li> <a href="#Scripting"><b>5.7 Is there a scripting interface to Ptolemy II?</b></a>
-	<li> <a href="#Contributions"><b>5.8 Does the Ptolemy project take software contributions?</b></a>
+	<li> <a href="#CodeGen"><b>5.8 What about Code Generation?</b></a>
+	<li> <a href="#Contributions"><b>5.9 Does the Ptolemy project take software contributions?</b></a>
 	</menu>
 
 </menu>
@@ -222,7 +223,7 @@ and for hierarchical Giotto models.
 </menu>
  <p>For more information about the current status of code generation in
 Ptolemy II, see
-<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/codegen.htm" target="_top"><code>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/codegen.htm</code></a>
+<a href="#CodeGen"><b>5.8 What about Code Generation?</b></a>
  </p>
 
 <p>Various people have made efforts to use a different front end with
@@ -818,7 +819,57 @@ and avoiding the usual edit/compile/run loop.
 
 
 
-<dt> <a name="Contributions"><b>5.8 Does the Ptolemy project take software contributions?</b></a>
+<dt> <a name="CodeGen"><b>5.8 What about Code Generation?</b></a>
+
+<dd>>Ptolemy II include a code generator developed by Stephen Neuendorffer
+that reads non-hierarchical SDF models and generates Java .class files.
+This code generator is called Copernicus.  We call this 
+the <I>deep</I> code generator.
+The code that is produced by deep codegen uses very little of the
+Ptolemy infrastructure.  The ptolemy.math package is used sometimes.
+
+ <p>In addition, Copernicus can read in models from other domains
+and generate a .class file that uses much more of the Ptolemy infrastructure.
+We call this the <I>shallow</I> code generator.
+
+ <p>Copernicus can also read in models and generate applets.
+ <br>To generate an applet within the Ptolemy II tree, try
+<pre>
+cd $PTII/ptolemy/domains/sdf/demo
+mkdir ButterflyTest
+cp Butterfly/Butterfly.xml ButterflyTest/ButterFlyTest.xml
+$PTII/bin/copernicus -codeGenerator applet -targetPath ptolemy/domains/sdf/demo/ButterflyTest ButterflyTest.xml
+</pre>
+
+ <p>The Copernicus deep and shallow codegenerators can use treeshaking
+to run the model, make a list of the classes that are used and
+create a jar file that contains only those class files.  We can also
+use the Jode obfuscator to reduce jar file size.  We've had limited
+success using the deep and shallow code generators with the GNU gcj
+compiler to create small standalone binaries.
+
+ <p>Another Copernicus effort is the C code generator,
+which was created by Ankush Varma and
+Professor Shuvra S. Bhattacharyya of the University of Maryland,
+The Copernicus C code generator generates C files for certain SDF
+models.  This C code generator is still very experimental.
+
+ <p>For more information about the Copernicus code generator, see
+<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/codegen.htm" target="_top"><code>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/codegen.htm</code></a>
+ <br>and
+ <br>Stephen Neuendorffer, <a href="http://ptolemy.eecs.berkeley.edu/publications/papers/04/StevesThesis"><i>Actor-Oriented Metaprogramming</i></a>, PhD Thesis, University of California, Berkeley, December 21, 2004.
+ <br>and
+ <br>Ankush Varma, "<a href="http://ptolemy.eecs.berkeley.edu/publications/papers/03/java-2-C">Retargetable Optimizing Java-to-C Compiler for Embedded Systems</a>," Master's Report, Department of Electrical and Computer Engineering, University of Maryland, College Park, MD, 2003.
+
+
+ <p>As of Ptolemy II 4.0, no further development is occuring in 
+Copernicus.  However, the Ptolemy group is developing a 
+Ptolemy Classic style code generator that uses template files
+to build C files.  This code generator is not available in 
+Ptolemy II 5.0.
+
+
+<dt> <a name="Contributions"><b>5.9 Does the Ptolemy project take software contributions?</b></a>
 <dd> Yes, the Ptolemy project has a long history of folding in software
 contributions from off site developers.
 
