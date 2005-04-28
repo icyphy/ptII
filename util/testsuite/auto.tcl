@@ -54,7 +54,8 @@ if [ file isdirectory auto/knownFailedTests ] {
     }
 }
 
-foreach file [glob auto/*.xml] {
+# IBM JDK 1.4.2 requires the lsort?
+foreach file [lsort [glob auto/*.xml]] {
     set relativeFilename \
 	    [java::call ptolemy.util.StringUtilities substituteFilePrefix \
 	    $PTII $file {$PTII}]
