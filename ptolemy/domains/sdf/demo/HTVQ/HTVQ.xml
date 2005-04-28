@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="HTVQ" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0-alpha">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
     </property>
     <property name="SDFDirector" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="100">
@@ -14,7 +14,7 @@
     </property>
     <property name="blockHeight" class="ptolemy.data.expr.Parameter" value="2">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[622, 367]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[672, 367]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 154]">
     </property>
@@ -71,7 +71,7 @@ integer matrices</text>
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {23, 198, 837, 476}, maximized = false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-1, 2, 887, 485}, maximized=false}">
     </property>
     <property name="annotation" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -95,7 +95,7 @@ integer matrices</text>
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{311.0, 183.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{336.0, 183.5}">
     </property>
     <entity name="Source" class="ptolemy.domains.sdf.lib.vq.ImageSequence">
         <property name="imageURLTemplate" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy/domains/sdf/lib/vq/data/seq/missa/missa***.qcf&quot;">
@@ -224,22 +224,39 @@ integer matrices</text>
         </port>
     </entity>
     <entity name="Compressed" class="ptolemy.domains.sdf.lib.vq.ImageDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={703, 417, 184, 196}, maximized=false}">
+        </property>
+        <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="555.1666564941406, 200.0">
         </property>
     </entity>
     <entity name="Original" class="ptolemy.domains.sdf.lib.vq.ImageDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 414, 184, 199}, maximized=false}">
+        </property>
+        <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="551.5, 63.5">
         </property>
     </entity>
-    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="7">
+    <entity name="Signal To Noise Ratio" class="ptolemy.actor.lib.gui.SequencePlotter">
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="PSNR">
         </property>
-        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={184, 413, 519, 200}, maximized=false}">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {370, 3, 112, 171}, maximized = false}">
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[511, 145]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="560.0, 130.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[560.0, 130.0]">
         </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>SequencePlotter</title>
+<xRange min="0.0" max="99.0"/>
+<yRange min="21.572860280838203" max="22.009860108312406"/>
+</plot>?>
+        </configure>
     </entity>
     <relation name="R1" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex0" value="95.0, 95.0">
@@ -255,10 +272,10 @@ integer matrices</text>
         <vertex name="vertex0" value="440.0, 200.0">
         </vertex>
     </relation>
-    <relation name="R6" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="Source.output" relation="R1"/>
-    <link port="PSNR.output" relation="R6"/>
+    <link port="PSNR.output" relation="relation"/>
     <link port="PSNR.signal" relation="R1"/>
     <link port="PSNR.distortedSignal" relation="R5"/>
     <link port="Partition Image.input" relation="R1"/>
@@ -271,5 +288,5 @@ integer matrices</text>
     <link port="Unpartition.output" relation="R5"/>
     <link port="Compressed.input" relation="R5"/>
     <link port="Original.input" relation="R1"/>
-    <link port="Display.input" relation="R6"/>
+    <link port="Signal To Noise Ratio.input" relation="relation"/>
 </entity>
