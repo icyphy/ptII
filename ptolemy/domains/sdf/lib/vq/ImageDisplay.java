@@ -30,18 +30,27 @@ package ptolemy.domains.sdf.lib.vq;
 import ptolemy.actor.gui.Placeable;
 import ptolemy.actor.lib.Sink;
 import ptolemy.data.IntMatrixToken;
+import ptolemy.data.AWTImageToken;
+import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.media.Picture;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.Image;
+import java.awt.image.ColorModel;
+import java.awt.image.MemoryImageSource;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.swing.JFrame;
-
+import javax.swing.SwingUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// ImageDisplay
@@ -60,7 +69,7 @@ import javax.swing.JFrame;
    @Pt.ProposedRating Yellow (neuendor)
    @Pt.AcceptedRating Red
 */
-public class ImageDisplay extends Sink implements Placeable {
+public class ImageDisplay extends ptolemy.actor.lib.image.ImageDisplay {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -74,41 +83,22 @@ public class ImageDisplay extends Sink implements Placeable {
         super(container, name);
 
         input.setTypeEquals(BaseType.INT_MATRIX);
-
-        _oldXSize = 0;
-        _oldYSize = 0;
-        _frame = null;
-        _container = null;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /**
-     * Initialize this actor.
-     * If place has not been called, then create a frame to display the
-     * image in.
-     * @exception IllegalActionException If a contained method throws it.
+    /** Clone the actor into the specified workspace. This calls the
+     *  base class and then removes association with graphical objects
+     *  belonging to the original class.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
      */
-    public void initialize() throws IllegalActionException {
-        super.initialize();
-
-        _oldXSize = 0;
-        _oldYSize = 0;
-
-        if (_container == null) {
-            _frame = new JFrame("ImageDisplay");
-            _frame.getContentPane().setLayout(new BorderLayout(15, 15));
-            _frame.show();
-            _frame.pack();
-            _frame.validate();
-            _container = _frame.getContentPane();
-        }
-
-        if (_frame != null) {
-            _frame.setVisible(true);
-            _frame.toFront();
-        }
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        ImageDisplay newObject = (ImageDisplay) super.clone(workspace);
+        return newObject;
     }
 
     /**
@@ -123,44 +113,174 @@ public class ImageDisplay extends Sink implements Placeable {
      * image to be opaque) and update the picture.
      * @exception IllegalActionException If a contained method throws it.
      */
-    public void fire() throws IllegalActionException {
-        IntMatrixToken message = (IntMatrixToken) input.get(0);
-        int[][] frame = message.intMatrix();
-        int xSize = message.getColumnCount();
-        int ySize = message.getRowCount();
+    public boolean postfire() throws IllegalActionException {
+        if (input.hasToken(0)) {
+            final Token in = input.get(0);
 
-        // If the image changes size, then we have to go through some
-        // trouble to resize the window.
-        if ((_oldXSize != xSize) || (_oldYSize != ySize)) {
-            _oldXSize = xSize;
-            _oldYSize = ySize;
-            _RGBbuffer = new int[xSize * ySize];
+            // Display probably to be done in the Swing event thread.
+            Runnable doDisplay = new Runnable() {
+                    public void run() {
+                        _display2(in);
+                    }
+                };
 
-            if (_picture != null) {
-                _container.remove(_picture);
+            SwingUtilities.invokeLater(doDisplay);
+        }
+
+        return true;
+
+//         IntMatrixToken message = (IntMatrixToken) input.get(0);
+//         int[][] frame = message.intMatrix();
+//         int xSize = message.getColumnCount();
+//         int ySize = message.getRowCount();
+
+//         // If the image changes size, then we have to go through some
+//         // trouble to resize the window.
+//         if ((_oldXSize != xSize) || (_oldYSize != ySize)) {
+//             _oldXSize = xSize;
+//             _oldYSize = ySize;
+//             _RGBbuffer = new int[xSize * ySize];
+
+//             if (_picture != null) {
+//                 _container.remove(_picture);
+//             }
+
+//             _picture = new Picture(xSize, ySize);
+//             _picture.setImage(_RGBbuffer);
+//             _picture.setBackground(null);
+
+//             _container.add("Center", _picture);
+//             _container.validate();
+//             _container.invalidate();
+//             _container.repaint();
+//             _container.doLayout();
+
+//             Container c = _container.getParent();
+
+//             while (c.getParent() != null) {
+//                 c.invalidate();
+//                 c.validate();
+//                 c = c.getParent();
+//             }
+
+//             if (_frame != null) {
+//                 _frame.pack();
+//             }
+//         }
+
+//         // convert the B/W image to a packed RGB image.  This includes
+//         // flipping the image upside down.  (When it is drawn, it gets
+//         // drawn from bottom up).
+//         int i;
+
+//         // convert the B/W image to a packed RGB image.  This includes
+//         // flipping the image upside down.  (When it is drawn, it gets
+//         // drawn from bottom up).
+//         int j;
+
+//         // convert the B/W image to a packed RGB image.  This includes
+//         // flipping the image upside down.  (When it is drawn, it gets
+//         // drawn from bottom up).
+//         int index = 0;
+
+//         for (j = ySize - 1; j >= 0; j--) {
+//             for (i = 0; i < xSize; i++, index++) {
+//                 _RGBbuffer[index] = (255 << 24) | ((frame[j][i] & 255) << 16)
+//                     | ((frame[j][i] & 255) << 8)
+//                     | (frame[j][i] & 255);
+//             }
+//         }
+
+//         // display it.
+//         _picture.displayImage();
+//         _picture.repaint();
+
+//         Thread.yield();
+    }
+
+    /** Display the specified token. This must be called in the Swing
+     *  event thread.
+     *  @param in The token to display
+     */
+    private void _display2(Token in) {
+        if (_frame != null) {
+            int xSize = ((IntMatrixToken) in).getColumnCount();
+            int ySize = ((IntMatrixToken) in).getRowCount();
+            MemoryImageSource imageSource = 
+                new MemoryImageSource(xSize, ySize,
+                        ColorModel.getRGBdefault(),
+                        _convertBWImageToPackedRGBImage((IntMatrixToken) in),
+                        0, xSize);
+            imageSource.setAnimated(true);
+            Image image = _frame.getContentPane().createImage(imageSource);
+            AWTImageToken token = new AWTImageToken(image);
+            List tokens = new LinkedList();
+            tokens.add(token);
+
+            try {
+                _effigy.setTokens(tokens);
+            } catch (IllegalActionException e) {
+                throw new InternalErrorException(e);
             }
+        } else if (_picture != null) {
+            //Image image = ((ImageToken) in).asAWTImage();
+            
+            int xSize = ((IntMatrixToken) in).getColumnCount();
+            int ySize = ((IntMatrixToken) in).getRowCount();
 
-            _picture = new Picture(xSize, ySize);
-            _picture.setImage(_RGBbuffer);
-            _picture.setBackground(null);
-            _container.add("Center", _picture);
-            _container.validate();
-            _container.invalidate();
-            _container.repaint();
-            _container.doLayout();
+            // If the size has changed, have to recreate the Picture object.
+            if ((_oldXSize != xSize) || (_oldYSize != ySize)) {
+                if (_debugging) {
+                    _debug("Image size has changed.");
+                }
 
-            Container c = _container.getParent();
+                _oldXSize = xSize;
+                _oldYSize = ySize;
 
-            while (c.getParent() != null) {
-                c.invalidate();
-                c.validate();
-                c = c.getParent();
-            }
+                Container container = _picture.getParent();
 
-            if (_frame != null) {
-                _frame.pack();
+                if (_picture != null) {
+                    container.remove(_picture);
+                }
+
+                _picture = new Picture(xSize, ySize);
+                //_picture.setImage(image);
+                _picture.setImage(
+                        _convertBWImageToPackedRGBImage((IntMatrixToken) in));
+                _picture.setBackground(null);
+                container.add("Center", _picture);
+                container.validate();
+                container.invalidate();
+                container.repaint();
+                container.doLayout();
+
+                Container c = container.getParent();
+
+                while (c.getParent() != null) {
+                    c.invalidate();
+                    c.validate();
+                    c = c.getParent();
+
+                    if (c instanceof JFrame) {
+                        ((JFrame) c).pack();
+                    }
+                }
+            } else {
+                //_picture.setImage(((ImageToken) in).asAWTImage());
+                _picture.setImage(
+                        _convertBWImageToPackedRGBImage((IntMatrixToken) in));
+                _picture.displayImage();
+                _picture.repaint();
             }
         }
+    }
+
+    private int[] _convertBWImageToPackedRGBImage(IntMatrixToken token) {
+        int[][] frame = token.intMatrix();
+        int xSize = token.getColumnCount();
+        int ySize = token.getRowCount();
+
+        int[] RGBbuffer = new int[xSize * ySize];
 
         // convert the B/W image to a packed RGB image.  This includes
         // flipping the image upside down.  (When it is drawn, it gets
@@ -179,57 +299,17 @@ public class ImageDisplay extends Sink implements Placeable {
 
         for (j = ySize - 1; j >= 0; j--) {
             for (i = 0; i < xSize; i++, index++) {
-                _RGBbuffer[index] = (255 << 24) | ((frame[j][i] & 255) << 16)
+                RGBbuffer[index] = (255 << 24) | ((frame[j][i] & 255) << 16)
                     | ((frame[j][i] & 255) << 8)
                     | (frame[j][i] & 255);
             }
         }
 
-        // display it.
-        _picture.displayImage();
-        _picture.repaint();
-
-        Thread.yield();
-    }
-
-    /** Set the background */
-    public Color getBackground() {
-        return _container.getBackground();
-    }
-
-    /** Set the background */
-    public void setBackground(Color background) {
-        _container.setBackground(background);
-    }
-
-    /** Set the container that this actor should display data in.  If place
-     * is not called, then the actor will create its own frame for display.
-     */
-    public void place(Container container) {
-        _container = container;
-
-        // FIXME: Need support for toolbar run.
-        if (_container == null) {
-            return;
-        }
-
-        Container c = _container.getParent();
-
-        while (c.getParent() != null) {
-            c = c.getParent();
-        }
-
-        if (c instanceof JFrame) {
-            _frame = (JFrame) c;
-        }
+        return RGBbuffer;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    private Picture _picture;
-    private JFrame _frame;
-    private Container _container;
-    private int _oldXSize;
-    private int _oldYSize;
-    private int[] _RGBbuffer = null;
+
+    //private int[] _RGBbuffer = null;
 }
