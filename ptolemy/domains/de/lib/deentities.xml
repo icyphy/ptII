@@ -7,8 +7,9 @@
       <group>
 <doc>Discrete-event actors</doc>
 
-<entity name="EventButton" class="ptolemy.domains.de.lib.EventButton">
-</entity>
+<!-- Duplicate of SR Button Time -->
+<!-- entity name="EventButton" class="ptolemy.domains.de.lib.EventButton" -->
+<!-- /entity -->
 
 <entity name="EventFilter" class="ptolemy.domains.de.lib.EventFilter">
 </entity>
@@ -22,16 +23,10 @@
 <entity name="NonInterruptibleTimer" class="ptolemy.domains.de.lib.NonInterruptibleTimer">
 </entity>
 
-<entity name="PreemptableTask" class="ptolemy.domains.de.lib.PreemptableTask">
-</entity>
-
 <entity name="Previous" class="ptolemy.domains.de.lib.Previous">
 </entity>
 
 <entity name="Queue" class="ptolemy.domains.de.lib.Queue">
-</entity>
-
-<entity name="QueueWithNextOut" class="ptolemy.domains.de.lib.QueueWithNextOut">
 </entity>
 
 <entity name="Register" class="ptolemy.domains.de.lib.Register">

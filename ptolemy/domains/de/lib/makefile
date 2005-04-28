@@ -55,10 +55,8 @@ JSRCS = \
 	Inhibit.java \
 	Merge.java \
 	NonInterruptibleTimer.java \
-	PreemptableTask.java \
 	Previous.java \
 	Queue.java \
-	QueueWithNextOut.java \
 	Register.java \
 	Sampler.java \
 	Server.java \
