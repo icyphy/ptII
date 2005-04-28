@@ -148,4 +148,4 @@ test GRColorChanges-7.4 {Expression: Sphere3D: RGB color} {
 }}
 
 
-} # else java3d exists
+}
