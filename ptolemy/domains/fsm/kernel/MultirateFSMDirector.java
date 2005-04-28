@@ -340,7 +340,7 @@ public class MultirateFSMDirector extends FSMDirector {
             if (inputRateChanged || outputRateChanged) {
                 CompositeActor actor = _getEnclosingDomainActor();
                 Director director = actor.getExecutiveDirector();
-                //director.invalidateSchedule();
+                director.invalidateSchedule();
             }*/
         }
     }
@@ -383,6 +383,8 @@ public class MultirateFSMDirector extends FSMDirector {
             if (refinementDir instanceof MultirateFSMDirector) {
                 refinementDir.postfire();
             } else if (refinementDir instanceof StaticSchedulingDirector) {
+                // Get the refinement schedule so we can update the
+                // external rates.
                 refinementDir.invalidateSchedule();
                 ((StaticSchedulingDirector) refinementDir).getScheduler()
                     .getSchedule();
@@ -399,7 +401,7 @@ public class MultirateFSMDirector extends FSMDirector {
         if (inputRateChanged || outputRateChanged) {
             CompositeActor compositeActor = _getEnclosingDomainActor();
             Director director = compositeActor.getExecutiveDirector();
-            //director.invalidateSchedule();
+            director.invalidateSchedule();
         }*/
 
         return superPostfire;

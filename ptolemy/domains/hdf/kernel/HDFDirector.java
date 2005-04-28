@@ -58,17 +58,17 @@ import java.util.Map;
 //// HDFDirector
 
 /**
-   The heterochronous dataflow (HDF) domain is an extension of the
-   SDFDirector and implements the HDF model of computation [1]. The HDF
-   model of computation is a generalization of synchronous dataflow (SDF).
-   In SDF, the set of port rates of an actor (called rate signatures) are
-   constant. In HDF, however, rate signatures are allowed to change between
-   iterations of the HDF schedule.
+   The Heterochronous Dataflow (HDF) domain is an extension of the
+   Synchronous Dataflow (SDF) domain and implements the HDF model of
+   computation [1]. In SDF, the set of port rates (called rate signatures)
+   of an actor are constant. In HDF, however, rate signatures are allowed
+   to change between iterations of the HDF schedule.
    <p>
    This director is often used with HDFFSMDirector. The HDFFSMDirector
-   governs the execution of a modal model. Rate signature changes can
+   governs the execution of a modal model. The change of rate signatures can
    be modeled by state transitions of the modal model, in which each state
-   refinement infers a set of rate signatures.
+   refinement infers a set of rate signatures. Within each state, the HDF
+   model behaves like an SDF model.
    <p>
    This director recomputes the schedules dynamically. Schedules are
    cached and labeled by their corresponding rate signatures, with the most
@@ -186,9 +186,10 @@ public class HDFDirector extends SDFDirector {
 
         if (isScheduleValid()) {
             // This will return a the current schedule.
-            //System.out.println("The schedule is valid");
+            //System.out.println(getName() + " The schedule is valid");
             schedule = ((SDFScheduler) scheduler).getSchedule();
         } else {
+            //System.out.println(getName() + " The schedule is invalid.");
             // The schedule is no longer valid, so check the schedule
             // cache.
             if (_inputPortList == null
@@ -234,11 +235,11 @@ public class HDFDirector extends SDFDirector {
             }
 
             if (rateKey.equals(_mostRecentRates)) {
-                //System.out.println("just use the current");
+                //System.out.println(getName() + " just use the current");
                 schedule = ((SDFScheduler) scheduler).getSchedule();
             } else if (_scheduleCache.containsKey(rateKey)) {
                 // cache hit.
-                //System.out.println("cache hit");
+                //System.out.println(getName() + " cache hit");
                 _mostRecentRates = rateKey;
 
                 if (cacheSize > 0) {
@@ -251,14 +252,14 @@ public class HDFDirector extends SDFDirector {
                 schedule = (Schedule) _scheduleCache.get(rateKey);
 
             } else {
-                //System.out.println("cache miss");
+                //System.out.println(getName() + " cache miss");
                 // cache miss.
                 _mostRecentRates = rateKey;
 
                 if (cacheSize > 0) {
                     while (_scheduleKeyList.size() >= cacheSize) {
                         // Cache is full. Remove tail of list.
-                        // System.out.println("cache is full.");
+                        //System.out.println(getName() + " cache is full.");
                         Object object = _scheduleKeyList.get(cacheSize - 1);
                         _scheduleKeyList.remove(cacheSize - 1);
                         _scheduleCache.remove(object);
@@ -272,20 +273,28 @@ public class HDFDirector extends SDFDirector {
                 _scheduleCache.put(rateKey, schedule);
             }
         }
-
+        getScheduler().setValid(true);
         return schedule;
     }
 
-    /** Send a request to the manager to get the HDF schedule if
-     *  this director is not at the top level. This is used to compute
-     *  the external rates.
+    /** Send a request to the manager to get the HDF schedule if the schedule
+     *  is not valide or this director is not at the top level.
      *  @exception IllegalActionException If no schedule can be found,
      *  or if the super class method throws it.
      */
     public boolean postfire() throws IllegalActionException {
-        // Get schedule if it is not at the top level.
-        // This is necessary to update the external rates to the upper level.
-        if (getContainer() != toplevel()) {
+        /*
+        if (isScheduleValid()) {
+            //System.out.println("before HDF postfire(): schedule valid");
+        } else {
+            //System.out.println("before HDF postfire(): schedule not valid");
+        }*/
+        // If this director is not at the top level, the HDFFSMDirector
+        // of the modal model that it contains may change rates after
+        // making a change request, which invalidates this HDF's schedule.
+        // So we need to get the schedule of this HDFDirector also in a
+        // change request.
+        if (!isScheduleValid() || getContainer() != toplevel()) {
             CompositeActor container = (CompositeActor) getContainer();
             ChangeRequest request = new ChangeRequest(this, "reschedule") {
                 protected void _execute() throws KernelException {
@@ -295,7 +304,13 @@ public class HDFDirector extends SDFDirector {
             request.setPersistent(false);
             container.requestChange(request);
         }
-        return super.postfire();
+        boolean postfire = super.postfire();
+        /*if (isScheduleValid()) {
+            //System.out.println("HDF postfire(): schedule valid");
+        } else {
+            //System.out.println("HDF postfire(): schedule not valid");
+        }*/
+        return postfire;
     }
 
     /** Preinitialize the actors associated with this director.
