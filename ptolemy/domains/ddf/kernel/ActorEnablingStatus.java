@@ -37,8 +37,8 @@ package ptolemy.domains.ddf.kernel;
    @author Gang Zhou
    @version $Id$
    @since Ptolemy II 5.0
-   @Pt.ProposedRating yellow (zgang)
-   @Pt.AcceptedRating red (zgang)
+   @Pt.ProposedRating Yellow (zgang)
+   @Pt.AcceptedRating Red (cxh)
 */
 public final class ActorEnablingStatus {
     /** A private constructor.
